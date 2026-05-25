@@ -54,7 +54,7 @@ if (isset($oGet->verificarequisitossistema) && $oGet->verificarequisitossistema 
 
 //var_dump($lVerificaRequisitos);
 
-// Diretório das extensoes do servidor necessárias
+// Diretï¿½rio das extensoes do servidor necessï¿½rias
 $diretorio          = "config/require_extensions.xml";
 $sDirDocumentRoot   = $_SERVER['DOCUMENT_ROOT'] . "/";
 
@@ -74,8 +74,8 @@ if (file_exists($diretorio)) {
    $lErroConf = false;
 } else {
 
-// Se não existir o arquivo config/require_extensions.xml retorna mensagem
-   $sMsgConf   = "Erro: 404 Diretório de Configuração Inexistente! \n";
+// Se nï¿½o existir o arquivo config/require_extensions.xml retorna mensagem
+   $sMsgConf   = "Erro: 404 Diretï¿½rio de Configuraï¿½ï¿½o Inexistente! \n";
    $sMsgConf  .= "Contate Administrador do Sistema.";
    $lErroConf  = true;
 }
@@ -161,7 +161,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 	    }
 
 	    /**
-	     * Caso devemos ignorar algum pedaço da versao, deixamos a versao do browser do usuario como *
+	     * Caso devemos ignorar algum pedaï¿½o da versao, deixamos a versao do browser do usuario como *
 	     */
 	    foreach ($aVersaoVerificar as $iParte => $sVersaoVerificar) {
 
@@ -184,7 +184,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 	      }
 	    } else {
 
-	      $sMsgConf   = "Erro: Parametro(s) de Configuração do Browser não Configurados Corretamente! \n";
+	      $sMsgConf   = "Erro: Parametro(s) de Configuraï¿½ï¿½o do Browser nï¿½o Configurados Corretamente! \n";
 	      $lErroConf  = true;
 	      $lErro      = true;
 	    }
@@ -346,7 +346,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 	<tr align="center">
 		<td>
 		<div id="lista_pendente" align="left">
-		<div id="titulo">Verificação de Configurações </div>
+		<div id="titulo">Verificaï¿½ï¿½o de Configuraï¿½ï¿½es </div>
 		<div id="conteudo">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr>
@@ -367,7 +367,7 @@ if (count(@$aListaModulos) > 0) {
 
   echo "<table border=0 cellpadding=0 cellspacing=2 width=100% height=100%>";
   echo "<tr rowspan=0>";
-  echo "  <td><b>&nbsp;Módulos Pendentes:</b></td>";
+  echo "  <td><b>&nbsp;Mï¿½dulos Pendentes:</b></td>";
   echo "</tr>";
 
   foreach ($aListaModulos as $aValCampo) {
@@ -385,7 +385,7 @@ if (count(@$aListaParam) > 0) {
 
   echo "<table border=0 cellpadding=0 cellspacing=2 width=100% height=100%>";
   echo "<tr rowspan=0>";
-  echo "  <td><b>&nbsp;Parâmetro PHP.INI:</b></td>";
+  echo "  <td><b>&nbsp;Parï¿½metro PHP.INI:</b></td>";
   echo "  <td><b>&nbsp;Nome no PHP.INI:</b></td>";
   echo "  <td><b>&nbsp;Valor Requirido:</b></td>";
   echo "  <td><b>&nbsp;Valor Encontrado:</b></td>";
@@ -432,7 +432,7 @@ if (count(@$aListaParamPostgre) > 0) {
 
   echo "<table border=0 cellpadding=0 cellspacing=2 width=100% height=100%>";
   echo "<tr rowspan=0>";
-  echo "  <td><b>&nbsp;Parâmetro POSTGRESQL:</b></td>";
+  echo "  <td><b>&nbsp;Parï¿½metro POSTGRESQL:</b></td>";
   echo "  <td><b>&nbsp;Nome no POSTGRESQL:</b></td>";
   echo "  <td><b>&nbsp;Valor Requirido:</b></td>";
   echo "  <td><b>&nbsp;Valor Encontrado:</b></td>";
@@ -472,7 +472,7 @@ if ($lDirTmpRaizExist == false || $lDirTmpDbPortalExist == false) {
 
   echo "<table border=0 width=100% height=100%>";
   echo "<tr>";
-  echo "  <td><b>&nbsp;Diretório(s) não encontrado(s) ou sem permissão de escrita:</b></td>";
+  echo "  <td><b>&nbsp;Diretï¿½rio(s) nï¿½o encontrado(s) ou sem permissï¿½o de escrita:</b></td>";
   echo "</tr>";
   echo "<tr id=lista_pendente_tr rowspan=0>";
 
@@ -508,7 +508,7 @@ if (isset($sMsgErro) && $sMsgErro != "") {
 
   echo "<table border=0 width=100% height=100%>";
   echo "<tr rowspan=0>";
-  echo "  <td><b>&nbsp;Parametros de configuração do PostgreSQL:</b></td>";
+  echo "  <td><b>&nbsp;Parametros de configuraï¿½ï¿½o do PostgreSQL:</b></td>";
   echo "</tr>";
   echo "<tr id=lista_pendente_tr rowspan=0>";
   echo "  <td id=lista_pendente_td>".$sMsgErro."</td>";
@@ -521,7 +521,7 @@ if ($lErroConf == true) {
 
   echo "<table border=0 width=100% height=100%>";
   echo "<tr rowspan=0>";
-  echo "  <td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuração não Configurado(s) Corretamente:</b></td>";
+  echo "  <td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuraï¿½ï¿½o nï¿½o Configurado(s) Corretamente:</b></td>";
   echo "</tr>";
   echo "<tr id=lista_pendente_tr rowspan=0>";
   echo "  <td id=lista_pendente_td>".$sMsgConf."</td>";
@@ -547,7 +547,7 @@ if ($lErroConf == true) {
 	<tr align="center">
 		<td>
 		<div id="lista_pendente" align="left">
-		<div id="titulo">Verificação de Configurações </div>
+		<div id="titulo">Verificaï¿½ï¿½o de Configuraï¿½ï¿½es </div>
 		<div id="conteudo">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr>
@@ -560,7 +560,7 @@ if ($lErroConf == true) {
 
 			  echo "<table border=0 width=100% height=100%>";
 			  echo "<tr rowspan=0>";
-			  echo "  <td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuração não Configurado(s) Corretamente:</b></td>";
+			  echo "  <td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuraï¿½ï¿½o nï¿½o Configurado(s) Corretamente:</b></td>";
 			  echo "</tr>";
 			  echo "<tr id=lista_pendente_tr rowspan=0>";
 			  echo "  <td id=lista_pendente_td>".$sMsgConf."</td>";
@@ -596,7 +596,7 @@ if ($lErroConf == true) {
         <td><b>&nbsp;Verifica Config. Homologadas do Sistema:</b></td>
       </tr>
       <tr id=lista_pendente_tr rowspan=0>
-        <td id=lista_pendente_td>Configurações OK.</td>
+        <td id=lista_pendente_td>Configuraï¿½ï¿½es OK.</td>
       </tr>
     </table>
 
@@ -629,7 +629,7 @@ if ($lErroConf == true) {
 	<tr align='center'>
 		<td>
 		<div id='lista_pendente' align='left'>
-		<div id='titulo'>Verificação de Configurações <img src='' /></div>
+		<div id='titulo'>Verificaï¿½ï¿½o de Configuraï¿½ï¿½es <img src='' /></div>
 		<div id='conteudo'>
 		<table width='100%' border='0' cellpadding='0' cellspacing='0'>
 			<tr>
@@ -639,7 +639,7 @@ if ($lErroConf == true) {
 		</div>
 		<table border='0' width='100%' height='100%'>
 			<tr rowspan='0'>
-				<td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuração não Configurado(s) Corretamente:</b></td>
+				<td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuraï¿½ï¿½o nï¿½o Configurado(s) Corretamente:</b></td>
 			</tr>
 			<tr id='lista_pendente_tr' rowspan='0'>
 				<td id='lista_pendente_td'><?=$sMsgConf?></td>
@@ -660,7 +660,7 @@ if ($lErroConf == true) {
   <tr align="center">
     <td>
     <div id="lista_pendente" align="left">
-    <div id="titulo">Verificação de Configurações </div>
+    <div id="titulo">Verificaï¿½ï¿½o de Configuraï¿½ï¿½es </div>
     <div id="conteudo">
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
@@ -673,7 +673,7 @@ if ($lErroConf == true) {
 
         echo "<table border=0 width=100% height=100%>";
         echo "<tr rowspan=0>";
-        echo "  <td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuração não Configurado(s) Corretamente:</b></td>";
+        echo "  <td><b>&nbsp;Arquivo Inexistente ou Parametro(s) de Configuraï¿½ï¿½o nï¿½o Configurado(s) Corretamente:</b></td>";
         echo "</tr>";
         echo "<tr id=lista_pendente_tr rowspan=0>";
         echo "  <td id=lista_pendente_td>".$sMsgConf."</td>";
@@ -687,10 +687,10 @@ if ($lErroConf == true) {
         <td><b>&nbsp;Verifica Config. Homologadas do Sistema:</b></td>
       </tr>
       <tr id=lista_pendente_tr rowspan=0>
-        <td id=lista_pendente_td>Configurações OK.</td>
+        <td id=lista_pendente_td>Configuraï¿½ï¿½es OK.</td>
       </tr>
     </table>
-    <?} ?>
+    <?php } ?>
   </div>
     </td>
   </tr>
@@ -708,7 +708,7 @@ if ($lErroConf == true) {
 <html>
 <?php
 /**
- * retorna o browser do usuário
+ * retorna o browser do usuï¿½rio
  * @return array
  */
 function getBrowser()  {
