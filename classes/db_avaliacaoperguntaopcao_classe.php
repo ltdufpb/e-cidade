@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: habitacao
 //CLASSE DA ENTIDADE avaliacaoperguntaopcao
 class cl_avaliacaoperguntaopcao { 

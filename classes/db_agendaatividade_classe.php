@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE agendaatividade
 class cl_agendaatividade { 

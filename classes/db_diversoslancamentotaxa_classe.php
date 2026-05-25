@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: diversos
 //CLASSE DA ENTIDADE diversoslancamentotaxa
 class cl_diversoslancamentotaxa { 

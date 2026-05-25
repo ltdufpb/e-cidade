@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE teto_orcamentario
 class cl_teto_orcamentario { 

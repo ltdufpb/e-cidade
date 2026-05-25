@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordoempempenho
 class cl_acordoempempenho { 

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE idioma
 class cl_idioma { 

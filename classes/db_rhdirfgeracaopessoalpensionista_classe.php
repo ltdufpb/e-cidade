@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhdirfgeracaopessoalpensionista
 class cl_rhdirfgeracaopessoalpensionista { 

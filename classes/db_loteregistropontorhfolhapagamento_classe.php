@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE loteregistropontorhfolhapagamento
 class cl_loteregistropontorhfolhapagamento { 

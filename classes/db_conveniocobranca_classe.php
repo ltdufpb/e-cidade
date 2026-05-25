@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE conveniocobranca
 class cl_conveniocobranca {

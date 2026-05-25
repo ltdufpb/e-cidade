@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE medicamentoslaboratorio
 class cl_medicamentoslaboratorio { 

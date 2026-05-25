@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhhistoricocalculo
 class cl_rhhistoricocalculo { 

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: juridico
 //CLASSE DA ENTIDADE advog
 class cl_advog { 

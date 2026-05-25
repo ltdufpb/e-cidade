@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE bancoagenciaendereco
 class cl_bancoagenciaendereco { 

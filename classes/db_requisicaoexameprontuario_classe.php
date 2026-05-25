@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE requisicaoexameprontuario
 class cl_requisicaoexameprontuario {

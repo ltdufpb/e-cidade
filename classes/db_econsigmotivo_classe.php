@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE econsigmotivo
 class cl_econsigmotivo { 

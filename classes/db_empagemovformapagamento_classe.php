@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE empagemovformapagamento
 class cl_empagemovformapagamento {

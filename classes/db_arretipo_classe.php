@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: caixa
 //CLASSE DA ENTIDADE arretipo
 class cl_arretipo

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhferiasperiodo
 class cl_rhferiasperiodo { 

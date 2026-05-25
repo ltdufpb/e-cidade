@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: agua
 //CLASSE DA ENTIDADE aguacalc
 class cl_aguacalc { 

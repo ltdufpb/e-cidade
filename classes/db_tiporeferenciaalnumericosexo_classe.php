@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE tiporeferenciaalnumericosexo
 class cl_tiporeferenciaalnumericosexo { 

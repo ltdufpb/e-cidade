@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: fiscal
 //CLASSE DA ENTIDADE grupotaxadiversos
 class cl_grupotaxadiversos { 

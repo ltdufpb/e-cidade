@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: material
 //CLASSE DA ENTIDADE matmaterconteudomaterial
 class cl_matmaterconteudomaterial { 

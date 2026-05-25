@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: caixa
 //CLASSE DA ENTIDADE remessacobrancaregistrada
 class cl_remessacobrancaregistrada { 

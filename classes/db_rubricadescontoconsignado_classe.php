@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rubricadescontoconsignado
 class cl_rubricadescontoconsignado { 

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhfundamentacaolegal
 class cl_rhfundamentacaolegal { 

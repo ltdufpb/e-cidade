@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE lancamentorrapensionista
 class cl_lancamentorrapensionista { 

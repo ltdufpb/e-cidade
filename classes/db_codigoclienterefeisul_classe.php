@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE codigoclienterefeisul
 class cl_codigoclienterefeisul { 

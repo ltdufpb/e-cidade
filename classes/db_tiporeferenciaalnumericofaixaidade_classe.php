@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE tiporeferenciaalnumericofaixaidade
 class cl_tiporeferenciaalnumericofaixaidade { 

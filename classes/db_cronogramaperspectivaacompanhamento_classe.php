@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: orcamento
 //CLASSE DA ENTIDADE cronogramaperspectivaacompanhamento
 class cl_cronogramaperspectivaacompanhamento { 

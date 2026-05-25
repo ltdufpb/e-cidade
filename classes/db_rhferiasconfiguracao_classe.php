@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE rhferiasconfiguracao
 class cl_rhferiasconfiguracao { 

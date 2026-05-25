@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE pagordemprocesso
 class cl_pagordemprocesso { 

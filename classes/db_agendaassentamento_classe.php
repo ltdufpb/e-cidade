@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE agendaassentamento
 class cl_agendaassentamento { 

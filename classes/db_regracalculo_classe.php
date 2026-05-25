@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE regracalculo
 class cl_regracalculo { 

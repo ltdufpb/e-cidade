@@ -413,7 +413,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 					?>					
 				</tr>
 
-<?
+<?php
 			for( $h=0; $h < $nro_fichas; $h++){
 			    $nro_ficha = str_pad($h,3,0,STR_PAD_LEFT);
 			    $id_ficha  = 0;
@@ -489,7 +489,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 						}
 					?>
 				</tr>
-<?
+<?php
 			    if( $intervalo != 0){
 					$hora_ini    = $this->somahora($hora_ini,($intervalo+$mi_interva2));	
 					$mi_interva1 = -1;
@@ -528,7 +528,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		}
 		
 		</script>
-<?
+<?php
 		
 				
 	}//fim função cria_table
@@ -675,7 +675,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 					 ?>					
 				</tr>
 
-<?
+<?php
 			for( $h=0; $h < $nro_fichas; $h++){
 
 			    $nro_ficha = str_pad($h,3,0,STR_PAD_LEFT);
@@ -749,7 +749,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 						}
 					?>
 				</tr>
-<?
+<?php
 			    if( $intervalo != 0){
 					$hora_ini    = $this->somahora($hora_ini,($intervalo+$mi_interva2));	
 					$mi_interva1 = -1;
@@ -764,9 +764,9 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 <script>
 
 js_hora_trans2(<?=$obj_undmedhorario->sd30_i_codigo?>, '<?=$this->lado_transf?>');
-<?if($lExibirCheckBox && $this->lMarcaTodasChekBox) {?>
+<?phpif($lExibirCheckBox && $this->lMarcaTodasChekBox) {?>
   js_marcarTodos();
-<?}?>
+<?php}?>
 
 function js_hora_trans2(valor, lado) {
 
@@ -804,7 +804,7 @@ function js_marcarTodos() {
 
 }
 </script>
-<?
+<?php
 				
 	}//fim função cria_table
   

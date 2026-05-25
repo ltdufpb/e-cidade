@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: issqn
 //CLASSE DA ENTIDADE juntacomercialprotocoloretorno
 class cl_juntacomercialprotocoloretorno { 

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE tipoassunto
 class cl_tipoassunto { 

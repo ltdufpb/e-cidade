@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE descartemedicamento
 class cl_descartemedicamento { 

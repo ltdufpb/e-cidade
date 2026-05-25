@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_formulas
 class cl_db_formulas { 

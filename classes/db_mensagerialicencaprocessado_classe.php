@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: meioambiente
 //CLASSE DA ENTIDADE mensagerialicencaprocessado
 class cl_mensagerialicencaprocessado { 
