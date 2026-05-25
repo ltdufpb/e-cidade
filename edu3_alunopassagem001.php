@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -38,7 +38,7 @@ include(modification("classes/db_linha_classe.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_rechumanoescola_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $claluno = new cl_aluno;
 $cllinha = new cl_linha;
 $clmatricula = new cl_matricula;
@@ -83,7 +83,7 @@ function js_redireciona(chave){
       <?=$Led47_i_codigo?>
      </td>
      <td>
-      <?db_input("ed60_i_codigo",10,@$Ied47_i_codigo,true,"text",4,"","chave_ed60_i_codigo");?>
+      <?php db_input("ed60_i_codigo",10,@$Ied47_i_codigo,true,"text",4,"","chave_ed60_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -91,7 +91,7 @@ function js_redireciona(chave){
       <b>Nome:</b>
      </td>
      <td>
-      <?db_input("ed47_v_nome",50,@$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+      <?php db_input("ed47_v_nome",50,@$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
      </td>
     </tr>
     <tr>
@@ -99,7 +99,7 @@ function js_redireciona(chave){
       <b>Escola:</b>
      </td>
      <td>
-      <?
+      <?php 
       $sql= "select ed18_i_codigo,ed18_c_nome,ed47_i_codigo,ed47_v_nome,'M' as tipoescola
        From aluno
        inner join alunopassagem on alunopassagem.ed215_i_aluno = aluno.ed47_i_codigo
@@ -116,7 +116,7 @@ function js_redireciona(chave){
       ?>
       <select name="chave_ed226_i_escola" style="font-size:10px;width:300px">
        <option value=''></option>
-       <?
+       <?php 
         for($x=0;$x<$linhas1;$x++){
          db_fieldsmemory($result1,$x);
          echo "<option value='$ed18_i_codigo' ".(@$ed226_i_escola==$ed18_i_codigo?"selected":"").">$ed18_c_nome</option>";
@@ -140,10 +140,10 @@ function js_redireciona(chave){
 <table width="100%">
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    if(isset($pesquisar)){
-    ?><fieldset style="width:95%"><legend><b>Registros</b></legend><?
+    ?><fieldset style="width:95%"><legend><b>Registros</b></legend><?php 
     $campos = "ed47_i_codigo,
                ed47_v_nome,
                ed215_i_codigo,
@@ -176,7 +176,7 @@ function js_redireciona(chave){
     if(isset($pesquisar)){
      db_lovrot(@$sql,15,"()","","js_redireciona|ed215_i_codigo","","NoMe",$repassa);
     }
-    ?></fieldset><?
+    ?></fieldset><?php 
    }
    ?>
    </td>
@@ -185,4 +185,4 @@ function js_redireciona(chave){
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>

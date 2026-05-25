@@ -380,12 +380,12 @@ if (isset($disponibilidade)) {
         <script>
         if (parent.document.getElementById("text<?=$quadro?>").value == "") {
 
-          <?
+          <?php 
              if ($rechumano != 0) {?>
                parent.document.getElementById("text<?=$quadro?>").style.background = "#FF9900"; //laranja
                parent.document.getElementById("disc<?=$quadro?>").innerHTML        = '';
                parent.document.getElementById("rh<?=$quadro?>").innerHTML          = 'HORÁRIO NÃO DISPONÍVEL NESTA ESCOLA';
-           <?} else {?>
+           <?php } else {?>
                 if (parent.document.getElementById('possuiRegente').value == 2) {
                     parent.document.getElementById("text<?=$quadro?>").style.background = "#CCFFCC"; //verde
                     parent.document.getElementById("disc<?=$quadro?>").innerHTML        = '';
@@ -395,17 +395,17 @@ if (isset($disponibilidade)) {
                     parent.document.getElementById("disc<?=$quadro?>").innerHTML        = '';
                     parent.document.getElementById("rh<?=$quadro?>").innerHTML          = '';
                 }
-           <?}?>
+           <?php }?>
 
         } else {
           parent.document.getElementById("text<?=$quadro?>").style.background = "#CCCCCC"; // Cinza
         }
         </script>
-    <?} else {?>
+    <?php } else {?>
         <script>
          if (parent.document.getElementById("text<?=$quadro?>").value == "") {
 
-           <?
+           <?php 
            if ($clregenciahorario->numrows > 0 && $iTotalTurma > 0) { // Ele já tem horário marcado, mas em outra turma, pois o quadro está em branco
 
              if ($clregenciahorario->numrows > 0) {
@@ -449,7 +449,7 @@ if (isset($disponibilidade)) {
            parent.document.getElementById("text<?=$quadro?>").style.background = "#CCCCCC"; // Cinza
          }
         </script>
-    <?}
+    <?php }
     }
   }
 }

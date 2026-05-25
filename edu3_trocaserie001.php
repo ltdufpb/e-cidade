@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,11 +70,11 @@ $escola = db_getsession("DB_coddepto");
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="center" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <form name="form1" method="post" action="">
    <fieldset style="width:95%"><legend><b>Consulta Progressão de Aluno</b></legend>
-    <?
+    <?php 
     $result = $clcalendario->sql_record($clcalendario->sql_query_calturma("","ed52_i_codigo,ed52_c_descr,ed52_i_ano","ed52_i_ano desc"," ed38_i_escola = $escola AND ed52_c_passivo = 'N'"));?>
     <table border="0" cellspacing="0" cellpadding="0">
      <tr>
@@ -82,7 +82,7 @@ $escola = db_getsession("DB_coddepto");
        <b>Selecione o Calendário:</b>
        <select name="calendario" style="font-size:9px;width:150px;height:18px;">
         <option value=""></option>
-        <?
+        <?php 
         for($i=0;$i<$clcalendario->numrows;$i++) {
          db_fieldsmemory($result,$i);
          $selected = $ed52_i_codigo==@$calendario?"selected":"";
@@ -107,7 +107,7 @@ $escola = db_getsession("DB_coddepto");
   </td>
  </tr>
 </table>
-<?
+<?php 
  if(isset($calendario)){
  $where = $tipo!=""?" AND ed101_c_tipo = '$tipo '":"";
  $sql = "SELECT DISTINCT
@@ -152,7 +152,7 @@ $escola = db_getsession("DB_coddepto");
    <td class="cabec" align="center">Etapa/Turma Destino</td>
    <td class="cabec" align="center">Data</td>
   </tr>
-  <?
+  <?php 
   $cor1 = "#f3f3f3";
   $cor2 = "#DBDBDB";
   $cor = "";
@@ -173,12 +173,12 @@ $escola = db_getsession("DB_coddepto");
      <td align="center"><?=$seriedestino." / ".$turmadestino?></td>
      <td align="center"><?=db_formatar($ed101_d_data,'d')?></td>
     </tr>
-    <?
+    <?php 
    }
   }else{
    ?>
    <tr bgcolor="#f3f3f3">
-    <?
+    <?php 
     if($tipo==""){
      $descr_tipo = " Nenhum AVANÇO ou CLASSIFICAÇÃO";
     }elseif($tipo=="A"){
@@ -189,12 +189,12 @@ $escola = db_getsession("DB_coddepto");
     ?>
     <td colspan="6"><?=$descr_tipo?> neste calendário.</td>
    </tr>
-   <?
+   <?php 
   }
   ?>
  </table>
-<?}?>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php }?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -203,7 +203,7 @@ function js_processar(calendario,tipo){
   location.href = "edu3_trocaserie001.php?calendario="+calendario+"&tipo="+tipo;
  }
 }
-<?if(!isset($calendario) && pg_num_rows($result)>0){?>
+<?php if(!isset($calendario) && pg_num_rows($result)>0){?>
  document.form1.calendario.options[1].selected = true;
-<?}?>
+<?php }?>
 </script>

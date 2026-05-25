@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $escola = db_getsession("DB_coddepto");
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <a name="topo"></a>
 <form name="form1" method="post" action="">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -74,7 +74,7 @@ $escola = db_getsession("DB_coddepto");
        <b>Selecione o Calendário:</b><br>
        <select name="calendario" style="font-size:9px;width:150px;height:18px;">
         <option></option>
-        <?
+        <?php 
         $sql = "SELECT ed52_i_codigo,ed52_i_ano,ed52_c_descr
                 FROM calendario
                  inner join calendarioescola on ed38_i_calendario = ed52_i_codigo
@@ -87,7 +87,7 @@ $escola = db_getsession("DB_coddepto");
          $desc_curso=$row["ed52_c_descr"];
          ?>
          <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-         <?
+         <?php 
         }
         ?>
        </select>
@@ -112,10 +112,10 @@ $escola = db_getsession("DB_coddepto");
       </td>
       <td>
        <b>Diretor:</b><br>
-       <?$result = $clescoladiretor->sql_record($clescoladiretor->sql_query("","ed254_i_rechumano,z01_nome,ed15_c_nome","ed15_i_sequencia"," ed254_i_escola = $escola AND ed254_c_tipo = 'A'"));?>
+       <?php $result = $clescoladiretor->sql_record($clescoladiretor->sql_query("","ed254_i_rechumano,z01_nome,ed15_c_nome","ed15_i_sequencia"," ed254_i_escola = $escola AND ed254_c_tipo = 'A'"));?>
        <select name="diretor" style="font-size:9px;height:18px;">
         <option value=""></option>
-        <?
+        <?php 
         for($r=0;$r<$clescoladiretor->numrows;$r++){
          db_fieldsmemory($result,$r);
          echo "<option value='$ed254_i_rechumano'>$z01_nome ($ed15_c_nome)</option>";
@@ -133,7 +133,7 @@ $escola = db_getsession("DB_coddepto");
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -143,7 +143,7 @@ function js_procurar(calendario,mes,diretor){
   jan.moveTo(0,0);
  }
 }
-<?if(pg_num_rows($sql_result)>0){?>
+<?php if(pg_num_rows($sql_result)>0){?>
  document.form1.calendario.options[1].selected = true;
-<?}?>
+<?php }?>
 </script>

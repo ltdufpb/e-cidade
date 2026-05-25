@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desper_und_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_desper_und = new cl_mer_desper_und;
 $db_opcao         = 22;
@@ -109,7 +109,7 @@ if (isset($alterar)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Alteração de Desperdício</b></legend>
-	<? include(modification("forms/db_frmmer_desper_und.php"));?>
+	<?php  include(modification("forms/db_frmmer_desper_und.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -117,7 +117,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($clmer_desper_und->erro_status=="0") {

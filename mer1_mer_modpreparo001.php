@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Modo Preparo</b></legend>
-    <?include(modification("forms/db_frmmer_modpreparo.php"));?>
+    <?php include(modification("forms/db_frmmer_modpreparo.php"));?>
    </fieldset>
    </center>
   </td>
@@ -87,7 +87,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me05_i_item",true,1,"me05_i_item",true);
 </script>
-<?
+<?php 
 if (isset($incluir)||isset($alterar)||isset($excluir)) {
 	
   if ($clmer_modpreparo->erro_status=="0") {

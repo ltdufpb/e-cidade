@@ -110,7 +110,7 @@ if (isset($excluir)) {
      <br>
      <center>
      <fieldset style="width:95%"><legend><b>Atividades Complementares da Turma <?=@$ed268_c_descr?></b></legend>
-        <?include(modification("forms/db_frmturmaacativ.php"));?>
+        <?php include(modification("forms/db_frmturmaacativ.php"));?>
      </fieldset>
      </center>
     </td>
@@ -121,7 +121,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","ed267_i_censoativcompl",true,1,"ed267_i_censoativcompl",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clturmaacativ->erro_status=="0"){
   $clturmaacativ->erro(true,false);

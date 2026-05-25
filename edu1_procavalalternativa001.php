@@ -107,7 +107,7 @@ if( isset($excluir) ) {
     <br>
     <center>
     <fieldset style="width:95%"><legend><b>Avaliações Alternativas</b></legend>
-	<?include(modification("forms/db_frmprocavalalternativa.php"));?>
+	<?php include(modification("forms/db_frmprocavalalternativa.php"));?>
     </center>
     </fieldset>
 	</td>

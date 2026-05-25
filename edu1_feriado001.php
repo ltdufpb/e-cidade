@@ -214,7 +214,7 @@ if (isset($incluir)) {
    <script>
     iframe_sabado2.location.href = "edu1_calendario004.php?calendario=<?=$ed52_i_codigo?>&sabado=<?=$ed52_c_aulasabado?>&feriado";
    </script>
-   <?
+   <?php 
    //$clferiado->erro(true,true);
   };
  }
@@ -237,7 +237,7 @@ if(isset($alterar)){
    <script>
     iframe_sabado2.location.href = "edu1_calendario004.php?calendario=<?=$ed52_i_codigo?>&sabado=<?=$ed52_c_aulasabado?>&feriado";
    </script>
-   <?
+   <?php 
   };
  }
 };
@@ -254,7 +254,7 @@ if (isset($excluir)) {
             <script>
                 iframe_sabado2.location.href = "edu1_calendario004.php?calendario=<?=$ed52_i_codigo?>&sabado=<?=$ed52_c_aulasabado?>&feriado";
             </script>
-            <?
+            <?php 
         };
     } else {
         if ($clferiado->erro_status == "0") {

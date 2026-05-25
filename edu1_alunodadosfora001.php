@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -139,7 +139,7 @@ if (isset($incluir)) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <center>
             <fieldset style="width:95%"><legend><b>Inclusão de Aluno</b></legend>
-              <?
+              <?php 
                 include(modification("forms/db_frmalunodadosfora.php"));
               ?>
             </fieldset>
@@ -150,7 +150,7 @@ if (isset($incluir)) {
   </body>
 </html>
 
-<?
+<?php 
 
 if (isset($incluir)) {
 

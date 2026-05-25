@@ -29,7 +29,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 
 $iEscola = db_getsession("DB_coddepto");
 

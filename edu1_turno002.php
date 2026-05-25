@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_turno_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $oDaoTurno = db_utils::getdao('turno');
@@ -87,14 +87,14 @@ if (isset($alterar)) {
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
           <center>
-            <?
+            <?php 
               include(modification("forms/db_frmturno.php"));
             ?>
           </center>
         </td>
       </tr>
     </table>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),
@@ -104,7 +104,7 @@ if (isset($alterar)) {
   </body>
 </html>
 
-<?
+<?php 
 
 if (isset($alterar)) {
 

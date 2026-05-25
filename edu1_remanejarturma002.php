@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@ include(modification("classes/db_regenciahorario_classe.php"));
 include(modification("classes/db_turmaserieregimemat_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $iAnoEtapaCenso        = null;
 $clturma               = new cl_turma;
@@ -138,7 +138,7 @@ if(isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href='edu1_parecerturma001.php?ed105_i_turma=<?=$ed57_i_codigo?>'+
                                      '&ed57_c_descr=<?=$ed57_c_descr?>&ed52_c_descr=<?=$ed52_c_descr?>';
   </script>
- <?
+ <?php 
 }
 ?>
 <html>
@@ -158,7 +158,7 @@ if(isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Turma</b></legend>
-    <?include(modification("forms/db_frmturma.php"));?>
+    <?php include(modification("forms/db_frmturma.php"));?>
    </fieldset>
    </center>
   </td>
@@ -169,7 +169,7 @@ if(isset($alterar)) {
 <script>
 js_tabulacaoforms("form1","ed57_c_descr",true,1,"ed57_c_descr",true);
 </script>
-<?
+<?php 
 if (isset($alterar)) {
   if ($clturma->erro_status == "0") {
     $clturma->erro(true,false);
@@ -240,7 +240,7 @@ if (isset($alterar)) {
   }
   ?>
    <script>parent.document.form2.teste.click();</script>
-  <?
+  <?php 
  }
 }
 if ($db_opcao == 22) {

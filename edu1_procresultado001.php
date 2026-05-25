@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -119,7 +119,7 @@ if (isset($incluir)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Inclusão de Resultados do Procedimento de Avaliação <?=$ed40_c_descr?></b></legend>
-       <?include(modification("forms/db_frmprocresultado.php"));?>
+       <?php include(modification("forms/db_frmprocresultado.php"));?>
       </fielset>
      </center>
     </td>
@@ -130,7 +130,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "ed43_i_resultado", true, 1, "ed43_i_resultado", true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 	
   if ($oDaoProcResultado->erro_status == "0") {
@@ -156,7 +156,7 @@ if (isset($incluir)) {
                                           "&opcao=alterar&procedimento=<?=$ed43_i_procedimento?>"+
                                           "&forma=<?=$forma?>&ed40_c_descr=<?=$ed40_c_descr?>"
     </script>
-    <?
+    <?php 
     
   }
   

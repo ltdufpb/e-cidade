@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_rhregime_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clrhregime = new cl_rhregime;
 $clrhcadregime = new cl_rhcadregime;
@@ -77,16 +77,16 @@ if (isset($excluir)) {
       <br> 
       <center>
       <fieldset style="width:95%"><legend><b>Inclusão de Vínculos</b></legend>
-      <?include(modification("forms/db_frmrhregimeedu.php"));?>
+      <?php include(modification("forms/db_frmrhregimeedu.php"));?>
       </fieldset>
       </center>
     </td>
   </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 
   if ($clrhregime->erro_status=="0") {

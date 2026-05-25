@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ db_fieldsmemory($result,0);
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Atos Legais que amparam a Justificativa</b></legend>
-    <?include(modification("forms/db_frmatojustificativa.php"));?>
+    <?php include(modification("forms/db_frmatojustificativa.php"));?>
    </fieldset>
    </center>
    </td>
@@ -64,11 +64,11 @@ db_fieldsmemory($result,0);
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  $result = $clatojustificativa->sql_record($clatojustificativa->sql_query("","*",""," ed07_i_justificativa = $ed07_i_justificativa and ed07_i_ato = $ed07_i_ato"));
  if($clatojustificativa->numrows>0){
-  ?><script>alert("Ato Legal informado já está associado a esta justificativa!");</script><?
+  ?><script>alert("Ato Legal informado já está associado a esta justificativa!");</script><?php 
  }else{
   db_inicio_transacao();
   $db_opcao = 1;

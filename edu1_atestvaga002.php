@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,7 @@ require_once(modification("classes/db_atestvaga_classe.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $ed102_d_data_dia = date("d", db_getsession("DB_datausu"));
 $ed102_d_data_mes = date("m", db_getsession("DB_datausu"));
 $ed102_d_data_ano = date("Y", db_getsession("DB_datausu"));
@@ -94,11 +94,11 @@ if (isset($alterar)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Alteração de Atestado de Vaga</b></legend>
-       <?include(modification("forms/db_frmatestvagaalt.php"));?>
+       <?php include(modification("forms/db_frmatestvagaalt.php"));?>
       </fieldset>
      </center>
     </td>
@@ -106,7 +106,7 @@ if (isset($alterar)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if($oDaoAtestVaga->erro_status == "0") {
@@ -132,7 +132,7 @@ if (isset($alterar)) {
      parent.document.form1.nomecaldest.value = '<?=$ed52_c_descr?>';
      parent.db_iframe_atestvaga.hide();
     </script>
-    <?
+    <?php 
     
   }
   

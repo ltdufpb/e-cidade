@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regencia_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clregencia = new cl_regencia;
 $turma=  $turma;
 if(isset($ordenacao)){
@@ -51,7 +51,7 @@ if(isset($ordenacao)){
   //parent.js_refresh();
   parent.window.location.reload();
  </script>
-<?}?>
+<?php }?>
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
@@ -68,12 +68,12 @@ if(isset($ordenacao)){
    <table border="0" cellspacing="0" cellpading="0">
     <tr>
      <td align="center">
-      <?$result3 = $clregencia->sql_record($clregencia->sql_query("","ed59_i_codigo,ed59_i_ordenacao,ed232_c_descr","ed59_i_ordenacao"," ed59_i_turma = $turma AND ed59_i_serie = $serie"));?>
+      <?php $result3 = $clregencia->sql_record($clregencia->sql_query("","ed59_i_codigo,ed59_i_ordenacao,ed232_c_descr","ed59_i_ordenacao"," ed59_i_turma = $turma AND ed59_i_serie = $serie"));?>
       <table width="100%" cellspacing="0" cellpading="0" border="0" >
        <tr>
         <td rowspan="0">
          <select multiple="true" name="ordenar[]" id="ordenar" size="10" style="font-size:9px;width:300px"  onclick="js_selectum('ordenar')">
-         <?
+         <?php 
          if($linhabranco=="yes"){
           echo "<option value=''></option>";
          }

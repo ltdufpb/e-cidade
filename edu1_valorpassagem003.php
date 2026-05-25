@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_valorpassagem_classe.php"));
 include(modification("classes/db_alunopassagemqtd_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clvalorpassagem = new cl_valorpassagem;
 $clalunopassagemqtd = new cl_alunopassagemqtd;
@@ -74,18 +74,18 @@ if(isset($excluir)){
     <br>
     <fieldset style="width:95%"><legend><b>Exclusão Valor Passagem</b></legend>
     <center>
-    <?include(modification("forms/db_frmvalorpassagem.php"));?>
+    <?php include(modification("forms/db_frmvalorpassagem.php"));?>
     </center>
     </fieldset>
    </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
   if($clvalorpassagem->erro_status=="0"){
     $clvalorpassagem->erro(true,false);

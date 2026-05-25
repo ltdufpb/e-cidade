@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -125,8 +125,8 @@ if(isset($chavepesquisa)){
          <tr>
           <td nowrap title="Período">
           Período<br>
-          <?db_inputdata('datainicial',@$datainicial_dia,@$datainicial_mes,@$datainicial_ano,true,'text',$db_opcao,"")?>
-          <?db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',$db_opcao,"")?>
+          <?php db_inputdata('datainicial',@$datainicial_dia,@$datainicial_mes,@$datainicial_ano,true,'text',$db_opcao,"")?>
+          <?php db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',$db_opcao,"")?>
           </td>
          </tr>
            <tr>

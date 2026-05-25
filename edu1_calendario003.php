@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 db_postmemory($_GET);
 
@@ -91,7 +91,7 @@ if ( isset( $chavepesquisa ) ) {
         <center>
         <fieldset style="width:95%">
           <legend><b>Exclusão de Calendário</b></legend>
-          <?include(modification("forms/db_frmcalendario.php"));?>
+          <?php include(modification("forms/db_frmcalendario.php"));?>
         </fieldset>
         </center>
       </td>
@@ -99,7 +99,7 @@ if ( isset( $chavepesquisa ) ) {
   </table>
 </body>
 </html>
-<?
+<?php 
 if ( $db_opcao == 33 ) {
   echo "<script>document.form1.pesquisar.click();</script>";
 }

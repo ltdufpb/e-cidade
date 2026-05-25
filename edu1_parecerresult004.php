@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -129,28 +129,28 @@ if($encerrado=="S"){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td bgcolor="#CCCCCC">
-   <?db_input('ed63_i_codigo',10,@$Ied63_i_codigo,true,'hidden',$db_opcao,"")?>
-   <?db_input('ed63_i_diarioresultado',10,@$Ied63_i_diarioresultado,true,'hidden',$db_opcao,"")?>
+   <?php db_input('ed63_i_codigo',10,@$Ied63_i_codigo,true,'hidden',$db_opcao,"")?>
+   <?php db_input('ed63_i_diarioresultado',10,@$Ied63_i_diarioresultado,true,'hidden',$db_opcao,"")?>
   </td>
  </tr>
- <?if((isset($opcao) && $opcao=="alterar") || (isset($opcao) && $opcao=="excluir") || (isset($alterar))){?>
+ <?php if((isset($opcao) && $opcao=="alterar") || (isset($opcao) && $opcao=="excluir") || (isset($alterar))){?>
   <tr>
    <td>
     <b>Parecer Padronizado:</b>
    </td>
    <td>
-    <?db_textarea('ed63_t_parecer',2,80,@$ed63_t_parecer,true,'text',@$db_opcao,"")?><br>
+    <?php db_textarea('ed63_t_parecer',2,80,@$ed63_t_parecer,true,'text',@$db_opcao,"")?><br>
    </td>
   </tr>
   <script>js_tabulacaoforms("form1","ed63_t_parecer",true,1,"ed63_t_parecer",true);</script>
- <?}else{?>
+ <?php }else{?>
   <tr>
    <td nowrap title="<?=@$Ted92_i_sequencial?>">
-   <?db_ancora("<b>Parecer:</b>","js_pesquisaed92_i_sequencial(true);",$db_opcao);?>
+   <?php db_ancora("<b>Parecer:</b>","js_pesquisaed92_i_sequencial(true);",$db_opcao);?>
    </td>
    <td>
-    <?db_input('ed92_i_sequencial',15,@$Ied92_i_sequencial,true,'text',$db_opcao," onchange='js_pesquisaed92_i_sequencial(false);'")?>
-    <?db_input('ed92_c_descr',40,@$Ied92_c_descr,true,'text',3,"")?>
+    <?php db_input('ed92_i_sequencial',15,@$Ied92_i_sequencial,true,'text',$db_opcao," onchange='js_pesquisaed92_i_sequencial(false);'")?>
+    <?php db_input('ed92_c_descr',40,@$Ied92_c_descr,true,'text',3,"")?>
    </td>
   </tr>
   <tr>
@@ -160,19 +160,19 @@ if($encerrado=="S"){
    <td>
     <select name="ed91_c_descr" <?=$encerrado=="S"?"disabled style=\"background:#f3f3f3;\"":"style=\"height:17px;font-size:10px;padding:0px;\""?>>
     <option value=""></option>
-    <?
+    <?php 
     $result = $clparecerlegenda->sql_record($clparecerlegenda->sql_query("","ed91_i_codigo,ed91_c_descr",""," ed91_i_escola=".db_getsession("DB_coddepto")));
     for($y=0;$y<$clparecerlegenda->numrows;$y++){
      db_fieldsmemory($result,$y);
      ?>
       <option value="<?=$ed91_c_descr?>"><?=trim($ed91_c_descr)?></option>
-     <?
+     <?php 
     }
     ?>
    </td>
   </tr>
   <script>js_tabulacaoforms("form1","ed92_i_sequencial",true,1,"ed92_i_sequencial",true);</script>
- <?}?>
+ <?php }?>
  <tr>
   <td>
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>>
@@ -183,7 +183,7 @@ if($encerrado=="S"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("ed63_i_codigo"=>@$ed63_i_codigo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clparecerresult->sql_query("","*","ed63_i_codigo"," ed63_i_diarioresultado = $ed63_i_diarioresultado");
@@ -207,7 +207,7 @@ if($encerrado=="S"){
 </form>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clparecerresult->erro_status=="0"){
   $clparecerresult->erro(true,false);

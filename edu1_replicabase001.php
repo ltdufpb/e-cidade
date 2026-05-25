@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -156,7 +156,7 @@ if (isset($incluir)) {
       parent.location.href = "edu1_base002.php?chavepesquisa=<?= $iNewCodBase ?>";
       parent.db_iframe_replicacao.hide();
     </script>
-    <?
+    <?php 
   }
   exit;
 }
@@ -178,14 +178,14 @@ if (isset($incluir)) {
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <br>
             <fieldset style="width:95%"><legend><b>Replicação de Base Curricular</b></legend>
-<?
+<?php 
 $rsBase = $clbase->sql_record($clbase->sql_query("", "*", "", " ed31_i_codigo = {$oGet->codbase}"));
 $oBase = db_utils::fieldsmemory($rsBase, 0);
 $ed31_i_codigo = $oBase->ed31_i_codigo;
 $ed31_c_descr_old = $oBase->ed31_c_descr;
 ?>
-<? db_input('ed31_i_codigo', 10, @$Ied31_i_codigo, true, 'text', 3, "") ?>
-<? db_input('ed31_c_descr_old', 40, @$Ied31_c_descr_old, true, 'text', 3, "") ?><br>
+<?php  db_input('ed31_i_codigo', 10, @$Ied31_i_codigo, true, 'text', 3, "") ?>
+<?php  db_input('ed31_c_descr_old', 40, @$Ied31_c_descr_old, true, 'text', 3, "") ?><br>
               <b>
                 Este procedimento irá replicar a base curricular <?= $oBase->ed31_i_codigo ?> - <?= $oBase->ed31_c_descr ?>,
                 alterando somente os dados modificados abaixo:<br><br>
@@ -203,12 +203,12 @@ $ed31_c_descr_old = $oBase->ed31_c_descr;
                       <b>Novo Regime de Matrícula</b>
                     </td>
                     <td>  
-<?
+<?php 
 $rsRegimemat = $clregimemat->sql_record($clregimemat->sql_query("", "ed218_i_codigo,ed218_c_nome,ed218_c_divisao", "ed218_i_codigo", ""));
 ?>
                       <select name="ed31_i_regimemat_new" onchange="js_VerRegime(<?= $oBase->ed31_i_codigo ?>, this.value)">
                         <option value=""></option>
-                      <?
+                      <?php 
                       for ($t = 0; $t < $clregimemat->numrows; $t++) {
 
                         $oRegimemat = db_utils::fieldsmemory($rsRegimemat, $t);
@@ -225,7 +225,7 @@ $rsRegimemat = $clregimemat->sql_record($clregimemat->sql_query("", "ed218_i_cod
                       <b>Novo Nome da Base:</b>
                     </td>
                     <td>
-                        <? db_input('ed31_c_descr', 40, @$Ied31_c_descr, true, 'text', $db_opcao, "") ?><br>    
+                        <?php  db_input('ed31_c_descr', 40, @$Ied31_c_descr, true, 'text', $db_opcao, "") ?><br>    
                     </td>  
                   </tr>
                   <tr>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -119,7 +119,7 @@ if ($clturma->numrows == 0) {
         </td>
     </tr>
    </table>
-<?
+<?php 
     exit ();
     
 }
@@ -151,7 +151,7 @@ if ($cledu_parametros->numrows > 0) {
         </td>
        </tr>
       </table>
-<?
+<?php 
       exit ();
       
     }
@@ -187,7 +187,7 @@ if ($cledu_parametros->numrows > 0) {
           </td>
          </tr>
         </table>
-<?
+<?php 
       exit ();
       
     }

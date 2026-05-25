@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_aluno_classe.php"));
 include(modification("classes/db_alunocurso_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $claluno = new cl_aluno;
 $clalunocurso = new cl_alunocurso;
@@ -89,7 +89,7 @@ if(isset($chavepesquisa)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Outros Dados</b></legend>
-    <?include(modification("forms/db_frmforaaluno.php"));?>
+    <?php include(modification("forms/db_frmforaaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -97,7 +97,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);

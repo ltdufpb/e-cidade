@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -34,7 +34,7 @@ require_once(modification("classes/db_cursoedu_classe.php"));
 require_once(modification("classes/db_cursoescola_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 $clcurso       = new cl_curso;
 $clcursoescola = new cl_cursoescola;
@@ -71,7 +71,7 @@ if (isset($alterar)) {
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href   = 'edu1_cursoato001.php?ed71_i_curso=<?=$ed29_i_codigo?>'+
                                         '&ed29_c_descr=<?=$ed29_c_descr?>';
  </script>
- <?
+ <?php 
 }
 ?>
 <html>
@@ -86,7 +86,7 @@ if (isset($alterar)) {
    <?php include(modification("forms/db_frmcursos.php"));?>
   </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($clcurso->erro_status == "0") {
@@ -117,7 +117,7 @@ if (isset($alterar)) {
      (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href   = 'edu1_cursoato001.php?ed71_i_curso=<?=$ed29_i_codigo?>'+
                                            '&ed29_c_descr=<?=$ed29_c_descr?>';
     </script>
-  <?
+  <?php 
   }
 
 }

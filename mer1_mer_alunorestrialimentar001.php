@@ -138,7 +138,7 @@ if( $clmer_cardapio->numrows > 0 ) {
                         <b><?=$me25_i_alimento?> - <?=$alimento?></b>
                       </td>
                     </tr>
-                    <?
+                    <?php 
                     $primeiro = $me25_i_alimento;
                   }
                   ?>

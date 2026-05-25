@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $escola = db_getsession("DB_coddepto");
 ?>
@@ -51,7 +51,7 @@ $escola = db_getsession("DB_coddepto");
 }
 </style>
 </head>
-<?
+<?php 
 //select tipos de nutrientes
 $sql    ="select me09_i_codigo,me09_c_descr from mer_nutriente order by me09_c_descr";
 $result = db_query($sql);
@@ -93,7 +93,7 @@ $linhas1  = pg_num_rows($result1);
 <br>
 <center>
 <table border='3px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px" id="tabela<?=$x?>">
-<?       
+<?php        
 //for percorre todods os cardapios retornados
 for ($z=0;$z<$linhas1;$z++) {
 	
@@ -132,7 +132,7 @@ for ($z=0;$z<$linhas1;$z++) {
 	             <td>
 	               <b>Quantidade por item</b>
 	             </td>
-	            <?for ($x=0;$x<$linhas;$x++) {
+	            <?php for ($x=0;$x<$linhas;$x++) {
 	             	
 	                $tvalor[$x]  = 0;
 	                $valor[$x]   = 0;
@@ -141,12 +141,12 @@ for ($z=0;$z<$linhas1;$z++) {
 	                <td>
 	                 <b><?=$me09_c_descr?></b>
 	                </td>
-	            <?}
+	            <?php }
 	              $tvalor[$x]  = 0;
 	              $valor[$x]   = 0;
 	              $unidade[$x] =""; ?>
 	          </tr>
-	         <?
+	         <?php 
 	         $cor1 = "#DBDBDB";
              $cor2 = "#f3f3f3";
              $cor  = ""; 
@@ -163,7 +163,7 @@ for ($z=0;$z<$linhas1;$z++) {
 	           <b><?=$me35_c_nomealimento?></b>
 	          </td>
 	          <td>
-	           <?
+	           <?php 
 	           $sqli    = "select me07_f_quantidade,m61_descr from mer_cardapio "; 
 	           $sqli   .= "                inner join mer_cardapioitem on me07_i_cardapio=me01_i_codigo "; 
 	           $sqli   .= "                inner join matunid on m61_codmatunid=me07_i_unidade ";
@@ -180,7 +180,7 @@ for ($z=0;$z<$linhas1;$z++) {
 	           }?>   
 	           <?=$quantitem?>
 	          </td>
-	         <?for ($x=0;$x<$linhas;$x++){
+	         <?php for ($x=0;$x<$linhas;$x++){
 	         	
 	             db_fieldsmemory($result,$x);
 	             $sqln    = " select me08_f_quant,m61_descr from mer_infnutricional ";
@@ -211,33 +211,33 @@ for ($z=0;$z<$linhas1;$z++) {
 	              <?=$quantnutri?>
 	             </td>   
 	             
-	         <?}?>	          
+	         <?php }?>	          
 	        </tr>  
-	       <?}?>
+	       <?php }?>
             <tr bgcolor="<?=$cor?>">
 	         <td><b>Total Nutrientes </b></td>
 	         <td>&nbsp;</td>
-            <?
+            <?php 
              for ($x=1;$x<=$linhas;$x++) {
              	
                $tvalor[$x]    = $tvalor[$x]+$valor[$x];
                $tunidade[$x]  = $unidade[$x];?>
 	           <td><?="$valor[$x] $unidade[$x]"?></td>
 	                      
-	       <?}?>
+	       <?php }?>
 	        </tr>
 	        <td><b>Total Nutrientes por aluno </b></td>
 	        <td>Percapita=<?=$me01_i_percapita?></td>
-            <?
+            <?php 
              for ($x=1;$x<=$linhas;$x++) {
              	
                $valor[$x] = $valor[$x]/$me01_i_percapita?>
 	           <td><?="$valor[$x] $unidade[$x]"?></td>
-	           <?$valor[$x] = 0;
+	           <?php $valor[$x] = 0;
                $unidade[$x] = "";
                
              }?>	  
-<?
+<?php 
 }
 if ($linhas1!=0) {?>  
   <tr class='cabec'>
@@ -246,14 +246,14 @@ if ($linhas1!=0) {?>
   <tr bgcolor="<?=$cor?>">
 	<td><b>Total Nutrientes </b></td>
 	<td>&nbsp;</td>
-<?for ($x=1;$x<=$linhas;$x++) {?>
+<?php for ($x=1;$x<=$linhas;$x++) {?>
 	 <td><?="$tvalor[$x] $tunidade[$x]"?></td>
-<?
+<?php 
   }          
 } else {?>
   <tr class='cabec'>
   <td><center>Não foi encontrado nenhum cardapio</center></td>
-<?
+<?php 
 }?>  
   </tr>              
  </table>         

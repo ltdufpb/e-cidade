@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("classes/db_itinerario_classe.php"));
 include(modification("classes/db_itinerarioescolaproc_classe.php"));
 include(modification("classes/db_itinerarioescola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clitinerario = new cl_itinerario;
 $clitinerarioescola = new cl_itinerarioescola;
@@ -84,18 +84,18 @@ if(isset($alterar)){
      <br>
      <fieldset style="width:95%"><legend><b>Alteração de itinerário</b></legend>
      <center>
-     <?include(modification("forms/db_frmitinerario.php"));?>
+     <?php include(modification("forms/db_frmitinerario.php"));?>
     </center>
     </fieldset>
    </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
   if($clitinerario->erro_status=="0"){
     $clitinerario->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -67,13 +67,13 @@ if(isset($incluir)){
     <br>
     <fieldset style="width:95%"><legend><b>Inclusão  Valor Passagem</b></legend>
     <center>
-    <?include(modification("forms/db_frmvalorpassagem.php"));?>
+    <?php include(modification("forms/db_frmvalorpassagem.php"));?>
     </center>
    </fieldset>
     </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -81,7 +81,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","ed230_i_linha",true,1,"ed230_i_linha",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($clvalorpassagem->erro_status=="0"){
     $clvalorpassagem->erro(true,false);

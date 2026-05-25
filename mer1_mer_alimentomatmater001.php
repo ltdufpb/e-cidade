@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("classes/db_mer_alimentomatmater_classe.php"));
 include(modification("classes/db_mer_alimento_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clmer_alimentomatmater = new cl_mer_alimentomatmater;
 $clmer_alimento         = new cl_mer_alimento;
 $db_opcao = 1;
@@ -72,7 +72,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Material</b></legend>
-	<?
+	<?php 
 	include(modification("forms/db_frmmer_alimentomatmater.php"));
 	?>
    </fieldset>
@@ -82,7 +82,7 @@ if (isset($incluir)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 	
   if ($clmer_alimentomatmater->erro_status == "0") {
@@ -103,7 +103,7 @@ if (isset($incluir) || isset($alterar) || isset($excluir)) {
     //db_redireciona("mer1_mer_alimentomatmater001.php?me36_i_alimento=$me36_i_alimento&me35_c_nomealimento=$me35_c_nomealimento");
     ?>
    <script>parent.document.form1.teste.click();</script>                 
-  <?}
+  <?php }
   
 } 
 if(isset($cancelar)){

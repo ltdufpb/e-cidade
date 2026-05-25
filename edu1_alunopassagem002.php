@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,7 @@ include(modification("classes/db_transporteparam_classe.php"));
 include(modification("classes/db_alunopassagemescolaproc_classe.php"));
 include(modification("classes/db_distancia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clalunopassagem = new cl_alunopassagem;
 $cldistancia = new cl_distancia;
@@ -124,16 +124,16 @@ if(isset($alterar)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Alunos que utilizam passagens</b></legend>
-    <?include(modification("forms/db_frmalunopassagem.php"));?>
+    <?php include(modification("forms/db_frmalunopassagem.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($clalunopassagem->erro_status=="0"){
   $clalunopassagem->erro(true,false);

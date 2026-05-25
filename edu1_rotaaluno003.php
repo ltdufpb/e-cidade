@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_rotaaluno_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clrotaaluno = new cl_rotaaluno;
 $db_botao = false;
@@ -73,16 +73,16 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Alunos por Rota</b></legend>
-    <?include(modification("forms/db_frmrotaaluno.php"));?>
+    <?php include(modification("forms/db_frmrotaaluno.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
  if($clrotaaluno->erro_status=="0"){
   $clrotaaluno->erro(true,false);

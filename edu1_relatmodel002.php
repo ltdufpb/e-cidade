@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_edu_relatmodel_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 
 $cledu_relatmodel = new cl_edu_relatmodel;
@@ -90,7 +90,7 @@ if (isset($alterar)) {
 
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($cledu_relatmodel->erro_status == "0") {

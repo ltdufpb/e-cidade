@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_nutricionista_classe.php"));
 include(modification("classes/db_mer_nutricionistaescola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_nutricionista       = new cl_mer_nutricionista;
 $clmer_nutricionistaescola = new cl_mer_nutricionistaescola;
@@ -65,7 +65,7 @@ if (isset($alterar)) {
                                              '&iCodNutricionista=<?=$chavepesquisa?>&z01_nome=<?=$z01_nome?>';
   </script> 
   
-  <?
+  <?php 
 
 }
 ?>
@@ -85,7 +85,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Nutricionista</b></legend>
-    <?include(modification("forms/db_frmmer_nutricionista.php"));?>
+    <?php include(modification("forms/db_frmmer_nutricionista.php"));?>
    </fieldset>
    </center>
   </td>
@@ -93,7 +93,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($clmer_nutricionista->erro_status == "0") {
@@ -118,7 +118,7 @@ if (isset($alterar)) {
                                            '&me31_i_nutricionista=<?=$chavepesquisa?>&z01_nome=<?=$z01_nome?>';
      parent.mo_camada('a2'); 
     </script>
-    <?
+    <?php 
     db_redireciona("mer1_mer_nutricionista002.php?chavepesquisa=$me02_i_codigo");
     
   }

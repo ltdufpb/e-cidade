@@ -284,7 +284,7 @@ if (isset($classificar)) {
            <td class='aluno' align='center'><?=$sTurnosMatriculados?></td>
            <td class='aluno' align='center'><?=$ed11_c_descr?></td>
           </tr>
-         <?
+         <?php 
         }
       } else {
 

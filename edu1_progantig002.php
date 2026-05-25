@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_progantig_classe.php"));
 include(modification("classes/db_progconfig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clprogantig = new cl_progantig;
 $clprogconfig = new cl_progconfig;
@@ -75,20 +75,20 @@ if(isset($alterar)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Pontos por Antiguidade</b></legend>
-    <?include(modification("forms/db_frmprogantig.php"));?>
+    <?php include(modification("forms/db_frmprogantig.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($clprogantig->erro_status=="0"){
   $clprogantig->erro(true,false);

@@ -40,7 +40,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php 
     db_app::load("scripts.js, prototype.js, strings.js, arrays.js, windowAux.widget.js, datagrid.widget.js,
                   dbmessageBoard.widget.js, dbcomboBox.widget.js, dbtextField.widget.js, webseller.js,
                   DBVisualizadorImpressaoTexto.js, DBToogle.widget.js");
@@ -49,7 +49,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   ?>
 </head>
 <body style='margin-top: 25px' bgcolor="#cccccc">
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <center>
   <div style="display:table;margin-top: 25px; ">
     <form name="form1" id='frmDiarioClasse' method="post">
@@ -78,7 +78,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     </form>
   </div>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

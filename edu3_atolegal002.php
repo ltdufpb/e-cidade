@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -106,7 +106,7 @@ if (!isset($iAtoLegal)) {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
 
-    <?
+    <?php 
       $sLib  = "scripts.js,prototype.js,webseller.js,strings.js,";
       $sLib .= "estilos.css,tab.style.css";
       db_app::load($sLib);
@@ -123,13 +123,13 @@ if (!isset($iAtoLegal)) {
             <?=$Led05_i_codigo?>
           </td>
           <td width="300">
-            <?db_input('ed05_i_codigo', '10', $ed05_i_codigo, true, 'text', '3', '')?>
+            <?php db_input('ed05_i_codigo', '10', $ed05_i_codigo, true, 'text', '3', '')?>
           </td>
           <td width="100" nowrap title="<?=$Ted05_i_ano?>">
             <?=$Led05_i_ano?>
           </td>
           <td>
-            <?db_input('ed05_i_ano', '10', $ed05_i_ano, true, 'text', '3', '')?>
+            <?php db_input('ed05_i_ano', '10', $ed05_i_ano, true, 'text', '3', '')?>
           </td>
         </tr>
         <tr>
@@ -137,14 +137,14 @@ if (!isset($iAtoLegal)) {
             <?=$Led05_c_numero?>
           </td>
           <td>
-            <?db_input('ed05_c_numero', '20', $ed05_c_numero, true, 'text', '3', '')?>
+            <?php db_input('ed05_c_numero', '20', $ed05_c_numero, true, 'text', '3', '')?>
           </td>
           <td nowrap title="<?=$Ted05_d_vigora?>">
             <?=$Led05_d_vigora?>
           </td>
           <td>
-            <? $ed05_d_vigora = DBFormataData($ed05_d_vigora); ?>
-            <?db_input('ed05_d_vigora', '10', $ed05_d_vigora, true, 'text', '3', '')?>
+            <?php  $ed05_d_vigora = DBFormataData($ed05_d_vigora); ?>
+            <?php db_input('ed05_d_vigora', '10', $ed05_d_vigora, true, 'text', '3', '')?>
           </td>
         </tr>
         <tr>
@@ -152,15 +152,15 @@ if (!isset($iAtoLegal)) {
             <?=$Led05_i_tipoato?>
           </td>
           <td>
-            <? $ed05_i_tipoato = DBTipoAto($ed05_i_tipoato); ?>
-            <?db_input('ed05_i_tipoato', '20', $ed05_i_tipoato, true, 'text', '3', '')?>
+            <?php  $ed05_i_tipoato = DBTipoAto($ed05_i_tipoato); ?>
+            <?php db_input('ed05_i_tipoato', '20', $ed05_i_tipoato, true, 'text', '3', '')?>
           </td>
           <td nowrap title="<?=$Ted05_d_aprovado?>">
             <?=$Led05_d_aprovado?>
           </td>
           <td>
-            <? $ed05_d_aprovado = DBFormataData($ed05_d_aprovado); ?>
-            <?db_input('ed05_d_aprovado', '10', $ed05_d_aprovado, true, 'text', '3', '')?>
+            <?php  $ed05_d_aprovado = DBFormataData($ed05_d_aprovado); ?>
+            <?php db_input('ed05_d_aprovado', '10', $ed05_d_aprovado, true, 'text', '3', '')?>
           </td>
         </tr>
         <tr>
@@ -168,15 +168,15 @@ if (!isset($iAtoLegal)) {
             <?=$Led05_c_competencia?>
           </td>
           <td>
-            <? $ed05_c_competencia = DBCompetencia($ed05_c_competencia); ?>
-            <?db_input('ed05_c_competencia', '20', $ed05_c_competencia, true, 'text', '3', '')?>
+            <?php  $ed05_c_competencia = DBCompetencia($ed05_c_competencia); ?>
+            <?php db_input('ed05_c_competencia', '20', $ed05_c_competencia, true, 'text', '3', '')?>
           </td>
           <td nowrap title="<?=$Ted05_d_publicado?>">
             <?=$Led05_d_publicado?>
           </td>
           <td>
-            <? $ed05_d_publicado = DBFormataData($ed05_d_publicado); ?>
-            <?db_input('ed05_d_publicado', '10', $ed05_d_publicado, true, 'text', '3', '')?>
+            <?php  $ed05_d_publicado = DBFormataData($ed05_d_publicado); ?>
+            <?php db_input('ed05_d_publicado', '10', $ed05_d_publicado, true, 'text', '3', '')?>
           </td>
         </tr>
         <tr>
@@ -184,13 +184,13 @@ if (!isset($iAtoLegal)) {
             <?=$Led05_c_finalidade?>
           </td>
           <td>
-            <?db_input('ed05_c_finalidade', '40', $ed05_c_finalidade, true, 'text', '3', '')?>
+            <?php db_input('ed05_c_finalidade', '40', $ed05_c_finalidade, true, 'text', '3', '')?>
           </td>
           <td nowrap title="<?=$Ted05_c_orgao?>">
             <?=$Led05_c_orgao?>
           </td>
           <td>
-            <?db_input('ed05_c_orgao', '40', $ed05_c_orgao, true, 'text', '3', '')?>
+            <?php db_input('ed05_c_orgao', '40', $ed05_c_orgao, true, 'text', '3', '')?>
           </td>
         </tr>
         <tr>
@@ -198,7 +198,7 @@ if (!isset($iAtoLegal)) {
             <?=$Led05_t_texto?>
           </td>
           <td colspan="3">
-            <?db_textarea('ed05_t_texto', 3, 97, $ed05_t_texto, true, 'text', '3', '')?>
+            <?php db_textarea('ed05_t_texto', 3, 97, $ed05_t_texto, true, 'text', '3', '')?>
           </td>
         </tr>
       </table>
@@ -209,7 +209,7 @@ if (!isset($iAtoLegal)) {
     <!-- Detalhamento do Ato Legal -->
     <fieldset><legend><b>Detalhamento</b></legend>
     <center>
-      <?
+      <?php 
         
         $oMenuLateral = new verticalTab('menus', '200');
 
@@ -225,7 +225,7 @@ if (!isset($iAtoLegal)) {
     <!-- Fim do Detalhamento do Ato Legal -->
   </body>
 </html>
-<?
+<?php 
 
 } //Fecha o isset($iAtoLegal)
 

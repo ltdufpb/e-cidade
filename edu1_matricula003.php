@@ -33,7 +33,7 @@ require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 
 $oGet = db_utils::postMemory($_GET);
@@ -309,7 +309,7 @@ if (isset($excluir)) {
 
                     $lErro = true;
                     $sMsg = $oDaoDiarioAvaliacaoAlternativa->erro_msg;
-                    break 2;
+                    break;
                 }
 
                 $cldiario->excluir("", " ed95_i_codigo = $coddiario");

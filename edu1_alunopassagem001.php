@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -109,19 +109,19 @@ if(isset($incluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Alunos que utilizam passagens</b></legend>
-    <?include(modification("forms/db_frmalunopassagem.php"));?>
+    <?php include(modification("forms/db_frmalunopassagem.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed215_i_ano",true,1,"ed215_i_ano",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clalunopassagem->erro_status=="0"){
   $clalunopassagem->erro(true,false);

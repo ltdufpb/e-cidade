@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_cardapiodia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_cardapiodia = new cl_mer_cardapiodia;
 $db_opcao          = 22;
@@ -67,13 +67,13 @@ if (isset($alterar)) {
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
 	<br><br>
     <fieldset style="width:95%"><legend><b>Alteração de Cardápio Dia</b></legend>
-	<? include(modification("forms/db_frmmer_cardapiodia.php"));?>
+	<?php  include(modification("forms/db_frmmer_cardapiodia.php"));?>
 	</fieldset>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -82,7 +82,7 @@ db_menu(db_getsession("DB_id_usuario"),
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)){
 	
   if ($clmer_cardapiodia->erro_status=="0"){

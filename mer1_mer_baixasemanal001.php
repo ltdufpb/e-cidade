@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ $clmer_cardapiodata = new cl_mer_cardapiodata;
 $clmatparam               = new cl_matparam;
 $cldb_departorg           = new  cl_db_departorg;
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clmatrequiitem           = new cl_matrequiitem;
 $clmatrequi               = new cl_matrequi;
 $clatendrequiitem         = new cl_atendrequiitem;
@@ -208,13 +208,13 @@ if (isset($incluir)) {
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
 	<br><br>
     <fieldset style="width:105%"><legend><b>Baixa Semanal</b></legend>
-	<? include(modification("forms/db_frmmerbaixa.php"));;?>
+	<?php  include(modification("forms/db_frmmerbaixa.php"));;?>
 	</fieldset>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -223,7 +223,7 @@ db_menu(db_getsession("DB_id_usuario"),
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 	
   if ($sqlerro==true) {
@@ -239,6 +239,6 @@ if (isset($incluir) || isset($alterar) || isset($excluir)) {
   }  
   ?>
   <script>js_reload();</script>
-  <?
+  <?php 
 }  
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -36,7 +36,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matricula_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 
 $oDaoEduNumAlunoBloqueado = db_utils::getdao('edu_numalunobloqueado');
 $clmatricula              = new cl_matricula;
@@ -121,7 +121,7 @@ if (isset($atualizar)) {
                            "&ed52_c_descr=<?=$ed52_c_descr?>&ordenar=true&numeracao=true";
      parent.db_iframe_classificacao.hide();
     </script>
-    <?
+    <?php 
     exit;
   } catch (Exception $eErro) {
 
@@ -142,11 +142,11 @@ if (isset($atualizar)) {
 <form name="form2" id='form2' method="post" action="">
 <table border="0" cellspacing="3" bgcolor="#CCCCCC" align="center">
  <tr>
- <?if (isset($numeracao) && $numeroaluno =="") {?>
+ <?php if (isset($numeracao) && $numeroaluno =="") {?>
   <td valign="top" align="center">
    <b>Novo N°</b>
   </td>
-  <?}?>
+  <?php }?>
   <td valign="top" align="center" colspan="2">
    <b>Nome Aluno</b>
   </td>
@@ -154,7 +154,7 @@ if (isset($atualizar)) {
  </tr>
  <tr>
   <td align="right" valign="top" style='overflow:hidden' >
-   <?
+   <?php 
    $sWhereTrocaTurma = '';
    if (isset($trocaTurma) && $trocaTurma == 1) {
      $sWhereTrocaTurma = " and ed60_c_situacao <> 'TROCA DE TURMA'";
@@ -180,7 +180,7 @@ if (isset($atualizar)) {
   <select name="numaluno[]" id="numaluno" size="15" style="position:relative;left:18px;font-size:9px;width:50px;
                                                            overflow:hidden;z-Index:0;
                                                            visibility:<?=$sVisibility?>;" multiple >
-    <?
+    <?php 
     $iContNum = 1;
     for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
@@ -199,7 +199,7 @@ if (isset($atualizar)) {
   </td>
   <td align="right" valign="top">
    <select name="matriculas[]" id="matriculas" size="15" style="font-size:9px;width:280px;" multiple>
-   <?
+   <?php 
    for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
      db_fieldsmemory($result,$x);
@@ -227,28 +227,28 @@ if (isset($atualizar)) {
    <td>
    <input type="button" name="cancelar" value="Cancelar" onClick="js_fechar();">
   </td>
-  <?
+  <?php 
   if ($oConfig->ed233_i_habilitaordemalfabeticaturma == 1) {
   ?>
     <td width="50">
      <input type="button" id="ordenar" value="Ordenar Alfabeticamente" onClick="js_OrdenarLista('matriculas', true);"
        <?=$sVisibility == 'hidden' ? 'disabled' : ''?>>
     </td>
-  <?
+  <?php 
   }
   if ($ed60_i_numaluno == '') {
   ?>
       <td>
         <input type="button" id="numeracao" value="Gerar Numeração" onClick="js_numeracao('matriculas');"  >
       </td>
-  <?} ?>
-  <?if ( $ed60_i_numaluno != "") {?>
+  <?php } ?>
+  <?php if ( $ed60_i_numaluno != "") {?>
       <td>
         <input type="button" id="numeracao" name="numeracao" value="Cancelar Numeração"
           onClick="js_cancelarNumeracao();"
           style="visibility:visible;">
       </td>
-  <?}?>
+  <?php }?>
   <td>
    <input type="button" id="voltar" value="Restaurar"
           onClick="location.href = 'edu1_alunoturma002.php?ed60_i_turma=<?=$ed60_i_turma?>&ed57_c_descr=<?=$ed57_c_descr?>

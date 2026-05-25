@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,19 +79,19 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Idade Inicial e Final por Etapa</b></legend>
-    <?include(modification("forms/db_frmserieidade.php"));?>
+    <?php include(modification("forms/db_frmserieidade.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed259_i_serie",true,1,"ed259_i_serie",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clserieidade->erro_status=="0"){
   $clserieidade->erro(true,false);

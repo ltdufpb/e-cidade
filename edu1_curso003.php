@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,7 @@ require_once(modification("classes/db_cursoedu_classe.php"));
 require_once(modification("classes/db_cursoescola_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clcurso       = new cl_curso;
 $clcursoescola = new cl_cursoescola;
@@ -76,7 +76,7 @@ if (isset($excluir)) {
      <br>
      <center>
       <fieldset style="width:90%"><legend><b>Exclusão de Curso</b></legend>
-        <?include(modification("forms/db_frmcursos.php"));?>
+        <?php include(modification("forms/db_frmcursos.php"));?>
       </fieldset>
      </center>
     </td>
@@ -84,7 +84,7 @@ if (isset($excluir)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clcurso->erro_status == "0") {

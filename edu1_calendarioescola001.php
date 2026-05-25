@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Escolas vinculadas ao Calendário <?=@$ed52_c_descr?></b></legend>
-    <?include(modification("forms/db_frmcalendarioescola.php"));?>
+    <?php include(modification("forms/db_frmcalendarioescola.php"));?>
    </fieldset>
    </center>
   </td>
@@ -84,7 +84,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clcalendarioescola->erro_status=="0"){
   $clcalendarioescola->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ if(isset($excluir)){
 <table width="90%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    include(modification("dbforms/db_classesgenericas.php"));
    $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
    $db_botao1 = false;
@@ -120,7 +120,7 @@ if(isset($excluir)){
        <?=@$Led128_i_codigo?>
       </td>
       <td>
-       <?db_input('ed128_i_codigo',10,$Ied128_i_codigo,true,'text',3,"")?>
+       <?php db_input('ed128_i_codigo',10,$Ied128_i_codigo,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -128,7 +128,7 @@ if(isset($excluir)){
        <?=@$Led128_d_data?>
       </td>
       <td>
-       <?db_inputdata('ed128_d_data',@$ed128_d_data_dia,@$ed128_d_data_mes,@$ed128_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
+       <?php db_inputdata('ed128_d_data',@$ed128_d_data_dia,@$ed128_d_data_mes,@$ed128_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
       </td>
      </tr>
      <tr>
@@ -136,7 +136,7 @@ if(isset($excluir)){
        <?=@$Led128_t_obs?>
       </td>
       <td>
-       <?db_textarea('ed128_t_obs',1,35,$Ied128_t_obs,true,'text',$db_opcao,"")?>
+       <?php db_textarea('ed128_t_obs',1,35,$Ied128_t_obs,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -144,7 +144,7 @@ if(isset($excluir)){
        <?=@$Led128_c_numfono?>
       </td>
       <td>
-       <?db_input('ed128_c_numfono',20,$Ied128_c_numfono,true,'text',$db_opcao,"")?>
+       <?php db_input('ed128_c_numfono',20,$Ied128_c_numfono,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -160,7 +160,7 @@ if(isset($excluir)){
     <table border="0" align="left">
      <tr>
       <td valign="top">
-      <?
+      <?php 
        $chavepri= array("ed128_i_codigo"=>@$ed128_i_codigo,"ed128_d_data"=>@$ed128_d_data,"ed128_t_obs"=>@$ed128_t_obs,"ed128_c_numfono"=>@$ed128_c_numfono);
        $cliframe_alterar_excluir->chavepri=$chavepri;
        @$cliframe_alterar_excluir->sql = $clprogconvfaltas->sql_query("","*",""," ed128_c_abonada = 'S' AND ed128_i_progconvres = $ed128_i_progconvres");
@@ -188,7 +188,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clprogconvfaltas->erro_status=="0"){
   $clprogconvfaltas->erro(true,false);
@@ -215,7 +215,7 @@ if(isset($incluir)){
   <script>
    parent.location.href = "edu1_progconvocacaores002.php?chavepesquisa=<?=$ed128_i_progconvres?>";
   </script>
-  <?
+  <?php 
  }
 }
 if(isset($alterar)){
@@ -233,7 +233,7 @@ if(isset($alterar)){
   <script>
    parent.location.href = "edu1_progconvocacaores002.php?chavepesquisa=<?=$ed128_i_progconvres?>";
   </script>
-  <?
+  <?php 
  }
 }
 if(isset($excluir)){
@@ -255,7 +255,7 @@ if(isset($excluir)){
   <script>
    parent.location.href = "edu1_progconvocacaores002.php?chavepesquisa=<?=$ed128_i_progconvres?>";
   </script>
-  <?
+  <?php 
  }
 }
 if(isset($cancelar)){
@@ -263,7 +263,7 @@ if(isset($cancelar)){
  <script>
   parent.location.href = "edu1_progconvocacaores002.php?chavepesquisa=<?=$ed128_i_progconvres?>";
  </script>
- <?
+ <?php 
 }
 ?>
 <script>

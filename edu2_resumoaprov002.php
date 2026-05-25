@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -68,7 +68,7 @@ if($clregencia->numrows==0){?>
    </td>
   </tr>
  </table>
- <?
+ <?php 
  exit;
 }
 $iAno = db_utils::fieldsMemory($result, 0)->ed52_i_ano;

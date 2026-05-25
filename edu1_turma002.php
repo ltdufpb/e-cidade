@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 // require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 
 $iAnoEtapaCenso = null;
@@ -436,7 +436,7 @@ if (isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'edu1_outrosprofissionaisturma001.php?iTurma=<?=$ed57_i_codigo?>' ;
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a7.location.href = 'edu1_turmaatividadecomplementar001.php?iCalendario=<?=$ed57_i_calendario?>&ed57_i_codigo=<?=$ed57_i_codigo?>';
   </script>
- <?
+ <?php 
 }
 ?>
 <html>

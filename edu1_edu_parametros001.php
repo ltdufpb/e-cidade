@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,20 +87,20 @@ if ( isset($alterar) ) {
 </table>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <br>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-    <?include(modification("forms/db_frmedu_parametros.php"));?>
+    <?php include(modification("forms/db_frmedu_parametros.php"));?>
   </td>
  </tr>
 </table>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 js_tabulacaoforms("form1","ed233_i_escola",true,1,"ed233_i_escola",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($cledu_parametros->erro_status=="0"){
     $cledu_parametros->erro(true,false);

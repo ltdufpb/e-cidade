@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -71,7 +71,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Curso do Aluno</b></legend>
-    <?include(modification("forms/db_frmalunofora.php"));?>
+    <?php include(modification("forms/db_frmalunofora.php"));?>
    </fieldset>
    </center>
   </td>
@@ -82,7 +82,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed216_i_cursoedu",true,1,"ed216_i_cursoedu",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clalunofora->erro_status=="0"){
   $clalunofora->erro(true,false);

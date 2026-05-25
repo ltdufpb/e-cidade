@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -74,23 +74,23 @@ if(isset($excluir)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Tipo de Formação</b></legend>
-    <?include(modification("forms/db_frmtipoformacao.php"));?>
+    <?php include(modification("forms/db_frmtipoformacao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed21_c_descr",true,1,"ed21_c_descr",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($cltipoformacao->erro_status=="0"){
   $cltipoformacao->erro(true,false);

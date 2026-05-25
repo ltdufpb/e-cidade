@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,11 +81,11 @@ if(isset($atualizar)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Divisões do Regime de Matrícula</b></legend>
-    <?include(modification("forms/db_frmregimematdiv.php"));?>
+    <?php include(modification("forms/db_frmregimematdiv.php"));?>
    </fieldset>
    </center>
   </td>
@@ -96,7 +96,7 @@ if(isset($atualizar)){
 <script>
 js_tabulacaoforms("form1","ed219_c_nome",true,1,"ed219_c_nome",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clregimematdiv->erro_status=="0"){
   $clregimematdiv->erro(true,false);

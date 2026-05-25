@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("model/educacao/DBEducacaoTermo.model.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $oDaoMatricula = db_utils::getdao("matricula");
 
 $sCampos      = " to_char(ed60_d_datasaida, 'DD/MM/YYYY') as datasaida,  ";
@@ -103,7 +103,7 @@ $rsMatricula   = $oDaoMatricula->sql_record($sSqlMatricula);
         <td><b>RF Anterior</b></td>
         <td><b>Destino Saída</b></td>
        </tr>
-       <?
+       <?php 
        for ($iCont = 0; $iCont < $oDaoMatricula->numrows; $iCont++) {
          	
          db_fieldsmemory($rsMatricula, $iCont);
@@ -152,7 +152,7 @@ $rsMatricula   = $oDaoMatricula->sql_record($sSqlMatricula);
           <td class='aluno' align='center'><?=$rfant==""?"&nbsp;":$rfant?></td>
           <td class="aluno" align="center"><?=$destinosaida==""?"&nbsp;":$destinosaida?></td>
          </tr>
-       <?
+       <?php 
        }
       ?>
      </table>

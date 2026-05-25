@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@
   require_once(modification("libs/db_utils.php"));
   require_once(modification("dbforms/db_funcoes.php"));
   
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
   db_postmemory($HTTP_POST_VARS);
   
   $oDaoRegraArredondamentoFaixa     = new cl_regraarredondamentofaixa();
@@ -255,13 +255,13 @@
   </head>
   <body>
     <div class="container">
-      <?
+      <?php 
     	  require_once(modification("forms/db_frmregraarredondamentofaixa.php"));
       ?>
     </div>
   </body>
 </html>
-<?
+<?php 
   if (isset($alterar) || isset($excluir) || isset($incluir)) {
     
     if ($oDaoRegraArredondamentoFaixa->erro_campo != "") {

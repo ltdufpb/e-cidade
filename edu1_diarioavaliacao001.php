@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -35,7 +35,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("std/DBDate.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $resultedu               = eduparametros(db_getsession("DB_coddepto"));
@@ -262,13 +262,13 @@ if (isset($salvartudo)) {
       parent.iframe_R<?=$resultaval?>.location.href = "edu1_diarioresultado001.php?regencia=<?=$regencia?>"+
     	                                              "&ed43_i_codigo=<?=$resultaval?>";
     </script>
-   <?
+   <?php 
   }
  ?>
   <script>
    parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>";
   </script>
-  <?
+  <?php 
   db_msgbox("Alteração efetuada com sucesso!");
 }
 
@@ -307,7 +307,7 @@ $iAno    = $oTurma->getCalendario()->getAnoExecucao();
 </head>
 <body bgcolor="#cccccc" leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
 <form name="form1" method="post" action="">
-<?
+<?php 
   $sWhere  = "WHERE ed95_i_regencia      = {$regencia}";
   $sWhere .= "  AND ed72_i_procavaliacao = {$ed41_i_codigo}";
   $sWhere .= "  AND ed60_i_turma         = {$ed59_i_turma}";
@@ -373,11 +373,11 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
    &nbsp;<?=$ed232_c_descr?> - <?=$descr_periodo?> | Turma <?=$ed57_c_descr?> - <?=$ed11_c_descr?> - Calendário <?=$ed52_c_descr?>
   </td>
   <td align="right" class='titulo'>
-   <?if(trim($ed59_c_freqglob)!='A'){?>
+   <?php if(trim($ed59_c_freqglob)!='A'){?>
     <input name="abono" value="Abonar Faltas" type="button"
            onclick="js_abono(<?=$ed41_i_codigo?>,<?=$regencia?>,'<?=$descr_periodo?>');"
            style="height:14px;border:1px outset #f3f3f3;font-size:11px;padding:0px;">
-   <?}?>
+   <?php }?>
   </td>
  </tr>
  <tr>
@@ -398,15 +398,15 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
      <td class="cabec1">Dt. Saída</td>
      <td class="cabec1">Código</td>
      <td class="cabec1" width="5%">Origem</td>
-     <?if (trim($ed59_c_freqglob) != "F") {?>
+     <?php if (trim($ed59_c_freqglob) != "F") {?>
          <td class="cabec1"><?=pg_result($result1,0,'ed37_c_tipo')?></td>
-     <?}?>
-     <?if (trim($ed59_c_freqglob) != "A") {?>
+     <?php }?>
+     <?php if (trim($ed59_c_freqglob) != "A") {?>
          <td class="cabec1">Faltas</td>
-     <?}?>
+     <?php }?>
      <td class="cabec1">&nbsp;</td>
     </tr>
-    <?
+    <?php 
     if ( $linhas1 > 0 ) {
 
       $cor1    = "#f3f3f3";
@@ -477,7 +477,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
          <input type="hidden" value="<?=$ed72_c_amparo?>" name="ed72_c_amparoX<?=$x?>">
         </td>
         <td align="center" class='aluno'>
-         <?
+         <?php 
          if ( trim( $ed81_c_todoperiodo ) == "S" && $ed60_c_ativa == "S" ) {
 
            if ( $ed81_i_justificativa != "" ) {
@@ -495,7 +495,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
         <td align="center" class='aluno'><?=$datasaida==""?"&nbsp;":$datasaida?></td>
         <td align="right" class='aluno'><b><?=$ed47_i_codigo?></b></td>
         <td align="center" <?=$ed72_i_escola!=$codescola||$ed72_c_tipo=="F"?"onmouseover=\"js_mostra('tiponota$x')\" onmouseout=\"js_oculta('tiponota$x')\" ":""?>>
-         <?
+         <?php 
          if ( trim( $ed60_c_situacao ) != "MATRICULADO" || trim( $ed72_c_amparo ) == "S" || $ed81_c_todoperiodo == "S" ) {
 
           if (    ( trim( $ed60_c_situacao ) == "TRANSFERIDO FORA" || trim( $ed60_c_situacao ) == "CANCELADO" || trim( $ed60_c_situacao ) == "EVADIDO")
@@ -519,7 +519,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
              </td>
             </tr>
            </table>
-          <?
+          <?php 
            } else {
              echo "&nbsp";
            }
@@ -543,9 +543,9 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
             </td>
            </tr>
           </table>
-         <?}?>
+         <?php }?>
         </td>
-        <?
+        <?php 
         $vinculo = false;
         $semfoco = false;
 
@@ -557,12 +557,12 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
            if ( $ed60_c_ativa == "S" ) {
 
              if ( $ed81_i_justificativa != "" ) {
-               ?><td align="center" class='aluno'>Amparo - Justif. n° <?=trim($ed81_i_justificativa)?></td><?
+               ?><td align="center" class='aluno'>Amparo - Justif. n° <?=trim($ed81_i_justificativa)?></td><?php 
              } else if ( $ed81_i_convencaoamp != "" ) {
-              ?><td align="center" class='aluno'><?=$ed250_c_abrev?></td><?
+              ?><td align="center" class='aluno'><?=$ed250_c_abrev?></td><?php 
              }
            } else {
-            ?><td align="center" class='aluno'>&nbsp;</td><?
+            ?><td align="center" class='aluno'>&nbsp;</td><?php 
            }
          } else {
 
@@ -587,9 +587,9 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                   </td>
                  </tr>
                 </table>
-               </td><?
+               </td><?php 
              } else {
-              ?><td class='aluno' align="center"><?=$ed09_c_abrev?> ainda não foi concluído.</td><?
+              ?><td class='aluno' align="center"><?=$ed09_c_abrev?> ainda não foi concluído.</td><?php 
              }
              $vinculo = true;
 
@@ -620,9 +620,9 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                   </td>
                  </tr>
                 </table>
-                </td><?
+                </td><?php 
                } else {
-                ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em <?=$ed09_c_abrev?></td><?
+                ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em <?=$ed09_c_abrev?></td><?php 
                }
 
                $vinculo = true;
@@ -704,9 +704,9 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                   </td>
                  </tr>
                 </table>
-                </td><?
+                </td><?php 
               } else {
-                ?><td class='aluno' align="center"><?=$ed42_c_abrev?> ainda não foi concluído</td><?
+                ?><td class='aluno' align="center"><?=$ed42_c_abrev?> ainda não foi concluído</td><?php 
               }
 
               $vinculo = true;
@@ -764,9 +764,9 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
 
                 $semfoco = true;
                 if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
-                  ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?
+                  ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?php 
                 } else {
-                  ?><td class='aluno' align="center"><?=$sMensagem?></td><?
+                  ?><td class='aluno' align="center"><?=$sMensagem?></td><?php 
                 }
 
                 $vinculo = true;
@@ -783,7 +783,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
             }
           }
 
-          $campo       = trim($ed37_c_tipo)=="NOTA"?"ed73_i_valornota":trim($ed37_c_tipo)=="NIVEL"?"ed73_c_valorconceito":"ed73_t_parecer";
+          $campo       = trim($ed37_c_tipo)=="NOTA"?"ed73_i_valornota":(trim($ed37_c_tipo)=="NIVEL"?"ed73_c_valorconceito":"ed73_t_parecer");
           $result_ante = $cldiarioresultado->sql_record($cldiarioresultado->sql_query("","ed42_c_abrev,ed73_c_aprovmin as apvmin,$campo as tipovalor",""," ed43_i_sequencia < $ed41_i_sequencia AND ed73_i_diario = $ed72_i_diario"));
 
           if ( $cldiarioresultado->numrows > 0 && $ed41_i_procresultvinc == 0 && $ed41_i_procavalvinc == 0 ) {
@@ -794,9 +794,9 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
             if ( $apvmin == "S" && ( $seqatual >= $seqmax ) ) {
 
               if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
-                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?
+                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?php 
               } else {
-                ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em  <?=$ed42_c_abrev?>.</td><?
+                ?><td class='aluno' align="center">Aluno atingiu mínimo para aprovação em  <?=$ed42_c_abrev?>.</td><?php 
               }
 
               $vinculo = true;
@@ -812,9 +812,9 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
             } else if ( $apvmin == "N" && $tipovalor == "" && ( $seqatual >= $seqmax ) ) {
 
               if ( trim( $ed60_c_situacao ) != "MATRICULADO" ) {
-                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?
+                ?><td class='aluno' align="center"><input name="nulo" value="" type="text" size="6" maxlength="6" style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;" <?=$disabled?>></td><?php 
               } else {
-                ?><td class='aluno' align="center"><?=$ed42_c_abrev?> ainda não foi concluído.</td><?
+                ?><td class='aluno' align="center"><?=$ed42_c_abrev?> ainda não foi concluído.</td><?php 
               }
 
               db_inicio_transacao();
@@ -927,7 +927,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                      db_fieldsmemory( $result3, $z );
                  ?>
                   <option value="<?=trim($ed39_c_conceito)?>" <?=trim($ed39_c_conceito)==trim($ed72_c_valorconceito)?"selected":""?>><?=trim($ed39_c_conceito)?></option>
-                 <?}?>
+                 <?php }?>
                 </select>
                </td>
                <td width="60">
@@ -937,16 +937,16 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                  <b><a style="color:green;text-decoration:none;"
                        href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');"
                        title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
-                <?}
+                <?php }
 
                   if ( ( trim($ed72_t_parecer) != "" or $clpareceraval->numrows > 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) {?>
                     &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecerindividual(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>');" title="Aluno <?=$ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
-                <?}?>
+                <?php }?>
                </td>
               </tr>
              </table>
             </td>
-           <?} else if ( trim( $ed37_c_tipo ) == "PARECER" ) { ?>
+           <?php } else if ( trim( $ed37_c_tipo ) == "PARECER" ) { ?>
 
             <td align="center">
              <table class='aluno' cellspacing="0" cellpading="0">
@@ -958,22 +958,22 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                 <?php
                   if ( trim( $ed72_t_obs != "" ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
                     &nbsp;<b><a style="color:green;text-decoration:none;"href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');" title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
-                <?}
+                <?php }
 
                   if ( $clpareceraval->numrows > 0 && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
                     &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecer(this,<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=str_replace("'","",$ed47_v_nome);?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>);" title="Aluno <?=$ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
-                <?}?>
+                <?php }?>
                </td>
               </tr>
              </table>
             </td>
-           <?} else if ( trim( $ed37_c_tipo ) == "NOTA" ) { ?>
+           <?php } else if ( trim( $ed37_c_tipo ) == "NOTA" ) { ?>
 
             <td class='aluno' align="center">
              <table class='aluno' cellspacing="0" cellpading="0">
               <tr>
                <td width="50">
-                <? if ( $resultedu == "S" ) { ?>
+                <?php  if ( $resultedu == "S" ) { ?>
                  <input name="ed72_i_valornotaX<?=$x?>"
                         id="ed72_i_valornotaX<?=$x?>"
                         value="<?=@$ed72_i_valornota?>"
@@ -984,7 +984,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                         style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
                         <?=trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onChange=\"js_formatavalor(this,$ed37_i_variacao,$ed37_i_menorvalor,$ed37_i_maiorvalor,$ed72_i_codigo,'$ed72_i_numfaltas','NOTA','$ed59_c_freqglob',$linhas1);\""?>
                         <?=trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
-                        <?
+                        <?php 
                           if (trim($ed95_c_encerrado) != "S") {
 
                             if ($disabled == '') {
@@ -995,7 +995,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                           }
                         ?>
                  >
-                <?} else {?>
+                <?php } else {?>
                  <input name="ed72_i_valornotaX<?=$x?>"
                         id="ed72_i_valornotaX<?=$x?>"
                         value="<?=@$ed72_i_valornota?>"
@@ -1006,7 +1006,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                         style="background:<?=$cordisabled?>;width:45px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
                         <?=trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onChange=\"js_formatavalor(this,$ed37_i_variacao,$ed37_i_menorvalor,$ed37_i_maiorvalor,$ed72_i_codigo,'$ed72_i_numfaltas','NOTA','$ed59_c_freqglob',$linhas1);\""?>
                         <?=trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
-                        <?
+                        <?php 
                           if (trim($ed95_c_encerrado) != "S") {
 
                             if ($disabled == '') {
@@ -1017,21 +1017,21 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                           }
                         ?>
                  ></input>
-                <?}?>
+                <?php }?>
                </td>
                <td width="60">
                 <?php
                   if ( trim( $ed72_t_obs != "" )  && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
                     <b><a style="color:green;text-decoration:none;"href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');" title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
-                <?}
+                <?php }
                   if ( ( trim( $ed72_t_parecer ) != "" or $clpareceraval->numrows > 0 ) && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
                   &nbsp;&nbsp;<b><a style="color:green;text-decoration:none;" href="javascript:js_parecerindividual(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=str_replace("'","",$ed47_v_nome);?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>');" title="Aluno <?=$ed47_v_nome?> possui parecer descritivo cadastrado neste período.">P</a></b>
-                <?}?>
+                <?php }?>
                </td>
               </tr>
              </table>
             </td>
-           <?}
+           <?php }
           }
          }
         }
@@ -1066,12 +1066,12 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                  if ( $ed60_c_ativa == "S" ) {
 
                    if ( $ed81_i_justificativa != "" ) {
-                     ?><td align="center" class='aluno'>Amparo - Justif. n° <?=trim($ed81_i_justificativa)?></td><?
+                     ?><td align="center" class='aluno'>Amparo - Justif. n° <?=trim($ed81_i_justificativa)?></td><?php 
                    } else if ( $ed81_i_convencaoamp != "" ) {
-                     ?><td align="center" class='aluno'><?=$ed250_c_abrev?></td><?
+                     ?><td align="center" class='aluno'><?=$ed250_c_abrev?></td><?php 
                    }
                  } else {
-                   ?><td align="center" class='aluno'>&nbsp;</td><?
+                   ?><td align="center" class='aluno'>&nbsp;</td><?php 
                  }
                } else {?>
               <input name="ed72_i_numfaltasX<?=$x?>"
@@ -1083,7 +1083,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                      style="background:<?=$cordisabled?>;width:25px;height:14px;border: 1px solid #000000;font-size:11px;text-align:right;padding:0px;"
                      <?=trim($ed95_c_encerrado)=="S"?"onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"":"onchange=\"js_faltas(this,$ed72_i_procavaliacao,'$ed09_c_descr',$ed72_i_codigo,'$ed72_i_valornota','$ed72_c_valorconceito','$ed80_i_numfaltas','$ed59_c_freqglob',$linhas1,'$ed37_c_tipo');\""?>
                      <?=trim($ed95_c_encerrado)=="S"?"readonly":$disabled?>
-                     <?
+                     <?php 
                        if (trim($ed95_c_encerrado) != "S") {
 
                          if ($disabled == '') {
@@ -1100,7 +1100,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
                        }
                      ?>
               >
-             <?}?>
+             <?php }?>
             </td>
             <td class='aluno' width="20" align="center">
              <?=$ed80_i_numfaltas!=""?"<b>A</b>":"&nbsp;"?>
@@ -1114,7 +1114,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
 
               if ( trim( $ed72_t_obs ) == "" && $ed81_c_todoperiodo != "S" && $ed60_c_ativa == "S" ) { ?>
                 <b><a href="javascript:js_observacoes(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>','<?=$ed72_t_parecer?>');" title="Incluir observações neste período de avaliação para <?=$ed47_v_nome?>">O</a></b>
-            <?} else {
+            <?php } else {
                 echo"&nbsp;";
               }
 
@@ -1124,7 +1124,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
 
                   &nbsp;&nbsp;
                   <b><a href="javascript:js_parecerindividual(<?=$ed72_i_codigo?>,'<?=$ed09_c_descr?>','<?=$ed47_v_nome?>','<?=$ed72_i_numfaltas?>','<?=$ed95_c_encerrado?>',<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,<?=$ed72_i_procavaliacao?>,'<?=$ed72_i_valornota?>','<?=$ed72_c_valorconceito?>');" title="Incluir parecer descritivo neste período de avaliação para <?=$ed47_v_nome?>">P</a></b>
-              <?} else {
+              <?php } else {
                   echo"&nbsp;";
                 }
               }
@@ -1132,7 +1132,7 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
               echo"&nbsp;";
             }?>
          </td>
-        <?}?>
+        <?php }?>
        </tr>
       <?php
         if ( $ed60_c_parecer == "S" ) {
@@ -1142,20 +1142,20 @@ $descr_periodo = pg_result($result1,0,'ed09_c_descr');
       <tr>
        <td align="center" colspan="10">
 
-        <?if ($oEduParametros->ed233_deslocamentocursor == 1) {?>
+        <?php if ($oEduParametros->ed233_deslocamentocursor == 1) {?>
           <input type="submit" name="salvartudo" value="Salvar"  <?=$somador==0||$nivel0==0?"disabled":""?> tabindex =<?=$iTabIndex++?>>
-        <?} else {?>
+        <?php } else {?>
           <input type="submit" name="salvartudo" value="Salvar"  <?=$somador==0||$nivel0==0?"disabled":""?> tabindex =<?=($linhas1+$iTabIndex+1)?>>
-        <?}?>
+        <?php }?>
         <input type="button" name="mensagens" value="Ver Mensagens" style="visibility:hidden;" onclick="location.href='edu1_diarioavaliacao001.php?regencia=<?=$regencia?>&ed41_i_codigo=<?=$ed41_i_codigo?>'">
        </td>
       </tr>
-     <?} else {?>
+     <?php } else {?>
 
         <tr>
           <td colspan="3" class='aluno' align="center">NENHUM ALUNO MATRICULADO NESTA TURMA.</td>
         </tr>
-     <?}?>
+     <?php }?>
     </table>
    <input name="ed41_i_codigo" type="hidden" value="<?=$ed41_i_codigo?>">
    <input name="regencia" type="hidden" value="<?=$regencia?>">
@@ -1202,7 +1202,7 @@ function js_focoinicial() {
           focoinicial = "ed72_t_parecerX"+i;
           break;
         }
-    <?}
+    <?php }
     } else if ( trim( $ed59_c_freqglob ) == "F" && $semfoco == false ) { ?>
 
       nomecampo = document.form1['ed72_i_numfaltasX'+i];
@@ -1211,7 +1211,7 @@ function js_focoinicial() {
         focoinicial = "ed72_i_numfaltasX"+i;
         break;
       }
-  <?}?>
+  <?php }?>
   }
 
   if ( focoinicial != "" ) {
@@ -1230,11 +1230,11 @@ function js_cent( amount ) {
 
   //retorna o valor com 2 casas decimais
   return amount;
-  <? if ( $resultedu == "S" ) { ?>
+  <?php  if ( $resultedu == "S" ) { ?>
        return(amount == Math.floor(amount)) ? amount + '.00' : ( (amount*10 == Math.floor(amount*10)) ? amount + '0' : amount);
-  <? } else { ?>
+  <?php  } else { ?>
        return(amount == Math.floor(amount)) ? Math.floor(amount) : ( (amount*10 == Math.floor(amount*10)) ? Math.floor(amount) : Math.floor(amount));
-  <? } ?>
+  <?php  } ?>
 }
 
 function js_dec( cantidad, decimales ) {
@@ -1509,7 +1509,7 @@ function js_oculta( id ) {
   document.getElementById(id).style.visibility = "hidden";
 }
 </script>
-<?
+<?php 
 $sql_r     = "SELECT DISTINCT max(ed09_i_sequencia) ";
 $sql_r    .= "  FROM diarioavaliacao ";
 $sql_r    .= "       inner join diario           on diario.ed95_i_codigo           = diarioavaliacao.ed72_i_diario ";
@@ -1608,7 +1608,7 @@ if ( $ed09_c_somach == "S" ) {
       <td>Data Matrícula</td>
       <td>&nbsp;</td>
      </tr>
-     <?
+     <?php 
      for ( $x = 0; $x < $linhas; $x++ ) {
 
       db_fieldsmemory( $result, $x );
@@ -1657,7 +1657,7 @@ if ( $ed09_c_somach == "S" ) {
         <td><?=db_formatar($ed60_d_datamatricula,'d')?></td>
         <td><input type="button" value="Modificar" onclick="document.getElementById('tb_aviso').style.visibility = 'hidden';js_tiponota('<?=$ed60_d_datamatricula?>',<?=$ed72_i_codigo?>,<?=$regencia?>,<?=$ed41_i_codigo?>,'<?=$ed09_c_descr?>','<?=$aprovperiodo?>')"></td>
        </tr>
-       <?
+       <?php 
       }
      }
      ?>
@@ -1674,12 +1674,12 @@ if ( $ed09_c_somach == "S" ) {
       </td>
      <tr>
     </table>
-    <?
+    <?php 
    }
  }
 
  if ( $contador == 0 && $linhas > 0 ) {
-   ?><script>document.getElementById('tb_aviso').style.visibility = 'hidden';</script><?
+   ?><script>document.getElementById('tb_aviso').style.visibility = 'hidden';</script><?php 
  }
 
  $sql1     = "SELECT ed60_i_aluno, ed60_i_codigo, ed60_matricula, ed60_i_numaluno, ed60_c_situacao, ed47_v_nome";
@@ -1711,9 +1711,9 @@ if ( $ed09_c_somach == "S" ) {
   ?>
   <script>
    document.form1.salvartudo.disabled = true;
-   <?if ( $contador > 0 ) {?>
+   <?php if ( $contador > 0 ) {?>
        document.getElementById('tb_aviso').style.visibility = 'hidden';
-   <?}?>
+   <?php }?>
   </script>
   <table id="tb_aviso1" style="top:80px;left:50px;visibility:visible;position:absolute;width:700px;border:3px solid #444444 " cellspacing="0" cellpading="2" bgcolor="#f3f3f3">
    <tr>
@@ -1739,7 +1739,7 @@ if ( $ed09_c_somach == "S" ) {
     <td>Aproveitamento</td>
     <td>&nbsp;</td>
    </tr>
-   <?
+   <?php 
    for ( $x = 0; $x < $linhas1; $x++ ) {
 
      db_fieldsmemory( $result1, $x );
@@ -1765,7 +1765,7 @@ if ( $ed09_c_somach == "S" ) {
               value="Converter"
               onclick="document.getElementById('tb_aviso1').style.visibility = 'hidden';js_tiponota('<?=$ed60_d_datamatricula?>',<?=$ed72_i_codigo?>,<?=$regencia?>,<?=$ed41_i_codigo?>,'<?=$ed09_c_descr?>','<?=$aprovperiodo?>')"></td>
     </tr>
-    <?
+    <?php 
    }
    ?>
    <tr>
@@ -1781,7 +1781,7 @@ if ( $ed09_c_somach == "S" ) {
     </td>
    <tr>
   </table>
-  <?
+  <?php 
  }
 
  if ( $contador > 0 || $linhas1 > 0 ) {
@@ -1790,7 +1790,7 @@ if ( $ed09_c_somach == "S" ) {
    <script>
      document.form1.mensagens.style.visibility = "visible";
    </script>
-   <?
+   <?php 
  }
 }
 ?>

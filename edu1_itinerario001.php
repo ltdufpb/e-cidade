@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -70,13 +70,13 @@ if(isset($incluir)){
     <br>
     <fieldset style="width:95%"><legend><b>Inclusão de itinerário</b></legend>
     <center>
-     <?include(modification("forms/db_frmitinerario.php"));?>
+     <?php include(modification("forms/db_frmitinerario.php"));?>
     </center>
     </fieldset>
    </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -84,7 +84,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","ed218_d_datacad",true,1,"ed218_d_datacad",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($clitinerario->erro_status=="0"){
     $clitinerario->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,24 +61,24 @@ $db_botao = true;
     <table border="0">
      <tr>
       <td nowrap title="<?=@$Ted17_i_turno?>">
-       <?db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",$db_opcao);?>
+       <?php db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",$db_opcao);?>
       </td>
       <td>
-       <?db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed129_i_escola(false);'")?>
-       <?db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
+       <?php db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed129_i_escola(false);'")?>
+       <?php db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
       <td colspan="2">
        <b>Arquivo:</b>&nbsp;&nbsp;&nbsp;
-       <?db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
+       <?php db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
        <input type="button" value="Importar" name="processar" onclick="js_processar();">
       </td>
      </tr>
     </table>
     <br>
     </form>
-    <?
+    <?php 
     if(isset($GLOBALS["_FILES"]["arquivo"]) && $GLOBALS["_FILES"]["arquivo"]!=""){
      db_postmemory($GLOBALS["_FILES"]["arquivo"]);
      $escola = $ed129_i_escola;
@@ -188,7 +188,7 @@ $db_botao = true;
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

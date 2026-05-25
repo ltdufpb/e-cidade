@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $oDaoAtoLegal         = db_utils::getdao("atolegal");
 $oDaoAnexoAtoLegal    = db_utils::getdao("edu_anexoatolegal");
@@ -47,7 +47,7 @@ if (isset($excluir)) {
   $rsAtoJustificativa = $oDaoAtoJustificativa->sql_record($sSqlJustificativa);
   
   if ($oDaoAtoJustificativa->numrows > 0) {
-    ?><script>alert("Ato Legal não pode ser excluído,  pois está relacionado com uma Justificativa");</script><?
+    ?><script>alert("Ato Legal não pode ser excluído,  pois está relacionado com uma Justificativa");</script><?php 
   } else {
   	
     db_inicio_transacao();
@@ -76,7 +76,7 @@ if (isset($excluir)) {
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href   = 'edu1_edu_anexoatolegal003.php?chavepesquisa=<?=$ed05_i_codigo?>';
   </script>
 
-<?
+<?php 
 }
 ?>
 <html>
@@ -92,11 +92,11 @@ if (isset($excluir)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Exclusão de Ato Legal</b></legend>
-       <?include(modification("forms/db_frmatolegal.php"));?>
+       <?php include(modification("forms/db_frmatolegal.php"));?>
       </fieldset>
      </center>
     </td>
@@ -104,7 +104,7 @@ if (isset($excluir)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($oDaoAtoLegal->erro_status == "0") {
