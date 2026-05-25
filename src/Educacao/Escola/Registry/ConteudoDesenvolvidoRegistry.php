@@ -12,7 +12,7 @@ class ConteudoDesenvolvidoRegistry
     /**
      * @var ConteudoDesenvolvido[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param ConteudoDesenvolvido $conteudoDesenvolvido

@@ -27,20 +27,20 @@ class Registro60Builder
     /**
      * @var array
      */
-    protected $tipoTransporte = array();
+    protected $tipoTransporte = [];
 
     /**
      * @var Registro60
      */
     protected $registro;
 
-    protected $multiEtapasCenso = array(3, 22, 23, 72, 56, 64);
+    protected $multiEtapasCenso = [3, 22, 23, 72, 56, 64];
 
-    protected $deParaEscolarizacaoOutroEspaco = array(
+    protected $deParaEscolarizacaoOutroEspaco = [
         Aluno::ESCOLARIZACAO_ESPECIAL_HOSPITAL => 2,
         Aluno::ESCOLARIZACAO_ESPECIAL_DOMICILIO => 3,
         Aluno::ESCOLARIZACAO_ESPECIAL_NAO => 1
-    );
+    ];
 
     public function addMatricula(MatriculaCensoVo $matricula)
     {

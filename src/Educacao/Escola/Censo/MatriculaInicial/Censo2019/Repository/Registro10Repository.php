@@ -47,14 +47,14 @@ class Registro10Repository
             throw new \Exception("Não foi possível buscar os dados da infraestrutura da escola.");
         }
 
-        $dados = array();
+        $dados = [];
         db_utils::makeCollectionFromRecord($rs, function ($dado) use (&$dados) {
 
-            $respota = (object) array(
+            $respota = (object) [
                 "opcao" => $dado->opcao,
                 "valor_resposta" => $dado->db104_valorresposta,
                 "resposta" => $dado->db106_resposta
-            );
+            ];
             $dados[$dado->grupo][$dado->pergunta][$dado->opcao][] = $respota;
         });
 

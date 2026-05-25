@@ -37,7 +37,7 @@ class PaisRegistry
     /**
      * @var Pais[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     public static function set(Pais $pais)
     {

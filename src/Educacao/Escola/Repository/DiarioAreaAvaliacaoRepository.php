@@ -151,8 +151,8 @@ class DiarioAreaAvaliacaoRepository extends Repository
         if (!is_null($nota) && $nota !== '') {
             $dao->ed163_nota = $nota;
         }
-        $dao->ed163_parecer = !is_null($diarioAvaliacao->getParecer()) ? $diarioAvaliacao->getParecer() : '';
-        $dao->ed163_conceito = !is_null($diarioAvaliacao->getConceito()) ? $diarioAvaliacao->getConceito() : '';
+        $dao->ed163_parecer = $diarioAvaliacao->getParecer() ?? '';
+        $dao->ed163_conceito = $diarioAvaliacao->getConceito() ?? '';
         $dao->ed163_amparado = $diarioAvaliacao->isAmparado() ? 'true' : 'false';
 
         if (empty($dao->ed163_codigo)) {

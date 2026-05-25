@@ -16,7 +16,7 @@ class HabilidadeReferencialCurricularEstadualRegistry
     /**
      * @var HabilidadeReferencialCurricularEstadual[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param HabilidadeReferencialCurricularEstadual $habilidadeReferencial

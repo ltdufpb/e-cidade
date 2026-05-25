@@ -180,7 +180,7 @@ class Registro40
      */
     public function toArray()
     {
-        return array(
+        return [
             "tipoRegistro" => $this->getTipoRegistro(),
             "codigoInepEscola" => $this->getCodigoInepEscola(),
             "codigoPessoa" => $this->getCodigoPessoa(),
@@ -189,6 +189,6 @@ class Registro40
             "criterioAcesso" => $this->getCriterioAcesso(),
             "especificacaoCriterioAcesso" => $this->getEspecificacaoCriterioAcesso(),
             "regimeContratacao" => $this->getRegimeContratacao(),
-        );
+        ];
     }
 }

@@ -33,7 +33,7 @@ namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Layout\Mapper
  */
 class Registro20Mapper extends Mapper
 {
-    protected $dePara = array(
+    protected $dePara = [
         "Tipo de registro" => "tipoRegistro",
         "Código de escola - Inep" => "codigoInepEscola",
         "Código da Turma na Entidade/Escola" => "codigoTurma",
@@ -110,5 +110,5 @@ class Registro20Mapper extends Mapper
         "32. Estágio Curricular Supervisionado" => "estagioSupervisionado",
         "Áreas do conhecimento/componentes curriculares - Projeto de vida" => "projetoVidaUnidade",
         "99. Outras disciplinas" => "outrasDisciplinas"
-    );
+    ];
 }

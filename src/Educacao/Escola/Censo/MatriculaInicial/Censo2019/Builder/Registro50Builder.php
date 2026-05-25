@@ -40,11 +40,11 @@ use ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Service\Registro00S
 class Registro50Builder
 {
 
-    protected static $deParaVinculo = array(
+    protected static $deParaVinculo = [
         1 => 1,
         2 => 4,
         3 => 3,
-    );
+    ];
 
     /**
      * @var Registro50
@@ -69,7 +69,7 @@ class Registro50Builder
     /**
      * @var CensoDisciplina[]
      */
-    private $disciplinas = array();
+    private $disciplinas = [];
 
     /**
      * @param ProfissionalEscola $profissional
@@ -134,7 +134,7 @@ class Registro50Builder
         $this->registro->setFuncaoExerce($this->funcao);
 
         $dependenciaAdministrativa = Registro00Service::getRegistroProcessado()->getDependenciaAdministrativa();
-        if (in_array($this->funcao, array(1, 5, 6)) && in_array($dependenciaAdministrativa, array(1, 2, 3))) {
+        if (in_array($this->funcao, [1, 5, 6]) && in_array($dependenciaAdministrativa, [1, 2, 3])) {
 
             $regime = $this->profissional->getRegimeContratacao();
 
@@ -149,8 +149,8 @@ class Registro50Builder
         }
 
         if ($this->turma->isEscolarizacao() &&
-            in_array($this->funcao, array(1, 5)) &&
-            !in_array($this->turma->getEtapaCenso(), array(1, 2, 3))) {
+            in_array($this->funcao, [1, 5]) &&
+            !in_array($this->turma->getEtapaCenso(), [1, 2, 3])) {
             $this->buidDiscplinas();
         }
     }

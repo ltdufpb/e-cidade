@@ -14,15 +14,15 @@ class TurnoResource
      */
     public static function toArray(array $turnos)
     {
-        $data = array();
+        $data = [];
 
         /** @var \Turno $turno */
         foreach ($turnos as $turno) {
-            $data[] = (object) array(
+            $data[] = (object) [
                 "codigo" => $turno->getCodigoTurno(),
                 "descricao" => $turno->getDescricao(),
                 "ordem" => $turno->getOrdem(),
-            );
+            ];
         }
         return $data;
     }

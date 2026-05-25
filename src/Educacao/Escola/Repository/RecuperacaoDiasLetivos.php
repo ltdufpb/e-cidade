@@ -168,7 +168,7 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
     private function validaExistenciaPeriodoRegencia(RecuperacaoDiasLetivosModel $recuperacaoDiasLetivos)
     {
         $daoRegenciaHorario = new \cl_regenciahorario();
-        $periodos = array();
+        $periodos = [];
 
         foreach ($recuperacaoDiasLetivos->getPeriodos() as $periodoEscola) {
             $periodos[] = $periodoEscola->getCodigo();

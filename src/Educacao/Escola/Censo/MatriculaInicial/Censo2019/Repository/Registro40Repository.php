@@ -23,10 +23,10 @@ class Registro40Repository extends Repository
      */
     public function getDadosDiretor(ProfissionalEscola $profissional)
     {
-        $where = array(
+        $where = [
             "ed254_i_escola = {$profissional->getEscola()->getCodigo()}",
             "ed254_i_rechumano = {$profissional->getCodigoRecursoHumano()}",
-        );
+        ];
         $campos = "distinct ed254_criterioacessofuncao, ed254_especificacaocriteriooutros";
         $dao = new cl_escoladiretor();
         $sql = $dao->sql_query_file(null, $campos, null, implode(' and ', $where));

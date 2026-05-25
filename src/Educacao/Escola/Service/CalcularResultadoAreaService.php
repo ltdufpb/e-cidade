@@ -38,23 +38,12 @@ use Exception;
 class CalcularResultadoAreaService
 {
     /**
-     * @var AreaProcedimento
-     */
-    private $areaProcedimento;
-    /**
-     * @var DiarioAvaliacaoDisciplina[]
-     */
-    private $diarioAvaliacoesDisciplinas = [];
-
-    /**
      * @param AreaProcedimento $areaProcedimento
      * @param DiarioAvaliacaoDisciplina[] $diarioAvaliacoesDisciplinas
      * @throws Exception
      */
-    public function __construct(AreaProcedimento $areaProcedimento, array $diarioAvaliacoesDisciplinas)
+    public function __construct(private AreaProcedimento $areaProcedimento, private array $diarioAvaliacoesDisciplinas)
     {
-        $this->areaProcedimento = $areaProcedimento;
-        $this->diarioAvaliacoesDisciplinas = $diarioAvaliacoesDisciplinas;
     }
 
     /**

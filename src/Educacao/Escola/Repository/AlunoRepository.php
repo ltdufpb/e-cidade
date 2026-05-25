@@ -67,10 +67,10 @@ class AlunoRepository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $alunosCenso = array();
+        $alunosCenso = [];
         while ($state = pg_fetch_array($rs)) {
             $alunosCenso[] = Aluno::fromState($state);
         }

@@ -17,7 +17,7 @@ class DadosEscola2016 implements DadosInterface
     private $iCargo;
     private $sEmail;
 
-    private $aErros = array();
+    private $aErros = [];
 
     public function popular(stdClass $oDados)
     {
@@ -104,7 +104,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 3 - regra 4
-        if (in_array($this->sCpf, array('00000000191', '00000000000'))) {
+        if (in_array($this->sCpf, ['00000000191', '00000000000'])) {
             $this->aErros[] = 'O campo "Número do CPF do Gestor Escolar" foi preenchido com valor inválido.';
         }
     }
@@ -136,7 +136,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 5 - regra 2
-        if (!in_array($this->iCargo, array(1, 2))) {
+        if (!in_array($this->iCargo, [1, 2])) {
             $this->aErros[] = 'Somente aceita os seguintes caracteres entre parêntesis: (1 2).';
         }
     }

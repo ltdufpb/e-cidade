@@ -16,7 +16,7 @@ class BaseCurricularRegistry
     /**
      * @var BaseCurricular[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param BaseCurricular $base

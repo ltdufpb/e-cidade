@@ -60,32 +60,32 @@ class Registro30Builder extends BuilderFormulario
     /**
      * @var array
      */
-    private $necessidadesEspeciais = array();
+    private $necessidadesEspeciais = [];
 
-    private $deParaEscolaridade = array(
+    private $deParaEscolaridade = [
         1 => 1,
         2 => 2,
         3 => 7,
         4 => 7,
         5 => 7,
         6 => 6,
-    );
+    ];
 
-    private $deParaRacaAluno = array(
+    private $deParaRacaAluno = [
         "NÃO DECLARADA" => 0,
         "BRANCA" => 1,
         "PRETA" => 2,
         "PARDA" => 3,
         "AMARELA" => 4,
         "INDÍGENA" => 5,
-    );
+    ];
 
-    private $outrosDadosFormacao = array();
+    private $outrosDadosFormacao = [];
 
     /**
      * @var AlunoRecursoNecessarioAvaliacaoInep[]
      */
-    private $recursoNecessarioAvaliacaoInep = array();
+    private $recursoNecessarioAvaliacaoInep = [];
 
     /**
      * @param ProfissionalEscola $profissionaisEscola
@@ -221,7 +221,7 @@ class Registro30Builder extends BuilderFormulario
             }
         }
 
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -229,7 +229,7 @@ class Registro30Builder extends BuilderFormulario
         $campos[] = $this->registro->getSurdocegueira();
         $campos[] = $this->registro->getDeficienciaFisica();
         $campos[] = $this->registro->getDeficienciaintelectual();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
         if (isset($campos[1]) && $campos[1] >= 2) {
             $this->registro->setDeficienciaMultipla(1);
@@ -242,7 +242,7 @@ class Registro30Builder extends BuilderFormulario
             return;
         }
 
-        $formacoesComplementar = array();
+        $formacoesComplementar = [];
 
         foreach ($this->profissionalEscola->getFormacoes() as $index => $formacao) {
             if (count($formacao->getFormacaoComplementar()) > 0) {
@@ -274,7 +274,7 @@ class Registro30Builder extends BuilderFormulario
         }
 
         // o array disciplinaInformada é para não deixar informar mais de uma vez a mesma disciplina
-        $disciplinaInformada = array();
+        $disciplinaInformada = [];
         foreach ($formacoesComplementar as $index => $formacaoComplementar) {
             if (in_array($formacaoComplementar->getCodigo(), $disciplinaInformada)) {
                 continue;

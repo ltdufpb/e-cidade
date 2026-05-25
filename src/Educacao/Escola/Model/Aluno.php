@@ -187,12 +187,12 @@ class Aluno
     /**
      * @var AlunoNecessidadeEspecial[]
      */
-    private $necessidadeEspecial = array();
+    private $necessidadeEspecial = [];
 
     /**
      * @var AlunoRecursoNecessarioAvaliacaoInep[]
      */
-    private $recursoNecessarioAvaliacaoInep = array();
+    private $recursoNecessarioAvaliacaoInep = [];
 
     /**
      * @return mixed

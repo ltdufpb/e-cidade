@@ -17,11 +17,11 @@ use ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Service\Registro00S
 class Registro40Builder
 {
 
-    protected static $deParaVinculo = array(
+    protected static $deParaVinculo = [
       1 => 1,
       2 => 4,
       3 => 3,
-    );
+    ];
 
     /**
      * @var ProfissionalEscola
@@ -81,7 +81,7 @@ class Registro40Builder
                 mb_strtoupper($this->diretor->getEspecificacaoCriterioOutros())
             );
             $reg00 = Registro00Service::getRegistroProcessado();
-            if (in_array($reg00->getDependenciaAdministrativa(), array(1, 2, 3))) {
+            if (in_array($reg00->getDependenciaAdministrativa(), [1, 2, 3])) {
                 $vinculo = $this->gestor->getVinculoRegimeContratacao();
                 $this->registro->setRegimeContratacao(self::$deParaVinculo[$vinculo->getCodigoRegime()]);
                 if ($vinculo->getNaturezaRegime() == 3) {

@@ -49,10 +49,10 @@ class AlunoNecessidadeEspecialRepository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $necessidades = array();
+        $necessidades = [];
         while ($state = pg_fetch_array($rs)) {
             $necessidades[] = AlunoNecessidadeEspecial::fromState($state);
         }

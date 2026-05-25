@@ -23,10 +23,6 @@ use TurmaRepository;
 class ConfirmacaoRematriculaService
 {
     /**
-     * @var stdClass
-     */
-    private $parametros;
-    /**
      * @var ConfirmacaoRematriculaRepository
      */
     private $repositorio;
@@ -35,9 +31,8 @@ class ConfirmacaoRematriculaService
      * ConfirmacaoRematriculaService constructor.
      * @param stdClass $parametros
      */
-    public function __construct(stdClass $parametros)
+    public function __construct(private stdClass $parametros)
     {
-        $this->parametros = $parametros;
         $this->repositorio = new ConfirmacaoRematriculaRepository();
     }
 
@@ -77,9 +72,7 @@ class ConfirmacaoRematriculaService
      */
     private function obterCodigosAlunosComRematriculaConfirmada(array $rematriculasConfirmadas)
     {
-        return array_map(function (ConfirmacaoRematricula $confirmacaoRematricula) {
-            return $confirmacaoRematricula->getAluno()->getCodigoAluno();
-        }, $rematriculasConfirmadas);
+        return array_map(fn(ConfirmacaoRematricula $confirmacaoRematricula) => $confirmacaoRematricula->getAluno()->getCodigoAluno(), $rematriculasConfirmadas);
     }
 
     /**
@@ -89,9 +82,7 @@ class ConfirmacaoRematriculaService
      */
     private function filtrarAlunosComRematriculaNaoConfirmada(array $alunos, array $codigosConfirmacoesRematricula)
     {
-        return array_filter($alunos, function (Aluno $aluno) use ($codigosConfirmacoesRematricula) {
-            return !in_array($aluno->getCodigoAluno(), $codigosConfirmacoesRematricula);
-        });
+        return array_filter($alunos, fn(Aluno $aluno) => !in_array($aluno->getCodigoAluno(), $codigosConfirmacoesRematricula));
     }
 
     /**
@@ -100,12 +91,10 @@ class ConfirmacaoRematriculaService
      */
     private function mapearAlunosComRematriculaNaoConfirmada(array $alunos)
     {
-        return array_map(function (Aluno $aluno) {
-            return array(
-                'codigo' => filter_var($aluno->getCodigoAluno(), FILTER_VALIDATE_INT),
-                'nome' => $aluno->getNome()
-            );
-        }, $alunos);
+        return array_map(fn(Aluno $aluno) => [
+            'codigo' => filter_var($aluno->getCodigoAluno(), FILTER_VALIDATE_INT),
+            'nome' => $aluno->getNome()
+        ], $alunos);
     }
 
     /**
@@ -154,14 +143,14 @@ class ConfirmacaoRematriculaService
 
         $primeiraEtapa = $etapas[0];
 
-        $dados = array(
+        $dados = [
             $this->montarLinhaRelatorio(
                 '-',
                 '-',
                 $primeiraEtapa->getNome(),
                 EtapaRepository::getVagasByEtapa($primeiraEtapa, $escola, $calendario)
             )
-        );
+        ];
 
         foreach ($etapas as $chave => $etapa) {
             $confirmacoes = ConfirmacaoRematriculaRepository::countConfirmados($etapa, $escola, $calendario);
@@ -233,13 +222,11 @@ class ConfirmacaoRematriculaService
      */
     private function mapearAlunosComRematriculaConfirmada(array $alunosConfirmados)
     {
-        return array_map(function (ConfirmacaoRematricula $confirmacaoRematricula) {
-            return array(
-                'codigo' => filter_var($confirmacaoRematricula->getAluno()->getCodigoAluno(), FILTER_VALIDATE_INT),
-                'nome' => $confirmacaoRematricula->getAluno()->getNome(),
-                'sequencial' => $confirmacaoRematricula->getSequencial()
-            );
-        }, $alunosConfirmados);
+        return array_map(fn(ConfirmacaoRematricula $confirmacaoRematricula) => [
+            'codigo' => filter_var($confirmacaoRematricula->getAluno()->getCodigoAluno(), FILTER_VALIDATE_INT),
+            'nome' => $confirmacaoRematricula->getAluno()->getNome(),
+            'sequencial' => $confirmacaoRematricula->getSequencial()
+        ], $alunosConfirmados);
     }
 
     /**

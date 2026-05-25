@@ -12,7 +12,7 @@ class HabilidadeDesenvolvidaRegistry
     /**
      * @var HabilidadeDesenvolvida[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param HabilidadeDesenvolvida $habilidadeDesenvolvida

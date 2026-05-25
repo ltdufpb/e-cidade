@@ -229,7 +229,7 @@ class BnccService
         $repository = new HabilidadeEnsinoFundamentalRepository();
         foreach ($habilidades as $habilidade) {
             if (!$novaHabilidade) {
-                $codigo = isset($habilidade->editar) ? $habilidade->editar : $habilidade->codigo;
+                $codigo = $habilidade->editar ?? $habilidade->codigo;
                 $habilidadeEnsinoFundamental = $repository->scopeAno($ano)->scopeHabilidade($codigo)->first();
                 if (is_null($habilidadeEnsinoFundamental)) {
                     $habilidadeEnsinoFundamental = new HabilidadesEnsinoFundamental();
@@ -259,7 +259,7 @@ class BnccService
                     $habilidadeEnsinoFundamental->setHabilidade($habilidade->habilidade);
                 }
             } else {
-                $codigo = isset($habilidade->editar) ? $habilidade->editar : $habilidade->codigo;
+                $codigo = $habilidade->editar ?? $habilidade->codigo;
                 $habilidadeEnsinoFundamental = $repository->scopeAno($ano)
                 ->scopeHabilidade($codigo)->scopeObjetoConhecimento($habilidade->objetoConhecimento)->first();
 

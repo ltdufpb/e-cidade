@@ -16,7 +16,7 @@ class DisciplinaRegistry
     /**
      * @var Disciplina[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Disciplina $disciplina

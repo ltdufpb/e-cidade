@@ -16,7 +16,7 @@ class BuscaDadosAlunosAntes2016 extends BuscaDadosAlunos2016 implements BuscarDa
     /**
      * @var array
      */
-    private $aCodigoAlunosAntes = array();
+    private $aCodigoAlunosAntes = [];
 
     /**
      * BuscaDadosAlunosAntes2016 constructor.
@@ -27,12 +27,12 @@ class BuscaDadosAlunosAntes2016 extends BuscaDadosAlunos2016 implements BuscarDa
     public function __construct(Censo $oCenso, Escola $oEscola)
     {
         $alunosComTrocaTurma = $this->identificaAlunosComTrocaDeTurma($oCenso, $oEscola);
-        $aCondicoes = array();
+        $aCondicoes = [];
         $date = $oCenso->getDataCenso()->getDate();
         $aCondicoes[] = " matricula.ed60_d_datamatricula <= '{$date}'";
         $aCondicoes[] = " ( matricula.ed60_d_datasaida > '{$date}' or ed60_c_situacao = 'MATRICULADO')";
 
-        $filtroMatriculasComTrocaTurma = array();
+        $filtroMatriculasComTrocaTurma = [];
         if (!empty($alunosComTrocaTurma)) {
             $aCondicoes[] = "ed60_i_aluno not in(" . implode(', ', $alunosComTrocaTurma) . ")";
             $filtroMatriculasComTrocaTurma[] = "ed60_i_aluno in(" . implode(', ', $alunosComTrocaTurma) . ")";

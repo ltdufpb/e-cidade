@@ -35,7 +35,7 @@ class CensoDisciplinaRegistry
     /**
      * @var CensoDisciplina[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     public static function set(CensoDisciplina $censoDisciplina)
     {

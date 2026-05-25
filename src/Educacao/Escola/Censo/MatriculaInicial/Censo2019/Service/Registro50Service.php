@@ -57,7 +57,7 @@ class Registro50Service
     /**
      * @var Registro50[]
      */
-    protected $registros = array();
+    protected $registros = [];
 
     /**
      * @var Censo
@@ -152,7 +152,7 @@ class Registro50Service
                     continue;
                 }
 
-                if (!in_array($turma->getEtapaCenso(), array(1, 2, 3))) {
+                if (!in_array($turma->getEtapaCenso(), [1, 2, 3])) {
                     $builder->addDisciplinas($disciplinas);
                 }
             }
@@ -287,7 +287,7 @@ class Registro50Service
     private function validaDuploVinculoProfissional(
         ProfissionalEscola $profissional,
         TurmaCensoVo $turma,
-        $disciplinas = array()
+        $disciplinas = []
     ) {
         $registro = null;
         foreach ($this->registros as $registro50) {
@@ -312,9 +312,9 @@ class Registro50Service
      * @param Registro50 $registro
      * @param CensoDisciplina[] $disciplinas
      */
-    private function mergeDisciplinasVinculoProfissional(Registro50 $registro, $disciplinas = array())
+    private function mergeDisciplinasVinculoProfissional(Registro50 $registro, $disciplinas = [])
     {
-        $disciplinasRegistro = array(
+        $disciplinasRegistro = [
             $registro->getCodigo1(),
             $registro->getCodigo2(),
             $registro->getCodigo3(),
@@ -330,15 +330,13 @@ class Registro50Service
             $registro->getCodigo13(),
             $registro->getCodigo14(),
             $registro->getCodigo15()
-        );
+        ];
 
         $disciplinasRegistro = array_filter($disciplinasRegistro);
         foreach ($disciplinasRegistro as $disciplinaRegistro) {
             if (!is_null($disciplinaRegistro)) {
                 $disciplinaX = CensoDisciplinaRegistry::get($disciplinaRegistro);
-                $existe = array_filter($disciplinas, function (CensoDisciplina $disciplina) use ($disciplinaX) {
-                    return $disciplina->getCodigo() === $disciplinaX->getCodigo();
-                });
+                $existe = array_filter($disciplinas, fn(CensoDisciplina $disciplina) => $disciplina->getCodigo() === $disciplinaX->getCodigo());
                 if (empty($existe)) {
                     $disciplinas[] = $disciplinaX;
                 }

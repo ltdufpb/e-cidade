@@ -185,7 +185,7 @@ class Registro40Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2))) {
+        if (!in_array($dado, [1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -217,11 +217,11 @@ class Registro40Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3, 4, 5, 6, 7))) {
+        if (!in_array($dado, [1, 2, 3, 4, 5, 6, 7])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($dado == 1 && in_array($dependencia, array(1, 2, 3))) {
+        if ($dado == 1 && in_array($dependencia, [1, 2, 3])) {
             $this->log(sprintf(
                 'O campo "%s" não pode ser preenchido com "Ser proprietário(a) ou sócio(a)-proprietário(a) '.
                 'da escola" quando o campo "Dependência administrativa" for preenchido com "Federal", "Estadual" '.
@@ -230,7 +230,7 @@ class Registro40Validator
             ));
         }
 
-        if (in_array($dado, array(4, 5, 6)) && $dependencia == 4) {
+        if (in_array($dado, [4, 5, 6]) && $dependencia == 4) {
             $this->log(sprintf(
                 'O campo "%s" não pode ser preenchido com 4, 5, 6 quando o campo "Dependência administrativa" '.
                 'for preenchido com "Privada".',
@@ -262,10 +262,10 @@ class Registro40Validator
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        $validos = array(
+        $validos = [
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
             'V', 'W', 'X', 'Y', 'Z', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'ª', 'º', '-'
-        );
+        ];
         if (!$this->containsOnly($dado, $validos)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
@@ -279,7 +279,7 @@ class Registro40Validator
         $dependencia = $this->registro00->getDependenciaAdministrativa();
         $campo = 'Situação Funcional/Regime de contratação/Tipo de vínculo';
 
-        if (!$this->isPreenchido($dado) && $cargo == 1 && $situacao == 1 && in_array($dependencia, array(1, 2, 3))) {
+        if (!$this->isPreenchido($dado) && $cargo == 1 && $situacao == 1 && in_array($dependencia, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -292,7 +292,7 @@ class Registro40Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && !in_array($dependencia, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && !in_array($dependencia, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -300,7 +300,7 @@ class Registro40Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3, 4))) {
+        if (!in_array($dado, [1, 2, 3, 4])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }

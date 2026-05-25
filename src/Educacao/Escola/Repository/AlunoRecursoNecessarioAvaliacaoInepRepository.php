@@ -32,10 +32,10 @@ class AlunoRecursoNecessarioAvaliacaoInepRepository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $recursos = array();
+        $recursos = [];
         while ($state = pg_fetch_array($rs)) {
             $recursos[] = AlunoRecursoNecessarioAvaliacaoInep::fromState($state);
         }

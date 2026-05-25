@@ -6,12 +6,9 @@ use ECidade\File\Csv\Dumper\Dumper;
 
 class VacinasRelatorioCSV extends Dumper
 {
-    private $dados = [];
-
-    public function __construct(array $dados)
+    public function __construct(private array $dados)
     {
         $this->setCsvControl(';', '"');
-        $this->dados = $dados;
     }
 
     public function emitirCsv()

@@ -14,22 +14,20 @@ use stdClass;
 class CorpoGestorRelatorio extends FpdfMultiCellBorder
 {
     /**
-     * @var stdClass
-     */
-    private $parametros;
-    /**
      * @var Bairro|Null
      */
     private $bairro;
 
-    public function __construct($parametros, $filtros_cabecalho)
+    /**
+     * @param stdClass $parametros
+     */
+    public function __construct(private $parametros, $filtros_cabecalho)
     {
         parent::__construct();
-        $this->parametros = $parametros;
 
-        if ($parametros->opt_escola == 1) {
+        if ($this->parametros->opt_escola == 1) {
             $this->parametros->opt_escola = "Escolas";
-        } elseif ($parametros->opt_escola == 2) {
+        } elseif ($this->parametros->opt_escola == 2) {
             $this->parametros->opt_escola = "CEIs";
         } else {
             $this->parametros->opt_escola = "Escolas e CEIs";

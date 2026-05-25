@@ -41,9 +41,9 @@ class Registro00Repository extends Repository
      */
     public function getDadosCenso(Escola $escola)
     {
-        $where = array(
+        $where = [
             "ed18_i_codigo = {$escola->getCodigo()}",
-        );
+        ];
         
         $dao = new cl_escola();
         $sql = $dao->sql_censo($where);

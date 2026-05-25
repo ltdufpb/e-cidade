@@ -7,14 +7,14 @@ abstract class Repository
     /**
      * @var array
      */
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * @return $this
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
 
         return $this;
     }

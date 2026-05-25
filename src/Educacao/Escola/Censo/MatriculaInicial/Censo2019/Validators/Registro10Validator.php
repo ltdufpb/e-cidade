@@ -306,7 +306,7 @@ class Registro10Validator
 
     private function validarLocalFuncionamento()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getPredioEscolar();
         $campos[] = $this->registro->getSalaOutraEscola();
         $campos[] = $this->registro->getGalpaoRanchoPaiolBarracao();
@@ -328,7 +328,7 @@ class Registro10Validator
         $predio = $this->registro->getPredioEscolar();
         $campo = "Local de funcionamento da escola - Prédio Escolar";
 
-        if (!in_array($predio, array(0, 1))) {
+        if (!in_array($predio, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -339,7 +339,7 @@ class Registro10Validator
         $sala = $this->registro->getSalaOutraEscola();
         $campo = "Sala(s) em outra escola";
 
-        if (!in_array($sala, array(0, 1))) {
+        if (!in_array($sala, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -350,7 +350,7 @@ class Registro10Validator
         $galpao = $this->registro->getGalpaoRanchoPaiolBarracao();
         $campo = "Galpão/rancho/paiol/barracão";
 
-        if (!in_array($galpao, array(0, 1))) {
+        if (!in_array($galpao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -361,7 +361,7 @@ class Registro10Validator
         $unidade = $this->registro->getUnidadeAtendimentoSocioeducativa();
         $campo = "Unidade de atendimento Socioeducativa";
 
-        if (!in_array($unidade, array(0, 1))) {
+        if (!in_array($unidade, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -372,7 +372,7 @@ class Registro10Validator
         $unidade = $this->registro->getUnidadePrisional();
         $campo = "Unidade Prisional";
 
-        if (!in_array($unidade, array(0, 1))) {
+        if (!in_array($unidade, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -383,7 +383,7 @@ class Registro10Validator
         $outro = $this->registro->getOutroLocal();
         $campo = "Outros";
 
-        if (!in_array($outro, array(0, 1))) {
+        if (!in_array($outro, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -406,7 +406,7 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($ocupacao, array(1, 2, 3))) {
+        if (!in_array($ocupacao, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -430,14 +430,14 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($compartilhado, array(0, 1))) {
+        if (!in_array($compartilhado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarCodigoEscolaCompartilha()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCodigoEscolaCompartilha1();
         $campos[] = $this->registro->getCodigoEscolaCompartilha2();
         $campos[] = $this->registro->getCodigoEscolaCompartilha3();
@@ -446,7 +446,7 @@ class Registro10Validator
         $campos[] = $this->registro->getCodigoEscolaCompartilha6();
 
         // Remover códigos que não foram preenchidos...
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
 
         // Se algum dos códigos estava duplicado...
         if (count(array_unique($campos)) < count($campos)) {
@@ -603,14 +603,14 @@ class Registro10Validator
         $agua = $this->registro->getForneceAguaPotavel();
         $campo = "Fornece água potável para o consumo humano";
 
-        if (!in_array($agua, array(0, 1))) {
+        if (!in_array($agua, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarAbastecimentoAgua()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getAguaRedePublica();
         $campos[] = $this->registro->getPocoArtesiano();
         $campos[] = $this->registro->getCacimbaCisternaPoco();
@@ -631,7 +631,7 @@ class Registro10Validator
         $publica = $this->registro->getAguaRedePublica();
         $campo = "Abastecimento de água - Rede pública";
 
-        if (!in_array($publica, array(0, 1))) {
+        if (!in_array($publica, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -648,7 +648,7 @@ class Registro10Validator
         $poco = $this->registro->getPocoArtesiano();
         $campo = "Abastecimento de água - Poço artesiano";
 
-        if (!in_array($poco, array(0, 1))) {
+        if (!in_array($poco, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -666,7 +666,7 @@ class Registro10Validator
         $cacimba = $this->registro->getCacimbaCisternaPoco();
         $campo = "Abastecimento de água - Cacimba/Cisterna/Poço";
 
-        if (!in_array($cacimba, array(0, 1))) {
+        if (!in_array($cacimba, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -684,7 +684,7 @@ class Registro10Validator
         $fonte = $this->registro->getFonteRio();
         $campo = "Abastecimento de água - Fonte/Rio/Igarapé/Riacho/Córrego.";
 
-        if (!in_array($fonte, array(0, 1))) {
+        if (!in_array($fonte, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -702,14 +702,14 @@ class Registro10Validator
         $semAgua = $this->registro->getSemAgua();
         $campo = "Abastecimento de água - Rede pública";
 
-        if (!in_array($semAgua, array(0, 1))) {
+        if (!in_array($semAgua, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarFonteEnergiaEletrica()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getLuzRedePublica();
         $campos[] = $this->registro->getGeradorCombustivelFossil();
         $campos[] = $this->registro->getEnergiaRenovavel();
@@ -728,7 +728,7 @@ class Registro10Validator
         $publica = $this->registro->getLuzRedePublica();
         $campo = "Fonte de energia elétrica - Rede pública";
 
-        if (!in_array($publica, array(0, 1))) {
+        if (!in_array($publica, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -747,7 +747,7 @@ class Registro10Validator
         $gerador = $this->registro->getGeradorCombustivelFossil();
         $campo = "Fonte de energia elétrica - Gerador movido a combustível fóssil";
 
-        if (!in_array($gerador, array(0, 1))) {
+        if (!in_array($gerador, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -767,7 +767,7 @@ class Registro10Validator
         $campo = "Fonte de energia elétrica - Fontes de energia renováveis ou alternativas ";
         $campo .= "(gerador a biocombustível e/ou biodigestores, eólica, solar, outras)";
 
-        if (!in_array($renovavel, array(0, 1))) {
+        if (!in_array($renovavel, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -786,7 +786,7 @@ class Registro10Validator
         $semEnergia = $this->registro->getSemEnergiaEletrica();
         $campo = "Fonte de energia elétrica - Rede pública";
 
-        if (!in_array($semEnergia, array(0, 1))) {
+        if (!in_array($semEnergia, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -794,7 +794,7 @@ class Registro10Validator
 
     private function validarEsgotamentoSanitario()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getEsgotoRedePublica();
         $campos[] = $this->registro->getFossaSeptica();
         $campos[] = $this->registro->getFossaRudimentar();
@@ -813,7 +813,7 @@ class Registro10Validator
         $publica = $this->registro->getEsgotoRedePublica();
         $campo = "Esgotamento sanitário - Rede pública";
 
-        if (!in_array($publica, array(0, 1))) {
+        if (!in_array($publica, [0, 1])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -832,7 +832,7 @@ class Registro10Validator
         $fossa = $this->registro->getFossaSeptica();
         $campo = "Esgotamento sanitário - Fossa séptica";
 
-        if (!in_array($fossa, array(0, 1))) {
+        if (!in_array($fossa, [0, 1])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -851,7 +851,7 @@ class Registro10Validator
         $fossa = $this->registro->getFossaRudimentar();
         $campo = "Esgotamento sanitário - Fossa rudimentar/comum";
 
-        if (!in_array($fossa, array(0, 1))) {
+        if (!in_array($fossa, [0, 1])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -870,7 +870,7 @@ class Registro10Validator
         $semEsgoto = $this->registro->getSemEsgotamentoSanitario();
         $campo = "Esgotamento sanitário - Não há esgotamento sanitário";
 
-        if (!in_array($semEsgoto, array(0, 1))) {
+        if (!in_array($semEsgoto, [0, 1])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -878,7 +878,7 @@ class Registro10Validator
 
     private function validarDestinacaoLixo()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getServicoColeta();
         $campos[] = $this->registro->getQueimaLixo();
         $campos[] = $this->registro->getEnterraLixo();
@@ -898,7 +898,7 @@ class Registro10Validator
         $coleta = $this->registro->getServicoColeta();
         $campo = "Destinação do lixo - Serviço de coleta";
 
-        if (!in_array($coleta, array(0, 1))) {
+        if (!in_array($coleta, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com um valor inválido.', $campo));
             return;
         }
@@ -909,7 +909,7 @@ class Registro10Validator
         $queima = $this->registro->getQueimaLixo();
         $campo = "Destinação do lixo - Queima";
 
-        if (!in_array($queima, array(0, 1))) {
+        if (!in_array($queima, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com um valor inválido.', $campo));
             return;
         }
@@ -920,7 +920,7 @@ class Registro10Validator
         $enterra = $this->registro->getEnterraLixo();
         $campo = "Destinação do lixo - Enterra";
 
-        if (!in_array($enterra, array(0, 1))) {
+        if (!in_array($enterra, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com um valor inválido.', $campo));
             return;
         }
@@ -931,7 +931,7 @@ class Registro10Validator
         $destinacaoFinal = $this->registro->getLevaLixo();
         $campo = "Destinação do lixo - Leva a uma destinação final licenciada pelo poder público";
 
-        if (!in_array($destinacaoFinal, array(0, 1))) {
+        if (!in_array($destinacaoFinal, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com um valor inválido.', $campo));
             return;
         }
@@ -942,7 +942,7 @@ class Registro10Validator
         $descarta = $this->registro->getDescartaLixo();
         $campo = "Destinação do lixo - Descarta em outra área";
 
-        if (!in_array($descarta, array(0, 1))) {
+        if (!in_array($descarta, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com um valor inválido.', $campo));
             return;
         }
@@ -950,7 +950,7 @@ class Registro10Validator
 
     private function validarTratamentoLixo()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getSeparacaoLixo();
         $campos[] = $this->registro->getReaproveitamentoLixo();
         $campos[] = $this->registro->getReciclagemLixo();
@@ -969,7 +969,7 @@ class Registro10Validator
         $separacao = $this->registro->getSeparacaoLixo();
         $campo = "Tratamento do lixo/resíduos que a escola realiza - Separação do lixo/resíduos";
 
-        if (!in_array($separacao, array(0, 1))) {
+        if (!in_array($separacao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -994,7 +994,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($reaproveita, array(0, 1))) {
+        if (!in_array($reaproveita, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1019,7 +1019,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($recicla, array(0, 1))) {
+        if (!in_array($recicla, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1044,7 +1044,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($naoTrata, array(0, 1))) {
+        if (!in_array($naoTrata, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1052,7 +1052,7 @@ class Registro10Validator
 
     private function validarDependenciasFisicas()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getAlmoxarifado();
         $campos[] = $this->registro->getAreaVerde();
         $campos[] = $this->registro->getAuditorio();
@@ -1104,7 +1104,7 @@ class Registro10Validator
         $almoxarifado = $this->registro->getAlmoxarifado();
         $campo = "Dependências físicas existentes e utilizadas na escola - Almoxarifado";
 
-        if (!in_array($almoxarifado, array(0, 1))) {
+        if (!in_array($almoxarifado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1122,7 +1122,7 @@ class Registro10Validator
         $area = $this->registro->getAreaVerde();
         $campo = "Dependências físicas existentes e utilizadas na escola - Área verde";
 
-        if (!in_array($area, array(0, 1))) {
+        if (!in_array($area, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1140,7 +1140,7 @@ class Registro10Validator
         $audirotio = $this->registro->getAuditorio();
         $campo = "Dependências físicas existentes e utilizadas na escola - Auditório";
 
-        if (!in_array($audirotio, array(0, 1))) {
+        if (!in_array($audirotio, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1158,7 +1158,7 @@ class Registro10Validator
         $banheiro = $this->registro->getBanheiro();
         $campo = "Dependências físicas existentes e utilizadas na escola - Banheiro";
 
-        if (!in_array($banheiro, array(0, 1))) {
+        if (!in_array($banheiro, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1188,7 +1188,7 @@ class Registro10Validator
         $campo = "Dependências físicas existentes e utilizadas na escola - Banheiro acessível adequado ao uso de ";
         $campo .= "pessoas com deficiência ou mobilidade reduzida";
 
-        if (!in_array($banheiroDeficiencia, array(0, 1))) {
+        if (!in_array($banheiroDeficiencia, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1206,7 +1206,7 @@ class Registro10Validator
         $banheiroInfantil = $this->registro->getBanheiroEducacaoInfantil();
         $campo = "Dependências físicas existentes e utilizadas na escola - Banheiro adequado à educação infantil";
 
-        if (!in_array($banheiroInfantil, array(0, 1))) {
+        if (!in_array($banheiroInfantil, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1224,7 +1224,7 @@ class Registro10Validator
         $banheiroFuncionarios = $this->registro->getBanheiroExclusivoFuncionarios();
         $campo = "Dependências físicas existentes e utilizadas na escola - Banheiro exclusivo para os funcionários";
 
-        if (!in_array($banheiroFuncionarios, array(0, 1))) {
+        if (!in_array($banheiroFuncionarios, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1242,7 +1242,7 @@ class Registro10Validator
         $banheiroChuveiro = $this->registro->getBanheiroComChuveiro();
         $campo = "Dependências físicas existentes e utilizadas na escola - Banheiro ou vestiário com chuveiro";
 
-        if (!in_array($banheiroChuveiro, array(0, 1))) {
+        if (!in_array($banheiroChuveiro, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1260,7 +1260,7 @@ class Registro10Validator
         $biblioteca = $this->registro->getBiblioteca();
         $campo = "Dependências físicas existentes e utilizadas na escola - ";
 
-        if (!in_array($biblioteca, array(0, 1))) {
+        if (!in_array($biblioteca, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1278,7 +1278,7 @@ class Registro10Validator
         $cozinha = $this->registro->getCozinha();
         $campo = "Dependências físicas existentes e utilizadas na escola - Cozinha";
 
-        if (!in_array($cozinha, array(0, 1))) {
+        if (!in_array($cozinha, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1296,7 +1296,7 @@ class Registro10Validator
         $despensa = $this->registro->getDespensa();
         $campo = "Dependências físicas existentes e utilizadas na escola - Despensa";
 
-        if (!in_array($despensa, array(0, 1))) {
+        if (!in_array($despensa, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1314,7 +1314,7 @@ class Registro10Validator
         $dormitorioAluno = $this->registro->getDormitorioAluno();
         $campo = "Dependências físicas existentes e utilizadas na escola - Dormitório de aluno(a)";
 
-        if (!in_array($dormitorioAluno, array(0, 1))) {
+        if (!in_array($dormitorioAluno, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1332,7 +1332,7 @@ class Registro10Validator
         $dormitorioProfessor = $this->registro->getDormitorioProfessor();
         $campo = "Dependências físicas existentes e utilizadas na escola - Dormitório de professor(a)";
 
-        if (!in_array($dormitorioProfessor, array(0, 1))) {
+        if (!in_array($dormitorioProfessor, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1350,7 +1350,7 @@ class Registro10Validator
         $laboratorioCiencia = $this->registro->getLaboratorioCiencias();
         $campo = "Dependências físicas existentes e utilizadas na escola - Laboratório de ciências";
 
-        if (!in_array($laboratorioCiencia, array(0, 1))) {
+        if (!in_array($laboratorioCiencia, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1368,7 +1368,7 @@ class Registro10Validator
         $laboratorioInformatica = $this->registro->getLaboratorioInformatica();
         $campo = "Dependências físicas existentes e utilizadas na escola - Laboratório de informática";
 
-        if (!in_array($laboratorioInformatica, array(0, 1))) {
+        if (!in_array($laboratorioInformatica, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1388,7 +1388,7 @@ class Registro10Validator
             Dependências físicas existentes e utilizadas na escola - Laboratório Específico para a Educação Profissional
             ";
 
-        if (!in_array($laboratorioEducacaoProfissional, array(0, 1))) {
+        if (!in_array($laboratorioEducacaoProfissional, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1406,7 +1406,7 @@ class Registro10Validator
         $parqueInfantil = $this->registro->getParqueInfantil();
         $campo = "Dependências físicas existentes e utilizadas na escola - Parque infantil";
 
-        if (!in_array($parqueInfantil, array(0, 1))) {
+        if (!in_array($parqueInfantil, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1424,7 +1424,7 @@ class Registro10Validator
         $patioCoberto = $this->registro->getPatiocoberto();
         $campo = "Dependências físicas existentes e utilizadas na escola - Pátio coberto";
 
-        if (!in_array($patioCoberto, array(0, 1))) {
+        if (!in_array($patioCoberto, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1442,7 +1442,7 @@ class Registro10Validator
         $patioDescoberto = $this->registro->getPatiodescoberto();
         $campo = "Dependências físicas existentes e utilizadas na escola - Pátio descoberto";
 
-        if (!in_array($patioDescoberto, array(0, 1))) {
+        if (!in_array($patioDescoberto, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1460,7 +1460,7 @@ class Registro10Validator
         $piscina = $this->registro->getPiscina();
         $campo = "Dependências físicas existentes e utilizadas na escola - Piscina";
 
-        if (!in_array($piscina, array(0, 1))) {
+        if (!in_array($piscina, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1478,7 +1478,7 @@ class Registro10Validator
         $quadraCoberta = $this->registro->getQuadraEsportesCoberta();
         $campo = "Dependências físicas existentes e utilizadas na escola - Quadra de esportes coberta";
 
-        if (!in_array($quadraCoberta, array(0, 1))) {
+        if (!in_array($quadraCoberta, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1496,7 +1496,7 @@ class Registro10Validator
         $quadraDescoberta = $this->registro->getQuadraEsportesDescoberta();
         $campo = "Dependências físicas existentes e utilizadas na escola - Quadra de esportes descoberta";
 
-        if (!in_array($quadraDescoberta, array(0, 1))) {
+        if (!in_array($quadraDescoberta, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1514,7 +1514,7 @@ class Registro10Validator
         $refeitorio = $this->registro->getRefeitorio();
         $campo = "Dependências físicas existentes e utilizadas na escola - Refeitório";
 
-        if (!in_array($refeitorio, array(0, 1))) {
+        if (!in_array($refeitorio, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1532,7 +1532,7 @@ class Registro10Validator
         $salaRepouso = $this->registro->getSalaRepousoAluno();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de repouso para aluno(a)";
 
-        if (!in_array($salaRepouso, array(0, 1))) {
+        if (!in_array($salaRepouso, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1550,7 +1550,7 @@ class Registro10Validator
         $atelie = $this->registro->getAtelieArtes();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala/ateliê de artes";
 
-        if (!in_array($atelie, array(0, 1))) {
+        if (!in_array($atelie, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1568,7 +1568,7 @@ class Registro10Validator
         $salaMusica = $this->registro->getSalaMusica();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de música/coral";
 
-        if (!in_array($salaMusica, array(0, 1))) {
+        if (!in_array($salaMusica, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1586,7 +1586,7 @@ class Registro10Validator
         $salaDanca = $this->registro->getSalaDanca();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala/estúdio de dança";
 
-        if (!in_array($salaDanca, array(0, 1))) {
+        if (!in_array($salaDanca, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1604,7 +1604,7 @@ class Registro10Validator
         $salaMultiuso = $this->registro->getSalaMultiuso();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala multiuso (música, dança e artes)";
 
-        if (!in_array($salaMultiuso, array(0, 1))) {
+        if (!in_array($salaMultiuso, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1623,7 +1623,7 @@ class Registro10Validator
         $campo = "Dependências físicas existentes e utilizadas na escola - Terreirão ";
         $campo .= "(área para prática desportiva e recreação sem cobertura, sem piso e sem edificações)";
 
-        if (!in_array($terreirao, array(0, 1))) {
+        if (!in_array($terreirao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1641,7 +1641,7 @@ class Registro10Validator
         $viveiro = $this->registro->getViveiro();
         $campo = "Dependências físicas existentes e utilizadas na escola - Viveiro/criação de animais";
 
-        if (!in_array($viveiro, array(0, 1))) {
+        if (!in_array($viveiro, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1659,7 +1659,7 @@ class Registro10Validator
         $salaDiretoria = $this->registro->getSalaDiretoria();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de diretoria";
 
-        if (!in_array($salaDiretoria, array(0, 1))) {
+        if (!in_array($salaDiretoria, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1677,7 +1677,7 @@ class Registro10Validator
         $salaLeitura = $this->registro->getSalaLeitura();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de Leitura";
 
-        if (!in_array($salaLeitura, array(0, 1))) {
+        if (!in_array($salaLeitura, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1695,7 +1695,7 @@ class Registro10Validator
         $salaProfessores = $this->registro->getSalaProfessores();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de professores";
 
-        if (!in_array($salaProfessores, array(0, 1))) {
+        if (!in_array($salaProfessores, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1714,7 +1714,7 @@ class Registro10Validator
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de recursos multifuncionais ";
         $campo .= "para atendimento educacional especializado (AEE)";
 
-        if (!in_array($salaAee, array(0, 1))) {
+        if (!in_array($salaAee, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1732,7 +1732,7 @@ class Registro10Validator
         $salaSecretaria = $this->registro->getSalaSecretaria();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de Secretaria";
 
-        if (!in_array($salaSecretaria, array(0, 1))) {
+        if (!in_array($salaSecretaria, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1750,7 +1750,7 @@ class Registro10Validator
         $salaEducacaoProfissional = $this->registro->getSalaEducacaoProfissional();
         $campo = "Dependências físicas existentes e utilizadas na escola - Sala de Oficinas da Educação Profissional";
 
-        if (!in_array($salaEducacaoProfissional, array(0, 1))) {
+        if (!in_array($salaEducacaoProfissional, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1768,14 +1768,14 @@ class Registro10Validator
         $nenhumaDependencias = $this->registro->getNenhumaDependencias();
         $campo = "Dependências físicas existentes e utilizadas na escola - Nenhuma das dependências relacionadas";
 
-        if (!in_array($nenhumaDependencias, array(0, 1))) {
+        if (!in_array($nenhumaDependencias, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarRecursosAcessibilidade()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCorrimao();
         $campos[] = $this->registro->getElevador();
         $campos[] = $this->registro->getPisoTatil();
@@ -1801,7 +1801,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de ";
         $campo .= "circulação internas na escola - Corrimão e guarda-corpos";
 
-        if (!in_array($corrimao, array(0, 1))) {
+        if (!in_array($corrimao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1821,7 +1821,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de ";
         $campo .= "circulação internas na escola - Elevador";
 
-        if (!in_array($elevador, array(0, 1))) {
+        if (!in_array($elevador, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1841,7 +1841,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de '.
         'circulação internas na escola - Pisos táteis";
 
-        if (!in_array($pisoTatil, array(0, 1))) {
+        if (!in_array($pisoTatil, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1861,7 +1861,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de ";
         $campo .= "circulação internas na escola - Portas com vão livre de no mínimo 80 cm";
 
-        if (!in_array($portas, array(0, 1))) {
+        if (!in_array($portas, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1881,7 +1881,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de ";
         $campo .= "circulação internas na escola - Rampas";
 
-        if (!in_array($rampas, array(0, 1))) {
+        if (!in_array($rampas, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1901,7 +1901,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de '.
         'circulação internas na escola - Sinalização sonora";
 
-        if (!in_array($sinalizacao, array(0, 1))) {
+        if (!in_array($sinalizacao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1921,7 +1921,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de ";
         $campo .= "circulação internas na escola - Sinalização tátil";
 
-        if (!in_array($sinalizacaoTatil, array(0, 1))) {
+        if (!in_array($sinalizacaoTatil, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1941,7 +1941,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de ";
         $campo .= "circulação internas na escola - Sinalização visual (piso/paredes)";
 
-        if (!in_array($sinalizacaoVisual, array(0, 1))) {
+        if (!in_array($sinalizacaoVisual, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -1961,7 +1961,7 @@ class Registro10Validator
         $campo = "Recursos de acessibilidade para pessoas com deficiência ou mobilidade reduzida nas vias de ";
         $campo .= "circulação internas na escola - Nenhum dos recursos de acessibilidade listados";
 
-        if (!in_array($nenhumRecurso, array(0, 1))) {
+        if (!in_array($nenhumRecurso, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -2113,7 +2113,7 @@ class Registro10Validator
 
     private function validarEquipamentosTecnicosAdministrativos()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getAntenaParabolica();
         $campos[] = $this->registro->getComputador();
         $campos[] = $this->registro->getCopiadora();
@@ -2136,7 +2136,7 @@ class Registro10Validator
         $nenhumEqupamento = $this->registro->getNenhumEquipamentosListados();
         $campo = "Equipamentos existentes na escola - Antena parabólica";
 
-        if (!in_array($antena, array(0, 1))) {
+        if (!in_array($antena, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2155,7 +2155,7 @@ class Registro10Validator
         $nenhumEqupamento = $this->registro->getNenhumEquipamentosListados();
         $campo = "Equipamentos existentes na escola - Computadores";
 
-        if (!in_array($computador, array(0, 1))) {
+        if (!in_array($computador, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2174,7 +2174,7 @@ class Registro10Validator
         $nenhumEqupamento = $this->registro->getNenhumEquipamentosListados();
         $campo = "Equipamentos existentes na escola - Copiadora";
 
-        if (!in_array($copiadora, array(0, 1))) {
+        if (!in_array($copiadora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2193,7 +2193,7 @@ class Registro10Validator
         $nenhumEqupamento = $this->registro->getNenhumEquipamentosListados();
         $campo = "Equipamentos existentes na escola - Impressora";
 
-        if (!in_array($impressora, array(0, 1))) {
+        if (!in_array($impressora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2212,7 +2212,7 @@ class Registro10Validator
         $nenhumEqupamento = $this->registro->getNenhumEquipamentosListados();
         $campo = "Equipamentos existentes na escola - Impressora Multifuncional";
 
-        if (!in_array($impressora, array(0, 1))) {
+        if (!in_array($impressora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2231,7 +2231,7 @@ class Registro10Validator
         $nenhumEqupamento = $this->registro->getNenhumEquipamentosListados();
         $campo = "Equipamentos existentes na escola - Scanner";
 
-        if (!in_array($impressora, array(0, 1))) {
+        if (!in_array($impressora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2249,7 +2249,7 @@ class Registro10Validator
         $nenhumEqupamento = $this->registro->getNenhumEquipamentosListados();
         $campo = "Nenhum dos Equipamentos existentes na escola";
 
-        if (!in_array($nenhumEqupamento, array(0, 1))) {
+        if (!in_array($nenhumEqupamento, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -2444,7 +2444,7 @@ class Registro10Validator
 
     private function validarAcessoInternet()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getInternetParaAdministrativo();
         $campos[] = $this->registro->getInternetParaEnsino();
         $campos[] = $this->registro->getInternetParaAluno();
@@ -2464,7 +2464,7 @@ class Registro10Validator
         $admin = $this->registro->getInternetParaAdministrativo();
         $campo = "Acesso à internet - Para uso administrativo";
 
-        if (!in_array($admin, array(0, 1))) {
+        if (!in_array($admin, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2482,7 +2482,7 @@ class Registro10Validator
         $ensino = $this->registro->getInternetParaEnsino();
         $campo = "Acesso à internet - Para uso no processo de ensino e aprendizagem";
 
-        if (!in_array($ensino, array(0, 1))) {
+        if (!in_array($ensino, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2500,7 +2500,7 @@ class Registro10Validator
         $paraAluno = $this->registro->getInternetParaAluno();
         $campo = "Acesso à internet - Para uso dos aluno(a)s";
 
-        if (!in_array($paraAluno, array(0, 1))) {
+        if (!in_array($paraAluno, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2518,7 +2518,7 @@ class Registro10Validator
         $paraComunidade = $this->registro->getInternetParaComunidade();
         $campo = "Acesso à internet - Para uso da comunidade";
 
-        if (!in_array($paraComunidade, array(0, 1))) {
+        if (!in_array($paraComunidade, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2536,7 +2536,7 @@ class Registro10Validator
         $semInternet = $this->registro->getNaoPossuiInternet();
         $campo = "Acesso à internet - Não possui acesso à internet";
 
-        if (!in_array($semInternet, array(0, 1))) {
+        if (!in_array($semInternet, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -2547,7 +2547,7 @@ class Registro10Validator
         $campo = "Equipamentos que os aluno(a)s usam para acessar a internet da escola - Computadores de mesa, ";
         $campo .= "portáteis e tablets da escola (no laboratório de informática, biblioteca, sala de aula etc.)";
 
-        if (!in_array($disponiveis, array(0, 1))) {
+        if (!in_array($disponiveis, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -2564,7 +2564,7 @@ class Registro10Validator
         $campo = "Equipamentos que os aluno(a)s usam para acessar a internet da escola - Dispositivos pessoais ";
         $campo .= "(computadores portáteis, celulares, tablets etc.)";
 
-        if (!in_array($pessoais, array(0, 1))) {
+        if (!in_array($pessoais, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -2596,14 +2596,14 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($bandaLarga, array(0, 1))) {
+        if (!in_array($bandaLarga, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarRedeComputadores()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getRedeCabo();
         $campos[] = $this->registro->getRedeWireless();
         $campos[] = $this->registro->getNaoExisteRede();
@@ -2633,7 +2633,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($cabo, array(0, 1))) {
+        if (!in_array($cabo, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2661,7 +2661,7 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($wireless, array(0, 1))) {
+        if (!in_array($wireless, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2690,14 +2690,14 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($semRede, array(0, 1))) {
+        if (!in_array($semRede, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarProfissionaisEscola()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getAuxiliarSecretariaAdministrativos();
         $campos[] = $this->registro->getAuxiliarServicosGerais();
         $campos[] = $this->registro->getBibliotecario();
@@ -3092,7 +3092,7 @@ class Registro10Validator
         $alimentacao = $this->registro->getAlimentacaoEscolar();
         $campo = "Alimentação escolar para os aluno(a)s";
 
-        if (!in_array($alimentacao, array(0, 1))) {
+        if (!in_array($alimentacao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3106,7 +3106,7 @@ class Registro10Validator
                 return;
             }
 
-            $respostas = array();
+            $respostas = [];
             foreach ($this->registros20 as $reg20) {
                 $respostas[] = $reg20->getTipoMediacaoDidaticoPedagogica();
             }
@@ -3123,7 +3123,7 @@ class Registro10Validator
 
     private function validarInstrumentosMateriais()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getAcervoMultimidia();
         $campos[] = $this->registro->getBrinquedosEducacaoInfantil();
         $campos[] = $this->registro->getMateriaisCientificos();
@@ -3155,7 +3155,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Acervo multimídia";
 
-        if (!in_array($acervo, array(0, 1))) {
+        if (!in_array($acervo, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3175,7 +3175,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Brinquedos para educação infantil";
 
-        if (!in_array($brinquedos, array(0, 1))) {
+        if (!in_array($brinquedos, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3195,7 +3195,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Conjunto de materiais científicos";
 
-        if (!in_array($materiaisCientificos, array(0, 1))) {
+        if (!in_array($materiaisCientificos, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3215,7 +3215,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Equipamento para amplificação e difusão de som/áudio";
 
-        if (!in_array($audio, array(0, 1))) {
+        if (!in_array($audio, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3236,7 +3236,7 @@ class Registro10Validator
         $campo .= "atividades de ensino aprendizagem - Instrumentos musicais para conjunto, banda/fanfarra e/ou aulas ";
         $campo .= "de música";
 
-        if (!in_array($instrumentos, array(0, 1))) {
+        if (!in_array($instrumentos, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3256,7 +3256,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento ";
         $campo .= "de atividades de ensino aprendizagem - Jogos educativos";
 
-        if (!in_array($jogos, array(0, 1))) {
+        if (!in_array($jogos, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3276,7 +3276,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Materiais para atividades culturais e artísticas";
 
-        if (!in_array($materialCultura, array(0, 1))) {
+        if (!in_array($materialCultura, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3296,7 +3296,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Materiais para atividades culturais e artísticas";
 
-        if (!in_array($materialProfissional, array(0, 1))) {
+        if (!in_array($materialProfissional, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3316,7 +3316,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Materiais para prática desportiva e recreação";
 
-        if (!in_array($materialRecreacao, array(0, 1))) {
+        if (!in_array($materialRecreacao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3336,7 +3336,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Materiais pedagógicos para a educação escolar indígena";
 
-        if (!in_array($educacaoIndigena, array(0, 1))) {
+        if (!in_array($educacaoIndigena, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3357,7 +3357,7 @@ class Registro10Validator
         $campo .= "atividades de ensino aprendizagem - Materiais pedagógicos para a educação das relações étnicos ";
         $campo .= "raciais";
 
-        if (!in_array($materialRacial, array(0, 1))) {
+        if (!in_array($materialRacial, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3377,7 +3377,7 @@ class Registro10Validator
         $campo = "Instrumentos, materiais socioculturais e/ou pedagógicos em uso na escola para o desenvolvimento de ";
         $campo .= "atividades de ensino aprendizagem - Materiais pedagógicos para a educação do campo";
 
-        if (!in_array($materialCampo, array(0, 1))) {
+        if (!in_array($materialCampo, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3395,7 +3395,7 @@ class Registro10Validator
         $nenhumInstrumento = $this->registro->getNenhumInstrumentoListado();
         $campo = "Nenhum dos Instrumentos Listados";
 
-        if (!in_array($nenhumInstrumento, array(0, 1))) {
+        if (!in_array($nenhumInstrumento, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3405,7 +3405,7 @@ class Registro10Validator
         $educacaoIndigena = $this->registro->getEducacaoEscolarIndigena();
         $campo = "Educação escolar indígena";
 
-        if (!in_array($educacaoIndigena, array(0, 1))) {
+        if (!in_array($educacaoIndigena, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
             return;
         }
@@ -3443,7 +3443,7 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($linguaIndigena, array(0, 1))) {
+        if (!in_array($linguaIndigena, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3467,7 +3467,7 @@ class Registro10Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($linguaPortuguesa, array(0, 1))) {
+        if (!in_array($linguaPortuguesa, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3544,7 +3544,7 @@ class Registro10Validator
         $campo = 'A escola faz exame de seleção para ingresso de seus aluno(a)s (avaliação por prova e /ou ';
         $campo .= 'analise curricular)';
 
-        if (!in_array($exame, array(0, 1))) {
+        if (!in_array($exame, [0, 1])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -3558,7 +3558,7 @@ class Registro10Validator
             return;
         }
 
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getReservaVagaPretoPardoIndigena();
         $campos[] = $this->registro->getReservaVagaRenda();
         $campos[] = $this->registro->getReservaVagaEscolaPublica();
@@ -3595,7 +3595,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($reservaPretoPardoIndigena, array(0, 1))) {
+        if (!in_array($reservaPretoPardoIndigena, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3628,7 +3628,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($reservaRenda, array(0, 1))) {
+        if (!in_array($reservaRenda, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3662,7 +3662,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($reservaEscolaPublica, array(0, 1))) {
+        if (!in_array($reservaEscolaPublica, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3696,7 +3696,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($reservaDeficiencia, array(0, 1))) {
+        if (!in_array($reservaDeficiencia, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3730,7 +3730,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($reservaOutro, array(0, 1))) {
+        if (!in_array($reservaOutro, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3762,7 +3762,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($semCota, array(0, 1))) {
+        if (!in_array($semCota, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3776,7 +3776,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($blog, array(0, 1))) {
+        if (!in_array($blog, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3790,7 +3790,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($integracao, array(0, 1))) {
+        if (!in_array($integracao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3804,7 +3804,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($equipamentos, array(0, 1))) {
+        if (!in_array($equipamentos, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3820,7 +3820,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($associacaoPais, array(0, 1))) {
+        if (!in_array($associacaoPais, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3844,7 +3844,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($associacaoPaisMestres, array(0, 1))) {
+        if (!in_array($associacaoPaisMestres, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3868,7 +3868,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($conselho, array(0, 1))) {
+        if (!in_array($conselho, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3892,7 +3892,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($gremio, array(0, 1))) {
+        if (!in_array($gremio, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3916,7 +3916,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($outros, array(0, 1))) {
+        if (!in_array($outros, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3939,7 +3939,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($semOrgao, array(0, 1))) {
+        if (!in_array($semOrgao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3954,7 +3954,7 @@ class Registro10Validator
             return;
         }
 
-        if (!in_array($projeto, array(0, 1, 2))) {
+        if (!in_array($projeto, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -4040,7 +4040,7 @@ class Registro10Validator
         $campo = "Não há Funcionários para as Funções Listadas ";
         $naoHaFuncionarios = $this->registro->getNaoHaFuncionarios();
 
-        if (!in_array($naoHaFuncionarios, array(1, null))) {
+        if (!in_array($naoHaFuncionarios, [1, null])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }

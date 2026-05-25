@@ -864,7 +864,7 @@ class Registro60
 
     public function toArray()
     {
-        return array(
+        return [
             "tipoRegistro" => $this->tipoRegistro,
             "codigoInepEscola" => $this->getCodigoInepEscola(),
             "codigoPessoa" => $this->getCodigoPessoa(),
@@ -910,7 +910,7 @@ class Registro60
             "aquaviárioEntre5A15" => $this->getAquaviarioEntre5A15(),
             "aquaviárioEntre15A35" => $this->getAquaviarioEntre15A35(),
             "aquaviárioAcima35" => $this->getAquaviarioAcima35(),
-        );
+        ];
     }
 
     /**

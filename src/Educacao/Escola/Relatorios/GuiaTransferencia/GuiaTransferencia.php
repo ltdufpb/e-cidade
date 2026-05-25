@@ -33,16 +33,10 @@ class GuiaTransferencia
 
     public $assinatura;
 
-    public $notificar;
 
-    public $tipoTransferencia;
-
-
-    public function __construct($orientation, $tipoTransf = "", $modelo = null, $notificar = false, $escola = "")
+    public function __construct($orientation, public $tipoTransferencia = "", $modelo = null, public $notificar = false, $escola = "")
     {
         $this->escola = $escola;
-        $this->tipoTransferencia = $tipoTransf;
-        $this->notificar = $notificar;
         $this->orientation = strtoupper($orientation);
         $this->pdf = new FpdfMultiCellBorder($orientation);
         $this->pdf->Open();
@@ -122,7 +116,7 @@ class GuiaTransferencia
                 $aluno->data_transf
             );
             $notificacaoService->setGuiaTransferencia($path);
-            $turma = isset($aluno->descr_turma) ? $aluno->descr_turma : $aluno->matricula[0]->descr_turma;
+            $turma = $aluno->descr_turma ?? $aluno->matricula[0]->descr_turma;
             $notificacaoService->notificar($turma, $aluno->obs);
         }
     }
@@ -130,11 +124,9 @@ class GuiaTransferencia
     public function imprimeDados()
     {
         $folha = 1;
-        $nome = !is_null($this->assinatura['nome']) ?
-                            $this->assinatura['nome'] :
-                            "------------------------------------------------------";
+        $nome = $this->assinatura['nome'] ?? "------------------------------------------------------";
 
-        $funcao = !is_null($this->assinatura['funcao']) ? $this->assinatura['funcao'] : "";
+        $funcao = $this->assinatura['funcao'] ?? "";
 
         foreach ($this->dados['alunos'] as $aluno) {
             $folha = 1;

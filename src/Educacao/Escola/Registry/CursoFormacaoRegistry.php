@@ -16,7 +16,7 @@ class CursoFormacaoRegistry
     /**
      * @var CursoFormacao[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param CursoFormacao $cursoFormacao

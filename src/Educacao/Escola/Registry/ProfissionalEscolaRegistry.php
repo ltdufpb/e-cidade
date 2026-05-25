@@ -34,7 +34,7 @@ class ProfissionalEscolaRegistry
     /**
      * @var ProfissionalEscola[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param $key

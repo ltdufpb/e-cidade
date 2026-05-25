@@ -52,7 +52,7 @@ class CensoMunicipioRepository extends Repository
             throw new Exception("Erro ao buscar das Cidades.");
         }
 
-        $municipios = array();
+        $municipios = [];
         while ($state = pg_fetch_array($rs)) {
             $municipios[] = CensoMunicipio::fromState($state);
         }

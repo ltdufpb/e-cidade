@@ -17,16 +17,16 @@ class DisciplinaResource
      */
     public static function toArray(array $disciplinas)
     {
-        $data = array();
+        $data = [];
 
         foreach ($disciplinas as $disciplina) {
-            $data[] = (object) array(
+            $data[] = (object) [
                 "codigo" => $disciplina->getCodigo(),
                 "nome" => $disciplina->getNome(),
                 "sigla" => $disciplina->getSigla(),
                 "area_conhecimento" => $disciplina->getAreaConhecimento(),
                 "ensino" => $disciplina->getEnsino(),
-            );
+            ];
         }
         return $data;
     }

@@ -47,7 +47,7 @@ class Registro20Service
     /**
      * @var Registro20[]
      */
-    private $registros = array();
+    private $registros = [];
     /**
      * @var Censo
      */
@@ -56,12 +56,12 @@ class Registro20Service
     /**
      * @var TurmaCensoVo[]
      */
-    protected static $turmasProcessadas = array();
+    protected static $turmasProcessadas = [];
 
     /**
      * @var TurmaCensoVo[]
      */
-    protected static $turmasVinculadas = array();
+    protected static $turmasVinculadas = [];
 
     /**
      * @var Registro00Service
@@ -73,7 +73,7 @@ class Registro20Service
      */
     private $registro10Service;
 
-    protected $camposTurmasRegulares = array(
+    protected $camposTurmasRegulares = [
         "ed57_i_codigoinep as inep_turma",
         "ed57_i_codigo as turma",
         "ed57_i_escola as escola",
@@ -93,9 +93,9 @@ class Registro20Service
             when ed16_c_pertence = 'S' then 0
             else ed16_local_funcionamento
         end as local_funcionamento"
-    );
+    ];
 
-    private $camposTurmasEspeciais = array(
+    private $camposTurmasEspeciais = [
         "ed268_i_codigoinep as inep_turma",
         "ed268_i_codigo as turma",
         "ed268_i_escola as escola",
@@ -116,7 +116,7 @@ class Registro20Service
         "1 as mediacao_didatico_pedagogica",
         "case when ed268_i_tipoatend = 4 then true else false end as atividade_complementar",
         "case when ed268_i_tipoatend = 5 then true else false end as atendimento_aee",
-    );
+    ];
     /**
      * @var Registro20Repository
      */
@@ -216,12 +216,12 @@ class Registro20Service
             $this->escola,
             $this->censo->getDataCenso()
         );
-        $turmasPrincipais = array();
-        $turmasDescartar = array();
+        $turmasPrincipais = [];
+        $turmasDescartar = [];
 
         // Arrays para vincular turmas multietapa de ensino diferente
-        $turmasCodCenso = array();
-        $unirTurmas = array();
+        $turmasCodCenso = [];
+        $unirTurmas = [];
 
         foreach ($turmasUnificadas as $turmaUnificada) {
             if ($turmaUnificada['ed343_principal'] === 't') {

@@ -29,7 +29,7 @@ namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Layout\Mapper
 
 class Registro10Mapper extends Mapper
 {
-    protected $dePara = array(
+    protected $dePara = [
         "Tipo de registro" => "tipoRegistro",
         "Código de escola - Inep" => "codigoInep",
         "Prédio escolar" => "predioEscolar",
@@ -212,5 +212,5 @@ class Registro10Mapper extends Mapper
         "Não há órgãos colegiados em funcionamento" => "orgaosColegiadosNenhum",
         "Projeto político pedagógico ou a proposta pedagógica da escola atualizado nos últimos 12 meses até a data de" .
         " referência" => "projetoPedagogicoAtualizado"
-    );
+    ];
 }

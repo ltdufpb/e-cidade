@@ -113,9 +113,7 @@ class TurmaEspecialService
         $matriculas = $this->turmaEspecial->matriculas;
         $aMatriculas = $matriculas->toArray();
 
-        usort($aMatriculas, function ($matriculaAtual, $matriculaProxima) {
-            return strcmp($matriculaAtual['aluno']['ed47_v_nome'], $matriculaProxima['aluno']['ed47_v_nome']);
-        });
+        usort($aMatriculas, fn($matriculaAtual, $matriculaProxima) => strcmp($matriculaAtual['aluno']['ed47_v_nome'], $matriculaProxima['aluno']['ed47_v_nome']));
         foreach ($aMatriculas as $matricula) {
             $alunoDiario = new AlunoDiarioClasse();
             $alunoVinculado = $matricula["aluno"];

@@ -16,7 +16,7 @@ class AreaConhecimentoRegistry
     /**
      * @var AreaConhecimento[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param AreaConhecimento $areaConhecimento
