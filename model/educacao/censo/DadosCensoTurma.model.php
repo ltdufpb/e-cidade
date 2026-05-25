@@ -28,8 +28,6 @@
 
 class DadosCensoTurma extends DadosCenso {
 
-  protected $iTurma;
-
   protected $iTipoTurma;
 
   protected $aNomeCampoDisciplinaCenso;
@@ -72,7 +70,7 @@ class DadosCensoTurma extends DadosCenso {
   /**
    *
    */
-  function __construct($iCodigoTurma) {
+  function __construct(protected $iTurma) {
 
     $this->aNomeCampoDisciplinaCenso[1]  = "disciplinas_turma_quimica";
     $this->aNomeCampoDisciplinaCenso[2]  = "disciplinas_turma_fisica";
@@ -100,7 +98,6 @@ class DadosCensoTurma extends DadosCenso {
     $this->aNomeCampoDisciplinaCenso[29] = "disciplinas_turma_sociologia";
     $this->aNomeCampoDisciplinaCenso[30] = "disciplinas_lingua_literatura_estrangeira_frances";
     $this->aNomeCampoDisciplinaCenso[99] = "disciplinas_turma_outras";
-    $this->iTurma     = $iCodigoTurma;
   }
 
   /**
@@ -236,7 +233,7 @@ class DadosCensoTurma extends DadosCenso {
      * Validamos o codigo do curso para educacao profissional
      * para censo 2014 foi removido a etapa 66
      */
-    $aEtapas = array(30, 31, 32, 33, 34, 39, 40, 62, 63, 64);
+    $aEtapas = [30, 31, 32, 33, 34, 39, 40, 62, 63, 64];
     if ( !in_array($oDadosTurma->etapa_ensino_turma, $aEtapas) ) {
       $oDadosTurma->codigo_curso_educacao_profissional = '';
     }
@@ -300,7 +297,7 @@ class DadosCensoTurma extends DadosCenso {
         $iTurmaSemProfessor = 0;
       }
 
-      $aEtapasCensoTurma = array(1, 2, 3, 65);
+      $aEtapasCensoTurma = [1, 2, 3, 65];
       if ( in_array($oDadosTurma->etapa_ensino_turma, $aEtapasCensoTurma) || ( ($oDadosTurma->tipo_atendimento == 4 || $oDadosTurma->tipo_atendimento == 5) ) ) {
 
         $oDadosTurma->{$oDisciplinaCenso->getCampoLayout()}              = '';
@@ -311,8 +308,8 @@ class DadosCensoTurma extends DadosCenso {
     }
 
     $oDataCenso   = new DBDate( $this->dtDataCenso );
-    $aEtapaEnsino = array('4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22',
-                          '23','24','25','26','27','28','29','35','36','37','38','41');
+    $aEtapaEnsino = ['4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22',
+                          '23','24','25','26','27','28','29','35','36','37','38','41'];
     if ( !in_array($oDadosTurma->etapa_ensino_turma, $aEtapaEnsino) && $oDataCenso->getAno() != 2014 ) {
       $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov = '';
     }
@@ -343,7 +340,7 @@ class DadosCensoTurma extends DadosCenso {
    */
   public function getDiasDaSemanaComAula () {
 
-    $aDiasDaSemana       = array();
+    $aDiasDaSemana       = [];
     $oDaoRegenciaHorario = db_utils::getDao("dialetivo");
     $sWhere              = "ed04_i_escola = {$this->iCodigoEscola}";
     $sWhere             .= " and ed04_c_letivo = 'S'";
@@ -369,7 +366,7 @@ class DadosCensoTurma extends DadosCenso {
    */
   public function getDisciplinasCenso() {
 
-    $aDisciplinaCenso     = array();
+    $aDisciplinaCenso     = [];
     $oDaoCensoDisciplina  = db_utils::getDao("censodisciplina");
     $sSqlDisciplinasCenso = $oDaoCensoDisciplina->sql_query(null,
                                                             "ed265_i_codigo as codigo,
@@ -652,7 +649,7 @@ class DadosCensoTurma extends DadosCenso {
         }
       }
       if ( ($oDadosTurma->tipo_atendimento == 2 || $oDadosTurma->tipo_atendimento == 3) &&
-              in_array($oDadosTurma->etapa_ensino_turma, array( 1, 2, 3, 56 ) ) ) {
+              in_array($oDadosTurma->etapa_ensino_turma, [ 1, 2, 3, 56 ] ) ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma} é de Ensino Regular. ";
         $sMsgErro .= "Turmas que possuem atendimento do tipo: Unidade de Atendimento Socioeducativo ou Unidade Prisional ";
@@ -671,7 +668,7 @@ class DadosCensoTurma extends DadosCenso {
        * 4 - Atividade Complementar
        * 5 - Atendimento Educacional Especializado (AEE)
        */
-      if ( !in_array($oDadosTurma->tipo_atendimento, array(4, 5) ) ) {
+      if ( !in_array($oDadosTurma->tipo_atendimento, [4, 5] ) ) {
 
         if ($oDadosTurma->tipo_atendimento == 1) {
 
@@ -712,13 +709,13 @@ class DadosCensoTurma extends DadosCenso {
       /**
        * Validamos relacionadas ao programa mais educacao
        */
-      $aPrimeiraCondicaoMaisEducacao = array(0, 2, 3);
-      $aEtapasTurma                  = array( range(4,38) );
+      $aPrimeiraCondicaoMaisEducacao = [0, 2, 3];
+      $aEtapasTurma                  = [ range(4,38) ];
 
       /**
        * As etapas abaixo correspondem as etapas do censo, e que nao podem participar do programa mais educacao
        */
-      $aEtapasNaoPermitidas = array(1, 2, 3, 43, 44, 45, 46, 47, 48, 51, 58, 60, 61, 62, 63, 66);
+      $aEtapasNaoPermitidas = [1, 2, 3, 43, 44, 45, 46, 47, 48, 51, 58, 60, 61, 62, 63, 66];
 
       if ( $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov != '' ) {
 
@@ -764,13 +761,13 @@ class DadosCensoTurma extends DadosCenso {
             $lDadosValidos = false;
           }
 
-      		$aAtividades = array( $oDadosTurma->codigo_tipo_atividade_complementar_1,
+      		$aAtividades = [ $oDadosTurma->codigo_tipo_atividade_complementar_1,
       								 				  $oDadosTurma->codigo_tipo_atividade_complementar_2,
       												  $oDadosTurma->codigo_tipo_atividade_complementar_3,
 									      			  $oDadosTurma->codigo_tipo_atividade_complementar_4,
 									      			  $oDadosTurma->codigo_tipo_atividade_complementar_5,
 									      			  $oDadosTurma->codigo_tipo_atividade_complementar_6
-      											  );
+      											  ];
 
      			if(!parent::VerificaDuplicidade($aAtividades)) {
 

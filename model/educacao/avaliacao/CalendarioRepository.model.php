@@ -36,7 +36,7 @@
      * Collection de Calendario
      * @var array
      */
-    private $aCalendario = array();
+    private $aCalendario = [];
 
     /**
      * Instancia da classe

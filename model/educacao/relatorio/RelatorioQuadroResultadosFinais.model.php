@@ -61,32 +61,27 @@ class RelatorioQuadroResultadosFinais
     private $iDisciplinasPagina = 9;
 
     /**
-     * @var integer Código do modelo quando selececionado um modelo personalizado
-     */
-    private $iModelo;
-
-    /**
      * @var array com as turmas e etapas a serem impressas
      */
-    private $aTurmaEtapa = array();
+    private $aTurmaEtapa = [];
 
     /**
      * Lista dos alunos da turma
      * Este array tem os dados organizados com as quebras de paginas
      * @var array estrutura organizada dos alunos da turma em uma etapa
      */
-    private $aAlunosTurmaEtapa = array();
+    private $aAlunosTurmaEtapa = [];
 
     /**
      * Alunos Aprovados pelo conselho
      * @var array lista dos alunos que foram aprovados pelo conselho de classe e as justificativas
      */
-    private $aObservacaoAlunosAprovadoConselho = array();
+    private $aObservacaoAlunosAprovadoConselho = [];
 
     /**
      * @var array Disciplinas do cabeçalho organizadas por pagina
      */
-    private $aDisciplinasCabecalho = array();
+    private $aDisciplinasCabecalho = [];
 
     /**
      * Instancia de FPDF
@@ -148,10 +143,15 @@ class RelatorioQuadroResultadosFinais
      */
     private $areaProcedimento = false;
 
-    public function __construct($iModelo = null, $lExibeBrasao = false)
+    /**
+     * @param int $iModelo
+     */
+    public function __construct(/**
+     * @var integer Código do modelo quando selececionado um modelo personalizado
+     */
+    private $iModelo = null, $lExibeBrasao = false)
     {
 
-        $this->iModelo = $iModelo;
         if (!empty($this->iModelo)) {
             $this->lTemAssinatura = true;
         }
@@ -160,7 +160,7 @@ class RelatorioQuadroResultadosFinais
 
         $this->oPdf = new FpdfMultiCellBorder('L');
         $this->oPdf->setExibeBrasao($this->lExibeBrasao);
-        $this->oPdf->exibeHeader(empty($iModelo));
+        $this->oPdf->exibeHeader(empty($this->iModelo));
 
         $this->oPdf->Open();
         $this->oPdf->AliasNbPages();
@@ -384,7 +384,7 @@ class RelatorioQuadroResultadosFinais
      */
     private function organizaEstrutura(Turma $oTurma, Etapa $oEtapa)
     {
-        $this->adicionaParagrafoAprovadoConselho = array();
+        $this->adicionaParagrafoAprovadoConselho = [];
 
         $sHash = "{$oTurma->getCodigo()}#{$oEtapa->getCodigo()}";
 
@@ -420,7 +420,7 @@ class RelatorioQuadroResultadosFinais
             $oDadosAluno->sTermoResultadoFinal = "";
             $oDadosAluno->sTermoResultadoFinalAbreviado = "";
 
-            $oDadosAluno->aAvaliacoes = array();
+            $oDadosAluno->aAvaliacoes = [];
             $oDadosAluno->lTemReclassificacaoBaixaFrequencia = false;
 
             db_inicio_transacao();
@@ -512,10 +512,10 @@ class RelatorioQuadroResultadosFinais
                 $oResultadoDisciplina->sTermoResultadoFinal = "";
                 $oResultadoDisciplina->sTermoResultadoFinalAbreviado = "";
                 $oResultadoDisciplina->nAproveitamentoFinal = $nAproveitamentoFinal;
-                $oResultadoDisciplina->lAprovadoProgressaoParcial = $oResultadoFinal->aprovadoPorProgressaoParcial($oRegencia);
+                $oResultadoDisciplina->lAprovadoProgressaoParcial = $oResultadoFinal->aprovadoPorProgressaoParcial();
                 $oResultadoDisciplina->sResultadoFinal = $sResultadoFinal;
 
-                if (in_array($oMatricula->getSituacao(), array('AVANÇADO', 'CLASSIFICADO'))) {
+                if (in_array($oMatricula->getSituacao(), ['AVANÇADO', 'CLASSIFICADO'])) {
                     $oResultadoDisciplina->sResultadoFinal = 'A';
                 }
 
@@ -665,7 +665,7 @@ class RelatorioQuadroResultadosFinais
     private function adicionaParagrafoAprovadoConselho(Matricula $oMatricula, Regencia $oRegencia, AprovacaoConselho $oAprovadoConselho)
     {
 
-        $aParagrafos = array();
+        $aParagrafos = [];
         switch ($oAprovadoConselho->getFormaAprovacao()) {
             case AprovacaoConselho::APROVADO_CONSELHO:
                 $oDocumento = new libdocumento(5013);
@@ -806,7 +806,7 @@ class RelatorioQuadroResultadosFinais
         $iPaginaDisciplina = 1;
         $iDisciplinaAdicionada = 0;
 
-        $this->aDisciplinasCabecalho = array();
+        $this->aDisciplinasCabecalho = [];
 
         /**
          * Percorre as disciplinas adicionando no array controlando número de disciplinas por página
@@ -1072,7 +1072,7 @@ class RelatorioQuadroResultadosFinais
             $this->oPdf->SetFont("Arial", "B", 7);
             $this->oPdf->Cell($this->iLarguraPagina, 4, "OBSERVAÇÕES", 1, 1, "C");
             $this->oPdf->SetFont("Arial", "", 7);
-            $aObservacoes = array();
+            $aObservacoes = [];
             foreach ($this->aObservacaoAlunosAprovadoConselho as $iDisciplina => $aObservacoesAlunos) {
                 foreach ($this->aDisciplinasCabecalho[$iPaginaDisciplina] as $oDisciplina) {
                     if ($iDisciplina == $oDisciplina->getCodigoDisciplinaGeral()) {

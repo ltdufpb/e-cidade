@@ -79,7 +79,7 @@ class HistoricoAluno
      * Etapas cursadas pelo aluno
      * @var Array
      */
-    protected $aEtapasCursadas = array();
+    protected $aEtapasCursadas = [];
     /**
      * Método Construtor.
      * @param integer $iCodigoHistorico Código do Historico

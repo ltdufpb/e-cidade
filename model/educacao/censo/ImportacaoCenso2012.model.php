@@ -36,7 +36,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      *
      */
-    function __construct($iAnoEscolhido, $iCodigoInepEscola = null, $iCodigoLayout)
+    function __construct($iAnoEscolhido, $iCodigoInepEscola = null, $iCodigoLayout = null)
     {
         parent::__construct($iAnoEscolhido, $iCodigoInepEscola, $iCodigoLayout);
     }
@@ -136,9 +136,9 @@ class ImportacaoCenso2012 extends importacaoCenso
           && isset($oLinha->data_nascimento) && isset($oLinha->nome_completo_mae)
         ) {
 
-            $sNomeDocenteCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_completo);
+            $sNomeDocenteCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_completo);
             $dNascDocente = $this->formataData($oLinha->data_nascimento);
-            $sMaeDocenteCenso = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_completo_mae);
+            $sMaeDocenteCenso = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_completo_mae);
             $sWhereRechumano = " ed18_c_codigoinep = '" . $this->iCodigoInepEscola . "'";
             $sWhereRechumano .= " AND ( ";
             $sWhereRechumano .= " ( (to_ascii(case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else ";
@@ -347,7 +347,7 @@ class ImportacaoCenso2012 extends importacaoCenso
                     }
                 }
                 $oAlunoCenso = new DadosCensoAluno($oDadosAluno->ed47_i_codigo, null);
-                $oAlunoCenso->atualizarDados($oLinha, $oDadosAluno);
+                $oAlunoCenso->atualizarDados($oLinha);
             }
         } else {
 
@@ -396,7 +396,7 @@ class ImportacaoCenso2012 extends importacaoCenso
 
         if (isset($oLinha->nome_completo) && !empty($oLinha->nome_completo)) {
 
-            $sNomeAlunoCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_completo);
+            $sNomeAlunoCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_completo);
             $sWhereAluno .= (empty($sWhereAluno) ? '' : ' AND ');
             $sWhereAluno .= " to_ascii(translate(ed47_v_nome, '´`', '') ,'LATIN1') = '" . $sNomeAlunoCensoNovo . "'";
 
@@ -457,7 +457,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      * e atualiza os se forem diferentes dos encontrados no banco de dados
      * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
      */
-    function atualizaDadosTurma($oLinha, $iAnoCenso)
+    function atualizaDadosTurma($oLinha, $iAnoCenso = null)
     {
 
         $sNomeTurmaCensoNovo = $oLinha->nome_turma;

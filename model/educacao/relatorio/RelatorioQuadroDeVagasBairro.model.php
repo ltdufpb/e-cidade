@@ -531,12 +531,7 @@ function ordenarString($a, $b)
 
     $a = romanoParaInteiro(trim($aString)) > 0 ? romanoParaInteiro(trim($aString)) . " " . $aNumber : $aString . " " . $aNumber;
     $b = romanoParaInteiro(trim($bString)) > 0 ? romanoParaInteiro(trim($bString)) . " " . $bNumber : $bString . " " . $bNumber;
-
-    if ($a == $b) {
-        return 0;
-    }
-
-    return ($a < $b) ? -1 : 1;
+    return $a <=> $b;
 }
 
 function ordenarStringMultisseriada($a, $b)
@@ -549,18 +544,13 @@ function ordenarStringMultisseriada($a, $b)
 
     $a = romanoParaInteiro(trim($aString)) > 0 ? romanoParaInteiro(trim($aString)) . " " . $aNumber : $aString . " " . $aNumber;
     $b = romanoParaInteiro(trim($bString)) > 0 ? romanoParaInteiro(trim($bString)) . " " . $bNumber : $bString . " " . $bNumber;
-
-    if ($a == $b) {
-        return 0;
-    }
-
-    return ($a < $b) ? -1 : 1;
+    return $a <=> $b;
 }
 
 function romanoParaInteiro($numRoman, $debug = false)
 {
     $nRoman = $numRoman;
-    $default = array(
+    $default = [
         'M' => 1000,
         'CM' => 900,
         'D' => 500,
@@ -574,11 +564,11 @@ function romanoParaInteiro($numRoman, $debug = false)
         'V' => 5,
         'IV' => 4,
         'I' => 1,
-    );
+    ];
 
     $int = 0;
     foreach ($default as $key => $value) {
-        while (strpos($numRoman, $key) === 0) {
+        while (str_starts_with($numRoman, $key)) {
             $int += $value;
             $numRoman = substr($numRoman, strlen($key));
         }

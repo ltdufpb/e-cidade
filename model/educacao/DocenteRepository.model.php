@@ -37,7 +37,7 @@ class DocenteRepository {
    * Array com as instancias de Docente
    * @var array
    */
-  private $aDocente = array();
+  private $aDocente = [];
 
   private static $oInstance;
 

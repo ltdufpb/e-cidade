@@ -191,11 +191,11 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
   public function calculaNotaComAmparo( $aElementosAvaliacao, $iAno ) {
 
     $nAproveitamento              = null;
-    $aPeriodosValidos             = array();
+    $aPeriodosValidos             = [];
     $aNotasPeriodos               = $this->getElementosParaCalculo( $aElementosAvaliacao, $iAno );
     $aElementos                   = $this->getResultadoAvaliacao()->getElementosComposicaoResultado();
 
-    $aPeriodoAvaliacaoAlternativa = array();
+    $aPeriodoAvaliacaoAlternativa = [];
 
     foreach ($aNotasPeriodos as $oNotaDoAproveitamento ) {
 

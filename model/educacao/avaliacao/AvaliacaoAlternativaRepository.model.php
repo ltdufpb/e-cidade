@@ -39,13 +39,13 @@ class AvaliacaoAlternativaRepository {
    * Array com instancias de AvaliacaoAlternativa
    * @var array
    */
-  private $aAvaliacaoAlternativa = array();
+  private $aAvaliacaoAlternativa = [];
 
   /**
    * Array de controle para os diários
    * @var array
    */
-  private $aDiarioAvaliacaoAlternativa = array();
+  private $aDiarioAvaliacaoAlternativa = [];
 
   private static $oInstance;
 
@@ -98,10 +98,10 @@ class AvaliacaoAlternativaRepository {
     }
 
     if ( pg_num_rows($rsAlternativa) == 0 ) {
-      return array();
+      return [];
     }
 
-    $aAvaliacaoAlternativa = array();
+    $aAvaliacaoAlternativa = [];
 
     $iAlternativas = pg_num_rows($rsAlternativa);
     for ( $i = 0; $i < $iAlternativas; $i++ ) {

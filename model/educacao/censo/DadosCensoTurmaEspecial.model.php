@@ -33,8 +33,6 @@
  */
 class DadosCensoTurmaEspecial extends DadosCenso {
 
-  protected $iTurma;
-
   protected $iTipoTurma;
 
   protected $aNomeCampoDisciplinaCenso;
@@ -44,7 +42,7 @@ class DadosCensoTurmaEspecial extends DadosCenso {
   /**
    *
    */
-  function __construct($iCodigoTurma) {
+  function __construct(protected $iTurma) {
 
     $this->aNomeCampoDisciplinaCenso[1]  = "disciplinas_turma_quimica";
     $this->aNomeCampoDisciplinaCenso[2]  = "disciplinas_turma_fisica";
@@ -72,7 +70,6 @@ class DadosCensoTurmaEspecial extends DadosCenso {
     $this->aNomeCampoDisciplinaCenso[29] = "disciplinas_turma_sociologia";
     $this->aNomeCampoDisciplinaCenso[30] = "disciplinas_lingua_literatura_estrangeira_frances";
     $this->aNomeCampoDisciplinaCenso[99] = "disciplinas_turma_outras";
-    $this->iTurma = $iCodigoTurma;
   }
 
   public function getDados() {
@@ -234,7 +231,7 @@ class DadosCensoTurmaEspecial extends DadosCenso {
    */
   public function getDiasDaSemanaComAula () {
 
-    $aDiasDaSemana       = array();
+    $aDiasDaSemana       = [];
     $oDaoRegenciaHorario =  new cl_turmaachorarioprofissional();
     $sWhere              = "ed346_turmaac = {$this->iTurma}";
     $sSqlDiasDaSemana    = $oDaoRegenciaHorario->sql_query_file( null,
@@ -257,7 +254,7 @@ class DadosCensoTurmaEspecial extends DadosCenso {
    */
   public function getDisciplinasCenso() {
 
-    $aDisciplinaCenso     = array();
+    $aDisciplinaCenso     = [];
     $oDaoCensoDisciplina  = db_utils::getDao("censodisciplina");
     $sSqlDisciplinasCenso = $oDaoCensoDisciplina->sql_query(null,
         "ed265_i_codigo as codigo,

@@ -9,7 +9,7 @@ class RelacaoTrabalhoRepository {
 
   const MENSAGEM_RELACAOTRABALHOREPOSITORY = "educacao.escola.RelacaoTrabalhoRepository.";
 
-  private $aRelacoesTrabalho = array();
+  private $aRelacoesTrabalho = [];
 
   private static $oInstance;
 
@@ -36,11 +36,11 @@ class RelacaoTrabalhoRepository {
    */
   public static function getRelacaoTrabalhoByCodigo( $iRelacaoTrabalho ) {
 
-    if (!array_key_exists($iRelacaoTrabalho, RelacaoTrabalhoRepository::getInstance()->aRelacoesTrabalho)) {
-      RelacaoTrabalhoRepository::getInstance()->aRelacoesTrabalho[$iRelacaoTrabalho] = new RelacaoTrabalho($iRelacaoTrabalho);
+    if (!array_key_exists($iRelacaoTrabalho, $this->getInstance()->aRelacoesTrabalho)) {
+      $this->getInstance()->aRelacoesTrabalho[$iRelacaoTrabalho] = new RelacaoTrabalho($iRelacaoTrabalho);
     }
 
-    return RelacaoTrabalhoRepository::getInstance()->aRelacoesTrabalho[$iRelacaoTrabalho];
+    return $this->getInstance()->aRelacoesTrabalho[$iRelacaoTrabalho];
   }
 
   /**
@@ -63,7 +63,7 @@ class RelacaoTrabalhoRepository {
     }
 
     $iLinhas           = pg_num_rows($rsRelacaoTrabalho);
-    $aRelacoesTrabalho = array();
+    $aRelacoesTrabalho = [];
 
     if ( $iLinhas > 0 ) {
 
@@ -98,7 +98,7 @@ class RelacaoTrabalhoRepository {
     }
 
     $iLinhas           = pg_num_rows($rsRelacao);
-    $aRelacoesTrabalho = array();
+    $aRelacoesTrabalho = [];
 
     if ( $iLinhas > 0 ) {
 

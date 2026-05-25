@@ -82,7 +82,7 @@ class CensoCartorio {
       if (!$rsCartorio || $oDaoCensoCartorio->numrows == 0) {
         
         throw new BusinessException(_M('educacao.escola.CensoCartorio.cartorio_nao_encontrado',
-                                      (Object)array("codigo_cartorio" => $iCodigoCartorio)
+                                      (Object)["codigo_cartorio" => $iCodigoCartorio]
                                       )
                                     );
       }

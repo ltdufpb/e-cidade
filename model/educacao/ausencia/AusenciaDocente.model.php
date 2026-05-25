@@ -279,7 +279,7 @@ class AusenciaDocente {
 	 */
 	public function getDocenteSubstitutoPorRegencia(Regencia $oRegencia) {
 
-		$aDocentesPorRegencia = array();
+		$aDocentesPorRegencia = [];
 		$aDocenteSubstituto   = $this->getDocentesSubstitutos();
 
 		if (count($this->getDocentesSubstitutos()) > 0) {
@@ -401,7 +401,7 @@ class AusenciaDocente {
 
 	public function desvincularSubstituto(DocenteSubstituto $oDocenteSubstituto) {
 
-		$oDocenteSubstituto->excluir($this);
+		$oDocenteSubstituto->excluir();
 		return true;
 	}
 
@@ -431,7 +431,7 @@ class AusenciaDocente {
 	 */
 	public function getDisciplinasLecionadaTurma(Turma $oTurma) {
 
-		$aRegencias          = array();
+		$aRegencias          = [];
 		$oDaoRegenciaHorario = db_utils::getDao('regenciahorario');
 
 		$sWhere        = " ed59_i_turma         = {$oTurma->getCodigo()} ";

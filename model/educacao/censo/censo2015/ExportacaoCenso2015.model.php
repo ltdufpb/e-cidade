@@ -41,18 +41,6 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
   protected $iCodigoLayout;
 
   /**
-   * Código da escola
-   * @var integer
-   */
-  protected $iCodigoEscola;
-
-  /**
-   * Ano do Censo
-   * @var integer
-   */
-  protected $iAnoCenso;
-
-  /**
    * Data do Censo
    * @var date
    */
@@ -74,13 +62,13 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
    * Array com as turmas
    * @var Array
    */
-  protected $aDadosCensoTurma = array();
+  protected $aDadosCensoTurma = [];
 
   /**
    * Array com os dados dos docentes
    * @var Array
    */
-  protected $aDadosCensoDocente = array();
+  protected $aDadosCensoDocente = [];
 
   protected $rsArquivoLog;
 
@@ -93,7 +81,7 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
    * Array com os dados dos aluno
    * @var array
    */
-  protected $aAlunos = array();
+  protected $aAlunos = [];
 
   /**
    * Constantes para indexar os erros encorados ao escrever o arquivo do censo.
@@ -103,24 +91,32 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
   const LOG_DOCENTE = 3;
   const LOG_ALUNO   = 4;
 
-  private $aLogCenso = array();
+  private $aLogCenso = [];
 
   /**
    * Coleção das turmas únicas ( turmas vinculadas na tabela turmacenso)
    * @var array
    */
-  private $aTurmasUnicas          = array();
+  private $aTurmasUnicas          = [];
 
   /**
    * Coleção das turmas que não devem ir no arquivo do censo pois compartilham a mesma sala e não são a turma principal.
    * @var array
    */
-  private $aTurmasNaoVaiNoArquivo = array();
+  private $aTurmasNaoVaiNoArquivo = [];
 
-  public function __construct($iCodigoEscola, $iAnoCenso) {
+  /**
+   * @param int $iCodigoEscola
+   * @param int $iAnoCenso
+   */
+  public function __construct(/**
+   * Código da escola
+   */
+  protected $iCodigoEscola, /**
+   * Ano do Censo
+   */
+  protected $iAnoCenso) {
 
-    $this->iCodigoEscola = $iCodigoEscola;
-    $this->iAnoCenso     = $iAnoCenso;
     $this->iCodigoLayout = 226;
   }
 
@@ -353,7 +349,7 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
       $oDadosTurmaAc        = db_utils::fieldsMemory($sResultTurmaAc, $i);
       $oDaoTurmaACMatricula = new cl_turmaacmatricula();
 
-      $aWhereMatriculas   = array();
+      $aWhereMatriculas   = [];
       $aWhereMatriculas[] = " ed269_i_turmaac = {$oDadosTurmaAc->ed268_i_codigo}";
       $aWhereMatriculas[] = " ed269_d_data <= '{$this->dtBaseCenso}'";
 
@@ -363,7 +359,7 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
       if ($oDadosTurmaAc->ed268_i_tipoatend == 4 ) {
 
         // Monta uma query para garantir que o aluno vinculado nas Turmas AC possui uma matricula em turmas normais
-        $aFiltro            = array('ed60_i_aluno = ed269_aluno');
+        $aFiltro            = ['ed60_i_aluno = ed269_aluno'];
         $oDaoMatricula      = new cl_matricula();
         $sWhereMatricula    = $this->montarWhereAlunosMatriculados($aFiltro, false);
 
@@ -515,9 +511,9 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
     return $rsAlunosMatriculados;
   }
 
-  protected function montarWhereAlunosMatriculados( $aOutrosFiltros = array(), $lFiltraEscola = true ) {
+  protected function montarWhereAlunosMatriculados( $aOutrosFiltros = [], $lFiltraEscola = true ) {
 
-    $aWhere   = array();
+    $aWhere   = [];
     if ( $lFiltraEscola ) {
       $aWhere[] = " turma.ed57_i_escola   = {$this->iCodigoEscola} ";
     }

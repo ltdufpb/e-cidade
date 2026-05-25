@@ -114,7 +114,7 @@ final class ProgressaoParcialParametro {
    * Lista de etapas que a progressao parcial é permitido
    * @var Etapa[]
    */
-  private $aEtapas = array();
+  private $aEtapas = [];
 
   /**
    * Verificacao das  etapas carregadas
@@ -215,9 +215,9 @@ final class ProgressaoParcialParametro {
    */
   public function setFormaControle($iFormaControle) {
 
-    $aFormasControle = array(self::CONTROLE_BASE_CURRICULAR,
+    $aFormasControle = [self::CONTROLE_BASE_CURRICULAR,
                              self::CONTROLE_ETAPA
-                            );
+                            ];
     if (!in_array($iFormaControle, $aFormasControle)) {
 
       $sErroParametro  = 'Parametro $iFormaControle deve ser  ProgressaoParcialParametro::CONTROLE_ETAPA';
@@ -378,7 +378,7 @@ final class ProgressaoParcialParametro {
     $this->aEtapas = $this->getEtapas();
     if ($oEtapa == null) {
 
-      $this->aEtapas = array();
+      $this->aEtapas = [];
       return true;
     }
     foreach ($this->aEtapas as $iIndice => $oEtapaLancada) {

@@ -37,7 +37,7 @@ class DisciplinaRepository
      * Collection de Disciplina
      * @var array
      */
-    private $aDisciplina = array();
+    private $aDisciplina = [];
 
     /**
      * Instancia da classe

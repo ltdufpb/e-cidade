@@ -32,7 +32,7 @@
 abstract class importacaoCenso
 {
 
-    protected static $aTipoRegistro = array("00", "10", "20", "30", "40", "50", "51", "60", "70", "80");
+    protected static $aTipoRegistro = ["00", "10", "20", "30", "40", "50", "51", "60", "70", "80"];
 
     /**
      * se for true importa dados da escola, caso seja false nao importa
@@ -65,11 +65,6 @@ abstract class importacaoCenso
      */
     public $sCaminhoArquivo;
     /**
-     * @var integer $iAnoEscolhido
-     * ano que foi escolhido ex: 2011 ou 2010
-     */
-    public $iAnoEscolhido;
-    /**
      * @var integer $iCodigoInepEscola
      * codigo inep escola utilizado nos sql das funcoes abaixo
      */
@@ -87,11 +82,6 @@ abstract class importacaoCenso
      * senao importa todos
      */
     public $lImportarAlunoAtivo;
-    /**
-     * Variavel sera utilizada para setar o codigo do layout que será lido pela funcao DBLayoutReader()
-     * @var integer $iCodigoLayout ;
-     */
-    public $iCodigoLayout;
 
     /**
      * Se o for true é executada a funcao incluir caso contrario nao inclui
@@ -142,7 +132,7 @@ abstract class importacaoCenso
      * Guarda todos os alunos importados
      * @var array
      */
-    protected $aAlunosArquivo = array();
+    protected $aAlunosArquivo = [];
 
     /**
      * @var int $iTotalProcessados
@@ -175,8 +165,13 @@ abstract class importacaoCenso
      * Funcao do construtor da classe
      * @param integer $iAnoEscolhido
      * @param integer $iCodigoInepEscola
+     * @param int $iCodigoLayout
      */
-    public function __construct($iAnoEscolhido, $iCodigoInepEscola = null, $iCodigoLayout)
+    public function __construct(public $iAnoEscolhido, $iCodigoInepEscola = null, /**
+     * Variavel sera utilizada para setar o codigo do layout que será lido pela funcao DBLayoutReader()
+     * @var integer $iCodigoLayout ;
+     */
+    public $iCodigoLayout = null)
     {
 
         $oDaoSecParametros = db_utils::getdao('sec_parametros');
@@ -196,8 +191,6 @@ abstract class importacaoCenso
         $this->sCaminhoArquivo              = $sCaminhoArquivo;
 
         $this->lTemInconsistencia           = false;
-        $this->iAnoEscolhido                = $iAnoEscolhido;
-        $this->iCodigoLayout                = $iCodigoLayout;
 
         if (empty($this->sNomeArquivoLog)) {
             $this->sNomeArquivoLog = "tmp/censo" . $this->iAnoEscolhido . "_importacao_" . db_getsession("DB_coddepto") . "_";
@@ -227,7 +220,7 @@ abstract class importacaoCenso
      */
     private function fatiaArquivos($sCaminhoArquivo)
     {
-        $aCaminhosArquivosFatiados = array();
+        $aCaminhosArquivosFatiados = [];
         $sPastaUpload = 'tmp/importacenso/';
 
         if (!is_dir($sPastaUpload) && !mkdir($sPastaUpload, 0775)) {
@@ -237,8 +230,8 @@ abstract class importacaoCenso
         $sArquivo = file_get_contents($sCaminhoArquivo);
 
         $aLinhas = explode("\n", $sArquivo);
-        $aLinhasEscola = array();
-        $aEscolasArquivo = array();
+        $aLinhasEscola = [];
+        $aEscolasArquivo = [];
         $sCabecalhoInconsistencia = '';
 
         foreach ($aLinhas as $indice => $linha) {
@@ -289,7 +282,7 @@ abstract class importacaoCenso
             $oCaminhoArquivoFatiado->iCodigo = $codigo;
             $oCaminhoArquivoFatiado->sEscola = $aEscolasArquivo[$codigo];
             $oCaminhoArquivoFatiado->sCaminho = $sCaminhoArquivo;
-            $oCaminhoArquivoFatiado->aAlunos = array();
+            $oCaminhoArquivoFatiado->aAlunos = [];
 
             foreach ($this->aAlunosArquivo[$codigo] as $oAluno) {
                 $oCaminhoArquivoFatiado->aAlunos[] = $oAluno;
@@ -517,7 +510,7 @@ abstract class importacaoCenso
 
             if ($this->lImportarTurma) {
                 if ($oLinha->{$this->sCampoChave} == "20") {
-                    $this->atualizaDadosTurma($oLinha, $this->iAnoEscolhido);
+                    $this->atualizaDadosTurma($oLinha);
                 }
             }
 
@@ -1323,9 +1316,9 @@ abstract class importacaoCenso
         if ($oDaoRechumano->numrows <= 0 && isset($oLinha->nomedocente)
           && isset($oLinha->nascdocente) && isset($oLinha->mae)
         ) {
-            $sNomeDocenteCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nomedocente);
-            $dNascDocente = $this->formataData($oLinha->nascdocente);
-            $sMaeDocenteCenso = str_replace(array('ª', 'º'), array('', ''), $oLinha->mae);
+            $sNomeDocenteCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nomedocente);
+            $dNascDocente = static::formataData($oLinha->nascdocente);
+            $sMaeDocenteCenso = str_replace(['ª', 'º'], ['', ''], $oLinha->mae);
             $sWhereRechumano = " ed18_c_codigoinep = '" . $this->iCodigoInepEscola . "'";
             $sWhereRechumano .= " AND ( ";
             $sWhereRechumano .= " ( (to_ascii(case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else ";
@@ -1505,13 +1498,13 @@ abstract class importacaoCenso
                     throw new Exception("Erro na alteração dos dados do rechumano. Erro da classe: " . $oDaoRechumano->erro_msg);
                 }
 
-                $aFormacao = array();
+                $aFormacao = [];
 
                 if (isset($oLinha->situacaocurso1) && isset($oLinha->formacao1) && isset($oLinha->cursosuperior1)
                   && isset($oLinha->anoinicurso1) && isset($oLinha->anoconclusao1) && isset($oLinha->tpinstintsuperior1)
                   && isset($oLinha->institsuperior1)
                 ) {
-                    $aFormacao[0] = array(
+                    $aFormacao[0] = [
                       trim($oLinha->situacaocurso1),
                       trim($oLinha->formacao1),
                       trim($oLinha->cursosuperior1),
@@ -1519,14 +1512,14 @@ abstract class importacaoCenso
                       trim($oLinha->anoconclusao1),
                       trim($oLinha->tpinstintsuperior1),
                       trim($oLinha->institsuperior1)
-                    );
+                    ];
                 }
 
                 if (isset($oLinha->situacaocurso2) && isset($oLinha->formacao2) && isset($oLinha->cursosuperior2)
                   && isset($oLinha->anoinicurso2) && isset($oLinha->anoconclusao2) && isset($oLinha->tpinstsuperior2)
                   && isset($oLinha->institsuperior2)
                 ) {
-                    $aFormacao[1] = array(
+                    $aFormacao[1] = [
                       trim($oLinha->situacaocurso2),
                       trim($oLinha->formacao2),
                       trim($oLinha->cursosuperior2),
@@ -1534,14 +1527,14 @@ abstract class importacaoCenso
                       trim($oLinha->anoconclusao2),
                       trim($oLinha->tpinstsuperior2),
                       trim($oLinha->institsuperior2)
-                    );
+                    ];
                 }
 
                 if (isset($oLinha->situacaocurso3) && isset($oLinha->formacao3) && isset($oLinha->cursosuperior3)
                   && isset($oLinha->anoinicurso3) && isset($oLinha->anoconclusao3) && isset($oLinha->tpinstsuperior3)
                   && isset($oLinha->institsuperior3)
                 ) {
-                    $aFormacao[2] = array(
+                    $aFormacao[2] = [
                       trim($oLinha->situacaocurso3),
                       trim($oLinha->formacao3),
                       trim($oLinha->cursosuperior3),
@@ -1549,7 +1542,7 @@ abstract class importacaoCenso
                       trim($oLinha->anoconclusao3),
                       trim($oLinha->tpinstsuperior3),
                       trim($oLinha->institsuperior3)
-                    );
+                    ];
                 }
 
                 for ($iContFormacao = 0; $iContFormacao < count($aFormacao); $iContFormacao++) {
@@ -1569,14 +1562,10 @@ abstract class importacaoCenso
                                 $oDaoFormacao->ed27_i_rechumano = $oDaoRechumano->ed20_i_codigo;
                                 $oDaoFormacao->ed27_i_cursoformacao = db_utils::fieldsmemory($rsCursoFormacao, 0)->ed94_i_codigo;
                                 $oDaoFormacao->ed27_c_situacao = 'CON';
-                                $oDaoFormacao->ed27_i_licenciatura = (isset($aFormacao[$iContFormacao][0]) ?
-                                  $aFormacao[$iContFormacao][0] : '');
-                                $oDaoFormacao->ed27_i_anoconclusao = (isset($aFormacao[$iContFormacao][4]) ?
-                                  $aFormacao[$iContFormacao][4] : '');
-                                $oDaoFormacao->ed27_i_censosuperior = (isset($aFormacao[$iContFormacao][5]) ?
-                                  $aFormacao[$iContFormacao][5] : '');
-                                $oDaoFormacao->ed27_i_censoinstsuperior = (isset($aFormacao[$iContFormacao][6]) ?
-                                  $aFormacao[$iContFormacao][6] : '');
+                                $oDaoFormacao->ed27_i_licenciatura = ($aFormacao[$iContFormacao][0] ?? '');
+                                $oDaoFormacao->ed27_i_anoconclusao = ($aFormacao[$iContFormacao][4] ?? '');
+                                $oDaoFormacao->ed27_i_censosuperior = ($aFormacao[$iContFormacao][5] ?? '');
+                                $oDaoFormacao->ed27_i_censoinstsuperior = ($aFormacao[$iContFormacao][6] ?? '');
 
                                 $oDaoFormacao->incluir(null);
 
@@ -1609,27 +1598,27 @@ abstract class importacaoCenso
         $oDaoAluno->oid = "";
 
         if (!empty($oLinha->mae)) {
-            $oDaoAluno->ed47_v_mae = str_replace(array('ª', 'º'), array('', ''), $oLinha->mae);
+            $oDaoAluno->ed47_v_mae = str_replace(['ª', 'º'], ['', ''], $oLinha->mae);
         }
 
         if (!empty($oLinha->filiacao_1)) {
-            $oDaoAluno->ed47_v_mae = str_replace(array('ª', 'º'), array('', ''), $oLinha->filiacao_1);
+            $oDaoAluno->ed47_v_mae = str_replace(['ª', 'º'], ['', ''], $oLinha->filiacao_1);
         }
 
         if (!empty($oLinha->nomealuno)) {
-            $oDaoAluno->ed47_v_nome = str_replace(array('ª', 'º'), array('', ''), $oLinha->nomealuno);
+            $oDaoAluno->ed47_v_nome = str_replace(['ª', 'º'], ['', ''], $oLinha->nomealuno);
         }
 
         if (!empty($oLinha->pai)) {
-            $oDaoAluno->ed47_v_pai = str_replace(array('ª', 'º'), array('', ''), $oLinha->pai);
+            $oDaoAluno->ed47_v_pai = str_replace(['ª', 'º'], ['', ''], $oLinha->pai);
         }
 
         if (!empty($oLinha->filiacao_2)) {
-            $oDaoAluno->ed47_v_pai = str_replace(array('ª', 'º'), array('', ''), $oLinha->filiacao_2);
+            $oDaoAluno->ed47_v_pai = str_replace(['ª', 'º'], ['', ''], $oLinha->filiacao_2);
         }
 
         if ($oLinha->nascaluno != "") {
-            $oDaoAluno->ed47_d_nasc = $this->formataData($oLinha->nascaluno);
+            $oDaoAluno->ed47_d_nasc = static::formataData($oLinha->nascaluno);
         }
 
         if ($oLinha->sexo != "") {
@@ -1880,7 +1869,7 @@ abstract class importacaoCenso
         }
 
         if (isset($oLinha->nomealuno) && !empty($oLinha->nomealuno)) {
-            $sNomeAlunoCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nomealuno);
+            $sNomeAlunoCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nomealuno);
             $sWhereAluno .= (empty($sWhereAluno) ? '' : ' AND ');
             $sWhereAluno .= " to_ascii(translate(ed47_v_nome, '´`', '') ,'LATIN1') = '" . $sNomeAlunoCensoNovo . "'";
         }
@@ -1945,7 +1934,7 @@ abstract class importacaoCenso
                 if (!empty($oLinha->dataexpedidentidade)
                   && $oLinha->dataexpedidentidade != trim($aDadosAluno[$iCont]->ed47_d_identdtexp)
                 ) {
-                    $oDaoAluno->ed47_d_identdtexp = $this->formataData($oLinha->dataexpedidentidade);
+                    $oDaoAluno->ed47_d_identdtexp = static::formataData($oLinha->dataexpedidentidade);
                 }
 
                 if (!empty($oLinha->tipodecertidao)
@@ -1981,7 +1970,7 @@ abstract class importacaoCenso
                 if (!empty($oLinha->dataemisscertidao)
                   && $oLinha->dataemisscertidao != trim($aDadosAluno[$iCont]->ed47_c_certidaodata)
                 ) {
-                    $oDaoAluno->ed47_c_certidaodata = $this->formataData($oLinha->dataemisscertidao);
+                    $oDaoAluno->ed47_c_certidaodata = static::formataData($oLinha->dataemisscertidao);
                 }
 
                 if ($this->iAnoEscolhido == 2010) {

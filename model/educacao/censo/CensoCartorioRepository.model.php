@@ -36,7 +36,7 @@
      * Collection de CensoCartorio
      * @var array
      */
-    private $aCartorios = array();
+    private $aCartorios = [];
     
     /**
      * Instancia da classe

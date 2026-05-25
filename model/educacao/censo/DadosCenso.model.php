@@ -231,7 +231,7 @@ class DadosCenso {
    */
   static function VerificaDuplicidade($aArray){
 
-  	$aArrayTemp = array();
+  	$aArrayTemp = [];
 
   	foreach($aArray as $iValor){
 
@@ -274,8 +274,8 @@ class DadosCenso {
    * @return array
    */
   static function getAtividadesComplementaresExcluidasCenso2015() {
-    return array(   31001, 31002, 31003, 31004, 31005, 31006, 31007, 31011, 31012, 31013, 91001, 91002, 13102, 13103
+    return [   31001, 31002, 31003, 31004, 31005, 31006, 31007, 31011, 31012, 31013, 91001, 91002, 13102, 13103
                   , 13201, 22010, 31008, 61002, 61003, 61004, 61005, 14106, 16105, 16104
-                );
+                ];
   }
 }

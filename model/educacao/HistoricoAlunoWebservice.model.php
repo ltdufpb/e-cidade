@@ -64,7 +64,7 @@ class HistoricoAlunoWebservice {
     $rsHistoricos            = $oDaoHistorico->sql_record($sSqlHistorico);
     $iTotalLinhas            = $oDaoHistorico->numrows;
     $oHistoricoDados         = new stdClass();
-    $oHistoricoDados->etapas = array();
+    $oHistoricoDados->etapas = [];
     $oHistoricoDados->linhas = $iTotalLinhas;
     $oHistoricoDados->query  = $sSqlHistorico;
     if ($rsHistoricos && $iTotalLinhas > 0) {
@@ -80,7 +80,7 @@ class HistoricoAlunoWebservice {
       }
     }
     
-    uasort($oHistoricoDados->etapas, array($this, "ordenarEtapas"));
+    uasort($oHistoricoDados->etapas, [$this, "ordenarEtapas"]);
     return $oHistoricoDados;
   }
   
@@ -91,7 +91,7 @@ class HistoricoAlunoWebservice {
    */
   protected function getEtapasHistorico(HistoricoAluno $oHistorico) {
     
-    $aEtapas = array();
+    $aEtapas = [];
     foreach ($oHistorico->getEtapas() as $oEtapa) {
       
       /**
@@ -128,7 +128,7 @@ class HistoricoAlunoWebservice {
    */
   protected function getDisciplinasDaEtapa (HistoricoEtapa $oEtapa) {
     
-    $aDisciplinas = array();
+    $aDisciplinas = [];
     $iAno            = $oEtapa->getAnoCurso();
     $iEnsino         = $oEtapa->getEtapa()->getEnsino()->getCodigo();
     foreach ($oEtapa->getDisciplinas() as $oDisciplinaHistorico) {

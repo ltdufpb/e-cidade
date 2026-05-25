@@ -78,7 +78,7 @@ class ArredondamentoFrequencia implements IEducacaoArredondamento
                 $oDadosRegra->lArredondar                  = $oDadosAvaliacao->ed328_arredondafrequencia == 't' ? true : false;
                 $oDadosRegra->iCasasDecimais               = 0;
                 $oDadosRegra->iCasasDecimaisArredondamento = $oDadosAvaliacao->ed316_casasdecimaisarredondamento;
-                $oDadosRegra->aRegras                      = array();
+                $oDadosRegra->aRegras                      = [];
                 $aPartesMascara                            = explode(".", $oDadosAvaliacao->db77_estrut);
 
                 if (isset($aPartesMascara[1])) {

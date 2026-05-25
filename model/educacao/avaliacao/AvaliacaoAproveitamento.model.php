@@ -61,12 +61,6 @@ final class AvaliacaoAproveitamento {
   private $iOrdemSequencia;
 
   /**
-   * Código do Aproveitamento
-   * @var integer
-   */
-  private $iCodigo;
-
-  /**
    * Define se o Aproveitamento foi superior ao aproveitamento minino
    * configurado para o aproveitamento;
    * @var boolean
@@ -144,9 +138,16 @@ final class AvaliacaoAproveitamento {
    */
   private $oAbonoFalta = null;
 
-  public function __construct($iCodigo = null) {
-
-    $this->iCodigo = $iCodigo;
+  /**
+   * @param int $iCodigo
+   */
+  public function __construct(
+      /**
+       * Código do Aproveitamento
+       */
+      private $iCodigo = null
+  )
+  {
   }
 
   /**

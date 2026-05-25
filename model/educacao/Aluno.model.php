@@ -101,13 +101,13 @@ class Aluno {
 	/**
    * Array com as matriculas do aluno
 	 */
-	private $aMatricula = array();
+	private $aMatricula = [];
 
 	/**
 	 * Array com as progressoes parciais do Aluno
 	 * @var ProgressaoParcialAluno[]
 	 */
-	private $aProgressaoParcial = array();
+	private $aProgressaoParcial = [];
 
 	/**
 	 * Sexo do aluno
@@ -131,14 +131,14 @@ class Aluno {
 	 * Array com as necessidades especiais do aluno
 	 * @var array
 	 */
-	protected $aNecessidadesEspeciais = array();
+	protected $aNecessidadesEspeciais = [];
 
 	/**
 	 * Array com os recursos necessarios para avaliacao do INEP. Recursos existentes apenas quando o aluno possui alguma
 	 * necessidade especial
 	 * @var array
 	 */
-	protected $aRecursosAvaliacaoInep = array();
+	protected $aRecursosAvaliacaoInep = [];
 
 	/**
 	 * Codigo do Inep
@@ -1201,18 +1201,11 @@ class Aluno {
     if (pg_num_rows($rsEscolaProcedencia) > 0) {
 
       $oDadosEscola = db_utils::fieldsMemory($rsEscolaProcedencia, 0);
-      switch ($oDadosEscola->ed76_c_tipo) {
-
-        case 'M':
-
-          $this->oEscolaProcedencia = EscolaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola);
-          break;
-
-        case 'F':
-
-          $this->oEscolaProcedencia = EscolaProcedenciaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola);
-          break;
-      }
+      $this->oEscolaProcedencia = match ($oDadosEscola->ed76_c_tipo) {
+          'M' => EscolaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola),
+          'F' => EscolaProcedenciaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola),
+          default => $this->oEscolaProcedencia,
+      };
       return $this->oEscolaProcedencia;
     }
   }

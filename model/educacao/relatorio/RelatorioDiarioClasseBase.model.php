@@ -151,7 +151,7 @@ class RelatorioDiarioClasseBase extends PDF
      * Quando selecionado Turma globalizada, temos que imprimir na grade as disciplinas que controlam avaliação.
      * @var Regencia[]
      */
-    private $aRegenciasGlobalizadasQueControlamAvaliacao = array();
+    private $aRegenciasGlobalizadasQueControlamAvaliacao = [];
 
     /**
      * Regencia Atual na que a turma se encontra
@@ -172,7 +172,7 @@ class RelatorioDiarioClasseBase extends PDF
      *
      * @var array
      */
-    protected $aAlunosOrganizados = array();
+    protected $aAlunosOrganizados = [];
 
     /**
      * Identifica se o período selecionado é uma Recuperação
@@ -200,12 +200,12 @@ class RelatorioDiarioClasseBase extends PDF
      * Situações de Transferencia
      * @var array
      */
-    protected $aSituacaoTransferido = array('TRANSFERIDO FORA', 'TRANSFERIDO REDE');
+    protected $aSituacaoTransferido = ['TRANSFERIDO FORA', 'TRANSFERIDO REDE'];
     /**
      * Matriculas de Alunos na turma
      * @var Matricula[]
      */
-    protected $aMatriculas = array();
+    protected $aMatriculas = [];
 
 
     /**
@@ -218,7 +218,7 @@ class RelatorioDiarioClasseBase extends PDF
      * Contém uma estrutura organizada dos cabeçalho
      * @var array
      */
-    protected $aEstruturaCabecalho = array();
+    protected $aEstruturaCabecalho = [];
 
     /**
      * Se deve filtrar alunos matrículados no turno referente.
@@ -443,7 +443,7 @@ class RelatorioDiarioClasseBase extends PDF
 
         $sEtapa = $this->oEtapa->getNome();
         if ($this->lTurmaMultEtapa) {
-            $aEtapaTurma = array();
+            $aEtapaTurma = [];
             foreach ($this->oTurma->getEtapas() as $oEtapaTurma) {
                 $aEtapaTurma[] = $oEtapaTurma->getEtapa()->getNome();
             }
@@ -490,10 +490,10 @@ class RelatorioDiarioClasseBase extends PDF
             return $this->aEstruturaCabecalho;
         }
 
-        $aTipoFrquenciaTurmaGlobalizadas = array('F', 'FA');
+        $aTipoFrquenciaTurmaGlobalizadas = ['F', 'FA'];
 
-        $this->aSubCabecalho = array();
-        $aEstrutura = array();
+        $this->aSubCabecalho = [];
+        $aEstrutura = [];
         foreach ($this->aRegencias as $oRegencia) {
             if ($this->lTurmaGlobalizada && !in_array($oRegencia->getFrequenciaGlobal(), $aTipoFrquenciaTurmaGlobalizadas)) {
                 continue;
@@ -529,7 +529,7 @@ class RelatorioDiarioClasseBase extends PDF
         $oDadosBasicos->iLarguraColunaNumero = $this->iLarguraColunaNumero;
         $oDadosBasicos->iLarguraColunaNome = $this->iLarguraColunaNome;
         $oDadosBasicos->iNumeroColunasVazias = 0;
-        $oDadosBasicos->aMeses = array();
+        $oDadosBasicos->aMeses = [];
 
         return $oDadosBasicos;
     }
@@ -546,7 +546,7 @@ class RelatorioDiarioClasseBase extends PDF
         $oGradeHorario = new GradeHorario($this->oTurma, $this->oEtapa);
         $aDatasLetiva = $oGradeHorario->getDiasDeAulaDaDisciplinaNoPeriodoDeAvaliacao($oRegencia->getDisciplina(), $oPeriodoAvaliacao);
 
-        $aDiasOrganizados = array();
+        $aDiasOrganizados = [];
 
         foreach ($aDatasLetiva as $oDataLetiva) {
             // Para cada periodo temos que repetir o dia letivo
@@ -593,13 +593,13 @@ class RelatorioDiarioClasseBase extends PDF
 
         $iTamanhoGrade = $oDadosEstrutura->iTamanhoGrade;
         $oDadosEstrutura->iLarguraCelulaGrade = 5;
-        $oDadosEstrutura->aMeses = array();
+        $oDadosEstrutura->aMeses = [];
 
         if ($this->lInformarDiasLetivos) {
             $oPeriodoAvaliacao = $this->oAvaliacaoPeriodica->getPeriodoAvaliacao();
             $aDatasCalendario = $this->oTurma->getCalendario()->getDatasLetivoNoPeriodo($oPeriodoAvaliacao);
 
-            $aDatasLetivas = array();
+            $aDatasLetivas = [];
             foreach ($aDatasCalendario as $oDataCalendario) {
                 $oDataPeriodo = new stdClass();
                 $oDataPeriodo->oData = $oDataCalendario;
@@ -611,14 +611,14 @@ class RelatorioDiarioClasseBase extends PDF
             $oDadosEstrutura->iLarguraCelulaGrade = $iTamanhoGrade / $oDadosEstrutura->iNumeroColunas;
 
             if ($oDadosEstrutura->iLarguraCelulaGrade > 5) {
-                $oDadosEstrutura = $this->recalculaLarguraCelulaGrade($oDadosEstrutura, count($aDatasLetivas));
+                $oDadosEstrutura = $this->recalculaLarguraCelulaGrade($oDadosEstrutura);
             }
 
             $oDadosEstrutura = $this->organizaDatasSubCabecalho($aDatasLetivas, $oDadosEstrutura);
         } else {
             $oDadosEstrutura->iNumeroColunas = $this->iDiasLetivos;
             $oDadosEstrutura->iLarguraCelulaGrade = $iTamanhoGrade / $this->iDiasLetivos;
-            $oDadosEstrutura->aMeses = array();
+            $oDadosEstrutura->aMeses = [];
 
             if ($oDadosEstrutura->iLarguraCelulaGrade > 5) {
                 $oDadosEstrutura = $this->recalculaLarguraCelulaGrade($oDadosEstrutura);
@@ -643,7 +643,7 @@ class RelatorioDiarioClasseBase extends PDF
             $oDia->iPeriodo = $oDataPeriodo->iPeriodo;
             if (!array_key_exists($oDataPeriodo->oData->getMes(), $oDadosEstrutura->aMeses)) {
                 $oDias = new stdClass();
-                $oDias->aDias = array();
+                $oDias->aDias = [];
                 $oDias->sMes = $oDataPeriodo->oData->getMesExtenso($oDataPeriodo->oData->getMes());
                 $oDias->aDias[] = $oDia;
                 $oDadosEstrutura->aMeses[$oDataPeriodo->oData->getMes()] = $oDias;
@@ -983,7 +983,7 @@ class RelatorioDiarioClasseBase extends PDF
             && !$this->lExibirTrocaTurma) {
             return false;
         } elseif ($this->lSomenteMatriculados &&
-            !in_array($oDadosAluno->oMatricula->getSituacao(), array('TROCA DE TURMA', 'MATRICULADO'))) {
+            !in_array($oDadosAluno->oMatricula->getSituacao(), ['TROCA DE TURMA', 'MATRICULADO'])) {
             return false;
         }
 

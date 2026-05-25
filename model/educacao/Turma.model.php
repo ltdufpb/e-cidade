@@ -605,7 +605,7 @@ class Turma
                     $aRegencias[] = $oRegencia->getCodigo();
                 }
 
-                $aEtapasEquivalentes = array($oEtapa->getCodigo());
+                $aEtapasEquivalentes = [$oEtapa->getCodigo()];
                 foreach ($oEtapa->buscaEtapaEquivalente() as $oEtapaEquivalente) {
                     $aEtapasEquivalentes[] = $oEtapaEquivalente->getCodigo();
                 }
@@ -1234,7 +1234,7 @@ class Turma
     public function isFrequenciaGlobalizada()
     {
 
-        $aFrequenciasValidas = array('F', 'FA');
+        $aFrequenciasValidas = ['F', 'FA'];
         foreach ($this->getDisciplinas() as $oDisciplina) {
 
             if (in_array($oDisciplina->getFrequenciaGlobal(), $aFrequenciasValidas)) {

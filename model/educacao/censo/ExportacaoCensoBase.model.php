@@ -36,18 +36,6 @@ abstract class ExportacaoCensoBase {
   protected $iCodigoLayout;
 
   /**
-   * Código da escola
-   * @var integer
-   */
-  protected $iCodigoEscola;
-
-  /**
-   * Ano do Censo
-   * @var integer
-   */
-  protected $iAnoCenso;
-
-  /**
    * Data do Censo
    * @var date
    */
@@ -69,13 +57,13 @@ abstract class ExportacaoCensoBase {
    * Array com as turmas
    * @var Array
    */
-  protected $aDadosCensoTurma = array();
+  protected $aDadosCensoTurma = [];
 
   /**
    * Array com os dados dos docentes
    * @var Array
    */
-  protected $aDadosCensoDocente = array();
+  protected $aDadosCensoDocente = [];
 
   protected $rsArquivoLog;
 
@@ -88,7 +76,7 @@ abstract class ExportacaoCensoBase {
    * Array com os dados dos aluno
    * @var array
    */
-  protected $aAlunos = array();
+  protected $aAlunos = [];
 
   /**
    * Constantes para indexar os erros encorados ao escrever o arquivo do censo.
@@ -98,16 +86,25 @@ abstract class ExportacaoCensoBase {
   const LOG_DOCENTE = 3;
   const LOG_ALUNO   = 4;
 
-  private $aLogCenso = array();
+  private $aLogCenso = [];
 
   /**
    * Método construtor
    *
+   * @param int $iCodigoEscola
+   * @param int $iAnoCenso
    */
-  public function __construct($iCodigoEscola, $iAnoCenso) {
-
-    $this->iCodigoEscola     = $iCodigoEscola;
-    $this->iAnoCenso         = $iAnoCenso;
+  public function __construct(
+      /**
+       * Código da escola
+       */
+      protected $iCodigoEscola,
+      /**
+       * Ano do Censo
+       */
+      protected $iAnoCenso
+  )
+  {
   }
 
  /* Retorna o Ano do censo

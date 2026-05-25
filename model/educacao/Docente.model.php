@@ -67,7 +67,7 @@ class Docente {
    * Array de todas as turmas que o docente leciona em todas as escolas
    * @var array Turmas
    */
-  private $aTurmas = array();
+  private $aTurmas = [];
 
   /**
    * Número do NIS
@@ -249,7 +249,7 @@ class Docente {
    */
   public function getDisciplinasPorTurma(Turma $oTurma) {
 
-    $aDisciplinasPorTurma = array();
+    $aDisciplinasPorTurma = [];
     foreach ($this->getDisciplinas() as $oDisciplinas) {
 
       foreach ($oTurma->getDisciplinas() as $oRegencia) {
@@ -311,7 +311,7 @@ class Docente {
    */
   public function getTurmasPorEscola(Escola $oEscola) {
 
-    $aTurmaPorEscola = array();
+    $aTurmaPorEscola = [];
     $this->getTurmas();
 
     foreach ($this->aTurmas as $oTurma) {
@@ -345,11 +345,11 @@ class Docente {
    */
   public function getAtividades(Escola $oEscola) {
 
-    $aAtividades = array();
+    $aAtividades = [];
 
     if (count($this->aListaAtividades) > 0) {
       
-      $aAtividades         = array(); 
+      $aAtividades         = []; 
       $sListaRecursoHumano = implode(",", $this->aListaAtividades);
       $oDaoRecHumanoAtiv   = db_utils::getDao("rechumanoativ");
       $sWhereRecHumanoAtiv = "ed75_i_rechumano in ({$sListaRecursoHumano}) AND ed75_i_escola = {$oEscola->getCodigo()}";

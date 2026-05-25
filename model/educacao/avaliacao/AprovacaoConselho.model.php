@@ -119,7 +119,7 @@ class AprovacaoConselho {
 	 * Array com as descrições dos tipos de aprovação utilizado pelo conselho
 	 * @var array
 	 */
-	private static $aTiposAprovacao = array();
+	private static $aTiposAprovacao = [];
 
 	/**
 	 * Construtor da classe. Recebe uma instancia de AvaliacaoResultadoFinal
@@ -183,23 +183,12 @@ class AprovacaoConselho {
 	 */
 	public function getFormaAprovacao() {
 
-	  switch ($this->iFormaAprovacao) {
-
-	  	case '1':
-
-        $iFormaAprovacao = AprovacaoConselho::APROVADO_CONSELHO;
-        break;
-	    case '2':
-
-  			$iFormaAprovacao = AprovacaoConselho::RECLASSIFICACAO_BAIXA_FREQUENCIA;
-	      break;
-
-      case '3':
-
-        $iFormaAprovacao = AprovacaoConselho::APROVADO_CONFORME_REGIMENTO_ESCOLAR;
-        break;
-
-	  }
+	  $iFormaAprovacao = match ($this->iFormaAprovacao) {
+          '1' => AprovacaoConselho::APROVADO_CONSELHO,
+          '2' => AprovacaoConselho::RECLASSIFICACAO_BAIXA_FREQUENCIA,
+          '3' => AprovacaoConselho::APROVADO_CONFORME_REGIMENTO_ESCOLAR,
+          default => $iFormaAprovacao,
+      };
 
 	  return $iFormaAprovacao;
 	}

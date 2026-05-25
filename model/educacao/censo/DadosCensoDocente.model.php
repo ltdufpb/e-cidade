@@ -29,8 +29,6 @@ define( "MSG_DADOS_CENSO_DOCENTE", "educacao.escola.DadosCensoDocente." );
 
 class DadosCensoDocente extends DadosCenso {
 
-  protected $iCodigoDocente = null;
-
   protected $iCodigoInep = null;
 
   protected $oDadosGerais = null;
@@ -43,16 +41,16 @@ class DadosCensoDocente extends DadosCenso {
 
   protected $iCodigoCgm = null;
 
-  protected $aEtapasCensoTurma = array(1, 2, 3, 65, 66);
+  protected $aEtapasCensoTurma = [1, 2, 3, 65, 66];
 
-  protected $aTurmasCenso = array();
+  protected $aTurmasCenso = [];
 
   /**
    * Construtor da classe. Recebe como parâmetro, o código do docente
    * @param integer $iCodigoDocente
    */
-  public function __construct( $iCodigoDocente ) {
-    $this->iCodigoDocente = $iCodigoDocente;
+  public function __construct(protected $iCodigoDocente)
+  {
   }
 
   /**
@@ -265,7 +263,7 @@ class DadosCensoDocente extends DadosCenso {
       throw new DBException( _M( MSG_DADOS_CENSO_DOCENTE . 'erro_buscar_necessidades_docente', $oMensagem ) );
     }
 
-    $aNecessidades           = array();
+    $aNecessidades           = [];
     $iQuantidadeNecessidades = 0;
 
     for( $iNecessidade = 0; $iNecessidade < pg_num_rows( $rsNecessidades ); $iNecessidade++ ) {
@@ -551,7 +549,7 @@ class DadosCensoDocente extends DadosCenso {
   public function getDadosDocencia() {
 
     $oDaoRegenciaHorario = new cl_regenciahorario();
-    $aDadosDocencia      = array();
+    $aDadosDocencia      = [];
     $oDadosDocente       = $this->getDadosIdentificacao();
 
     $sWhere   = "     (cgmcgm.z01_numcgm = {$this->iCodigoCgm} or cgmrh.z01_numcgm = {$this->iCodigoCgm})";
@@ -573,7 +571,7 @@ class DadosCensoDocente extends DadosCenso {
     // echo "busca dados registro 51: <br> $sSqlTurmasRecursoHumano <br><br><br>";
     $rsDadosDocente          = db_query($sSqlTurmasRecursoHumano);
     $iTotalLinhas            = pg_num_rows( $rsDadosDocente );
-    $aDocencia               = array();
+    $aDocencia               = [];
 
     for ($iDocente = 0; $iDocente < $iTotalLinhas; $iDocente++) {
 
@@ -662,7 +660,7 @@ class DadosCensoDocente extends DadosCenso {
 	        }
         }
 
-        if ( !in_array($oDadosDocencia->funcao_exerce_escola_turma, array( 1, 5 ) ) ) {
+        if ( !in_array($oDadosDocencia->funcao_exerce_escola_turma, [ 1, 5 ] ) ) {
           $iCodigoDisciplina = "" ;
         }
         $oDadosDocencia->{"codigo_disciplina_{$iSequencialDiscplina}"} = $iCodigoDisciplina;
@@ -672,7 +670,7 @@ class DadosCensoDocente extends DadosCenso {
        * campo 8 "situacao_funcional_contratacao_vinculo" deve ser null se o campo 7
        * "situacao_funcional_contratacao_vinculo" do registro 51 deve ser igual a 1, 5 ou 6
        */
-      if (  !in_array($oDadosDocencia->funcao_exerce_escola_turma, array( 1, 5, 6 )) ) {
+      if (  !in_array($oDadosDocencia->funcao_exerce_escola_turma, [ 1, 5, 6 ]) ) {
         $oDadosDocencia->situacao_funcional_contratacao_vinculo = '';
       }
 
@@ -714,7 +712,7 @@ class DadosCensoDocente extends DadosCenso {
     }
     $iLinhas = pg_num_rows($rsDadosDocente);
 
-    $aOutrasFuncoes = array();
+    $aOutrasFuncoes = [];
     for ($i = 0; $i < $iLinhas; $i++ ) {
 
       $oDados                      = db_utils::fieldsMemory($rsDadosDocente, $i);
@@ -741,7 +739,7 @@ class DadosCensoDocente extends DadosCenso {
     $sSqlDisciplinas   = $oDaoDisciplinas->sql_query_disciplina_regencia_censo(null, $sCampos, null, $sWhere);
     $rsDisciplinas     = db_query($sSqlDisciplinas);
     $iTotalDisciplinas = pg_num_rows( $rsDisciplinas );
-    $aDisciplinas      = array();
+    $aDisciplinas      = [];
 
     for( $iDisciplina = 0; $iDisciplina < $iTotalDisciplinas; $iDisciplina++ ) {
 
@@ -779,7 +777,7 @@ class DadosCensoDocente extends DadosCenso {
       throw new DBException ( _M( MSG_DADOS_CENSO_DOCENTE . "erro_buscar_disciplinas", $oErro) );
     }
 
-    $aDisciplinas = array();
+    $aDisciplinas = [];
     $iLinhas      = pg_num_rows( $rsRegencia );
 
     for( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
@@ -800,8 +798,8 @@ class DadosCensoDocente extends DadosCenso {
    */
   public function getDadosDocenciaTurmaAEE() {
 
-    $aDadosDocente = array();
-    $aTurmasACAEE  = array();
+    $aDadosDocente = [];
+    $aTurmasACAEE  = [];
 
     foreach( $this->aTurmasCenso as $oTurmasCenso ) {
 
@@ -850,7 +848,7 @@ class DadosCensoDocente extends DadosCenso {
        * campo 8 "situacao_funcional_contratacao_vinculo" deve ser null se o campo 7
        * "situacao_funcional_contratacao_vinculo" do registro 51 deve ser igual a 1, 5 ou 6
        */
-      if (  !in_array($oDadosDocencia->funcao_exerce_escola_turma, array( 1, 5, 6 )) ) {
+      if (  !in_array($oDadosDocencia->funcao_exerce_escola_turma, [ 1, 5, 6 ]) ) {
         $oDadosDocencia->situacao_funcional_contratacao_vinculo = '';
       }
 
@@ -1084,7 +1082,7 @@ class DadosCensoDocente extends DadosCenso {
         $lDadosValidos = false;
       }
 
-      if ( in_array($oDadosCensoDocente->registro30->nacionalidade_docente, array(1,2)) &&
+      if ( in_array($oDadosCensoDocente->registro30->nacionalidade_docente, [1,2]) &&
            $oDadosCensoDocente->registro30->pais_origem != 76
          ) {
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -1126,7 +1124,7 @@ class DadosCensoDocente extends DadosCenso {
        * ********************************** Validações do registro 40 **************************************************
        * ***************************************************************************************************************
        */
-      $aEnderecoCompleto   = array();
+      $aEnderecoCompleto   = [];
       $aEnderecoCompleto[] = $oDadosCensoDocente->registro40->cep;
       $aEnderecoCompleto[] = $oDadosCensoDocente->registro40->endereco;
       $aEnderecoCompleto[] = $oDadosCensoDocente->registro40->uf;
@@ -1471,7 +1469,7 @@ class DadosCensoDocente extends DadosCenso {
     $oDaoCursoFormacao   = new cl_cursoformacao();
     $oDaoFormacao        = new cl_formacao();
     $oDaoFormacao->excluir(null,"ed27_i_rechumano = {$this->iCodigoDocente}");
-    $aFormacao = array();
+    $aFormacao = [];
     for ($i = 1; $i <= 3; $i++) {
 
       if (   isset($oLinha->{"situacao_curso_superior_$i"}) && isset($oLinha->{"formacao_complementacao_pedagogica_$i"})
@@ -1479,14 +1477,14 @@ class DadosCensoDocente extends DadosCenso {
           && isset($oLinha->{"ano_conclusao_curso_superior_$i"}) && isset($oLinha->{"tipo_instituicao_curso_superior_$i"})
           && isset($oLinha->{"instituicao_curso_superior_$i"})) {
 
-          $aFormacao[] = array(trim($oLinha->{"situacao_curso_superior_$i"}),
+          $aFormacao[] = [trim($oLinha->{"situacao_curso_superior_$i"}),
                                trim($oLinha->{"formacao_complementacao_pedagogica_$i"}),
                                trim($oLinha->{"codigo_curso_superior_$i"}),
                                trim($oLinha->{"ano_inicio_curso_superior_$i"}),
                                trim($oLinha->{"ano_conclusao_curso_superior_$i"}),
                                trim($oLinha->{"tipo_instituicao_curso_superior_$i"}),
                                trim($oLinha->{"instituicao_curso_superior_$i"})
-                             );
+                             ];
       }
     }
 
@@ -1510,10 +1508,10 @@ class DadosCensoDocente extends DadosCenso {
           $oDaoFormacao->ed27_i_rechumano         = $this->iCodigoDocente;
           $oDaoFormacao->ed27_i_cursoformacao     = db_utils::fieldsmemory($rsCursoFormacao, 0)->ed94_i_codigo;
           $oDaoFormacao->ed27_c_situacao          = 'CON';
-          $oDaoFormacao->ed27_i_licenciatura      = (isset($aFormacaoDecente[0]) ? $aFormacaoDecente[0] : '');
-          $oDaoFormacao->ed27_i_anoconclusao      = (isset($aFormacaoDecente[4]) ? $aFormacaoDecente[4] : '');
-          $oDaoFormacao->ed27_i_censosuperior     = (isset($aFormacaoDecente[5]) ? $aFormacaoDecente[5] : '');
-          $oDaoFormacao->ed27_i_censoinstsuperior = (isset($aFormacaoDecente[6]) ? $aFormacaoDecente[6] : '');
+          $oDaoFormacao->ed27_i_licenciatura      = ($aFormacaoDecente[0] ?? '');
+          $oDaoFormacao->ed27_i_anoconclusao      = ($aFormacaoDecente[4] ?? '');
+          $oDaoFormacao->ed27_i_censosuperior     = ($aFormacaoDecente[5] ?? '');
+          $oDaoFormacao->ed27_i_censoinstsuperior = ($aFormacaoDecente[6] ?? '');
           $oDaoFormacao->incluir(null);
           if ($oDaoFormacao->erro_status == '0') {
 

@@ -725,8 +725,8 @@ final class ProgressaoParcialAluno {
    */
   public function getVinculosNaTurma(Turma $oTurma, Etapa $oEtapa) {
 
-    $aVinculos  = array();
-    $aRegencias = array();
+    $aVinculos  = [];
+    $aRegencias = [];
 
     foreach ( $oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia ) {
       $aRegencias[] = $oRegencia->getCodigo();
@@ -1014,7 +1014,7 @@ final class ProgressaoParcialAluno {
    */
   public function getVinculosProgressao() {
 
-    $aProgressaoParcialVinculoDisciplina = array();
+    $aProgressaoParcialVinculoDisciplina = [];
 
     $oDaoVinculosProgressao   = new cl_progressaoparcialalunoturmaregencia();
     $sWhereVinculosProgressao = "ed150_progressaoparcialaluno = {$this->iCodigoProgressaoParcial}";

@@ -374,21 +374,11 @@ class AvaliacaoResultadoFinal {
    */
   public function isAprovado() {
 
-    switch (trim($this->sResultadoFinal)) {
-
-      case 'R':
-
-        return false;
-        break;
-      case 'A':
-
-        return true;
-        break;
-      default:
-
-        return '';
-        break;
-    }
+    return match (trim($this->sResultadoFinal)) {
+        'R' => false,
+        'A' => true,
+        default => '',
+    };
   }
 
   /**

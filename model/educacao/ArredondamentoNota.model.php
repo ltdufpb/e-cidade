@@ -78,7 +78,7 @@ class ArredondamentoNota implements IEducacaoArredondamento {
         $oDadosRegra->lArredondar                  = $oDadosAvaliacao->ed315_arredondamedia == 't'?true:false;
         $oDadosRegra->iCasasDecimais               = 0;
         $oDadosRegra->iCasasDecimaisArredondamento = $oDadosAvaliacao->ed316_casasdecimaisarredondamento;
-        $oDadosRegra->aRegras                      = array();
+        $oDadosRegra->aRegras                      = [];
         $aPartesMascara                            = explode(".", $oDadosAvaliacao->db77_estrut);
 
         if (isset($aPartesMascara[1])) {
@@ -100,7 +100,7 @@ class ArredondamentoNota implements IEducacaoArredondamento {
    */
   protected function retornarFaixasRegraArrendodamento( $iCodigoRegra ) {
 
-    $aRegras    = array();
+    $aRegras    = [];
     $sWhere     = "ed317_regraarredondamento = {$iCodigoRegra}";
     $oDaoRegra  = new cl_regraarredondamentofaixa();
     $sSqlFaixas = $oDaoRegra->sql_query_file(null, "*", null, $sWhere);

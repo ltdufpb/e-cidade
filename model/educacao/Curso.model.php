@@ -56,7 +56,7 @@ class Curso {
    * Adicionado array de etapas
    * @var array
    */
-  private $aEtapas = array();
+  private $aEtapas = [];
 
   /**
    * Parametro de avaliacao parcial no curso habilitado ou nao
@@ -76,7 +76,7 @@ class Curso {
    * Cursos que são equivalentes a este
    * @return Curso[]
    */
-  private $aCursosEquivalentes = array();
+  private $aCursosEquivalentes = [];
 
     private $odem;
 

@@ -37,7 +37,7 @@
      * Collection de CensoMunicipio
      * @var array
      */
-    private $aItens = array();
+    private $aItens = [];
     
     /**
      * Instancia da classe
@@ -130,7 +130,7 @@
       $sSqlDadosMunicipio = $oDaoCensoMunic->sql_query_file(null,'*',null,$where);
       $rsDadosMunicipio   = db_query($sSqlDadosMunicipio);
 
-      if (pg_numrows($rsDadosMunicipio) > 0) {
+      if (pg_num_rows($rsDadosMunicipio) > 0) {
         $oDadosMunicipio        = db_utils::fieldsMemory($rsDadosMunicipio, 0);
         $municipioCenso->iCodigoMunicipio = $oDadosMunicipio->ed261_i_codigo;
         $municipioCenso->sNome = $oDadosMunicipio->ed261_c_nome;

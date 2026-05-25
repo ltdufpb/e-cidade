@@ -204,7 +204,7 @@ class AlunoWebservice {
    */
   public function getMatriculas() {
 
-    $aMatriculas = array();
+    $aMatriculas = [];
     foreach ($this->oAluno->getMatriculas() as $oMatriculaAluno) {
 
       $oMatricula                   = new stdClass();
@@ -251,22 +251,11 @@ class AlunoWebservice {
       $oDadosAluno = db_utils::fieldsMemory($rsOutrosDados, 0);
 
       $sEscolarizacaoOutroEspaco = '';
-      switch ($oDadosAluno->ed47_c_atenddifer) {
-
-        case "1":
-
-          $sEscolarizacaoOutroEspaco = "EM HOSPITAL";
-          break;
-        case '2':
-
-          $sEscolarizacaoOutroEspaco = "EM DOMICÍLIO";
-          break;
-
-        default:
-
-          $sEscolarizacaoOutroEspaco = "NÃO RECEBE";
-          break;
-      }
+      $sEscolarizacaoOutroEspaco = match ($oDadosAluno->ed47_c_atenddifer) {
+          "1" => "EM HOSPITAL",
+          '2' => "EM DOMICÍLIO",
+          default => "NÃO RECEBE",
+      };
       $sTipoTransportePublico = 'NÃO INFORMADO';
       switch ($oDadosAluno->ed47_c_transporte) {
 
@@ -305,7 +294,7 @@ class AlunoWebservice {
       $oOutrosDados->contato_aluno                    = utf8_encode($oDadosAluno->ed47_v_contato);
 
 
-      $oOutrosDados->transportes_utilizados = array();
+      $oOutrosDados->transportes_utilizados = [];
       $oDaoAlunoTransportes                 = new cl_alunocensotipotransporte();
       $sWhereTransportes                    = "ed311_aluno = {$this->oAluno->getCodigoAluno()}";
       $sSqlTransportes                      = $oDaoAlunoTransportes->sql_query_tipo_transporte(null,
@@ -471,10 +460,7 @@ class AlunoWebservice {
  * @param unknown $oProximaMatricula
  * @return number
  */
-function ordernarMatriculas($oMatriculaAtual, $oProximaMatricula) {
-
-  if ($oMatriculaAtual->ano_matricula == $oProximaMatricula->ano_matricula) {
-    return 0;
-  }
-  return ($oMatriculaAtual->ano_matricula > $oProximaMatricula->ano_matricula) ? -1 : 1;
+function ordernarMatriculas($oMatriculaAtual, $oProximaMatricula)
+{
+    return $oProximaMatricula->ano_matricula <=> $oMatriculaAtual->ano_matricula;
 }

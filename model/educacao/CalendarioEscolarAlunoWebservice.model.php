@@ -51,11 +51,11 @@ class CalendarioEscolarAlunoWebservice {
     $iAno               = $oCalendarioTurma->getAnoExecucao();
     
     $oCalendario                   = new stdClass;
-    $oCalendario->periodos_letivos = array();
+    $oCalendario->periodos_letivos = [];
     $oCalendario->ano              = $iAno;
     $oCalendario->data_inicio      = $oCalendarioTurma->getDataInicio()->convertTo(DBDate::DATA_EN);
     $oCalendario->data_fim         = $oCalendarioTurma->getDataFinal()->convertTo(DBDate::DATA_EN);;
-    $oCalendario->meses            = array();
+    $oCalendario->meses            = [];
     $aPeriodosAula                 = $oCalendarioTurma->getPeriodos();
     foreach ($aPeriodosAula as $oPeriodosLetivos) {
       
@@ -70,7 +70,7 @@ class CalendarioEscolarAlunoWebservice {
       $oMes                 = new stdClass();
       $sDataFinal           = "{$iAno}-$iMes-".cal_days_in_month(CAL_GREGORIAN, $iMes, $iAno);
       $oMes->nome           = utf8_encode(ucfirst(db_mes($iMes)));
-      $oMes->dias           = array();
+      $oMes->dias           = [];
       $aDiasNoMes           = DBDate::getDatasNoIntervalo(new DBDate("{$iAno}-$iMes-01"), new DBDate($sDataFinal));
       foreach ($aDiasNoMes as $oDiaNoMes) {
          
@@ -88,7 +88,7 @@ class CalendarioEscolarAlunoWebservice {
   
   protected function getEventosDia(Calendario $oCalendario, DBDate $oDia) {
     
-    $aEventos = array();
+    $aEventos = [];
     foreach ($oCalendario->getEventos() as $oEvento) {
       
       if ($oEvento->getDataEvento() == $oDia) {
@@ -112,7 +112,7 @@ class CalendarioEscolarAlunoWebservice {
     $oDiaLetivo->dia_letivo = false;
     $oDiaLetivo->periodo    = '';
     $aPeriodosCalendario    = $oCalendarioEscolar->getPeriodos();
-    if (in_array($oData->getDiaSemana(), array(0, 6))) {
+    if (in_array($oData->getDiaSemana(), [0, 6])) {
       
       $lDiaLetivo = false;
       foreach ($aEventos as $oEvento) {

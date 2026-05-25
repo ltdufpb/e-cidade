@@ -49,9 +49,9 @@ class GradeHorario
      * Instância do período de aula
      * @var PeriodoAula[]
      */
-    private $aPeriodosAula = array();
+    private $aPeriodosAula = [];
 
-    private $aLogConflito = array();
+    private $aLogConflito = [];
 
     /**
      * Tipo da grade horario
@@ -128,7 +128,7 @@ class GradeHorario
     public function getDiasDeAulaDaDisciplinaNoPeriodoDeAvaliacao(Disciplina $oDisciplina, PeriodoAvaliacao $oPeriodoAvaliacao)
     {
         $oPeriodoCalendario = $this->oTurma->getCalendario()->getPeriodoCalendarioPorPeriodoAvaliacao($oPeriodoAvaliacao);
-        $aDiasSemenaComAula = array();
+        $aDiasSemenaComAula = [];
 
         $this->aPeriodosAula = $this->buscarPeriodos(false);
 
@@ -168,11 +168,11 @@ class GradeHorario
             }
         }
 
-        $aDiasAula = array();
+        $aDiasAula = [];
         foreach ($aDatasNoIntervalo as $oDiaAula) {
             $oDia = new stdClass();
             $oDia->oData = $oDiaAula;
-            $oDia->aPeriodoAula = array();
+            $oDia->aPeriodoAula = [];
             foreach ($this->aPeriodosAula as $oPeriodoAula) {
                 if ($oPeriodoAula->getDisciplina()->getCodigoDisciplina() != $oDisciplina->getCodigoDisciplina()) {
                     continue;
@@ -227,7 +227,7 @@ class GradeHorario
             throw new DBException ("Erro ao buscar grade horario. \n" . pg_last_error());
         }
 
-        $aPeriodosAula = array();
+        $aPeriodosAula = [];
         $iLinhas = pg_num_rows($rsRegenciaHorario);
 
         for ($i = 0; $i < $iLinhas; $i++) {
@@ -257,7 +257,7 @@ class GradeHorario
      */
     private function validarPeriodos()
     {
-        $aPeriodosValidar = array();
+        $aPeriodosValidar = [];
         $aTodosPeriodos = $this->buscarPeriodos(false);
 
         /**
@@ -274,7 +274,7 @@ class GradeHorario
             }
         }
 
-        $this->aLogConflito = array();
+        $this->aLogConflito = [];
 
         foreach ($this->aPeriodosAula as $oPeriodoSalvar) {
             // os periodos novos não tem código
@@ -287,11 +287,11 @@ class GradeHorario
                     && $oOutrosPeriodos->getPeriodoEscola()->getCodigo() == $oPeriodoSalvar->getPeriodoEscola()->getCodigo()) {
 
                     if ($oPeriodoSalvar->getDataInicio()->getTimeStamp() <= $oOutrosPeriodos->getDataFim()->getTimeStamp()) {
-                        $this->aLogConflito[] = array(
+                        $this->aLogConflito[] = [
                             'periodo' => $oPeriodoSalvar->getPeriodoEscola()->getDescricao(),
                             'diasemana' => DBDate::getLabelDiaSemana($oPeriodoSalvar->getDiaSemana()),
                             'data_fim' => $oOutrosPeriodos->getDataFim()->adiantarPeriodo(1, 'd')->convertTo(DBDate::DATA_PTBR)
-                        );
+                        ];
                     }
                 }
             }
@@ -392,13 +392,13 @@ class GradeHorario
                 $dados = pg_fetch_array($rs, 0);
                 $proximoDiaDisponivel = new DBDate($dados['datafim']);
 
-                $this->aLogConflito[] = array(
+                $this->aLogConflito[] = [
                     'disciplina' => $perido->getRegencia()->getDisciplina()->getNomeDisciplina(),
                     'periodo' => $perido->getPeriodoEscola()->getDescricao(),
                     'diasemana' => DBDate::getLabelDiaSemana($perido->getDiaSemana()),
                     'data_fim' => $proximoDiaDisponivel->adiantarPeriodo(1, 'd')->convertTo(DBDate::DATA_PTBR),
                     'sql' => $sql,
-                );
+                ];
             }
         }
 

@@ -38,7 +38,7 @@ class AtividadeEscolarRepository {
    * Collection de AtividadeEscolar
    * @var array
    */
-  private $aAtividadeEscolar = array();
+  private $aAtividadeEscolar = [];
 
   /**
    * Instancia da classe

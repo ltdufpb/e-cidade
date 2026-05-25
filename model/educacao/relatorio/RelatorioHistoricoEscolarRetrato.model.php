@@ -52,7 +52,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     private $sPrefixoTitulo = "HISTÓRICO ESCOLAR";
     private $sTituloRelatorio = "HISTÓRICO ESCOLAR";
 
-    private static $aLarguraColunaEtapa = array(
+    private static $aLarguraColunaEtapa = [
         'etapa' => 21,
         'ano' => 8,
         'periodo' => 15,
@@ -64,9 +64,9 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         'escola' => 58,
         'cidade' => 36,
         'uf' => 5
-    );
+    ];
 
-    private static $aLabelColunaEtapa = array(
+    private static $aLabelColunaEtapa = [
         'etapa' => 'ETAPA',
         'ano' => 'ANO',
         'periodo' => 'PERIODO',
@@ -78,7 +78,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
         'escola' => 'ESCOLA',
         'cidade' => 'CIDADE/DISTRITO',
         'uf' => 'UF'
-    );
+    ];
 
     /**
      * Instancia da Biblioteca FPDF
@@ -163,11 +163,11 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
             $sFiliacao = "{$sNomePai} e de {$sNomeMae}";
         }
 
-        $aNacionalidade = array(
+        $aNacionalidade = [
             "1" => "BRASILEIRA",
             "2" => "BRASILEIRA NASCIDO NO EXTERIOR OU NATURALIZADO",
             "3" => "ESTRANGEIRA"
-        );
+        ];
 
         if ($this->oAluno->getDataNascimento() == "") {
             $sAluno = "{$this->oAluno->getCodigoAluno()} - {$nome}";
@@ -632,7 +632,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
     public function criarTabelaComponentesCurriculares()
     {
         $aDisciplinasCursadas = $this->disciplinasCursadas();
-        list($areasConhecimento, $disciplinasComArea) = $this->disciplinasCursadasPorArea($aDisciplinasCursadas);
+        [$areasConhecimento, $disciplinasComArea] = $this->disciplinasCursadasPorArea($aDisciplinasCursadas);
         foreach ($disciplinasComArea as $disciplinaComArea) {
             unset($aDisciplinasCursadas[$disciplinaComArea]);
         }
@@ -847,7 +847,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
      */
     private function disciplinasCursadas()
     {
-        $aDisciplinas = array();
+        $aDisciplinas = [];
 
         foreach ($this->aDadosOrganizados as $oEtapaCursada) {
             foreach ($oEtapaCursada->aDisicplinasEtapa as $oDisciplinaCursada) {
@@ -938,9 +938,7 @@ class RelatorioHistoricoEscolarRetrato extends RelatorioHistoricoEscolar
                 $observacaoEtapa
             );
             // retira espaços no início e fim de cada linha
-            $linhas = array_map(function ($linha) {
-                return trim($linha);
-            }, $linhas);
+            $linhas = array_map(fn($linha) => trim($linha), $linhas);
 
             $sObservacao = array_merge($sObservacao, $linhas);
         }

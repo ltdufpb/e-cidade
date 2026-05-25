@@ -49,7 +49,7 @@ class HorarioEscola {
    */
   private $iTurno;
 
-  private $aTurnos = array(1 => "MANHÃ", 2 => "TARDE", 3 => "NOITE");
+  private $aTurnos = [1 => "MANHÃ", 2 => "TARDE", 3 => "NOITE"];
 
   /**
    * Escola vinculada

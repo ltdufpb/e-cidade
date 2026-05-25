@@ -371,15 +371,10 @@ final class ClassificacaoAluno {
    */
   public function setTipo ($sTipo) {
 
-    switch ($sTipo) {
-
-    	case ClassificacaoAluno::CLASSIFICACAO   :
-  	  case ClassificacaoAluno::RECLASSIFICACAO :
-    	  $this->sTipo = $sTipo;
-    	  break;
-    	default:
-    	  throw new ParameterException(_M(URL_MENSAGEM_CLASSIFICACAOALUNO."tipo_nao_valido"));
-    }
+    $this->sTipo = match ($sTipo) {
+        ClassificacaoAluno::CLASSIFICACAO, ClassificacaoAluno::RECLASSIFICACAO => $sTipo,
+        default => throw new ParameterException(_M(URL_MENSAGEM_CLASSIFICACAOALUNO."tipo_nao_valido")),
+    };
 
   }
 
@@ -467,7 +462,7 @@ final class ClassificacaoAluno {
     	throw new BusinessException(_M(URL_MENSAGEM_CLASSIFICACAOALUNO . "nenhum_aluno_classificado"));
     }
 
-    $aAlunosClassificados = array();
+    $aAlunosClassificados = [];
     for ($i = 0; $i < $iLinhas; $i++) {
 
       $oAluno = AlunoRepository::getAlunoByCodigo(db_utils::fieldsMemory($rsAlunos, $i)->ed101_i_aluno);

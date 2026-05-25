@@ -39,7 +39,7 @@ class EtapaRepository {
    * Collection de Etapa
    * @var array
    */
-  private $aEtapa = array();
+  private $aEtapa = [];
 
   /**
    * Instancia da classe
@@ -138,7 +138,7 @@ class EtapaRepository {
      * uma turma multietapa, devemos pesquisar a proxima etapa atravez da etapa do parametro.
      * Turmas de EJA, sempre procuramos a proxima etapa da totalidade.
      */
-    if (in_array($oTurma->getTipoDaTurma(), array(1, 3))) {
+    if (in_array($oTurma->getTipoDaTurma(), [1, 3])) {
 
       $sOrderBy = '';
       $sWhere .= " and ed223_i_serie = {$oEtapa->getCodigo()}";
@@ -242,7 +242,7 @@ class EtapaRepository {
 
     $iLinhas = pg_num_rows($rsEtapas);
 
-    $aEtapasEnsino = array();
+    $aEtapasEnsino = [];
     for ( $i = 0; $i < $iLinhas; $i++ ) {
       $aEtapasEnsino[] = EtapaRepository::getEtapaByCodigo(db_utils::fieldsMemory($rsEtapas, $i)->ed11_i_codigo);
     }
@@ -258,7 +258,7 @@ class EtapaRepository {
   public static function getEtapasPosteriores(Etapa $oEtapa) {
 
     $aEtapasEnsino      = EtapaRepository::getEtapasEnsino($oEtapa->getEnsino());
-    $aEtapasPosteriores = array();
+    $aEtapasPosteriores = [];
     foreach ($aEtapasEnsino as $oEtapaEnsino) {
 
       if ( $oEtapaEnsino->getOrdem() > $oEtapa->getOrdem() ) {
@@ -279,7 +279,7 @@ class EtapaRepository {
   public static function getEtapasAnteriores(Etapa $oEtapa) {
 
     $aEtapasEnsino      = EtapaRepository::getEtapasEnsino($oEtapa->getEnsino());
-    $aEtapasAnteriores = array();
+    $aEtapasAnteriores = [];
     foreach ($aEtapasEnsino as $oEtapaEnsino) {
 
       if ( $oEtapaEnsino->getOrdem() < $oEtapa->getOrdem() ) {
@@ -293,7 +293,7 @@ class EtapaRepository {
   public static function removeAll() {
 
     unset(EtapaRepository::getInstance()->aEtapa);
-    EtapaRepository::getInstance()->aEtapa = array();
+    EtapaRepository::getInstance()->aEtapa = [];
     return true;
   }
 
@@ -324,7 +324,7 @@ class EtapaRepository {
             throw new Exception("Não foi possível buscar as etapas da escola {$escola->getNome()}.\nContate o suporte.");
         }
 
-        $etapas = array();
+        $etapas = [];
 
         if (pg_num_rows($rs) === 0) {
             return $etapas;

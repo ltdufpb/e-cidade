@@ -188,7 +188,7 @@ class RelatorioCertificadoEscolarRetrato extends RelatorioHistoricoEscolarRetrat
     $iYAntes = $this->oPdf->GetY();
     $this->oPdf->SetFont("Arial", "", 8);
     $this->oPdf->Cell(195, self::ALTURA_LINHA, "Certificado de Conclusão:", 0, 1, "C");
-    $this->oPdf->setMulticellBreakPageFunction( array($this, "escreveCabecalho") );
+    $this->oPdf->setMulticellBreakPageFunction( [$this, "escreveCabecalho"] );
     $this->oPdf->MultiCell(195, self::ALTURA_LINHA, $sMsg, 0, "J");
 
     $nLinhas = $this->oPdf->NbLines(195, $sMsg);

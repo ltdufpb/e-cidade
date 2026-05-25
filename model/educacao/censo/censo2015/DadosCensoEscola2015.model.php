@@ -327,7 +327,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     /**
      * Procuramos o codigo da avaliacao da escola.
      */
-    $aRespostasObjetivas          = array();
+    $aRespostasObjetivas          = [];
 
     /**
      * 3000004 - Acesso à Internet
@@ -422,12 +422,12 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
      * Perguntas que nao podem ter respostas com valor 0.
      * esses respostas devem ficar com o valor vazio;
      */
-    $aPerguntasLimparValorZero = array(3000010, 3000003, 3000024);
+    $aPerguntasLimparValorZero = [3000010, 3000003, 3000024];
 
-    $aPerguntasRespostaObrigatoria = array(3000000, 3000006, 3000014, 3000015, 3000008, 3000011,3000009);
+    $aPerguntasRespostaObrigatoria = [3000000, 3000006, 3000014, 3000015, 3000008, 3000011,3000009];
 
     $sWhereAvaliacao      = "ed308_escola = {$this->iCodigoEscola}";
-    $aPerguntas           = array();
+    $aPerguntas           = [];
     $oDaoEscolaDadosCenso = new cl_escoladadoscenso();
     $sSqlCodigoAvaliacao  = $oDaoEscolaDadosCenso->sql_query_file(null, "ed308_avaliacaogruporesposta", null, $sWhereAvaliacao);
     $rsCodigoAvaliacao    = $oDaoEscolaDadosCenso->sql_record($sSqlCodigoAvaliacao);
@@ -436,7 +436,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $sSqlResposta = " '' ";
     } else {
 
-      $aPerguntasDevemUsarTexto = array(3000003, 3000010, 3000019, 3000020, 3000024, 3000154, 3000155, 3000156, 3000157, 3000158, 3000159);
+      $aPerguntasDevemUsarTexto = [3000003, 3000010, 3000019, 3000020, 3000024, 3000154, 3000155, 3000156, 3000157, 3000158, 3000159];
 
       $iCodigoAvaliacao  = db_utils::fieldsMemory($rsCodigoAvaliacao, 0)->ed308_avaliacaogruporesposta;
       $sSqlResposta      = "(select case when db103_avaliacaotiporesposta = 1        then cast(db104_sequencial as varchar) ";
@@ -671,7 +671,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
         try {
           $oDataTermino = new DBDate( $dtFimAnoLetivo );
-        } catch( Exception $o) {
+        } catch( Exception) {
 
           $sMensagem  = "Data de início do ano letivo não é válida. Data informada: {$dtFimAnoLetivo}. ";
           $sMensagem .= "Formato válido: dd/mm/aaaa.";
@@ -894,7 +894,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $oExportacaoCenso->logErro("Número do CPF do gestor é obrigatório", ExportacaoCenso2015::LOG_ESCOLA);
     }
 
-    if ( in_array( trim($oDados->numero_cpf_gestor_escolar), array("00000000191", "00000000000") ) ) {
+    if ( in_array( trim($oDados->numero_cpf_gestor_escolar), ["00000000191", "00000000000"] ) ) {
 
       $lValidou  = false;
       $sMensagem           = "Número do CPF ({$oDados->numero_cpf_gestor_escolar}) do";
@@ -1017,7 +1017,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     protected static function validarDadosInfraEstrutura(IExportacaoCenso $oExportacaoCenso)
     {
 
-    $aValidou = array();
+    $aValidou = [];
 
     $aValidou[] = static::validarEquipamentos($oExportacaoCenso);
     $aValidou[] = static::validarDependencias($oExportacaoCenso);
@@ -1048,11 +1048,11 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
     $oDadosEscola = $oExportacaoCenso->getDadosProcessadosEscola();
     $oRegistro10  = $oDadosEscola->registro10;
-    $aErros       = array();
+    $aErros       = [];
 
     $lValidouLocalFuncionamento = true;
 
-    $aLocalFuncionamento = array( "local_funcionamento_escola_predio_escolar",
+    $aLocalFuncionamento = [ "local_funcionamento_escola_predio_escolar",
                                   "local_funcionamento_escola_templo_igreja",
                                   "local_funcionamento_escola_salas_empresas",
                                   "local_funcionamento_escola_casa_professor",
@@ -1061,7 +1061,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
                                   "local_funcionamento_escola_un_internacao_socio",
                                   "local_funcionamento_escola_unidade_prisional",
                                   "local_funcionamento_escola_outros"
-                                );
+                                ];
 
     $lMarcou = false;
     foreach ($aLocalFuncionamento as $sLocal) {
@@ -1107,40 +1107,40 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
     $oDadosEscola = $oExportacaoCenso->getDadosProcessadosEscola();
     $oRegistro10  = $oDadosEscola->registro10;
-    $aErros       = array();
+    $aErros       = [];
 
     $lValidouDependencias = true;
-    $aDependenciasEscola  = array(
-      isset( $oRegistro10->dependencias_existentes_escola_sala_diretoria )      ? $oRegistro10->dependencias_existentes_escola_sala_diretoria      : null,
-      isset( $oRegistro10->dependencias_existentes_escola_sala_professores )    ? $oRegistro10->dependencias_existentes_escola_sala_professores    : null,
-      isset( $oRegistro10->dependencias_existentes_escola_sala_secretaria )     ? $oRegistro10->dependencias_existentes_escola_sala_secretaria     : null,
-      isset( $oRegistro10->dependencias_existentes_escola_laboratorio_informa ) ? $oRegistro10->dependencias_existentes_escola_laboratorio_informa : null,
-      isset( $oRegistro10->dependencias_existentes_escola_laboratorio_ciencia ) ? $oRegistro10->dependencias_existentes_escola_laboratorio_ciencia : null,
-      isset( $oRegistro10->dependencias_existentes_escola_sala_recursos_multi ) ? $oRegistro10->dependencias_existentes_escola_sala_recursos_multi : null,
-      isset( $oRegistro10->dependencias_existentes_escola_quadra_esporte_cobe ) ? $oRegistro10->dependencias_existentes_escola_quadra_esporte_cobe : null,
-      isset( $oRegistro10->dependencias_existentes_escola_quadra_esporte_desc ) ? $oRegistro10->dependencias_existentes_escola_quadra_esporte_desc : null,
-      isset( $oRegistro10->dependencias_existentes_escola_cozinha )             ? $oRegistro10->dependencias_existentes_escola_cozinha             : null,
-      isset( $oRegistro10->dependencias_existentes_escola_biblioteca )          ? $oRegistro10->dependencias_existentes_escola_biblioteca          : null,
-      isset( $oRegistro10->dependencias_existentes_escola_sala_leitura )        ? $oRegistro10->dependencias_existentes_escola_sala_leitura        : null,
-      isset( $oRegistro10->dependencias_existentes_escola_parque_infantil )     ? $oRegistro10->dependencias_existentes_escola_parque_infantil     : null,
-      isset( $oRegistro10->dependencias_existentes_escola_bercario )            ? $oRegistro10->dependencias_existentes_escola_bercario            : null,
-      isset( $oRegistro10->dependencias_existentes_escola_banheiro_fora_predi ) ? $oRegistro10->dependencias_existentes_escola_banheiro_fora_predi : null,
-      isset( $oRegistro10->dependencias_existentes_escola_banheiro_dentro_pre ) ? $oRegistro10->dependencias_existentes_escola_banheiro_dentro_pre : null,
-      isset( $oRegistro10->dependencias_existentes_escola_banheiro_educ_infan ) ? $oRegistro10->dependencias_existentes_escola_banheiro_educ_infan : null,
-      isset( $oRegistro10->dependencias_existentes_escola_banheiro_alunos_def ) ? $oRegistro10->dependencias_existentes_escola_banheiro_alunos_def : null,
-      isset( $oRegistro10->dependencias_existentes_escola_dep_vias_alunos_def ) ? $oRegistro10->dependencias_existentes_escola_dep_vias_alunos_def : null,
-      isset( $oRegistro10->dependencias_existentes_escola_banheiro_chuveiro )   ? $oRegistro10->dependencias_existentes_escola_banheiro_chuveiro   : null,
-      isset( $oRegistro10->dependencias_existentes_escola_refeitorio )          ? $oRegistro10->dependencias_existentes_escola_refeitorio          : null,
-      isset( $oRegistro10->dependencias_existentes_escola_despensa )            ? $oRegistro10->dependencias_existentes_escola_despensa            : null,
-      isset( $oRegistro10->dependencias_existentes_escola_almoxarifado )        ? $oRegistro10->dependencias_existentes_escola_almoxarifado        : null,
-      isset( $oRegistro10->dependencias_existentes_escola_auditorio )           ? $oRegistro10->dependencias_existentes_escola_auditorio           : null,
-      isset( $oRegistro10->dependencias_existentes_escola_patio_coberto )       ? $oRegistro10->dependencias_existentes_escola_patio_coberto       : null,
-      isset( $oRegistro10->dependencias_existentes_escola_patio_descoberto )    ? $oRegistro10->dependencias_existentes_escola_patio_descoberto    : null,
-      isset( $oRegistro10->dependencias_existentes_escola_alojamento_aluno )    ? $oRegistro10->dependencias_existentes_escola_alojamento_aluno    : null,
-      isset( $oRegistro10->dependencias_existentes_escola_alojamento_professo ) ? $oRegistro10->dependencias_existentes_escola_alojamento_professo : null,
-      isset( $oRegistro10->dependencias_existentes_escola_area_verde )          ? $oRegistro10->dependencias_existentes_escola_area_verde          : null,
-      isset( $oRegistro10->dependencias_existentes_escola_lavanderia )          ? $oRegistro10->dependencias_existentes_escola_lavanderia          : null
-    );
+    $aDependenciasEscola  = [
+      $oRegistro10->dependencias_existentes_escola_sala_diretoria ?? null,
+      $oRegistro10->dependencias_existentes_escola_sala_professores ?? null,
+      $oRegistro10->dependencias_existentes_escola_sala_secretaria ?? null,
+      $oRegistro10->dependencias_existentes_escola_laboratorio_informa ?? null,
+      $oRegistro10->dependencias_existentes_escola_laboratorio_ciencia ?? null,
+      $oRegistro10->dependencias_existentes_escola_sala_recursos_multi ?? null,
+      $oRegistro10->dependencias_existentes_escola_quadra_esporte_cobe ?? null,
+      $oRegistro10->dependencias_existentes_escola_quadra_esporte_desc ?? null,
+      $oRegistro10->dependencias_existentes_escola_cozinha ?? null,
+      $oRegistro10->dependencias_existentes_escola_biblioteca ?? null,
+      $oRegistro10->dependencias_existentes_escola_sala_leitura ?? null,
+      $oRegistro10->dependencias_existentes_escola_parque_infantil ?? null,
+      $oRegistro10->dependencias_existentes_escola_bercario ?? null,
+      $oRegistro10->dependencias_existentes_escola_banheiro_fora_predi ?? null,
+      $oRegistro10->dependencias_existentes_escola_banheiro_dentro_pre ?? null,
+      $oRegistro10->dependencias_existentes_escola_banheiro_educ_infan ?? null,
+      $oRegistro10->dependencias_existentes_escola_banheiro_alunos_def ?? null,
+      $oRegistro10->dependencias_existentes_escola_dep_vias_alunos_def ?? null,
+      $oRegistro10->dependencias_existentes_escola_banheiro_chuveiro ?? null,
+      $oRegistro10->dependencias_existentes_escola_refeitorio ?? null,
+      $oRegistro10->dependencias_existentes_escola_despensa ?? null,
+      $oRegistro10->dependencias_existentes_escola_almoxarifado ?? null,
+      $oRegistro10->dependencias_existentes_escola_auditorio ?? null,
+      $oRegistro10->dependencias_existentes_escola_patio_coberto ?? null,
+      $oRegistro10->dependencias_existentes_escola_patio_descoberto ?? null,
+      $oRegistro10->dependencias_existentes_escola_alojamento_aluno ?? null,
+      $oRegistro10->dependencias_existentes_escola_alojamento_professo ?? null,
+      $oRegistro10->dependencias_existentes_escola_area_verde ?? null,
+      $oRegistro10->dependencias_existentes_escola_lavanderia ?? null
+    ];
 
     if ( !in_array(1, $aDependenciasEscola) && $oRegistro10->dependencias_existentes_escola_nenhuma_relacionada == 0 ) {
 
@@ -1225,10 +1225,10 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     $oDadosEscola = $oExportacaoCenso->getDadosProcessadosEscola();
     $oRegistro10  = $oDadosEscola->registro10;
 
-    $aErros = array();
+    $aErros = [];
 
     $lValidouEquipamento    = true;
-    $aEquipamentosValidacao = array(
+    $aEquipamentosValidacao = [
       "Aparelho de Televisão"           => "equipamentos_existentes_escola_televisao",
       "Videocassete"                    => "equipamentos_existentes_escola_videocassete",
       "Aparelho de DVD"                 => "equipamentos_existentes_escola_dvd",
@@ -1242,7 +1242,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       "Máquina Fotográfica/Filmadora"   => "equipamentos_existentes_escola_maquina_fotografica",
       "Computadores"                    => "equipamentos_existentes_escola_computador",
       "Impressora Multifuncional"       => "equipamentos_impressora_multifuncional"
-    );
+    ];
 
     foreach ($aEquipamentosValidacao as $sNome => $sEquipamentoValidacao) {
 
@@ -1470,7 +1470,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $lEscolaPossuiTurmaPresencialOuSemi = true;
       foreach ($aDadosTurma as $oRegistro20) {
 
-        if ( !in_array($oRegistro20->mediacao_didatico_pedagogica, array(1,2)) ) {
+        if ( !in_array($oRegistro20->mediacao_didatico_pedagogica, [1,2]) ) {
           $lEscolaPossuiTurmaPresencialOuSemi = false;
         }
       }
@@ -1591,7 +1591,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     }
 
     // coluna 90 regra 5
-    if ( in_array($oDadosEscola->registro10->atendimento_educacional_especializado, array(1, 2)) ) {
+    if ( in_array($oDadosEscola->registro10->atendimento_educacional_especializado, [1, 2]) ) {
 
       $lSemTurmaAEE = false;
       foreach ($oDadosTurma as $oRegistro20) {
@@ -1610,7 +1610,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       }
     }
     // coluna 91 regra 5
-    if ( in_array($oDadosEscola->registro10->atividade_complementar, array(1, 2)) ) {
+    if ( in_array($oDadosEscola->registro10->atividade_complementar, [1, 2]) ) {
 
       $lTemTurmaComplementar = false;
       foreach ($oDadosTurma as $oRegistro20) {
@@ -1631,7 +1631,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     }
 
     /* Coluna 96 do Registro 10 - INICIO */
-    $aEtapasCiclos = array(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 41, 56);
+    $aEtapasCiclos = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 41, 56];
     $lPossuiEtapasCompativelComCiclos = false;
     foreach ($oDadosTurma as $oRegistro20) {
 
@@ -1738,7 +1738,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     $oRegistro10  = $oDadosEscola->registro10;
     $lValidou     = true;
 
-    $aCompartilha   = array();
+    $aCompartilha   = [];
     $lRepitiuEscola = false;
     for ($i = 1; $i <= 6; $i++) {
 
@@ -1813,7 +1813,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $oExportacaoCenso->logErro( $sMsgErro, ExportacaoCenso2015::LOG_ESCOLA );
     }
 
-    if ( isset($oRegistro10->agua_consumida_alunos) && !in_array($oRegistro10->agua_consumida_alunos, array(1, 2)) ) {
+    if ( isset($oRegistro10->agua_consumida_alunos) && !in_array($oRegistro10->agua_consumida_alunos, [1, 2]) ) {
 
       $sMsgErro = 'O campo "Água consumida pelos alunos" foi preenchido com valor inválido.';
       $lValidou = false;
@@ -1835,13 +1835,13 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     $oRegistro10  = $oDadosEscola->registro10;
     $lValidou     = true;
 
-    $aAbastecimentoAgua = array(
+    $aAbastecimentoAgua = [
       "Rede pública"                            => $oRegistro10->abastecimento_agua_rede_publica,
       "Poço artesiano"                          => $oRegistro10->abastecimento_agua_poco_artesiano,
       "Cacimba / cisterna / poço"               => $oRegistro10->abastecimento_agua_cacimba_cisterna_poco,
       "Fonte / rio / igarapé/ riacho/ córrego." => $oRegistro10->abastecimento_agua_fonte_rio_igarape_riacho_correg,
       "Inexistente"                             => $oRegistro10->abastecimento_agua_inexistente,
-    );
+    ];
 
     // colunas 21 a 25 regra Pelo menos um dos campos de 21 a 25 deve ser preenchido com 1 (Sim)
     if ( !in_array(1, $aAbastecimentoAgua) ) {
@@ -1854,7 +1854,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     foreach ($aAbastecimentoAgua as $sAbastecimento => $iValue) {
 
       // colunas 21-25 regra 2
-      if ( !in_array($iValue, array(0, 1)) ) {
+      if ( !in_array($iValue, [0, 1]) ) {
 
         $sMsgErro = "O campo \"Abastecimento de água - {$sAbastecimento}\" foi preenchido com valor inválido.";
         $lValidou = false;
@@ -1890,15 +1890,15 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     $oRegistro10  = $oDadosEscola->registro10;
     $lValidou     = true;
 
-    $iCedeEspaco          = isset($oRegistro10->escola_cede_espaco_turma_brasil_alfabetizado) ? $oRegistro10->escola_cede_espaco_turma_brasil_alfabetizado : null;
-    $iAbreFinaisSemana    = isset($oRegistro10->escola_abre_finais_semanas_comunidade) ? $oRegistro10->escola_abre_finais_semanas_comunidade : null;
-    $iFormacaoAlternancia = isset($oRegistro10->escola_formacao_alternancia) ? $oRegistro10->escola_formacao_alternancia : null;
+    $iCedeEspaco          = $oRegistro10->escola_cede_espaco_turma_brasil_alfabetizado ?? null;
+    $iAbreFinaisSemana    = $oRegistro10->escola_abre_finais_semanas_comunidade ?? null;
+    $iFormacaoAlternancia = $oRegistro10->escola_formacao_alternancia ?? null;
 
-    $aCampos = array(
+    $aCampos = [
       "Escola cede espaço para turmas do Brasil Alfabetizado"      => $iCedeEspaco,
       "Escola abre aos finais de semana para a comunidade"         => $iAbreFinaisSemana,
       "Escola com proposta pedagógica de formação por alternância" => $iFormacaoAlternancia,
-    );
+    ];
 
     foreach ($aCampos as $sColuna => $mValor) {
 
@@ -1910,7 +1910,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       }
 
       // regra 2
-      if ( $mValor !== '' && !in_array($mValor, array(0,1)) ) {
+      if ( $mValor !== '' && !in_array($mValor, [0,1]) ) {
 
         $sMsgErro = "O campo \"{$sColuna}\" foi preenchido com valor inválido.";
         $lValidou = false;
@@ -1922,7 +1922,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     if ( isset($oRegistro10->escola_formacao_alternancia) && $oRegistro10->escola_formacao_alternancia != 0 ) {
 
       // etapas de educação infantil e de anos iniciais do ensino fundamental
-      $aEtapas       = array(1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18);
+      $aEtapas       = [1, 2, 3, 4, 5, 6, 7, 14, 15, 16, 17, 18];
       $oDadosTurma   = $oExportacaoCenso->getDadosProcessadosTurma();
       $lPossuiEtapas = false;
       foreach ($oDadosTurma as $oRegistro20) {
@@ -1932,8 +1932,8 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
         }
       }
 
-      if ( in_array($oRegistro10->atendimento_educacional_especializado, array(1,2)) ||
-           in_array($oRegistro10->atividade_complementar, array(1,2) ) ||
+      if ( in_array($oRegistro10->atendimento_educacional_especializado, [1,2]) ||
+           in_array($oRegistro10->atividade_complementar, [1,2] ) ||
            $lPossuiEtapas ) {
 
         $sMsgErro  = 'Escolas que possuem apenas turmas de atividade complementar, de atendimento educacional ';

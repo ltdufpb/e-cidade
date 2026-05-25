@@ -31,7 +31,7 @@
 class importacaoCenso2018 extends importacaoCenso2015
 {
     private $iCodigoEscola = null;
-    private $linhasTurmas = array();
+    private $linhasTurmas = [];
 
     function __construct($iAnoEscolhido, $iCodigoInepEscola = null)
     {
@@ -48,7 +48,7 @@ class importacaoCenso2018 extends importacaoCenso2015
                 $this->linhasTurmas[$oLinha->codigo_escola_inep][$oLinha->codigo_turma_inep] = $oLinha;
             }
 
-            if (!in_array($oLinha->{$this->sCampoChave}, array(20, 30, 60, 80))) {
+            if (!in_array($oLinha->{$this->sCampoChave}, [20, 30, 60, 80])) {
                 continue;
             }
 
@@ -107,9 +107,9 @@ class importacaoCenso2018 extends importacaoCenso2015
      */
     protected function validaTurma(DBLayoutLinha $oLinha)
     {
-        $sNomeTurmaCensoNovo = str_replace(array('ª', 'º'), array('', ''), trim($oLinha->nome_turma));
+        $sNomeTurmaCensoNovo = str_replace(['ª', 'º'], ['', ''], trim($oLinha->nome_turma));
 
-        $aWhere = array();
+        $aWhere = [];
         if (!empty($oLinha->codigo_turma_entidade_escola)) {
             $aWhere[] = " ed57_i_codigo = {$oLinha->codigo_turma_entidade_escola} ";
         } else {
@@ -199,7 +199,7 @@ class importacaoCenso2018 extends importacaoCenso2015
          * 2 - Unidade de internação socioeducativa
          * 3 - Unidade prisional
          */
-        if (in_array(trim($oLinha->tipo_atendimento), array(0, 1, 2, 3))) {
+        if (in_array(trim($oLinha->tipo_atendimento), [0, 1, 2, 3])) {
 
             $oTurma = $this->validaTurma($oLinha);
             if ($oTurma && trim($oLinha->codigo_escola_inep) != "") {
@@ -220,7 +220,7 @@ class importacaoCenso2018 extends importacaoCenso2015
          * 4 - Atividade complementar
          * 5 - Atendimento Educacional Especializado (AEE)
          */
-        if (in_array(trim($oLinha->tipo_atendimento), array(4, 5))) {
+        if (in_array(trim($oLinha->tipo_atendimento), [4, 5])) {
 
             $oTurma = $this->validarTurmaEspecial($oLinha);
             if ($oTurma && trim($oLinha->codigo_escola_inep) != "") {
@@ -249,7 +249,7 @@ class importacaoCenso2018 extends importacaoCenso2015
         $linhaTurma = $tumasEscola[$linhaAluno->codigo_turma_inep];
 
         if (in_array(trim($linhaTurma->tipo_atendimento),
-                array(4, 5)) && $linhaAluno->codigo_turma_inep === $linhaTurma->codigo_turma_inep) {
+                [4, 5]) && $linhaAluno->codigo_turma_inep === $linhaTurma->codigo_turma_inep) {
             return true;
         }
 

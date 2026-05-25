@@ -30,8 +30,6 @@
 class DadosCensoAluno extends DadosCenso
 {
 
-    protected $iCodigoAluno;
-
     protected $oDadosAluno;
 
     protected $oDadosDocumento;
@@ -44,16 +42,11 @@ class DadosCensoAluno extends DadosCenso
 
     protected $iAnoCenso;
 
-    protected $iEscola;
-
     /**
      *
      */
-    function __construct($iAluno, $iEscola)
+    function __construct(protected $iCodigoAluno, protected $iEscola)
     {
-
-        $this->iCodigoAluno = $iAluno;
-        $this->iEscola = $iEscola;
     }
 
     /**
@@ -66,7 +59,7 @@ class DadosCensoAluno extends DadosCenso
 
         $lDadosValidos = true;
         $lValidaCertidao = true;
-        $aNecessidades = array();
+        $aNecessidades = [];
         $oDadosAluno = $oExportacaoCenso->getDadosProcessadosAluno();
 
         foreach ($oDadosAluno as $oAlunos) {
@@ -289,8 +282,8 @@ class DadosCensoAluno extends DadosCenso
             $aRecursos['recurso_auxilio_prova_braille'] = $oAlunos->registro60->recurso_auxilio_prova_braille;
             $aRecursos['recurso_auxilio_nenhum'] = $oAlunos->registro60->recurso_auxilio_nenhum;
 
-            $avalidarNecessidades = DadosCensoAluno::validarNecessidades($aNecessidades, $aRecursos);
-            $avalidarRecursos = DadosCensoAluno::validarRecursos($aNecessidades, $aRecursos);
+            $avalidarNecessidades = $this->validarNecessidades($aNecessidades, $aRecursos);
+            $avalidarRecursos = $this->validarRecursos($aNecessidades, $aRecursos);
 
             if (count($avalidarNecessidades) > 0) {
 
@@ -329,7 +322,7 @@ class DadosCensoAluno extends DadosCenso
             /**
              * Validações do registro 70 do Layout do Censo
              */
-            $oRetornoDocumentacao = DadosCensoAluno::registroDocumentacaoValido($oAlunos);
+            $oRetornoDocumentacao = $this->registroDocumentacaoValido($oAlunos);
 
             if (!$oRetornoDocumentacao->lDadosValidos) {
 
@@ -630,7 +623,7 @@ class DadosCensoAluno extends DadosCenso
             }
 
 
-            $aMatriculaTurno = array();
+            $aMatriculaTurno = [];
             /**
              * Validações do registro 80 do Layout do Censo
              */
@@ -695,19 +688,19 @@ class DadosCensoAluno extends DadosCenso
                 }
 
                 $oTurma = DadosCensoAluno::getTurmaAluno($oExportacaoCenso, $oMatricula->codigo_turma_entidade_escola);
-                $aEtapasMultiEtapa = array(12, 13, 22, 23, 24, 51, 56, 58, 64);
-                $aEtapasPermitidas[12] = array(4, 5, 6, 7, 8, 9, 10, 11);
-                $aEtapasPermitidas[13] = array(4, 5, 6, 7, 8, 9, 10, 11);
-                $aEtapasPermitidas[22] = array(14, 15, 16, 17, 18, 19, 20, 21, 41);
-                $aEtapasPermitidas[23] = array(14, 15, 16, 17, 18, 19, 20, 21, 41);
-                $aEtapasPermitidas[24] = array(4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 41);
-                $aEtapasPermitidas[51] = array(43, 44);
-                $aEtapasPermitidas[56] = array(1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 41);
-                $aEtapasPermitidas[58] = array(46, 47);
-                $aEtapasPermitidas[64] = array(39, 40);
+                $aEtapasMultiEtapa = [12, 13, 22, 23, 24, 51, 56, 58, 64];
+                $aEtapasPermitidas[12] = [4, 5, 6, 7, 8, 9, 10, 11];
+                $aEtapasPermitidas[13] = [4, 5, 6, 7, 8, 9, 10, 11];
+                $aEtapasPermitidas[22] = [14, 15, 16, 17, 18, 19, 20, 21, 41];
+                $aEtapasPermitidas[23] = [14, 15, 16, 17, 18, 19, 20, 21, 41];
+                $aEtapasPermitidas[24] = [4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 41];
+                $aEtapasPermitidas[51] = [43, 44];
+                $aEtapasPermitidas[56] = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 41];
+                $aEtapasPermitidas[58] = [46, 47];
+                $aEtapasPermitidas[64] = [39, 40];
                 if (!empty($oTurma)) {
 
-                    if ($oTurma->etapa_ensino_turma == 3 && !in_array($oMatricula->turma_unificada, array(1, 2))) {
+                    if ($oTurma->etapa_ensino_turma == 3 && !in_array($oMatricula->turma_unificada, [1, 2])) {
 
                         $sMsgErro = "Aluno(a) {$sAluno}: \n";
                         $sMsgErro .= "Deve ser informada a turma Unificada do Aluno";
@@ -745,8 +738,8 @@ class DadosCensoAluno extends DadosCenso
     function validarNecessidades($aNecessidades, $aRecursos)
     {
 
-        $aErroMsg = array();
-        $aNecessidadesDoAluno = array();
+        $aErroMsg = [];
+        $aNecessidadesDoAluno = [];
         $iContadorErros = 0;
 
         foreach ($aNecessidades as $sTipoDeficiencia => $iNecessidade) {
@@ -876,8 +869,8 @@ class DadosCensoAluno extends DadosCenso
     function validarRecursos($aNecessidades, $aRecursos)
     {
 
-        $aErroMsg = array();
-        $aRecursosDoAluno = array();
+        $aErroMsg = [];
+        $aRecursosDoAluno = [];
         $iContadorErros = 0;
 
         foreach ($aRecursos as $sTipoRecurso => $iRecurso) {
@@ -888,7 +881,7 @@ class DadosCensoAluno extends DadosCenso
             }
         }
 
-        $aNecessidadesMarcadas = array();
+        $aNecessidadesMarcadas = [];
         foreach ($aNecessidades as $sNecessidade => $iNecessidade) {
             if ($iNecessidade == 1) {
                 $aNecessidadesMarcadas[$sNecessidade] = $iNecessidade;
@@ -1033,7 +1026,7 @@ class DadosCensoAluno extends DadosCenso
         $iAnoCertidao = substr($sCertidao, 10, 4);
         $iTipoLivro = substr($sCertidao, 14, 1);
         $iDigitoCertidao = substr($sCertidao, 30, 2);
-        if (!in_array($sAcervo, array('01', '02'))) {
+        if (!in_array($sAcervo, ['01', '02'])) {
             throw new Exception("Tipo do acervo inválido. deve ser '01' ou '02'. Foi informado '{$sAcervo}'");
         }
 
@@ -1044,7 +1037,7 @@ class DadosCensoAluno extends DadosCenso
             throw new Exception("Ano da certidão fora do intervalo válido. Deve estar entre 1905 e {$iAnoCenso}. Foi informado '{$sNumeroServico}'");
         }
 
-        if (in_array($iTipoLivro, array(4, 5, 6))) {
+        if (in_array($iTipoLivro, [4, 5, 6])) {
             throw new Exception("Tipo do Livro deve ser diferente de 4,5 ou 6. Foi informado '{$sNumeroServico}'");
         }
 
@@ -1235,36 +1228,14 @@ class DadosCensoAluno extends DadosCenso
 
         $oDadosAluno = db_utils::fieldsMemory($rsDadosAluno, 0);
         $iRacaAluno = 0;
-        switch (trim($oDadosAluno->ed47_c_raca)) {
-
-            case  "BRANCA":
-                $iRacaAluno = 1;
-                break;
-
-            case "PRETA":
-
-                $iRacaAluno = 2;
-                break;
-
-            case "PARDA":
-
-                $iRacaAluno = 3;
-                break;
-
-            case 'AMARELA' :
-
-                $iRacaAluno = 4;
-                break;
-
-            case 'INDÍGENA' :
-                $iRacaAluno = 5;
-                break;
-
-            default:
-
-                $iRacaAluno = 0;
-                break;
-        }
+        $iRacaAluno = match (trim($oDadosAluno->ed47_c_raca)) {
+            "BRANCA" => 1,
+            "PRETA" => 2,
+            "PARDA" => 3,
+            'AMARELA' => 4,
+            'INDÍGENA' => 5,
+            default => 0,
+        };
 
         $iTipoFiliacao = 0;
         if (trim($oDadosAluno->ed47_v_mae) != "" || trim($oDadosAluno->ed47_v_pai) != "") {
@@ -1381,7 +1352,7 @@ class DadosCensoAluno extends DadosCenso
     protected function getDeficiencias()
     {
 
-        $aNecessidades = array();
+        $aNecessidades = [];
         $oDaoAlunoNecessidades = db_utils::getDao("alunonecessidade");
         $sWhere = "ed214_i_aluno = {$this->getCodigoAluno()}";
         $sCampos = "distinct ed48_i_codigo as codigo, ";
@@ -1426,7 +1397,7 @@ class DadosCensoAluno extends DadosCenso
         $rsAlunoRecursoAvaliacaoInep = $oDaoAlunoRecursoAvaliacaoInep->sql_record($sSqlAlunoRecursoAvaliacaoInep);
         $iTotalAlunoRecursoAvaliacaoInep = $oDaoAlunoRecursoAvaliacaoInep->numrows;
 
-        $aRecursosAvaliacaoInep = array();
+        $aRecursosAvaliacaoInep = [];
         if ($iTotalAlunoRecursoAvaliacaoInep > 0) {
 
             for ($iContador = 0; $iContador < $iTotalAlunoRecursoAvaliacaoInep; $iContador++) {
@@ -1472,23 +1443,11 @@ class DadosCensoAluno extends DadosCenso
             }
         }
 
-        switch ($oDadosDocumento->ed47_c_certidaotipo) {
-
-            case 'C':
-
-                $iTipoCertidao = 2;
-                break;
-
-            case 'N':
-
-                $iTipoCertidao = 1;
-                break;
-
-            default:
-
-                $iTipoCertidao = '';
-                break;
-        }
+        $iTipoCertidao = match ($oDadosDocumento->ed47_c_certidaotipo) {
+            'C' => 2,
+            'N' => 1,
+            default => '',
+        };
 
         /**
          * Caso a certidao for nova, não devemos informar os dados do cartorio;
@@ -1585,9 +1544,9 @@ class DadosCensoAluno extends DadosCenso
 
         $sTurmaMultiEtapa = "";
         $oDadosMatricula = db_utils::fieldsMemory($rsMatricula, 0);
-        $aSeriesValidasMultiEtapaEja = array(12, 13, 22, 23, 51, 56, 58, 64);
+        $aSeriesValidasMultiEtapaEja = [12, 13, 22, 23, 51, 56, 58, 64];
         if ($this->getAnoCenso() > 2014) {
-            $aSeriesValidasMultiEtapaEja = array(12, 13, 22, 23, 24, 56, 64, 72);
+            $aSeriesValidasMultiEtapaEja = [12, 13, 22, 23, 24, 56, 64, 72];
         }
         $aTransportes = $this->getDadosTransportePublico();
         if (in_array($oDadosMatricula->ed11_i_codcenso, $aSeriesValidasMultiEtapaEja)) {
@@ -1597,7 +1556,7 @@ class DadosCensoAluno extends DadosCenso
         $sTurmaUnificada = '';
         if (!empty($oDadosMatricula->etapa_unificada)) {
 
-            if ($oDadosMatricula->etapa_unificada == 3 && in_array($oDadosMatricula->ed11_i_codcenso, array(1, 2))) {
+            if ($oDadosMatricula->etapa_unificada == 3 && in_array($oDadosMatricula->ed11_i_codcenso, [1, 2])) {
                 $sTurmaUnificada = $oDadosMatricula->ed11_i_codcenso;
             }
             if (in_array($oDadosMatricula->etapa_unificada, $aSeriesValidasMultiEtapaEja)) {
@@ -1605,7 +1564,7 @@ class DadosCensoAluno extends DadosCenso
             }
         }
 
-        $this->aDadosMatricula = array();
+        $this->aDadosMatricula = [];
 
         $oDadosMatricula->tipo_registro = 80;
         $oDadosMatricula->identificacao_unica_aluno = $oDadosMatricula->ed47_c_codigoinep;
@@ -1672,7 +1631,7 @@ class DadosCensoAluno extends DadosCenso
         );
         $rsTransportePublico = $oDaoAlunoTransporte->sql_record($sSqlTransportePublico);
         $iTotalLinhas = $oDaoAlunoTransporte->numrows;
-        $aMeiosTransporte = array();
+        $aMeiosTransporte = [];
         for ($iTransporte = 0; $iTransporte < $iTotalLinhas; $iTransporte++) {
 
             $oDadosTransporte = db_utils::fieldsMemory($rsTransportePublico, $iTransporte);
@@ -1688,7 +1647,7 @@ class DadosCensoAluno extends DadosCenso
     public function getMatriculasAtividadeEspecial()
     {
 
-        $aMatriculaAEE = array();
+        $aMatriculaAEE = [];
         $oDaoTurmaAEE = new cl_turmaacmatricula();
         $sCamposMatricula = " distinct ed268_i_codigo, ed47_c_codigoinep, ed47_i_codigo, ed268_i_codigoinep, ed47_i_transpublico,";
         $sCamposMatricula .= " ed47_c_transporte, ed231_i_referencia, ed268_i_tipoatend,";
@@ -1861,19 +1820,19 @@ class DadosCensoAluno extends DadosCenso
         $oDaoAluno->ed47_c_bolsafamilia = "N";
 
         if (!empty($oLinha->nome_mae)) {
-            $oDaoAluno->ed47_v_mae = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_mae);
+            $oDaoAluno->ed47_v_mae = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_mae);
         }
 
         if (!empty($oLinha->filiacao_1)) {
-            $oDaoAluno->ed47_v_mae = str_replace(array('ª', 'º'), array('', ''), $oLinha->filiacao_1);
+            $oDaoAluno->ed47_v_mae = str_replace(['ª', 'º'], ['', ''], $oLinha->filiacao_1);
         }
 
         if (!empty($oLinha->nome_pai)) {
-            $oDaoAluno->ed47_v_pai = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_pai);
+            $oDaoAluno->ed47_v_pai = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_pai);
         }
 
         if (!empty($oLinha->filiacao_2)) {
-            $oDaoAluno->ed47_v_pai = str_replace(array('ª', 'º'), array('', ''), $oLinha->filiacao_2);
+            $oDaoAluno->ed47_v_pai = str_replace(['ª', 'º'], ['', ''], $oLinha->filiacao_2);
         }
 
         if ($oLinha->data_nascimento != "") {
@@ -1921,36 +1880,14 @@ class DadosCensoAluno extends DadosCenso
     {
 
         $sRaca = '';
-        switch (trim($iCodigoRacaCenso)) {
-
-            case 1:
-                $sRaca = 'BRANCA';
-                break;
-
-            case 2:
-
-                $sRaca = 'PRETA';
-                break;
-            case 3:
-
-                $sRaca = 'PARDA';
-                break;
-
-            case 4:
-
-                $sRaca = 'AMARELA';
-                break;
-
-            case 5:
-
-                $sRaca = 'INDÍGENA';
-                break;
-
-            default :
-
-                $sRaca = 'NÃO DECLARADA';
-                break;
-        }
+        $sRaca = match ((int) trim($iCodigoRacaCenso)) {
+            1 => 'BRANCA',
+            2 => 'PRETA',
+            3 => 'PARDA',
+            4 => 'AMARELA',
+            5 => 'INDÍGENA',
+            default => 'NÃO DECLARADA',
+        };
 
         return $sRaca;
     }
@@ -1963,7 +1900,7 @@ class DadosCensoAluno extends DadosCenso
             $oDaoAlunoNecessidade = db_utils::getdao('alunonecessidade');
             $oDaoAlunoNecessidade->excluir(null, "ed214_i_aluno = {$this->getCodigoAluno()}");
 
-            $aNecessidade = array();
+            $aNecessidade = [];
 
             trim($oLinha->tipos_defic_transtorno_cegueira) == 1 ? $aNecessidade[] = 101 : '';
             trim($oLinha->tipos_defic_transtorno_baixa_visao) == 1 ? $aNecessidade[] = 102 : '';
@@ -2019,7 +1956,7 @@ class DadosCensoAluno extends DadosCenso
         $oDaoAluno->ed47_i_transpublico = '0';
         $oDaoAluno->ed47_i_estciv = 1;
         if (!empty($oLinha->nome_completo)) {
-            $oDaoAluno->ed47_v_nome = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_completo);
+            $oDaoAluno->ed47_v_nome = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_completo);
         }
         $oDaoAluno->incluir(null);
         if ($oDaoAluno->erro_status == '0') {
@@ -2174,7 +2111,7 @@ class DadosCensoAluno extends DadosCenso
         /**
          * Atualizamos os transportes utilizados pelos alunos para a locomoção até a escola.
          */
-        $aTransportes = array();
+        $aTransportes = [];
         $oLinha->rodoviario_vans_kombi == 1 ? $aTransportes[] = 1 : '';
         $oLinha->rodoviario_microonibus == 1 ? $aTransportes[] = 2 : '';
         $oLinha->rodoviario_onibus == 1 ? $aTransportes[] = 3 : '';

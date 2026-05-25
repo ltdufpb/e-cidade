@@ -43,7 +43,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
   /**
    * Regencias que possuem professor lecionando
    */
-  protected $aRegenciasComProfessor = array();
+  protected $aRegenciasComProfessor = [];
   
   /**
    * Instancia uma classe do servico
@@ -82,7 +82,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
       $aTurnos[] = $oTurma->getTurnoAdicional() ;
     }
     $oGrade         = new stdClass();
-    $oGrade->turnos = array();
+    $oGrade->turnos = [];
     $aDiasDaSemana = $this->getDiasDaSemana();
     foreach ($aTurnos as $oTurno) {
       
@@ -92,7 +92,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
         $sNomeAdicional = '(Turno Principal)';
       }
       $oTurnoGrade->nome        = utf8_encode($oTurno->getDescricao()." {$sNomeAdicional}");
-      $oTurnoGrade->dias_semana = array();
+      $oTurnoGrade->dias_semana = [];
       
       $oDaoPeriodoEscola = new cl_periodoescola();
       $sWherePeriodos    = "ed17_i_escola = {$oTurma->getEscola()->getCodigo()} ";
@@ -109,7 +109,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
           
           $oDiaSemanaGrade           = new stdClass();
           $oDiaSemanaGrade->nome     = utf8_encode($oDiaSemana->ed32_c_descr);
-          $oDiaSemanaGrade->periodos = array();
+          $oDiaSemanaGrade->periodos = [];
           for ($iPeriodo = 0; $iPeriodo < $iTotalLinhas; $iPeriodo++) {
 
             $oDadosPeriodo = db_utils::fieldsMemory($rsPeriodos, $iPeriodo);
@@ -163,7 +163,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
   protected function getDiasDaSemana() {
     
     $iCodigoEscola = $this->oMatricula->getTurma()->getEscola()->getCodigo();
-    $aDiasemana    = array();
+    $aDiasemana    = [];
     $oDaoDiaSemana = new cl_diasemana();
     $sSqlDiaSemana = $oDaoDiaSemana->sql_query_rh("", "*",
                                                   "ed32_i_codigo",

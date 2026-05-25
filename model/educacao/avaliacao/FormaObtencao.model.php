@@ -60,7 +60,7 @@ abstract class FormaObtencao {
    * Lista de Aproveitamentos que Foram Substituidos
    * @var []
    */
-  protected $aListaAproveitamentosSubstituir = array();
+  protected $aListaAproveitamentosSubstituir = [];
 
   /**
    * Define qual resultado está sendo calculado
@@ -87,7 +87,7 @@ abstract class FormaObtencao {
    */
   protected function getElementosParaCalculo( $aAproveitamentos, $iAno ) {
 
-    $aNotasPeriodo              = array();
+    $aNotasPeriodo              = [];
     $oPeriodoRecuperacao        = null;
     $oDiarioAvaliacaoDisciplina = $aAproveitamentos[0]->getDiarioAvaliacaoDisciplina();
 
@@ -240,7 +240,7 @@ abstract class FormaObtencao {
    * @param AvaliacaoPeriodica $oPeriodoRecuperacao
    * @return bool
    */
-  protected function aplicarJulgamentoMenorNotaDoPeriodo(AvaliacaoPeriodica $oPeriodoRecuperacao = null, array $aNotasPeriodo) {
+  protected function aplicarJulgamentoMenorNotaDoPeriodo(AvaliacaoPeriodica $oPeriodoRecuperacao = null, array $aNotasPeriodo = []) {
 
     if (empty($oPeriodoRecuperacao)) {
       return $aNotasPeriodo;
@@ -273,7 +273,7 @@ abstract class FormaObtencao {
      */
     foreach ($aElementosVinculadosNoResultado as $oElemento) {
 
-      $oNota = isset($aNotasPeriodo[$oElemento->getOrdem()]) ? $aNotasPeriodo[$oElemento->getOrdem()] : null;
+      $oNota = $aNotasPeriodo[$oElemento->getOrdem()] ?? null;
 
       if (empty($oNota)) {
         continue;

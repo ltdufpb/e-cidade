@@ -54,7 +54,7 @@ class Regencia
      * Docentes da Disciplina
      * @var Docente[]
      */
-    private $aDocentes = array();
+    private $aDocentes = [];
 
     /**
      * Forma de controle da frequencia

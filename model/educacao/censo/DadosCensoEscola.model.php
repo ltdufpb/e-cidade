@@ -32,27 +32,21 @@
  */
 class DadosCensoEscola extends DadosCenso {
 
-  /**
-   * codigo da escola
-   * @var integer
-   */
-  protected $iCodigoEscola;
-
-  protected $iAnoCenso;
-
   protected $iCodigoInep;
-
-  protected $dtBaseCenso;
 
   /**
    * Método Construtor
+   * @param int $iCodigoEscola
    */
-  function __construct($iCodigoEscola, $iAnoCenso, $dtBaseCenso) {
-
-    $this->iAnoCenso     = $iAnoCenso;
-    $this->iCodigoEscola = $iCodigoEscola;
-    $this->dtBaseCenso   = $dtBaseCenso;
-
+  function __construct(
+      /**
+       * codigo da escola
+       */
+      protected $iCodigoEscola,
+      protected $iAnoCenso,
+      protected $dtBaseCenso
+  )
+  {
   }
   /**
    * Gera os dados de Identificacao da escola
@@ -372,7 +366,7 @@ class DadosCensoEscola extends DadosCenso {
   public function getTiposDeEnsinoNaEscola() {
 
     $oDaoMatricula     = db_utils::getDao("matricula");
-    $aTiposDeEnsino    = array();
+    $aTiposDeEnsino    = [];
     $sCamposModalidade = " distinct ed10_i_tipoensino ";
     $sWhereModalidade  = " turma.ed57_i_escola  = {$this->iCodigoEscola} ";
     $sWhereModalidade .= "  AND calendario.ed52_i_ano = {$this->iAnoCenso} ";
@@ -400,7 +394,7 @@ class DadosCensoEscola extends DadosCenso {
    */
   public function getEtapasNaEscola() {
 
-    $aEtapas               = array();
+    $aEtapas               = [];
     $oDaoCensoEtapas        = db_utils::getDao("censoetapamodal");
     $sCamposEtapasNaEscola  = "ed273_i_sequencia  as codigo, ";
     $sCamposEtapasNaEscola .= "ed273_i_codigo  as codigo_Seq, ";
@@ -439,7 +433,7 @@ class DadosCensoEscola extends DadosCenso {
     /**
      * Procuramos o codigo da avaliacao da escola.
      */
-    $aRespostasObjetivas          = array();
+    $aRespostasObjetivas          = [];
 
     /**
      * acesso a internt
@@ -532,9 +526,9 @@ class DadosCensoEscola extends DadosCenso {
      * Perguntas que nao podem ter respostas com valor 0.
      * esses respostas devem ficar com o valor vazio;
      */
-    $aPerguntasLimparValorZero = array(3000010);
+    $aPerguntasLimparValorZero = [3000010];
 
-    $aPerguntas           = array();
+    $aPerguntas           = [];
     $oDaoEscolaDadosCenso = db_utils::getDao("escoladadoscenso");
     $sSqlCodigoAvaliacao  = $oDaoEscolaDadosCenso->sql_query_file(null,
         "ed308_avaliacaogruporesposta",
@@ -618,7 +612,7 @@ class DadosCensoEscola extends DadosCenso {
    */
   public function getTelefones() {
 
-    $aTelefones    = array();
+    $aTelefones    = [];
     $oDaoTelefones = new cl_telefoneescola();
     $sCampos       = "ed26_i_ddd as ddd, ed26_i_numero as numero, ed13_c_descr as tipo_telefone";
     $sSqlTelefones = $oDaoTelefones->sql_query(null, $sCampos, "ed26_i_numero", "ed26_i_escola = {$this->iCodigoEscola}" );
@@ -642,7 +636,7 @@ class DadosCensoEscola extends DadosCenso {
 
       $oDadosTelefone->ddd = $oTelefone->ddd;
 
-      if (strpos(strtoupper($oTelefone->tipo_telefone), "FAX") !== false) {
+      if (str_contains(strtoupper($oTelefone->tipo_telefone), "FAX")) {
         $oDadosTelefone->fax = $oTelefone->numero;
         continue;
       }
@@ -957,7 +951,7 @@ class DadosCensoEscola extends DadosCenso {
     $oDadosEscola           = $oExportacaoCenso->getDadosProcessadosEscola();
     $aDadosTurma            = $oExportacaoCenso->getDadosProcessadosTurma();
 
-    $aEquipamentosValidacao = array(
+    $aEquipamentosValidacao = [
                                       0  => "equipamentos_existentes_escola_televisao",
                                       1  => "equipamentos_existentes_escola_videocassete",
                                       2  => "equipamentos_existentes_escola_dvd",
@@ -969,17 +963,17 @@ class DadosCensoEscola extends DadosCenso {
                                       8  => "equipamentos_existentes_escola_projetor_datashow",
                                       9  => "equipamentos_existentes_escola_fax",
                                       10 => "equipamentos_existentes_escola_maquina_fotografica"
-                                   );
+                                   ];
 
-    $aEstruturaValidacao    = array(
+    $aEstruturaValidacao    = [
                                       3000032 => "equipamentos_existentes_escola_computador",
                                       3000003 => "quantidade_computadores_uso_administrativo",
                                       3000024 => "quantidade_computadores_uso_alunos",
                                       3000019 => "numero_salas_aula_existentes_escola",
                                       3000020 => "numero_salas_usadas_como_salas_aula"
-                                   );
+                                   ];
 
-    $aDependenciasEscola = array(
+    $aDependenciasEscola = [
                                   "dependencias_existentes_escola_sala_professores",
                                   "dependencias_existentes_escola_bercario",
                                   "dependencias_existentes_escola_despensa",
@@ -1010,9 +1004,9 @@ class DadosCensoEscola extends DadosCenso {
                                   "dependencias_existentes_escola_sala_diretoria",
                                   "dependencias_existentes_escola_patio_descoberto",
                                   "dependencias_existentes_escola_nenhuma_relacionada"
-                                );
+                                ];
 
-    $aModalidadesEtapas = array(
+    $aModalidadesEtapas = [
                                  "modalidade_ensino_regular",
                                  "modalidade_educacao_especial_modalidade_substutiva",
                                  "modalidade_educacao_jovens_adultos",
@@ -1037,7 +1031,7 @@ class DadosCensoEscola extends DadosCenso {
                                  "etapa_eja_ensino_fundamental",
                                  "etapa_eja_ensino_fundamental_projovem_urbano",
                                  "etapa_eja_ensino_medio"
-                               );
+                               ];
 
     foreach ($aEquipamentosValidacao as $sEquipamentoValidacao) {
 
@@ -1081,7 +1075,7 @@ class DadosCensoEscola extends DadosCenso {
         $oExportacaoCenso->logErro( $sMensagem, ExportacaoCensoBase::LOG_ESCOLA );
       }
 
-      if (!DadosCensoEscola::validarEquipamentosGeral($oExportacaoCenso, $iSequencial, $oDadosEscola->registro10->$sEstruturaValidacao)) {
+      if (!$this->validarEquipamentosGeral($oExportacaoCenso, $iSequencial, $oDadosEscola->registro10->$sEstruturaValidacao)) {
         $lTodosDadosValidos = false;
       }
     }

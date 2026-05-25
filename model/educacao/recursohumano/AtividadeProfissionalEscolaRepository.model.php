@@ -38,7 +38,7 @@ class AtividadeProfissionalEscolaRepository {
    * Collection de AtividadeProfissionalEscola
    * @var array
    */
-  private $aAtividade = array();
+  private $aAtividade = [];
 
   /**
    * Instancia da classe
@@ -85,7 +85,7 @@ class AtividadeProfissionalEscolaRepository {
       throw new DBException( _M(self::MSG_ATIVIDADEPROFISSIONALESCOLA . "erro_buscar_atividade", $oMsgErro) );
     }
 
-    $aAtividades = array();
+    $aAtividades = [];
     if (pg_num_rows($rsAtividade) == 0) {
       return $aAtividades;
     }

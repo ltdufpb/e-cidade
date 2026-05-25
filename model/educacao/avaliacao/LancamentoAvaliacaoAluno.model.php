@@ -107,7 +107,7 @@ final class LancamentoAvaliacaoAluno {
 
     $oAproveitamentoAlterar->setValorAproveitamento($oValorAproveitamento);
     $aResultados               = $oDiarioDisciplina->getResultados();
-    $aResultadosRetorno        = array();
+    $aResultadosRetorno        = [];
     $oElementoAvaliacaoPeriodo = $oAproveitamentoAlterar->getElementoAvaliacao();
     $oRetorno->iCodigoRegencia = $oAvaliacao->iCodigoRegencia;
     $oRetorno->iCodigoPeriodo  = $oAvaliacao->iPeriodo;
@@ -115,7 +115,7 @@ final class LancamentoAvaliacaoAluno {
     $oPeriodoDependente        = $oDiarioDisciplina->getAvaliacaoDependentesDoPeriodo($oElementoAvaliacaoPeriodo);
 
     $oUltimoResultado   = null;
-    $aPeriodosVerificar = array();
+    $aPeriodosVerificar = [];
 
     foreach ($aResultados as $oResultado) {
 
@@ -383,11 +383,11 @@ final class LancamentoAvaliacaoAluno {
     /**
      * Buscamos os pareceres vinculados a uma disciplina
      */
-    $aPareceres               = array();
+    $aPareceres               = [];
     $oDaoParecerDisciplina    = new cl_parecer();
     $sCamposParecerDisciplina = "distinct ed92_i_codigo, ed92_c_descr, ed92_i_sequencial";
 
-    $aWhereParecer   = array();
+    $aWhereParecer   = [];
     $aWhereParecer[] = " ed105_i_turma = " . $oRegencia->getTurma()->getCodigo();
 
     if (!empty($oRegencia)) {
@@ -425,7 +425,7 @@ final class LancamentoAvaliacaoAluno {
     /**
      * Buscamos as legendas cadastradas na escola
      */
-    $aLegendas      = array();
+    $aLegendas      = [];
     $oDaoLegenda    = new cl_parecerlegenda();
     $sCamposLegenda = "ed91_i_codigo, ed91_sigla";
     $sWhereLegenda  = "ed91_i_escola = {$iEscola}";

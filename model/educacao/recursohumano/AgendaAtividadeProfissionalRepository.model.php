@@ -38,7 +38,7 @@ class AgendaAtividadeProfissionalRepository {
    * Collection de AgendaAtividadeProfissional
    * @var array
    */
-  private $aAgenda = array();
+  private $aAgenda = [];
 
   /**
    * Instancia da classe
@@ -85,7 +85,7 @@ class AgendaAtividadeProfissionalRepository {
       throw new DBException( _M(self::MSG_AGENDAATIVIDADEPROFISSIONAL . "erro_buscar_atividade", $oMsgErro) );
     }
 
-    $aAgendas = array();
+    $aAgendas = [];
     if (pg_num_rows($rsAgenda) == 0) {
       return $aAgendas;
     }

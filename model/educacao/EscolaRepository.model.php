@@ -36,7 +36,7 @@
      * Collection de Escola
      * @var array
      */
-    private $aEscola = array();
+    private $aEscola = [];
 
     /**
      * Instancia da classe

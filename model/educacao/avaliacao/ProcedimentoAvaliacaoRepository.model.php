@@ -37,19 +37,19 @@ class ProcedimentoAvaliacaoRepository
      * Collection de ProcedimentoAvaliacao
      * @var array
      */
-    private $aProcedimentoAvaliacao = array();
+    private $aProcedimentoAvaliacao = [];
 
     /**
      * Array de vinculos com o resultado
      * @var array
      */
-    private $aVinculosResultado = array();
+    private $aVinculosResultado = [];
 
     /**
      * Array de vinculos do período de avaliacao
      * @var array
      */
-    private $aVinculosProcedimentoAvaliacao = array();
+    private $aVinculosProcedimentoAvaliacao = [];
 
     /**
      * Instancia da classe

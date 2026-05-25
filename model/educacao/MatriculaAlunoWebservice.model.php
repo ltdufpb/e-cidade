@@ -96,7 +96,7 @@ class MatriculaAlunoWebservice {
 
   protected function getPeridosEtapa() {
 
-    $aPeriodos    = array();
+    $aPeriodos    = [];
     $oEtapaOrigem = $this->oMatricula->getEtapaDeOrigem();
 
     $oProcedimentoAvaliacao = $this->oMatricula->getTurma()->getProcedimentoDeAvaliacaoDaEtapa($oEtapaOrigem);
@@ -151,7 +151,7 @@ class MatriculaAlunoWebservice {
     $sWhere              = "ed269_aluno = {$iCodigoAluno}";
     $sWhere             .= " and ed52_i_ano = {$iAnoCalendario}";
 
-    $aAtividadesComplementares = array();
+    $aAtividadesComplementares = [];
 
     $sSqlMatriculaAluno = $oDaoMatriculaAc->sql_query_turma(null, "*", null, $sWhere);
     $rsMatriculaAluno   = $oDaoMatriculaAc->sql_record($sSqlMatriculaAluno);
@@ -207,7 +207,7 @@ class MatriculaAlunoWebservice {
     $sSqlVinculos = $oDaoTurmaHorarioProfissional->sql_query_vinculo_profissional(null, $sCampos, "ed32_i_codigo", $sWhere);
     $rsVinculos   = $oDaoTurmaHorarioProfissional->sql_record($sSqlVinculos);
 
-    $aProfissionais = array();
+    $aProfissionais = [];
     if ($rsVinculos && $oDaoTurmaHorarioProfissional->numrows > 0) {
 
       $iLinhasProfissionais = $oDaoTurmaHorarioProfissional->numrows;
@@ -226,7 +226,7 @@ class MatriculaAlunoWebservice {
           $oProfissional              = new stdClass();
           $oProfissional->iCodigo     = $oDadosProfissional->ed20_i_codigo;
           $oProfissional->sNome       = utf8_encode($oDadosProfissional->profissional);
-          $oProfissional->aHorarios   = array();
+          $oProfissional->aHorarios   = [];
           $aProfissionais[$oDadosProfissional->ed20_i_codigo] = $oProfissional;
         }
 
@@ -244,7 +244,7 @@ class MatriculaAlunoWebservice {
    */
   protected function getDiasDaSemana($iCodigoTurma) {
 
-    $aDiasDeAula      = array();
+    $aDiasDeAula      = [];
     $oDaoTurmaHorario = new cl_turmaachorario();
     $sWhereDiasDeAula = "ed270_i_turmaac = {$iCodigoTurma}";
     $sSqlDiasDeAula   = $oDaoTurmaHorario->sql_query_horario(null,
@@ -269,18 +269,12 @@ class MatriculaAlunoWebservice {
    */
   protected function getAtividades($iTurma, $iTipoTurma, $sDadosAtendimento) {
 
-    $aListaAtividades = array();
-    switch ($iTipoTurma) {
-      case 4:
-
-        $aListaAtividades = $this->getAtividadesComplementaresNaTurma($iTurma);
-        break;
-
-      case 5:
-
-        $aListaAtividades = $this->getAtendimentosEspeciaisNaTurma($sDadosAtendimento);
-        break;
-    }
+    $aListaAtividades = [];
+    $aListaAtividades = match ($iTipoTurma) {
+        4 => $this->getAtividadesComplementaresNaTurma($iTurma),
+        5 => $this->getAtendimentosEspeciaisNaTurma($sDadosAtendimento),
+        default => $aListaAtividades,
+    };
     return $aListaAtividades;
   }
 
@@ -291,7 +285,7 @@ class MatriculaAlunoWebservice {
    */
   protected function getAtividadesComplementaresNaTurma($iTurma) {
 
-    $aAtividades               = array();
+    $aAtividades               = [];
     $oDaoAtividadeComplementar = new cl_turmaacativ();
     $sSqlAtividadeComplementar = $oDaoAtividadeComplementar->sql_query(null,
                                                                        "ed133_c_descr",
@@ -314,8 +308,8 @@ class MatriculaAlunoWebservice {
    */
   protected function getAtendimentosEspeciaisNaTurma($sListaAtividades) {
 
-    $aAtividades      = array();
-    $aListaAtividades = array(
+    $aAtividades      = [];
+    $aListaAtividades = [
                               'Ensino do Sistema Braile',
                               '',//está criando a string com um zero mais....
                               'Ensino do uso de recursos ópticos e não ópticos',
@@ -328,7 +322,7 @@ class MatriculaAlunoWebservice {
                               'Ensino da usabilidade e das funcionalidades da informática acessível',
                               'Ensino da Língua Portuguesa na modalidade escrita',
                               'Estratégias para autonomia no ambiente escolar'
-                             );
+                             ];
 
     $iTamanho = strlen($sListaAtividades);
     for ($iAtividade = 0; $iAtividade < $iTamanho; $iAtividade++) {

@@ -36,7 +36,7 @@ class EnsinoRepository
      * Coleção de Ensino
      * @var Ensino[]
      */
-    private $aEnsino = array();
+    private $aEnsino = [];
 
     /**
      * Instancia da classe
@@ -134,7 +134,7 @@ class EnsinoRepository
      */
     public static function getEnsinosInfantil()
     {
-        $aEnsinosInfantil = array();
+        $aEnsinosInfantil = [];
 
         foreach (EnsinoRepository::getEnsinos() as $oEnsino) {
             if ($oEnsino->isInfantil()) {
@@ -163,11 +163,9 @@ class EnsinoRepository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        return db_utils::makeCollectionFromRecord($rs, function ($dado) {
-            return EnsinoRepository::getEnsinoByCodigo($dado->ed10_i_codigo);
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($dado) => EnsinoRepository::getEnsinoByCodigo($dado->ed10_i_codigo));
     }
 }

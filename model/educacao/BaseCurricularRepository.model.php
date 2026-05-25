@@ -36,7 +36,7 @@
      * Collection de BaseCurricular
      * @var array
      */
-    private $aBaseCurricular = array();
+    private $aBaseCurricular = [];
 
     /**
      * Instancia da classe

@@ -65,10 +65,7 @@ class CensoUFRepository {
    */
   public static function getEstadoPorCodigo($iCodigo) {
 
-    if (isset(CensoUFRepository::getInstance()->aUF[$iCodigo])) {
-      return CensoUFRepository::getInstance()->aUF[$iCodigo];
-    }
-    return false;
+    return CensoUFRepository::getInstance()->aUF[$iCodigo] ?? false;
   }
 
   public static function getEstadoPorSigla($siglaUF) {
@@ -79,7 +76,7 @@ class CensoUFRepository {
     $oDaoCensoUF = new cl_censouf;
     $sSqlCenso   = $oDaoCensoUF->sql_query_file(null, "*", null,$where);
     $rsCensoUF   = db_query($sSqlCenso);
-    if(pg_numrows($rsCensoUF) > 0){
+    if(pg_num_rows($rsCensoUF) > 0){
       $dadosUFCenso = db_utils::fieldsMemory($rsCensoUF,0);
       $ufCenso->iCodigo = $dadosUFCenso->ed260_i_codigo;
       $ufCenso->sUF = $dadosUFCenso->ed260_c_sigla;

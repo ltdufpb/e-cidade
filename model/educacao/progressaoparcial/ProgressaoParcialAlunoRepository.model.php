@@ -40,7 +40,7 @@ class ProgressaoParcialAlunoRepository {
    * Array com instancias de ProgressaoParcialAluno
    * @var array
    */
-  private $aProgressaoParcialAluno = array();
+  private $aProgressaoParcialAluno = [];
   private static $oInstance;
 
   private function __construct() {
@@ -168,7 +168,7 @@ class ProgressaoParcialAlunoRepository {
    */
   public static function getProgressoesReprovadas(Aluno $oAluno) {
 
-    $aProgressoes               = array();
+    $aProgressoes               = [];
     $oDaoProgressaoParcialAluno = new cl_progressaoparcialaluno();
     $sWhere                     = "ed114_aluno = {$oAluno->getCodigoAluno()}";
     $sWhere                    .= " and ed114_situacaoeducacao  <> " . ProgressaoParcialAluno::INATIVA;
@@ -200,7 +200,7 @@ class ProgressaoParcialAlunoRepository {
    */
   public static function getProgressoesNaoEncerradasDoAluno(Aluno $oAluno) {
 
-    $aProgressoes               = array();
+    $aProgressoes               = [];
     $oDaoProgressaoParcialAluno = new cl_progressaoparcialaluno();
     $sWhere                     = "ed114_aluno = {$oAluno->getCodigoAluno()}";
     $sWhere                    .= " and (ed150_encerrado is false or ed150_sequencial is null)";
@@ -232,7 +232,7 @@ class ProgressaoParcialAlunoRepository {
    */
   public static function getProgressoesAprovadasNaEtapa(Aluno $oAluno, Etapa $oEtapa) {
 
-    $aProgressoes               = array();
+    $aProgressoes               = [];
     $oDaoProgressaoParcialAluno = new cl_progressaoparcialaluno();
     $sWhere                     = "ed114_aluno = {$oAluno->getCodigoAluno()}";
     $sWhere                    .= " and ed114_situacaoeducacao  = " . ProgressaoParcialAluno::CONCLUIDA;
@@ -300,7 +300,7 @@ class ProgressaoParcialAlunoRepository {
    */
   public static function getProgressoesAtivas(Aluno $oAluno) {
 
-    $aProgressoes               = array();
+    $aProgressoes               = [];
     $oDaoProgressaoParcialAluno = new cl_progressaoparcialaluno();
     $sWhere                     = "ed114_aluno = {$oAluno->getCodigoAluno()}";
     $sWhere                    .= " and ed114_situacaoeducacao = " . ProgressaoParcialAluno::ATIVA;
@@ -332,7 +332,7 @@ class ProgressaoParcialAlunoRepository {
    */
   public static function getProgressoesAtivasNaMatricula(Matricula $oMatricula) {
 
-    $aProgressoes               = array();
+    $aProgressoes               = [];
     $oDaoProgressaoParcialAluno = new cl_progressaoparcialaluno();
     $sWhere                     = "ed114_aluno = {$oMatricula->getAluno()->getCodigoAluno()}";
     $sWhere                    .= " and (ed114_ano < {$oMatricula->getTurma()->getCalendario()->getAnoExecucao()})";
@@ -384,7 +384,7 @@ class ProgressaoParcialAlunoRepository {
       throw new DBException( _M(self::MSG_PROGRESSAOPARCIALALUNOREPOSITORY . "erro_bucar_progressoes_regencia", $oMsgErro) );
     }
 
-    $aProgressoes = array();
+    $aProgressoes = [];
     $iLinhas      = pg_num_rows($rsProgressoes);
     for ( $i = 0; $i < $iLinhas; $i++) {
 
@@ -401,7 +401,7 @@ class ProgressaoParcialAlunoRepository {
   public static function removeAll() {
 
     unset(ProgressaoParcialAlunoRepository::getInstance()->aProgressaoParcialAluno);
-    ProgressaoParcialAlunoRepository::getInstance()->aProgressaoParcialAluno = array();
+    ProgressaoParcialAlunoRepository::getInstance()->aProgressaoParcialAluno = [];
     return true;
   }
 

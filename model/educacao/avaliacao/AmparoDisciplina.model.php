@@ -86,16 +86,10 @@ class AmparoDisciplina {
   private $oJustificativa = null;
 
   /**
-   *
-   * @var DiarioAvaliacaoDisciplina
-   */
-  private $oDiarioAvaliacaoDisciplina;
-
-  /**
    * Lista de periodos amparados
    * @var array
    */
-  private $aPeriodosAmparados =  array();
+  private $aPeriodosAmparados =  [];
 
   /**
    * O Amparo é feito por convencao
@@ -119,12 +113,10 @@ class AmparoDisciplina {
    * Instancia um novo amparo, ou carrega os dados de um amparo existente para uma discipplina de um aluno
    * @param DiarioAvaliacaoDisciplina $oDiarioAvaliacaoDisciplina
    */
-  public function __construct(DiarioAvaliacaoDisciplina $oDiarioAvaliacaoDisciplina) {
-
-    $this->oDiarioAvaliacaoDisciplina = $oDiarioAvaliacaoDisciplina;
+  public function __construct(private DiarioAvaliacaoDisciplina $oDiarioAvaliacaoDisciplina) {
 
     $oDaoAmparo           = db_utils::getDao("amparo");
-    $sWhere               = "ed81_i_diario = {$oDiarioAvaliacaoDisciplina->getCodigoDiario()}";
+    $sWhere               = "ed81_i_diario = {$this->oDiarioAvaliacaoDisciplina->getCodigoDiario()}";
     $sSqlAmparoDisciplina = $oDaoAmparo->sql_query_file(null, "*", null, $sWhere);
     $rsAmparoDisciplina   = db_query($sSqlAmparoDisciplina);
     if (!$rsAmparoDisciplina) {
@@ -485,7 +477,7 @@ class AmparoDisciplina {
   private function getResultadosQueDevemSeremAmparados() {
 
     // busca todos resultados que não gerem resultado final
-    $aResultados = array();
+    $aResultados = [];
     foreach ($this->oDiarioAvaliacaoDisciplina->getResultados() as $oAvaliacaoResultado) {
 
       if ( $oAvaliacaoResultado->getElementoAvaliacao()->geraResultadoFinal() ) {
@@ -498,7 +490,7 @@ class AmparoDisciplina {
      * Valida se todos os elementos de avaliação que compõem um resultado esta amparado.
      * Se sim amparamos os resultados
      */
-    $aResultadosQueDevemSeremAmparados = array();
+    $aResultadosQueDevemSeremAmparados = [];
     foreach ($aResultados as $oAvaliacaoResultado) {
 
       $iElementosAmparadosDoResultado = 0;
