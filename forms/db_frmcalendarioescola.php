@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -65,25 +65,25 @@ if($clescola->numrows>0){
    <?=@$Led38_i_codigo?>
   </td>
   <td>
-   <?db_input('ed38_i_codigo',10,$Ied38_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed38_i_codigo',10,$Ied38_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted38_i_escola?>">
-   <?db_ancora(@$Led38_i_escola,"",3);?>
+   <?php db_ancora(@$Led38_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed38_i_escola',10,$Ied38_i_escola,true,'text',3,"")?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?php db_input('ed38_i_escola',10,$Ied38_i_escola,true,'text',3,"")?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted38_i_calendario?>">
-   <?db_ancora(@$Led38_i_calendario,"",3);?>
+   <?php db_ancora(@$Led38_i_calendario,"",3);?>
   </td>
   <td>
-   <?db_input('ed38_i_calendario',10,$Ied38_i_calendario,true,'text',3,"","",$cor)?>
-   <?db_input('ed52_c_descr',40,@$Ied52_c_descr,true,'text',3,"","",$cor)?>
+   <?php db_input('ed38_i_calendario',10,$Ied38_i_calendario,true,'text',3,"","",$cor)?>
+   <?php db_input('ed52_c_descr',40,@$Ied52_c_descr,true,'text',3,"","",$cor)?>
   </td>
  </tr>
 </table>
@@ -92,7 +92,7 @@ if($clescola->numrows>0){
 <table>
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("ed38_i_codigo"=>@$ed38_i_codigo,
                     "ed38_i_escola"=>@$ed38_i_escola,
                     "ed18_c_nome"=>@$ed18_c_nome,

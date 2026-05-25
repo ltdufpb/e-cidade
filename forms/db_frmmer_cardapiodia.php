@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ $clrotulo->label("me37_i_tipocardapio");
       <b>Cardápio:</b>
      </td>
      <td> 
-      <?
+      <?php 
       $hoje = date("Y-m-d",db_getsession("DB_datausu"));
       $result_cardapio = $clmer_tipocardapio->sql_record($clmer_tipocardapio->sql_query("",
                                                                                           "me27_i_codigo,me27_c_nome,me27_f_versao,me27_i_id",
@@ -59,13 +59,13 @@ $clrotulo->label("me37_i_tipocardapio");
       <select name="cardapio" id="cardapio"   onChange="js_pesquisa_refeicao(this.value);js_carrega_iframe(this.value);"
               style="height:18px;font-size:9px;">
       <option value="0"></option>
-      <?
+      <?php 
       for ($t = 0; $t < $clmer_tipocardapio->numrows; $t++) {
         
         db_fieldsmemory($result_cardapio,$t);
         ?>
         <option value="<?=$me27_i_codigo?>"><?=$me27_c_nome?> - Versão: <?=$me27_f_versao?></option>
-        <?
+        <?php 
              
       }
       ?>
@@ -105,7 +105,7 @@ $clrotulo->label("me37_i_tipocardapio");
       <b>Dia da Semana:</b>
      </td>
      <td> 
-      <?
+      <?php 
       $result_dias = $cldiasemana->sql_record(
                                               $cldiasemana->sql_query_rh("",
                                                                          "ed32_i_codigo,ed32_c_descr",
@@ -116,11 +116,11 @@ $clrotulo->label("me37_i_tipocardapio");
       ?> 
       <select name="diasemana" id="diasemana" onchange="js_carrega_iframe();" style="font-size:9px;height:18px;">
        <option value="8">TODOS</option>
-       <?for ($t = 0; $t < $cldiasemana->numrows; $t++) {
+       <?php for ($t = 0; $t < $cldiasemana->numrows; $t++) {
            db_fieldsmemory($result_dias,$t);
         ?>
            <option value="<?=($ed32_i_codigo-1)?>"><?=$ed32_c_descr?></option>
-       <?}?>
+       <?php }?>
       </select>
      </td>
     </tr>

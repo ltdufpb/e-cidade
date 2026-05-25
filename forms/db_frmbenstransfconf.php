@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrotulo->label("t52_ident");
           <?=@$Lt96_data?>
         </td>
         <td> 
-          <?
+          <?php 
             $t96_data_dia=date("d",db_getsession("DB_datausu"));
             $t96_data_mes=date("m",db_getsession("DB_datausu"));
             $t96_data_ano=date("Y",db_getsession("DB_datausu"));
@@ -68,25 +68,25 @@ $clrotulo->label("t52_ident");
           <?=(@$Lnome)?>
         </td>
         <td> 
-          <?
+          <?php 
             db_input('t96_id_usuario',8,$It96_id_usuario,true,'text',3," onchange='js_pesquisat96_id_usuario(false);'")
           ?>
-          <?
+          <?php 
             db_input('nome',40,$Inome,true,'text',3,'')
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt96_codtran?>">
-          <?
+          <?php 
             db_ancora(@$Lt96_codtran,"js_pesquisat96_codtran(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?
+          <?php 
             db_input('t96_codtran',8,$It96_codtran,true,'text',$db_opcao," onchange='js_pesquisat96_codtran(false);'")
           ?>
-          <?
+          <?php 
             db_input('nome',40,$Inome,true,'text',3,'','nome_transf')
           ?>
         </td>
@@ -94,7 +94,7 @@ $clrotulo->label("t52_ident");
     </table>
   </fieldset>
   <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Receber":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-  <?
+  <?php 
     if ( isset($t96_codtran) && $t96_codtran != "" ) {
       
       $sCamposBensTransfCodigo = "distinct t95_codtran,t95_codbem,t52_descr,t95_situac,t70_descr,t95_histor,t31_divisao,t30_descr,t52_ident";
@@ -139,7 +139,7 @@ $clrotulo->label("t52_ident");
           db_fieldsmemory($result1,$y);
    	        ?>
    	          <option value=<?=@$t30_codigo?> <?=(isset($t31_divisao)&&$t31_divisao==$t30_codigo?"selected":"") ?> > <?=@$t30_descr?> </option>
-   	        <?
+   	        <?php 
   	    }
         echo " </select>";          
      
@@ -182,7 +182,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benstransfconf.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

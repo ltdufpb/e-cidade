@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $me27_c_nome = stripslashes($me27_c_nome);
   </tr>
   <tr>
     <td colspan="4">
-     <?
+     <?php 
        db_ancora(@$Lme32_i_tipocardapio,"",3);echo "&nbsp";
        db_input('me32_i_tipocardapio',10,$Ime32_i_tipocardapio,true,'text',3,"");
        db_input('me27_c_nome',60,$Ime27_c_nome,true,'text',3,'');

@@ -49,7 +49,7 @@ $clrotulo->label("s111_procedimento");
               <tr>
                 <td nowrap title="<?=$Ts111_i_prestador?>"><?=$Ls111_i_prestador?></td>
                 <td>
-                  <?
+                  <?php 
                   db_input( 's111_i_prestador', 10, $Is111_i_prestador, true, 'text', 3 );
                   db_input( 'z01_nome',         59, $Iz01_nome,          true, 'text', 3 );
                   ?>
@@ -57,7 +57,7 @@ $clrotulo->label("s111_procedimento");
               </tr>
               <tr>
                 <td nowrap title="<?=$Ts111_procedimento?>">
-                  <?
+                  <?php 
                   db_ancora( $Ls111_procedimento, "js_pesquisas111_i_exame(true);", $db_opcao );
                   ?>
                 </td>

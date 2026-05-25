@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -130,7 +130,7 @@ function js_select(tipo){
   </table>
 
 <!--   -->
-<?
+<?php 
   if (!isset($o69_codparamrel) || $o69_codparamrel ==""){
          $o69_codparamrel=0;
          $o69_codseq=0;  	 
@@ -218,7 +218,7 @@ function js_select(tipo){
   <div id='div_ativo' style='position:absolute; visibility:hidden;' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC" align="center"> 
 
-  <?// se alteração     
+  <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>Reduz</th><th>Recurso</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($a_codcon);$i++) {
          echo "<tr>";
@@ -238,7 +238,7 @@ function js_select(tipo){
   </div> 
   <div id='div_passivo' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC">
-   <?// se alteração     
+   <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>Reduz</th><th>Recurso</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($p_codcon);$i++) {
          echo "<tr>";
@@ -259,7 +259,7 @@ function js_select(tipo){
   </div>
   <div id='div_rec' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC"> 
-   <?// se alteração     
+   <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>Reduz</th><th>Recurso</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($r_codcon);$i++) {
          echo "<tr>";
@@ -280,7 +280,7 @@ function js_select(tipo){
   </div>
   <div id='div_desp' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC"> 
-  <?
+  <?php 
    // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>Reduz</th><th>Recurso</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($d_codcon);$i++) {
@@ -302,7 +302,7 @@ function js_select(tipo){
   </div>
   <div id='div_outros' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC"> 
-   <?// se alteração     
+   <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>Reduz</th><th>Recurso</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($o_codcon);$i++) {
          echo "<tr>";

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -69,7 +69,7 @@ if ($clpcorcamforne->numrows > 0){
 <center><br><br>
 <table height="20" border="0">
   <tr>
-<?  
+<?php   
     db_input('orcamento',10,0,true,'hidden',3);
     db_input('orcamforne',8,0,true,'hidden',3);
     db_input('l20_codigo',10,0,true,'hidden',3);
@@ -81,11 +81,11 @@ if ($clpcorcamforne->numrows > 0){
        <?=@$Lpc25_orcamitem?>
     </td>
     <td> 
-    <?
+    <?php 
         db_input('pc25_orcamitem',8,$Ipc25_orcamitem,true,'text',3);
     ?>
     </td>
-<?
+<?php 
     }
 ?>
   </tr>  
@@ -94,7 +94,7 @@ if ($clpcorcamforne->numrows > 0){
 	<strong>Fornecedor cotado:</strong>
     </td>
     <td> 
-    <?
+    <?php 
     $result_forneccotado = $clpcorcamforne->sql_record($clpcorcamforne->sql_query_fornec(null,"pc21_orcamforne as pc21_orcamforne_ant,z01_nome as z01_nome_ant","","pc22_codorc=$orcamento and pc21_orcamforne=$orcamforne $dbwhere"));
     if($clpcorcamforne->numrows>0){
       db_fieldsmemory($result_forneccotado,0);
@@ -109,7 +109,7 @@ if ($clpcorcamforne->numrows > 0){
 	<strong>Obs do item:</strong>
     </td>
     <td> 
-    <?
+    <?php 
     db_input('pc23_obs',51,$Ipc23_obs,true,'text',3);
     ?>
     </td>
@@ -119,7 +119,7 @@ if ($clpcorcamforne->numrows > 0){
 	<strong>Fornecedor para troca:</strong>
     </td>
     <td> 
-    <?
+    <?php 
     $result_fornec = $clpcorcamforne->sql_record($clpcorcamforne->sql_query_fornec(null,"pc21_orcamforne, z01_nome, sum(coalesce(pc23_valor, 0)) as pc23_valor, l04_descricao","l04_descricao,z01_nome,pc21_orcamforne","pc22_codorc=$orcamento and pc21_orcamforne<>$orcamforne and pc23_valor > 0 and pc32_orcamitem is null $dbwhere $dbwhere_lote group by pc21_orcamforne, z01_nome, l04_descricao"));
     $numrows       = $clpcorcamforne->numrows;
 
@@ -139,13 +139,13 @@ if ($clpcorcamforne->numrows > 0){
     ?>
     </td>
    </tr> 
-<?
+<?php 
     if ($tipojulg == 1) {
 ?>
    <tr> 
     <td><b>Preco Cotado para troca:</b></td>
     <td>
-    <?
+    <?php 
     if ($clpcorcamforne->numrows > 0){
          for($i = 0; $i < $clpcorcamforne->numrows; $i++){
               db_fieldsmemory($result_fornec,$i);
@@ -163,7 +163,7 @@ if ($clpcorcamforne->numrows > 0){
     ?>
     </td> 
   </tr>  
-<?
+<?php 
   }
 ?>
   <tr>
@@ -171,7 +171,7 @@ if ($clpcorcamforne->numrows > 0){
        <?=@$Lpc25_motivo?>
     </td>
     <td> 
-    <?
+    <?php 
     db_textarea('pc25_motivo',3,48,$Ipc25_motivo,true,'text',1);
     db_input("tipojulg",1,0,true,"hidden",3);
     ?>
@@ -186,7 +186,7 @@ if ($clpcorcamforne->numrows > 0){
 </table>
 </center>
 </form>
-<?
+<?php 
     if ($numrows == 0){
          db_msgbox("Nao existem fornecedor(es) para troca");
          echo "<script>
@@ -215,14 +215,14 @@ function js_confirmar(){
 }
 arr_valores = new Array();
 arr_obsss = new Array();
-<?
+<?php 
 $result_valores = $clpcorcamval->sql_record($clpcorcamval->sql_query_file(null,null,"pc23_orcamforne,pc23_valor,pc23_obs","pc23_orcamforne","pc23_valor > 0 $dbwhere2"));
 for($i=0;$i<$clpcorcamval->numrows;$i++){
   db_fieldsmemory($result_valores,$i);
 ?>
   arr_valores[<?=$pc23_orcamforne?>] = '<?=db_formatar($pc23_valor,"f")?>';;
-  arr_obsss[<?=$pc23_orcamforne?>]   = '<? echo addslashes($pc23_obs); ?>';
-<?  
+  arr_obsss[<?=$pc23_orcamforne?>]   = '<?php  echo addslashes($pc23_obs); ?>';
+<?php   
 }
 ?>
 function js_mostravalor(valor){

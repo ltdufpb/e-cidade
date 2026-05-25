@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ $at75_seqclimod = $sequencial;
 ?>
 <form name="form1" method="post" action="">
 <table border="0" width='100%'>
-<?
+<?php 
 db_input('at75_seqclimod',6,$Iat75_seqclimod,true,'hidden',3,"");
 
 for($i=0;$i<pg_numrows($result);$i++){
@@ -104,20 +104,20 @@ for($i=0;$i<pg_numrows($result);$i++){
 ?>
   <tr width="100%">
     <td> 
-    <?
+    <?php 
     db_input('at75_codproced_'.$codproced,10,$Iat75_codproced,true,'text',3)
     ?>
-    <?
+    <?php 
     db_input('descrproced_'.$codproced,40,$Idescrproced,true,'text',3,'')
     ?>
     </td>
     <td> 
-    <?
+    <?php 
     db_inputdata('at75_data_'.$codproced,@$at75_data_dia,@$at75_data_mes,@$at75_data_ano,true,'text',$db_opcao,"")
     ?>
     </td>
     <td> 
-    <?
+    <?php 
     db_textarea('at75_obs_'.$codproced,1,50,$Iat75_obs,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -127,7 +127,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     <input name="at76_sequen_<?=$codproced?>" value="<?=$at75_sequen?>" type="hidden">
     </td>
   </tr>
-<?
+<?php 
 }
 ?>
   </table>

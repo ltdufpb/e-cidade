@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,15 +44,15 @@ $opcao = @$bi18_codigo==""?1:3;
  <table border="0">
   <tr>
     <td nowrap title="<?=@$Tbi18_leitor?>">
-       <?
+       <?php 
        db_ancora(@$Lbi18_leitor,"js_pesquisabi18_leitor(true);",$opcao);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('bi18_leitor',10,$Ibi18_leitor,true,'text',$opcao," onchange='js_pesquisabi18_leitor(false);'")
 ?>
-<?
+<?php 
 db_input('z01_nome',50,@$z01_nome,true,'text',3," ")
 ?>
     </td>
@@ -62,7 +62,7 @@ db_input('z01_nome',50,@$z01_nome,true,'text',3," ")
        <?=@$Lbi18_retirada?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('bi18_retirada',@$bi18_retirada_dia,@$bi18_retirada_mes,@$bi18_retirada_ano,true,'text',3,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ db_inputdata('bi18_retirada',@$bi18_retirada_dia,@$bi18_retirada_mes,@$bi18_reti
        <?=@$Lbi18_devolucao?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('bi18_devolucao',@$bi18_devolucao_dia,@$bi18_devolucao_mes,@$bi18_devolucao_ano,true,'text',$opcao,"")
 ?>
     </td>
@@ -81,22 +81,22 @@ db_inputdata('bi18_devolucao',@$bi18_devolucao_dia,@$bi18_devolucao_mes,@$bi18_d
   </fieldset>
  </td></tr></table>
  <br>
- <?if(!empty($bi18_codigo)){?>
+ <?php if(!empty($bi18_codigo)){?>
  <table border="0">
   <tr>
     <td colspan="2">
       <fieldset width="100%"><legend><b>Acervo:</b></legend>
-      <?include(modification("forms/db_frmemprestimoacervo.php"));?>
+      <?php include(modification("forms/db_frmemprestimoacervo.php"));?>
       </fieldset>
     </td>
   </tr>
  </table>
- <?}?>
+ <?php }?>
  <input name="<?=@$bi18_codigo==''?'incluir':'incluir2'?>" type="submit" id="<?=@$bi18_codigo==''?'incluir':'incluir2'?>" value="<?=@$bi18_codigo==''?'Próximo':'Salvar'?>" <?=@$bi19_codigo!=""?"disabled":""?> >
  <input name="excluir" type="submit" id="excluir" value="Excluir" <?=@$bi19_codigo==""?"disabled":""?> >
  <input name="cancelar" type="button" id="cancelar" value="Cancelar" <?=@$bi19_codigo==""?"disabled":""?> onclick="location='bib1_emprestimo001.php?bi18_codigo=<?=$bi18_codigo?>'">
  <br><br>
-  <?
+  <?php 
   if(!empty($bi18_codigo)){
     $chavepri= array("bi19_codigo"=>@$bi19_codigo,"bi06_seq"=>@$bi06_seq,"bi06_codbarras"=>@$bi06_codbarras,"bi06_titulo"=>@$bi06_titulo);
     $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -147,7 +147,7 @@ function js_pesquisa2(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_emprestimo.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

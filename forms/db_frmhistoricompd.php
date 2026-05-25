@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,67 +41,67 @@ $clrotulo->label("ed06_i_codigo");
        <?=@$Led64_i_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_codigo',10,$Ied64_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted64_i_historico?>">
-       <?
+       <?php 
        db_ancora(@$Led64_i_historico,"js_pesquisaed64_i_historico(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_historico',10,$Ied64_i_historico,true,'text',$db_opcao," onchange='js_pesquisaed64_i_historico(false);'")
 ?>
-       <?
+       <?php 
 db_input('ed61_i_codigo',10,$Ied61_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted64_i_escola?>">
-       <?
+       <?php 
        db_ancora(@$Led64_i_escola,"js_pesquisaed64_i_escola(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_escola',10,$Ied64_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed64_i_escola(false);'")
 ?>
-       <?
+       <?php 
 db_input('ed18_i_codigo',10,$Ied18_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted64_i_disciplina?>">
-       <?
+       <?php 
        db_ancora(@$Led64_i_disciplina,"js_pesquisaed64_i_disciplina(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_disciplina',10,$Ied64_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed64_i_disciplina(false);'")
 ?>
-       <?
+       <?php 
 db_input('ed12_i_codigo',10,$Ied12_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted64_i_justificativa?>">
-       <?
+       <?php 
        db_ancora(@$Led64_i_justificativa,"js_pesquisaed64_i_justificativa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_justificativa',10,$Ied64_i_justificativa,true,'text',$db_opcao," onchange='js_pesquisaed64_i_justificativa(false);'")
 ?>
-       <?
+       <?php 
 db_input('ed06_i_codigo',10,$Ied06_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -111,7 +111,7 @@ db_input('ed06_i_codigo',10,$Ied06_i_codigo,true,'text',3,'')
        <?=@$Led64_i_anoref?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_anoref',4,$Ied64_i_anoref,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -121,7 +121,7 @@ db_input('ed64_i_anoref',4,$Ied64_i_anoref,true,'text',$db_opcao,"")
        <?=@$Led64_i_periodoref?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_periodoref',10,$Ied64_i_periodoref,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -131,7 +131,7 @@ db_input('ed64_i_periodoref',10,$Ied64_i_periodoref,true,'text',$db_opcao,"")
        <?=@$Led64_c_resultadofinal?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_c_resultadofinal',1,$Ied64_c_resultadofinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,7 +141,7 @@ db_input('ed64_c_resultadofinal',1,$Ied64_c_resultadofinal,true,'text',$db_opcao
        <?=@$Led64_c_situacao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_c_situacao',20,$Ied64_c_situacao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -151,7 +151,7 @@ db_input('ed64_c_situacao',20,$Ied64_c_situacao,true,'text',$db_opcao,"")
        <?=@$Led64_t_resultobtido?>
     </td>
     <td> 
-<?
+<?php 
 db_textarea('ed64_t_resultobtido',0,0,$Ied64_t_resultobtido,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -161,7 +161,7 @@ db_textarea('ed64_t_resultobtido',0,0,$Ied64_t_resultobtido,true,'text',$db_opca
        <?=@$Led64_i_qtdch?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_i_qtdch',10,$Ied64_i_qtdch,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -171,7 +171,7 @@ db_input('ed64_i_qtdch',10,$Ied64_i_qtdch,true,'text',$db_opcao,"")
        <?=@$Led64_c_tiporesultado?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed64_c_tiporesultado',1,$Ied64_c_tiporesultado,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -279,7 +279,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_historicompd.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

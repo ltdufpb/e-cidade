@@ -188,7 +188,7 @@ if (!empty($rsParametros)) {
             <?=@$Lla30_f_normalmin?>
           </td>
           <td>
-            <?
+            <?php 
             db_input('la30_i_codigo', 5, $Ila30_i_codigo, true,'hidden',$db_opcao,"");
             db_input('la30_f_normalmin',5,$Ila30_f_normalmin,true,'text',$db_opcao,
                      "onchange=\"js_validaNormal();\"","","","parent.js_validaNormal();");
@@ -210,7 +210,7 @@ if (!empty($rsParametros)) {
            <?=$Lla30_f_absurdomin?>
           </td>
           <td>
-            <?
+            <?php 
               if ($habilitarAbsurdo == true) {
                 db_input('la30_f_absurdomin', 5, $Ila30_f_absurdomin, true, 'text', $db_opcao, "onchange=\"js_validaAbsurdo();\"", "", "", "parent.js_validaAbsurdo();");
               } else {
@@ -224,7 +224,7 @@ if (!empty($rsParametros)) {
             ?>
           </td>
           <td>
-            <?
+            <?php 
               if ($habilitarAbsurdo == true) {
                 db_input('la30_f_absurdomax', 5, $Ila30_f_absurdomax, true, 'text', $db_opcao,
                    "onchange=\"js_validaAbsurdo();\"", "", "", "parent.js_validaAbsurdo();"
@@ -353,7 +353,7 @@ if (!empty($rsParametros)) {
                     ?>
                   </td>
                   <td nowrap>
-                    <?
+                    <?php 
                     db_input('la27_i_atributobase', 10, $Ila27_i_atributo, true, 'text',
                       $db_opcao," onchange='js_pesquisala27_i_atributobase(false);' disabled");
                     db_input('la25_c_descrbase', 25,$Ila25_c_descr,true,'text',3,'');
@@ -603,7 +603,7 @@ function js_preenchepesquisa(chave){
 
   db_iframe_lab_valorreferencia.hide();
   //js_getValoresReferencioa(chave);
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

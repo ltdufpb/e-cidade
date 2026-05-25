@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,16 +44,16 @@ $clrotulo->label("s115_c_cartaosus");
       <?=$Ls115_c_cartaosus?>
     </td>
     <td>
-      <?db_input('s115_c_cartaosus',15,$Is115_c_cartaosus,true,'text',$db_opcao,
+      <?php db_input('s115_c_cartaosus',15,$Is115_c_cartaosus,true,'text',$db_opcao,
                   " onchange=\"js_getCgsCns();\"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc16_i_cgs?>">
-      <?db_ancora(@$Lvc16_i_cgs,"js_pesquisavc16_i_cgs(true);",$db_opcao);?>
+      <?php db_ancora(@$Lvc16_i_cgs,"js_pesquisavc16_i_cgs(true);",$db_opcao);?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('vc16_i_cgs',10,$Ivc16_i_cgs,true,'text',$db_opcao,
                " onchange='js_pesquisavc16_i_cgs(false);'");
       db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,'');
@@ -65,7 +65,7 @@ $clrotulo->label("s115_c_cartaosus");
       <?=$Lz01_d_nasc?>
     </td>
     <td>
-      <?
+      <?php 
       db_input('z01_d_nasc',10,$Iz01_d_nasc,true,'text',3,"");
       echo"<b>Idade:</b>";
       db_input('iIdade',23,"",true,'text',3,"");
@@ -79,7 +79,7 @@ $clrotulo->label("s115_c_cartaosus");
       <strong><b>Nome da Mãe</b></strong>
     </td>
     <td>
-      <?db_input('z01_v_mae',40,$Iz01_v_mae,true,'text',3,'');?>
+      <?php db_input('z01_v_mae',40,$Iz01_v_mae,true,'text',3,'');?>
     </td>
   </tr>
 </table>

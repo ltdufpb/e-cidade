@@ -87,7 +87,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
       <legend>Funções/Atividades</legend>
       <table>
         <tr style="display: none;">
-          <td nowrap title="<? echo $Ted01_i_codigo; ?>">
+          <td nowrap title="<?php  echo $Ted01_i_codigo; ?>">
             <label for='ed01_i_codigo'> <?php echo$Led01_i_codigo; ?></label>
           </td>
           <td>

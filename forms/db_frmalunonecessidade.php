@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -73,25 +73,25 @@ if($ed214_i_aluno!=""){
       <?=@$Led214_i_codigo?>
      </td>
      <td>
-      <?db_input('ed214_i_codigo',20,$Ied214_i_codigo,true,'text',3,"")?>
+      <?php db_input('ed214_i_codigo',20,$Ied214_i_codigo,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Ted214_i_aluno?>">
-      <?db_ancora(@$Led214_i_aluno,"",3);?>
+      <?php db_ancora(@$Led214_i_aluno,"",3);?>
      </td>
      <td>
-      <?db_input('ed214_i_aluno',20,$Ied214_i_aluno,true,'text',3)?>
-      <?db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
+      <?php db_input('ed214_i_aluno',20,$Ied214_i_aluno,true,'text',3)?>
+      <?php db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Ted214_i_necessidade?>">
-      <?db_ancora(@$Led214_i_necessidade,"js_pesquisaed214_i_necessidade(true);",$db_opcao);?>
+      <?php db_ancora(@$Led214_i_necessidade,"js_pesquisaed214_i_necessidade(true);",$db_opcao);?>
      </td>
      <td>
-      <?db_input('ed214_i_necessidade',20,$Ied214_i_necessidade,true,'text',$db_opcao," onchange='js_pesquisaed214_i_necessidade(false);'")?>
-      <?db_input('ed48_c_descr',30,@$Ied48_c_descr,true,'text',3,'')?>
+      <?php db_input('ed214_i_necessidade',20,$Ied214_i_necessidade,true,'text',$db_opcao," onchange='js_pesquisaed214_i_necessidade(false);'")?>
+      <?php db_input('ed48_c_descr',30,@$Ied48_c_descr,true,'text',3,'')?>
      </td>
     </tr>
     <tr>
@@ -99,7 +99,7 @@ if($ed214_i_aluno!=""){
       <?=@$Led214_i_apoio?>
      </td>
      <td>
-      <?
+      <?php 
       $x = array(""=>"","1"=>"SEM APOIO PEDAGÓGICO","2"=>"COM APOIO PEDAGÓGICO","3"=>"COM APOIO PEDAGÓGICO (OUTRO ESTABELECIMENTO)");
       db_select('ed214_i_apoio',$x,true,$db_opcao,"");
       ?>
@@ -110,7 +110,7 @@ if($ed214_i_aluno!=""){
       <?=@$Led214_i_tipo?>
      </td>
      <td>
-      <?
+      <?php 
       $x = array(""=>"","1"=>"SEM DIAGNÓSTICO","2"=>"FICHA DE AVALIAÇÃO","3"=>"LAUDO TÉCNICO");
       db_select('ed214_i_tipo',$x,true,$db_opcao,"");
       ?>
@@ -121,14 +121,14 @@ if($ed214_i_aluno!=""){
       <?=@$Led214_i_escola?>
      </td>
      <td>
-      <?db_input('ed214_i_escola',20,$Ied214_i_escola,true,'hidden',3,"")?>
-      <?db_input('ed18_c_nome',60,@$Ied18_c_nome,true,'text',3,'')?>
+      <?php db_input('ed214_i_escola',20,$Ied214_i_escola,true,'hidden',3,"")?>
+      <?php db_input('ed18_c_nome',60,@$Ied18_c_nome,true,'text',3,'')?>
     <tr>
      <td nowrap title="<?=@$Ted214_d_data?>">
       <?=@$Led214_d_data?>
      </td>
      <td>
-      <?db_inputdata('ed214_d_data',@$ed214_d_data_dia,@$ed214_d_data_mes,@$ed214_d_data_ano,true,'text',3,"")?>
+      <?php db_inputdata('ed214_d_data',@$ed214_d_data_dia,@$ed214_d_data_mes,@$ed214_d_data_ano,true,'text',3,"")?>
      </td>
     </tr>
     <tr>
@@ -140,13 +140,13 @@ if($ed214_i_aluno!=""){
              <?=($db_botao==false?"disabled":"")?> >
       <input name="cancelar" type="submit" value="Cancelar" <?=(@$db_botao1==false?"disabled":"")?> >
       <input id="btnRecursosParaAvaliacao" name="btnRecursosParaAvaliacao" type="button" value="Recursos Para Avaliação" disabled >
-      <?db_input('ed214_c_principal',3,@$Ied214_c_principal,true,'hidden',3,'')?>
+      <?php db_input('ed214_c_principal',3,@$Ied214_c_principal,true,'hidden',3,'')?>
      </td>
     </tr>
    </table>
   </td>
   <td valign="top">
-   <?
+   <?php 
    $sql = "SELECT * FROM alunonecessidade
             inner join necessidade on ed48_i_codigo = ed214_i_necessidade
            WHERE ed214_i_aluno = $ed214_i_aluno
@@ -157,7 +157,7 @@ if($ed214_i_aluno!=""){
     ?>
     <b>Informe a necessidade maior:</b><br>
     <select name="principal" style="width:200px;" size="4">
-     <?
+     <?php 
      for($t=0;$t<$linhas;$t++){
       db_fieldsmemory($result,$t);
       $selected = $ed214_c_principal=="SIM"?"selected":"";
@@ -167,7 +167,7 @@ if($ed214_i_aluno!=""){
      ?>
     </select><br><br>
     <input name="atualizar" value="Atualizar" type="submit">
-    <?
+    <?php 
    }
    ?>
   </td>
@@ -176,7 +176,7 @@ if($ed214_i_aluno!=""){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php 
    $chavepri= array("ed214_i_codigo"=>@$ed214_i_codigo,
                     "ed214_i_aluno"=>@$ed214_i_aluno,
                     "ed47_v_nome"=>@$ed47_v_nome,

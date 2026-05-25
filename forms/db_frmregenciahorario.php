@@ -295,7 +295,7 @@ $db_botao1 = false;
           }
           ?>
           <tr>
-          <?}?>
+          <?php }?>
           </tr>
         </table>
       </td>

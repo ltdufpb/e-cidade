@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,15 +62,15 @@ if (isset($opcao) && $opcao == "alterar") {
  <b>Código:</b>
  </td>
    <td nowrap title="<?=@$Tme36_i_codigo?>">
-    <?db_input('me36_i_codigo',10,@$Ime36_i_codigo,true,'text',3,"");?>
+    <?php db_input('me36_i_codigo',10,@$Ime36_i_codigo,true,'text',3,"");?>
    </td>
   </tr>
   <tr>
    <td nowrap title="<?=@$Tme36_i_alimento?>">
-    <?db_ancora(@$Lme36_i_alimento,"js_pesquisa_alimento(true);",3);?>
+    <?php db_ancora(@$Lme36_i_alimento,"js_pesquisa_alimento(true);",3);?>
    </td>
    <td> 
-    <?
+    <?php 
      db_input('me36_i_alimento',10,@$Ime36_i_alimento,true,'text',3,"onchange='js_pesquisa_alimento(false);'");
      db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,"");
     ?>
@@ -78,10 +78,10 @@ if (isset($opcao) && $opcao == "alterar") {
   </tr>
   <tr>
    <td nowrap title="<?=@$Tme36_i_matmater?>">
-     <?db_ancora(@$Lme36_i_matmater,"js_pesquisam60_codmater(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme36_i_matmater,"js_pesquisam60_codmater(true);",$db_opcao);?>
    </td>
    <td> 
-    <?
+    <?php 
      if (isset($me36_i_matmater) && trim($me36_i_matmater) != "") {
        $result_pcdescr = $clmer_alimentomatmater->sql_record($clmer_alimentomatmater->sql_query_file($me36_i_matmater,
                                                                                                      "m60_descr"
@@ -111,7 +111,7 @@ if (isset($opcao) && $opcao == "alterar") {
  <table>
   <tr>
     <td valign="top"> 
-    <?
+    <?php 
      $chavepri                                = array("me36_i_codigo"=>@$me36_i_codigo,
                                                       "me36_i_alimento"=>@$me36_i_alimento, 
                                                       "me35_c_nomealimento"=>@$me35_c_nomealimento,

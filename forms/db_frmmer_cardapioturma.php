@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -76,7 +76,7 @@ $escola              = db_getsession("DB_coddepto");
         <tr>
          <td>
            <b>Cardápio:</b>          
-           <?$result_cardapio = $clmer_cardapio->sql_record($clmer_cardapio->sql_query("",
+           <?php $result_cardapio = $clmer_cardapio->sql_record($clmer_cardapio->sql_query("",
                                                                                        "me01_i_codigo,me01_c_nome",
                                                                                         "",
                                                                                         ""
@@ -85,13 +85,13 @@ $escola              = db_getsession("DB_coddepto");
          <select name="cardapio" id="cardapio"   onChange="js_cardapio(this.value);"
                   style="height:18px;font-size:10px;">
            <option value="0"></option>
-           <?for ($t=0;$t<$clmer_cardapio->numrows;$t++) {
+           <?php for ($t=0;$t<$clmer_cardapio->numrows;$t++) {
         
                db_fieldsmemory($result_cardapio,$t);
            ?>
                <option value="<?=$me01_i_codigo?>"><?=$me01_c_nome?></option>
       
-           <?}?>
+           <?php }?>
           </select>
          </td>
         </tr>
@@ -101,7 +101,7 @@ $escola              = db_getsession("DB_coddepto");
         <tr>
         <td nowrap title="<?=@$Tme39_i_repeticao?>">
           <?=@$Lme39_i_repeticao?>   
-          <?db_input('me39_i_repeticao',10,@$Ime39_i_repeticao,true,'text',$db_opcao,"")?>
+          <?php db_input('me39_i_repeticao',10,@$Ime39_i_repeticao,true,'text',$db_opcao,"")?>
         </td>
         </tr>
         <tr>
@@ -120,7 +120,7 @@ $escola              = db_getsession("DB_coddepto");
  </tr>
 </table>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

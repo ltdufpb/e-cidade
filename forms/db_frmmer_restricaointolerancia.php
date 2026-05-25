@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,7 +41,7 @@ $clrotulo->label("me33_i_codigo");
        <?=@$Lme34_i_codigo?>
     </td>
     <td> 
-    <?db_input('me34_i_codigo',10,$Ime34_i_codigo,true,'text',3,"")?>
+    <?php db_input('me34_i_codigo',10,$Ime34_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -49,21 +49,21 @@ $clrotulo->label("me33_i_codigo");
      <b>Aluno:</b>
     </td>
     <td> 
-     <?db_input('me24_i_aluno',10,@$Ime24_i_aluno,true,'text',3,"")?>
-     <?db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
+     <?php db_input('me24_i_aluno',10,@$Ime24_i_aluno,true,'text',3,"")?>
+     <?php db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme34_i_intolerancia?>">
-     <?db_ancora(@$Lme34_i_intolerancia,"js_pesquisame34_i_intolerancia(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme34_i_intolerancia,"js_pesquisame34_i_intolerancia(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me34_i_intolerancia',10,$Ime34_i_intolerancia,true,'text',$db_opcao,
+     <?php db_input('me34_i_intolerancia',10,$Ime34_i_intolerancia,true,'text',$db_opcao,
                 " onchange='js_pesquisame34_i_intolerancia(false);'"
                )
      ?>
-     <?db_input('me33_c_descr',40,$Ime33_i_codigo,true,'text',3,'')?>
-     <?db_input('me34_i_restricao',40,@$Ime34_i_restricao,true,'hidden',3,'')?>
+     <?php db_input('me33_c_descr',40,$Ime33_i_codigo,true,'text',3,'')?>
+     <?php db_input('me34_i_restricao',40,@$Ime34_i_restricao,true,'hidden',3,'')?>
     </td>
   </tr>
   </table>
@@ -75,7 +75,7 @@ $clrotulo->label("me33_i_codigo");
 <input name="cancelar" type="button" id="cancela" value="Cancelar" 
        onclick="js_cancela();"  <?=($db_botao==false?"disabled":"")?> >
 <br><br>
-<?
+<?php 
 $chavepri                           = array("me34_i_codigo" => @$me34_i_codigo);
 $cliframe_alterar_excluir->chavepri = $chavepri;
 if (isset($me34_i_restricao) && @$me34_i_restricao != "") {

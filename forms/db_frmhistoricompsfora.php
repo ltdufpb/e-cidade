@@ -55,7 +55,7 @@ function js_direciona2() {
 
 parent.disciplina.location.href = "edu1_historicodisciplinafora.php?ed100_i_historicompsfora=<?=@$chavepesquisa?>";
 </script>
-<?
+<?php 
 if ( isset($situacao) && $situacao == "CONCLUÍDO") {
   $db_botao = false;
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,30 +60,30 @@ $clrotulo->label("z01_nome");
 									<tr>
 										<td nowrap title="<?=@$Tov02_sequencial?>"><?=@$Lov02_sequencial;?></td>
 										<td>
-										  <?
+										  <?php 
 										    db_input('ov02_sequencial',10,$Iov02_sequencial,true,'text',3,"");
   							        db_input('ov02_seq'       ,10,'',true,'hidden',3,"");
 										  ?>
 										</td>
 										<td>
 											<b>Processado:</b>
-											<? db_input('ov03_numcgm',10,$Iov03_numcgm,true,'text',3,"");?>
-											<? db_input('z01_nome',30,$Iz01_nome,true,'text',3,"");?>
+											<?php  db_input('ov03_numcgm',10,$Iov03_numcgm,true,'text',3,"");?>
+											<?php  db_input('z01_nome',30,$Iz01_nome,true,'text',3,"");?>
 										</td>
 									</tr>
 									<tr>
 										<td nowrap title="<?=@$Tov02_nome?>"><?=@$Lov02_nome?></td>
 										<td colspan="2"> 
-											<?db_input('ov02_nome',80,$Iov02_nome,true,'text',$db_opcao,"");?>
+											<?php db_input('ov02_nome',80,$Iov02_nome,true,'text',$db_opcao,"");?>
 										</td>
 									</tr>
 									<tr>
 										<td nowrap title="<?=@$Tov02_ident?>"><?=@$Lov02_ident?></td>
 										<td>
-											<?db_input('ov02_ident',20,$Iov02_ident,true,'text',$db_opcao,"");?>
+											<?php db_input('ov02_ident',20,$Iov02_ident,true,'text',$db_opcao,"");?>
 										</td>
 										<td nowrap title="<?=@$Tov02_cnpjcpf?>" align="left"><?=@$Lov02_cnpjcpf?>
-											<?
+											<?php 
 											db_input('ov02_cnpjcpf',14,$Iov02_cnpjcpf,true,'text',$db_opcao,"")
 											?>
 									  </td>
@@ -91,7 +91,7 @@ $clrotulo->label("z01_nome");
 									<tr>
 										<td><b>Tipo Retorno:</b></td>
 										<td colspan="2" id="tiporetorno">
-											<?
+											<?php 
 												$rsTipoRetorno = $cltiporetorno->sql_record($cltiporetorno->sql_query_file());
 												$iNumRowsTipoRetorno = pg_num_rows($rsTipoRetorno);
 												if($iNumRowsTipoRetorno > 0){
@@ -118,12 +118,12 @@ $clrotulo->label("z01_nome");
 				        <table>
 									<tr>
 										<td nowrap title="<?=@$Tov02_endereco?>">
-											<?
+											<?php 
 											db_ancora(@$Lov02_endereco,"js_pesquisaov02_endereco(true);",$db_opcao,'','ancora_endereco');
 											?>
 											
 										<td>
-											<?
+											<?php 
 											db_input('ov02_endereco',50,$Iov02_endereco,true,'text',$db_opcao,"")
 											?>
 										</td>
@@ -131,19 +131,19 @@ $clrotulo->label("z01_nome");
 											<?=@$Lov02_numero?>
 										</td>
 										<td>
-											<?
+											<?php 
 											db_input('ov02_numero',20,$Iov02_numero,true,'text',$db_opcao,"")
 											?>
 										</td>
 									</tr>
 									<tr>
 										<td nowrap title="<?=@$Tov02_bairro?>">
-										<? 
+										<?php  
 										db_ancora(@$Lov02_bairro,"js_pesquisaov02_bairro(true);",$db_opcao,'','ancora_bairro');
 					       		?>
 					       		</td>
 										<td> 
-											<?
+											<?php 
 											db_input('ov02_bairro',50,$Iov02_bairro,true,'text',$db_opcao,"")
 											?>
 										</td>
@@ -151,7 +151,7 @@ $clrotulo->label("z01_nome");
 											<?=@$Lov02_compl?>
 										</td>
 										<td>
-											<?
+											<?php 
 											db_input('ov02_compl',20,$Iov02_compl,true,'text',$db_opcao,"")
 											?>
 										</td>  					
@@ -159,17 +159,17 @@ $clrotulo->label("z01_nome");
 									<tr>
 										<td nowrap title="<?=@$Tov02_munic?>"><?=@$Lov02_munic?></td>
 										<td> 
-											<?
+											<?php 
 											db_input('ov02_munic',30,$Iov02_munic,true,'text',$db_opcao,"")
 											?>
 											<?=@$Lov02_uf?>
-											<?
+											<?php 
 											db_input('ov02_uf',2,$Iov02_uf,true,'text',$db_opcao,"")
 											?>
 										</td>
 										<td nowrap title="<?=@$Tov02_cep?>" align="right"><?=@$Lov02_cep?></td>
 										<td> 
-											<?db_input('ov02_cep',20,$Iov02_cep,true,'text',$db_opcao,"")?>
+											<?php db_input('ov02_cep',20,$Iov02_cep,true,'text',$db_opcao,"")?>
 										</td>
 									</tr>
 				        </table>

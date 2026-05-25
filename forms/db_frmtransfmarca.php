@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,45 +42,45 @@ $clrotulo->label("p51_descr");
    <?=@$Lma02_i_codigo?>
   </td>
   <td>
-   <?db_input('ma02_i_codigo',10,$Ima02_i_codigo,true,'text',3,"")?>
+   <?php db_input('ma02_i_codigo',10,$Ima02_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma02_i_marca?>">
-   <?db_ancora(@$Lma02_i_marca,"js_pesquisama02_i_marca(true);",$db_opcao);?>
+   <?php db_ancora(@$Lma02_i_marca,"js_pesquisama02_i_marca(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ma02_i_marca',10,$Ima02_i_marca,true,'text',$db_opcao,"onchange=js_pesquisama02_i_marca(false);")?>
+   <?php db_input('ma02_i_marca',10,$Ima02_i_marca,true,'text',$db_opcao,"onchange=js_pesquisama02_i_marca(false);")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma02_i_propant?>">
-   <?db_ancora(@$Lma02_i_propant,"js_pesquisama02_i_propant(true);",3);?>
+   <?php db_ancora(@$Lma02_i_propant,"js_pesquisama02_i_propant(true);",3);?>
   </td>
   <td>
-   <?db_input('ma02_i_propant',10,$Ima02_i_propant,true,'text',3," onchange='js_pesquisama02_i_propant(false);'")?>
-   <?db_input('nome1',40,@$nome1,true,'text',3,'')?>
+   <?php db_input('ma02_i_propant',10,$Ima02_i_propant,true,'text',3," onchange='js_pesquisama02_i_propant(false);'")?>
+   <?php db_input('nome1',40,@$nome1,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma02_i_codproc?>">
-   <?db_ancora(@$Lma02_i_codproc,"js_pesquisama02_i_codproc(true);",$db_opcao);?>
+   <?php db_ancora(@$Lma02_i_codproc,"js_pesquisama02_i_codproc(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ma02_i_codproc',10,$Ima02_i_codproc,true,'text',$db_opcao," onchange='js_pesquisama02_i_codproc(false);'")?>
-   <?//db_input('ma02_i_codproc',10,$Ima02_i_codproc,true,'text',3," onchange='js_pesquisama02_i_codproc(false);'")?>
-   <?db_input('p51_descr',40,$Ip51_descr,true,'text',3,'')?>
+   <?php db_input('ma02_i_codproc',10,$Ima02_i_codproc,true,'text',$db_opcao," onchange='js_pesquisama02_i_codproc(false);'")?>
+   <?php //db_input('ma02_i_codproc',10,$Ima02_i_codproc,true,'text',3," onchange='js_pesquisama02_i_codproc(false);'")?>
+   <?php db_input('p51_descr',40,$Ip51_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma02_i_propnovo?>">
-   <?db_ancora(@$Lma02_i_propnovo,"js_pesquisama02_i_propnovo(true);",$db_opcao);?>
-   <?//db_ancora(@$Lma02_i_propnovo,"js_pesquisama02_i_propnovo(true);",3);?>
+   <?php db_ancora(@$Lma02_i_propnovo,"js_pesquisama02_i_propnovo(true);",$db_opcao);?>
+   <?php //db_ancora(@$Lma02_i_propnovo,"js_pesquisama02_i_propnovo(true);",3);?>
   </td>
   <td>
-   <?db_input('ma02_i_propnovo',10,$Ima02_i_propnovo,true,'text',$db_opcao," onchange='js_pesquisama02_i_propnovo(false);'")?>
-   <?//db_input('ma02_i_propnovo',10,$Ima02_i_propnovo,true,'text',3," onchange='js_pesquisama02_i_propnovo(false);'")?>
-   <?db_input('nome2',40,@$nome2,true,'text',3,'')?>
+   <?php db_input('ma02_i_propnovo',10,$Ima02_i_propnovo,true,'text',$db_opcao," onchange='js_pesquisama02_i_propnovo(false);'")?>
+   <?php //db_input('ma02_i_propnovo',10,$Ima02_i_propnovo,true,'text',3," onchange='js_pesquisama02_i_propnovo(false);'")?>
+   <?php db_input('nome2',40,@$nome2,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -88,7 +88,7 @@ $clrotulo->label("p51_descr");
    <?=@$Lma02_d_data?>
   </td>
   <td>
-   <?db_inputdata('ma02_d_data',@$ma02_d_data_dia,@$ma02_d_data_mes,@$ma02_d_data_ano,true,'text',3,"")?>
+   <?php db_inputdata('ma02_d_data',@$ma02_d_data_dia,@$ma02_d_data_mes,@$ma02_d_data_ano,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -96,7 +96,7 @@ $clrotulo->label("p51_descr");
    <?=@$Lma02_t_obs?>
   </td>
   <td>
-   <?db_textarea('ma02_t_obs',5,50,$Ima02_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ma02_t_obs',5,50,$Ima02_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -181,7 +181,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_transfmarca.hide();
- <?
+ <?php 
  if($db_opcao!=1){
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }

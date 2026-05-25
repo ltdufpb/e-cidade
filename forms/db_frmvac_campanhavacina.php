@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,27 +40,27 @@ $clrotulo->label("vc06_c_descr");
        <?=@$Lvc12_i_codigo?>
     </td>
     <td> 
-     <?db_input('vc12_i_codigo',10,$Ivc12_i_codigo,true,'text',3,"")?>
+     <?php db_input('vc12_i_codigo',10,$Ivc12_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc12_i_campanha?>">
-     <? db_ancora(@$Lvc12_i_campanha,"js_pesquisavc12_i_campanha(true);",3);?>
+     <?php  db_ancora(@$Lvc12_i_campanha,"js_pesquisavc12_i_campanha(true);",3);?>
     </td>
     <td> 
-     <?db_input('vc12_i_campanha',10,$Ivc12_i_campanha,true,'text',3,
+     <?php db_input('vc12_i_campanha',10,$Ivc12_i_campanha,true,'text',3,
                  " onchange='js_pesquisavc12_i_campanha(false);'")?>
-     <?db_input('vc11_c_nome',20,$Ivc11_c_nome,true,'text',3,'')?>
+     <?php db_input('vc11_c_nome',20,$Ivc11_c_nome,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc12_i_vacina?>">
-     <? db_ancora(@$Lvc12_i_vacina,"js_pesquisavc12_i_vacina(true);",$db_opcao);?>
+     <?php  db_ancora(@$Lvc12_i_vacina,"js_pesquisavc12_i_vacina(true);",$db_opcao);?>
     </td>
     <td> 
-      <?db_input('vc12_i_vacina',10,$Ivc12_i_vacina,true,'text',$db_opcao,
+      <?php db_input('vc12_i_vacina',10,$Ivc12_i_vacina,true,'text',$db_opcao,
                   " onchange='js_pesquisavc12_i_vacina(false);'")?>
-      <?db_input('vc06_c_descr',10,$Ivc06_c_descr,true,'text',3,'')?>
+      <?php db_input('vc06_c_descr',10,$Ivc06_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -79,7 +79,7 @@ $clrotulo->label("vc06_c_descr");
 </form>
 </fieldset>
 
-<?
+<?php 
   $chavepri= array("vc12_i_codigo"=>@$vc12_i_codigo);
   $cliframe_alterar_excluir->chavepri=$chavepri;
   if (isset($vc12_i_campanha) && @$vc12_i_campanha!="") {
@@ -165,7 +165,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_campanhavacina.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

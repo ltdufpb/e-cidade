@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,28 +39,28 @@ $clrotulo->label("me10_i_codigo");
        <?=@$Lme20_i_codigo?>
     </td>
     <td> 
-     <?db_input('me20_i_codigo',5,$Ime20_i_codigo,true,'text',$db_opcao,"")?>
+     <?php db_input('me20_i_codigo',5,$Ime20_i_codigo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme20_i_unidade?>">
-       <?db_ancora(@$Lme20_i_unidade,"js_pesquisame20_i_unidade(true);",$db_opcao);?>
+       <?php db_ancora(@$Lme20_i_unidade,"js_pesquisame20_i_unidade(true);",$db_opcao);?>
     </td>
     <td> 
-    <?db_input('me20_i_unidade',5,$Ime20_i_unidade,true,'text',$db_opcao,
+    <?php db_input('me20_i_unidade',5,$Ime20_i_unidade,true,'text',$db_opcao,
                " onchange='js_pesquisame20_i_unidade(false);'"
               )
     ?>
-    <?db_input('me15_i_codigo',5,$Ime15_i_codigo,true,'text',3,'')?>
+    <?php db_input('me15_i_codigo',5,$Ime15_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme20_i_item?>">
-       <?db_ancora(@$Lme20_i_item,"js_pesquisame20_i_item(true);",$db_opcao);?>
+       <?php db_ancora(@$Lme20_i_item,"js_pesquisame20_i_item(true);",$db_opcao);?>
     </td>
     <td> 
-    <?db_input('me20_i_item',5,$Ime20_i_item,true,'text',$db_opcao," onchange='js_pesquisame20_i_item(false);'")?>
-    <?db_input('me10_i_codigo',5,$Ime10_i_codigo,true,'text',3,'')?>
+    <?php db_input('me20_i_item',5,$Ime20_i_item,true,'text',$db_opcao," onchange='js_pesquisame20_i_item(false);'")?>
+    <?php db_input('me10_i_codigo',5,$Ime10_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -170,7 +170,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_itemunisaida.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

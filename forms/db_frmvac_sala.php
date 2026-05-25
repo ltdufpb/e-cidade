@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,15 +39,15 @@ $clrotulo->label("descrdepto");
        <?=@$Lvc01_i_codigo?>
     </td>
     <td> 
-    <?db_input('vc01_i_codigo',10,$Ivc01_i_codigo,true,'text',3,"")?>
+    <?php db_input('vc01_i_codigo',10,$Ivc01_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc01_i_unidade?>">
-       <?db_ancora(@$Lvc01_i_unidade,"js_pesquisavc01_i_unidade(true);",$db_opcao);?>
+       <?php db_ancora(@$Lvc01_i_unidade,"js_pesquisavc01_i_unidade(true);",$db_opcao);?>
     </td>
     <td> 
-     <?
+     <?php 
       db_input('vc01_i_unidade',10,$Ivc01_i_unidade,true,'text',$db_opcao,
                " onchange='js_pesquisavc01_i_unidade(false);' ");
       db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
@@ -59,7 +59,7 @@ $clrotulo->label("descrdepto");
        <?=@$Lvc01_c_nome?>
     </td>
     <td> 
-     <?db_input('vc01_c_nome',20,$Ivc01_c_nome,true,'text',$db_opcao,"")?>
+     <?php db_input('vc01_c_nome',20,$Ivc01_c_nome,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -67,7 +67,7 @@ $clrotulo->label("descrdepto");
        <?=@$Lvc01_c_descr?>
     </td>
     <td> 
-     <?db_input('vc01_c_descr',50,$Ivc01_c_descr,true,'text',$db_opcao,"")?>
+     <?php db_input('vc01_c_descr',50,$Ivc01_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -75,7 +75,7 @@ $clrotulo->label("descrdepto");
        <?=@$Lvc01_i_situacao?>
     </td>
     <td> 
-     <? 
+     <?php  
        $aTipos= Array("1"=>"ATIVO","2"=>"INATIVO");
        db_select("vc01_i_situacao",$aTipos,$Ivc01_i_situacao,$db_opcao,"");
      ?>
@@ -98,7 +98,7 @@ $clrotulo->label("descrdepto");
 </fieldset>
 <br><br>
 
-<?
+<?php 
   $chavepri                                = array("vc01_i_codigo"=>@$vc01_i_codigo);
   $cliframe_alterar_excluir->chavepri      = $chavepri;
   $cliframe_alterar_excluir->sql           = $clvac_sala->sql_query(null,'*',null,"");
@@ -178,7 +178,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_sala.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

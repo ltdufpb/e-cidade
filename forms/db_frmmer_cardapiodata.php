@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clrotulo->label("me01_i_codigo");
        <?=@$Lme13_i_codigo?>
     </td>
     <td> 
-     <?db_input('me13_i_codigo',5,$Ime13_i_codigo,true,'text',$db_opcao,"")?>
+     <?php db_input('me13_i_codigo',5,$Ime13_i_codigo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -46,19 +46,19 @@ $clrotulo->label("me01_i_codigo");
        <?=@$Lme13_d_data?>
     </td>
     <td> 
-     <?db_inputdata('me13_d_data',@$me13_d_data_dia,@$me13_d_data_mes,@$me13_d_data_ano,true,'text',$db_opcao,"")?>
+     <?php db_inputdata('me13_d_data',@$me13_d_data_dia,@$me13_d_data_mes,@$me13_d_data_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme13_i_cardapio?>">
-       <?db_ancora(@$Lme13_i_cardapio,"js_pesquisame13_i_cardapio(true);",$db_opcao);?>
+       <?php db_ancora(@$Lme13_i_cardapio,"js_pesquisame13_i_cardapio(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me13_i_cardapio',5,$Ime13_i_cardapio,true,'text',$db_opcao,
+     <?php db_input('me13_i_cardapio',5,$Ime13_i_cardapio,true,'text',$db_opcao,
                 " onchange='js_pesquisame13_i_cardapio(false);'"
                )
      ?>
-     <?db_input('me01_i_codigo',5,$Ime01_i_codigo,true,'text',3,'')?>
+     <?php db_input('me01_i_codigo',5,$Ime01_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -117,7 +117,7 @@ function js_pesquisa() {
 
 function js_preenchepesquisa(chave) {
   db_iframe_mer_cardapiodata.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

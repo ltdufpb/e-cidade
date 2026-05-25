@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clmer_grupoalimento->rotulo->label();
        <?=@$Lme30_i_codigo?>
     </td>
     <td> 
-    <?db_input('me30_i_codigo',10,$Ime30_i_codigo,true,'text',3,"")?>
+    <?php db_input('me30_i_codigo',10,$Ime30_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -44,7 +44,7 @@ $clmer_grupoalimento->rotulo->label();
        <?=@$Lme30_c_descricao?>
     </td>
     <td> 
-    <?db_input('me30_c_descricao',40,$Ime30_c_descricao,true,'text',$db_opcao,"")?>
+    <?php db_input('me30_c_descricao',40,$Ime30_c_descricao,true,'text',$db_opcao,"")?>
     </td>
   </tr>
  </table>
@@ -68,7 +68,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_grupoalimento.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

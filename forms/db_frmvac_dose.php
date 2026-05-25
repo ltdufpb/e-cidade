@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clvac_dose->rotulo->label();
        <?=@$Lvc03_i_codigo?>
     </td>
     <td> 
-     <?db_input('vc03_i_codigo',10,$Ivc03_i_codigo,true,'text',3,"")?>
+     <?php db_input('vc03_i_codigo',10,$Ivc03_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -45,7 +45,7 @@ $clvac_dose->rotulo->label();
        <?=@$Lvc03_c_codpni?>
     </td>
     <td> 
-     <?db_input('vc03_c_codpni',10,$Ivc03_c_codpni,true,'text',$db_opcao,"")?>
+     <?php db_input('vc03_c_codpni',10,$Ivc03_c_codpni,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -53,10 +53,10 @@ $clvac_dose->rotulo->label();
        <?=@$Lvc03_c_descr?>
     </td>
     <td> 
-     <?db_input('vc03_c_descr',10,$Ivc03_c_descr,true,'text',$db_opcao,"")?>
+     <?php db_input('vc03_c_descr',10,$Ivc03_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
-<?if ($db_opcao==2) {?>
+<?php if ($db_opcao==2) {?>
 
   <tr>
     <td nowrap title="<?=@$Tvc03_i_ordem?>" colspan="2">
@@ -64,7 +64,7 @@ $clvac_dose->rotulo->label();
           <tr>
             <td rowspan="3">
               <select name="vc03_i_ordem" size="5" style="width: 200px">
-                <?
+                <?php 
                   $sSql=$clvac_dose->sql_query("","vc03_i_codigo,vc03_c_descr","vc03_i_ordem");
                   $rsResult=$clvac_dose->sql_record($sSql);
                   for ($iX=0;$iX<$clvac_dose->numrows;$iX++) {
@@ -86,10 +86,10 @@ $clvac_dose->rotulo->label();
             </td>
           </tr>
         </table>
-        <?db_input('sLista',10,"",true,'hidden',$db_opcao,"")?>
+        <?php db_input('sLista',10,"",true,'hidden',$db_opcao,"")?>
     </td>
   </tr>
-<?}?>
+<?php }?>
   </table>
   </center>
 <input name  = "<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
@@ -166,7 +166,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_dose.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

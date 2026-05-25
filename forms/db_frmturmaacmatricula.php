@@ -205,7 +205,7 @@ if ($clturmaac->numrows > 0) {
   <table style="width:100%">
     <tr>
       <td valign="top">
-        <?
+        <?php 
         $campos1  = "distinct turmaacmatricula.ed269_aluno, turmaacmatricula.ed269_i_codigo";
         $campos1 .= ", turmaacmatricula.ed269_i_turmaac, turmaacmatricula.ed269_d_data, turmaac.ed268_c_descr";
         $campos1 .= ", aluno.ed47_v_nome";

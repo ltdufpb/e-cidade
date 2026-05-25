@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,13 +38,13 @@ $clrotulo->label("nome");
 				<tr>
 					<td nowrap title="<?=@$Ttf32_i_mescompetencia?>">
 					<b>Competência Mês/Ano:</b>
-					<? db_input('tf32_i_codigo', 15, $Itf32_i_codigo, true, 'hidden', $db_opcao2, "");?>
+					<?php  db_input('tf32_i_codigo', 15, $Itf32_i_codigo, true, 'hidden', $db_opcao2, "");?>
 					</td> 
 						<td> 
-						<? db_input('tf32_i_mescompetencia', 2, $Itf32_i_mescompetencia, true, 'text', $db_opcao, 
+						<?php  db_input('tf32_i_mescompetencia', 2, $Itf32_i_mescompetencia, true, 'text', $db_opcao, 
 						" onchange=\"js_descr();\" ");?>
 						/
-						<? db_input('tf32_i_anocompetencia', 4, $Itf32_i_anocompetencia, true, 'text', $db_opcao, 
+						<?php  db_input('tf32_i_anocompetencia', 4, $Itf32_i_anocompetencia, true, 'text', $db_opcao, 
 						"onchange=\"js_descr();\" ");?>
 						</td>
 				</tr>
@@ -53,11 +53,11 @@ $clrotulo->label("nome");
 					<b>Período de Fechamento :</b>
 					</td>
 						<td> 
-						<? db_inputdata('tf32_d_datainicio', @$tf32_d_datainicio_dia, @$tf32_d_datainicio_mes, @$tf32_d_datainicio_ano,
+						<?php  db_inputdata('tf32_d_datainicio', @$tf32_d_datainicio_dia, @$tf32_d_datainicio_mes, @$tf32_d_datainicio_ano,
 						true, 'text', $db_opcao, "onchange=\"js_validadata();\"","","","parent.js_validadata();"
 						);?>
 						À
-<?
+<?php 
 	    				db_inputdata('tf32_d_datafim', @$tf32_d_datafim_dia, @$tf32_d_datafim_mes, @$tf32_d_datafim_ano, true, 'text',
 	    				$db_opcao, "onchange=\"js_validadata();\"", "", "", "parent.js_validadata();"
 	    				);
@@ -69,7 +69,7 @@ $clrotulo->label("nome");
 					<?=@$Ltf32_d_datasistema?>
 					</td>
 						<td colspan="3"> 
-						<? db_inputdata('tf32_d_datasistema',@$tf32_d_datasistema_dia,@$tf32_d_datasistema_mes,@$tf32_d_datasistema_ano,
+						<?php  db_inputdata('tf32_d_datasistema',@$tf32_d_datasistema_dia,@$tf32_d_datasistema_mes,@$tf32_d_datasistema_ano,
 						true,'text',3,""
 						);?>
 						</td>
@@ -77,7 +77,7 @@ $clrotulo->label("nome");
 				<tr>
 						<td><b>Tipo Financiamnto:</b></td>
 						<td colspan="3">
-										<?$x = array();
+										<?php $x = array();
 										$sWhere = "sd65_i_anocomp=(select max(sd65_i_anocomp) from sau_financiamento) and sd65_i_mescomp=( 
 												select max(sd65_i_mescomp) from sau_financiamento where sd65_i_anocomp=(
 												select max(sd65_i_anocomp) from sau_financiamento))";
@@ -100,7 +100,7 @@ $clrotulo->label("nome");
 						<?=@$Ltf32_c_descr?>
 						</td>
 							<td colspan="3"> 
-							<? db_input('tf32_c_descr',64,$Itf32_c_descr,true,'text',$db_opcao,"");?>
+							<?php  db_input('tf32_c_descr',64,$Itf32_c_descr,true,'text',$db_opcao,"");?>
 							</td>
 				</tr>
 </table>
@@ -127,7 +127,7 @@ $clrotulo->label("nome");
 <table>
  <tr>
   <td valign="top">
-  <?
+  <?php 
     $chavepri                     = array("tf32_i_codigo"=>@$tf32_i_codigo);
     $sCampos                      = " tf32_i_mescompetencia||'/'||tf32_i_anocompetencia as tf32_i_mescompetencia,";
     $sCampos                     .= " tf32_d_datafim,tf32_c_descr,tf32_i_codigo,tf32_i_financiamento,sd65_c_nome, "; 
@@ -156,9 +156,9 @@ $clrotulo->label("nome");
 </center>
 </form>
 <script>
-<?if (!isset($tf32_c_descr)) {?>
+<?php if (!isset($tf32_c_descr)) {?>
     js_descr();
-<?}?>
+<?php }?>
 function js_validadata() {
 
    if ((document.form1.tf32_d_datainicio.value!='')&&(document.form1.tf32_d_datafim.value!='')) {

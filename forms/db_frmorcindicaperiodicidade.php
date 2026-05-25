@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clorcindicaperiodicidade->rotulo->label();
        <?=@$Lo09_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o09_sequencial',10,$Io09_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -50,7 +50,7 @@ db_input('o09_sequencial',10,$Io09_sequencial,true,'text',3,"")
        <?=@$Lo09_descricao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o09_descricao',40,$Io09_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcindicaperiodicidade.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

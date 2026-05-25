@@ -137,7 +137,7 @@ $competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
     <tr> 
       <td>Matr&iacute;cula Im&oacute;vel:</td>
       <td>
-        <?
+        <?php 
           if ($k00_matric != "") {
           	echo $k00_matric;
           }
@@ -147,7 +147,7 @@ $competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
     <tr> 
       <td>Inscri&ccedil;&atilde;o Alvar&aacute;:</td>
       <td> 
-        <?
+        <?php 
           if ($k00_inscr != "") {
           	echo $k00_inscr;
           }
@@ -157,7 +157,7 @@ $competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
       <tr>
           <td>Compet&ecirc;ncia:</td>
           <td>
-              <?
+              <?php 
               if (!empty($competencias)) {
                   echo implode(", ", $competencias);
               }

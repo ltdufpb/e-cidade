@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -112,44 +112,44 @@ $sEtapas = implode( ", ", $aEtapas );
           <table>
             <tr>
               <td nowrap title="<?=@$Ted56_i_escola?>">
-                <?db_ancora( @$Led56_i_escola, "", 3 );?>
+                <?php db_ancora( @$Led56_i_escola, "", 3 );?>
               </td>
               <td>
-                <?db_input('ed56_i_escola', 15, $Ied56_i_escola, true, 'text', 3, "")?>
-                <?db_input('ed18_c_nome', 30, @$Ied18_c_nome, true, 'text', 3, '')?>
+                <?php db_input('ed56_i_escola', 15, $Ied56_i_escola, true, 'text', 3, "")?>
+                <?php db_input('ed18_c_nome', 30, @$Ied18_c_nome, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted56_i_aluno?>">
-                <?db_ancora(@$Led56_i_aluno, "", 3);?>
+                <?php db_ancora(@$Led56_i_aluno, "", 3);?>
               </td>
               <td>
-                <?db_input('ed56_i_aluno', 15, $Ied56_i_aluno, true, 'text', 3, "")?>
-                <?db_input('ed47_v_nome', 30, @$Ied47_v_nome, true, 'text', 3, '')?>
+                <?php db_input('ed56_i_aluno', 15, $Ied56_i_aluno, true, 'text', 3, "")?>
+                <?php db_input('ed47_v_nome', 30, @$Ied47_v_nome, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted31_i_curso?>">
-                <?db_ancora(@$Led31_i_curso, "js_pesquisaed31_i_curso(true);", $db_opcao);?>
+                <?php db_ancora(@$Led31_i_curso, "js_pesquisaed31_i_curso(true);", $db_opcao);?>
               </td>
               <td>
-                <?db_input('ed31_i_curso', 15, $Ied31_i_curso, true, 'text', $db_opcao,
+                <?php db_input('ed31_i_curso', 15, $Ied31_i_curso, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed31_i_curso(false);'")
                 ?>
-                <?db_input('ed29_c_descr', 30, @$Ied29_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed29_c_descr', 30, @$Ied29_c_descr, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted56_i_base?>">
-                <?db_ancora(@$Led56_i_base, "js_pesquisaed56_i_base(true,document.form1.ed31_i_curso.value);",
+                <?php db_ancora(@$Led56_i_base, "js_pesquisaed56_i_base(true,document.form1.ed31_i_curso.value);",
                             $db_opcao);
                 ?>
               </td>
               <td>
-                <?db_input('ed56_i_base', 15, $Ied56_i_base, true, 'text', $db_opcao,
+                <?php db_input('ed56_i_base', 15, $Ied56_i_base, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed56_i_base(false,document.form1.ed31_i_curso.value);'")
                 ?>
-                <?db_input('ed31_c_descr', 30, @$Ied31_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed31_c_descr', 30, @$Ied31_c_descr, true, 'text', 3, '')?>
               </td>
             </tr>
           </table>
@@ -158,37 +158,37 @@ $sEtapas = implode( ", ", $aEtapas );
           <table>
             <tr>
               <td nowrap title="<?=@$Ted56_i_calendario?>">
-                <?db_ancora(@$Led56_i_calendario, "js_pesquisaed56_i_calendario(true);", $db_opcao);?>
+                <?php db_ancora(@$Led56_i_calendario, "js_pesquisaed56_i_calendario(true);", $db_opcao);?>
               </td>
               <td>
-                <?db_input('ed56_i_calendario', 15, $Ied56_i_calendario, true, 'text', $db_opcao,
+                <?php db_input('ed56_i_calendario', 15, $Ied56_i_calendario, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed56_i_calendario(false);'")
                 ?>
-                <?db_input('ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted79_i_serie?>">
-                <?db_ancora(@$Led79_i_serie, "js_pesquisaed79_i_serie(true,document.form1.ed56_i_base.value);",
+                <?php db_ancora(@$Led79_i_serie, "js_pesquisaed79_i_serie(true,document.form1.ed56_i_base.value);",
                             $db_opcao);
                 ?>
               </td>
               <td>
-                <?db_input('ed79_i_serie', 15, $Ied79_i_serie, true, 'text', $db_opcao,
+                <?php db_input('ed79_i_serie', 15, $Ied79_i_serie, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed79_i_serie(false,document.form1.ed56_i_base.value);'")
                 ?>
-                <?db_input('ed11_c_descr', 20, @$Ied11_c_descr, true, 'text', 3, '')?>
+                <?php db_input('ed11_c_descr', 20, @$Ied11_c_descr, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>
               <td nowrap title="<?=@$Ted79_i_turno?>">
-                <?db_ancora(@$Led79_i_turno, "js_pesquisaed79_i_turno(true);", $db_opcao);?>
+                <?php db_ancora(@$Led79_i_turno, "js_pesquisaed79_i_turno(true);", $db_opcao);?>
               </td>
               <td>
-                <?db_input('ed79_i_turno', 15, $Ied79_i_turno, true, 'text', $db_opcao,
+                <?php db_input('ed79_i_turno', 15, $Ied79_i_turno, true, 'text', $db_opcao,
                            " onchange='js_pesquisaed79_i_turno(false);'")
                 ?>
-                <?db_input('ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3, '')?>
+                <?php db_input('ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3, '')?>
               </td>
             </tr>
             <tr>

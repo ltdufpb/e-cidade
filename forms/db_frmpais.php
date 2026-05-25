@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clpais->rotulo->label();
    <?=@$Led228_i_codigo?>
   </td>
   <td>
-   <?db_input('ed228_i_codigo',20,$Ied228_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed228_i_codigo',20,$Ied228_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -44,7 +44,7 @@ $clpais->rotulo->label();
    <?=@$Led228_c_descr?>
   </td>
   <td>
-   <?db_input('ed228_c_descr',50,$Ied228_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed228_c_descr',50,$Ied228_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  </table>
@@ -58,7 +58,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_pais.hide();
- <?
+ <?php 
  if($db_opcao!=1){
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }

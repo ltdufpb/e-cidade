@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -48,7 +48,7 @@ if ( (isset($opcao) && $opcao == "alterar") || isset($alterar) ) {
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Ted17_i_escola?>">
-          <?db_ancora( @$Led17_i_escola, "", 3 );?>
+          <?php db_ancora( @$Led17_i_escola, "", 3 );?>
         </td>
         <td colspan="2">
           <?php
@@ -59,7 +59,7 @@ if ( (isset($opcao) && $opcao == "alterar") || isset($alterar) ) {
       </tr>
       <tr>
       <td nowrap title="<?=@$Ted17_i_turno?>">
-        <?db_ancora( @$Led17_i_turno, "js_pesquisaed17_i_turno(true);", $db_opcao2 );?>
+        <?php db_ancora( @$Led17_i_turno, "js_pesquisaed17_i_turno(true);", $db_opcao2 );?>
       </td>
       <td>
         <?php
@@ -69,12 +69,12 @@ if ( (isset($opcao) && $opcao == "alterar") || isset($alterar) ) {
       </td>
       <td nowrap title="<?=@$Ted17_h_inicio?>">
         <?=@$Led17_h_inicio?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <?db_input( 'ed17_h_inicio', 5, $Ied17_h_inicio, true, 'text', $db_opcao, "OnKeyUp=\"js_validaHora(this)\"" )?>
+        <?php db_input( 'ed17_h_inicio', 5, $Ied17_h_inicio, true, 'text', $db_opcao, "OnKeyUp=\"js_validaHora(this)\"" )?>
       </td>
       </tr>
       <tr>
       <td nowrap title="<?=@$Ted17_i_periodoaula?>">
-        <?db_ancora( @$Led17_i_periodoaula, "js_pesquisaed17_i_periodoaula(true);", $db_opcao2 );?>
+        <?php db_ancora( @$Led17_i_periodoaula, "js_pesquisaed17_i_periodoaula(true);", $db_opcao2 );?>
       </td>
       <td>
         <?php
@@ -84,7 +84,7 @@ if ( (isset($opcao) && $opcao == "alterar") || isset($alterar) ) {
       </td>
       <td>
         <?=@$Led17_h_fim?>
-        <?db_input( 'ed17_h_fim', 5, $Ied17_h_fim, true, 'text', $db_opcao, "OnKeyUp=\"js_validaHora(this)\"" );?>
+        <?php db_input( 'ed17_h_fim', 5, $Ied17_h_fim, true, 'text', $db_opcao, "OnKeyUp=\"js_validaHora(this)\"" );?>
       </td>
       </tr>
     </table>

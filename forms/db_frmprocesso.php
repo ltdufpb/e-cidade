@@ -47,7 +47,7 @@ if (isset($pc80_codproc) && trim($pc80_codproc) != "") {
            <?php echo $Lpc20_codorc; ?>
           </td>
           <td>
-            <?
+            <?php 
               db_input('pc20_codorc',8,$Ipc20_codorc,true,'text',3);
               db_input('pc80_codproc',8,0,true,'hidden',3);
             ?>
@@ -154,7 +154,7 @@ if (isset($pc80_codproc) && trim($pc80_codproc) != "") {
 <script>
 function js_verifica_hora(valor,campo){
   erro= 0;
-  <?
+  <?php 
   $hora = "00";
   $minu = "00";
   if(isset($pc30_horas)){
@@ -163,8 +163,8 @@ function js_verifica_hora(valor,campo){
     $minu = $arr_horas[1];
   }
   ?>
-  hora= "<?$hora?>" ;
-  minu= "<?$minu?>";
+  hora= "<?php $hora?>" ;
+  minu= "<?php $minu?>";
 
   ms  = "";
   hs  = "";
@@ -231,7 +231,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcorcam.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

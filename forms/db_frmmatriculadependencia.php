@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,13 +50,13 @@ $clrotulo->label("ed297_data");
       <table border="0">
        <tr>
         <td nowrap title="<?=@$Ted60_i_turma?>">
-         <?db_ancora(@$Led60_i_turma,"js_pesquisaed60_i_turma();", '');?>
+         <?php db_ancora(@$Led60_i_turma,"js_pesquisaed60_i_turma();", '');?>
         </td>
         <td>
-         <?db_input('ed60_i_turma',15,$Ied60_i_turma,true,'text',3,'')?>
-         <?db_input('ed57_c_descr',20,@$Ied57_c_descr,true,'text',3,'')?>
+         <?php db_input('ed60_i_turma',15,$Ied60_i_turma,true,'text',3,'')?>
+         <?php db_input('ed57_c_descr',20,@$Ied57_c_descr,true,'text',3,'')?>
          <?=@$Led57_i_calendario?>
-         <?db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,'')?>
+         <?php db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,'')?>
         </td>
        </tr>
        <tr>
@@ -64,11 +64,11 @@ $clrotulo->label("ed297_data");
         <?=@$Led31_i_curso?>
        </td>
        <td>
-        <?db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
+        <?php db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
         <?=@$Led223_i_serie?>
-        <?db_input('nometapa',30,@$Inometapa,true,'text',3,'')?>
+        <?php db_input('nometapa',30,@$Inometapa,true,'text',3,'')?>
         <?=@$Led57_i_turno?>
-        <?db_input('ed15_c_nome',20,@$Ied15_c_nome,true,'text',3,'')?>
+        <?php db_input('ed15_c_nome',20,@$Ied15_c_nome,true,'text',3,'')?>
        </td>
       </tr>
       <tr>
@@ -76,47 +76,47 @@ $clrotulo->label("ed297_data");
         <?=@$Led57_i_numvagas?>
        </td>
        <td>
-        <?db_input('ed57_i_numvagas',10,@$Ied57_i_numvagas,true,'text',3,'')?>
+        <?php db_input('ed57_i_numvagas',10,@$Ied57_i_numvagas,true,'text',3,'')?>
           &nbsp;&nbsp;&nbsp;&nbsp;
         <?=@$Led57_i_nummatr?>
-        <?db_input('ed57_i_nummatr',10,@$Ied57_i_nummatr,true,'text',3,'')?>
+        <?php db_input('ed57_i_nummatr',10,@$Ied57_i_nummatr,true,'text',3,'')?>
           &nbsp;&nbsp;&nbsp;&nbsp;
         <b>Vagas Disponíveis:</b>
-        <?db_input('restantes',10,@$Irestantes,true,'text',3,'')?>
+        <?php db_input('restantes',10,@$Irestantes,true,'text',3,'')?>
        </td>
       </tr>
      </table>
     </fieldset>
    </td>
   </tr>
-  <?//if (isset($chavepesquisa) && $db_opcao == 1) {?>
+  <?php //if (isset($chavepesquisa) && $db_opcao == 1) {?>
     <tr>
       <td nowrap title="<?=@$Ted60_i_aluno?>">
-       <?db_ancora(@$Led60_i_aluno,"js_pesquisaed60_i_aluno(true);",$db_opcao);?>
+       <?php db_ancora(@$Led60_i_aluno,"js_pesquisaed60_i_aluno(true);",$db_opcao);?>
       </td>
       <td>
-       <?db_input('ed60_i_aluno',15,$Ied60_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed60_i_aluno(false);'")?>
-       <?db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?>
+       <?php db_input('ed60_i_aluno',15,$Ied60_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed60_i_aluno(false);'")?>
+       <?php db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?>
       </td>
      </tr>
- <?///}?>
+ <?php ///}?>
 
- <?//if ($db_opcao == 1) {?>
+ <?php //if ($db_opcao == 1) {?>
      <tr>
       <td nowrap title="<?=@$Ted297_data?>">
        <?=@$Led297_data?>
       </td>
       <td>
-       <?db_inputdata('ed297_data',@$ed297_data_dia,@$ed297_data_mes,
+       <?php db_inputdata('ed297_data',@$ed297_data_dia,@$ed297_data_mes,
                       @$ed297_data_ano,true,'text',$db_opcao,""
                      )
        ?>
       </td>
      </tr>
- <?//}?>
+ <?php //}?>
 
  
- <?
+ <?php 
    if (isset($chavepesquisa)) {
    	
      $data      = @$ed297_data_ano."-".@$ed297_data_mes."-".@$ed297_data_dia;
@@ -137,7 +137,7 @@ $clrotulo->label("ed297_data");
 
 <div id="oDisciplinas"></div>
 
-<?
+<?php 
 if (isset($ed60_i_turma)) {
 
   $sSqlTurmaSerieRegimeMat = $oDaoTurmaSerieRegimeMat->sql_query("","ed220_i_codigo",""," ed220_i_turma = $ed60_i_turma"); 	
@@ -163,9 +163,9 @@ if (isset($ed60_i_turma)) {
          value="<?=($db_value_botao == 1 ? "Incluir" : 
                       ($db_value_botao == 2 || $db_value_botao == 22 ? "Alterar" : "Excluir"))?>"
                 <?=($db_botao==false?"disabled":"")?> />
-  <? if ($db_opcao == 2) { ?>
+  <?php  if ($db_opcao == 2) { ?>
     <input name="dbCancelar" type="button" value="Cancelar" onClick="js_cancela();" />
-  <? } ?>
+  <?php  } ?>
  </form>
 </center>
 
@@ -505,7 +505,7 @@ function js_pesquisaed60_i_turma() {
 function js_preenchepesquisaturma(chave) {
 	
   db_iframe_turma.hide();
-  <?
+  <?php 
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
   
@@ -649,7 +649,7 @@ if ((parseInt($('ed57_i_numvagas').value, 10) - parseInt($('ed57_i_nummatr').val
   $('restantes').value = parseInt($('ed57_i_numvagas').value, 10) - parseInt($('ed57_i_nummatr').value, 10);
 }
 
-<?
+<?php 
 if ($db_value_botao == 1 && isset($chavepesquisa)) {
 ?>
 
@@ -659,7 +659,7 @@ if ($db_value_botao == 1 && isset($chavepesquisa)) {
     
   }
   
-<?
+<?php 
 }
 ?>
 
@@ -761,18 +761,18 @@ function js_alteraMatricula(iMatricula, iTurma) {
 
 }
 
-<? if (isset($iTurma)) { ?>
+<?php  if (isset($iTurma)) { ?>
   function js_cancela() {
     location.href = "edu1_matriculadependencia001.php?chavepesquisa=<?=$iTurma?>";
   }
-<? } ?>
+<?php  } ?>
 
-<? if (isset($chavepesquisa) && trim($chavepesquisa) != "") { ?>
+<?php  if (isset($chavepesquisa) && trim($chavepesquisa) != "") { ?>
   js_buscaAlunos();
-<? } ?>
+<?php  } ?>
 
-<? if (isset($iMatricula) && isset($iTurma)) { ?>
+<?php  if (isset($iMatricula) && isset($iTurma)) { ?>
   js_buscaDisciplinas($('ed60_i_aluno').value);
-<? } ?>
+<?php  } ?>
 
 </script>

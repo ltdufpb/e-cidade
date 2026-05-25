@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -61,7 +61,7 @@ if (empty ($e60_numemp)) {
                       <?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho',\$F('e60_numemp'))",1)?>
                     </td>
                     <td style='text-align:left' colspan='4'>
-                      <?
+                      <?php 
                       db_input('e60_numemp', 10, $Ie60_numemp, true, 'text', 3);
                       echo $Le60_codemp;
                       db_input('e60_codemp', 10, $Ie60_codemp, true, 'text', 3);
@@ -73,7 +73,7 @@ if (empty ($e60_numemp)) {
                       <?=db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm',\$F('e60_numcgm'))",1)?>
                     </td>
                     <td colspan=3>
-                      <?
+                      <?php 
                       db_input('e60_numcgm', 10, $Ie60_numcgm, true, 'text', 3);
                       db_input('z01_nome', 43, $Iz01_nome, true, 'text', 3, '');
                       ?>
@@ -81,7 +81,7 @@ if (empty ($e60_numemp)) {
                   </tr>
                   <tr>
                     <td><?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao',\$F('e60_coddot'),'".@$e60_anousu."')",1)?></td>
-                    <td><? db_input('e60_coddot', 10, $Ie60_coddot, true, 'text', 3);
+                    <td><?php  db_input('e60_coddot', 10, $Ie60_coddot, true, 'text', 3);
                       db_ancora($Lo15_codigo,"",3);
                       db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3); db_input('o15_descr', 24, $Io15_descr, true, 'text', 3)?></td>
                   </tr>
@@ -94,7 +94,7 @@ if (empty ($e60_numemp)) {
                       <b>Tipo:</b>
                     </td>
                     <td colspan='3' nowrap>
-                      <?
+                      <?php 
                       $oEmpAnuladoTipo  = new cl_empanuladotipo;
                       $rsEmpAnuladoTipo = $oEmpAnuladoTipo->sql_record(
                         $oEmpAnuladoTipo->sql_query(null,"*",
@@ -121,12 +121,12 @@ if (empty ($e60_numemp)) {
                   <td>
                     <fieldset><legend><b>Saldos</b></legend>
                       <table style="width:200px" >
-                        <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><? db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                        <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><? db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                        <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><? db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                        <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><? db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><?php  db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><?php  db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><?php  db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                        <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><?php  db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '','','','text-align:right')?></td></tr>
                         <tr><td colspan='2' class='table_header'>Saldo a Anular </td></tr>
-                        <tr><td nowrap><b>Saldo:</></td><td align=right><? db_input('saldo_dis', 12,'', true, 'text', 3, '','','','text-align:right')?></td></tr>
+                        <tr><td nowrap><b>Saldo:</></td><td align=right><?php  db_input('saldo_dis', 12,'', true, 'text', 3, '','','','text-align:right')?></td></tr>
                         <tr>
                       </table>
                     </fieldset>

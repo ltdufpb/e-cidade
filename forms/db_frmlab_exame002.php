@@ -47,7 +47,7 @@ $clrotulo->label ( "la19_i_exame" );
         </tr>
         <tr>
           <td nowrap title="<?=$Tla19_i_exame?>">
-           <?
+           <?php 
            db_ancora ( $Lla19_i_exame, "", 3 );
            ?>
           </td>

@@ -54,7 +54,7 @@ $oRotulo->label("z01_nome");
                  <b>CGS:</b>
               </td>
                 <td colspan='1'>
-                <?
+                <?php 
                  db_input('z01_i_cgsund',10,$Is113_i_numcgs,true,'text',3," onchange='js_pesquisasd32_i_numcgs(false);'");
                  echo "</td><td colspan=6>";
                  db_input('z01_v_nome',60,$Iz01_v_nome,true,'text',3,'');
@@ -66,7 +66,7 @@ $oRotulo->label("z01_nome");
                 <b>Data do Exame:</b>
               </td>
               <td>
-                <?
+                <?php 
                  db_inputdata('s113_d_exame',null,null,null,true,3);
                 ?>
               </td>
@@ -74,7 +74,7 @@ $oRotulo->label("z01_nome");
                 <b>Nasc.:</b>
               </td>
               <td>
-              <?
+              <?php 
                db_inputdata('z01_d_nasc',null,null,null,true,3);
               ?>
               </td>
@@ -82,7 +82,7 @@ $oRotulo->label("z01_nome");
                 <b>CPF:</b>
               </td>
               <td align="left">
-              <?
+              <?php 
                db_input('z01_v_cgccpf',20,null,true,3);
               ?>
               </td>
@@ -101,7 +101,7 @@ $oRotulo->label("z01_nome");
                           <b>Exame:</b>
                        </td>
                        <td colspan="5">
-                          <?
+                          <?php 
                            db_input('s113_i_codigo',10,$Is113_i_codigo,true,3);
                            db_input('s108_c_exame',45,'',true,3);
                           ?>
@@ -112,7 +112,7 @@ $oRotulo->label("z01_nome");
                           <b>Prestadora:</b>
                        </td>
                        <td colspan="5">
-                          <?
+                          <?php 
                            db_input('s110_i_codigo',10,$Is113_i_codigo,true,3);
                            db_input('z01_nome',45,$Iz01_nome,true,3);
                           ?>
@@ -123,7 +123,7 @@ $oRotulo->label("z01_nome");
                           <b>Encaminhamento:</b>
                        </td>
                        <td>
-                          <?
+                          <?php 
                           db_input("s113_c_encaminhamento",10,$Is113_c_encaminhamento,true,$db_opcao);
                           ?>
                        </td>
@@ -131,7 +131,7 @@ $oRotulo->label("z01_nome");
                           <b>Dia:</b>
                        </td>
                        <td>
-                         <?
+                         <?php 
                           db_inputdata('s113_d_exame',null,null,null,true,3);
                          ?>
                        </td>
@@ -139,7 +139,7 @@ $oRotulo->label("z01_nome");
                           <b>Hora:</b>
                        </td>
                        <td>
-                        <?
+                        <?php 
                          db_input("s113_c_hora",10,$Is113_c_hora,true,3);
                         ?>
                        </td>
@@ -149,7 +149,7 @@ $oRotulo->label("z01_nome");
                          <b>Protocolo Nro.:</b>
                        </td>
                        <td>
-                        <?
+                        <?php 
                          db_input("s133_c_protocolo",10,$Is133_c_protocolo,true,"text",1);
                          db_input("s133_i_codigo",10,$Is133_c_protocolo,true,"hidden",3);
                         ?>
@@ -157,12 +157,12 @@ $oRotulo->label("z01_nome");
                      </tr>
                      <tr>
                        <td>
-                         <?
+                         <?php 
                           db_ancora("<b>Resultados do Exame</b>","js_lancaAtributos()",1,null, "preencheexame");
                          ?>
                        </td>
                        <td colspan="6">
-                         <?
+                         <?php 
                           db_input("valoresatributos",50,null,true,"text",3);
                          ?>
                        </td>
@@ -172,7 +172,7 @@ $oRotulo->label("z01_nome");
                          <b>Observações:</b>
                        </td>
                        <td colspan='6'>
-                         <?
+                         <?php 
                           db_textarea("s133_c_observacoes", 4, 56, $Is133_c_observacoes,true,"text", 1);
                          ?>
                        </td>

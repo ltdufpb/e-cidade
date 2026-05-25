@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,7 +42,7 @@ $clrotulo->label("tf12_descricao");
       <?=@$Ltf14_i_codigo?>
     </td>
     <td>
-      <?
+      <?php 
       db_input('tf14_i_codigo',10,$Itf14_i_codigo,true,'text',3,"");
       db_input('tf15_i_codigo',10,$Itf15_i_codigo,true,'text',3,"");
       ?>
@@ -53,19 +53,19 @@ $clrotulo->label("tf12_descricao");
       <?=@$Ltf14_i_pedidotfd?>
     </td>
      <td>
-      <?
+      <?php 
       db_input('tf14_i_pedidotfd',10,$Itf14_i_pedidotfd,true,'text',3,'');
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf01_i_cgsund?>">
-      <?
+      <?php 
       echo '<b>Paciente:</b>';
       ?>
     </td>
     <td nowrap>
-      <?
+      <?php 
       db_input('tf01_i_cgsund',10,$Itf01_i_cgsund,true,'text',3,'');
       db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
       ?>
@@ -77,7 +77,7 @@ $clrotulo->label("tf12_descricao");
         <table border="0" width="90%">
           <tr>
             <td nowrap title="<?=@$Ttf14_i_cgsretirou?>">
-              <?
+              <?php 
               if(isset($tf14_i_cgsretirou)) {
                 $db_opcao2 = 3;
               } else {
@@ -87,7 +87,7 @@ $clrotulo->label("tf12_descricao");
               ?>
             </td>
             <td nowrap>
-              <?
+              <?php 
               db_input('tf14_i_cgsretirou',10,$Itf14_i_cgsretirou,true,'text',$db_opcao2," onchange='js_pesquisatf14_i_cgsretirou(false);'");
               db_input('z01_v_nome2',50,$Iz01_v_nome,true,'text',3,'');
               ?>
@@ -106,12 +106,12 @@ $clrotulo->label("tf12_descricao");
         <table border="0" width="90%">
           <tr>
             <td nowrap title="<?=@$Ttf15_i_cgsund?>">
-              <?
+              <?php 
               db_ancora(@$Ltf15_i_cgsund,"js_pesquisatf15_i_cgsund(true);",$db_opcao);
               ?>
             </td>
             <td nowrap>
-              <?
+              <?php 
               db_input('tf15_i_cgsund',10,$Itf15_i_cgsund,true,'text',$db_opcao," onchange='js_pesquisatf15_i_cgsund(false);'");
               db_input('z01_v_nome3',50,$Iz01_v_nome,true,'text',3,'');
               db_input('tipo', 10,'', true, 'hidden', 3);
@@ -120,12 +120,12 @@ $clrotulo->label("tf12_descricao");
           </tr>
           <tr>
             <td nowrap title="<?=@$Ttf15_i_ajudacusto?>">
-              <?
+              <?php 
               db_ancora(@$Ltf15_i_ajudacusto,"js_pesquisatf15_i_ajudacusto(true);",$db_opcao);
               ?>
             </td>
             <td nowrap>
-              <?
+              <?php 
               db_input('tf15_i_ajudacusto',10,$Itf15_i_ajudacusto,true,'text',$db_opcao," onchange='js_pesquisatf15_i_ajudacusto(false);'");
               db_input('tf12_descricao', 50, @$Itf12_descricao, true, 'text', 3, '');
               ?>
@@ -136,7 +136,7 @@ $clrotulo->label("tf12_descricao");
               <?=@$Ltf15_observacao?>
             </td>
             <td nowrap>
-              <?
+              <?php 
               db_input('tf15_observacao', 62, @$Itf15_observacao, true, 'text', $db_opcao, '');
               ?>
             </td>
@@ -146,7 +146,7 @@ $clrotulo->label("tf12_descricao");
               <?=$Ltf15_f_valoremitido?>
             </td>
             <td nowrap>
-              <?
+              <?php 
               db_input('tf15_f_valoremitido', 10, $Itf15_f_valoremitido, true, 'text', 3, '');
               db_input('tf12_f_valor', 10, '', true, 'hidden', 3, '');
               ?>
@@ -170,7 +170,7 @@ $clrotulo->label("tf12_descricao");
         <table width="100%">
 	        <tr>
 		        <td valign="top"><br>
-              <?
+              <?php 
 				      $aChavepri = array ('tf14_i_codigo' => @$tf14_i_codigo,
                                   'tf14_i_pedidotfd' => @$tf14_i_pedidotfd,
                                   'tf14_i_cgsretirou' => @$tf14_i_cgsretirou,
@@ -232,7 +232,7 @@ $clrotulo->label("tf12_descricao");
       <?=@$Ltf14_d_datarecebimento?>
     </td>
     <td>
-      <?
+      <?php 
       if(!isset($tf14_d_datarecebimento) || empty($tf14_d_datarecebimento)) {
 
         $tf14_d_datarecebimento_dia = date('d', db_getsession('DB_datausu'));
@@ -262,7 +262,7 @@ $clrotulo->label("tf12_descricao");
 
 function js_cancelar() {
 
-  <?
+  <?php 
   echo ' location.href = "'.basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf14_i_pedidotfd='.
                           $tf14_i_pedidotfd.'&tf01_i_cgsund="'.
                           '+document.getElementById(\'tf01_i_cgsund\').value+"&z01_v_nome='.$z01_v_nome.'";'

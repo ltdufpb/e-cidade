@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrotulo->label("it04_descr");
 
 <center> <b> Transmitente(s) : </b> </center>
 <hr width="75%" >
-<? 
+<?php  
  //select para pegar os tranmitentes
  $sql  = " select case when it21_numcgm is not null then it21_numcgm::text else 'Sem CGM cadastrado' end as it21_numcgm, ";
  $sql .= "        it03_nome,";
@@ -99,7 +99,7 @@ $clrotulo->label("it04_descr");
 ?>
 <center> <b> Adquirente(s) : </b> </center>
 <hr width="75%" >
-<?
+<?php 
  $sql  = " select case when it21_numcgm is not null then it21_numcgm::text else 'Sem CGM cadastrado' end as it21_numcgm, ";
  $sql .= "        it03_nome,";
  $sql .= "        it03_cpfcnpj,";
@@ -165,7 +165,7 @@ $clrotulo->label("it04_descr");
   <tr>
     <th align="right"  nowrap title="<?=@$Tit06_matric?>">
     <input name="oid" type="hidden" value="<?=@$oid?>">
-       <?
+       <?php 
        db_ancora($Lit06_matric,"js_JanelaAutomatica('iptubase','".@$it06_matric."')",2)
        ?>
     </th>

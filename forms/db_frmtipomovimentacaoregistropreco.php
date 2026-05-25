@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,7 +42,7 @@ $cltipomovimentacaoregistropreco->rotulo->label();
        <?=@$Ll33_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('l33_sequencial',10,$Il33_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -52,7 +52,7 @@ db_input('l33_sequencial',10,$Il33_sequencial,true,'text',3,"")
        <?=@$Ll33_descricao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('l33_descricao',50,$Il33_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -69,7 +69,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipomovimentacaoregistropreco.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

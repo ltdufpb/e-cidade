@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ db_fieldsmemory($result,0);
     <b>Período:</b> <?=$ed23_c_nome?>
    </td>
   </tr>
-  <?
+  <?php 
   $sql = "select * from turmas
            inner join escolas    on ed02_i_codigo = ed05_i_escola
            inner join matriculas on ed09_i_escola = ed02_i_codigo
@@ -60,7 +60,7 @@ db_fieldsmemory($result,0);
    <td align="center" width="70%"><b>Aluno</b></td>
    <td width="10%" align="center"><b>Média</b>&nbsp;</td>
   </tr>
-  <?
+  <?php 
   $cor = "#bbbbbb";
   $cor2 = "#dddddd";
   $vermelho = "#ff9999";
@@ -73,7 +73,7 @@ db_fieldsmemory($result,0);
    <td>&nbsp;<?=$z01_nome?></td>
    <td align="center">&nbsp;</td>
   </tr>
-  <?
+  <?php 
   $sql2 = "select * from notas
            where ed11_i_matriculas = $ed09_i_codigo
           ";
@@ -84,24 +84,24 @@ db_fieldsmemory($result,0);
    <td>
     <table border="1" bordercolor="#dddddd" cellpadding="0" cellspacing="0">
      <tr>
-     <?
+     <?php 
      $media = 0;
      for($y=0;$y < $clnotas->numrows; $y++){
      @db_fieldsmemory($result2,$y);
      ?>
-     <td align="center" width="80" <?if($ed11_c_fechado=="t"){echo "bgcolor='$vermelho'";}else{echo "bgcolor='$verde'";}?>>
+     <td align="center" width="80" <?php if($ed11_c_fechado=="t"){echo "bgcolor='$vermelho'";}else{echo "bgcolor='$verde'";}?>>
       <b><?=substr($ed11_d_data,8,2)?>/<?=substr($ed11_d_data,5,2)?>/<?=substr($ed11_d_data,0,4)?></b><br>
       <?=$ed11_f_media?>
      </td>
-     <?
+     <?php 
       $media += $ed11_f_media;
      }
      ?>
     </tr></table>
    </td>
-   <td align="right"><?db_input('media',5,$media,true,'text',3,"")?></td>
+   <td align="right"><?php db_input('media',5,$media,true,'text',3,"")?></td>
   </tr>
-  <?
+  <?php 
   }
   ?>
   </table><br>

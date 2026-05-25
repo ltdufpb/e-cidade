@@ -53,7 +53,7 @@ $clrotulo->label("ed10_c_descr");
         </tr>
         <tr>
           <td nowrap title="<?=$Ted69_i_matricula?>">
-            <?db_ancora( $Led69_i_matricula, "js_pesquisaed69_i_matricula(true);", $db_opcao );?>
+            <?php db_ancora( $Led69_i_matricula, "js_pesquisaed69_i_matricula(true);", $db_opcao );?>
           </td>
           <td>
             <?php
@@ -68,7 +68,7 @@ $clrotulo->label("ed10_c_descr");
             <?=$Led60_d_datamatricula?>
           </td>
           <td>
-            <?db_input( 'datamatricula', 10, '', true, 'text', 3 );?>
+            <?php db_input( 'datamatricula', 10, '', true, 'text', 3 );?>
           </td>
         </tr>
         <tr>

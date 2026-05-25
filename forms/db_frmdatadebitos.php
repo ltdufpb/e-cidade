@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lk115_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k115_sequencial',10,$Ik115_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -48,22 +48,22 @@ db_input('k115_sequencial',10,$Ik115_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk115_data?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('k115_data',@$k115_data_dia,@$k115_data_mes,@$k115_data_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk115_instit?>">
-       <?
+       <?php 
        db_ancora(@$Lk115_instit,"js_pesquisak115_instit(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k115_instit',10,$Ik115_instit,true,'text',$db_opcao," onchange='js_pesquisak115_instit(false);'")
 ?>
-       <?
+       <?php 
 db_input('nomeinst',80,$Inomeinst,true,'text',3,'')
        ?>
     </td>
@@ -102,7 +102,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_datadebitos.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,13 +43,13 @@ $clrotulo->label("la02_c_descr");
        <?=@$Lla24_i_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la24_i_codigo',10,$Ila24_i_codigo,true,'text',3,"")
 ?>
     </td>
      <td rowspan="6">
     <iframe name="frame_imagem" id="frame_imagem" src="lab4_mostraimagem.php" width="150" height=150" frameborder="0" scrolling="no"></iframe>
-    <?
+    <?php 
     if((isset($chavepesquisa) || isset($opcao) || isset($alterar)) && isset($la24_c_nomearq)){
      if($la24_o_assinatura!=0){
       $arquivo = "tmp/".$la24_c_nomearq;
@@ -63,20 +63,20 @@ db_input('la24_i_codigo',10,$Ila24_i_codigo,true,'text',3,"")
     <script>
      frame_imagem.location.href="lab4_mostraimagem.php?imagem_gerada=<?=$arquivo?>";
     </script>
-    <?}?>
+    <?php }?>
    </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla24_i_laboratorio?>">
-       <?
+       <?php 
        db_ancora(@$Lla24_i_laboratorio,"js_pesquisala24_i_laboratorio(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la24_i_laboratorio',10,$Ila24_i_laboratorio,true,'text',3," onchange='js_pesquisala24_i_laboratorio(false);'")
 ?>
-       <?
+       <?php 
 db_input('la02_c_descr',40,$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -84,30 +84,30 @@ db_input('la02_c_descr',40,$Ila02_c_descr,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tla24_i_resp?>">
-       <?
+       <?php 
        db_ancora(@$Lla24_i_resp,"js_pesquisala24_i_resp(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la24_i_resp',10,$Ila24_i_resp,true,'text',$db_opcao," onchange='js_pesquisala24_i_resp(false);'")
 ?>
-       <?
+       <?php 
 db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tla24_i_setor?>">
-       <?
+       <?php 
        db_ancora(@$Lla24_i_setor,"js_pesquisala24_i_setor(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la24_i_setor',10,$Ila24_i_setor,true,'text',$db_opcao," onchange='js_pesquisala24_i_setor(false);'")
 ?>
-       <?
+       <?php 
 db_input('la23_c_descr',40,@$Ila23_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -129,7 +129,7 @@ db_input('la23_c_descr',40,@$Ila23_c_descr,true,'text',3,'')
 <table width="100%">
   <tr>
     <td valign="top"><br>
-  <?
+  <?php 
     $chavepri = array ("la24_i_codigo" => @$la05_i_codigo,"z01_nome"=>@$z01_nome ,"la23_c_descr"=>@$la23_c_descr, "la24_i_laboratorio" => @$la24_i_laboratorio, "la24_i_resp" => @$la24_resp, "la24_i_setor" => @$la24_i_setor, "la24_o_assinatura" => @$la24_o_assinatura,"la24_c_nomearq" => @$la24_c_nomearq);
     $cliframe_alterar_excluir->chavepri = $chavepri;
     @$cliframe_alterar_excluir->sql = $cllab_labsetor->sql_query ("","*",""," la24_i_laboratorio = $la24_i_laboratorio");
@@ -227,7 +227,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_labsetor.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

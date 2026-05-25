@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ require_once(modification('libs/db_libdicionario.php'));
        <?=@$Lg03_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('g03_sequencial',10,$Ig03_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -54,7 +54,7 @@ db_input('g03_sequencial',10,$Ig03_sequencial,true,'text',3,"")
        <?=@$Lg03_descricao?>
     </td>
     <td> 
-       <?db_input('g03_descricao',40,$Ig03_descricao,true,'text',$db_opcao,"")?>
+       <?php db_input('g03_descricao',40,$Ig03_descricao,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -62,7 +62,7 @@ db_input('g03_sequencial',10,$Ig03_sequencial,true,'text',3,"")
        <?=@$Lg03_datalimite?>
     </td>
     <td> 
-       <?db_inputdata('g03_datalimite',@$g03_datalimite_dia,@$g03_datalimite_mes,@$g03_datalimite_ano,true,'text',$db_opcao,"")?>
+       <?php db_inputdata('g03_datalimite',@$g03_datalimite_dia,@$g03_datalimite_mes,@$g03_datalimite_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -70,7 +70,7 @@ db_input('g03_sequencial',10,$Ig03_sequencial,true,'text',3,"")
       <?=@$Lg03_projeto ?>
     </td>
     <td>
-      <?
+      <?php 
         $x = getValoresPadroesCampo('g03_projeto');
         db_select('g03_projeto',$x,true,$db_opcao,"");
       ?>
@@ -98,7 +98,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave,chave2){
 
   db_iframe_gestorgrupoindicador.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

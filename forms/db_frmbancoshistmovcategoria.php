@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clbancoshistmovcategoria->rotulo->label();
        <?=@$Lk67_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k67_sequencial',10,$Ik67_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('k67_sequencial',10,$Ik67_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk67_descricao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k67_descricao',50,$Ik67_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('k67_descricao',50,$Ik67_descricao,true,'text',$db_opcao,"")
        <?=@$Lk67_tipo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k67_tipo',1,$Ik67_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bancoshistmovcategoria.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

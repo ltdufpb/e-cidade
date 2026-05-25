@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,37 +52,37 @@ $clrotulo->label("nome");
        <?=@$Lrh67_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh67_sequencial',6,$Irh67_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh67_regist?>">
-       <?
+       <?php 
        db_ancora(@$Lrh67_regist,"js_pesquisarh67_regist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh67_regist',6,$Irh67_regist,true,'text',$db_opcao," onchange='js_pesquisarh67_regist(false);'")
 ?>
-       <?
+       <?php 
 db_input('z01_nome',45,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh67_rhtipovale?>">
-       <?
+       <?php 
        db_ancora(@$Lrh67_rhtipovale,"js_pesquisarh67_rhtipovale(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh67_rhtipovale',6,$Irh67_rhtipovale,true,'text',$db_opcao," onchange='js_pesquisarh67_rhtipovale(false);'")
 ?>
-       <?
+       <?php 
 db_input('rh68_descr',45,$Irh68_descr,true,'text',3,'')
        ?>
     </td>
@@ -92,7 +92,7 @@ db_input('rh68_descr',45,$Irh68_descr,true,'text',3,'')
        <?=@$Lrh67_cartao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh67_cartao',20,$Irh67_cartao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -102,7 +102,7 @@ db_input('rh67_cartao',20,$Irh67_cartao,true,'text',$db_opcao,"")
        <?=@$Lrh67_grupo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh67_grupo',6,$Irh67_grupo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ db_input('rh67_grupo',6,$Irh67_grupo,true,'text',$db_opcao,"")
        <?=@$Lrh67_dias?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh67_dias',6,$Irh67_dias,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -122,7 +122,7 @@ db_input('rh67_dias',6,$Irh67_dias,true,'text',$db_opcao,"")
        <?=@$Lrh67_vales?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh67_vales',6,$Irh67_vales,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,13 +132,13 @@ db_input('rh67_vales',6,$Irh67_vales,true,'text',$db_opcao,"")
        <?=@$Lrh67_ativo?>
     </td>
     <td> 
-<?
+<?php 
 $x = array("t"=>"SIM","f"=>"NAO");
 db_select('rh67_ativo',$x,true,$db_opcao,"");
 ?>
     </td>
   </tr>
-<?
+<?php 
 $rh67_db_usuarios = db_getsession('DB_id_usuario'); 
 db_input('rh67_db_usuarios',10,$Irh67_db_usuarios,true,'hidden',3,'');
 
@@ -232,7 +232,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhteutri.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

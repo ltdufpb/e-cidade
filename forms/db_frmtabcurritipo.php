@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $cltabcurritipo->rotulo->label();
        <?=@$Lh02_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('h02_codigo',5,$Ih02_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('h02_codigo',5,$Ih02_codigo,true,'text',$db_opcao,"")
        <?=@$Lh02_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('h02_descr',60,$Ih02_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -56,7 +56,7 @@ db_input('h02_descr',60,$Ih02_descr,true,'text',$db_opcao,"")
        <?=@$Lh02_obs?>
     </td>
     <td>
-        <?
+        <?php 
         db_textarea('h02_obs',5,70,$Ih02_obs,true,'text',$db_opcao,"");
         ?>
     </td>
@@ -86,7 +86,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tabcurritipo.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

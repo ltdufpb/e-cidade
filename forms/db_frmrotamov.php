@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,25 +40,25 @@ $clrotulo->label("ve60_codigo");
    <?=@$Led220_i_codigo?>
   </td>
   <td>
-   <?db_input('ed220_i_codigo',10,$Ied220_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed220_i_codigo',10,$Ied220_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted220_i_rota?>">
-   <?db_ancora(@$Led220_i_rota,"js_pesquisaed220_i_rota(true);",$db_opcao);?>
+   <?php db_ancora(@$Led220_i_rota,"js_pesquisaed220_i_rota(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed220_i_rota',10,$Ied220_i_rota,true,'text',$db_opcao," onchange='js_pesquisaed220_i_rota(false);'")?>
-   <?db_input('ed217_c_descr',40,@$Ied217_c_descr,true,'text',3,'')?>
+   <?php db_input('ed220_i_rota',10,$Ied220_i_rota,true,'text',$db_opcao," onchange='js_pesquisaed220_i_rota(false);'")?>
+   <?php db_input('ed217_c_descr',40,@$Ied217_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted220_i_veicretirada?>">
-   <?db_ancora(@$Led220_i_veicretirada,"js_pesquisaed220_i_veicretirada(true);",$db_opcao);?>
+   <?php db_ancora(@$Led220_i_veicretirada,"js_pesquisaed220_i_veicretirada(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed220_i_veicretirada',10,$Ied220_i_veicretirada,true,'text',$db_opcao," onchange='js_pesquisaed220_i_veicretirada(false);'")?>
-   <?db_input('ve60_codigo',10,$Ive60_codigo,true,'text',3,'')?>
+   <?php db_input('ed220_i_veicretirada',10,$Ied220_i_veicretirada,true,'text',$db_opcao," onchange='js_pesquisaed220_i_veicretirada(false);'")?>
+   <?php db_input('ve60_codigo',10,$Ive60_codigo,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -118,7 +118,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_rotamov.hide();
- <?
+ <?php 
  if($db_opcao!=1){
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }

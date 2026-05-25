@@ -139,7 +139,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
         <td>
        </tr>
        <tr id="linhaTemplate" style="display:none;">
-         <td nowrap="nowrap" title="<? echo $Tp90_db_documentotemplate; ?>">
+         <td nowrap="nowrap" title="<?php  echo $Tp90_db_documentotemplate; ?>">
            <?php
              db_ancora("<strong>Documento Template:</strong>","js_pesquisaDocumentoAutodeInfracao(true);",$db_opcao);
            ?>

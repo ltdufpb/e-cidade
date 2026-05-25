@@ -37,15 +37,15 @@ function js_verizero(){
   return true;
 }
 function js_trocaid(valor){
-  <?
+  <?php 
   if(isset($j41_matric) && $j41_matric!=""){
   ?>
     location.href="cad1_promitentealt.php?j41_matric=<?php echo $j41_matric?>&j41_numcgm="+valor;
-  <?
+  <?php 
   }else{
   ?>
     location.href="cad1_promitentealt.php?j41_matric="+document.form1.j41_matric.value+"&j41_numcgm="+valor;
-  <?
+  <?php 
   }
   ?>
 }
@@ -60,7 +60,7 @@ function js_trocaid(valor){
       <?php echo $Lj41_matric?>
     </td>
     <td>
-<?
+<?php 
 db_input('j41_matric',10,$Ij41_matric,true,'text',3,"");
 db_input("z01_nome",78,$Ij01_numcgm,true,"text",3,"","z01_nomematri");
 ?>
@@ -68,12 +68,12 @@ db_input("z01_nome",78,$Ij01_numcgm,true,"text",3,"","z01_nomematri");
       </tr>
       <tr>
         <td nowrap title="<?php echo $Tj41_numcgm?>">
-<?
+<?php 
 db_ancora($Lj41_numcgm,' js_cgm(true); ',$db_opcao==2?"3":"1");
 ?>
         </td>
         <td>
-<?
+<?php 
 db_input('j41_numcgm',10,$Ij41_numcgm,true,'text',$db_opcao==2?"3":"1","onchange='js_cgm(false)'");
 db_input('z01_nome',78,$Iz01_nome,true,'text',3,"");
 ?>
@@ -84,7 +84,7 @@ db_input('z01_nome',78,$Iz01_nome,true,'text',3,"");
           <?php echo $Lj41_promitipo?>
         </td>
         <td>
-<?
+<?php 
 
 $x = array("C"=>"Com contrato","S"=>"Sem contrato");
 db_select('j41_promitipo',$x,true,$db_opcao,"");
@@ -96,7 +96,7 @@ db_select('j41_promitipo',$x,true,$db_opcao,"");
          <?php echo $Lj41_tipopro?>
        </td>
        <td>
-        <?
+        <?php 
         if ($outros == true) {
           $xs = array("f"=>"Secundário","t"=>"Principal");
         }else{
@@ -107,7 +107,7 @@ db_select('j41_promitipo',$x,true,$db_opcao,"");
         </td>
       </tr>
       <TR><TD colspan="2" align="center">
-      <?
+      <?php 
         $cgmpromi="";
         if($outros==true){
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clorctipoproj->rotulo->label();
        <?=@$Lo38_tipoproj?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o38_tipoproj',8,$Io38_tipoproj,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o38_tipoproj',8,$Io38_tipoproj,true,'text',$db_opcao,"")
        <?=@$Lo38_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o38_descr',50,$Io38_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orctipoproj.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

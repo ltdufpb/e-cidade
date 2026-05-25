@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led94_i_codigo?>
   </td>
   <td>
-   <?db_input('ed94_i_codigo',10,$Ied94_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed94_i_codigo',10,$Ied94_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led94_c_descr?>
   </td>
   <td>
-   <?db_input('ed94_c_descr',50,$Ied94_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed94_c_descr',50,$Ied94_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("ed94_i_codigo"=>@$ed94_i_codigo,"ed94_c_descr"=>@$ed94_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clcursoformacao->sql_query($ed94_i_codigo,"*","ed94_c_descr");

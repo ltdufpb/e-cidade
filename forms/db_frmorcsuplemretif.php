@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,28 +40,28 @@ $clrotulo->label("nome");
   
   <tr>
     <td nowrap title="<?=@$To48_seq?>"><?=@$Lo48_seq?></td>
-    <td><? db_input('o48_seq',10,$Io48_seq,true,'text',3,"") ?> </td>
+    <td><?php  db_input('o48_seq',10,$Io48_seq,true,'text',3,"") ?> </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$To48_projeto?>"><? db_ancora(@$Lo48_projeto,"js_pesquisao48_projeto(true);",$db_opcao); ?></td>
-    <td nowrap><? db_input('o48_projeto',10,$Io48_projeto,true,'text',$db_opcao," onchange='js_pesquisao48_projeto(false);'") ?>
-                         <?db_input('o39_descr',80,$Io39_descr,true,'text',3,'')   ?>
+    <td nowrap title="<?=@$To48_projeto?>"><?php  db_ancora(@$Lo48_projeto,"js_pesquisao48_projeto(true);",$db_opcao); ?></td>
+    <td nowrap><?php  db_input('o48_projeto',10,$Io48_projeto,true,'text',$db_opcao," onchange='js_pesquisao48_projeto(false);'") ?>
+                         <?php db_input('o39_descr',80,$Io39_descr,true,'text',3,'')   ?>
          </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$To48_retificado?>"><?  db_ancora(@$Lo48_retificado,"js_pesquisao48_retificado(true);",$db_opcao);  ?></td>
-    <td nowrap><? db_input('o48_retificado',10,$Io48_retificado,true,'text',$db_opcao," onchange='js_pesquisao48_retificado(false);'") ?>
-                         <? db_input('o39_descr_retificado',80,$Io39_descr,true,'text',3,'')       ?>
+    <td nowrap title="<?=@$To48_retificado?>"><?php   db_ancora(@$Lo48_retificado,"js_pesquisao48_retificado(true);",$db_opcao);  ?></td>
+    <td nowrap><?php  db_input('o48_retificado',10,$Io48_retificado,true,'text',$db_opcao," onchange='js_pesquisao48_retificado(false);'") ?>
+                         <?php  db_input('o39_descr_retificado',80,$Io39_descr,true,'text',3,'')       ?>
         </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To48_texto?>"><?=@$Lo48_texto?></td>
-    <td><?db_textarea('o48_texto',0,80,$Io48_texto,true,'text',$db_opcao,"") ?>
+    <td><?php db_textarea('o48_texto',0,80,$Io48_texto,true,'text',$db_opcao,"") ?>
     </td>
   </tr>  
   <tr>
     <td nowrap title="<?=@$To48_data?>"><?=@$Lo48_data?></td>
-    <td><? db_inputdata('o48_data',@$o48_data_dia,@$o48_data_mes,@$o48_data_ano,true,'text',$db_opcao,"") ?>   </td>
+    <td><?php  db_inputdata('o48_data',@$o48_data_dia,@$o48_data_mes,@$o48_data_ano,true,'text',$db_opcao,"") ?>   </td>
   </tr>
   </table>
   
@@ -121,7 +121,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcsuplemretif.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

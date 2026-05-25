@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -100,7 +100,7 @@ if(isset($opcao) && $opcao=="alterar"){
 			       <?=@$Lsd24_i_codigo?>
 			    </td>
 			    <td colspan="3">
-			     <?
+			     <?php 
 			     db_input('sd24_i_codigo',10,$Isd24_i_codigo,true,'text',3,"");
 			     if( isset( $sd24_i_codigo ) && (int)$sd24_i_codigo != 0){
 			       ?>
@@ -108,13 +108,13 @@ if(isset($opcao) && $opcao=="alterar"){
 			           //js_diagnostico();
 			           //parent.mo_camada('a2');
 			         </script>
-			       <?
+			       <?php 
 			     }else{
 			       ?>
 			         <script>
 			           parent.document.formaba.a2.disabled = true;
 			         </script>
-			       <?       
+			       <?php        
 			     }     
 			     db_input('z01_v_nome',66,$Iz01_v_nome,true,'text',3);
 			     db_input('z01_i_cgsund',10,$Iz01_i_cgsund,true,'hidden',3,'');
@@ -123,12 +123,12 @@ if(isset($opcao) && $opcao=="alterar"){
 			  </tr>
 			  <tr>
 			    <td nowrap title="<?=@$Tsd24_i_unidade?>">
-			       <?
+			       <?php 
 			         db_ancora(@$Lsd24_i_unidade,"js_pesquisasd24_i_unidade(true);",3);
 			       ?>
 			    </td>
 			    <td colspan=3>
-			     <?
+			     <?php 
 			     db_input('sd24_i_unidade',10,$Isd24_i_unidade,true,'text',3," onchange=alert('aquiii')");
 			     @db_input('descrdepto',66,$Idescrdepto,true,'text',3,"");
 			     ?>
@@ -140,7 +140,7 @@ if(isset($opcao) && $opcao=="alterar"){
 			       <?=@$Lsd29_i_codigo?>
 			    </td>
 			    <td> 
-			      <?
+			      <?php 
 			        db_input('sd29_i_codigo',10,$Isd29_i_codigo,true,'text',3,"");
 			      ?>
 			    </td>
@@ -148,15 +148,15 @@ if(isset($opcao) && $opcao=="alterar"){
 			  <!-- PROFISSIONAL -->
 			  <tr>
 			    <td nowrap title="<?=@$Tsd03_i_codigo?>" >
-			       <?
+			       <?php 
 			       db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",isset($sd03_i_codigo)?3:$db_opcao);
 			       ?>
 			    </td>
 			    <td valing="top" align="top" colspan="3">
-			       <?
+			       <?php 
 			          db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',isset($sd03_i_codigo)?3:$db_opcao," onchange='js_pesquisasd03_i_codigo(false);'")
 			       ?>
-			       <?
+			       <?php 
 			          db_input('z01_nome',66,$Iz01_nome,true,'text',3,'');          
 			       ?>
 			    </td>
@@ -165,12 +165,12 @@ if(isset($opcao) && $opcao=="alterar"){
 			  <!-- CBO -->
 			       <tr>
 			         <td nowrap title="<?=@$Tsd04_i_cbo?>">
-			            <?
+			            <?php 
 			            db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao);
 			            ?>
 			         </td>
 			         <td colspan="3">
-			          <?
+			          <?php 
 			          db_input('sd29_i_profissional',10,$Isd29_i_profissional,true,'hidden',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
 			          db_input('rh70_sequencial',10,$Irh70_sequencial,true,'hidden',$db_opcao,"");
 			          db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
@@ -183,22 +183,22 @@ if(isset($opcao) && $opcao=="alterar"){
 			   <!-- PROCEDIMENTO -->
 			  <tr>
 			    <td nowrap title="<?=@$Tsd29_i_procedimento?>">
-			       <?
+			       <?php 
 			       db_ancora(@$Lsd29_i_procedimento,"js_pesquisasd29_i_procedimento(true);",$db_opcao);
 			       ?>
 			    </td>
 			       <td valign="top">
-			       <?
+			       <?php 
 			          db_input('sd29_i_procedimento',10,$Isd29_i_procedimento,true,'text',$db_opcao," onchange='js_pesquisasd29_i_procedimento(false);'");
 			       ?>
 			       </td>
 			       <td valign="top">
-			       <? 
+			       <?php  
 			          db_input('sd63_c_procedimento',12,$Isd63_c_procedimento,true,'text',$db_opcao," onchange='js_pesquisasd29_i_procedimento(false);'");
 			       ?>
 			       </td>
 			       <td valign="top">
-			       <?
+			       <?php 
 			          //db_textarea('sd63_c_nome',1,34,@$Isd63_c_nome,true,'text',3,"")
 			          db_input('sd63_c_nome',49,$Isd63_c_nome,true,'text',3,'')
 			       ?>       
@@ -210,13 +210,13 @@ if(isset($opcao) && $opcao=="alterar"){
 			       <?=@$Lsd29_d_data?>
 			    </td>
 			    <td colspan="2"> 
-			       <?
+			       <?php 
 			       db_inputdata('sd29_d_data',@$sd29_d_data_dia,@$sd29_d_data_mes,@$sd29_d_data_ano,true,'text',$db_opcao,"");
 			       ?>
 			    </td>
 			    <td  nowrap title="<?=@$Tsd29_c_hora?>">
 			       <?=@$Lsd29_c_hora?>
-     			   <?db_input('sd29_c_hora',5,$Isd29_c_hora,true,'text',$db_opcao,"OnKeyUp=mascara_hora(this.value,'sd29_c_hora')")?>
+     			   <?php db_input('sd29_c_hora',5,$Isd29_c_hora,true,'text',$db_opcao,"OnKeyUp=mascara_hora(this.value,'sd29_c_hora')")?>
 			    </td>
 			  </tr>
 			  
@@ -225,7 +225,7 @@ if(isset($opcao) && $opcao=="alterar"){
 			       <b>Executado:</b>
 			    </td>
 			    <td colspan="3"> 
-			      <?
+			      <?php 
 			         $sd29_t_tratamento=!isset($sd29_t_tratamento)?' ':$sd29_t_tratamento;
 			         db_textarea('sd29_t_tratamento',2,77,@$sd29_t_tratamento,true,'text',$db_opcao,"");
 			      ?>
@@ -237,7 +237,7 @@ if(isset($opcao) && $opcao=="alterar"){
 			       <?=@$Lsd29_t_diagnostico?>
 			    </td>
 			    <td > 
-			      <?
+			      <?php 
 			         $sd29_t_diagnostico=!isset($sd29_t_diagnostico)?' ':$sd29_t_diagnostico;
 			         db_textarea('sd29_t_diagnostico',1,70,@$sd29_t_diagnostico,true,'text',$db_opcao,"")
 			      ?>
@@ -252,7 +252,7 @@ if(isset($opcao) && $opcao=="alterar"){
 			       <b>Fatores de Riscos</b>
 			    </td>
 			    <td colspan="3"> 
-			      <?
+			      <?php 
 			         $z01_t_obs=!isset($z01_t_obs)?' ':$z01_t_obs;
 			         db_textarea('z01_t_obs',2,62,@$z01_t_obs,true,'text',$db_opcao,"")
 			      ?>
@@ -295,7 +295,7 @@ if(isset($opcao) && $opcao=="alterar"){
 			<tr>
 				<td width="100%" height="100%">
 					<fieldset><legend><b>Fator de Risco</b></legend>
-						<? if( isset($sd24_i_codigo) && (int)$sd24_i_codigo != 0 ) { ?>
+						<?php  if( isset($sd24_i_codigo) && (int)$sd24_i_codigo != 0 ) { ?>
 						<iframe id="framefatorderisco" 
 								name="framefatorderisco"  
 								src="sau4_framefatorderisco001.php?chavepesquisacgs=<?=$z01_i_cgsund?>"   
@@ -306,7 +306,7 @@ if(isset($opcao) && $opcao=="alterar"){
 								marginheight="0" 
 								frameborder="0">
 						</iframe>
-						<? } ?>
+						<?php  } ?>
 					
 					</fieldset>
 				</td>
@@ -548,7 +548,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_prontproced.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -605,14 +605,14 @@ function js_prosseguir(){
   if(document.form1.sd24_i_codigo.value==""){
 	 alert("FAA não informada!");	
   }else{
-     <?
+     <?php 
 	   //$clprontproced->sql_record($clprontproced->sql_query(null,"prontuarios.*, cgs_und.*, medicos.*, rhcbo.* ",null,"sd29_i_prontuario = $chavepesquisaprontuario"));
 	   if( $clprontproced->numrows > 0){
 		  echo "parent.document.formaba.a2.disabled = false;";
 		  echo "parent.iframe_a2.location.href='sau4_fichaatendabas004.php?chavepesquisaprontuario=$chavepesquisaprontuario&chaveprofissional='+document.form1.sd03_i_codigo.value;";  
 		  echo "parent.mo_camada('a2');";
 	   }else{
-	   	?>alert('FAA sem procedimentos.');<?
+	   	?>alert('FAA sem procedimentos.');<?php 
 	   }   
      ?>
   }

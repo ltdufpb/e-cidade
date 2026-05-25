@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,19 +39,19 @@ $clrotulo->label("ed47_v_nome");
    <?=@$Lme24_i_codigo?>
   </td>
   <td>
-   <?db_input('me24_i_codigo',10,$Ime24_i_codigo,true,'text',3,"")?>
+   <?php db_input('me24_i_codigo',10,$Ime24_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme24_i_aluno?>">
-   <?db_ancora(@$Lme24_i_aluno,"js_pesquisame24_i_aluno(true);",($db_opcao!=1?3:1));?>
+   <?php db_ancora(@$Lme24_i_aluno,"js_pesquisame24_i_aluno(true);",($db_opcao!=1?3:1));?>
   </td>
   <td>
-   <?db_input('me24_i_aluno',10,$Ime24_i_aluno,true,'text',($db_opcao!=1?3:1),
+   <?php db_input('me24_i_aluno',10,$Ime24_i_aluno,true,'text',($db_opcao!=1?3:1),
                "onchange='js_pesquisame24_i_aluno(false);'"
              )
    ?>
-   <?db_input('ed47_v_nome',40,$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_input('ed47_v_nome',40,$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -114,7 +114,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_restricao.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

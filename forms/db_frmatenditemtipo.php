@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clatenditemtipo->rotulo->label();
        <?=@$Lat06_tipo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('at06_tipo',4,$Iat06_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -47,7 +47,7 @@ db_input('at06_tipo',4,$Iat06_tipo,true,'text',$db_opcao,"")
        <?=@$Lat06_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('at06_descr',20,$Iat06_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -63,7 +63,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_atenditemtipo.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

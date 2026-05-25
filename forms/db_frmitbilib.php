@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -46,7 +46,7 @@ $clrotulo->label("");
 			        <?=@$Lit01_guia?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php 
 			          db_input('it01_guia',15,$Iit01_guia,true,'text',3,"");
 			        ?>
 			      </td>
@@ -56,7 +56,7 @@ $clrotulo->label("");
 			        <?=@$Lit01_data?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php 
 			          if ( isset($it01_data) && $it01_data != "" ){
 
 			            $data = split('-',$it01_data);
@@ -74,7 +74,7 @@ $clrotulo->label("");
 			        <?=@$Lit14_dtvenc?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php 
 			          if ( isset($it14_dtvenc) && $it14_dtvenc != "" ) {
 
 			            $data = split('-',$it14_dtvenc);
@@ -92,7 +92,7 @@ $clrotulo->label("");
 			        <?=@$Lit14_dtliber?>&nbsp;
 			      </td>
 			      <td>
-			        <?
+			        <?php 
 			          if ( isset($it14_dtliber) && $it14_dtliber != "" ){
 
 			            $data = split('-',$it14_dtliber);

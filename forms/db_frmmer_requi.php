@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,7 +39,7 @@ $clrotulo->label("nome");
        <?=@$Lme16_i_codigo?>
     </td>
     <td> 
-    <?db_input('me16_i_codigo',5,$Ime16_i_codigo,true,'text',$db_opcao,"")?>
+    <?php db_input('me16_i_codigo',5,$Ime16_i_codigo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -47,7 +47,7 @@ $clrotulo->label("nome");
        <?=@$Lme16_t_obs?>
     </td>
     <td> 
-    <?db_textarea('me16_t_obs',0,0,$Ime16_t_obs,true,'text',$db_opcao,"") ?>
+    <?php db_textarea('me16_t_obs',0,0,$Ime16_t_obs,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
@@ -55,7 +55,7 @@ $clrotulo->label("nome");
        <?=@$Lme16_d_data?>
     </td>
     <td> 
-     <?db_inputdata('me16_d_data',@$me16_d_data_dia,@$me16_d_data_mes,@$me16_d_data_ano,true,'text',$db_opcao,"")?>
+     <?php db_inputdata('me16_d_data',@$me16_d_data_dia,@$me16_d_data_mes,@$me16_d_data_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -63,7 +63,7 @@ $clrotulo->label("nome");
        <?=@$Lme16_c_hora?>
     </td>
     <td> 
-     <?db_input('me16_c_hora',5,$Ime16_c_hora,true,'text',$db_opcao,"")?>
+     <?php db_input('me16_c_hora',5,$Ime16_c_hora,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -71,28 +71,28 @@ $clrotulo->label("nome");
        <?=@$Lme16_c_tiposaida?>
     </td>
     <td> 
-     <?db_input('me16_c_tiposaida',2,$Ime16_c_tiposaida,true,'text',$db_opcao,"")?>
+     <?php db_input('me16_c_tiposaida',2,$Ime16_c_tiposaida,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme16_i_escola?>">
-     <?db_ancora(@$Lme16_i_escola,"js_pesquisame16_i_escola(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme16_i_escola,"js_pesquisame16_i_escola(true);",$db_opcao);?>
     </td>
     <td> 
-    <?db_input('me16_i_escola',5,$Ime16_i_escola,true,'text',$db_opcao," onchange='js_pesquisame16_i_escola(false);'")?>
-    <?db_input('ed18_i_codigo',20,$Ied18_i_codigo,true,'text',3,'')?>
+    <?php db_input('me16_i_escola',5,$Ime16_i_escola,true,'text',$db_opcao," onchange='js_pesquisame16_i_escola(false);'")?>
+    <?php db_input('ed18_i_codigo',20,$Ied18_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme16_i_dbusuario?>">
-     <?db_ancora(@$Lme16_i_dbusuario,"js_pesquisame16_i_dbusuario(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme16_i_dbusuario,"js_pesquisame16_i_dbusuario(true);",$db_opcao);?>
     </td>
     <td> 
-    <?db_input('me16_i_dbusuario',5,$Ime16_i_dbusuario,true,'text',$db_opcao,
+    <?php db_input('me16_i_dbusuario',5,$Ime16_i_dbusuario,true,'text',$db_opcao,
                 " onchange='js_pesquisame16_i_dbusuario(false);'"
               )
     ?>
-    <?db_input('nome',40,$Inome,true,'text',3,'')?>
+    <?php db_input('nome',40,$Inome,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -199,7 +199,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_requi.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

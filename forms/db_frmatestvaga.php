@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clrotulo->label("nome");
       <tr>
         <td nowrap title="<?=@$Ted102_i_codigo?>">
           <?=@$Led102_i_codigo?>
-          <?db_input( 'ed102_i_codigo', 15, $Ied102_i_codigo, true, 'text', 3);?>
+          <?php db_input( 'ed102_i_codigo', 15, $Ied102_i_codigo, true, 'text', 3);?>
         </td>
       </tr>
       <tr>
@@ -55,7 +55,7 @@ $clrotulo->label("nome");
             <table>
               <tr>
                 <td nowrap title="<?=@$Ted102_i_aluno?>">
-                  <?db_ancora( @$Led102_i_aluno, "js_pesquisaed102_i_aluno(true);", $db_opcao );?>
+                  <?php db_ancora( @$Led102_i_aluno, "js_pesquisaed102_i_aluno(true);", $db_opcao );?>
                 </td>
                 <td>
                   <?php
@@ -91,7 +91,7 @@ $clrotulo->label("nome");
                   <b>Situação:</b>
                 </td>
                 <td>
-                  <?db_input( 'situacao', 20, @$situacao, true, 'text', 3 );?>
+                  <?php db_input( 'situacao', 20, @$situacao, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -99,7 +99,7 @@ $clrotulo->label("nome");
                   <b>Data Matrícula:</b>
                 </td>
                 <td>
-                  <?db_input( 'datamatricula', 10, @$situacao, true, 'text', 3 );?>
+                  <?php db_input( 'datamatricula', 10, @$situacao, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -118,7 +118,7 @@ $clrotulo->label("nome");
                   <b>Ano:</b>
                 </td>
                 <td>
-                  <?db_input( 'anocal', 15, @$anocal, true, 'text', 3 );?>
+                  <?php db_input( 'anocal', 15, @$anocal, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -140,7 +140,7 @@ $clrotulo->label("nome");
               <table>
                 <tr>
                   <td nowrap title="<?=@$Ted102_i_escola?>">
-                    <?db_ancora( @$Led102_i_escola, "", 3 );?>
+                    <?php db_ancora( @$Led102_i_escola, "", 3 );?>
                   </td>
                   <td>
                     <?php
@@ -151,7 +151,7 @@ $clrotulo->label("nome");
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Ted102_i_base?>">
-                    <?db_ancora( @$Led102_i_base, "js_pesquisaed102_i_base(true);", $db_opcao );?>
+                    <?php db_ancora( @$Led102_i_base, "js_pesquisaed102_i_base(true);", $db_opcao );?>
                   </td>
                   <td>
                     <?php
@@ -164,7 +164,7 @@ $clrotulo->label("nome");
                   <td nowrap title="Curso">
                     <b>Curso:</b>
                   </td>
-                  <?
+                  <?php 
                     if ( $db_opcao == 3 ) {
                   ?>
                     <td>
@@ -173,7 +173,7 @@ $clrotulo->label("nome");
                         db_input( 'ed29_c_descr',  50, @$Ied29_c_descr,  true, 'text', 3 );
                       ?>
                     </td>
-                  <?
+                  <?php 
                     } else {
                   ?>
                     <td>
@@ -182,13 +182,13 @@ $clrotulo->label("nome");
                         db_input( 'nomecursodest', 50, @$Inomecursodest, true, 'text', 3 );
                       ?>
                     </td>
-                  <?
+                  <?php 
                     }
                   ?>
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Ted34_i_serie?>">
-                    <?db_ancora( "<b>Etapa:</b>", "js_pesquisaed34_i_serie(true);", $db_opcao );?>
+                    <?php db_ancora( "<b>Etapa:</b>", "js_pesquisaed34_i_serie(true);", $db_opcao );?>
                   </td>
                   <td>
                     <?php
@@ -199,7 +199,7 @@ $clrotulo->label("nome");
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Ted102_i_turno?>">
-                    <?db_ancora( @$Led102_i_turno, "js_pesquisaed102_i_turno(true);", $db_opcao );?>
+                    <?php db_ancora( @$Led102_i_turno, "js_pesquisaed102_i_turno(true);", $db_opcao );?>
                   </td>
                   <td>
                     <?php
@@ -210,7 +210,7 @@ $clrotulo->label("nome");
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Ted102_i_calendario?>">
-                    <?db_ancora( @$Led102_i_calendario, "js_pesquisaed102_i_calendario(true);", $db_opcao );?>
+                    <?php db_ancora( @$Led102_i_calendario, "js_pesquisaed102_i_calendario(true);", $db_opcao );?>
                   </td>
                   <td>
                     <?php
@@ -224,9 +224,9 @@ $clrotulo->label("nome");
                     <?=@$Led52_d_inicio?>
                   </td>
                   <td>
-                    <?db_input( 'ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'text', 3 );?>
+                    <?php db_input( 'ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'text', 3 );?>
                     <?=@$Led52_d_fim?>
-                    <?db_input( 'ed52_d_fim', 10, @$Ied52_d_fim, true, 'text', 3 );?>
+                    <?php db_input( 'ed52_d_fim', 10, @$Ied52_d_fim, true, 'text', 3 );?>
                   </td>
                 </tr>
                 <tr>
@@ -234,14 +234,14 @@ $clrotulo->label("nome");
                     <?=@$Led102_d_data?>
                   </td>
                   <td>
-                    <?db_inputdata( 'ed102_d_data', @$ed102_d_data_dia, @$ed102_d_data_mes, @$ed102_d_data_ano, true, 'text', $db_opcao );?>
+                    <?php db_inputdata( 'ed102_d_data', @$ed102_d_data_dia, @$ed102_d_data_mes, @$ed102_d_data_ano, true, 'text', $db_opcao );?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Ted102_t_obs?>" colspan="2">
                     <fieldset class="separator">
                       <legend><?=@$Led102_t_obs?></legend>
-                      <?db_textarea( 'ed102_t_obs', 4, 54, $Ied102_t_obs, true, 'text', $db_opcao );?>
+                      <?php db_textarea( 'ed102_t_obs', 4, 54, $Ied102_t_obs, true, 'text', $db_opcao );?>
                     </fieldset>
                   </td>
                 </tr>
@@ -582,7 +582,7 @@ function js_pesquisa() {
 function js_preenchepesquisa( chave ) {
   
   db_iframe_atestvaga.hide();
-  <?
+  <?php 
   if ( $db_opcao != 1 ) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -78,38 +78,38 @@ if ($ed49_i_aluno != "") {
    <?=@$Led49_i_codigo?>
   </td>
   <td>
-   <?db_input('ed49_i_codigo',20,$Ied49_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed49_i_codigo',20,$Ied49_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted49_i_escola?>">
-   <?db_ancora(@$Led49_i_escola,"",3);
+   <?php db_ancora(@$Led49_i_escola,"",3);
    ?>
   </td>
   <td>
-   <?db_input('ed49_i_escola',20,$Ied49_i_escola,true,'text',3,"")?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?php db_input('ed49_i_escola',20,$Ied49_i_escola,true,'text',3,"")?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted49_i_aluno?>">
-   <?db_ancora(@$Led49_i_aluno,"",3);
+   <?php db_ancora(@$Led49_i_aluno,"",3);
    ?>
   </td>
   <td>
-   <?db_input('ed49_i_aluno',20,$Ied49_i_aluno,true,'text',3,"")?>
-   <?db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_input('ed49_i_aluno',20,$Ied49_i_aluno,true,'text',3,"")?>
+   <?php db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted49_i_documentacao?>">
-   <?db_ancora(@$Led49_i_documentacao,"js_pesquisaed49_i_documentacao(true);",$db_opcao);?>
+   <?php db_ancora(@$Led49_i_documentacao,"js_pesquisaed49_i_documentacao(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed49_i_documentacao',20,$Ied49_i_documentacao,true,'text',$db_opcao,
+   <?php db_input('ed49_i_documentacao',20,$Ied49_i_documentacao,true,'text',$db_opcao,
               " onchange='js_pesquisaed49_i_documentacao(false);'")
    ?>
-   <?db_input('ed02_c_descr',40,@$Ied02_c_descr,true,'text',3,'')?>
+   <?php db_input('ed02_c_descr',40,@$Ied02_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -117,7 +117,7 @@ if ($ed49_i_aluno != "") {
    <?=@$Led49_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed49_t_obs',2,50,$Ied49_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ed49_t_obs',2,50,$Ied49_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -129,7 +129,7 @@ if ($ed49_i_aluno != "") {
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php 
    $chavepri                                = array("ed49_i_codigo"=>@$ed49_i_codigo,
                                                     "ed49_i_aluno"=>@$ed49_i_aluno,
                                                     "ed49_i_documentacao"=>@$ed49_i_documentacao,

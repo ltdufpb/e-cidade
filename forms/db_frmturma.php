@@ -87,12 +87,12 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     </label>
                 </td>
                 <td>
-                    <? db_input('ed57_i_codigo', 15, $Ied57_i_codigo, true, 'text', 3, "") ?>
+                    <?php  db_input('ed57_i_codigo', 15, $Ied57_i_codigo, true, 'text', 3, "") ?>
                     <spam id='codigoInep'>
                         <label for="ed57_i_codigoinep">
                             <?= @$Led57_i_codigoinep ?>
                         </label>
-                        <? db_input('ed57_i_codigoinep', 10, $Ied57_i_codigoinep, true, 'text', $db_opcao, "") ?>
+                        <?php  db_input('ed57_i_codigoinep', 10, $Ied57_i_codigoinep, true, 'text', $db_opcao, "") ?>
                     </spam>
                     <label for="ed57_i_tipoturma">
                         <?= @$Led57_i_tipoturma ?>
@@ -280,7 +280,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 ?>
                 <tr id='etapaCenso'>
                     <td nowrap title="<?= @$Ted132_censoetapa ?>">
-                        <label for="ed132_censoetapa"><? db_ancora(@$Led132_censoetapa, "", 3); ?> </label>
+                        <label for="ed132_censoetapa"><?php  db_ancora(@$Led132_censoetapa, "", 3); ?> </label>
                     </td>
                     <td>
                         <?php
@@ -295,7 +295,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             <tr>
                 <td nowrap title="<?= @$Ted57_i_turno ?>">
                     <label
-                        for="ed57_i_turno"><? db_ancora(@$Led57_i_turno, "js_pesquisaed57_i_turno(true);", $db_opcao); ?></label>
+                        for="ed57_i_turno"><?php  db_ancora(@$Led57_i_turno, "js_pesquisaed57_i_turno(true);", $db_opcao); ?></label>
                 </td>
                 <td>
                     <?php
@@ -308,7 +308,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             <tr>
                 <td nowrap title="<?= @$Ted57_i_sala ?>">
                     <label
-                        for="ed57_i_sala"><? db_ancora(@$Led57_i_sala, "js_pesquisaed57_i_sala(true);", $db_opcao); ?></label>
+                        for="ed57_i_sala"><?php  db_ancora(@$Led57_i_sala, "js_pesquisaed57_i_sala(true);", $db_opcao); ?></label>
 
                 </td>
                 <td>
@@ -332,7 +332,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     ?>
                     <spam id='tipoAtendimento'>
                         <label for="ed57_i_tipoatend"><?= @$Led57_i_tipoatend ?></label>
-                        <?
+                        <?php 
                         $x = array('0' => 'NÃO SE APLICA', '1' => 'CLASSE HOSPITALAR', '2' => 'UNIDADE DE INTERNAÇÃO', '3' => 'UNIDADE PRISIONAL');
                         db_select('ed57_i_tipoatend', $x, true, $db_opcao, "");
                         ?>
@@ -347,7 +347,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     <table>
                         <tr>
                             <td>
-                                <? db_textarea('ed57_t_obs', 6, 90, $Ied57_t_obs, true, 'text', $db_opcao, "", "", "") ?>
+                                <?php  db_textarea('ed57_t_obs', 6, 90, $Ied57_t_obs, true, 'text', $db_opcao, "", "", "") ?>
                             </td>
                         </tr>
                     </table>
@@ -356,7 +356,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
             <tr id='turnoAdicional'>
                 <td nowrap title="<?= @$Ted246_i_turno ?>">
                     <label
-                        for="ed246_i_turno"><? db_ancora(@$Led246_i_turno, "js_pesquisaed246_i_turno(true);", $db_opcao); ?></label>
+                        for="ed246_i_turno"><?php  db_ancora(@$Led246_i_turno, "js_pesquisaed246_i_turno(true);", $db_opcao); ?></label>
                 </td>
                 <td>
                     <?php
@@ -380,7 +380,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     ?>
                 </td>
             </tr>
-            <?
+            <?php 
             $visivel = "hidden";
 
             if ($db_opcao == 2 || $db_opcao == 3 && !isset($excluir)) {
