@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -28,10 +28,10 @@
 
 $sScriptName = basename(__FILE__);
 
-db_query("select fc_startsession();") or die("$sScriptName: Erro ao iniciar sessão no banco de dados");
+db_query("select fc_startsession();") or die("$sScriptName: Erro ao iniciar sessï¿½o no banco de dados");
 // criar usuario
 
-db_query("begin") or die("$sScriptName: Erro ao iniciar transação");
+db_query("begin") or die("$sScriptName: Erro ao iniciar transaï¿½ï¿½o");
 
 $sqlprocura = "select * from db_usuarios where id_usuario = 1";
 $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
@@ -39,8 +39,8 @@ $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
 if (pg_numrows($resultprocura) == 0) {
 
   $sql = "insert into db_usuarios (id_usuario , nome , login , senha , usuarioativo , email , usuext)
-		       values     (1,'DBSeller Informática Ltda','dbseller','" . Encriptacao::encriptaSenha('') . "','1','dbseller#dbseller.com.br',0)";
-   //                    values     (nextval('db_usuarios_id_usuario_seq'),'DBSeller Informática Ltda','dbseller','','t','dbseller#dbseller.com.br',0)";
+		       values     (1,'DBSeller Informï¿½tica Ltda','dbseller','" . Encriptacao::encriptaSenha('') . "','1','dbseller#dbseller.com.br',0)";
+   //                    values     (nextval('db_usuarios_id_usuario_seq'),'DBSeller Informï¿½tica Ltda','dbseller','','t','dbseller#dbseller.com.br',0)";
 
   $res = db_query($sql) or die("$sScriptName: $sql");
 }
@@ -102,7 +102,7 @@ $res = db_query($sql) or die("$sScriptName: $sql");
 
 
 // liberar acesso ao sistema
-$sql = " insert into db_sysregrasacesso values (0,'2000-01-01','00:00','2999-01-01','24:00',1,current_date,'implantação')";
+$sql = " insert into db_sysregrasacesso values (0,'2000-01-01','00:00','2999-01-01','24:00',1,current_date,'implantaï¿½ï¿½o')";
 $res = db_query($sql) or die("$sScriptName: $sql");
 
 $sql = "insert into db_sysregrasacessoip values (0,'*')";
@@ -110,8 +110,8 @@ $res = db_query($sql) or die("$sScriptName: $sql");
 //
 
 
-db_query("commit") or die("$sScriptName: Erro ao finalizar transação");
+db_query("commit") or die("$sScriptName: Erro ao finalizar transaï¿½ï¿½o");
 
-die("ATENÇÃO!! feche todas janelas e acesse novamente o sistema...")
+die("ATENï¿½ï¿½O!! feche todas janelas e acesse novamente o sistema...")
 
 ?>
