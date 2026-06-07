@@ -160,7 +160,7 @@ if (isset($alterar) && !$lErro) {
   </div>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar) && !$lErro) {
 
   if($clsepultamentos->erro_status == "0") {

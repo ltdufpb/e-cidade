@@ -122,7 +122,7 @@ if ((isset($incluir) || isset($alterar) || isset($excluir)) && $cltabplansaldore
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-      <?
+      <?php 
       include(modification("forms/db_frmtabplansaldorecurso.php"));
       ?>
       </center>
@@ -131,7 +131,7 @@ if ((isset($incluir) || isset($alterar) || isset($excluir)) && $cltabplansaldore
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cltabplansaldorecurso->erro_status=="0"){
     $cltabplansaldorecurso->erro(true,false);

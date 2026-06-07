@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -270,7 +270,7 @@ if(isset($incluir)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmrhlotavincele.php"));
 	?>
     </center>
@@ -279,7 +279,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar) || isset($excluir) || isset($incluir)){
   if(isset($alterar)){
     $erro_msg = str_replace("Inclusão","Alteração",$erro_msg);

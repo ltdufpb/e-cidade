@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clpcorcamtroca->rotulo->label("pc25_orcamitem");
               <?=$Lpc25_codtroca?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc25_codtroca",10,$Ipc25_codtroca,true,"text",4,"","chave_pc25_codtroca");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clpcorcamtroca->rotulo->label("pc25_orcamitem");
               <?=$Lpc25_orcamitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc25_orcamitem",10,$Ipc25_orcamitem,true,"text",4,"","chave_pc25_orcamitem");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clpcorcamtroca->rotulo->label("pc25_orcamitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamtroca.php")==true){
@@ -118,12 +118,12 @@ $clpcorcamtroca->rotulo->label("pc25_orcamitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

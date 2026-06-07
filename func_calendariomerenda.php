@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -225,7 +225,7 @@ $clcalendario->cria(date("d",db_getsession("DB_datausu")),date("$mes_solicitado"
 ?> 
 <script>
 function janela(d,m,a){ 
-  <?
+  <?php 
   echo "parent.document.getElementById('".$nome_objeto_data."_dia').value = (d<10?'0'+d:d);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = (m<10?'0'+m:m);\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_ano').value = a;\n";
@@ -239,7 +239,7 @@ function janela(d,m,a){
   ?>
 }
 function janela_zera(){ 
-  <?
+  <?php 
   echo "parent.document.getElementById('".$nome_objeto_data."').value     = '';\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_dia').value = '';\n";
   echo "parent.document.getElementById('".$nome_objeto_data."_mes').value = '';\n";

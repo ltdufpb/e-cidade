@@ -358,7 +358,7 @@ function js_controla_tecla_enter(obj,evt) {
 
 $('m60_descr').onkeydown = '';
 </script>
-<?
+<?php 
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 
   $sSql           = $oDaoFarControlemed->sql_query('', '*', '', "fa11_i_cgsund = $fa11_i_cgsund");

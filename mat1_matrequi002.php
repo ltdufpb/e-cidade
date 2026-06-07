@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -79,7 +79,7 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatrequi.php"));
 	?>
     </center>
@@ -88,7 +88,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($chavepesquisa)){
     echo "<script>
                parent.iframe_matrequiitem.location.href='mat1_matrequiitemalt001.php?m40_codigo=".@$chavepesquisa."&m40_almox=".@$m40_almox."';\n

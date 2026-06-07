@@ -328,7 +328,7 @@ if((isset($novo) && $novo=="ok")|| (isset($sqlerro) && $sqlerro==false)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmlevvalor.php"));
 	?>
     </center>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_versaoclientes->rotulo->label("db19_codver");
               <?=$Ldb19_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db19_sequen",6,$Idb19_sequen,true,"text",4,"","chave_db19_sequen");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_versaoclientes->rotulo->label("db19_codver");
               <?=$Ldb19_codver?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db19_codver",6,$Idb19_codver,true,"text",4,"","chave_db19_codver");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_versaoclientes->rotulo->label("db19_codver");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_versaoclientes.php")==true){
@@ -122,12 +122,12 @@ $cldb_versaoclientes->rotulo->label("db19_codver");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

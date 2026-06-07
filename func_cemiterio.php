@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcemiterio->rotulo->label("cm14_i_codigo");
               <?=$Lcm14_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("cm14_i_codigo",10,$Icm14_i_codigo,true,"text",4,"","chave_cm14_i_codigo");
                        ?>
             </td>
@@ -64,7 +64,7 @@ $clcemiterio->rotulo->label("cm14_i_codigo");
               <?=$Lcm14_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("cm14_i_codigo",10,$Icm14_i_codigo,true,"text",4,"","chave_cm14_i_codigo");
                        ?>
             </td>
@@ -82,7 +82,7 @@ $clcemiterio->rotulo->label("cm14_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cemiterio.php")==true){
@@ -125,12 +125,12 @@ $clcemiterio->rotulo->label("cm14_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

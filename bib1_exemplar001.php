@@ -193,7 +193,7 @@ if (isset($alterar)) {
         <script>
             (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo5.location.href = 'bib1_localacervo001.php?bi20_acervo=<?=$bi23_acervo?>&bi06_titulo=<?=$bi06_titulo?>';
         </script>
-        <?
+        <?php 
         $oDaoExemplar->erro(true, true);
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -101,7 +101,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   <tr>
     <td>
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmorcprojativ.php"));
 	?>
     </center>
@@ -110,7 +110,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </table>
 </body>
 </html>
-<?
+<?php 
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
   if($clorcprojativ->erro_status=="0"){
     $clorcprojativ->erro(true,false);

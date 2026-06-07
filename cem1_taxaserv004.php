@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -77,7 +77,7 @@ if ( isset( $oPost->incluir ) ) {
   </tr>
   <tr> 
     <td valign="top"> 
-		  <?
+		  <?php 
 		    include(modification("forms/db_frmtaxaserv.php"));
 		  ?>
   </td>
@@ -85,7 +85,7 @@ if ( isset( $oPost->incluir ) ) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if ( isset($oPost->incluir) ) {
   
   if ($lSqlErro) {

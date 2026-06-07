@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clobraslotei->rotulo->label("ob06_setor");
               <?=$Lob06_codobra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ob06_codobra",10,$Iob06_codobra,true,"text",4,"","chave_ob06_codobra");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clobraslotei->rotulo->label("ob06_setor");
               <?=$Lob06_setor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ob06_setor",4,$Iob06_setor,true,"text",4,"","chave_ob06_setor");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clobraslotei->rotulo->label("ob06_setor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_obraslotei.php")==true){
@@ -118,12 +118,12 @@ $clobraslotei->rotulo->label("ob06_setor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

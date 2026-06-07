@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ function js_emite() {
               <strong>Regime:</strong>
             </td>
             <td align="left">
-              <?
+              <?php 
               $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null,"rh52_regime,rh52_regime||' - '||rh52_descr"));
 
               db_selectrecord("regime",$result_regime,true,1,"","","","0-Todos...");
@@ -111,7 +111,7 @@ function js_emite() {
         <strong>Data .:&nbsp;&nbsp;</strong>
         </td>
         <td nowrap>
-        <?
+        <?php 
         db_inputdata("datai", @$datai_dia, @$datai_mes, @$datai_ano, true, 'text', 1);
         ?>
         </td>
@@ -120,7 +120,7 @@ function js_emite() {
         <td align="right" nowrap title="Ordem para a emissão do relatório" ><strong>Ordem : </strong>
         </td>
         <td align="left">
-          <?
+          <?php 
             $xx = array("a"=>"Alfabética","l"=>"Lotação");
             db_select('ordem',$xx,true,4,"");
 	  ?>
@@ -128,7 +128,7 @@ function js_emite() {
       </tr>
   <tr>
     <td nowrap colspan="2">
-    <?
+    <?php 
     $arr_tipoassent_inicial = Array();
     $arr_tipoassent_final   = Array();
     if(isset($cltipoasse->numrows)){
@@ -155,7 +155,7 @@ function js_emite() {
 
   </form>
     </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

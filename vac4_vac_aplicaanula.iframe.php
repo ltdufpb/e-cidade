@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -85,7 +85,7 @@ if ((isset($iAplica)) && (isset($iCgs))) {
     <td height="150" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
         <fieldset style='width: 60%;'> <legend><b>Anular Aplicação</b></legend>
-	        <?
+	        <?php 
 	        require_once(modification("forms/db_frmvac_aplicaanulaiframe.php"));
 	        ?>
         </fieldset>
@@ -99,7 +99,7 @@ if ((isset($iAplica)) && (isset($iCgs))) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($anular)) {
 
   if ($oDaoVacAplicaanula->erro_status == '0') {

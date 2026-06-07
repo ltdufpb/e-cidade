@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -109,7 +109,7 @@ $db_botao = true;
                                         </td>
                                     </tr>
                                 </table>
-                                <?
+                                <?php 
                                 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Receber"){
 
                                     echo "<table cellspacing = 0>";
@@ -282,7 +282,7 @@ $db_botao = true;
             </fieldset>
         </div>
     </div>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;

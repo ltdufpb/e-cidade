@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $chave_db01_anousu = db_getsession('DB_anousu');
               <?=$Ldb01_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                 db_input("teste", 10, $Idb01_coddepto, true, 'text', 1, '', 'chave_db01_coddepto');
     	      ?>
             </td>
@@ -75,7 +75,7 @@ $chave_db01_anousu = db_getsession('DB_anousu');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = "";
       if (isset($orgaos) && $orgaos != "") {
         
@@ -162,12 +162,12 @@ $chave_db01_anousu = db_getsession('DB_anousu');
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

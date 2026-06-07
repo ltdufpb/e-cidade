@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -108,13 +108,13 @@ if (!isset($db_opcao)) {
               <?=@$Lrh55_codigo?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('rh55_codigo',10,$Irh55_codigo,true,'text',3,"")
               ?>
             </td>
           </tr>
           <tr>
-            <?
+            <?php 
             $retorno_cfpess = db_sel_cfpess(db_anofolha(),db_mesfolha(),"r11_localtrab");
             if (isset($r11_localtrab) && trim($r11_localtrab) != "") {
               $cldb_estrut->autocompletar = true;
@@ -135,7 +135,7 @@ if (!isset($db_opcao)) {
               <?=@$Lrh55_inep?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('rh55_inep', 10, $Irh55_inep, true, 'text', $db_opcao, "")
               ?>
             </td>
@@ -145,19 +145,19 @@ if (!isset($db_opcao)) {
               <?=@$Lrh55_descr?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('rh55_descr',44,$Irh55_descr,true,'text',$db_opcao,"")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="Criterio Rateio">
-               <?
+               <?php 
                db_ancora("Criterio Rateio","adicionaCentroCusto('');",$db_opcao); 
                ?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('rh86_criteriorateio',10,$Irh86_criteriorateio,true,'text',$db_opcao," onchange='adicionaCentroCusto(this.value);'");
               db_input('cc08_descricao',30,$Icc08_descricao,true,'text',3,'')
                ?>
@@ -165,12 +165,12 @@ if (!isset($db_opcao)) {
           </tr>
           <tr>
             <td nowrap title="Lotação Tributária">
-               <?
+               <?php 
                db_ancora("Lotação Tributária","pesquisaLotacaoTributaria(true);",$db_opcao); 
                ?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('rh55_lotacaotributaria',10,$Irh55_lotacaotributaria,true,'text',3,"");
                ?>
             </td>

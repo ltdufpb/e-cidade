@@ -1,4 +1,4 @@
-<?
+<?php 
 if (!function_exists('truncar')) {
     function truncar($valor)
     {

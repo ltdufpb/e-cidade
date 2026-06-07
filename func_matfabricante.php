@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmatfabricante->rotulo->label("m76_numcgm");
               <?=$Lm76_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m76_sequencial",10,$Im76_sequencial,true,"text",4,"","chave_m76_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmatfabricante->rotulo->label("m76_numcgm");
               <?=$Lm76_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m76_numcgm",10,$Im76_numcgm,true,"text",4,"","chave_m76_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmatfabricante->rotulo->label("m76_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matfabricante.php")==true){
@@ -122,12 +122,12 @@ $clmatfabricante->rotulo->label("m76_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

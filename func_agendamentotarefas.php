@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ function js_enviar() {
 <form name="form1" action="func_agendamentotarefas.php">
   <tr>
     <td><b>Usuário:</b>&nbsp;&nbsp;
-    <?
+    <?php 
     if (!isset($at40_responsavel)) {
       global $at40_responsavel;
       $at40_responsavel = db_getsession("DB_id_usuario");
@@ -80,7 +80,7 @@ function js_enviar() {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(isset($data_ini)&&$data_ini!="") {
       	  $vet_data = explode("-",$data_ini);
 		  $ano      = $vet_data[0];
@@ -129,7 +129,7 @@ function js_enviar() {
    </tr>
 </form>
 </table>
-<?
+<?php 
 function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=null) {
 	global $at53_horaini_manha, $at53_horafim_manha, $at53_horaini_tarde, $at53_horafim_tarde;  // parametros para controle de expediente
 	global $at40_sequencial,$at40_horainidia,$at40_horafim,$at40_previsao,$at40_tipoprevisao;	// resumo de tarefas
@@ -278,7 +278,7 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	      document.getElementById(nomediv).style.visibility = 'hidden';
   }
 </script>
-<?
+<?php 
 	echo "<table id=\"TabDbLov\" border=\"1\" cellspacing=\"1\" cellpadding=\"0\">\n";
 	echo "<tr>\n";
 	echo "<td colspan=\"3\"><b>Responsável:&nbsp;&nbsp;<font size=\"2\">$id_usuario&nbsp;&nbsp;-&nbsp;&nbsp;$nome</font></b></td>\n";
@@ -667,7 +667,7 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	}
 ?>
 <iframe frameborder="1" name="calendario" src="func_calendar.php?cols=<?=$cols?>&id_usuario=<?=$id_usuario?>&data_inicial=<?=$data_inicial?>" height="400" width="450">	
-<?
+<?php 
 }
 function retorna_data($ano, $mes, $dia, $executar) {
 	global $k13_data;

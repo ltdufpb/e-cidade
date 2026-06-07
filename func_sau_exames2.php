@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsau_exames->rotulo->label("s108_c_exame");
               <?=$Ls108_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s108_i_codigo",10,$Is108_i_codigo,true,"text",4,"","chave_s108_i_codigo");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clsau_exames->rotulo->label("s108_c_exame");
               <?=$Ls108_c_exame?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s108_c_exame",25,$Is108_c_exame,true,"text",4,"","chave_s108_c_exame");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clsau_exames->rotulo->label("s108_c_exame");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = " exists ( select *
       							from sau_prestadorhorarios
       							inner join sau_prestadorvinculos on s111_i_codigo = s112_i_prestadorvinc
@@ -128,12 +128,12 @@ $clsau_exames->rotulo->label("s108_c_exame");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -151,7 +151,7 @@ function js_buscarvalores(){
   <form name="form1" method="post" action="">
   <tr>
     <td> 
-   <?
+   <?php 
     db_input("selecionados",30,0,true,'hidden',1);
     db_input("quebras",30,0,true,'hidden',1);
     db_input("totaliz",30,0,true,'hidden',1);
@@ -272,7 +272,7 @@ function js_checkarcampos(){
     for(i=0;i<x.length;i++){
       if(i<8){
 	      value = x.options[i].value;
-	      <?
+	      <?php 
 	      if(isset($arr_totalizacao) && count($arr_totalizacao) > 0){
 	      	for($i=0; $i<count($arr_totalizacao); $i++){
 	      		echo "
@@ -336,7 +336,7 @@ function js_zeralista(tdh,val,dvh){
     }
   }
 }
-<?
+<?php 
 if(!isset($selecionados)){
   echo "js_buscarvalores();";
 }else{

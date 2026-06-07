@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ if(isset($chavepesquisa)){
   <tr> 
     <td height="380" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmlevantanotas.php"));
 	?>
     </center>
@@ -69,7 +69,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($cllevantanotas->erro_status=="0"){
     $cllevantanotas->erro(true,false);

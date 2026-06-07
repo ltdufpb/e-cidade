@@ -83,7 +83,7 @@ define("SITUACAO_BAIXADO", "3");
               <?= $Lt52_ident ?>
           </td>
           <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("t52_ident", 20, $It52_ident, true, "text", 4, "", "chave_t52_ident");
               ?>
           </td>

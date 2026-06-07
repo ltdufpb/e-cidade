@@ -1,4 +1,4 @@
-<?
+<?php 
 require("libs/db_stdlib.php");
 require("libs/db_conecta.php");
 include("libs/db_sessoes.php");
@@ -28,7 +28,7 @@ $clmatordemprocesso->rotulo->label("m08_sequencial");
               <?=$Lm08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m08_sequencial",10,$Im08_sequencial,true,"text",4,"","chave_m08_sequencial");
 		       ?>
             </td>
@@ -38,7 +38,7 @@ $clmatordemprocesso->rotulo->label("m08_sequencial");
               <?=$Lm08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m08_sequencial",10,$Im08_sequencial,true,"text",4,"","chave_m08_sequencial");
 		       ?>
             </td>
@@ -56,7 +56,7 @@ $clmatordemprocesso->rotulo->label("m08_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matordemprocesso.php")==true){
@@ -96,12 +96,12 @@ $clmatordemprocesso->rotulo->label("m08_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

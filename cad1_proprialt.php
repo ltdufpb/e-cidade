@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -176,7 +176,7 @@ input {
       <tr>
         <td align="left" valign="top" bgcolor="#CCCCCC">
           <center>
-            <?
+            <?php 
             require_once(modification("forms/db_frmproprialt.php"));
             ?> 
           </center> 
@@ -186,7 +186,7 @@ input {
   </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)||isset($excluir)){
   if(!$sqlerro && $clpropri->erro_status=="0"){
     $clpropri->erro(true,false);

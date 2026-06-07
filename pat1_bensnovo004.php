@@ -223,7 +223,7 @@ if (isset($oGet->iCodigoEmpNotaItem) && !empty($oGet->iCodigoEmpNotaItem)) {
   }
 </script>
 
-<?
+<?php 
 if(isset($incluir)) {
 
   if (trim(@$erro_msg) != "") {

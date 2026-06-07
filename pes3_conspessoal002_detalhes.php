@@ -650,7 +650,7 @@ oHint  = new oDbHint("oHint");
 	      <strong><?=$RLz01_cgccpf?>:</strong>
 	    </td>
             <td align="right" class="bordasCor1" nowrap bgcolor="#CCCCCC">
-              <?
+              <?php 
 	      $result_cgccpf = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgm($rh16_regist,"z01_cgccpf,z01_ident"));
 	      if($clrhpessoal->numrows > 0){
                 db_fieldsmemory($result_cgccpf, 0);

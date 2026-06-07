@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -728,12 +728,12 @@ order by z01_nome";
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php 
            $ano = db_anofolha();
            db_input('ano',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?
+          <?php 
            $mes = db_mesfolha();
            db_input('mes',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -742,7 +742,7 @@ order by z01_nome";
       <tr>
         <td align="right"><b>Tipo de Arquivo :&nbsp;&nbsp;<b></td>
 	<td align="left">
-	<?
+	<?php 
 	  $arr = array('C'=>'Cadastro',
                  'B'=>'Bancos',
                  'D'=>'Cadastro CEF',
@@ -760,7 +760,7 @@ order by z01_nome";
       <tr>
         <td align="right"><b>Tipo de Servidor :&nbsp;&nbsp;<b></td>
 	<td align="left">
-	<?
+	<?php 
 	  $arr_f = array('T'=>'Todos',
                    'E'=>'Estatutário',
                    'C'=>'Comissionados',
@@ -792,7 +792,7 @@ order by z01_nome";
       </tr>
   </form>
     </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -820,7 +820,7 @@ order by z01_nome";
 </html>
 
 <script>
-  <?
+  <?php 
   if(isset($gera)){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }

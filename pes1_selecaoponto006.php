@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -100,7 +100,7 @@ if( isset($oPost->excluir) ){
 <table align="center" style="padding-top:15px;"  border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td> 
-			<?
+			<?php 
 	  	   include(modification("forms/db_frmselecaoponto.php"));
 			?>
   	</td>
@@ -108,7 +108,7 @@ if( isset($oPost->excluir) ){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($oPost->excluir)){
 	
   db_msgbox($sErroMsg);

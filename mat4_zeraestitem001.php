@@ -748,7 +748,7 @@ if (isset ($excluir)) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-  <?
+  <?php 
 
 
 if (db_getsession('DB_login') != 'dbseller') {
@@ -761,12 +761,12 @@ if (db_getsession('DB_login') != 'dbseller') {
   </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 
 
 

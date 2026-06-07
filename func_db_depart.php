@@ -82,7 +82,7 @@ if (!empty($_POST['filtrar_ids_orgao'])) {
                     ?>
                 </td>
               </tr>
-                <?
+                <?php 
             }
             ?>
           

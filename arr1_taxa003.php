@@ -72,7 +72,7 @@ if (isset($excluir)) {
 </div>
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
   if($cltaxa->erro_status=="0"){
     $cltaxa->erro(true,false);

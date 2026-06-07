@@ -404,7 +404,7 @@ if(isset($alterar)){
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php 
     db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,dates.js,
                datagrid.widget.js, widgets/Input/DBInput.widget.js, widgets/Input/DBInputDate.widget.js,
@@ -423,7 +423,7 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
-          <?
+          <?php 
           include(modification("forms/db_frmrhpessoal.php"));
           ?>
       </center>
@@ -520,7 +520,7 @@ if(isset($alterar)){
     js_tabulacao("form1","rh01_regist",true,0,"rh01_regist",true);
   }
 </script>
-<?
+<?php 
 if(isset($alterar)){
     db_msgbox($erro_msg);
     if($sqlerro==true){

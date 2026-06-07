@@ -70,7 +70,7 @@ $db_opcao = 1;
         <table>
           <tr>
             <td>
-              <?
+              <?php 
               $aux                 = new cl_arquivo_auxiliar;
               $aux->cabecalho      = "<strong>TIPOS DE CÁLCULO</strong>";
               $aux->codigo         = "q81_codigo";

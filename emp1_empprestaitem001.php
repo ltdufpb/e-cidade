@@ -254,13 +254,13 @@ function validaObrigatoriedadeCampos($e46_numemp, &$erro_msg)
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" style="margin-top: 30px;" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmempprestaitem.php"));
 	?>
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar) || isset($excluir) || isset($incluir)) {
     db_msgbox($erro_msg);
 

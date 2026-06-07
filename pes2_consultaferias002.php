@@ -63,10 +63,10 @@ $oPost = db_utils::postMemory($_POST);
 				      <table class='form-container'>
 							  <tr> 
 								  <td><strong>Matrícula:</strong> 
-				            <?
+				            <?php 
 				            db_input('rh01_regist', '', '', true, 'text', 3, "class='field-size2'");
 				            ?>
-			              <?
+			              <?php 
 			               db_input('z01_nome', '', '', true, 'text', 3, "class='field-size9'");
 			              ?> 
 			            </td>

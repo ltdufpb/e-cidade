@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_depart->rotulo->label("descrdepto");
               <?=$Lcoddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_depart->rotulo->label("descrdepto");
               <?=$Ldescrdepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("descrdepto",40,$Idescrdepto,true,"text",4,"","chave_descrdepto");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_depart->rotulo->label("descrdepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_depart.php")==true){
@@ -118,12 +118,12 @@ $cldb_depart->rotulo->label("descrdepto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

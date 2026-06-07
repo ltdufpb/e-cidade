@@ -176,7 +176,7 @@ $where = ["o55_anousu = {$ano}"];
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -193,7 +193,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?
+    <?php 
 }
 ?>
 <script type="text/javascript">

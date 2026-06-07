@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clconciliapendextrato->rotulo->label("k88_extratolinha");
               <?=$Lk88_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k88_sequencial",10,$Ik88_sequencial,true,"text",4,"","chave_k88_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clconciliapendextrato->rotulo->label("k88_extratolinha");
               <?=$Lk88_extratolinha?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k88_extratolinha",10,$Ik88_extratolinha,true,"text",4,"","chave_k88_extratolinha");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clconciliapendextrato->rotulo->label("k88_extratolinha");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conciliapendextrato.php")==true){
@@ -122,12 +122,12 @@ $clconciliapendextrato->rotulo->label("k88_extratolinha");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

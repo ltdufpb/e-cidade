@@ -82,7 +82,7 @@ $clavaliacao->rotulo->label("db101_descricao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $aWhere = array();
       if (!isset($_GET["todos"])) {
@@ -156,12 +156,12 @@ $clavaliacao->rotulo->label("db101_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

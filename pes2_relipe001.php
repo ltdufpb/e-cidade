@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,12 +65,12 @@ $clrhlota = new cl_rhlota;
     <tr>
       <td width="15%" title="Digite o Ano / Mes de competência"><b>Ano / Mês :</b></td>
       <td>
-        <?
+        <?php 
          $ano = db_anofolha();
          db_input('ano',4,1,true,'text',2,'')
         ?>
         &nbsp;/&nbsp;
-        <?
+        <?php 
          $mes = db_mesfolha();
          db_input('mes',2,1,true,'text',2,'')
         ?>
@@ -80,7 +80,7 @@ $clrhlota = new cl_rhlota;
     <tr>
       <td nowrap title="Tipo de relatório" ><b>Tipo :</b></td>
       <td>
-        <?
+        <?php 
          $aTipoRelatorio = array("m"=>"Manutenção", "i"=>"Inclusão", "t"=>"Todos","c"=>"Cadastro");
          db_select('tipo',$aTipoRelatorio,true,1,"style='width: 108px;'");
         ?>
@@ -90,7 +90,7 @@ $clrhlota = new cl_rhlota;
     <tr>
       <td><b>Unifica I.P.E.:</b></td>
       <td>
-       <?
+       <?php 
         $aUnica  = Array('f'=>'Não', 't'=>'Sim');
         db_select("unifica_ipe",$aUnica,true,1, "style='width: 108px;'");
        ?>
@@ -101,7 +101,7 @@ $clrhlota = new cl_rhlota;
       <td colspan="2">
       <fieldset>
        <legend><b>Lotações</b></legend>
-       <?
+       <?php 
          $sSqlLotacaoes = $clrhlota->sql_query_file(null, "r70_estrut, r70_estrut || ' - ' || r70_descr as r70_descr", "r70_estrut", " r70_instit = ".db_getsession('DB_instit'));
          $rsLotacoes    = $clrhlota->sql_record($sSqlLotacaoes);
          db_multiploselect("r70_estrut","r70_descr", "", "", $rsLotacoes, array(), 16, 380);
@@ -116,7 +116,7 @@ $clrhlota = new cl_rhlota;
  <br>
  <input name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
 </div>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

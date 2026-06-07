@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -138,7 +138,7 @@ if( isset($chavepesquisa)){
           </tr>
           <tr>
               <td>
-                  <?
+                  <?php 
                   if (isset($sql)) {
                       $js_funcao="parent.js_infoLancamento|c70_codlan";
                       db_lovrot($sql,15,"()","",$js_funcao,"","form1",array(),false,array());

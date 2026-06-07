@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk40_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k40_codigo",10,$Ik40_codigo,true,"text",4,"","chave_k40_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk40_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k40_descr",40,$Ik40_descr,true,"text",4,"","chave_k40_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadtipoparc.php")==true){
@@ -140,12 +140,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

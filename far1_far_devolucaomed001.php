@@ -174,7 +174,7 @@ if (isset($confirmar)) {
                 <center>
                     <fieldset style="width:90%">
                         <legend><b>Devolução Medicamentos</b></legend>
-                        <?
+                        <?php 
           require_once(modification("forms/db_frmfar_devolucaomed.php"));
           ?>
         </fieldset>
@@ -183,7 +183,7 @@ if (isset($confirmar)) {
   </tr>
 </table>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -191,7 +191,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","fa23_i_matersaude",true,1,"fa23_i_matersaude",true);
 </script>
-<?
+<?php 
 if (isset($confirmar)) {
 
   if ($oDaoclFarDevolucaomed->erro_status == '0') {

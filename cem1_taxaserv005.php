@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -85,7 +85,7 @@ if ( isset($alterar) ) {
   </tr>
   <tr> 
     <td valign="top"> 
-      <?
+      <?php 
         include(modification("forms/db_frmtaxaserv.php"));
       ?>
   </td>
@@ -93,7 +93,7 @@ if ( isset($alterar) ) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if ( isset($alterar) ) {
 	
   if ( $cltaxaserv->erro_status == "0" ) {

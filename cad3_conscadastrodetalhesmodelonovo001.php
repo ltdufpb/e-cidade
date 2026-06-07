@@ -119,7 +119,7 @@ function js_emite() {
             <strong>Informações padrões:&nbsp;</strong>
           </td>
           <td>
-            <?
+            <?php 
 $aOpcao = array("1" => "Completo",
     "2" => "Resumido");
 db_select("opcaoimpressao", $aOpcao, true, 2, " onchange='js_marcaropcao();'");

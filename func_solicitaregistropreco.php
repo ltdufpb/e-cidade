@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,7 +58,7 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
               <?=$Lpc54_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("pc54_sequencial",10,$Ipc54_sequencial,true,"text",4,"","chave_pc54_sequencial");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
              <b>Solicitação:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("pc54_solicita",10,$Ipc54_sequencial,true,"text",4,"","chave_pc54_solicita");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhereInstituicao = "";
 
       if (!empty($oGet->lFiltraInstituicao) && $oGet->lFiltraInstituicao == true) {
@@ -228,12 +228,12 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

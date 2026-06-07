@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -108,7 +108,7 @@ if (isset($incluir)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-	    <?
+	    <?php 
 	    	include(modification("forms/db_frmtiaf001.php"));
 	    ?> 
 	</td>
@@ -124,7 +124,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe_tiaf.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -181,7 +181,7 @@ function js_validacampos(){
 
 </script>
 
-<?
+<?php 
 if(isset($incluir)){
   if($cltiaf->erro_status=="0"){
     $cltiaf->erro(true,false);

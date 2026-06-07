@@ -71,7 +71,7 @@ $iAnoSessao = db_getsession("DB_anousu");
 			    Tipo do Processamento:
 			  </td>
 			  <td>
-			  <?
+			  <?php 
           $aTiposProcessamento = array(0 => "Selecione",
                                        1 => "Automático",
                                        2 => "Manual"

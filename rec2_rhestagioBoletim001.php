@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -83,7 +83,7 @@ if (isset($oGet->iMatricula) && $oGet->iMatricula != null){
 </table>
 <center>
 <fieldset>
-<?
+<?php 
 
 $campos    = " h57_sequencial, h57_regist, z01_nome, rh01_admiss,h55_nroaval, ";
 $campos   .= " count(distinct h56_sequencial) as \"dl_total realizadas\",fc_calculapontosestagio(h57_sequencial,'t') as dl_Pontos";

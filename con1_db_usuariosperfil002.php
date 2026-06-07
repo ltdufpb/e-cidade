@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -110,19 +110,19 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php 
    	include(modification("forms/db_frmdb_usuariosperfil.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
   if (trim(@$erro_msg)!=""){
        db_msgbox($erro_msg);

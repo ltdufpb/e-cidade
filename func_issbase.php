@@ -1,4 +1,4 @@
-<?
+<?php 
     /*
      *     E-cidade Software Publico para Gestao Municipal
      *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -113,7 +113,7 @@
                             <?=$Lq02_inscr?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php 
                                 db_input("q02_inscr",10,$Iq02_inscr,true,"text",10,"","chave_q02_inscr");
                             ?>
                         </td>
@@ -123,7 +123,7 @@
                             <?=$Lz01_nome?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php 
                                 db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
                             ?>
                         </td>
@@ -134,7 +134,7 @@
                             <label for="cpf"><?=$DBtxt30?>:</label>
                         </td>
                         <td>
-                            <?
+                            <?php 
                                 db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CPF\",\"\",\"\",event);'",'cpf');
                             ?>
                         </td>
@@ -144,7 +144,7 @@
                             <label for="cnpj"><?=$DBtxt31?>:</label>
                         </td>
                         <td>
-                            <?
+                            <?php 
                                 db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CNPJ\",\"\",\"\",event);'",'cnpj');
                             ?>
                         </td>
@@ -155,7 +155,7 @@
                             <?=$Lq02_inscmu?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?
+                            <?php 
                                 db_input("q02_inscmu",10,$Iq02_inscmu,true,"text",4,"","chave_q02_inscmu");
                             ?>
                         </td>
@@ -195,7 +195,7 @@
     </tr>
     <tr>
         <td align="center" valign="top">
-            <?
+            <?php 
                 $propaga["chave_z01_nome"] = @$chave_z01_nome;
                 $propaga["chave_q02_inscr"] = @$chave_q02_inscr;
                 $propaga["cpf"] = @$cpf;
@@ -242,7 +242,7 @@
 </table>
 </body>
 </html>
-<?
+<?php 
     if(!isset($pesquisa_chave)){
         ?>
         <script>
@@ -256,7 +256,7 @@
             document.form2.chave_z01_nome.select();
 
         </script>
-        <?
+        <?php 
     }
 ?>
 <script type="text/javascript">

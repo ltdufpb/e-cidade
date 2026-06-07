@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ $oRotulo->label('z01_v_nome');
               <?=$Ltf19_i_cgsund?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input('tf19_i_cgsund', 10, $Itf19_i_cgsund, true, 'text', 4, '', 'chave_tf19_i_cgsund');
 		          ?>
             </td>
@@ -68,7 +68,7 @@ $oRotulo->label('z01_v_nome');
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input('z01_v_nome', 50, $Iz01_v_nome, true, 'text', 4, '', 'chave_z01_v_nome');
 		          ?>
             </td>
@@ -87,7 +87,7 @@ $oRotulo->label('z01_v_nome');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sValidos        = '';
       $sSepValidos     = '';
       $sFica           = '';
@@ -263,12 +263,12 @@ $oRotulo->label('z01_v_nome');
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

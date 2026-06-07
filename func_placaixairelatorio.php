@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -56,7 +56,7 @@ $funcao_js = "js_showReport|k80_codpla";
 	<table height="100%" border="0" align="center">
 		<tr>
 			<td align="center" valign="top">
-				<?
+				<?php 
 					$where = "";
 					$ano   = db_getsession("DB_anousu");
 					if(isset($campos)==false){

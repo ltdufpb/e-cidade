@@ -48,7 +48,7 @@ $clrotulo->label("z01_nome");
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php 
   db_app::load("scripts.js, prototype.js, strings.js, datagrid.widget.js");
   db_app::load("estilos.css, grid.style.css");
   ?>
@@ -63,12 +63,12 @@ $clrotulo->label("z01_nome");
       <table border="0" cellspacing="0" cellpadding="0">
         <tr> 
           <td nowrap title="<?=@$Tp30_procapensado?>" >
-            <?
+            <?php 
               db_ancora('<b>Principal: </b>',"js_pesquisaProcesso(true, false);","");
             ?>
           </td>
           <td nowrap="nowrap"> 
-            <?
+            <?php 
               db_input('p58_codproc',12,$Ip30_procapensado,true,'text',$db_opcao," onchange='js_pesquisaProcesso(false, false);'");
               db_input('z01_nome_principal',40,$Iz01_nome,true,'text',3,"");
             ?>
@@ -76,12 +76,12 @@ $clrotulo->label("z01_nome");
         </tr>
         <tr> 
           <td nowrap title="<?=@$Tp30_procapensado?>" align="right">
-            <?
+            <?php 
               db_ancora('<b>Apensar: </b>',"js_pesquisaProcesso(true, true);","");
             ?>
           </td>
           <td nowrap="nowrap"> 
-            <?
+            <?php 
               db_input('p30_procapensado',12,$Ip30_procapensado,true,'text',$db_opcao," onchange='js_pesquisaProcesso(false, true);'");
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,"");
             ?>
@@ -100,7 +100,7 @@ $clrotulo->label("z01_nome");
   </div>
 </center>
 </body>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>  
 <script type="text/javascript">

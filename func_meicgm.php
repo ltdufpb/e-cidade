@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clmeicgm->rotulo->label("q115_numcgm");
               <?=$Lq115_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q115_sequencial",10,$Iq115_sequencial,true,"text",4,"","chave_q115_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clmeicgm->rotulo->label("q115_numcgm");
               <?=$Lq115_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q115_numcgm",10,$Iq115_numcgm,true,"text",4,"","chave_q115_numcgm");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clmeicgm->rotulo->label("q115_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meicgm.php")==true){
@@ -122,12 +122,12 @@ $clmeicgm->rotulo->label("q115_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

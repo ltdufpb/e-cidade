@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -164,7 +164,7 @@ if(isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo)
       <center>
       <form name="form1" method="post" action="">
       <table height="100%"  border="0" cellspacing="0" cellpadding="0">
-<?
+<?php 
 //select 1 que traz k02_codigo e k02_drecei da tabela tabrec
 $sql0 = "select tabrec.k02_codigo,tabrec.k02_drecei from (select distinct k00_receit from arrecad where k00_tipo = 1) as x inner join tabrec on k02_codigo = x.k00_receit";
 $result0 = $cltabrec->sql_record($sql0);
@@ -234,7 +234,7 @@ function js_troca(){
   document.form1.cod_v03_codigo.value=codigo;
 }
 </script>
-<?
+<?php 
 if($teste==true){
   db_msgbox($erro_msg);
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -169,7 +169,7 @@ function js_alteralinha(linha) {
       <th width="20" align="center" nowrap style="font-size:8px">Alterar</th>
     </tr>
 
-    <?
+    <?php 
     if ( isset($i03_codigo) ) {
 
        $sql="select * from infcor where i04_codigo = $i03_codigo";
