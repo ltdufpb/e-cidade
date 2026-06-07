@@ -68,7 +68,7 @@ class cl_itbidadosimovel {
                  it22_loteri = varchar(4) = Lote no RI 
                  ";
    //funcao construtor da classe 
-   function cl_itbidadosimovel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbidadosimovel"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

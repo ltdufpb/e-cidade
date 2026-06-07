@@ -56,7 +56,7 @@ class cl_autoexec {
                  y15_compl = varchar(20) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_autoexec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autoexec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

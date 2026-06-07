@@ -60,7 +60,7 @@ class cl_cadvencdesc {
                  q92_formacalcparcvenc = int4 = Forma de calculo parc. Vencidas 
                  ";
    //funcao construtor da classe 
-   function cl_cadvencdesc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadvencdesc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

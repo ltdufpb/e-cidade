@@ -56,7 +56,7 @@ class cl_db_cepmunic {
                  db10_codibge = int4 = Código do município no cadastro do IBGE 
                  ";
    //funcao construtor da classe 
-   function cl_db_cepmunic() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cepmunic"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

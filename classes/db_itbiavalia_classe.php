@@ -74,7 +74,7 @@ class cl_itbiavalia {
                  it14_desc = float8 = Desconto 
                  ";
    //funcao construtor da classe 
-   function cl_itbiavalia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiavalia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

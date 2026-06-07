@@ -58,7 +58,7 @@ class cl_autotipo {
                  y59_fator = int4 = Fator 
                  ";
    //funcao construtor da classe 
-   function cl_autotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autotipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

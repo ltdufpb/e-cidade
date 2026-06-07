@@ -54,7 +54,7 @@ class cl_rhrubretencao {
                  rh75_retencaotiporec = int4 = Retenção 
                  ";
    //funcao construtor da classe 
-   function cl_rhrubretencao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhrubretencao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

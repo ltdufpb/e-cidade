@@ -83,7 +83,7 @@ class cl_meiimportameiregcontador {
                  q109_email = varchar(115) = Email 
                  ";
    //funcao construtor da classe 
-   function cl_meiimportameiregcontador() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimportameiregcontador"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

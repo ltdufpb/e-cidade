@@ -52,7 +52,7 @@ class cl_recreparcarretipo {
                  k72_codigo = int4 = Receita 
                  ";
    //funcao construtor da classe 
-   function cl_recreparcarretipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recreparcarretipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

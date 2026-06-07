@@ -52,7 +52,7 @@ class cl_aguahidromatricleitura {
                  x05_codleitura = int4 = Leitura 
                  ";
    //funcao construtor da classe 
-   function cl_aguahidromatricleitura() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidromatricleitura"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

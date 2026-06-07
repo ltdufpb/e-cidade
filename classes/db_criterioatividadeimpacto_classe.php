@@ -50,7 +50,7 @@ class cl_criterioatividadeimpacto {
                  am01_descricao = varchar(50) = Critério de Medição
                  ";
    //funcao construtor da classe
-   function cl_criterioatividadeimpacto() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("criterioatividadeimpacto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

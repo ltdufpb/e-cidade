@@ -65,7 +65,7 @@ class cl_lab_emissao {
                  la34_c_nomearq = char(50) = Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_lab_emissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_emissao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

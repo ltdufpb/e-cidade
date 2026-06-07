@@ -54,7 +54,7 @@ class cl_db_plugin {
                  db145_situacao = bool = Situação 
                  ";
    //funcao construtor da classe
-   function cl_db_plugin() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_plugin");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

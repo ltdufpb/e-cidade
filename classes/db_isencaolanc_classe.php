@@ -66,7 +66,7 @@ class cl_isencaolanc {
                  v18_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_isencaolanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isencaolanc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

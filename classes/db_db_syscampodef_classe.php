@@ -52,7 +52,7 @@ class cl_db_syscampodef {
                  defdescr = varchar(200) = Descrição Valor
                  ";
    //funcao construtor da classe
-   function cl_db_syscampodef() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_syscampodef");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

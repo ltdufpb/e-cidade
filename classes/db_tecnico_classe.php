@@ -50,7 +50,7 @@ class cl_tecnico {
                  at03_id_usuario = int4 = Técnico 
                  ";
    //funcao construtor da classe 
-   function cl_tecnico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tecnico"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

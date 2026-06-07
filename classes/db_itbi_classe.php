@@ -96,7 +96,7 @@ class cl_itbi {
                  it01_cartorioextra = integer = Código do Cartório
                  ";
    //funcao construtor da classe
-   public function  cl_itbi() {
+   public function  __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbi");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

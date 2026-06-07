@@ -60,7 +60,7 @@ class cl_aguarotarua {
                  x07_orientacao = char(1) = Orientação
                  ";
    //funcao construtor da classe 
-   function cl_aguarotarua() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguarotarua"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -77,7 +77,7 @@ class cl_parecertecnico {
                  am08_arquivo = oid = Arquivo Parecer Técnico
                  ";
    //funcao construtor da classe
-   function cl_parecertecnico() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parecertecnico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

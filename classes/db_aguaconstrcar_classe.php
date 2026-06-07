@@ -50,7 +50,7 @@ class cl_aguaconstrcar {
                  x12_codigo = int8 = Caracteristica 
                  ";
    //funcao construtor da classe 
-   function cl_aguaconstrcar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaconstrcar"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

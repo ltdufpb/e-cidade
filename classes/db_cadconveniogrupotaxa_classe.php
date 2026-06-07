@@ -52,7 +52,7 @@ class cl_cadconveniogrupotaxa {
                  ar39_grupotaxa = int4 = Grupo Taxa 
                  ";
    //funcao construtor da classe 
-   function cl_cadconveniogrupotaxa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadconveniogrupotaxa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

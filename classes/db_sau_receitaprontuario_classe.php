@@ -52,7 +52,7 @@ class cl_sau_receitaprontuario {
                  s162_i_prontuario = int4 = Prontuário 
                  ";
    //funcao construtor da classe 
-   function cl_sau_receitaprontuario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_receitaprontuario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

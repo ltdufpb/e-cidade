@@ -52,7 +52,7 @@ class cl_acordoitemexecutadomatordemitem {
                  ac30_matordemitem = int4 = Item da Ordem de Compra 
                  ";
    //funcao construtor da classe 
-   function cl_acordoitemexecutadomatordemitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoitemexecutadomatordemitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

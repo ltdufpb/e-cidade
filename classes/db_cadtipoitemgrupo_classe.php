@@ -50,7 +50,7 @@ class cl_cadtipoitemgrupo {
                  k37_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_cadtipoitemgrupo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipoitemgrupo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

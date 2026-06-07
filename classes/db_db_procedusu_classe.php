@@ -52,7 +52,7 @@ class cl_db_procedusu {
                  at31_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_db_procedusu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_procedusu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

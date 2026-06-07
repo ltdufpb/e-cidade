@@ -52,7 +52,7 @@ class cl_sau_cgserrado {
                  s128_v_nome = varchar(255) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_sau_cgserrado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_cgserrado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

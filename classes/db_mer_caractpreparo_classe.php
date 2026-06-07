@@ -56,7 +56,7 @@ class cl_mer_caractpreparo {
                  me06_i_cardapio = int4 = Cardápio 
                  ";
    //funcao construtor da classe 
-   function cl_mer_caractpreparo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_caractpreparo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -59,7 +59,7 @@ class cl_benscadlote {
                  t42_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_benscadlote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benscadlote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

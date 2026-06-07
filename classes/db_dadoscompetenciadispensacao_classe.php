@@ -56,7 +56,7 @@ class cl_dadoscompetenciadispensacao {
                  fa61_cns = varchar(15) = CNS
                  ";
    //funcao construtor da classe
-   function cl_dadoscompetenciadispensacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dadoscompetenciadispensacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

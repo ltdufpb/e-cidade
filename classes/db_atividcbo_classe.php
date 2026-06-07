@@ -50,7 +50,7 @@ class cl_atividcbo {
                  q75_rhcbo = int4 = Código CBO 
                  ";
    //funcao construtor da classe 
-   function cl_atividcbo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atividcbo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_meiimportamei {
                  q105_cnpj = varchar(14) = CNPJ Mei 
                  ";
    //funcao construtor da classe 
-   function cl_meiimportamei() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimportamei"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

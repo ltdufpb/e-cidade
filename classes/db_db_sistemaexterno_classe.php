@@ -50,7 +50,7 @@ class cl_db_sistemaexterno {
                  db124_descricao = varchar(50) = Sistema Externo
                  ";
    //funcao construtor da classe
-   function cl_db_sistemaexterno() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sistemaexterno");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

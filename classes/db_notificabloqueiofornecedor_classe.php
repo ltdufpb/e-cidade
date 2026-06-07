@@ -65,7 +65,7 @@ class cl_notificabloqueiofornecedor {
                  pc86_departamento = int4 = Departameto 
                  ";
    //funcao construtor da classe 
-   function cl_notificabloqueiofornecedor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notificabloqueiofornecedor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

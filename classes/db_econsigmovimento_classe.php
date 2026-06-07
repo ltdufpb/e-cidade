@@ -58,7 +58,7 @@ class cl_econsigmovimento {
                  rh133_relatorio = oid = Relatório de  Importação 
                  ";
    //funcao construtor da classe 
-   function cl_econsigmovimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("econsigmovimento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

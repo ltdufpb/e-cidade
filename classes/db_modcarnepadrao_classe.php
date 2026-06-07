@@ -68,7 +68,7 @@ class cl_modcarnepadrao {
                  k48_parcfim = float4 = Parcela Final 
                  ";
    //funcao construtor da classe 
-   function cl_modcarnepadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("modcarnepadrao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

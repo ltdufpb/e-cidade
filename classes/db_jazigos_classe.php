@@ -83,7 +83,7 @@ class cl_jazigos {
                  cm03_f_metragem2 = float8 = Metragem 2 
                  ";
    //funcao construtor da classe 
-   function cl_jazigos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("jazigos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_tabrectipo {
                  k116_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tabrectipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabrectipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

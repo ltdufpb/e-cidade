@@ -50,7 +50,7 @@ class cl_fiscarquivos {
                  y26_idparag = int4 = Códido do parágrafo 
                  ";
    //funcao construtor da classe 
-   function cl_fiscarquivos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscarquivos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

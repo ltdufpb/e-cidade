@@ -68,7 +68,7 @@ class cl_mer_tipocardapio {
                  me27_i_ano = int4 = Ano do Cardápio 
                  ";
    //funcao construtor da classe 
-   function cl_mer_tipocardapio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_tipocardapio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

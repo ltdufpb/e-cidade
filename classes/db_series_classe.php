@@ -52,7 +52,7 @@ class cl_series {
                  ed03_c_abrevia = char(10) = Abreviação 
                  ";
    //funcao construtor da classe 
-   function cl_series() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("series"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

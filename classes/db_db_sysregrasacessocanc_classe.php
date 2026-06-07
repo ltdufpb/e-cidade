@@ -57,7 +57,7 @@ class cl_db_sysregrasacessocanc {
                  db49_observ = text = Descrição Cancelamento 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysregrasacessocanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysregrasacessocanc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

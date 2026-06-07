@@ -56,7 +56,7 @@ class cl_isscalcloginscr {
                  q48_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_isscalcloginscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isscalcloginscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_iptucalclogmat {
                  j28_obs = text = Observacoes 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalclogmat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalclogmat"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

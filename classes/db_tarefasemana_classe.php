@@ -60,7 +60,7 @@ class cl_tarefasemana {
                  at19_dtfim = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_tarefasemana() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefasemana"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

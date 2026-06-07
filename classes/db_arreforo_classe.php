@@ -78,7 +78,7 @@ class cl_arreforo {
                  k00_certidao = int4 = numero da certidao
                  ";
    //funcao construtor da classe
-   function cl_arreforo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arreforo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

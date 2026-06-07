@@ -70,7 +70,7 @@ class cl_arrehist {
                  k00_idhist = int4 = Sequencia 
                  ";
    //funcao construtor da classe
-   function cl_arrehist() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrehist");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

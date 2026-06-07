@@ -50,7 +50,7 @@ class cl_db_contatostipo {
                  g02_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_contatostipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_contatostipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

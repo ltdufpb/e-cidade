@@ -58,7 +58,7 @@ class cl_cgs_cartaosus
                  ";
 
     //funcao construtor da classe
-    function cl_cgs_cartaosus()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("cgs_cartaosus");

@@ -50,7 +50,7 @@ class cl_db_menuacesso {
                  db06_idtipo = int4 = Tipo Acesso 
                  ";
    //funcao construtor da classe 
-   function cl_db_menuacesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_menuacesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

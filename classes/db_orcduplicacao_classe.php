@@ -66,7 +66,7 @@ class cl_orcduplicacao {
                  o75_importar = bool = Importar 
                  ";
    //funcao construtor da classe 
-   function cl_orcduplicacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcduplicacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

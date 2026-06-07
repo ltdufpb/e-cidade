@@ -50,7 +50,7 @@ class cl_db_itensmenudemonstracao {
                  demodescr = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_itensmenudemonstracao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_itensmenudemonstracao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

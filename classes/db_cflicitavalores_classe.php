@@ -64,7 +64,7 @@ class cl_cflicitavalores {
                  l40_datafinal = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_cflicitavalores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cflicitavalores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

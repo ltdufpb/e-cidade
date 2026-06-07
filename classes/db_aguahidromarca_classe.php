@@ -52,7 +52,7 @@ class cl_aguahidromarca {
                  x03_sigla = varchar(15) = Sigla 
                  ";
    //funcao construtor da classe 
-   function cl_aguahidromarca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidromarca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

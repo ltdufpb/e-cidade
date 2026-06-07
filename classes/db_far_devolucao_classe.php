@@ -59,7 +59,7 @@ class cl_far_devolucao {
                  fa22_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_far_devolucao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_devolucao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

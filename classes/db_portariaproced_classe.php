@@ -52,7 +52,7 @@ class cl_portariaproced {
                  h40_lancahaver = int4 = Lançamento em haver 
                  ";
    //funcao construtor da classe 
-   function cl_portariaproced() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariaproced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

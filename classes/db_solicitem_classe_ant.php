@@ -66,7 +66,7 @@ class cl_solicitem {
                  pc11_liberado = bool = Liberar para contabilidade 
                  ";
    //funcao construtor da classe 
-   function cl_solicitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

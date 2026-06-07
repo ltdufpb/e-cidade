@@ -56,7 +56,7 @@ class cl_db_sysforkey {
                  tipoobjrel = int4 = Tipo Objeto 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysforkey() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysforkey"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

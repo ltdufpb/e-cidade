@@ -50,7 +50,7 @@ class cl_arrenaoagrupa {
                  k00_tipo = int4 = Tipo de Débito 
                  ";
    //funcao construtor da classe 
-   function cl_arrenaoagrupa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrenaoagrupa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

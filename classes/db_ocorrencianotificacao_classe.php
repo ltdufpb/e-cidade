@@ -52,7 +52,7 @@ class cl_ocorrencianotificacao {
                  ed105_mensagemnotificacao = int4 = Mensagem Notificação 
                  ";
    //funcao construtor da classe 
-   function cl_ocorrencianotificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ocorrencianotificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

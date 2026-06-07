@@ -70,7 +70,7 @@ class cl_mer_subitem {
                  me29_t_obs = text = Justificativa 
                  ";
    //funcao construtor da classe 
-   function cl_mer_subitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_subitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

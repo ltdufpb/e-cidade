@@ -50,7 +50,7 @@ class cl_procandamintusu {
                  p79_usuario = int4 = Usuário de Destino 
                  ";
    //funcao construtor da classe 
-   function cl_procandamintusu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procandamintusu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

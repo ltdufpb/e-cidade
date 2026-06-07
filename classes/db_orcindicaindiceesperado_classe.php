@@ -54,7 +54,7 @@ class cl_orcindicaindiceesperado {
                  o25_valor = float4 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_orcindicaindiceesperado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcindicaindiceesperado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

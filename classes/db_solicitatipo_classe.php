@@ -52,7 +52,7 @@ class cl_solicitatipo {
                  pc12_tipo = int4 = tipo 
                  ";
    //funcao construtor da classe 
-   function cl_solicitatipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitatipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

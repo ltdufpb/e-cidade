@@ -50,7 +50,7 @@ class cl_benstipoaquisicao {
                  t45_descricao = varchar(150) = Descrição da Aquisição 
                  ";
    //funcao construtor da classe 
-   function cl_benstipoaquisicao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstipoaquisicao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

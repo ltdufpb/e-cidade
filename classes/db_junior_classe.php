@@ -52,7 +52,7 @@ class cl_junior {
                  ssj_codcid = int4 = cód. Logradouro 
                  ";
    //funcao construtor da classe 
-   function cl_junior() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("junior"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

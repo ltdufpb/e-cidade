@@ -56,7 +56,7 @@ class cl_db_confplan {
                  w10_dia = int4 = Dia Vencimento 
                  ";
    //funcao construtor da classe 
-   function cl_db_confplan() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_confplan"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

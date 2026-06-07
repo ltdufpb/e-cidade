@@ -54,7 +54,7 @@ class cl_rhlocaltrabcustoplano {
                  rh86_instit = int4 = Instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_rhlocaltrabcustoplano() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlocaltrabcustoplano"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

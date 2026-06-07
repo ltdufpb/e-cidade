@@ -50,7 +50,7 @@ class cl_aguacondominiomat {
                  x40_codcondominio = int4 = Código do Condomínio 
                  ";
    //funcao construtor da classe 
-   function cl_aguacondominiomat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacondominiomat"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

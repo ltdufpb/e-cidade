@@ -60,7 +60,7 @@ class cl_pcdotac {
                  pc13_codele = int4 = Código Elemento 
                  ";
    //funcao construtor da classe 
-   function cl_pcdotac() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcdotac"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

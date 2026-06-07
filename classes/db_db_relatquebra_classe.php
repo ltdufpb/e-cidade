@@ -54,7 +54,7 @@ class cl_db_relatquebra {
                  db97_totaliza = bool = Totalizar 
                  ";
    //funcao construtor da classe 
-   function cl_db_relatquebra() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relatquebra"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

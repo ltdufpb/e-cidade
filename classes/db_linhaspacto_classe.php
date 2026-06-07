@@ -28,7 +28,7 @@ class cl_linhaspacto
                  ";
 
     //funcao construtor da classe
-    function cl_linhaspacto()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("linhaspacto");

@@ -54,7 +54,7 @@ class cl_atendimento_top {
                  at14_qtd = int4 = Atendimentos 
                  ";
    //funcao construtor da classe 
-   function cl_atendimento_top() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendimento_top"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

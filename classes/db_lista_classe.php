@@ -63,7 +63,7 @@ class cl_lista {
                  k60_instit = int4 = Cód. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_lista() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lista"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

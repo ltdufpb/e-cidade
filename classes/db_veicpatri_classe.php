@@ -52,7 +52,7 @@ class cl_veicpatri {
                  ve03_bem = int8 = Bem 
                  ";
    //funcao construtor da classe 
-   function cl_veicpatri() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicpatri"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

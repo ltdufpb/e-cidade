@@ -50,7 +50,7 @@ class cl_autor {
                  bi01_nome = char(50) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_autor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

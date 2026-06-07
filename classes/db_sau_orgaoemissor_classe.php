@@ -50,7 +50,7 @@ class cl_sau_orgaoemissor {
                  sd51_v_descricao = varchar(60) = Decrição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_orgaoemissor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_orgaoemissor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

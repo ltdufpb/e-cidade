@@ -52,7 +52,7 @@ class cl_pccontrtipopago {
                  p77_tipo = char(1) = Tipo de pagamento 
                  ";
    //funcao construtor da classe 
-   function cl_pccontrtipopago() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pccontrtipopago"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

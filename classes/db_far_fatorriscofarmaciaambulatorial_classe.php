@@ -52,7 +52,7 @@ class cl_far_fatorriscofarmaciaambulatorial {
                  fa45_i_fatorriscofarmacia = int4 = Fator de risco farmácia 
                  ";
    //funcao construtor da classe 
-   function cl_far_fatorriscofarmaciaambulatorial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_fatorriscofarmaciaambulatorial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

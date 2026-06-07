@@ -56,7 +56,7 @@ class cl_registroprecocedenciaitem {
                  pc36_quantidade = numeric(10) = Quantidade 
                  ";
    //funcao construtor da classe 
-   function cl_registroprecocedenciaitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("registroprecocedenciaitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

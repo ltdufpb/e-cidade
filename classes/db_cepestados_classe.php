@@ -50,7 +50,7 @@ class cl_cepestados {
                  cp03_estado = varchar(72) = Estado 
                  ";
    //funcao construtor da classe 
-   function cl_cepestados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cepestados"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

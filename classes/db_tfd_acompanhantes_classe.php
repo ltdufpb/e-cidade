@@ -56,7 +56,7 @@ class cl_tfd_acompanhantes {
                  tf13_i_anulado = int4 = Anulado
                  ";
    //funcao construtor da classe
-   function cl_tfd_acompanhantes() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_acompanhantes");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

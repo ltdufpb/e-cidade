@@ -54,7 +54,7 @@ class cl_procjurjudicialadvog {
                  v65_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_procjurjudicialadvog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procjurjudicialadvog"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -79,7 +79,7 @@ class cl_bancoaplic {
                  k90_cpsldaplicant = float8 = Saldo Aplicado Ant.-cp 
                  ";
    //funcao construtor da classe 
-   function cl_bancoaplic() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancoaplic"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

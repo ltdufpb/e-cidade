@@ -52,7 +52,7 @@ class cl_habitprogramalote {
                  ht05_habitprograma = int4 = Programa 
                  ";
    //funcao construtor da classe 
-   function cl_habitprogramalote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habitprogramalote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

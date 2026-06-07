@@ -59,7 +59,7 @@ class cl_db_sysmodulo {
                  ativo = bool = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysmodulo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysmodulo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

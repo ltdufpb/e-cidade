@@ -50,7 +50,7 @@ class cl_sau_modvinculo {
                  sd52_v_descricao = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_modvinculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_modvinculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

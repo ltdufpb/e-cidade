@@ -70,7 +70,7 @@ class cl_registroprecomovimentacaoitens {
                  pc66_solicitem = int4 = Item da Compilação 
                  ";
    //funcao construtor da classe 
-   function cl_registroprecomovimentacaoitens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("registroprecomovimentacaoitens"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

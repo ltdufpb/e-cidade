@@ -52,7 +52,7 @@ class cl_orcparamfontes {
                  o43_codfon = int4 = Código Fonte 
                  ";
    //funcao construtor da classe 
-   function cl_orcparamfontes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcparamfontes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

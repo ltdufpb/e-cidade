@@ -54,7 +54,7 @@ class cl_tfd_tipotratamentodoc {
                  tf06_i_obrigatorio = int4 = Obrigatório 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_tipotratamentodoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_tipotratamentodoc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

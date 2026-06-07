@@ -50,7 +50,7 @@ class cl_orcimpactotiporec {
                  o93_codigo = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactotiporec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactotiporec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

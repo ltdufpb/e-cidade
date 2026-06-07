@@ -66,7 +66,7 @@ class cl_processoouvidoriaprorrogacao {
                  ov15_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe
-   function cl_processoouvidoriaprorrogacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoouvidoriaprorrogacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -59,7 +59,7 @@ class cl_averbatipo {
                  j93_averbagrupo = int4 = Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_averbatipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbatipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

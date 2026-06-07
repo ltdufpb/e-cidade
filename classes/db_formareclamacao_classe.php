@@ -60,7 +60,7 @@ class cl_formareclamacao {
                  p42_dtfim = date = Data Fim
                  ";
    //funcao construtor da classe
-   function cl_formareclamacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("formareclamacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_processoinscr {
                  p82_inscr = int4 = Inscrição 
                  ";
    //funcao construtor da classe 
-   function cl_processoinscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoinscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

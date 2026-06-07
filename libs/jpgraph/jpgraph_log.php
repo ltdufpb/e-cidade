@@ -24,7 +24,7 @@ class LogScale extends LinearScale {
 // CONSTRUCTOR
 
     // Log scale is specified using the log of min and max
-    function LogScale($min,$max,$type="y") {
+    function __construct($min,$max,$type="y") {
 	$this->LinearScale($min,$max,$type);
 	$this->ticks = new LogTicks();
 	$this->name = 'log';
@@ -98,7 +98,7 @@ class LogTicks extends Ticks{
     var $label_logtype=LOGLABELS_MAGNITUDE;
 //---------------
 // CONSTRUCTOR
-    function LogTicks() {
+    function __construct() {
     }
 //---------------
 // PUBLIC METHODS	

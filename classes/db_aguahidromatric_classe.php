@@ -69,7 +69,7 @@ class cl_aguahidromatric {
                  x04_observacao = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_aguahidromatric() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidromatric");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

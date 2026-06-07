@@ -54,7 +54,7 @@ class cl_selecaoponto {
                  r72_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_selecaoponto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("selecaoponto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

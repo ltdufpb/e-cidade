@@ -61,7 +61,7 @@ class cl_termovist {
                  y91_tipo = varchar(3) = Origem do termo 
                  ";
    //funcao construtor da classe 
-   function cl_termovist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termovist"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

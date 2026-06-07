@@ -58,7 +58,7 @@ class cl_cad_afast {
                  r68_salario = bool = Salário 
                  ";
    //funcao construtor da classe 
-   function cl_cad_afast() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cad_afast"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

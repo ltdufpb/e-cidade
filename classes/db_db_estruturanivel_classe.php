@@ -56,7 +56,7 @@ class cl_db_estruturanivel {
 					                 db78_inicio    = int4        = Inicio 
 					                 ";
 					   //funcao construtor da classe 
-   function cl_db_estruturanivel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_estruturanivel"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

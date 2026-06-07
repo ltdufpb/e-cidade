@@ -54,7 +54,7 @@ class cl_autorec {
                  y57_valor = float8 = Valor da Receita
                  ";
    //funcao construtor da classe
-   function cl_autorec() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autorec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_issnotaavulsainscr {
                  q52_inscr = int4 = Inscrição Municipal 
                  ";
    //funcao construtor da classe 
-   function cl_issnotaavulsainscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issnotaavulsainscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

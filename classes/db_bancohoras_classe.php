@@ -63,7 +63,7 @@ class cl_bancohoras {
                  rh126_observacao = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_bancohoras() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancohoras");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_sau_cadsusversao {
                  s150_i_versao = int4 = versao 
                  ";
    //funcao construtor da classe 
-   function cl_sau_cadsusversao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_cadsusversao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

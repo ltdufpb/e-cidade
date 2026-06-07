@@ -52,7 +52,7 @@ class cl_isencaoproc {
                  v17_isencao = int4 = Codigo da isenção 
                  ";
    //funcao construtor da classe 
-   function cl_isencaoproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isencaoproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

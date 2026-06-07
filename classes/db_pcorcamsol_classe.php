@@ -50,7 +50,7 @@ class cl_pcorcamsol {
                  pc27_solic = int4 = numero da solicitacao 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamsol() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamsol"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

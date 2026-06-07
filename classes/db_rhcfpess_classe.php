@@ -50,7 +50,7 @@ class cl_rhcfpess {
                  rh22_mesusu = int4 = Mês da Folha 
                  ";
    //funcao construtor da classe 
-   function cl_rhcfpess() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhcfpess"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

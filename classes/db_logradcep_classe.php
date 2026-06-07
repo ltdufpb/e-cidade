@@ -50,7 +50,7 @@ class cl_logradcep {
                  j65_ceplog = int8 = Código do Logradouro 
                  ";
    //funcao construtor da classe 
-   function cl_logradcep() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("logradcep"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

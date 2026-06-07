@@ -77,7 +77,7 @@ class cl_prontproced
                  sd29_t_achado = text = outros achados
                  ";
    //funcao construtor da classe
-   function cl_prontproced() {
+   function __construct() {
      //classes dos rotulos dos campos
         $this->rotulo = new rotulo("prontproced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

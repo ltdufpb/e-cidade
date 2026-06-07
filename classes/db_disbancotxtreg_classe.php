@@ -52,7 +52,7 @@ class cl_disbancotxtreg {
                  k35_idret = int4 = Cód. Ret. 
                  ";
    //funcao construtor da classe 
-   function cl_disbancotxtreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disbancotxtreg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

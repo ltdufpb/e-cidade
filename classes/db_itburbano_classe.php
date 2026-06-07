@@ -58,7 +58,7 @@ class cl_itburbano {
                  it05_itbisituacao = int8 = Situação
                  ";
    //funcao construtor da classe
-   public function cl_itburbano() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itburbano");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

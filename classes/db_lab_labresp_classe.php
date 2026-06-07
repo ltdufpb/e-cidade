@@ -75,7 +75,7 @@ class cl_lab_labresp {
                  la06_permitidoconferencia = boolean = Permitido Conferência 
                  ";
    //funcao construtor da classe 
-   function cl_lab_labresp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_labresp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

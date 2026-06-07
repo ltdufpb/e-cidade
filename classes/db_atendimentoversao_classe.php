@@ -52,7 +52,7 @@ class cl_atendimentoversao {
                  at67_codver = int4 = Código da Versão 
                  ";
    //funcao construtor da classe 
-   function cl_atendimentoversao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendimentoversao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

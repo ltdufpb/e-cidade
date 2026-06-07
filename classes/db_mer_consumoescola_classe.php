@@ -54,7 +54,7 @@ class cl_mer_consumoescola {
                  me38_i_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_mer_consumoescola() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_consumoescola"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

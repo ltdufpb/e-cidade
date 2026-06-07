@@ -50,7 +50,7 @@ class cl_sam_class_gravidade {
                  sm02_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sam_class_gravidade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sam_class_gravidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

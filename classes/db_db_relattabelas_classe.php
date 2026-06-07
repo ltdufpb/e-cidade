@@ -52,7 +52,7 @@ class cl_db_relattabelas {
                  db92_codarq = int4 = Código Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_db_relattabelas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relattabelas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

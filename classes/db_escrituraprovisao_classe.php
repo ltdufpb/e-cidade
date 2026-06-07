@@ -65,7 +65,7 @@ class cl_escrituraprovisao {
                  c102_processado = bool = Processado 
                  ";
    //funcao construtor da classe 
-   function cl_escrituraprovisao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("escrituraprovisao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

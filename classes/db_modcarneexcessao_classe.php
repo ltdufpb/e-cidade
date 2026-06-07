@@ -52,7 +52,7 @@ class cl_modcarneexcessao {
                  k36_ip = varchar(15) = IP 
                  ";
    //funcao construtor da classe 
-   function cl_modcarneexcessao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("modcarneexcessao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

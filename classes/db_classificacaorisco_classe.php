@@ -30,7 +30,7 @@ class cl_classificacaorisco {
                  sd78_cor = varchar(7) = Cor 
                  ";
    //funcao construtor da classe 
-   function cl_classificacaorisco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaorisco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

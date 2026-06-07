@@ -26,7 +26,7 @@ class cl_tipoassentamentoferias {
                  rh168_tipoassentamentoabono = int4 = Assentamento para Abono 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassentamentoferias() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassentamentoferias"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

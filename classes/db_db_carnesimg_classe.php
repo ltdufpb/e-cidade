@@ -54,7 +54,7 @@ class cl_db_carnesimg {
                  orientacao = char(1) = Orientação 
                  ";
    //funcao construtor da classe 
-   function cl_db_carnesimg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_carnesimg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

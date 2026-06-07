@@ -54,7 +54,7 @@ class cl_rhrubelementoprinc {
                  rh24_codele = int4 = Elemento 
                  ";
    //funcao construtor da classe 
-   function cl_rhrubelementoprinc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhrubelementoprinc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

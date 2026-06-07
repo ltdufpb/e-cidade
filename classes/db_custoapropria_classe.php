@@ -56,7 +56,7 @@ class cl_custoapropria {
                  cc12_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_custoapropria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custoapropria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

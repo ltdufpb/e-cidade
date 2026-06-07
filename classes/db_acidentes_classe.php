@@ -73,7 +73,7 @@ class cl_acidentes {
                  tr07_depto = int8 = Departamento 
                  ";
    //funcao construtor da classe 
-   function cl_acidentes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acidentes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

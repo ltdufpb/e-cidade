@@ -52,7 +52,7 @@ class cl_issplanitinscr {
                  q31_inscr = int4 = q31_inscr 
                  ";
    //funcao construtor da classe 
-   function cl_issplanitinscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issplanitinscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

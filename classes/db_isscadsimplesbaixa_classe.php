@@ -59,7 +59,7 @@ class cl_isscadsimplesbaixa {
                  q39_obs = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_isscadsimplesbaixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isscadsimplesbaixa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

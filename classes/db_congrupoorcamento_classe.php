@@ -52,7 +52,7 @@ class cl_congrupoorcamento {
                  c20_tipo = int4 = Tipo de grupo 
                  ";
    //funcao construtor da classe 
-   function cl_congrupoorcamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("congrupoorcamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

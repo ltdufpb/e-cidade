@@ -52,7 +52,7 @@ class cl_sau_triagemprocsf {
                  s147_i_procsf = int4 = procedimento sem fatua 
                  ";
    //funcao construtor da classe 
-   function cl_sau_triagemprocsf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_triagemprocsf"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

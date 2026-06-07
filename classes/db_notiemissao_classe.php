@@ -59,7 +59,7 @@ class cl_notiemissao {
                  k136_usuario = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_notiemissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notiemissao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

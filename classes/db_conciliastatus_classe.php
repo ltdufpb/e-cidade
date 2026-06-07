@@ -52,7 +52,7 @@ class cl_conciliastatus {
                  k95_fechada = bool = Fechada 
                  ";
    //funcao construtor da classe 
-   function cl_conciliastatus() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conciliastatus"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

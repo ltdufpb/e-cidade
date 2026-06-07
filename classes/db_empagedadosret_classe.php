@@ -60,7 +60,7 @@ class cl_empagedadosret {
                  e75_ativo = bool = Retorno Ativo
                  ";
    //funcao construtor da classe
-   function cl_empagedadosret() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagedadosret");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

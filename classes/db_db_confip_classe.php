@@ -50,7 +50,7 @@ class cl_db_confip {
                  w02_ativo = bool = Acesso Negado 
                  ";
    //funcao construtor da classe 
-   function cl_db_confip() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_confip"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

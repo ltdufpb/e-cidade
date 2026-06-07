@@ -50,7 +50,7 @@ class cl_bousudepto {
                  bo06_coddepto = int4 = Departamento 
                  ";
    //funcao construtor da classe 
-   function cl_bousudepto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bousudepto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

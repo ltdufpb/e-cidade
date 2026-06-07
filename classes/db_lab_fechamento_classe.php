@@ -75,7 +75,7 @@ class cl_lab_fechamento {
                  la54_i_financiamento = int4 = Tipo de Financiamento 
                  ";
    //funcao construtor da classe 
-   function cl_lab_fechamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_fechamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

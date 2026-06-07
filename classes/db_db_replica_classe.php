@@ -50,7 +50,7 @@ class cl_db_replica {
                  db40_basereplica = varchar(40) = Base de dados a replicar 
                  ";
    //funcao construtor da classe 
-   function cl_db_replica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_replica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

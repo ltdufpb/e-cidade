@@ -52,7 +52,7 @@ class cl_issarqsimplesregissvar {
                  q68_issarqsimplesreg = int4 = Código do Registro 
                  ";
    //funcao construtor da classe 
-   function cl_issarqsimplesregissvar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarqsimplesregissvar"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

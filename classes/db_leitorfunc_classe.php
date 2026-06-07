@@ -50,7 +50,7 @@ class cl_leitorfunc {
                  bi12_rechumano = int8 = Código do Recurso Humano 
                  ";
    //funcao construtor da classe 
-   function cl_leitorfunc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("leitorfunc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

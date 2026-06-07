@@ -61,7 +61,7 @@ class cl_termoanu {
                  v09_motivo = text = Motivo 
                  ";
    //funcao construtor da classe 
-   function cl_termoanu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termoanu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

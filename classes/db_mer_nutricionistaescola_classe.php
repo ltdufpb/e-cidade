@@ -54,7 +54,7 @@ class cl_mer_nutricionistaescola {
                  me31_i_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_mer_nutricionistaescola() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_nutricionistaescola"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

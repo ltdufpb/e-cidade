@@ -50,7 +50,7 @@ class cl_sau_atividadeensino {
                  sd38_v_descricao = varchar(60) = Descricao 
                  ";
    //funcao construtor da classe 
-   function cl_sau_atividadeensino() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_atividadeensino"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

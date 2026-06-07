@@ -52,7 +52,7 @@ class cl_debcontapedidotipo {
                  d66_arretipo = int4 = tipo de debito 
                  ";
    //funcao construtor da classe 
-   function cl_debcontapedidotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidotipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

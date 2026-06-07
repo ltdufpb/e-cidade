@@ -56,7 +56,7 @@ class cl_meiprocessareg {
                  q112_motivo = text = Motivo de Descarte do Registro 
                  ";
    //funcao construtor da classe 
-   function cl_meiprocessareg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiprocessareg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

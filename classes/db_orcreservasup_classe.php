@@ -50,7 +50,7 @@ class cl_orcreservasup {
                  o81_codsup = int4 = Código Suplementação 
                  ";
    //funcao construtor da classe 
-   function cl_orcreservasup() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcreservasup"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

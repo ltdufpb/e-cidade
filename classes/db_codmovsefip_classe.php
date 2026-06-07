@@ -62,7 +62,7 @@ class cl_codmovsefip {
                  r66_ifgtse = varchar(1) = Recolhe FGTS p/ Estatutário 
                  ";
    //funcao construtor da classe
-   function cl_codmovsefip() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("codmovsefip");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_vac_vacinamaterial {
                  vc29_i_material = int4 = Material 
                  ";
    //funcao construtor da classe 
-   function cl_vac_vacinamaterial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_vacinamaterial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

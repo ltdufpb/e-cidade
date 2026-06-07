@@ -52,7 +52,7 @@ class cl_orcleiorcprojetolei {
                  o140_orcprojetolei = int4 = Projeto de Lei 
                  ";
    //funcao construtor da classe 
-   function cl_orcleiorcprojetolei() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcleiorcprojetolei"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

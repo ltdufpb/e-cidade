@@ -52,7 +52,7 @@ class cl_prontagendamento {
                  s102_i_agendamento = int4 = Agendamento 
                  ";
    //funcao construtor da classe 
-   function cl_prontagendamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontagendamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

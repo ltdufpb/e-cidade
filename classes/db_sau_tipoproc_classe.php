@@ -50,7 +50,7 @@ class cl_sau_tipoproc {
                  sd93_c_nome = varchar(50) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_sau_tipoproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_tipoproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

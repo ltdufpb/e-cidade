@@ -65,7 +65,7 @@ class cl_matestoquedev {
                  m45_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_matestoquedev() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoquedev"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

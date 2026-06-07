@@ -52,7 +52,7 @@ class cl_matordemmail {
                  m55_email = varchar(30) = E-mail 
                  ";
    //funcao construtor da classe 
-   function cl_matordemmail() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemmail"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

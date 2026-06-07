@@ -61,7 +61,7 @@ class cl_tmp_far_retiradaitemlote {
                  fa09_f_quant = float4 = Quantidade 
                  ";
    //funcao construtor da classe 
-   function cl_tmp_far_retiradaitemlote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tmp_far_retiradaitemlote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

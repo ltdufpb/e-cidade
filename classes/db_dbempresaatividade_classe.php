@@ -55,7 +55,7 @@ class cl_dbempresaatividade {
                  q58_dtinc = date = Data de inclusão 
                  ";
    //funcao construtor da classe 
-   function cl_dbempresaatividade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dbempresaatividade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

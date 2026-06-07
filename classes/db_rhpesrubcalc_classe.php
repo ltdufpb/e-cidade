@@ -54,7 +54,7 @@ class cl_rhpesrubcalc {
                  rh65_valor = float8 = valor 
                  ";
    //funcao construtor da classe 
-   function cl_rhpesrubcalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpesrubcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

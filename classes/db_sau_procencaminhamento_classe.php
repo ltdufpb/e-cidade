@@ -52,7 +52,7 @@ class cl_sau_procencaminhamento {
                  s143_i_procedimento = int8 = Procedimento 
                  ";
    //funcao construtor da classe 
-   function cl_sau_procencaminhamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_procencaminhamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

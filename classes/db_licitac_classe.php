@@ -73,7 +73,7 @@ class cl_licitac {
                  l01_dotac = int4 = Codigo Reduzido da Dotacao 
                  ";
    //funcao construtor da classe 
-   function cl_licitac() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licitac"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

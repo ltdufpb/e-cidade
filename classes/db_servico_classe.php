@@ -50,7 +50,7 @@ class cl_servico {
                  u09_descr = char(    30) = Descricao do tipo do servico 
                  ";
    //funcao construtor da classe 
-   function cl_servico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("servico"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

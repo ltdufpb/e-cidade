@@ -52,7 +52,7 @@ class cl_assunto {
                  bi15_acervo = int8 = Acervo 
                  ";
    //funcao construtor da classe 
-   function cl_assunto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("assunto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

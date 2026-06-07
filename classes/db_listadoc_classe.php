@@ -50,7 +50,7 @@ class cl_listadoc {
                  k64_codigo = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_listadoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("listadoc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

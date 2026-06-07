@@ -70,7 +70,7 @@ class cl_isstipoalvara {
                  q98_tipovalidade = int4 = Tipo de Validade 
                  ";
    //funcao construtor da classe 
-   function cl_isstipoalvara() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isstipoalvara"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

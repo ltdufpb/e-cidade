@@ -52,7 +52,7 @@ class cl_veiccaditensobrig {
                  ve08_obs = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_veiccaditensobrig() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiccaditensobrig"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -73,7 +73,7 @@ class cl_saniatividade {
                  y83_databx = date = Data da Baixa 
                  ";
    //funcao construtor da classe 
-   function cl_saniatividade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("saniatividade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

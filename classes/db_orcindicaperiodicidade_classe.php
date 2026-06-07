@@ -50,7 +50,7 @@ class cl_orcindicaperiodicidade {
                  o09_descricao = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_orcindicaperiodicidade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcindicaperiodicidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

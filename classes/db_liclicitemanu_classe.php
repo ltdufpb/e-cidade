@@ -61,7 +61,7 @@ class cl_liclicitemanu {
                  l07_liclicitem = int8 = Item da licitação 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitemanu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitemanu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

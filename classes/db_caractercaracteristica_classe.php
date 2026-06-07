@@ -52,7 +52,7 @@ class cl_caractercaracteristica {
                  db143_caracter = int4 = Caracteristica IPTU / ITBI 
                  ";
    //funcao construtor da classe 
-   function cl_caractercaracteristica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caractercaracteristica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

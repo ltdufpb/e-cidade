@@ -60,7 +60,7 @@ class cl_itbiintermediador {
                  it35_principal = bool = Principal
                  ";
    //funcao construtor da classe
-   function cl_itbiintermediador() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiintermediador");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

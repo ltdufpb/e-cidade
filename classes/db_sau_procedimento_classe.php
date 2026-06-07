@@ -80,7 +80,7 @@ class cl_sau_procedimento {
                  sd63_i_mescomp = int4 = Mes
                  ";
    //funcao construtor da classe
-   function cl_sau_procedimento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_procedimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

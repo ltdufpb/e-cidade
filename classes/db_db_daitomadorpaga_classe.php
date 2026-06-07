@@ -57,7 +57,7 @@ class cl_db_daitomadorpaga {
                  w09_valpago = float8 = Valor do pagamento 
                  ";
    //funcao construtor da classe 
-   function cl_db_daitomadorpaga() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_daitomadorpaga"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

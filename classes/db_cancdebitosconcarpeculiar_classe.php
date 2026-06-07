@@ -52,7 +52,7 @@ class cl_cancdebitosconcarpeculiar {
                  k72_concarpeculiar = varchar(100) = Código carac. peculiar 
                  ";
    //funcao construtor da classe 
-   function cl_cancdebitosconcarpeculiar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitosconcarpeculiar"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

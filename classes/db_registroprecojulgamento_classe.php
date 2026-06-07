@@ -62,7 +62,7 @@ class cl_registroprecojulgamento {
                  pc65_valorunitario = int4 = Valor Unitário 
                  ";
    //funcao construtor da classe 
-   function cl_registroprecojulgamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("registroprecojulgamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

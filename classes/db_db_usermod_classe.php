@@ -52,7 +52,7 @@ class cl_db_usermod {
                  id_modulo = int4 = ID módulo 
                  ";
    //funcao construtor da classe 
-   function cl_db_usermod() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_usermod"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_loteamcgm {
                  j120_cgm = int4 = CGM 
                  ";
    //funcao construtor da classe 
-   function cl_loteamcgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("loteamcgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

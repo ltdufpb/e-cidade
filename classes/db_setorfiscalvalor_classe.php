@@ -54,7 +54,7 @@ class cl_setorfiscalvalor {
                  j82_valorterreno = float8 = Valor m2 terreno 
                  ";
    //funcao construtor da classe 
-   function cl_setorfiscalvalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("setorfiscalvalor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

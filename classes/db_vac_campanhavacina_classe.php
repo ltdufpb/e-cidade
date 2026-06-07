@@ -52,7 +52,7 @@ class cl_vac_campanhavacina {
                  vc12_i_vacina = int4 = Vacina 
                  ";
    //funcao construtor da classe 
-   function cl_vac_campanhavacina() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_campanhavacina"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

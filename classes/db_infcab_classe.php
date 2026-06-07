@@ -64,7 +64,7 @@ class cl_infcab {
                  i03_id_usuario = int8 = Login 
                  ";
    //funcao construtor da classe 
-   function cl_infcab() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("infcab"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

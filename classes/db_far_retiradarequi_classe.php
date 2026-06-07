@@ -52,7 +52,7 @@ class cl_far_retiradarequi {
                  fa07_i_matrequi = int8 = Requisição 
                  ";
    //funcao construtor da classe 
-   function cl_far_retiradarequi() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_retiradarequi"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

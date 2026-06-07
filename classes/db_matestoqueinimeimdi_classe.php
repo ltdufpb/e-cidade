@@ -52,7 +52,7 @@ class cl_matestoqueinimeimdi {
                  m50_codmatestoqueinimei = int8 = Código matestoqueinimei 
                  ";
    //funcao construtor da classe 
-   function cl_matestoqueinimeimdi() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueinimeimdi"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

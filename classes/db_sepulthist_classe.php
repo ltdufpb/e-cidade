@@ -61,7 +61,7 @@ class cl_sepulthist {
                  cm21_c_localant = char(200) = Local Anterior
                  ";
    //funcao construtor da classe
-   function cl_sepulthist() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sepulthist");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

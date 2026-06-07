@@ -55,7 +55,7 @@ class cl_autolancam {
                  y88_data = date = Data do auto de lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_autolancam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolancam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

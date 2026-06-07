@@ -72,7 +72,7 @@ class cl_orcimpacto {
                  o90_produto = int4 = Produto 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpacto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpacto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

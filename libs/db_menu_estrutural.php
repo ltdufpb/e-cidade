@@ -42,7 +42,7 @@
     
     var $mostra_conta = null;
 
-    function menu_estrutural(){
+    function __construct(){
      //-- constructor
     }  
     function monta_select(){

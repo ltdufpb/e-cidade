@@ -59,7 +59,7 @@ class cl_issvarsemmov {
                  q08_tipolanc = int4 = Tipo de lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_issvarsemmov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issvarsemmov"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

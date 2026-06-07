@@ -58,7 +58,7 @@ class cl_zonassetorvalor {
                  j141_valorm2 = float8 = Valor do metro quadrado
                  ";
    //funcao construtor da classe
-   function cl_zonassetorvalor() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonassetorvalor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

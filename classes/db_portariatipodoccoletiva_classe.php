@@ -52,7 +52,7 @@ class cl_portariatipodoccoletiva {
                  h38_modportariacoletiva = int4 = Modelo Portaria Coletiva 
                  ";
    //funcao construtor da classe 
-   function cl_portariatipodoccoletiva() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariatipodoccoletiva"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

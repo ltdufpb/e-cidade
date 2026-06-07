@@ -70,7 +70,7 @@ class cl_empreendimento {
                  am05_protprocesso = int4 = Protocolo
                  ";
    //funcao construtor da classe
-   function cl_empreendimento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empreendimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

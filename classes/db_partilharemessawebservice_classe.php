@@ -54,7 +54,7 @@ class cl_partilharemessawebservice {
                  v89_resposta = text = Resposta 
                  ";
    //funcao construtor da classe 
-   function cl_partilharemessawebservice() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("partilharemessawebservice"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

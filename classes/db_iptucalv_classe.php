@@ -60,7 +60,7 @@ class cl_iptucalv
                  ";
 
     //funcao construtor da classe
-    function cl_iptucalv()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("iptucalv");

@@ -50,7 +50,7 @@ class cl_cgmtipofamiliar {
                  z14_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_cgmtipofamiliar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmtipofamiliar"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

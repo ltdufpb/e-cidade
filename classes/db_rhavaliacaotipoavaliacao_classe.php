@@ -54,7 +54,7 @@ class cl_rhavaliacaotipoavaliacao {
                  h76_pontos = int4 = Pontos 
                  ";
    //funcao construtor da classe 
-   function cl_rhavaliacaotipoavaliacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhavaliacaotipoavaliacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

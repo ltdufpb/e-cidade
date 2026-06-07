@@ -52,7 +52,7 @@ class cl_empagegeraobn {
                  e138_empagegera = int4 = Sequencial empagegera 
                  ";
    //funcao construtor da classe 
-   function cl_empagegeraobn() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagegeraobn"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

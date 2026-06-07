@@ -52,7 +52,7 @@ class cl_iptumatzonaentrega {
                  j86_iptucadzonaentrega = int4 = Codigo da zona de entrega 
                  ";
    //funcao construtor da classe 
-   function cl_iptumatzonaentrega() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptumatzonaentrega"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -46,7 +46,7 @@ class cl_empprestaitemdiaria {
                  e446_tipodiaria = varchar(50) = Tipo de Diária 
                  ";
    //funcao construtor da classe 
-   function cl_empprestaitemdiaria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empprestaitemdiaria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

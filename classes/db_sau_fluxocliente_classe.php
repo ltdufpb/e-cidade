@@ -50,7 +50,7 @@ class cl_sau_fluxocliente {
                  sd41_v_descricao = varchar(60) = Descricao 
                  ";
    //funcao construtor da classe 
-   function cl_sau_fluxocliente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_fluxocliente"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

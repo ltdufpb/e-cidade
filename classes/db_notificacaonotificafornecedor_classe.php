@@ -52,7 +52,7 @@ class cl_notificacaonotificafornecedor {
                  pc87_notificacao = int4 = Número da notificação 
                  ";
    //funcao construtor da classe 
-   function cl_notificacaonotificafornecedor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notificacaonotificafornecedor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

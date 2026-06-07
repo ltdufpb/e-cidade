@@ -55,7 +55,7 @@ class cl_orcam {
                  o02_percen = float8 = Percentual 
                  ";
    //funcao construtor da classe 
-   function cl_orcam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

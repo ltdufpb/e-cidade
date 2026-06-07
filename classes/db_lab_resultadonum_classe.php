@@ -56,7 +56,7 @@ class cl_lab_resultadonum {
                  la41_faixaescolhida = int4 = Faixa escolhida para o exame 
                  ";
    //funcao construtor da classe 
-   function cl_lab_resultadonum() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_resultadonum"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

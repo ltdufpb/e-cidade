@@ -70,7 +70,7 @@ class cl_sau_vinculosus {
                  sd50_d_publicacao2 = date = Data Publicação 
                  ";
    //funcao construtor da classe 
-   function cl_sau_vinculosus() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_vinculosus"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -56,7 +56,7 @@ class cl_cursosocialcidadao {
                  as22_observacao = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_cursosocialcidadao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cursosocialcidadao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

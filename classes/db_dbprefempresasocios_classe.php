@@ -58,7 +58,7 @@ class cl_dbprefempresasocios {
                  q66_capital = float8 = Capital 
                  ";
    //funcao construtor da classe 
-   function cl_dbprefempresasocios() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dbprefempresasocios"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

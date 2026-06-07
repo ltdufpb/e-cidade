@@ -50,7 +50,7 @@ class cl_obrastiporesp {
                  ob02_descr = varchar(50) = Descrição do tipo de responsável 
                  ";
    //funcao construtor da classe 
-   function cl_obrastiporesp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrastiporesp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

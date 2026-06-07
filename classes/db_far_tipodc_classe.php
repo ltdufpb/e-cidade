@@ -50,7 +50,7 @@ class cl_far_tipodc {
                  fa27_c_denominacao = char(20) = Denominação 
                  ";
    //funcao construtor da classe 
-   function cl_far_tipodc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_tipodc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

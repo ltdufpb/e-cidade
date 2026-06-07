@@ -70,7 +70,7 @@ class cl_aguaplanilha {
                  x24_nrohidro = varchar(15) = Hidrometro 
                  ";
    //funcao construtor da classe 
-   function cl_aguaplanilha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaplanilha"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

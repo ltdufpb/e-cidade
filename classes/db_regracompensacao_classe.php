@@ -71,7 +71,7 @@ class cl_regracompensacao {
                  k155_database = date = Data base 
                  ";
    //funcao construtor da classe 
-   function cl_regracompensacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regracompensacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

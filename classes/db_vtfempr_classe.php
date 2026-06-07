@@ -62,7 +62,7 @@ class cl_vtfempr {
                  r16_empres = int4 = Empresa 
                  ";
    //funcao construtor da classe 
-   function cl_vtfempr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vtfempr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

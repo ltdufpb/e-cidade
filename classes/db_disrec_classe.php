@@ -56,7 +56,7 @@ class cl_disrec {
                  instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_disrec() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disrec");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

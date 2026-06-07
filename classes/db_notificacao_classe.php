@@ -59,7 +59,7 @@ class cl_notificacao {
                  k50_instit = int4 = Cód. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_notificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

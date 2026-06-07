@@ -61,7 +61,7 @@ class cl_noticonf {
                  k54_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_noticonf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("noticonf"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

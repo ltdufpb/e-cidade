@@ -52,7 +52,7 @@ class cl_veicutilizacao {
                  ve15_veiculos = int4 = Veiculo 
                  ";
    //funcao construtor da classe 
-   function cl_veicutilizacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicutilizacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

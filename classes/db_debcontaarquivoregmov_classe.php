@@ -59,7 +59,7 @@ class cl_debcontaarquivoregmov {
                  d75_numpar = int4 = Parcela 
                  ";
    //funcao construtor da classe 
-   function cl_debcontaarquivoregmov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontaarquivoregmov"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

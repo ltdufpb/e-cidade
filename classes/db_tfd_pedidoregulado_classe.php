@@ -61,7 +61,7 @@ class cl_tfd_pedidoregulado {
                  tf34_c_horasistema = char(5) = Hora do sistema 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_pedidoregulado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_pedidoregulado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

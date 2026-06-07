@@ -52,7 +52,7 @@ class cl_rharquivossiprev {
                  rh94_nomeclasse = varchar(100) = Nome da classe a ser utitilizada 
                  ";
    //funcao construtor da classe 
-   function cl_rharquivossiprev() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rharquivossiprev"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

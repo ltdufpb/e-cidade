@@ -78,7 +78,7 @@ class cl_orcprojeto {
                  o39_usalimite = bool = Usa limite da Loa 
                  ";
    //funcao construtor da classe 
-   function cl_orcprojeto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprojeto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

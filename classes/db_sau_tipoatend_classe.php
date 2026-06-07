@@ -52,7 +52,7 @@ class cl_sau_tipoatend {
                  sd45_i_programa = int4 = Tipo Programa 
                  ";
    //funcao construtor da classe 
-   function cl_sau_tipoatend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_tipoatend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

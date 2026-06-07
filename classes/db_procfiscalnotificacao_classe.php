@@ -52,7 +52,7 @@ class cl_procfiscalnotificacao {
                  y110_procfiscal = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscalnotificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscalnotificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

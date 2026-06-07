@@ -156,7 +156,7 @@ class cl_cgmalt {
                  z05_fax = varchar(12) = Fax 
                  ";
    //funcao construtor da classe 
-   function cl_cgmalt() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmalt"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

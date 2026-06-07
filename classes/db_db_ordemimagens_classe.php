@@ -54,7 +54,7 @@ class cl_db_ordemimagens {
                  descrimg = varchar(40) = Descrição da imagem 
                  ";
    //funcao construtor da classe 
-   function cl_db_ordemimagens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_ordemimagens"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

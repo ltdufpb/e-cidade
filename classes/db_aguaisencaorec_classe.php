@@ -54,7 +54,7 @@ class cl_aguaisencaorec {
                  x26_codconsumotipo = int4 = Consumo 
                  ";
    //funcao construtor da classe 
-   function cl_aguaisencaorec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaisencaorec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

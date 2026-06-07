@@ -50,7 +50,7 @@ class cl_recursosavaliacaoinep {
                  ed326_descricao = varchar(100) = Descrição do Recurso 
                  ";
    //funcao construtor da classe 
-   function cl_recursosavaliacaoinep() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recursosavaliacaoinep"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

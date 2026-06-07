@@ -52,7 +52,7 @@ class cl_conencerramentolancam {
                  c44_conlancam = int4 = Código do Lançamento 
                  ";
    //funcao construtor da classe
-   function cl_conencerramentolancam() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conencerramentolancam");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_sau_retentributo {
                  sd39_v_situacao = varchar(60) = Situação 
                  ";
    //funcao construtor da classe 
-   function cl_sau_retentributo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_retentributo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

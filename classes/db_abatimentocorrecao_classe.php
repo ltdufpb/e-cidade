@@ -30,7 +30,7 @@ class cl_abatimentocorrecao {
                  k167_abatimento = int4 = Código do Abatimento 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentocorrecao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentocorrecao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

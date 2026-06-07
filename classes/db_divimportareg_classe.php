@@ -50,7 +50,7 @@ class cl_divimportareg {
                  v04_coddiv = int4 = codigo da divida 
                  ";
    //funcao construtor da classe 
-   function cl_divimportareg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("divimportareg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_veiculotransportemunicipalterceiro {
                  tre03_veiculotransportemunicipal = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_veiculotransportemunicipalterceiro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiculotransportemunicipalterceiro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

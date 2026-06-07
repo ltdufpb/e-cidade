@@ -52,7 +52,7 @@ class cl_divcontr {
                  v01_matric = int4 = matricula do cadastro imobiliário 
                  ";
    //funcao construtor da classe 
-   function cl_divcontr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("divcontr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

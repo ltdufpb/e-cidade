@@ -52,7 +52,7 @@ class cl_veicabastretirada {
                  ve73_veicretirada = int4 = Retirada 
                  ";
    //funcao construtor da classe 
-   function cl_veicabastretirada() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicabastretirada"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

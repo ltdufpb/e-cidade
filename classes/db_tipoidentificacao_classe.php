@@ -52,7 +52,7 @@ class cl_tipoidentificacao {
                  ov05_anonimo = bool = Anonimo 
                  ";
    //funcao construtor da classe 
-   function cl_tipoidentificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoidentificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

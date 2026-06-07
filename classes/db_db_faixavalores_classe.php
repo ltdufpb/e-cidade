@@ -28,7 +28,7 @@ class cl_db_faixavalores {
                  db150_final = float8 = Fim da Faixa 
                  ";
    //funcao construtor da classe 
-   function cl_db_faixavalores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_faixavalores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

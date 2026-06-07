@@ -52,7 +52,7 @@ class cl_rhestagioavaliacaoresposta {
                  h58_rhestagioavaliacao = int4 = Cód. Avaliação 
                  ";
    //funcao construtor da classe 
-   function cl_rhestagioavaliacaoresposta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhestagioavaliacaoresposta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

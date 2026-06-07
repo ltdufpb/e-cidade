@@ -52,7 +52,7 @@ class cl_procservicos {
                  sd19_i_servico = int4 = Serviço 
                  ";
    //funcao construtor da classe 
-   function cl_procservicos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procservicos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

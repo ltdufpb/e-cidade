@@ -117,7 +117,7 @@ class cl_plano {
                  c01_clarec = int4 = Classificação 
                  ";
    //funcao construtor da classe 
-   function cl_plano() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("plano"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_aquisicao {
                  bi04_forma = char(50) = Forma de Aquisição 
                  ";
    //funcao construtor da classe 
-   function cl_aquisicao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aquisicao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

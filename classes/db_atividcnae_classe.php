@@ -50,7 +50,7 @@ class cl_atividcnae {
                  q74_ativid = int4 = Atividade 
                  ";
    //funcao construtor da classe 
-   function cl_atividcnae() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atividcnae"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

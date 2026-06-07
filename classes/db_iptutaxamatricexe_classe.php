@@ -52,7 +52,7 @@ class cl_iptutaxamatricexe {
                  j10_anousu = int4 = Anousu 
                  ";
    //funcao construtor da classe 
-   function cl_iptutaxamatricexe() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutaxamatricexe"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

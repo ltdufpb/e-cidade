@@ -63,7 +63,7 @@ class cl_atendusucliitem {
                  at81_prioridade = int4 = Prioridade 
                  ";
    //funcao construtor da classe 
-   function cl_atendusucliitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendusucliitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

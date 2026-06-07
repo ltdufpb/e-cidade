@@ -52,7 +52,7 @@ class cl_abatimentodisbanco {
                  k132_idret = int4 = Disbanco 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentodisbanco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentodisbanco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

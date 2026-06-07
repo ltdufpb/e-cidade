@@ -52,7 +52,7 @@ class cl_issmovalvarabaixa {
                  q129_tipobaixa = int4 = Tipo de Baixa 
                  ";
    //funcao construtor da classe 
-   function cl_issmovalvarabaixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issmovalvarabaixa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

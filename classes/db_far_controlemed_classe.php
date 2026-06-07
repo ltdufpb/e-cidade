@@ -70,7 +70,7 @@ class cl_far_controlemed {
                  fa10_i_programa = int4 = Programa 
                  ";
    //funcao construtor da classe 
-   function cl_far_controlemed() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_controlemed"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

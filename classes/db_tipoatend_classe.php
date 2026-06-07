@@ -50,7 +50,7 @@ class cl_tipoatend {
                  at04_descr = varchar(20) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoatend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoatend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

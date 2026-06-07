@@ -52,7 +52,7 @@ class cl_atendarea {
                  at28_atendcadarea = int4 = Código da área 
                  ";
    //funcao construtor da classe 
-   function cl_atendarea() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendarea"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

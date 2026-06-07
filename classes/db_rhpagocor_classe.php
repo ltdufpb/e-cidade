@@ -61,7 +61,7 @@ class cl_rhpagocor {
                  rh58_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_rhpagocor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpagocor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

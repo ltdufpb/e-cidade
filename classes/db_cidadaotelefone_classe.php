@@ -64,7 +64,7 @@ class cl_cidadaotelefone {
                  ov07_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaotelefone() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaotelefone"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

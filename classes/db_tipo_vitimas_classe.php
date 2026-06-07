@@ -52,7 +52,7 @@ class cl_tipo_vitimas {
                  tr06_descr = varchar(35) = descrição da vitima 
                  ";
    //funcao construtor da classe 
-   function cl_tipo_vitimas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipo_vitimas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -76,7 +76,7 @@ class cl_orcprojativ {
                  o55_orcproduto = int4 = Produto
                  ";
    //funcao construtor da classe
-   function cl_orcprojativ() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprojativ");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

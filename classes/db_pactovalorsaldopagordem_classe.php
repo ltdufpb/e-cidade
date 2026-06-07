@@ -52,7 +52,7 @@ class cl_pactovalorsaldopagordem {
                  o110_pagordem = int4 = o110_pagordem 
                  ";
    //funcao construtor da classe 
-   function cl_pactovalorsaldopagordem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactovalorsaldopagordem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

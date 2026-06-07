@@ -50,7 +50,7 @@ class cl_empautorizainscricaopassivo {
                  e16_inscricaopassivo = int4 = Inscrição Passiva 
                  ";
    //funcao construtor da classe 
-   function cl_empautorizainscricaopassivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empautorizainscricaopassivo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

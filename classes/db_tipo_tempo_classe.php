@@ -52,7 +52,7 @@ class cl_tipo_tempo {
                  tr04_descr = varchar(35) = descrição do Clima 
                  ";
    //funcao construtor da classe 
-   function cl_tipo_tempo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipo_tempo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

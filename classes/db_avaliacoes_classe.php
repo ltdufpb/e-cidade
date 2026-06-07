@@ -63,7 +63,7 @@ class cl_avaliacoes {
                  ed13_c_descr = char(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacoes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacoes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_localiza {
                  v54_descr = char(30) = Descrição de Localização 
                  ";
    //funcao construtor da classe 
-   function cl_localiza() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("localiza"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

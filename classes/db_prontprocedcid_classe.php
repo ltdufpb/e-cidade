@@ -52,7 +52,7 @@ class cl_prontprocedcid {
                  s135_i_cid = int4 = CID 
                  ";
    //funcao construtor da classe 
-   function cl_prontprocedcid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontprocedcid"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

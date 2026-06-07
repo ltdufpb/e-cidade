@@ -52,7 +52,7 @@ class cl_atendimentoorigem {
                  at11_origematend = int4 = Codigo original de atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_atendimentoorigem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendimentoorigem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -57,7 +57,7 @@ class cl_cids {
                  sd22_c_restrsexo = char(1) = Restrição por Sexo 
                  ";
    //funcao construtor da classe 
-   function cl_cids() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cids"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

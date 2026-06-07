@@ -77,7 +77,7 @@ var $fpdf_charwidths;
 *                              Public methods                               *
 *                                                                           *
 ****************************************************************************/
-function FPDF($orientation='P',$unit='mm',$format='A4')
+function __construct($orientation='P',$unit='mm',$format='A4')
 {
 	//Check for PHP locale-related bug
 	if(1.1==1)

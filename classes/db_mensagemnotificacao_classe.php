@@ -64,7 +64,7 @@ class cl_mensagemnotificacao {
                  db134_mensagemretorno = varchar(150) = Mensagem de Retorno 
                  ";
    //funcao construtor da classe 
-   function cl_mensagemnotificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagemnotificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_sau_tipounidade {
                  sd42_v_descricao = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_tipounidade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_tipounidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

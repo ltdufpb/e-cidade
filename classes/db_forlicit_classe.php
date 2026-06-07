@@ -59,7 +59,7 @@ class cl_forlicit {
                  l09_pessoa = char(    40) = Pessoa que retirou edital 
                  ";
    //funcao construtor da classe 
-   function cl_forlicit() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("forlicit"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

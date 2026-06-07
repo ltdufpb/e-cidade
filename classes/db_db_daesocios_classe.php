@@ -70,7 +70,7 @@ class cl_db_daesocios {
                  w06_percent = int4 = Percentual de sociedade 
                  ";
    //funcao construtor da classe 
-   function cl_db_daesocios() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_daesocios"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

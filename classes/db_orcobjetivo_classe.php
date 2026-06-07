@@ -56,7 +56,7 @@ class cl_orcobjetivo {
                  o143_objetivo = text = Objetivo 
                  ";
    //funcao construtor da classe 
-   function cl_orcobjetivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcobjetivo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_db_tipodoc {
                  db08_descr = varchar(40) = Descrição do tipo de documento 
                  ";
    //funcao construtor da classe 
-   function cl_db_tipodoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_tipodoc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

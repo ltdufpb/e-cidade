@@ -54,7 +54,7 @@ class cl_procfiscalfiscais {
                  y106_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscalfiscais() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscalfiscais"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

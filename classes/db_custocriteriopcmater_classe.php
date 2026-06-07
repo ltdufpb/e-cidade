@@ -52,7 +52,7 @@ class cl_custocriteriopcmater {
                  cc10_custocriteriorateio = int4 = Criterio de Rateio 
                  ";
    //funcao construtor da classe 
-   function cl_custocriteriopcmater() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custocriteriopcmater"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

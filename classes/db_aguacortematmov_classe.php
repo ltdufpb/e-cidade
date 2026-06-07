@@ -63,7 +63,7 @@ class cl_aguacortematmov {
                  x42_leitura = int8 = Última Leitura do Hidrômetro 
                  ";
    //funcao construtor da classe 
-   function cl_aguacortematmov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacortematmov"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

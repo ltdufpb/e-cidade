@@ -59,7 +59,7 @@ class cl_ossoario {
                  cm06_t_obs = text = Observações
                  ";
    //funcao construtor da classe
-   function cl_ossoario() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ossoario");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

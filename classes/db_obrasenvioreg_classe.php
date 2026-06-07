@@ -52,7 +52,7 @@ class cl_obrasenvioreg {
                  ob17_codobra = int4 = Código da obra 
                  ";
    //funcao construtor da classe 
-   function cl_obrasenvioreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasenvioreg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

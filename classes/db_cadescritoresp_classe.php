@@ -52,7 +52,7 @@ class cl_cadescritoresp {
                  q84_numcgm = int4 = Cgm 
                  ";
    //funcao construtor da classe 
-   function cl_cadescritoresp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadescritoresp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

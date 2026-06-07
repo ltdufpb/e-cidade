@@ -52,7 +52,7 @@ class cl_db_projetosativid {
                  at62_cor = varchar(15) = Cores 
                  ";
    //funcao construtor da classe 
-   function cl_db_projetosativid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_projetosativid"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

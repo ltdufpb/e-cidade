@@ -52,7 +52,7 @@ class cl_far_complicacoescadacomp {
                  fa52_i_complicacao = int4 = Complicação 
                  ";
    //funcao construtor da classe 
-   function cl_far_complicacoescadacomp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_complicacoescadacomp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

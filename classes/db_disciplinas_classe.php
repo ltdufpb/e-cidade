@@ -52,7 +52,7 @@ class cl_disciplinas {
                  ed27_c_abrevia = char(5) = Abreviação 
                  ";
    //funcao construtor da classe 
-   function cl_disciplinas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disciplinas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

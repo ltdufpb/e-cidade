@@ -52,7 +52,7 @@ class cl_veicmanutoficina {
                  ve66_veiccadoficinas = int4 = Oficina 
                  ";
    //funcao construtor da classe 
-   function cl_veicmanutoficina() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicmanutoficina"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

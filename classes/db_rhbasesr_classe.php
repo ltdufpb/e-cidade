@@ -50,7 +50,7 @@ class cl_rhbasesr {
                  rh33_rubric = varchar(4) = Código da Rubrica 
                  ";
    //funcao construtor da classe 
-   function cl_rhbasesr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhbasesr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

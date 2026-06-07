@@ -50,7 +50,7 @@ class cl_itbimatric {
                  it06_matric = int4 = Inscrição Imóvel 
                  ";
    //funcao construtor da classe 
-   function cl_itbimatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbimatric"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

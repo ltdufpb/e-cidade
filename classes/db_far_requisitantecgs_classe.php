@@ -52,7 +52,7 @@ class cl_far_requisitantecgs {
                  fa38_i_cgs = int4 = CGS 
                  ";
    //funcao construtor da classe 
-   function cl_far_requisitantecgs() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_requisitantecgs"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

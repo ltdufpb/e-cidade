@@ -26,7 +26,7 @@ class cl_tabdesccadban {
                  k114_codban = int8 = Código da conta que será vinculada 
                  ";
    //funcao construtor da classe 
-   function cl_tabdesccadban() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabdesccadban"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

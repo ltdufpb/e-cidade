@@ -50,7 +50,7 @@ class cl_causa {
                  cm04_c_descr = char(200) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_causa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("causa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

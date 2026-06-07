@@ -73,7 +73,7 @@ class cl_contcearquivo {
                  c11_infleiame = text = Informações Adicionais leiame 
                  ";
    //funcao construtor da classe 
-   function cl_contcearquivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contcearquivo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

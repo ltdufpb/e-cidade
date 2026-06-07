@@ -78,7 +78,7 @@ class cl_previden
                  ";
 
     //funcao construtor da classe
-    function cl_previden()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("previden");

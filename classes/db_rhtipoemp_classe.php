@@ -50,7 +50,7 @@ class cl_rhtipoemp {
                  rh12_descr = varchar(40) = Descrição do Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_rhtipoemp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhtipoemp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

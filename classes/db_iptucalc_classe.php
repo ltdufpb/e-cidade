@@ -72,7 +72,7 @@ class cl_iptucalc {
                  j23_tipocalculo = int8 = Tipo de calculo 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

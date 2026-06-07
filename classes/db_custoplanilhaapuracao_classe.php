@@ -58,7 +58,7 @@ class cl_custoplanilhaapuracao {
                  cc17_valor = float4 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_custoplanilhaapuracao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custoplanilhaapuracao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

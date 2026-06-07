@@ -52,7 +52,7 @@ class cl_iptucadlogcalc {
                  j62_erro = bool = Erro 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadlogcalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadlogcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

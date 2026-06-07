@@ -52,7 +52,7 @@ class cl_issarqsimplesdisarq {
                  q43_disarq = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_issarqsimplesdisarq() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarqsimplesdisarq"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

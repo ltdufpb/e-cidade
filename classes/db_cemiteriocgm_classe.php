@@ -50,7 +50,7 @@ class cl_cemiteriocgm {
                  cm15_i_cgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_cemiteriocgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cemiteriocgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

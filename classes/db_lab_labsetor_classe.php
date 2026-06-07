@@ -58,7 +58,7 @@ class cl_lab_labsetor {
                  la24_c_nomearq = char(50) = Nome do arquivo
                  ";
    //funcao construtor da classe
-   function cl_lab_labsetor() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_labsetor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

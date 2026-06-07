@@ -15,7 +15,7 @@
 class RGB {
     var $rgb_table;
     var $img;
-    function RGB(&$aImg) {
+    function __construct(&$aImg) {
 	$this->img = &$aImg;
 		
 	// Conversion array between color names and RGB
@@ -595,7 +595,7 @@ class Image {
 
     //---------------
     // CONSTRUCTOR
-    function Image($aWidth,$aHeight,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
+    function __construct($aWidth,$aHeight,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
 	$this->CreateImgCanvas($aWidth,$aHeight);
 	if( $aSetAutoMargin ) 
 	    $this->SetAutoMargin();		
@@ -2012,7 +2012,7 @@ class RotImage extends Image {
     var $a=0;
     var $dx=0,$dy=0,$transx=0,$transy=0; 
 	
-    function RotImage($aWidth,$aHeight,$a=0,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
+    function __construct($aWidth,$aHeight,$a=0,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
 	$this->Image($aWidth,$aHeight,$aFormat,$aSetAutoMargin);
 	$this->dx=$this->left_margin+$this->plotwidth/2;
 	$this->dy=$this->top_margin+$this->plotheight/2;

@@ -83,7 +83,7 @@ class cl_pcnlp {
                  h09_perpu = varchar(20) = Período Publicação 
                  ";
    //funcao construtor da classe 
-   function cl_pcnlp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcnlp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

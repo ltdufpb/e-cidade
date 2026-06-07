@@ -50,7 +50,7 @@ class cl_fiscalinscr {
                  y34_inscr = int4 = Inscricao 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalinscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalinscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

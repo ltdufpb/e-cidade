@@ -54,7 +54,7 @@ class cl_atendordemcli {
                  at85_prioridade = int4 = Prioridade 
                  ";
    //funcao construtor da classe 
-   function cl_atendordemcli() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendordemcli"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

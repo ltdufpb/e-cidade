@@ -52,7 +52,7 @@ class cl_far_formafarmaceuticamed {
                  fa33_i_formafarmaceutica = int4 = forma farmaceutica 
                  ";
    //funcao construtor da classe 
-   function cl_far_formafarmaceuticamed() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_formafarmaceuticamed"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_funcionarios {
                  ed19_i_escola = int8 = Escola 
                  ";
    //funcao construtor da classe 
-   function cl_funcionarios() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("funcionarios"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -57,7 +57,7 @@ class cl_mobimportacao {
                  j95_idusuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_mobimportacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mobimportacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

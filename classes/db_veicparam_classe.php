@@ -60,7 +60,7 @@ class cl_veicparam {
                  ve50_integrapessoal = int4 = Integração com módulo Pessoal 
                  ";
    //funcao construtor da classe 
-   function cl_veicparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicparam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

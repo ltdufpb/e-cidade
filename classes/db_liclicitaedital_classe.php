@@ -54,7 +54,7 @@ class cl_liclicitaedital {
                  l27_liclicita = int4 = codigo 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitaedital() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaedital"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

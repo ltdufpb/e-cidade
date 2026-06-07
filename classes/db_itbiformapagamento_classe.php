@@ -56,7 +56,7 @@ class cl_itbiformapagamento {
                  it27_aliquota = float4 = Aliquota 
                  ";
    //funcao construtor da classe 
-   function cl_itbiformapagamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiformapagamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -32,7 +32,7 @@ class cl_cargorhrubricas {
                  rh176_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_cargorhrubricas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cargorhrubricas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

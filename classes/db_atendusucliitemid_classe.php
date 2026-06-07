@@ -52,7 +52,7 @@ class cl_atendusucliitemid {
                  at83_id_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_atendusucliitemid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendusucliitemid"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

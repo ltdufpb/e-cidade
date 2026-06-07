@@ -50,7 +50,7 @@ class cl_recreparcdest {
                  k71_recdest = int4 = Receita 
                  ";
    //funcao construtor da classe 
-   function cl_recreparcdest() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recreparcdest"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -58,7 +58,7 @@ class cl_conlancamprovisaodecimoterceiro {
                  c100_escrituraprovisao = int4 = Escritura Provisao 
                  ";
    //funcao construtor da classe 
-   function cl_conlancamprovisaodecimoterceiro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancamprovisaodecimoterceiro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

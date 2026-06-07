@@ -50,7 +50,7 @@ class cl_matparaminstit {
                  m10_controlapit = int4 = Controla Pit 
                  ";
    //funcao construtor da classe 
-   function cl_matparaminstit() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matparaminstit"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

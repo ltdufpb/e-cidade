@@ -58,7 +58,7 @@ class cl_sau_proccid {
                  sd72_i_mescomp = int4 = Mes 
                  ";
    //funcao construtor da classe 
-   function cl_sau_proccid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_proccid"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

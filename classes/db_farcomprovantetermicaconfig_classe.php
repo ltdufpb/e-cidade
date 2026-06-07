@@ -52,7 +52,7 @@ class cl_farcomprovantetermicaconfig {
                  fa57_mensagem = text = Mensagem Comprovante 
                  ";
    //funcao construtor da classe 
-   function cl_farcomprovantetermicaconfig() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("farcomprovantetermicaconfig"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

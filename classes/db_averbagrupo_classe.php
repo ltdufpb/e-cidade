@@ -50,7 +50,7 @@ class cl_averbagrupo {
                  j105_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_averbagrupo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbagrupo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -66,7 +66,7 @@ class cl_rhestagio {
                  h50_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_rhestagio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhestagio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

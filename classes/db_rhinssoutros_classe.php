@@ -58,7 +58,7 @@ class cl_rhinssoutros {
                  rh51_ocorre = varchar(2) = Ocorrência 
                  ";
    //funcao construtor da classe 
-   function cl_rhinssoutros() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhinssoutros"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

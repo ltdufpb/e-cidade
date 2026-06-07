@@ -59,7 +59,7 @@ class cl_histbem_ant {
                  t05_histor = char(    60) = Descricao do acontecimento 
                  ";
    //funcao construtor da classe 
-   function cl_histbem_ant() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("histbem_ant"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

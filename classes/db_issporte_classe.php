@@ -52,7 +52,7 @@ class cl_issporte {
                  q40_fisica = bool = Pessoa 
                  ";
    //funcao construtor da classe 
-   function cl_issporte() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issporte"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

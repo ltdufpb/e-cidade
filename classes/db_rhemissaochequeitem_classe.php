@@ -64,7 +64,7 @@ class cl_rhemissaochequeitem {
                  r18_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_rhemissaochequeitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhemissaochequeitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

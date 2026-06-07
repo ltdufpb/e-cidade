@@ -50,7 +50,7 @@ class cl_autotestem {
                  y24_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_autotestem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autotestem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

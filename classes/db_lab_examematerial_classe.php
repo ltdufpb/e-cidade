@@ -66,7 +66,7 @@ class cl_lab_examematerial {
                  la19_d_fim = date = Fim 
                  ";
    //funcao construtor da classe 
-   function cl_lab_examematerial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_examematerial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

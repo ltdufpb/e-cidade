@@ -52,7 +52,7 @@ class cl_lab_tiporeferenciaalfa {
                  la29_i_fixo = int4 = Valor Referencial Fixo 
                  ";
    //funcao construtor da classe 
-   function cl_lab_tiporeferenciaalfa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_tiporeferenciaalfa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

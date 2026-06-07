@@ -54,7 +54,7 @@ class cl_db_acountkey {
                  actipo = char(1) = Chave de Pesquisa 
                  ";
    //funcao construtor da classe 
-   function cl_db_acountkey() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_acountkey"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

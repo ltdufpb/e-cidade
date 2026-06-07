@@ -52,7 +52,7 @@ class cl_procgrupoatend {
                  sd17_i_grupoatend = int4 = Grupo de Atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_procgrupoatend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procgrupoatend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

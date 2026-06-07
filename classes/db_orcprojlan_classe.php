@@ -55,7 +55,7 @@ class cl_orcprojlan {
                  o51_id_usuario = int8 = id do usuario 
                  ";
    //funcao construtor da classe 
-   function cl_orcprojlan() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprojlan"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

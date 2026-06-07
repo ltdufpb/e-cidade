@@ -62,7 +62,7 @@ class cl_matordemitement {
                  m54_codmatunid = int8 = Código da unidade 
                  ";
    //funcao construtor da classe 
-   function cl_matordemitement() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemitement"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

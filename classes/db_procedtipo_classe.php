@@ -52,7 +52,7 @@ class cl_procedtipo {
                  v28_grupo = int4 = Grupo de Tipo de Procedência 
                  ";
    //funcao construtor da classe 
-   function cl_procedtipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procedtipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

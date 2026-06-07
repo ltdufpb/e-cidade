@@ -33,7 +33,7 @@ class cl_sau_triagemavulsaagravo {
                  s167_gestante = bool = Gestante 
                  ";
    //funcao construtor da classe 
-   function cl_sau_triagemavulsaagravo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_triagemavulsaagravo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

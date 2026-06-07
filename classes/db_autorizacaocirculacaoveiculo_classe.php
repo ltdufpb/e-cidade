@@ -73,7 +73,7 @@ class cl_autorizacaocirculacaoveiculo {
                  ve13_departamento = int4 = Departamento 
                  ";
    //funcao construtor da classe 
-   function cl_autorizacaocirculacaoveiculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autorizacaocirculacaoveiculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

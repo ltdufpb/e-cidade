@@ -48,7 +48,7 @@ class cl_numatend {
                  sd23_i_seq = int4 = Sequência 
                  ";
    //funcao construtor da classe 
-   function cl_numatend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("numatend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

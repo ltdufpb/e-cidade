@@ -50,7 +50,7 @@ class cl_bancoshistmovexcecao {
                  k166_bancoshistmov = int4 = Codigo do movimento bancario 
                  ";
    //funcao construtor da classe 
-   function cl_bancoshistmovexcecao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancoshistmovexcecao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

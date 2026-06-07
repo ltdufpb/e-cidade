@@ -50,7 +50,7 @@ class cl_lab_turno {
                  la01_c_descr = char(10) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_lab_turno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_turno"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

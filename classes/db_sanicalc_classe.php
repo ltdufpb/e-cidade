@@ -54,7 +54,7 @@ class cl_sanicalc {
                  y84_valor = float8 = Valor do Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_sanicalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sanicalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

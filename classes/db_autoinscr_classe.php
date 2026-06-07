@@ -50,7 +50,7 @@ class cl_autoinscr {
                  y52_inscr = int4 = Inscricao 
                  ";
    //funcao construtor da classe 
-   function cl_autoinscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autoinscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

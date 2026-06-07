@@ -55,7 +55,7 @@ class cl_obrasconstr {
                  ob08_tipolanc = int4 = Tipo de Lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_obrasconstr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasconstr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

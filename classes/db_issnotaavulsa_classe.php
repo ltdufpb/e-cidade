@@ -72,7 +72,7 @@ class cl_issnotaavulsa {
                  q51_obs = varchar(200) = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_issnotaavulsa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issnotaavulsa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

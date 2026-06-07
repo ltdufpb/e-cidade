@@ -52,7 +52,7 @@ class cl_far_origemreceitaretirada {
                  fa41_i_origemreceita = int4 = Origem 
                  ";
    //funcao construtor da classe 
-   function cl_far_origemreceitaretirada() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_origemreceitaretirada"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

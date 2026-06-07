@@ -64,7 +64,7 @@ class cl_db_proced {
                  at30_situacao = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_db_proced() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_proced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

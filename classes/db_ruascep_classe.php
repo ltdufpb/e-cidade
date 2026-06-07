@@ -54,7 +54,7 @@ class cl_ruascep {
                  j29_cep = char(8) = CEP 
                  ";
    //funcao construtor da classe 
-   function cl_ruascep() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ruascep"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

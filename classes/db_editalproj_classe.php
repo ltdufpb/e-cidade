@@ -50,7 +50,7 @@ class cl_editalproj {
                  d10_codigo = int4 = Código da lista de projeto 
                  ";
    //funcao construtor da classe 
-   function cl_editalproj() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("editalproj"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

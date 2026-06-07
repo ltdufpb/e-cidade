@@ -84,7 +84,7 @@ class cl_tarefa {
                  at40_urgente = int4 = Urgente 
                  ";
    //funcao construtor da classe 
-   function cl_tarefa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

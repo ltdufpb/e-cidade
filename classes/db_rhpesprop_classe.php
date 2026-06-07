@@ -50,7 +50,7 @@ class cl_rhpesprop {
                  rh19_propi = float8 = Proporção Inativo 
                  ";
    //funcao construtor da classe 
-   function cl_rhpesprop() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpesprop"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

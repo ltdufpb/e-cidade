@@ -52,7 +52,7 @@ class cl_tarefalogsituacao {
                  at48_situacao = int4 = Codigo da situacao 
                  ";
    //funcao construtor da classe 
-   function cl_tarefalogsituacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefalogsituacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

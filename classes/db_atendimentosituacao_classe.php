@@ -52,7 +52,7 @@ class cl_atendimentosituacao {
                  at16_situacao = int4 = Situacao do atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_atendimentosituacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendimentosituacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

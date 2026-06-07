@@ -51,7 +51,7 @@ class cl_db_consultacep {
 	                 db10_uf = int8 = UF
 	                 ";
 	//funcao construtor da classe
-	function cl_db_consultacep() {
+	function __construct() {
 		//classes dos rotulos dos campos
 		$this->rotulo = new rotulo("db_consultacep");
 		$this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -66,7 +66,7 @@ class cl_veicmotoristas {
                  ve05_veiccadmotoristasit = int4 = Situação do Condutor 
                  ";
    //funcao construtor da classe 
-   function cl_veicmotoristas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicmotoristas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

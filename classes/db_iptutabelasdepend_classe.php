@@ -52,7 +52,7 @@ class cl_iptutabelasdepend {
                  j128_iptutabelasdepend = int4 = Código Tabela Dependente 
                  ";
    //funcao construtor da classe 
-   function cl_iptutabelasdepend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutabelasdepend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

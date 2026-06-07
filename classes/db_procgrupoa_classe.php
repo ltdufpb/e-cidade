@@ -50,7 +50,7 @@ class cl_procgrupoa {
                  sd17_i_grupoatend = int8 = Grupo de Atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_procgrupoa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procgrupoa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

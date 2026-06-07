@@ -54,7 +54,7 @@ class cl_sau_atendprestund {
                  sd48_i_convenio = int4 = Convênio 
                  ";
    //funcao construtor da classe 
-   function cl_sau_atendprestund() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_atendprestund"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

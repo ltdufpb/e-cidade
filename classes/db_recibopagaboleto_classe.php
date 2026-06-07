@@ -59,7 +59,7 @@ class cl_recibopagaboleto {
                  k138_usuario = int4 = Usuario 
                  ";
    //funcao construtor da classe 
-   function cl_recibopagaboleto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibopagaboleto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

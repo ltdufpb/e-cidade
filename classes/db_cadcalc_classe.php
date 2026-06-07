@@ -69,7 +69,7 @@ class cl_cadcalc {
                  q85_outromun = bool = Calcular para empresas de outro municipio 
                  ";
    //funcao construtor da classe 
-   function cl_cadcalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

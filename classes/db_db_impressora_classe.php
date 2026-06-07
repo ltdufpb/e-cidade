@@ -56,7 +56,7 @@ class cl_db_impressora {
                  db64_fabricante = varchar(50) = Fabricante da Impressora 
                  ";
    //funcao construtor da classe 
-   function cl_db_impressora() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_impressora"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

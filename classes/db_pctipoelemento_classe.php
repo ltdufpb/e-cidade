@@ -50,7 +50,7 @@ class cl_pctipoelemento {
                  pc06_codele = int4 = Código Elemento 
                  ";
    //funcao construtor da classe 
-   function cl_pctipoelemento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipoelemento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

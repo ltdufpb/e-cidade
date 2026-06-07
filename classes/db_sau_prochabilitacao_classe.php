@@ -58,7 +58,7 @@ class cl_sau_prochabilitacao {
                  sd77_i_mescomp = int4 = Mes 
                  ";
    //funcao construtor da classe 
-   function cl_sau_prochabilitacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_prochabilitacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

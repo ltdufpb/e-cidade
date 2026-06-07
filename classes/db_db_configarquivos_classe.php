@@ -54,7 +54,7 @@ class cl_db_configarquivos {
                  db38_tipo = int4 = Tipo de Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_db_configarquivos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_configarquivos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

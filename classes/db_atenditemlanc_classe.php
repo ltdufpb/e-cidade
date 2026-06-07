@@ -57,7 +57,7 @@ class cl_atenditemlanc {
                  at07_horalanc = char(5) = Hora do lancamento 
                  ";
    //funcao construtor da classe 
-   function cl_atenditemlanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atenditemlanc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

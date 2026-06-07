@@ -52,7 +52,7 @@ class cl_far_fatorrisco {
                  fa44_i_codrisco = int4 = Fator de Risco 
                  ";
    //funcao construtor da classe 
-   function cl_far_fatorrisco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_fatorrisco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -71,7 +71,7 @@ class cl_abatimento {
                  k125_observacao = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_abatimento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

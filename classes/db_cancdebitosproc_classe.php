@@ -61,7 +61,7 @@ class cl_cancdebitosproc {
                  k23_cancdebitostipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_cancdebitosproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitosproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

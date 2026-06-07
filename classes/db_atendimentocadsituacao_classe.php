@@ -50,7 +50,7 @@ class cl_atendimentocadsituacao {
                  at15_descr = varchar(40) = Descricao 
                  ";
    //funcao construtor da classe 
-   function cl_atendimentocadsituacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendimentocadsituacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

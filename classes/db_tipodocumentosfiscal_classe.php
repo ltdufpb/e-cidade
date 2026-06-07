@@ -50,7 +50,7 @@ class cl_tipodocumentosfiscal {
                  e12_descricao = varchar(50) = Descriçao 
                  ";
    //funcao construtor da classe 
-   function cl_tipodocumentosfiscal() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipodocumentosfiscal"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

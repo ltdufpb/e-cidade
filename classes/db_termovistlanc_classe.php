@@ -50,7 +50,7 @@ class cl_termovistlanc {
                  y92_codvist = int4 = Código da Vistoria 
                  ";
    //funcao construtor da classe 
-   function cl_termovistlanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termovistlanc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

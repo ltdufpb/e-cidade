@@ -52,7 +52,7 @@ class cl_debcontaarquivoregret {
                  d76_debcontaarqreg = int4 = Codigo sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_debcontaarquivoregret() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontaarquivoregret"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

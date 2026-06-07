@@ -58,7 +58,7 @@ class cl_db_sysfuncoes {
                  triggerfuncao = char(1) = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysfuncoes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysfuncoes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

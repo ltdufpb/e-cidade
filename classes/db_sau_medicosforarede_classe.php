@@ -56,7 +56,7 @@ class cl_sau_medicosforarede {
                  s154_rhcbo = int4 = Código cbo 
                  ";
    //funcao construtor da classe 
-   function cl_sau_medicosforarede() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_medicosforarede"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

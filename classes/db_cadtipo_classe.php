@@ -56,7 +56,7 @@ class cl_cadtipo {
                  k03_permparc = bool = Se permite parcelar este tipo de débito 
                  ";
    //funcao construtor da classe 
-   function cl_cadtipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

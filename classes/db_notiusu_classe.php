@@ -57,7 +57,7 @@ class cl_notiusu {
                  k52_hora = varchar(5) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_notiusu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notiusu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

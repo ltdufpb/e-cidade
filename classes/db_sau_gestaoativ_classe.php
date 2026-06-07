@@ -54,7 +54,7 @@ class cl_sau_gestaoativ {
                  sd47_i_indgestao = int4 = Indicador de Gestão 
                  ";
    //funcao construtor da classe 
-   function cl_sau_gestaoativ() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_gestaoativ"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

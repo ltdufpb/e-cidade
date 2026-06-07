@@ -66,7 +66,7 @@ class cl_liclicitafornitem {
                  l23_pontuacao = int4 = Pontuação 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitafornitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitafornitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

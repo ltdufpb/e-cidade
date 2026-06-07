@@ -48,7 +48,7 @@ class cl_parobrastipocons {
                  ob12_grupo = int4 = Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_parobrastipocons() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parobrastipocons"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

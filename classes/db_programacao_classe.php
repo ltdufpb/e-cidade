@@ -54,7 +54,7 @@ class cl_programacao {
                  ed242_i_subconteudo = int4 = Subconteudo 
                  ";
    //funcao construtor da classe 
-   function cl_programacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("programacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

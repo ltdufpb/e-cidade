@@ -53,7 +53,7 @@ class cl_cadescrito {
                  q86_datalimite = date = Data Limite 
                  ";
    //funcao construtor da classe 
-   function cl_cadescrito() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadescrito"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

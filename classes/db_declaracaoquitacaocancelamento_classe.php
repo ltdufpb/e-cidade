@@ -63,7 +63,7 @@ class cl_declaracaoquitacaocancelamento {
                  ar32_automatico = bool = Automático 
                  ";
    //funcao construtor da classe 
-   function cl_declaracaoquitacaocancelamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("declaracaoquitacaocancelamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

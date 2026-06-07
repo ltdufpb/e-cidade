@@ -52,7 +52,7 @@ class cl_desdobramentosliberadosordemcompra {
                  pc33_anousu = int4 = Ano Uso 
                  ";
    //funcao construtor da classe 
-   function cl_desdobramentosliberadosordemcompra() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("desdobramentosliberadosordemcompra"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

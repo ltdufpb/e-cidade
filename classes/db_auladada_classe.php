@@ -57,7 +57,7 @@ class cl_auladada {
                  ed243_i_regencia = int4 = Regencia 
                  ";
    //funcao construtor da classe 
-   function cl_auladada() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("auladada"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

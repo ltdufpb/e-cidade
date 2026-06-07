@@ -50,7 +50,7 @@ class cl_obrasresp {
                  ob10_numcgm = int4 = Responsável da obra 
                  ";
    //funcao construtor da classe 
-   function cl_obrasresp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasresp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

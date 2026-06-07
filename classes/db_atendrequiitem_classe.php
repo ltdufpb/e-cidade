@@ -54,7 +54,7 @@ class cl_atendrequiitem {
                  m43_quantatend = float8 = Quant. Atendida 
                  ";
    //funcao construtor da classe 
-   function cl_atendrequiitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendrequiitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

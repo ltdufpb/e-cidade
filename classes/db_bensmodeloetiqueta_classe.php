@@ -52,7 +52,7 @@ class cl_bensmodeloetiqueta {
                  t71_strxml = text = XML 
                  ";
    //funcao construtor da classe 
-   function cl_bensmodeloetiqueta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bensmodeloetiqueta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

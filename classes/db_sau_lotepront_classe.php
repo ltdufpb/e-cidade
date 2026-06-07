@@ -52,7 +52,7 @@ class cl_sau_lotepront {
                  sd59_i_prontuario = int4 = FAA
                  ";
    //funcao construtor da classe
-   function cl_sau_lotepront() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_lotepront");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

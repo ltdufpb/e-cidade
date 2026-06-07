@@ -64,7 +64,7 @@ class cl_orcprogramahorizontetemp {
                  o17_valor = float4 = Valor Global Estimado 
                  ";
    //funcao construtor da classe 
-   function cl_orcprogramahorizontetemp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprogramahorizontetemp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_tipoingresso {
                  ed334_tipo = varchar(40) = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_tipoingresso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoingresso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

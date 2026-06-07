@@ -50,7 +50,7 @@ class cl_itbilogin {
                  it13_id_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_itbilogin() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbilogin"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

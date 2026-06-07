@@ -50,7 +50,7 @@ class cl_aguabasecar {
                  x30_matric = int4 = Matrícula 
                  ";
    //funcao construtor da classe 
-   function cl_aguabasecar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguabasecar"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

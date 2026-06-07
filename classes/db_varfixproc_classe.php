@@ -52,7 +52,7 @@ class cl_varfixproc {
                  q36_processo = int4 = Processo 
                  ";
    //funcao construtor da classe 
-   function cl_varfixproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("varfixproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

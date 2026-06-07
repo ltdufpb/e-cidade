@@ -74,7 +74,7 @@ class cl_orcimpactomov {
                  o63_codimpger = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactomov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactomov"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

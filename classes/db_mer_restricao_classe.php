@@ -50,7 +50,7 @@ class cl_mer_restricao {
                  me24_i_aluno = int4 = Aluno 
                  ";
    //funcao construtor da classe 
-   function cl_mer_restricao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_restricao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

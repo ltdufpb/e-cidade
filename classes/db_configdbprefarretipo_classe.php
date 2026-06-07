@@ -62,7 +62,7 @@ class cl_configdbprefarretipo {
                  w17_dtfim = date = Vencimento Final 
                  ";
    //funcao construtor da classe 
-   function cl_configdbprefarretipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("configdbprefarretipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

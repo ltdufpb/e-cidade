@@ -74,7 +74,7 @@ class cl_ppadotacao {
                  o08_concarpeculiar = varchar(100) = C.Peculiar/ C. Aplicação
                  ";
   //funcao construtor da classe
-  function cl_ppadotacao() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("ppadotacao");
     $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

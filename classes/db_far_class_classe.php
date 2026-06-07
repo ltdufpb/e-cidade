@@ -56,7 +56,7 @@ class cl_far_class {
                  fa05_c_descr = char(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_far_class() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_class"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

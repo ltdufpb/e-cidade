@@ -54,7 +54,7 @@ class cl_reconhecimentocontabiltipo {
                  c111_conhistdocestorno = int4 = Código do documento 
                  ";
    //funcao construtor da classe 
-   function cl_reconhecimentocontabiltipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("reconhecimentocontabiltipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -60,7 +60,7 @@ class cl_fechamentotfdprocedimento {
                  tf40_paciente = bool = Se foi paciente 
                  ";
    //funcao construtor da classe 
-   function cl_fechamentotfdprocedimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fechamentotfdprocedimento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_procjuradm {
                  v64_procjur = int4 = Código do processo jurídico 
                  ";
    //funcao construtor da classe 
-   function cl_procjuradm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procjuradm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

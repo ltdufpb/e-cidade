@@ -68,7 +68,7 @@ class cl_meievento {
                  q101_datafin = date = Data de Finalização 
                  ";
    //funcao construtor da classe 
-   function cl_meievento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meievento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

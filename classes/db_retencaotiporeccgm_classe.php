@@ -52,7 +52,7 @@ class cl_retencaotiporeccgm {
                  e48_cgm = int4 = CGM 
                  ";
    //funcao construtor da classe 
-   function cl_retencaotiporeccgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("retencaotiporeccgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

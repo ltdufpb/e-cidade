@@ -50,7 +50,7 @@ class cl_situabens {
                  t70_descr = varchar(40) = Descrição da situação 
                  ";
    //funcao construtor da classe 
-   function cl_situabens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("situabens"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

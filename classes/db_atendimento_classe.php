@@ -72,7 +72,7 @@ class cl_atendimento {
                  at02_observacao = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_atendimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendimento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

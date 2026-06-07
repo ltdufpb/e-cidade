@@ -52,7 +52,7 @@ class cl_sau_distritosanitario {
                  s153_c_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_distritosanitario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_distritosanitario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

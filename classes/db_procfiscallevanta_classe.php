@@ -52,7 +52,7 @@ class cl_procfiscallevanta {
                  y112_levanta = int4 = Levantamento 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscallevanta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscallevanta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

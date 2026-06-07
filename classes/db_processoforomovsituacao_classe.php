@@ -52,7 +52,7 @@ class cl_processoforomovsituacao {
                  v74_tipomovimento = int4 = Tipo Movimento 
                  ";
    //funcao construtor da classe 
-   function cl_processoforomovsituacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforomovsituacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

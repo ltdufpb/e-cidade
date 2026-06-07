@@ -58,7 +58,7 @@ class cl_clabensconplano {
                  t86_anousudepreciacao = int4 = Exercício
                  ";
    //funcao construtor da classe
-   function cl_clabensconplano() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clabensconplano");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

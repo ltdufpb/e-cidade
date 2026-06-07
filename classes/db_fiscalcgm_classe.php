@@ -50,7 +50,7 @@ class cl_fiscalcgm {
                  y36_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalcgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalcgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

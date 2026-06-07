@@ -52,7 +52,7 @@ class cl_averbaregimovel {
                  j78_protocolo = char(20) = Protocolo Reg. Imóvel 
                  ";
    //funcao construtor da classe 
-   function cl_averbaregimovel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbaregimovel"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

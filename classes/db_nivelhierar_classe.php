@@ -52,7 +52,7 @@ class cl_nivelhierar {
                  sd21_l_pab = bool = PAB - Sim/São 
                  ";
    //funcao construtor da classe 
-   function cl_nivelhierar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("nivelhierar"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

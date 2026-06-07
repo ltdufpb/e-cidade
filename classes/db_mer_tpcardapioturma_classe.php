@@ -52,7 +52,7 @@ class cl_mer_tpcardapioturma {
                  me28_i_cardapioescola = int4 = Cardapio escola 
                  ";
    //funcao construtor da classe 
-   function cl_mer_tpcardapioturma() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_tpcardapioturma"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

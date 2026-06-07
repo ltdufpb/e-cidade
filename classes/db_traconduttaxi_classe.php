@@ -69,7 +69,7 @@ class cl_traconduttaxi {
                  tr22_complem = varchar(255) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_traconduttaxi() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("traconduttaxi"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

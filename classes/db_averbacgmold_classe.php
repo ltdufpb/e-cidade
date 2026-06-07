@@ -56,7 +56,7 @@ class cl_averbacgmold {
                  j79_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_averbacgmold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbacgmold"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

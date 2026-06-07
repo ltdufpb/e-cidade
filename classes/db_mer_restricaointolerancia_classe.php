@@ -52,7 +52,7 @@ class cl_mer_restricaointolerancia {
                  me34_i_intolerancia = int4 = Intolerância Alimentar 
                  ";
    //funcao construtor da classe 
-   function cl_mer_restricaointolerancia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_restricaointolerancia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

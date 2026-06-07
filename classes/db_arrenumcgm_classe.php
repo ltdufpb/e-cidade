@@ -50,7 +50,7 @@ class cl_arrenumcgm {
                  k00_numpre = int4 = Numpre 
                  ";
    //funcao construtor da classe 
-   public function cl_arrenumcgm() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrenumcgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

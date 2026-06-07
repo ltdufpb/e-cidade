@@ -50,7 +50,7 @@ class cl_issmotivoparalisacao {
                  q141_descricao = varchar(250) = Motivo da Paralisação 
                  ";
    //funcao construtor da classe 
-   function cl_issmotivoparalisacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issmotivoparalisacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

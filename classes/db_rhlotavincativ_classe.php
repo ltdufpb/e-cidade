@@ -60,7 +60,7 @@ class cl_rhlotavincativ {
                  rh39_funcao = int4 = Função 
                  ";
    //funcao construtor da classe 
-   function cl_rhlotavincativ() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotavincativ"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

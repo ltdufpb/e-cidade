@@ -50,7 +50,7 @@ class cl_db_projetoscadgrupos {
                  at62_descr = varchar(40) = Descrição do grupo de projeto 
                  ";
    //funcao construtor da classe 
-   function cl_db_projetoscadgrupos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_projetoscadgrupos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

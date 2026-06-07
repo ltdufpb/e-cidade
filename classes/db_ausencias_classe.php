@@ -73,7 +73,7 @@ class cl_ausencias {
                  sd06_i_undmedhorario = int4 = Código da Grade 
                  ";
    //funcao construtor da classe 
-   function cl_ausencias() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ausencias"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

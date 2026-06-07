@@ -56,7 +56,7 @@ class cl_db_usuclientes {
                  at10_nome = varchar(60) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_db_usuclientes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_usuclientes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

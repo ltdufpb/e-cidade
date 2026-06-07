@@ -50,7 +50,7 @@ class cl_db_errobanco {
                  e78_errobanco = int4 = Sequencia 
                  ";
    //funcao construtor da classe 
-   function cl_db_errobanco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_errobanco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

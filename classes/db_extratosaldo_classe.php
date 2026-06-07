@@ -73,7 +73,7 @@ class cl_extratosaldo {
                  k97_limite = float8 = Limite da conta 
                  ";
    //funcao construtor da classe 
-   function cl_extratosaldo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("extratosaldo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

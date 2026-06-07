@@ -50,7 +50,7 @@ class cl_benstipoguarda {
                  t20_descr = varchar(40) = Descr. Tipo de Guarda 
                  ";
    //funcao construtor da classe 
-   function cl_benstipoguarda() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstipoguarda"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_configuracaogrupocaracteristicas {
                  db144_tipoutilizacaoiptu = int4 = Tipo de Utilização IPTU 
                  ";
    //funcao construtor da classe 
-   function cl_configuracaogrupocaracteristicas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("configuracaogrupocaracteristicas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

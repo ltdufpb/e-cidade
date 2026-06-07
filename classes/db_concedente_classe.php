@@ -52,7 +52,7 @@ class cl_concedente {
                  o108_tipoconcedente = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_concedente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("concedente"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -60,7 +60,7 @@ class cl_aguacoletorexportadadosleitura {
                  x51_numcgm = int4 = Leiturista 
                  ";
    //funcao construtor da classe 
-   function cl_aguacoletorexportadadosleitura() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacoletorexportadadosleitura"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

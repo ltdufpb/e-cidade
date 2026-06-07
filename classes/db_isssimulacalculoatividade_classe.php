@@ -60,7 +60,7 @@ class cl_isssimulacalculoatividade {
                  q131_permanente = bool = Permanente 
                  ";
    //funcao construtor da classe 
-   function cl_isssimulacalculoatividade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isssimulacalculoatividade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_sau_cadsustipo {
                  s138_c_descr = char(130) = descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_cadsustipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_cadsustipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_iptucadtaxa {
                  j07_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadtaxa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadtaxa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

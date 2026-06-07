@@ -56,7 +56,7 @@ class cl_concarpeculiar {
                  c58_estrutural = varchar(100) = Código
                  ";
    //funcao construtor da classe
-   function cl_concarpeculiar() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("concarpeculiar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

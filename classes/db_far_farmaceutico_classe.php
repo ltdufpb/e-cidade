@@ -50,7 +50,7 @@ class cl_far_farmaceutico {
                  fa25_i_cgm = int4 = Cgm 
                  ";
    //funcao construtor da classe 
-   function cl_far_farmaceutico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_farmaceutico"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_procrec {
                  p52_valor = float8 = Valor da Taxa 
                  ";
    //funcao construtor da classe 
-   function cl_procrec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procrec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

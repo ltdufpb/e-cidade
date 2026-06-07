@@ -52,7 +52,7 @@ class cl_fiscalusuario {
                  y38_obs = text = Observação do fiscal 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalusuario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalusuario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

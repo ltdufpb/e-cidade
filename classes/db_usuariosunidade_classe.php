@@ -52,7 +52,7 @@ class cl_usuariosunidade {
                  sd25_b_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_usuariosunidade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("usuariosunidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

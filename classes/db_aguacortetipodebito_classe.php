@@ -71,7 +71,7 @@ class cl_aguacortetipodebito {
                  x45_dtopfim = date = Data Final Operação 
                  ";
    //funcao construtor da classe 
-   function cl_aguacortetipodebito() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacortetipodebito"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

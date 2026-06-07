@@ -54,7 +54,7 @@ class cl_empagedadosretmovocorrencia {
                  e02_errobanco = int4 = Sequencial ErroBanco 
                  ";
    //funcao construtor da classe 
-   function cl_empagedadosretmovocorrencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagedadosretmovocorrencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

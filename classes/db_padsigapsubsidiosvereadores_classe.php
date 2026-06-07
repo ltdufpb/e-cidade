@@ -60,7 +60,7 @@ class cl_padsigapsubsidiosvereadores {
                  c16_subsidioextraordinario = float8 = Valor do Subsídio Extraordináro 
                  ";
    //funcao construtor da classe 
-   function cl_padsigapsubsidiosvereadores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("padsigapsubsidiosvereadores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

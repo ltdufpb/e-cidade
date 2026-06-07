@@ -62,7 +62,7 @@ class cl_empnotadadospit {
                  e11_valoricmssubstitutotrib = float4 = Valor ICMS Substituto Trib 
                  ";
    //funcao construtor da classe 
-   function cl_empnotadadospit() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empnotadadospit"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

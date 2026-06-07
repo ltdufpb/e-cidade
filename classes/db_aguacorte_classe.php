@@ -73,7 +73,7 @@ class cl_aguacorte {
                  x40_tipomatricula = int4 = Considerar matriculas 
                  ";
    //funcao construtor da classe 
-   function cl_aguacorte() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacorte"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

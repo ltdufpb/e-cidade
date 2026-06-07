@@ -58,7 +58,7 @@ class cl_db_menupref {
                  m_publico = bool = Público 
                  ";
    //funcao construtor da classe 
-   function cl_db_menupref() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_menupref"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

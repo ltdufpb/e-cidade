@@ -50,7 +50,7 @@ class cl_tipoabatimento {
                  k126_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoabatimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoabatimento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_dividaprotprocesso {
                  v88_protprocesso = int4 = Número do processo 
                  ";
    //funcao construtor da classe 
-   function cl_dividaprotprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dividaprotprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

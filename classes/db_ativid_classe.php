@@ -68,7 +68,7 @@ class cl_ativid {
                  ";
 
   //funcao construtor da classe
-  function cl_ativid() {
+  function __construct() {
 
     //classes dos rotulos dos campos
     $this->rotulo         = new rotulo("ativid");

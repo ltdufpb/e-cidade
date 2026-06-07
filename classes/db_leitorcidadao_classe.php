@@ -52,7 +52,7 @@ class cl_leitorcidadao {
                  bi28_cidadao_seq = int4 = Código do Cidadão 
                  ";
    //funcao construtor da classe 
-   function cl_leitorcidadao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("leitorcidadao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

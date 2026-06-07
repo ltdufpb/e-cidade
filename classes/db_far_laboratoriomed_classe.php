@@ -52,7 +52,7 @@ class cl_far_laboratoriomed {
                  fa32_i_laboratorio = int4 = Laboratorio 
                  ";
    //funcao construtor da classe 
-   function cl_far_laboratoriomed() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_laboratoriomed"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

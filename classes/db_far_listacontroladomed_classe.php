@@ -52,7 +52,7 @@ class cl_far_listacontroladomed {
                  fa35_i_medanvisa = int4 = medanvisa 
                  ";
    //funcao construtor da classe 
-   function cl_far_listacontroladomed() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_listacontroladomed"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

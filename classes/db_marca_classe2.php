@@ -87,7 +87,7 @@ class cl_marca {
                  ma01_v_sinal = varchar(60) = Sinal 
                  ";
    //funcao construtor da classe 
-   function cl_marca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("marca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

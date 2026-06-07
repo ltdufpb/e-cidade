@@ -50,7 +50,7 @@ class cl_pagordemval {
                  e51_codlan = int4 = Código Lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_pagordemval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pagordemval"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

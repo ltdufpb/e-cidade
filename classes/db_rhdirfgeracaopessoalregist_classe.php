@@ -52,7 +52,7 @@ class cl_rhdirfgeracaopessoalregist {
                  rh99_regist = int4 = Código da Matrícula 
                  ";
    //funcao construtor da classe 
-   function cl_rhdirfgeracaopessoalregist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdirfgeracaopessoalregist"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

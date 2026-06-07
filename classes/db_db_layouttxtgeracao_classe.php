@@ -67,7 +67,7 @@ class cl_db_layouttxtgeracao {
                  db55_conteudo = text = Conteudo do txt 
                  ";
    //funcao construtor da classe 
-   function cl_db_layouttxtgeracao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_layouttxtgeracao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

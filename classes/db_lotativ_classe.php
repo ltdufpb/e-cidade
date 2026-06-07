@@ -66,7 +66,7 @@ class cl_lotativ {
                  r41_rsubel = varchar(6) = Sub-ele. Rep. 
                  ";
    //funcao construtor da classe 
-   function cl_lotativ() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lotativ"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

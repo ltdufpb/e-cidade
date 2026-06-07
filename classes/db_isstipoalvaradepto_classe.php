@@ -52,7 +52,7 @@ class cl_isstipoalvaradepto {
                  q99_isstipoalvara = int4 = Tipo de Alvará 
                  ";
    //funcao construtor da classe 
-   function cl_isstipoalvaradepto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isstipoalvaradepto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

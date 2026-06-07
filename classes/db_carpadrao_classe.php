@@ -50,7 +50,7 @@ class cl_carpadrao {
                  j33_codcaracter = int4 = Característica Principal 
                  ";
    //funcao construtor da classe 
-   function cl_carpadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carpadrao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

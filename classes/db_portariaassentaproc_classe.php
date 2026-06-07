@@ -52,7 +52,7 @@ class cl_portariaassentaproc {
                  h34_protprocesso = int4 = Código do processo 
                  ";
    //funcao construtor da classe 
-   function cl_portariaassentaproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariaassentaproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

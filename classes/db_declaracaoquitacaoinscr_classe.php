@@ -52,7 +52,7 @@ class cl_declaracaoquitacaoinscr {
                  ar35_declaracaoquitacao = int8 = Código Declaração 
                  ";
    //funcao construtor da classe 
-   function cl_declaracaoquitacaoinscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("declaracaoquitacaoinscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

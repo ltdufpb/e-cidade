@@ -56,7 +56,7 @@ class cl_conceitos
                  ";
 
     //funcao construtor da classe
-    function cl_conceitos()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conceitos");

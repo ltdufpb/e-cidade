@@ -64,7 +64,7 @@ class cl_ouvidoriaatendimentoretornoender {
                  ov12_cep = varchar(8) = CEP 
                  ";
    //funcao construtor da classe 
-   function cl_ouvidoriaatendimentoretornoender() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriaatendimentoretornoender"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

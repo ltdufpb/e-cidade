@@ -52,7 +52,7 @@ class cl_veiccadpotencia {
                  ve31_descrcompleta = varchar(40) = Descrição Completa da Potência 
                  ";
    //funcao construtor da classe 
-   function cl_veiccadpotencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiccadpotencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

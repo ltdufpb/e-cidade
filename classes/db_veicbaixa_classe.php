@@ -63,7 +63,7 @@ class cl_veicbaixa {
                  ve04_veiccadtipobaixa = int4 = Tipo de baixa 
                  ";
    //funcao construtor da classe 
-   function cl_veicbaixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicbaixa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

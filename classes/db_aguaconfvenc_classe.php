@@ -55,7 +55,7 @@ class cl_aguaconfvenc {
                  x33_dtvenc = date = Vencimento 
                  ";
    //funcao construtor da classe 
-   function cl_aguaconfvenc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaconfvenc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

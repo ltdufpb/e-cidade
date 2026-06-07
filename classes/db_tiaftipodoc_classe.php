@@ -50,7 +50,7 @@ class cl_tiaftipodoc {
                  y98_descr = text = Descrição do documento 
                  ";
    //funcao construtor da classe 
-   function cl_tiaftipodoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiaftipodoc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

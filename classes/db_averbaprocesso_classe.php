@@ -50,7 +50,7 @@ class cl_averbaprocesso {
                  j77_codproc = int4 = Processo de Protocolo 
                  ";
    //funcao construtor da classe 
-   function cl_averbaprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbaprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

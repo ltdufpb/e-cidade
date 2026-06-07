@@ -52,7 +52,7 @@ class cl_pcobjeto {
                  pc02_complobjeto = text = Complemento do Objeto 
                  ";
    //funcao construtor da classe 
-   function cl_pcobjeto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcobjeto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

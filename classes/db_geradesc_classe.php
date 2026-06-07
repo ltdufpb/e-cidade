@@ -50,7 +50,7 @@ class cl_geradesc {
                  q89_descr = varchar(40) = descricao 
                  ";
    //funcao construtor da classe 
-   function cl_geradesc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("geradesc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

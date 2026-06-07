@@ -50,7 +50,7 @@ class cl_benscadcedente {
                  t04_numcgm = int4 = CGM 
                  ";
    //funcao construtor da classe 
-   function cl_benscadcedente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benscadcedente"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

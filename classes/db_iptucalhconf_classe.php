@@ -52,7 +52,7 @@ class cl_iptucalhconf {
                  j89_codhispai = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalhconf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalhconf"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

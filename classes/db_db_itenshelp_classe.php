@@ -50,7 +50,7 @@ class cl_db_itenshelp {
                  id_help = int4 = Código Help 
                  ";
    //funcao construtor da classe 
-   function cl_db_itenshelp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_itenshelp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -105,7 +105,7 @@ class cl_cadtipoparc {
                  k40_controlavencimento = bool = Controla Vencimento até o fim do ano
                  ";
    //funcao construtor da classe 
-   function cl_cadtipoparc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipoparc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

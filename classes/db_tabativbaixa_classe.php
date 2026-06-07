@@ -67,7 +67,7 @@ class cl_tabativbaixa {
                  q11_numero = varchar(10) = q11_numero 
                  ";
    //funcao construtor da classe 
-   function cl_tabativbaixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabativbaixa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

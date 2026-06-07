@@ -52,7 +52,7 @@ class cl_levretnome {
                  y65_cnpj = varchar(14) = CNPJ 
                  ";
    //funcao construtor da classe 
-   function cl_levretnome() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levretnome"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

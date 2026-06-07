@@ -52,7 +52,7 @@ class cl_disbancodiver {
                  k44_coddiver = int8 = Codigo diversos 
                  ";
    //funcao construtor da classe 
-   function cl_disbancodiver() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disbancodiver"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_responsaveltecnico {
                  am07_cgm = int4 = Código do CGM
                  ";
    //funcao construtor da classe
-   function cl_responsaveltecnico() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("responsaveltecnico");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

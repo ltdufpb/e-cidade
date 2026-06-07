@@ -56,7 +56,7 @@ class cl_regraponto {
                  rh123_comportamento = int4 = Comportamento 
                  ";
    //funcao construtor da classe 
-   function cl_regraponto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regraponto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

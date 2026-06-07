@@ -52,7 +52,7 @@ class cl_aguaconsumorec {
                  x20_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_aguaconsumorec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaconsumorec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

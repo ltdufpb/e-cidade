@@ -54,7 +54,7 @@ class cl_empagemod {
                  e84_sequencia = int4 = Sequência 
                  ";
    //funcao construtor da classe 
-   function cl_empagemod() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemod"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

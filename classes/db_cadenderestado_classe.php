@@ -54,7 +54,7 @@ class cl_cadenderestado {
                  db71_descricao = varchar(100) = Descrição do Estado 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderestado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderestado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

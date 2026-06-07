@@ -48,7 +48,7 @@ class cl_documento {
                  db58_sequencial = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_documento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("documento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

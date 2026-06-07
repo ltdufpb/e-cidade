@@ -52,7 +52,7 @@ class cl_benslote {
                  t43_bem = int8 = Código do bem 
                  ";
    //funcao construtor da classe 
-   function cl_benslote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benslote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

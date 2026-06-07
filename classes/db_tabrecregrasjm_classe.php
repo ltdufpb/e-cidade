@@ -62,7 +62,7 @@ class cl_tabrecregrasjm {
                  k04_dtfim = date = Data final 
                  ";
    //funcao construtor da classe 
-   function cl_tabrecregrasjm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabrecregrasjm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

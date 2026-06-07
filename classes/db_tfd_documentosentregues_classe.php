@@ -61,7 +61,7 @@ class cl_tfd_documentosentregues {
                  tf22_c_numdoc = varchar(20) = N° Documento 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_documentosentregues() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_documentosentregues"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

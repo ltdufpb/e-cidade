@@ -71,7 +71,7 @@ class cl_depend {
                  r03_especi = varchar(1) = Especial 
                  ";
    //funcao construtor da classe 
-   function cl_depend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("depend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

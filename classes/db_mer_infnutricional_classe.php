@@ -54,7 +54,7 @@ class cl_mer_infnutricional {
                  me08_f_quant = float4 = Quantidade 
                  ";
    //funcao construtor da classe 
-   function cl_mer_infnutricional() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_infnutricional"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

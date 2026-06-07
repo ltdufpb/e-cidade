@@ -44,7 +44,7 @@ class PolarPlot {
     var $csimalts=null;			// ALT:s for corresponding target
     var $line_style='solid',$mark;
 
-    function PolarPlot($aData) {
+    function __construct($aData) {
 	$n = count($aData);
 	if( $n & 1 ) {
 	    JpGraphError::RaiseL(17001);
@@ -157,7 +157,7 @@ class PolarAxis extends Axis {
     var $show_angle_tick=true;
     var $radius_tick_color='black';
 
-    function PolarAxis(&$img,&$aScale) {
+    function __construct(&$img,&$aScale) {
 	parent::Axis($img,$aScale);
     }
 
@@ -572,7 +572,7 @@ class PolarAxis extends Axis {
 
 class PolarScale extends LinearScale {
     var $graph;
-    function PolarScale($aMax=0,&$graph) {
+    function __construct($aMax=0,&$graph) {
 	parent::LinearScale(0,$aMax,'x');
 	$this->graph = &$graph;
     }
@@ -604,7 +604,7 @@ class PolarScale extends LinearScale {
 
 class PolarLogScale extends LogScale {
     var $graph;
-    function PolarLogScale($aMax=1,&$graph) {
+    function __construct($aMax=1,&$graph) {
 	parent::LogScale(0,$aMax,'x');
 	$this->graph = &$graph;
 	$this->ticks->SetLabelLogType(LOGLABELS_MAGNITUDE);
@@ -639,7 +639,7 @@ class PolarGraph extends Graph {
     var $iType=POLAR_360;
     var $axis;
     
-    function PolarGraph($aWidth=300,$aHeight=200,$aCachedName="",$aTimeOut=0,$aInline=true) {
+    function __construct($aWidth=300,$aHeight=200,$aCachedName="",$aTimeOut=0,$aInline=true) {
 	parent::Graph($aWidth,$aHeight,$aCachedName,$aTimeOut,$aInline) ;
 	$this->SetDensity(TICKD_DENSE);
 	$this->SetBox();

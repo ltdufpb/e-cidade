@@ -52,7 +52,7 @@ class cl_tarefaprevisaofaserecurso {
                  at83_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_tarefaprevisaofaserecurso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefaprevisaofaserecurso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

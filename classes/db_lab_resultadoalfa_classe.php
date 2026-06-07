@@ -54,7 +54,7 @@ class cl_lab_resultadoalfa {
                  la40_c_valor = char(50) = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_lab_resultadoalfa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_resultadoalfa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

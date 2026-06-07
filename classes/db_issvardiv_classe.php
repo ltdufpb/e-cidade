@@ -50,7 +50,7 @@ class cl_issvardiv {
                  q19_issvar = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_issvardiv() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issvardiv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

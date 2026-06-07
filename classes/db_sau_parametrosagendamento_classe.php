@@ -50,7 +50,7 @@ class cl_sau_parametrosagendamento {
                  s165_formatocomprovanteagend = int4 = Formato Comprovante de Agendamento 
                  ";
    //funcao construtor da classe 
-   function cl_sau_parametrosagendamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_parametrosagendamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

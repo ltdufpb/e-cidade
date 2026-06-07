@@ -84,7 +84,7 @@ class cl_estestado {
                  prodpriperc = float8 = % 
                  ";
    //funcao construtor da classe 
-   function cl_estestado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("estestado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

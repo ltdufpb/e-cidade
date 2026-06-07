@@ -60,7 +60,7 @@ class cl_pactovalorsaldo {
                  o103_contrapartida = bool = Contrapartida 
                  ";
    //funcao construtor da classe 
-   function cl_pactovalorsaldo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactovalorsaldo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

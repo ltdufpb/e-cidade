@@ -54,7 +54,7 @@ class cl_rhestagiocomissaomembro {
                  h60_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_rhestagiocomissaomembro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhestagiocomissaomembro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

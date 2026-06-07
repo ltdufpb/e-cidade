@@ -54,7 +54,7 @@ class cl_far_medicamentohiperdia {
                  fa43_n_dosagemmax = float4 = Dosagem máxima 
                  ";
    //funcao construtor da classe 
-   function cl_far_medicamentohiperdia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_medicamentohiperdia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

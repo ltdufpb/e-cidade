@@ -24,7 +24,7 @@ class cl_db_tabelavalorestipo {
                  db151_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_tabelavalorestipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_tabelavalorestipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

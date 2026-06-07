@@ -60,7 +60,7 @@ class cl_cadtipoparcdeb {
                  k41_vencfim = date = Vencimento final 
                  ";
    //funcao construtor da classe 
-   function cl_cadtipoparcdeb() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipoparcdeb"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

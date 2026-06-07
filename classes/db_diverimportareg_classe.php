@@ -52,7 +52,7 @@ class cl_diverimportareg {
                  dv12_diverimporta = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_diverimportareg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diverimportareg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

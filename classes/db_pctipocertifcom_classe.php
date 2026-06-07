@@ -52,7 +52,7 @@ class cl_pctipocertifcom {
                  pc77_liccomissao = int4 = Código Comissão 
                  ";
    //funcao construtor da classe 
-   function cl_pctipocertifcom() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipocertifcom"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

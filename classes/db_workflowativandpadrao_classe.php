@@ -54,7 +54,7 @@ class cl_workflowativandpadrao {
                  db115_ordem = int4 = Ordem Andamento Padrão 
                  ";
    //funcao construtor da classe 
-   function cl_workflowativandpadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("workflowativandpadrao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_rhestagioperiodo {
                  h55_nroaval = int4 = Número de Avaliações 
                  ";
    //funcao construtor da classe 
-   function cl_rhestagioperiodo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhestagioperiodo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

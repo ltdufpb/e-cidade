@@ -52,7 +52,7 @@ class cl_issatividconfdocumento {
                  q119_caddocumento = int4 = Código do Documento 
                  ";
    //funcao construtor da classe 
-   function cl_issatividconfdocumento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issatividconfdocumento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

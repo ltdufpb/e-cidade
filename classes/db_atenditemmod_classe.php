@@ -54,7 +54,7 @@ class cl_atenditemmod {
                  at22_modulo = int4 = Código do modulo 
                  ";
    //funcao construtor da classe 
-   function cl_atenditemmod() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atenditemmod"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

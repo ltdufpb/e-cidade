@@ -58,7 +58,7 @@ class cl_iptucalcconfrec {
                  j23_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalcconfrec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalcconfrec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

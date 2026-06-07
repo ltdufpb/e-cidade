@@ -56,7 +56,7 @@ class cl_db_syscadproced {
                  codarea = int4 = Área 
                  ";
    //funcao construtor da classe 
-   function cl_db_syscadproced() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_syscadproced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

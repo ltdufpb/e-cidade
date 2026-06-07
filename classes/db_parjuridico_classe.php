@@ -78,7 +78,7 @@ class cl_parjuridico
                  v19_advogadopadrao = int4 = Advogado padrão";
 
     //funcao construtor da classe
-    function cl_parjuridico()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("parjuridico");

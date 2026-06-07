@@ -52,7 +52,7 @@ class cl_rhgrupotipoavaliacao {
                  h68_tipolancamento = int4 = Tipo de lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_rhgrupotipoavaliacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhgrupotipoavaliacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

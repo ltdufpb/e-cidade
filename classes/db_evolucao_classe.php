@@ -54,7 +54,7 @@ class cl_evolucao {
                  ranking = int4 = Ranking do Munícipio 
                  ";
    //funcao construtor da classe 
-   function cl_evolucao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("evolucao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

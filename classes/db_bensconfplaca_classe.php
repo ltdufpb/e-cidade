@@ -50,7 +50,7 @@ class cl_bensconfplaca {
                  t40_descr = varchar(40) = Descrição tipo de configuração da placa 
                  ";
    //funcao construtor da classe 
-   function cl_bensconfplaca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bensconfplaca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

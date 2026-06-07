@@ -50,7 +50,7 @@ class cl_lab_setor {
                  la23_c_descr = char(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_lab_setor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_setor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_pactoitem {
                  o109_controlasaldo = int4 = Controle de Saldo Por 
                  ";
    //funcao construtor da classe 
-   function cl_pactoitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactoitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

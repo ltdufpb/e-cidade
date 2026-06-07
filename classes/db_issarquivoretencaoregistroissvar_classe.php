@@ -52,7 +52,7 @@ class cl_issarquivoretencaoregistroissvar {
                  q146_issarquivoretencaoregistro = int4 = Código Registro Retencão
                  ";
    //funcao construtor da classe
-   function cl_issarquivoretencaoregistroissvar() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarquivoretencaoregistroissvar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

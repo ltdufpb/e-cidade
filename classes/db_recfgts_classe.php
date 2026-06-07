@@ -59,7 +59,7 @@ class cl_recfgts {
                  r58_base13 = float8 = valor da base fgts 13.sal. 
                  ";
    //funcao construtor da classe 
-   function cl_recfgts() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recfgts"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

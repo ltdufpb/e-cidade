@@ -52,7 +52,7 @@ class cl_far_controle {
                  fa11_t_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_far_controle() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_controle"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

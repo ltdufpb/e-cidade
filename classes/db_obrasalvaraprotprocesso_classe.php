@@ -52,7 +52,7 @@ class cl_obrasalvaraprotprocesso {
                  ob26_protprocesso = int4 = Processo 
                  ";
    //funcao construtor da classe 
-   function cl_obrasalvaraprotprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasalvaraprotprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

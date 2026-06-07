@@ -58,7 +58,7 @@ class cl_contacorrentesaldo {
                  c29_credito = float4 = Crédito
                  ";
   //funcao construtor da classe
-  function cl_contacorrentesaldo() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("contacorrentesaldo");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

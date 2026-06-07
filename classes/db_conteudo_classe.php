@@ -52,7 +52,7 @@ class cl_conteudo {
                  ed237_i_caddisciplina = int4 = Caddisciplina 
                  ";
    //funcao construtor da classe 
-   function cl_conteudo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conteudo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

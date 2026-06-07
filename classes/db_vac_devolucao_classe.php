@@ -57,7 +57,7 @@ class cl_vac_devolucao {
                  vc26_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_vac_devolucao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_devolucao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_db_relatselecionados {
                  db93_codcam = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_db_relatselecionados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relatselecionados"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

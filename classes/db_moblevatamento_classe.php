@@ -70,7 +70,7 @@ class cl_moblevatamento {
                  j97_calcada = bool = Calçada 
                  ";
    //funcao construtor da classe 
-   function cl_moblevatamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("moblevatamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

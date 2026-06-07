@@ -50,7 +50,7 @@ class cl_acordocategoria {
                  ac50_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_acordocategoria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordocategoria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

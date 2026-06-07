@@ -50,7 +50,7 @@ class cl_sam_kit_material {
                  sm03_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sam_kit_material() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sam_kit_material"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

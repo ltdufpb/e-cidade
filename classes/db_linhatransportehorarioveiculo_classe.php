@@ -52,7 +52,7 @@ class cl_linhatransportehorarioveiculo {
                  tre08_veiculotransportemunicipal = int4 = Sequencial
                  ";
    //funcao construtor da classe
-   function cl_linhatransportehorarioveiculo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("linhatransportehorarioveiculo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -56,7 +56,7 @@ class cl_db_secretaria {
                  s_nome = varchar(200) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_db_secretaria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_secretaria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

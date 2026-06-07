@@ -54,7 +54,7 @@ class cl_concadtce {
                  c10_db_uf = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_concadtce() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("concadtce"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

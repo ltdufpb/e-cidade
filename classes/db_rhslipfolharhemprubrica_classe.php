@@ -52,7 +52,7 @@ class cl_rhslipfolharhemprubrica {
                  rh80_rhempenhofolharubrica = int4 = rhempenhofolharubrica 
                  ";
    //funcao construtor da classe 
-   function cl_rhslipfolharhemprubrica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhslipfolharhemprubrica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

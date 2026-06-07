@@ -50,7 +50,7 @@ class cl_veiccadtipo {
                  ve20_descr = varchar(40) = Descrição do Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_veiccadtipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiccadtipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

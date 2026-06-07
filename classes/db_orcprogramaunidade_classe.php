@@ -56,7 +56,7 @@ class cl_orcprogramaunidade {
                  o14_anousu = int4 = Exercício 
                  ";
    //funcao construtor da classe 
-   function cl_orcprogramaunidade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprogramaunidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

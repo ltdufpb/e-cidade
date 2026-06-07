@@ -52,7 +52,7 @@ class cl_pctipocompranumero {
                  pc51_numeracao = int8 = Numeração 
                  ";
    //funcao construtor da classe 
-   function cl_pctipocompranumero() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipocompranumero"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

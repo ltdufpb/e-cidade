@@ -63,7 +63,7 @@ class cl_processoforomov {
                  v73_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe
-   function cl_processoforomov() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforomov");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_fiscalvistorias {
                  y21_codvist = int4 = Código da Vistoria 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalvistorias() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalvistorias"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

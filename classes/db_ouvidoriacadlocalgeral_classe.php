@@ -52,7 +52,7 @@ class cl_ouvidoriacadlocalgeral {
                  ov28_descricao = varchar(500) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_ouvidoriacadlocalgeral() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriacadlocalgeral"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

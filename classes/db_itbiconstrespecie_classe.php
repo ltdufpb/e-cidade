@@ -50,7 +50,7 @@ class cl_itbiconstrespecie {
                  it09_caract = int4 = Espécie da Construção 
                  ";
    //funcao construtor da classe 
-   function cl_itbiconstrespecie() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiconstrespecie"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

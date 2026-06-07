@@ -54,7 +54,7 @@ class cl_contricalc {
                  d09_numpre = int4 = Numpre 
                  ";
    //funcao construtor da classe 
-   function cl_contricalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contricalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

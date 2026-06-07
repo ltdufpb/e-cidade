@@ -72,7 +72,7 @@ class cl_vac_vacina {
                  vc06_c_prazo = char(20) = Prazo 
                  ";
    //funcao construtor da classe 
-   function cl_vac_vacina() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_vacina"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

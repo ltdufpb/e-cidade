@@ -57,7 +57,7 @@ class cl_benscorlanc {
                  t62_codcom = int8 = Código da comissão 
                  ";
    //funcao construtor da classe 
-   function cl_benscorlanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benscorlanc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

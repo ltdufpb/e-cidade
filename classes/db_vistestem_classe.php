@@ -50,7 +50,7 @@ class cl_vistestem {
                  y25_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_vistestem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistestem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

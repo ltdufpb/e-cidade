@@ -56,7 +56,7 @@ class cl_orcparamrecurso {
                  o44_instit = int4 = instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_orcparamrecurso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcparamrecurso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_autocgm {
                  y54_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_autocgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autocgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -70,7 +70,7 @@ class cl_pcfornecertif {
                  pc74_validade = date = Data de Validade 
                  ";
    //funcao construtor da classe 
-   function cl_pcfornecertif() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcfornecertif"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

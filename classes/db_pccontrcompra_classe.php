@@ -50,7 +50,7 @@ class cl_pccontrcompra {
                  p72_codcom = int4 = Código do tipo de compra 
                  ";
    //funcao construtor da classe 
-   function cl_pccontrcompra() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pccontrcompra"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

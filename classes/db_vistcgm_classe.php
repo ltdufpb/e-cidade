@@ -50,7 +50,7 @@ class cl_vistcgm {
                  y73_numcgm = int4 = Número do CGM da Vistoria 
                  ";
    //funcao construtor da classe 
-   function cl_vistcgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistcgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

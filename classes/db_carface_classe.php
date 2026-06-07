@@ -55,7 +55,7 @@ class cl_carface {
                  j38_datalancamento = date = Date de Lançamento
                  ";
    //funcao construtor da classe
-   function cl_carface() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carface");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_abatimentotransferencia {
                  k158_abatimentodestino = int4 = Sequencial da tabela abatimento 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentotransferencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentotransferencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

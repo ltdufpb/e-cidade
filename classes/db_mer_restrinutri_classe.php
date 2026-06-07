@@ -52,7 +52,7 @@ class cl_mer_restrinutri {
                  me26_i_nutriente = int4 = Nutriente 
                  ";
    //funcao construtor da classe 
-   function cl_mer_restrinutri() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_restrinutri"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

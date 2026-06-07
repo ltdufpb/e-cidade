@@ -52,7 +52,7 @@ class cl_iptutaxa {
                  j19_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_iptutaxa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutaxa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

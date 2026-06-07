@@ -52,7 +52,7 @@ class cl_db_versaousucliente {
                  db27_codcli = int4 = Código do Cliente 
                  ";
    //funcao construtor da classe 
-   function cl_db_versaousucliente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_versaousucliente"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

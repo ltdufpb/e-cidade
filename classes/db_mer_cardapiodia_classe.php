@@ -57,7 +57,7 @@ class cl_mer_cardapiodia {
                  me12_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_mer_cardapiodia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_cardapiodia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

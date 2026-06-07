@@ -50,7 +50,7 @@ class cl_tarefacadsituacao {
                  at46_descr = varchar(40) = Descricao da situacao 
                  ";
    //funcao construtor da classe 
-   function cl_tarefacadsituacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefacadsituacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

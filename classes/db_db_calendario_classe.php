@@ -76,7 +76,7 @@ class cl_db_calendario {
                  s_intext = bool = Intext 
                  ";
    //funcao construtor da classe 
-   function cl_db_calendario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_calendario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

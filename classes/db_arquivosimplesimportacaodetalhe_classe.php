@@ -58,7 +58,7 @@ class cl_arquivosimplesimportacaodetalhe {
                  q142_observacao = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_arquivosimplesimportacaodetalhe() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arquivosimplesimportacaodetalhe");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

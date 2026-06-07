@@ -52,7 +52,7 @@ class cl_obnnumeracao {
                  o150_proximonumero = int4 = Próximo Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_obnnumeracao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obnnumeracao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

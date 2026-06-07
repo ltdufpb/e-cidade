@@ -52,7 +52,7 @@ class cl_atenditemsyscadproced {
                  at29_syscadproced = int4 = Código do procedimento 
                  ";
    //funcao construtor da classe 
-   function cl_atenditemsyscadproced() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atenditemsyscadproced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -64,7 +64,7 @@ class cl_veiculos_env {
                  tr08_idade = int4 = Idade 
                  ";
    //funcao construtor da classe 
-   function cl_veiculos_env() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiculos_env"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

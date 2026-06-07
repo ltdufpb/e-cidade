@@ -50,7 +50,7 @@ class cl_familia {
                  sd33_v_descricao = varchar(40) = Família Saúde 
                  ";
    //funcao construtor da classe 
-   function cl_familia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("familia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

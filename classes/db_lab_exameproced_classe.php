@@ -56,7 +56,7 @@ class cl_lab_exameproced {
                  la53_n_acrescimo = float4 = Valor SMS 
                  ";
    //funcao construtor da classe 
-   function cl_lab_exameproced() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_exameproced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

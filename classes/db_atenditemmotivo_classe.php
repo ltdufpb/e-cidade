@@ -52,7 +52,7 @@ class cl_atenditemmotivo {
                  at34_tarefacadmotivo = int4 = Motivo 
                  ";
    //funcao construtor da classe 
-   function cl_atenditemmotivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atenditemmotivo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

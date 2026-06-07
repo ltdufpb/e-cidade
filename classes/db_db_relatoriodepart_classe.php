@@ -52,7 +52,7 @@ class cl_db_relatoriodepart {
                  db07_db_depart = int4 = Departamento 
                  ";
    //funcao construtor da classe 
-   function cl_db_relatoriodepart() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relatoriodepart"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

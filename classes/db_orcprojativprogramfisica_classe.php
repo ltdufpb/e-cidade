@@ -56,7 +56,7 @@ class cl_orcprojativprogramfisica {
                  o28_valor = float4 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_orcprojativprogramfisica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprojativprogramfisica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

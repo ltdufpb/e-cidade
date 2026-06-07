@@ -54,7 +54,7 @@ class cl_pactoacoes {
                  o79_obs = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_pactoacoes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactoacoes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

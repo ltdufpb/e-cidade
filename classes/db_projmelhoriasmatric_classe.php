@@ -60,7 +60,7 @@ class cl_projmelhoriasmatric {
                  d41_pgtopref = bool = Pgto prefeitura 
                  ";
    //funcao construtor da classe 
-   function cl_projmelhoriasmatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("projmelhoriasmatric"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

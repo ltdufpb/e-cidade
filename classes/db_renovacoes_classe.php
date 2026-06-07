@@ -64,7 +64,7 @@ class cl_renovacoes {
                  cm07_d_vencimento = date = Vencimento
                  ";
    //funcao construtor da classe
-   function cl_renovacoes() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("renovacoes");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -77,7 +77,7 @@ class cl_auto {
                  y50_instit = int4 = Cod. Instituição
                  ";
    //funcao construtor da classe
-   function cl_auto() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("auto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

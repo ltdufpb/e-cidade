@@ -52,7 +52,7 @@ class cl_sam_base {
                  sm01_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sam_base() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sam_base"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

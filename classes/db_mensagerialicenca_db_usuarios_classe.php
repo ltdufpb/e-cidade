@@ -26,7 +26,7 @@ class cl_mensagerialicenca_db_usuarios {
                  am16_dias = int4 = Dias
                  ";
    //funcao construtor da classe
-   function cl_mensagerialicenca_db_usuarios() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagerialicenca_db_usuarios");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_linhatransporteitinerario {
                  tre09_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_linhatransporteitinerario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("linhatransporteitinerario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

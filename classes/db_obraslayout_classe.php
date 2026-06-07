@@ -57,7 +57,7 @@ class cl_obraslayout {
                  ob14_data = date = Data da emissão 
                  ";
    //funcao construtor da classe 
-   function cl_obraslayout() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obraslayout"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

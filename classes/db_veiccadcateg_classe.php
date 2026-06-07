@@ -50,7 +50,7 @@ class cl_veiccadcateg {
                  ve32_descr = varchar(40) = Descrição Categoria 
                  ";
    //funcao construtor da classe 
-   function cl_veiccadcateg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiccadcateg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

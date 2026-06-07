@@ -50,7 +50,7 @@ class cl_conplanoref {
                  c65_codpla = int4 = Código Reduzido 
                  ";
    //funcao construtor da classe 
-   function cl_conplanoref() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoref"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

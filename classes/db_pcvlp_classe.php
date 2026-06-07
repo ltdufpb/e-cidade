@@ -87,7 +87,7 @@ class cl_pcvlp {
                  h10_ndias = char(     3) = nr dias a convertidos 
                  ";
    //funcao construtor da classe 
-   function cl_pcvlp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcvlp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

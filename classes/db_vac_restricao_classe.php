@@ -52,7 +52,7 @@ class cl_vac_restricao {
                  vc02_c_descr = char(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_vac_restricao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_restricao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

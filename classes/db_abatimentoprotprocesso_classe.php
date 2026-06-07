@@ -52,7 +52,7 @@ class cl_abatimentoprotprocesso {
                  k159_protprocesso = int4 = Cód. Processo 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoprotprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoprotprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

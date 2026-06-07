@@ -57,7 +57,7 @@ class cl_restosgavetas {
                  cm26_d_entrada = date = Entrada
                  ";
    //funcao construtor da classe
-   function cl_restosgavetas() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("restosgavetas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_cartaoidentificacaosituacao {
                  ed307_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_cartaoidentificacaosituacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cartaoidentificacaosituacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

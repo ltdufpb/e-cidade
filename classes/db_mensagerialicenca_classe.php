@@ -26,7 +26,7 @@ class cl_mensagerialicenca {
                  am14_mensagem = text = Mensagem 
                  ";
    //funcao construtor da classe 
-   function cl_mensagerialicenca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagerialicenca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

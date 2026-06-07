@@ -52,7 +52,7 @@ class cl_rhelementoemppcmater {
                  rh36_rhelementoemp = int4 = Elementos utilizados na folha 
                  ";
    //funcao construtor da classe 
-   function cl_rhelementoemppcmater() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhelementoemppcmater"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

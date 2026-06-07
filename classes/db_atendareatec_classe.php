@@ -52,7 +52,7 @@ class cl_atendareatec {
                  at27_usuarios = int4 = Código do usuário 
                  ";
    //funcao construtor da classe 
-   function cl_atendareatec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendareatec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

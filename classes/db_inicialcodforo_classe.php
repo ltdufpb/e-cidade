@@ -59,7 +59,7 @@ class cl_inicialcodforo {
                  v55_codvara = int4 = Vara 
                  ";
    //funcao construtor da classe 
-   function cl_inicialcodforo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inicialcodforo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

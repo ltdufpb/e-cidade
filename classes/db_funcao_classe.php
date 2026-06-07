@@ -62,7 +62,7 @@ class cl_funcao {
                  r37_class = varchar(5) = Classificação 
                  ";
    //funcao construtor da classe 
-   function cl_funcao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("funcao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

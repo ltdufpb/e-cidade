@@ -52,7 +52,7 @@ class cl_tfd_procpedidotfd {
                  tf23_i_pedidotfd = int4 = Pedido 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_procpedidotfd() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_procpedidotfd"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -70,7 +70,7 @@ class cl_termocontrib {
                  vlrdescjur = float8 = Desconto Juros 
                  ";
    //funcao construtor da classe 
-   function cl_termocontrib() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termocontrib"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

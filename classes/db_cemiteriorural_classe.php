@@ -60,7 +60,7 @@ class cl_cemiteriorural {
                  cm16_c_telefone = char(14) = Telefone 
                  ";
    //funcao construtor da classe 
-   function cl_cemiteriorural() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cemiteriorural"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

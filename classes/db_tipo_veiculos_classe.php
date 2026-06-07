@@ -50,7 +50,7 @@ class cl_tipo_veiculos {
                  tr05_descr = varchar(35) = Descrição do veiculo 
                  ";
    //funcao construtor da classe 
-   function cl_tipo_veiculos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipo_veiculos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

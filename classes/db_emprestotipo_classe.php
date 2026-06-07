@@ -52,7 +52,7 @@ class cl_emprestotipo {
                  e90_estrut = varchar(20) = Elemento 
                  ";
    //funcao construtor da classe 
-   function cl_emprestotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emprestotipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

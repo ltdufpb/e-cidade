@@ -52,7 +52,7 @@ class cl_db_naoutilizado {
                  at63_grupo = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_db_naoutilizado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_naoutilizado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

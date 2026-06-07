@@ -53,7 +53,7 @@ class cl_prontprofatend {
                  s104_rhcbo = int4 = CBO 
                  ";
    //funcao construtor da classe 
-   function cl_prontprofatend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontprofatend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

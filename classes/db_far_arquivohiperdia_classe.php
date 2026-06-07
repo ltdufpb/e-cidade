@@ -71,7 +71,7 @@ class cl_far_arquivohiperdia {
                  fa56_c_horasistema = char(5) = Hora do sistema 
                  ";
    //funcao construtor da classe 
-   function cl_far_arquivohiperdia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_arquivohiperdia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

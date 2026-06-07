@@ -52,7 +52,7 @@ class cl_vac_devfechadescarte {
                  vc25_i_devolucao = int4 = Devolução 
                  ";
    //funcao construtor da classe 
-   function cl_vac_devfechadescarte() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_devfechadescarte"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

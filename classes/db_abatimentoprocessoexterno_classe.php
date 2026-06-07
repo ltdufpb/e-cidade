@@ -59,7 +59,7 @@ class cl_abatimentoprocessoexterno {
                  k160_nometitular = varchar(50) = Nome Titular 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoprocessoexterno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoprocessoexterno"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

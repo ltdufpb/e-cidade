@@ -50,7 +50,7 @@ class cl_editaltemplategeral {
                  l36_db_documentotemplate = int4 = Template 
                  ";
    //funcao construtor da classe 
-   function cl_editaltemplategeral() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("editaltemplategeral"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

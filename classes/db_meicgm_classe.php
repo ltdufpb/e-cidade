@@ -52,7 +52,7 @@ class cl_meicgm {
                  q115_numcgm = int4 = CGM 
                  ";
    //funcao construtor da classe 
-   function cl_meicgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meicgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

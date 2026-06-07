@@ -50,7 +50,7 @@ class cl_conciliatipo {
                  k65_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_conciliatipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conciliatipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

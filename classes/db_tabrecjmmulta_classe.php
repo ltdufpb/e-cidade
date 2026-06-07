@@ -54,7 +54,7 @@ class cl_tabrecjmmulta {
                  k140_faixa = float4 = Faixa Percentual 
                  ";
    //funcao construtor da classe 
-   function cl_tabrecjmmulta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabrecjmmulta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

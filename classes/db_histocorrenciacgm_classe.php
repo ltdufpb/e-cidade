@@ -52,7 +52,7 @@ class cl_histocorrenciacgm {
                  ar24_histocorrencia = int4 = Código Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_histocorrenciacgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("histocorrenciacgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

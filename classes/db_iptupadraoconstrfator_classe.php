@@ -54,7 +54,7 @@ class cl_iptupadraoconstrfator {
                  j117_anousu = int4 = Ano 
                  ";
    //funcao construtor da classe 
-   function cl_iptupadraoconstrfator() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptupadraoconstrfator"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

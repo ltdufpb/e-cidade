@@ -52,7 +52,7 @@ class cl_lab_exasinonima {
                  la18_i_exame = int4 = Exame 
                  ";
    //funcao construtor da classe 
-   function cl_lab_exasinonima() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_exasinonima"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

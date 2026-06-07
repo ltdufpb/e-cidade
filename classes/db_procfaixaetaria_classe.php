@@ -52,7 +52,7 @@ class cl_procfaixaetaria {
                  sd16_i_faixaetaria = int4 = Faixa Etária 
                  ";
    //funcao construtor da classe 
-   function cl_procfaixaetaria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfaixaetaria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

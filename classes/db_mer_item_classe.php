@@ -56,7 +56,7 @@ class cl_mer_item {
                  me10_c_descr = char(30) = Descrição do produto 
                  ";
    //funcao construtor da classe 
-   function cl_mer_item() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_item"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

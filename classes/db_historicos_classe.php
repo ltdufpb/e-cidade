@@ -57,7 +57,7 @@ class cl_historicos {
                  ed14_t_descr = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_historicos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("historicos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

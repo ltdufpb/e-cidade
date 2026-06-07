@@ -52,7 +52,7 @@ class cl_custoplanoanaliticabens {
                  cc05_custoplanoanalitica = int4 = Custo plano analítico 
                  ";
    //funcao construtor da classe 
-   function cl_custoplanoanaliticabens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custoplanoanaliticabens"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

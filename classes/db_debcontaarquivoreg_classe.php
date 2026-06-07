@@ -52,7 +52,7 @@ class cl_debcontaarquivoreg {
                  d73_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_debcontaarquivoreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontaarquivoreg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

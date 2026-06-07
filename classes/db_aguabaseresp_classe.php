@@ -50,7 +50,7 @@ class cl_aguabaseresp {
                  x14_numcgm = int4 = Responsável 
                  ";
    //funcao construtor da classe 
-   function cl_aguabaseresp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguabaseresp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

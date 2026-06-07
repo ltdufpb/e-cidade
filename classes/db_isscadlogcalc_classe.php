@@ -52,7 +52,7 @@ class cl_isscadlogcalc {
                  q46_erro = bool = Erro 
                  ";
    //funcao construtor da classe 
-   function cl_isscadlogcalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isscadlogcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

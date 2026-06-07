@@ -66,7 +66,7 @@ class cl_procfiscal {
                  y100_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscal() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscal"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

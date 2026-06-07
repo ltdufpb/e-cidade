@@ -49,7 +49,7 @@ class cl_rhcontratoemergencial {
                  rh163_matricula = int4 = Matricula 
                  ";
    //funcao construtor da classe 
-   function cl_rhcontratoemergencial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhcontratoemergencial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

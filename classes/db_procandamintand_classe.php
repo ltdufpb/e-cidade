@@ -52,7 +52,7 @@ class cl_procandamintand
                  ";
 
     //funcao construtor da classe
-    function cl_procandamintand()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("procandamintand");

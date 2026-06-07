@@ -52,7 +52,7 @@ class cl_acordoposicaoacordomovimentacao {
                  ac31_acordomovimentacao = int4 = Código da Movimentacao 
                  ";
    //funcao construtor da classe 
-   function cl_acordoposicaoacordomovimentacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoposicaoacordomovimentacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

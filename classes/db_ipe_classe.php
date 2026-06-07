@@ -78,7 +78,7 @@ class cl_ipe {
                  r36_contrato = int8 = Contrato
                  ";
    //funcao construtor da classe
-   function cl_ipe() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ipe");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

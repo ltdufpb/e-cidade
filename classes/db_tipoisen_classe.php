@@ -56,7 +56,7 @@ class cl_tipoisen {
                  j45_obscertidao = text = Observação certidão 
                  ";
    //funcao construtor da classe 
-   function cl_tipoisen() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoisen"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_ouvidoriacadlocaldepart {
                  ov27_ouvidoriacadlocal = int4 = Local 
                  ";
    //funcao construtor da classe 
-   function cl_ouvidoriacadlocaldepart() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriacadlocaldepart"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

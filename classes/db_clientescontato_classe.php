@@ -60,7 +60,7 @@ class cl_clientescontato {
                  at92_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_clientescontato() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clientescontato"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

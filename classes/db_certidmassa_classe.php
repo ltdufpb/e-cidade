@@ -48,7 +48,7 @@ class cl_certidmassa {
                  v13_certid = int4 = certidao 
                  ";
    //funcao construtor da classe 
-   function cl_certidmassa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidmassa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

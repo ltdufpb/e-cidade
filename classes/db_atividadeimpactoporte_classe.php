@@ -52,7 +52,7 @@ class cl_atividadeimpactoporte {
                  am04_porteatividadeimpacto = int4 = Porte 
                  ";
    //funcao construtor da classe 
-   function cl_atividadeimpactoporte() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atividadeimpactoporte"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

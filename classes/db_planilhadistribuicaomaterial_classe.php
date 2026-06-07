@@ -26,7 +26,7 @@ class cl_planilhadistribuicaomaterial {
                  pd03_material = int4 = Material 
                  ";
    //funcao construtor da classe 
-   function cl_planilhadistribuicaomaterial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("planilhadistribuicaomaterial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

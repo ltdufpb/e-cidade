@@ -59,7 +59,7 @@ class cl_lotenumero {
                  j12_numero = int8 = Numero 
                  ";
    //funcao construtor da classe 
-   function cl_lotenumero() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lotenumero"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

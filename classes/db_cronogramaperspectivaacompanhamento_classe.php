@@ -28,7 +28,7 @@ class cl_cronogramaperspectivaacompanhamento {
                  o151_mes = int4 = Mês 
                  ";
    //funcao construtor da classe 
-   function cl_cronogramaperspectivaacompanhamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cronogramaperspectivaacompanhamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

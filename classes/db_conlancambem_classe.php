@@ -52,7 +52,7 @@ class cl_conlancambem {
                  c110_bem = int4 = Código do Bem 
                  ";
    //funcao construtor da classe 
-   function cl_conlancambem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancambem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

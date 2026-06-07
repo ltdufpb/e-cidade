@@ -50,7 +50,7 @@ class cl_iptubaixaproc {
                  j03_codproc = int4 = Código do processo 
                  ";
    //funcao construtor da classe 
-   function cl_iptubaixaproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptubaixaproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

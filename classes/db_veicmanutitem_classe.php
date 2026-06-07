@@ -71,7 +71,7 @@ class cl_veicmanutitem {
                  ve63_numeronota = varchar(10) = Número da Nota
                  ";
    //funcao construtor da classe
-   function cl_veicmanutitem() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicmanutitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

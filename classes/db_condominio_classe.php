@@ -52,7 +52,7 @@ class cl_condominio {
                  j107_tipo = int4 = Tipo
                  ";
    //funcao construtor da classe
-   public function cl_condominio() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condominio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

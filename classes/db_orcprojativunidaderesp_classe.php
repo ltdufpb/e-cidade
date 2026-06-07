@@ -54,7 +54,7 @@ class cl_orcprojativunidaderesp {
                  o13_anousu = int4 = Ano do Exercicio 
                  ";
    //funcao construtor da classe 
-   function cl_orcprojativunidaderesp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprojativunidaderesp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -51,7 +51,7 @@ class cl_calend {
                  k13_data = date = data do feriado 
                  ";
    //funcao construtor da classe 
-   function cl_calend() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("calend"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

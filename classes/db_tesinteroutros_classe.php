@@ -52,7 +52,7 @@ class cl_tesinteroutros {
                  j84_observacao = varchar(255) = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_tesinteroutros() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tesinteroutros"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

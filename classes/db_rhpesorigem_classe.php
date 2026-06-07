@@ -50,7 +50,7 @@ class cl_rhpesorigem {
                  rh21_regpri = int4 = Origem 
                  ";
    //funcao construtor da classe 
-   function cl_rhpesorigem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpesorigem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_issmovalvaraprocesso {
                  q124_issmovalvara = int4 = Movimentação do Alvará 
                  ";
    //funcao construtor da classe 
-   function cl_issmovalvaraprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issmovalvaraprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

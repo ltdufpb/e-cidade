@@ -52,7 +52,7 @@ class cl_caraliq {
                  j73_aliq = float8 = Aliquota 
                  ";
    //funcao construtor da classe 
-   function cl_caraliq() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caraliq"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

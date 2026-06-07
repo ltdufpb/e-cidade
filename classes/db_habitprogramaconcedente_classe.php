@@ -52,7 +52,7 @@ class cl_habitprogramaconcedente {
                  ht19_numcgm = int4 = Cgm 
                  ";
    //funcao construtor da classe 
-   function cl_habitprogramaconcedente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habitprogramaconcedente"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

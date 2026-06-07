@@ -56,7 +56,7 @@ class cl_dadoscompetenciasaida {
                  fa63_movimentacao = varchar(15) = Tipos de movimentação
                  ";
    //funcao construtor da classe
-   function cl_dadoscompetenciasaida() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dadoscompetenciasaida");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

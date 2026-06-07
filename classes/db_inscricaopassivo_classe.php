@@ -67,7 +67,7 @@ class cl_inscricaopassivo {
                  c36_data = date = Data Inscricao 
                  ";
    //funcao construtor da classe 
-   function cl_inscricaopassivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inscricaopassivo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

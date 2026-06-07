@@ -54,7 +54,7 @@ class cl_conplanoreduzcgm {
                  c22_numcgm = int4 = Código do CGM
                  ";
    //funcao construtor da classe
-   function cl_conplanoreduzcgm() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoreduzcgm");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

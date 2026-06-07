@@ -54,7 +54,7 @@ class cl_iptufrac {
                  j25_fracao = float8 = Fracao Ideal 
                  ";
    //funcao construtor da classe 
-   function cl_iptufrac() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptufrac"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

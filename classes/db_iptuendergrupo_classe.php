@@ -50,7 +50,7 @@ class cl_iptuendergrupo {
                  j135_observacao = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_iptuendergrupo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptuendergrupo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

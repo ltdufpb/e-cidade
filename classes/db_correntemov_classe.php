@@ -63,7 +63,7 @@ class cl_correntemov {
                  k12_obsmov = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_correntemov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("correntemov"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_veiccadproced {
                  ve25_descr = varchar(40) = Descrição Procedência 
                  ";
    //funcao construtor da classe 
-   function cl_veiccadproced() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiccadproced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

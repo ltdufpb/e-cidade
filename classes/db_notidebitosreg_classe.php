@@ -64,7 +64,7 @@ class cl_notidebitosreg {
                  k43_vlrdes = float8 = Desconto 
                  ";
    //funcao construtor da classe 
-   function cl_notidebitosreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notidebitosreg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

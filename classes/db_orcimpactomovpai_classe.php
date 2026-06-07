@@ -50,7 +50,7 @@ class cl_orcimpactomovpai {
                  o86_codimpmovfilho = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactomovpai() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactomovpai"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

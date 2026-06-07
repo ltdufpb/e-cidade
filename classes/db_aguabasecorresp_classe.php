@@ -50,7 +50,7 @@ class cl_aguabasecorresp {
                  x32_matric = int4 = Matrícula 
                  ";
    //funcao construtor da classe 
-   function cl_aguabasecorresp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguabasecorresp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

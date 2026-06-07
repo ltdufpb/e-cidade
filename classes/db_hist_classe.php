@@ -51,7 +51,7 @@ class cl_hist {
                  c03_compl = boolean = Complemento do Historico 
                  ";
    //funcao construtor da classe 
-   function cl_hist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("hist"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

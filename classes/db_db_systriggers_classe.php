@@ -60,7 +60,7 @@ class cl_db_systriggers {
                  eventotrigger = varchar(40) = Evento 
                  ";
    //funcao construtor da classe 
-   function cl_db_systriggers() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_systriggers"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

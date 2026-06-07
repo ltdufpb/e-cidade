@@ -58,7 +58,7 @@ class cl_ppalei {
                  o01_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_ppalei() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ppalei"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_lab_materialcoleta {
                  la15_c_descr = char(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_lab_materialcoleta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_materialcoleta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

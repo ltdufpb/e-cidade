@@ -52,7 +52,7 @@ class cl_cursosocialcidadaoausencia {
                  as18_cursocialcidadao = int4 = Curso 
                  ";
    //funcao construtor da classe 
-   function cl_cursosocialcidadaoausencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cursosocialcidadaoausencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

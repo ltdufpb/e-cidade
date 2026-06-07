@@ -52,7 +52,7 @@ class cl_procfiscalauto {
                  y111_auto = int4 = Código do Auto de Infração 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscalauto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscalauto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

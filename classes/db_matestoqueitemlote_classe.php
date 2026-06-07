@@ -57,7 +57,7 @@ class cl_matestoqueitemlote {
                  m77_matestoqueitem = int4 = Código do Item 
                  ";
    //funcao construtor da classe 
-   function cl_matestoqueitemlote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueitemlote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

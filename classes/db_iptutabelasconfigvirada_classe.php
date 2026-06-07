@@ -52,7 +52,7 @@ class cl_iptutabelasconfigvirada {
                  j129_anousu = int4 = Ano Virada 
                  ";
    //funcao construtor da classe 
-   function cl_iptutabelasconfigvirada() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutabelasconfigvirada"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

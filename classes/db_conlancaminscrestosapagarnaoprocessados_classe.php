@@ -52,7 +52,7 @@ class cl_conlancaminscrestosapagarnaoprocessados {
                  c108_inscricaorestosapagarnaoprocessados = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_conlancaminscrestosapagarnaoprocessados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancaminscrestosapagarnaoprocessados"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

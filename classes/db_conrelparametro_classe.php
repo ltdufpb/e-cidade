@@ -50,7 +50,7 @@ class cl_conrelparametro {
                  c18_valor = char(20) = valor do parametro 
                  ";
    //funcao construtor da classe 
-   function cl_conrelparametro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conrelparametro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

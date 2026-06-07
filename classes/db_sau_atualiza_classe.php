@@ -61,7 +61,7 @@ class cl_sau_atualiza {
                  s100_c_hora = varchar(20) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_sau_atualiza() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_atualiza"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

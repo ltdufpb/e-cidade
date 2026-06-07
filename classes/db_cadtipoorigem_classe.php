@@ -52,7 +52,7 @@ class cl_cadtipoorigem {
                  k14_cadorigem = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_cadtipoorigem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadtipoorigem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

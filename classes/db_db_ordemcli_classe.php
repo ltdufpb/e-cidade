@@ -50,7 +50,7 @@ class cl_db_ordemcli {
                  or13_nome = char(30) = Nome do cliente 
                  ";
    //funcao construtor da classe 
-   function cl_db_ordemcli() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_ordemcli"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

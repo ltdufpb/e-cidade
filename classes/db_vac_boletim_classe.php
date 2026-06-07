@@ -66,7 +66,7 @@ class cl_vac_boletim {
                  vc13_i_situacao = int4 = Situação 
                  ";
    //funcao construtor da classe 
-   function cl_vac_boletim() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vac_boletim"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_dbempresaatividaderhcbo {
                  q59_rhcbo = int4 = Código CBO 
                  ";
    //funcao construtor da classe 
-   function cl_dbempresaatividaderhcbo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dbempresaatividaderhcbo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

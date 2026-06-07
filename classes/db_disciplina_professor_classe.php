@@ -56,7 +56,7 @@ class cl_disciplina_professor {
                  ed12_f_frequencia = float8 = Frequência 
                  ";
    //funcao construtor da classe 
-   function cl_disciplina_professor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disciplina_professor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

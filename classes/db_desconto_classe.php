@@ -56,7 +56,7 @@ class cl_desconto {
                  r27_valor = float8 = Valor do Desconto 
                  ";
    //funcao construtor da classe 
-   function cl_desconto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("desconto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

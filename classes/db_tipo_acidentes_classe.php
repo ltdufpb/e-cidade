@@ -52,7 +52,7 @@ class cl_tipo_acidentes {
                  tr01_descr = varchar(35) = Descrição do tipo 
                  ";
    //funcao construtor da classe 
-   function cl_tipo_acidentes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipo_acidentes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

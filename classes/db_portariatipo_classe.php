@@ -58,7 +58,7 @@ class cl_portariatipo {
                  h30_amparolegal = text = Amparo legal 
                  ";
    //funcao construtor da classe 
-   function cl_portariatipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariatipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

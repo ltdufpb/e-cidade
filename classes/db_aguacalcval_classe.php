@@ -52,7 +52,7 @@ class cl_aguacalcval {
                  x23_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_aguacalcval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacalcval"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -59,7 +59,7 @@ class cl_meiimportalinhaempresameievento {
                  q112_processado = bool = Processado 
                  ";
    //funcao construtor da classe 
-   function cl_meiimportalinhaempresameievento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimportalinhaempresameievento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

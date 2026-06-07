@@ -56,7 +56,7 @@ class cl_salas {
                  ed08_f_frequencia = float8 = Frequência 
                  ";
    //funcao construtor da classe 
-   function cl_salas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("salas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

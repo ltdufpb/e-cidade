@@ -59,7 +59,7 @@ class cl_baixa {
                  bi08_usuario = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_baixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("baixa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

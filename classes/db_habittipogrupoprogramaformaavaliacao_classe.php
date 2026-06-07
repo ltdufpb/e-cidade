@@ -52,7 +52,7 @@ class cl_habittipogrupoprogramaformaavaliacao {
                  ht06_habittipogrupoprograma = int4 = Tipo de Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_habittipogrupoprogramaformaavaliacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habittipogrupoprogramaformaavaliacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_cadconveniomodalidade {
                  ar15_nome = varchar(50) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_cadconveniomodalidade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadconveniomodalidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

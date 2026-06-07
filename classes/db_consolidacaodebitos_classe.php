@@ -57,7 +57,7 @@ class cl_consolidacaodebitos {
                  k161_filtrosselecionados = text = Filtros Selecionados 
                  ";
    //funcao construtor da classe 
-   function cl_consolidacaodebitos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("consolidacaodebitos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

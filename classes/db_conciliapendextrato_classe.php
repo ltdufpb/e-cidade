@@ -56,7 +56,7 @@ class cl_conciliapendextrato {
                  k88_justificativa = text = Justificativa
                  ";
    //funcao construtor da classe
-   function cl_conciliapendextrato() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conciliapendextrato");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

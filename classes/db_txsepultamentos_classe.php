@@ -52,7 +52,7 @@ class cl_txsepultamentos {
                  cm31_i_sepultamento = int4 = Sepultamento
                  ";
    //funcao construtor da classe
-   function cl_txsepultamentos() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("txsepultamentos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

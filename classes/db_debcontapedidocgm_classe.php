@@ -50,7 +50,7 @@ class cl_debcontapedidocgm {
                  d70_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_debcontapedidocgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidocgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

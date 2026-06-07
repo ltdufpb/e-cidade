@@ -68,7 +68,7 @@ class cl_conreltitulos {
                  c44_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_conreltitulos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conreltitulos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

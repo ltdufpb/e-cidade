@@ -50,7 +50,7 @@ class cl_cnaeanalitica {
                  q72_cnae = int4 = Código sequencial cnae 
                  ";
    //funcao construtor da classe 
-   function cl_cnaeanalitica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cnaeanalitica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

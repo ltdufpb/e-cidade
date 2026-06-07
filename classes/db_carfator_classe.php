@@ -54,7 +54,7 @@ class cl_carfator {
                  j74_corrig = bool = Corrigir 
                  ";
    //funcao construtor da classe 
-   function cl_carfator() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carfator"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

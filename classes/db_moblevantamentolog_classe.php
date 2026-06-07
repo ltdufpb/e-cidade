@@ -72,7 +72,7 @@ class cl_moblevantamentolog {
                  j98_lixo = varchar(1) = Coleta Lixo 
                  ";
    //funcao construtor da classe 
-   function cl_moblevantamentolog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("moblevantamentolog"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -78,7 +78,7 @@ class cl_itbinome {
                  it03_mail = varchar(50) = e-mail
                  ";
    //funcao construtor da classe
-   public function cl_itbinome() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbinome");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

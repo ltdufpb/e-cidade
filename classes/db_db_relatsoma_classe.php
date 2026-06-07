@@ -52,7 +52,7 @@ class cl_db_relatsoma {
                  db96_codcam = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_db_relatsoma() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relatsoma"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

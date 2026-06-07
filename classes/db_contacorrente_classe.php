@@ -52,7 +52,7 @@ class cl_contacorrente {
                  c17_descricao = varchar(200) = Descricao
                  ";
    //funcao construtor da classe
-   function cl_contacorrente() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contacorrente");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

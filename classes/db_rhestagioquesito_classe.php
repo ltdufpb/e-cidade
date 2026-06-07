@@ -52,7 +52,7 @@ class cl_rhestagioquesito {
                  h51_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_rhestagioquesito() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhestagioquesito"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

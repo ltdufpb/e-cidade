@@ -72,7 +72,7 @@ class cl_corcheque {
                  k12_horainc = char(5) = Hora da Inclusão 
                  ";
    //funcao construtor da classe 
-   function cl_corcheque() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("corcheque"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

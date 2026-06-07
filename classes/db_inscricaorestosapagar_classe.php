@@ -58,7 +58,7 @@ class cl_inscricaorestosapagar {
                  c107_tipo = int4 = Tipo de RP
                  ";
   //funcao construtor da classe
-  function cl_inscricaorestosapagar() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("inscricaorestosapagar");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

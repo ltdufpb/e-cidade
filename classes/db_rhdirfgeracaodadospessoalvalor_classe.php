@@ -60,7 +60,7 @@ class cl_rhdirfgeracaodadospessoalvalor {
                  rh98_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_rhdirfgeracaodadospessoalvalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdirfgeracaodadospessoalvalor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

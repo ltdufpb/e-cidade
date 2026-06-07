@@ -54,7 +54,7 @@ class cl_orcprogramaorgao {
                  o12_orcorgao = int4 = Orgão 
                  ";
    //funcao construtor da classe 
-   function cl_orcprogramaorgao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprogramaorgao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

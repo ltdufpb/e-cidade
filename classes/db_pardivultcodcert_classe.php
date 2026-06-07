@@ -48,7 +48,7 @@ class cl_pardivultcodcert {
                  v05_codultcert = int4 = Codigo da ultima CDA 
                  ";
    //funcao construtor da classe 
-   function cl_pardivultcodcert() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pardivultcodcert"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

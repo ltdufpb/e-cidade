@@ -54,7 +54,7 @@ class cl_acordoempautitem {
                  ac19_acordoitem = int4 = Acordo Item 
                  ";
    //funcao construtor da classe 
-   function cl_acordoempautitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoempautitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

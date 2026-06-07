@@ -50,7 +50,7 @@ class cl_editora {
                  bi02_nome = char(50) = Nome da Editora 
                  ";
    //funcao construtor da classe 
-   function cl_editora() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("editora"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

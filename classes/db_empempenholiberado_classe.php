@@ -59,7 +59,7 @@ class cl_empempenholiberado {
                  e22_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_empempenholiberado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empempenholiberado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

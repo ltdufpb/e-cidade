@@ -24,7 +24,7 @@ class cl_tipoassecontrolediasmes {
                  rh170_tipoasse = int4 = Tipo do Assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassecontrolediasmes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassecontrolediasmes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -62,7 +62,7 @@ class cl_cepgu {
                  cp07_adicional = varchar(72) = Adicional 
                  ";
    //funcao construtor da classe 
-   function cl_cepgu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cepgu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

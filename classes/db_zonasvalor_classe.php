@@ -54,7 +54,7 @@ class cl_zonasvalor {
                  j51_valorm2c = float8 = Valor Construção (m²) 
                  ";
    //funcao construtor da classe 
-   function cl_zonasvalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonasvalor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

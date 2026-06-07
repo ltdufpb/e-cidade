@@ -50,7 +50,7 @@ class cl_perimp {
                  d51_impres = int4 = codigo da impressora 
                  ";
    //funcao construtor da classe 
-   function cl_perimp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("perimp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

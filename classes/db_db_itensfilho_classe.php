@@ -50,7 +50,7 @@ class cl_db_itensfilho {
                  codfilho = int4 = Código Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_db_itensfilho() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_itensfilho"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

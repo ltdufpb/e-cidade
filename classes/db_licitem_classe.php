@@ -80,7 +80,7 @@ class cl_licitem {
                  l02_compl04 = varchar(45) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_licitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

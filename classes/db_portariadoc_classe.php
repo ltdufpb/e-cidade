@@ -52,7 +52,7 @@ class cl_portariadoc {
                  h32_oid = int8 = OID 
                  ";
    //funcao construtor da classe 
-   function cl_portariadoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariadoc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -56,7 +56,7 @@ class cl_listainscr {
                  p12_tipolanc = int4 = Tipo Lancamento 
                  ";
    //funcao construtor da classe 
-   function cl_listainscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("listainscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

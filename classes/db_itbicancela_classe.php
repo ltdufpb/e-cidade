@@ -57,7 +57,7 @@ class cl_itbicancela {
                  it16_id_usuario = int4 = Identificador do Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_itbicancela() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbicancela"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

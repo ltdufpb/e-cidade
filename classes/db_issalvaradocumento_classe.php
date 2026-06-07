@@ -52,7 +52,7 @@ class cl_issalvaradocumento {
                  q122_caddocumento = int4 = Documento 
                  ";
    //funcao construtor da classe 
-   function cl_issalvaradocumento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issalvaradocumento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

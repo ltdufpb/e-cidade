@@ -50,7 +50,7 @@ class cl_vistsanitario {
                  y74_codsani = int4 = Código do Alvará sanitário 
                  ";
    //funcao construtor da classe 
-   function cl_vistsanitario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistsanitario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

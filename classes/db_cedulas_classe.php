@@ -70,7 +70,7 @@ class cl_cedulas {
                  r05_cedu9 = float8 = DECIMA CEDULA DA TABELA 
                  ";
    //funcao construtor da classe 
-   function cl_cedulas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cedulas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

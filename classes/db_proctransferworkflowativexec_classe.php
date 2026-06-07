@@ -52,7 +52,7 @@ class cl_proctransferworkflowativexec {
                  p46_workflowativexec = int4 = Código Work Flow Atividade Execução 
                  ";
    //funcao construtor da classe 
-   function cl_proctransferworkflowativexec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("proctransferworkflowativexec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

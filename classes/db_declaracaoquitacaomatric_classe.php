@@ -52,7 +52,7 @@ class cl_declaracaoquitacaomatric {
                  ar33_declaracaoquitacao = int8 = Código Declaração 
                  ";
    //funcao construtor da classe 
-   function cl_declaracaoquitacaomatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("declaracaoquitacaomatric"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

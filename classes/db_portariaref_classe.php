@@ -52,7 +52,7 @@ class cl_portariaref {
                  h35_portaria = int8 = Portaria 
                  ";
    //funcao construtor da classe 
-   function cl_portariaref() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariaref"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

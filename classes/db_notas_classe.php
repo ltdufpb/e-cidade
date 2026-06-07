@@ -59,7 +59,7 @@ class cl_notas {
                  ed11_c_fechado = char(1) = Fechado
                  ";
    //funcao construtor da classe
-   function cl_notas() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

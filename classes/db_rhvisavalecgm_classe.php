@@ -54,7 +54,7 @@ class cl_rhvisavalecgm {
                  rh48_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_rhvisavalecgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhvisavalecgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

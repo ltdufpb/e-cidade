@@ -28,7 +28,7 @@ class cl_rubricadescontoconsignado {
                  rh140_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_rubricadescontoconsignado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rubricadescontoconsignado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_editaltipo {
                  d03_descr = varchar(40) = Descricao do Serviço 
                  ";
    //funcao construtor da classe 
-   function cl_editaltipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("editaltipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

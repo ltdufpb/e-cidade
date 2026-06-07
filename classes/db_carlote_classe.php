@@ -55,7 +55,7 @@ class cl_carlote {
                  j35_dtlanc = date = Data de lancamento 
                  ";
    //funcao construtor da classe 
-   function cl_carlote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carlote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

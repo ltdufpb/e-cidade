@@ -138,7 +138,7 @@ class cl_confsite {
                  w01_instit = int8 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_confsite() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("confsite"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

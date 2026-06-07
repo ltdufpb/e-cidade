@@ -50,7 +50,7 @@ class cl_veiccadposto {
                  ve29_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_veiccadposto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiccadposto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

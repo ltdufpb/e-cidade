@@ -50,7 +50,7 @@ class cl_issvarlevold {
                  y85_codissvar = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_issvarlevold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issvarlevold"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

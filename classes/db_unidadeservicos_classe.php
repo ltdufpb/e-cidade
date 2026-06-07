@@ -62,7 +62,7 @@ class cl_unidadeservicos {
                  s126_d_desativado = date = Desativado 
                  ";
    //funcao construtor da classe 
-   function cl_unidadeservicos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("unidadeservicos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

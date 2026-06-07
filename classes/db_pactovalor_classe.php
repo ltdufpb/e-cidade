@@ -70,7 +70,7 @@ class cl_pactovalor {
                  o87_orcprogramaano = int4 = Ano do Porgrama 
                  ";
    //funcao construtor da classe 
-   function cl_pactovalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactovalor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

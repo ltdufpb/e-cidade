@@ -64,7 +64,7 @@ class cl_gavetas {
                  cm27_i_gaveta = int4 = N da Gaveta
                  ";
    //funcao construtor da classe
-   function cl_gavetas() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("gavetas");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

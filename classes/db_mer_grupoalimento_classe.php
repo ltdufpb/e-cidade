@@ -50,7 +50,7 @@ class cl_mer_grupoalimento {
                  me30_c_descricao = char(40) = Nome do Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_mer_grupoalimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_grupoalimento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

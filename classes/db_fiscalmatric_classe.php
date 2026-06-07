@@ -50,7 +50,7 @@ class cl_fiscalmatric {
                  y35_matric = int4 = Inscrição Imóvel 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalmatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalmatric"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

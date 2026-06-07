@@ -52,7 +52,7 @@ class cl_atendemail {
                  at12_email = varchar(40) = emails dos clientes do atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_atendemail() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendemail"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

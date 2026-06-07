@@ -52,7 +52,7 @@ class cl_issbasecaracteristica {
                  q138_inscr = int4 = Inscrição Municipal
                  ";
    //funcao construtor da classe
-   function cl_issbasecaracteristica() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issbasecaracteristica");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

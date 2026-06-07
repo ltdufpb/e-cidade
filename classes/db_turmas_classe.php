@@ -58,7 +58,7 @@ class cl_turmas {
                  ed05_i_criterio = int4 = Critério 
                  ";
    //funcao construtor da classe 
-   function cl_turmas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_cgmerrado {
                  z11_nome = varchar(40) = Nome/Razão Social 
                  ";
    //funcao construtor da classe 
-   function cl_cgmerrado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmerrado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

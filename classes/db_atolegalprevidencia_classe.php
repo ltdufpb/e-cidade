@@ -49,7 +49,7 @@ class cl_atolegalprevidencia {
                  rh179_descricao = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_atolegalprevidencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atolegalprevidencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

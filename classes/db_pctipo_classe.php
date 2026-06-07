@@ -51,7 +51,7 @@ class cl_pctipo {
                  pc05_natureza = int8 = Natureza
                  ";
    //funcao construtor da classe
-   function cl_pctipo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

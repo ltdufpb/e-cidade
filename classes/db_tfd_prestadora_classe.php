@@ -54,7 +54,7 @@ class cl_tfd_prestadora {
                  tf25_i_destino = int4 = Destino 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_prestadora() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_prestadora"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_pctipoandam {
                  pc44_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_pctipoandam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipoandam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

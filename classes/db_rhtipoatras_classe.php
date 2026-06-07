@@ -50,7 +50,7 @@ class cl_rhtipoatras {
                  rh60_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_rhtipoatras() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhtipoatras"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

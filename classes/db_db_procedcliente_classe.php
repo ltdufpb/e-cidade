@@ -52,7 +52,7 @@ class cl_db_procedcliente {
                  at50_proced = int4 = Codigo do procedimento 
                  ";
    //funcao construtor da classe 
-   function cl_db_procedcliente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_procedcliente"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

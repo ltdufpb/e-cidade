@@ -50,7 +50,7 @@ class cl_automatric {
                  y53_matric = int4 = Inscrição Imóvel 
                  ";
    //funcao construtor da classe 
-   function cl_automatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("automatric"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -55,7 +55,7 @@ class cl_autolancancanc {
                  y89_motivo = text = Motivo cancelamento 
                  ";
    //funcao construtor da classe 
-   function cl_autolancancanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolancancanc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

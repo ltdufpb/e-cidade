@@ -52,7 +52,7 @@ class cl_cancdebitossusp {
                  ar21_cancdebitos = int4 = Débitos Cancelados 
                  ";
    //funcao construtor da classe 
-   function cl_cancdebitossusp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitossusp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

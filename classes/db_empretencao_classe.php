@@ -56,7 +56,7 @@ class cl_empretencao {
                  e65_hist = text = Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_empretencao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empretencao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

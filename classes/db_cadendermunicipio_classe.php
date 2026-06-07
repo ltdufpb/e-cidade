@@ -58,7 +58,7 @@ class cl_cadendermunicipio {
                  db72_cepfinal = varchar(8) = Cep Final 
                  ";
    //funcao construtor da classe 
-   function cl_cadendermunicipio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadendermunicipio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

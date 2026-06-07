@@ -54,7 +54,7 @@ class cl_notiemissaoreg {
                  k137_numpre = int4 = Numpre 
                  ";
    //funcao construtor da classe 
-   function cl_notiemissaoreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notiemissaoreg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

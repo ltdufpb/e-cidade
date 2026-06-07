@@ -70,7 +70,7 @@ class cl_orcindica {
                  o10_formulacalculo = text = Fórmula de Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_orcindica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcindica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_arrehistip {
                  k45_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_arrehistip() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrehistip"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

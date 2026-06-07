@@ -52,7 +52,7 @@ class cl_portariatipodocindividual {
                  h37_modportariaindividual = int4 = Modelo Portaria Individual 
                  ";
    //funcao construtor da classe 
-   function cl_portariatipodocindividual() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariatipodocindividual"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

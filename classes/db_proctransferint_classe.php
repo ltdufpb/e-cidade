@@ -63,7 +63,7 @@ class cl_proctransferint
                  ";
 
     //funcao construtor da classe
-    function cl_proctransferint()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("proctransferint");

@@ -62,7 +62,7 @@ class cl_ceplocalidades {
                  cp05_codsubordinacao = int8 = Codigo Subordinação 
                  ";
    //funcao construtor da classe 
-   function cl_ceplocalidades() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ceplocalidades"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

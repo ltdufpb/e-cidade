@@ -66,7 +66,7 @@ class cl_pontof13 {
                  r34_instit = int4 = codigo da instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_pontof13() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pontof13"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

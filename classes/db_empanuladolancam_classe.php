@@ -52,7 +52,7 @@ class cl_empanuladolancam {
                  e39_codlan = int4 = Código do Lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_empanuladolancam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empanuladolancam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

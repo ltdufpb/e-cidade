@@ -52,7 +52,7 @@ class cl_condicionantetipolicenca {
                  am17_tipolicenca = int4 = Código Tipo Licença
                  ";
    //funcao construtor da classe
-   function cl_condicionantetipolicenca() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condicionantetipolicenca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_benstransfdiv {
                  t31_divisao = int4 = Código da divisão 
                  ";
    //funcao construtor da classe 
-   function cl_benstransfdiv() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstransfdiv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

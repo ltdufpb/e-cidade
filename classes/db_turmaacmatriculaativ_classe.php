@@ -52,7 +52,7 @@ class cl_turmaacmatriculaativ {
                  ed271_i_turmaacativ = int8 = Atividade Complementar 
                  ";
    //funcao construtor da classe 
-   function cl_turmaacmatriculaativ() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmaacmatriculaativ"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

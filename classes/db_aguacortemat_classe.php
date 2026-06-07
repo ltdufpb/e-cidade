@@ -57,7 +57,7 @@ class cl_aguacortemat {
                  x41_dtprazo = date = Prazo Regularização 
                  ";
    //funcao construtor da classe 
-   function cl_aguacortemat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacortemat"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_custocriteriorateiobens {
                  cc06_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_custocriteriorateiobens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custocriteriorateiobens"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

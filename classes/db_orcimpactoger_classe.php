@@ -59,7 +59,7 @@ class cl_orcimpactoger {
                  o62_passivo = float8 = Passivo 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactoger() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactoger"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

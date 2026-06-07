@@ -52,7 +52,7 @@ class cl_caracteristicapitsefaz {
                  db142_codigopitsefaz = varchar(5) = Código do PIT 
                  ";
    //funcao construtor da classe 
-   function cl_caracteristicapitsefaz() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caracteristicapitsefaz"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -63,7 +63,7 @@ class cl_bancoshistmov {
                  k66_sigla = char(3) = Sigla 
                  ";
    //funcao construtor da classe 
-   function cl_bancoshistmov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancoshistmov"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

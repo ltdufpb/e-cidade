@@ -59,7 +59,7 @@ class cl_apolice {
                  t81_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_apolice() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("apolice"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

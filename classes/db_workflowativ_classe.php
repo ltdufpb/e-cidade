@@ -54,7 +54,7 @@ class cl_workflowativ {
                  db114_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_workflowativ() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("workflowativ"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

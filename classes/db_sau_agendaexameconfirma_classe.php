@@ -63,7 +63,7 @@ class cl_sau_agendaexameconfirma {
                  s133_c_observacoes = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_sau_agendaexameconfirma() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_agendaexameconfirma"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

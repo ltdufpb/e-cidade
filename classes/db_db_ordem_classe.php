@@ -81,7 +81,7 @@ class cl_db_ordem {
                  dtrecebe = date = Data do recebimento 
                  ";
    //funcao construtor da classe 
-   function cl_db_ordem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_ordem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

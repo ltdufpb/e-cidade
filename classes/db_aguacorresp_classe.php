@@ -60,7 +60,7 @@ class cl_aguacorresp {
                  x02_complemento = varchar(20) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_aguacorresp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacorresp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

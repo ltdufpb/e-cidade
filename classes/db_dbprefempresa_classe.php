@@ -69,7 +69,7 @@ class cl_dbprefempresa {
                  q55_recbrutaano = float8 = Receita Bruta Anual 
                  ";
    //funcao construtor da classe 
-   function cl_dbprefempresa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dbprefempresa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

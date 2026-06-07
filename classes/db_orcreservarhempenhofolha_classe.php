@@ -52,7 +52,7 @@ class cl_orcreservarhempenhofolha {
                  o120_rhempenhofolha = int4 = Código Empenho 
                  ";
    //funcao construtor da classe 
-   function cl_orcreservarhempenhofolha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcreservarhempenhofolha"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

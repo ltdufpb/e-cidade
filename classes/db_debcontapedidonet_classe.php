@@ -50,7 +50,7 @@ class cl_debcontapedidonet {
                  d64_ip = varchar(50) = IP 
                  ";
    //funcao construtor da classe 
-   function cl_debcontapedidonet() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidonet"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

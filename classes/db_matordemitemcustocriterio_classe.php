@@ -52,7 +52,7 @@ class cl_matordemitemcustocriterio {
                  cc11_matordemitem = int4 = Código do Item 
                  ";
    //funcao construtor da classe 
-   function cl_matordemitemcustocriterio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemitemcustocriterio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

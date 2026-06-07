@@ -52,7 +52,7 @@ class cl_acordopenalidadeacordotipo {
                  ac14_acordopenalidade = int4 = Acordo Penalidade 
                  ";
    //funcao construtor da classe 
-   function cl_acordopenalidadeacordotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordopenalidadeacordotipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_autosanitario {
                  y55_codsani = int4 = Código do Alvará sanitário 
                  ";
    //funcao construtor da classe 
-   function cl_autosanitario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autosanitario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

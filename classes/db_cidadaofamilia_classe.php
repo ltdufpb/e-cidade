@@ -62,7 +62,7 @@ class cl_cidadaofamilia {
                  as04_aparelhoeletricocontinuo = bool = Aparelho Eletríco Contínuo 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaofamilia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaofamilia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

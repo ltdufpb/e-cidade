@@ -55,7 +55,7 @@ class cl_procfiscalcadtipo {
                  y33_validade = date = Valido 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscalcadtipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscalcadtipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -56,7 +56,7 @@ class cl_tipoandam {
                  y41_instit = int4 = Cod. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoandam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoandam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

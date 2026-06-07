@@ -56,7 +56,7 @@ class cl_orcimpactoval {
                  o91_proces = int4 = Processo 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactoval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactoval"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

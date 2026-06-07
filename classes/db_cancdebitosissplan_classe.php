@@ -52,7 +52,7 @@ class cl_cancdebitosissplan {
                  q78_issplan = int4 = Planilha 
                  ";
    //funcao construtor da classe 
-   function cl_cancdebitosissplan() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitosissplan"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -75,7 +75,7 @@ class cl_tarefaagenda {
                  at77_cliente = int4 = Codigo do Cliente 
                  ";
    //funcao construtor da classe 
-   function cl_tarefaagenda() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefaagenda"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_pccontrpago {
                  p76_codcontr = int4 = Código do contrato 
                  ";
    //funcao construtor da classe 
-   function cl_pccontrpago() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pccontrpago"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

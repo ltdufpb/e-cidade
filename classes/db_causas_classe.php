@@ -52,7 +52,7 @@ class cl_causas {
                  tr02_descr = varchar(35) = Descrição da Causa 
                  ";
    //funcao construtor da classe 
-   function cl_causas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("causas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -59,7 +59,7 @@ class cl_condutores {
                  tr11_sexo = varchar(15) = Sexo 
                  ";
    //funcao construtor da classe 
-   function cl_condutores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condutores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

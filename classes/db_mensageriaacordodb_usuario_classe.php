@@ -26,7 +26,7 @@ class cl_mensageriaacordodb_usuario {
                  ac52_dias = int4 = Dias 
                  ";
    //funcao construtor da classe 
-   function cl_mensageriaacordodb_usuario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensageriaacordodb_usuario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

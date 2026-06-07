@@ -52,7 +52,7 @@ class cl_aidofautenticidade {
                  y01_codautenticidade = text = Código de autenticidade 
                  ";
    //funcao construtor da classe 
-   function cl_aidofautenticidade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aidofautenticidade"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

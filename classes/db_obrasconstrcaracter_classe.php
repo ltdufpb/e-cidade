@@ -52,7 +52,7 @@ class cl_obrasconstrcaracter {
                  ob34_caracter = int4 = Caracteristica 
                  ";
    //funcao construtor da classe 
-   function cl_obrasconstrcaracter() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasconstrcaracter"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

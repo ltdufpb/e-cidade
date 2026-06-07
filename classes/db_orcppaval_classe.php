@@ -58,7 +58,7 @@ class cl_orcppaval {
                  o24_proces = int4 = Processo 
                  ";
    //funcao construtor da classe 
-   function cl_orcppaval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcppaval"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_procjurtipo {
                  v66_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_procjurtipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procjurtipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

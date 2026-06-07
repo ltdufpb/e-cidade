@@ -66,7 +66,7 @@ class cl_arrevenc {
                  k00_obs = text = Observação 
                  ";
    //funcao construtor da classe
-   function cl_arrevenc() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrevenc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

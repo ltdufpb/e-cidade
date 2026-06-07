@@ -111,7 +111,7 @@ class cl_db_ouvidoria {
                  po01_id_usuario = int4 = Usuario 
                  ";
    //funcao construtor da classe 
-   function cl_db_ouvidoria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_ouvidoria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

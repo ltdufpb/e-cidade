@@ -50,7 +50,7 @@ class cl_db_tipohelp {
                  descrtipohelp = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_tipohelp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_tipohelp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

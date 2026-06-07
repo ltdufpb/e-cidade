@@ -57,7 +57,7 @@ class cl_pcfornecert {
                  pc61_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_pcfornecert() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcfornecert"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

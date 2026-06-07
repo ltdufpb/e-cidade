@@ -52,7 +52,7 @@ class cl_workflowtipoproc {
                  db116_tipoproc = int4 = Código Tipo Processo 
                  ";
    //funcao construtor da classe 
-   function cl_workflowtipoproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("workflowtipoproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

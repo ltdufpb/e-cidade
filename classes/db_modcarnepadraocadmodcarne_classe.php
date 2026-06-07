@@ -52,7 +52,7 @@ class cl_modcarnepadraocadmodcarne {
                  m01_modcarnepadrao = int4 = Modelo Padrão 
                  ";
    //funcao construtor da classe 
-   function cl_modcarnepadraocadmodcarne() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("modcarnepadraocadmodcarne"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

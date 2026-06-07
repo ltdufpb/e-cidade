@@ -93,7 +93,7 @@ class cl_aidof {
                  y08_datalimiteliberada = date = Data limite liberada 
                  ";
    //funcao construtor da classe 
-   function cl_aidof() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aidof"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

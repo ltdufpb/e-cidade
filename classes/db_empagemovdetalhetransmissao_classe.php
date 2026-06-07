@@ -47,7 +47,7 @@ class cl_empagemovdetalhetransmissao {
                  e74_valormulta = float4 = Multa 
                  ";
    //funcao construtor da classe 
-   function cl_empagemovdetalhetransmissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemovdetalhetransmissao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

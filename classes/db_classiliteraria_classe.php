@@ -50,7 +50,7 @@ class cl_classiliteraria {
                  bi03_classificacao = char(50) = Classificação Literária 
                  ";
    //funcao construtor da classe 
-   function cl_classiliteraria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classiliteraria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

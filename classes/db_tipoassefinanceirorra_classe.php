@@ -38,7 +38,7 @@ class cl_tipoassefinanceirorra {
                  rh172_rubricamolestia = char(4) = Isenção por Moléstia 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassefinanceirorra() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassefinanceirorra"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

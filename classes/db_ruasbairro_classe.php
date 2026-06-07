@@ -52,7 +52,7 @@ class cl_ruasbairro {
                  j16_bairro = int4 = Cód. do Bairro 
                  ";
    //funcao construtor da classe 
-   function cl_ruasbairro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ruasbairro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_averbaformalpartilhacgm {
                  j102_averbaformalpartilha = int4 = Averba sentença Judicial 
                  ";
    //funcao construtor da classe 
-   function cl_averbaformalpartilhacgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbaformalpartilhacgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -67,7 +67,7 @@ class cl_lab_conferencia {
                  la47_i_cid = int8 = CID 
                  ";
    //funcao construtor da classe 
-   function cl_lab_conferencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_conferencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

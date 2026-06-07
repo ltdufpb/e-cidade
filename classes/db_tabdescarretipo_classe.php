@@ -52,7 +52,7 @@ class cl_tabdescarretipo {
                  k78_tabdesc = int4 = Código Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tabdescarretipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabdescarretipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_linhatransporte {
                  tre06_abreviatura = varchar(10) = Abreviatura
                  ";
    //funcao construtor da classe
-   function cl_linhatransporte() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("linhatransporte");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

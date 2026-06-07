@@ -52,7 +52,7 @@ class cl_contlot {
                  d05_testad = float8 = Testada 
                  ";
    //funcao construtor da classe 
-   function cl_contlot() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contlot"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

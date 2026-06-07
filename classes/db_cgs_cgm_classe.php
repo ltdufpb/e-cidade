@@ -50,7 +50,7 @@ class cl_cgs_cgm {
                  z01_i_numcgm = int4 = CGM 
                  ";
    //funcao construtor da classe 
-   function cl_cgs_cgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgs_cgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

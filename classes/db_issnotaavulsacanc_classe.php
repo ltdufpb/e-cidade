@@ -61,7 +61,7 @@ class cl_issnotaavulsacanc {
                  q63_motivo = text = Motivo do Cancelamento 
                  ";
    //funcao construtor da classe 
-   function cl_issnotaavulsacanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issnotaavulsacanc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

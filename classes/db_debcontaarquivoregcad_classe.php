@@ -57,7 +57,7 @@ class cl_debcontaarquivoregcad {
                  d74_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_debcontaarquivoregcad() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontaarquivoregcad"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

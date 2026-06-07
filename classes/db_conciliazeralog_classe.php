@@ -61,7 +61,7 @@ class cl_conciliazeralog {
                  k132_filtros = text = Filtros 
                  ";
    //funcao construtor da classe 
-   function cl_conciliazeralog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conciliazeralog"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

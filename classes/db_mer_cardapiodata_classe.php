@@ -55,7 +55,7 @@ class cl_mer_cardapiodata {
                  me13_i_cardapiodiaescola = int4 = Cardapio/Dia 
                  ";
    //funcao construtor da classe 
-   function cl_mer_cardapiodata() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_cardapiodata"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

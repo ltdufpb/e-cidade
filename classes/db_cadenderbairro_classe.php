@@ -54,7 +54,7 @@ class cl_cadenderbairro {
                  db73_sigla = varchar(2) = Sigla do Bairro 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderbairro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderbairro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -26,7 +26,7 @@ class cl_planilhadistribuicaodepart {
                  pd02_departamento = int4 = Departamento 
                  ";
    //funcao construtor da classe 
-   function cl_planilhadistribuicaodepart() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("planilhadistribuicaodepart"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

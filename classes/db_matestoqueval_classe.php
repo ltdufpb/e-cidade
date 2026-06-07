@@ -53,7 +53,7 @@ class cl_matestoqueval {
                  m72_validade = date = Validade 
                  ";
    //funcao construtor da classe 
-   function cl_matestoqueval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueval"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

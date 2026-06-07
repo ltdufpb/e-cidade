@@ -36,7 +36,7 @@ class cl_carne {
   var $resultparcelas = null;
   var $result = null;
   
-  function cl_carne($numpre,$numparini,$numparfim) {
+  function __construct($numpre,$numparini,$numparfim) {
     $this->np  = $numpre;
     $this->npi = $numparini;
     $this->npf = $numparfim;	

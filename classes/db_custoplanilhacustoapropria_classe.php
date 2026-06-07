@@ -52,7 +52,7 @@ class cl_custoplanilhacustoapropria {
                  cc18_custoplanilhaapuracao = int4 = Custo Planilha Apuração 
                  ";
    //funcao construtor da classe 
-   function cl_custoplanilhacustoapropria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custoplanilhacustoapropria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

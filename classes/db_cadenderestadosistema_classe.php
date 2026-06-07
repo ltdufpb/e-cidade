@@ -28,7 +28,7 @@ class cl_cadenderestadosistema {
                  db300_codigo = varchar(50) = Código no sistema externo
                  ";
    //funcao construtor da classe
-   function cl_cadenderestadosistema() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderestadosistema");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

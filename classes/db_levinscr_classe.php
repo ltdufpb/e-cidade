@@ -50,7 +50,7 @@ class cl_levinscr {
                  y62_inscr = int4 = Inscricao 
                  ";
    //funcao construtor da classe 
-   function cl_levinscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levinscr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

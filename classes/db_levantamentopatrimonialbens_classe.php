@@ -26,7 +26,7 @@ class cl_levantamentopatrimonialbens {
                  p14_placa = varchar(50) = Placa 
                  ";
    //funcao construtor da classe 
-   function cl_levantamentopatrimonialbens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levantamentopatrimonialbens"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

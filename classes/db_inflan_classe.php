@@ -60,7 +60,7 @@ class cl_inflan {
                  i01_calc = int4 = Tipo de calculo 
                  ";
    //funcao construtor da classe 
-   function cl_inflan() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inflan"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

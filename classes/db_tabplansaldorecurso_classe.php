@@ -72,7 +72,7 @@ class cl_tabplansaldorecurso {
                  k111_debitoatualizado = float8 = Débito Atualizado 
                  ";
    //funcao construtor da classe 
-   function cl_tabplansaldorecurso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabplansaldorecurso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_matanulitemrequi {
                  m102_matrequiitem = int8 = Requisitado 
                  ";
    //funcao construtor da classe 
-   function cl_matanulitemrequi() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matanulitemrequi"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_lab_tipocontrolefisicofinanceiro {
                  la57_c_descr = varchar(40) = Tipo de controle 
                  ";
    //funcao construtor da classe 
-   function cl_lab_tipocontrolefisicofinanceiro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_tipocontrolefisicofinanceiro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

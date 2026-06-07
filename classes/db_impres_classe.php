@@ -54,7 +54,7 @@ class cl_impres {
                  d50_padrao = bool = Se padrao ou nao 
                  ";
    //funcao construtor da classe 
-   function cl_impres() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("impres"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -56,7 +56,7 @@ class cl_cadarrecadacao {
                  ar16_formatovenc = int4 = Formato do vencimento 
                  ";
    //funcao construtor da classe 
-   function cl_cadarrecadacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadarrecadacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_corchequecgm {
                  k12_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_corchequecgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("corchequecgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

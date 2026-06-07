@@ -50,7 +50,7 @@ class cl_vistretornocalc {
                  y04_msgretorno = varchar(150) = Mensagem de retorno 
                  ";
    //funcao construtor da classe 
-   function cl_vistretornocalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistretornocalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

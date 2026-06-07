@@ -54,7 +54,7 @@ class cl_pcmater {
                  pc01_codsubgrupo = int4 = Código do Sub-Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_pcmater() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcmater"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_modcarnepadraotipo {
                  k49_tipo = int4 = tipo de debito 
                  ";
    //funcao construtor da classe 
-   function cl_modcarnepadraotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("modcarnepadraotipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

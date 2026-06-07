@@ -52,7 +52,7 @@ class cl_aberturaexercicio {
                  c81_estornado = bool = Estornado 
                  ";
    //funcao construtor da classe 
-   function cl_aberturaexercicio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aberturaexercicio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

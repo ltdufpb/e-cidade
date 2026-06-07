@@ -56,7 +56,7 @@ class cl_vistlocal {
                  y10_compl = varchar(10) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_vistlocal() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistlocal"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

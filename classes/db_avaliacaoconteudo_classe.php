@@ -52,7 +52,7 @@ class cl_avaliacaoconteudo {
                  ed240_i_avaliacao = int4 = Avaliação 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaoconteudo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaoconteudo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

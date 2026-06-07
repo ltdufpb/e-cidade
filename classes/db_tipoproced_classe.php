@@ -50,7 +50,7 @@ class cl_tipoproced {
                  v07_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoproced() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoproced"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

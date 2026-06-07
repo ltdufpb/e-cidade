@@ -56,7 +56,7 @@ class cl_pcorcamtroca {
                  pc25_forneatu = int8 = Fornecedor trocado após julgamento 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamtroca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamtroca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

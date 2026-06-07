@@ -60,7 +60,7 @@ class cl_ouvidoriaatendimentoretornotelefone {
                  ov14_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_ouvidoriaatendimentoretornotelefone() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriaatendimentoretornotelefone"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

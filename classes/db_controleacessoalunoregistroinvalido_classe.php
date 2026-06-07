@@ -52,7 +52,7 @@ class cl_controleacessoalunoregistroinvalido {
                  ed304_codigoinvalido = varchar(255) = Código da Leitura Inválido 
                  ";
    //funcao construtor da classe 
-   function cl_controleacessoalunoregistroinvalido() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("controleacessoalunoregistroinvalido"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

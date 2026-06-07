@@ -50,7 +50,7 @@ class cl_fiscalprocpa {
                  y61_codtipo = int8 = codtipo 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalprocpa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalprocpa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

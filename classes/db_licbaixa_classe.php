@@ -71,7 +71,7 @@ class cl_licbaixa {
                  l28_liclicita = int4 = codigo da licitação 
                  ";
    //funcao construtor da classe 
-   function cl_licbaixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licbaixa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

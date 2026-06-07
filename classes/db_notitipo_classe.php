@@ -52,7 +52,7 @@ class cl_notitipo {
                  k51_confirma = bool = Recebimento 
                  ";
    //funcao construtor da classe 
-   function cl_notitipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notitipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

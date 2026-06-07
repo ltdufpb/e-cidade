@@ -50,7 +50,7 @@ class cl_issgrupotipoalvara {
                  q97_descricao = varchar(200) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_issgrupotipoalvara() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issgrupotipoalvara"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

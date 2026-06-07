@@ -50,7 +50,7 @@ class cl_tipopacto {
                  o29_descricao = varchar(50) = Descricao 
                  ";
    //funcao construtor da classe 
-   function cl_tipopacto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipopacto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

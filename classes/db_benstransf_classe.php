@@ -65,7 +65,7 @@ class cl_benstransf {
                  t93_divisao = int4 = Divisão
                  ";
    //funcao construtor da classe
-   function cl_benstransf() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstransf");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -66,7 +66,7 @@ class cl_acordocomissao {
                  ac08_acordocomissaotipo = int4 = Comissão 
                  ";
    //funcao construtor da classe 
-   function cl_acordocomissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordocomissao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

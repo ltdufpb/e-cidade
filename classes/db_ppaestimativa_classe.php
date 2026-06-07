@@ -56,7 +56,7 @@ class cl_ppaestimativa {
                  o05_valor = float8 = Valor Estimado 
                  ";
    //funcao construtor da classe 
-   function cl_ppaestimativa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ppaestimativa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

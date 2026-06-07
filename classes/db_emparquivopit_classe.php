@@ -73,7 +73,7 @@ class cl_emparquivopit {
                  e14_dtfinal = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_emparquivopit() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emparquivopit"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -58,7 +58,7 @@ class cl_far_requisitanteoutro {
                  fa39_i_ident = int4 = Identidade 
                  ";
    //funcao construtor da classe 
-   function cl_far_requisitanteoutro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_requisitanteoutro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

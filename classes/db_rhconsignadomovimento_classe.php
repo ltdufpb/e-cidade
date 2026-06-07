@@ -44,7 +44,7 @@ class cl_rhconsignadomovimento {
                  rh151_situacao = char(1) = Situação do consignado 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomovimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomovimento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

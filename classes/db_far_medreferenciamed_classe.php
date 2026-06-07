@@ -52,7 +52,7 @@ class cl_far_medreferenciamed {
                  fa34_i_medreferencia = int4 = med referencia 
                  ";
    //funcao construtor da classe 
-   function cl_far_medreferenciamed() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_medreferenciamed"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

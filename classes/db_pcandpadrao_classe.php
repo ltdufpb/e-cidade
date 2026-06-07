@@ -56,7 +56,7 @@ class cl_pcandpadrao {
                  pc45_instit = int4 = codigo da instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_pcandpadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcandpadrao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

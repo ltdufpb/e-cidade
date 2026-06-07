@@ -52,7 +52,7 @@ class cl_debcontaarquivoregped {
                  d80_pedido = int4 = Codigo sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_debcontaarquivoregped() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontaarquivoregped"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

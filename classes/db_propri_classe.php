@@ -50,7 +50,7 @@ class cl_propri {
                  j42_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_propri() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("propri"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

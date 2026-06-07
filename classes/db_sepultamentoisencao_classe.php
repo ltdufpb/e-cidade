@@ -73,7 +73,7 @@ class cl_sepultamentoisencao {
                  cm33_obs = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_sepultamentoisencao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sepultamentoisencao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

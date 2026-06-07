@@ -52,7 +52,7 @@ class cl_conlancammatestoqueini {
                  c103_matestoqueini = int8 = Lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_conlancammatestoqueini() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancammatestoqueini"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

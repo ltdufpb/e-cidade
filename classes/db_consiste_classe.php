@@ -58,7 +58,7 @@ class cl_consiste {
                  r46_descr = varchar(40) = Descrição da Ocorrência 
                  ";
    //funcao construtor da classe 
-   function cl_consiste() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("consiste"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_localacervo {
                  bi20_acervo = int4 = Acervo 
                  ";
    //funcao construtor da classe 
-   function cl_localacervo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("localacervo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

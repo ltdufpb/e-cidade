@@ -52,7 +52,7 @@ class cl_cfautentmodeloimpressao {
                  db68_modeloimpressao = int4 = Código Mod. Impressão 
                  ";
    //funcao construtor da classe 
-   function cl_cfautentmodeloimpressao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfautentmodeloimpressao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

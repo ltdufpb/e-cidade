@@ -52,7 +52,7 @@ class cl_consistema {
                  c52_descrred = varchar(1) = Descrição Reduzida 
                  ";
    //funcao construtor da classe 
-   function cl_consistema() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("consistema"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

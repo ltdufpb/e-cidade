@@ -68,7 +68,7 @@ class cl_matriculas {
                  ed09_i_ano = int8 = Ano 
                  ";
    //funcao construtor da classe 
-   function cl_matriculas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matriculas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

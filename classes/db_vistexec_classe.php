@@ -56,7 +56,7 @@ class cl_vistexec {
                  y11_compl = varchar(10) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_vistexec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistexec"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

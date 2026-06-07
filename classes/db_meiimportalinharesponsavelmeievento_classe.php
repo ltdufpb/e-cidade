@@ -59,7 +59,7 @@ class cl_meiimportalinharesponsavelmeievento {
                  q113_processado = bool = Processado 
                  ";
    //funcao construtor da classe 
-   function cl_meiimportalinharesponsavelmeievento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimportalinharesponsavelmeievento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

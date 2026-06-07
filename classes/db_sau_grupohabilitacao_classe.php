@@ -54,7 +54,7 @@ class cl_sau_grupohabilitacao {
                  sd76_c_descricao = varchar(250) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_grupohabilitacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_grupohabilitacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

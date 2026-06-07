@@ -57,7 +57,7 @@ class cl_aguahidrotroca {
                  x28_codhidrometro = int4 = Código do hidrômetro 
                  ";
    //funcao construtor da classe 
-   function cl_aguahidrotroca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidrotroca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

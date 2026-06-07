@@ -75,7 +75,7 @@ class cl_itenserv {
                  cm10_f_valortaxa = float8 = Valor Taxa 
                  ";
    //funcao construtor da classe 
-   function cl_itenserv() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itenserv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_empageordemcgm {
                  e94_historico = text = Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_empageordemcgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empageordemcgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_itbiretificacao {
                  it32_itbiretif = int4 = Retificação 
                  ";
    //funcao construtor da classe 
-   function cl_itbiretificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiretificacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

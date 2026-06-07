@@ -56,7 +56,7 @@ class cl_db_relatfiltros {
                  db94_valfim = varchar(40) = Valor final 
                  ";
    //funcao construtor da classe 
-   function cl_db_relatfiltros() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relatfiltros"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

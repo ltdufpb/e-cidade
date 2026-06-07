@@ -52,7 +52,7 @@ class cl_prescricaoanulareg {
                  k121_prescricaoanula = int4 = Prescrição Anula 
                  ";
    //funcao construtor da classe 
-   function cl_prescricaoanulareg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prescricaoanulareg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

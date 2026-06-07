@@ -52,7 +52,7 @@ class cl_acordogarantiaacordotipo {
                  ac05_acordogarantia = int4 = Acordo Garantia 
                  ";
    //funcao construtor da classe 
-   function cl_acordogarantiaacordotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordogarantiaacordotipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

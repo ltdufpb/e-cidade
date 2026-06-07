@@ -56,7 +56,7 @@ class cl_reposic {
                  r64_percen = float8 = Percentual de reposicao 
                  ";
    //funcao construtor da classe 
-   function cl_reposic() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("reposic"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

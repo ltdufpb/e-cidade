@@ -50,7 +50,7 @@ class cl_recibopagahist {
                  k00_historico = text = Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_recibopagahist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibopagahist"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

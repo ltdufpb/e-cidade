@@ -52,7 +52,7 @@ class cl_cgs_undetnia {
                  s201_etnia = int4 = Etnia 
                  ";
    //funcao construtor da classe 
-   function cl_cgs_undetnia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgs_undetnia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

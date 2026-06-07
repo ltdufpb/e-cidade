@@ -52,7 +52,7 @@ class cl_db_syscadind {
                  sequen = int4 = Sequencia 
                  ";
    //funcao construtor da classe 
-   function cl_db_syscadind() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_syscadind"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

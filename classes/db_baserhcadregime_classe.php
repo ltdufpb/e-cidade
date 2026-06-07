@@ -34,7 +34,7 @@ class cl_baserhcadregime {
                  rh158_basesubstituido = varchar(4) = Substituído 
                  ";
    //funcao construtor da classe 
-   function cl_baserhcadregime() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("baserhcadregime"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

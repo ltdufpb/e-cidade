@@ -54,7 +54,7 @@ class cl_veicabastposto {
                  ve71_nota = varchar(20) = Nº da nota fiscal 
                  ";
    //funcao construtor da classe 
-   function cl_veicabastposto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicabastposto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

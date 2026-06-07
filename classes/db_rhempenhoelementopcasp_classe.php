@@ -52,7 +52,7 @@ class cl_rhempenhoelementopcasp {
                  rh119_rhelementoempnov = int4 = Elemento Novo 
                  ";
    //funcao construtor da classe 
-   function cl_rhempenhoelementopcasp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhempenhoelementopcasp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

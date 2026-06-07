@@ -50,7 +50,7 @@ class cl_arrecontr {
                  k00_contr = int4 = contribuicao 
                  ";
    //funcao construtor da classe 
-   function cl_arrecontr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrecontr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

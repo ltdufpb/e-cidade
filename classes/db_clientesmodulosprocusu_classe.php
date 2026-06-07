@@ -52,7 +52,7 @@ class cl_clientesmodulosprocusu {
                  at76_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_clientesmodulosprocusu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clientesmodulosprocusu"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

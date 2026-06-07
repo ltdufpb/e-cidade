@@ -26,7 +26,7 @@ class cl_empagemovformapagamento {
                  e07_empagemov = int4 = Código do Movimento 
                  ";
    //funcao construtor da classe
-   function cl_empagemovformapagamento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemovformapagamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

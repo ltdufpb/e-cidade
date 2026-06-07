@@ -30,7 +30,7 @@ class cl_previsaodespesalinhaspacto {
                  c41_valorlinha = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_previsaodespesalinhaspacto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("previsaodespesalinhaspacto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

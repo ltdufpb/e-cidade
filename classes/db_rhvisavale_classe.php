@@ -60,7 +60,7 @@ class cl_rhvisavale {
                  rh47_db_sysfuncoes = int4 = Código Função 
                  ";
    //funcao construtor da classe 
-   function cl_rhvisavale() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhvisavale"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

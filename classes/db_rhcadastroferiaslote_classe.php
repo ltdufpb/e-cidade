@@ -56,7 +56,7 @@ class cl_rhcadastroferiaslote {
                  rh93_processado = bool = Ferias Processadas 
                  ";
    //funcao construtor da classe 
-   function cl_rhcadastroferiaslote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhcadastroferiaslote"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

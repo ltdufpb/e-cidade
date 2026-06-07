@@ -52,7 +52,7 @@ class cl_cadenderruaruastipo {
                  db85_ruastipo = int4 = Código do Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderruaruastipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderruaruastipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_conlancaminscricaoslip {
                  c109_slip = int4 = Código Slip 
                  ";
    //funcao construtor da classe 
-   function cl_conlancaminscricaoslip() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancaminscricaoslip"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

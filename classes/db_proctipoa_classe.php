@@ -50,7 +50,7 @@ class cl_proctipoa {
                  sd20_i_tipoatend = int8 = Tipo de Atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_proctipoa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("proctipoa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -70,7 +70,7 @@ class cl_estmun {
                  reticms = float8 = Retorno de ICMS 
                  ";
    //funcao construtor da classe 
-   function cl_estmun() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("estmun"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -63,7 +63,7 @@ class cl_transfmarca {
                  ma02_t_obs = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_transfmarca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transfmarca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

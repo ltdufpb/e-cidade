@@ -54,7 +54,7 @@ class cl_lab_fechaconferencia {
                  la58_gerado = bool = Gerado 
                  ";
    //funcao construtor da classe 
-   function cl_lab_fechaconferencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_fechaconferencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

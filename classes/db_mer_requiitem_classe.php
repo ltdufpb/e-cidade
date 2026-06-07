@@ -54,7 +54,7 @@ class cl_mer_requiitem {
                  me17_i_merrequi = int4 = Requisição 
                  ";
    //funcao construtor da classe 
-   function cl_mer_requiitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_requiitem"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

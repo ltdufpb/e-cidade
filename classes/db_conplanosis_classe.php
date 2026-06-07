@@ -52,7 +52,7 @@ class cl_conplanosis {
                  c64_descr = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_conplanosis() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanosis"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

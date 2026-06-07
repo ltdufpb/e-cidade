@@ -52,7 +52,7 @@ class cl_issgruposervicoativid {
                  q127_ativid = int4 = Código da Atividade 
                  ";
    //funcao construtor da classe 
-   function cl_issgruposervicoativid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issgruposervicoativid"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

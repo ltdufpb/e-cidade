@@ -52,7 +52,7 @@ class cl_atenditemtarefa {
                  at18_tarefa = int4 = Cod. da tarefa 
                  ";
    //funcao construtor da classe 
-   function cl_atenditemtarefa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atenditemtarefa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

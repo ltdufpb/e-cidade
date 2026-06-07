@@ -50,7 +50,7 @@ class cl_far_classeterapeutica {
                  fa18_c_classetera = char(50) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_far_classeterapeutica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_classeterapeutica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

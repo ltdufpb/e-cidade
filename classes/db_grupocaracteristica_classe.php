@@ -52,7 +52,7 @@ class cl_grupocaracteristica {
                  db139_descricao = varchar(50) = Descricao Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_grupocaracteristica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("grupocaracteristica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

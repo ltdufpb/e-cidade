@@ -56,7 +56,7 @@ class cl_relrubrelrubcampos {
                  rh121_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_relrubrelrubcampos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("relrubrelrubcampos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

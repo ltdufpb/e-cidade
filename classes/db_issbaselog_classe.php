@@ -63,7 +63,7 @@ class cl_issbaselog {
                  q102_origem = int4 = Origem 
                  ";
    //funcao construtor da classe 
-   function cl_issbaselog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issbaselog"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

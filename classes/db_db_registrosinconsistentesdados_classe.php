@@ -56,7 +56,7 @@ class cl_db_registrosinconsistentesdados {
                  db137_excluir = bool = Excluir 
                  ";
    //funcao construtor da classe 
-   function cl_db_registrosinconsistentesdados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_registrosinconsistentesdados"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

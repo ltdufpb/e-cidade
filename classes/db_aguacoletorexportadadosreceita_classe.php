@@ -62,7 +62,7 @@ class cl_aguacoletorexportadadosreceita {
                  x52_numtot = int4 = Número Total de Parcelas 
                  ";
    //funcao construtor da classe 
-   function cl_aguacoletorexportadadosreceita() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacoletorexportadadosreceita"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -59,7 +59,7 @@ class cl_arrevenclog {
                  k75_hora = char(10) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_arrevenclog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrevenclog"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

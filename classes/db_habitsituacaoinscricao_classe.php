@@ -62,7 +62,7 @@ class cl_habitsituacaoinscricao {
                  ht13_datafinal = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_habitsituacaoinscricao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habitsituacaoinscricao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_ccustob {
                  t02_respon = char(    40) = Nome do Responsavel p/ C Custo 
                  ";
    //funcao construtor da classe 
-   function cl_ccustob() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ccustob"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

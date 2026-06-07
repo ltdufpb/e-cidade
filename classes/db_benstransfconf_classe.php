@@ -55,7 +55,7 @@ class cl_benstransfconf {
                  t96_data = date = Data da confirmação 
                  ";
    //funcao construtor da classe 
-   function cl_benstransfconf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstransfconf"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

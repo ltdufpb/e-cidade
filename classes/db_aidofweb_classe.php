@@ -56,7 +56,7 @@ class cl_aidofweb {
                  y07_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_aidofweb() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aidofweb"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_itbilocalidaderural {
                  it33_localidaderural = int4 = Codigo sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_itbilocalidaderural() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbilocalidaderural"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

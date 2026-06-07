@@ -52,7 +52,7 @@ class cl_orcparamrelnotaperiodo {
                  o118_periodo = int4 = Código do período do relatório 
                  ";
    //funcao construtor da classe 
-   function cl_orcparamrelnotaperiodo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcparamrelnotaperiodo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

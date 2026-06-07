@@ -55,7 +55,7 @@ class cl_cursosocialaula {
                  as21_dataaula = date = Dia de aula 
                  ";
    //funcao construtor da classe 
-   function cl_cursosocialaula() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cursosocialaula"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

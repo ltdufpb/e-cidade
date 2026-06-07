@@ -64,7 +64,7 @@ class cl_db_usuemp {
                  z97_despes = char(12) = Elementos 
                  ";
    //funcao construtor da classe 
-   function cl_db_usuemp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_usuemp"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -50,7 +50,7 @@ class cl_tipoarq {
                  p66_descr = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoarq() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoarq"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

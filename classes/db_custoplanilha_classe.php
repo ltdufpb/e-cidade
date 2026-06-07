@@ -56,7 +56,7 @@ class cl_custoplanilha {
                  cc15_situacao = int4 = Situação 
                  ";
    //funcao construtor da classe 
-   function cl_custoplanilha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custoplanilha"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_pcfornesubgrupo {
                  pc76_pcsubgrupo = int4 = Código do Subgrupo 
                  ";
    //funcao construtor da classe 
-   function cl_pcfornesubgrupo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcfornesubgrupo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

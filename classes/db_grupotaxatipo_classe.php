@@ -50,7 +50,7 @@ class cl_grupotaxatipo {
                  ar38_descricao = varchar(150) = Descricao 
                  ";
    //funcao construtor da classe 
-   function cl_grupotaxatipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("grupotaxatipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

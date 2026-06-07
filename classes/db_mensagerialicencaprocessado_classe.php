@@ -26,7 +26,7 @@ class cl_mensagerialicencaprocessado {
                  am15_licencaempreendimento = int4 = Licença 
                  ";
    //funcao construtor da classe 
-   function cl_mensagerialicencaprocessado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagerialicencaprocessado"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -52,7 +52,7 @@ class cl_alunos_turma {
                  ed32_i_turma = int8 = Turma 
                  ";
    //funcao construtor da classe 
-   function cl_alunos_turma() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("alunos_turma"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

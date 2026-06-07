@@ -56,7 +56,7 @@ class cl_arrejustreg {
                  k28_receita = int4 = Receita 
                  ";
    //funcao construtor da classe 
-   function cl_arrejustreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrejustreg"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

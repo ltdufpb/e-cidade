@@ -54,7 +54,7 @@ class cl_tnomes {
                  yy_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_tnomes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tnomes"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

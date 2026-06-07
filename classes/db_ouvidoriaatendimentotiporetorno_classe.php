@@ -52,7 +52,7 @@ class cl_ouvidoriaatendimentotiporetorno {
                  ov17_ouvidoriaatendimento = int4 = Atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_ouvidoriaatendimentotiporetorno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriaatendimentotiporetorno"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

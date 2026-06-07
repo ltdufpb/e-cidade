@@ -67,7 +67,7 @@ class cl_atolegalprevidenciainssirf {
                  rh180_datainiciovigencia = date = Data de Início de Vigência 
                  ";
    //funcao construtor da classe 
-   function cl_atolegalprevidenciainssirf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atolegalprevidenciainssirf"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -62,7 +62,7 @@ class cl_matestoquetransferencia {
                  m84_ativo = bool = Situação da Transferência
                  ";
    //funcao construtor da classe
-   function cl_matestoquetransferencia() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoquetransferencia");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

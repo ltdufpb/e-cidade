@@ -24,7 +24,7 @@ class cl_idioma {
                  bi22_idioma = varchar(50) = Idioma 
                  ";
    //funcao construtor da classe 
-   function cl_idioma() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("idioma"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

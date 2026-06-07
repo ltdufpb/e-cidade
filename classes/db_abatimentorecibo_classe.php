@@ -54,7 +54,7 @@ class cl_abatimentorecibo {
                  k127_numpreoriginal = int4 = Numpre Original
                  ";
    //funcao construtor da classe
-   function cl_abatimentorecibo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentorecibo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
