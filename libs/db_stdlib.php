@@ -3,9 +3,25 @@
 use ECidade\V3\Extension\Registry;
 
 // PHP 8 compatibility: register_long_arrays removed in PHP 5.4
-if (!isset($_SERVER)) $_SERVER ??= [];
-if (!isset($_POST))   $_POST ??= [];
-if (!isset($_GET))    $_GET ??= [];
+// O e-cidade legado usa as superglobais antigas $HTTP_*_VARS extensivamente,
+// tanto direto como via $GLOBALS["HTTP_*_VARS"]. Como esse arquivo
+// (db_stdlib.php) e includado por todo arquivo edu*.php/mer*.php/etc. no
+// inicio do request, popular aqui via $GLOBALS basta para que todo o
+// codigo legado encontre as variaveis.
+$GLOBALS["HTTP_SERVER_VARS"]  = $_SERVER  ?? [];
+$GLOBALS["HTTP_POST_VARS"]    = $_POST    ?? [];
+$GLOBALS["HTTP_GET_VARS"]     = $_GET     ?? [];
+$GLOBALS["HTTP_COOKIE_VARS"]  = $_COOKIE  ?? [];
+$GLOBALS["HTTP_SESSION_VARS"] = $_SESSION ?? [];
+$GLOBALS["HTTP_ENV_VARS"]     = $_ENV     ?? [];
+// Tambem cria as variaveis locais no escopo global, ja que o legado
+// faz uso direto em alguns lugares (por exemplo: db_postmemory($HTTP_POST_VARS)).
+$HTTP_SERVER_VARS  = &$GLOBALS["HTTP_SERVER_VARS"];
+$HTTP_POST_VARS    = &$GLOBALS["HTTP_POST_VARS"];
+$HTTP_GET_VARS     = &$GLOBALS["HTTP_GET_VARS"];
+$HTTP_COOKIE_VARS  = &$GLOBALS["HTTP_COOKIE_VARS"];
+$HTTP_SESSION_VARS = &$GLOBALS["HTTP_SESSION_VARS"];
+$HTTP_ENV_VARS     = &$GLOBALS["HTTP_ENV_VARS"];
 
 /*
  *     E-cidade Software Publico para Gestao Municipal
