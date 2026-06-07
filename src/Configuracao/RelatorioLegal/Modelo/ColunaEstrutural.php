@@ -98,13 +98,13 @@ class ColunaEstrutural
      */
     public function toArray($deep = false)
     {
-        $dados = array(
+        $dados = [
             'sequencial' => $this->getSequencial(),
             'exclusao' => $this->isExclusao(),
             'estrutural' => $this->getEstrutural(),
             'codigo_coluna' => $this->getColuna()->getSequencial(),
             'ano' => $this->getAno(),
-        );
+        ];
 
         if ($deep) {
             $dados['coluna'] = $this->getColuna()->toArray();

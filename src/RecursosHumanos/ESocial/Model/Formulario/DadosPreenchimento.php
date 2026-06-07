@@ -28,5 +28,5 @@ class DadosPreenchimento
      *
      * @var \stdClass
      */
-    public $respostas = array();
+    public $respostas = [];
 }

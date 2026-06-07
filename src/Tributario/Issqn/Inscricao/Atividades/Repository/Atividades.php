@@ -35,7 +35,7 @@ class Atividades
     {
         switch ($this->tipoConsulta) {
             default:
-                $campos = array(
+                $campos = [
                      "sequencial"  => "q03_ativ"
                     ,"descricao"   => "q03_descr"
                     ,"codigo"      => "case
@@ -47,19 +47,19 @@ class Atividades
                                               when q71_estrutural is null then  rh70_classificacaorisco
                                               else q71_classificacaorisco
                                        end"
-                );
+                ];
                 break;
         }
 
-        $resultado   = array();
+        $resultado   = [];
         $fnResultado = function ($retorno) use ($campos) {
 
-            $items = array();
+            $items = [];
 
             foreach ($campos as $campo => $valor) {
                 $valor = $retorno->{$campo};
 
-                if (!empty($valor) && strpos($campo, 'data') !== false) {
+                if (!empty($valor) && str_contains($campo, 'data')) {
                     $valor = DBDate::getInstance($valor)->getDate(DBDate::DATA_PTBR);
                 }
 
@@ -74,7 +74,7 @@ class Atividades
         if (pg_num_rows($rsResultado) > 1) {
             $resultado = db_utils::makeCollectionFromRecord($rsResultado, $fnResultado);
         } elseif (pg_num_rows($rsResultado) == 1) {
-            $resultado = array(db_utils::makeFromRecord($rsResultado, $fnResultado, 0));
+            $resultado = [db_utils::makeFromRecord($rsResultado, $fnResultado, 0)];
         }
 
         return $resultado;
@@ -95,15 +95,15 @@ class Atividades
                     LEFT JOIN cnae ON cnae.q71_sequencial = cnaeanalitica.q72_cnae
                 ";
 
-                $order = array(
+                $order = [
                      "q71_estrutural"
-                );
+                ];
 
                 $erro = "Ocorreu um erro ao consultar os processos\n";
                 break;
         }
 
-        $camposConsulta = array();
+        $camposConsulta = [];
         foreach ($campos as $key => $campo) {
             $camposConsulta[] = $campo . ' as ' . $key;
         }

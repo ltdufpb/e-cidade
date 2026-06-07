@@ -80,7 +80,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
    */
   private $aOrdemPeriodoProporcionalidade = null;
 
-  public function __construct(DiarioAvaliacaoDisciplinaVO $oDadosDiario = null) {
+  public function __construct(?DiarioAvaliacaoDisciplinaVO $oDadosDiario = null) {
 
     if (!empty($oDadosDiario)) {
 
@@ -214,8 +214,8 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
         $oAvaliavaoAproveitamento->setElementoAvaliacao($oElementoAvaliacao);
         $oAvaliavaoAproveitamento->setNumeroFaltas($oDadosDiario->numero_faltas);
         $oAvaliavaoAproveitamento->setParecerPadronizado($oDadosDiario->parecerpadronizado);
-        $oAvaliavaoAproveitamento->setAmparado(trim($oDadosDiario->amparo) == "S" ? true : false);
-        $oAvaliavaoAproveitamento->setConvertido(trim($oDadosDiario->convertido) == "S" ? true : false);
+        $oAvaliavaoAproveitamento->setAmparado(trim((string) $oDadosDiario->amparo) == "S" ? true : false);
+        $oAvaliavaoAproveitamento->setConvertido(trim((string) $oDadosDiario->convertido) == "S" ? true : false);
         $oAvaliavaoAproveitamento->setObservacao($oDadosDiario->observacao);
 
         if ( !empty($oDadosDiario->codigo_faltas_abonadas) ) {
@@ -284,14 +284,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
 
         if ($oPeriodo->isResultado()) {
 
-          $lPossuiResultado = false;
-          foreach ($this->aAvaliacaoAproveitamento as $oAvaliacao) {
-            if ($oPeriodo->getOrdemSequencia() == $oAvaliacao->getElementoAvaliacao()->getOrdemSequencia()) {
-
-              $lPossuiResultado = true;
-              break;
-            }
-          }
+          $lPossuiResultado = array_any($this->aAvaliacaoAproveitamento, fn($oAvaliacao) => $oPeriodo->getOrdemSequencia() == $oAvaliacao->getElementoAvaliacao()->getOrdemSequencia());
           if (!$lPossuiResultado) {
 
             $iTotalSemResultado ++;

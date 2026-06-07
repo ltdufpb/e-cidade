@@ -130,7 +130,7 @@ class Repository
      * @throws DBException
      * @throws BusinessException
      */
-    public function getDadosIncluiBoleto($iNumpre, $iConvenio, $nValor, $aEmitirPor = array())
+    public function getDadosIncluiBoleto($iNumpre, $iConvenio, $nValor, $aEmitirPor = [])
     {
         $oRegistro = new stdClass();
         $oRegistro->tipoEspecie        = "02";
@@ -193,7 +193,7 @@ class Repository
         $oRegistro->nossoNumero        = $oRecibo->nosso_numero;
         $oRegistro->numeroDocumento    = $iNumpre . "000";
         $oRegistro->dataVencimento     = $oRecibo->data_vencimento;
-        $oRegistro->valor              = (string) db_formatar($nValor, 'p', ' ', strlen($nValor));
+        $oRegistro->valor              = (string) db_formatar($nValor, 'p', ' ', strlen((string) $nValor));
         $oRegistro->valor              = str_pad($oRegistro->valor, 16, '0', STR_PAD_LEFT);
         $oRegistro->valorJuros         = (string) db_formatar(0, 'p', ' ', strlen('0'));
         $oRegistro->valorJuros         = str_pad($oRegistro->valorJuros, 16, '0', STR_PAD_LEFT);

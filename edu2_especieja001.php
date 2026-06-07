@@ -35,7 +35,7 @@ include(modification("classes/db_calendario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_escoladiretor_classe.php"));
 $clescoladiretor = new cl_escoladiretor;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatricula = new cl_matricula;
 $clcalendario = new cl_calendario;
 $db_opcao = 1;

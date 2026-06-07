@@ -33,7 +33,7 @@ class cl_conplanocontabancaria
     public function __construct()
     {
         $this->rotulo = new rotulo("conplanocontabancaria");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -108,10 +108,10 @@ class cl_conplanocontabancaria
          $this->erro_status = "0";
          return false;
        }
-       $this->c56_sequencial = pg_result($result,0,0);
+       $this->c56_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from conplanocontabancaria_c56_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c56_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c56_sequencial)){
          $this->erro_sql = " Campo c56_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -147,7 +147,7 @@ class cl_conplanocontabancaria
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligação conta bancaria com a contabilidade ($this->c56_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligação conta bancaria com a contabilidade já Cadastrado";
@@ -177,10 +177,10 @@ class cl_conplanocontabancaria
       $this->atualizacampos();
      $sql = " update conplanocontabancaria set ";
      $virgula = "";
-     if(trim($this->c56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_sequencial"])){
+     if(trim((string) $this->c56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_sequencial"])){
        $sql  .= $virgula." c56_sequencial = $this->c56_sequencial ";
        $virgula = ",";
-       if(trim($this->c56_sequencial) == null ){
+       if(trim((string) $this->c56_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "c56_sequencial";
          $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_conplanocontabancaria
          return false;
        }
      }
-     if(trim($this->c56_contabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_contabancaria"])){
+     if(trim((string) $this->c56_contabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_contabancaria"])){
        $sql  .= $virgula." c56_contabancaria = $this->c56_contabancaria ";
        $virgula = ",";
-       if(trim($this->c56_contabancaria) == null ){
+       if(trim((string) $this->c56_contabancaria) == null ){
          $this->erro_sql = " Campo Codigo sequencial da conta bancaria não informado.";
          $this->erro_campo = "c56_contabancaria";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_conplanocontabancaria
          return false;
        }
      }
-     if(trim($this->c56_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_codcon"])){
+     if(trim((string) $this->c56_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_codcon"])){
        $sql  .= $virgula." c56_codcon = $this->c56_codcon ";
        $virgula = ",";
-       if(trim($this->c56_codcon) == null ){
+       if(trim((string) $this->c56_codcon) == null ){
          $this->erro_sql = " Campo Código da Conta não informado.";
          $this->erro_campo = "c56_codcon";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_conplanocontabancaria
          return false;
        }
      }
-     if(trim($this->c56_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_anousu"])){
+     if(trim((string) $this->c56_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_anousu"])){
        $sql  .= $virgula." c56_anousu = $this->c56_anousu ";
        $virgula = ",";
-       if(trim($this->c56_anousu) == null ){
+       if(trim((string) $this->c56_anousu) == null ){
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "c56_anousu";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_conplanocontabancaria
          return false;
        }
      }
-     if(trim($this->c56_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_reduz"])){
+     if(trim((string) $this->c56_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c56_reduz"])){
        $sql  .= $virgula." c56_reduz = $this->c56_reduz ";
        $virgula = ",";
-       if(trim($this->c56_reduz) == null ){
+       if(trim((string) $this->c56_reduz) == null ){
          $this->erro_sql = " Campo Reduzido não informado.";
          $this->erro_campo = "c56_reduz";
          $this->erro_banco = "";
@@ -355,7 +355,7 @@ class cl_conplanocontabancaria
     function sql_query ( $c56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = preg_split("#\\##m",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_conplanocontabancaria
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];

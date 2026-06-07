@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE acordoparalisacaoacordomovimentacao
 class cl_acordoparalisacaoacordomovimentacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ac48_sequencial = 0; 
-   var $ac48_acordoparalisacao = 0; 
-   var $ac48_acordomovimentacao = 0; 
+   public $ac48_sequencial = 0; 
+   public $ac48_acordoparalisacao = 0; 
+   public $ac48_acordomovimentacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ac48_sequencial = int4 = Sequencial Periodo da Paralisacao 
                  ac48_acordoparalisacao = int4 = Sequencial da Paralisação 
                  ac48_acordomovimentacao = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_acordoparalisacaoacordomovimentacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoparalisacaoacordomovimentacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_acordoparalisacaoacordomovimentacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac48_sequencial = pg_result($result,0,0); 
+       $this->ac48_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from acordoparalisacaoacordomovimentacao_ac48_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac48_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac48_sequencial)){
          $this->erro_sql = " Campo ac48_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_acordoparalisacaoacordomovimentacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimento da Paralisacao ($this->ac48_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimento da Paralisacao já Cadastrado";
@@ -145,12 +145,12 @@ class cl_acordoparalisacaoacordomovimentacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20522,'$this->ac48_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3693,20522,'','".AddSlashes(pg_result($resaco,0,'ac48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3693,20523,'','".AddSlashes(pg_result($resaco,0,'ac48_acordoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3693,20524,'','".AddSlashes(pg_result($resaco,0,'ac48_acordomovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3693,20522,'','".AddSlashes(pg_fetch_result($resaco,0,'ac48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3693,20523,'','".AddSlashes(pg_fetch_result($resaco,0,'ac48_acordoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3693,20524,'','".AddSlashes(pg_fetch_result($resaco,0,'ac48_acordomovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_acordoparalisacaoacordomovimentacao {
       $this->atualizacampos();
      $sql = " update acordoparalisacaoacordomovimentacao set ";
      $virgula = "";
-     if(trim($this->ac48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac48_sequencial"])){ 
+     if(trim((string) $this->ac48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac48_sequencial"])){ 
        $sql  .= $virgula." ac48_sequencial = $this->ac48_sequencial ";
        $virgula = ",";
-       if(trim($this->ac48_sequencial) == null ){ 
+       if(trim((string) $this->ac48_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial Periodo da Paralisacao não informado.";
          $this->erro_campo = "ac48_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_acordoparalisacaoacordomovimentacao {
          return false;
        }
      }
-     if(trim($this->ac48_acordoparalisacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac48_acordoparalisacao"])){ 
+     if(trim((string) $this->ac48_acordoparalisacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac48_acordoparalisacao"])){ 
        $sql  .= $virgula." ac48_acordoparalisacao = $this->ac48_acordoparalisacao ";
        $virgula = ",";
-       if(trim($this->ac48_acordoparalisacao) == null ){ 
+       if(trim((string) $this->ac48_acordoparalisacao) == null ){ 
          $this->erro_sql = " Campo Sequencial da Paralisação não informado.";
          $this->erro_campo = "ac48_acordoparalisacao";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_acordoparalisacaoacordomovimentacao {
          return false;
        }
      }
-     if(trim($this->ac48_acordomovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac48_acordomovimentacao"])){ 
+     if(trim((string) $this->ac48_acordomovimentacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac48_acordomovimentacao"])){ 
        $sql  .= $virgula." ac48_acordomovimentacao = $this->ac48_acordomovimentacao ";
        $virgula = ",";
-       if(trim($this->ac48_acordomovimentacao) == null ){ 
+       if(trim((string) $this->ac48_acordomovimentacao) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "ac48_acordomovimentacao";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_acordoparalisacaoacordomovimentacao {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20522,'$this->ac48_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac48_sequencial"]) || $this->ac48_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3693,20522,'".AddSlashes(pg_result($resaco,$conresaco,'ac48_sequencial'))."','$this->ac48_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3693,20522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac48_sequencial'))."','$this->ac48_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac48_acordoparalisacao"]) || $this->ac48_acordoparalisacao != "")
-             $resac = db_query("insert into db_acount values($acount,3693,20523,'".AddSlashes(pg_result($resaco,$conresaco,'ac48_acordoparalisacao'))."','$this->ac48_acordoparalisacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3693,20523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac48_acordoparalisacao'))."','$this->ac48_acordoparalisacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac48_acordomovimentacao"]) || $this->ac48_acordomovimentacao != "")
-             $resac = db_query("insert into db_acount values($acount,3693,20524,'".AddSlashes(pg_result($resaco,$conresaco,'ac48_acordomovimentacao'))."','$this->ac48_acordomovimentacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3693,20524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac48_acordomovimentacao'))."','$this->ac48_acordomovimentacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_acordoparalisacaoacordomovimentacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20522,'$ac48_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3693,20522,'','".AddSlashes(pg_result($resaco,$iresaco,'ac48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3693,20523,'','".AddSlashes(pg_result($resaco,$iresaco,'ac48_acordoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3693,20524,'','".AddSlashes(pg_result($resaco,$iresaco,'ac48_acordomovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3693,20522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac48_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3693,20523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac48_acordoparalisacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3693,20524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac48_acordomovimentacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -341,7 +341,7 @@ class cl_acordoparalisacaoacordomovimentacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:acordoparalisacaoacordomovimentacao";
@@ -356,7 +356,7 @@ class cl_acordoparalisacaoacordomovimentacao {
    function sql_query ( $ac48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_acordoparalisacaoacordomovimentacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_acordoparalisacaoacordomovimentacao {
    function sql_query_file ( $ac48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_acordoparalisacaoacordomovimentacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_acordoparalisacaoacordomovimentacao {
   function sql_queryMovimentacao ( $ac48_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_acordoparalisacaoacordomovimentacao {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

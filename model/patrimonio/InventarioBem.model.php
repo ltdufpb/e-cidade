@@ -34,12 +34,6 @@
 class InventarioBem {
 
   /**
-   * Codigo do Bem dentro do inventario
-   * @var integer
-   */
-  protected $iCodigo;
-
-  /**
    * Inventario a qual este bem pertece
    * @var Inventario
    */
@@ -93,9 +87,11 @@ class InventarioBem {
    * @param integer $iCodigo
    * @throws BusinessException
    */
-  public function __construct($iCodigo=null) {
+  public function __construct(/**
+   * Codigo do Bem dentro do inventario
+   */
+  protected $iCodigo=null) {
 
-    $this->iCodigo = $iCodigo;
     if (!empty($this->iCodigo)) {
 
       $oDaoInventarioBem      = new cl_inventariobem();

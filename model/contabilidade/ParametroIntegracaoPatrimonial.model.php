@@ -169,7 +169,7 @@ class ParametroIntegracaoPatrimonial {
    */
   public static function getParametroPorInstituicao(Instituicao $oInstituicao) {
 
-    $aParametros = array();
+    $aParametros = [];
     $rsBuscarParametro = self::buscarParametro(null, $oInstituicao);
     $aDadosParametros  = db_utils::getCollectionByRecord($rsBuscarParametro);
 
@@ -189,9 +189,9 @@ class ParametroIntegracaoPatrimonial {
    * @param  integer $iModulo 
    * @return Resource
    */
-  private static function buscarParametro($iCodigo = null, Instituicao $oInstituicao = null, DBDate $oDataImplantacao = null, $iModulo = null) {
+  private static function buscarParametro($iCodigo = null, ?Instituicao $oInstituicao = null, ?DBDate $oDataImplantacao = null, $iModulo = null) {
 
-    $aWhereParametro = array();
+    $aWhereParametro = [];
     $oDaoParametroIntegracaoPatrimonial = db_utils::getDao('parametrointegracaopatrimonial');
 
     if (! empty($iCodigo)) {

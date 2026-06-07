@@ -33,7 +33,7 @@ class cl_matriz_saldo_contabil
     public function __construct()
     {
         $this->rotulo = new rotulo('matriz_saldo_contabil');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -85,10 +85,10 @@ class cl_matriz_saldo_contabil
                 $this->erro_status = "0";
                 return false;
             }
-            $this->c132_sequencial = pg_result($result, 0, 0);
+            $this->c132_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM matriz_saldo_contabil_c132_sequencial_seq");
-            if ($result && pg_result($result, 0, 0) < $c132_sequencial) {
+            if ($result && pg_fetch_result($result, 0, 0) < $c132_sequencial) {
                 $this->erro_sql = " Campo c132_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -121,7 +121,7 @@ class cl_matriz_saldo_contabil
      $result = db_query($sql);
      if ($result == false) { 
        $this->erro_banco = str_replace("\n", "", @pg_last_error());
-       if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+       if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
          $this->erro_sql = "Matriz Saldo Contábil () não Incluído. Inclusão Abortada.";
          $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Matriz Saldo Contábil já cadastrado";
@@ -148,12 +148,12 @@ class cl_matriz_saldo_contabil
        $resaco = $this->sql_record($this->sql_query_file($this->c132_sequencial  ));
        if ($resaco != false || $this->numrows != 0) {
          $resac = db_query("SELECT nextval('db_acount_id_acount_seq') AS acount");
-         $acount = pg_result($resac, 0, 0);
+         $acount = pg_fetch_result($resac, 0, 0);
          $resac = db_query("INSERT INTO db_acountacesso VALUES ($acount, " . db_getsession("DB_acessado") . ")");
          $resac = db_query("INSERT INTO db_acountkey VALUES ($acount,1010461,'$this->c132_sequencial','I')");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010444,1010463,'','" . AddSlashes(pg_result($resaco,0,'c132_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010444,1010462,'','" . AddSlashes(pg_result($resaco,0,'c132_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010444,1010461,'','" . AddSlashes(pg_result($resaco,0,'c132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010444,1010463,'','" . AddSlashes(pg_fetch_result($resaco,0,'c132_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010444,1010462,'','" . AddSlashes(pg_fetch_result($resaco,0,'c132_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010444,1010461,'','" . AddSlashes(pg_fetch_result($resaco,0,'c132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -191,15 +191,15 @@ class cl_matriz_saldo_contabil
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010461,'$this->c132_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c132_ano"]) || $this->c132_ano != "")
-             $resac = db_query("insert into db_acount values($acount,1010444,1010463,'".AddSlashes(pg_result($resaco,$conresaco,'c132_ano'))."','$this->c132_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010444,1010463,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c132_ano'))."','$this->c132_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c132_mes"]) || $this->c132_mes != "")
-             $resac = db_query("insert into db_acount values($acount,1010444,1010462,'".AddSlashes(pg_result($resaco,$conresaco,'c132_mes'))."','$this->c132_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010444,1010462,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c132_mes'))."','$this->c132_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c132_sequencial"]) || $this->c132_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010444,1010461,'".AddSlashes(pg_result($resaco,$conresaco,'c132_sequencial'))."','$this->c132_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010444,1010461,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c132_sequencial'))."','$this->c132_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -250,12 +250,12 @@ class cl_matriz_saldo_contabil
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010461,'$c132_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010444,1010463,'','".AddSlashes(pg_result($resaco,$iresaco,'c132_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010444,1010462,'','".AddSlashes(pg_result($resaco,$iresaco,'c132_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010444,1010461,'','".AddSlashes(pg_result($resaco,$iresaco,'c132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010444,1010463,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c132_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010444,1010462,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c132_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010444,1010461,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -370,7 +370,7 @@ class cl_matriz_saldo_contabil
      * @param array $order
      * @return string
      */
-    public function sql($columns = array('*'), $where = array(), $order = array())
+    public function sql($columns = ['*'], $where = [], $order = [])
     {
         $columns = implode(', ', $columns);
         $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';

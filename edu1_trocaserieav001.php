@@ -39,7 +39,7 @@ $ed101_d_data_dia = date("d",db_getsession("DB_datausu"));
 $ed101_d_data_mes = date("m",db_getsession("DB_datausu"));
 $ed101_d_data_ano = date("Y",db_getsession("DB_datausu"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cltrocaserie          = new cl_trocaserie;
 $clalunocurso          = new cl_alunocurso;

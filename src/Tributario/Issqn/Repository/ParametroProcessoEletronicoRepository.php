@@ -117,7 +117,7 @@ class ParametroProcessoEletronicoRepository
     {
         $rs =  \db_query($this->dao->sql_query());
 
-        $arr = array();
+        $arr = [];
 
         if (pg_num_rows($rs) > 0) {
             $arr = pg_fetch_array($rs);

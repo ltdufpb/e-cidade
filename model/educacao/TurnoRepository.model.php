@@ -63,7 +63,7 @@ class TurnoRepository
     public static function getTurnoByCodigo($iCodigoTurno)
     {
 
-        if (!array_key_exists($iCodigoTurno, TurnoRepository::getInstance()->aTurno)) {
+        if (!array_key_exists((string) $iCodigoTurno, TurnoRepository::getInstance()->aTurno)) {
             TurnoRepository::getInstance()->aTurno[$iCodigoTurno] = new Turno($iCodigoTurno);
         }
         return TurnoRepository::getInstance()->aTurno[$iCodigoTurno];

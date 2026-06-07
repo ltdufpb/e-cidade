@@ -46,7 +46,7 @@ if (isset($alterar)) {
   }
 
   if ($ed217_i_relatorio == 3 && $ed217_i_tipomodelo == 2) {
-    $cledu_relatmodel->ed217_t_cabecalho = preg_replace(array('/\r/', '/\n/'), ' ', $ed217_t_cabecalho);
+    $cledu_relatmodel->ed217_t_cabecalho = preg_replace(['/\r/', '/\n/'], ' ', (string) $ed217_t_cabecalho);
   }
 
   $cledu_relatmodel->ed217_exibeturma        = $ed217_exibeturma;

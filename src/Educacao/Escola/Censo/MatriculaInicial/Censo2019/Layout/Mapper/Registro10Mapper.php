@@ -29,6 +29,7 @@ namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Layout\Mapper
 
 class Registro10Mapper extends Mapper
 {
+    #[\Override]
     protected $dePara = [
         "Tipo de registro" => "tipoRegistro",
         "Código de escola - Inep" => "codigoInep",

@@ -52,7 +52,7 @@ class DBEstruturaValor {
 
   protected $tipo;
 
-  protected $aEstruturaContaAnalitica = array();
+  protected $aEstruturaContaAnalitica = [];
 
   public function __construct($iCodigoEstrutura) {
 
@@ -74,7 +74,7 @@ class DBEstruturaValor {
         unset($oDadosEstrutura);
       }
     }
-    $this->tipo = __CLASS__;
+    $this->tipo = self::class;
   }
   /**
    * retorna o tipo da conta
@@ -276,7 +276,7 @@ class DBEstruturaValor {
     if ($oDaoEstruturaValor->erro_status == 0) {
 
       $sMsgErro = $oDaoEstruturaValor->erro_msg;
-      if (strpos($sMsgErro, "db_estruturavalor_estrutura_estrut_in") !== false) {
+      if (str_contains((string) $sMsgErro, "db_estruturavalor_estrutura_estrut_in")) {
         $sMsgErro = "{$this->sTipoEstrutural} {$this->sEstrutural} já cadastradado!.";
       }
       throw new Exception($sMsgErro);
@@ -329,7 +329,7 @@ class DBEstruturaValor {
 
       $oValidacao->valida         = false;
       $oValidacao->errovalidacao  = "Nível do {$this->sTipoEstrutural} Informado não é válido.\n";
-      $oValidacao->errovalidacao .= ucfirst($this->sTipoEstrutural)." deve ter ".count($aNiveisEstrutura)." níveis.";
+      $oValidacao->errovalidacao .= ucfirst((string) $this->sTipoEstrutural)." deve ter ".count($aNiveisEstrutura)." níveis.";
     }
 
     if ($oValidacao->valida) {
@@ -362,7 +362,7 @@ class DBEstruturaValor {
    */
   protected function nivelEstrutura($sStrutural) {
 
-    $aNiveis = explode(".", $sStrutural);
+    $aNiveis = explode(".", (string) $sStrutural);
     $iNivel  = 1;
     foreach ($aNiveis as $iIndice => $sNivel) {
 
@@ -392,7 +392,7 @@ class DBEstruturaValor {
   protected function getDependenciaEstrutura() {
 
     if (empty($this->tipo )) {
-      throw new Exception(__CLASS__.": Erro tipo da classe nao definido. Deve ser definido a propriedade tipo");
+      throw new Exception(self::class.": Erro tipo da classe nao definido. Deve ser definido a propriedade tipo");
     }
     $sEstruturalpai      = $this->getCodigoEstruturalPai();
     $oEstruturaPai       = null;
@@ -407,11 +407,11 @@ class DBEstruturaValor {
 
         $iCodigoPai       = db_utils::fieldsMemory($rsEstruturaPai, 0)->db121_sequencial;
 
-        if (get_class($this) == 'DBEstruturaValor') {
+        if (static::class == 'DBEstruturaValor') {
           $iCodigoEstrutura  = $iCodigoPai;
         }
         else {
-          $iCodigoEstrutura = call_user_func_array($this->tipo."::getCodigoByEstrutura", array($iCodigoPai));
+          $iCodigoEstrutura = call_user_func_array($this->tipo."::getCodigoByEstrutura", [$iCodigoPai]);
         }
         $oEstruturaPai    = new $this->tipo($iCodigoEstrutura);
       }

@@ -37,7 +37,7 @@ require_once(modification("classes/db_escoladiretor_classe.php"));
 require_once(modification("libs/db_utils.php"));
 
 $oDaoEscDiretor = db_utils::getdao("escoladiretor");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoMatricula  = db_utils::getdao("matricula");
 $oDaoCalendario = db_utils::getdao("calendario");
 $db_opcao       = 1;

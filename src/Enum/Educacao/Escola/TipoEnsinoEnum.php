@@ -24,12 +24,12 @@ class TipoEnsinoEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::ENSINO_INFANTIL => "Educação Infantil",
             self::ENSINO_FUNDAMENTAL => "Ensino Fundamental",
             self::ENSINO_MEDIO => "Ensino Médio",
             self::ENSINO_PROFISSIONAL => "Ensino Profissional",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Tipo de ensino não encontrada.');
@@ -43,15 +43,16 @@ class TipoEnsinoEnum extends Enum
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();
-        $return = array();
+        $return = [];
         foreach ($tipos as $tipo) {
-            $return[] = array(
+            $return[] = [
                 'value' => $tipo->value(),
                 'name' => $tipo->name()
-            );
+            ];
         }
 
         return $return;
@@ -63,19 +64,12 @@ class TipoEnsinoEnum extends Enum
      */
     public function getEnsinoBncc()
     {
-        switch ($this->value) {
-            case self::ENSINO_INFANTIL:
-                return new EnsinoEnum(EnsinoEnum::ENSINO_INFANTIL);
-                break;
-            case self::ENSINO_FUNDAMENTAL:
-                return new EnsinoEnum(EnsinoEnum::ENSINO_FUNDAMENTAL);
-                break;
-            case self::ENSINO_MEDIO:
-                return new EnsinoEnum(EnsinoEnum::ENSINO_MEDIO);
-                break;
-        }
-
-        throw new Exception("Ensino não mapeado.");
+        return match ($this->value) {
+            self::ENSINO_INFANTIL => new EnsinoEnum(EnsinoEnum::ENSINO_INFANTIL),
+            self::ENSINO_FUNDAMENTAL => new EnsinoEnum(EnsinoEnum::ENSINO_FUNDAMENTAL),
+            self::ENSINO_MEDIO => new EnsinoEnum(EnsinoEnum::ENSINO_MEDIO),
+            default => throw new Exception("Ensino não mapeado."),
+        };
     }
 
     public function isInfantil()

@@ -48,6 +48,7 @@ class CadastroBeneficiarioAltFormatter extends CadastroBeneficiarioFormatter
      * @return array|\Assentamento[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $return = [];

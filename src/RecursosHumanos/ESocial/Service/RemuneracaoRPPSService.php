@@ -200,7 +200,7 @@ class RemuneracaoRPPSService
          * 2 - CalculoFolha::CALCULO_13
          * 3 - CalculoFolha::CALCULO_RESCISAO
          */
-        $pagamentos = array();
+        $pagamentos = [];
 
         foreach ($calculoFinanceiroSalario->getEventosFinanceiros() as $eventoFinanceiro) {
             $rubrica = new stdClass();
@@ -364,7 +364,7 @@ class RemuneracaoRPPSService
                     from
                         registro_cgm ) ";
             $resultado = db_query($sql);
-            if (pg_numrows($resultado) == 1) {
+            if (pg_num_rows($resultado) == 1) {
                 return (int) \db_utils::fieldsMemory($resultado, 0)->qtdservidores;
             }
         }
@@ -423,7 +423,7 @@ class RemuneracaoRPPSService
 
         if (pg_num_rows($rsReajusteSalarial) > 0) {
             $dadoCompetenciaPeriodo = \db_utils::fieldsMemory($rsReajusteSalarial, 0);
-            $competenciaPeriodo = explode('-', $dadoCompetenciaPeriodo->eso39_dataefeito);
+            $competenciaPeriodo = explode('-', (string) $dadoCompetenciaPeriodo->eso39_dataefeito);
             if (!empty($competenciaPeriodo[1])) {
                 $grupoIdePeriodo->perRef  = $competenciaPeriodo[0] . '-' . $competenciaPeriodo[1];
             }

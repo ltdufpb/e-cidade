@@ -37,8 +37,8 @@ include(modification("classes/db_alunopassagem_classe.php"));
 include(modification("classes/db_linha_classe.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_rechumanoescola_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $claluno = new cl_aluno;
 $cllinha = new cl_linha;
 $clmatricula = new cl_matricula;
@@ -169,9 +169,9 @@ function js_redireciona(chave){
        left join escolaproc  on escolaproc.ed82_i_codigo = alunofora.ed216_i_escolaproc
        inner join linha on linha.ed217_i_codigo = alunopassagem.ed215_i_linha
        $where";
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed18_i_codigo)){
-     $repassa = array("chave_ed47_i_codigo"=>$chave_ed60_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome);
+     $repassa = ["chave_ed47_i_codigo"=>$chave_ed60_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome];
     }
     if(isset($pesquisar)){
      db_lovrot(@$sql,15,"()","","js_redireciona|ed215_i_codigo","","NoMe",$repassa);

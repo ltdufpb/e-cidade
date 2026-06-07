@@ -87,11 +87,11 @@ if($linhas1==0){?>
  $sep = "";
  for($x=0;$x<$linhas1;$x++){
   db_fieldsmemory($result1,$x);
-  if(!strstr($serie1,$nomeserie)){
+  if(!strstr($serie1,(string) $nomeserie)){
    $serie1   .= $sep.$nomeserie;
   }
   if(!strstr($escolas,$abrevescola."|".$nomeescola)){
-   $escolas   .= $sep.$abrevescola."|".(trim($nomeescola)==""?"SEM ABREVIATURA":$nomeescola);
+   $escolas   .= $sep.$abrevescola."|".(trim((string) $nomeescola)==""?"SEM ABREVIATURA":$nomeescola);
   }
   $media  .= $sep.$medias;
   $sep = ",";
@@ -141,7 +141,7 @@ if($linhas1==0){?>
  $vermelho2 = ImageColorAllocate($imagem, 255, 128, 128);
  $azul3     = ImageColorAllocate($imagem, 0, 255, 255);
  $verde3    = ImageColorAllocate($imagem, 128, 255, 128);
- $cores_colunas = array($azul,$verde,$amarelo,$vermelho,$rosa,$laranja,$azul2,$verde2,$violeta,$amarelo2,$vermelho2,$azul3,$verde3);
+ $cores_colunas = [$azul,$verde,$amarelo,$vermelho,$rosa,$laranja,$azul2,$verde2,$violeta,$amarelo2,$vermelho2,$azul3,$verde3];
 
  $texto_linha = explode(",",$serie1);
  $texto_coluna = explode (",",$escolas);
@@ -159,7 +159,7 @@ if($linhas1==0){?>
 
  // ------ calcula o intervalo de variação entre os pontos de y ----------
 
- $fator = pow (10, strlen(intval($y_maximo))-1);
+ $fator = 10 ** (strlen(intval($y_maximo)) - 1);
 
  if($y_maximo<1)
      $variacao=0.1;
@@ -198,9 +198,9 @@ if($linhas1==0){?>
 
  for($i=0 ; $i<=$num_pontos_eixo_y; $i++)
  {
-     $posx = $inicio_grafico_x - (strlen($valor)+2)*6; // 6 da largura da fonte + 2 espaços
+     $posx = $inicio_grafico_x - (strlen((string) $valor)+2)*6; // 6 da largura da fonte + 2 espaços
 
-     ImageString($imagem, 2, $posx, $posy-7, $valor, $preto);
+     ImageString($imagem, 2, $posx, $posy-7, (string) $valor, $preto);
      ImageLine($imagem, $inicio_grafico_x-6, $posy, $inicio_grafico_x+$largura_eixo_x, $posy, $cinza);
      $valor += $variacao;
      $posy -= $dist_entre_pontos;
@@ -277,6 +277,5 @@ if($linhas1==0){?>
         }
        </script>
       ";
- ImageDestroy($imagem);
 }
 ?>

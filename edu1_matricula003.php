@@ -492,16 +492,16 @@ if (isset($excluir)) {
                                 }
                             }
 
-                            if (trim($sitant) != "AVANÇADO" && trim($sitant) != "CLASSIFICADO") {
+                            if (trim((string) $sitant) != "AVANÇADO" && trim((string) $sitant) != "CLASSIFICADO") {
 
                                 if ($concant == "S") {
 
-                                    if (trim($sitant) == "MATRICULADO") {
+                                    if (trim((string) $sitant) == "MATRICULADO") {
 
                                         $resfinal = ResultadoFinal($matrant, $ed60_i_aluno, $turmaant, $sitant, $concant);
                                         $sitant = $resfinal == "REPROVADO" ? "REPETENTE" : $resfinal;
 
-                                    } elseif (trim($sitant) == "TROCA DE MODALIDADE") {
+                                    } elseif (trim((string) $sitant) == "TROCA DE MODALIDADE") {
 
                                         $sql01 = "UPDATE matricula SET
                                      ed60_c_ativa        = 'S',
@@ -549,11 +549,11 @@ if (isset($excluir)) {
                                     }
                                 }
 
-                                if (trim($sitant) == "TRANSFERIDO REDE") {
+                                if (trim((string) $sitant) == "TRANSFERIDO REDE") {
                                     $escolaant = $ed57_i_escola;
                                 }
 
-                                if (trim($ativaant) == "N" && !$lErro) {
+                                if (trim((string) $ativaant) == "N" && !$lErro) {
 
                                     $sql0 = "UPDATE matricula SET
                                   ed60_c_ativa     = 'S',
@@ -593,7 +593,7 @@ if (isset($excluir)) {
 
                                     if (!$lErro) {
 
-                                        if (trim($sitant) == "APROVADO") {
+                                        if (trim((string) $sitant) == "APROVADO") {
 
                                             $sSqlTurmaSerieRegimeMat = $clturmaserieregimemat->sql_query(
                                                 "",
@@ -640,7 +640,7 @@ if (isset($excluir)) {
                                                     $serieant = $serieant;
                                                 }
                                             }
-                                        } else if (trim($sitant) == "APROVADO PARCIAL") {
+                                        } else if (trim((string) $sitant) == "APROVADO PARCIAL") {
                                             $serieant = $serieant;
                                         }
                                     }
@@ -663,7 +663,7 @@ if (isset($excluir)) {
 
                                         }
 
-                                        if (trim($sitant) == "TRANSFERIDO REDE" && !$lErro) {
+                                        if (trim((string) $sitant) == "TRANSFERIDO REDE" && !$lErro) {
 
                                             $sql2 = "UPDATE transfescolarede SET
                                       ed103_c_situacao = 'A'
@@ -680,7 +680,7 @@ if (isset($excluir)) {
                                             }
                                         }
 
-                                        if (trim($sitant) == "TRANSFERIDO FORA" && !$lErro) {
+                                        if (trim((string) $sitant) == "TRANSFERIDO FORA" && !$lErro) {
 
                                             $sql2 = "UPDATE transfescolafora SET
                                       ed104_c_situacao = 'A'

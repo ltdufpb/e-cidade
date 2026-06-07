@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_calendario_classe.php"));
 include(modification("classes/db_periodocalendario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcalendario = new cl_calendario;
 $clperiodocalendario = new cl_periodocalendario;
 if(isset($sabado)){
@@ -43,8 +43,8 @@ if(isset($sabado)){
  if($clperiodocalendario->numrows>0){
   for($xx=0;$xx<$clperiodocalendario->numrows;$xx++){
     db_fieldsmemory($result,$xx);
-    $data_in = mktime(0,0,0,substr($ed53_d_inicio,5,2),substr($ed53_d_inicio,8,2),substr($ed53_d_inicio,0,4));
-    $data_out = mktime(0,0,0,substr($ed53_d_fim,5,2),substr($ed53_d_fim,8,2),substr($ed53_d_fim,0,4));
+    $data_in = mktime(0,0,0,substr((string) $ed53_d_inicio,5,2),substr((string) $ed53_d_inicio,8,2),substr((string) $ed53_d_inicio,0,4));
+    $data_out = mktime(0,0,0,substr((string) $ed53_d_fim,5,2),substr((string) $ed53_d_fim,8,2),substr((string) $ed53_d_fim,0,4));
     #pega a data de saida em UNIX_TIMESTAMP e diminui da data de entrada UNIX_TIMESTAMP
     $data_entre = $data_out - $data_in;
     #divide a diferenca das datas pelo numero de segundos de um dia e arredonda, para saber o numero de dias inteiro que tem
@@ -64,7 +64,7 @@ if(isset($sabado)){
     $mi = date('m', $data_in);
     #se o dia da entrada + total de dias for menor que total de dias do mes, ou seja, se não passar do mesmo mês.
     $semanas = 0;
-    $primeiro_dia = date("w", mktime (0,0,0,substr($ed53_d_inicio,5,2),substr($ed53_d_inicio,8,2),substr($ed53_d_inicio,0,4)));
+    $primeiro_dia = date("w", mktime (0,0,0,substr((string) $ed53_d_inicio,5,2),substr((string) $ed53_d_inicio,8,2),substr((string) $ed53_d_inicio,0,4)));
     if($dias+$d <= $days_month){
      for ($i = 0; $i < $dias+1; $i++){
       $day++;
@@ -79,7 +79,7 @@ if(isset($sabado)){
         if(pg_num_rows($res)==0){
          $nao_util++;
         }else{
-         if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+         if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
           $nao_util++;
          }
         }
@@ -97,7 +97,7 @@ if(isset($sabado)){
         if(pg_num_rows($res)==0){
          $nao_util++;
         }else{
-         if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+         if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
           $nao_util++;
          }
         }
@@ -133,7 +133,7 @@ if(isset($sabado)){
          if(pg_num_rows($res)==0){
           $nao_util++;
          }else{
-          if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+          if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
            $nao_util++;
           }
          }
@@ -151,7 +151,7 @@ if(isset($sabado)){
          if(pg_num_rows($res)==0){
           $nao_util++;
          }else{
-          if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+          if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
            $nao_util++;
           }
          }
@@ -191,7 +191,7 @@ if(isset($sabado)){
           if(pg_num_rows($res)==0){
            $nao_util++;
           }else{
-           if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+           if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
             $nao_util++;
            }
           }
@@ -209,7 +209,7 @@ if(isset($sabado)){
           if(pg_num_rows($res)==0){
            $nao_util++;
           }else{
-           if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+           if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
             $nao_util++;
            }
           }

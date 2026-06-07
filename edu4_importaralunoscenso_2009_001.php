@@ -32,7 +32,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $escola = db_getsession("DB_coddepto");
 function db_criatermometro_edu($dbnametermo='termometro',$dbtexto='Concluído',$dbcor='blue',$dbborda=1,$dbacao='Aguarde Processando...'){
  //#00#//db_criatermometro
@@ -121,7 +121,7 @@ $ano_atual = date("Y",db_getsession("DB_datausu"));
    <fieldset style="width:95%"><legend><b>Importação de informações do CENSO ESCOLAR -> ALUNO</b></legend>
     <?php 
     $result = db_query("SELECT ed18_c_codigoinep FROM escola WHERE ed18_i_codigo = $escola");
-    $codigoinep_banco = pg_result($result,0,0);
+    $codigoinep_banco = pg_fetch_result($result,0,0);
     ?>
     <table border="0" align="left">
      <tr>
@@ -246,7 +246,7 @@ if(isset($processar)){
   $contador_geral = 0;
   while(!feof($ponteiro3)){
    $linhaponteiro = fgets($ponteiro3,500);
-   if($contador_geral==0 && substr($linhaponteiro,0,2)!="00"){
+   if($contador_geral==0 && !str_starts_with($linhaponteiro, "00")){
     $valida_arquivo1 = true;
     break;
    }
@@ -258,7 +258,7 @@ if(isset($processar)){
     $valida_arquivo3 = true;
     break;
    }
-   if(substr($linhaponteiro,0,2)=="60" || substr($linhaponteiro,0,2)=="70" || substr($linhaponteiro,0,2)=="80"){
+   if(str_starts_with($linhaponteiro, "60") || str_starts_with($linhaponteiro, "70") || str_starts_with($linhaponteiro, "80")){
     $contador_aluno++;
    }
    if(substr($linhaponteiro,0,2)!=""){
@@ -389,10 +389,10 @@ if(isset($processar)){
        die("ERRO ALUNO[2]: ".$sqlinsert11."<br><br>");
       }else{
        $res_ultimo = db_query("SELECT last_value from aluno_ed47_i_codigo_seq");
-       $codigoaluno = pg_result($res_ultimo,0,0);
+       $codigoaluno = pg_fetch_result($res_ultimo,0,0);
       }
      }else{
-      $codigoaluno = pg_result($result11,0,0);
+      $codigoaluno = pg_fetch_result($result11,0,0);
       $sqlupdate11 = "UPDATE aluno SET
                        ed47_c_codigoinep   = '$ed47_c_codigoinep',
 	               ed47_v_nome         = '$nome_censo',
@@ -501,7 +501,7 @@ if(isset($processar)){
         $res_bairro = db_query($sql_bairro);
         $linhas_bairro = pg_num_rows($res_bairro);
         if($linhas_bairro>0){
-         $codbairro = pg_result($res_bairro,0,0);
+         $codbairro = pg_fetch_result($res_bairro,0,0);
          $deletebairro = db_query("DELETE FROM alunobairro WHERE ed225_i_aluno = $codigoaluno");
 	 $sqlinsertbairro = "INSERT INTO alunobairro VALUES(nextval('alunobairro_ed225_i_codigo_seq'),$codigoaluno,$codbairro)";
 	 $insertbairro = db_query($sqlinsertbairro);

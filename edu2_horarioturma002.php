@@ -43,7 +43,7 @@ $clturmaturnoadicional = new cl_turmaturnoadicional;
 isset($escola) ?: $escola = db_getsession("DB_coddepto");
 
 $sSql = $clturma->sql_query_turmaserie("", "ed52_c_descr,ed57_c_descr,ed11_c_descr,ed57_i_turno", "", " ed220_i_codigo = $turma");
-$result1 = $clturma->sql_record($sSql) or die(pg_errormessage());
+$result1 = $clturma->sql_record($sSql) or die(pg_last_error());
 db_fieldsmemory($result1, 0);
 
 if ($clturma->numrows == 0) {
@@ -89,7 +89,7 @@ if ($clturmaturnoadicional->numrows > 0) {
 
 $turno = "";
 $sql = $clperiodoescola->sql_query("", "*", "ed15_i_sequencia,ed08_i_sequencia", " ed17_i_escola = $escola AND ed17_i_turno in ($cod_turnos)");
-$result1 = $clperiodoescola->sql_record($sql) or die(pg_errormessage());
+$result1 = $clperiodoescola->sql_record($sql) or die(pg_last_error());
 $contp = 0;
 $contd = 0;
 
@@ -102,7 +102,7 @@ for ($z = 0; $z < $clperiodoescola->numrows; $z++) {
     if ($turno != $ed15_c_nome) {
         $pdf->setfont('arial', 'B', 9);
         $pdf->cell(195, 5, $ed15_i_codigo == $ed57_i_turno ? "TURNO PRINCIPAL" : "TURNO ADICIONAL", 1, 1, "C", 1);
-        $pdf->cell(35, 5, trim(pg_result($result1, $z, "ed15_c_nome")), 1, 0, "C", 1);
+        $pdf->cell(35, 5, trim(pg_fetch_result($result1, $z, "ed15_c_nome")), 1, 0, "C", 1);
 
         if ($cldiasemana->numrows == 0) {
             $pdf->cell(195, 5, "Informe os dias lelivos desta escola", 1, 1, "C", 1);
@@ -230,7 +230,7 @@ UNION
                 $pdf->SetY($iYinicial + 13);
             }
             $pdf->setX($iXinicial);
-            $pdf->cell(32, 4, substr($regente, 0, 15), 0, $qb, "C", 1);
+            $pdf->cell(32, 4, substr((string) $regente, 0, 15), 0, $qb, "C", 1);
 
             $pdf->Rect($iXinicial, $iYinicial, 32, 20);
             $pdf->SetY($iYinicial + 20);

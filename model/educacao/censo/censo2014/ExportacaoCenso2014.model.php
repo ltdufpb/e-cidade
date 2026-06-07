@@ -94,6 +94,7 @@ class ExportacaoCenso2014 extends ExportacaoCensoBase implements IExportacaoCens
   /**
    * Método que busca as turmas da escola
    */
+  #[\Override]
   protected function getDadosCensoTurma() {
 
     $this->getTurmasUnicas();

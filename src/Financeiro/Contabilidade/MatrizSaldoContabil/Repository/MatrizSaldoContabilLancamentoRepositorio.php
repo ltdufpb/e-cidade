@@ -12,7 +12,7 @@ class MatrizSaldoContabilLancamentoRepositorio
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param int $sequencial
@@ -132,14 +132,14 @@ class MatrizSaldoContabilLancamentoRepositorio
     public function get()
     {
         $dao = new cl_matriz_saldo_contabil_lancamentos();
-        $sql = $dao->sql(array('*'), $this->scopes);
+        $sql = $dao->sql(['*'], $this->scopes);
         $rs = db_query($sql);
 
         if (!$rs) {
             throw new Exception("Não foi possível buscar os lançamentos da matriz saldo contábil.\nContate o suporte.");
         }
 
-        $matrizSaldoContabilLancamentos = array();
+        $matrizSaldoContabilLancamentos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $matrizSaldoContabilLancamentos;
@@ -156,7 +156,7 @@ class MatrizSaldoContabilLancamentoRepositorio
      * @param MatrizSaldoContabilLancamento|null $matrizSaldoContabilLancamento
      * @throws Exception
      */
-    public function delete(MatrizSaldoContabilLancamento $matrizSaldoContabilLancamento = null)
+    public function delete(?MatrizSaldoContabilLancamento $matrizSaldoContabilLancamento = null)
     {
         $sequencial = $matrizSaldoContabilLancamento instanceof MatrizSaldoContabilLancamento
             ? $matrizSaldoContabilLancamento->getSequencial()

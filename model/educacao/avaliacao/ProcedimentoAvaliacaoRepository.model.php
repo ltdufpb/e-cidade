@@ -75,7 +75,7 @@ class ProcedimentoAvaliacaoRepository
     public static function getProcedimentoByCodigo($iCodigoProcedimentoAvaliacao)
     {
 
-        if (!array_key_exists($iCodigoProcedimentoAvaliacao, ProcedimentoAvaliacaoRepository::getInstance()->aProcedimentoAvaliacao)) {
+        if (!array_key_exists((string) $iCodigoProcedimentoAvaliacao, ProcedimentoAvaliacaoRepository::getInstance()->aProcedimentoAvaliacao)) {
             ProcedimentoAvaliacaoRepository::getInstance()->aProcedimentoAvaliacao[$iCodigoProcedimentoAvaliacao] = new ProcedimentoAvaliacao($iCodigoProcedimentoAvaliacao);
         }
         return ProcedimentoAvaliacaoRepository::getInstance()->aProcedimentoAvaliacao[$iCodigoProcedimentoAvaliacao];

@@ -18,6 +18,7 @@ class ProcessoAdministrativoFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -151,16 +152,16 @@ class ProcessoAdministrativoFormatter extends Formatter
     {
         switch ($nomeCampo) {
             case 'indSusp':
-                $valoresValidos = array('01', '02', '03', '04', '05', '08', '09', '10', '11', '12', '13', '14', '90',
-                    '92');
+                $valoresValidos = ['01', '02', '03', '04', '05', '08', '09', '10', '11', '12', '13', '14', '90',
+                    '92'];
 
                 switch ($valorCampoCondicional) {
                     case ProcessoAdministrativoFormatter::TIPO_PROCESSO_ADMINISTRATIVO:
                     case ProcessoAdministrativoFormatter::TIPO_PROCESSO_PROCESSO_FAP:
-                        $valoresValidos = array('03', '14', '90', '92');
+                        $valoresValidos = ['03', '14', '90', '92'];
                         break;
                     case ProcessoAdministrativoFormatter::TIPO_PROCESSO_JUDICIAL:
-                        $valoresValidos = array('01', '02', '04', '05', '08', '09', '10', '11', '12', '13', '90', '92');
+                        $valoresValidos = ['01', '02', '04', '05', '08', '09', '10', '11', '12', '13', '90', '92'];
                         break;
                 }
                 break;

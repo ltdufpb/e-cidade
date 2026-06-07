@@ -96,12 +96,12 @@ if($clescola->numrows>0){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed86_i_codigo"       => (isset($ed86_i_codigo))       ? $ed86_i_codigo       : null,
-                    "ed86_i_escola"       => (isset($ed86_i_escola))       ? $ed86_i_escola       : null,
-                    "ed18_c_nome"         => (isset($ed18_c_nome))         ? $ed18_c_nome         : '',
-                    "ed86_i_procedimento" => (isset($ed86_i_procedimento)) ? $ed86_i_procedimento : null,
-                    "ed40_c_descr"        => (isset($ed40_c_descr))        ? $ed40_c_descr        : ''
-                    );
+   $chavepri= ["ed86_i_codigo"       => $ed86_i_codigo ?? null,
+                    "ed86_i_escola"       => $ed86_i_escola ?? null,
+                    "ed18_c_nome"         => $ed18_c_nome ?? '',
+                    "ed86_i_procedimento" => $ed86_i_procedimento ?? null,
+                    "ed40_c_descr"        => $ed40_c_descr ?? ''
+                    ];
    $cliframe_alterar_excluir->chavepri      = $chavepri;
    $cliframe_alterar_excluir->sql           = $clprocescola->sql_query("","*","ed18_c_nome"," ed86_i_procedimento = $ed86_i_procedimento");
    $cliframe_alterar_excluir->sql_disabled  = $clprocescola->sql_query("","*","ed18_c_nome"," ed86_i_escola != $ed86_i_escola");

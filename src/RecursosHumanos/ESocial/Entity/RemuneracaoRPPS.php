@@ -44,7 +44,7 @@ class RemuneracaoRPPS
     /**
      * @var ServidorOutrosVinculos[]
      */
-    private $servidorOutrosVinculos = array();
+    private $servidorOutrosVinculos = [];
 
     /**
      * @var ServidorOperadoraSaude[]
@@ -54,7 +54,7 @@ class RemuneracaoRPPS
     /**
      * @var array
      */
-    private $pagamentos = array();
+    private $pagamentos = [];
 
     /**
      * @var \stdClass
@@ -69,12 +69,12 @@ class RemuneracaoRPPS
     /**
      * @var ServidorProcessosJudiciaisFolha[]
      */
-    private $pocessosJudiciais = array();
+    private $pocessosJudiciais = [];
 
     /**
      * @var TrabalhoIntermitente[]
      */
-    private $trabalhadoresIntermitente = array();
+    private $trabalhadoresIntermitente = [];
 
     /**
      * @return ServidorOutrosVinculos[]

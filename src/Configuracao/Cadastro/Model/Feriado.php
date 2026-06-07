@@ -105,7 +105,7 @@ class Feriado
         $instancia = new Feriado();
 
         foreach ($atributos as $atributo => $valor) {
-            preg_match('/(^\w{1})(.*)/', $atributo, $aAtributo);
+            preg_match('/(^\w{1})(.*)/', (string) $atributo, $aAtributo);
 
             $metodo  = 'set';
             $metodo .= strtoupper($aAtributo[1]);

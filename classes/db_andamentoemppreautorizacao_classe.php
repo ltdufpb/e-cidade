@@ -38,7 +38,7 @@ class cl_andamentoemppreautorizacao
     public function __construct()
     {
         $this->rotulo = new rotulo("andamentoemppreautorizacao");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -140,7 +140,7 @@ class cl_andamentoemppreautorizacao
         $result = db_query($sql);
         if ($result==false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = " ($this->id) não Incluído. Inclusão Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -170,10 +170,10 @@ class cl_andamentoemppreautorizacao
         $this->atualizacampos();
         $sql = " update andamentoemppreautorizacao set ";
         $virgula = "";
-        if (trim($this->id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
+        if (trim((string) $this->id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
             $sql  .= $virgula." id = $this->id ";
             $virgula = ",";
-            if (trim($this->id) == null) {
+            if (trim((string) $this->id) == null) {
                 $this->erro_sql = " Campo id não informado.";
                 $this->erro_campo = "id";
                 $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_andamentoemppreautorizacao
                 return false;
             }
         }
-        if (trim($this->empautoriza_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["empautoriza_id"])) {
+        if (trim((string) $this->empautoriza_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["empautoriza_id"])) {
             $sql  .= $virgula." empautoriza_id = $this->empautoriza_id ";
             $virgula = ",";
-            if (trim($this->empautoriza_id) == null) {
+            if (trim((string) $this->empautoriza_id) == null) {
                 $this->erro_sql = " Campo IdAutorizacao não informado.";
                 $this->erro_campo = "empautoriza_id";
                 $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_andamentoemppreautorizacao
                 return false;
             }
         }
-        if (trim($this->status_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["status_id"])) {
+        if (trim((string) $this->status_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["status_id"])) {
             $sql  .= $virgula." status_id = $this->status_id ";
             $virgula = ",";
-            if (trim($this->status_id) == null) {
+            if (trim((string) $this->status_id) == null) {
                 $this->erro_sql = " Campo Status não informado.";
                 $this->erro_campo = "status_id";
                 $this->erro_banco = "";
@@ -209,14 +209,14 @@ class cl_andamentoemppreautorizacao
                 return false;
             }
         }
-        if (trim($this->observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["observacao"])) {
+        if (trim((string) $this->observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["observacao"])) {
             $sql  .= $virgula." observacao = '$this->observacao' ";
             $virgula = ",";
         }
-        if (trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])) {
+        if (trim((string) $this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])) {
             $sql  .= $virgula." id_usuario = $this->id_usuario ";
             $virgula = ",";
-            if (trim($this->id_usuario) == null) {
+            if (trim((string) $this->id_usuario) == null) {
                 $this->erro_sql = " Campo Código do Usuário não informado.";
                 $this->erro_campo = "id_usuario";
                 $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_andamentoemppreautorizacao
                 return false;
             }
         }
-        if (trim($this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="")) {
+        if (trim((string) $this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="")) {
             $sql  .= $virgula." data = '$this->data' ";
             $virgula = ",";
-            if (trim($this->data) == null) {
+            if (trim((string) $this->data) == null) {
                 $this->erro_sql = " Campo Data não informado.";
                 $this->erro_campo = "data_dia";
                 $this->erro_banco = "";
@@ -242,7 +242,7 @@ class cl_andamentoemppreautorizacao
             if (isset($GLOBALS["HTTP_POST_VARS"]["data_dia"])) {
                 $sql  .= $virgula." data = null ";
                 $virgula = ",";
-                if (trim($this->data) == null) {
+                if (trim((string) $this->data) == null) {
                       $this->erro_sql = " Campo Data não informado.";
                       $this->erro_campo = "data_dia";
                       $this->erro_banco = "";

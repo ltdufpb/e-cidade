@@ -98,6 +98,7 @@ class PagamentosRendimentosTrabalhoFormatter extends Formatter
      * @return array|stdClass[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dados = (object)$dados;
@@ -115,7 +116,7 @@ class PagamentosRendimentosTrabalhoFormatter extends Formatter
         $rubricasEsocialRepository = new ESocialRubricasRepository();
         $this->rubricas = $rubricasEsocialRepository->validarRubricas('1210');
 
-        $dadosFormatados = array();
+        $dadosFormatados = [];
         foreach ($dados->cgms as $indice => $cgm) {
             if ($cgm->cgm instanceof \CgmFisico) {
                 $dadoFormatado = $this->dadosECidade($cgm);

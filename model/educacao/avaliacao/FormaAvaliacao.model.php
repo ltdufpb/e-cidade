@@ -102,7 +102,7 @@ class FormaAvaliacao {
         $oFormaAvaliacao             = db_utils::fieldsMemory($rsFormaAvaliacao, 0);
         $this->iCodigo               = $oFormaAvaliacao->ed37_i_codigo;
         $this->sDescricao            = $oFormaAvaliacao->ed37_c_descr;
-        $this->sTipo                 = trim($oFormaAvaliacao->ed37_c_tipo);
+        $this->sTipo                 = trim((string) $oFormaAvaliacao->ed37_c_tipo);
         $this->iMenorValor           = $oFormaAvaliacao->ed37_i_menorvalor;
         $this->iMaiorValor           = $oFormaAvaliacao->ed37_i_maiorvalor;
         $this->mAproveitamentoMinimo = $oFormaAvaliacao->ed37_c_minimoaprov;

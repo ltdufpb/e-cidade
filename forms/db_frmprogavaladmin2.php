@@ -31,7 +31,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("ed112_d_datainicio");
 $clrotulo->label("ed112_i_progclasse");
 $clrotulo->label("ed112_c_situacao");
-if(trim(@$ed112_c_situacao)!="A"){
+if(trim((string) @$ed112_c_situacao)!="A"){
  $db_botao = false;
 }
 if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
@@ -93,7 +93,7 @@ if($ed110_i_ptavaladmin==0 || $ed110_i_ptgeral==0){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','A'=>'AVALIAÇÃO','U'=>'AUTO-AVALIAÇÃO');
+   $x = [''=>'','A'=>'AVALIAÇÃO','U'=>'AUTO-AVALIAÇÃO'];
    db_select('ed116_c_tipo',$x,true,$db_opcao1,"");
    ?>
    <b>Pontuação:</b>
@@ -244,7 +244,7 @@ function js_preenchepesquisa(chave1,chave2,chave3){
  db_iframe_progavaladmin.hide();
  <?php 
  if($db_opcao!=1){
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ed112_i_rhpessoal='+chave1+'&ed116_i_ano='+chave2+'&ed116_c_tipo='+chave3";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ed112_i_rhpessoal='+chave1+'&ed116_i_ano='+chave2+'&ed116_c_tipo='+chave3";
  }
  ?>
 }

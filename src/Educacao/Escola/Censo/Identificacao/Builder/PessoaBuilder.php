@@ -133,7 +133,7 @@ class PessoaBuilder
     {
         $this->pessoa->setCodigoPessoa(PessoaHelper::buildCodigoAluno($this->alunoEscola->getCodigo()));
         $this->pessoa->setNacionalidade($this->alunoEscola->getNacionalidade());
-        $this->pessoa->setCpf(trim($this->alunoEscola->getCpf()));
+        $this->pessoa->setCpf(trim((string) $this->alunoEscola->getCpf()));
         $this->pessoa->setCertidaoNascimento($this->alunoEscola->getMatriculaCeridao());
         //$this->pessoa->setNis(trim($this->alunoEscola->getNis()));
         $this->pessoa->setNome(mb_strtoupper(DBString::removerAcentuacao($this->alunoEscola->getNome())));
@@ -145,7 +145,7 @@ class PessoaBuilder
             $codigoMunicipioNascimento = $this->municipioInstituicao->getCodigo();
         }
         $this->pessoa->setCodigoMunicipioNascimento($codigoMunicipioNascimento);
-        $this->pessoa->setInep(trim($this->alunoEscola->getCodigoInep()));
+        $this->pessoa->setInep(trim((string) $this->alunoEscola->getCodigoInep()));
     }
 
     /**

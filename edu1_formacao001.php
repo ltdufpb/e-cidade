@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 use App\Domain\Configuracao\Helpers\StorageHelper;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clformacao = new cl_formacao;
 $clrechumano = new cl_rechumano;
 $db_opcao = 1;
@@ -78,7 +78,7 @@ if(isset($excluir)){
 db_inicio_transacao();
 $daoFormacaoCensoDisciplina = new cl_formacaocensodisciplina();
 if ($clformacao->erro_status != '0' && !empty($clformacao->ed27_i_codigo)) {
-    $formacoes = array($formacao1, $formacao2, $formacao3);
+    $formacoes = [$formacao1, $formacao2, $formacao3];
 
     $daoFormacaoCensoDisciplina->ed145_formacao = $clformacao->ed27_i_codigo;
     $daoFormacaoCensoDisciplina->excluir(null, "ed145_formacao = {$clformacao->ed27_i_codigo}");
@@ -88,7 +88,7 @@ if ($clformacao->erro_status != '0' && !empty($clformacao->ed27_i_codigo)) {
             foreach ($formacoes as $formacao) {
                 if (!empty($formacao)) {
                     $daoFormacaoCensoDisciplina->ed145_censodisciplina = $formacao;
-                    $daoFormacaoCensoDisciplina->incluir(null);
+                    $daoFormacaoCensoDisciplina->incluir();
                 }
             }
         }
@@ -178,7 +178,7 @@ if (isset($incluir)) {
           $idFormacao = db_utils::fieldsMemory($rsFormacao, 0)->ed27_i_docformacao_estorage;
           $arquivoFormacao = !empty($idFormacao) ? StorageHelper::downloadArquivo($idFormacao) : "";
 
-          $nameFormacao = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoFormacao"]);
+          $nameFormacao = @trim((string) $GLOBALS["HTTP_POST_VARS"]["oid_arquivoFormacao"]);
           if ($nameFormacao != "" && $arquivoFormacao != $nameFormacao) {
               $idFileFormacao = StorageHelper::uploadArquivo($nameFormacao, null, true);
               $sqlIncluirFormacao   = "UPDATE escola.formacao set ed27_i_docformacao_estorage = {$idFileFormacao} ";
@@ -232,7 +232,7 @@ if(isset($alterar)){
         $idFormacao = db_utils::fieldsMemory($rsFormacao, 0)->ed27_i_docformacao_estorage;
         $arquivoFormacao = !empty($idFormacao) ? StorageHelper::downloadArquivo($idFormacao) : "";
 
-        $nameFormacao = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoFormacao"]);
+        $nameFormacao = @trim((string) $GLOBALS["HTTP_POST_VARS"]["oid_arquivoFormacao"]);
 
         if ($nameFormacao != "" && $arquivoFormacao != $nameFormacao) {
             $idFileFormacao = StorageHelper::uploadArquivo($nameFormacao, null, true);

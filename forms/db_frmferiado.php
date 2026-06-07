@@ -36,13 +36,13 @@ $clrotulo->label("ed52_i_codigo");
 
 $db_botao1 = false;
 
-$ed54_d_data_dia = isset( $ed54_d_data ) && !empty( $ed54_d_data ) ? substr( $ed54_d_data, 0, 2 ) : "";
-$ed54_d_data_mes = isset( $ed54_d_data ) && !empty( $ed54_d_data ) ? substr( $ed54_d_data, 3, 2 ) : "";
-$ed54_d_data_ano = isset( $ed54_d_data ) && !empty( $ed54_d_data ) ? substr( $ed54_d_data, 6, 4 ) : "";
+$ed54_d_data_dia = isset( $ed54_d_data ) && !empty( $ed54_d_data ) ? substr( (string) $ed54_d_data, 0, 2 ) : "";
+$ed54_d_data_mes = isset( $ed54_d_data ) && !empty( $ed54_d_data ) ? substr( (string) $ed54_d_data, 3, 2 ) : "";
+$ed54_d_data_ano = isset( $ed54_d_data ) && !empty( $ed54_d_data ) ? substr( (string) $ed54_d_data, 6, 4 ) : "";
 
-$datafinal_dia = isset( $datafinal ) && !empty( $datafinal ) ? substr( $datafinal, 0, 2 ) : "";
-$datafinal_mes = isset( $datafinal ) && !empty( $datafinal ) ? substr( $datafinal, 3, 2 ) : "";
-$datafinal_ano = isset( $datafinal ) && !empty( $datafinal ) ? substr( $datafinal, 6, 4 ) : "";
+$datafinal_dia = isset( $datafinal ) && !empty( $datafinal ) ? substr( (string) $datafinal, 0, 2 ) : "";
+$datafinal_mes = isset( $datafinal ) && !empty( $datafinal ) ? substr( (string) $datafinal, 3, 2 ) : "";
+$datafinal_ano = isset( $datafinal ) && !empty( $datafinal ) ? substr( (string) $datafinal, 6, 4 ) : "";
 
 if( isset( $opcao ) && $opcao == "alterar" ) {
 
@@ -179,7 +179,7 @@ if( $clregencia->numrows > 0 ) {
             </td>
             <td>
               <?php
-              $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+              $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
               db_select( 'ed54_c_dialetivo', $x, true, $db_opcao, "" );
               ?>
             </td>
@@ -199,7 +199,7 @@ if( $clregencia->numrows > 0 ) {
     <tr>
       <td valign="top">
         <?php
-        $chavepri = array(
+        $chavepri = [
                            "ed54_i_codigo"    => @$ed54_i_codigo,
                            "ed54_c_descr"     => @$ed54_c_descr,
                            "ed54_c_diasemana" => @$ed54_c_diasemana,
@@ -207,7 +207,7 @@ if( $clregencia->numrows > 0 ) {
                            "ed54_c_dialetivo" => @$ed54_c_dialetivo,
                            "ed54_i_evento"    => @$ed54_i_evento,
                            "ed96_c_descr"     => @$ed96_c_descr
-                         );
+                         ];
 
         $sWhere = " ed54_i_calendario = {$ed54_i_calendario} AND ed54_c_dialetivo = 'N'";
 
@@ -233,7 +233,7 @@ if( $clregencia->numrows > 0 ) {
     <tr>
       <td valign="top">
         <?php
-        $chavepri = array(
+        $chavepri = [
                            "ed54_i_codigo"    => @$ed54_i_codigo,
                            "ed54_c_descr"     => @$ed54_c_descr,
                            "ed54_c_diasemana" => @$ed54_c_diasemana,
@@ -241,7 +241,7 @@ if( $clregencia->numrows > 0 ) {
                            "ed54_c_dialetivo" => @$ed54_c_dialetivo,
                            "ed54_i_evento"    => @$ed54_i_evento,
                            "ed96_c_descr"     => @$ed96_c_descr
-                         );
+                         ];
 
         $sWhereFeriado = " ed54_i_calendario = {$ed54_i_calendario} AND ed54_c_dialetivo = 'S'";
 

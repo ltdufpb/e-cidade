@@ -123,14 +123,14 @@ class ItemLicitacao {
     $oDaoLiclicitemAnu->excluir(null, "l07_liclicitem = {$iItemLicitacao}");
 
     if ($this->hasCota()) {
-      throw new Exception(utf8_encode("Não foi possível excluir os itens da licitação, por favor, remova a reserva de cotas: " .
-      "DB:PATRIMONIAL > Licitações > Procedimentos > Reserva de Cotas"));
+      throw new Exception(mb_convert_encoding("Não foi possível excluir os itens da licitação, por favor, remova a reserva de cotas: " .
+      "DB:PATRIMONIAL > Licitações > Procedimentos > Reserva de Cotas", 'UTF-8', 'ISO-8859-1'));
     }
 
     $oDaoLiclicitem->excluir($iItemLicitacao);
 
     if ($oDaoLiclicitem->erro_status == "0" || $oDaoLiclicitemLote->erro_status == "0") {
-      throw new Exception(utf8_encode("Não foi possível excluir os itens da licitação."));
+      throw new Exception(mb_convert_encoding("Não foi possível excluir os itens da licitação.", 'UTF-8', 'ISO-8859-1'));
     }
     return true;
   }

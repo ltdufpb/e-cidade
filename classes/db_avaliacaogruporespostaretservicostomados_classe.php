@@ -35,7 +35,7 @@ class cl_avaliacaogruporespostaretservicostomados
     public function __construct()
     {
         $this->rotulo = new rotulo("avaliacaogruporespostaretservicostomados"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -138,7 +138,7 @@ class cl_avaliacaogruporespostaretservicostomados
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Retenção de serviços tomados ($this->efd04_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Retenção de serviços tomados já Cadastrado";
@@ -167,15 +167,15 @@ class cl_avaliacaogruporespostaretservicostomados
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1010237,'$this->efd04_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010364,1010237,'','".AddSlashes(pg_result($resaco,0,'efd04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010364,1010238,'','".AddSlashes(pg_result($resaco,0,'efd04_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010364,1010239,'','".AddSlashes(pg_result($resaco,0,'efd04_cgmcontribuinte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010364,1010240,'','".AddSlashes(pg_result($resaco,0,'efd04_cgmprestador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010364,1010241,'','".AddSlashes(pg_result($resaco,0,'efd04_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010364,1010242,'','".AddSlashes(pg_result($resaco,0,'efd04_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010364,1010237,'','".AddSlashes(pg_fetch_result($resaco,0,'efd04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010364,1010238,'','".AddSlashes(pg_fetch_result($resaco,0,'efd04_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010364,1010239,'','".AddSlashes(pg_fetch_result($resaco,0,'efd04_cgmcontribuinte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010364,1010240,'','".AddSlashes(pg_fetch_result($resaco,0,'efd04_cgmprestador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010364,1010241,'','".AddSlashes(pg_fetch_result($resaco,0,'efd04_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010364,1010242,'','".AddSlashes(pg_fetch_result($resaco,0,'efd04_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_avaliacaogruporespostaretservicostomados
       $this->atualizacampos();
      $sql = " update avaliacaogruporespostaretservicostomados set ";
      $virgula = "";
-     if(trim($this->efd04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_sequencial"])){ 
+     if(trim((string) $this->efd04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_sequencial"])){ 
        $sql  .= $virgula." efd04_sequencial = $this->efd04_sequencial ";
        $virgula = ",";
-       if(trim($this->efd04_sequencial) == null ){ 
+       if(trim((string) $this->efd04_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "efd04_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_avaliacaogruporespostaretservicostomados
          return false;
        }
      }
-     if(trim($this->efd04_avaliacaogruporesposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_avaliacaogruporesposta"])){ 
+     if(trim((string) $this->efd04_avaliacaogruporesposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_avaliacaogruporesposta"])){ 
        $sql  .= $virgula." efd04_avaliacaogruporesposta = $this->efd04_avaliacaogruporesposta ";
        $virgula = ",";
-       if(trim($this->efd04_avaliacaogruporesposta) == null ){ 
+       if(trim((string) $this->efd04_avaliacaogruporesposta) == null ){ 
          $this->erro_sql = " Campo Avaliacao Gupo Resposta não informado.";
          $this->erro_campo = "efd04_avaliacaogruporesposta";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_avaliacaogruporespostaretservicostomados
          return false;
        }
      }
-     if(trim($this->efd04_cgmcontribuinte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_cgmcontribuinte"])){ 
+     if(trim((string) $this->efd04_cgmcontribuinte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_cgmcontribuinte"])){ 
        $sql  .= $virgula." efd04_cgmcontribuinte = $this->efd04_cgmcontribuinte ";
        $virgula = ",";
-       if(trim($this->efd04_cgmcontribuinte) == null ){ 
+       if(trim((string) $this->efd04_cgmcontribuinte) == null ){ 
          $this->erro_sql = " Campo Cgm do contribuinte não informado.";
          $this->erro_campo = "efd04_cgmcontribuinte";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_avaliacaogruporespostaretservicostomados
          return false;
        }
      }
-     if(trim($this->efd04_cgmprestador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_cgmprestador"])){ 
+     if(trim((string) $this->efd04_cgmprestador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_cgmprestador"])){ 
        $sql  .= $virgula." efd04_cgmprestador = $this->efd04_cgmprestador ";
        $virgula = ",";
-       if(trim($this->efd04_cgmprestador) == null ){ 
+       if(trim((string) $this->efd04_cgmprestador) == null ){ 
          $this->erro_sql = " Campo Cgm Prestador não informado.";
          $this->erro_campo = "efd04_cgmprestador";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_avaliacaogruporespostaretservicostomados
          return false;
        }
      }
-     if(trim($this->efd04_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_ano"])){ 
+     if(trim((string) $this->efd04_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_ano"])){ 
        $sql  .= $virgula." efd04_ano = $this->efd04_ano ";
        $virgula = ",";
-       if(trim($this->efd04_ano) == null ){ 
+       if(trim((string) $this->efd04_ano) == null ){ 
          $this->erro_sql = " Campo ano não informado.";
          $this->erro_campo = "efd04_ano";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_avaliacaogruporespostaretservicostomados
          return false;
        }
      }
-     if(trim($this->efd04_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_mes"])){ 
+     if(trim((string) $this->efd04_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd04_mes"])){ 
        $sql  .= $virgula." efd04_mes = $this->efd04_mes ";
        $virgula = ",";
-       if(trim($this->efd04_mes) == null ){ 
+       if(trim((string) $this->efd04_mes) == null ){ 
          $this->erro_sql = " Campo Mes não informado.";
          $this->erro_campo = "efd04_mes";
          $this->erro_banco = "";
@@ -278,21 +278,21 @@ class cl_avaliacaogruporespostaretservicostomados
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010237,'$this->efd04_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd04_sequencial"]) || $this->efd04_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010364,1010237,'".AddSlashes(pg_result($resaco,$conresaco,'efd04_sequencial'))."','$this->efd04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010364,1010237,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd04_sequencial'))."','$this->efd04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd04_avaliacaogruporesposta"]) || $this->efd04_avaliacaogruporesposta != "")
-             $resac = db_query("insert into db_acount values($acount,1010364,1010238,'".AddSlashes(pg_result($resaco,$conresaco,'efd04_avaliacaogruporesposta'))."','$this->efd04_avaliacaogruporesposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010364,1010238,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd04_avaliacaogruporesposta'))."','$this->efd04_avaliacaogruporesposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd04_cgmcontribuinte"]) || $this->efd04_cgmcontribuinte != "")
-             $resac = db_query("insert into db_acount values($acount,1010364,1010239,'".AddSlashes(pg_result($resaco,$conresaco,'efd04_cgmcontribuinte'))."','$this->efd04_cgmcontribuinte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010364,1010239,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd04_cgmcontribuinte'))."','$this->efd04_cgmcontribuinte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd04_cgmprestador"]) || $this->efd04_cgmprestador != "")
-             $resac = db_query("insert into db_acount values($acount,1010364,1010240,'".AddSlashes(pg_result($resaco,$conresaco,'efd04_cgmprestador'))."','$this->efd04_cgmprestador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010364,1010240,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd04_cgmprestador'))."','$this->efd04_cgmprestador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd04_ano"]) || $this->efd04_ano != "")
-             $resac = db_query("insert into db_acount values($acount,1010364,1010241,'".AddSlashes(pg_result($resaco,$conresaco,'efd04_ano'))."','$this->efd04_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010364,1010241,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd04_ano'))."','$this->efd04_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd04_mes"]) || $this->efd04_mes != "")
-             $resac = db_query("insert into db_acount values($acount,1010364,1010242,'".AddSlashes(pg_result($resaco,$conresaco,'efd04_mes'))."','$this->efd04_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010364,1010242,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd04_mes'))."','$this->efd04_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -346,15 +346,15 @@ class cl_avaliacaogruporespostaretservicostomados
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010237,'$efd04_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010364,1010237,'','".AddSlashes(pg_result($resaco,$iresaco,'efd04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010364,1010238,'','".AddSlashes(pg_result($resaco,$iresaco,'efd04_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010364,1010239,'','".AddSlashes(pg_result($resaco,$iresaco,'efd04_cgmcontribuinte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010364,1010240,'','".AddSlashes(pg_result($resaco,$iresaco,'efd04_cgmprestador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010364,1010241,'','".AddSlashes(pg_result($resaco,$iresaco,'efd04_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010364,1010242,'','".AddSlashes(pg_result($resaco,$iresaco,'efd04_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010364,1010237,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010364,1010238,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd04_avaliacaogruporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010364,1010239,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd04_cgmcontribuinte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010364,1010240,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd04_cgmprestador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010364,1010241,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd04_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010364,1010242,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd04_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -466,7 +466,7 @@ class cl_avaliacaogruporespostaretservicostomados
      return $sql;
   }
 
-    public function buscarRespostasPreenchimento($campos = array('*'), $where = array(), $outrosComandos = "")
+    public function buscarRespostasPreenchimento($campos = ['*'], $where = [], $outrosComandos = "")
     {
         $sql  = " SELECT DISTINCT " . implode(', ', $campos);
         $sql .= "   FROM avaliacaogruporespostaretencaoservicostomados";

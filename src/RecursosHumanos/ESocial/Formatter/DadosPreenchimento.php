@@ -33,7 +33,7 @@ class DadosPreenchimento
             $dadosPreechimento->inscricao_empregador = $inscricao;
         }
 
-        $dadosPreechimento->tipo_inscricao = strlen($inscricao) == 11 ? 'cpf' : 'cnpj';
+        $dadosPreechimento->tipo_inscricao = strlen((string) $inscricao) == 11 ? 'cpf' : 'cnpj';
         $dadosPreechimento->respostas = $this->formataRespostas($respostas);
         $dadosPreechimento->dadosPreenchimento = $dadosPreenchimento;
         return $dadosPreechimento;
@@ -47,20 +47,20 @@ class DadosPreenchimento
      */
     private function formataRespostas($respostas)
     {
-        $respostasFormatadas = array();
+        $respostasFormatadas = [];
         foreach ($respostas as $resposta) {
-            if (!\array_key_exists($resposta->grupo, $respostasFormatadas)) {
+            if (!\array_key_exists((string) $resposta->grupo, $respostasFormatadas)) {
                 $this->criaGrupo($resposta, $respostasFormatadas);
             }
 
-            if (!\array_key_exists($resposta->pergunta, $respostasFormatadas[$resposta->grupo]->perguntas)) {
+            if (!\array_key_exists((string) $resposta->pergunta, $respostasFormatadas[$resposta->grupo]->perguntas)) {
                 $this->criaPergunta($resposta, $respostasFormatadas);
             }
 
             $dado = new \stdClass();
             $dado->idPergunta = $resposta->idPergunta;
             $dado->resposta = $resposta->resposta;
-            if (in_array($resposta->tipoPergunta, array(1,3))) {
+            if (in_array($resposta->tipoPergunta, [1,3])) {
                 $dado->resposta = $resposta->valorResposta;
             }
 
@@ -81,7 +81,7 @@ class DadosPreenchimento
     {
         $grupo = new \stdClass();
         $grupo->nome = $resposta->grupo;
-        $grupo->perguntas = array();
+        $grupo->perguntas = [];
         $respostasFormatadas[$resposta->grupo] = $grupo;
     }
 

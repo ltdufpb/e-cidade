@@ -111,7 +111,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <tr>
    <td valign="top">
    <?php 
-    $chavepri= array("ed12_i_codigo"=>@$ed12_i_codigo,"ed232_c_descr"=>@$ed232_c_descr,"ed232_c_abrev"=>@$ed232_c_abrev);
+    $chavepri= ["ed12_i_codigo"=>@$ed12_i_codigo,"ed232_c_descr"=>@$ed232_c_descr,"ed232_c_abrev"=>@$ed232_c_abrev];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     @$cliframe_alterar_excluir->sql = $cldisciplina->sql_query_file("","*","ed59_i_ordenacao"," ed12_i_ensino = $ensino");
     $cliframe_alterar_excluir->campos  ="ed12_i_codigo,ed232_c_descr,ed232_c_abrev";

@@ -40,8 +40,8 @@ include(modification("classes/db_diasemana_classe.php"));
 require_once(modification("model/educacao/QuadroGeralHorario.model.php"));
 ini_set('memory_limit', '-1');
 set_time_limit(0);
-$parametros = $HTTP_SERVER_VARS["QUERY_STRING"];
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+$parametros = $_SERVER["QUERY_STRING"];
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 
 $anoAtual = db_getsession("DB_anousu");
 $pCorQuadro = QuadroGeralHorarioRepository::getParamQuadroHorarios();

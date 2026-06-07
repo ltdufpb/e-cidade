@@ -63,8 +63,8 @@ try {
              */
             db_inicio_transacao();
 
-            $deficienciasIncideMultiplas = array(101, 102, 103, 104, 105, 106, 107);
-            $deficienciasSelecionadas = array();
+            $deficienciasIncideMultiplas = [101, 102, 103, 104, 105, 106, 107];
+            $deficienciasSelecionadas = [];
 
             $sWhere = "ed310_rechumano = {$oParam->iRecursoHumano}";
             $oDaoRecursoHumanoNecessidade->excluir(null, $sWhere);
@@ -105,24 +105,24 @@ try {
                 throw new ParameterException("Profissional não informado.");
             }
 
-            $oRetorno->aAtividades = array();
+            $oRetorno->aAtividades = [];
             $oProfissionalEscola = ProfissionalEscolaRepository::getByCodigo($oParam->iProfissionalEscola);
 
             foreach ($oProfissionalEscola->getAtividades() as $oAtividadeProfissionalEscola) {
 
                 $oDadosAtividade = new stdClass();
                 $oDadosAtividade->iCodigo = $oAtividadeProfissionalEscola->getAtividadeEscolar()->getCodigo();
-                $oDadosAtividade->sDescricao = urlencode($oAtividadeProfissionalEscola->getAtividadeEscolar()->getDescricao());
+                $oDadosAtividade->sDescricao = urlencode((string) $oAtividadeProfissionalEscola->getAtividadeEscolar()->getDescricao());
 
                 $oRetorno->aAtividades[] = $oDadosAtividade;
             }
 
             break;
     }
-} catch (Exception $oErro) {
+} catch (Exception) {
 
     $oRetorno->status = 2;
-    $oRetorno->message = urlencode($eErro->getMessage());
+    $oRetorno->message = urlencode((string) $eErro->getMessage());
     $oRetorno->erro = true;
 
     db_fim_transacao(true);

@@ -46,9 +46,9 @@ db_app::import("educacao.*");
 $oDaoRegenciaHorario = db_utils::getDao("regenciahorario");
 $oGet                = db_utils::postMemory($_GET);
 
-$aCodigoTurmas = explode(",", $oGet->aTurmas);
+$aCodigoTurmas = explode(",", (string) $oGet->aTurmas);
 
-$aTurmaAlunos  = array();
+$aTurmaAlunos  = [];
 
 foreach ($aCodigoTurmas as $iCodigoTurma) {
   
@@ -73,7 +73,7 @@ foreach ($aTurmaAlunos as $oTurma) {
   $iAlturaAluno           = 40;
   $iSalto                 = 2;
   $iLinhasImpressas       = 0;
-  $aListaImagens          = array();
+  $aListaImagens          = [];
   $aAlunosMatriculados    = $oTurma->getAlunosMatriculados();
   
     

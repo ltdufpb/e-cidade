@@ -108,7 +108,7 @@ if(isset($opcao) && $opcao=="alterar"){
   $campos = "ed223_i_codigo,
              ed218_c_nome as ed223_i_regimemat,
              ed219_c_nome as ed223_i_regimematdiv";
-  $chavepri= array("ed223_i_codigo"=>@$ed223_i_codigo);
+  $chavepri= ["ed223_i_codigo"=>@$ed223_i_codigo];
   $cliframe_alterar_excluir->chavepri=$chavepri;
   $cliframe_alterar_excluir->sql = $clserieregimemat->sql_query("",$campos,"ed223_i_ordenacao,ed223_i_codigo"," ed223_i_serie = $ed223_i_serie");
   $cliframe_alterar_excluir->campos  ="ed223_i_codigo,ed223_i_regimemat,ed223_i_regimematdiv";

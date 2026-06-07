@@ -53,7 +53,7 @@ class empenho
 
     private $anousu           = null;
 
-    public $aItensAnulados   = array();
+    public $aItensAnulados   = [];
 
     private $lRecriarReserva  = false;
 
@@ -86,7 +86,7 @@ class empenho
 
     private $log = [];
 
-    function empenho()
+    function __construct()
     {
 
         if (!class_exists("cl_empempenho")) {
@@ -286,11 +286,11 @@ class empenho
         $isPrecatoria        = $oEmpenhoFinanceiro->isPrecatoria();
 
         $iAnoSessao = db_getsession("DB_anousu");
-        $documentosLancamentoControle = array(
+        $documentosLancamentoControle = [
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MAT_ALMOX
-        );
+        ];
         $lPossuiControleEmLiqudacao = self::possuiLancamentoDeControle($numemp, $iAnoSessao, $documentosLancamentoControle);
         if ($e60_anousu < db_getsession("DB_anousu")) {
             $codteste = HistoricoDocumento::LIQUIDACAO_RP;
@@ -309,7 +309,7 @@ class empenho
 
         $sql    = "select fc_verifica_lancamento(" . $numemp . ",'" . date("Y-m-d", db_getsession("DB_datausu")) . "',". $codteste . "," . $valor . ")";
         $result = db_query($sql);
-        $status = pg_result($result, 0, 0);
+        $status = pg_fetch_result($result, 0, 0);
         if (substr($status, 0, 2) > 0) {
             $this->erro_msg    = substr($status, 3);
             $this->erro_status = '0';
@@ -396,9 +396,9 @@ class empenho
                      */
                     $lControleVerificacaoRP = false;
                     if (UTILIZA_INCORPORACAO_BEM) {
-                        $documentosVerificacaoRP = array(
+                        $documentosVerificacaoRP = [
                             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO
-                        );
+                        ];
                         $lPossuiDocumentoVerificacaoRP = self::possuiLancamentoDeControle($numemp, null, $documentosVerificacaoRP);
                         if ($lPossuiDocumentoVerificacaoRP) {
                             $lControleVerificacaoRP = true;
@@ -734,7 +734,7 @@ class empenho
 
         $sql    = "select fc_verifica_lancamento(" . $numemp . ",'" . date("Y-m-d", db_getsession("DB_datausu")) . "'," . $codteste . "," . $valor . ") as teste";
         $result = db_query($sql);
-        $status = pg_result($result, 0, "teste");
+        $status = pg_fetch_result($result, 0, "teste");
         if (substr($status, 0, 2) > 0) {
             $this->erro_msg    = "Validação (codigo: fc_verifica_lançamento) " . substr($status, 3);
             $this->erro_status = '0';
@@ -833,10 +833,10 @@ class empenho
         }
         $documento = null;
         if ($this->anousu == $oEmpenho->e60_anousu) {
-            if (substr($oEmpenho->o56_elemento, 0, 2) == '33') {
+            if (str_starts_with((string) $oEmpenho->o56_elemento, '33')) {
                 $documento = HistoricoDocumento::ANULACAO_LIQUIDACAO;
             } else {
-                if (substr($oEmpenho->o56_elemento, 0, 2) == '34') {
+                if (str_starts_with((string) $oEmpenho->o56_elemento, '34')) {
                     $documento = HistoricoDocumento::ANULACAO_LIQUIDACAO_CAPITAL;
                 }
             }
@@ -884,17 +884,17 @@ class empenho
                 }
             }
 
-            $documentosQueNaoPodemSerSobreescritos = array(
+            $documentosQueNaoPodemSerSobreescritos = [
                 HistoricoDocumento::ANULACAO_LIQUIDACAO_CAPITAL,
                 HistoricoDocumento::ESTORNO_LIQUIDACAO_SUPRIMENTO_FUNDOS,
                 HistoricoDocumento::ESTORNO_LIQUIDACAO_PROVISAO_13_SALARIO,
                 HistoricoDocumento::ESTORNO_LIQUIDACAO_PROVISAO_FERIAS,
                 HistoricoDocumento::ESTORNO_LIQUIDACAO_PRECATORIOS,
                 HistoricoDocumento::ESTORNO_LIQUIDACAO_AMORT_DIVIDA,
-            );
+            ];
             $documentoPodeSerReescrito = !in_array($documento, $documentosQueNaoPodemSerSobreescritos);
             $lPossuiDocumentoControle = cl_translan::possuiLancamentoDeControle($oEmpenhoFinanceiro->getNumero());
-            $aDocumentosControleLiquidacao = array(HistoricoDocumento::ESTORNO_LIQUIDACAO_DESPESA_COM_SERVICOS, HistoricoDocumento::ESTORNO_LIQ_DESPESA_MATERIAL_CONSUMO);
+            $aDocumentosControleLiquidacao = [HistoricoDocumento::ESTORNO_LIQUIDACAO_DESPESA_COM_SERVICOS, HistoricoDocumento::ESTORNO_LIQ_DESPESA_MATERIAL_CONSUMO];
             if ((!$lPossuiDocumentoControle && self::ordemCompraAutomatica($codnota) && $documentoPodeSerReescrito)
             ) {
                 $documento = HistoricoDocumento::ANULACAO_LIQUIDACAO;
@@ -912,9 +912,9 @@ class empenho
                  */
                 $lControleVerificacaoRP = false;
                 if (UTILIZA_INCORPORACAO_BEM) {
-                    $documentosVerificacaoRP = array(
+                    $documentosVerificacaoRP = [
                         HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO
-                    );
+                    ];
                     $lPossuiDocumentoVerificacaoRP = self::possuiLancamentoDeControle($numemp, null, $documentosVerificacaoRP);
                     if ($lPossuiDocumentoVerificacaoRP) {
                         $lControleVerificacaoRP = true;
@@ -1098,7 +1098,7 @@ class empenho
      *  gera registros como se fosse ordem de pagamento (OP)
      *
      */
-    private function lancaOP($numemp = "", $codele = "", $codnota = "", $valor = "", $retencoes = "", $historico)
+    private function lancaOP($numemp = "", $codele = "", $codnota = "", $valor = "", $retencoes = "", $historico = null)
     {
 
         if ($numemp == "" || $codele == "" || $codnota == "" || $valor == "") {
@@ -1227,7 +1227,7 @@ class empenho
      *
      */
 
-    function estornaOP($numemp = "", $codele = "", $codnota = "", $valor = "", $retencoes = "", $historico)
+    function estornaOP($numemp = "", $codele = "", $codnota = "", $valor = "", $retencoes = "", $historico = null)
     {
 
         if ($numemp == "" || $codele == "" || $codnota == "" || $valor == "") {
@@ -1370,7 +1370,7 @@ class empenho
     {
 
         $objNota = new cl_empnota();
-        if (trim($sWhere) != '') {
+        if (trim((string) $sWhere) != '') {
             $sWhere = " and $sWhere";
         }
 
@@ -1437,7 +1437,7 @@ class empenho
         $sSqlItensNota .= "  where e72_codnota = {$iCodNota}";
 
         $rsNota     = $oNota->sql_record($sSqlItensNota);
-        $aItensNota = array();
+        $aItensNota = [];
 
         if ($rsNota) {
             for ($iInd = 0; $iInd < $oNota->numrows; $iInd++) {
@@ -1457,7 +1457,7 @@ class empenho
      * @param array $aItensPendentesPatrimonio
      * @return string json
      */
-    function empenho2Json($sWhere = '', $itens = 0, $aItensPendentesPatrimonio = array())
+    function empenho2Json($sWhere = '', $itens = 0, $aItensPendentesPatrimonio = [])
     {
 
         if (!class_exists("services_json")) {
@@ -1481,8 +1481,8 @@ class empenho
         $elemento = '';
         $subelemento = '';
         if ($desdobramento) {
-            $elemento = substr($desdobramento->o56_elemento, 5, 2);
-            $subelemento = substr($desdobramento->o56_elemento, 7, 2);
+            $elemento = substr((string) $desdobramento->o56_elemento, 5, 2);
+            $subelemento = substr((string) $desdobramento->o56_elemento, 7, 2);
         }
 
         $outrosDados = null;
@@ -1505,25 +1505,25 @@ class empenho
 
             if (pg_num_rows($rsDados) > 0) {
                 $oDados = db_utils::fieldsmemory($rsDados, 0);
-                $outrosDados = json_decode($oDados->e171_dados, true);
+                $outrosDados = json_decode((string) $oDados->e171_dados, true);
             }
 
             $tipo = new TiposNotasParaiba();
             $tiposNotas = $tipo->getTiposNotasSegundoRegras($cgnFisico, $elemento, $subelemento);
             foreach ($tiposNotas as $key => $tipo) {
-                $tiposNotas[$key]['label'] = urlencode($tipo['label']);
+                $tiposNotas[$key]['label'] = urlencode((string) $tipo['label']);
             }
 
             /**
              * Implementação provisória para Paraiba apenas até implementar o empenho automático da folha
              */
             // se o terceiro
-            $isEmpenhoFolha = substr($desdobramento->o56_elemento, 2, 1) == 1;
+            $isEmpenhoFolha = substr((string) $desdobramento->o56_elemento, 2, 1) == 1;
             $necessitaCodigoAgrupamento = in_array(
-                substr($desdobramento->o56_elemento, 5, 2),
+                substr((string) $desdobramento->o56_elemento, 5, 2),
                 ['01','03','04','05','11','16','34']
-            ) || (substr($desdobramento->o56_elemento, 5, 2) == '08'
-                    && substr($desdobramento->o56_elemento, 7, 1) == '0');
+            ) || (substr((string) $desdobramento->o56_elemento, 5, 2) == '08'
+                    && substr((string) $desdobramento->o56_elemento, 7, 1) == '0');
         }
 
         if ($this->getDados($this->numemp, $sWhere)) {
@@ -1591,14 +1591,14 @@ class empenho
             }
             $strJson["z01_nome"]   = $this->dadosEmpenho->z01_nome;
             $strJson["o58_codigo"] = $this->dadosEmpenho->o58_codigo;
-            $strJson["o15_descr"]  = trim($this->dadosEmpenho->o15_descr);
-            $strJson["e60_vlremp"] = trim(db_formatar($this->dadosEmpenho->e60_vlremp, "f"));
-            $strJson["e60_vlrliq"] = trim(db_formatar($this->dadosEmpenho->e60_vlrliq, "f"));
-            $strJson["e60_vlrpag"] = trim(db_formatar($this->dadosEmpenho->e60_vlrpag, "f"));
-            $strJson["e60_vlranu"] = trim(db_formatar($this->dadosEmpenho->e60_vlranu, "f"));
+            $strJson["o15_descr"]  = trim((string) $this->dadosEmpenho->o15_descr);
+            $strJson["e60_vlremp"] = trim((string) db_formatar($this->dadosEmpenho->e60_vlremp, "f"));
+            $strJson["e60_vlrliq"] = trim((string) db_formatar($this->dadosEmpenho->e60_vlrliq, "f"));
+            $strJson["e60_vlrpag"] = trim((string) db_formatar($this->dadosEmpenho->e60_vlrpag, "f"));
+            $strJson["e60_vlranu"] = trim((string) db_formatar($this->dadosEmpenho->e60_vlranu, "f"));
             $strJson["numnotas"]   = "0";
             if ($this->operacao == 1) {
-                $strJson["saldo_dis"] = trim(db_formatar(
+                $strJson["saldo_dis"] = trim((string) db_formatar(
                     $this->dadosEmpenho->e60_vlremp - $this->dadosEmpenho->e60_vlranu
                     - $this->dadosEmpenho->e60_vlrliq,
                     "f"
@@ -1619,7 +1619,7 @@ class empenho
                 if (pg_num_rows($rsOrdem) == 1) {
                     $objOrdem = db_utils::fieldsMemory($rsOrdem, 0);
 
-                    $strJson["saldo_dis"] = trim(db_formatar(
+                    $strJson["saldo_dis"] = trim((string) db_formatar(
                         $objOrdem->e53_valor - $objOrdem->e53_vlranu - $objOrdem->e53_vlrpag,
                         "f"
                     ));
@@ -1640,7 +1640,7 @@ class empenho
 
                             if (count($aParcelasNotaLiquidacao) > 0) {
                                 $oUltimaParcelaNotaLiquidacao = (object) $aParcelasNotaLiquidacao[0];
-                                $sMesCompetencia = str_pad($oUltimaParcelaNotaLiquidacao->k118_mes, 2, '0', STR_PAD_LEFT);
+                                $sMesCompetencia = str_pad((string) $oUltimaParcelaNotaLiquidacao->k118_mes, 2, '0', STR_PAD_LEFT);
                                 $sCompetencia    = "{$sMesCompetencia}/{$oUltimaParcelaNotaLiquidacao->k118_ano}";
                             }
 
@@ -1693,22 +1693,22 @@ class empenho
                                 $iCodMov =$objNotas->e82_codmov;
                             }
 
-                            $strJson["data"][] = array(
-                              "e69_codnota" => $objNotas->e69_codnota, "e69_numero" => urlencode($objNotas->e69_numero),
+                            $strJson["data"][] = [
+                              "e69_codnota" => $objNotas->e69_codnota, "e69_numero" => urlencode((string) $objNotas->e69_numero),
                               "e69_anousu" => $objNotas->e69_anousu, "e50_anousu" => $objNotas->e50_anousu,
                               "e69_dtnota" => db_formatar($objNotas->e69_dtnota, "d"),
-                              "e70_vlranu" => trim(db_formatar($objNotas->e70_vlranu, "f")),
-                              "e70_vlrliq" => trim(db_formatar($objNotas->e70_vlrliq, "f")),
-                              "e70_valor" => trim(db_formatar($objNotas->e70_valor, "f")),
-                              "e53_vlrpag" => trim(db_formatar($objNotas->e53_vlrpag, "f")),
-                              "vlrretencao" => trim(db_formatar($objNotas->vlrretencao, "f")), "e50_codord" => $objNotas->e50_codord,
+                              "e70_vlranu" => trim((string) db_formatar($objNotas->e70_vlranu, "f")),
+                              "e70_vlrliq" => trim((string) db_formatar($objNotas->e70_vlrliq, "f")),
+                              "e70_valor" => trim((string) db_formatar($objNotas->e70_valor, "f")),
+                              "e53_vlrpag" => trim((string) db_formatar($objNotas->e53_vlrpag, "f")),
+                              "vlrretencao" => trim((string) db_formatar($objNotas->vlrretencao, "f")), "e50_codord" => $objNotas->e50_codord,
                               "sInfoAgenda" => urlencode($sStrNotas), "libera" => $checked,
                               "competencia" => $sCompetencia,
                               "elemento" => $objItens->elemento,
                               "unidade" => $objItens->descricao_unidade_item,
-                              "resumo" => urlencode($objItens->resumo_item),
+                              "resumo" => urlencode((string) $objItens->resumo_item),
                               "e82_codmov" => $iCodMov
-                            );
+                            ];
                         }//end for
                     }
                 }
@@ -1743,8 +1743,8 @@ class empenho
                                 $objItens = DB_UTILS::fieldsMemory($result, 0);
                             }
 
-                            $strJson["data"][] = array(
-                              "pc01_descrmater" => urlencode($objNotas->pc01_descrmater), "e62_sequen" => $objNotas->e62_sequen,
+                            $strJson["data"][] = [
+                              "pc01_descrmater" => urlencode((string) $objNotas->pc01_descrmater), "e62_sequen" => $objNotas->e62_sequen,
                               "e62_sequencial" => $objNotas->e62_sequencial, "saldo" => $objNotas->saldo,
                               "e62_vlrun" => $objNotas->e62_vlrun, "pc01_fraciona" => $objNotas->pc01_fraciona,
                               "pc01_servico" => $objNotas->pc01_servico, "saldodiferenca" => $objNotas->saldocentavos,
@@ -1752,8 +1752,8 @@ class empenho
                               "libera" => $checked,
                               "elemento" => $objItens->elemento,
                               "unidade" => $objItens->descricao_unidade_item,
-                              "resumo" => urlencode($objItens->resumo_item)
-                            );
+                              "resumo" => urlencode((string) $objItens->resumo_item)
+                            ];
                         }
                     }
                 }
@@ -1769,7 +1769,7 @@ class empenho
         /**
          * Retorno o código, mês e ano das parcelas referentes a um regime de competência de acordo, quando este existir
          */
-        $strJson["aParcelasRegimeCompetencia"] = array();
+        $strJson["aParcelasRegimeCompetencia"] = [];
         $icontrato =  $oEmpenhoFinanceiro->getCodigoContrato();
 
         if (!empty($icontrato)) {
@@ -1805,7 +1805,7 @@ class empenho
     function liquidarAjax($iEmpenho, $aNotas, $sHistorico = '')
     {
 
-        (boolean) $this->lSqlErro = false;
+        (bool) $this->lSqlErro = false;
         (string) $this->sMsgErro = false;
         if ($sHistorico == "") {
             $sHistorico = "S/Historico";
@@ -1865,7 +1865,7 @@ class empenho
                 $objNota = db_utils::fieldsMemory($this->getNotas($iEmpenho, "e69_codnota = " . $aNotas[$i]), 0);
 
                 //trata string
-                $sHistorico = addslashes(stripslashes($sHistorico));
+                $sHistorico = addslashes(stripslashes((string) $sHistorico));
 
                 $this->liquidar($iEmpenho, $objEmpElem->e64_codele, $objNota->e69_codnota, $objNota->e70_valor, $sHistorico);
                 if ($this->erro_status == "0") {
@@ -1884,14 +1884,14 @@ class empenho
 
         $objJson = new services_JSON();
         if ($this->lSqlErro) {
-            $retorno = array("erro" => 2, "mensagem" => urlencode($this->sMsgErro), "e50_codord");
+            $retorno = ["erro" => 2, "mensagem" => urlencode((string) $this->sMsgErro), "e50_codord"];
         } else {
             $total = 0;
             if ($totalLiquidado == $this->dadosEmpenho->e60_vlremp) {
                 $total = 1;
             }
 
-            $retorno = array("erro" => 1, "mensagem" => "OK", "total" => $total, "sOrdensGeradas" => $sNotas);
+            $retorno = ["erro" => 1, "mensagem" => "OK", "total" => $total, "sOrdensGeradas" => $sNotas];
         }
 
         return $objJson->encode($retorno);
@@ -1908,10 +1908,10 @@ class empenho
      *
      * @return boolean;
      */
-    function estornarLiquidacaoAJAX($iEmpenho, $aNotas, $sHistorico = '', $lTransacao = true, $aCompetenciaNotas = array())
+    function estornarLiquidacaoAJAX($iEmpenho, $aNotas, $sHistorico = '', $lTransacao = true, $aCompetenciaNotas = [])
     {
 
-        (boolean) $this->lSqlErro = false;
+        (bool) $this->lSqlErro = false;
         (string) $this->sMsgErro = false;
         if ($sHistorico == "") {
             $sHistorico = "S/Historico";
@@ -1949,7 +1949,7 @@ class empenho
             }
             (float) $totalLiquidado = 0;
             for ($i = 0; $i < count($aNotas); $i++) {
-                if (count($aCompetenciaNotas) > 0 && array_key_exists($aNotas[$i], $aCompetenciaNotas)) {
+                if (count($aCompetenciaNotas) > 0 && array_key_exists((string) $aNotas[$i], $aCompetenciaNotas)) {
                     $this->setCompetenciaLiquidacao($aCompetenciaNotas[$aNotas[$i]]->sCompetencia);
                 }
 
@@ -2080,15 +2080,15 @@ class empenho
         $objJson = new services_JSON();
         if ($this->lSqlErro) {
             if ($lTransacao) {
-                $this->sMsgErro = urlencode($this->sMsgErro);
+                $this->sMsgErro = urlencode((string) $this->sMsgErro);
             }
-            $retorno = array("erro" => 2, "mensagem" => $this->sMsgErro);
+            $retorno = ["erro" => 2, "mensagem" => $this->sMsgErro];
         } else {
             $total = 0;
             if ($totalLiquidado == $this->dadosEmpenho->e60_vlremp) {
                 $total = 1;
             }
-            $retorno = array("erro" => 1, "mensagem" => "OK", "total" => $total);
+            $retorno = ["erro" => 1, "mensagem" => "OK", "total" => $total];
         }
 
         return $objJson->encode($retorno);
@@ -2167,7 +2167,7 @@ class empenho
         if ($dDataNota == null) {
             $e69_dtnota = date("Y-m-d", db_getsession("DB_datausu"));
         } else {
-            $dtaux = explode("/", $dDataNota);
+            $dtaux = explode("/", (string) $dDataNota);
             if (count($dtaux) != 3) {
                 $this->lSqlErro = true;
                 $this->sMsgErro = "Argumento [dDataNota] não é uma data válida.";
@@ -2229,16 +2229,16 @@ class empenho
          */
 
         require_once(modification("std/db_stdClass.php"));
-        $aParamKeys          = array(
+        $aParamKeys          = [
           db_getsession("DB_anousu")
-        );
+        ];
         $aParametrosCustos   = db_stdClass::getParametro("parcustos", $aParamKeys);
         $iTipoControleCustos = 0;
         if (count($aParametrosCustos) > 0) {
             $iTipoControleCustos = $aParametrosCustos[0]->cc09_tipocontrole;
         }
         if ($iTipoControleCustos > 1) {
-            $aData = explode("-", $this->datausu);
+            $aData = explode("-", (string) $this->datausu);
             require_once(modification('model/custoPlanilha.model.php'));
             $oPlanilha = new custoPlanilha($aData[1], $aData[0]);
             if ($oPlanilha->getSituacao() == 2) {
@@ -2353,9 +2353,9 @@ class empenho
         if (!$this->lSqlErro) {
             require_once(modification("std/db_stdClass.php"));
             $iControlaPit   = 2;
-            $aParamKeys     = array(
+            $aParamKeys     = [
               db_getsession("DB_instit")
-            );
+            ];
             $aParametrosPit = db_stdClass::getParametro("matparaminstit", $aParamKeys);
             if (count($aParametrosPit) > 0) {
                 $iControlaPit = $aParametrosPit[0]->m10_controlapit;
@@ -2497,12 +2497,12 @@ class empenho
         }
         $objJson = new services_JSON();
         if ($this->lSqlErro) {
-            $retorno = array("erro" => 2, "mensagem" => urlencode($this->sMsgErro), "e50_codord" => null);
+            $retorno = ["erro" => 2, "mensagem" => urlencode((string) $this->sMsgErro), "e50_codord" => null];
         } else {
-            $retorno = array(
+            $retorno = [
               "erro" => 1, "mensagem" => "OK", "e50_codord" => $this->iPagOrdem, "iCodMov" => $this->getCodigoMovimento(),
               "iCodNota" => $objEmpNota->e69_codnota
-            );
+            ];
         }
 
         return $objJson->encode($retorno);
@@ -2530,7 +2530,7 @@ class empenho
         $sSQLAnulados .= "   and e35_situacao = 1";
         $sSQLAnulados .= " order by e62_sequen";
         $rsAnulados           = $clempsolicitaanulitem->sql_record($sSQLAnulados);
-        $this->aItensAnulados = array();
+        $this->aItensAnulados = [];
         if ($clempsolicitaanulitem->numrows > 0) {
             for ($i = 0; $i < $clempsolicitaanulitem->numrows; $i++) {
                 $oAnulados              = db_utils::fieldsMemory($rsAnulados, $i, false, false, true);
@@ -2552,7 +2552,7 @@ class empenho
         $nValorAnular = 0,
         $sMotivo = null,
         $aSolicitacoes = null,
-        $iTipoAnulacao,
+        $iTipoAnulacao = null,
         $lTransacao = true
     ) {
 
@@ -2563,7 +2563,7 @@ class empenho
             return false;
         }
         $lControlePacto       = false;
-        $aParametrosOrcamento = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+        $aParametrosOrcamento = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
         if (count($aParametrosOrcamento) > 0) {
             if (isset($aParametrosOrcamento[0]->o50_utilizapacto)) {
                 $lControlePacto = $aParametrosOrcamento[0]->o50_utilizapacto == "t" ? true : false;
@@ -2585,8 +2585,8 @@ class empenho
             $this->lSqlErro = true;
 
             $this->sErroMsg = "Erro [2]: Não Existe saldo a anular no empenho!\nSaldo disponivel: R$ "
-              . trim(db_formatar($nSaldoEmpenho, 'f'));
-            $this->sErroMsg .= "\nValor Solicitado para anulação: R$ " . trim(db_formatar($nValorAnular, 'f'));
+              . trim((string) db_formatar($nSaldoEmpenho, 'f'));
+            $this->sErroMsg .= "\nValor Solicitado para anulação: R$ " . trim((string) db_formatar($nValorAnular, 'f'));
 
             return false;
         }
@@ -2598,7 +2598,7 @@ class empenho
         ));
         $oElemento      = db_utils::fieldsMemory($rsEmpElemento, 0);
         $nTotalElemento = $oElemento->e64_vlranu + $nValorAnular;
-        if (bccomp($nTotalElemento, $oElemento->e64_vlremp) > 0) { // if $tot > $e64_vlremp
+        if (bccomp($nTotalElemento, (string) $oElemento->e64_vlremp) > 0) { // if $tot > $e64_vlremp
             $this->lSqlErro = true;
             $this->sErroMsg = "Erro[12](Sem saldo no elemento para anular\nNão pode anular o valor digitado para o elemento $elemento do empenho. Verifique!";
 
@@ -2687,8 +2687,8 @@ class empenho
         $sSqlVerificacao .= date("Y-m-d", db_getsession("DB_datausu")) . "',{$iCodigoDocumento}," . round($nValorAnular, 2)
           . ") as verificacao";
         $oVerificacao = db_utils::fieldsMemory($this->clempempenho->sql_record($sSqlVerificacao), 0);
-        if (substr($oVerificacao->verificacao, 0, 2) > 0) {
-            $this->sErroMsg = substr($oVerificacao->verificacao, 3);
+        if (substr((string) $oVerificacao->verificacao, 0, 2) > 0) {
+            $this->sErroMsg = substr((string) $oVerificacao->verificacao, 3);
             $this->lSqlErro = true;
 
             return false;
@@ -2973,11 +2973,11 @@ class empenho
                                                            {$iCodigoDocumento},
                                                            {$nValorAnular}) as dotacao");
                     $oFcLancam  = db_utils::fieldsMemory($rsFcLancam, 0);
-                    if (substr($oFcLancam->dotacao, 0, 1)
+                    if (substr((string) $oFcLancam->dotacao, 0, 1)
                       == 0
                     ) { //quando o primeiro caractere for igual a zero eh porque deu erro
                         $this->lSqlErro = true;
-                        $this->sErroMsg = "Erro [16]:Erro na atualização do orçamento \\n " . substr($dotacao, 1);
+                        $this->sErroMsg = "Erro [16]:Erro na atualização do orçamento \\n " . substr((string) $dotacao, 1);
                     }
                 }
 
@@ -3123,7 +3123,7 @@ class empenho
         }
 
         if ($lTransacao) {
-            $this->sMsgErro = urlencode($this->sMsgErro);
+            $this->sMsgErro = urlencode((string) $this->sMsgErro);
             db_fim_transacao($this->lSqlErro);
         }
 
@@ -3156,7 +3156,7 @@ class empenho
                 $rsNotas              = $this->getNotas($this->numemp, "e50_anousu < {$this->anousu}", false);
                 $nValorProcessado     = 0;
                 $nValorProcessadoNota = 0;
-                $aNotasProcessadas    = array();
+                $aNotasProcessadas    = [];
                 if ($this->iNumRowsNotas > 0) {
                     for ($iInd = 0; $iInd < $this->iNumRowsNotas; $iInd++) {
                         $oEmpNota             = db_utils::fieldsMemory($rsNotas, $iInd, false, false, $this->getEncode());
@@ -3182,8 +3182,8 @@ class empenho
                 $nValorNaoProcessado     = $this->dadosEmpenho->e60_vlremp - $this->dadosEmpenho->e60_vlrliq
                   - $this->dadosEmpenho->e60_vlranu;
                 $nValorNaoProcessadoNota = 0;
-                $aNotasNaoProcessadas    = array();
-                $aItensNota              = array();
+                $aNotasNaoProcessadas    = [];
+                $aItensNota              = [];
                 if ($this->iNumRowsNotas > 0) {
                     for ($iInd = 0; $iInd < $this->iNumRowsNotas; $iInd++) {
                         $oEmpNota               = db_utils::fieldsMemory($rsNotas, $iInd, false, false, $this->getEncode());
@@ -3196,7 +3196,7 @@ class empenho
                 }
                 $this->dadosEmpenho->nValorProcessado = $nValorNaoProcessado;
                 $rsItens                              = $this->getItensSaldo();
-                $aItens                               = array();
+                $aItens                               = [];
                 //print_r($aItensNota);
                 if ($rsItens) {
                     for ($iInd = 0; $iInd < $this->iNumRowsItens; $iInd++) {
@@ -3222,7 +3222,7 @@ class empenho
     function estornarRP(
         $iTipo,
         $aNotas = null,
-        $nValorEstornado,
+        $nValorEstornado = null,
         $sMotivo = '',
         $aItens = null,
         $iTipoAnulacao = null
@@ -3292,7 +3292,7 @@ class empenho
             $sqlFcLancamento .= date("Y-m-d", db_getsession("DB_datausu")) . "',";
             $sqlFcLancamento .= "{$iCodDoc},{$nValorEstornado})";
             $rsFcLancamento    = db_query($sqlFcLancamento);
-            $sErroFclancamento = pg_result($rsFcLancamento, 0, 0);
+            $sErroFclancamento = pg_fetch_result($rsFcLancamento, 0, 0);
             if (substr($sErroFclancamento, 0, 2) > 0) {
                 $this->sErroMsg = substr($sErroFclancamento, 3);
                 $this->lSqlErro = true;
@@ -3645,7 +3645,7 @@ class empenho
         $iAnoUso        = db_getsession("DB_anousu");
         $iInstit        = db_getsession("DB_instit");
         $oDaoEmpempenho = db_utils::getDao("empempenho");
-        $aItens         = array();
+        $aItens         = [];
 
         $sCampos = "e60_numemp, e60_codemp, e60_anousu, e60_vlremp, e60_vlrliq, e60_vlranu, z01_cgccpf, e22_sequencial, ";
         $sCampos .= "z01_nome, e60_emiss, (round(e60_vlremp,2)-round(e60_vlranu,2)-round(e60_vlrpag,2)) as saldo,        ";
@@ -3659,15 +3659,15 @@ class empenho
         $sCampos .= "               inner join db_depart on ridepto = coddepto limit 1) as origem                        ";
 
         if (isset($oFiltro->codempini) && !empty($oFiltro->codempini)) {
-            $codempIni = split("/", $oFiltro->codempini);
+            $codempIni = preg_split("#\\/#m", (string) $oFiltro->codempini);
             if (isset($oFiltro->codempfim) && !empty($oFiltro->codempfim)) {
-                $codempFim = split("/", $oFiltro->codempfim);
+                $codempFim = preg_split("#\\/#m", (string) $oFiltro->codempfim);
                 $str       = "  ( ( e60_codemp::integer >= " . $codempIni[0]
                   . " and e60_anousu = {$iAnoUso} )                          ";
                 $str .= " and ( e60_codemp::integer <= " . $codempFim[0]
                   . " and e60_anousu = {$iAnoUso} ) )                      ";
             } else {
-                $codemp = split("/", $oFiltro->codempini);
+                $codemp = preg_split("#\\/#m", (string) $oFiltro->codempini);
                 if (count($codemp) > 1) {
                     $str = " e60_codemp = '" . $codemp[0] . "' and e60_anousu = " . $codemp[1] . " ";
                 } else {
@@ -3686,12 +3686,12 @@ class empenho
 
         if (isset($oFiltro->dtemissini) && isset($oFiltro->dtemissfim)) {
             if (!empty($oFiltro->dtemissini)) {
-                $dtDataIni = split("/", $oFiltro->dtemissini);
+                $dtDataIni = preg_split("#\\/#m", (string) $oFiltro->dtemissini);
                 $dtDataIni = $dtDataIni[2] . "-" . $dtDataIni[1] . "-" . $dtDataIni[0];
             }
 
             if (!empty($oFiltro->dtemissini)) {
-                $dtDataFim = split("/", $oFiltro->dtemissfim);
+                $dtDataFim = preg_split("#\\/#m", $oFiltro->dtemissfim);
                 $dtDataFim = $dtDataFim[2] . "-" . $dtDataFim[1] . "-" . $dtDataFim[0];
             }
 
@@ -3774,7 +3774,7 @@ class empenho
     function getLancamentosContabeis($sWhere = '')
     {
 
-        if (trim($sWhere) != "") {
+        if (trim((string) $sWhere) != "") {
             $sWhere = " and " . $sWhere;
         }
         $sSqlLancamentos = "select c70_codlan  as codigo,";
@@ -3826,7 +3826,7 @@ class empenho
             throw new Exception("Não há transação aberta.\nProcedimento Cancelado");
         }
 
-        $dtValidar = implode("-", array_reverse(explode("/", $dtNovaData)));
+        $dtValidar = implode("-", array_reverse(explode("/", (string) $dtNovaData)));
         /**
          * Verificamos se o lancamento informado é realmente do empenho
          */
@@ -3864,7 +3864,7 @@ class empenho
                  */
                 $aDataValidar    = explode("-", $dtValidar);
                 $iAnoNovaData    = $aDataValidar[0];
-                $aDataLancamento = explode("-", $oDadosLancamento->data);
+                $aDataLancamento = explode("-", (string) $oDadosLancamento->data);
                 $iAnoLancamento  = $aDataLancamento[0];
                 if ($iAnoNovaData != $iAnoLancamento) {
                     $sErroMensagem = "Não é permitido mudar o ano do lançamento.\n";
@@ -3949,7 +3949,7 @@ class empenho
                  */
                 $aDataValidar    = explode("-", $dtValidar);
                 $iAnoNovaData    = $aDataValidar[0];
-                $aDataLancamento = explode("-", $oDadosLancamento->data);
+                $aDataLancamento = explode("-", (string) $oDadosLancamento->data);
                 $iAnoLancamento  = $aDataLancamento[0];
                 if ($iAnoNovaData != $iAnoLancamento) {
                     $sErroMensagem = "Não é permitido mudar o ano do lançamento.\n";
@@ -4205,7 +4205,7 @@ class empenho
          */
         $sWhere               = " e33_pagordemdesconto = {$iCodigoDesconto}";
         $aLancamentosDesconto = $this->getLancamentosContabeis($sWhere);
-        $dtValidar            = implode("-", array_reverse(explode("/", $dtDataDesconto)));
+        $dtValidar            = implode("-", array_reverse(explode("/", (string) $dtDataDesconto)));
         /**
          * Verificamos se o lancamento informado é realmente do empenho
          */
@@ -4717,7 +4717,7 @@ class empenho
                 $sSQLOrdem .= " where m72_codnota = {$oDadosLancamento->codigonotafiscal}";
                 $sSQLOrdem .= "   and m51_tipo = 2";
                 $rOrdem        = db_query($sSQLOrdem);
-                $aCodigosOrdem = array();
+                $aCodigosOrdem = [];
                 if (pg_num_rows($rOrdem) > 0) {
                     if (!class_exists("cl_matordemanu")) {
                         require_once modification("classes/db_matordemanu_classe.php");
@@ -5356,7 +5356,7 @@ class empenho
         /**
          * Se houver retenção, não pode alterar a data do lançamento de pagamento ou estorno.
          */
-        if (in_array($iTipo, array(1, 2))) {
+        if (in_array($iTipo, [1, 2])) {
             if (ManutencaoRetencao::temRetencao($oDadosLancamento->codigo)) {
                 $msg = sprintf(
                     'O lançamento %s possui lançamentos de retenção. Não esqueça de altera-lo também.',
@@ -6082,14 +6082,14 @@ class empenho
      *
      * @return bool
      */
-    public static function possuiLancamentoDeControle($iNumeroEmpenho, $iAno = null, array $aDocumentos)
+    public static function possuiLancamentoDeControle($iNumeroEmpenho, $iAno = null, array $aDocumentos = [])
     {
 
         $sDocumentos = implode(',', $aDocumentos);
-        $aWhere      = array(
+        $aWhere      = [
           "c75_numemp  = {$iNumeroEmpenho}",
           "c71_coddoc in ({$sDocumentos})"
-        );
+        ];
         if (!empty($iAno)) {
             $aWhere[] = "c70_anousu = {$iAno}";
         }
@@ -6116,9 +6116,9 @@ class empenho
     public static function buscaUltimoDocumentoExecutado($iSequencialEmpenho, $iAno)
     {
 
-        $aWhere = array(
+        $aWhere = [
           "c75_numemp = {$iSequencialEmpenho}", "c70_anousu = {$iAno}"
-        );
+        ];
 
         $sOrdem             = " c70_codlan desc limit 1 ";
         $sWhere             = implode(" and ", $aWhere);
@@ -6171,14 +6171,14 @@ class empenho
     public static function getLiquidacaoPorControleLiquidacao($documento, $estorno = false)
     {
 
-        $deParaLiquidacao = array(
+        $deParaLiquidacao = [
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO           => HistoricoDocumento::LIQUIDACAO_DESPESA_COM_SERVICOS,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP        => HistoricoDocumento::LIQUIDACAO_AQUISICAO_MATERIAL_PERMANENTE,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MAT_ALMOX => HistoricoDocumento::LIQUIDACAO_DESPESA_MATERIAL_CONSUMO,
             HistoricoDocumento::REGISTRO_ENTRADA_MATERIAL_VIA_RP      => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP_RP     => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_RP        => HistoricoDocumento::LIQUIDACAO_RP_ESTOQUES_PATRIMONIO
-        );
+        ];
         if ($estorno) {
             $evento = EventoContabilRepository::getEventoContabilByCodigo($documento);
             return $evento->getEventoInverso()->getCodigoDocumento();
@@ -6247,7 +6247,7 @@ class empenho
         }
 
         $estrutural = db_utils::fieldsMemory($rsBuscaEstrutural, 0)->o56_elemento;
-        $substrElemento = substr($estrutural, 0, 2);
+        $substrElemento = substr((string) $estrutural, 0, 2);
         if ($substrElemento == '33') {
             $documento = HistoricoDocumento::LIQUIDACAO;
         }
@@ -6261,11 +6261,11 @@ class empenho
         $isAmortizacaoDivida = $oEmpenhoFinanceiro->isAmortizacaoDivida();
         $isPrecatoria        = $oEmpenhoFinanceiro->isPrecatoria();
 
-        $documentosLancamentoControle = array(
+        $documentosLancamentoControle = [
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MP,
             HistoricoDocumento::CONTROLE_DESPESA_LIQUIDACAO_MAT_ALMOX,
-        );
+        ];
         $lPossuiDocumentoControle = self::possuiLancamentoDeControle($oEmpenhoFinanceiro->getNumero(), $anoSessao, $documentosLancamentoControle);
 
         if ($oEmpenhoFinanceiro->isEmpenhoPassivo()) {
@@ -6317,20 +6317,20 @@ class empenho
             }
         }
 
-        $documentosLiquidacaoDespesa = array(
+        $documentosLiquidacaoDespesa = [
             HistoricoDocumento::LIQUIDACAO_DESPESA_COM_SERVICOS,
             HistoricoDocumento::LIQUIDACAO_DESPESA_MATERIAL_CONSUMO
-        );
+        ];
 
         $lLiquidacaoDespesa = in_array($documento, $documentosLiquidacaoDespesa);
-        $documentosQueNaoPodemSerSobreescritos = array(
+        $documentosQueNaoPodemSerSobreescritos = [
             HistoricoDocumento::LIQUIDACAO_DESPESA_CAPITAL,
             HistoricoDocumento::LIQUIDACAO_SUPRIMENTO_FUNDOS,
             HistoricoDocumento::LIQUIDACAO_PROVISAO_13_SALARIO,
             HistoricoDocumento::LIQUIDACAO_PROVISAO_FERIAS,
             HistoricoDocumento::LIQUIDACAO_PRECATORIOS,
             HistoricoDocumento::LIQUIDACAO_AMORT_DIVIDA,
-        );
+        ];
         $documentoPodeSerReescrito = !in_array($documento, $documentosQueNaoPodemSerSobreescritos);
         if ((!$lPossuiDocumentoControle && self::ordemCompraAutomatica($codigoNota) && $documentoPodeSerReescrito)
         ) {

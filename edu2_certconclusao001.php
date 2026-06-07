@@ -236,7 +236,7 @@ if ( $rsEduParametros && pg_num_rows( $rsEduParametros ) > 0 ) {
     <tr>
     <td colspan = '3'>
     <table> <!-- tabela  dos selects-->
-    <tr id='alunoHistorico' style="display: <?=isset( $sOcultaAluno ) ? $sOcultaAluno : ""?>" >
+    <tr id='alunoHistorico' style="display: <?=$sOcultaAluno ?? ""?>" >
       <td>
         <label for="aluno"><b>Aluno:</b></label>
       </td>

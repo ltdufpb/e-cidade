@@ -46,20 +46,11 @@ try {
   $oPdf->SetMargins(10, 10);
   $oPdf->SetAutoPageBreak(true, 10);
 
-  switch ($oGet->iModelo) {
-
-    case 1:
-
-      $oModelo = new RelatorioProfessorEscolaSintetico($oPdf, $oGet->escola, $somenteServidoresAtivos, $oGet->area, $oGet->iTipoHora);
-      break;
-    case 2:
-
-      $oModelo = new RelatorioProfessorEscolaAnalitico($oPdf, $oGet->escola, $somenteServidoresAtivos, $oGet->area, $oGet->iTipoHora, $somenteServidoresAtivos);
-      break;
-    default:
-      throw new Exception( _M ( RelatorioProfessorEscola::MSG_RELATORIOPROFESSORESCOLA . "impossivel_localizar_modelo") );
-      break;
-  }
+  $oModelo = match ($oGet->iModelo) {
+      1 => new RelatorioProfessorEscolaSintetico($oPdf, $oGet->escola, $somenteServidoresAtivos, $oGet->area, $oGet->iTipoHora),
+      2 => new RelatorioProfessorEscolaAnalitico($oPdf, $oGet->escola, $somenteServidoresAtivos, $oGet->area, $oGet->iTipoHora, $somenteServidoresAtivos),
+      default => throw new Exception( _M ( RelatorioProfessorEscola::MSG_RELATORIOPROFESSORESCOLA . "impossivel_localizar_modelo") ),
+  };
   $oModelo->setTipoTotalizador($oGet->iTotalizador);
   $oModelo->setMostrarDisciplinas($lMostrarDisciplinas);
   $oModelo->setSomenteServidoresAtivos($somenteServidoresAtivos);

@@ -44,11 +44,6 @@ class DocumentoEventoLicitacao {
   /**
    * @var integer
    */
-  private $iCodigo;
-
-  /**
-   * @var integer
-   */
   private $iCodigoEvento;
 
   /**
@@ -161,9 +156,7 @@ class DocumentoEventoLicitacao {
    * @throws DBException
    * @param integer $iCodigo Código do Arquivo
    */
-  public function __construct($iCodigo = null) {
-
-    $this->iCodigo = $iCodigo;
+  public function __construct(private $iCodigo = null) {
 
     if ($this->iCodigo !== null) {
 
@@ -248,7 +241,7 @@ class DocumentoEventoLicitacao {
       }
       
       $rsValidaExistencia = db_query($sSqlValidaExistencia);
-      if(pg_numrows($rsValidaExistencia) > 0) {
+      if(pg_num_rows($rsValidaExistencia) > 0) {
           
         throw new FileException("O arquivo já Existe no Cadastro. Renomeie o Arquivo.");           
       }

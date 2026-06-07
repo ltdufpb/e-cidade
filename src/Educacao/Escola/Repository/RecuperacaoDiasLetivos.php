@@ -45,6 +45,7 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
      * @var RecuperacaoDiasLetivos
      * @access protected
      */
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -88,19 +89,19 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
             $dados = new \stdClass();
             $dados->data = $retorno->data;
             $dados->identificador = $retorno->identificador;
-            $dados->disciplina = trim($retorno->descricao_disciplina);
-            $dados->descricaoTurma = trim($retorno->descricao_turma);
-            $dados->descricaoTurno = trim($retorno->descricao_turno);
-            $dados->regente = trim($retorno->nome_regente);
+            $dados->disciplina = trim((string) $retorno->descricao_disciplina);
+            $dados->descricaoTurma = trim((string) $retorno->descricao_turma);
+            $dados->descricaoTurno = trim((string) $retorno->descricao_turno);
+            $dados->regente = trim((string) $retorno->nome_regente);
             $dados->possui_falta_lancada = $retorno->possui_falta_lancada == 't';
             
-            $dados->regencias = explode(',', $retorno->codigos_regenciahorario);
+            $dados->regencias = explode(',', (string) $retorno->codigos_regenciahorario);
             $dados->regencias = array_unique($dados->regencias);
 
-            $dados->periodos = explode(',', $retorno->periodos);
+            $dados->periodos = explode(',', (string) $retorno->periodos);
             $dados->periodos = array_unique($dados->periodos);
 
-            $dados->codigosPeriodos = explode(',', $retorno->codigos_periodos);
+            $dados->codigosPeriodos = explode(',', (string) $retorno->codigos_periodos);
             $dados->codigosPeriodos = array_unique($dados->codigosPeriodos);
 
             sort($dados->periodos);
@@ -226,7 +227,7 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
 
         return \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
             $data = new \stdClass();
-            $data->descricao = urlencode($retorno->ed54_c_descr);
+            $data->descricao = urlencode((string) $retorno->ed54_c_descr);
             $data->diaSemana = $retorno->ed54_c_diasemana;
             $data->data = $retorno->ed54_d_data;
 

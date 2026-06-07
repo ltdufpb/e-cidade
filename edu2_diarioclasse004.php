@@ -66,7 +66,7 @@ $sResultParametros   = $cledu_parametros->sql_record($sSqlParametros);
 if ($cledu_parametros->numrows>0) {
 
   db_fieldsmemory($sResultParametros,0);
-  if (!strstr($ed233_c_database,"/")) {
+  if (!strstr((string) $ed233_c_database,"/")) {
     ?>
     <table width='100%'>
      <tr>
@@ -74,7 +74,7 @@ if ($cledu_parametros->numrows>0) {
        <font color='#FF0000' face='arial'>
         <b>Parâmetro Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
          deve estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
-         Valor atual do parâmetro: <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
+         Valor atual do parâmetro: <?=trim((string) $ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
          <input type='button' value='Fechar' onclick='window.close()'>
        </font>
       </td>
@@ -83,7 +83,7 @@ if ($cledu_parametros->numrows>0) {
     <?php 
     exit;
   }
-  $database     = explode("/",$ed233_c_database);
+  $database     = explode("/",(string) $ed233_c_database);
   $dia_database = $database[0];
   $mes_database = $database[1];
   if (@!checkdate($mes_database,$dia_database,$ano_calendario)) {
@@ -132,7 +132,7 @@ if ($clregencia->numrows == 0) {
 $sCamposProcResultado  = " ed43_i_codigo,ed37_c_tipo as tipores,ed43_c_arredmedia as arredmedia,";
 $sCamposProcResultado .= " ed43_c_minimoaprov as minimoaprovres, ed43_c_obtencao as obtencao";
 $sWhereProcResultado   = " ed43_c_geraresultado = 'S' AND ";
-$sWhereProcResultado  .= " ed43_i_procedimento = ".pg_result($result,0,'ed220_i_procedimento')."";
+$sWhereProcResultado  .= " ed43_i_procedimento = ".pg_fetch_result($result,0,'ed220_i_procedimento')."";
 $sSqlProcResultado     = $clprocresultado->sql_query("",$sCamposProcResultado,"",$sWhereProcResultado);
 $sResultProcResultado  = $clprocresultado->sql_record($sSqlProcResultado);
 
@@ -250,7 +250,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
    $pdf->setfont('arial','b',7);
    for ($r = 0; $r < count($array_meses); $r++) {
 
-     $qtd_diasmes = explode(",",$array_meses[$r]);
+     $qtd_diasmes = explode(",",(string) $array_meses[$r]);
      $pdf->cell($larguraindiv*$qtd_diasmes[1],4,$qtd_diasmes[0],1,0,"C",0);
 
    }
@@ -272,7 +272,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
 
    for ($r = 0; $r < count($n_dias); $r++) {
 
-     $umdia = explode("-",$n_dias[$r]);
+     $umdia = explode("-",(string) $n_dias[$r]);
      $pdf->cell($larguraindiv,4,$umdia[0],1,0,"C",0);
 
    }
@@ -371,13 +371,13 @@ for ($x = 0; $x < $iLinhas; $x++) {
 
     } else {
 
-        if (trim($ed60_c_situacao) != "MATRICULADO") {
+        if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
 
         $pdf->setfont('arial','b',11);
 
-        $sSituacao = trim(Situacao($ed60_c_situacao,$ed60_i_codigo));
+        $sSituacao = trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo));
 
-        if ( trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+        if ( trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA" || trim((string) $ed60_c_situacao) == "TRANSFERIDO REDE") {
           $sSituacao = "TRANSFERIDO";
         }
 
@@ -419,7 +419,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
         $array_meses = DiasLetivos($ed53_d_inicio,$ed53_d_fim,$ed52_c_aulasabado,$ed52_i_codigo,3);
         for ($r = 0; $r < count($array_meses); $r++) {
 
-          $qtd_diasmes = explode(",",$array_meses[$r]);
+          $qtd_diasmes = explode(",",(string) $array_meses[$r]);
           $pdf->cell($larguraindiv*$qtd_diasmes[1],4,$qtd_diasmes[0],1,0,"C",0);
 
         }
@@ -441,7 +441,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
 
         for ($r = 0; $r < count($n_dias); $r++) {
 
-          $umdia = explode("-",$n_dias[$r]);
+          $umdia = explode("-",(string) $n_dias[$r]);
           $pdf->cell($larguraindiv,4,$umdia[0],1,0,"C",0);
 
         }
@@ -555,7 +555,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
     }
   }
 
-  $pdf->cell(10,4,substr($sTipo,0,5),1,0,"C",0);
+  $pdf->cell(10,4,substr((string) $sTipo,0,5),1,0,"C",0);
   $pdf->cell(5,4,"F",1,0,"C",0);
   if ($abono == "true") {
     $pdf->cell(5,4,"FA",1,0,"C",0);
@@ -671,17 +671,17 @@ for ($x = 0; $x < $iLinhas; $x++) {
       $cor = $cor1;
     }
 
-    if (trim($sTipo) == "NOTA") {
+    if (trim((string) $sTipo) == "NOTA") {
 
       $campoaval = "ed72_i_valornota is null";
       $campoaval2 = "ed72_i_valornota is not null";
 
-    } else if (trim($sTipo) == "NIVEL") {
+    } else if (trim((string) $sTipo) == "NIVEL") {
 
       $campoaval = "ed72_c_valorconceito = ''";
       $campoaval2 = "ed72_c_valorconceito != ''";
 
-    } else if (trim($sTipo) == "PARECER") {
+    } else if (trim((string) $sTipo) == "PARECER") {
 
       $campoaval = "ed72_t_parecer = '' ";
       $campoaval2 = "ed72_t_parecer != ''";
@@ -705,7 +705,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
 
     $pdf->setfont('arial','',8);
     $pdf->cell(5,4,$ed60_i_numaluno,1,0,"C",0);
-    $pdf->cell(40,4,substr($ed47_v_nome,0,20),1,0,"L",0);
+    $pdf->cell(40,4,substr((string) $ed47_v_nome,0,20),1,0,"L",0);
 
     if ($sexo == "true") {
       $pdf->cell(5,4,$ed47_v_sexo,1,0,"C",0);
@@ -717,12 +717,12 @@ for ($x = 0; $x < $iLinhas; $x++) {
     	$pdf->setfont('arial','',8);
       $pdf->cell(5,4,$idadealuno,1,0,"C",0);
     }
-    $inf_ant = explode("|",RFanterior($ed60_i_codigo));
+    $inf_ant = explode("|",(string) RFanterior($ed60_i_codigo));
     $rfant   = substr($inf_ant[1],0,1);
     if ($resultant == "true") {
       $pdf->cell(5,4,$rfant,1,0,"C",0);
     }
-    if (trim($ed60_c_situacao) == "MATRICULADO") {
+    if (trim((string) $ed60_c_situacao) == "MATRICULADO") {
 
       $sCamposDiario        = "ed37_c_minimoaprov as minperiodo,ed72_i_procavaliacao,ed72_c_valorconceito,";
   	  $sCamposDiario       .= " ed72_i_valornota,ed72_c_amparo,ed37_c_tipo,ed72_i_escola,ed72_c_tipo,";
@@ -774,7 +774,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
               $aprov = "";
             }
 
-            if (trim($ed37_c_tipo) == "NOTA" && $aprov < $minperiodo) {
+            if (trim((string) $ed37_c_tipo) == "NOTA" && $aprov < $minperiodo) {
 
               $pdf->setfont('arial','b',10);
               $pdf->cell(10,4,$NE.$aprov,1,0,"C",0);
@@ -832,9 +832,9 @@ for ($x = 0; $x < $iLinhas; $x++) {
       if ($permitenotaembranco == "S" && $iLinhasDiarioAva > 0
           && ($obtencao == "ME" || $obtencao == "MP" || $obtencao == "SO" )) {
 
-        if (trim($ed37_c_tipo) == "NOTA") {
+        if (trim((string) $ed37_c_tipo) == "NOTA") {
 
-          if (trim($obtencao) == "ME") {
+          if (trim((string) $obtencao) == "ME") {
 
      	    $sCamposDiarioAva  = "sum(ed72_i_valornota)/count(ed72_i_valornota) as aprvto,";
      	    $sCamposDiarioAva .=" ($minimoaprovres*(count(ed72_i_valornota)+1))-sum(ed72_i_valornota) as projetada";
@@ -873,7 +873,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
 
               }
             }
-          } else if (trim($obtencao) == "MP") {
+          } else if (trim((string) $obtencao) == "MP") {
 
      	    $sWhereAvalComp  = " ed44_i_procresultado = $ed43_i_codigo AND ed41_i_sequencia < $ed41_i_sequencia";
      	    $sSqlAvalComp    = $clavalcompoeres->sql_query("","sum(ed44_i_peso) as somapeso","",$sWhereAvalComp);
@@ -934,7 +934,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
                 }
               }
             }
-          } else if (trim($obtencao) == "SO") {
+          } else if (trim((string) $obtencao) == "SO") {
 
      	    $sCampos                = "sum(ed72_i_valornota) as aprvto, ";
      	    $sCampos               .= " $minimoaprovres-sum(ed72_i_valornota) as projetada";
@@ -970,7 +970,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
                 $notaprojetada = !empty( $projetada ) ? number_format($projetada,0) : "";
               }
             }
-          } else if (trim($obtencao) == "MN") {
+          } else if (trim((string) $obtencao) == "MN") {
 
      	    $sWhereDir  = " ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' ";
      	    $sWhereDir .= " AND ed72_i_valornota is not null  AND ed41_i_sequencia < $ed41_i_sequencia";
@@ -1002,7 +1002,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
                 $notaprojetada = !empty( $projetada ) ? number_format($projetada,0) : "";
               }
             }
-          } else if (trim($obtencao) == "UN") {
+          } else if (trim((string) $obtencao) == "UN") {
 
      	    $sCamposAvaliacao = "ed72_c_amparo as ultamparo,ed72_i_valornota as aprvto";
      	    $sWhereAvaliacao  = " ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo";
@@ -1037,8 +1037,8 @@ for ($x = 0; $x < $iLinhas; $x++) {
             }
           }
 
-          $resfinal      = trim($ed60_c_situacao)!="MATRICULADO"||$aprvto==""?"":$resfinal;
-          $notaprojetada = trim($ed60_c_situacao)!="MATRICULADO"||$projetada==""?"":$notaprojetada;
+          $resfinal      = trim((string) $ed60_c_situacao)!="MATRICULADO"||$aprvto==""?"":$resfinal;
+          $notaprojetada = trim((string) $ed60_c_situacao)!="MATRICULADO"||$projetada==""?"":$notaprojetada;
 
           if ($iLinhasDiarioAval == 0) {
 
@@ -1048,7 +1048,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
           }
           if (($priaval+2) <= $ed41_i_sequencia) {
 
-            if (trim($ed37_c_tipo) == "NOTA" && $resfinal < @$minimoaprovres) {
+            if (trim((string) $ed37_c_tipo) == "NOTA" && $resfinal < @$minimoaprovres) {
 
               $pdf->setfont('arial','b',10);
               $pdf->cell(10,4,$resfinal,1,0,"C",0);
@@ -1143,7 +1143,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
             $aprov_atual = "";
           }
 
-          if (trim($ed37_c_tipo) == "NOTA" && $aprov_atual < @$minimoaprovres) {
+          if (trim((string) $ed37_c_tipo) == "NOTA" && $aprov_atual < @$minimoaprovres) {
 
             $pdf->setfont('arial','b',10);
             $pdf->cell(10,4,$NE.$aprov_atual,1,0,"C",0);
@@ -1188,9 +1188,9 @@ for ($x = 0; $x < $iLinhas; $x++) {
       }
     } else {
 
-      $sSituacao = trim(Situacao($ed60_c_situacao,$ed60_i_codigo));
+      $sSituacao = trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo));
 
-      if ( trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+      if ( trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA" || trim((string) $ed60_c_situacao) == "TRANSFERIDO REDE") {
         $sSituacao = "TRANSFERIDO";
       }
 
@@ -1202,11 +1202,11 @@ for ($x = 0; $x < $iLinhas; $x++) {
       $pdf->cell(12,4,$ed60_i_aluno,1,0,"R",0);
     }
     $pdf->setfont('arial','',8);
-    if (trim($ed60_c_situacao) != "MATRICULADO") {
+    if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
 
-      $sSituacao = trim(Situacao($ed60_c_situacao,$ed60_i_codigo));
+      $sSituacao = trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo));
 
-      if ( trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+      if ( trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA" || trim((string) $ed60_c_situacao) == "TRANSFERIDO REDE") {
         $sSituacao = "TRANSFERIDO";
       }
 
@@ -1350,7 +1350,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
         }
       }
 
-      $pdf->cell(10,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+      $pdf->cell(10,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
       $pdf->cell(5,4,"F",1,0,"C",0);
 
       if ($abono == "true") {

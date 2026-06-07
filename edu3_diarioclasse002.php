@@ -123,8 +123,8 @@ if ( $clturma->numrows > 0 ) {
         && $oMatricula->getTurma()->getBaseCurricular()->getCurso()->getEnsino()->isInfantil()
       ) {
 
-        $aDescricaoTurno = array();
-        $aTurnoReferente = array( 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' );
+        $aDescricaoTurno = [];
+        $aTurnoReferente = [ 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' ];
 
         foreach ( $oMatricula->getTurnosVinculados() as $oTurnoReferente ) {
           $aDescricaoTurno[] = $aTurnoReferente[ $oTurnoReferente->ed336_turnoreferente ];

@@ -60,11 +60,11 @@ class AvaliacaoQuestionarioInterno {
       $this->setTransmitido(false);
       $this->setAtivo(true);
     }
-    $this->aMenu = array();
-    $this->tipo  = __CLASS__;
+    $this->aMenu = [];
+    $this->tipo  = self::class;
   }
 
-  function getQuestionarios($iMenu=0, $iModulo, $bReturn=false){
+  function getQuestionarios($iMenu=0, $iModulo = null, $bReturn=false){
 
     $this->aAvaliacao = 0;
 
@@ -99,7 +99,7 @@ class AvaliacaoQuestionarioInterno {
       }                   
       
       $aItem                   = db_utils::getCollectionByRecord($rsResult, false, false, true);
-      $this->aAvaliacao        = array();
+      $this->aAvaliacao        = [];
       $this->aAvaliacao        = $aItem;
     }     
     if($bReturn){
@@ -263,7 +263,7 @@ class AvaliacaoQuestionarioInterno {
     if(!empty($this->aMenu)){
 
       unset($this->aMenu);
-      $this->aMenu = array();
+      $this->aMenu = [];
     }
 
     if(!empty($this->iCodigoQuestionarioInterno)){

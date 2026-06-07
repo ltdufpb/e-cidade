@@ -59,7 +59,7 @@ switch ($oParam->exec) {
 
     try {
 
-      db_inicio_transacao(false);
+      db_inicio_transacao();
       $sWhereExclusao         = "ed311_aluno = {$oParam->iCodigoAluno}";
       $sSqlExcluirTransportes = $oDaoAlunoTransporte->excluir(null, $sWhereExclusao);
       if ($oDaoAlunoTransporte->erro_status == 0) {
@@ -96,11 +96,7 @@ switch ($oParam->exec) {
       $oGradeAproveitamento->setUrlEncode(true);
 
       $oRetorno->aGradeAproveitamento = $oGradeAproveitamento->getGradeAproveitamento();
-    } catch (ParameterException $eErro) {
-
-      $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($eErro->getMessage());
-    } catch (BusinessException $eErro) {
+    } catch (ParameterException|BusinessException $eErro) {
 
       $oRetorno->status  = 2;
       $oRetorno->message = urlencode($eErro->getMessage());

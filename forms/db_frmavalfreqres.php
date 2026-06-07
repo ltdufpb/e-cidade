@@ -127,12 +127,12 @@ if ( isset($per_cad) ) {
     <tr>
      <td valign="top">
      <?php 
-      $chavepri= array( "ed67_i_codigo"        => isset($ed67_i_codigo)        ? $ed67_i_codigo        : null,
-                        "ed67_i_procresultado" => isset($ed67_i_procresultado) ? $ed67_i_procresultado : null,
-                        "ed42_c_descr"         => isset($ed42_c_descr)         ? $ed42_c_descr         : '',
-                        "ed67_i_procavaliacao" => isset($ed67_i_procavaliacao) ? $ed67_i_procavaliacao : null,
-                        "ed09_c_descr"         => isset($ed09_c_descr)         ? $ed09_c_descr         : ''
-                      );
+      $chavepri= [ "ed67_i_codigo"        => $ed67_i_codigo ?? null,
+                        "ed67_i_procresultado" => $ed67_i_procresultado ?? null,
+                        "ed42_c_descr"         => $ed42_c_descr ?? '',
+                        "ed67_i_procavaliacao" => $ed67_i_procavaliacao ?? null,
+                        "ed09_c_descr"         => $ed09_c_descr ?? ''
+                      ];
       $cliframe_alterar_excluir->chavepri      = $chavepri;
       $cliframe_alterar_excluir->sql           = $clavalfreqres->sql_query("","*","ed41_i_sequencia"," ed67_i_procresultado = $ed67_i_procresultado");
       $cliframe_alterar_excluir->campos        = "ed09_c_descr";

@@ -44,7 +44,7 @@ class PagamentosRendimentosTrabalho
     /**
      * @var array
      */
-    private $pagamentos = array();
+    private $pagamentos = [];
 
     /**
      * @var float

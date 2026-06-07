@@ -28,16 +28,16 @@ class Conta implements InterfacePosProcessamento
      */
     private function possuiContasRepetidas($codigoLancamento)
     {
-        $contas = array('c69_debito', 'c69_credito');
+        $contas = ['c69_debito', 'c69_credito'];
         foreach ($contas as $coluna) {
             $descricaoOrigem = $coluna === 'c69_debito' ? 'Débito' : 'Crédito';
-            $campos = implode(',', array(
+            $campos = implode(',', [
                 "{$coluna} as conta",
                 "c69_anousu as ano_lancamento",
                 "'{$descricaoOrigem}' as origem",
                 'array_to_string(array_accum(c69_ordem order by c69_ordem), \', \') as ordens',
                 "count(*)"
-            ));
+            ]);
 
             $where  = " c69_codlan = {$codigoLancamento} ";
             $where .= " group by 1, 2 having count(*) > 1 ";

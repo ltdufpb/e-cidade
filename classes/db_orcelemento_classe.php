@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE orcelemento
 class cl_orcelemento {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $o56_codele = 0;
-   var $o56_anousu = 0;
-   var $o56_elemento = null;
-   var $o56_descr = null;
-   var $o56_finali = null;
-   var $o56_orcado = 'f';
+   public $o56_codele = 0;
+   public $o56_anousu = 0;
+   public $o56_elemento = null;
+   public $o56_descr = null;
+   public $o56_finali = null;
+   public $o56_orcado = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  o56_codele = int4 = Código Elemento
                  o56_anousu = int4 = Exercício
                  o56_elemento = varchar(13) = Elemento
@@ -58,10 +58,10 @@ class cl_orcelemento {
                  o56_orcado = bool = Orçado
                  ";
    //funcao construtor da classe
-   function cl_orcelemento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcelemento");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -153,7 +153,7 @@ class cl_orcelemento {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Elementos da Despesa ($this->o56_codele."-".$this->o56_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Elementos da Despesa já Cadastrado";
@@ -182,10 +182,10 @@ class cl_orcelemento {
       $this->atualizacampos();
      $sql = " update orcelemento set ";
      $virgula = "";
-     if(trim($this->o56_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_codele"])){
+     if(trim((string) $this->o56_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_codele"])){
        $sql  .= $virgula." o56_codele = $this->o56_codele ";
        $virgula = ",";
-       if(trim($this->o56_codele) == null ){
+       if(trim((string) $this->o56_codele) == null ){
          $this->erro_sql = " Campo Código Elemento nao Informado.";
          $this->erro_campo = "o56_codele";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_orcelemento {
          return false;
        }
      }
-     if(trim($this->o56_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_anousu"])){
+     if(trim((string) $this->o56_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_anousu"])){
        $sql  .= $virgula." o56_anousu = $this->o56_anousu ";
        $virgula = ",";
-       if(trim($this->o56_anousu) == null ){
+       if(trim((string) $this->o56_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "o56_anousu";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_orcelemento {
          return false;
        }
      }
-     if(trim($this->o56_elemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_elemento"])){
+     if(trim((string) $this->o56_elemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_elemento"])){
        $sql  .= $virgula." o56_elemento = '$this->o56_elemento' ";
        $virgula = ",";
-       if(trim($this->o56_elemento) == null ){
+       if(trim((string) $this->o56_elemento) == null ){
          $this->erro_sql = " Campo Elemento nao Informado.";
          $this->erro_campo = "o56_elemento";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_orcelemento {
          return false;
        }
      }
-     if(trim($this->o56_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_descr"])){
+     if(trim((string) $this->o56_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_descr"])){
        $sql  .= $virgula." o56_descr = '$this->o56_descr' ";
        $virgula = ",";
-       if(trim($this->o56_descr) == null ){
+       if(trim((string) $this->o56_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "o56_descr";
          $this->erro_banco = "";
@@ -234,14 +234,14 @@ class cl_orcelemento {
          return false;
        }
      }
-     if(trim($this->o56_finali)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_finali"])){
+     if(trim((string) $this->o56_finali)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_finali"])){
        $sql  .= $virgula." o56_finali = '$this->o56_finali' ";
        $virgula = ",";
      }
-     if(trim($this->o56_orcado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_orcado"])){
+     if(trim((string) $this->o56_orcado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o56_orcado"])){
        $sql  .= $virgula." o56_orcado = '$this->o56_orcado' ";
        $virgula = ",";
-       if(trim($this->o56_orcado) == null ){
+       if(trim((string) $this->o56_orcado) == null ){
          $this->erro_sql = " Campo Orçado nao Informado.";
          $this->erro_campo = "o56_orcado";
          $this->erro_banco = "";
@@ -361,7 +361,7 @@ class cl_orcelemento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcelemento";
@@ -405,7 +405,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,31 +471,31 @@ class cl_orcelemento {
       return true;
     }
     if($nivel==8){
-      $codigo = substr($elemento,0,9)."00";
+      $codigo = substr((string) $elemento,0,9)."00";
       $where="substr(o56_elemento,1,11)='$codigo' and substr(o56_elemento,12,2)<>'00' ";
     }
     if($nivel==7){
-      $codigo = substr($elemento,0,7)."00";
+      $codigo = substr((string) $elemento,0,7)."00";
       $where="substr(o56_elemento,1,9)='$codigo' and substr(o56_elemento,10,4)<>'0000' ";
     }
     if($nivel==6){
-      $codigo = substr($elemento,0,5)."00";
+      $codigo = substr((string) $elemento,0,5)."00";
       $where="substr(o56_elemento,1,7)='$codigo' and substr(o56_elemento,8,6)<>'000000' ";
     }
     if($nivel==5){
-         $codigo = substr($elemento,0,4)."0";
+         $codigo = substr((string) $elemento,0,4)."0";
          $where="substr(o56_elemento,1,5)='$codigo' and substr(o56_elemento,6,8)<>'00000000' ";
     }
     if($nivel==4){
-         $codigo = substr($elemento,0,3)."0";
+         $codigo = substr((string) $elemento,0,3)."0";
          $where="substr(o56_elemento,1,4)='$codigo' and substr(o56_elemento,5,9)<>'000000000' ";
     }
     if($nivel==3){
-         $codigo = substr($elemento,0,2)."0";
+         $codigo = substr((string) $elemento,0,2)."0";
          $where="substr(o56_elemento,1,3)='$codigo' and substr(o56_elemento,4,10)<>'0000000000' ";
     }
     if($nivel==2){
-         $codigo = substr($elemento,0,1)."0";
+         $codigo = substr((string) $elemento,0,1)."0";
          $where="substr(o56_elemento,1,2)='$codigo' and substr(o56_elemento,3,11)<>'00000000000' ";
     }
 
@@ -519,35 +519,35 @@ class cl_orcelemento {
           return true;
      }
      if($nivel==8){
-         $codigo = substr($elemento,0,11);
+         $codigo = substr((string) $elemento,0,11);
          $where="substr(o56_elemento,1,11)='$codigo' and substr(o56_elemento,12,2)<>'00' ";
     }
     if($nivel==7){
-         $codigo = substr($elemento,0,7);
+         $codigo = substr((string) $elemento,0,7);
          $where="substr(o56_elemento,1,9)='$codigo' and substr(o56_elemento,10,4)<>'0000' ";
     }
     if($nivel==6){
-        $codigo = substr($elemento,0,7);
+        $codigo = substr((string) $elemento,0,7);
         $where="substr(o56_elemento,1,7)='$codigo' and substr(o56_elemento,8,6)<>'000000' ";
     }
     if($nivel==5){
-        $codigo = substr($elemento,0,5);
+        $codigo = substr((string) $elemento,0,5);
         $where="substr(o56_elemento,1,5)='$codigo' and substr(o56_elemento,6,8)<>'00000000' ";
     }
     if($nivel==4){
-        $codigo = substr($elemento,0,4);
+        $codigo = substr((string) $elemento,0,4);
         $where="substr(o56_elemento,1,4)='$codigo' and substr(o56_elemento,5,9)<>'000000000' ";
     }
     if($nivel==3){
-        $codigo = substr($elemento,0,3);
+        $codigo = substr((string) $elemento,0,3);
         $where="substr(o56_elemento,1,3)='$codigo' and substr(o56_elemento,4,10)<>'0000000000' ";
     }
     if($nivel==2){
-        $codigo = substr($elemento,0,2);
+        $codigo = substr((string) $elemento,0,2);
         $where="substr(o56_elemento,1,2)='$codigo' and substr(o56_elemento,3,11)<>'00000000000' ";
      }
      if($nivel==1){
-        $codigo = substr($elemento,0,1);
+        $codigo = substr((string) $elemento,0,1);
         $where="substr(o56_elemento,1,1)='$codigo' and substr(o56_elemento,2,11)<>'00000000000' ";
      }
      $result= $this->sql_record($this->sql_query_file("",null,"o56_elemento","","  o56_anousu=$o56_anousu and ".$where));
@@ -584,7 +584,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -629,7 +629,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -664,7 +664,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -742,7 +742,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -780,7 +780,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -823,7 +823,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -866,7 +866,7 @@ class cl_orcelemento {
       $sql .= $sql2;
       if($ordem != null ){
       $sql .= " order by ";
-         $campos_sql = explode("#",$ordem);
+         $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
       $sql .= $virgula.$campos_sql[$i];
@@ -909,7 +909,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -956,7 +956,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -995,7 +995,7 @@ class cl_orcelemento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1036,7 +1036,7 @@ class cl_orcelemento {
     if($ordem != null ) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++) {
 
@@ -1075,7 +1075,7 @@ class cl_orcelemento {
     if($ordem != null ) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++) {
 

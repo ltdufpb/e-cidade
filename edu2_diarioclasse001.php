@@ -271,7 +271,7 @@ $clprocavaliacao = new cl_procavaliacao;
 
   $oTurma          = TurmaRepository::getTurmaByCodigoTurmaSerieRegimeMat( $turma );
   $lEnsinoInfantil = $oTurma->getTurno()->isIntegral() ? true : false;
-  $arr_tipo        = array( "2" => "EJA", "3" => "MULTIETAPA" );
+  $arr_tipo        = [ "2" => "EJA", "3" => "MULTIETAPA" ];
 
   $sSqlTurma   = $clturma->sql_query_turmaserie("", "ed57_i_codigo, ed57_i_tipoturma", "", "ed220_i_codigo = {$turma}");
   $result_tipo = $clturma->sql_record( $sSqlTurma );
@@ -542,8 +542,8 @@ $clprocavaliacao = new cl_procavaliacao;
       <fieldset style="align:center">
         Para selecionar mais de uma disciplina mantenha pressionada a tecla CTRL <br>e clique sobre o nome da disciplina.
       </fieldset>
-      <input type="hidden" name="base" value="<?=isset( $base ) ? $base : "" ?>">
-      <input type="hidden" name="curso" value="<?=isset( $curso ) ? $curso : "" ?>">
+      <input type="hidden" name="base" value="<?=$base ?? "" ?>">
+      <input type="hidden" name="curso" value="<?=$curso ?? "" ?>">
     </td>
   </tr>
 <?php } ?>

@@ -64,7 +64,7 @@ $clcalendario = new cl_calendario;
       <?php 
       $result = $clcalendario->sql_record($clcalendario->sql_query(""," distinct ed52_i_ano,ed52_i_ano","ed52_i_ano DESC",""));
       if($clcalendario->numrows==0){
-       $x = array(' '=>'NENHUM REGISTRO');
+       $x = [' '=>'NENHUM REGISTRO'];
        db_select('ano',$x,true,1," style='font-size:9px;width:200px;height:18px;'");
       }else{
        ?><select name="ano" onchange="js_ano(this.value)" style="font-size:9px;width:200px;height:18px;"><?php 
@@ -95,7 +95,7 @@ $clcalendario = new cl_calendario;
       $result= db_query($sql);
       $linhas = pg_num_rows($result);
       if($linhas==0){
-       $x = array(' '=>'NENHUM REGISTRO');
+       $x = [' '=>'NENHUM REGISTRO'];
        db_select('ano',$x,true,1,"style='font-size:9px;width:200px;height:18px;'");
       }else{
        ?><select name="ensino" onchange='js_ensino(this.value)' style="font-size:9px;width:200px;height:18px;"><?php 
@@ -127,7 +127,7 @@ $clcalendario = new cl_calendario;
       $result= db_query($sql);
       $linhas = pg_num_rows($result);
       if($linhas==0){
-       $x = array(' '=>'NENHUM REGISTRO');
+       $x = [' '=>'NENHUM REGISTRO'];
        db_select('serie',$x,true,1,"style='font-size:9px;width:200px;height:18px;'");
       }else{
        ?><select name="serie" onchange='js_serie(this.value);' style="font-size:9px;width:200px;height:18px;"><?php 

@@ -74,7 +74,7 @@ if (isset($incluir) && !isset($_POST['opcao'])) {
 
             $clescoladiretor->erro_status = "0";
             $sMensagem = "ATENÇÃO! Já existe um diretor com exercício ABERTO para o turno ";
-            $sMensagem .= trim($ed15_c_nome) . "!";
+            $sMensagem .= trim((string) $ed15_c_nome) . "!";
             $clescoladiretor->erro_msg = $sMensagem;
         } else {
             $clescoladiretor->incluir($ed254_i_codigo);
@@ -120,7 +120,7 @@ if (isset($alterar) && !isset($_POST['opcao'])) {
 
                 $clescoladiretor->erro_status = "0";
                 $sMensagem = "ATENÇÃO! Já existe um diretor com exercício ABERTO para o turno ";
-                $sMensagem .= trim($ed15_c_nome) . "!";
+                $sMensagem .= trim((string) $ed15_c_nome) . "!";
                 $clescoladiretor->erro_msg = $sMensagem;
             } else {
                 $clescoladiretor->alterar($ed254_i_codigo);

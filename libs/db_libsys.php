@@ -61,11 +61,11 @@ function db_sysexportaagata($sArquivoXml) {
   $lAbreTag = false;
 
   for($x=0; $x<$numrows; $x++) {
-    $nomemod  = trim(pg_result($result, $x, "nomemod"));
-    $nomearq  = trim(pg_result($result, $x, "nomearq"));
-    $rotarq   = trim(pg_result($result, $x, "rotarq"));
-    $nomecam  = trim(pg_result($result, $x, "nomecam"));
-    $rotcam   = trim(pg_result($result, $x, "rotcam"));
+    $nomemod  = trim(pg_fetch_result($result, $x, "nomemod"));
+    $nomearq  = trim(pg_fetch_result($result, $x, "nomearq"));
+    $rotarq   = trim(pg_fetch_result($result, $x, "rotarq"));
+    $nomecam  = trim(pg_fetch_result($result, $x, "nomecam"));
+    $rotcam   = trim(pg_fetch_result($result, $x, "rotcam"));
 
     if($sTabela <> $nomearq) {
 
@@ -107,12 +107,12 @@ function db_sysexportaagata($sArquivoXml) {
 // classe de configuracao do agata
 class cl_dbagata {
 
-  var $nomeprojeto = "";
-  var $relatorio = "";
-  var $api;
-  var $arquivo = "";
+  public $nomeprojeto = "";
+  public $relatorio = "";
+  public $api;
+  public $arquivo = "";
 
-  function cl_dbagata($_relatorio='') {
+  function __construct($_relatorio='') {
     $this->api = new \AgataAPI;
     $this->api->setLanguage('pt'); //'en', 'pt', 'es', 'de', 'fr', 'it', 'se'
 
@@ -143,7 +143,7 @@ class cl_dbagata {
      */
     $sSqlMenuAcess = "SELECT fc_montamenu(funcao) as menu from db_itensmenu where id_item =".db_getsession("DB_itemmenu_acessado");
     $rsMenuAcess   = db_query($sSqlMenuAcess);
-    $sMenuAcess    = substr(pg_result($rsMenuAcess,0,"menu"), 0, 50);
+    $sMenuAcess    = substr(pg_fetch_result($rsMenuAcess,0,"menu"), 0, 50);
 
     $this->api->setParameter('$db_item_menu_extenso',trim($sMenuAcess));
 
@@ -162,18 +162,18 @@ class cl_dbagata {
     where db_usuarios.id_usuario = (fc_getsession('db_id_usuario'::text))::integer and rh05_seqpes is null";
     $rsDadosUsuarioFolha= db_query($sDadosUsuarioFolha);
 
-    $this->api->setParameter('$db_nomeusu',          trim(pg_result($rsDadosUsuarioFolha, 0, "nome"       )) );
-    $this->api->setParameter('$db_login',            trim(pg_result($rsDadosUsuarioFolha, 0, "login"       )) );
-    $this->api->setParameter('$db_cargofolhausu',    trim(pg_result($rsDadosUsuarioFolha, 0, "rh37_descr" )) );
-    $this->api->setParameter('$db_matriculafolhausu',trim(pg_result($rsDadosUsuarioFolha, 0, "rh01_regist")) );
+    $this->api->setParameter('$db_nomeusu',          trim(pg_fetch_result($rsDadosUsuarioFolha, 0, "nome"       )) );
+    $this->api->setParameter('$db_login',            trim(pg_fetch_result($rsDadosUsuarioFolha, 0, "login"       )) );
+    $this->api->setParameter('$db_cargofolhausu',    trim(pg_fetch_result($rsDadosUsuarioFolha, 0, "rh37_descr" )) );
+    $this->api->setParameter('$db_matriculafolhausu',trim(pg_fetch_result($rsDadosUsuarioFolha, 0, "rh01_regist")) );
 
     $sSqlDataExtenso = " SELECT fc_dataextenso('" . date("Y-m-d",db_getsession("DB_datausu")) . "') as data_atual_extenso; ";
     $rsDataExtenso = db_query($sSqlDataExtenso);
 
-    $data_atual_extenso = trim(pg_result($rsDataExtenso, 0, "data_atual_extenso"));
+    $data_atual_extenso = trim(pg_fetch_result($rsDataExtenso, 0, "data_atual_extenso"));
     $this->api->setParameter('$db_data_atual_extenso', "$data_atual_extenso");
 
-    $aProject = array();
+    $aProject = [];
 
     $aProject["host"] = db_getsession("DB_servidor").":".db_getsession("DB_porta");
 
@@ -193,7 +193,7 @@ class cl_dbagata {
     $this->api->setDataSource($aProject);
 
 	  $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-	  $nome = substr($nome,strrpos($nome,"/")+1);
+	  $nome = substr((string) $nome,strrpos((string) $nome,"/")+1);
     $this->api->setParameter('$db_programa',"$nome");
 
     $this->api->setParameter('$db_id_usuario', db_getsession("DB_id_usuario"));

@@ -4,25 +4,25 @@
 class cl_avaliacaogruporespostaconta
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $c06_sequencial = 0;
-    var $c06_conta = 0;
-    var $c06_avaliacaogruporesposta = 0;
-    var $c06_ano = 0;
+    public $c06_sequencial = 0;
+    public $c06_conta = 0;
+    public $c06_avaliacaogruporesposta = 0;
+    public $c06_ano = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  c06_sequencial = int4 = Sequencial
                  c06_conta = int4 = Conta
                  c06_avaliacaogruporesposta = int4 = Avaliação Grupo Resposta
@@ -30,11 +30,11 @@ class cl_avaliacaogruporespostaconta
                  ";
 
     //funcao construtor da classe
-    function cl_avaliacaogruporespostaconta()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("avaliacaogruporespostaconta");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -106,10 +106,10 @@ class cl_avaliacaogruporespostaconta
                 $this->erro_status = "0";
                 return false;
             }
-            $this->c06_sequencial = pg_result($result, 0, 0);
+            $this->c06_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM avaliacaogruporespostaconta_c06_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $c06_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $c06_sequencial)) {
                 $this->erro_sql = " Campo c06_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -159,19 +159,19 @@ class cl_avaliacaogruporespostaconta
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1009812,'$this->c06_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010294,1009812,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010294,1009812,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c06_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010294,1009814,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010294,1009814,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c06_conta')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010294,1009813,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010294,1009813,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c06_avaliacaogruporesposta')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010294,1009815,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010294,1009815,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c06_ano')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -185,10 +185,10 @@ class cl_avaliacaogruporespostaconta
         $this->atualizacampos();
         $sql = " UPDATE avaliacaogruporespostaconta SET ";
         $virgula = "";
-        if (trim($this->c06_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_sequencial"])) {
+        if (trim((string) $this->c06_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_sequencial"])) {
             $sql .= $virgula . " c06_sequencial = $this->c06_sequencial ";
             $virgula = ",";
-            if (trim($this->c06_sequencial) == null) {
+            if (trim((string) $this->c06_sequencial) == null) {
                 $this->erro_sql = " Campo Sequencial não informado.";
                 $this->erro_campo = "c06_sequencial";
                 $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_avaliacaogruporespostaconta
                 return false;
             }
         }
-        if (trim($this->c06_conta) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_conta"])) {
+        if (trim((string) $this->c06_conta) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_conta"])) {
             $sql .= $virgula . " c06_conta = $this->c06_conta ";
             $virgula = ",";
-            if (trim($this->c06_conta) == null) {
+            if (trim((string) $this->c06_conta) == null) {
                 $this->erro_sql = " Campo Conta não informado.";
                 $this->erro_campo = "c06_conta";
                 $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_avaliacaogruporespostaconta
                 return false;
             }
         }
-        if (trim($this->c06_avaliacaogruporesposta) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_avaliacaogruporesposta"])) {
+        if (trim((string) $this->c06_avaliacaogruporesposta) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_avaliacaogruporesposta"])) {
             $sql .= $virgula . " c06_avaliacaogruporesposta = $this->c06_avaliacaogruporesposta ";
             $virgula = ",";
-            if (trim($this->c06_avaliacaogruporesposta) == null) {
+            if (trim((string) $this->c06_avaliacaogruporesposta) == null) {
                 $this->erro_sql = " Campo Avaliação Grupo Resposta não informado.";
                 $this->erro_campo = "c06_avaliacaogruporesposta";
                 $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_avaliacaogruporespostaconta
                 return false;
             }
         }
-        if (trim($this->c06_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_ano"])) {
+        if (trim((string) $this->c06_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c06_ano"])) {
             $sql .= $virgula . " c06_ano = $this->c06_ano ";
             $virgula = ",";
-            if (trim($this->c06_ano) == null) {
+            if (trim((string) $this->c06_ano) == null) {
                 $this->erro_sql = " Campo Ano não informado.";
                 $this->erro_campo = "c06_ano";
                 $this->erro_banco = "";

@@ -47,7 +47,7 @@ class AlunoRepository extends Repository
      * @return Aluno[]
      * @throws Exception
      */
-    public function getAlunosCenso(Escola $escola, DBDate $dataCenso = null)
+    public function getAlunosCenso(Escola $escola, ?DBDate $dataCenso = null)
     {
         $where = $this->scopes;
 
@@ -78,7 +78,7 @@ class AlunoRepository extends Repository
         return $alunosCenso;
     }
 
-    public function scopeMatriculadosTurmaRegular(Escola $escola, DBDate $data = null)
+    public function scopeMatriculadosTurmaRegular(Escola $escola, ?DBDate $data = null)
     {
         if (is_null($data)) {
             $this->scopes['matriculados_turma_regular'] = "
@@ -103,7 +103,7 @@ class AlunoRepository extends Repository
      * @param DBDate $data
      * @return $this
      */
-    public function scopeMatriculadosTurmaAC(Escola $escola, DBDate $data = null)
+    public function scopeMatriculadosTurmaAC(Escola $escola, ?DBDate $data = null)
     {
         if (is_null($data)) {
             $this->scopes['matriculados_turma_ac'] = "

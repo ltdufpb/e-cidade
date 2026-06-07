@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("classes/db_escolalivros_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_depart = new cl_db_depart;
 $clescolalivros = new cl_escolalivros;
 $clescolalivros->rotulo->label();
@@ -118,7 +118,7 @@ if(isset($incluir)){
          <td><?=$Led134_i_reutilizavel?></td>
         </tr>
         <?php 
-        $arr_serie = array('1'=>'2ª SÉRIE / 3º ANO','2'=>'3ª SÉRIE / 4º ANO','3'=>'4ª SÉRIE / 5º ANO','4'=>'5ª SÉRIE / 6º ANO','5'=>'6ª SÉRIE / 7º ANO','6'=>'7ª SÉRIE / 8º ANO','7'=>'8ª SÉRIE / 9º ANO');
+        $arr_serie = ['1'=>'2ª SÉRIE / 3º ANO','2'=>'3ª SÉRIE / 4º ANO','3'=>'4ª SÉRIE / 5º ANO','4'=>'5ª SÉRIE / 6º ANO','5'=>'6ª SÉRIE / 7º ANO','6'=>'7ª SÉRIE / 8º ANO','7'=>'8ª SÉRIE / 9º ANO'];
         for($x=0;$x<7;$x++){
          $linha = $x+1;
          $result3 = $clescolalivros->sql_record($clescolalivros->sql_query_file("","*",""," ed134_i_escola = $ed134_i_escola AND ed134_i_ano = $chavepesquisa AND ed134_i_serie = $linha"));

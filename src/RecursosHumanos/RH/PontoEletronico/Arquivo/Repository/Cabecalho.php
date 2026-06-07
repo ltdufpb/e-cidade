@@ -96,8 +96,8 @@ class Cabecalho {
     $this->oDao->rh196_efetividade_exercicio   = $oPeriodo->getExercicio();
     $this->oDao->rh196_efetividade_competencia = (string) $oPeriodo->getCompetencia();
     $this->oDao->rh196_instituicao             = $this->iInstituicao;
-    $this->oDao->rh196_ano                     = substr($sDataInicial, 4);
-    $this->oDao->rh196_mes                     = substr($sDataInicial, 2, 2);
+    $this->oDao->rh196_ano                     = substr((string) $sDataInicial, 4);
+    $this->oDao->rh196_mes                     = substr((string) $sDataInicial, 2, 2);
     $this->oDao->rh196_sequencial              = $iSequencial;
     $this->oDao->rh196_arquivo                 = $iOid;
 

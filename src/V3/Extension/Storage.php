@@ -9,11 +9,6 @@ use \Exception;
 class Storage {
 
   /**
-   * @string
-   */
-  protected $path;
-
-  /**
    * @var mixed
    */
   private $data;
@@ -26,8 +21,8 @@ class Storage {
   /**
    * @param string $path
    */
-  public function __construct($path) {
-    $this->path = $path;
+  public function __construct(protected $path)
+  {
   }
 
   /**
@@ -121,7 +116,7 @@ class Storage {
 
     $this->data = $this->serialize ? unserialize($data) : $data;
 
-    return (boolean) $this->data;
+    return (bool) $this->data;
   }
 
   /**
@@ -155,7 +150,7 @@ class Storage {
    */
   private function createDirectory() {
 
-    $dir = dirname($this->path);
+    $dir = dirname((string) $this->path);
 
     if (!is_dir($dir) && !mkdir($dir, 0775, true)) {
       throw new Exception("Não foi possivel criar diretório de cache: " . $dir);
@@ -174,14 +169,14 @@ class Storage {
 
     return preg_replace_callback($pattern, function($matches) {
 
-      $fixedData = array(
+      $fixedData = [
         $matches[1],
         (intval($matches[2]) + 3),
         str_replace("ECidade", "ECidade\V3", $matches[3])
-      );
+      ];
 
       return implode(":", $fixedData);
-    }, $data);
+    }, (string) $data);
 
   }
 

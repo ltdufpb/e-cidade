@@ -51,6 +51,7 @@ class Inicial extends \BaseClassRepository
     /** @var bool */
     private $persistPropagation;
 
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -61,7 +62,7 @@ class Inicial extends \BaseClassRepository
     /**
      * @var array
      */
-    private $joins = array();
+    private $joins = [];
 
     /**
      * Retorna uma inicial filtrando por codigo.
@@ -139,7 +140,7 @@ class Inicial extends \BaseClassRepository
             return null;
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }
@@ -169,7 +170,7 @@ class Inicial extends \BaseClassRepository
             return null;
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }
@@ -351,14 +352,14 @@ class Inicial extends \BaseClassRepository
             throw new Exception("Não foi possível buscar os iniciais.");
         }
 
-        $iniciais = array();
+        $iniciais = [];
 
         while ($inicial = pg_fetch_array($rs)) {
             $iniciais[] = Entity::fromState($inicial);
         }
 
-        $this->scopes = array();
-        $this->joins = array();
+        $this->scopes = [];
+        $this->joins = [];
 
         return $iniciais;
     }

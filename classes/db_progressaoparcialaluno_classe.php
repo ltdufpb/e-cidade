@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE progressaoparcialaluno
 class cl_progressaoparcialaluno {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed114_sequencial = 0;
-   var $ed114_disciplina = 0;
-   var $ed114_aluno = 0;
-   var $ed114_serie = 0;
-   var $ed114_tipoconclusao = 0;
-   var $ed114_ano = 0;
-   var $ed114_escola = 0;
-   var $ed114_situacaoeducacao = 0;
+   public $ed114_sequencial = 0;
+   public $ed114_disciplina = 0;
+   public $ed114_aluno = 0;
+   public $ed114_serie = 0;
+   public $ed114_tipoconclusao = 0;
+   public $ed114_ano = 0;
+   public $ed114_escola = 0;
+   public $ed114_situacaoeducacao = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed114_sequencial = int4 = Código
                  ed114_disciplina = int4 = Disciplina
                  ed114_aluno = int4 = Aluno
@@ -62,10 +62,10 @@ class cl_progressaoparcialaluno {
                  ed114_situacaoeducacao = int4 = Situação da progressão
                  ";
    //funcao construtor da classe
-   function cl_progressaoparcialaluno() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("progressaoparcialaluno");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -161,10 +161,10 @@ class cl_progressaoparcialaluno {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed114_sequencial = pg_result($result,0,0);
+       $this->ed114_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from progressaoparcialaluno_ed114_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed114_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed114_sequencial)){
          $this->erro_sql = " Campo ed114_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -206,7 +206,7 @@ class cl_progressaoparcialaluno {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Progressão parcial do Aluno ($this->ed114_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Progressão parcial do Aluno já Cadastrado";
@@ -235,17 +235,17 @@ class cl_progressaoparcialaluno {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19537,'$this->ed114_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3472,19537,'','".AddSlashes(pg_result($resaco,0,'ed114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3472,19539,'','".AddSlashes(pg_result($resaco,0,'ed114_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3472,19540,'','".AddSlashes(pg_result($resaco,0,'ed114_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3472,19541,'','".AddSlashes(pg_result($resaco,0,'ed114_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3472,19681,'','".AddSlashes(pg_result($resaco,0,'ed114_tipoconclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3472,20386,'','".AddSlashes(pg_result($resaco,0,'ed114_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3472,20390,'','".AddSlashes(pg_result($resaco,0,'ed114_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3472,20413,'','".AddSlashes(pg_result($resaco,0,'ed114_situacaoeducacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,19537,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,19539,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,19540,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,19541,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,19681,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_tipoconclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,20386,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,20390,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3472,20413,'','".AddSlashes(pg_fetch_result($resaco,0,'ed114_situacaoeducacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -255,10 +255,10 @@ class cl_progressaoparcialaluno {
       $this->atualizacampos();
      $sql = " update progressaoparcialaluno set ";
      $virgula = "";
-     if(trim($this->ed114_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_sequencial"])){
+     if(trim((string) $this->ed114_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_sequencial"])){
        $sql  .= $virgula." ed114_sequencial = $this->ed114_sequencial ";
        $virgula = ",";
-       if(trim($this->ed114_sequencial) == null ){
+       if(trim((string) $this->ed114_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed114_sequencial";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_progressaoparcialaluno {
          return false;
        }
      }
-     if(trim($this->ed114_disciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_disciplina"])){
+     if(trim((string) $this->ed114_disciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_disciplina"])){
        $sql  .= $virgula." ed114_disciplina = $this->ed114_disciplina ";
        $virgula = ",";
-       if(trim($this->ed114_disciplina) == null ){
+       if(trim((string) $this->ed114_disciplina) == null ){
          $this->erro_sql = " Campo Disciplina não informado.";
          $this->erro_campo = "ed114_disciplina";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_progressaoparcialaluno {
          return false;
        }
      }
-     if(trim($this->ed114_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_aluno"])){
+     if(trim((string) $this->ed114_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_aluno"])){
        $sql  .= $virgula." ed114_aluno = $this->ed114_aluno ";
        $virgula = ",";
-       if(trim($this->ed114_aluno) == null ){
+       if(trim((string) $this->ed114_aluno) == null ){
          $this->erro_sql = " Campo Aluno não informado.";
          $this->erro_campo = "ed114_aluno";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_progressaoparcialaluno {
          return false;
        }
      }
-     if(trim($this->ed114_serie)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_serie"])){
+     if(trim((string) $this->ed114_serie)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_serie"])){
        $sql  .= $virgula." ed114_serie = $this->ed114_serie ";
        $virgula = ",";
-       if(trim($this->ed114_serie) == null ){
+       if(trim((string) $this->ed114_serie) == null ){
          $this->erro_sql = " Campo Série não informado.";
          $this->erro_campo = "ed114_serie";
          $this->erro_banco = "";
@@ -307,17 +307,17 @@ class cl_progressaoparcialaluno {
          return false;
        }
      }
-     if(trim($this->ed114_tipoconclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_tipoconclusao"])){
-        if(trim($this->ed114_tipoconclusao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed114_tipoconclusao"])){
+     if(trim((string) $this->ed114_tipoconclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_tipoconclusao"])){
+        if(trim((string) $this->ed114_tipoconclusao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed114_tipoconclusao"])){
            $this->ed114_tipoconclusao = "0" ;
         }
        $sql  .= $virgula." ed114_tipoconclusao = $this->ed114_tipoconclusao ";
        $virgula = ",";
      }
-     if(trim($this->ed114_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_ano"])){
+     if(trim((string) $this->ed114_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_ano"])){
        $sql  .= $virgula." ed114_ano = $this->ed114_ano ";
        $virgula = ",";
-       if(trim($this->ed114_ano) == null ){
+       if(trim((string) $this->ed114_ano) == null ){
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "ed114_ano";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_progressaoparcialaluno {
          return false;
        }
      }
-     if(trim($this->ed114_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_escola"])){
+     if(trim((string) $this->ed114_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_escola"])){
        $sql  .= $virgula." ed114_escola = $this->ed114_escola ";
        $virgula = ",";
-       if(trim($this->ed114_escola) == null ){
+       if(trim((string) $this->ed114_escola) == null ){
          $this->erro_sql = " Campo Escola não informado.";
          $this->erro_campo = "ed114_escola";
          $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_progressaoparcialaluno {
          return false;
        }
      }
-     if(trim($this->ed114_situacaoeducacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_situacaoeducacao"])){
+     if(trim((string) $this->ed114_situacaoeducacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed114_situacaoeducacao"])){
        $sql  .= $virgula." ed114_situacaoeducacao = $this->ed114_situacaoeducacao ";
        $virgula = ",";
-       if(trim($this->ed114_situacaoeducacao) == null ){
+       if(trim((string) $this->ed114_situacaoeducacao) == null ){
          $this->erro_sql = " Campo Situação da progressão não informado.";
          $this->erro_campo = "ed114_situacaoeducacao";
          $this->erro_banco = "";
@@ -367,25 +367,25 @@ class cl_progressaoparcialaluno {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19537,'$this->ed114_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_sequencial"]) || $this->ed114_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3472,19537,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_sequencial'))."','$this->ed114_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,19537,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_sequencial'))."','$this->ed114_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_disciplina"]) || $this->ed114_disciplina != "")
-             $resac = db_query("insert into db_acount values($acount,3472,19539,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_disciplina'))."','$this->ed114_disciplina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,19539,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_disciplina'))."','$this->ed114_disciplina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_aluno"]) || $this->ed114_aluno != "")
-             $resac = db_query("insert into db_acount values($acount,3472,19540,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_aluno'))."','$this->ed114_aluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,19540,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_aluno'))."','$this->ed114_aluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_serie"]) || $this->ed114_serie != "")
-             $resac = db_query("insert into db_acount values($acount,3472,19541,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_serie'))."','$this->ed114_serie',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,19541,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_serie'))."','$this->ed114_serie',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_tipoconclusao"]) || $this->ed114_tipoconclusao != "")
-             $resac = db_query("insert into db_acount values($acount,3472,19681,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_tipoconclusao'))."','$this->ed114_tipoconclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,19681,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_tipoconclusao'))."','$this->ed114_tipoconclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_ano"]) || $this->ed114_ano != "")
-             $resac = db_query("insert into db_acount values($acount,3472,20386,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_ano'))."','$this->ed114_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,20386,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_ano'))."','$this->ed114_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_escola"]) || $this->ed114_escola != "")
-             $resac = db_query("insert into db_acount values($acount,3472,20390,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_escola'))."','$this->ed114_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,20390,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_escola'))."','$this->ed114_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed114_situacaoeducacao"]) || $this->ed114_situacaoeducacao != "")
-             $resac = db_query("insert into db_acount values($acount,3472,20413,'".AddSlashes(pg_result($resaco,$conresaco,'ed114_situacaoeducacao'))."','$this->ed114_situacaoeducacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3472,20413,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed114_situacaoeducacao'))."','$this->ed114_situacaoeducacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -439,17 +439,17 @@ class cl_progressaoparcialaluno {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19537,'$ed114_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3472,19537,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3472,19539,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3472,19540,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3472,19541,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3472,19681,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_tipoconclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3472,20386,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3472,20390,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3472,20413,'','".AddSlashes(pg_result($resaco,$iresaco,'ed114_situacaoeducacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,19537,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,19539,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,19540,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,19541,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,19681,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_tipoconclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,20386,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,20390,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3472,20413,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed114_situacaoeducacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -510,7 +510,7 @@ class cl_progressaoparcialaluno {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:progressaoparcialaluno";
@@ -567,7 +567,7 @@ class cl_progressaoparcialaluno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -601,7 +601,7 @@ class cl_progressaoparcialaluno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -648,7 +648,7 @@ class cl_progressaoparcialaluno {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -741,7 +741,7 @@ class cl_progressaoparcialaluno {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -784,7 +784,7 @@ class cl_progressaoparcialaluno {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -825,7 +825,7 @@ class cl_progressaoparcialaluno {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -870,7 +870,7 @@ class cl_progressaoparcialaluno {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -915,7 +915,7 @@ class cl_progressaoparcialaluno {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#", $ordem);
+      $campos_sql = explode("#", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

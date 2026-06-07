@@ -12,17 +12,17 @@ class Container {
   /**
    * @var array
    */
-  private $factory = array();
+  private $factory = [];
 
   /**
    * @var array
    */
-  private $values = array();
+  private $values = [];
 
   /**
    * @var array
    */
-  private $immutable = array();
+  private $immutable = [];
 
   /**
    * @param string $name

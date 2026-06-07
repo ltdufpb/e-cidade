@@ -79,7 +79,7 @@ class ArredondamentoNota implements IEducacaoArredondamento {
         $oDadosRegra->iCasasDecimais               = 0;
         $oDadosRegra->iCasasDecimaisArredondamento = $oDadosAvaliacao->ed316_casasdecimaisarredondamento;
         $oDadosRegra->aRegras                      = [];
-        $aPartesMascara                            = explode(".", $oDadosAvaliacao->db77_estrut);
+        $aPartesMascara                            = explode(".", (string) $oDadosAvaliacao->db77_estrut);
 
         if (isset($aPartesMascara[1])) {
           $oDadosRegra->iCasasDecimais = strlen($aPartesMascara[1]);

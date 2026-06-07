@@ -58,7 +58,7 @@
      */
     public static function getEscolaByCodigo($iCodigoEscola) {
 
-      if (!array_key_exists($iCodigoEscola, EscolaRepository::getInstance()->aEscola)) {
+      if (!array_key_exists((string) $iCodigoEscola, EscolaRepository::getInstance()->aEscola)) {
         EscolaRepository::getInstance()->aEscola[$iCodigoEscola] = new Escola($iCodigoEscola);
       }
       return EscolaRepository::getInstance()->aEscola[$iCodigoEscola];

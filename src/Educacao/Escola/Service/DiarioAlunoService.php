@@ -52,20 +52,15 @@ class DiarioAlunoService
      * @var DiarioAluno
      */
     private $diarioAluno;
-    /**
-     * @var Matricula
-     */
-    private $matricula;
 
     /**
      * DiarioAlunoService constructor.
      * @param Matricula $matricula
      * @throws Exception
      */
-    public function __construct(Matricula $matricula)
+    public function __construct(private readonly Matricula $matricula)
     {
-        $this->matricula = $matricula;
-        $this->buscaOuCriaDiario($matricula);
+        $this->buscaOuCriaDiario($this->matricula);
     }
 
     /**

@@ -56,8 +56,8 @@ try {
      */
     case 'getRecursosAvaliacaoInep':
 
-      $oRetorno->aRecursosAvaliacaoInep = array();
-      $aCodigosRecursos                 = array();
+      $oRetorno->aRecursosAvaliacaoInep = [];
+      $aCodigosRecursos                 = [];
 
       if (isset($oParam->iAluno) && !empty($oParam->iAluno)) {
 
@@ -94,7 +94,7 @@ try {
               $oRecursosAvaliacaoInep->lTemRecurso = true;
             }
 
-            $oRecursosAvaliacaoInep->sDescricao  = urlencode($oDadosRecursosAvaliacaoInep->ed326_descricao);
+            $oRecursosAvaliacaoInep->sDescricao  = urlencode((string) $oDadosRecursosAvaliacaoInep->ed326_descricao);
             $oRetorno->aRecursosAvaliacaoInep[]  = $oRecursosAvaliacaoInep;
           }
         }
@@ -185,7 +185,7 @@ try {
 
     case 'buscaAlunos':
 
-      $aFiltros = array();
+      $aFiltros = [];
 
       /**
        *  Aceitar os filtros : ed47_v_nome, ed47_v_mae, ed47_d_nasc
@@ -216,7 +216,7 @@ try {
         throw new BusinessException(_M('educacao.escola.edu4_aluno.nenhum_aluno_encontrado'));
       }
 
-      $oRetorno->aAlunos = array();
+      $oRetorno->aAlunos = [];
       for ($i = 0; $i < $iLinhas; $i++) {
         $oRetorno->aAlunos[] = db_utils::fieldsMemory($rsAluno, $i, false, false, true);
       }
@@ -249,8 +249,8 @@ try {
             $oPai                    = $oCidadao->getPai()->getCidadao();
             $oRetorno->oPai          = new stdClass();
             $oRetorno->oPai->iCodigo = $oPai->getCodigo();
-            $oRetorno->oPai->sCpf    = urlencode( $oPai->getCpfCnpj() );
-            $oRetorno->oPai->sNome   = urlencode( $oPai->getNome() );
+            $oRetorno->oPai->sCpf    = urlencode( (string) $oPai->getCpfCnpj() );
+            $oRetorno->oPai->sNome   = urlencode( (string) $oPai->getNome() );
           }
 
           $oRetorno->oMae = null;
@@ -260,8 +260,8 @@ try {
             $oMae                    = $oCidadao->getMae()->getCidadao();
             $oRetorno->oMae          = new stdClass();
             $oRetorno->oMae->iCodigo = $oMae->getCodigo();
-            $oRetorno->oMae->sCpf    = urlencode( $oMae->getCpfCnpj() );
-            $oRetorno->oMae->sNome   = urlencode( $oMae->getNome() );
+            $oRetorno->oMae->sCpf    = urlencode( (string) $oMae->getCpfCnpj() );
+            $oRetorno->oMae->sNome   = urlencode( (string) $oMae->getNome() );
           }
         }
       }
@@ -288,7 +288,7 @@ try {
           $oCidadaoResponsavel             = $oAluno->getCidadaoResponsavel();
           $oRetorno->oResponsavel          = new stdClass();
           $oRetorno->oResponsavel->iCodigo = $oCidadaoResponsavel->getCodigo();
-          $oRetorno->oResponsavel->sCpf    = urlencode( $oCidadaoResponsavel->getCpfCnpj() );
+          $oRetorno->oResponsavel->sCpf    = urlencode( (string) $oCidadaoResponsavel->getCpfCnpj() );
           $oRetorno->oResponsavel->sNome   = urlencode( $oCidadaoResponsavel->getNome() );
         }
       }
@@ -356,7 +356,7 @@ try {
       $oDadosAluno->ano_calendario    = $oMatricula->getTurma()->getCalendario()->getAnoExecucao();
       $oDadosAluno->codigo_etapa      = $oMatricula->getEtapaDeOrigem()->getCodigo();
       $oDadosAluno->descricao_etapa   = urlencode($oMatricula->getEtapaDeOrigem()->getNome());
-      $oDadosAluno->situacao_aluno    = urlencode($oMatricula->getSituacao());
+      $oDadosAluno->situacao_aluno    = urlencode((string) $oMatricula->getSituacao());
       $oDadosAluno->data_matricula    = $oMatricula->getDataMatricula()->convertTo(DBDate::DATA_PTBR);
       $oDadosAluno->tipo_matricula    = urlencode($oMatricula->getTipo());
 

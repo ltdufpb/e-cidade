@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clalunocurso          = new cl_alunocurso;
 $clalunopossib         = new cl_alunopossib;
 $clserie               = new cl_serie;
@@ -192,8 +192,8 @@ if ( isset( $incluirmatricula ) ) {
     $clmatriculamov->ed229_i_matricula    = $ultima;
     $clmatriculamov->ed229_i_usuario      = db_getsession("DB_id_usuario");
     $clmatriculamov->ed229_c_procedimento = "MATRICULAR ALUNO";
-    $sDescr                               = "ALUNO MATRICULADO NA TURMA ".trim($ed57_c_descr);
-    $sDescr                              .= ". SITUAÇÃO ANTERIOR: ".trim($sitanterior);
+    $sDescr                               = "ALUNO MATRICULADO NA TURMA ".trim((string) $ed57_c_descr);
+    $sDescr                              .= ". SITUAÇÃO ANTERIOR: ".trim((string) $sitanterior);
     $clmatriculamov->ed229_t_descr        = $sDescr;
     $sDataEvento                          = $ed60_d_datamatricula_ano."-".$ed60_d_datamatricula_mes;
     $sDataEvento                         .= "-".$ed60_d_datamatricula_dia;
@@ -398,8 +398,8 @@ if ( isset( $novamatricula ) ) {
     $clmatriculamov->ed229_i_matricula    = $ultima;
     $clmatriculamov->ed229_i_usuario      = db_getsession("DB_id_usuario");
     $clmatriculamov->ed229_c_procedimento = "MATRICULAR ALUNO";
-    $sDescricao                           = "ALUNO MATRICULADO NA TURMA ".trim($ed57_c_descr);
-    $sDescricao                          .= ". SITUAÇÃO ANTERIOR: ".trim($sitanterior);
+    $sDescricao                           = "ALUNO MATRICULADO NA TURMA ".trim((string) $ed57_c_descr);
+    $sDescricao                          .= ". SITUAÇÃO ANTERIOR: ".trim((string) $sitanterior);
     $clmatriculamov->ed229_t_descr        = $sDescricao;
     $sDataEvento                          = $ed60_d_datamatricula_ano."-".$ed60_d_datamatricula_mes;
     $sDataEvento                         .= "-".$ed60_d_datamatricula_dia;
@@ -577,18 +577,18 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
 
                   $datahj = date("Y-m-d");
 
-                  if ( strstr( $datasaida, "/" ) ) {
+                  if ( strstr( (string) $datasaida, "/" ) ) {
 
-                    $datasaida_dia  = substr( $datasaida, 0, 2 );
-                    $datasaida_mes  = substr( $datasaida, 3, 2 );
-                    $datasaida_ano  = substr( $datasaida, 6, 4 );
-                    $matricula_data = substr( $matricula_data, 0, 2 )."/".substr( $matricula_data, 3, 2 )."/".substr( $matricula_data, 6, 4 );
+                    $datasaida_dia  = substr( (string) $datasaida, 0, 2 );
+                    $datasaida_mes  = substr( (string) $datasaida, 3, 2 );
+                    $datasaida_ano  = substr( (string) $datasaida, 6, 4 );
+                    $matricula_data = substr( (string) $matricula_data, 0, 2 )."/".substr( (string) $matricula_data, 3, 2 )."/".substr( (string) $matricula_data, 6, 4 );
                   } else {
 
-                    $datasaida_dia  = substr( $datasaida, 8, 2 );
-                    $datasaida_mes  = substr( $datasaida, 5, 2 );
-                    $datasaida_ano  = substr( $datasaida, 0, 4 );
-                    $matricula_data = substr( $matricula_data, 8, 2 )."/".substr( $matricula_data, 5, 2 )."/".substr( $matricula_data, 0, 4 );
+                    $datasaida_dia  = substr( (string) $datasaida, 8, 2 );
+                    $datasaida_mes  = substr( (string) $datasaida, 5, 2 );
+                    $datasaida_ano  = substr( (string) $datasaida, 0, 4 );
+                    $matricula_data = substr( (string) $matricula_data, 8, 2 )."/".substr( (string) $matricula_data, 5, 2 )."/".substr( (string) $matricula_data, 0, 4 );
                   }
 
                   $data_in    = mktime( 0, 0, 0, $datasaida_mes, $datasaida_dia, $datasaida_ano );
@@ -639,14 +639,14 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
 
                 if ( $datasaidaant != "" ) {
 
-                  $datasaidaant_dia = substr( $datasaidaant, 8, 2 );
-                  $datasaidaant_mes = substr( $datasaidaant, 5, 2 );
-                  $datasaidaant_ano = substr( $datasaidaant, 0, 4 );
+                  $datasaidaant_dia = substr( (string) $datasaidaant, 8, 2 );
+                  $datasaidaant_mes = substr( (string) $datasaidaant, 5, 2 );
+                  $datasaidaant_ano = substr( (string) $datasaidaant, 0, 4 );
                 } else {
 
-                  $datasaidaant_dia = substr( $datamatrant, 8, 2 );
-                  $datasaidaant_mes = substr( $datamatrant, 5, 2 );
-                  $datasaidaant_ano = substr( $datamatrant, 0, 4 );
+                  $datasaidaant_dia = substr( (string) $datamatrant, 8, 2 );
+                  $datasaidaant_mes = substr( (string) $datamatrant, 5, 2 );
+                  $datasaidaant_ano = substr( (string) $datamatrant, 0, 4 );
                 }
 
                 $data_in    = mktime( 0, 0, 0, $datasaidaant_mes, $datasaidaant_dia, $datasaidaant_ano );
@@ -697,7 +697,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                 </td>
                 <td>
                   <?php
-                    $aTipoIngresso = array( 1 => "Normal", 2 => "Classificado", 3 => "Reclassificado", 4 => "Avanço" );
+                    $aTipoIngresso = [ 1 => "Normal", 2 => "Classificado", 3 => "Reclassificado", 4 => "Avanço" ];
                     db_select( 'ed334_tipo', $aTipoIngresso, true, 1, "onChange='js_redireciona();'");
                   ?>
                 </td>
@@ -989,14 +989,14 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                                  $primeira = $regenciaorigem;
                                }
 
-                               if ( trim( $ed37_c_tipo ) == "NOTA" ) {
+                               if ( trim( (string) $ed37_c_tipo ) == "NOTA" ) {
 
                                  if ( $resultedu == 'S' ) {
                                    $aproveitamento = $ed72_i_valornota != "" ? number_format( $ed72_i_valornota, 2, ",", "." ) : "";
                                  } else {
                                    $aproveitamento = $ed72_i_valornota != "" ? number_format( $ed72_i_valornota, 0 ) : "";
                                  }
-                               } else if ( trim( $ed37_c_tipo ) == "NIVEL" ) {
+                               } else if ( trim( (string) $ed37_c_tipo ) == "NIVEL" ) {
                                  $aproveitamento = $ed72_c_valorconceito;
                                } else {
                                 $aproveitamento = "";

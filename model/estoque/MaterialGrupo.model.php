@@ -62,6 +62,7 @@ class MaterialGrupo extends DBEstruturaValor  {
    * Descrição do Tipo de Estrutural
    * @var string
    */
+  #[\Override]
   protected $sTipoEstrutural = 'Grupo/Subgrupo';
 
   /**
@@ -115,7 +116,7 @@ class MaterialGrupo extends DBEstruturaValor  {
         unset($oDadosGrupo);
       }
     }
-    $this->tipo = __CLASS__;
+    $this->tipo = self::class;
   }
 
   /**
@@ -123,6 +124,7 @@ class MaterialGrupo extends DBEstruturaValor  {
    *
    * @return MaterialGrupo
    */
+  #[\Override]
   public function salvar() {
 
     parent::salvar();
@@ -240,6 +242,7 @@ class MaterialGrupo extends DBEstruturaValor  {
    *
    * @return integer
    */
+  #[\Override]
   public function getCodigo() {
     return $this->iCodigoGrupo;
   }

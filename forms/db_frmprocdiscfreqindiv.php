@@ -79,7 +79,7 @@ if($clprocdiscfreqindiv->numrows>0){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed45_i_codigo"=>@$ed45_i_codigo,"ed45_i_disciplina"=>@$ed45_i_disciplina,"ed232_c_descr"=>@$ed232_c_descr);
+   $chavepri= ["ed45_i_codigo"=>@$ed45_i_codigo,"ed45_i_disciplina"=>@$ed45_i_disciplina,"ed232_c_descr"=>@$ed232_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clprocdiscfreqindiv->sql_query("","*","ed59_i_ordenacao"," ed45_i_procedimento = $ed45_i_procedimento");
    $cliframe_alterar_excluir->campos  ="ed232_c_descr,ed10_c_descr";

@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_telefonerechumano_classe.php"));
 include(modification("classes/db_rechumano_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltelefonerechumano = new cl_telefonerechumano;
 $clrechumano = new cl_rechumano;
 $db_opcao = 1;

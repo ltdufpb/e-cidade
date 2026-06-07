@@ -250,9 +250,9 @@ class  ProcessoProtocoloNumeracao {
                     throw new Exception("Erro ao incluir processo.\nPor favor, contante o suporte.");
                 }
 
-                $numeroProcesso = str_pad($numeroProcesso, 5, '0', STR_PAD_LEFT);
-                $orgao = str_pad($idOrgao, 2, '0', STR_PAD_LEFT);
-                $volume = str_pad($volume, 3, '0', STR_PAD_LEFT);
+                $numeroProcesso = str_pad((string) $numeroProcesso, 5, '0', STR_PAD_LEFT);
+                $orgao = str_pad((string) $idOrgao, 2, '0', STR_PAD_LEFT);
+                $volume = str_pad((string) $volume, 3, '0', STR_PAD_LEFT);
                 $sigla = $rsSigla['p91_sigla'];
 
                 $numeroProcesso = "{$sigla}{$orgao}{$numeroProcesso}{$volume}";

@@ -45,7 +45,7 @@ $clregenciahorario = new cl_regenciahorario;
 $clDBConfig        = new cl_db_config();
 $clEscola          = new cl_escola();
 
-$obs1 = base64_decode($obs1);
+$obs1 = base64_decode((string) $obs1);
 
 $oDadosGrade                = new stdClass();
 $oDadosGrade->nLarguraGrade = 280;
@@ -182,12 +182,12 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
   $head4    = "Código Aluno: {$ed47_i_codigo}  Matrícula: {$ed60_i_codigo}";
   $head5    = "Etapa: {$ed11_c_descr} Ano: {$ed52_i_ano}";
   $head6    = "Turma: {$ed57_c_descr}";
-  $situacao = trim($ed60_c_concluida) == "S"
-              && trim($ed60_c_situacao) != 'AVANÇADO'
-              && trim($ed60_c_situacao) != 'CLASSIFICADO' ? "CONCLUÍDO" : Situacao( $ed60_c_situacao, $ed60_i_codigo );
+  $situacao = trim((string) $ed60_c_concluida) == "S"
+              && trim((string) $ed60_c_situacao) != 'AVANÇADO'
+              && trim((string) $ed60_c_situacao) != 'CLASSIFICADO' ? "CONCLUÍDO" : Situacao( $ed60_c_situacao, $ed60_i_codigo );
   $head7    = "Situação: {$situacao}";
 
-  if ( strlen($nome) > 42 || strlen($sNomeEscola) > 42 ) {
+  if ( strlen((string) $nome) > 42 || strlen((string) $sNomeEscola) > 42 ) {
 	  $TamFonteNome = 8;
   } else {
 	  $TamFonteNome = 9;
@@ -225,7 +225,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
   $result_obs          = $cldiarioavaliacao->sql_record( $sSqlDiarioAvaliacao );
 
   $ed72_t_obs   = "";
-  $aObservacoes = array();
+  $aObservacoes = [];
 
   for( $iContador = 0; $iContador < pg_num_rows( $result_obs ); $iContador++ ) {
 
@@ -271,7 +271,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
           if ($padraotipo == "L") {
 
-            $explode_parecer = explode( "**", $ed93_t_parecer );
+            $explode_parecer = explode( "**", (string) $ed93_t_parecer );
 
             for ($b = 0; $b < count($explode_parecer); $b++) {
               $pdf->cell( $oDadosGrade->nLarguraGrade, 4, trim($explode_parecer[$b]), 1, 1, "L", 0 );
@@ -297,7 +297,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
 
     if ($cldiarioavaliacao->numrows > 0) {
 
-      $pardescr = trim( pg_result( $result_pardescr, 0, 'pardescr' ) );
+      $pardescr = trim( pg_fetch_result( $result_pardescr, 0, 'pardescr' ) );
 
       if ($pardescr != "") {
 
@@ -336,8 +336,8 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
   $sSqlAprovConselho = $claprovconselho->sql_query( "", $sCampos, "ed59_i_ordenacao", $sWhere );
   $result_cons       = $claprovconselho->sql_record( $sSqlAprovConselho );
 
-  $aAprovadoBaixaFrequencia   = array();
-  $aAprovadoConselhoRegimento = array();
+  $aAprovadoBaixaFrequencia   = [];
+  $aAprovadoConselhoRegimento = [];
   $sObservacaoConselho        = '';
 
   if ($claprovconselho->numrows > 0) {
@@ -364,7 +364,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
           $oDadosObservacao              = new stdClass();
           $oDadosObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-          if( trim( $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) != '' ) {
+          if( trim( (string) $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) != '' ) {
             $aAprovadoConselhoRegimento[]  = "- {$oDadosObservacao->aParagrafos[1]->oParag->db02_texto}";
           }
 
@@ -385,7 +385,7 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
         /**
         * Valida se a aprovação foi por regimento escolar
         */
-        case 3;
+        case 3:
 
           $sObservacao = "- Disciplina {$disconselho}: Aprovado conforme regimento escolar. Justificativa: {$ed253_t_obs}";
           $aAprovadoConselhoRegimento[] = $sObservacao;
@@ -448,14 +448,14 @@ for ($x = 0; $x < $clmatricula->numrows; $x++) {
     $pdf->setY( $posy );
     $pdf->setX( $pdf->rMargin + $oDadosGrade->nLarguraGrade / 2 );
 
-    $sTexto  = "TF - Total Faltas | ". (trim( $ed57_c_medfreq ) == "PERÌODOS" ? "AD - Aulas Dadas" : "DL - Dias Letivos" );
+    $sTexto  = "TF - Total Faltas | ". (trim( (string) $ed57_c_medfreq ) == "PERÌODOS" ? "AD - Aulas Dadas" : "DL - Dias Letivos" );
     $sTexto .= " | FA - Faltas Abonadas";
     $pdf->cell( $oDadosGrade->nLarguraGrade / 2, 4, $sTexto, 0, 1, "L", 0 );
 
     $pdf->setX( $pdf->rMargin + $oDadosGrade->nLarguraGrade / 2 );
 
 
-    $aPeriodosApresentados = array();
+    $aPeriodosApresentados = [];
     if ($oGrade instanceof  RelatorioGradeAproveitamento) {
         foreach ($oGrade->getElementosApresentados() as $oElemento) {
             $aPeriodosApresentados[] = "{$oElemento->getDescricaoAbreviada()} - {$oElemento->getDescricao()}";

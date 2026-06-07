@@ -65,7 +65,7 @@ class Arrepaga
     /**
      * @var ReciboPaga[]
      */
-    private $reciboPaga = array();
+    private $reciboPaga = [];
 
     /**
      * @var Disbanco

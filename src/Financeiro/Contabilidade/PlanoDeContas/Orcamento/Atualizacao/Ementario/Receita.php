@@ -163,17 +163,17 @@ class Receita
         $this->cadastrarEmentarioReceita();
 
         $contasDoModelo = $this->getModelo();
-        $estruturaisJaVinculados = array();
+        $estruturaisJaVinculados = [];
         $arquivo = file($this->arquivo->getFilePath());
         foreach ($arquivo as $indice => $linha) {
 
             $linha = preg_replace("/\n/", '', $linha);
-            $grupoEstrutural = (int)substr($linha, 0, 1);
-            if (!in_array($grupoEstrutural, array(1,4))) {
+            $grupoEstrutural = (int)substr((string) $linha, 0, 1);
+            if (!in_array($grupoEstrutural, [1,4])) {
                 continue;
             }
 
-            list($estruturalNovo, $estruturalAntigo) = explode('|', $linha);
+            [$estruturalNovo, $estruturalAntigo] = explode('|', (string) $linha);
 
             if (empty($estruturalNovo) || empty($estruturalAntigo)) {
                 continue;
@@ -225,7 +225,7 @@ class Receita
         foreach ($arquivo as $indiceArquivo => $linha) {
 
             $linha = preg_replace("/\n/", '', $linha);
-            $dadosLinha = explode("|", $linha);
+            $dadosLinha = explode("|", (string) $linha);
 
             if (count($dadosLinha) !== 5) {
                 $indiceArquivo++;
@@ -301,7 +301,7 @@ class Receita
             throw new \Exception('Deve ser informado o código da Plano Conta Detalhe ou o Código do Plano Orçamentário');
         }
 
-        $where = array();
+        $where = [];
 
         if (!empty($codigoPlanoContaDetalhe)) {
             $where[] = 'c97_planocontadetalhe = ' . $codigoPlanoContaDetalhe;
@@ -411,7 +411,7 @@ class Receita
      */
     protected function getModelo()
     {
-        $retorno = array();
+        $retorno = [];
         $buscaEmentario = pg_query("select * from planocontadetalhe where c95_modeloplanoconta = {$this->modelo}");
 
         $totalRegistros = pg_num_rows($buscaEmentario);
@@ -512,11 +512,11 @@ class Receita
     public static function atualizarOrcamento($codigoPlanoContaDetalhe, $codigoContaOrcamento)
     {
 
-        $where = implode(' and ', array(
+        $where = implode(' and ', [
                 "c60_anousu >= ". self::$iAnoImplantacao,
                 "substr(c60_estrut ,1,1)::integer in (4,9)",
                 "c60_codcon = {$codigoContaOrcamento}",
-            )) . " order by c60_anousu";
+            ]) . " order by c60_anousu";
         $daoOrcamento  = new \cl_conplanoorcamento();
         $sqlBuscaConta = $daoOrcamento->sql_query_orcamento_receita("*", $where);
         $resBuscaConta = db_query($sqlBuscaConta);
@@ -538,7 +538,7 @@ class Receita
                 $daoOrcamentoReceita->c98_codcon                  = $codigoContaOrcamento;
                 $daoOrcamentoReceita->c98_anousu                  = $stdOrcamento->c60_anousu;
                 $daoOrcamentoReceita->c98_estrutural              = $stdOrcamento->c60_estrut;
-                $daoOrcamentoReceita->c98_descricao               = strtoupper($stdOrcamento->c60_descr);
+                $daoOrcamentoReceita->c98_descricao               = strtoupper((string) $stdOrcamento->c60_descr);
                 $daoOrcamentoReceita->c98_finalidade              = !empty($stdOrcamento->c60_finali) ? $stdOrcamento->c60_finali : $stdOrcamento->c60_descr;
                 $daoOrcamentoReceita->c98_codsis                  = $stdOrcamento->c60_codsis;
                 $daoOrcamentoReceita->c98_codcla                  = $stdOrcamento->c60_codcla;
@@ -580,9 +580,9 @@ class Receita
             $daoOrcamento->c60_codcon = $stdOrcamento->c60_codcon;
             $daoOrcamento->c60_anousu = $stdOrcamento->c60_anousu;
             $daoOrcamento->c60_estrut = $stdDetalhe->c95_estrutural;
-            $daoOrcamento->c60_descr  = strtoupper(substr($stdDetalhe->c95_titulo, 0, 50));
-            $daoOrcamento->c60_finali = strtoupper($stdDetalhe->c95_titulo);
-            $daoOrcamento->c60_funcao = strtoupper($stdDetalhe->c95_funcao);
+            $daoOrcamento->c60_descr  = strtoupper(substr((string) $stdDetalhe->c95_titulo, 0, 50));
+            $daoOrcamento->c60_finali = strtoupper((string) $stdDetalhe->c95_titulo);
+            $daoOrcamento->c60_funcao = strtoupper((string) $stdDetalhe->c95_funcao);
             $daoOrcamento->alterar($daoOrcamento->c60_codcon, $daoOrcamento->c60_anousu);
             if ($daoOrcamento->erro_status === '0') {
                 throw new \BusinessException("Ocorreu um erro ao alterar os dados da conta com estrutura: {$stdOrcamento->c60_estrut}.");
@@ -599,10 +599,10 @@ class Receita
                 throw new \BusinessException("Ocorreu um erro ao alterar os dados da fonte de receita para o estrutural: {$stdOrcamento->c60_estrut}.");
             }
 
-            $whereTesouraria = implode(' and ', array(
+            $whereTesouraria = implode(' and ', [
                 "conplanoorcamento.c60_codcon = {$stdOrcamento->c60_codcon}",
                 "taborc.k02_anousu = ". self::$iAnoImplantacao
-            ));
+            ]);
 
             $daoTesouraria = new \cl_taborc();
             $resTesouraria = db_query($daoTesouraria->sql_query_receita("taborc.*", $whereTesouraria));
@@ -655,14 +655,14 @@ class Receita
 
             $estrutural = str_replace('.', '', $stdEmentario->c95_estrutural);
             $daoOrcamento->c60_estrut                  = $estrutural;
-            $daoOrcamento->c60_descr                   = mb_strtoupper(substr($stdEmentario->c95_titulo, 0, 50));
-            $daoOrcamento->c60_finali                  = mb_strtoupper($stdEmentario->c95_titulo);
+            $daoOrcamento->c60_descr                   = mb_strtoupper(substr((string) $stdEmentario->c95_titulo, 0, 50));
+            $daoOrcamento->c60_finali                  = mb_strtoupper((string) $stdEmentario->c95_titulo);
             $daoOrcamento->c60_codsis                  = '0';
             $daoOrcamento->c60_codcla                  = '4';
             $daoOrcamento->c60_consistemaconta         = '0';
             $daoOrcamento->c60_identificadorfinanceiro = 'N';
             $daoOrcamento->c60_naturezasaldo           = "2";
-            $daoOrcamento->c60_funcao                  = mb_strtoupper($stdEmentario->c95_funcao);
+            $daoOrcamento->c60_funcao                  = mb_strtoupper((string) $stdEmentario->c95_funcao);
             $daoOrcamento->c60_anousu                  = $ano;
             $daoOrcamento->c60_codcon                  = $codigoContaOrcamento;
             $daoOrcamento->incluir($daoOrcamento->c60_codcon, $daoOrcamento->c60_anousu);
@@ -675,8 +675,8 @@ class Receita
             $daoFontesReceita->o57_codfon = $codigoContaOrcamento;
             $daoFontesReceita->o57_anousu = $daoOrcamento->c60_anousu;
             $daoFontesReceita->o57_fonte  = $estrutural;
-            $daoFontesReceita->o57_descr  = mb_strtoupper(substr($stdEmentario->c95_titulo, 0, 50));
-            $daoFontesReceita->o57_finali = mb_strtoupper($stdEmentario->c95_titulo);
+            $daoFontesReceita->o57_descr  = mb_strtoupper(substr((string) $stdEmentario->c95_titulo, 0, 50));
+            $daoFontesReceita->o57_finali = mb_strtoupper((string) $stdEmentario->c95_titulo);
             $daoFontesReceita->incluir($daoFontesReceita->o57_codfon, $daoFontesReceita->o57_anousu);
             if ($daoFontesReceita->erro_status === "0") {
                 throw new \DBException("Ocorreu um erro ao incluir o estrutural {$stdEmentario->c95_estrutural} como fonte de receita.");

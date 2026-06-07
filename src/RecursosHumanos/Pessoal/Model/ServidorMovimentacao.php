@@ -347,7 +347,7 @@ class ServidorMovimentacao
         ? $this->getDataPermanenciaAbonada()->format('d/m/Y')
         : null;
 
-        return array(
+        return [
         'instituicao' => $this->getInstituicao() instanceof Instituicao ? $this->getInstituicao()->toArray() : null,
         'sequencial' => $this->getSequencial(),
         'ano' => $this->getAno(),
@@ -385,7 +385,7 @@ class ServidorMovimentacao
         'regimeJornadaTrabalho' => $this->getRegimeJornadaTrabalho(),
         'descricaoInstrumento' => $this->getDescricaoInstrumento(),
         'pensaoJudicial' => $this->isPensaoJudicial()
-        );
+        ];
     }
 
     /**
@@ -566,7 +566,7 @@ class ServidorMovimentacao
      */
     public function getHorasSemanais()
     {
-        return (double)$this->horasSemanais;
+        return (float) $this->horasSemanais;
     }
 
     /**
@@ -574,7 +574,7 @@ class ServidorMovimentacao
      */
     public function setHorasSemanais($horasSemanais)
     {
-        $this->horasSemanais = (double)$horasSemanais;
+        $this->horasSemanais = (float) $horasSemanais;
     }
 
     /**
@@ -582,7 +582,7 @@ class ServidorMovimentacao
      */
     public function getHorasMensais()
     {
-        return (double)$this->horasMensais;
+        return (float) $this->horasMensais;
     }
 
     /**
@@ -590,7 +590,7 @@ class ServidorMovimentacao
      */
     public function setHorasMensais($horasMensais)
     {
-        $this->horasMensais = (double)$horasMensais;
+        $this->horasMensais = (float) $horasMensais;
     }
 
     /**
@@ -662,7 +662,7 @@ class ServidorMovimentacao
      */
     public function getSalario()
     {
-        return (double)$this->salario;
+        return (float) $this->salario;
     }
 
     /**
@@ -670,7 +670,7 @@ class ServidorMovimentacao
      */
     public function setSalario($salario)
     {
-        $this->salario = (double)$salario;
+        $this->salario = (float) $salario;
     }
 
     /**

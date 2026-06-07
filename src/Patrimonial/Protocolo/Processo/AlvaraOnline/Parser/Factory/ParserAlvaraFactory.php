@@ -19,11 +19,8 @@ as ParserAlvaraAutonomoProcessoEletronico;
 
 class ParserAlvaraFactory
 {
-    public $collectionAtividades;
-
-    public function __construct($collectionAtividades)
+    public function __construct(public $collectionAtividades)
     {
-        $this->collectionAtividades = $collectionAtividades;
     }
 
     public static function getInstance($collectionAtividades)
@@ -46,35 +43,14 @@ class ParserAlvaraFactory
      */
     public function create($filtroProcessos, ParametrosProcessoEletronicoBag $parameterBag)
     {
-        switch ($filtroProcessos->getCodigoTipoProcesso()) {
-            case $parameterBag->getAlvaraAutonomo():
-                return new ParserAlvaraAutonomo($this->collectionAtividades);
-                break;
-
-            case $parameterBag->getAlvaraAutonomoProcessoEletronico():
-                return new ParserAlvaraAutonomoProcessoEletronico($this->collectionAtividades);
-                break;
-
-            case $parameterBag->getAlvaraEmpresa():
-                return new ParserAlvaraEmpresa($this->collectionAtividades);
-                break;
-
-            case $parameterBag->getAlvaraEmpresaProcessoEletronico():
-            case AtendimentoInclusaoInscricaoJsonService::getTipoProcesso():
-                return new ParserAlvaraEmpresaProcessoEletronico($this->collectionAtividades);
-                break;
-
-            case $parameterBag->getAlvaraMei():
-                return new ParserAlvaraMei($this->collectionAtividades);
-                break;
-
-            case $parameterBag->getAlvaraMeiProcessoEletronico():
-                return new ParserAlvaraMeiProcessoEletronico($this->collectionAtividades);
-                break;
-
-            default:
-                throw new BusinessException("Não foi possí­vel identificar o tipo de parser a carregar.");
-                break;
-        }
+        return match ($filtroProcessos->getCodigoTipoProcesso()) {
+            $parameterBag->getAlvaraAutonomo() => new ParserAlvaraAutonomo($this->collectionAtividades),
+            $parameterBag->getAlvaraAutonomoProcessoEletronico() => new ParserAlvaraAutonomoProcessoEletronico($this->collectionAtividades),
+            $parameterBag->getAlvaraEmpresa() => new ParserAlvaraEmpresa($this->collectionAtividades),
+            $parameterBag->getAlvaraEmpresaProcessoEletronico(), AtendimentoInclusaoInscricaoJsonService::getTipoProcesso() => new ParserAlvaraEmpresaProcessoEletronico($this->collectionAtividades),
+            $parameterBag->getAlvaraMei() => new ParserAlvaraMei($this->collectionAtividades),
+            $parameterBag->getAlvaraMeiProcessoEletronico() => new ParserAlvaraMeiProcessoEletronico($this->collectionAtividades),
+            default => throw new BusinessException("Não foi possí­vel identificar o tipo de parser a carregar."),
+        };
     }
 }

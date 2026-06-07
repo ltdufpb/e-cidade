@@ -470,7 +470,7 @@ if (isset($incluirobs)) {
                 }
                 ?>
                 <?php
-                if (trim($ed37_c_tipo) == "PARECER") {
+                if (trim((string) $ed37_c_tipo) == "PARECER") {
                 ?>
                     <tr>
                         <td>
@@ -520,7 +520,7 @@ if (isset($incluirobs)) {
                                 <fieldset>
                                     <label for="orientacao">Orientação: </label>
                                     <select name="orientacao" id="orientacao"
-                                            style="font-size:9px;width:200px;height:18px;" <?= (trim($ed37_c_tipo) == "PARECER") ? "disabled=''" : ""; ?>>
+                                            style="font-size:9px;width:200px;height:18px;" <?= (trim((string) $ed37_c_tipo) == "PARECER") ? "disabled=''" : ""; ?>>
                                         <option value='0'>RETRATO</option>
                                         <option value='1'>PAISAGEM</option>
                                     </select>
@@ -531,7 +531,7 @@ if (isset($incluirobs)) {
                     <tr>
                         <td colspan="4">
                             <div class="center">
-                                <?php if (trim($ed37_c_tipo) == "PARECER") { ?>
+                                <?php if (trim((string) $ed37_c_tipo) == "PARECER") { ?>
                                     <input name="pesquisar" type="button" id="pesquisar" value="Imprimir"
                                            onclick="js_pesquisa2(document.form1.subgrupo.value);" disabled>
 
@@ -546,8 +546,8 @@ if (isset($incluirobs)) {
                                     sobre
                                     o nome dos alunos.
                                 </fieldset>
-                                <input type="hidden" name="base" value="<?= isset($base) ? $base : ''; ?>">
-                                <input type="hidden" name="curso" value="<?= isset($curso) ? $curso : ''; ?>">
+                                <input type="hidden" name="base" value="<?= $base ?? ''; ?>">
+                                <input type="hidden" name="curso" value="<?= $curso ?? ''; ?>">
                             </div>
                         </td>
                     </tr>

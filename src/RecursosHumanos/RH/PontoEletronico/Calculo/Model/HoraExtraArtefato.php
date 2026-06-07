@@ -40,15 +40,6 @@ class HoraExtraArtefato {
    * @var int
    */
   private $iniciaEm = Extra::TIPO_DIURNA;
-
-  /**
-   * @var \DateTime
-   */
-  private $oValor;
-  /**
-   * @var \DateTime
-   */
-  private $oInicio;
   /**
    * @var \DateTime
    */
@@ -326,22 +317,19 @@ class HoraExtraArtefato {
    * @param \DateTime $oValor
    * @param \DateTime $oInicio
    */
-  public function __construct($oInicioHorarioNoturno, $oFinalHorarioNoturno, $oInicio, $oValor)
+  public function __construct($oInicioHorarioNoturno, $oFinalHorarioNoturno, private $oInicio, private $oValor)
   {
 
     $this->setHoraZerada(new \DateTime($oInicioHorarioNoturno->format('Y-m-d 00:00')));
 
     $this->setInicioHorarioNoturno($oInicioHorarioNoturno);
     $this->setFinalHorarioNoturno($oFinalHorarioNoturno);
-
-    $this->oValor = $oValor;
-    $this->oInicio = $oInicio;
-    $this->setFinal($this->somaHoras($oInicio, $oValor));
+    $this->setFinal($this->somaHoras($this->oInicio, $this->oValor));
 
     $this->setValorDiurno($this->getHoraZerada());
     $this->setValorNoturno($this->getHoraZerada());
 
-    if ($oInicio->getTimestamp() > $this->getFinalHorarioNoturno()->getTimestamp()){
+    if ($this->oInicio->getTimestamp() > $this->getFinalHorarioNoturno()->getTimestamp()){
       $this->getInicioHorarioNoturno()->modify('+1 day');
     }
     $this->oFinalHorarioNoturnoNoDia = clone $oFinalHorarioNoturno;

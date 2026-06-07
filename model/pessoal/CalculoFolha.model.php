@@ -74,14 +74,6 @@ abstract class CalculoFolha
     protected $sSigla;
 
     /**
-     * Servidor proprietário do calculo
-     *
-     * @var Servidor
-     * @access private
-     */
-    private $oServidor;
-
-    /**
      * Array com matrículas a exlcuir do histórico do ponto
      *
      * @var Array
@@ -94,9 +86,15 @@ abstract class CalculoFolha
      *
      * @param Servidor $oServidor
      */
-    public function __construct(Servidor $oServidor)
+    public function __construct(
+        /**
+         * Servidor proprietário do calculo
+         *
+         * @access private
+         */
+        private readonly Servidor $oServidor
+    )
     {
-        $this->oServidor = $oServidor;
     }
 
     /**
@@ -204,10 +202,10 @@ abstract class CalculoFolha
         }
 
         if (pg_num_rows($rsMovimentacoes) == 0) {
-            return array();
+            return [];
         }
 
-        $aMovimentacoes = array();
+        $aMovimentacoes = [];
 
         foreach (db_utils::getCollectionbyRecord($rsMovimentacoes) as $oMovimentacao) {
 
@@ -235,7 +233,7 @@ abstract class CalculoFolha
 
         if (is_array($mRubrica)) {
 
-            $aRubricas = array();
+            $aRubricas = [];
 
             // Verifica se existir um collection de objetos Rubrica transforma em array de strings
             foreach ($mRubrica as $oRubrica) {
@@ -288,41 +286,29 @@ abstract class CalculoFolha
             }
         }
 
-        switch ($this->sTabela) {
-
-            default :
-
-                $sSql = $oDaoGeracaoFolha->sql_query_file(null,
-                    null,
-                    null,
-                    null,
-                    " {$this->sSigla}_rubric as codigo_rubrica,
+        $sSql = match ($this->sTabela) {
+            CalculoFolha::CALCULO_RESCISAO, CalculoFolha::CALCULO_PROVISAO_FERIAS, CalculoFolha::CALCULO_FERIAS => $oDaoGeracaoFolha->sql_query_file(null,
+                null,
+                null,
+                null,
+                null,
+                " {$this->sSigla}_rubric as codigo_rubrica,
                                                       {$this->sSigla}_valor  as valor_rubrica,
                                                       {$this->sSigla}_pd     as provento_desconto,
                                                       {$this->sSigla}_quant  as quantidade_rubrica ",
-                    null,
-                    $sWhere);
-                break;
-
-            case CalculoFolha::CALCULO_RESCISAO :
-            case CalculoFolha::CALCULO_PROVISAO_FERIAS :
-            case CalculoFolha::CALCULO_FERIAS :
-
-                $sSql = $oDaoGeracaoFolha->sql_query_file(null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    " {$this->sSigla}_rubric as codigo_rubrica,
+                null,
+                $sWhere),
+            default => $oDaoGeracaoFolha->sql_query_file(null,
+                null,
+                null,
+                null,
+                " {$this->sSigla}_rubric as codigo_rubrica,
                                                       {$this->sSigla}_valor  as valor_rubrica,
                                                       {$this->sSigla}_pd     as provento_desconto,
                                                       {$this->sSigla}_quant  as quantidade_rubrica ",
-                    null,
-                    $sWhere);
-
-
-                break;
-        }
+                null,
+                $sWhere),
+        };
 
         $rsMovimentacoes = db_query($sSql);
 
@@ -330,7 +316,7 @@ abstract class CalculoFolha
             throw new DBException(pg_last_error() . _M(self::MENSAGENS . 'erro_buscar_movimentacoes'));
         }
 
-        $aMovimentacoes = array();
+        $aMovimentacoes = [];
 
         for ($iEvento = 0; $iEvento < pg_num_rows($rsMovimentacoes); $iEvento++) {
 
@@ -390,10 +376,10 @@ abstract class CalculoFolha
         }
 
         if (pg_num_rows($rsHistorico) == 0) {
-            return array();
+            return [];
         }
 
-        $aEvento = array();
+        $aEvento = [];
         $aHistorico = db_utils::getCollectionbyRecord($rsHistorico);
 
         foreach ($aHistorico as $oHistorico) {
@@ -436,10 +422,10 @@ abstract class CalculoFolha
         }
 
         if (pg_num_rows($rsRubricas) == 0) {
-            return array();
+            return [];
         }
 
-        $aRubricas = array();
+        $aRubricas = [];
 
         foreach (db_utils::getCollectionByRecord($rsRubricas) as $oRubrica) {
             $aRubricas[] = RubricaRepository::getInstanciaByCodigo($oRubrica->codigo_rubrica);
@@ -485,7 +471,7 @@ abstract class CalculoFolha
             throw new Exception($oDaoCalculo->erro_msg);
         }
 
-        $this->aRegistros = array();
+        $this->aRegistros = [];
         return true;
     }
 
@@ -604,7 +590,7 @@ abstract class CalculoFolha
                 $sClass = "CalculoFolhaComplementar";
                 $oFolha = FolhaPagamentoComplementar::getFolhaAberta();
                 $oCompetencia = DBPessoal::getCompetenciaFolha();
-                $aFolhasFechadasCompetencia = array();
+                $aFolhasFechadasCompetencia = [];
 
                 if (!$oFolha) {
                     throw new BusinessException(_M(self::MENSAGENS . 'nao_existe_folha_complementar_aberta'));
@@ -654,7 +640,7 @@ abstract class CalculoFolha
          * @todo  verificar esses 2 foreach, quando é calculo individual o primeiro é utilizado, cálculo geral o segundo é utilizado.
          */
 
-        $aMatriculasSelecionadas = array();
+        $aMatriculasSelecionadas = [];
         $aMatriculasUtilizadasCalculo = explode(',', $sMatriculas);
 
         foreach ($aMatriculasUtilizadasCalculo as $iMatricula) {
@@ -756,7 +742,7 @@ abstract class CalculoFolha
 
             $aEventosFinanceirosResultado = $oCalculoAtual->getEventosFinanceiros();
             $aEventosFinanceirosAtuais = $oCalculoAtual->getEventosFinanceiros();
-            $aEventosAtuaisAssociados = array();
+            $aEventosAtuaisAssociados = [];
 
             for ($iIndiceEvento = 0; $iIndiceEvento < count($aEventosFinanceirosAtuais); $iIndiceEvento++) {
 
@@ -773,7 +759,7 @@ abstract class CalculoFolha
             $aEventosFinanceirosAtuais = $aEventosAtuaisAssociados;
             unset($aEventosAtuaisAssociados);
 
-            $aEventosFinanceirosFechados = array();
+            $aEventosFinanceirosFechados = [];
 
             /**
              * Limpa a tabela do Calculo
@@ -796,7 +782,7 @@ abstract class CalculoFolha
 
                 $sRubricaFechada = $oEventoFechado->getRubrica()->getCodigo();
 
-                if (!array_key_exists($sRubricaFechada, $aEventosFinanceirosAtuais)) {
+                if (!array_key_exists((string) $sRubricaFechada, $aEventosFinanceirosAtuais)) {
 
                     /**
                      * Quando não houver no atual e existir no historico
@@ -852,7 +838,7 @@ abstract class CalculoFolha
 
             $oCalculoAtual->salvar();
             $oServidor->getPonto($oFolha->getTabelaPonto())->limpar();
-            $oFolha->salvarHistoricoCalculo(array($oServidor));
+            $oFolha->salvarHistoricoCalculo([$oServidor]);
             $oCalculoAtual->limpar();
         }
 
@@ -914,7 +900,7 @@ abstract class CalculoFolha
             }
 
             $sSqlGerfsal = $oDaoGerfsal->excluir(null, null, null, null, $sWhere);
-            $rsGerfSal = db_query("insert into gerfsal " . $sSqlDadosConsolidados . "--", null, "SQL", true);
+            $rsGerfSal = db_query("insert into gerfsal " . $sSqlDadosConsolidados . "--", null, "SQL");
 
             if (!$rsGerfSal) {
                 throw new BusinessException(pg_last_error());
@@ -923,8 +909,8 @@ abstract class CalculoFolha
 
         $oFolha->retornarPonto($aMatriculasSelecionadas);
 
-        $aServidoresRelatorio = array();
-        $aServidoresSelecionados = array();
+        $aServidoresRelatorio = [];
+        $aServidoresSelecionados = [];
         $iAnoUsu = $oFolha->getCompetencia()->getAno();
         $iMesUsu = $oFolha->getCompetencia()->getMes();
 
@@ -1356,7 +1342,7 @@ abstract class CalculoFolha
          * Verifica se a tabela da previdencia do servidor está entre as tabelas
          * configuradas com as rubricas de maternidade e prorrogação
          */
-        $matriculasComRubricaConfigurada = array();
+        $matriculasComRubricaConfigurada = [];
         foreach ($matriculas as $matricula) {
             $servidor = ServidorRepository::getInstanciaByCodigo($matricula, DBPessoal::getAnoFolha(), DBPessoal::getMesFolha(), $codigoInstituicao);
             $codigoPrevidencia = $servidor->getTabelaPrevidencia() + 2;
@@ -1370,7 +1356,7 @@ abstract class CalculoFolha
             return null;
         }
         $matriculasIn = implode(', ', $matriculasComRubricaConfigurada);
-        $where = array(
+        $where = [
             "r45_anousu = {$competencia->getAno()}",
             "r45_mesusu = {$competencia->getMes()}",
             "r45_situac in (" . implode(",", $codigoAtual) . ")",
@@ -1381,7 +1367,7 @@ abstract class CalculoFolha
                 BETWEEN to_date(r45_dtafas::TEXT, 'YYYY-MM') AND to_date(r45_dtreto::TEXT, 'YYYY-MM')
               )
           )"
-        );
+        ];
 
         /**
          * Verifica se as matrículas que possuem rubricas configuradas possuem
@@ -1474,14 +1460,14 @@ abstract class CalculoFolha
          */
         $competencia = DBRegistry::get('competencia');
         $afastamentosIgnorar = DBRegistry::get('ignorarAfastamentoRubrica');
-        $listaMatriculas = array();
+        $listaMatriculas = [];
         //preparamos as matriculas em 1 array de matriculas, organizado por tipos de assentamentos convertidos
         foreach ($matriculas as $matricula) {
             $listaMatriculas[$matricula->r45_regist][$afastamentoNovo[$matricula->r45_situac]][] = $matricula;
         }
         foreach ($listaMatriculas as $matricula => $tipoAlterar) {
             foreach ($tipoAlterar as $tipoAfastamento => $matriculaAlterar) {
-                $afastamentoProporcionaliza = array();
+                $afastamentoProporcionaliza = [];
                 foreach ($matriculaAlterar as $afastamentoCalculo) {
                     $codigoAfastamento = $afastamentoCalculo->r45_codigo;
 
@@ -1497,18 +1483,18 @@ abstract class CalculoFolha
                     $rubricas = self::getRubricaSubtistuicao($afastamentoCalculo->r45_situac, $tabelaInssIRF);
             $rubricaAtual = $rubricas->atual;
             $rubricaNova = $rubricas->nova;
-            $where = array(
+            $where = [
                 "{$sigla}_anousu = {$competencia->getAno()}",
                 "{$sigla}_mesusu = {$competencia->getMes()}",
                 "{$sigla}_regist = {$matricula}",
                 "{$sigla}_rubric = '{$rubricaAtual}'"
-            );
-            $whereOld = array(
+            ];
+            $whereOld = [
                 "{$sigla}_anousu = {$competencia->getAno()}",
                 "{$sigla}_mesusu = {$competencia->getMes()}",
                 "{$sigla}_regist = {$matricula}",
                 "{$sigla}_rubric = '{$rubricaNova}'"
-            );
+            ];
 
             $afastamento = AfastamentoRepository::getInstanciaPorCodigo($codigoAfastamento);
 
@@ -1557,11 +1543,11 @@ abstract class CalculoFolha
 
             $rubricaCalculada = pg_fetch_array($rs, 0, PGSQL_ASSOC);
 
-            $propriedades = (object)array(
+            $propriedades = (object)[
                 'rubrica' => $rubricaNova,
                 'quantidade' => $diasNaCompetencia,
                 'valor' => $rubricaCalculada["{$sigla}_valor"]
-            );
+            ];
 
             $quantidadeCalculada = (int)$rubricaCalculada["{$sigla}_quant"];
 
@@ -1642,14 +1628,14 @@ abstract class CalculoFolha
     public static function getAfastamentosSubstituicao($tipo="atual"){
         switch ($tipo) {
             case "mensagem":
-                $mensagens = array();
+                $mensagens = [];
                 $mensagens[Afastamento::AFASTADO_PRORROGACAO_MATERNIDADE] = " de prorrogação de licença maternidade.";
                 $mensagens[Afastamento::AFASTADO_CUIDAR_FAMILIAR] = " para cuidar de familiar.";
                 $mensagens[Afastamento::LICENCA_PREMIO] = " de licença prêmio.";
                 return $mensagens;
                 break;
             case "novo":
-                $codigoNovo = array();
+                $codigoNovo = [];
                 $codigoNovo[Afastamento::AFASTADO_PRORROGACAO_MATERNIDADE] = Afastamento::AFASTADO_PRORROGACAO_MATERNIDADE;
                 $codigoNovo[Afastamento::AFASTADO_CUIDAR_FAMILIAR] = Afastamento::AFASTADO_LICENCA_GESTANTE;
                 $codigoNovo[Afastamento::LICENCA_PREMIO] = Afastamento::AFASTADO_LICENCA_GESTANTE;
@@ -1657,7 +1643,7 @@ abstract class CalculoFolha
                 break;
             case "atual" :
             default:
-                $codigoAtual = array();
+                $codigoAtual = [];
                 $id = Afastamento::AFASTADO_PRORROGACAO_MATERNIDADE;
                 $codigoAtual[$id] = Afastamento::AFASTADO_PRORROGACAO_MATERNIDADE;
                 $codigoAtual[Afastamento::AFASTADO_CUIDAR_FAMILIAR] = Afastamento::AFASTADO_CUIDAR_FAMILIAR;
@@ -1944,7 +1930,7 @@ abstract class CalculoFolha
 
 
     public static function ordenaValoresFaixaInss(array $faixas) {
-        $retorno = array();
+        $retorno = [];
         foreach ($faixas as $faixa) {
             $dados = new stdClass();
             $dados->valorInicial = $faixa['r33_inic'];

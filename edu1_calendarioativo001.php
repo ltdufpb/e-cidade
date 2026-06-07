@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_calendario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcalendario = new cl_calendario;
 $db_opcao = 22;
 $db_botao = false;
@@ -92,7 +92,7 @@ $clrotulo->label("ed52_c_passivo");
       </td>
       <td>
        <?php 
-       $x = array('N'=>'NÃO','S'=>'SIM');
+       $x = ['N'=>'NÃO','S'=>'SIM'];
        db_select('ed52_c_passivo',$x,true,$db_opcao,"");
        ?>
       </td>
@@ -133,7 +133,7 @@ function js_preenchepesquisa(chave){
  db_iframe_calendario.hide();
  <?php 
  if($db_opcao!=1){
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }
  ?>
 }

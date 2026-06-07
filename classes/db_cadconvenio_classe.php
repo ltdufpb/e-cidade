@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE cadconvenio
 class cl_cadconvenio {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ar11_sequencial = 0;
-   var $ar11_cadtipoconvenio = 0;
-   var $ar11_instit = 0;
-   var $ar11_nome = null;
+   public $ar11_sequencial = 0;
+   public $ar11_cadtipoconvenio = 0;
+   public $ar11_instit = 0;
+   public $ar11_nome = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ar11_sequencial = int4 = Sequêncial
                  ar11_cadtipoconvenio = int4 = Tipo de convênio
                  ar11_instit = int4 = Instituição
                  ar11_nome = varchar(50) = Nome
                  ";
    //funcao construtor da classe
-   function cl_cadconvenio() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadconvenio");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_cadconvenio {
          $this->erro_status = "0";
          return false;
        }
-       $this->ar11_sequencial = pg_result($result,0,0);
+       $this->ar11_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from cadconvenio_ar11_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ar11_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ar11_sequencial)){
          $this->erro_sql = " Campo ar11_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_cadconvenio {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de convênio ($this->ar11_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de convênio já Cadastrado";
@@ -180,13 +180,13 @@ class cl_cadconvenio {
      $resaco = $this->sql_record($this->sql_query_file($this->ar11_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12523,'$this->ar11_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2185,12523,'','".AddSlashes(pg_result($resaco,0,'ar11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2185,12524,'','".AddSlashes(pg_result($resaco,0,'ar11_cadtipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2185,12525,'','".AddSlashes(pg_result($resaco,0,'ar11_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2185,12526,'','".AddSlashes(pg_result($resaco,0,'ar11_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2185,12523,'','".AddSlashes(pg_fetch_result($resaco,0,'ar11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2185,12524,'','".AddSlashes(pg_fetch_result($resaco,0,'ar11_cadtipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2185,12525,'','".AddSlashes(pg_fetch_result($resaco,0,'ar11_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2185,12526,'','".AddSlashes(pg_fetch_result($resaco,0,'ar11_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -195,10 +195,10 @@ class cl_cadconvenio {
       $this->atualizacampos();
      $sql = " update cadconvenio set ";
      $virgula = "";
-     if(trim($this->ar11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_sequencial"])){
+     if(trim((string) $this->ar11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_sequencial"])){
        $sql  .= $virgula." ar11_sequencial = $this->ar11_sequencial ";
        $virgula = ",";
-       if(trim($this->ar11_sequencial) == null ){
+       if(trim((string) $this->ar11_sequencial) == null ){
          $this->erro_sql = " Campo Sequêncial nao Informado.";
          $this->erro_campo = "ar11_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_cadconvenio {
          return false;
        }
      }
-     if(trim($this->ar11_cadtipoconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_cadtipoconvenio"])){
+     if(trim((string) $this->ar11_cadtipoconvenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_cadtipoconvenio"])){
        $sql  .= $virgula." ar11_cadtipoconvenio = $this->ar11_cadtipoconvenio ";
        $virgula = ",";
-       if(trim($this->ar11_cadtipoconvenio) == null ){
+       if(trim((string) $this->ar11_cadtipoconvenio) == null ){
          $this->erro_sql = " Campo Tipo de convênio nao Informado.";
          $this->erro_campo = "ar11_cadtipoconvenio";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_cadconvenio {
          return false;
        }
      }
-     if(trim($this->ar11_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_instit"])){
+     if(trim((string) $this->ar11_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_instit"])){
        $sql  .= $virgula." ar11_instit = $this->ar11_instit ";
        $virgula = ",";
-       if(trim($this->ar11_instit) == null ){
+       if(trim((string) $this->ar11_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "ar11_instit";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_cadconvenio {
          return false;
        }
      }
-     if(trim($this->ar11_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_nome"])){
+     if(trim((string) $this->ar11_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar11_nome"])){
        $sql  .= $virgula." ar11_nome = '$this->ar11_nome' ";
        $virgula = ",";
-       if(trim($this->ar11_nome) == null ){
+       if(trim((string) $this->ar11_nome) == null ){
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "ar11_nome";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_cadconvenio {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12523,'$this->ar11_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar11_sequencial"]) || $this->ar11_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2185,12523,'".AddSlashes(pg_result($resaco,$conresaco,'ar11_sequencial'))."','$this->ar11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2185,12523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar11_sequencial'))."','$this->ar11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar11_cadtipoconvenio"]) || $this->ar11_cadtipoconvenio != "")
-           $resac = db_query("insert into db_acount values($acount,2185,12524,'".AddSlashes(pg_result($resaco,$conresaco,'ar11_cadtipoconvenio'))."','$this->ar11_cadtipoconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2185,12524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar11_cadtipoconvenio'))."','$this->ar11_cadtipoconvenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar11_instit"]) || $this->ar11_instit != "")
-           $resac = db_query("insert into db_acount values($acount,2185,12525,'".AddSlashes(pg_result($resaco,$conresaco,'ar11_instit'))."','$this->ar11_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2185,12525,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar11_instit'))."','$this->ar11_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar11_nome"]) || $this->ar11_nome != "")
-           $resac = db_query("insert into db_acount values($acount,2185,12526,'".AddSlashes(pg_result($resaco,$conresaco,'ar11_nome'))."','$this->ar11_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2185,12526,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar11_nome'))."','$this->ar11_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_cadconvenio {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12523,'$ar11_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2185,12523,'','".AddSlashes(pg_result($resaco,$iresaco,'ar11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2185,12524,'','".AddSlashes(pg_result($resaco,$iresaco,'ar11_cadtipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2185,12525,'','".AddSlashes(pg_result($resaco,$iresaco,'ar11_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2185,12526,'','".AddSlashes(pg_result($resaco,$iresaco,'ar11_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2185,12523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2185,12524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar11_cadtipoconvenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2185,12525,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar11_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2185,12526,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar11_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadconvenio
@@ -376,7 +376,7 @@ class cl_cadconvenio {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadconvenio";
@@ -391,7 +391,7 @@ class cl_cadconvenio {
    function sql_query ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_cadconvenio {
    function sql_query_file ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_cadconvenio {
    function sql_query_arrecad_cobranc ( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_cadconvenio {
    function sql_query_arrecadacao( $ar11_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,7 +558,7 @@ class cl_cadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

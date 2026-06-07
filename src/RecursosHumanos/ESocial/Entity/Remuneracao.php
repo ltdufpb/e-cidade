@@ -39,7 +39,7 @@ class Remuneracao
     /**
      * @var array
      */
-    private $pagamentos = array();
+    private $pagamentos = [];
 
     /**
      * @return array
@@ -81,7 +81,7 @@ class Remuneracao
     /**
      * @var ServidorOutrosVinculos[]
      */
-    private $servidorOutrosVinculos = array();
+    private $servidorOutrosVinculos = [];
 
     /**
      * @return ServidorOutrosVinculos[]
@@ -124,7 +124,7 @@ class Remuneracao
     /**
      * @var ServidorProcessosJudiciaisFolha[]
      */
-    private $pocessosJudiciais = array();
+    private $pocessosJudiciais = [];
 
     /**
      * @return ServidorProcessosJudiciaisFolha[]

@@ -56,7 +56,7 @@ final class TaxaRepository extends DataBaseRepository
             $quantTaxa = $object->j152_quant;
         }
 
-        $taxas = array();
+        $taxas = [];
 
         $taxa = new Taxa();
         $taxa->setValorTotal($valorIptu);

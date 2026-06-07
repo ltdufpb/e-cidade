@@ -26,13 +26,13 @@ class TermoOrigemRepositoryFactory
      */
     public static function getTipoPorTabela()
     {
-        return array(
+        return [
             static::REPARCELAMENTO => 2,
             static::DIVIDA => 1,
             static::INICIAL => 3,
             static::DIVERSOS => 4,
             static::CONTRIBUICAO => 5,
-        );
+        ];
     }
 
     /**
@@ -42,17 +42,12 @@ class TermoOrigemRepositoryFactory
     public static function get($tipo)
     {
         $repository = null;
-        switch ($tipo) {
-            case static::DIVIDA:
-                $repository = DividaRepository::getInstance();
-                break;
-            case static::DIVERSOS:
-                $repository = DiversosRepository::getInstance();
-                break;
-            case static::INICIAL:
-                $repository = InicialRepository::getInstance();
-                break;
-        }
+        $repository = match ($tipo) {
+            static::DIVIDA => DividaRepository::getInstance(),
+            static::DIVERSOS => DiversosRepository::getInstance(),
+            static::INICIAL => InicialRepository::getInstance(),
+            default => $repository,
+        };
 
         return $repository;
     }

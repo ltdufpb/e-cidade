@@ -135,11 +135,11 @@ class DadosCensoEscola extends DadosCenso {
     $oDadosEscola->complemento_endereco                               = $this->removeCaracteres($oDadosEscola->complemento_endereco, 7);
     $oDadosEscola->endereco_numero                                    = $this->removeCaracteres($oDadosEscola->endereco_numero,      5);
     $oDadosEscola->endereco_eletronico                                = $this->removeCaracteres($oDadosEscola->endereco_eletronico,  4);
-    $oDadosEscola->mant_esc_privada_empresa_grupo_empresarial_pes_fis = trim(substr($oDadosEscola->lista_mantenedoras, 0, 1));
-    $oDadosEscola->mant_esc_privada_sidicatos_associacoes_cooperativa = trim(substr($oDadosEscola->lista_mantenedoras, 1, 1));
-    $oDadosEscola->mant_esc_privada_ong_internacional_nacional_oscip  = trim(substr($oDadosEscola->lista_mantenedoras, 2, 1));
-    $oDadosEscola->mant_esc_privada_instituicoes_sem_fins_lucrativos  = trim(substr($oDadosEscola->lista_mantenedoras, 3, 1));
-    $oDadosEscola->sistema_s_sesi_senai_sesc_outros                   = trim(substr($oDadosEscola->lista_mantenedoras, 4, 1));
+    $oDadosEscola->mant_esc_privada_empresa_grupo_empresarial_pes_fis = trim(substr((string) $oDadosEscola->lista_mantenedoras, 0, 1));
+    $oDadosEscola->mant_esc_privada_sidicatos_associacoes_cooperativa = trim(substr((string) $oDadosEscola->lista_mantenedoras, 1, 1));
+    $oDadosEscola->mant_esc_privada_ong_internacional_nacional_oscip  = trim(substr((string) $oDadosEscola->lista_mantenedoras, 2, 1));
+    $oDadosEscola->mant_esc_privada_instituicoes_sem_fins_lucrativos  = trim(substr((string) $oDadosEscola->lista_mantenedoras, 3, 1));
+    $oDadosEscola->sistema_s_sesi_senai_sesc_outros                   = trim(substr((string) $oDadosEscola->lista_mantenedoras, 4, 1));
 
     $oTelefone                        = $this->getTelefones();
     $oDadosEscola->ddd                = $oTelefone->ddd;
@@ -178,14 +178,14 @@ class DadosCensoEscola extends DadosCenso {
 
       $oDadosGestor = db_utils::fieldsMemory($rsEscolaGestor, 0);
       $oDadosInfraEstrutura->numero_cpf_responsavel_gestor_responsavel = $oDadosGestor->z01_cgccpf;
-      $oDadosInfraEstrutura->nome_gestor                               = trim($oDadosGestor->z01_nome);
+      $oDadosInfraEstrutura->nome_gestor                               = trim((string) $oDadosGestor->z01_nome);
       $oDadosInfraEstrutura->cargo_gestor_responsavel                  = 1;
 
       if (empty($oDadosGestor->ed254_i_codigo)) {
         $oDadosInfraEstrutura->cargo_gestor_responsavel = 2;
       }
 
-      $oDadosInfraEstrutura->endereco_eletronico_email_gestor_responsavel = strtoupper(trim($oDadosGestor->ed325_email));
+      $oDadosInfraEstrutura->endereco_eletronico_email_gestor_responsavel = strtoupper(trim((string) $oDadosGestor->ed325_email));
     }
 
     /**
@@ -425,9 +425,7 @@ class DadosCensoEscola extends DadosCenso {
     return $aEtapas;
   }
 
-  /**
-   * @deprecated    só usado até 2014 ver DadosCensoEscola2015.model.php -> getDadosAvaliacao
-   */
+  #[\Deprecated(message: 'só usado até 2014 ver DadosCensoEscola2015.model.php -> getDadosAvaliacao')]
   public function getDadosAvaliacao ($oDadosInfra) {
 
     /**
@@ -570,7 +568,7 @@ class DadosCensoEscola extends DadosCenso {
       if ($oPergunta->tipo_resposta == 1) {
 
         if (isset($aPerguntas[$oPergunta->campo])) {
-          if (trim($oPergunta->respostas) != "") {
+          if (trim((string) $oPergunta->respostas) != "") {
             $aPerguntas[$oPergunta->campo] = $oPergunta;
           }
         } else {
@@ -596,7 +594,7 @@ class DadosCensoEscola extends DadosCenso {
          * Caso a pergunta seja 3000010 (equipamentos existentes) e a resposta esteja como zero, setamos a resposta
          * como vazio
          */
-        if ($oPergunta->db103_sequencial == 3000010 && (trim($oPergunta->respostas) == 0 || trim($oPergunta->respostas) == '') ) {
+        if ($oPergunta->db103_sequencial == 3000010 && (trim((string) $oPergunta->respostas) == 0 || trim((string) $oPergunta->respostas) == '') ) {
           $oPergunta->respostas = '';
         }
         $aPerguntas[$oPergunta->campo] = $oPergunta;
@@ -636,12 +634,12 @@ class DadosCensoEscola extends DadosCenso {
 
       $oDadosTelefone->ddd = $oTelefone->ddd;
 
-      if (str_contains(strtoupper($oTelefone->tipo_telefone), "FAX")) {
+      if (str_contains(strtoupper((string) $oTelefone->tipo_telefone), "FAX")) {
         $oDadosTelefone->fax = $oTelefone->numero;
         continue;
       }
 
-      if ( empty($oDadosTelefone->telefone_publico) && strlen($oTelefone->numero) == 8 ) {
+      if ( empty($oDadosTelefone->telefone_publico) && strlen((string) $oTelefone->numero) == 8 ) {
         $oDadosTelefone->telefone_publico = $oTelefone->numero;
         continue;
       }
@@ -675,14 +673,14 @@ class DadosCensoEscola extends DadosCenso {
     /**
      * Início da validação dos campos obrigatórios
     */
-    if( trim( $oDadosEscola->registro00->codigo_escola_inep ) == '' ) {
+    if( trim( (string) $oDadosEscola->registro00->codigo_escola_inep ) == '' ) {
 
       $sMensagem          = "É necessário informar o código INEP da escola.";
       $lTodosDadosValidos = false;
       $oExportacaoCenso->logErro( $sMensagem, ExportacaoCensoBase::LOG_ESCOLA );
     }
 
-    if( trim( $oDadosEscola->registro00->codigo_escola_inep ) != '' ) {
+    if( trim( (string) $oDadosEscola->registro00->codigo_escola_inep ) != '' ) {
 
       if( !DBNumber::isInteger( $oDadosEscola->registro00->codigo_escola_inep ) ) {
 
@@ -691,7 +689,7 @@ class DadosCensoEscola extends DadosCenso {
         $oExportacaoCenso->logErro( $sMensagem, ExportacaoCensoBase::LOG_ESCOLA );
       }
 
-      if( strlen( trim( $oDadosEscola->registro00->codigo_escola_inep ) ) != 8 ) {
+      if( strlen( trim( (string) $oDadosEscola->registro00->codigo_escola_inep ) ) != 8 ) {
 
         $sMensagem          = "Código INEP da escola inválido. O código INEP deve conter 8 dígitos.";
         $lTodosDadosValidos = false;
@@ -699,14 +697,14 @@ class DadosCensoEscola extends DadosCenso {
       }
     }
 
-    if (trim($oDadosEscola->registro00->nome_escola) == '') {
+    if (trim((string) $oDadosEscola->registro00->nome_escola) == '') {
 
       $lTodosDadosValidos = false;
       $oExportacaoCenso->logErro("Nome da Escola não pode ser vazio", ExportacaoCensoBase::LOG_ESCOLA);
     }
 
-    if (    trim( $oDadosEscola->registro00->nome_escola ) != ''
-         && strlen( $oDadosEscola->registro00->nome_escola ) < 4
+    if (    trim( (string) $oDadosEscola->registro00->nome_escola ) != ''
+         && strlen( (string) $oDadosEscola->registro00->nome_escola ) < 4
        ) {
 
       $lTodosDadosValidos = false;
@@ -728,7 +726,7 @@ class DadosCensoEscola extends DadosCenso {
         $oExportacaoCenso->logErro( $sMensagem, ExportacaoCensoBase::LOG_ESCOLA );
       }
 
-      if (strlen($oDadosEscola->registro00->cep) < 8) {
+      if (strlen((string) $oDadosEscola->registro00->cep) < 8) {
 
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro("CEP  da escola deve conter 8 dígitos.", ExportacaoCensoBase::LOG_ESCOLA);
@@ -766,7 +764,7 @@ class DadosCensoEscola extends DadosCenso {
     if ($oDadosEscola->registro00->situacao_funcionamento == 1) {
 
 
-      if (trim($oDadosEscola->registro00->codigo_orgao_regional_ensino) == '' && $oDadosEscola->registro00->lOrgaoEnsinoObrigatorio) {
+      if (trim((string) $oDadosEscola->registro00->codigo_orgao_regional_ensino) == '' && $oDadosEscola->registro00->lOrgaoEnsinoObrigatorio) {
 
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro("Orgão Regional de Ensino obrigatório.", ExportacaoCensoBase::LOG_ESCOLA);
@@ -840,15 +838,15 @@ class DadosCensoEscola extends DadosCenso {
 
         if( $oDadosEscola->registro00->{$sPropriedadeTelefone} != '' ) {
 
-          if( strlen( $oDadosEscola->registro00->{$sPropriedadeTelefone} ) < 8 ) {
+          if( strlen( (string) $oDadosEscola->registro00->{$sPropriedadeTelefone} ) < 8 ) {
 
             $sMensagem          = "Campo {$sMensagemTelefone} deve conter 8 dígitos";
             $lTodosDadosValidos = false;
             $oExportacaoCenso->logErro( $sMensagem, ExportacaoCensoBase::LOG_ESCOLA );
           }
 
-          if (    substr($oDadosEscola->registro00->{$sPropriedadeTelefone}, 0, 1) != 9
-               && strlen($oDadosEscola->registro00->{$sPropriedadeTelefone}) == 9
+          if (    substr((string) $oDadosEscola->registro00->{$sPropriedadeTelefone}, 0, 1) != 9
+               && strlen((string) $oDadosEscola->registro00->{$sPropriedadeTelefone}) == 9
              ) {
 
             $sMensagem          = "Campo {$sMensagemTelefone}, ao conter 9 dígitos, o primeiro algarismo deve ser 9.";
@@ -860,7 +858,7 @@ class DadosCensoEscola extends DadosCenso {
 
       if ($oDadosEscola->registro00->fax != '') {
 
-        if (strlen($oDadosEscola->registro00->fax) < 8) {
+        if (strlen((string) $oDadosEscola->registro00->fax) < 8) {
 
           $lTodosDadosValidos = false;
           $oExportacaoCenso->logErro("Campo Fax deve conter 8 dígitos", ExportacaoCensoBase::LOG_ESCOLA);
@@ -1105,7 +1103,7 @@ class DadosCensoEscola extends DadosCenso {
       $oExportacaoCenso->logErro("Número do CPF do gestor é obrigatório", ExportacaoCensoBase::LOG_ESCOLA);
     }
 
-    if (trim($oDadosEscola->registro10->numero_cpf_responsavel_gestor_responsavel) == "00000000191") {
+    if (trim((string) $oDadosEscola->registro10->numero_cpf_responsavel_gestor_responsavel) == "00000000191") {
 
       $lTodosDadosValidos  = false;
       $sMensagem           = "Número do CPF ({$oDadosEscola->registro10->numero_cpf_responsavel_gestor_responsavel}) do";
@@ -1120,7 +1118,7 @@ class DadosCensoEscola extends DadosCenso {
     }
 
     $sExpressao          = '/([a-zA-Z])\1{3}/';
-    $lValidacaoExpressao = preg_match($sExpressao, $oDadosEscola->registro10->nome_gestor) ? true : false;
+    $lValidacaoExpressao = preg_match($sExpressao, (string) $oDadosEscola->registro10->nome_gestor) ? true : false;
 
     if ($lValidacaoExpressao) {
 
@@ -1185,12 +1183,12 @@ class DadosCensoEscola extends DadosCenso {
           for( $iContador = 1; $iContador <= 6; $iContador++ ) {
 
             $sCodigoEscolaCompartilhada = "codigo_escola_compartilha_" . $iContador;
-            if( trim( $oDadosEscola->registro10->{$sCodigoEscolaCompartilhada} ) == '' ) {
+            if( trim( (string) $oDadosEscola->registro10->{$sCodigoEscolaCompartilhada} ) == '' ) {
               $iTotalCodigoVazio++;
             }
 
-            if(    trim( $oDadosEscola->registro10->{$sCodigoEscolaCompartilhada} ) != ''
-                && strlen( trim( $oDadosEscola->registro10->{$sCodigoEscolaCompartilhada} ) ) != 8 ) {
+            if(    trim( (string) $oDadosEscola->registro10->{$sCodigoEscolaCompartilhada} ) != ''
+                && strlen( trim( (string) $oDadosEscola->registro10->{$sCodigoEscolaCompartilhada} ) ) != 8 ) {
               $lErroCodigoInvalido = true;
             }
           }
@@ -1236,7 +1234,7 @@ class DadosCensoEscola extends DadosCenso {
       }
 
       $lNumeroSalasExistentesValido = true;
-      if( !DBNumber::isInteger( trim( $oDadosEscola->registro10->numero_salas_aula_existentes_escola ) ) ) {
+      if( !DBNumber::isInteger( trim( (string) $oDadosEscola->registro10->numero_salas_aula_existentes_escola ) ) ) {
 
         $lNumeroSalasExistentesValido = false;
         $sMensagem                    = "Valor do 'N° de Salas de Aula Existentes na Escola' inválido. Deve ser";
@@ -1255,7 +1253,7 @@ class DadosCensoEscola extends DadosCenso {
       }
 
       $lNumeroSalasUsadasValido = true;
-      if( !DBNumber::isInteger( trim( $oDadosEscola->registro10->numero_salas_usadas_como_salas_aula ) ) ) {
+      if( !DBNumber::isInteger( trim( (string) $oDadosEscola->registro10->numero_salas_usadas_como_salas_aula ) ) ) {
 
         $lNumeroSalasUsadasValido = false;
         $sMensagem                = "Valor do 'N° de Salas Utilizadas como Sala de Aula' inválido. Deve ser";
@@ -1293,7 +1291,7 @@ class DadosCensoEscola extends DadosCenso {
       }
 
       if (    $oDadosEscola->registro00->dependencia_administrativa != 3
-           && trim( $oDadosEscola->registro10->alimentacao_escolar_aluno ) != 1
+           && trim( (string) $oDadosEscola->registro10->alimentacao_escolar_aluno ) != 1
          ) {
 
         $lTodosDadosValidos  = false;
@@ -1346,18 +1344,8 @@ class DadosCensoEscola extends DadosCenso {
 
       if( $oDadosEscola->registro10->dependencias_existentes_escola_nenhuma_relacionada == 1 ) {
 
-        $lSelecionouDependencia = false;
-        foreach( $aDependenciasEscola as $sDependencia ) {
-
-          if(    $oDadosEscola->registro10->{$sDependencia} != "dependencias_existentes_escola_nenhuma_relacionada"
-              && $oDadosEscola->registro10->{$sDependencia} == 1
-            ) {
-
-            $lSelecionouDependencia = true;
-            break;
-          }
-        }
-
+        $lSelecionouDependencia = array_any($aDependenciasEscola, fn($sDependencia) => $oDadosEscola->registro10->{$sDependencia} != "dependencias_existentes_escola_nenhuma_relacionada"
+            && $oDadosEscola->registro10->{$sDependencia} == 1);
         if( $lSelecionouDependencia ) {
 
           $sMensagem            = "Informação das dependências da escola inválida. Ao selecionar 'Nenhuma das dependências";
@@ -1605,27 +1593,27 @@ class DadosCensoEscola extends DadosCenso {
     $oDaoEscolaEstrutura = db_utils::getDao('escolaestrutura');
 
     if ($oLinha->educacao_indigena != ""
-        && $oLinha->educacao_indigena != trim($oDadosEscola->ed18_i_educindigena)) {
+        && $oLinha->educacao_indigena != trim((string) $oDadosEscola->ed18_i_educindigena)) {
       $oDaoEscola->ed18_i_educindigena = $oLinha->educacao_indigena;
     }
 
     if ($oLinha->lingua_ensino_ministrado_lingua_indigena != ""
-        && $oLinha->lingua_ensino_ministrado_lingua_indigena != trim($oDadosEscola->ed18_i_tipolinguain)) {
+        && $oLinha->lingua_ensino_ministrado_lingua_indigena != trim((string) $oDadosEscola->ed18_i_tipolinguain)) {
       $oDaoEscola->ed18_i_tipolinguain = $oLinha->lingua_ensino_ministrado_lingua_indigena;
     }
 
     if ($oLinha->lingua_ensino_ministrada_lingua_portuguesa != ""
-        && $oLinha->lingua_ensino_ministrada_lingua_portuguesa != trim($oDadosEscola->ed18_i_tipolinguapt)) {
+        && $oLinha->lingua_ensino_ministrada_lingua_portuguesa != trim((string) $oDadosEscola->ed18_i_tipolinguapt)) {
       $oDaoEscola->ed18_i_tipolinguapt = $oLinha->lingua_ensino_ministrada_lingua_portuguesa;
     }
 
     if ($oLinha->codigo_lingua_indigena != ""
-        && $oLinha->codigo_lingua_indigena != trim($oDadosEscola->ed18_i_linguaindigena)) {
+        && $oLinha->codigo_lingua_indigena != trim((string) $oDadosEscola->ed18_i_linguaindigena)) {
       $oDaoEscola->ed18_i_linguaindigena = $oLinha->codigo_lingua_indigena;
     }
 
     if ($oLinha->localizacao_diferenciada_escola != ""
-        && $oLinha->localizacao_diferenciada_escola != trim($oDadosEscola->ed18_i_locdiferenciada)) {
+        && $oLinha->localizacao_diferenciada_escola != trim((string) $oDadosEscola->ed18_i_locdiferenciada)) {
       $oDaoEscola->ed18_i_locdiferenciada = $oLinha->localizacao_diferenciada_escola;
     }
 

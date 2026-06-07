@@ -225,6 +225,7 @@ class AssentamentoJustificativa extends \Assentamento {
      *
      * @throws \DBException
    */
+  #[\Override]
   public function persist() {
 
     parent::persist();
@@ -262,6 +263,7 @@ class AssentamentoJustificativa extends \Assentamento {
      * @param DiaTrabalho $diaTrabalho
      * @return String
      */
+    #[\Override]
     public function calcularHorasDiurnasNoturnasNoDia(DiaTrabalho $diaTrabalho)
     {
         $baseHora = new BaseHora($diaTrabalho);
@@ -271,7 +273,7 @@ class AssentamentoJustificativa extends \Assentamento {
         $periodo = 0;
 
 
-        $horasTotais = array();
+        $horasTotais = [];
         $quantidadeHorasJornada = 4;
         for ($i = 0; $i < $quantidadeHorasJornada; $i = $i + 2) {
             $indiceEntrada = $i;

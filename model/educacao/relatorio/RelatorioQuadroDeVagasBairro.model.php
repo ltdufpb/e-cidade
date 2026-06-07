@@ -345,7 +345,7 @@ class RelatorioQuadroDeVagasBairro extends EstatisticaAlunosMatriculados
                             $nomeEtapaCenso = "OUTROS";
                         }
 
-                        if (!array_key_exists($oTurma->iCodigo, $this->aTurmasMulti)) {
+                        if (!array_key_exists((string) $oTurma->iCodigo, $this->aTurmasMulti)) {
                             $this->aTurmasMulti[$oTurma->iCodigo] = (object)[
                                 'etapa_turma_multi' => $nomeEtapaCenso,
                                 'nome_turma_multi' => $oTurma->sTurma,
@@ -522,11 +522,11 @@ class RelatorioQuadroDeVagasBairro extends EstatisticaAlunosMatriculados
 
 function ordenarString($a, $b)
 {
-    $aString = substr($a, strpos($a, " "));
-    $bString = substr($b, strpos($b, " "));
+    $aString = substr((string) $a, strpos((string) $a, " "));
+    $bString = substr((string) $b, strpos((string) $b, " "));
 
-    $aNumber = substr($a, 0, strpos($a, " "));
-    $bNumber = substr($b, 0, strpos($b, " "));
+    $aNumber = substr((string) $a, 0, strpos((string) $a, " "));
+    $bNumber = substr((string) $b, 0, strpos((string) $b, " "));
 
 
     $a = romanoParaInteiro(trim($aString)) > 0 ? romanoParaInteiro(trim($aString)) . " " . $aNumber : $aString . " " . $aNumber;
@@ -536,11 +536,11 @@ function ordenarString($a, $b)
 
 function ordenarStringMultisseriada($a, $b)
 {
-    $aString = substr(key($a), strpos(key($a), " "));
-    $bString = substr(key($b), strpos(key($b), " "));
+    $aString = substr((string) key($a), strpos((string) key($a), " "));
+    $bString = substr((string) key($b), strpos((string) key($b), " "));
 
-    $aNumber = substr(key($a), 0, strpos(key($a), " "));
-    $bNumber = substr(key($b), 0, strpos(key($b), " "));
+    $aNumber = substr((string) key($a), 0, strpos((string) key($a), " "));
+    $bNumber = substr((string) key($b), 0, strpos((string) key($b), " "));
 
     $a = romanoParaInteiro(trim($aString)) > 0 ? romanoParaInteiro(trim($aString)) . " " . $aNumber : $aString . " " . $aNumber;
     $b = romanoParaInteiro(trim($bString)) > 0 ? romanoParaInteiro(trim($bString)) . " " . $bNumber : $bString . " " . $bNumber;
@@ -568,9 +568,9 @@ function romanoParaInteiro($numRoman, $debug = false)
 
     $int = 0;
     foreach ($default as $key => $value) {
-        while (str_starts_with($numRoman, $key)) {
+        while (str_starts_with((string) $numRoman, $key)) {
             $int += $value;
-            $numRoman = substr($numRoman, strlen($key));
+            $numRoman = substr((string) $numRoman, strlen($key));
         }
     }
 

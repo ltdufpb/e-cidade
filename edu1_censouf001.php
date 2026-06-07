@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censouf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clcensouf = new cl_censouf;
 ?>
 <html>
@@ -65,9 +65,9 @@ $clcensouf = new cl_censouf;
               ed260_c_nome
              ";
    $sql = $clcensouf->sql_query("",$campos,"ed260_c_nome","");
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_ed2721_i_codigo)){
-    $repassa = array("chave_ed260_i_codigo"=>@$chave_ed260_i_codigo);
+    $repassa = ["chave_ed260_i_codigo"=>@$chave_ed260_i_codigo];
    }
    db_lovrot($sql,25,"","","","","NoMe",$repassa);
    ?>

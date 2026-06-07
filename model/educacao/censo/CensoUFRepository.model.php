@@ -71,7 +71,7 @@ class CensoUFRepository {
   public static function getEstadoPorSigla($siglaUF) {
 
     $ufCenso = new stdClass();
-    $siglaUF = strtoupper($siglaUF); 
+    $siglaUF = strtoupper((string) $siglaUF); 
     $where = "ed260_c_sigla = '$siglaUF'";  
     $oDaoCensoUF = new cl_censouf;
     $sSqlCenso   = $oDaoCensoUF->sql_query_file(null, "*", null,$where);

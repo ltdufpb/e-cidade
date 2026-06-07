@@ -37,7 +37,7 @@ include(modification("classes/db_distancia_classe.php"));
 include(modification("classes/db_transporteparam_classe.php"));
 include(modification("classes/db_alunopassagemescolaproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clalunopassagem = new cl_alunopassagem;
 $clescola = new cl_escola;
 $cldistancia = new cl_distancia;
@@ -133,7 +133,7 @@ if(isset($incluir)){
   }
  }else{
   $result = @db_query("select last_value from alunopassagem_ed215_i_codigo_seq");
-  $ultimo = pg_result($result,0,0);
+  $ultimo = pg_fetch_result($result,0,0);
   if($tipoescola=="F"){
    db_inicio_transacao();
    $clalunopassagemescolaproc->ed227_i_alunopassagem=$ultimo;

@@ -73,7 +73,7 @@ db_postmemory($_POST);
 $sMsgErro = '';
 $iAnoAtual = date("Y", db_getsession("DB_datausu"));
 $oPost = db_utils::postMemory($_POST);
-$iAnoEscolhido = isset($oPost->ano_opcao) ? $oPost->ano_opcao : $iAnoAtual;
+$iAnoEscolhido = $oPost->ano_opcao ?? $iAnoAtual;
 $lErro = false;
 
 if (isset($oPost->importar)) {

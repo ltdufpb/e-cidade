@@ -39,6 +39,7 @@ use Exception;
  */
 class InicialNome extends \BaseClassRepository
 {
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -120,7 +121,7 @@ class InicialNome extends \BaseClassRepository
             return null;
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object)$item);
         }

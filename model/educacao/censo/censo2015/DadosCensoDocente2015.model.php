@@ -34,6 +34,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
   private   $sDadosDocente          = '';
   private   $oExportacaoCenso       = '';
+  #[\Override]
   protected $aEtapasCensoTurma      = [1, 2, 3, 65];
   protected static $aCursosFormacao = [];
 
@@ -42,6 +43,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
    * @param IExportacaoCenso $oExportacaoCenso  Importacao do censo
    * @return boolean
    */
+  #[\Override]
   public static function validarDados( IExportacaoCenso $oExportacaoCenso ) {
 
     $lDadosValidos    = true;
@@ -98,7 +100,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
       $lDadosValidos = false;
     }
 
-    $sNome = trim( $oRegistro30->nome_completo );
+    $sNome = trim( (string) $oRegistro30->nome_completo );
     if( !DBString::isNomeValido( $sNome, DBString::NOME_REGRA_2 ) ) {
 
       $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -179,7 +181,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
     $aStatusValidacao[] = static::validarRegistro30Coluna17( $sDadosDocente, $oExportacaoCenso, $oRegistro30 );
 
     if ( $lDadosValidos ) {
-      $lDadosValidos = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lDadosValidos = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lDadosValidos;
@@ -199,7 +201,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     $lDadosValidos = true;
 
-    $sEmail = trim( $oRegistro30->email );
+    $sEmail = trim( (string) $oRegistro30->email );
 
     if( !empty( $sEmail ) ) {
 
@@ -283,7 +285,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     if( !empty( $oRegistro30->filiacao_1 ) ) {
 
-      $sFiliacao1 = trim( $oRegistro30->filiacao_1 );
+      $sFiliacao1 = trim( (string) $oRegistro30->filiacao_1 );
       if( empty($oRegistro40->numero_cpf) && !DBString::isNomeValido( $sFiliacao1, DBString::NOME_REGRA_3 ) ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -467,7 +469,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
     $aStatusValidacao[] = static::validarOutrosCursos( $sDadosDocente, $oExportacaoCenso, $oRegistro50);
 
     if ( $lDadosValidos ) {
-      $lDadosValidos = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lDadosValidos = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lDadosValidos;
@@ -1226,7 +1228,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if (strlen($oRegistro40->cep) < 8) {
+      if (strlen((string) $oRegistro40->cep) < 8) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= "CEP [{$oRegistro40->cep}] da escola deve conter 8 dígitos.";
@@ -1234,7 +1236,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', $oRegistro40->cep)) {
+      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', (string) $oRegistro40->cep)) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= "O Campo CEP [{$oRegistro40->cep}] foi preenchido com um valor inválido.";
@@ -1355,7 +1357,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         continue;
       }
 
-        if (preg_match('/[^a-z0-9ªº\s\-.,\/]+/i', $oDadosEndereco->sValor)) {
+        if (preg_match('/[^a-z0-9ªº\s\-.,\/]+/i', (string) $oDadosEndereco->sValor)) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
             $sMsgErro .= "{$oDadosEndereco->sDescricao} [{$oDadosEndereco->sValor}] possui caracteres inválidos. ";
@@ -1475,7 +1477,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     protected static function validarRegistro30Coluna13Regra4($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_3)) {
+        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_3)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O nome da mãe deve ser composto de nome e sobrenome.";
 
@@ -1489,7 +1491,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     protected static function validarRegistro30Coluna13Regra5($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_4)) {
+        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_4)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O nome da mãe não deve conter 4 letras repetidas em sequência.";
 
@@ -1503,7 +1505,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     protected static function validarRegistro30Coluna13Regra3($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
-        if (!DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_5)) {
+        if (!DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_5)) {
             $sMsgErro = "Docente CGM {$dadosDocente}: \n";
             $sMsgErro .= 'O campo "Filiação 2" foi preenchido com valor inválido.';
 

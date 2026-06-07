@@ -63,7 +63,7 @@ class cl_rhpessoalprocessocontrato
     public function __construct()
     {
         $this->rotulo = new rotulo("rhpessoalprocessocontrato"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -161,10 +161,10 @@ class cl_rhpessoalprocessocontrato
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh273_sequencial = pg_result($result,0,0); 
+       $this->rh273_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhpessoalprocessocontrato_rh273_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh273_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh273_sequencial)){
          $this->erro_sql = " Campo rh273_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -224,7 +224,7 @@ class cl_rhpessoalprocessocontrato
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contrato de Trabalho ($this->rh273_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contrato de Trabalho já Cadastrado";
@@ -253,10 +253,10 @@ class cl_rhpessoalprocessocontrato
       $this->atualizacampos();
      $sql = " update rhpessoalprocessocontrato set ";
      $virgula = "";
-     if(trim($this->rh273_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_sequencial"])){ 
+     if(trim((string) $this->rh273_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_sequencial"])){ 
        $sql  .= $virgula." rh273_sequencial = $this->rh273_sequencial ";
        $virgula = ",";
-       if(trim($this->rh273_sequencial) == null ){ 
+       if(trim((string) $this->rh273_sequencial) == null ){ 
          $this->erro_sql = " Campo Número Sequencial não informado.";
          $this->erro_campo = "rh273_sequencial";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_rhpessoalprocessocontrato
          return false;
        }
      }
-     if(trim($this->rh273_sequencialprocessoservidor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_sequencialprocessoservidor"])){ 
+     if(trim((string) $this->rh273_sequencialprocessoservidor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_sequencialprocessoservidor"])){ 
        $sql  .= $virgula." rh273_sequencialprocessoservidor = $this->rh273_sequencialprocessoservidor ";
        $virgula = ",";
-       if(trim($this->rh273_sequencialprocessoservidor) == null ){ 
+       if(trim((string) $this->rh273_sequencialprocessoservidor) == null ){ 
          $this->erro_sql = " Campo Identificação única de processo não informado.";
          $this->erro_campo = "rh273_sequencialprocessoservidor";
          $this->erro_banco = "";
@@ -279,18 +279,18 @@ class cl_rhpessoalprocessocontrato
          return false;
        }
      }
-     if(trim($this->rh273_tpcontr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_tpcontr"])){ 
-        if(trim($this->rh273_tpcontr)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh273_tpcontr"])){ 
+     if(trim((string) $this->rh273_tpcontr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_tpcontr"])){ 
+        if(trim((string) $this->rh273_tpcontr)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh273_tpcontr"])){ 
            $this->rh273_tpcontr = "0" ; 
         } 
        $sql  .= $virgula." rh273_tpcontr = $this->rh273_tpcontr ";
        $virgula = ",";
      }
-     if(trim($this->rh273_indcontr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indcontr"])){ 
+     if(trim((string) $this->rh273_indcontr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indcontr"])){ 
        $sql  .= $virgula." rh273_indcontr = '$this->rh273_indcontr' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_dtadmorig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_dtadmorig_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh273_dtadmorig_dia"] !="") ){ 
+     if(trim((string) $this->rh273_dtadmorig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_dtadmorig_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh273_dtadmorig_dia"] !="") ){ 
        $sql  .= $virgula." rh273_dtadmorig = '$this->rh273_dtadmorig' ";
        $virgula = ",";
      }     else{ 
@@ -299,22 +299,22 @@ class cl_rhpessoalprocessocontrato
          $virgula = ",";
        }
      }
-     if(trim($this->rh273_indreint)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indreint"])){ 
+     if(trim((string) $this->rh273_indreint)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indreint"])){ 
        $sql  .= $virgula." rh273_indreint = '$this->rh273_indreint' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_indcateg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indcateg"])){ 
+     if(trim((string) $this->rh273_indcateg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indcateg"])){ 
        $sql  .= $virgula." rh273_indcateg = '$this->rh273_indcateg' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_indnatativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indnatativ"])){ 
+     if(trim((string) $this->rh273_indnatativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indnatativ"])){ 
        $sql  .= $virgula." rh273_indnatativ = '$this->rh273_indnatativ' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_indmotdeslig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indmotdeslig"])){ 
+     if(trim((string) $this->rh273_indmotdeslig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indmotdeslig"])){ 
        $sql  .= $virgula." rh273_indmotdeslig = '$this->rh273_indmotdeslig' ";
        $virgula = ",";
-       if(trim($this->rh273_indmotdeslig) == null ){ 
+       if(trim((string) $this->rh273_indmotdeslig) == null ){ 
          $this->erro_sql = " Campo Motivo Desligamento não informado.";
          $this->erro_campo = "rh273_indmotdeslig";
          $this->erro_banco = "";
@@ -324,7 +324,7 @@ class cl_rhpessoalprocessocontrato
          return false;
        }
      }
-     if(trim($this->rh273_dinicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_dinicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh273_dinicio_dia"] !="") ){ 
+     if(trim((string) $this->rh273_dinicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_dinicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh273_dinicio_dia"] !="") ){ 
        $sql  .= $virgula." rh273_dinicio = '$this->rh273_dinicio' ";
        $virgula = ",";
      }     else{ 
@@ -333,37 +333,37 @@ class cl_rhpessoalprocessocontrato
          $virgula = ",";
        }
      }
-     if(trim($this->rh273_codcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_codcbo"])){ 
+     if(trim((string) $this->rh273_codcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_codcbo"])){ 
        $sql  .= $virgula." rh273_codcbo = '$this->rh273_codcbo' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_natatividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_natatividade"])){ 
-        if(trim($this->rh273_natatividade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh273_natatividade"])){ 
+     if(trim((string) $this->rh273_natatividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_natatividade"])){ 
+        if(trim((string) $this->rh273_natatividade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh273_natatividade"])){ 
            $this->rh273_natatividade = "0" ; 
         } 
        $sql  .= $virgula." rh273_natatividade = $this->rh273_natatividade ";
        $virgula = ",";
      }
-     if(trim($this->rh273_compini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_compini"])){ 
+     if(trim((string) $this->rh273_compini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_compini"])){ 
        $sql  .= $virgula." rh273_compini = '$this->rh273_compini' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_compfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_compfim"])){ 
+     if(trim((string) $this->rh273_compfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_compfim"])){ 
        $sql  .= $virgula." rh273_compfim = '$this->rh273_compfim' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_indreperc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indreperc"])){ 
-        if(trim($this->rh273_indreperc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh273_indreperc"])){ 
+     if(trim((string) $this->rh273_indreperc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indreperc"])){ 
+        if(trim((string) $this->rh273_indreperc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh273_indreperc"])){ 
            $this->rh273_indreperc = "0" ; 
         } 
        $sql  .= $virgula." rh273_indreperc = $this->rh273_indreperc ";
        $virgula = ",";
      }
-     if(trim($this->rh273_indenabono)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indenabono"])){ 
+     if(trim((string) $this->rh273_indenabono)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indenabono"])){ 
        $sql  .= $virgula." rh273_indenabono = '$this->rh273_indenabono' ";
        $virgula = ",";
      }
-     if(trim($this->rh273_indensd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indensd"])){ 
+     if(trim((string) $this->rh273_indensd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh273_indensd"])){ 
        $sql  .= $virgula." rh273_indensd = '$this->rh273_indensd' ";
        $virgula = ",";
      }

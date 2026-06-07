@@ -120,7 +120,7 @@ class retencaoNota {
      *
      * @var array
      */
-    private $aRetencoes = array();
+    private $aRetencoes = [];
 
     private $codigoOrdem;
 
@@ -167,7 +167,7 @@ class retencaoNota {
             if (isset($_SESSION["retencaoNota{$this->iCodNota}"])) {
                 $aRetencoes = $_SESSION["retencaoNota{$this->iCodNota}"];
             } else {
-                $aRetencoes = array();
+                $aRetencoes = [];
             }
         } else {
             $aRetencoes = $this->aRetencoes;
@@ -308,7 +308,7 @@ class retencaoNota {
 				$lJaRecolhido        = false;
 				$oDaoRetencaoReceita = new cl_retencaoreceitas;
 				$aDataUsu = explode("-", date("Y-m-d",db_getsession("DB_datausu")));
-				list($iAnoUsu, $iMesUsu, $iDiaCalculo) = $aDataUsu;
+				[$iAnoUsu, $iMesUsu, $iDiaCalculo] = $aDataUsu;
 				$sSqlRetencao        = $oDaoRetencaoReceita->sql_query_notas(null,
 						"e23_sequencial,
 						e23_ativo,
@@ -568,7 +568,7 @@ class retencaoNota {
 	 */
 	function getRetencoesFromDB($iNotaLiquidacao, $lInSession = true, $iTipo = 2,$iMes = "", $iAno = "", $lPrincipal = false) {
 
-        $aRetencoes = array();
+        $aRetencoes = [];
         if (!isset($_SESSION["retencaoNota{$this->iCodNota}"]) || $lInSession == false) {
 
             $sWhere = "";
@@ -663,7 +663,7 @@ class retencaoNota {
                         "e27_retencaoreceitas = {$oRetencao->e23_sequencial} and e27_principal is false"
                     );
                     $rsMovimentos = $oDaoRetencaoEmpAgeMov->sql_record($sSqlMovimentos);
-                    $oRetencao->aMovimentos = array();
+                    $oRetencao->aMovimentos = [];
                     if ($oDaoRetencaoEmpAgeMov->numrows > 0) {
                         for ($i = 0; $i < $oDaoRetencaoEmpAgeMov->numrows; $i++) {
                             $oRetencao->aMovimentos[] = $aMovimentos = db_utils::fieldsMemory($rsMovimentos, $i)->e27_empagemov;
@@ -935,7 +935,7 @@ class retencaoNota {
             $oDaoRetencaoReceitas->e23_sequencial = $oRetencao->e23_sequencial;
             $oDaoRetencaoReceitas->e23_recolhido  = "true";
             $aDataCalculo   = explode("-", $oRetencao->e23_dtcalculo);
-            $aDataPagamento = explode("-", $this->getDataBase());
+            $aDataPagamento = explode("-", (string) $this->getDataBase());
             if ($aDataCalculo[1] != $aDataPagamento[1]) {
                 $oDaoRetencaoReceitas->e23_dtcalculo = $this->getDataBase();
             }
@@ -1005,7 +1005,7 @@ class retencaoNota {
 
                 $sHistoricoRecibo  = "Neste pagamento  foi lançada uma retenção ";
                 $sHistoricoRecibo .= "para o empenho {$oNotaLiquidacao->oDadosOrdem->e60_codemp}/{$oNotaLiquidacao->oDadosOrdem->e60_anousu} ";
-                $sHistoricoRecibo .= "no valor de R$ ".trim(db_formatar($oRetencao->e23_valorretencao,"f"));
+                $sHistoricoRecibo .= "no valor de R$ ".trim((string) db_formatar($oRetencao->e23_valorretencao,"f"));
                 $sHistoricoRecibo .= " pela Ordem de Pagamento n° {$oNotaLiquidacao->oDadosOrdem->e50_codord}";
                 $sHistoricoRecibo .= " correspondente a Nota Fiscal n° {$oNotaLiquidacao->oDadosOrdem->e69_numero} ";
                 $sHistoricoRecibo .= "de ".db_formatar($oNotaLiquidacao->oDadosOrdem->e69_dtnota,"d");
@@ -1368,7 +1368,7 @@ class retencaoNota {
                              $receita = $oRetencao->e21_receita;
 
                              $aDebitos = [];
-                             $aDadosDebitos = array();
+                             $aDadosDebitos = [];
                              $aDadosDebitos['Numpre']  = $iNumpre;
                              $aDadosDebitos['Numpar']  = 1;
                              $aDadosDebitos['Receita'] = $receita;
@@ -1854,7 +1854,7 @@ class retencaoNota {
     public function validaDataEFD($oRetencao, $evento) {
         $instit = db_getsession('DB_instit');
         $daoDataEnvioEFD = new cl_dataenvioefd;
-        $where = array();
+        $where = [];
         $where[] = "efd06_arquivo = '{$evento}'";
         $where[] = "(efd06_dataenvio::date) <= ('{$this->dtDataBase}'::date)";
         $where[] = "efd06_instituicao = {$instit}";
@@ -1866,7 +1866,7 @@ class retencaoNota {
         }
 
         $envioValido = pg_num_rows($rsDataenvioEFD) == 1;
-        $pessoaJuridica = strlen($oRetencao->iCpfCnpj) != 14 ? false : true;
+        $pessoaJuridica = strlen((string) $oRetencao->iCpfCnpj) != 14 ? false : true;
 
         if ($envioValido && isset($oRetencao->dadosReinf) && empty($oRetencao->dadosReinf->tipoServicoNotaFiscal) && $pessoaJuridica) {
             $oDaoRetencao = new cl_retencaotiporec;

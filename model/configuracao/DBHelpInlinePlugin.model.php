@@ -6,7 +6,6 @@ class DBHelpInlinePlugin extends DBHelpInline {
 
   public function __construct(AppConfig $oConfig, $iIdItemMenu, Plugin $oPlugin) {
 
-    parent::__construct($oConfig, $iIdItemMenu);
     $this->oPlugin = $oPlugin;
   }
 
@@ -22,6 +21,7 @@ class DBHelpInlinePlugin extends DBHelpInline {
     return $oHelp;
   }
 
+  #[\Override]
   public function load() {
 
     $oHelp = $this->loadHelpFile();

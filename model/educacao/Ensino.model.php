@@ -304,8 +304,8 @@ class Ensino {
   /**
    * Retorna o Tipo de Ensino
    * @return integer
-   * @deprecated
    */
+  #[\Deprecated]
   public function getCodigoTipoEnsino() {
     return $this->iCodigoTipoEnsino;
   }
@@ -313,8 +313,8 @@ class Ensino {
   /**
    * Define o Tipo de Ensino
    * @param integer $iCodigoTipoEnsino
-   * @deprecated
    */
+  #[\Deprecated]
   public function setCodigoTipoEnsino( $iCodigoTipoEnsino ) {
     $this->iCodigoTipoEnsino = $iCodigoTipoEnsino;
   }

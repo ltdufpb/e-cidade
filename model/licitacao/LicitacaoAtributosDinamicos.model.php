@@ -59,11 +59,6 @@ class LicitacaoAtributosDinamicos {
   const NOME_TIPO_ATUACAO                      = 'tipoatuacao';
 
   /**
-   * @var integer Codigo da Licitação
-   */
-  private $iCodigoLicitacao;
-
-  /**
    * @var integer Codigo do Grupo de Atributo Dinamico
    */
   private $iCodigoGrupo;
@@ -77,29 +72,29 @@ class LicitacaoAtributosDinamicos {
    * LicitacaoAtributosDinamicos constructor.
    * @param integer $iCodigoLicitacao
    */
-  public function __construct($iCodigoLicitacao = null) {
-    $this->iCodigoLicitacao = $iCodigoLicitacao;
+  public function __construct(private $iCodigoLicitacao = null)
+  {
   }
 
   /**
    * @param integer $iCodigoLicitacao
    */
   public function setCodigoLicitacao($iCodigoLicitacao) {
-    $this->iCodigoLicitacao = (integer) $iCodigoLicitacao;
+    $this->iCodigoLicitacao = (int) $iCodigoLicitacao;
   }
 
   /**
    * @param integer $iCodigoGrupo
    */
   public function setCodigoGrupo($iCodigoGrupo) {
-    $this->iCodigoGrupo = (integer) $iCodigoGrupo;
+    $this->iCodigoGrupo = (int) $iCodigoGrupo;
   }
 
   /**
    * @return int
    */
   public function getCodigoGrupo() {
-    return (integer)$this->iCodigoGrupo;
+    return (int) $this->iCodigoGrupo;
   }
 
 
@@ -109,7 +104,7 @@ class LicitacaoAtributosDinamicos {
    */
   private function carregarAtributos() {
 
-    $this->aAtributos = array();
+    $this->aAtributos = [];
 
     if ($this->iCodigoLicitacao && !$this->iCodigoGrupo) {
 
@@ -150,7 +145,7 @@ class LicitacaoAtributosDinamicos {
           break;
 
         case DBAttDinamicoAtributo::TIPO_INTEGER:
-          $this->aAtributos[$oAtributo->getNome()] = (integer) $this->aAtributos[$oAtributo->getNome()];
+          $this->aAtributos[$oAtributo->getNome()] = (int) $this->aAtributos[$oAtributo->getNome()];
           break;
       }
     }

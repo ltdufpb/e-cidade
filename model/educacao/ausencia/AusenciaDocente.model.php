@@ -156,7 +156,7 @@ class AusenciaDocente {
 	 * Seta uma data para retorno do docente ausente
 	 * @param DBDate $oDtFinal
 	 */
-	public function setDataFinal (DBDate $oDtFinal = null) {
+	public function setDataFinal (?DBDate $oDtFinal = null) {
 
 		$this->oDtFinal = $oDtFinal;
 	}

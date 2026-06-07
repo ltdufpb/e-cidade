@@ -106,7 +106,7 @@ class TributoIRRFComplementarRepository
      * @param TributoIRRFComplementar|null $IRRFcomplmentar
      * @throws BusinessException
      */
-    public function delete(TributoIRRFComplementar $IRRFcomplmentar = null)
+    public function delete(?TributoIRRFComplementar $IRRFcomplmentar = null)
     {
         $id = $IRRFcomplmentar instanceof TributoIRRFComplementar ? $IRRFcomplmentar->getSequencial() : null;
 
@@ -124,7 +124,7 @@ class TributoIRRFComplementarRepository
      * @return bool|TributoIRRFComplementar
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessoirrfcomp;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

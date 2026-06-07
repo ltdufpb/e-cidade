@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE classificacaocredoreselemento
 class cl_classificacaocredoreselemento {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cc32_sequencial = 0;
-   var $cc32_classificacaocredores = 0;
-   var $cc32_codcon = 0;
-   var $cc32_anousu = 0;
-   var $cc32_exclusao = 'f';
+   public $cc32_sequencial = 0;
+   public $cc32_classificacaocredores = 0;
+   public $cc32_codcon = 0;
+   public $cc32_anousu = 0;
+   public $cc32_exclusao = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cc32_sequencial = int4 = C?digo
                  cc32_classificacaocredores = int4 = Lista
                  cc32_codcon = int4 = Conta
@@ -30,10 +30,10 @@ class cl_classificacaocredoreselemento {
                  cc32_exclusao = bool = Exclus?o
                  ";
    //funcao construtor da classe
-   function cl_classificacaocredoreselemento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaocredoreselemento");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -105,10 +105,10 @@ class cl_classificacaocredoreselemento {
          $this->erro_status = "0";
          return false;
        }
-       $this->cc32_sequencial = pg_result($result,0,0);
+       $this->cc32_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from classificacaocredoreselemento_cc32_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cc32_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cc32_sequencial)){
          $this->erro_sql = " Campo cc32_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -144,7 +144,7 @@ class cl_classificacaocredoreselemento {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "classificacaocredoreselemento ($this->cc32_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "classificacaocredoreselemento já Cadastrado";
@@ -172,10 +172,10 @@ class cl_classificacaocredoreselemento {
       $this->atualizacampos();
      $sql = " update classificacaocredoreselemento set ";
      $virgula = "";
-     if(trim($this->cc32_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_sequencial"])){
+     if(trim((string) $this->cc32_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_sequencial"])){
        $sql  .= $virgula." cc32_sequencial = $this->cc32_sequencial ";
        $virgula = ",";
-       if(trim($this->cc32_sequencial) == null ){
+       if(trim((string) $this->cc32_sequencial) == null ){
          $this->erro_sql = " Campo C?digo não informado.";
          $this->erro_campo = "cc32_sequencial";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_classificacaocredoreselemento {
          return false;
        }
      }
-     if(trim($this->cc32_classificacaocredores)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_classificacaocredores"])){
+     if(trim((string) $this->cc32_classificacaocredores)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_classificacaocredores"])){
        $sql  .= $virgula." cc32_classificacaocredores = $this->cc32_classificacaocredores ";
        $virgula = ",";
-       if(trim($this->cc32_classificacaocredores) == null ){
+       if(trim((string) $this->cc32_classificacaocredores) == null ){
          $this->erro_sql = " Campo Lista não informado.";
          $this->erro_campo = "cc32_classificacaocredores";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_classificacaocredoreselemento {
          return false;
        }
      }
-     if(trim($this->cc32_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_codcon"])){
+     if(trim((string) $this->cc32_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_codcon"])){
        $sql  .= $virgula." cc32_codcon = $this->cc32_codcon ";
        $virgula = ",";
-       if(trim($this->cc32_codcon) == null ){
+       if(trim((string) $this->cc32_codcon) == null ){
          $this->erro_sql = " Campo Conta não informado.";
          $this->erro_campo = "cc32_codcon";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_classificacaocredoreselemento {
          return false;
        }
      }
-     if(trim($this->cc32_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_anousu"])){
+     if(trim((string) $this->cc32_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_anousu"])){
        $sql  .= $virgula." cc32_anousu = $this->cc32_anousu ";
        $virgula = ",";
-       if(trim($this->cc32_anousu) == null ){
+       if(trim((string) $this->cc32_anousu) == null ){
          $this->erro_sql = " Campo Conta não informado.";
          $this->erro_campo = "cc32_anousu";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_classificacaocredoreselemento {
          return false;
        }
      }
-     if(trim($this->cc32_exclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_exclusao"])){
+     if(trim((string) $this->cc32_exclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc32_exclusao"])){
        $sql  .= $virgula." cc32_exclusao = '$this->cc32_exclusao' ";
        $virgula = ",";
-       if(trim($this->cc32_exclusao) == null ){
+       if(trim((string) $this->cc32_exclusao) == null ){
          $this->erro_sql = " Campo Exclus?o não informado.";
          $this->erro_campo = "cc32_exclusao";
          $this->erro_banco = "";

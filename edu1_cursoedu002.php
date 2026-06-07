@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_cursoescola_classe.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clcurso                  = new cl_curso;
 $clcursoescola            = new cl_cursoescola;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
@@ -95,13 +95,13 @@ if (isset($alterar)) {
    <tr>
     <td valign="top" align="center">
      <?php 
-       $chavepri= array("ed71_i_codigo"=>@$ed71_i_codigo, 
+       $chavepri= ["ed71_i_codigo"=>@$ed71_i_codigo, 
                         "ed71_i_escola"=>@$ed71_i_escola, 
                         "ed18_c_nome"=>@$ed18_c_nome, 
                         "ed71_i_curso"=>@$ed71_i_curso, 
                         "ed29_c_descr"=>@$ed29_c_descr, 
                         "ed71_c_situacao"=>@$ed71_c_situacao
-                       );
+                       ];
        $cliframe_alterar_excluir->chavepri      = $chavepri;
        @$cliframe_alterar_excluir->sql          = $clcursoescola->sql_query("", "*", "ed18_c_nome", 
                                                                               " ed71_i_curso = $chavepesquisa" 

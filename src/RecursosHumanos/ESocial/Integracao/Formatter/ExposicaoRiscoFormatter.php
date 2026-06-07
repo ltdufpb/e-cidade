@@ -93,6 +93,7 @@ class ExposicaoRiscoFormatter extends Formatter
      * @return array|\Servidor[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dataInicioDefault = new \DBDate("2022-01-10");
@@ -201,15 +202,15 @@ class ExposicaoRiscoFormatter extends Formatter
         foreach ($agentes as $ag) {
             $agente = new stdClass();
             $agente->codAgNoc = $ag->getTipoAvaliacao();
-            $agente->tpAval = (integer) $ag->getTipoAvaliacao();
+            $agente->tpAval = (int) $ag->getTipoAvaliacao();
             if (!empty($ag->getIntensidadeConcentracao())) {
-                $agente->intConc = (integer) $ag->getIntensidadeConcentracao();
+                $agente->intConc = (int) $ag->getIntensidadeConcentracao();
             }
             if (!empty($ag->getToleranciaLimite())) {
-                $agente->limTol = (integer) $ag->getToleranciaLimite();
+                $agente->limTol = (int) $ag->getToleranciaLimite();
             }
             if (!empty($ag->getMedida())) {
-                $agente->unMed = (integer) $ag->getMedida();
+                $agente->unMed = (int) $ag->getMedida();
             }
             if (!empty($ag->getTecnicaMedicao())) {
                 $agente->tecMedicao = $ag->getTecnicaMedicao();
@@ -228,11 +229,11 @@ class ExposicaoRiscoFormatter extends Formatter
     {
         $epcEpi = new stdClass();
         $epc = $agente->getEquipamento();
-        $epcEpi->utilizEPC = (integer) $epc->getUtilizaEpc();
+        $epcEpi->utilizEPC = (int) $epc->getUtilizaEpc();
         if (!empty($epc->getEficaciaEpc())) {
             $epcEpi->eficEpc = $epc->getEficaciaEpc();
         }
-        $epcEpi->utilizEPI = (integer) $epc->getUtilizaEpi();
+        $epcEpi->utilizEPI = (int) $epc->getUtilizaEpi();
         if (!empty($epc->getEficaciaEpi())) {
             $epcEpi->eficEpi = $epc->getEficaciaEpi();
         }
@@ -305,7 +306,7 @@ class ExposicaoRiscoFormatter extends Formatter
         foreach ($registros as $regitro) {
             $respReg =  new stdClass();
             $respReg->cpfResp = $regitro->getCpf();
-            $respReg->ideOC = (integer) $regitro->getIdentificacaoOrgao();
+            $respReg->ideOC = (int) $regitro->getIdentificacaoOrgao();
             if (!empty($regitro->getDescricaoOrgao())) {
                 $respReg->dscOC = $regitro->getDescricaoOrgao();
             }

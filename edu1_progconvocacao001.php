@@ -34,7 +34,7 @@ include(modification("classes/db_progconvocacao_classe.php"));
 include(modification("classes/db_progmatricula_classe.php"));
 include(modification("classes/db_progconfig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprogconvocacao = new cl_progconvocacao;
 $clprogmatricula = new cl_progmatricula;
 $clprogconfig = new cl_progconfig;
@@ -43,7 +43,7 @@ $db_botao = true;
 $result = $clprogconfig->sql_record($clprogconfig->sql_query("","*","",""));
 db_fieldsmemory($result,0);
 if(isset($incluir)){
- $convocacoes = explode(",",$convoca);
+ $convocacoes = explode(",",(string) $convoca);
  for($i=0;$i<count($convocacoes);$i++){
   db_inicio_transacao();
   $clprogconvocacao->ed115_i_progmatricula = $codmatricula;

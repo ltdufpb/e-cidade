@@ -35,6 +35,7 @@
 require_once modification("model/educacao/avaliacao/ValorAproveitamento.model.php");
 final class ValorAproveitamentoNivel extends ValorAproveitamento {
 
+  #[\Override]
   protected $lUtilizaNivel = true;
   public function __construct($mValor='', private $iOrdem = '') {
 

@@ -58,7 +58,7 @@
      */
     public static function getRegenciaByCodigo($iCodigoRegencia) {
 
-      if (!array_key_exists($iCodigoRegencia, RegenciaRepository::getInstance()->aRegencia)) {
+      if (!array_key_exists((string) $iCodigoRegencia, RegenciaRepository::getInstance()->aRegencia)) {
         RegenciaRepository::getInstance()->aRegencia[$iCodigoRegencia] = new Regencia($iCodigoRegencia);
       }
       return RegenciaRepository::getInstance()->aRegencia[$iCodigoRegencia];

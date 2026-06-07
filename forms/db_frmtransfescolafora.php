@@ -180,7 +180,7 @@ $oClRotulo->label("nome");
         <td nowrap="nowrap" class='bold'>Auxílio Brasil:</td>
         <td>
           <?php
-            $aOpBolFamilia = array("1" => "NÃO", "2" => "SIM");
+            $aOpBolFamilia = ["1" => "NÃO", "2" => "SIM"];
             db_select( 'ed283_c_bolsafamilia', $aOpBolFamilia, true, @$db_opcao );
           ?>
         </td>
@@ -355,7 +355,7 @@ function js_novaescola(){
 <?php
 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
 
 ?>

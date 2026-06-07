@@ -3,28 +3,28 @@
 //CLASSE DA ENTIDADE programacaofinanceiraparcela
 class cl_programacaofinanceiraparcela {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $k118_sequencial = 0;
-   var $k118_programacaofinanceira = 0;
-   var $k118_parcela = 0;
-   var $k118_valor = 0;
-   var $k118_ano = 0;
-   var $k118_mes = 0;
-   var $k118_reconhecido = 'f';
+   public $k118_sequencial = 0;
+   public $k118_programacaofinanceira = 0;
+   public $k118_parcela = 0;
+   public $k118_valor = 0;
+   public $k118_ano = 0;
+   public $k118_mes = 0;
+   public $k118_reconhecido = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  k118_sequencial = int4 = Código Sequencial 
                  k118_programacaofinanceira = int4 = Programacao Financeira 
                  k118_parcela = int4 = Número Parcela 
@@ -34,10 +34,10 @@ class cl_programacaofinanceiraparcela {
                  k118_reconhecido = bool = Reconhecido 
                  ";
    //funcao construtor da classe
-   function cl_programacaofinanceiraparcela() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("programacaofinanceiraparcela");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -123,10 +123,10 @@ class cl_programacaofinanceiraparcela {
          $this->erro_status = "0";
          return false;
        }
-       $this->k118_sequencial = pg_result($result,0,0);
+       $this->k118_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from programacaofinanceiraparcela_k118_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k118_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k118_sequencial)){
          $this->erro_sql = " Campo k118_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_programacaofinanceiraparcela {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Programação Financeira Parcela ($this->k118_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Programação Financeira Parcela já Cadastrado";
@@ -195,16 +195,16 @@ class cl_programacaofinanceiraparcela {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17131,'$this->k118_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3026,17131,'','".AddSlashes(pg_result($resaco,0,'k118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3026,17132,'','".AddSlashes(pg_result($resaco,0,'k118_programacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3026,17133,'','".AddSlashes(pg_result($resaco,0,'k118_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3026,17135,'','".AddSlashes(pg_result($resaco,0,'k118_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3026,22420,'','".AddSlashes(pg_result($resaco,0,'k118_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3026,22421,'','".AddSlashes(pg_result($resaco,0,'k118_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3026,22422,'','".AddSlashes(pg_result($resaco,0,'k118_reconhecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3026,17131,'','".AddSlashes(pg_fetch_result($resaco,0,'k118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3026,17132,'','".AddSlashes(pg_fetch_result($resaco,0,'k118_programacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3026,17133,'','".AddSlashes(pg_fetch_result($resaco,0,'k118_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3026,17135,'','".AddSlashes(pg_fetch_result($resaco,0,'k118_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3026,22420,'','".AddSlashes(pg_fetch_result($resaco,0,'k118_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3026,22421,'','".AddSlashes(pg_fetch_result($resaco,0,'k118_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3026,22422,'','".AddSlashes(pg_fetch_result($resaco,0,'k118_reconhecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -214,10 +214,10 @@ class cl_programacaofinanceiraparcela {
       $this->atualizacampos();
      $sql = " update programacaofinanceiraparcela set ";
      $virgula = "";
-     if(trim($this->k118_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_sequencial"])){
+     if(trim((string) $this->k118_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_sequencial"])){
        $sql  .= $virgula." k118_sequencial = $this->k118_sequencial ";
        $virgula = ",";
-       if(trim($this->k118_sequencial) == null ){
+       if(trim((string) $this->k118_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "k118_sequencial";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_programacaofinanceiraparcela {
          return false;
        }
      }
-     if(trim($this->k118_programacaofinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_programacaofinanceira"])){
+     if(trim((string) $this->k118_programacaofinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_programacaofinanceira"])){
        $sql  .= $virgula." k118_programacaofinanceira = $this->k118_programacaofinanceira ";
        $virgula = ",";
-       if(trim($this->k118_programacaofinanceira) == null ){
+       if(trim((string) $this->k118_programacaofinanceira) == null ){
          $this->erro_sql = " Campo Programacao Financeira não informado.";
          $this->erro_campo = "k118_programacaofinanceira";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_programacaofinanceiraparcela {
          return false;
        }
      }
-     if(trim($this->k118_parcela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_parcela"])){
+     if(trim((string) $this->k118_parcela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_parcela"])){
        $sql  .= $virgula." k118_parcela = $this->k118_parcela ";
        $virgula = ",";
-       if(trim($this->k118_parcela) == null ){
+       if(trim((string) $this->k118_parcela) == null ){
          $this->erro_sql = " Campo Número Parcela não informado.";
          $this->erro_campo = "k118_parcela";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_programacaofinanceiraparcela {
          return false;
        }
      }
-     if(trim($this->k118_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_valor"])){
+     if(trim((string) $this->k118_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_valor"])){
        $sql  .= $virgula." k118_valor = $this->k118_valor ";
        $virgula = ",";
-       if(trim($this->k118_valor) == null ){
+       if(trim((string) $this->k118_valor) == null ){
          $this->erro_sql = " Campo Valor a Pagar não informado.";
          $this->erro_campo = "k118_valor";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_programacaofinanceiraparcela {
          return false;
        }
      }
-     if(trim($this->k118_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_ano"])){
+     if(trim((string) $this->k118_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_ano"])){
        $sql  .= $virgula." k118_ano = $this->k118_ano ";
        $virgula = ",";
-       if(trim($this->k118_ano) == null ){
+       if(trim((string) $this->k118_ano) == null ){
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "k118_ano";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_programacaofinanceiraparcela {
          return false;
        }
      }
-     if(trim($this->k118_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_mes"])){
+     if(trim((string) $this->k118_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_mes"])){
        $sql  .= $virgula." k118_mes = $this->k118_mes ";
        $virgula = ",";
-       if(trim($this->k118_mes) == null ){
+       if(trim((string) $this->k118_mes) == null ){
          $this->erro_sql = " Campo Mês não informado.";
          $this->erro_campo = "k118_mes";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ class cl_programacaofinanceiraparcela {
          return false;
        }
      }
-     if(trim($this->k118_reconhecido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_reconhecido"])){
+     if(trim((string) $this->k118_reconhecido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k118_reconhecido"])){
        $sql  .= $virgula." k118_reconhecido = '$this->k118_reconhecido' ";
        $virgula = ",";
      }
@@ -310,23 +310,23 @@ class cl_programacaofinanceiraparcela {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,17131,'$this->k118_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k118_sequencial"]) || $this->k118_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3026,17131,'".AddSlashes(pg_result($resaco,$conresaco,'k118_sequencial'))."','$this->k118_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3026,17131,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k118_sequencial'))."','$this->k118_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k118_programacaofinanceira"]) || $this->k118_programacaofinanceira != "")
-             $resac = db_query("insert into db_acount values($acount,3026,17132,'".AddSlashes(pg_result($resaco,$conresaco,'k118_programacaofinanceira'))."','$this->k118_programacaofinanceira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3026,17132,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k118_programacaofinanceira'))."','$this->k118_programacaofinanceira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k118_parcela"]) || $this->k118_parcela != "")
-             $resac = db_query("insert into db_acount values($acount,3026,17133,'".AddSlashes(pg_result($resaco,$conresaco,'k118_parcela'))."','$this->k118_parcela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3026,17133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k118_parcela'))."','$this->k118_parcela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k118_valor"]) || $this->k118_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3026,17135,'".AddSlashes(pg_result($resaco,$conresaco,'k118_valor'))."','$this->k118_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3026,17135,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k118_valor'))."','$this->k118_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k118_ano"]) || $this->k118_ano != "")
-             $resac = db_query("insert into db_acount values($acount,3026,22420,'".AddSlashes(pg_result($resaco,$conresaco,'k118_ano'))."','$this->k118_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3026,22420,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k118_ano'))."','$this->k118_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k118_mes"]) || $this->k118_mes != "")
-             $resac = db_query("insert into db_acount values($acount,3026,22421,'".AddSlashes(pg_result($resaco,$conresaco,'k118_mes'))."','$this->k118_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3026,22421,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k118_mes'))."','$this->k118_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k118_reconhecido"]) || $this->k118_reconhecido != "")
-             $resac = db_query("insert into db_acount values($acount,3026,22422,'".AddSlashes(pg_result($resaco,$conresaco,'k118_reconhecido'))."','$this->k118_reconhecido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3026,22422,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k118_reconhecido'))."','$this->k118_reconhecido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -380,16 +380,16 @@ class cl_programacaofinanceiraparcela {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,17131,'$k118_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3026,17131,'','".AddSlashes(pg_result($resaco,$iresaco,'k118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3026,17132,'','".AddSlashes(pg_result($resaco,$iresaco,'k118_programacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3026,17133,'','".AddSlashes(pg_result($resaco,$iresaco,'k118_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3026,17135,'','".AddSlashes(pg_result($resaco,$iresaco,'k118_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3026,22420,'','".AddSlashes(pg_result($resaco,$iresaco,'k118_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3026,22421,'','".AddSlashes(pg_result($resaco,$iresaco,'k118_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3026,22422,'','".AddSlashes(pg_result($resaco,$iresaco,'k118_reconhecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3026,17131,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3026,17132,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k118_programacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3026,17133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k118_parcela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3026,17135,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k118_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3026,22420,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k118_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3026,22421,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k118_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3026,22422,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k118_reconhecido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

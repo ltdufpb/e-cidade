@@ -49,7 +49,7 @@ if (isset($incluir)) {
   $consulta = "";
   $sep = "";
   for($vv=0;$vv<count($xcodavaliacao);$vv++){
-   if(trim($xformaavaliacao[$vv])==""){
+   if(trim((string) $xformaavaliacao[$vv])==""){
     $consulta .= $sep.$xcodavaliacao[$vv];
     $sep = ",";
    }

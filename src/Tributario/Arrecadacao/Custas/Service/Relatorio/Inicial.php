@@ -46,12 +46,6 @@ use ECidade\Tributario\Juridico\Inicial\Inicial as InicialEntity;
  */
 class Inicial implements Custas\Interfaces\Service
 {
-    /** @var integer */
-    private $tipoDebito;
-
-    /** @var integer */
-    private $cadTipo;
-
     /** @var array */
     private $iniciais;
 
@@ -59,16 +53,17 @@ class Inicial implements Custas\Interfaces\Service
     private $dataUsuario;
 
     /** @var array  */
-    private $datasVencimentos = array();
+    private $datasVencimentos = [];
 
-    public function __construct($tipoDebito, $cadTipo, $iniciais)
+    /**
+     * @param int $tipoDebito
+     * @param int $cadTipo
+     */
+    public function __construct(private $tipoDebito, private $cadTipo, $iniciais)
     {
         if (!\db_utils::inTransaction()) {
             throw new \Exception('Transação não iniciada');
         }
-
-        $this->tipoDebito = $tipoDebito;
-        $this->cadTipo = $cadTipo;
         $this->iniciais = array_unique($iniciais);
         $this->dataUsuario = \DBDate::createFromTimestamp(db_getsession("DB_datausu"));
     }
@@ -89,10 +84,10 @@ class Inicial implements Custas\Interfaces\Service
             ->setReturnFullItem(true);
 
         /** @var ProcessoForoEntity[] $processos */
-        $processos = array();
+        $processos = [];
 
         /** @var InicialEntity[] $iniciais */
-        $iniciais = array();
+        $iniciais = [];
 
         foreach ($this->iniciais as $inicial) {
             $processo = $processoForoRepository->getByInicial($inicial);
@@ -147,7 +142,7 @@ class Inicial implements Custas\Interfaces\Service
      */
     private function getIniciaisDebito($debito)
     {
-        $iniciais = array();
+        $iniciais = [];
 
         if ($debito instanceof ProcessoForoEntity) {
             foreach ($debito->getIniciais() as $inicial) {
@@ -156,7 +151,7 @@ class Inicial implements Custas\Interfaces\Service
         }
 
         if ($debito instanceof InicialEntity) {
-            $iniciais = array($debito->getCodigo());
+            $iniciais = [$debito->getCodigo()];
         }
 
         return $iniciais;
@@ -170,7 +165,7 @@ class Inicial implements Custas\Interfaces\Service
      */
     private function buildPartilha($debito, $custas)
     {
-        $partilhas = array();
+        $partilhas = [];
 
         foreach ($custas as $custa) {
             if ($debito instanceof ProcessoForoEntity) {
@@ -227,7 +222,7 @@ class Inicial implements Custas\Interfaces\Service
      */
     private function validarIniciais($processos, $iniciais)
     {
-        $exists = array();
+        $exists = [];
         foreach ($processos as $processo) {
             foreach ($processo->getIniciais() as $inicial) {
                 if (!empty($exists[$inicial->getCodigo()])) {
@@ -269,7 +264,7 @@ class Inicial implements Custas\Interfaces\Service
         $processoForoPartilhaRepository = ProcessoForoPartilhaRepository::getInstance();
         $custasPagas = $processoForoPartilhaRepository->getPagoManualByNumnov($recibo->getNumpreRecibo());
 
-        $custas = array();
+        $custas = [];
         if ($processamentoCustas) {
             $custas = $reciboService->getCustas($recibo->getNumpreRecibo());
         }

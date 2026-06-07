@@ -43,7 +43,7 @@ class SetorlocRepository
      *
      * @return Setorloc[]
      */
-    public function get($campos = array('*'))
+    public function get($campos = ['*'])
     {
         $dao = new cl_setorloc;
         $campos = implode(', ', $campos);
@@ -55,12 +55,12 @@ class SetorlocRepository
         $rs = db_query($sql);
         $registros = pg_fetch_all($rs);
 
-        $setorlocs = array();
+        $setorlocs = [];
         foreach ($registros as $registro) {
             $setorlocs[] = Setorloc::fromState($registro);
         }
 
-        $this->scopes = array();
+        $this->scopes = [];
 
         return $setorlocs;
     }
@@ -69,7 +69,7 @@ class SetorlocRepository
      * @param string[] $campos
      * @return Setorloc|null
      */
-    public function first($campos = array('*'))
+    public function first($campos = ['*'])
     {
         $all = $this->get($campos);
 

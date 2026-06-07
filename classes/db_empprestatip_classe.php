@@ -27,26 +27,26 @@
 
 class cl_empprestatip { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e44_tipo = 0; 
-   var $e44_descr = null; 
-   var $e44_obriga = 0; 
-   var $e44_naturezaevento = 1; 
-   var $e44_diaria = 'f'; 
+   public $e44_tipo = 0; 
+   public $e44_descr = null; 
+   public $e44_obriga = 0; 
+   public $e44_naturezaevento = 1; 
+   public $e44_diaria = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e44_tipo = int4 = Evento 
                  e44_descr = varchar(40) = Descrição do evento
                  e44_obriga = int4 = Obriga 
@@ -54,10 +54,10 @@ class cl_empprestatip {
                  e44_diaria = bool = Diária 
                  ";
    //funcao construtor da classe 
-   function cl_empprestatip() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empprestatip"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -123,10 +123,10 @@ class cl_empprestatip {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e44_tipo = pg_result($result,0,0); 
+       $this->e44_tipo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empprestatip_e44_tipo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e44_tipo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e44_tipo)){
          $this->erro_sql = " Campo e44_tipo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -162,7 +162,7 @@ class cl_empprestatip {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipos de prestação ($this->e44_tipo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipos de prestação já Cadastrado";
@@ -191,14 +191,14 @@ class cl_empprestatip {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6355,'$this->e44_tipo','I')");
-         $resac = db_query("insert into db_acount values($acount,1038,6355,'','".AddSlashes(pg_result($resaco,0,'e44_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1038,6356,'','".AddSlashes(pg_result($resaco,0,'e44_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1038,6357,'','".AddSlashes(pg_result($resaco,0,'e44_obriga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1038,20881,'','".AddSlashes(pg_result($resaco,0,'e44_naturezaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1038,1010019,'','".AddSlashes(pg_result($resaco,0,'e44_diaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1038,6355,'','".AddSlashes(pg_fetch_result($resaco,0,'e44_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1038,6356,'','".AddSlashes(pg_fetch_result($resaco,0,'e44_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1038,6357,'','".AddSlashes(pg_fetch_result($resaco,0,'e44_obriga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1038,20881,'','".AddSlashes(pg_fetch_result($resaco,0,'e44_naturezaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1038,1010019,'','".AddSlashes(pg_fetch_result($resaco,0,'e44_diaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -208,10 +208,10 @@ class cl_empprestatip {
       $this->atualizacampos();
      $sql = " update empprestatip set ";
      $virgula = "";
-     if(trim($this->e44_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_tipo"])){ 
+     if(trim((string) $this->e44_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_tipo"])){ 
        $sql  .= $virgula." e44_tipo = $this->e44_tipo ";
        $virgula = ",";
-       if(trim($this->e44_tipo) == null ){ 
+       if(trim((string) $this->e44_tipo) == null ){ 
          $this->erro_sql = " Campo Evento não informado.";
          $this->erro_campo = "e44_tipo";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_empprestatip {
          return false;
        }
      }
-     if(trim($this->e44_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_descr"])){ 
+     if(trim((string) $this->e44_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_descr"])){ 
        $sql  .= $virgula." e44_descr = '$this->e44_descr' ";
        $virgula = ",";
-       if(trim($this->e44_descr) == null ){ 
+       if(trim((string) $this->e44_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do Evento não informado.";
          $this->erro_campo = "e44_descr";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_empprestatip {
          return false;
        }
      }
-     if(trim($this->e44_obriga)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_obriga"])){ 
+     if(trim((string) $this->e44_obriga)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_obriga"])){ 
        $sql  .= $virgula." e44_obriga = $this->e44_obriga ";
        $virgula = ",";
-       if(trim($this->e44_obriga) == null ){ 
+       if(trim((string) $this->e44_obriga) == null ){ 
          $this->erro_sql = " Campo Obriga não informado.";
          $this->erro_campo = "e44_obriga";
          $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_empprestatip {
          return false;
        }
      }
-     if(trim($this->e44_naturezaevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_naturezaevento"])){ 
+     if(trim((string) $this->e44_naturezaevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_naturezaevento"])){ 
        $sql  .= $virgula." e44_naturezaevento = $this->e44_naturezaevento ";
        $virgula = ",";
-       if(trim($this->e44_naturezaevento) == null ){ 
+       if(trim((string) $this->e44_naturezaevento) == null ){ 
          $this->erro_sql = " Campo Natureza do Evento não informado.";
          $this->erro_campo = "e44_naturezaevento";
          $this->erro_banco = "";
@@ -260,7 +260,7 @@ class cl_empprestatip {
          return false;
        }
      }
-     if(trim($this->e44_diaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_diaria"])){ 
+     if(trim((string) $this->e44_diaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e44_diaria"])){ 
        $sql  .= $virgula." e44_diaria = '$this->e44_diaria' ";
        $virgula = ",";
      }
@@ -278,19 +278,19 @@ class cl_empprestatip {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,6355,'$this->e44_tipo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e44_tipo"]) || $this->e44_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,1038,6355,'".AddSlashes(pg_result($resaco,$conresaco,'e44_tipo'))."','$this->e44_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1038,6355,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e44_tipo'))."','$this->e44_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e44_descr"]) || $this->e44_descr != "")
-             $resac = db_query("insert into db_acount values($acount,1038,6356,'".AddSlashes(pg_result($resaco,$conresaco,'e44_descr'))."','$this->e44_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1038,6356,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e44_descr'))."','$this->e44_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e44_obriga"]) || $this->e44_obriga != "")
-             $resac = db_query("insert into db_acount values($acount,1038,6357,'".AddSlashes(pg_result($resaco,$conresaco,'e44_obriga'))."','$this->e44_obriga',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1038,6357,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e44_obriga'))."','$this->e44_obriga',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e44_naturezaevento"]) || $this->e44_naturezaevento != "")
-             $resac = db_query("insert into db_acount values($acount,1038,20881,'".AddSlashes(pg_result($resaco,$conresaco,'e44_naturezaevento'))."','$this->e44_naturezaevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1038,20881,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e44_naturezaevento'))."','$this->e44_naturezaevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e44_diaria"]) || $this->e44_diaria != "")
-             $resac = db_query("insert into db_acount values($acount,1038,1010019,'".AddSlashes(pg_result($resaco,$conresaco,'e44_diaria'))."','$this->e44_diaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1038,1010019,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e44_diaria'))."','$this->e44_diaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -344,14 +344,14 @@ class cl_empprestatip {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,6355,'$e44_tipo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1038,6355,'','".AddSlashes(pg_result($resaco,$iresaco,'e44_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1038,6356,'','".AddSlashes(pg_result($resaco,$iresaco,'e44_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1038,6357,'','".AddSlashes(pg_result($resaco,$iresaco,'e44_obriga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1038,20881,'','".AddSlashes(pg_result($resaco,$iresaco,'e44_naturezaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1038,1010019,'','".AddSlashes(pg_result($resaco,$iresaco,'e44_diaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1038,6355,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e44_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1038,6356,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e44_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1038,6357,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e44_obriga'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1038,20881,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e44_naturezaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1038,1010019,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e44_diaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

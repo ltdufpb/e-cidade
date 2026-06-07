@@ -11,14 +11,8 @@ use \convenio as ConvenioLegacy;
 
 final class ConvenioService extends Service
 {
-    private $format;
-
-    private $reciboValorTotal;
-
-    public function __construct(Format $format, ReciboValorTotal $reciboValorTotal)
+    public function __construct(private readonly Format $format, private readonly ReciboValorTotal $reciboValorTotal)
     {
-        $this->format = $format;
-        $this->reciboValorTotal = $reciboValorTotal;
     }
 
     public function execute(Recibo $recibo, RegraEmissao $regraEmissao)

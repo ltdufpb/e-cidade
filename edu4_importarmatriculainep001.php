@@ -90,7 +90,7 @@ $iAnoEscolhido = '';
 if (isset($oPost->importar)) {
 
     $lErro = false;
-    $aAnoOpcao = array(2010, 2011, 2012, 2013, 2014, 2015, 2018);
+    $aAnoOpcao = [2010, 2011, 2012, 2013, 2014, 2015, 2018];
 
     db_inicio_transacao();
 
@@ -242,7 +242,7 @@ $iCodigoInepBanco = db_utils::fieldsMemory($rsEscola, 0)->ed18_c_codigoinep;
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                        <?php  if (trim($iCodigoInepBanco) == "") : ?>
+                        <?php  if (trim((string) $iCodigoInepBanco) == "") : ?>
                             <div style="padding: 5px; color: red;">
                                 * Código INEP desta escola não informado no sistema. Operação Não Permitida. <br>
                                 <a href='edu1_escolaabas002.php'>Informar Código INEP</a>

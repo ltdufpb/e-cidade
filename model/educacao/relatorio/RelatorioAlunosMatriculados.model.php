@@ -294,7 +294,7 @@ class RelatorioAlunosMatriculados extends EstatisticaAlunosMatriculados {
 
     public function ajustaTamanhoFonte($content, $largura, $tamanhoFonteOriginal)
     {
-        $content = "${content}   ";
+        $content = "{$content}   ";
         $tamanhoString = $this->oPdf->GetStringWidth($content);
 
         if ($tamanhoString > $largura) {

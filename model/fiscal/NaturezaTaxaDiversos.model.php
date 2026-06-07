@@ -242,8 +242,6 @@ class NaturezaTaxaDiversos
       throw new \DBException('Erro ao buscar os lançamentos da natureza.');
     }
 
-    return \db_utils::makeCollectionFromRecord($rsLancamentos, function($oLancamento) {
-      return LancamentoTaxaDiversosRepository::getInstanciaPorCodigo($oLancamento->y120_sequencial);
-    });
+    return \db_utils::makeCollectionFromRecord($rsLancamentos, fn($oLancamento) => LancamentoTaxaDiversosRepository::getInstanciaPorCodigo($oLancamento->y120_sequencial));
   }
 }

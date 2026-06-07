@@ -58,7 +58,7 @@
      */
     public static function getCalendarioByCodigo($iCodigoCalendario) {
 
-      if (!array_key_exists($iCodigoCalendario, CalendarioRepository::getInstance()->aCalendario)) {
+      if (!array_key_exists((string) $iCodigoCalendario, CalendarioRepository::getInstance()->aCalendario)) {
         CalendarioRepository::getInstance()->aCalendario[$iCodigoCalendario] = new Calendario($iCodigoCalendario);
       }
       return CalendarioRepository::getInstance()->aCalendario[$iCodigoCalendario];

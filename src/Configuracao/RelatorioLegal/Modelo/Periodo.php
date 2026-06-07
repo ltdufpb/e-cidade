@@ -136,7 +136,7 @@ class Periodo
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'descricao' => $this->getDescricao(),
             'quantidadePorAno' => $this->getQuantidadePorAno(),
@@ -146,7 +146,7 @@ class Periodo
             'mesFinal' => $this->getMesFinal(),
             'sigla' => $this->getSigla(),
             'ordem' => $this->getOrdem(),
-        );
+        ];
     }
 
     /**

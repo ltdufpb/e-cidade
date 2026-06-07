@@ -462,7 +462,7 @@ class RelatorioQuadroResultadosFinais
                  */
                 if ($oMatricula->getSituacao() != 'MATRICULADO') {
                     $oResultadoDisciplina->sTermoResultadoFinalAbreviado = "";
-                    $oResultadoDisciplina->nAproveitamentoFinal = substr($oMatricula->getSituacao(), 0, 5);
+                    $oResultadoDisciplina->nAproveitamentoFinal = substr((string) $oMatricula->getSituacao(), 0, 5);
 
                     $oDadosAluno->aAvaliacoes[$iPaginaDisciplina][] = $oResultadoDisciplina;
                     $iDisciplinaAdicionada++;
@@ -678,7 +678,7 @@ class RelatorioQuadroResultadosFinais
                 $aParagrafos = $oDocumento->getDocParagrafos();
 
                 $sTexto = $aParagrafos[1]->oParag->db02_texto;
-                if (trim($sTexto) != '') {
+                if (trim((string) $sTexto) != '') {
                     $sObservacao = "- {$oMatricula->getAluno()->getNome()}: {$sTexto}";
                     $this->aObservacaoAlunosAprovadoConselho[$oRegencia->getDisciplina()->getCodigoDisciplinaGeral()][] = $sObservacao;
                 }
@@ -693,7 +693,7 @@ class RelatorioQuadroResultadosFinais
                 $aParagrafos = $oDocumento->getDocParagrafos();
 
                 $sTexto = $aParagrafos[1]->oParag->db02_texto;
-                if (trim($sTexto) != '') {
+                if (trim((string) $sTexto) != '') {
                     $sObservacao = "- {$sTexto}";
                     $this->aObservacaoAlunosAprovadoConselho[$oRegencia->getDisciplina()->getCodigoDisciplinaGeral()][] = $sObservacao;
                 }
@@ -1132,7 +1132,7 @@ class RelatorioQuadroResultadosFinais
         $notaAproveitamentoFinal = '';
 
         if ($oDadosAluno->sSituacao != "MATRICULADO") {
-            return substr($oDadosAluno->sSituacao, 0, 5);
+            return substr((string) $oDadosAluno->sSituacao, 0, 5);
         }
 
         if ($diarioAreaConhecimento->getResultado()->isAmparado()) {

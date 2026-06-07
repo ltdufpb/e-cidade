@@ -11,16 +11,16 @@ class PosProcessamento
     /**
      * @var array
      */
-    private static $classes = array(
-        '\ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Conta',
+    private static $classes = [
+        \ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Conta::class,
         '\ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Atributos'
-    );
+    ];
 
     /**
      * Instancia as classes definidas para validação e executa o método processar
      * @param $codigoLancamento
      */
-    public static function processar($codigoLancamento, $itensParaNaoProcessar = array())
+    public static function processar($codigoLancamento, $itensParaNaoProcessar = [])
     {
         foreach (self::$classes as $classe) {
             if (in_array($classe, $itensParaNaoProcessar)) {

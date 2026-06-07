@@ -10,14 +10,8 @@ use ECidade\Tributario\Caixa\Cast\RecibopagaCollectionCast;
 
 final class ReciboFillService extends Service
 {
-    private $recibopagaRepository;
-
-    private $recibopagaCollectionCast;
-
-    public function __construct(RecibopagaRepository $recibopagaRepository, RecibopagaCollectionCast $recibopagaCollectionCast)
+    public function __construct(private readonly RecibopagaRepository $recibopagaRepository, private readonly RecibopagaCollectionCast $recibopagaCollectionCast)
     {
-        $this->recibopagaRepository = $recibopagaRepository;
-        $this->recibopagaCollectionCast = $recibopagaCollectionCast;
     }
 
     public function execute(Recibo $recibo)

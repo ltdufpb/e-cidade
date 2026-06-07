@@ -38,13 +38,14 @@ use \DBException;
  */
 class Taxa extends \BaseClassRepository
 {
-    protected static $itens = array();
+    protected static $itens = [];
 
     /**
      * Sobrescreve o atributo da classe pai para
      * manter apenas as referências da classe atual
      * @var Taxa
      */
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -145,11 +146,11 @@ class Taxa extends \BaseClassRepository
 
     /**
      * Obtem todas as taxas aplicadas a debitos com processo
-     * @deprecated
      * @see self::getTaxasProcessuais
      * @return null|TaxaModel[]
      * @throws DBException
      */
+    #[\Deprecated]
     public function getTodasComProcesso()
     {
         $oDaoTaxa = new cl_taxa();
@@ -172,11 +173,11 @@ class Taxa extends \BaseClassRepository
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {
@@ -192,9 +193,9 @@ class Taxa extends \BaseClassRepository
      * @param TaxaModel[] $taxas
      * @return array
      */
-    public function toArray($taxas = array())
+    public function toArray($taxas = [])
     {
-        $dadoTaxas = array();
+        $dadoTaxas = [];
         foreach ($taxas as $taxa) {
             $dado = new \stdClass();
 

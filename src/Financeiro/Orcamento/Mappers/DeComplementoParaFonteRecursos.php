@@ -29,7 +29,7 @@ class DeComplementoParaFonteRecursos
 
     public function getRecursosByIdComplemento($id)
     {
-        if (array_key_exists($id, $this->deComplementoParaRecursos)) {
+        if (array_key_exists((string) $id, $this->deComplementoParaRecursos)) {
             return $this->deComplementoParaRecursos[$id];
         }
 

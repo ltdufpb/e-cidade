@@ -41,7 +41,7 @@ $sSqlMediacaoDidaticoPedagogica = $oDaoMediacaoDidaticoPedagogica->sql_query(nul
 $rsMediacaoDidaticoPedagogica = $oDaoMediacaoDidaticoPedagogica->sql_record($sSqlMediacaoDidaticoPedagogica);
 $iTotalMediacaoDidaticoPedagogica = $oDaoMediacaoDidaticoPedagogica->numrows;
 
-$aMediacaoDidaticoPedagogica = array("" => "Selecione...");
+$aMediacaoDidaticoPedagogica = ["" => "Selecione..."];
 
 if ($iTotalMediacaoDidaticoPedagogica > 0) {
     for ($iContadorMediacaoDidaticoPedagogica = 0; $iContadorMediacaoDidaticoPedagogica < $iTotalMediacaoDidaticoPedagogica; $iContadorMediacaoDidaticoPedagogica++) {
@@ -212,7 +212,7 @@ $tipoEnsino = [
         db_iframe_ensino.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

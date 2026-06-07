@@ -878,7 +878,7 @@ class DadosCensoDocente extends DadosCenso {
        * ********************************** Validações do registro 30 **************************************************
        * ***************************************************************************************************************
        */
-      if (strpos($oDadosCensoDocente->registro30->nome_completo, '  ')) {
+      if (strpos((string) $oDadosCensoDocente->registro30->nome_completo, '  ')) {
 
     		$sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
     		$sMsgErro .= "O nome deve conter apenas espaços simples.";
@@ -886,7 +886,7 @@ class DadosCensoDocente extends DadosCenso {
     		$lDadosValidos = false;
     	}
 
-      if (strpos($oDadosCensoDocente->registro30->nome_completo, '  ')) {
+      if (strpos((string) $oDadosCensoDocente->registro30->nome_completo, '  ')) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
     	  $sMsgErro .= "O nome deve conter apenas espaços simples.";
@@ -902,7 +902,7 @@ class DadosCensoDocente extends DadosCenso {
       }
 
       if ( !empty($oDadosCensoDocente->registro30->identificacao_unica_docente_inep) &&
-           strlen($oDadosCensoDocente->registro30->identificacao_unica_docente_inep) < 12) {
+           strlen((string) $oDadosCensoDocente->registro30->identificacao_unica_docente_inep) < 12) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
         $sMsgErro .= "Identificação única do Profissional escolar em sala de Aula (INEP) com tamanho diferente do especificado.";
@@ -943,7 +943,7 @@ class DadosCensoDocente extends DadosCenso {
       		$lDadosValidos = false;
       	}
 
-      	if(strpos($oDadosCensoDocente->registro30->nome_completo_mae, '  ')){
+      	if(strpos((string) $oDadosCensoDocente->registro30->nome_completo_mae, '  ')){
 
       		$sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
       		$sMsgErro .= "O nome da mãe deve conter apenas espaços simples.";
@@ -1380,36 +1380,36 @@ class DadosCensoDocente extends DadosCenso {
     $oDaoRechumano->ed20_i_pais = "";
 
     if (isset($oLinha->identificacao_unica_docente_inep)
-         && $oLinha->identificacao_unica_docente_inep != trim($oDados->ed20_i_codigoinep)) {
+         && $oLinha->identificacao_unica_docente_inep != trim((string) $oDados->ed20_i_codigoinep)) {
        $oDaoRechumano->ed20_i_codigoinep = $oLinha->identificacao_unica_docente_inep;
 }
     if ($oLinha->numero_identificacao_social_inss != ""
-        && $oLinha->numero_identificacao_social_inss != trim($oDados->ed20_c_nis)) {
+        && $oLinha->numero_identificacao_social_inss != trim((string) $oDados->ed20_c_nis)) {
      $oDaoRechumano->ed20_c_nis = $oLinha->numero_identificacao_social_inss;
     }
 
     if ($oLinha->cor_raca != ""
-          && $oLinha->cor_raca != trim($oDados->ed20_i_raca)) {
+          && $oLinha->cor_raca != trim((string) $oDados->ed20_i_raca)) {
        $oDaoRechumano->ed20_i_raca = $oLinha->cor_raca;
     }
 
     if ($oLinha->nacionalidade_docente != ""
-        && $oLinha->nacionalidade_docente != trim($oDados->ed20_i_nacionalidade)) {
+        && $oLinha->nacionalidade_docente != trim((string) $oDados->ed20_i_nacionalidade)) {
       $oDaoRechumano->ed20_i_nacionalidade = $oLinha->nacionalidade_docente;
     }
 
     if (!empty($oLinha->pais_origem)
-         && $oLinha->pais_origem != trim($oDados->ed228_i_paisonu)) {
+         && $oLinha->pais_origem != trim((string) $oDados->ed228_i_paisonu)) {
       $oDaoRechumano->ed20_i_pais = $this->getPais($oLinha->pais_origem);
     }
 
     if ($oLinha->uf_nascimento != ""
-          && $oLinha->uf_nascimento != trim($oDados->ed20_i_censoufnat)) {
+          && $oLinha->uf_nascimento != trim((string) $oDados->ed20_i_censoufnat)) {
        $oDaoRechumano->ed20_i_censoufnat = $oLinha->uf_nascimento;
     }
 
     if ($oLinha->municipio_nascimento != ""
-         && $oLinha->municipio_nascimento != trim($oDados->ed20_i_censomunicnat)) {
+         && $oLinha->municipio_nascimento != trim((string) $oDados->ed20_i_censomunicnat)) {
         $oDaoRechumano->ed20_i_censomunicnat = $oLinha->municipio_nascimento;
     }
 
@@ -1431,12 +1431,12 @@ class DadosCensoDocente extends DadosCenso {
     $oDaoRechumano = new cl_rechumano();
 
     if ($oLinha->uf != ""
-        && $oLinha->uf != trim($oDadosEndereco->ed20_i_censoufender)) {
+        && $oLinha->uf != trim((string) $oDadosEndereco->ed20_i_censoufender)) {
       $oDaoRechumano->ed20_i_censoufender = $oLinha->uf;
     }
 
     if ($oLinha->municipio != ""
-        && $oLinha->municipio != trim($oDadosEndereco->ed20_i_censomunicender)) {
+        && $oLinha->municipio != trim((string) $oDadosEndereco->ed20_i_censomunicender)) {
       $oDaoRechumano->ed20_i_censomunicender = $oLinha->municipio;
     }
 

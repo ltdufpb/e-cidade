@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE contrans
 class cl_contrans { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c45_seqtrans = 0; 
-   var $c45_anousu = 0; 
-   var $c45_coddoc = 0; 
-   var $c45_instit = 0; 
+   public $c45_seqtrans = 0; 
+   public $c45_anousu = 0; 
+   public $c45_coddoc = 0; 
+   public $c45_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c45_seqtrans = int4 = Sequência 
                  c45_anousu = int4 = Exercício 
                  c45_coddoc = int4 = Código 
                  c45_instit = int4 = codigo da instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_contrans() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contrans"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_contrans {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c45_seqtrans = pg_result($result,0,0); 
+       $this->c45_seqtrans = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from contrans_c45_seqtrans_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c45_seqtrans)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c45_seqtrans)){
          $this->erro_sql = " Campo c45_seqtrans maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_contrans {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro das Transações ($this->c45_seqtrans) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro das Transações já Cadastrado";
@@ -180,13 +180,13 @@ class cl_contrans {
      $resaco = $this->sql_record($this->sql_query_file($this->c45_seqtrans));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6019,'$this->c45_seqtrans','I')");
-       $resac = db_query("insert into db_acount values($acount,816,6019,'','".AddSlashes(pg_result($resaco,0,'c45_seqtrans'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,816,5482,'','".AddSlashes(pg_result($resaco,0,'c45_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,816,5483,'','".AddSlashes(pg_result($resaco,0,'c45_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,816,6031,'','".AddSlashes(pg_result($resaco,0,'c45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,816,6019,'','".AddSlashes(pg_fetch_result($resaco,0,'c45_seqtrans'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,816,5482,'','".AddSlashes(pg_fetch_result($resaco,0,'c45_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,816,5483,'','".AddSlashes(pg_fetch_result($resaco,0,'c45_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,816,6031,'','".AddSlashes(pg_fetch_result($resaco,0,'c45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_contrans {
       $this->atualizacampos();
      $sql = " update contrans set ";
      $virgula = "";
-     if(trim($this->c45_seqtrans)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_seqtrans"])){ 
+     if(trim((string) $this->c45_seqtrans)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_seqtrans"])){ 
        $sql  .= $virgula." c45_seqtrans = $this->c45_seqtrans ";
        $virgula = ",";
-       if(trim($this->c45_seqtrans) == null ){ 
+       if(trim((string) $this->c45_seqtrans) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "c45_seqtrans";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_contrans {
          return false;
        }
      }
-     if(trim($this->c45_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_anousu"])){ 
+     if(trim((string) $this->c45_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_anousu"])){ 
        $sql  .= $virgula." c45_anousu = $this->c45_anousu ";
        $virgula = ",";
-       if(trim($this->c45_anousu) == null ){ 
+       if(trim((string) $this->c45_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c45_anousu";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_contrans {
          return false;
        }
      }
-     if(trim($this->c45_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_coddoc"])){ 
+     if(trim((string) $this->c45_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_coddoc"])){ 
        $sql  .= $virgula." c45_coddoc = $this->c45_coddoc ";
        $virgula = ",";
-       if(trim($this->c45_coddoc) == null ){ 
+       if(trim((string) $this->c45_coddoc) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "c45_coddoc";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_contrans {
          return false;
        }
      }
-     if(trim($this->c45_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_instit"])){ 
+     if(trim((string) $this->c45_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c45_instit"])){ 
        $sql  .= $virgula." c45_instit = $this->c45_instit ";
        $virgula = ",";
-       if(trim($this->c45_instit) == null ){ 
+       if(trim((string) $this->c45_instit) == null ){ 
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "c45_instit";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_contrans {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6019,'$this->c45_seqtrans','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c45_seqtrans"]))
-           $resac = db_query("insert into db_acount values($acount,816,6019,'".AddSlashes(pg_result($resaco,$conresaco,'c45_seqtrans'))."','$this->c45_seqtrans',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,816,6019,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c45_seqtrans'))."','$this->c45_seqtrans',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c45_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,816,5482,'".AddSlashes(pg_result($resaco,$conresaco,'c45_anousu'))."','$this->c45_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,816,5482,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c45_anousu'))."','$this->c45_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c45_coddoc"]))
-           $resac = db_query("insert into db_acount values($acount,816,5483,'".AddSlashes(pg_result($resaco,$conresaco,'c45_coddoc'))."','$this->c45_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,816,5483,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c45_coddoc'))."','$this->c45_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c45_instit"]))
-           $resac = db_query("insert into db_acount values($acount,816,6031,'".AddSlashes(pg_result($resaco,$conresaco,'c45_instit'))."','$this->c45_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,816,6031,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c45_instit'))."','$this->c45_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_contrans {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6019,'$c45_seqtrans','E')");
-         $resac = db_query("insert into db_acount values($acount,816,6019,'','".AddSlashes(pg_result($resaco,$iresaco,'c45_seqtrans'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,816,5482,'','".AddSlashes(pg_result($resaco,$iresaco,'c45_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,816,5483,'','".AddSlashes(pg_result($resaco,$iresaco,'c45_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,816,6031,'','".AddSlashes(pg_result($resaco,$iresaco,'c45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,816,6019,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c45_seqtrans'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,816,5482,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c45_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,816,5483,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c45_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,816,6031,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from contrans
@@ -376,7 +376,7 @@ class cl_contrans {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:contrans";
@@ -390,7 +390,7 @@ class cl_contrans {
    function sql_query ( $c45_seqtrans=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ class cl_contrans {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_contrans {
   function sql_query_evento_contabil ( $c45_seqtrans=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_contrans {
   		$sql .= $sql2;
   		if($ordem != null ){
   		$sql .= " order by ";
-  			$campos_sql = split("#",$ordem);
+  			$campos_sql = preg_split("#\\##m",(string) $ordem);
   			$virgula = "";
   			for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_contrans {
    function sql_query_file ( $c45_seqtrans=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,7 +485,7 @@ class cl_contrans {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_contrans {
   function sql_query_vinculo ( $c45_seqtrans=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_contrans {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_contrans {
   function sql_queryVinculoEmpRestoTipoLiquidacao ( $c45_seqtrans=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_contrans {
   		$sql .= $sql2;
   		if($ordem != null ){
   		$sql .= " order by ";
-  			$campos_sql = split("#",$ordem);
+  			$campos_sql = preg_split("#\\##m",(string) $ordem);
   			$virgula = "";
   			for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];

@@ -31,7 +31,7 @@ class cl_complementofonterecurso
     public function __construct()
     {
         $this->rotulo = new rotulo("complementofonterecurso");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -110,7 +110,7 @@ class cl_complementofonterecurso
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "complementofonterecurso ($this->o200_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "complementofonterecurso já Cadastrado";
@@ -139,13 +139,13 @@ class cl_complementofonterecurso
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1011274,'$this->o200_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010561,1011274,'','" . AddSlashes(pg_result($resaco, 0, 'o200_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010561,1011275,'','" . AddSlashes(pg_result($resaco, 0, 'o200_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010561,1011277,'','" . AddSlashes(pg_result($resaco, 0, 'o200_msc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010561,1011867,'','" . AddSlashes(pg_result($resaco, 0, 'o200_tribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010561,1011274,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o200_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010561,1011275,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o200_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010561,1011277,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o200_msc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010561,1011867,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o200_tribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -156,10 +156,10 @@ class cl_complementofonterecurso
         $this->atualizacampos();
         $sql = " update complementofonterecurso set ";
         $virgula = "";
-        if (trim($this->o200_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_sequencial"])) {
+        if (trim((string) $this->o200_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_sequencial"])) {
             $sql .= $virgula . " o200_sequencial = $this->o200_sequencial ";
             $virgula = ",";
-            if (trim($this->o200_sequencial) == null) {
+            if (trim((string) $this->o200_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "o200_sequencial";
                 $this->erro_banco = "";
@@ -169,10 +169,10 @@ class cl_complementofonterecurso
                 return false;
             }
         }
-        if (trim($this->o200_descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_descricao"])) {
+        if (trim((string) $this->o200_descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_descricao"])) {
             $sql .= $virgula . " o200_descricao = '$this->o200_descricao' ";
             $virgula = ",";
-            if (trim($this->o200_descricao) == null) {
+            if (trim((string) $this->o200_descricao) == null) {
                 $this->erro_sql = " Campo Complemento não informado.";
                 $this->erro_campo = "o200_descricao";
                 $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_complementofonterecurso
                 return false;
             }
         }
-        if (trim($this->o200_msc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_msc"])) {
+        if (trim((string) $this->o200_msc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_msc"])) {
             $sql .= $virgula . " o200_msc = '$this->o200_msc' ";
             $virgula = ",";
-            if (trim($this->o200_msc) == null) {
+            if (trim((string) $this->o200_msc) == null) {
                 $this->erro_sql = " Campo MSC não informado.";
                 $this->erro_campo = "o200_msc";
                 $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_complementofonterecurso
                 return false;
             }
         }
-        if (trim($this->o200_tribunal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_tribunal"])) {
+        if (trim((string) $this->o200_tribunal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o200_tribunal"])) {
             $sql .= $virgula . " o200_tribunal = '$this->o200_tribunal' ";
             $virgula = ",";
-            if (trim($this->o200_tribunal) == null) {
+            if (trim((string) $this->o200_tribunal) == null) {
                 $this->erro_sql = " Campo Tribunal de Contas não informado.";
                 $this->erro_campo = "o200_tribunal";
                 $this->erro_banco = "";
@@ -222,17 +222,17 @@ class cl_complementofonterecurso
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1011274,'$this->o200_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o200_sequencial"]) || $this->o200_sequencial != "")
-                        $resac = db_query("insert into db_acount values($acount,1010561,1011274,'" . AddSlashes(pg_result($resaco, $conresaco, 'o200_sequencial')) . "','$this->o200_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010561,1011274,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o200_sequencial')) . "','$this->o200_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o200_descricao"]) || $this->o200_descricao != "")
-                        $resac = db_query("insert into db_acount values($acount,1010561,1011275,'" . AddSlashes(pg_result($resaco, $conresaco, 'o200_descricao')) . "','$this->o200_descricao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010561,1011275,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o200_descricao')) . "','$this->o200_descricao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o200_msc"]) || $this->o200_msc != "")
-                        $resac = db_query("insert into db_acount values($acount,1010561,1011277,'" . AddSlashes(pg_result($resaco, $conresaco, 'o200_msc')) . "','$this->o200_msc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010561,1011277,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o200_msc')) . "','$this->o200_msc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o200_tribunal"]) || $this->o200_tribunal != "")
-                        $resac = db_query("insert into db_acount values($acount,1010561,1011867,'" . AddSlashes(pg_result($resaco, $conresaco, 'o200_tribunal')) . "','$this->o200_tribunal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010561,1011867,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o200_tribunal')) . "','$this->o200_tribunal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -286,13 +286,13 @@ class cl_complementofonterecurso
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1011274,'$o200_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010561,1011274,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o200_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010561,1011275,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o200_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010561,1011277,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o200_msc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010561,1011867,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o200_tribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010561,1011274,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o200_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010561,1011275,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o200_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010561,1011277,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o200_msc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010561,1011867,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o200_tribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }

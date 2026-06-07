@@ -150,12 +150,12 @@ class Empresa
     /**
      * @var Atividade[] $aAtividades
      */
-    protected $aAtividades = array();
+    protected $aAtividades = [];
 
     /**
      * @var QSA[]
      */
-    protected $aQsa = array();
+    protected $aQsa = [];
 
     /**
      * z01_ender
@@ -183,7 +183,7 @@ class Empresa
             /**
              * Não encontrou inscricao
              */
-            if (pg_numrows($rsDadosIss) == 0) {
+            if (pg_num_rows($rsDadosIss) == 0) {
                 return null;
             }
 
@@ -558,7 +558,7 @@ class Empresa
      */
     public function setValorCapital($iValorCapital)
     {
-        $iValorCapital = trim($iValorCapital);
+        $iValorCapital = trim((string) $iValorCapital);
         if (is_numeric($iValorCapital)) {
             $this->iValorCapital = "{$iValorCapital}";
         }
@@ -609,7 +609,7 @@ class Empresa
          */
         if (!$rsParalisacoes) {
 
-            $oErroMensagem = (object)array('sErroBanco' => pg_last_error());
+            $oErroMensagem = (object)['sErroBanco' => pg_last_error()];
             throw new Exception(_M(self::MENSAGENS . 'erro_buscar_paralisacoes', $oErroMensagem));
         }
 

@@ -121,7 +121,7 @@
             </td>
             <td>
               <?php 
-                $aAtivo = array("f"=>"NAO", "t"=>"SIM");
+                $aAtivo = ["f"=>"NAO", "t"=>"SIM"];
                 db_select('ed328_ativo', $aAtivo, true, $db_opcao, "");
               ?>
             </td>
@@ -132,7 +132,7 @@
             </td>
             <td>
               <?php 
-                $aArredonda = array("f"=>"NAO", "t"=>"SIM");
+                $aArredonda = ["f"=>"NAO", "t"=>"SIM"];
                 db_select('ed328_arredondafrequencia', $aArredonda, true, $db_opcao, " onchange='js_verificaArredondar();'");
               ?>
             </td>
@@ -329,7 +329,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_avaliacaoestruturafrequencia.hide();
   <?php 
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }
@@ -348,7 +348,7 @@ function js_preenchepesquisaregraarredondamento(chave) {
 	db_iframe_regraarredondamento.hide();
   <?php 
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

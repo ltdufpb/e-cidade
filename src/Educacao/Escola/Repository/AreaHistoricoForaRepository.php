@@ -161,7 +161,7 @@ class AreaHistoricoForaRepository extends Repository
      * @throws Exception
      */
     public function salvarAreaDisciplina(
-        AreaHistoricoFora $areaHistoricoFora = null,
+        ?AreaHistoricoFora $areaHistoricoFora = null,
         ?DisciplinaHistoricoForaRede $disciplinaHistoricoFora = null
     ) {
         $codigo = $disciplinaHistoricoFora->getCodigo();

@@ -29,6 +29,7 @@
 class importacaoCenso2015 extends ImportacaoCenso2012
 {
 
+    #[\Override]
     protected $sCampoChave = 'tipo_registro';
 
     private $iCodigoEscola = null;
@@ -55,6 +56,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      *
      * @param DBLayoutLinha $oLinha
      */
+    #[\Override]
     public function atualizaDadosEscola(DBLayoutLinha $oLinha)
     {
         $oDadosEscola = new DadosCensoEscola2015($this->iEscola, null, null);
@@ -66,6 +68,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @param DBLayoutLinha $oLinha
      * @return bool|null
      */
+    #[\Override]
     public function atualizaDadosAluno(DBLayoutLinha $oLinha)
     {
         if (!$this->lImportarAluno) {
@@ -80,7 +83,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
 
                 if ($this->lImportarAlunoAtivo) {
 
-                    if (trim($oDadosAluno->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+                    if (trim((string) $oDadosAluno->vinculo_escola) != trim($this->iCodigoInepEscola)) {
 
                         if ($this->lInepEscola) {
 
@@ -122,6 +125,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @param DBLayoutLinha $oLinha linha com os dados do registro 60 do censo escolar
      * @return stdClass
      */
+    #[\Override]
     public function getDadosAluno(DBLayoutLinha $oLinha, $lPesquisaInep = false, $lValidaCodigo = true)
     {
 
@@ -396,7 +400,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
 
                 $oDaoAluno = new cl_aluno();
                 if (!empty($oLinha->identificacao_unica_aluno)) {
-                    $oDaoAluno->ed47_c_codigoinep = trim($oLinha->identificacao_unica_aluno);
+                    $oDaoAluno->ed47_c_codigoinep = trim((string) $oLinha->identificacao_unica_aluno);
                 }
 
                 $oDaoAluno->ed47_i_codigo = $oDadosAluno->ed47_i_codigo;
@@ -422,11 +426,12 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @throws Exception
      * @return boolean
      */
+    #[\Override]
     protected function validaAnoArquivo($aLinha)
     {
 
         $sData = $aLinha[7];
-        $aData = explode("/", $sData);
+        $aData = explode("/", (string) $sData);
 
         if ($this->iAnoEscolhido != $aData[2]) {
 

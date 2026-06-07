@@ -58,10 +58,10 @@ $db_opcao   = 1;
        if ( isModuloEscola() ) {
          MsgAviso(db_getsession("DB_coddepto"),"escola");
        }
-       $clcriaabas->identifica = array("a1"=>"Geral","a2"=>"Avaliações","a3"=>"Escolas");
-       $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"25","a3"=>"25");
-       $clcriaabas->src        = array("a1"=>"edu1_procedimento002.php","a2"=>"","a3"=>"");
-       $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true");
+       $clcriaabas->identifica = ["a1"=>"Geral","a2"=>"Avaliações","a3"=>"Escolas"];
+       $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"25","a3"=>"25"];
+       $clcriaabas->src        = ["a1"=>"edu1_procedimento002.php","a2"=>"","a3"=>""];
+       $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true"];
        $clcriaabas->cordisabled = "#9b9b9b";
        $clcriaabas->iframe_height = "600";
        $clcriaabas->cria_abas();

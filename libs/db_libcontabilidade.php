@@ -41,7 +41,7 @@ use ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceita;
 class cl_desdobramento
 {
 
-    function sql($where = "", $dtini, $dtfim, $w_instit = "(1) ", $w_elemento = "")
+    function sql($where = "", $dtini = null, $dtfim = null, $w_instit = "(1) ", $w_elemento = "")
     {
         $sql = "select
     /* orcdotacao.o58_codele,*/
@@ -98,17 +98,17 @@ class cl_receita_saldo_mes_complemento
     //|00|//cl_receita_saldo_mes
     //|10|//calcula a receita arrecadada por mes
     //|15|//[variavel] = new cl_receita_saldo_mes;
-    var $receita = null;
-    var $anousu = null;
-    var $sql = null;
-    var $numrows = 0;
-    var $result = false;
-    var $dtini = null;
-    var $dtfim = null;
-    var $lPrevisaoCronograma = false;
-    var $estrut = null; // string de estruturais
-    var $instit = null;
-    var $usa_datas = null; // essa variavel indica o usuo das variaveis dtini e dtfim
+    public $receita = null;
+    public $anousu = null;
+    public $sql = null;
+    public $numrows = 0;
+    public $result = false;
+    public $dtini = null;
+    public $dtfim = null;
+    public $lPrevisaoCronograma = false;
+    public $estrut = null; // string de estruturais
+    public $instit = null;
+    public $usa_datas = null; // essa variavel indica o usuo das variaveis dtini e dtfim
 
     function sql_query($receita)
     {
@@ -306,7 +306,7 @@ class cl_receita_saldo_mes_complemento
         }
         $this->result = db_query($this->sql);
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
@@ -331,7 +331,7 @@ class cl_receita_saldo_mes_complemento
         db_query("CREATE TEMPORARY TABLE work_plano AS " . $this->sql);
         db_query("CREATE INDEX work_plano_estrut ON work_plano(o57_fonte)");
         $result = db_query("SELECT * FROM work_plano");
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             $sSqlSaldoPrevisao = "SELECT mes,coalesce(o34_valor, 0) as valor, {$o70_codrec} as receita
                                  from  generate_series(1,12) as mes";
@@ -355,7 +355,7 @@ class cl_receita_saldo_mes_complemento
             //die($sSqlSaldoPrevisao);
             $rsSaldoPrevisao = db_query($sSqlSaldoPrevisao);
             $aMeses = db_utils::getCollectionByRecord($rsSaldoPrevisao);
-            $aValorPrevMes = array();
+            $aValorPrevMes = [];
             foreach ($aMeses as $oSaldoMes) {
                 $aValorPrevMes[$oSaldoMes->mes] = $oSaldoMes->valor;
             }
@@ -408,11 +408,11 @@ class cl_receita_saldo_mes_complemento
 
                 $sSql = "select o57_descr from work_plano where o57_fonte = '$estrutural'";
                 $result_estrut = db_query($sSql);
-                if (pg_numrows($result_estrut) == 0) {
+                if (pg_num_rows($result_estrut) == 0) {
                     $result_estrut = db_query(
                         "select o57_descr from orcfontes where o57_anousu = " . $this->anousu . " and o57_fonte = '$estrutural'");
 
-                    if (pg_numrows($result_estrut) <= 0) {
+                    if (pg_num_rows($result_estrut) <= 0) {
                         echo "Conta não encontrada nas fontes de Receita Comando:<br>"
                             . "select o57_descr from orcfontes where o57_anousu = " . $this->anousu
                             . " and o57_fonte = '$estrutural'";
@@ -547,7 +547,7 @@ class cl_receita_saldo_mes_complemento
             //db_criatabela($this->result);
         }
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
@@ -567,17 +567,17 @@ class cl_receita_saldo_mes
     //|10|//calcula a receita arrecadada por mes
     //|15|//[variavel] = new cl_receita_saldo_mes;
 
-    var $receita = null;
-    var $anousu = null;
-    var $sql = null;
-    var $numrows = 0;
-    var $result = false;
-    var $dtini = null;
-    var $dtfim = null;
-    var $lPrevisaoCronograma = false;
-    var $estrut = null; // string de estruturais
-    var $instit = null;
-    var $usa_datas = null; // essa variavel indica o usuo das variaveis dtini e dtfim
+    public $receita = null;
+    public $anousu = null;
+    public $sql = null;
+    public $numrows = 0;
+    public $result = false;
+    public $dtini = null;
+    public $dtfim = null;
+    public $lPrevisaoCronograma = false;
+    public $estrut = null; // string de estruturais
+    public $instit = null;
+    public $usa_datas = null; // essa variavel indica o usuo das variaveis dtini e dtfim
 
     function sql_query($receita)
     {
@@ -749,7 +749,7 @@ class cl_receita_saldo_mes
         }
         $this->result = db_query($this->sql);
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
@@ -774,7 +774,7 @@ class cl_receita_saldo_mes
         db_query("CREATE TEMPORARY TABLE work_plano AS " . $this->sql);
         db_query("CREATE INDEX work_plano_estrut ON work_plano(o57_fonte)");
         $result = db_query("SELECT * FROM work_plano");
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             $sSqlSaldoPrevisao = "SELECT mes,coalesce(o34_valor, 0) as valor, {$o70_codrec} as receita
                                  from  generate_series(1,12) as mes";
@@ -798,7 +798,7 @@ class cl_receita_saldo_mes
             //die($sSqlSaldoPrevisao);
             $rsSaldoPrevisao = db_query($sSqlSaldoPrevisao);
             $aMeses = db_utils::getCollectionByRecord($rsSaldoPrevisao);
-            $aValorPrevMes = array();
+            $aValorPrevMes = [];
             foreach ($aMeses as $oSaldoMes) {
                 $aValorPrevMes[$oSaldoMes->mes] = $oSaldoMes->valor;
             }
@@ -850,11 +850,11 @@ class cl_receita_saldo_mes
                 }
 
                 $result_estrut = db_query("select o57_descr from work_plano where o57_fonte = '$estrutural'");
-                if (pg_numrows($result_estrut) == 0) {
+                if (pg_num_rows($result_estrut) == 0) {
                     $result_estrut = db_query(
                         "select o57_descr from orcfontes where o57_anousu = " . $this->anousu . " and o57_fonte = '$estrutural'");
 
-                    if (pg_numrows($result_estrut) == 0) {
+                    if (pg_num_rows($result_estrut) == 0) {
                         echo "Conta não encontrada nas fontes de Receita Comando:"
                             . "select o57_descr from orcfontes where o57_anousu = " . $this->anousu
                             . " and o57_fonte = '$estrutural'";
@@ -982,7 +982,7 @@ class cl_receita_saldo_mes
             //db_criatabela($this->result);
         }
         if ($this->result != false) {
-            $this->numrows = pg_numrows($this->result);
+            $this->numrows = pg_num_rows($this->result);
         } else {
             $this->numrows = 0;
         }
@@ -997,16 +997,17 @@ class cl_receita_saldo_mes
 class cl_translan extends cl_contranslan
 {
 
-    var $arr_credito = null;
-    var $arr_debito = null;
-    var $arr_histori = null;
-    var $arr_seqtranslr = null;
-    var $coddoc = null;
-    var $sql = null;
-    var $numrows = null;
-    var $result = null;
-    var $conta_emp = null; //variavel usada no pagamento de RP
-    var $sqlerro = false;
+    public $arr_credito = null;
+    public $arr_debito = null;
+    public $arr_histori = null;
+    public $arr_seqtranslr = null;
+    public $coddoc = null;
+    public $sql = null;
+    #[\Override]
+    public $numrows = null;
+    public $result = null;
+    public $conta_emp = null; //variavel usada no pagamento de RP
+    public $sqlerro = false;
 
     /**
      * @var integer|null
@@ -1018,23 +1019,23 @@ class cl_translan extends cl_contranslan
      * @see cl_translan::getRegrasTransacao()
      * @var resource
      */
-    var $rsRegrasTransacao = null;
+    public $rsRegrasTransacao = null;
 
     /**
      * Cache do total de regras da transacao do lancamento
      * @see cl_translan::getRegrasTransacao()
      * @var integer
      */
-    var $iRegrasTransacao = 0;
+    public $iRegrasTransacao = 0;
 
     /**
      * Cache do ultimo sql executado para buscar regras da transacao do lancamento
      * @see cl_translan::getRegrasTransacao()
      * @var string
      */
-    var $sSqlRegrasTransacao = null;
+    public $sSqlRegrasTransacao = null;
 
-    var $it = null;
+    public $it = null;
     // var $it  = "sapiranga";
     // var $it  = "alegrete";
     // var $it  = "guaiba";
@@ -1061,7 +1062,7 @@ class cl_translan extends cl_contranslan
     /*
    *  Função que retorna o os creditos e os debitos do empenho
    */
-    function db_trans_empenho($codcom = null, $anousu, $iCodigoDocumento = '')
+    function db_trans_empenho($codcom = null, $anousu = null, $iCodigoDocumento = '')
     {
         global $c46_codhist, $c47_credito, $c47_debito, $c47_ref, $c47_seqtranslr, $c46_seqtranslan;
 
@@ -1074,7 +1075,7 @@ class cl_translan extends cl_contranslan
         $this->result = $this->getRegrasTransacao($this->coddoc, $anousu, db_getsession('DB_anousu'));
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
 
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
@@ -1082,7 +1083,7 @@ class cl_translan extends cl_contranslan
             if ($c47_ref == 0 || ($c47_ref != 0 && $c47_ref == $codcom)) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -1151,13 +1152,13 @@ class cl_translan extends cl_contranslan
 
         $rsLancamentosContratos = $this->sql_record($this->sql);
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         for ($i = 0; $i < $this->numrows; $i++) {
             $oDadosTransacao = db_utils::fieldsmemory($rsLancamentosContratos, $i);
             if ($oDadosTransacao->c47_compara == 5 && $oDadosTransacao->c47_ref == $iCategoriaContrato) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($oDadosTransacao->c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $oDadosTransacao->c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$oDadosTransacao->c46_seqtranslan] = $oDadosTransacao->c46_seqtranslan;
@@ -1207,13 +1208,13 @@ class cl_translan extends cl_contranslan
 
         $rsLancamentosContratos = $this->sql_record($this->sql);
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         for ($i = 0; $i < $this->numrows; $i++) {
             $oDadosTransacao = db_utils::fieldsmemory($rsLancamentosContratos, $i);
             if ($oDadosTransacao->c47_compara == 5 && $oDadosTransacao->c47_ref == $iCategoriaContrato) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($oDadosTransacao->c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $oDadosTransacao->c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$oDadosTransacao->c46_seqtranslan] = $oDadosTransacao->c46_seqtranslan;
@@ -1233,7 +1234,7 @@ class cl_translan extends cl_contranslan
    *  Função que retorna o os creditos e os debitos  do estorno do empenho
    */
 
-    function db_trans_estorna_empenho($codcom = null, $anousu, $iCodigoDocumento = null, $iNumeroEmpenho = null)
+    function db_trans_estorna_empenho($codcom = null, $anousu = null, $iCodigoDocumento = null, $iNumeroEmpenho = null)
     {
         global $c46_codhist, $c47_credito, $c47_debito, $c47_ref, $c47_seqtranslr, $c46_seqtranslan;
         $this->cl_zera_variaveis();
@@ -1272,7 +1273,7 @@ class cl_translan extends cl_contranslan
             }
         }
 
-        $arr_lans = array();
+        $arr_lans = [];
 
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
@@ -1285,7 +1286,7 @@ class cl_translan extends cl_contranslan
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
 
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -1319,7 +1320,7 @@ class cl_translan extends cl_contranslan
             $this->coddoc = $iCodigoDocumento;
         }
 
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -1337,7 +1338,7 @@ class cl_translan extends cl_contranslan
         $this->result = $this->getRegrasTransacao($this->coddoc, $anousu, db_getsession('DB_anousu'));
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
             if ($c47_compara == 1) {
@@ -1357,7 +1358,7 @@ class cl_translan extends cl_contranslan
                 && ($c47_compara == 0 || $comparador == $codele)) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -1384,7 +1385,7 @@ class cl_translan extends cl_contranslan
         global $c46_codhist, $c47_credito, $c47_debito, $c47_ref, $c46_seqtranslan, $c47_seqtranslr, $c61_reduz, $c47_compara;
         $this->cl_zera_variaveis();
         $this->coddoc = 23;
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -1401,7 +1402,7 @@ class cl_translan extends cl_contranslan
         $this->result = $this->getRegrasTransacao($this->coddoc, $anousu, db_getsession('DB_anousu'));
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
 
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
@@ -1423,7 +1424,7 @@ class cl_translan extends cl_contranslan
                 && ($c47_compara == 0 || $comparador == $codele)) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -1453,7 +1454,7 @@ class cl_translan extends cl_contranslan
         $coddoc_liq_capital = 23;
 
         $codhist = 9006;
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -1529,7 +1530,7 @@ class cl_translan extends cl_contranslan
 
         $codigoContaOrcamento = $codele;
         $iAnoSessao = db_getsession("DB_anousu");
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -1558,7 +1559,7 @@ class cl_translan extends cl_contranslan
         $this->result = $this->getRegrasTransacao($this->coddoc, $anousu, db_getsession('DB_anousu'));
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
 
@@ -1580,7 +1581,7 @@ class cl_translan extends cl_contranslan
                 && (($c47_compara == 0 || $comparador == $codele) || $c47_compara == 11)) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -1645,7 +1646,7 @@ class cl_translan extends cl_contranslan
         $this->coddoc = 24;
 
         $codigoContaOrcamento = $codele;
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -1663,7 +1664,7 @@ class cl_translan extends cl_contranslan
         $this->result = $this->getRegrasTransacao($this->coddoc, $anousu, db_getsession('DB_anousu'));
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
             //comparador deve ser por credito
@@ -1684,7 +1685,7 @@ class cl_translan extends cl_contranslan
                 && (($c47_compara == 0 || $comparador == $codele) || $c47_compara == 11)) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -1767,7 +1768,7 @@ class cl_translan extends cl_contranslan
         $iDesdobramentoEmpenho = $codele;
 
         $codhist = 9005;
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -1805,25 +1806,25 @@ class cl_translan extends cl_contranslan
                  * Caso o empenho seja de amortizacao da divida, ou precatorios, ferias/13 salario
                  * devemos procurar a contra partida no lancamento de empenho.
                  */
-                if (in_array($oGrupoOrcamento->getCodigo(), array(10, 12, 13, 15))) {
+                if (in_array($oGrupoOrcamento->getCodigo(), [10, 12, 13, 15])) {
                     $coddoc_liq = $aDocumentosEvento['empenho'];
                     $coddoc_liq_capital = $aDocumentosEvento['empenho'];
                     $sWhereConta = "and contranslan.c46_ordem = 1 limit 1";
                 }
 
-                if (in_array($oGrupoOrcamento->getCodigo(), array(8, 9))) {
+                if (in_array($oGrupoOrcamento->getCodigo(), [8, 9])) {
                     $coddoc_liq = $aDocumentosEvento['em_liquidacao'];
                     $coddoc_liq_capital = $aDocumentosEvento['em_liquidacao'];
 
                     if (!empenho::possuiLancamentoDeControle($iNumEmp, db_getsession('DB_anousu'),
-                        array($aDocumentosEvento['em_liquidacao']))) {
+                        [$aDocumentosEvento['em_liquidacao']])) {
                         /**
                          * Verifica se foi executado lançamentos de controle do grupo 8 - no caso de dispensa de tombamento
                          */
                         $aDocumentosEventoGrupo8 = DocumentoContabil::getDocumentosPorGrupo(8);
 
                         if (empenho::possuiLancamentoDeControle($iNumEmp, db_getsession('DB_anousu'),
-                            array($aDocumentosEventoGrupo8['em_liquidacao']))) {
+                            [$aDocumentosEventoGrupo8['em_liquidacao']])) {
                             $coddoc_liq = $aDocumentosEventoGrupo8['em_liquidacao'];
                             $coddoc_liq_capital = $aDocumentosEventoGrupo8['em_liquidacao'];
                         } else {
@@ -1840,7 +1841,7 @@ class cl_translan extends cl_contranslan
                      * Verificamos se existe mais de uma conta para o item do material
                      */
                     $oDaoMatmater = new cl_matmater;
-                    $aItens = array();
+                    $aItens = [];
                     foreach ($aItensEmpenho as $oItem) {
                         $aItens[] = $oItem->getItemMaterialCompras()->getMaterial();
                     }
@@ -1854,7 +1855,7 @@ class cl_translan extends cl_contranslan
                         null, $sWhere
                     );
                     $rsContaGrupo = $oDaoMatmater->sql_record($sSqlContaGrupo);
-                    $aContasMaterial = array();
+                    $aContasMaterial = [];
                     $aItens = db_utils::getCollectionByRecord($rsContaGrupo);
                     foreach ($aItens as $oItem) {
                         if (!in_array($oItem->c61_reduz, $aContasMaterial)) {
@@ -1883,7 +1884,7 @@ class cl_translan extends cl_contranslan
             }
         }
 
-        $aDocumentosConferencia = array(
+        $aDocumentosConferencia = [
             204 // LIQUIDAÇÃO DESPESA MATERIAL DE CONSUMO
         ,
             208 // CONTROLE DESPESA EM LIQUIDAÇÃO MP
@@ -1903,7 +1904,7 @@ class cl_translan extends cl_contranslan
             309 // ESTORNO DE EMPENHO DA PROVISÃO DE 13º SALÁRIO
         ,
             412 // LIQUIDAÇÃO SUPRIMENTO DE FUNDOS
-        );
+        ];
 
 
         $iAnoSessao = db_getsession("DB_anousu");
@@ -1911,7 +1912,7 @@ class cl_translan extends cl_contranslan
 
         //rotina que pega o o valor que foi creditado na liquidacao para colocar no debit  do pagamento...
         if (USE_PCASP /*&& (in_array($coddoc_liq, $aDocumentosConferencia) || in_array($coddoc_liq_capital, $aDocumentosConferencia))*/) {
-            $c47_credito = self::getContaLiquidacao($iNumEmp, array($coddoc_liq_capital, $coddoc_liq, 84, 3, 23), $iAnoSessao);
+            $c47_credito = self::getContaLiquidacao($iNumEmp, [$coddoc_liq_capital, $coddoc_liq, 84, 3, 23], $iAnoSessao);
             $c47_seqtranslr = 0;
             $oEventoContabil = EventoContabilRepository::getEventoContabilByCodigo($coddoc_liq, $iAnoSessao,$iInstituicaoSessao);
             $aLancamentos = $oEventoContabil->getEventoContabilLancamento();
@@ -1928,7 +1929,7 @@ class cl_translan extends cl_contranslan
             $sSqlContaCreditoLiquidacao .= "   and c47_instit  = {$iInstituicaoSessao}";
             $sSqlContaCreditoLiquidacao .= "  {$sWhereConta}";
             $result = @db_query($sSqlContaCreditoLiquidacao);
-            $numrows = @pg_numrows($result);
+            $numrows = @pg_num_rows($result);
             if ($numrows == 0) {
                 throw new Exception('Lançamento de ordem 1 sem conta a credito para lançamento. Verifique conta PCASP ' . $codele);
             }
@@ -1955,7 +1956,7 @@ class cl_translan extends cl_contranslan
         }
     }
 
-    function db_trans_pagamentoApropriacao($codele, $reduzido, $anousu, $iNumEmp = null, $iCodigoDocumento = null, $iCodOrd)
+    function db_trans_pagamentoApropriacao($codele, $reduzido, $anousu, $iNumEmp = null, $iCodigoDocumento = null, $iCodOrd = null)
     {
 
         $this->result = $this->getRegrasTransacao($iCodigoDocumento, $anousu, db_getsession('DB_anousu'));
@@ -1966,7 +1967,7 @@ class cl_translan extends cl_contranslan
 
         $iContador = 0;
 
-        $aDocsEstorno = array(6003, 6005, 6009, 6011);
+        $aDocsEstorno = [6003, 6005, 6009, 6011];
 
        // dump($aNotas);
 
@@ -1989,7 +1990,7 @@ class cl_translan extends cl_contranslan
               $iReduzidoRetencao = $oRetencao->k02_reduz;
 
               // percorre as regras do doc para encontra o compara com o tipocalc da retencao
-              for ($i = 0; $i < pg_numrows($this->result); $i++) {
+              for ($i = 0; $i < pg_num_rows($this->result); $i++) {
 
                 $oDadosRegra = db_utils::fieldsMemory($this->result, $i);
 
@@ -2077,7 +2078,7 @@ class cl_translan extends cl_contranslan
         $iAnoSessao = db_getsession("DB_anousu");
 
         $codhist = 9005;
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $iCodigoReduzido = $this->getCodigoElemento($codele, $iAnoSessao, db_getsession("DB_instit"));
             if (!empty($iCodigoReduzido)) {
@@ -2145,7 +2146,7 @@ class cl_translan extends cl_contranslan
 
 
         if (UTILIZA_INCORPORACAO_BEM) {
-            $aCodigoDocumento = array(3,23,33,39,84,202,204,206, 412);
+            $aCodigoDocumento = [3,23,33,39,84,202,204,206, 412];
             $iAnoSessao       = null;
         }
         $sCodigoDocumento = implode(",", $aCodigoDocumento);
@@ -2205,7 +2206,7 @@ class cl_translan extends cl_contranslan
         $iDesdobramentoEmpenho = $codele;
 
         $codhist = 9006;
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -2240,17 +2241,17 @@ class cl_translan extends cl_contranslan
              * Caso o empenho seja de amortizacao da divida, ou precatorios,
              * devemos procurar a contra partida na no lancamento de empenho.
              */
-            if (in_array($oGrupoOrcamento->getCodigo(), array(10, 12, 13, 15))) {
+            if (in_array($oGrupoOrcamento->getCodigo(), [10, 12, 13, 15])) {
                 $coddoc_liq = $aDocumentosEvento['empenho'];
                 $coddoc_liq_capital = $aDocumentosEvento['empenho'];
                 $sWhereConta = "and contranslan.c46_ordem = 1 limit 1";
             }
 
-            if (in_array($oGrupoOrcamento->getCodigo(), array(8, 9))) {
+            if (in_array($oGrupoOrcamento->getCodigo(), [8, 9])) {
                 $coddoc_liq = $aDocumentosEvento['em_liquidacao'];
                 $coddoc_liq_capital = $aDocumentosEvento['em_liquidacao'];
                 if (!empenho::possuiLancamentoDeControle($iNumEmp, db_getsession('DB_anousu'),
-                    array($aDocumentosEvento['liquidacao']))) {
+                    [$aDocumentosEvento['liquidacao']])) {
                     $coddoc_liq = 3;
                     $coddoc_liq_capital = 3;
                 }
@@ -2263,7 +2264,7 @@ class cl_translan extends cl_contranslan
                  * Verificamos se existe mais de uma conta para o item do material
                  */
                 $oDaoMatmater = new cl_matmater;
-                $aItens = array();
+                $aItens = [];
                 foreach ($aItensEmpenho as $oItem) {
                     $aItens[] = $oItem->getItemMaterialCompras()->getMaterial();
                 }
@@ -2277,7 +2278,7 @@ class cl_translan extends cl_contranslan
                     null, $sWhere
                 );
                 $rsContaGrupo = $oDaoMatmater->sql_record($sSqlContaGrupo);
-                $aContasMaterial = array();
+                $aContasMaterial = [];
                 $aItens = db_utils::getCollectionByRecord($rsContaGrupo);
                 foreach ($aItens as $oItem) {
                     if (!in_array($oItem->c61_reduz, $aContasMaterial)) {
@@ -2308,7 +2309,7 @@ class cl_translan extends cl_contranslan
         $cont = 0;
         $iAnoSessao = db_getsession("DB_anousu");
         $iInstituicaoSessao = db_getsession("DB_instit");
-        $aDocumentosConferencia = array(208, 209, 210, 211, 412);
+        $aDocumentosConferencia = [208, 209, 210, 211, 412];
 
         if (USE_PCASP /*&& (in_array($coddoc_liq, $aDocumentosConferencia) || in_array($coddoc_liq_capital, $aDocumentosConferencia))*/) {
             /**
@@ -2349,7 +2350,7 @@ class cl_translan extends cl_contranslan
             $sSqlContaCreditoLiquidacao .= "   and c47_instit  = {$iInstituicaoSessao}";
             $sSqlContaCreditoLiquidacao .= "  {$sWhereConta}";
             $result = @db_query($sSqlContaCreditoLiquidacao);
-            $numrows = @pg_numrows($result);
+            $numrows = @pg_num_rows($result);
             if ($numrows == 0) {
                 throw new Exception('Lançamento de ordem 1 sem conta a credito para lançamento. Verifique conta PCASP ' . $codele);
             }
@@ -2395,7 +2396,7 @@ class cl_translan extends cl_contranslan
 
         $this->cl_zera_variaveis();
         $this->coddoc = $iCodigoDocumento;
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
 
         if ($iCodigoDocumento == 39) {
             $anousu = db_getsession('DB_anousu');
@@ -2434,7 +2435,7 @@ class cl_translan extends cl_contranslan
         $this->result = $this->getRegrasTransacao($this->coddoc, $anousu, db_getsession('DB_anousu'));
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         /**
          * Percorremos as contas encontradas e validamos se devemos lançar nestas ou não
          */
@@ -2454,7 +2455,7 @@ class cl_translan extends cl_contranslan
                 (($c47_instit != '' && $c47_instit != 0) &&
                     $c47_instit == $iInstituicaoSessao)) {
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -2479,7 +2480,7 @@ class cl_translan extends cl_contranslan
 
         $iAnoSessao = db_getsession("DB_anousu");
         $iInstituicaoSessao = db_getsession("DB_instit");
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
 
         if ($iCodigoDocumento == 40) {
             $anousu = $iAnoSessao;
@@ -2511,7 +2512,7 @@ class cl_translan extends cl_contranslan
 
 
         //declara array para verificação
-        $arr_lans = array();
+        $arr_lans = [];
         $cont = 0;
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
@@ -2530,7 +2531,7 @@ class cl_translan extends cl_contranslan
                 || (($c47_instit != '' && $c47_instit != 0) && $c47_instit == $iInstituicaoSessao)) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -2559,9 +2560,9 @@ class cl_translan extends cl_contranslan
         //----------------------------------------------------------------------
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
-            $e91_codtipo = @pg_result($result, 0, 0);
+            $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
             $this->sqlerro = true;
             $this->erro_msg = "Resto a pagar não encontrado na tabela empresto... Contate suporte.";
@@ -2578,7 +2579,7 @@ class cl_translan extends cl_contranslan
 
         require_once(modification("classes/empenho.php"));
         //declara array para verificação
-        $arr_lans = array();
+        $arr_lans = [];
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
             if (!USE_PCASP || $this->coddoc == 35) {
@@ -2592,19 +2593,19 @@ class cl_translan extends cl_contranslan
              */
             if ($c46_ordem == 1 && USE_PCASP && $this->coddoc != 35) {
 
-                if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento, array(210, 200, 208, 212, 214, 216))) {
+                if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento, [210, 200, 208, 212, 214, 216])) {
 
-                    $c47_debito = self::getContaLiquidacao($numemp, array(210, 200, 208, 212, 214, 216), $iAnoLancamento);
+                    $c47_debito = self::getContaLiquidacao($numemp, [210, 200, 208, 212, 214, 216], $iAnoLancamento);
 
                 } else {
-                    if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento, array(33))) {
+                    if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento, [33])) {
 
-                        $c47_debito = self::getContaLiquidacao($numemp, array(33), $iAnoLancamento);
+                        $c47_debito = self::getContaLiquidacao($numemp, [33], $iAnoLancamento);
 
                     } else {
-                        if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento - 1, array(210, 200, 208, 212, 214, 216))) {
+                        if ($this->coddoc == 37 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento - 1, [210, 200, 208, 212, 214, 216])) {
 
-                            $c47_debito = self::getContaLiquidacao($numemp, array(210, 200, 208, 212, 214, 216), $iAnoLancamento - 1);
+                            $c47_debito = self::getContaLiquidacao($numemp, [210, 200, 208, 212, 214, 216], $iAnoLancamento - 1);
 
                         } else {
                             $sSqlContaCredito = " select c69_credito
@@ -2631,7 +2632,7 @@ class cl_translan extends cl_contranslan
 
             //------------------------------------------------------------------------
             //verificação para naum incluir duas vezes o mesmo seqtranslan
-            if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+            if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                 continue;
             } else {
                 $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -2658,7 +2659,7 @@ class cl_translan extends cl_contranslan
         $this->coddoc = $iCodDoc;
 
         require_once(modification("classes/empenho.php"));
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
 
         if ($codele != "") {
             $this->result = $this->sql_record("select c61_reduz
@@ -2676,9 +2677,9 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
-            $e91_codtipo = @pg_result($result, 0, 0);
+            $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
             $this->sqlerro = true;
             $this->erro_msg = "Resto a pagar não encotrado na tabela empresto... Contate suporte.";
@@ -2687,7 +2688,7 @@ class cl_translan extends cl_contranslan
         $cont = 0;
 
         //declara array para verificação
-        $arr_lans = array();
+        $arr_lans = [];
 
         $iAnoLancamento = db_getsession('DB_anousu');
         if (!empty($c70_data)) {
@@ -2712,12 +2713,12 @@ class cl_translan extends cl_contranslan
                  * verifica se tem lancamento de controle de liquidacao e busca conta credito do controle
                  */
                 if ($this->coddoc == 38 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento,
-                        array(212, 214))) {
-                    $c47_credito = self::getContaLiquidacao($numemp, array(212, 214), $iAnoLancamento);
+                        [212, 214])) {
+                    $c47_credito = self::getContaLiquidacao($numemp, [212, 214], $iAnoLancamento);
                 } else {
                     if ($this->coddoc == 38 && empenho::possuiLancamentoDeControle($numemp, $iAnoLancamento - 1,
-                            array(212, 214))) {
-                        $c47_credito = self::getContaLiquidacao($numemp, array(212, 214), $iAnoLancamento - 1);
+                            [212, 214])) {
+                        $c47_credito = self::getContaLiquidacao($numemp, [212, 214], $iAnoLancamento - 1);
                     } else {
                         $sSqlContaDebito = "  select c69_debito
                                   from conlancamemp
@@ -2742,7 +2743,7 @@ class cl_translan extends cl_contranslan
 
             //------------------------------------------------------------------------
             //verificação para naum incluir duas vezes o mesmo seqtranslan
-            if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+            if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                 continue;
             } else {
                 $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -2763,7 +2764,7 @@ class cl_translan extends cl_contranslan
         }
     }
 
-    function db_trans_estorna_empenho_resto($codcom = null, $anousu, $numemp)
+    function db_trans_estorna_empenho_resto($codcom = null, $anousu = null, $numemp = null)
     {
         global $c46_codhist, $c47_credito, $c47_debito, $c47_ref, $c46_seqtranslan, $c47_seqtranslr, $c47_tiporesto;
         $this->cl_zera_variaveis();
@@ -2773,16 +2774,16 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
-            $e91_codtipo = @pg_result($result, 0, 0);
+            $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
             $this->sqlerro = true;
             $this->erro_msg = "Resto a pagar não encotrado na tabela empresto... Contate suporte.";
         }
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         // echo $this->sql;
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
@@ -2793,7 +2794,7 @@ class cl_translan extends cl_contranslan
 
             //------------------------------------------------------------------------
             //verificação para naum incluir duas vezes o mesmo seqtranslan
-            if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+            if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                 continue;
             } else {
                 $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -2808,7 +2809,7 @@ class cl_translan extends cl_contranslan
         }
     }
 
-    function db_trans_estorna_empenho_resto_processado($codcom = null, $anousu, $numemp)
+    function db_trans_estorna_empenho_resto_processado($codcom = null, $anousu = null, $numemp = null)
     {
         global $c46_codhist, $c47_credito, $c47_debito, $c47_ref, $c46_seqtranslan, $c47_seqtranslr, $c47_tiporesto;
         $this->cl_zera_variaveis();
@@ -2818,16 +2819,16 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
-            $e91_codtipo = @pg_result($result, 0, 0);
+            $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
             $this->sqlerro = true;
             $this->erro_msg = "Resto a pagar não encotrado na tabela empresto... Contate suporte.";
         }
 
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
         // echo $this->sql;
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
@@ -2838,7 +2839,7 @@ class cl_translan extends cl_contranslan
 
             //------------------------------------------------------------------------
             //verificação para naum incluir duas vezes o mesmo seqtranslan
-            if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+            if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                 continue;
             } else {
                 $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -2863,13 +2864,13 @@ class cl_translan extends cl_contranslan
 
         $this->coddoc = $documento;
 
-        $arr_obrigatorio = array(); // quarda os lançamentos que são obrigatorios
+        $arr_obrigatorio = []; // quarda os lançamentos que são obrigatorios
 
         $sql = "select e60_anousu from empempenho where e60_numemp=$numemp";
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
-            $anousu = @pg_result($result, 0, 0);
+            $anousu = @pg_fetch_result($result, 0, 0);
         } else {
             $this->sqlerro = true;
             $this->erro_msg = "Falha ao pesquisar na tabela de empenhos... Contate suporte ! ";
@@ -2877,9 +2878,9 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu=" . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
-            $e91_codtipo = @pg_result($result, 0, 0);
+            $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
             $this->sqlerro = true;
             $this->erro_msg = "Resto a pagar não encotrado na tabela empresto... Contate suporte !";
@@ -2897,7 +2898,7 @@ class cl_translan extends cl_contranslan
 
         // db_criatabela($result);
 
-        $numrows = @pg_numrows($result);
+        $numrows = @pg_num_rows($result);
         if ($numrows > 0) {
             $cont = 0;
             for ($i = 0; $i < $numrows; $i++) {
@@ -2951,9 +2952,9 @@ class cl_translan extends cl_contranslan
       c46_obrigatorio ='t'
       ";
             $result = @db_query($sql);
-            $numrows = pg_numrows($result);
+            $numrows = pg_num_rows($result);
             if ($numrows > 0) {
-                $qtd_obrigatoria = pg_result($result, 0, 0);
+                $qtd_obrigatoria = pg_fetch_result($result, 0, 0);
                 if ($qtd_obrigatoria != sizeof($arr_obrigatorio)) {
                     $this->sqlerro = true;
                     $this->erro_msg = "Lançamento obrigatorio sem registro. Verifique (Contabilidade,documentos,transações) ! ";
@@ -3027,7 +3028,7 @@ class cl_translan extends cl_contranslan
 
                     $rsDeducao = db_query($sSqlDeducao);
 
-                    if (pg_numrows($rsDeducao) > 0 ) {
+                    if (pg_num_rows($rsDeducao) > 0 ) {
                         continue;
                     }
                 }
@@ -3127,7 +3128,7 @@ class cl_translan extends cl_contranslan
                        and substring(o57_fonte, 1, 1) = '9' ";
 
                     $rsDeducao = db_query($sSqlDeducao);
-                    if (pg_numrows($rsDeducao) > 0 ) {
+                    if (pg_num_rows($rsDeducao) > 0 ) {
                         continue;
                     }
                 }
@@ -3269,10 +3270,10 @@ class cl_translan extends cl_contranslan
             $iInstit = db_getsession("DB_instit");
         }
 
-        $this->arr_credito = array();
-        $this->arr_debito = array();
-        $this->arr_histori = array();
-        $this->arr_seqtranslr = array();
+        $this->arr_credito = [];
+        $this->arr_debito = [];
+        $this->arr_histori = [];
+        $this->arr_seqtranslr = [];
         $sDocSuplementacao = "o48_coddocsup";
         if ($tipo == 1050) {
             $sDocSuplementacao = "o48_arrecadmaior";
@@ -3356,7 +3357,7 @@ class cl_translan extends cl_contranslan
         $this->cl_zera_variaveis();
         $this->coddoc = 1007;
 
-        $codele = $this->getVinculoPcasp($codele);
+        $codele = static::getVinculoPcasp($codele);
         if ($codele != "") {
             $sSqlCodigoConta = "select c61_reduz ";
             $sSqlCodigoConta .= "  from conplanoreduz ";
@@ -3380,7 +3381,7 @@ class cl_translan extends cl_contranslan
         # echo $this->sql;
         $this->result = $this->sql_record($this->sql);
         $cont = 0;
-        $arr_lans = array();
+        $arr_lans = [];
 
         for ($i = 0; $i < $this->numrows; $i++) {
             db_fieldsmemory($this->result, $i);
@@ -3401,7 +3402,7 @@ class cl_translan extends cl_contranslan
                 && ($c47_compara == 0 || $comparador == $codele)) {
                 //------------------------------------------------------------------------
                 //verificação para naum incluir duas vezes o mesmo seqtranslan
-                if (array_key_exists($c46_seqtranslan, $arr_lans)) {
+                if (array_key_exists((string) $c46_seqtranslan, $arr_lans)) {
                     continue;
                 } else {
                     $arr_lans[$c46_seqtranslan] = $c46_seqtranslan;
@@ -3469,7 +3470,7 @@ class cl_translan extends cl_contranslan
      */
     public function getRegrasTransacao($iCodigoDocumento, $iAnoContas, $iAnoTransacao = null, $iOrdemLancamento = null)
     {
-        $sWhere   = array(" c45_coddoc = $iCodigoDocumento ");
+        $sWhere   = [" c45_coddoc = $iCodigoDocumento "];
         $sWhere[] = " and c45_instit = " . db_getsession('DB_instit');
         $sWhere[] = " and c47_instit = " . db_getsession('DB_instit');
         $sWhere[] = " and c47_anousu = $iAnoContas ";
@@ -3574,24 +3575,24 @@ class cl_translan extends cl_contranslan
                  * Caso o empenho seja de amortizacao da divida, ou precatorios, ferias/13 salario
                  * devemos procurar a contra partida no lancamento de empenho.
                  */
-                if (in_array($oGrupoOrcamento->getCodigo(), array(10, 12, 13, 15))) {
+                if (in_array($oGrupoOrcamento->getCodigo(), [10, 12, 13, 15])) {
                     $coddoc_liq = $aDocumentosEvento['empenho'];
                     $coddoc_liq_capital = $aDocumentosEvento['empenho'];
                     $sWhereConta = "and contranslan.c46_ordem = 1 limit 1";
                 }
 
-                if (in_array($oGrupoOrcamento->getCodigo(), array(8, 9))) {
+                if (in_array($oGrupoOrcamento->getCodigo(), [8, 9])) {
                     $coddoc_liq = $aDocumentosEvento['em_liquidacao'];
                     $coddoc_liq_capital = $aDocumentosEvento['em_liquidacao'];
 
-                    if (!empenho::possuiLancamentoDeControle($iNumEmp, $anousu, array($aDocumentosEvento['em_liquidacao']))) {
+                    if (!empenho::possuiLancamentoDeControle($iNumEmp, $anousu, [$aDocumentosEvento['em_liquidacao']])) {
                         /**
                          * Verifica se foi executado lançamentos de controle do grupo 8 - no caso de dispensa de tombamento
                          */
                         $aDocumentosEventoGrupo8 = DocumentoContabil::getDocumentosPorGrupo(8);
 
                         if (empenho::possuiLancamentoDeControle($iNumEmp, db_getsession('DB_anousu'),
-                            array($aDocumentosEventoGrupo8['em_liquidacao']))) {
+                            [$aDocumentosEventoGrupo8['em_liquidacao']])) {
                             $coddoc_liq = $aDocumentosEventoGrupo8['em_liquidacao'];
                             $coddoc_liq_capital = $aDocumentosEventoGrupo8['em_liquidacao'];
                         } else {
@@ -3608,7 +3609,7 @@ class cl_translan extends cl_contranslan
                      * Verificamos se existe mais de uma conta para o item do material
                      */
                     $oDaoMatmater = new cl_matmater;
-                    $aItens = array();
+                    $aItens = [];
                     foreach ($aItensEmpenho as $oItem) {
                         $aItens[] = $oItem->getItemMaterialCompras()->getMaterial();
                     }
@@ -3622,7 +3623,7 @@ class cl_translan extends cl_contranslan
                         null, $sWhere
                     );
                     $rsContaGrupo = $oDaoMatmater->sql_record($sSqlContaGrupo);
-                    $aContasMaterial = array();
+                    $aContasMaterial = [];
                     $aItens = db_utils::getCollectionByRecord($rsContaGrupo);
                     foreach ($aItens as $oItem) {
                         if (!in_array($oItem->c61_reduz, $aContasMaterial)) {
@@ -3681,7 +3682,7 @@ class cl_translan extends cl_contranslan
             $anousu = db_getsession("DB_anousu");
         }
 
-        return self::getContaLiquidacao($iNumEmp, array($coddoc_liq_capital, $coddoc_liq, 84, 3, 23, 33), $anousu);
+        return self::getContaLiquidacao($iNumEmp, [$coddoc_liq_capital, $coddoc_liq, 84, 3, 23, 33], $anousu);
     }
 
 }
@@ -3693,15 +3694,15 @@ class cl_estrutura_sistema
 {
     // cria variaveis de erro
 
-    var $nomeform = "form1";
-    var $reload = false;
-    var $size = '50';
-    var $mascara = true;
-    var $input = false;
-    var $db_opcao = 1;
-    var $funcao_onchange = null;
-    var $autocompletar = false;
-    var $botao = false;
+    public $nomeform = "form1";
+    public $reload = false;
+    public $size = '50';
+    public $mascara = true;
+    public $input = false;
+    public $db_opcao = 1;
+    public $funcao_onchange = null;
+    public $autocompletar = false;
+    public $botao = false;
 
     function estrutura_sistema($picture = null)
     {
@@ -3711,7 +3712,7 @@ class cl_estrutura_sistema
         $title = "T" . $picture;
         $label = "L" . $picture;
 
-        global $$label, $$title, $$picture, $mascara;
+        global ${$label}, ${$title}, ${$picture}, $mascara;
         if (!class_exists('cl_conparametro')) {
             db_msgbox('Classe conparametro não incluida!');
             exit;
@@ -3719,7 +3720,7 @@ class cl_estrutura_sistema
         $result = $clconparametro->sql_record($clconparametro->sql_query_file("", "$picture as mascara"));
         if ($clconparametro->numrows > 0) {
             db_fieldsmemory($result, 0);
-            $tamanho = strlen($mascara);
+            $tamanho = strlen((string) $mascara);
         } else {
             db_msgbox('Configuração de Parametros não encontrada ! Contate o suporte !');
             exit;
@@ -3753,8 +3754,8 @@ class cl_estrutura_sistema
     if ($this->input == false) {
         ?>
         <tr>
-            <td nowrap title="<?= @$$title ?>">
-                <?= @$$label ?>
+            <td nowrap title="<?= @${$title} ?>">
+                <?= @${$label} ?>
             </td>
             <td>
                 <?php 
@@ -3762,9 +3763,9 @@ class cl_estrutura_sistema
                 }
                 ?>
 
-                <input title="<?= @$$title ?>"
+                <input title="<?= @${$title} ?>"
                        name="<?= $picture ?>" maxlength='<?= $tamanho ?>'
-                       size='<?= $this->size ?>' type="text" value="<?= @$$picture ?>"
+                       size='<?= $this->size ?>' type="text" value="<?= @${$picture} ?>"
                        onKeyPress="return js_mascara01_<?= $picture ?>(event,this.value);"
                     <?= $funcao ?> <?= ($this->db_opcao == 22 || $this->db_opcao == 33 || $this->db_opcao == 3 ? "readonly style=\"background-color:#DEB887\" "
                     : "") ?>
@@ -3947,60 +3948,60 @@ class cl_estrutura_sistema
 function db_le_mae_sistema($codigo, $nivel = false)
 {
     $retorno = "";
-    if (substr($codigo, 11, 2) != '00') {
+    if (substr((string) $codigo, 11, 2) != '00') {
         if ($nivel == true) {
             $retorno = 9;
         } else {
-            $retorno = substr($codigo, 0, 11) . '00';
+            $retorno = substr((string) $codigo, 0, 11) . '00';
         }
     }
-    if ($retorno == "" && substr($codigo, 9, 4) != '0000') {
+    if ($retorno == "" && substr((string) $codigo, 9, 4) != '0000') {
         if ($nivel == true) {
             $retorno = 8;
         } else {
-            $retorno = substr($codigo, 0, 9) . '0000';
+            $retorno = substr((string) $codigo, 0, 9) . '0000';
         }
     }
-    if ($retorno == "" && substr($codigo, 7, 6) != '000000') {
+    if ($retorno == "" && substr((string) $codigo, 7, 6) != '000000') {
         if ($nivel == true) {
             $retorno = 7;
         } else {
-            $retorno = substr($codigo, 0, 7) . '000000';
+            $retorno = substr((string) $codigo, 0, 7) . '000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 5, 8) != '00000000') {
+    if ($retorno == "" && substr((string) $codigo, 5, 8) != '00000000') {
         if ($nivel == true) {
             $retorno = 6;
         } else {
-            $retorno = substr($codigo, 0, 5) . '00000000';
+            $retorno = substr((string) $codigo, 0, 5) . '00000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 4, 9) != '000000000') {
+    if ($retorno == "" && substr((string) $codigo, 4, 9) != '000000000') {
         if ($nivel == true) {
             $retorno = 5;
         } else {
-            $retorno = substr($codigo, 0, 4) . '000000000';
+            $retorno = substr((string) $codigo, 0, 4) . '000000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 3, 10) != '0000000000') {
+    if ($retorno == "" && substr((string) $codigo, 3, 10) != '0000000000') {
         if ($nivel == true) {
             $retorno = 4;
         } else {
-            $retorno = substr($codigo, 0, 3) . '0000000000';
+            $retorno = substr((string) $codigo, 0, 3) . '0000000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 2, 11) != '00000000000') {
+    if ($retorno == "" && substr((string) $codigo, 2, 11) != '00000000000') {
         if ($nivel == true) {
             $retorno = 3;
         } else {
-            $retorno = substr($codigo, 0, 2) . '00000000000';
+            $retorno = substr((string) $codigo, 0, 2) . '00000000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 1, 12) != '000000000000') {
+    if ($retorno == "" && substr((string) $codigo, 1, 12) != '000000000000') {
         if ($nivel == true) {
             $retorno = 2;
         } else {
-            $retorno = substr($codigo, 0, 1) . '000000000000';
+            $retorno = substr((string) $codigo, 0, 1) . '000000000000';
         }
     }
     if ($retorno == "") {
@@ -4022,65 +4023,65 @@ function db_le_corta_conplano($codigo, $nivel, $full = false)
     $retorno = "";
     if ($nivel == 9) {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 13) . '00';
+            $retorno = substr((string) $codigo, 0, 13) . '00';
         } else {
-            $retorno = substr($codigo, 0, 13);
+            $retorno = substr((string) $codigo, 0, 13);
         }
     }
     if ($nivel == 8) {
         if ($full == 8) {
-            $retorno = substr($codigo, 0, 11) . '0000';
+            $retorno = substr((string) $codigo, 0, 11) . '0000';
         } else {
-            $retorno = substr($codigo, 0, 11);
+            $retorno = substr((string) $codigo, 0, 11);
         }
     }
     if ($nivel == 7) {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 9) . '000000';
+            $retorno = substr((string) $codigo, 0, 9) . '000000';
         } else {
-            $retorno = substr($codigo, 0, 9);
+            $retorno = substr((string) $codigo, 0, 9);
         }
     }
     if ($nivel == 6) {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 7) . '00000000';
+            $retorno = substr((string) $codigo, 0, 7) . '00000000';
         } else {
-            $retorno = substr($codigo, 0, 7);
+            $retorno = substr((string) $codigo, 0, 7);
         }
     }
     if ($nivel == 5) {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 5) . '0000000000';
+            $retorno = substr((string) $codigo, 0, 5) . '0000000000';
         } else {
-            $retorno = substr($codigo, 0, 5);
+            $retorno = substr((string) $codigo, 0, 5);
         }
     }
     if ($nivel == 4) {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 4) . '00000000000';
+            $retorno = substr((string) $codigo, 0, 4) . '00000000000';
         } else {
-            $retorno = substr($codigo, 0, 4);
+            $retorno = substr((string) $codigo, 0, 4);
         }
     }
     if ($nivel == 3) {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 3) . '000000000000';
+            $retorno = substr((string) $codigo, 0, 3) . '000000000000';
         } else {
-            $retorno = substr($codigo, 0, 3);
+            $retorno = substr((string) $codigo, 0, 3);
         }
     }
     if ($nivel == 2) {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 2) . '0000000000000';
+            $retorno = substr((string) $codigo, 0, 2) . '0000000000000';
         } else {
-            $retorno = substr($codigo, 0, 2);
+            $retorno = substr((string) $codigo, 0, 2);
         }
     }
     if ($nivel == "1") {
         if ($full == true) {
-            $retorno = substr($codigo, 0, 1) . '0000000000000';
+            $retorno = substr((string) $codigo, 0, 1) . '0000000000000';
         } else {
-            $retorno = substr($codigo, 0, 1);
+            $retorno = substr((string) $codigo, 0, 1);
         }
     }
     return $retorno;
@@ -4090,67 +4091,67 @@ function db_le_mae_conplano($codigo, $nivel = false)
 {
     $retorno = "";
 
-    if ($retorno == "" && substr($codigo, 13, 2) != '00') {
+    if ($retorno == "" && substr((string) $codigo, 13, 2) != '00') {
         if ($nivel == true) {
             $retorno = 10;
         } else {
-            $retorno = substr($codigo, 0, 13) . '00';
+            $retorno = substr((string) $codigo, 0, 13) . '00';
         }
     }
-    if ($retorno == "" && substr($codigo, 11, 2) != '00') {
+    if ($retorno == "" && substr((string) $codigo, 11, 2) != '00') {
         if ($nivel == true) {
             $retorno = 9;
         } else {
-            $retorno = substr($codigo, 0, 11) . '0000';
+            $retorno = substr((string) $codigo, 0, 11) . '0000';
         }
     }
-    if ($retorno == "" && substr($codigo, 9, 6) != '000000') {
+    if ($retorno == "" && substr((string) $codigo, 9, 6) != '000000') {
         if ($nivel == true) {
             $retorno = 8;
         } else {
-            $retorno = substr($codigo, 0, 9) . '000000';
+            $retorno = substr((string) $codigo, 0, 9) . '000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 7, 8) != '00000000') {
+    if ($retorno == "" && substr((string) $codigo, 7, 8) != '00000000') {
         if ($nivel == true) {
             $retorno = 7;
         } else {
-            $retorno = substr($codigo, 0, 7) . '00000000';
+            $retorno = substr((string) $codigo, 0, 7) . '00000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 5, 10) != '0000000000') {
+    if ($retorno == "" && substr((string) $codigo, 5, 10) != '0000000000') {
         if ($nivel == true) {
             $retorno = 6;
         } else {
-            $retorno = substr($codigo, 0, 5) . '0000000000';
+            $retorno = substr((string) $codigo, 0, 5) . '0000000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 4, 11) != '00000000000') {
+    if ($retorno == "" && substr((string) $codigo, 4, 11) != '00000000000') {
         if ($nivel == true) {
             $retorno = 5;
         } else {
-            $retorno = substr($codigo, 0, 4) . '00000000000';
+            $retorno = substr((string) $codigo, 0, 4) . '00000000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 3, 12) != '000000000000') {
+    if ($retorno == "" && substr((string) $codigo, 3, 12) != '000000000000') {
         if ($nivel == true) {
             $retorno = 4;
         } else {
-            $retorno = substr($codigo, 0, 3) . '000000000000';
+            $retorno = substr((string) $codigo, 0, 3) . '000000000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 2, 13) != '0000000000000') {
+    if ($retorno == "" && substr((string) $codigo, 2, 13) != '0000000000000') {
         if ($nivel == true) {
             $retorno = 3;
         } else {
-            $retorno = substr($codigo, 0, 2) . '0000000000000';
+            $retorno = substr((string) $codigo, 0, 2) . '0000000000000';
         }
     }
-    if ($retorno == "" && substr($codigo, 1, 14) != '00000000000000') {
+    if ($retorno == "" && substr((string) $codigo, 1, 14) != '00000000000000') {
         if ($nivel == true) {
             $retorno = 2;
         } else {
-            $retorno = substr($codigo, 0, 1) . '00000000000000';
+            $retorno = substr((string) $codigo, 0, 1) . '00000000000000';
         }
     }
     if ($retorno == "") {
@@ -4236,7 +4237,7 @@ function db_planosissaldo($anousu, $dataini, $datafim, $retsql = false, $where =
     $tot_saldo_final = 0;
     GLOBAL $estrut_mae, $estrut, $c61_reduz, $c60_descr, $c60_finali, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final, $result_estrut, $sinal_anterior, $sinal_final, $c64_descr;
     $nivel = 0;
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         //  for($i = 0;$i < 4;$i++){
         db_fieldsmemory($result, $i);
         if ($sinal_anterior == "C") {
@@ -4270,7 +4271,7 @@ function db_planosissaldo($anousu, $dataini, $datafim, $retsql = false, $where =
             }
             $result_estrut = db_query("select saldo_anterior from work_planosis where estrut = '$estrutural'");
             //db_criatabela($result_estrut);
-            if (@pg_numrows($result_estrut) != true) {
+            if (@pg_num_rows($result_estrut) != true) {
                 $res = db_query("select c64_descr from conplanosis where c64_estrut = '$estrutural'");
                 db_fieldsmemory($res, 0);
 
@@ -4340,7 +4341,7 @@ function db_planocontassaldo_matriz(
     $acumula_reduzido = 'true',
     $encerramento = 'false',
     $join = '',
-    $aOrcParametro = array()
+    $aOrcParametro = []
 ) {
     if ($anousu == null) {
         $anousu = db_getsession("DB_anousu");
@@ -4458,12 +4459,12 @@ select estrut_mae,
     GLOBAL $c60_consistemaconta;
     GLOBAL $sis;
 
-    $work_planomae = array();
-    $work_planoestrut = array();
-    $work_plano = array();
+    $work_planomae = [];
+    $work_planoestrut = [];
+    $work_plano = [];
     $seq = 0;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         //  for($i = 0;$i < 20;$i++){
         db_fieldsmemory($result, $i);
         if ($sinal_anterior == "C") {
@@ -4485,7 +4486,7 @@ select estrut_mae,
         if ($key === false) { // não achou
             $work_planomae[$seq] = $estrut_mae;
             $work_planoestrut[$seq] = $estrut;
-            $work_plano[$seq] = array(
+            $work_plano[$seq] = [
                 0 => "$c61_reduz",
                 1 => "$c61_codcon",
                 2 => "$c61_codigo",
@@ -4500,7 +4501,7 @@ select estrut_mae,
                 11 => "$sinal_final",
                 12 => "$c60_identificadorfinanceiro",
                 13 => "$c60_consistemaconta"
-            );
+            ];
             $seq = $seq + 1;
         } else {
             $work_plano[$key][6] = dbround_php_52($work_plano[$key][6], 2) + dbround_php_52($tot_anterior, 2);
@@ -4521,7 +4522,7 @@ select estrut_mae,
                     "select c60_descr,c60_finali,c60_codcon, c60_identificadorfinanceiro
             from conplano
             where c60_anousu=" . $anousu . " and c60_estrut = '$estrutural'");
-                if ($res == false || pg_numrows($res) == 0) {
+                if ($res == false || pg_num_rows($res) == 0) {
                     $sMensagemErro = "Está faltando cadastrar esse estrutural na contabilidade. Nível : {$nivel}  Estrutural : {$estrutural} - ano: {$anousu}";
 
                     if ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
@@ -4536,7 +4537,7 @@ select estrut_mae,
                 $work_planomae[$seq] = $estrutural;
                 $work_planoestrut[$seq] = '';
                 /// Validar Parametros do Orcamento para Acumular as Sinteticas (Estrutura e Instituicao)
-                $work_plano[$seq] = (array(
+                $work_plano[$seq] = ([
                     0 => 0,
                     1 => $c60_codcon,
                     2 => 0,
@@ -4551,10 +4552,10 @@ select estrut_mae,
                     11 => $sinal_final,
                     12 => $c60_identificadorfinanceiro,
                     13 => $c60_consistemaconta
-                ));
+                ]);
                 if (count($aOrcParametro) > 0) { // Se foram passados parametros...
-                    if (!in_array(array($estrutural, $c61_instit), $aOrcParametro)) {
-                        $work_plano[$seq] = (array(
+                    if (!in_array([$estrutural, $c61_instit], $aOrcParametro)) {
+                        $work_plano[$seq] = ([
                             0 => 0,
                             1 => $c60_codcon,
                             2 => 0,
@@ -4569,7 +4570,7 @@ select estrut_mae,
                             11 => '',
                             12 => '',
                             13 => 0
-                        ));
+                        ]);
                     }
                 }
 
@@ -4577,7 +4578,7 @@ select estrut_mae,
             } else {
                 /// Validar Parametros do Orcamento para Acumular as Sinteticas (Estrutura e Instituicao)
                 if (count($aOrcParametro) > 0) { // Se foram passados parametros...
-                    if (!in_array(array($estrutural, $c61_instit), $aOrcParametro)) {
+                    if (!in_array([$estrutural, $c61_instit], $aOrcParametro)) {
                         continue;
                     }
                     //echo "<pre>";
@@ -4812,11 +4813,11 @@ function db_planocontassaldo_desp_rec(
     GLOBAL $result_estrut;
     GLOBAL $sinal_anterior;
     GLOBAL $sinal_final;
-    $work_planomae = array();
-    $work_planoestrut = array();
-    $work_plano = array();
+    $work_planomae = [];
+    $work_planoestrut = [];
+    $work_plano = [];
     $seq = 0;
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         if ($sinal_anterior == "C") {
             $saldo_anterior *= -1;
@@ -4832,7 +4833,7 @@ function db_planocontassaldo_desp_rec(
         if ($key === false) { // não achou
             $work_planomae[$seq] = $estrut_mae;
             $work_planoestrut[$seq] = $estrut;
-            $work_plano[$seq] = array(
+            $work_plano[$seq] = [
                 0 => "$c61_reduz",
                 1 => "$c61_codcon",
                 2 => "$c61_codigo",
@@ -4845,7 +4846,7 @@ function db_planocontassaldo_desp_rec(
                 9 => "$saldo_final",
                 10 => "$sinal_anterior",
                 11 => "$sinal_final"
-            );
+            ];
             $seq = $seq + 1;
         } else {
             $work_plano[$key][6] += $tot_anterior;
@@ -4864,7 +4865,7 @@ function db_planocontassaldo_desp_rec(
                 $res = db_query(
                     "select c60_descr,c60_finali,c60_codcon from conplano where c60_anousu=" . db_getsession("DB_anousu")
                     . " and c60_estrut = '$estrutural'");
-                if ($res == false || pg_numrows($res) == 0) {
+                if ($res == false || pg_num_rows($res) == 0) {
                     db_redireciona(
                         "db_erros.php?fechar=true&db_erro=Está faltando cadastrar esse estrutural na contabilidade. Nível : $nivel  Estrutural : $estrutural - ano: " + db_getsession("DB_anousu"));
                     exit;
@@ -4873,7 +4874,7 @@ function db_planocontassaldo_desp_rec(
 
                 $work_planomae[$seq] = $estrutural;
                 $work_planoestrut[$seq] = '';
-                $work_plano[$seq] = (array(
+                $work_plano[$seq] = ([
                     0 => 0,
                     1 => 0,
                     2 => $c60_codcon,
@@ -4886,7 +4887,7 @@ function db_planocontassaldo_desp_rec(
                     9 => $saldo_final,
                     10 => $sinal_anterior,
                     11 => $sinal_final
-                ));
+                ]);
                 $seq++;
             } else {
                 $work_plano[$key][6] += $tot_anterior;
@@ -4975,7 +4976,7 @@ function db_planocontassaldo_completo(
     $datafim,
     $retsql = false,
     $where = '',
-    $aOrcParametro = array(),
+    $aOrcParametro = [],
     $estrut_inicial = '',
     $acumula_reduzido = false,
     $encerramento = 'false'
@@ -5182,7 +5183,7 @@ function db_elementosaldo(
 
     GLOBAL $o58_orgao, $o40_descr, $o58_unidade, $o41_descr, $o56_descr, $codele, $elemento, $descr, $dot_ini, $saldo_anterior, $empenhado, $anulado, $liquidado, $pago, $suplementado, $reduzido, $atual, $reservado, $atual_menos_reservado, $atual_a_pagar, $atual_a_pagar_liquidado, $empenhado_acumulado, $anulado_acumulado, $liquidado_acumulado, $pago_acumulado, $suplementado_acumulado, $reduzido_acumulado, $especial, $especial_acumulado, $suplemen;
     // for($i = 0;$i < 10;$i++){
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         $tot_dot_ini = $dot_ini;
         $tot_saldo_anterior = $saldo_anterior;
@@ -5252,10 +5253,10 @@ function db_elementosaldo(
             $result_estrut = db_query("select dot_ini from work_plano where elemento = '$estrutural' $agrupa3");
 
             //       db_criatabela($result_estrut);
-            if (@pg_numrows($result_estrut) != true) {
+            if (@pg_num_rows($result_estrut) != true) {
                 $res = db_query(
                     "select o56_descr from orcelemento where o56_anousu = $anousu and o56_elemento = '$estrutural'");
-                if (@pg_numrows($res) != true) {
+                if (@pg_num_rows($res) != true) {
                     break;
                 }
                 db_fieldsmemory($res, 0);
@@ -5448,7 +5449,7 @@ function grupoconta(
         // Começo da estruturação da tabela temporaria
         $result_rec = db_query($creat_sql);
         $result_rec = db_query($sql22);
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             db_fieldsmemory($result_rec, $i);
             //aqui é colocado os valores da DB_DOTAÇÂOSALDO recomento e alerto ao mesmo tempo pode, pode se buscar mais valores desde tome o cuidado citado acima no começo da função
             $valor1 = $saldo_anterior;
@@ -5466,7 +5467,7 @@ function grupoconta(
                 $sql = "update work set valor1 = valor1+$valor1,valor2 = valor2+$valor2,valor3 = valor3+$valor3,valor4 = valor4+$valor4 where work.estrutural = '"
                     . $estrutural . "00" . "'";
                 $result = db_query($sql);
-                if (substr($estrutural, 1, 12) == "0000000000000") {
+                if (substr((string) $estrutural, 1, 12) == "0000000000000") {
                     $executa = false;
                 }
                 $conta++;
@@ -5499,7 +5500,7 @@ function grupoconta(
             . 'valor_debito    		float8,' . 'valor_credito  	 	float8,' . 'valor_final 				float8' . ')';
         global $estrutural, $c60_descr, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final;
         db_query($criatabela);
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             for ($x = 0; $x < count($paramconta); $x++) {
                 if (in_array($estrutural, $paramconta[$x])) {
@@ -5509,8 +5510,8 @@ function grupoconta(
                         . "'," . "$saldo_anterior," . "$saldo_anterior_debito," . "$saldo_anterior_credito,"
                         . "$saldo_final)");
                 }
-                if (substr($estrutural, 0, 1) == 'F') {
-                    $estrutural = substr($estrutural, 1);
+                if (str_starts_with((string) $estrutural, 'F')) {
+                    $estrutural = substr((string) $estrutural, 1);
                     $g = 'F';
                     db_query(
                         "insert into work_grupconta values (' " . $g . " '," . "'" . $estrutural . "'," . "'" . pg_escape_string($c60_descr)
@@ -5555,7 +5556,7 @@ function grupoconta(
         $result_rec = db_query($sql11);
         // novamente eu copio, da vontade de mandar ler o DICAS.PHP, torama q o comum q esteja dando manutenção aqui nesse codigo seja um dos velhos IF velho THEN deve estar lembrando de mim ELSE pergunta para os velhos
         // Começo da estruturação da tabela temporaria
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             db_fieldsmemory($result_rec, $i);
             // eu ja disse o que pode fazer aqui, se não sei acima vai ler
             $valor1 = $anterior;
@@ -5572,7 +5573,7 @@ function grupoconta(
                 $sql = "update work set valor1 = valor1+$valor1,valor2 = valor2+$valor2,valor3 = valor3+$valor3 where work.estrutural = '"
                     . $estrutural . "00" . "'";
                 $result = db_query($sql);
-                if (substr($estrutural, 1, 12) == "0000000000000") {
+                if (substr((string) $estrutural, 1, 12) == "0000000000000") {
                     $executa = false;
                 }
                 $conta++;
@@ -5592,7 +5593,7 @@ function grupoconta(
             . 'valor_ini    		float8,' . 'valor_exec  	 	float8' . ')';
         global $estrutural, $c60_descr, $anterior, $inicial, $executado;
         db_query($criatabela);
-        for ($i = 0; $i < pg_numrows($result); $i++) {
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
             db_fieldsmemory($result, $i);
             for ($x = 0; $x < count($paramconta); $x++) {
                 if (in_array($estrutural, $paramconta[$x])) {
@@ -5602,8 +5603,8 @@ function grupoconta(
                         "insert into work_grupconta values (' " . $g . " '," . "'" . $estrutural . "'," . "'" . pg_escape_string($c60_descr)
                         . "'," . "$anterior," . "$inicial," . "$executado )");
                 }
-                if (substr($estrutural, 0, 1) == 'F') {
-                    $estrutural = substr($estrutural, 1);
+                if (str_starts_with((string) $estrutural, 'F')) {
+                    $estrutural = substr((string) $estrutural, 1);
                     $g = 'F';
                     //troca por array ME ORGULHE eu não tinha tempo
                     db_query(
@@ -5677,7 +5678,7 @@ function calcula_rcl($anousu, $dtini, $dtfin, $db_selinstit, $matriz = false)
     for ($p = 1; $p <= 18; $p++) {
         // 18 é a quantidade de parametros ou linhas existentes nos parametros
 
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             db_fieldsmemory($result_rec, $i);
 
             $estrutural = $o57_fonte;
@@ -5712,7 +5713,7 @@ function calcula_rcl($anousu, $dtini, $dtfin, $db_selinstit, $matriz = false)
                     $rcl_matriz['dezembro'] += $dezembro;
                 } else {
                     //                if (substr($estrutural,0,3) == "497") {
-                    if (db_conplano_grupo($anousu, substr($estrutural, 0, 3) . "%", 9001) == true) {
+                    if (db_conplano_grupo($anousu, substr((string) $estrutural, 0, 3) . "%", 9001) == true) {
                         $rcl_matriz['janeiro'] -= ($janeiro);
                         $rcl_matriz['fevereiro'] -= ($fevereiro);
                         $rcl_matriz['marco'] -= ($marco);
@@ -5762,12 +5763,12 @@ function calcula_rcl2($anousu, $dtini, $dtfin, $db_selinstit, $matriz = false, $
     global $o57_fonte, $janeiro, $fevereiro, $marco, $abril, $maio, $junho, $julho, $agosto, $setembro, $outubro, $novembro, $dezembro, $bimestre, $dt;
 
     if ($data == 0) {
-        $dt = explode("-", $dtfin);
+        $dt = explode("-", (string) $dtfin);
     } else {
-        $dt = explode("-", $data);
+        $dt = explode("-", (string) $data);
     }
 
-    $bimestre = (int)substr(db_retorna_periodo($dt[1], "B"), 0, 1);
+    $bimestre = (int)substr((string) db_retorna_periodo($dt[1], "B"), 0, 1);
     $bimestre = $dt[1];
     $flag_anterior = false;
 
@@ -5935,7 +5936,7 @@ function calcula_rcl2($anousu, $dtini, $dtfin, $db_selinstit, $matriz = false, $
         }
 
 
-        for ($i = 0; $i < pg_numrows($result_rec); $i++) {
+        for ($i = 0; $i < pg_num_rows($result_rec); $i++) {
             $oReceita = db_utils::fieldsmemory($result_rec, $i);
             $estrutural = $oReceita->o57_fonte;
             $oParametro = $param[$p]->parametro;
@@ -6016,7 +6017,7 @@ function calcula_rcl2($anousu, $dtini, $dtfin, $db_selinstit, $matriz = false, $
                             $transferenciaParlamentar[12] += $oReceita->dezembro;
                             continue;
                         }
-                        if (db_conplano_grupo($anousu, substr($estrutural, 0, 3) . "%", 9001) == true) {
+                        if (db_conplano_grupo($anousu, substr((string) $estrutural, 0, 3) . "%", 9001) == true) {
                             $rcl_matriz[1][1] += ($oReceita->janeiro);
                             $rcl_matriz[1][2] += ($oReceita->fevereiro);
                             $rcl_matriz[1][3] += ($oReceita->marco);
@@ -6100,9 +6101,9 @@ function db_conplano_grupo($anousu = null, $estrut = "", $grupo = 0)
 
     $sql_result = analiseQueryPlanoOrcamento("select fc_conplano_grupo($anousu, '$estrut', $grupo) as retorno");
     $result = db_query($sql_result);
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     if ($numrows != 0) {
-        $retorno = pg_result($result, 0, 0);
+        $retorno = pg_fetch_result($result, 0, 0);
         if ($retorno == 't') {
             return true;
         } else {
@@ -6176,10 +6177,10 @@ function notasExplicativas($oPdf, $iCodRel, $sPeriodo, $iTam, $lFonte = true)
 
 function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
 {
-    $aVariacoesAtivo = array();
-    $aVariacoesPassivo = array();
-    $aVariacoesExtraAtivo = array();
-    $aVariacoesExtraPassivo = array();
+    $aVariacoesAtivo = [];
+    $aVariacoesPassivo = [];
+    $aVariacoesExtraAtivo = [];
+    $aVariacoesExtraPassivo = [];
 
     (float)$aVariacoesAtivo['ReceitasCorrentes'] = 0;
     (float)$aVariacoesAtivo['ReceitasCapital'] = 0;
@@ -6219,7 +6220,7 @@ function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
     for ($i = 0; $i < $iNumrowsReceita; $i++) {
         $oReceitaSaldo = db_utils::fieldsMemory($rsReceitaSaldo, $i);
 
-        switch (substr($oReceitaSaldo->o57_fonte, 0, 4)) {
+        switch (substr((string) $oReceitaSaldo->o57_fonte, 0, 4)) {
             case '4100':
                 $aVariacoesAtivo['ReceitasCorrentes'] += (float)$oReceitaSaldo->saldo_arrecadado_acumulado;
                 break;
@@ -6249,14 +6250,14 @@ function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
     for ($i = 0; $i < $iNumRowsDotacaoSaldo; $i++) {
         $oDotacaoSaldo = db_utils::fieldsMemory($rsDotacaoSaldo, $i);
 
-        if (substr($oDotacaoSaldo->o58_elemento, 0, 2) == '33' && substr($oDotacaoSaldo->o58_elemento, 3, 2) != '91') {
+        if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33') && substr((string) $oDotacaoSaldo->o58_elemento, 3, 2) != '91') {
             $aVariacoesPassivo['DespesasCorrentes'] += (float)$oDotacaoSaldo->liquidado_acumulado;
         }
-        if (substr($oDotacaoSaldo->o58_elemento, 0, 2) == '34' && substr($oDotacaoSaldo->o58_elemento, 3, 2) != '91') {
+        if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34') && substr((string) $oDotacaoSaldo->o58_elemento, 3, 2) != '91') {
             $aVariacoesPassivo['DespesasCapital'] += (float)$oDotacaoSaldo->liquidado_acumulado;
         }
-        if ((substr($oDotacaoSaldo->o58_elemento, 0, 2) == '33' || substr($oDotacaoSaldo->o58_elemento, 0, 2) == '34')
-            && substr($oDotacaoSaldo->o58_elemento, 3, 2) == '91') {
+        if ((str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33') || str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34'))
+            && substr((string) $oDotacaoSaldo->o58_elemento, 3, 2) == '91') {
             $aVariacoesPassivo['IntraOrcamentarias'] += (float)$oDotacaoSaldo->liquidado_acumulado;
         }
     }
@@ -6272,11 +6273,11 @@ function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
     for ($i = 0; $i < $iNumRowsContaSaldo; $i++) {
         $oContaSaldo = db_utils::fieldsMemory($rsContaSaldo, $i);
 
-        if (substr($oContaSaldo->estrutural, 0, 15) == '612000000000000') {
+        if (str_starts_with((string) $oContaSaldo->estrutural, '612000000000000')) {
             $aVariacoesAtivo['TransferenciasFinanceirasRecebidas'] += (float)$oContaSaldo->saldo_final;
         }
 
-        switch (substr($oContaSaldo->estrutural, 0, 15)) {
+        switch (substr((string) $oContaSaldo->estrutural, 0, 15)) {
             case '613100000000000':
                 $aVariacoesAtivo['IncorporacaoAtivos'] += (float)$oContaSaldo->saldo_final;
                 break;
@@ -6331,7 +6332,7 @@ function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
     // Totalizadores
     //
 
-    $aRetorno = array();
+    $aRetorno = [];
 
     // Receitas
     $aRetorno['Ativo']['ReceitasCorrentes'] = $aVariacoesAtivo['ReceitasCorrentes'];

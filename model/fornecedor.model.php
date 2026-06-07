@@ -77,17 +77,12 @@ class fornecedor
             throw new Exception("Situação Fiscal não encontrada !");
         }
         $oSituacaoFiscal = db_utils::fieldsMemory($rsSql, 0);
-        switch ($oSituacaoFiscal->situacao) {
-            case 'negativa' :
-                $this->lBloqueado = false;
-                break;
-            case 'positiva' :
-                $this->lBloqueado = true;
-                break;
-            case 'regular'  :
-                $this->lBloqueado = false;
-                break;
-        }
+        $this->lBloqueado = match ($oSituacaoFiscal->situacao) {
+            'negativa' => false,
+            'positiva' => true,
+            'regular' => false,
+            default => $this->lBloqueado,
+        };
         return $this->lBloqueado;
     }
 
@@ -179,9 +174,9 @@ class fornecedor
 
                     } else {
 
-                        $aData = explode('-', $oLiberacao->pc82_dataini);
+                        $aData = explode('-', (string) $oLiberacao->pc82_dataini);
                         $dtIni = mktime(0, 0, 0, $aData[1], $aData[2], $aData[0]);
-                        $aData = explode('-', $oLiberacao->pc82_datafim);
+                        $aData = explode('-', (string) $oLiberacao->pc82_datafim);
                         $dtFim = mktime(0, 0, 0, $aData[1], $aData[2], $aData[0]);
 
                         if ($dtIni <= $dtAtual && $dtFim >= $dtAtual) {
@@ -233,9 +228,9 @@ class fornecedor
 
                         } else {
 
-                            $aData = explode('-', $oLiberacaoGeral->pc82_dataini);
+                            $aData = explode('-', (string) $oLiberacaoGeral->pc82_dataini);
                             $dtIni = mktime(0, 0, 0, $aData[1], $aData[2], $aData[0]);
-                            $aData = explode('-', $oLiberacaoGeral->pc82_datafim);
+                            $aData = explode('-', (string) $oLiberacaoGeral->pc82_datafim);
                             $dtFim = mktime(0, 0, 0, $aData[1], $aData[2], $aData[0]);
 
                             if ($dtIni <= $dtAtual && $dtFim >= $dtAtual) {
@@ -323,7 +318,7 @@ class fornecedor
      *
      * return $iCodigoNotificacao
      */
-    public function notificar($lGerarNotificacaoDebito, $iOrigem, $iNotificaBloqueio = null, $aDebitosEmAberto)
+    public function notificar($lGerarNotificacaoDebito, $iOrigem, $iNotificaBloqueio = null, $aDebitosEmAberto = null)
     {
 
         if (!db_utils::inTransaction()) {
@@ -494,7 +489,7 @@ class fornecedor
      * @return CgmFisico|CgmJuridico|null
      * @throws DBException
      */
-    public function getRepresentanteLegal(DBDate $oData = null)
+    public function getRepresentanteLegal(?DBDate $oData = null)
     {
 
         $sCampos = "b.z01_numcgm";
@@ -556,9 +551,9 @@ class fornecedor
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'z01_numcgm' => $this->getCgmFornecedor()
-        );
+        ];
 
         return $retorno;
     }

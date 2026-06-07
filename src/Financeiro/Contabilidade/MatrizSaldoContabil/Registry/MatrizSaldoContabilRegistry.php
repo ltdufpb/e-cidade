@@ -36,7 +36,7 @@ class MatrizSaldoContabilRegistry
     /**
      * @var MatrizSaldoContabil[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param $key
@@ -45,7 +45,7 @@ class MatrizSaldoContabilRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $resultado = MatrizSaldoContabilRepositorio::find($key);
 
             if ($resultado) {

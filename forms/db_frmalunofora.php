@@ -40,9 +40,9 @@ $db_botao1 = false;
 if(isset($opcao) && $opcao=="alterar"){
  $db_opcao = 2;
  $db_botao1 = true;
- $ed216_d_datacad_dia= substr($ed216_d_datacad,0,2);
- $ed216_d_datacad_mes= substr($ed216_d_datacad,3,2);
- $ed216_d_datacad_ano= substr($ed216_d_datacad,6,4);
+ $ed216_d_datacad_dia= substr((string) $ed216_d_datacad,0,2);
+ $ed216_d_datacad_mes= substr((string) $ed216_d_datacad,3,2);
+ $ed216_d_datacad_ano= substr((string) $ed216_d_datacad,6,4);
 }elseif(isset($opcao) && $opcao=="excluir" || isset($db_opcao) && $db_opcao==3){
  $db_botao1 = true;
  $db_opcao = 3;
@@ -118,7 +118,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed216_i_codigo"=>@$ed216_i_codigo,"ed216_d_datacad"=>@$ed216_d_datacad,"ed216_i_aluno"=>@$ed216_i_aluno,"ed47_v_nome"=>@$ed47_v_nome,"ed216_i_turno"=>@$ed216_i_turno,"ed15_c_nome"=>@$ed15_c_nome,"ed216_i_cursoedu"=>@$ed216_i_cursoedu,"ed29_c_descr"=>@$ed29_c_descr,"ed216_i_serie"=>@$ed216_i_serie,"ed11_c_descr"=>@$ed11_c_descr,"ed216_i_escolaproc"=>@$ed216_i_escolaproc,"ed82_c_nome"=>@$ed82_c_nome);
+   $chavepri= ["ed216_i_codigo"=>@$ed216_i_codigo,"ed216_d_datacad"=>@$ed216_d_datacad,"ed216_i_aluno"=>@$ed216_i_aluno,"ed47_v_nome"=>@$ed47_v_nome,"ed216_i_turno"=>@$ed216_i_turno,"ed15_c_nome"=>@$ed15_c_nome,"ed216_i_cursoedu"=>@$ed216_i_cursoedu,"ed29_c_descr"=>@$ed29_c_descr,"ed216_i_serie"=>@$ed216_i_serie,"ed11_c_descr"=>@$ed11_c_descr,"ed216_i_escolaproc"=>@$ed216_i_escolaproc,"ed82_c_nome"=>@$ed82_c_nome];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clalunofora->sql_query("","*",""," ed216_i_aluno=$ed216_i_aluno");
    $cliframe_alterar_excluir->campos  ="ed82_c_nome,ed29_c_descr,ed11_c_descr,ed15_c_nome,ed216_d_datacad";

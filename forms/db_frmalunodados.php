@@ -39,7 +39,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
  $linhas4 = pg_num_rows($query);
  if($linhas4==0){
   $db_botao = true;
- }elseif(db_getsession("DB_coddepto")!=pg_result($query,0,0)){
+ }elseif(db_getsession("DB_coddepto")!=pg_fetch_result($query,0,0)){
   $db_botao = false;
  }else{
   $db_botao = true;
@@ -135,11 +135,11 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
           <?php db_input('idade',25,'',true,'text',3,"");?>
           <?=$Led47_v_sexo?>
           <?php
-          $sex = array(""=>"","M"=>"Masculino","F"=>"Feminino");
+          $sex = [""=>"","M"=>"Masculino","F"=>"Feminino"];
           db_select('ed47_v_sexo',$sex,true,$db_opcao);
           ?>
           <?php
-            $aTipoSanguineo       = array();
+            $aTipoSanguineo       = [];
             $aTipoSanguineo[ "" ] = "";
 
             echo $Led47_tiposanguineo;
@@ -165,15 +165,15 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
          </td>
          <td>
           <?php
-          $fil = array("0"=>"NÃO DECLARADO / IGNORADO","1"=>"PAI E/OU MÃE");
+          $fil = ["0"=>"NÃO DECLARADO / IGNORADO","1"=>"PAI E/OU MÃE"];
           db_select('ed47_i_filiacao',$fil,true,$db_opcao," onchange='js_filiacao(this.value)'");
           ?>
           <?=@$Led47_c_raca?>
           <?php
-          $x = array('NÃO DECLARADA'=>'NÃO DECLARADA','BRANCA'=>'BRANCA','PRETA'=>'PRETA','PARDA'=>'PARDA','AMARELA'=>'AMARELA','INDÍGENA'=>'INDÍGENA');
+          $x = ['NÃO DECLARADA'=>'NÃO DECLARADA','BRANCA'=>'BRANCA','PRETA'=>'PRETA','PARDA'=>'PARDA','AMARELA'=>'AMARELA','INDÍGENA'=>'INDÍGENA'];
           db_select('ed47_c_raca',$x,true,$db_opcao,"");
           echo $Led47_i_estciv;
-          $x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
+          $x = ["1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado"];
           db_select('ed47_i_estciv',$x,true,$db_opcao);
           ?>
          </td>
@@ -341,12 +341,12 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
       <td colspan="2">
        <b>Libera Endereço:</b>
        <?php
-       $x = array("N"=>"NÃO","S"=>"SIM");
+       $x = ["N"=>"NÃO","S"=>"SIM"];
        db_select('liberaendereco',$x,true,$db_opcao," onchange='LiberaEndereco(this.value);'");
        ?>
        <b>Libera Bairro:</b>
        <?php
-       $b = array("N"=>"NÃO","S"=>"SIM");
+       $b = ["N"=>"NÃO","S"=>"SIM"];
        db_select('liberabairro',$b,true,$db_opcao," onchange='LiberaBairro(this.value);'");
        ?>
       </td>
@@ -390,13 +390,13 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
        if(isset($ed47_i_censoufend) && $ed47_i_censoufend!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufend"));
         if($clcensomunic->numrows==0){
-         $x = array(' '=>'Selecione o Estado');
+         $x = [' '=>'Selecione o Estado'];
          db_select('ed47_i_censomunicend',$x,true,@$db_opcao,"");
         }else{
          db_selectrecord("ed47_i_censomunicend",$result_munic,"","","","","","  ","",1);
         }
        }else {
-           $x = array(' ' => 'Selecione o Estado');
+           $x = [' ' => 'Selecione o Estado'];
            db_select('ed47_i_censomunicend', $x, true, @$db_opcao, "");
        }
        ?>
@@ -426,7 +426,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
       </td>
       <td>
        <?php
-       $x = array('URBANA'=>'Urbana','RURAL'=>'Rural');
+       $x = ['URBANA'=>'Urbana','RURAL'=>'Rural'];
        db_select('ed47_c_zona',$x,true,$db_opcao,"");
        ?>
       </td>
@@ -471,7 +471,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
       </td>
       <td>
        <?php
-       $x = array("1"=>"Brasileira","2"=>"Brasileira no Exterior ou Naturalizado","3"=>"Estrangeira");
+       $x = ["1"=>"Brasileira","2"=>"Brasileira no Exterior ou Naturalizado","3"=>"Estrangeira"];
        db_select('ed47_i_nacion',$x,true,$db_opcao," onchange='js_nacionalidade(this.value)'");
        ?>
       </td>
@@ -487,7 +487,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
        }
        $result_pais = $clpais->sql_record($clpais->sql_query_file("","ed228_i_codigo,ed228_c_descr","ed228_c_descr",""));
        if($clpais->numrows==0){
-        $x = array(''=>'NENHUM REGISTRO');
+        $x = [''=>'NENHUM REGISTRO'];
         db_select('ed47_i_pais',$x,true,$db_opcao,"");
        }else{
         db_selectrecord("ed47_i_pais",$result_pais,"",$db_opcao,"","","","  ","","");
@@ -515,13 +515,13 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
        if(isset($ed47_i_censoufnat) && trim($ed47_i_censoufnat)!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufnat"));
         if($clcensomunic->numrows==0){
-         $x = array(' '=>'Selecione o Estado');
+         $x = [' '=>'Selecione o Estado'];
          db_select('ed47_i_censomunicnat',$x,true,@$db_opcao,"");
         }else{
          db_selectrecord("ed47_i_censomunicnat",$result_munic,"","","","","","  ","",1);
         }
        }else{
-        $x = array(' '=>'Selecione o Estado');
+        $x = [' '=>'Selecione o Estado'];
         db_select('ed47_i_censomunicnat',$x,true,@$db_opcao,"");
        }
        ?>
@@ -550,7 +550,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
       </td>
       <td>
        <?php
-       $x = array("0"=>"Não Utiliza","1"=>"Utiliza");
+       $x = ["0"=>"Não Utiliza","1"=>"Utiliza"];
        db_select('ed47_i_transpublico',$x,true,$db_opcao);
        ?>
       </td>
@@ -561,7 +561,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
       </td>
       <td>
        <?php
-       $x = array(''=>'','1'=>'Estadual','2'=>'Municipal');
+       $x = [''=>'','1'=>'Estadual','2'=>'Municipal'];
        db_select('ed47_c_transporte',$x,true,$db_opcao,"");
        ?>
       </td>
@@ -570,7 +570,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
       <td colspan="2">
        <?=$Led47_c_atenddifer?>
        <?php
-       $x = array("3"=>"Não Recebe","1"=>"Em Hospital","2"=>"Em Domicílio");
+       $x = ["3"=>"Não Recebe","1"=>"Em Hospital","2"=>"Em Domicílio"];
        db_select('ed47_c_atenddifer',$x,true,$db_opcao);
        ?>
       </td>
@@ -581,7 +581,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
       </td>
       <td>
        <?php
-       $x = array('N'=>'NÃO','S'=>'SIM');
+       $x = ['N'=>'NÃO','S'=>'SIM'];
        db_select('ed47_c_bolsafamilia',$x,true,$db_opcao,"");
        ?>
        <?php db_input('ed47_i_atendespec',10,$Ied47_i_atendespec,true,'hidden',$db_opcao);?>
@@ -619,13 +619,13 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
                  (isset($ed47_localizacaodiferenciada) && empty($ed47_localizacaodiferenciada)) || $db_opcao == 1 ? 
                      $ed47_localizacaodiferenciada = "7": "";
                 // O padrao deve vir como localizacao diferenciada
-                $x = array (
+                $x =  [
                     '' => "",
                     1 => "Área de assentamento",
                     2 => "Terra indígena",
                     3 => "Área onde se localiza comunidade remanescente de quilombos",
                     7 => "Não está em área de localização diferenciada"
-                );
+                ];
 
                 db_select('ed47_localizacaodiferenciada', $x, true, $db_opcao);
                 ?>
@@ -746,7 +746,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
         function js_preenchepesquisa(chave){
 
             db_iframe_aluno.hide();
-            <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+            <?php echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
         }
         function js_novo(){
             parent.document.formaba.a2.disabled = true;
@@ -915,8 +915,8 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
             }
 
             <?php } ?>
-            Vemailresp = "<?=@$GLOBALS[Sed47_c_emailresp]?>";
-            Vemail = "<?=@$GLOBALS[Sed47_v_email]?>";
+            Vemailresp = "<?=@$GLOBALS[\SED47_C_EMAILRESP]?>";
+            Vemail = "<?=@$GLOBALS[\SED47_V_EMAIL]?>";
             if(jsValidaEmail(document.form1.ed47_c_emailresp.value,Vemailresp)==false){
                 return false;
             }
@@ -983,8 +983,8 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
             cep  = js_processacep(cep);
             document.form1.ed47_v_cep.value = cep;
 
-            let municipioInicial = '<?php echo isset($ed47_i_censomunicend) ? $ed47_i_censomunicend : "" ?>';
-            let ufInicial = '<?php echo isset($ed47_i_censoufend) ? $ed47_i_censoufend : "" ?>';
+            let municipioInicial = '<?php echo $ed47_i_censomunicend ?? "" ?>';
+            let ufInicial = '<?php echo $ed47_i_censoufend ?? "" ?>';
             
             let url = 'https://viacep.com.br/ws/'+cep+'/json/';
             let oReq = new XMLHttpRequest();

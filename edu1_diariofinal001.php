@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/educacao/ArredondamentoNota.model.php"));
 require_once(modification("model/educacao/DBEducacaoTermo.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 function getSemDecimal($fDados) {
 
@@ -80,7 +80,7 @@ $aTermosAprovadoParcial = DBEducacaoTermo::getTermoEncerramento($iCodigoEnsino, 
 if (count($aTermosAprovadoParcial) > 0) {
   $sLabelAprovadoParcial = $aTermosAprovadoParcial[0]->sDescricao;
 }
-if (trim($ed57_c_medfreq) == "PERÌODOS") {
+if (trim((string) $ed57_c_medfreq) == "PERÌODOS") {
   $tipofreq = "Aulas Dadas";
 } else {
   $tipofreq = "Dias Letivos";
@@ -172,16 +172,16 @@ function SomaFaltas($codigo,$diario, $codaluno, $regencia, $reprovafreq, $calcfr
     $sql1      .= "    AND ed09_c_somach = 'S' ";
 
     $result1    = db_query($sql1);
-    $perc_total = ArredondamentoFrequencia::arredondar(pg_result($result1,0,'perc_total'), $iAno);
+    $perc_total = ArredondamentoFrequencia::arredondar(pg_fetch_result($result1,0,'perc_total'), $iAno);
 
   } else {
     $perc_total = 0;
   }
 
   $result5 = db_query($sql);
-  $faltas  = pg_result($result5,0,'faltas') == ""?0:pg_result($result5,0,'faltas');
-  $aulas   = pg_result($result5,0,'aulas')  == ""?0:pg_result($result5,0,'aulas');
-  $abonos  = pg_result($result5,0,'abonos') == ""?0:pg_result($result5,0,'abonos');
+  $faltas  = pg_fetch_result($result5,0,'faltas') == ""?0:pg_fetch_result($result5,0,'faltas');
+  $aulas   = pg_fetch_result($result5,0,'aulas')  == ""?0:pg_fetch_result($result5,0,'aulas');
+  $abonos  = pg_fetch_result($result5,0,'abonos') == ""?0:pg_fetch_result($result5,0,'abonos');
   if ($aulas == 0) {
     if ($reprovafreq == "N") {
       $perc_presenca = 1;
@@ -279,7 +279,7 @@ if ($n_resultados == 0) {
   $result2  = db_query($sql);
   $linhas   = pg_num_rows($result2);
   if ($ed59_c_encerrada == "S") {
-    $pri_calculo = pg_result($result2,0,'ed74_i_calcfreq');
+    $pri_calculo = pg_fetch_result($result2,0,'ed74_i_calcfreq');
   } else {
     $pri_calculo = $ed40_i_calcfreq;
   }
@@ -316,7 +316,7 @@ if ($n_resultados == 0) {
      <td class="cabec1">Nome</td>
      <td class="cabec1">Situação</td>
      <td class="cabec1">Código</td>
-     <?php if (trim($ed37_c_tipo) == "PARECER") {?>
+     <?php if (trim((string) $ed37_c_tipo) == "PARECER") {?>
          <td colspan="2" class="cabec1">Resultado</td>
      <?php } else {?>
 
@@ -387,7 +387,7 @@ if ($n_resultados == 0) {
         </td>
         <td align="center" class='aluno'>
         <?php 
-        if (trim($ed81_c_todoperiodo) == "S" && $ed60_c_ativa == "S") {
+        if (trim((string) $ed81_c_todoperiodo) == "S" && $ed60_c_ativa == "S") {
           if ($ed81_i_justificativa != "") {
           	$valor = 'APROVADO';
             echo "AMPARADO";
@@ -401,7 +401,7 @@ if ($n_resultados == 0) {
         </td>
         <td align="right" class='aluno'><b><?=$ed47_i_codigo?></b></td>
         <?php 
-        if (trim($ed60_c_concluida) == "S") {
+        if (trim((string) $ed60_c_concluida) == "S") {
 
           if (trim($ed60_c_situacao != "MATRICULADO")) {
 
@@ -421,7 +421,7 @@ if ($n_resultados == 0) {
 
           } else {
 
-            if (trim($ed81_c_todoperiodo) == "S") {
+            if (trim((string) $ed81_c_todoperiodo) == "S") {
 
             ?>
               <td class='aluno'>&nbsp;</td>
@@ -430,7 +430,7 @@ if ($n_resultados == 0) {
               <td class='aluno' align="center"><font color="<?=$ed74_c_resultadofinal == 'R'?'#FF0000':'#000000'?>">
                   <?=$ed74_c_resultadofinal == "A"?"{$sLabelAprovado}":"$sLabelReprovado"?></font></td>
 
-              <?php if (trim($ed74_c_resultadofinal) != "") {?>
+              <?php if (trim((string) $ed74_c_resultadofinal) != "") {?>
                   <td class='aluno' align="center"><b>
                      <a style="color:green;text-decoration:none;"
                         href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
@@ -440,29 +440,29 @@ if ($n_resultados == 0) {
                 } else {?>
                   <td align='center' class='aluno'>&nbsp;</td>
               <?php }
-            } else if (trim($ed59_c_freqglob) != "F") {
+            } else if (trim((string) $ed59_c_freqglob) != "F") {
 
          ?>
-            <?php if (trim($ed37_c_tipo) == "PARECER") {?>
+            <?php if (trim((string) $ed37_c_tipo) == "PARECER") {?>
                 <td colspan="2" class='aluno'align="center">
                   <?=$ed74_c_resultadoaprov == "A"?"{$sLabelAprovado}":"$sLabelReprovado"?>
                 </td>
             <?php } else {?>
 
-              <?php if (trim($ed37_c_tipo) == "NOTA") {?>
+              <?php if (trim((string) $ed37_c_tipo) == "NOTA") {?>
                     <td class='aluno' align="right"><?=ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano)?></td>
               <?php } else {?>
                   <td class='aluno' align="center"><?=$ed74_c_valoraprov?></td>
               <?php }?>
                 <td class='aluno' align="center"><?=$ed74_c_resultadoaprov == "A"?"{$sLabelAprovado}":"{$sLabelReprovado}"?></td>
             <?php }?>
-            <?php if (trim($ed59_c_freqglob) == "A") {?>
+            <?php if (trim((string) $ed59_c_freqglob) == "A") {?>
                 <td class='aluno' colspan="<?=5+$add_coluna?>" align="center">Disciplina sem frequência</td>
             <?php } else {
                 $perc_freq = SomaFaltas($ed74_i_procresultadofreq,$ed74_i_diario,$ed47_i_codigo,$regencia,$reprovafreq,
                                         $ed74_i_calcfreq,$ed59_i_turma,$ed59_i_serie, $ed52_i_ano
                                        );
-                $perc_array    = explode("|",$perc_freq);
+                $perc_array    = explode("|",(string) $perc_freq);
            ?>
                 <td align="center" class='aluno'><?=@$perc_array[3]==""?0:@$perc_array[3]?></td>
                 <td align="center" class='aluno'><?=@$perc_array[1]==""?0:@$perc_array[1]?></td>
@@ -516,7 +516,7 @@ if ($n_resultados == 0) {
                   ?>
                 </font>
               </td>
-            <?php if (trim($ed74_c_resultadofinal) != "") {?>
+            <?php if (trim((string) $ed74_c_resultadofinal) != "") {?>
                 <td class='aluno' align="center"><b>
                   <a style="color:blue;text-decoration:none;"
                      href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
@@ -530,7 +530,7 @@ if ($n_resultados == 0) {
               $perc_freq = SomaFaltas($ed43_i_codigo,$ed74_i_diario,$ed47_i_codigo,$regencia,$reprovafreq,
                                       $ed40_i_calcfreq,$ed59_i_turma,$ed59_i_serie, $ed52_i_ano
                                      );
-              $perc_array    = explode("|",$perc_freq);
+              $perc_array    = explode("|",(string) $perc_freq);
          ?>
               <td colspan="2" class='aluno' align="center">Disciplina sem aproveitamento</td>
               <td align="center" class='aluno'><?=@$perc_array[3] == ""?0:@$perc_array[3]?></td>
@@ -573,7 +573,7 @@ if ($n_resultados == 0) {
                         <?=$ed74_c_resultadofinal=="A"?"{$sLabelAprovado}":"{$sLabelReprovado}"?>
                   </font>
                </td>
-             <?php if (trim($ed74_c_resultadofinal) != "") {?>
+             <?php if (trim((string) $ed74_c_resultadofinal) != "") {?>
                  <td class='aluno' align="center"><b>
                     <a style="color:blue;text-decoration:none;"
                        href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
@@ -587,7 +587,7 @@ if ($n_resultados == 0) {
           }
         } else {
 
-          if (trim($ed81_c_todoperiodo) == "S") {
+          if (trim((string) $ed81_c_todoperiodo) == "S") {
 
             db_inicio_transacao();
             $cldiariofinal->ed74_i_procresultadoaprov = "";
@@ -609,16 +609,16 @@ if ($n_resultados == 0) {
         <?php 
           } else {
             $valor = "";
-            if (trim($ed59_c_freqglob) != "F") {
-              if (trim($ed37_c_tipo) == "NOTA") {
+            if (trim((string) $ed59_c_freqglob) != "F") {
+              if (trim((string) $ed37_c_tipo) == "NOTA") {
                 $campo = "ed73_i_valornota";
                 $campoaval = "ed72_i_valornota";
                 $where1 = "0";
-              } else if (trim($ed37_c_tipo) == "NIVEL") {
+              } else if (trim((string) $ed37_c_tipo) == "NIVEL") {
                 $campo = "ed73_c_valorconceito";
                 $campoaval = "ed72_c_valorconceito";
                 $where1 = "''";
-              } else if (trim($ed37_c_tipo) == "PARECER") {
+              } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                 $campo = "ed73_t_parecer";
                 $campoaval = "ed72_t_parecer";
                 $where1 = "''";
@@ -726,8 +726,8 @@ if ($n_resultados == 0) {
                 <?php } else {
                     $resultado = $ed73_c_aprovmin == "N"?"R":"A";
                     ?>
-                      <td align="<?=trim($ed37_c_tipo)=='NIVEL'?'center':'right'?>" class='valor'>
-                       <?=trim($ed37_c_tipo)=="NIVEL"?$valor:ArredondamentoNota::formatar($valor, $ed52_i_ano)?>
+                      <td align="<?=trim((string) $ed37_c_tipo)=='NIVEL'?'center':'right'?>" class='valor'>
+                       <?=trim((string) $ed37_c_tipo)=="NIVEL"?$valor:ArredondamentoNota::formatar($valor, $ed52_i_ano)?>
                       </td>
                     <td align="center" class='aluno'>
                    <?php 
@@ -762,7 +762,7 @@ if ($n_resultados == 0) {
                                             $ed40_i_calcfreq,$ed59_i_turma,$ed59_i_serie, $ed52_i_ano
                                            );
 
-                    $perc_array    = explode("|",$perc_freq);
+                    $perc_array    = explode("|",(string) $perc_freq);
                     if ($perc_freq < 0) {
 
                       $perc_freq = "&nbsp;";
@@ -898,9 +898,9 @@ if ($n_resultados == 0) {
               $per_branco = "";
               $vrg        = "";
               for ($a = 0; $a < $linhas6; $a++) {
-                if (pg_result($result6,$a,'ed78_i_aulasdadas') == "") {
+                if (pg_fetch_result($result6,$a,'ed78_i_aulasdadas') == "") {
                   $embranco    = true;
-                  $per_branco .= $vrg.pg_result($result6,$a,'abrevpreencha');
+                  $per_branco .= $vrg.pg_fetch_result($result6,$a,'abrevpreencha');
                   $vrg = " - ";
                 }
               }
@@ -922,9 +922,9 @@ if ($n_resultados == 0) {
                 $sql          .= "    AND ed09_c_somach   = 'S' ";
                 $sql          .= "    AND ed72_c_amparo   = 'N' ";
                 $result5       = db_query($sql);
-                $faltas        = pg_result($result5,0,'faltas');
-                $aulas         = pg_result($result5,0,'aulas');
-                $abonos        = pg_result($result5,0,'abonos');
+                $faltas        = pg_fetch_result($result5,0,'faltas');
+                $aulas         = pg_fetch_result($result5,0,'aulas');
+                $abonos        = pg_fetch_result($result5,0,'abonos');
                 $presenca      = $aulas-$faltas+$abonos;
                 $perc_presenca = $presenca/$aulas;
                 if ($resultedu == 'S') {
@@ -1010,11 +1010,11 @@ if ($n_resultados == 0) {
               db_fim_transacao();
             }
           }
-          if (trim($ed37_c_tipo) == "NOTA") {
+          if (trim((string) $ed37_c_tipo) == "NOTA") {
             $campoaval = "ed72_i_valornota is null";
-          } else if(trim($ed37_c_tipo) == "NIVEL") {
+          } else if(trim((string) $ed37_c_tipo) == "NIVEL") {
             $campoaval = "ed72_c_valorconceito = ''";
-          } else if (trim($ed37_c_tipo) == "PARECER") {
+          } else if (trim((string) $ed37_c_tipo) == "PARECER") {
             $campoaval = "ed72_t_parecer = '' ";
           }
           $sWhere   = " ed72_i_diario = $ed74_i_diario AND $campoaval AND ed72_c_amparo = 'N' ";
@@ -1103,7 +1103,7 @@ if ($n_resultados == 0) {
             ?>
             <font color="<?=$sCorResultadoFinal?>"><?=$resultadofinal?></font>
           </td>
-        <?php if (trim($ed74_c_resultadofinal) != "") {?>
+        <?php if (trim((string) $ed74_c_resultadofinal) != "") {?>
             <td align='center' class='aluno'><b>
               <a style="color:blue;text-decoration:none;"
                  href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
@@ -1130,7 +1130,7 @@ if ($n_resultados == 0) {
 </body>
 </html>
 <?php 
-    if (trim(@$ed60_c_concluida) == "N") {
+    if (trim((string) @$ed60_c_concluida) == "N") {
       $sql_r    = " SELECT DISTINCT max(ed09_i_sequencia) ";
       $sql_r   .= "   FROM diarioavaliacao ";
       $sql_r   .= "        inner join diario           on diario.ed95_i_codigo           = diarioavaliacao.ed72_i_diario ";

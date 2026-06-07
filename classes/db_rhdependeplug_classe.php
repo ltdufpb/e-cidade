@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE rhpescargo
 class cl_rhdependeplug { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
    // var $pl05_formula   = 0; 
-   var $dp01_rhdepend       = 0;
-   var $dp01_regist         = 0;   
-   var $dp01_instit         = 0;
-   var $dp01_processo       = 0;
-   var $dp01_cpf            = 0;
-   var $dp01_sexo           = 0;
-  
+   public $dp01_rhdepend       = 0;
+   public $dp01_regist         = 0;   
+   public $dp01_instit         = 0;
+   public $dp01_processo       = 0;
+   public $dp01_cpf            = 0;
+   public $dp01_sexo           = 0;
+
 
 
    //funcao construtor da classe 
-   function cl_rhdependeplug() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdependeplug"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -79,7 +79,7 @@ class cl_rhdependeplug {
        $this->erro_status = "0";
        return false;
      }
-    
+
      $sql = "
               insert into rhdependeplug(
                                        dp01_rhdepend 
@@ -88,7 +88,7 @@ class cl_rhdependeplug {
                                       ,dp01_processo                                   
                                       ,dp01_cpf                                   
                                       ,dp01_sexo                                   
-                                     
+
                        )
                 values (
                                 $this->dp01_rhdepend 
@@ -100,10 +100,10 @@ class cl_rhdependeplug {
                       )";
 // die($sql);
      $result = db_query($sql);
-                                     
+
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dependente ($this->dp01_rhdepend) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
@@ -145,7 +145,7 @@ class cl_rhdependeplug {
                                           dp01_regist   = $this->dp01_regist
                                     and   dp01_rhdepend = $this->dp01_rhdepend ";   
      $result = db_query($sql);
- 
+
      if($result==false ){ 
        $this->erro_banco  = str_replace("\n","",@pg_last_error());
        $this->erro_sql    = "Processo Não Alterado. Alteração Abortada.\\n";
@@ -180,7 +180,7 @@ class cl_rhdependeplug {
    // funcao para exclusao 
    function excluir($dp01_codigo = null, $where = null) {
 
-       $filtros = array();
+       $filtros = [];
        if  (!empty($dp01_codigo)) {
         $filtros[] = "dp01_codigo = {$dp01_codigo}";
        }

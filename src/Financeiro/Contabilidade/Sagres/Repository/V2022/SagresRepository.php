@@ -68,18 +68,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as Unidades Orçamentárias.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora' => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codigo' => str_pad($oResultado->codigo, 5, 0, STR_PAD_LEFT),
-                'descricao' => str_pad(utf8_decode($oResultado->descricao), 50, ' ', STR_PAD_RIGHT),
-                'nomeSecretario' => str_pad(utf8_decode($oResultado->nomesecretario), 60, ' ', STR_PAD_RIGHT),
-                'cpfSecretario' => str_pad($oResultado->cpfsecretario, 11, 0),
-                'atoAdministrativo' => str_pad($oResultado->atoadministrativo, 1, 0, STR_PAD_LEFT),
-                'tipoNaturezaJuridica' => str_pad($oResultado->tiponaturezajuridica, 1, 0, STR_PAD_LEFT),
-                'reservado' => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora' => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codigo' => str_pad((string) $oResultado->codigo, 5, 0, STR_PAD_LEFT),
+            'descricao' => str_pad(mb_convert_encoding($oResultado->descricao, 'ISO-8859-1'), 50, ' ', STR_PAD_RIGHT),
+            'nomeSecretario' => str_pad(mb_convert_encoding($oResultado->nomesecretario, 'ISO-8859-1'), 60, ' ', STR_PAD_RIGHT),
+            'cpfSecretario' => str_pad((string) $oResultado->cpfsecretario, 11, 0),
+            'atoAdministrativo' => str_pad((string) $oResultado->atoadministrativo, 1, 0, STR_PAD_LEFT),
+            'tipoNaturezaJuridica' => str_pad((string) $oResultado->tiponaturezajuridica, 1, 0, STR_PAD_LEFT),
+            'reservado' => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.2. Programas
@@ -113,16 +111,14 @@ class SagresRepository
             throw new Exception("Erro ao buscar os Programas.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'   => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codigo'              => str_pad($oResultado->codigo, 4, 0, STR_PAD_LEFT),
-                'descricao'           => utf8_decode(str_pad($oResultado->descricao, 70, ' ', STR_PAD_RIGHT)),
-                'descObjetivo'        => utf8_decode(str_pad($oResultado->descobjetivo, 150, ' ', STR_PAD_RIGHT)),
-                'tipoObjetivoMilenio' => str_pad($oResultado->tipoobjetivomilenio, 2, 0, STR_PAD_LEFT),
-                'reservado'           => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'   => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codigo'              => str_pad((string) $oResultado->codigo, 4, 0, STR_PAD_LEFT),
+            'descricao'           => mb_convert_encoding(str_pad((string) $oResultado->descricao, 70, ' ', STR_PAD_RIGHT), 'ISO-8859-1'),
+            'descObjetivo'        => mb_convert_encoding(str_pad((string) $oResultado->descobjetivo, 150, ' ', STR_PAD_RIGHT), 'ISO-8859-1'),
+            'tipoObjetivoMilenio' => str_pad((string) $oResultado->tipoobjetivomilenio, 2, 0, STR_PAD_LEFT),
+            'reservado'           => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.3. Acao
@@ -151,17 +147,15 @@ class SagresRepository
             throw new Exception("Erro ao buscar as Ações.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora' => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codigo'            => str_pad($oResultado->codigo, 4, 0, STR_PAD_LEFT),
-                'descricao'         => utf8_encode(str_pad($oResultado->descricao, 70, ' ', STR_PAD_RIGHT)),
-                'tipo'              => str_pad($oResultado->tipo, 1, 0, STR_PAD_LEFT),
-                'descMeta'          => utf8_encode(str_pad($oResultado->descmeta, 150, ' ', STR_PAD_RIGHT)),
-                'unidadeMedida'     => utf8_encode(str_pad($oResultado->unidademedida, 50, ' ', STR_PAD_RIGHT)),
-                'reservado'         => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora' => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codigo'            => str_pad((string) $oResultado->codigo, 4, 0, STR_PAD_LEFT),
+            'descricao'         => mb_convert_encoding(str_pad((string) $oResultado->descricao, 70, ' ', STR_PAD_RIGHT), 'UTF-8', 'ISO-8859-1'),
+            'tipo'              => str_pad((string) $oResultado->tipo, 1, 0, STR_PAD_LEFT),
+            'descMeta'          => mb_convert_encoding(str_pad((string) $oResultado->descmeta, 150, ' ', STR_PAD_RIGHT), 'UTF-8', 'ISO-8859-1'),
+            'unidadeMedida'     => mb_convert_encoding(str_pad((string) $oResultado->unidademedida, 50, ' ', STR_PAD_RIGHT), 'UTF-8', 'ISO-8859-1'),
+            'reservado'         => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.4. Dotacao
@@ -200,26 +194,24 @@ class SagresRepository
             throw new Exception("Erro ao buscar as Dotações.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'competencia'            => str_pad($oResultado->competencia, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'codFuncao'              => str_pad($oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
-                'codSubfuncao'           => str_pad($oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
-                'codPrograma'            => str_pad($oResultado->codprograma, 4, 0, STR_PAD_LEFT),
-                'codAcao'                => str_pad($oResultado->codacao, 4, 0, STR_PAD_LEFT),
-                'reservado1'             => str_pad($oResultado->reservado1, 6, 0, STR_PAD_LEFT),
-                'codCategoriaEconomica'  => str_pad($oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
-                'codNaturezaDespesa'     => str_pad($oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
-                'codModalidadeDespesa'   => str_pad($oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
-                'codElementoDespesa'     => str_pad($oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'  => $oResultado->exerciciofonterecurso,
-                'codFonteRecurso'        => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado2'             => str_pad($oResultado->reservado2, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'competencia'            => str_pad((string) $oResultado->competencia, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'codFuncao'              => str_pad((string) $oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
+            'codSubfuncao'           => str_pad((string) $oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
+            'codPrograma'            => str_pad((string) $oResultado->codprograma, 4, 0, STR_PAD_LEFT),
+            'codAcao'                => str_pad((string) $oResultado->codacao, 4, 0, STR_PAD_LEFT),
+            'reservado1'             => str_pad((string) $oResultado->reservado1, 6, 0, STR_PAD_LEFT),
+            'codCategoriaEconomica'  => str_pad((string) $oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
+            'codNaturezaDespesa'     => str_pad((string) $oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
+            'codModalidadeDespesa'   => str_pad((string) $oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
+            'codElementoDespesa'     => str_pad((string) $oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'  => $oResultado->exerciciofonterecurso,
+            'codFonteRecurso'        => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado2'             => str_pad((string) $oResultado->reservado2, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.5. AtualizacaoOrcamentaria
@@ -282,29 +274,27 @@ class SagresRepository
             throw new Exception("Erro ao buscar as Atualizações Orçamentárias.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'competencia'            => str_pad($oResultado->competencia, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'codFuncao'              => str_pad($oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
-                'codSubfuncao'           => str_pad($oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
-                'codPrograma'            => str_pad($oResultado->codprograma, 4, 0, STR_PAD_LEFT),
-                'codAcao'                => str_pad($oResultado->codacao, 4, 0, STR_PAD_LEFT),
-                'reservado1'             => str_pad($oResultado->reservado1, 6, 0, STR_PAD_LEFT),
-                'numDecretoOficio'       => str_pad($oResultado->numdecretooficio, 8, 0, STR_PAD_LEFT),
-                'tipoDecretoOficio'      => str_pad($oResultado->tipodecretooficio, 1, 0, STR_PAD_LEFT),
-                'tipoAlteracao'          => str_pad($oResultado->tipoalteracao, 2, 0, STR_PAD_LEFT),
-                'codCategoriaEconomica'  => str_pad($oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
-                'codNaturezaDespesa'     => str_pad($oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
-                'codModalidadeDespesa'   => str_pad($oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
-                'codElementoDespesa'     => str_pad($oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'  => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'        => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado2'             => str_pad($oResultado->reservado2, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'competencia'            => str_pad((string) $oResultado->competencia, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'codFuncao'              => str_pad((string) $oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
+            'codSubfuncao'           => str_pad((string) $oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
+            'codPrograma'            => str_pad((string) $oResultado->codprograma, 4, 0, STR_PAD_LEFT),
+            'codAcao'                => str_pad((string) $oResultado->codacao, 4, 0, STR_PAD_LEFT),
+            'reservado1'             => str_pad((string) $oResultado->reservado1, 6, 0, STR_PAD_LEFT),
+            'numDecretoOficio'       => str_pad((string) $oResultado->numdecretooficio, 8, 0, STR_PAD_LEFT),
+            'tipoDecretoOficio'      => str_pad((string) $oResultado->tipodecretooficio, 1, 0, STR_PAD_LEFT),
+            'tipoAlteracao'          => str_pad((string) $oResultado->tipoalteracao, 2, 0, STR_PAD_LEFT),
+            'codCategoriaEconomica'  => str_pad((string) $oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
+            'codNaturezaDespesa'     => str_pad((string) $oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
+            'codModalidadeDespesa'   => str_pad((string) $oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
+            'codElementoDespesa'     => str_pad((string) $oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'  => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'        => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado2'             => str_pad((string) $oResultado->reservado2, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.6. DecretoseOficios
@@ -343,17 +333,15 @@ class SagresRepository
             throw new Exception("Erro ao buscar os Decretos e Ofícios.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora' => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'competencia'       => str_pad($oResultado->competencia, 4, 0, STR_PAD_LEFT),
-                'numero'            => str_pad($oResultado->numero, 8, 0, STR_PAD_LEFT),
-                'numLei'            => str_pad(rmSpecial($oResultado->numlei), 8, 0, STR_PAD_LEFT),
-                'data'              => str_pad(rmSpecial($oResultado->data), 8, 0, STR_PAD_LEFT),
-                'tipo'              => str_pad($oResultado->tipo, 1, 0, STR_PAD_LEFT),
-                'reservado'         => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora' => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'competencia'       => str_pad((string) $oResultado->competencia, 4, 0, STR_PAD_LEFT),
+            'numero'            => str_pad((string) $oResultado->numero, 8, 0, STR_PAD_LEFT),
+            'numLei'            => str_pad((string) rmSpecial($oResultado->numlei), 8, 0, STR_PAD_LEFT),
+            'data'              => str_pad((string) rmSpecial($oResultado->data), 8, 0, STR_PAD_LEFT),
+            'tipo'              => str_pad((string) $oResultado->tipo, 1, 0, STR_PAD_LEFT),
+            'reservado'         => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.7. ReceitaPrevista
@@ -392,18 +380,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as Receitas Previstas.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'competencia'            => str_pad($oResultado->competencia, 4, 0, STR_PAD_LEFT),
-                'codReceitaOrcamentaria' => str_pad($oResultado->codreceitaorcamentaria, 8, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'  => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'        => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'tipoReceita'            => str_pad($oResultado->tiporeceita, 1, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'competencia'            => str_pad((string) $oResultado->competencia, 4, 0, STR_PAD_LEFT),
+            'codReceitaOrcamentaria' => str_pad((string) $oResultado->codreceitaorcamentaria, 8, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'  => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'        => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'tipoReceita'            => str_pad((string) $oResultado->tiporeceita, 1, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.8. Empenhos
@@ -485,41 +471,41 @@ class SagresRepository
         }
 
         return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            $numObra = json_decode($oResultado->numobra);
+            $numObra = json_decode((string) $oResultado->numobra);
             if (!isset($numObra->geo_obra)) {
                 $numObra->geo_obra = 0;
             }
-            return array(
-                'codUnidadeGestora'       => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissao'              => str_pad($oResultado->anoemissao, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria'  => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'codFuncao'               => str_pad($oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
-                'codSubfuncao'            => str_pad($oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
-                'codPrograma'             => str_pad($oResultado->codprograma, 4, 0, STR_PAD_LEFT),
-                'codAcao'                 => str_pad($oResultado->codacao, 4, 0, STR_PAD_LEFT),
-                'reservado'               => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-                'codCategoriaEconomica'   => str_pad($oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
-                'codNaturezaDespesa'      => str_pad($oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
-                'codModalidadeDespesa'    => str_pad($oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
-                'codElementoDespesa'      => str_pad($oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
-                'codSubelementoDespesa'   => str_pad($oResultado->codsubelementodespesa, 3, 0, STR_PAD_LEFT),
-                'modalidadeLicitacao'     => str_pad($oResultado->modalidadelicitacao, 2, 0, STR_PAD_LEFT),
-                'numLicitacao'            => str_pad($oResultado->numlicitacao, 9, 0, STR_PAD_LEFT),
-                'numEmpenho'              => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'tipo'                    => str_pad($oResultado->tipo, 1, 0, STR_PAD_LEFT),
-                'data'                    => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
+            return [
+                'codUnidadeGestora'       => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+                'anoEmissao'              => str_pad((string) $oResultado->anoemissao, 4, 0, STR_PAD_LEFT),
+                'codUnidadeOrcamentaria'  => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+                'codFuncao'               => str_pad((string) $oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
+                'codSubfuncao'            => str_pad((string) $oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
+                'codPrograma'             => str_pad((string) $oResultado->codprograma, 4, 0, STR_PAD_LEFT),
+                'codAcao'                 => str_pad((string) $oResultado->codacao, 4, 0, STR_PAD_LEFT),
+                'reservado'               => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+                'codCategoriaEconomica'   => str_pad((string) $oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
+                'codNaturezaDespesa'      => str_pad((string) $oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
+                'codModalidadeDespesa'    => str_pad((string) $oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
+                'codElementoDespesa'      => str_pad((string) $oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
+                'codSubelementoDespesa'   => str_pad((string) $oResultado->codsubelementodespesa, 3, 0, STR_PAD_LEFT),
+                'modalidadeLicitacao'     => str_pad((string) $oResultado->modalidadelicitacao, 2, 0, STR_PAD_LEFT),
+                'numLicitacao'            => str_pad((string) $oResultado->numlicitacao, 9, 0, STR_PAD_LEFT),
+                'numEmpenho'              => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+                'tipo'                    => str_pad((string) $oResultado->tipo, 1, 0, STR_PAD_LEFT),
+                'data'                    => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
                 'valor'                   => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'historico'               => str_pad($oResultado->historico, 255, ' ', STR_PAD_RIGHT),
+                'historico'               => str_pad((string) $oResultado->historico, 255, ' ', STR_PAD_RIGHT),
                 'complementacaoHistorico' =>
-                    str_pad($oResultado->complementacaohistorico, 255, ' ', STR_PAD_RIGHT),
-                'cpfCnpjFornecedor'       => str_pad($oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
-                'tipoMeta'                => str_pad($oResultado->tipometa, 1, 0, STR_PAD_LEFT),
-                'numObra'                 => str_pad($numObra->geo_obra, 8, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'   => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'         => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'cpfOrdenador'            => str_pad($oResultado->cpfordenador, 11, 0, STR_PAD_LEFT),
-                'co'                      => str_pad($oResultado->co, 4, 0, STR_PAD_LEFT),
-            );
+                    str_pad((string) $oResultado->complementacaohistorico, 255, ' ', STR_PAD_RIGHT),
+                'cpfCnpjFornecedor'       => str_pad((string) $oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
+                'tipoMeta'                => str_pad((string) $oResultado->tipometa, 1, 0, STR_PAD_LEFT),
+                'numObra'                 => str_pad((string) $numObra->geo_obra, 8, 0, STR_PAD_LEFT),
+                'exercicioFonteRecurso'   => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+                'codFonteRecurso'         => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+                'cpfOrdenador'            => str_pad((string) $oResultado->cpfordenador, 11, 0, STR_PAD_LEFT),
+                'co'                      => str_pad((string) $oResultado->co, 4, 0, STR_PAD_LEFT),
+            ];
         });
     }
 
@@ -649,20 +635,18 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informaes dos Estornos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'motivo'                 => str_pad(utf8_decode($oResultado->motivo), 120, ' ', STR_PAD_RIGHT),
-                'despesaLiquidada'       => str_pad(utf8_decode($oResultado->despesaliquidada), 1, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'motivo'                 => str_pad(mb_convert_encoding($oResultado->motivo, 'ISO-8859-1'), 120, ' ', STR_PAD_RIGHT),
+            'despesaLiquidada'       => str_pad(mb_convert_encoding($oResultado->despesaliquidada, 'ISO-8859-1'), 1, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.10. Liquidacao
@@ -731,34 +715,34 @@ class SagresRepository
 
         return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
 
-            $e69_outrosdados = json_decode($oResultado->e69_outrosdados);
-            $e171_dados = json_decode($oResultado->e171_dados);
+            $e69_outrosdados = json_decode((string) $oResultado->e69_outrosdados);
+            $e171_dados = json_decode((string) $oResultado->e171_dados);
 
             if (!isset($e171_dados->codigo_agrupamento)) {
                 $e171_dados->codigo_agrupamento = " ";
             }
 
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'tipoNotaFiscal'         => str_pad($e69_outrosdados->tipo_nota, 2, 0, STR_PAD_LEFT),
-                'numChaveNotaFiscal'     => str_pad($e69_outrosdados->chave_nota, 44, 0, STR_PAD_LEFT),
+            return [
+                'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+                'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+                'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+                'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+                'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+                'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+                'tipoNotaFiscal'         => str_pad((string) $e69_outrosdados->tipo_nota, 2, 0, STR_PAD_LEFT),
+                'numChaveNotaFiscal'     => str_pad((string) $e69_outrosdados->chave_nota, 44, 0, STR_PAD_LEFT),
                 'numNotaFiscal'          =>
-                    str_pad(utf8_decode(substr($oResultado->numnotafiscal, 0, 15)), 15, ' ', STR_PAD_RIGHT),
+                    str_pad(mb_convert_encoding(substr((string) $oResultado->numnotafiscal, 0, 15), 'ISO-8859-1'), 15, ' ', STR_PAD_RIGHT),
                 'serieNotaFiscal'        =>
-                    str_pad(utf8_decode(substr($e69_outrosdados->serie_nota, 0, 12)), 12, ' ', STR_PAD_RIGHT),
-                'dataNotaFiscal'         => str_pad(rmSpecial($oResultado->datanotafiscal), 8, 0, STR_PAD_LEFT),
+                    str_pad(mb_convert_encoding(substr((string) $e69_outrosdados->serie_nota, 0, 12), 'ISO-8859-1'), 12, ' ', STR_PAD_RIGHT),
+                'dataNotaFiscal'         => str_pad((string) rmSpecial($oResultado->datanotafiscal), 8, 0, STR_PAD_LEFT),
                 'valorNotaFiscal'        =>
                     str_pad(str_replace(".", ",", $oResultado->valornotafiscal), 16, 0, STR_PAD_LEFT),
                 'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
                 'codAgrupamentoFolha'    =>
-                    str_pad(utf8_decode($e171_dados->codigo_agrupamento), 10, ' ', STR_PAD_RIGHT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
+                    str_pad(mb_convert_encoding($e171_dados->codigo_agrupamento, 'ISO-8859-1'), 10, ' ', STR_PAD_RIGHT),
+                'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+            ];
         });
     }
 
@@ -874,20 +858,18 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos Estornos de Liquidação.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numLiquidacao'          => str_pad($oResultado->numliquidacao, 7, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'motivo'                 => str_pad(utf8_decode($oResultado->motivo), 120, ' ', STR_PAD_RIGHT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numLiquidacao'          => str_pad((string) $oResultado->numliquidacao, 7, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'motivo'                 => str_pad(mb_convert_encoding($oResultado->motivo, 'ISO-8859-1'), 120, ' ', STR_PAD_RIGHT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.11. EstornoLiquidacaoRestos
@@ -1004,20 +986,18 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos Estornos de Liquidação de Restos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numLiquidacao'          => str_pad($oResultado->numliquidacao, 7, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'motivo'                 => str_pad(utf8_decode($oResultado->motivo), 120, ' ', STR_PAD_RIGHT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numLiquidacao'          => str_pad((string) $oResultado->numliquidacao, 7, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'motivo'                 => str_pad(mb_convert_encoding($oResultado->motivo, 'ISO-8859-1'), 120, ' ', STR_PAD_RIGHT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.12. Pagamentos
@@ -1153,37 +1133,35 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos Pagamentos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'         => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'         => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria'    => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'                => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numero'                    => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                      => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'valor'                     => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'numContaBancaria'          =>
-                    str_pad(utf8_decode(trim($oResultado->numcontabancaria)), 13, '0', STR_PAD_LEFT),
-                'numAgencia'                =>
-                    str_pad(utf8_decode(trim($oResultado->numagencia)), 6, '0', STR_PAD_LEFT),
-                'codBanco'                  =>
-                    str_pad(utf8_decode(trim($oResultado->codbanco)), 3, '0', STR_PAD_LEFT),
-                'numCheque'                 =>
-                    str_pad(utf8_decode(trim($oResultado->numcheque)), 6, '0', STR_PAD_LEFT),
-                'numDocDebito'              =>
-                    str_pad(utf8_decode(trim($oResultado->numdocdebito)), 11, ' ', STR_PAD_LEFT),
-                'codBancoCred'              =>
-                    str_pad(utf8_decode(trim($oResultado->codbancocred)), 3, ' ', STR_PAD_LEFT),
-                'numAgenciaCred'            =>
-                    str_pad(utf8_decode(trim($oResultado->numagenciacred)), 6, ' ', STR_PAD_LEFT),
-                'numContaBancariaCred'      =>
-                    str_pad(utf8_decode(trim($oResultado->numcontabancariacred)), 13, ' ', STR_PAD_LEFT),
-                'exercicioFonteRecurso'     => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'           => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'tipoContaBancaria'         => str_pad($oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
-                'cnpjGerenciaContaBancaria' => str_pad($oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'         => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'         => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria'    => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'                => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numero'                    => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'data'                      => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'valor'                     => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'numContaBancaria'          =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->numcontabancaria), 'ISO-8859-1'), 13, '0', STR_PAD_LEFT),
+            'numAgencia'                =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->numagencia), 'ISO-8859-1'), 6, '0', STR_PAD_LEFT),
+            'codBanco'                  =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->codbanco), 'ISO-8859-1'), 3, '0', STR_PAD_LEFT),
+            'numCheque'                 =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->numcheque), 'ISO-8859-1'), 6, '0', STR_PAD_LEFT),
+            'numDocDebito'              =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->numdocdebito), 'ISO-8859-1'), 11, ' ', STR_PAD_LEFT),
+            'codBancoCred'              =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->codbancocred), 'ISO-8859-1'), 3, ' ', STR_PAD_LEFT),
+            'numAgenciaCred'            =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->numagenciacred), 'ISO-8859-1'), 6, ' ', STR_PAD_LEFT),
+            'numContaBancariaCred'      =>
+                str_pad(mb_convert_encoding(trim((string) $oResultado->numcontabancariacred), 'ISO-8859-1'), 13, ' ', STR_PAD_LEFT),
+            'exercicioFonteRecurso'     => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'           => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'tipoContaBancaria'         => str_pad((string) $oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
+            'cnpjGerenciaContaBancaria' => str_pad((string) $oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.13. EstornoPagamento
@@ -1326,20 +1304,18 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos Estornos de Pagamento.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numPagamento'           => str_pad($oResultado->numpagamento, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'motivo'                 => str_pad(utf8_decode($oResultado->motivo), 120, ' ', STR_PAD_RIGHT),
-                'despesaLiquidada'       => str_pad($oResultado->despesaliquidada, 1, ' ', STR_PAD_RIGHT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numPagamento'           => str_pad((string) $oResultado->numpagamento, 7, 0, STR_PAD_LEFT),
+            'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'motivo'                 => str_pad(mb_convert_encoding($oResultado->motivo, 'ISO-8859-1'), 120, ' ', STR_PAD_RIGHT),
+            'despesaLiquidada'       => str_pad((string) $oResultado->despesaliquidada, 1, ' ', STR_PAD_RIGHT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.14. Retencao
@@ -1431,18 +1407,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Retenções.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'tipo'                   => str_pad($oResultado->tipo, 1, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'tipo'                   => str_pad((string) $oResultado->tipo, 1, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.15. EstornoRetencao
@@ -1567,19 +1541,17 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Estorno de Retenções.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
-                'tipoRetencao'           => str_pad($oResultado->tiporetencao, 1, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
+            'tipoRetencao'           => str_pad((string) $oResultado->tiporetencao, 1, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.16. ReceitaOrcamentaria
@@ -1642,19 +1614,17 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações da Receita Orçamentária.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codReceitaOrcamentaria' => str_pad($oResultado->codreceitaorcamentaria, 8, 0, STR_PAD_LEFT),
-                'tipoLancamento'         => str_pad($oResultado->tipolancamento, 1, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'  => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'        => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'tipoReceita'            => str_pad($oResultado->tiporeceita, 1, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'competencia'            => str_pad($oResultado->competencia, 6, 0, STR_PAD_LEFT),
-                'co'                     => str_pad($oResultado->co, 4, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codReceitaOrcamentaria' => str_pad((string) $oResultado->codreceitaorcamentaria, 8, 0, STR_PAD_LEFT),
+            'tipoLancamento'         => str_pad((string) $oResultado->tipolancamento, 1, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'  => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'        => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'tipoReceita'            => str_pad((string) $oResultado->tiporeceita, 1, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'competencia'            => str_pad((string) $oResultado->competencia, 6, 0, STR_PAD_LEFT),
+            'co'                     => str_pad((string) $oResultado->co, 4, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.17. TransfRecebida
@@ -1702,19 +1672,17 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações das Transferências Recebidas.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'              => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codUnidadeGestoraTransferencia' =>
-                    str_pad($oResultado->codunidadegestoratransferencia, 6, 0, STR_PAD_LEFT),
-                'tipoTransferencia'              => str_pad($oResultado->tipotransferencia, 1, 0, STR_PAD_LEFT),
-                'tipoLancamento'                 => str_pad($oResultado->tipolancamento, 1, 0, STR_PAD_LEFT),
-                'valor'                          =>
-                    str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'                      =>
-                    str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'              => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codUnidadeGestoraTransferencia' =>
+                str_pad((string) $oResultado->codunidadegestoratransferencia, 6, 0, STR_PAD_LEFT),
+            'tipoTransferencia'              => str_pad((string) $oResultado->tipotransferencia, 1, 0, STR_PAD_LEFT),
+            'tipoLancamento'                 => str_pad((string) $oResultado->tipolancamento, 1, 0, STR_PAD_LEFT),
+            'valor'                          =>
+                str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'                      =>
+                str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.18. TransfConcedida
@@ -1759,18 +1727,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações das Transferências Concedidas.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'              => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codUnidadeGestoraTransferencia' =>
-                    str_pad($oResultado->codunidadegestoratransferencia, 6, 0, STR_PAD_LEFT),
-                'tipoTransferencia'              => str_pad($oResultado->tipotransferencia, 1, 0, STR_PAD_LEFT),
-                'tipoLancamento'                 => str_pad($oResultado->tipolancamento, 1, 0, STR_PAD_LEFT),
-                'valor'                          =>
-                    str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'                      => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'              => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codUnidadeGestoraTransferencia' =>
+                str_pad((string) $oResultado->codunidadegestoratransferencia, 6, 0, STR_PAD_LEFT),
+            'tipoTransferencia'              => str_pad((string) $oResultado->tipotransferencia, 1, 0, STR_PAD_LEFT),
+            'tipoLancamento'                 => str_pad((string) $oResultado->tipolancamento, 1, 0, STR_PAD_LEFT),
+            'valor'                          =>
+                str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'                      => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.19. ReceitaExtra
@@ -2173,40 +2139,38 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações da Receita Extra.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'              => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numero'                         => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'codContaContabil'               => str_pad($oResultado->codcontacontabil, 9, 0, STR_PAD_LEFT),
-                'data'                           => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'cpfCnpjFornecedor'              => str_pad($oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'          => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'                => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'numContaBancaria'               => str_pad($oResultado->numcontabancaria, 13, 0, STR_PAD_LEFT),
-                'numAgencia'                     => str_pad($oResultado->numagencia, 6, 0, STR_PAD_LEFT),
-                'codBanco'                       => str_pad($oResultado->codbanco, 3, 0, STR_PAD_LEFT),
-                'tipoContaBancaria'              => str_pad($oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
-                'valor'                          =>
-                    str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'historico'                      => str_pad($oResultado->historico, 500, ' ', STR_PAD_RIGHT),
-                'codReceitaExtra'                => str_pad($oResultado->codreceitaextra, 8, 0, STR_PAD_LEFT),
-                'exercicio'                      => str_pad($oResultado->exercicio, 4, 0, STR_PAD_LEFT),
-                'codUnidadeGestoraRetencao'      =>
-                    str_pad($oResultado->codunidadegestorart, 6, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
-                'codUnidadeOrcamentariaRetencao' =>
-             str_pad($oResultado->codunidadeorcamentariaretencao, 5, ($oResultado->exigere == 1?0:" "), STR_PAD_RIGHT),
-                'anoEmissaoEmpenho'              =>
-                    str_pad($oResultado->anoemissaoempenho, 4, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
-                'numEmpenho'                     =>
-                    str_pad($oResultado->numempenho, 7, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
-                'numPagamento'                   =>
-                    str_pad($oResultado->numpagamento, 7, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
-                'tipoRetencao'                   =>
-                    str_pad($oResultado->tiporetencao, 1, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
-                'cnpjGerenciaContaBancaria'      =>
-                    str_pad($oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'              => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numero'                         => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'codContaContabil'               => str_pad((string) $oResultado->codcontacontabil, 9, 0, STR_PAD_LEFT),
+            'data'                           => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'cpfCnpjFornecedor'              => str_pad((string) $oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'          => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'                => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'numContaBancaria'               => str_pad((string) $oResultado->numcontabancaria, 13, 0, STR_PAD_LEFT),
+            'numAgencia'                     => str_pad((string) $oResultado->numagencia, 6, 0, STR_PAD_LEFT),
+            'codBanco'                       => str_pad((string) $oResultado->codbanco, 3, 0, STR_PAD_LEFT),
+            'tipoContaBancaria'              => str_pad((string) $oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
+            'valor'                          =>
+                str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'historico'                      => str_pad((string) $oResultado->historico, 500, ' ', STR_PAD_RIGHT),
+            'codReceitaExtra'                => str_pad((string) $oResultado->codreceitaextra, 8, 0, STR_PAD_LEFT),
+            'exercicio'                      => str_pad((string) $oResultado->exercicio, 4, 0, STR_PAD_LEFT),
+            'codUnidadeGestoraRetencao'      =>
+                str_pad((string) $oResultado->codunidadegestorart, 6, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
+            'codUnidadeOrcamentariaRetencao' =>
+         str_pad((string) $oResultado->codunidadeorcamentariaretencao, 5, ($oResultado->exigere == 1?0:" "), STR_PAD_RIGHT),
+            'anoEmissaoEmpenho'              =>
+                str_pad((string) $oResultado->anoemissaoempenho, 4, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
+            'numEmpenho'                     =>
+                str_pad((string) $oResultado->numempenho, 7, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
+            'numPagamento'                   =>
+                str_pad((string) $oResultado->numpagamento, 7, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
+            'tipoRetencao'                   =>
+                str_pad((string) $oResultado->tiporetencao, 1, ($oResultado->exigere == 1?0:" "), STR_PAD_LEFT),
+            'cnpjGerenciaContaBancaria'      =>
+                str_pad((string) $oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.21. EstornoReceitaExtra
@@ -2347,19 +2311,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Estorno da Receita Extra.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'              => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numReceitaExtra'                => str_pad($oResultado->numeroreceitaextra, 7, 0, STR_PAD_LEFT),
-                'numero'                         => str_pad($oResultado->numeroreceitaextra, 7, 0, STR_PAD_LEFT),
-                'data'                           => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'valor'                          =>
-                    str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'motivo'                         => str_pad($oResultado->historico, 255, ' ', STR_PAD_RIGHT),
-                'reservado'                      => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'              => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numReceitaExtra'                => str_pad((string) $oResultado->numeroreceitaextra, 7, 0, STR_PAD_LEFT),
+            'numero'                         => str_pad((string) $oResultado->numeroreceitaextra, 7, 0, STR_PAD_LEFT),
+            'data'                           => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'valor'                          =>
+                str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'motivo'                         => str_pad((string) $oResultado->historico, 255, ' ', STR_PAD_RIGHT),
+            'reservado'                      => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.20. DespesaExtra
@@ -2769,43 +2730,40 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações da Despesa Extra.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'             => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numero'                        => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'codContaContabil'              => str_pad($oResultado->codcontacontabil, 9, 0, STR_PAD_LEFT),
-                'data'                          => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'cpfCnpjFornecedor'             => str_pad($oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'         => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'               => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'numContaBancaria'              => str_pad($oResultado->numcontabancaria, 13, 0, STR_PAD_LEFT),
-                'numAgencia'                    => str_pad($oResultado->numagencia, 6, 0, STR_PAD_LEFT),
-                'codBanco'                      => str_pad($oResultado->codbanco, 3, 0, STR_PAD_LEFT),
-                'tipoContaBancaria'             => str_pad($oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
-                'valor'                         =>
-                    str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'historico'                     => str_pad($oResultado->historico, 500, ' ', STR_PAD_RIGHT),
-                'codDespesaExtra'               => str_pad($oResultado->coddespesaextra, 8, 0, STR_PAD_LEFT),
-                'exercicio'                     => str_pad($oResultado->exercicio, 4, 0, STR_PAD_LEFT),
-                'codFonteRecursoPagamento'      => str_pad($oResultado->codfonterecursopagamento, 3, 0, STR_PAD_LEFT),
-                'co'                            => str_pad($oResultado->copagamento, 4, 0, STR_PAD_LEFT),
-                'codUnidadeGestoraReceitaExtra' =>
-                    str_pad($oResultado->codunidadegestorareceitaextra, 6, ($oResultado->coddespesaextra == '20000010'
-                            ||
-                            $oResultado->coddespesaextra == '20000019'
-                            ||
-                            $oResultado->exigert == 0?' ':0), STR_PAD_LEFT),
-                'exercicioReceitaExtra'         =>
-                    str_pad($oResultado->exercicioreceitaextra, 4, ( $oResultado->coddespesaextra == '20000010' ||
-                            $oResultado->coddespesaextra == '20000019'?' ':' ' ), STR_PAD_LEFT),
-                'numReceitaExtra'               =>
-                    str_pad($oResultado->numreceitaextra, 7, ( $oResultado->coddespesaextra == '20000010' ||
-                            $oResultado->coddespesaextra == '20000019' ||
-                            $oResultado->exigert == 0?' ':0 ), STR_PAD_LEFT),
-                'cnpjGerenciaContaBancaria'    => str_pad($oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'             => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numero'                        => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'codContaContabil'              => str_pad((string) $oResultado->codcontacontabil, 9, 0, STR_PAD_LEFT),
+            'data'                          => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'cpfCnpjFornecedor'             => str_pad((string) $oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'         => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'               => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'numContaBancaria'              => str_pad((string) $oResultado->numcontabancaria, 13, 0, STR_PAD_LEFT),
+            'numAgencia'                    => str_pad((string) $oResultado->numagencia, 6, 0, STR_PAD_LEFT),
+            'codBanco'                      => str_pad((string) $oResultado->codbanco, 3, 0, STR_PAD_LEFT),
+            'tipoContaBancaria'             => str_pad((string) $oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
+            'valor'                         =>
+                str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'historico'                     => str_pad((string) $oResultado->historico, 500, ' ', STR_PAD_RIGHT),
+            'codDespesaExtra'               => str_pad((string) $oResultado->coddespesaextra, 8, 0, STR_PAD_LEFT),
+            'exercicio'                     => str_pad((string) $oResultado->exercicio, 4, 0, STR_PAD_LEFT),
+            'codFonteRecursoPagamento'      => str_pad((string) $oResultado->codfonterecursopagamento, 3, 0, STR_PAD_LEFT),
+            'co'                            => str_pad((string) $oResultado->copagamento, 4, 0, STR_PAD_LEFT),
+            'codUnidadeGestoraReceitaExtra' =>
+                str_pad((string) $oResultado->codunidadegestorareceitaextra, 6, ($oResultado->coddespesaextra == '20000010'
+                        ||
+                        $oResultado->coddespesaextra == '20000019'
+                        ||
+                        $oResultado->exigert == 0?' ':0), STR_PAD_LEFT),
+            'exercicioReceitaExtra'         =>
+                str_pad((string) $oResultado->exercicioreceitaextra, 4, ( $oResultado->coddespesaextra == '20000010' ||
+                        $oResultado->coddespesaextra == '20000019'?' ':' ' ), STR_PAD_LEFT),
+            'numReceitaExtra'               =>
+                str_pad((string) $oResultado->numreceitaextra, 7, ( $oResultado->coddespesaextra == '20000010' ||
+                        $oResultado->coddespesaextra == '20000019' ||
+                        $oResultado->exigert == 0?' ':0 ), STR_PAD_LEFT),
+            'cnpjGerenciaContaBancaria'    => str_pad((string) $oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.22. EstornoDespesaExtra
@@ -2891,19 +2849,17 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do Estorno da Despesa Extra.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'             => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numDespesaExtra'               => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'numero'                        => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                          => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'valor'                         =>
-                    str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'motivo'                        =>
-                    str_pad(utf8_decode($oResultado->historico), 255, ' ', STR_PAD_RIGHT),
-                'reservado'                     => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'             => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numDespesaExtra'               => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'numero'                        => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'data'                          => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'valor'                         =>
+                str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'motivo'                        =>
+                str_pad(mb_convert_encoding($oResultado->historico, 'ISO-8859-1'), 255, ' ', STR_PAD_RIGHT),
+            'reservado'                     => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.23. CadastroContaBancaria
@@ -2951,18 +2907,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do Cadastro de Conta Bancária.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora' => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numero'            => str_pad(utf8_decode($oResultado->numero), 13, 0, STR_PAD_LEFT),
-                'situacao'          => str_pad($oResultado->situacao, 1, 0, STR_PAD_LEFT),
-                'codBanco'          => str_pad($oResultado->codbanco, 3, 0, STR_PAD_LEFT),
-                'numAgencia'        => str_pad(utf8_decode($oResultado->numagencia), 6, 0, STR_PAD_LEFT),
-                'descricao'         => str_pad(utf8_decode($oResultado->descricao), 60, 0, STR_PAD_LEFT),
-                'tipo'              => str_pad($oResultado->tipo, 1, 0, STR_PAD_LEFT),
-                'cnpjGerencia'      => str_pad($oResultado->cnpjgerencia, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora' => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numero'            => str_pad(mb_convert_encoding($oResultado->numero, 'ISO-8859-1'), 13, 0, STR_PAD_LEFT),
+            'situacao'          => str_pad((string) $oResultado->situacao, 1, 0, STR_PAD_LEFT),
+            'codBanco'          => str_pad((string) $oResultado->codbanco, 3, 0, STR_PAD_LEFT),
+            'numAgencia'        => str_pad(mb_convert_encoding($oResultado->numagencia, 'ISO-8859-1'), 6, 0, STR_PAD_LEFT),
+            'descricao'         => str_pad(mb_convert_encoding($oResultado->descricao, 'ISO-8859-1'), 60, 0, STR_PAD_LEFT),
+            'tipo'              => str_pad((string) $oResultado->tipo, 1, 0, STR_PAD_LEFT),
+            'cnpjGerencia'      => str_pad((string) $oResultado->cnpjgerencia, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.24. RelacionamentoCCorrenteFontePagadora
@@ -3010,18 +2964,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Relacionamento CCorrente Fonte Pagadora.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'         => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numContaBancaria'          => str_pad(utf8_decode($oResultado->numcontabancaria), 13, 0, STR_PAD_LEFT),
-                'numAgencia'                => str_pad(utf8_decode($oResultado->numagencia), 6, 0, STR_PAD_LEFT),
-                'codBanco'                  => str_pad(utf8_decode($oResultado->codbanco), 3, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'     => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'           => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'tipoContaBancaria'         => str_pad($oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
-                'cnpjGerenciaContaBancaria' => str_pad($oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'         => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numContaBancaria'          => str_pad(mb_convert_encoding($oResultado->numcontabancaria, 'ISO-8859-1'), 13, 0, STR_PAD_LEFT),
+            'numAgencia'                => str_pad(mb_convert_encoding($oResultado->numagencia, 'ISO-8859-1'), 6, 0, STR_PAD_LEFT),
+            'codBanco'                  => str_pad(mb_convert_encoding($oResultado->codbanco, 'ISO-8859-1'), 3, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'     => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'           => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'tipoContaBancaria'         => str_pad((string) $oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
+            'cnpjGerenciaContaBancaria' => str_pad((string) $oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.28. PagamentosRestos
@@ -3135,36 +3087,34 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos Pagamentos de Restos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'         => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'         => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria'    => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'                => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numero'                    => str_pad($oResultado->numero.$oResultado->seq, 7, 0, STR_PAD_LEFT),
-                'data'                      => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'valor'                     => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'numContaBancaria'          =>
-                                  str_pad(utf8_decode(trim($oResultado->numcontabancaria)), 13, '0', STR_PAD_LEFT),
-                'numAgencia'                =>
-                                  str_pad(utf8_decode(trim($oResultado->numagencia)), 6, '0', STR_PAD_LEFT),
-                'codBanco'                  => str_pad(utf8_decode(trim($oResultado->codbanco)), 3, '0', STR_PAD_LEFT),
-                'numCheque'                 =>
-                                  str_pad(utf8_decode(trim($oResultado->numcheque)), 6, '0', STR_PAD_LEFT),
-                'numDocDebito'              =>
-                                  str_pad(utf8_decode(trim($oResultado->numdocdebito)), 11, ' ', STR_PAD_LEFT),
-                'codBancoCred'              =>
-                                  str_pad(utf8_decode(trim($oResultado->codbancocred)), 3, ' ', STR_PAD_LEFT),
-                'numAgenciaCred'            =>
-                                  str_pad(utf8_decode(trim($oResultado->numagenciacred)), 6, ' ', STR_PAD_LEFT),
-                'numContaBancariaCred'      =>
-                                  str_pad(utf8_decode(trim($oResultado->numcontabancariacred)), 13, ' ', STR_PAD_LEFT),
-                'codFonteRecurso'           => str_pad($oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
-                'tipoContaBancaria'         => str_pad($oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
-                'co'                        => str_pad($oResultado->co, 4, 0, STR_PAD_LEFT),
-                'cnpjGerenciaContaBancaria' => str_pad($oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'         => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'         => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria'    => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'                => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numero'                    => str_pad($oResultado->numero.$oResultado->seq, 7, 0, STR_PAD_LEFT),
+            'data'                      => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'valor'                     => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'numContaBancaria'          =>
+                              str_pad(mb_convert_encoding(trim((string) $oResultado->numcontabancaria), 'ISO-8859-1'), 13, '0', STR_PAD_LEFT),
+            'numAgencia'                =>
+                              str_pad(mb_convert_encoding(trim((string) $oResultado->numagencia), 'ISO-8859-1'), 6, '0', STR_PAD_LEFT),
+            'codBanco'                  => str_pad(mb_convert_encoding(trim((string) $oResultado->codbanco), 'ISO-8859-1'), 3, '0', STR_PAD_LEFT),
+            'numCheque'                 =>
+                              str_pad(mb_convert_encoding(trim((string) $oResultado->numcheque), 'ISO-8859-1'), 6, '0', STR_PAD_LEFT),
+            'numDocDebito'              =>
+                              str_pad(mb_convert_encoding(trim((string) $oResultado->numdocdebito), 'ISO-8859-1'), 11, ' ', STR_PAD_LEFT),
+            'codBancoCred'              =>
+                              str_pad(mb_convert_encoding(trim((string) $oResultado->codbancocred), 'ISO-8859-1'), 3, ' ', STR_PAD_LEFT),
+            'numAgenciaCred'            =>
+                              str_pad(mb_convert_encoding(trim((string) $oResultado->numagenciacred), 'ISO-8859-1'), 6, ' ', STR_PAD_LEFT),
+            'numContaBancariaCred'      =>
+                              str_pad(mb_convert_encoding(trim((string) $oResultado->numcontabancariacred), 'ISO-8859-1'), 13, ' ', STR_PAD_LEFT),
+            'codFonteRecurso'           => str_pad((string) $oResultado->codfonterecurso, 3, 0, STR_PAD_LEFT),
+            'tipoContaBancaria'         => str_pad((string) $oResultado->tipocontabancaria, 1, 0, STR_PAD_LEFT),
+            'co'                        => str_pad((string) $oResultado->co, 4, 0, STR_PAD_LEFT),
+            'cnpjGerenciaContaBancaria' => str_pad((string) $oResultado->cnpjgerenciacontabancaria, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.29. EstornoPagamentoRestos
@@ -3296,21 +3246,19 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos Estornos de Pagamentos de Restos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numPagamento'           => str_pad($oResultado->numpagamento, 7, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'motivo'                 => str_pad(utf8_decode($oResultado->motivo), 120, ' ', STR_PAD_RIGHT),
-                'despesaLiquidada'       => str_pad($oResultado->despesaliquidada, 1, ' ', STR_PAD_RIGHT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numPagamento'           => str_pad((string) $oResultado->numpagamento, 7, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'motivo'                 => str_pad(mb_convert_encoding($oResultado->motivo, 'ISO-8859-1'), 120, ' ', STR_PAD_RIGHT),
+            'despesaLiquidada'       => str_pad((string) $oResultado->despesaliquidada, 1, ' ', STR_PAD_RIGHT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.30. CancelamentoRestos
@@ -3349,20 +3297,18 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Cancelamentos de Restos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'motivo'                 => str_pad(utf8_decode($oResultado->motivo), 120, ' ', STR_PAD_RIGHT),
-                'despesaLiquidada'       => str_pad(utf8_decode($oResultado->despesaliquidada), 1, ' ', STR_PAD_RIGHT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'motivo'                 => str_pad(mb_convert_encoding($oResultado->motivo, 'ISO-8859-1'), 120, ' ', STR_PAD_RIGHT),
+            'despesaLiquidada'       => str_pad(mb_convert_encoding($oResultado->despesaliquidada, 'ISO-8859-1'), 1, ' ', STR_PAD_RIGHT),
+            'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.31. LiquidacaoRestos
@@ -3432,34 +3378,34 @@ class SagresRepository
 
         return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
 
-            $e69_outrosdados = json_decode($oResultado->e69_outrosdados);
-            $e171_dados = json_decode($oResultado->e171_dados);
+            $e69_outrosdados = json_decode((string) $oResultado->e69_outrosdados);
+            $e171_dados = json_decode((string) $oResultado->e171_dados);
 
             if (!isset($e171_dados->codigo_agrupamento)) {
                 $e171_dados->codigo_agrupamento = " ";
             }
 
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'data'                   => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'tipoNotaFiscal'         => str_pad($e69_outrosdados->tipo_nota, 2, 0, STR_PAD_LEFT),
-                'numChaveNotaFiscal'     => str_pad($e69_outrosdados->chave_nota, 44, 0, STR_PAD_LEFT),
+            return [
+                'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+                'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+                'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+                'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+                'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+                'data'                   => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+                'tipoNotaFiscal'         => str_pad((string) $e69_outrosdados->tipo_nota, 2, 0, STR_PAD_LEFT),
+                'numChaveNotaFiscal'     => str_pad((string) $e69_outrosdados->chave_nota, 44, 0, STR_PAD_LEFT),
                 'numNotaFiscal'          =>
-                    str_pad(utf8_decode(substr($oResultado->numnotafiscal, 0, 15)), 15, ' ', STR_PAD_RIGHT),
+                    str_pad(mb_convert_encoding(substr((string) $oResultado->numnotafiscal, 0, 15), 'ISO-8859-1'), 15, ' ', STR_PAD_RIGHT),
                 'serieNotaFiscal'        =>
-                    str_pad(utf8_decode(substr($e69_outrosdados->serie_nota, 0, 12)), 12, ' ', STR_PAD_RIGHT),
-                'dataNotaFiscal'         => str_pad(rmSpecial($oResultado->datanotafiscal), 8, 0, STR_PAD_LEFT),
+                    str_pad(mb_convert_encoding(substr((string) $e69_outrosdados->serie_nota, 0, 12), 'ISO-8859-1'), 12, ' ', STR_PAD_RIGHT),
+                'dataNotaFiscal'         => str_pad((string) rmSpecial($oResultado->datanotafiscal), 8, 0, STR_PAD_LEFT),
                 'valorNotaFiscal'        =>
                     str_pad(str_replace(".", ",", $oResultado->valornotafiscal), 16, 0, STR_PAD_LEFT),
                 'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
                 'codAgrupamentoFolha'    =>
-                    str_pad(utf8_decode($e171_dados->codigo_agrupamento), 10, ' ', STR_PAD_RIGHT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
+                    str_pad(mb_convert_encoding($e171_dados->codigo_agrupamento, 'ISO-8859-1'), 10, ' ', STR_PAD_RIGHT),
+                'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+            ];
         });
     }
 
@@ -3544,18 +3490,16 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Retenções de Restos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'tipoRetencao'           => str_pad($oResultado->tipo, 1, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'tipoRetencao'           => str_pad((string) $oResultado->tipo, 1, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.34. EstornoRetencaoRestos
@@ -3640,20 +3584,17 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Estorno de Retenções de Restos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'anoEmissaoEmpenho'      => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
-                'tipoRetencao'           => str_pad($oResultado->tiporetencao, 1, 0, STR_PAD_LEFT),
-                'numero'                 => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'anoEmissaoEmpenho'      => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'numPagamento'           => str_pad($oResultado->numpagamento.$oResultado->seq, 7, 0, STR_PAD_LEFT),
+            'tipoRetencao'           => str_pad((string) $oResultado->tiporetencao, 1, 0, STR_PAD_LEFT),
+            'numero'                 => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+            'valor'                  => str_pad(str_replace(".", ",", $oResultado->valor), 16, 0, STR_PAD_LEFT),
+            'reservado'              => str_pad(sprintf('%06d', $oResultado->reservado), 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.35. Fornecedores
@@ -3729,15 +3670,13 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Fornecedores.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora' => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'cpfCnpj'           => str_pad($oResultado->cpfcnpj, 14, 0, STR_PAD_LEFT),
-                'nome'              => str_pad(utf8_decode($oResultado->nome), 80, ' ', STR_PAD_RIGHT),
-                'tipo'              => $oResultado->tipo,
-                'reservado'         => sprintf('%06d', $oResultado->reservado),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora' => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'cpfCnpj'           => str_pad((string) $oResultado->cpfcnpj, 14, 0, STR_PAD_LEFT),
+            'nome'              => str_pad(mb_convert_encoding($oResultado->nome, 'ISO-8859-1'), 80, ' ', STR_PAD_RIGHT),
+            'tipo'              => $oResultado->tipo,
+            'reservado'         => sprintf('%06d', $oResultado->reservado),
+        ]);
     }
 
     // 4.36. Ordenador
@@ -3762,14 +3701,12 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do Ordenador.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora' => $oResultado->codunidadegestora,
-                'cpfCnpj'           => $oResultado->cpfcnpj,
-                'nome'              => utf8_decode($oResultado->nome),
-                'reservado'         => sprintf('%06d', $oResultado->reservado),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora' => $oResultado->codunidadegestora,
+            'cpfCnpj'           => $oResultado->cpfcnpj,
+            'nome'              => mb_convert_encoding($oResultado->nome, 'ISO-8859-1'),
+            'reservado'         => sprintf('%06d', $oResultado->reservado),
+        ]);
     }
 
     // 4.40. RestosInscritos
@@ -3871,60 +3808,58 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Restos Inscritos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'       => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'descUnidadeGestora'      =>
-                          str_pad(utf8_decode($oResultado->descunidadegestora), 250, ' ', STR_PAD_RIGHT),
-                'anoEmissaoEmpenho'       => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria'  => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'descUnidadeOrcamentaria' =>
-                          str_pad(utf8_decode($oResultado->descunidadeorcamentaria), 250, ' ', STR_PAD_RIGHT),
-                'codFuncao'               => str_pad($oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
-                'descFuncao'              => str_pad(utf8_decode($oResultado->descfuncao), 100, ' ', STR_PAD_RIGHT),
-                'codSubfuncao'            => str_pad($oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
-                'descSubfuncao'           => str_pad(utf8_decode($oResultado->descsubfuncao), 100, ' ', STR_PAD_RIGHT),
-                'codPrograma'             => str_pad($oResultado->codprograma, 4, 0, STR_PAD_LEFT),
-                'descPrograma'            => str_pad(utf8_decode($oResultado->descprograma), 300, ' ', STR_PAD_RIGHT),
-                'codAcao'                 => str_pad($oResultado->codacao, 4, 0, STR_PAD_LEFT),
-                'descAcao'                => str_pad(utf8_decode($oResultado->descacao), 500, ' ', STR_PAD_RIGHT),
-                'codClassificacao'        => str_pad($oResultado->codclassificacao, 6, 0, STR_PAD_LEFT),
-                'codCategoriaEconomica'   => str_pad($oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
-                'descCategoriaEconomica'  =>
-                           str_pad(utf8_decode($oResultado->desccategoriaeconomica), 50, ' ', STR_PAD_RIGHT),
-                'codNaturezaDespesa'      => str_pad($oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
-                'descNaturezaDespesa'     =>
-                           str_pad(utf8_decode($oResultado->descnaturezadespesa), 50, ' ', STR_PAD_RIGHT),
-                'codModalidadeDespesa'    => str_pad($oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
-                'descModalidadeDespesa'   =>
-                           str_pad(utf8_decode($oResultado->descmodalidadedespesa), 100, ' ', STR_PAD_RIGHT),
-                'codElementoDespesa'      => str_pad($oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
-                'descElementoDespesa'     =>
-                           str_pad(utf8_decode($oResultado->descelementodespesa), 100, ' ', STR_PAD_RIGHT),
-                'codSubelementoDespesa'   => str_pad($oResultado->codsubelementodespesa, 3, 0, STR_PAD_LEFT),
-                'descSubelementoDespesa'  =>
-                           str_pad(utf8_decode($oResultado->descsubelementodespesa), 100, ' ', STR_PAD_RIGHT),
-                'numEmpenho'              => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'dataEmpenho'             => str_pad($oResultado->dataempenho, 8, 0, STR_PAD_LEFT),
-                'cpfCnpjFornecedor'       => str_pad($oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
-                'descFornecedor'          =>
-                               str_pad(utf8_decode($oResultado->descfornecedor), 150, ' ', STR_PAD_RIGHT),
-                'tipoFonteRecurso'        => str_pad($oResultado->tipofonterecurso, 4, 0, STR_PAD_LEFT),
-                'descFonteRecurso'        =>
-                               str_pad(utf8_decode($oResultado->descfonterecurso), 150, ' ', STR_PAD_RIGHT),
-                'historicoEmpenho'        =>
-                               str_pad(utf8_decode($oResultado->historicoempenho), 1000, ' ', STR_PAD_RIGHT),
-                'valorInscrito'           =>
-                               str_pad(str_replace(".", ",", $oResultado->valorinscrito), 16, 0, STR_PAD_LEFT),
-                'valorProcessado'         =>
-                               str_pad(str_replace(".", ",", $oResultado->valorprocessado), 16, 0, STR_PAD_LEFT),
-                'valorNaoProcessado'      =>
-                               str_pad(str_replace(".", ",", $oResultado->valornaoprocessado), 16, 0, STR_PAD_LEFT),
-                'codUnidadeGestoraOrigem' => str_pad($oResultado->codunidadegestoraorigem, 6, 0, STR_PAD_LEFT),
-                'codFonteRecursoAtual'    => str_pad($oResultado->codfonterecursoatual, 3, 0, STR_PAD_LEFT),
-                'coAtual'                 => str_pad($oResultado->coatual, 4, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'       => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'descUnidadeGestora'      =>
+                      str_pad(mb_convert_encoding($oResultado->descunidadegestora, 'ISO-8859-1'), 250, ' ', STR_PAD_RIGHT),
+            'anoEmissaoEmpenho'       => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria'  => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'descUnidadeOrcamentaria' =>
+                      str_pad(mb_convert_encoding($oResultado->descunidadeorcamentaria, 'ISO-8859-1'), 250, ' ', STR_PAD_RIGHT),
+            'codFuncao'               => str_pad((string) $oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
+            'descFuncao'              => str_pad(mb_convert_encoding($oResultado->descfuncao, 'ISO-8859-1'), 100, ' ', STR_PAD_RIGHT),
+            'codSubfuncao'            => str_pad((string) $oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
+            'descSubfuncao'           => str_pad(mb_convert_encoding($oResultado->descsubfuncao, 'ISO-8859-1'), 100, ' ', STR_PAD_RIGHT),
+            'codPrograma'             => str_pad((string) $oResultado->codprograma, 4, 0, STR_PAD_LEFT),
+            'descPrograma'            => str_pad(mb_convert_encoding($oResultado->descprograma, 'ISO-8859-1'), 300, ' ', STR_PAD_RIGHT),
+            'codAcao'                 => str_pad((string) $oResultado->codacao, 4, 0, STR_PAD_LEFT),
+            'descAcao'                => str_pad(mb_convert_encoding($oResultado->descacao, 'ISO-8859-1'), 500, ' ', STR_PAD_RIGHT),
+            'codClassificacao'        => str_pad((string) $oResultado->codclassificacao, 6, 0, STR_PAD_LEFT),
+            'codCategoriaEconomica'   => str_pad((string) $oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
+            'descCategoriaEconomica'  =>
+                       str_pad(mb_convert_encoding($oResultado->desccategoriaeconomica, 'ISO-8859-1'), 50, ' ', STR_PAD_RIGHT),
+            'codNaturezaDespesa'      => str_pad((string) $oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
+            'descNaturezaDespesa'     =>
+                       str_pad(mb_convert_encoding($oResultado->descnaturezadespesa, 'ISO-8859-1'), 50, ' ', STR_PAD_RIGHT),
+            'codModalidadeDespesa'    => str_pad((string) $oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
+            'descModalidadeDespesa'   =>
+                       str_pad(mb_convert_encoding($oResultado->descmodalidadedespesa, 'ISO-8859-1'), 100, ' ', STR_PAD_RIGHT),
+            'codElementoDespesa'      => str_pad((string) $oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
+            'descElementoDespesa'     =>
+                       str_pad(mb_convert_encoding($oResultado->descelementodespesa, 'ISO-8859-1'), 100, ' ', STR_PAD_RIGHT),
+            'codSubelementoDespesa'   => str_pad((string) $oResultado->codsubelementodespesa, 3, 0, STR_PAD_LEFT),
+            'descSubelementoDespesa'  =>
+                       str_pad(mb_convert_encoding($oResultado->descsubelementodespesa, 'ISO-8859-1'), 100, ' ', STR_PAD_RIGHT),
+            'numEmpenho'              => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'dataEmpenho'             => str_pad((string) $oResultado->dataempenho, 8, 0, STR_PAD_LEFT),
+            'cpfCnpjFornecedor'       => str_pad((string) $oResultado->cpfcnpjfornecedor, 14, 0, STR_PAD_LEFT),
+            'descFornecedor'          =>
+                           str_pad(mb_convert_encoding($oResultado->descfornecedor, 'ISO-8859-1'), 150, ' ', STR_PAD_RIGHT),
+            'tipoFonteRecurso'        => str_pad((string) $oResultado->tipofonterecurso, 4, 0, STR_PAD_LEFT),
+            'descFonteRecurso'        =>
+                           str_pad(mb_convert_encoding($oResultado->descfonterecurso, 'ISO-8859-1'), 150, ' ', STR_PAD_RIGHT),
+            'historicoEmpenho'        =>
+                           str_pad(mb_convert_encoding($oResultado->historicoempenho, 'ISO-8859-1'), 1000, ' ', STR_PAD_RIGHT),
+            'valorInscrito'           =>
+                           str_pad(str_replace(".", ",", $oResultado->valorinscrito), 16, 0, STR_PAD_LEFT),
+            'valorProcessado'         =>
+                           str_pad(str_replace(".", ",", $oResultado->valorprocessado), 16, 0, STR_PAD_LEFT),
+            'valorNaoProcessado'      =>
+                           str_pad(str_replace(".", ",", $oResultado->valornaoprocessado), 16, 0, STR_PAD_LEFT),
+            'codUnidadeGestoraOrigem' => str_pad((string) $oResultado->codunidadegestoraorigem, 6, 0, STR_PAD_LEFT),
+            'codFonteRecursoAtual'    => str_pad((string) $oResultado->codfonterecursoatual, 3, 0, STR_PAD_LEFT),
+            'coAtual'                 => str_pad((string) $oResultado->coatual, 4, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.37 - RelacionamentoEmpenhoObra
@@ -3972,20 +3907,20 @@ class SagresRepository
 
         return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
 
-            $e171_dados = json_decode($oResultado->e171_dados);
+            $e171_dados = json_decode((string) $oResultado->e171_dados);
 
             if (!isset($e171_dados->geo_obra)) {
                 $e171_dados->geo_obra = " ";
             }
 
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'codUnidadeGestoraObra'  => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numObra'                => str_pad(utf8_decode($e171_dados->geo_obra), 8, ' ', STR_PAD_RIGHT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
+            return [
+                'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+                'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+                'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+                'codUnidadeGestoraObra'  => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+                'numObra'                => str_pad(mb_convert_encoding($e171_dados->geo_obra, 'ISO-8859-1'), 8, ' ', STR_PAD_RIGHT),
+                'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+            ];
         });
     }
 
@@ -4042,18 +3977,15 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos Empenhos de Licitações.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'           => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria'      => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
-                'numEmpenho'                  => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'codUnidadeGestoraLicitacao'  => str_pad($oResultado->codunidadegestoralic, 6, 0, STR_PAD_LEFT),
-                'numLicitacao'                => str_pad($oResultado->numlicitacao, 9, ' ', STR_PAD_RIGHT),
-                'modalidadeLicitacao'         => str_pad($oResultado->modalidadelicitacao, 2, 0, STR_PAD_LEFT),
-                'reservado'                   => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'           => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria'      => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_LEFT),
+            'numEmpenho'                  => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+            'codUnidadeGestoraLicitacao'  => str_pad((string) $oResultado->codunidadegestoralic, 6, 0, STR_PAD_LEFT),
+            'numLicitacao'                => str_pad((string) $oResultado->numlicitacao, 9, ' ', STR_PAD_RIGHT),
+            'modalidadeLicitacao'         => str_pad((string) $oResultado->modalidadelicitacao, 2, 0, STR_PAD_LEFT),
+            'reservado'                   => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.39 - RelacionamentoLiquidacaoCodigoAgrupamentoFolhaPagamento
@@ -4128,21 +4060,21 @@ class SagresRepository
 
         return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
 
-            $e172_dados = json_decode($oResultado->e172_dados);
+            $e172_dados = json_decode((string) $oResultado->e172_dados);
 
             if (!isset($e172_dados->codigo_agrupamento)) {
                 $e172_dados->codigo_agrupamento = "";
             }
 
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
-                'numEmpenho'             => str_pad($oResultado->numempenho, 7, 0, STR_PAD_LEFT),
-                'numLiquidacao'          => str_pad($oResultado->numero, 7, 0, STR_PAD_LEFT),
-                'codAgrupamentoFolha'    => str_pad($oResultado->mes, 2, 0, STR_PAD_LEFT).
-                               str_pad(utf8_decode($e172_dados->codigo_agrupamento), 8, 0, STR_PAD_LEFT),
-                'reservado'              => str_pad($oResultado->reservado, 6, 0, STR_PAD_LEFT),
-            );
+            return [
+                'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
+                'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
+                'numEmpenho'             => str_pad((string) $oResultado->numempenho, 7, 0, STR_PAD_LEFT),
+                'numLiquidacao'          => str_pad((string) $oResultado->numero, 7, 0, STR_PAD_LEFT),
+                'codAgrupamentoFolha'    => str_pad((string) $oResultado->mes, 2, 0, STR_PAD_LEFT).
+                               str_pad(mb_convert_encoding($e172_dados->codigo_agrupamento, 'ISO-8859-1'), 8, 0, STR_PAD_LEFT),
+                'reservado'              => str_pad((string) $oResultado->reservado, 6, 0, STR_PAD_LEFT),
+            ];
         });
     }
 
@@ -4150,7 +4082,7 @@ class SagresRepository
     public static function getSaldoMensalCoConciliado($params)
     {
         $iInstit = db_getsession('DB_instit');
-        $aCompetencia = explode('/', $params->folder);
+        $aCompetencia = explode('/', (string) $params->folder);
         $sCompetencia = $aCompetencia[1].$aCompetencia[0];
         $sDataIni = str_replace('/', '-', $params->folder).'-01';
         $dDataIni = date("Y-m-d", strtotime($sDataIni));
@@ -4242,28 +4174,25 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações de Saldo Mensal CO Conciliado.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'         => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'competencia'               => str_pad($oResultado->competencia, 6, 0, STR_PAD_LEFT),
-                'codBanco'                  => str_pad($oResultado->banco, 3, 0, STR_PAD_LEFT),
-                'numAgencia'                => str_pad($oResultado->agencia, 6, 0, STR_PAD_LEFT),
-                'numero'                    => str_pad($oResultado->conta, 13, 0, STR_PAD_LEFT),
-                'tipo'                      => str_pad($oResultado->tipo, 1, ' ', STR_PAD_RIGHT),
-                'codFonteRecurso'           => str_pad($oResultado->fonterecurso, 3, ' ', STR_PAD_LEFT),
-                'co'                        => str_pad($oResultado->co, 4, 0, STR_PAD_LEFT),
-                'valor'                     => str_pad($oResultado->valor, 16, 0, STR_PAD_LEFT),
-                'cnpjGerenciaContaBancaria' => str_pad($oResultado->cnpj_conta, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'         => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'competencia'               => str_pad((string) $oResultado->competencia, 6, 0, STR_PAD_LEFT),
+            'codBanco'                  => str_pad((string) $oResultado->banco, 3, 0, STR_PAD_LEFT),
+            'numAgencia'                => str_pad((string) $oResultado->agencia, 6, 0, STR_PAD_LEFT),
+            'numero'                    => str_pad((string) $oResultado->conta, 13, 0, STR_PAD_LEFT),
+            'tipo'                      => str_pad((string) $oResultado->tipo, 1, ' ', STR_PAD_RIGHT),
+            'codFonteRecurso'           => str_pad((string) $oResultado->fonterecurso, 3, ' ', STR_PAD_LEFT),
+            'co'                        => str_pad((string) $oResultado->co, 4, 0, STR_PAD_LEFT),
+            'valor'                     => str_pad((string) $oResultado->valor, 16, 0, STR_PAD_LEFT),
+            'cnpjGerenciaContaBancaria' => str_pad((string) $oResultado->cnpj_conta, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.26 - SaldoMensal
     public static function getSaldoMensal($params)
     {
         $iInstit = db_getsession('DB_instit');
-        $aCompetencia = explode('/', $params->folder);
+        $aCompetencia = explode('/', (string) $params->folder);
         $sCompetencia = $aCompetencia[1].$aCompetencia[0];
         $sDataIni = str_replace('/', '-', $params->folder).'-01';
         $dDataIni = date("Y-m-d", strtotime($sDataIni));
@@ -4349,18 +4278,15 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do Saldo Mensal.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'         => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numContaBancaria'          => str_pad($oResultado->conta, 13, 0, STR_PAD_LEFT),
-                'numAgencia'                => str_pad($oResultado->agencia, 6, 0, STR_PAD_LEFT),
-                'codBanco'                  => str_pad($oResultado->banco, 3, 0, STR_PAD_LEFT),
-                'valor'                     => str_pad($oResultado->valor, 16, 0, STR_PAD_LEFT),
-                'tipoContaBancaria'         => str_pad($oResultado->tipo, 1, ' ', STR_PAD_RIGHT),
-                'cnpjGerenciaContaBancaria' => str_pad($oResultado->cnpj_conta, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'         => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numContaBancaria'          => str_pad((string) $oResultado->conta, 13, 0, STR_PAD_LEFT),
+            'numAgencia'                => str_pad((string) $oResultado->agencia, 6, 0, STR_PAD_LEFT),
+            'codBanco'                  => str_pad((string) $oResultado->banco, 3, 0, STR_PAD_LEFT),
+            'valor'                     => str_pad((string) $oResultado->valor, 16, 0, STR_PAD_LEFT),
+            'tipoContaBancaria'         => str_pad((string) $oResultado->tipo, 1, ' ', STR_PAD_RIGHT),
+            'cnpjGerenciaContaBancaria' => str_pad((string) $oResultado->cnpj_conta, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.27 - ConciliacaoBancaria
@@ -4530,24 +4456,21 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações da Conciliação Bancária.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'         => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'numContaBancaria'          => str_pad($oResultado->conta, 13, 0, STR_PAD_LEFT),
-                'numAgencia'                => str_pad($oResultado->agencia, 6, 0, STR_PAD_LEFT),
-                'codBanco'                  => str_pad($oResultado->banco, 3, 0, STR_PAD_LEFT),
-                'numero'                    => str_pad($oResultado->numero, 8, 0, STR_PAD_LEFT),
-                'tipoConciliacao'           => str_pad($oResultado->tipo, 1, 0, STR_PAD_LEFT),
-                'descricao'                 => str_pad($oResultado->detalhe, 150, 0, STR_PAD_RIGHT),
-                'data'                      => str_pad($oResultado->data, 8, 0, STR_PAD_LEFT),
-                'numCheque'                 => str_pad($oResultado->cheque, 6, 0, STR_PAD_LEFT),
-                'numDocDebito'              => str_pad($oResultado->numdocdebito, 11, 0, STR_PAD_LEFT),
-                'valor'                     => str_pad($oResultado->valor, 16, 0, STR_PAD_LEFT),
-                'tipoContaBancaria'         => str_pad($oResultado->tipocontabancaria, 1, ' ', STR_PAD_RIGHT),
-                'cnpjGerenciaContaBancaria' => str_pad($oResultado->cnpj_conta, 14, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'         => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'numContaBancaria'          => str_pad((string) $oResultado->conta, 13, 0, STR_PAD_LEFT),
+            'numAgencia'                => str_pad((string) $oResultado->agencia, 6, 0, STR_PAD_LEFT),
+            'codBanco'                  => str_pad((string) $oResultado->banco, 3, 0, STR_PAD_LEFT),
+            'numero'                    => str_pad((string) $oResultado->numero, 8, 0, STR_PAD_LEFT),
+            'tipoConciliacao'           => str_pad((string) $oResultado->tipo, 1, 0, STR_PAD_LEFT),
+            'descricao'                 => str_pad((string) $oResultado->detalhe, 150, 0, STR_PAD_RIGHT),
+            'data'                      => str_pad((string) $oResultado->data, 8, 0, STR_PAD_LEFT),
+            'numCheque'                 => str_pad((string) $oResultado->cheque, 6, 0, STR_PAD_LEFT),
+            'numDocDebito'              => str_pad((string) $oResultado->numdocdebito, 11, 0, STR_PAD_LEFT),
+            'valor'                     => str_pad((string) $oResultado->valor, 16, 0, STR_PAD_LEFT),
+            'tipoContaBancaria'         => str_pad((string) $oResultado->tipocontabancaria, 1, ' ', STR_PAD_RIGHT),
+            'cnpjGerenciaContaBancaria' => str_pad((string) $oResultado->cnpj_conta, 14, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.41 - PLOAAcao
@@ -4574,16 +4497,14 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do PloaAcao.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'     => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codigo'            => str_pad($oResultado->codigo, 4, 0, STR_PAD_RIGHT),
-                'descricao'             => str_pad(utf8_decode($oResultado->descricao), 70, ' ', STR_PAD_RIGHT),
-                'tipoAcao'              => str_pad($oResultado->tipoacao, 1, ' ', STR_PAD_RIGHT),
-                'descMeta'              => str_pad(utf8_decode($oResultado->descmeta), 150, ' ', STR_PAD_RIGHT),
-                'descUnidade'           => str_pad(utf8_decode($oResultado->descunidade), 50, ' ', STR_PAD_RIGHT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'     => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codigo'            => str_pad((string) $oResultado->codigo, 4, 0, STR_PAD_RIGHT),
+            'descricao'             => str_pad(mb_convert_encoding($oResultado->descricao, 'ISO-8859-1'), 70, ' ', STR_PAD_RIGHT),
+            'tipoAcao'              => str_pad((string) $oResultado->tipoacao, 1, ' ', STR_PAD_RIGHT),
+            'descMeta'              => str_pad(mb_convert_encoding($oResultado->descmeta, 'ISO-8859-1'), 150, ' ', STR_PAD_RIGHT),
+            'descUnidade'           => str_pad(mb_convert_encoding($oResultado->descunidade, 'ISO-8859-1'), 50, ' ', STR_PAD_RIGHT),
+        ]);
     }
 
     // 4.42 - PLoaDotacao
@@ -4624,24 +4545,22 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dPLoaDotacao [$sSql]");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'competencia'            => str_pad($oResultado->competencia, 4, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria' => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
-                'codFuncao'              => str_pad($oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
-                'codSubfuncao'           => str_pad($oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
-                'codPrograma'            => str_pad($oResultado->codprograma, 4, 0, STR_PAD_LEFT),
-                'codAcao'                => str_pad($oResultado->codacao, 4, 0, STR_PAD_LEFT),
-                'codCategoriaEconomica'  => str_pad($oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
-                'codNaturezaDespesa'     => str_pad($oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
-                'codModalidadeDespesa'   => str_pad($oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
-                'codElementoDespesa'     => str_pad($oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'  => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'        => str_pad($oResultado->codfonterecurso, 3, ' ', STR_PAD_LEFT),
-                'valor'                  => str_pad($oResultado->valor, 16, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'competencia'            => str_pad((string) $oResultado->competencia, 4, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria' => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
+            'codFuncao'              => str_pad((string) $oResultado->codfuncao, 2, 0, STR_PAD_LEFT),
+            'codSubfuncao'           => str_pad((string) $oResultado->codsubfuncao, 3, 0, STR_PAD_LEFT),
+            'codPrograma'            => str_pad((string) $oResultado->codprograma, 4, 0, STR_PAD_LEFT),
+            'codAcao'                => str_pad((string) $oResultado->codacao, 4, 0, STR_PAD_LEFT),
+            'codCategoriaEconomica'  => str_pad((string) $oResultado->codcategoriaeconomica, 1, 0, STR_PAD_LEFT),
+            'codNaturezaDespesa'     => str_pad((string) $oResultado->codnaturezadespesa, 1, 0, STR_PAD_LEFT),
+            'codModalidadeDespesa'   => str_pad((string) $oResultado->codmodalidadedespesa, 2, 0, STR_PAD_LEFT),
+            'codElementoDespesa'     => str_pad((string) $oResultado->codelementodespesa, 2, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'  => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'        => str_pad((string) $oResultado->codfonterecurso, 3, ' ', STR_PAD_LEFT),
+            'valor'                  => str_pad((string) $oResultado->valor, 16, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.43 - PloaPrograma
@@ -4672,15 +4591,13 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do PloaAcao.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'     => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codigo'            => str_pad($oResultado->codigo, 4, 0, STR_PAD_RIGHT),
-                'descricao'             => str_pad(utf8_decode($oResultado->descricao), 70, ' ', STR_PAD_RIGHT),
-                'descObjetivo'          => str_pad(utf8_decode($oResultado->descobjetivo), 150, ' ', STR_PAD_RIGHT),
-                'tipoObjetivoMilenio'    => str_pad($oResultado->tipoobjetivomilenio, 2, '0', STR_PAD_RIGHT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'     => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codigo'            => str_pad((string) $oResultado->codigo, 4, 0, STR_PAD_RIGHT),
+            'descricao'             => str_pad(mb_convert_encoding($oResultado->descricao, 'ISO-8859-1'), 70, ' ', STR_PAD_RIGHT),
+            'descObjetivo'          => str_pad(mb_convert_encoding($oResultado->descobjetivo, 'ISO-8859-1'), 150, ' ', STR_PAD_RIGHT),
+            'tipoObjetivoMilenio'    => str_pad((string) $oResultado->tipoobjetivomilenio, 2, '0', STR_PAD_RIGHT),
+        ]);
     }
 
     // 4.44 - PloaReceitaPrevista
@@ -4714,17 +4631,15 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do PloaAcao.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'      => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'competencia'            => str_pad($oResultado->competencia, 4, 0, STR_PAD_LEFT),
-                'codReceitaOrcamentaria' => str_pad($oResultado->codreceitaorcamentaria, 8, 0, STR_PAD_LEFT),
-                'exercicioFonteRecurso'  => str_pad($oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
-                'codFonteRecurso'        => str_pad($oResultado->codfonterecurso, 3, ' ', STR_PAD_LEFT),
-                'tipoReceita'            => str_pad($oResultado->tiporeceita, 1, 0, STR_PAD_LEFT),
-                'valor'                  => str_replace(".", ",", $oResultado->valor)
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'      => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'competencia'            => str_pad((string) $oResultado->competencia, 4, 0, STR_PAD_LEFT),
+            'codReceitaOrcamentaria' => str_pad((string) $oResultado->codreceitaorcamentaria, 8, 0, STR_PAD_LEFT),
+            'exercicioFonteRecurso'  => str_pad((string) $oResultado->exerciciofonterecurso, 1, 0, STR_PAD_LEFT),
+            'codFonteRecurso'        => str_pad((string) $oResultado->codfonterecurso, 3, ' ', STR_PAD_LEFT),
+            'tipoReceita'            => str_pad((string) $oResultado->tiporeceita, 1, 0, STR_PAD_LEFT),
+            'valor'                  => str_replace(".", ",", $oResultado->valor)
+        ]);
     }
 
 
@@ -4770,17 +4685,15 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do PloaAcao.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'     => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codigo'               => str_pad($oResultado->codigo, 5, ' ', STR_PAD_RIGHT),
-                'descricao'            => str_pad(utf8_decode($oResultado->descricao), 50, ' ', STR_PAD_RIGHT),
-                'nomeSecretario'       => str_pad(utf8_decode($oResultado->nomesecretario), 60, ' ', STR_PAD_RIGHT),
-                'cpfSecretario'        => str_pad($oResultado->cpfsecretario, 11, 0),
-                'tipoAtoJuridico'      => str_pad($oResultado->tipoatojuridico, 1, 0, STR_PAD_LEFT),
-                'tipoNaturezaJuridica' => str_pad($oResultado->tiponaturezajuridica, 1, 0, STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'     => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codigo'               => str_pad((string) $oResultado->codigo, 5, ' ', STR_PAD_RIGHT),
+            'descricao'            => str_pad(mb_convert_encoding($oResultado->descricao, 'ISO-8859-1'), 50, ' ', STR_PAD_RIGHT),
+            'nomeSecretario'       => str_pad(mb_convert_encoding($oResultado->nomesecretario, 'ISO-8859-1'), 60, ' ', STR_PAD_RIGHT),
+            'cpfSecretario'        => str_pad((string) $oResultado->cpfsecretario, 11, 0),
+            'tipoAtoJuridico'      => str_pad((string) $oResultado->tipoatojuridico, 1, 0, STR_PAD_LEFT),
+            'tipoNaturezaJuridica' => str_pad((string) $oResultado->tiponaturezajuridica, 1, 0, STR_PAD_LEFT),
+        ]);
     }
 
     // 4.46 - RelacionamentoEmpenhoTipoMeta
@@ -4807,21 +4720,18 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do Relacionamento Empenho Tipo Meta.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'         => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'codUnidadeOrcamentaria'    => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
-                'anoEmissaoEmpenho'         => str_pad($oResultado->anoemissaoempenho, 4, 0, STR_PAD_RIGHT),
-                'numEmpenho'                => str_pad($oResultado->numempenho, 7, ' ', STR_PAD_RIGHT),
-                'tipoMeta'                  => str_pad($oResultado->tipometa, 1, ' ', STR_PAD_LEFT),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'         => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'codUnidadeOrcamentaria'    => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
+            'anoEmissaoEmpenho'         => str_pad((string) $oResultado->anoemissaoempenho, 4, 0, STR_PAD_RIGHT),
+            'numEmpenho'                => str_pad((string) $oResultado->numempenho, 7, ' ', STR_PAD_RIGHT),
+            'tipoMeta'                  => str_pad((string) $oResultado->tipometa, 1, ' ', STR_PAD_LEFT),
+        ]);
     }
 }
 
 function rmSpecial($str)
 {
-    $res = preg_replace('/[\@\.\;\" "-\/]+/', '', $str);
+    $res = preg_replace('/[\@\.\;\" "-\/]+/', '', (string) $str);
     return $res;
 }

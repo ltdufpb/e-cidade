@@ -36,7 +36,7 @@ require_once(modification("classes/db_turno_classe.php"));
 require_once(modification("classes/db_turnoreferente_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoTurno          = db_utils::getdao('turno');
 $oDaoTurnoReferente = db_utils::getdao('turnoreferente');

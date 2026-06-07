@@ -114,7 +114,7 @@ if (isset($excluir)) {
             $iTotalLinhasDiario = $oDaoDiarioClasseRegenciaHorario->numrows;
 
             if ($iTotalLinhasDiario > 0) {
-                  $aDiarioClasseExcluidos = array();
+                  $aDiarioClasseExcluidos = [];
                 for ($iDiario = 0; $iDiario < $iTotalLinhasDiario; $iDiario++) {
                     $oDadosDiarioClasse       = db_utils::fieldsMemory($rsDiarioClasse, $iDiario);
                     $aDiarioClasseExcluidos[] = $oDadosDiarioClasse->ed302_diarioclasse;

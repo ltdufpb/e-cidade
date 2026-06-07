@@ -39,63 +39,55 @@ final class Periodo
   /**
    * @type integer
    */
-    const PRIMEIRO_BIMESTRE = 6;
-    const SEGUNDO_BIMESTRE = 7;
-    const TERCEIRO_BIMESTRE = 8;
-    const QUARTO_BIMESTRE = 9;
-    const QUINTO_BIMESTRE = 10;
+    const int PRIMEIRO_BIMESTRE = 6;
+    const int SEGUNDO_BIMESTRE = 7;
+    const int TERCEIRO_BIMESTRE = 8;
+    const int QUARTO_BIMESTRE = 9;
+    const int QUINTO_BIMESTRE = 10;
 
-    /**
-     * @var integer
-     */
-    const SEXTO_BIMESTRE = 11;
+    const int SEXTO_BIMESTRE = 11;
     /**
      * @type integer
      */
-    const PRIMEIRO_SEMESTRE = 12;
+    const int PRIMEIRO_SEMESTRE = 12;
 
     /**
      * @type integer
      */
-    const SEGUNDO_SEMESTRE = 13;
+    const int SEGUNDO_SEMESTRE = 13;
 
     /**
      * @type integer
      */
-    const PRIMEIRO_QUADRIMESTRE = 14;
+    const int PRIMEIRO_QUADRIMESTRE = 14;
 
     /**
      * @type integer
      */
-    const SEGUNDO_QUADRIMESTRE  = 15;
+    const int SEGUNDO_QUADRIMESTRE  = 15;
 
     /**
      * @type integer
      */
-    const TERCEIRO_QUADRIMESTRE = 16;
+    const int TERCEIRO_QUADRIMESTRE = 16;
 
 
-    const MARCO = 19;
+    const int MARCO = 19;
 
-    const ABRIL = 20;
+    const int ABRIL = 20;
 
-    const JUNHO = 22;
+    const int JUNHO = 22;
 
-    const AGOSTO = 24;
+    const int AGOSTO = 24;
 
-    const SETEMBRO = 25;
+    const int SETEMBRO = 25;
 
-    const DEZEMBRO = 28;
+    const int DEZEMBRO = 28;
 
     /**
      * @type integer
      */
-    const ANO = 1;
-    /**
-     * Código
-     * @var integer
-     */
-    private $iCodigo;
+    const int ANO = 1;
 
     /**
      * Descrição
@@ -138,17 +130,19 @@ final class Periodo
      * @throws BusinessException
      * @param integer $iCodigo
      */
-    public function __construct($iCodigo = null)
+    public function __construct(/**
+     * Código
+     */
+    private $iCodigo = null)
     {
-        $this->iCodigo = $iCodigo;
         if (empty($this->iCodigo)) {
             return;
         }
 
         $oDaoPeriodo    = new cl_periodo();
-        $rsBuscaPeriodo = db_query($oDaoPeriodo->sql_query_file($iCodigo));
+        $rsBuscaPeriodo = db_query($oDaoPeriodo->sql_query_file($this->iCodigo));
         if (!$rsBuscaPeriodo || pg_num_rows($rsBuscaPeriodo) == 0) {
-            throw new BusinessException("Período [{$iCodigo}] não encontrado.");
+            throw new BusinessException("Período [{$this->iCodigo}] não encontrado.");
         }
         $oStdPeriodo       = db_utils::fieldsMemory($rsBuscaPeriodo, 0);
         $this->sDescricao  = $oStdPeriodo->o114_descricao;

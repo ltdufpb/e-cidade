@@ -59,7 +59,7 @@
      */
     public static function getSituacaoEducacaoByCodigo($iCodigoSituacaoEducacao) {
       
-      if (!array_key_exists($iCodigoSituacaoEducacao, SituacaoEducacaoRepository::getInstance()->aSituacaoEducacao)) {
+      if (!array_key_exists((string) $iCodigoSituacaoEducacao, SituacaoEducacaoRepository::getInstance()->aSituacaoEducacao)) {
         SituacaoEducacaoRepository::getInstance()->aSituacaoEducacao[$iCodigoSituacaoEducacao] = new SituacaoEducacao($iCodigoSituacaoEducacao);
       }
       return SituacaoEducacaoRepository::getInstance()->aSituacaoEducacao[$iCodigoSituacaoEducacao];

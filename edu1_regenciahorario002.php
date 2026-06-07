@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str( $_SERVER["QUERY_STRING"]);
+parse_str( (string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory( $_POST );
 
 $clregencia          = new cl_regencia;
@@ -155,7 +155,7 @@ if (isset($chavepesquisa)) {
                 $rsRegencia = db_query($sSqlRegencia);
                 $iTotalRegencia = pg_num_rows($rsRegencia);
 
-                $aTurmas = array();
+                $aTurmas = [];
                 for ($iContador = 0; $iContador < $iTotalRegencia; $iContador++) {
                     $aTurmas[] = db_utils::fieldsMemory($rsRegencia, $iContador)->ed59_i_turma;
                 }
@@ -188,7 +188,7 @@ if (isset($chavepesquisa)) {
             $result_sala = db_query($sSqlTurmaAC);
             $iTotalTurmaAC = pg_num_rows($result_sala);
 
-            $aTurmasSimultaneas = array();
+            $aTurmasSimultaneas = [];
             $lTemConflito = false;
             $deixamarcar = true;
             $msg_erro = "{$descrturno} {$descrperiodo} Período ({$horainicio} às {$horafim}) está em conflito";
@@ -237,8 +237,8 @@ if (isset($chavepesquisa)) {
 
       $sSqlRegencia = $clregencia->sql_query( "", "ed59_i_qtdperiodo,ed232_c_descr", "", "ed59_i_codigo = $chavepesquisa" );
       $result       = $clregencia->sql_record( $sSqlRegencia );
-      $qtdperiodo   = pg_result( $result, 0, 0 );
-      $descr        = trim( pg_result( $result, 0, 1 ) );
+      $qtdperiodo   = pg_fetch_result( $result, 0, 0 );
+      $descr        = trim( pg_fetch_result( $result, 0, 1 ) );
     ?>
       <script>
        contador = 0;

@@ -82,7 +82,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed07_i_codigo"=>@$ed07_i_codigo,"ed07_i_justificativa"=>@$ed07_i_justificativa,"ed07_i_ato"=>@$ed07_i_ato,"ed05_c_finalidade"=>@$ed05_c_finalidade);
+   $chavepri= ["ed07_i_codigo"=>@$ed07_i_codigo,"ed07_i_justificativa"=>@$ed07_i_justificativa,"ed07_i_ato"=>@$ed07_i_ato,"ed05_c_finalidade"=>@$ed05_c_finalidade];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clatojustificativa->sql_query("","*","","ed07_i_justificativa = $ed07_i_justificativa");
    $cliframe_alterar_excluir->campos  = "ed05_c_numero,ed05_c_finalidade,ed05_d_vigora,ed83_c_descr";

@@ -50,8 +50,8 @@ $oTurma = TurmaRepository::getTurmaByCodigo($oGet->turma);
 $oCalendario = new Calendario($oGet->calendario);
 $etapa = EtapaRepository::getEtapaByCodigo($oGet->etapa);
 
-$aDisciplinas = array();
-$oGet->disciplinas = trim($oGet->disciplinas);
+$aDisciplinas = [];
+$oGet->disciplinas = trim((string) $oGet->disciplinas);
 if ( !empty( $oGet->disciplinas ) ) {
     $aDisciplinas = explode(",", trim($oGet->disciplinas) );
 }
@@ -118,7 +118,7 @@ if ( count($aDisciplinas) > 0 ) {
         /**
          * Busca os conteúdos desenvolvidos por disciplina quando for selecionado para ser lançado conforme diário.
          */
-        $aConteudoDesenvolvido = array();
+        $aConteudoDesenvolvido = [];
         if($oGet->preenchimento == 'diario') {
             $aConteudoDesenvolvido = buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario);
         }
@@ -152,7 +152,7 @@ function imprimeCabecalho($oPdf, $oDadosCabecalho) {
 
     $oPdf->SetFont('arial', 'b', 10);
 
-    $oPdf->Cell(290, 4, mb_strtoupper($oDadosCabecalho->sTitulo) . " - {$oDadosCabecalho->sPeriodo}", 0, 1, "C");
+    $oPdf->Cell(290, 4, mb_strtoupper((string) $oDadosCabecalho->sTitulo) . " - {$oDadosCabecalho->sPeriodo}", 0, 1, "C");
     $oPdf->Cell(290, 4, $oDadosCabecalho->sEscola, 0, 1, "C");
     $oPdf->Ln();
     $oPdf->SetFont('arial', 'b', 9);
@@ -335,7 +335,7 @@ function buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario) {
     $rsConteudo     = $oDaoConteudos->sql_record($sSqlConteudo);
     $iRegistros     = $oDaoConteudos->numrows;
 
-    $aConteudoDesenvolvido = array();
+    $aConteudoDesenvolvido = [];
 
     if ($iRegistros > 0) {
 

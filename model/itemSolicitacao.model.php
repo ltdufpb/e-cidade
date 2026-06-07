@@ -114,7 +114,7 @@ class itemSolicitacao {
    *
    * @var integer
    */
-  protected $aDotacoes    = array();
+  protected $aDotacoes    = [];
 
   /**
    * Codigo do item da Solicitação
@@ -265,7 +265,7 @@ class itemSolicitacao {
           $oDaoPcMater           = db_utils::getDao("pcmater");
           $sSqlDescricaoMaterial = $oDaoPcMater->sql_query_file($iMaterial);
           $rsMaterial            = $oDaoPcMater->sql_record($sSqlDescricaoMaterial);
-          $sDescricao            = urlencode(db_utils::fieldsMemory($rsMaterial, 0)->pc01_descrmater);
+          $sDescricao            = urlencode((string) db_utils::fieldsMemory($rsMaterial, 0)->pc01_descrmater);
           DBRegistry::add("descricaomaterial{$iMaterial}", $sDescricao);
         }
         $this->sDescricaoMaterial = $sDescricao;
@@ -779,7 +779,7 @@ class itemSolicitacao {
 
 
     $oRetorno      = new stdClass();
-    $aParamCompras = db_stdClass::getParametro("pcparam", array(DB_getsession("DB_instit")));
+    $aParamCompras = db_stdClass::getParametro("pcparam", [DB_getsession("DB_instit")]);
 
      $oParamCompras = $aParamCompras[0];
      unset($aParamCompras[0]);
@@ -807,15 +807,15 @@ class itemSolicitacao {
      /**
       * Consultamos todos os orcamentos de solicitacao
       */
-    $oRetorno->solicitacoes      = array();
-    $oRetorno->processodecompras = array();
-    $oRetorno->empenhos          = array();
+    $oRetorno->solicitacoes      = [];
+    $oRetorno->processodecompras = [];
+    $oRetorno->empenhos          = [];
     $sWhereDatas  = "between  cast(fc_getsession('db_datausu')as date) - '{$iMaximoDias} days'::interval";
     $sWhereDatas .= " and cast(fc_getsession('db_datausu')as date)";
     if ($dtInicial != null && $dtFinal != null) {
 
-       $sWhereDatas  = "between '".implode("-",array_reverse(explode("/", $dtInicial)))."' and ";
-       $sWhereDatas .= " '".implode("-",array_reverse(explode("/", $dtFinal)))."' ";
+       $sWhereDatas  = "between '".implode("-",array_reverse(explode("/", (string) $dtInicial)))."' and ";
+       $sWhereDatas .= " '".implode("-",array_reverse(explode("/", (string) $dtFinal)))."' ";
     }
 
     if ($iQuantidadeOrcamentosSolicitacao > 0) {
@@ -1040,7 +1040,7 @@ class itemSolicitacao {
    */
   public function getReservasSaldoDotacao($iCodigoDotacao) {
 
-    $aReservas          = array();
+    $aReservas          = [];
     $oDaoOrcReservaSol  = db_utils::getDao('orcreservasol');
     $sSqlReservaDotacao = $oDaoOrcReservaSol->sql_query_orcreserva(
                                                                    null,
@@ -1245,8 +1245,8 @@ class itemSolicitacao {
       if ($oDotacao->getSaldoAtualMenosReservado() < $nValor) {
 
         $sMsgErro  = "Dotação {$iCodigoDotacao} sem saldo suficiente para a reserva do  item. {$sNomeItem}.\n";
-        $sMsgErro .= "Saldo da Dotação: ".trim(db_formatar($oDotacao->getSaldoAtualMenosReservado(), "f")).".\n";
-        $sMsgErro .= "Valor Solicitado Para Reserva: ".trim(db_formatar($nValor, "f"))."";
+        $sMsgErro .= "Saldo da Dotação: ".trim((string) db_formatar($oDotacao->getSaldoAtualMenosReservado(), "f")).".\n";
+        $sMsgErro .= "Valor Solicitado Para Reserva: ".trim((string) db_formatar($nValor, "f"))."";
         throw new Exception($sMsgErro);
       }
 

@@ -15,6 +15,7 @@ class AvisoPrevioFormatter extends Formatter
      * @param  array $dados
      * @return \stdClass[]
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dados = parent::formatar($dados);

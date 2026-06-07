@@ -96,7 +96,7 @@ class ContratoRepository
      * @param ContratoProcessual|null $contrato
      * @throws Exception
      */
-    public function delete(ContratoProcessual $contrato = null)
+    public function delete(?ContratoProcessual $contrato = null)
     {
         $id = $contrato instanceof ContratoProcessual ? $contrato->getSequencial() : null;
         $dao = new cl_rhpessoalprocessocontrato;
@@ -113,7 +113,7 @@ class ContratoRepository
      * @return bool|ProcessoJudicial
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessocontrato;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);
@@ -290,7 +290,7 @@ class ContratoRepository
      * @return bool|ProcessoJudicial
      * @throws Exception
      */
-    public static function getListaContratosProcesso($sequencialProcessoServidor, $columns = array('*'))
+    public static function getListaContratosProcesso($sequencialProcessoServidor, $columns = ['*'])
     {
         $dao = new cl_rhpessoalprocessocontrato;
         $where = " rh273_sequencialprocessoservidor = {$sequencialProcessoServidor}";

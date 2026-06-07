@@ -120,7 +120,7 @@ class AgendaAtividadeProfissionalRepository {
    */
   public static function adicionarAgenda(AgendaAtividadeProfissional $oAgendaAtividadeProfissional) {
 
-    if(!array_key_exists($oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
+    if(!array_key_exists((string) $oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
       AgendaAtividadeProfissionalRepository::getInstance()->aAgenda[$oAgendaAtividadeProfissional->getCodigo()] = $oAgendaAtividadeProfissional;
     }
     return true;
@@ -133,7 +133,7 @@ class AgendaAtividadeProfissionalRepository {
    */
   public static function removerAgenda(AgendaAtividadeProfissional $oAgendaAtividadeProfissional) {
 
-    if (array_key_exists($oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
+    if (array_key_exists((string) $oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
       unset(AgendaAtividadeProfissionalRepository::getInstance()->aAgenda[$oAgendaAtividadeProfissional->getCodigo()]);
     }
     return true;

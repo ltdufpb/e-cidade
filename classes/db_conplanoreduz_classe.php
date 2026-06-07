@@ -30,27 +30,27 @@
 class cl_conplanoreduz
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $c61_codcon = 0;
-    var $c61_anousu = 0;
-    var $c61_reduz = 0;
-    var $c61_instit = 0;
-    var $c61_codigo = 0;
-    var $c61_contrapartida = 0;
+    public $c61_codcon = 0;
+    public $c61_anousu = 0;
+    public $c61_reduz = 0;
+    public $c61_instit = 0;
+    public $c61_codigo = 0;
+    public $c61_contrapartida = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  c61_codcon = int4 = Código da Conta
                  c61_anousu = int4 = Exercício
                  c61_reduz = int4 = Reduzido
@@ -60,11 +60,11 @@ class cl_conplanoreduz
                  ";
 
     //funcao construtor da classe
-    function cl_conplanoreduz()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conplanoreduz");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -146,10 +146,10 @@ class cl_conplanoreduz
 
                 return false;
             }
-            $this->c61_reduz = pg_result($result, 0, 0);
+            $this->c61_reduz = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from conplanoreduz_c61_reduz_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $c61_reduz)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $c61_reduz)) {
                 $this->erro_sql = " Campo c61_reduz maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -201,7 +201,7 @@ class cl_conplanoreduz
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Código Reduzido do Plano ($this->c61_reduz." - ".$this->c61_anousu) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Código Reduzido do Plano já Cadastrado";
@@ -237,10 +237,10 @@ class cl_conplanoreduz
         $this->atualizacampos();
         $sql = " update conplanoreduz set ";
         $virgula = "";
-        if (trim($this->c61_codcon) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_codcon"])) {
+        if (trim((string) $this->c61_codcon) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_codcon"])) {
             $sql .= $virgula . " c61_codcon = $this->c61_codcon ";
             $virgula = ",";
-            if (trim($this->c61_codcon) == null) {
+            if (trim((string) $this->c61_codcon) == null) {
                 $this->erro_sql = " Campo Código da Conta nao Informado.";
                 $this->erro_campo = "c61_codcon";
                 $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_conplanoreduz
                 return false;
             }
         }
-        if (trim($this->c61_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_anousu"])) {
+        if (trim((string) $this->c61_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_anousu"])) {
             $sql .= $virgula . " c61_anousu = $this->c61_anousu ";
             $virgula = ",";
-            if (trim($this->c61_anousu) == null) {
+            if (trim((string) $this->c61_anousu) == null) {
                 $this->erro_sql = " Campo Exercício nao Informado.";
                 $this->erro_campo = "c61_anousu";
                 $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_conplanoreduz
                 return false;
             }
         }
-        if (trim($this->c61_reduz) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_reduz"])) {
+        if (trim((string) $this->c61_reduz) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_reduz"])) {
             $sql .= $virgula . " c61_reduz = $this->c61_reduz ";
             $virgula = ",";
-            if (trim($this->c61_reduz) == null) {
+            if (trim((string) $this->c61_reduz) == null) {
                 $this->erro_sql = " Campo Reduzido nao Informado.";
                 $this->erro_campo = "c61_reduz";
                 $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_conplanoreduz
                 return false;
             }
         }
-        if (trim($this->c61_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_instit"])) {
+        if (trim((string) $this->c61_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_instit"])) {
             $sql .= $virgula . " c61_instit = $this->c61_instit ";
             $virgula = ",";
-            if (trim($this->c61_instit) == null) {
+            if (trim((string) $this->c61_instit) == null) {
                 $this->erro_sql = " Campo Instituição nao Informado.";
                 $this->erro_campo = "c61_instit";
                 $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_conplanoreduz
                 return false;
             }
         }
-        if (trim($this->c61_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_codigo"])) {
+        if (trim((string) $this->c61_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_codigo"])) {
             $sql .= $virgula . " c61_codigo = $this->c61_codigo ";
             $virgula = ",";
-            if (trim($this->c61_codigo) == null) {
+            if (trim((string) $this->c61_codigo) == null) {
                 $this->erro_sql = " Campo Codigo do Recurso nao Informado.";
                 $this->erro_campo = "c61_codigo";
                 $this->erro_banco = "";
@@ -312,8 +312,8 @@ class cl_conplanoreduz
                 return false;
             }
         }
-        if (trim($this->c61_contrapartida) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_contrapartida"])) {
-            if (trim($this->c61_contrapartida) == "" && isset($GLOBALS["HTTP_POST_VARS"]["c61_contrapartida"])) {
+        if (trim((string) $this->c61_contrapartida) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c61_contrapartida"])) {
+            if (trim((string) $this->c61_contrapartida) == "" && isset($GLOBALS["HTTP_POST_VARS"]["c61_contrapartida"])) {
                 $this->c61_contrapartida = "0";
             }
             $sql .= $virgula . " c61_contrapartida = $this->c61_contrapartida ";
@@ -448,7 +448,7 @@ class cl_conplanoreduz
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:conplanoreduz";
@@ -506,7 +506,7 @@ class cl_conplanoreduz
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -552,7 +552,7 @@ class cl_conplanoreduz
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -565,7 +565,6 @@ class cl_conplanoreduz
 
     /**
      * Metood para retornar a conta bancaria
-     * @deprecated
      * @param null $c61_codcon
      * @param null $c61_anousu
      * @param string $campos
@@ -574,6 +573,7 @@ class cl_conplanoreduz
      * @return string
      *
      */
+    #[\Deprecated]
     function sql_query_contabancaria(
       $c61_codcon = null,
       $c61_anousu = null,
@@ -654,7 +654,7 @@ class cl_conplanoreduz
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -732,7 +732,7 @@ class cl_conplanoreduz
         if ($ordem != null) {
 
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -785,7 +785,7 @@ class cl_conplanoreduz
         if ($ordem != null) {
 
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {

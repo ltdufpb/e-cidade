@@ -50,9 +50,9 @@ $db_opcao = 1;
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("b1"=>"Avaliacões Periódicas","b2"=>"Resultados");
-   $clcriaabas->sizecampo  = array("b1"=>"20","b2"=>"20");
-   $clcriaabas->src        = array("b1"=>"edu1_procavaliacao001.php?ed41_i_procedimento=$procedimento&ed40_c_descr=$ed40_c_descr","b2"=>"edu1_procresultadoabas.php?ed43_i_procedimento=$procedimento&ed40_c_descr=$ed40_c_descr&forma=".trim($forma)."");
+   $clcriaabas->identifica = ["b1"=>"Avaliacões Periódicas","b2"=>"Resultados"];
+   $clcriaabas->sizecampo  = ["b1"=>"20","b2"=>"20"];
+   $clcriaabas->src        = ["b1"=>"edu1_procavaliacao001.php?ed41_i_procedimento=$procedimento&ed40_c_descr=$ed40_c_descr","b2"=>"edu1_procresultadoabas.php?ed43_i_procedimento=$procedimento&ed40_c_descr=$ed40_c_descr&forma=".trim((string) $forma).""];
    $clcriaabas->cortextoselecionado = "#004F9D";
    //$clcriaabas->deslocadireita = 135;
    $clcriaabas->abas_top   = 25;

@@ -78,17 +78,17 @@ $ed233_c_avalalternativa = ParamAvalAlternativa(db_getsession("DB_coddepto"));
         }
         if ($ed233_c_avalalternativa=="N") {
 
-          $clcriaabas->identifica = array("c1"=>"Geral","c2"=>"Elementos","c3"=>"Frequência");
-          $clcriaabas->sizecampo  = array("c1"=>"20","c2"=>"20","c3"=>"20");
-          $clcriaabas->src        = array("c1"=>$arquivo,"c2"=>"","c3"=>"");
-          $clcriaabas->disabled   = array("c2"=>"true","c3"=>"true");
+          $clcriaabas->identifica = ["c1"=>"Geral","c2"=>"Elementos","c3"=>"Frequência"];
+          $clcriaabas->sizecampo  = ["c1"=>"20","c2"=>"20","c3"=>"20"];
+          $clcriaabas->src        = ["c1"=>$arquivo,"c2"=>"","c3"=>""];
+          $clcriaabas->disabled   = ["c2"=>"true","c3"=>"true"];
 
         } else {
 
-          $clcriaabas->identifica = array("c1"=>"Geral","c2"=>"Elementos","c3"=>"Frequência","c4"=>"Avaliações Alternativas");
-          $clcriaabas->sizecampo  = array("c1"=>"20","c2"=>"20","c3"=>"20","c4"=>"30");
-          $clcriaabas->src        = array("c1"=>$arquivo,"c2"=>"","c3"=>"","c4"=>"");
-          $clcriaabas->disabled   = array("c2"=>"true","c3"=>"true","c4"=>"true");
+          $clcriaabas->identifica = ["c1"=>"Geral","c2"=>"Elementos","c3"=>"Frequência","c4"=>"Avaliações Alternativas"];
+          $clcriaabas->sizecampo  = ["c1"=>"20","c2"=>"20","c3"=>"20","c4"=>"30"];
+          $clcriaabas->src        = ["c1"=>$arquivo,"c2"=>"","c3"=>"","c4"=>""];
+          $clcriaabas->disabled   = ["c2"=>"true","c3"=>"true","c4"=>"true"];
 
         }
         $clcriaabas->abas_top   = 25;

@@ -437,14 +437,14 @@ db_postmemory($_GET);
                             <?php
                             if ($clprocresultado->numrows > 0) {
 
-                                if (trim($ed37_c_tipo) == "PARECER") {
+                                if (trim((string) $ed37_c_tipo) == "PARECER") {
 
                                     echo $ed37_c_tipo;
                                     ?>
                                     &nbsp;&nbsp;&nbsp;&nbsp;<b>BOLETIM POR PARECER DESCRITIVO</b>
 
                                     <?php
-                                } else if (trim($ed37_c_tipo) == "NIVEL") {
+                                } else if (trim((string) $ed37_c_tipo) == "NIVEL") {
 
                                     echo $ed37_c_tipo;
                                     ?>
@@ -468,7 +468,7 @@ db_postmemory($_GET);
                         </td>
                     </tr>
                 <?php
-                if (trim($ed37_c_tipo) == "PARECER") {
+                if (trim((string) $ed37_c_tipo) == "PARECER") {
 
                 ?>
                     <tr>
@@ -678,7 +678,7 @@ db_postmemory($_GET);
                     <tr>
                         <td align="center" colspan="3">
                             <?php
-                            if (trim($ed37_c_tipo) == "PARECER") {
+                            if (trim((string) $ed37_c_tipo) == "PARECER") {
 
                                 ?>
                                 <input name="pesquisar"
@@ -702,7 +702,7 @@ db_postmemory($_GET);
                             ?>
                             <br><br>
                             <?php
-                            if (trim($ed37_c_tipo) != "PARECER") {
+                            if (trim((string) $ed37_c_tipo) != "PARECER") {
 
                                 ?>
                                 <fieldset style="align:left">
@@ -737,8 +737,8 @@ db_postmemory($_GET);
                                 Para selecionar mais de um aluno<br>mantenha pressionada a tecla CTRL <br>e clique sobre
                                 o nome dos alunos.
                             </fieldset>
-                            <input type="hidden" name="base" value="<?= isset($base) ? $base : "" ?>">
-                            <input type="hidden" name="curso" value="<?= isset($curso) ? $curso : "" ?>">
+                            <input type="hidden" name="base" value="<?= $base ?? "" ?>">
+                            <input type="hidden" name="curso" value="<?= $curso ?? "" ?>">
                         </td>
                     </tr>
                     <?php

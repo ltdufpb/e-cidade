@@ -40,7 +40,7 @@ db_app::import("educacao.*");
 $oJson       = new Services_JSON();
 $oLogArquivo = $oJson->decode(file_get_contents("tmp/encerramento.json"));
 $oDados      = db_utils::postMemory($_GET);
-$aEtapas     = array();
+$aEtapas     = [];
 
 /**
  * Percorremos cada erro retornado, e armazenamos em um array indexando por etapa
@@ -48,12 +48,12 @@ $aEtapas     = array();
 foreach ($oLogArquivo->aLogs as $oLog) {
 
   $oEtapa             = new stdClass();
-  $oEtapa->turma      = urldecode($oLog->turma);
-  $oEtapa->etapa      = urldecode($oLog->etapa);
-  $oEtapa->aluno      = urldecode($oLog->aluno);
-  $oEtapa->mensagem   = urldecode($oLog->mensagem);
+  $oEtapa->turma      = urldecode((string) $oLog->turma);
+  $oEtapa->etapa      = urldecode((string) $oLog->etapa);
+  $oEtapa->aluno      = urldecode((string) $oLog->aluno);
+  $oEtapa->mensagem   = urldecode((string) $oLog->mensagem);
 
-  $aEtapas[urldecode($oLog->etapa)][] = $oEtapa;
+  $aEtapas[urldecode((string) $oLog->etapa)][] = $oEtapa;
 }
 
 $oPdf = new PDF();

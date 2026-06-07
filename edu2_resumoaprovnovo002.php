@@ -39,7 +39,7 @@ $oTurma = TurmaRepository::getTurmaByCodigo( $oGet->iTurma );
  * Objeto com dados a serem utilizados para validações e impressão do relatório
  */
 $oDadosRelatorio                        = new stdClass();
-$oDadosRelatorio->aDisciplinasImpressao = explode( ",", $oGet->aRegencias );
+$oDadosRelatorio->aDisciplinasImpressao = explode( ",", (string) $oGet->aRegencias );
 $oDadosRelatorio->lTemNotaParcial       = VerParametroNota( db_getsession("DB_coddepto") ) == 'S';
 $oDadosRelatorio->iMaximoPeriodosPagina = 9;
 $oDadosRelatorio->iMinimoAlunosPagina   = 20;
@@ -51,10 +51,10 @@ $oDadosRelatorio->iColunaFalta          = 5;
 $oDadosRelatorio->iColunaResultadoFinal = 30;
 $oDadosRelatorio->iAltura               = 4;
 $oDadosRelatorio->lExibeTrocaTurma      = $oGet->lExibirTrocaTurma == 'S';
-$oDadosRelatorio->aAprovadosConselho    = array();
+$oDadosRelatorio->aAprovadosConselho    = [];
 $oDadosRelatorio->iDisciplinaAtual      = '';
 $oDadosRelatorio->sSituacaoAlunoAtual   = '';
-$oDadosRelatorio->aSituacoesAluno       = array(
+$oDadosRelatorio->aSituacoesAluno       = [
                                                  'AVANÇADO'             => 'AVANÇADO',
                                                  'CANCELADO'            => 'CANCELADO',
                                                  'EVADIDO'              => 'EVADIDO',
@@ -68,7 +68,7 @@ $oDadosRelatorio->aSituacoesAluno       = array(
                                                  'TROCA DE MODALIDADE'  => 'TM',
                                                  'MATRICULA INDEVIDA'   => 'MI',
                                                  'MATRICULA INDEFERIDA' => 'IN'
-                                               );
+                                               ];
 $oDadosRelatorio->aEstruturaGeral = montaEstruturaGeral( $oTurma, $oEtapa, $oDadosRelatorio );
 
 $oPdf = new FpdfMultiCellBorder( 'L' );
@@ -455,7 +455,7 @@ function imprimeResultado( FpdfMultiCellBorder $oPdf, $oGrade, $oDadosRelatorio 
  */
 function montaEstruturaImpressaoPeriodos( Turma $oTurma, Etapa $oEtapa, $oDadosRelatorio ) {
 
-  $aEstruturaPeriodos     = array();
+  $aEstruturaPeriodos     = [];
   $iContadorPagina        = 0;
   $iContadorPeriodos      = 0;
   $oProcedimentoAvaliacao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa( $oEtapa );
@@ -473,7 +473,7 @@ function montaEstruturaImpressaoPeriodos( Turma $oTurma, Etapa $oEtapa, $oDadosR
     $oDadosPeriodo                  = new stdClass();
     $oDadosPeriodo->sPeriodo        = $oElementoAvaliacao->getPeriodoAvaliacao()->getDescricaoAbreviada();
     $oDadosPeriodo->sFormaAvaliacao = $oElementoAvaliacao->getFormaDeAvaliacao()->getTipo();
-    $oDadosPeriodo->aDisciplinas    = array();
+    $oDadosPeriodo->aDisciplinas    = [];
 
     /**
      * Percorre as disciplinas, armazenando o total de aulas previstas e dadas em cada período
@@ -523,7 +523,7 @@ function montaEstruturaImpressaoPeriodos( Turma $oTurma, Etapa $oEtapa, $oDadosR
  */
 function montaEstruturaImpressaoAlunos( Turma $oTurma, Etapa $oEtapa, $oDadosRelatorio ) {
 
-  $aEstruturaAlunos       = array();
+  $aEstruturaAlunos       = [];
   $iMaximoAlunosPorPagina = 38;
   $iContadorPagina        = 0;
   $iContadorAlunos        = 0;
@@ -551,7 +551,7 @@ function montaEstruturaImpressaoAlunos( Turma $oTurma, Etapa $oEtapa, $oDadosRel
     $oDadosAluno->sAluno       = $oMatricula->getAluno()->getNome();
     $oDadosAluno->iNumero      = $oMatricula->getNumeroOrdemAluno();
     $oDadosAluno->sSituacao    = $oMatricula->getSituacao();
-    $oDadosAluno->aDisciplinas = array();
+    $oDadosAluno->aDisciplinas = [];
 
     db_inicio_transacao();
 
@@ -567,7 +567,7 @@ function montaEstruturaImpressaoAlunos( Turma $oTurma, Etapa $oEtapa, $oDadosRel
       $oDadosDisciplina->sFrequencia          = '';
       $oDadosDisciplina->sResultadoFinal      = '';
       $oDadosDisciplina->sNotaParcial         = '';
-      $oDadosDisciplina->aAvaliacoes          = array();
+      $oDadosDisciplina->aAvaliacoes          = [];
 
       /**
        * Percorre as avaliações configuradas no procedimento da turma
@@ -667,7 +667,7 @@ function montaEstruturaImpressaoAlunos( Turma $oTurma, Etapa $oEtapa, $oDadosRel
                 $oDadosObservacao              = new stdClass();
                 $oDadosObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-                if( trim( $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) != '' ) {
+                if( trim( (string) $oDadosObservacao->aParagrafos[1]->oParag->db02_texto ) != '' ) {
 
                   $sObservacao  = "- {$oMatricula->getAluno()->getNome()}: ";
                   $sObservacao .= $oDadosObservacao->aParagrafos[1]->oParag->db02_texto;
@@ -788,7 +788,7 @@ function montaEstruturaImpressaoAlunos( Turma $oTurma, Etapa $oEtapa, $oDadosRel
  */
 function montaEstruturaGeral( Turma $oTurma, Etapa $oEtapa, $oDadosRelatorio ) {
 
-  $aEstruturaGeral    = array();
+  $aEstruturaGeral    = [];
   $aDisciplinasTurma  = $oTurma->getDisciplinasPorEtapa( $oEtapa );
   $aEstruturaPeriodos = montaEstruturaImpressaoPeriodos( $oTurma, $oEtapa, $oDadosRelatorio );
   $aEstruturaAlunos   = montaEstruturaImpressaoAlunos( $oTurma, $oEtapa, $oDadosRelatorio );

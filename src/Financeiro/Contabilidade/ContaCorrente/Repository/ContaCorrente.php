@@ -40,6 +40,7 @@ class ContaCorrente  extends \BaseClassRepository
     /**
      * @var ContaCorrente
      */
+    #[\Override]
     protected static  $oInstance;
 
 

@@ -44,6 +44,7 @@ class AlvaraMovimentacaoLiberacao extends AlvaraMovimentacao {
   	 parent::salvar();
   }
   
+  #[\Override]
   public function gravaDocumentos() {
     parent::gravaDocumentos();
     

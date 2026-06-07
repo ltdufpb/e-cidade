@@ -127,7 +127,7 @@ $clrotulo->label("DBtxt5");
             <td align="left">
               <b>Libera Endereço:</b>
               <?php 
-                $aOptionsSelect = array("N" => "NÃO", "S" => "SIM");
+                $aOptionsSelect = ["N" => "NÃO", "S" => "SIM"];
                 db_select('liberaendereco', $aOptionsSelect, true, $db_opcao, 
                           " onchange='LiberaEndereco(this.value);'"
                          );
@@ -186,16 +186,16 @@ $clrotulo->label("DBtxt5");
                   </td>
                   <td nowrap title="<?=$Ted47_i_estciv?>">
                     <?php 
-                      $aSelect = array("1" => "Solteiro", 
+                      $aSelect = ["1" => "Solteiro", 
                                        "2" => "Casado", 
                                        "3" => "Viúvo", 
                                        "4" => "Divorciado"
-                                      );
+                                      ];
                       db_select('ed47_i_estciv', $aSelect, true, $db_opcao);
                     ?>
                     <?=$Led47_v_sexo?>
                     <?php 
-                      $aSexos = array("M" => "Masculino", "F" => "Feminino");
+                      $aSexos = ["M" => "Masculino", "F" => "Feminino"];
                       db_select('ed47_v_sexo', $aSexos, true, $db_opcao);
                     ?>
                   </td>
@@ -221,10 +221,10 @@ $clrotulo->label("DBtxt5");
                   </td>
                   <td nowrap title="<?=$Ted47_i_nacion?>">
                     <?php 
-                      $aNacao = array("1" => "Brasileiro",
+                      $aNacao = ["1" => "Brasileiro",
                                       "3" => "Brasileiro Nascido no Exterior ou Naturalizado",
                                       "2" => "Estrangeiro"
-                                     );
+                                     ];
                       db_select('ed47_i_nacion', $aNacao, true, $db_opcao);
                     ?>
                   </td>
@@ -244,7 +244,7 @@ $clrotulo->label("DBtxt5");
                       
                       if ($oDaoPais->numrows == 0) {
                         
-                        $aSelect = array('' => 'NENHUM REGISTRO');
+                        $aSelect = ['' => 'NENHUM REGISTRO'];
                         db_select('ed47_i_pais', $aSelect, true, $db_opcao, "");
                       
                       } else {
@@ -260,7 +260,7 @@ $clrotulo->label("DBtxt5");
                     <?php db_input('ed47_v_cnh', 15, $Ied47_v_cnh, true, 'text', $db_opcao, "");?>
                     <?=@$Led47_v_categoria?>
                     <?php 
-                      $y = array("" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E");
+                      $y = ["" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E"];
                       db_select('ed47_v_categoria', $y, true, $db_opcao);
                     ?>
                   </td>
@@ -627,7 +627,7 @@ function LiberaEndereco(valor) {
 function js_preenchepesquisa(chave) {
 
   db_iframe_alunofora.hide();
-  <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+  <?php echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
 
 }
 

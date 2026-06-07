@@ -30,7 +30,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
 
     private $inscricaoEmpregador;
 
-    private $rubricas = array();
+    private $rubricas = [];
 
     private $anoCompetencia;
 
@@ -119,6 +119,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
      * @throws \BusinessException
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -132,7 +133,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         $this->competencia = CompetenciaHelper::get($this->anoCompetencia, $this->mesCompetencia);
         $this->rubricaDiferenca = $dados->rubricaDiferenca;
 
-        $dadosFormatados = array();
+        $dadosFormatados = [];
 
         foreach ($dados->cgms as $cgm) {
             $cgmServidor = CgmRepository::getByCodigo($cgm);
@@ -159,9 +160,9 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         $this->remuneracaoService = new RemuneracaoBeneficioService($this->anoCompetencia, $this->mesCompetencia);
 
         $dadoFormatado = new stdClass();
-        $dadoFormatado->dmDev = array();
+        $dadoFormatado->dmDev = [];
         $dadoFormatado->referencia = $cgm . '_' . $this->remuneracaoService->getAnoCompetencia()
-            . str_pad($this->remuneracaoService->getMesCompetencia(), 2, '0', STR_PAD_LEFT)
+            . str_pad((string) $this->remuneracaoService->getMesCompetencia(), 2, '0', STR_PAD_LEFT)
             . '_';
 
         if ($this->isDecimoTerceiro) {
@@ -323,7 +324,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         foreach ($folha as $pagamento) {
             $item = new stdClass();
             $item->codRubr = $pagamento->codigo;
-            if (!array_key_exists($pagamento->codigo, $this->rubricasValidas)) {
+            if (!array_key_exists((string) $pagamento->codigo, $this->rubricasValidas)) {
                 continue;
             }
             /**
@@ -513,6 +514,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         return $removeIndice;
     }
 
+    #[\Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));
@@ -572,7 +574,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
              *  Validar com a analista o periodo de referencia
              *  enquanto isso esta sendo setado o periodo da propria rescisao
              */
-            $dataRescisao = explode('-', $servidor->getDadosRescisao()->rh05_recis);
+            $dataRescisao = explode('-', (string) $servidor->getDadosRescisao()->rh05_recis);
             $apurAnt = "{$dataRescisao[0]}-{$dataRescisao[1]}";
         }
         return $apurAnt;

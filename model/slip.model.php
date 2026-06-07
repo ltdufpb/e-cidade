@@ -36,18 +36,11 @@ class slip
 {
 
   /**
-   * Código do Slip
-   *
-   * @var integer
-   */
-    protected $iSlip;
-
-  /**
    * Arrecadacoes vinculadas ao slip (quanto receita extra)
    *
    * @var array
    */
-    protected $aArrecadacoes = array();
+    protected $aArrecadacoes = [];
 
   /**
    * Valor do recurso
@@ -165,7 +158,7 @@ class slip
     /**
      * @var array
      */
-    protected $retencoes = array();
+    protected $retencoes = [];
 
 
   /**
@@ -193,18 +186,20 @@ class slip
    * @throws Exception
    * @return slip
    */
-    function __construct($iSlip = null)
+    function __construct(/**
+     * Código do Slip
+     */
+    protected $iSlip = null)
     {
 
-        $this->iSlip = $iSlip;
-        if (!empty($iSlip)) {
+        if (!empty($this->iSlip)) {
 
           /**
            * Caso o slip foi preenchido, pesquisamos seus dados e preenchemos
            * os dados
            */
             $oDaoSlip  = new cl_slip();
-            $sSqlSlip  = $oDaoSlip->sql_query_file($iSlip);
+            $sSqlSlip  = $oDaoSlip->sql_query_file($this->iSlip);
             $rsSlip    = $oDaoSlip->sql_record($sSqlSlip);
             if ($oDaoSlip->numrows > 0) {
                  $oDadosSlip = db_utils::fieldsMemory($rsSlip, 0);
@@ -218,7 +213,7 @@ class slip
                  $this->setValor($oDadosSlip->k17_valor);
                  $this->dtDataAutenticacao = $oDadosSlip->k17_dtaut;
                  $this->iTipoAutenticacao  = $oDadosSlip->k17_autent;
-                 $this->iSlip = $iSlip;
+                 $this->iSlip = $this->iSlip;
                  $this->iInstituicao = $oDadosSlip->k17_instit;
 
                  /**
@@ -232,7 +227,7 @@ class slip
                     $this->addRecurso($oRecurso->k29_recurso, $oRecurso->k29_valor);
                 }
             } else {
-                throw new Exception("Slip {$iSlip} não encontrado!");
+                throw new Exception("Slip {$this->iSlip} não encontrado!");
             }
           /**
            * Pesquisamos as arrecadacoes vinculadas ao slip
@@ -255,7 +250,7 @@ class slip
             }
 
             $oDaoSlipCaracteristica      = new cl_slipconcarpeculiar();
-            $sSqlBuscaCaracteristicaSlip = $oDaoSlipCaracteristica->sql_query_file(null, "*", "k131_tipo", "k131_slip = {$iSlip}");
+            $sSqlBuscaCaracteristicaSlip = $oDaoSlipCaracteristica->sql_query_file(null, "*", "k131_tipo", "k131_slip = {$this->iSlip}");
             $rsBuscaCaracteristica       = $oDaoSlipCaracteristica->sql_record($sSqlBuscaCaracteristicaSlip);
             if ($oDaoSlipCaracteristica->numrows > 0) {
                 for ($iRowCP = 0; $iRowCP < $oDaoSlipCaracteristica->numrows; $iRowCP++) {
@@ -271,7 +266,7 @@ class slip
             unset($oDaoSlipCaracteristica);
 
             $oDaoSlipNum  = new cl_slipnum();
-            $sSqlBuscaCGM = $oDaoSlipNum->sql_query_file($iSlip);
+            $sSqlBuscaCGM = $oDaoSlipNum->sql_query_file($this->iSlip);
             $rsBuscaCGM   = $oDaoSlipNum->sql_record($sSqlBuscaCGM);
             if ($oDaoSlipNum->numrows > 0) {
                 $this->iNumCgm = db_utils::fieldsMemory($rsBuscaCGM, 0)->k17_numcgm;
@@ -282,8 +277,8 @@ class slip
 
     public function getSlipPagamentoOperacaoExtra($situacao = null)
     {
-        $aSlips = array();
-        $aWhere = array();
+        $aSlips = [];
+        $aWhere = [];
         $aWhere[] =  "k208_recebimento = {$this->iSlip}";
         if (!empty($situacao)) {
             $aWhere[] = "slippagamento.k17_situacao = {$situacao}";
@@ -644,7 +639,7 @@ class slip
       * Procuramos se a conta credito do slip é uma conta pagadora no caixa.
       * caso for. setamos essa conta como conta pagadora na agenda.
       */
-        $oParametroAgenda = (db_stdClass::getParametro("empparametro", array(db_getsession('DB_anousu')), "e30_agendaautomatico"));
+        $oParametroAgenda = (db_stdClass::getParametro("empparametro", [db_getsession('DB_anousu')], "e30_agendaautomatico"));
         if ($oParametroAgenda[0]->e30_agendaautomatico == "t") {
             if ($this->getContaCredito() != 0) {
                 $oDaoEmpAgeTipo = new cl_empagetipo();
@@ -734,7 +729,7 @@ class slip
    * @throws Exception
    * @return boolean true
    */
-    public function estornar($lExcluirCheque = true, Transferencia $oTransferencia = null)
+    public function estornar($lExcluirCheque = true, ?Transferencia $oTransferencia = null)
     {
 
         $iInstituicaoSessao = db_getsession("DB_instit");
@@ -790,7 +785,7 @@ class slip
             }
 
             $sDadoAutenticacaoSlip = db_utils::fieldsMemory($rsExecutaValidacao, 0)->autentica_slip;
-            $iSubStringValidacao   = substr($sDadoAutenticacaoSlip, 0, 1);
+            $iSubStringValidacao   = substr((string) $sDadoAutenticacaoSlip, 0, 1);
             if ($iSubStringValidacao != 1) {
                 throw new Exception($sDadoAutenticacaoSlip);
             }
@@ -798,7 +793,7 @@ class slip
                 $iCodigoTerminal = db_utils::fieldsMemory($rsAutenticador, 0)->k11_id;
                 $oTransferencia->setIDTerminal($iCodigoTerminal);
                 $oTransferencia->setDataAutenticacao($dtSessao);
-                $oTransferencia->setNumeroAutenticacao(substr($sDadoAutenticacaoSlip, 1, 7));
+                $oTransferencia->setNumeroAutenticacao(substr((string) $sDadoAutenticacaoSlip, 1, 7));
             }
         }
 
@@ -909,7 +904,7 @@ class slip
    * @param  string $sMotivo
    * @throws Exception
    */
-    public function anular($sMotivo, $lExcluirCheque = true, Transferencia $oTransferencia = null)
+    public function anular($sMotivo, $lExcluirCheque = true, ?Transferencia $oTransferencia = null)
     {
 
         if ($this->isAnulado()) {
@@ -1127,7 +1122,7 @@ class slip
   /**
    * @param array $aPagamentos
    */
-    final private function setPagamentos($aPagamentos)
+    private function setPagamentos($aPagamentos)
     {
         $this->aPagamentos = $aPagamentos;
     }
@@ -1681,7 +1676,7 @@ class slip
         
             $oParametroAgenda = (db_stdClass::getParametro(
                                 "empparametro", 
-                                 array(db_getsession('DB_anousu'))
+                                 [db_getsession('DB_anousu')]
                                  , "e30_agendaautomatico"
                                  ))                                 ;
             if ($oParametroAgenda[0]->e30_agendaautomatico == "t") {

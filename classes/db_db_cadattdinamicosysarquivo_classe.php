@@ -26,33 +26,33 @@
  */
 class cl_db_cadattdinamicosysarquivo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db17_sequencial = 0;
-   var $db17_sysarquivo = 0;
-   var $db17_cadattdinamico = 0;
+   public $db17_sequencial = 0;
+   public $db17_sysarquivo = 0;
+   public $db17_cadattdinamico = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db17_sequencial = int4 = Código
                  db17_sysarquivo = int4 = Código Tabela
                  db17_cadattdinamico = int4 = Código Atributos
                  ";
    //funcao construtor da classe
-   function cl_db_cadattdinamicosysarquivo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cadattdinamicosysarquivo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -104,10 +104,10 @@ class cl_db_cadattdinamicosysarquivo {
          $this->erro_status = "0";
          return false;
        }
-       $this->db17_sequencial = pg_result($result,0,0);
+       $this->db17_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_cadattdinamicosysarquivo_db17_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db17_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db17_sequencial)){
          $this->erro_sql = " Campo db17_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -139,7 +139,7 @@ class cl_db_cadattdinamicosysarquivo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Atributos Dinâmicos Sysarquivo ($this->db17_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Atributos Dinâmicos Sysarquivo já Cadastrado";
@@ -168,12 +168,12 @@ class cl_db_cadattdinamicosysarquivo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21706,'$this->db17_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3900,21706,'','".AddSlashes(pg_result($resaco,0,'db17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3900,21707,'','".AddSlashes(pg_result($resaco,0,'db17_sysarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3900,21708,'','".AddSlashes(pg_result($resaco,0,'db17_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3900,21706,'','".AddSlashes(pg_fetch_result($resaco,0,'db17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3900,21707,'','".AddSlashes(pg_fetch_result($resaco,0,'db17_sysarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3900,21708,'','".AddSlashes(pg_fetch_result($resaco,0,'db17_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -183,10 +183,10 @@ class cl_db_cadattdinamicosysarquivo {
       $this->atualizacampos();
      $sql = " update db_cadattdinamicosysarquivo set ";
      $virgula = "";
-     if(trim($this->db17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_sequencial"])){
+     if(trim((string) $this->db17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_sequencial"])){
        $sql  .= $virgula." db17_sequencial = $this->db17_sequencial ";
        $virgula = ",";
-       if(trim($this->db17_sequencial) == null ){
+       if(trim((string) $this->db17_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "db17_sequencial";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_db_cadattdinamicosysarquivo {
          return false;
        }
      }
-     if(trim($this->db17_sysarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_sysarquivo"])){
+     if(trim((string) $this->db17_sysarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_sysarquivo"])){
        $sql  .= $virgula." db17_sysarquivo = $this->db17_sysarquivo ";
        $virgula = ",";
-       if(trim($this->db17_sysarquivo) == null ){
+       if(trim((string) $this->db17_sysarquivo) == null ){
          $this->erro_sql = " Campo Código Tabela não informado.";
          $this->erro_campo = "db17_sysarquivo";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_db_cadattdinamicosysarquivo {
          return false;
        }
      }
-     if(trim($this->db17_cadattdinamico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_cadattdinamico"])){
+     if(trim((string) $this->db17_cadattdinamico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db17_cadattdinamico"])){
        $sql  .= $virgula." db17_cadattdinamico = $this->db17_cadattdinamico ";
        $virgula = ",";
-       if(trim($this->db17_cadattdinamico) == null ){
+       if(trim((string) $this->db17_cadattdinamico) == null ){
          $this->erro_sql = " Campo Código Atributos não informado.";
          $this->erro_campo = "db17_cadattdinamico";
          $this->erro_banco = "";
@@ -236,15 +236,15 @@ class cl_db_cadattdinamicosysarquivo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21706,'$this->db17_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db17_sequencial"]) || $this->db17_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3900,21706,'".AddSlashes(pg_result($resaco,$conresaco,'db17_sequencial'))."','$this->db17_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3900,21706,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db17_sequencial'))."','$this->db17_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db17_sysarquivo"]) || $this->db17_sysarquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3900,21707,'".AddSlashes(pg_result($resaco,$conresaco,'db17_sysarquivo'))."','$this->db17_sysarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3900,21707,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db17_sysarquivo'))."','$this->db17_sysarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db17_cadattdinamico"]) || $this->db17_cadattdinamico != "")
-             $resac = db_query("insert into db_acount values($acount,3900,21708,'".AddSlashes(pg_result($resaco,$conresaco,'db17_cadattdinamico'))."','$this->db17_cadattdinamico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3900,21708,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db17_cadattdinamico'))."','$this->db17_cadattdinamico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -298,12 +298,12 @@ class cl_db_cadattdinamicosysarquivo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21706,'$db17_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3900,21706,'','".AddSlashes(pg_result($resaco,$iresaco,'db17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3900,21707,'','".AddSlashes(pg_result($resaco,$iresaco,'db17_sysarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3900,21708,'','".AddSlashes(pg_result($resaco,$iresaco,'db17_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3900,21706,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3900,21707,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db17_sysarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3900,21708,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db17_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

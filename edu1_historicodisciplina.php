@@ -159,7 +159,7 @@ $oDaoDisciplina = new cl_disciplina();
           }
 
           $ed65_t_resultobtido = @$ed65_t_resultobtido;
-          if (trim($ed65_c_situacao) == "AMPARADO") {
+          if (trim((string) $ed65_c_situacao) == "AMPARADO") {
             $ed65_t_resultobtido = "&nbsp;";
           }
 
@@ -204,8 +204,8 @@ $oDaoDisciplina = new cl_disciplina();
             ?>
             <td class='aluno'><?=$sResultadoFinal?></td>
             <td class='aluno' align="right"><?=DBNumber::truncate( $ed65_i_qtdch )?></td>
-            <td class='aluno' align="right"><?=trim($ed65_c_tiporesultado)?></td>
-            <td class='aluno' align="right"><?=trim($ed65_c_termofinal)?></td>
+            <td class='aluno' align="right"><?=trim((string) $ed65_c_tiporesultado)?></td>
+            <td class='aluno' align="right"><?=trim((string) $ed65_c_termofinal)?></td>
           </tr>
           <?php
         }
@@ -240,8 +240,8 @@ $oDaoDisciplina = new cl_disciplina();
     /*
     * Valida se Escola selecionada tem permissão de manutenção do histórico do aluno
     */
-    var iEnsinoSelecionado        = "<?php echo isset($ed11_i_ensino) ? $ed11_i_ensino : "";?>",
-        iOrdemEtapaSelecionada    = "<?php echo isset($ed11_i_sequencia) ? $ed11_i_sequencia : ""?>",
+    var iEnsinoSelecionado        = "<?php echo $ed11_i_ensino ?? "";?>",
+        iOrdemEtapaSelecionada    = "<?php echo $ed11_i_sequencia ?? ""?>",
         iOrdemEtapaAtual          = CurrentWindow.corpo.oDadosManutencaoHistorico.aSenquenciaEtapas[iEnsinoSelecionado],
         iStatusAlteracaoHistorico = CurrentWindow.corpo.oDadosManutencaoHistorico.iStatusAlteracaoHistorico,
         oHistorico                = new HistoricoEscolar(iStatusAlteracaoHistorico,

@@ -45,7 +45,7 @@ class BemDepreciacao {
    */
   private $nValorResidual = 0;
 
-  private $aDepreciacaoSintetica = array();
+  private $aDepreciacaoSintetica = [];
 
 
   /**
@@ -501,7 +501,7 @@ class BemDepreciacao {
    * @param  DBDate $oDate
    * @return BemDepreciacao $oBemDepreciacao
    */
-  public static function getInstance(Bem $oBem, DBDate $oDate = null) {
+  public static function getInstance(Bem $oBem, ?DBDate $oDate = null) {
 
     $iCodigoInstituicao    = $oBem->getInstituicao();
     $iCodigoBem            = $oBem->getCodigoBem();

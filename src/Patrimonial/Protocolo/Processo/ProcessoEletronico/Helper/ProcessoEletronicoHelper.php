@@ -12,11 +12,11 @@ class ProcessoEletronicoHelper
         ACAO_ALVARA_AUTONOMO = 'ALVARA_AUTONOMO',
         ACAO_ALVARA_EMPRESA = 'ALVARA_EMPRESA',
         ACAO_ALVARA_MEI = 'ALVARA_MEI',
-        CLASSIFICACAO_RISCO = array(
+        CLASSIFICACAO_RISCO = [
             "B" => 1,
             "M" => 2,
             "A" => 3
-        );
+        ];
 
     private function __construct()
     {
@@ -37,7 +37,7 @@ class ProcessoEletronicoHelper
 
     public static function processaCgmsByDados(InclusaoCgmLegacy $inclusaoCgmService, $dados, $acao)
     {
-        $cgms = array();
+        $cgms = [];
         $dadosMunicipio = self::getDadosMunicipio("munic, uf");
 
         switch ($acao) {
@@ -46,7 +46,7 @@ class ProcessoEletronicoHelper
                 $dados->empresa->endereco->municipio->value = $dadosMunicipio["munic"];
 //                $cgms['cgmRequerente'] = $inclusaoCgmService->processaDadosCgm($dados->requerente);
                 $cgms['cgmEmpresa'] = $inclusaoCgmService->processaDadosCgm($dados->empresa);
-                $cgms['cgmSocios'] = array();
+                $cgms['cgmSocios'] = [];
                 foreach ($dados->empresa->socios as $key => $socio) {
                     $cgms['cgmSocios'][$key] = $inclusaoCgmService->processaDadosCgm($socio);
                 }
@@ -64,7 +64,7 @@ class ProcessoEletronicoHelper
                 ) {
 //                    $cgms['cgmResponsavel'] = $inclusaoCgmService->processaDadosCgm($dados->empresa->responsavel_mei);
 
-                    $cgms['cgmResponsavel'] = array();
+                    $cgms['cgmResponsavel'] = [];
 
                     foreach ($dados->empresa->responsavel_mei as $key => $responsavel) {
                         $cgms['cgmResponsavel'][$key] = $inclusaoCgmService->processaDadosCgm($responsavel);
@@ -165,7 +165,7 @@ class ProcessoEletronicoHelper
 
     public static function consultarCgmsByDados($inclusaoCgmService, $dados, $acao)
     {
-        $cgms = array();
+        $cgms = [];
         $dadosMunicipio = self::getDadosMunicipio("munic, uf");
 
         switch ($acao) {
@@ -173,7 +173,7 @@ class ProcessoEletronicoHelper
                 $dados->empresa->endereco->estado->value = $dadosMunicipio["uf"];
                 $dados->empresa->endereco->municipio->value = $dadosMunicipio["munic"];
                 $cgms['cgmEmpresa'] = $inclusaoCgmService->consultarDadosCgm($dados->empresa);
-                $cgms['cgmSocios'] = array();
+                $cgms['cgmSocios'] = [];
                 foreach ($dados->empresa->socios as $key => $socio) {
                     $cgms['cgmSocios'][$key] = $inclusaoCgmService->consultarDadosCgm($socio);
                 }
@@ -188,7 +188,7 @@ class ProcessoEletronicoHelper
                 if (array_key_exists('responsavel_mei', $dados->empresa)
                     && ! is_null($dados->empresa->responsavel_mei)
                 ) {
-                    $cgms['cgmResponsavel'] = array();
+                    $cgms['cgmResponsavel'] = [];
                     foreach ($dados->empresa->responsavel_mei as $key => $responsavel) {
                         $cgms['cgmResponsavel'][$key] = $inclusaoCgmService->consultarDadosCgm($responsavel);
                     }
@@ -302,23 +302,12 @@ class ProcessoEletronicoHelper
         ParametrosProcessoEletronicoBag $parameterBag,
         $classificacaoGrau
     ) {
-        switch ($classificacaoGrau) {
-            case 1:
-                return $parameterBag->getAlvaraBaixoRisco();
-                break;
-
-            case 2:
-                return $parameterBag->getAlvaraMedioRisco();
-                break;
-
-            case 3:
-                return $parameterBag->getAlvaraAltoRisco();
-                break;
-
-            default:
-                throw new Exception("Classificação de grau de risco inválidada");
-                break;
-        }
+        return match ($classificacaoGrau) {
+            1 => $parameterBag->getAlvaraBaixoRisco(),
+            2 => $parameterBag->getAlvaraMedioRisco(),
+            3 => $parameterBag->getAlvaraAltoRisco(),
+            default => throw new Exception("Classificação de grau de risco inválidada"),
+        };
     }
 
     public static function getDadosMunicipio(

@@ -42,7 +42,7 @@ abstract class BaseRepository {
    *
    * @var Base
    */
-  static $aBases = array();
+  static $aBases = [];
 
 
   /**
@@ -59,7 +59,7 @@ abstract class BaseRepository {
     $iInstituicao =  $oBase->getInstituicao()->getCodigo();
     $sChave       = "{$iAno}{$iMes}{$iCodigo}{$iInstituicao}";
 
-    if(array_key_exists($sChave, BaseRepository::$aBases)) {
+    if(property_exists(BaseRepository::$aBases, $sChave)) {
       unset(BaseRepository::$aBases[$sChave]);
     }
 
@@ -80,7 +80,7 @@ abstract class BaseRepository {
     $iInstituicao = $oBase->getInstituicao()->getCodigo()+0;
     $sChave       = "{$iAno}{$iMes}{$iCodigo}{$iInstituicao}";
 
-    if(!array_key_exists($sChave, BaseRepository::$aBases)) {
+    if(!property_exists(BaseRepository::$aBases, $sChave)) {
       BaseRepository::$aBases[$sChave] = $oBase;
     }
 
@@ -95,7 +95,7 @@ abstract class BaseRepository {
    * @param Instituicao $oInstituicao
    * @return Base
    */
-  public static function getBase($sCodigo, DBCompetencia $oCompetencia = null, Instituicao $oInstituicao = null) {
+  public static function getBase($sCodigo, ?DBCompetencia $oCompetencia = null, ?Instituicao $oInstituicao = null) {
 
 
     if (empty($sCodigo)) {
@@ -117,7 +117,7 @@ abstract class BaseRepository {
     $iInstituicao = $oInstituicao->getCodigo()+0;
     $sChave       = "{$iAno}{$iMes}{$iCodigo}{$iInstituicao}";
 
-    if (array_key_exists($sChave, self::$aBases)) {
+    if (property_exists(self::$aBases, $sChave)) {
       return self::$aBases[$sChave];
     }
 

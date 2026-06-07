@@ -43,11 +43,11 @@ class EtapaTurma {
       /**
        * Etapa (Serie)
        */
-      private Etapa $oEtapa,
+      private readonly Etapa $oEtapa,
       /**
        * Procedimento de Avalicao
        */
-      private ProcedimentoAvaliacao $oProcedimentoAvaliacao
+      private readonly ProcedimentoAvaliacao $oProcedimentoAvaliacao
   )
   {
   }

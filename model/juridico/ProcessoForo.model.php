@@ -209,7 +209,7 @@ class ProcessoForo {
     }
     
     $aCustasProcesso = db_utils::getCollectionByRecord($rsCustasProcesso);
-    $aCustasRecibo   = array();
+    $aCustasRecibo   = [];
     
     foreach($aCustasProcesso as $oCustaProcesso) {
     

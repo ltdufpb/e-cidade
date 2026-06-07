@@ -65,7 +65,7 @@ $db_opcao = 1;
                     "a5" => "Relação de Trabalho",
                     "a6" => "Horários da Regência",
                 ];
-                $clcriaabas->sizecampo = array(
+                $clcriaabas->sizecampo = [
                     "a1" => "12",
                     "a2" => "15",
                     "a3" => "10",
@@ -75,8 +75,8 @@ $db_opcao = 1;
                     "a4" => "20",
                     "a5" => "20",
                     "a6" => "20",
-                );
-                $clcriaabas->src = array(
+                ];
+                $clcriaabas->src = [
                     "a1" => "edu1_rechumano002.php",
                     "a2" => "",
                     "a3" => "",
@@ -86,8 +86,8 @@ $db_opcao = 1;
                     "a4" => "",
                     "a5" => "",
                     "a6" => "",
-                );
-                $clcriaabas->disabled = array(
+                ];
+                $clcriaabas->disabled = [
                     "a2" => "true",
                     "a3" => "true",
                     "a9" => "",
@@ -96,7 +96,7 @@ $db_opcao = 1;
                     "a4" => "",
                     "a5" => "true",
                     "a6" => "true",
-                );
+                ];
                 $clcriaabas->cordisabled = "#9b9b9b";
                 $clcriaabas->iframe_height = "100%";
                 $clcriaabas->iframe_width = "100%";

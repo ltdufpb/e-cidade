@@ -35,7 +35,7 @@ include(modification("classes/db_diasemana_classe.php"));
 include(modification("classes/db_rechumanohoradisp_classe.php"));
 include(modification("classes/db_regenciahorario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldialetivo = new cl_dialetivo;
 $cldiasemana = new cl_diasemana;
 $clregenciahorario = new cl_regenciahorario;

@@ -108,9 +108,9 @@ class Transicao
 
     public function run()
     {
-        $resultados  = array();
-        $artefatos   = array();
-        $erros       = array();
+        $resultados  = [];
+        $artefatos   = [];
+        $erros       = [];
         
         if (!empty($acoes)) {
             foreach ($acoes as $acao) {

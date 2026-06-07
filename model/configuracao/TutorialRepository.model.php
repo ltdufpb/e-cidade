@@ -2,7 +2,7 @@
 
 class TutorialRepository {
 
-  private static $tutoriais = array();
+  private static $tutoriais = [];
 
   public function getTutoriaisDisponiveis($idMenu, $idModulo) {
 
@@ -18,12 +18,10 @@ class TutorialRepository {
       throw new DBException("Erro ao buscar os tutoriais.");
     }
 
-    return db_utils::makeCollectionFromRecord($rsTutorial, function($obj) {
-      return array(
-        'id' => $obj->id,
-        'descricao' => $obj->descricao
-      );
-    });
+    return db_utils::makeCollectionFromRecord($rsTutorial, fn($obj) => [
+      'id' => $obj->id,
+      'descricao' => $obj->descricao
+    ]);
 
   }
 
@@ -62,11 +60,11 @@ class TutorialRepository {
 
   public static function storeOnSession(Tutorial $tutorial) {
 
-    $_SESSION['Tutorial'] = array(
+    $_SESSION['Tutorial'] = [
       'id' => $tutorial->getId(),
       'etapaAtual' => $tutorial->getEtapaAtual()->getId(),
       'passoAtual' => $tutorial->getEtapaAtual()->getPassoAtual()->getId(),
-    );
+    ];
 
   }
 

@@ -13,19 +13,12 @@ use ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Repository\Consult
 
 final class AlvaraOnline extends BaseService
 {
-    private $consultaProcessosRepository;
-    private $atividadesRepository;
-    private $collectionAtividades;
-
     public function __construct(
-        RepositoryConsultaProcesso $consultaProcessosRepository,
-        RepositoryAtividades $atividadesRepository,
-        CollectionAtividades $collectionAtividades,
+        private readonly RepositoryConsultaProcesso $consultaProcessosRepository,
+        private readonly RepositoryAtividades $atividadesRepository,
+        private readonly CollectionAtividades $collectionAtividades,
         ParametrosProcessoEletronicoBag $parameterBag
     ) {
-        $this->consultaProcessosRepository = $consultaProcessosRepository;
-        $this->atividadesRepository        = $atividadesRepository;
-        $this->collectionAtividades        = $collectionAtividades;
         $this->parameterBag                = $parameterBag;
     }
 

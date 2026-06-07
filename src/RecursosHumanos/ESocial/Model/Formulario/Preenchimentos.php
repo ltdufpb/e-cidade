@@ -60,7 +60,7 @@ class Preenchimentos
     /**
      * @var Servidor[]
      */
-    private $servidores = array();
+    private $servidores = [];
 
     /**
      * Informa o responsável pelo preenchimento. Se não indormado, busca de todos
@@ -74,9 +74,9 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoAdmissaoPreliminar($codigoFormulario)
     {
-        $where = array(
+        $where = [
             " db101_sequencial = {$codigoFormulario} "
-        );
+        ];
 
         if (!empty($this->responsavelPreenchimento)) {
             $where[] = "eso18_cgm = {$this->responsavelPreenchimento}";
@@ -114,7 +114,7 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoEmpregador($codigoFormulario)
     {
-        $where = array(" db101_sequencial = {$codigoFormulario} ");
+        $where = [" db101_sequencial = {$codigoFormulario} "];
         if (!empty($this->responsavelPreenchimento)) {
             $where[] = "eso03_cgm = {$this->responsavelPreenchimento}";
         }
@@ -146,7 +146,7 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoObras($codigoFormulario)
     {
-        $where = array(" db101_sequencial = {$codigoFormulario} ");
+        $where = [" db101_sequencial = {$codigoFormulario} "];
         if (!empty($this->responsavelPreenchimento)) {
             $where[] = "eso35_empregador = {$this->responsavelPreenchimento}";
         }
@@ -179,23 +179,23 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoServidor($codigoFormulario, $cgmEmpregador)
     {
-        $campos = array(
+        $campos = [
             'eso02_rhpessoal AS matricula',
             'max(eso02_avaliacaogruporesposta) AS preenchimento',
             "(SELECT z01_cgccpf FROM cgm WHERE z01_numcgm = {$cgmEmpregador}) AS inscricao_empregador"
-        );
+        ];
 
-        $where = array(
+        $where = [
             "eso02_avaliacao = {$codigoFormulario}",
             "eso02_empregador = {$cgmEmpregador}"
-        );
+        ];
 
         if ($this->filtraServidores()) {
             $where[] = $this->montarWhereServidores('eso02_rhpessoal');
         }
 
         $dao = new cl_avaliacaogruporespostarhpessoal();
-        $sql = $dao->sql_avaliacao_preenchida($campos, $where, array('eso02_rhpessoal'));
+        $sql = $dao->sql_avaliacao_preenchida($campos, $where, ['eso02_rhpessoal']);
         $rs = db_query($sql);
 
         $titulo = Tipo::getTitulos(Tipo::SERVIDOR);
@@ -297,7 +297,7 @@ class Preenchimentos
         }
         $empregadores = db_utils::getCollectionByRecord($rs);
 
-        $dadosDoPreenchimentoPorEmpregador = array();
+        $dadosDoPreenchimentoPorEmpregador = [];
 
         foreach ($empregadores as $empregador) {
             foreach ($dadosDoPreenchimento as $item) {
@@ -348,17 +348,17 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoProcesso($codigoFormulario)
     {
-        $where = array(" db101_sequencial = {$codigoFormulario} ");
+        $where = [" db101_sequencial = {$codigoFormulario} "];
         if (!empty($this->responsavelPreenchimento)) {
             $where[] = "eso05_avaliacaogruporesposta = {$this->responsavelPreenchimento}";
         }
 
         $group = " group by eso05_cgm";
-        $campos = array(
+        $campos = [
             'eso05_cgm as cgm',
             'max(db107_sequencial) as preenchimento',
             '(select z01_cgccpf from cgm where z01_numcgm = eso05_cgm) as inscricao_empregador'
-        );
+        ];
 
         $dao = new \cl_avaliacaogruporespostaprocesso;
         $sql = $dao->avaliacaoPreenchida($campos, $where, $group);
@@ -400,7 +400,7 @@ class Preenchimentos
         }
         $empregadores = db_utils::getCollectionByRecord($rs);
 
-        $dadosDoPreenchimentoPorEmpregador = array();
+        $dadosDoPreenchimentoPorEmpregador = [];
 
         foreach ($empregadores as $empregador) {
             foreach ($dadosDoPreenchimento as $item) {
@@ -422,7 +422,7 @@ class Preenchimentos
     public static function buscaRespostas($preenchimentoId)
     {
         $dao = new cl_avaliacaogruporesposta;
-        $campos = array(
+        $campos = [
             "db102_identificadorcampo as grupo",
             "db103_identificadorcampo as pergunta",
             "db103_sequencial as idpergunta",
@@ -430,7 +430,7 @@ class Preenchimentos
             "db106_resposta as resposta",
             "db103_avaliacaotiporesposta as tipopergunta",
             "db103_obrigatoria as obrigatoria"
-        );
+        ];
 
         $campos = implode(', ', $campos);
         $sql = $dao->busca_resposta_preenchimento($preenchimentoId, $campos);
@@ -490,16 +490,16 @@ class Preenchimentos
     {
         $daoAvaliacaoAvisoPrevio = new \cl_avaliacaogruporespostaavisoprevio();
 
-        $campos = array(
+        $campos = [
             'distinct db107_sequencial as preenchimento',
             'z01_cgccpf as inscricao_empregador',
             'eso07_regist as matricula'
-        );
+        ];
 
-        $where = array(
+        $where = [
             "db101_sequencial = $this->codigoFormulario",
             "eso07_empregador = $cgm"
-        );
+        ];
 
         $sql = $daoAvaliacaoAvisoPrevio->avaliacaoPreenchida($campos, $where);
 
@@ -533,12 +533,12 @@ class Preenchimentos
         $configuracaoAfastamento = new S2230();
         $dataConfiguracao = $configuracaoAfastamento->getPropriedade('data_envio');
 
-        $where = array(
+        $where = [
             "eso13_avaliacao = {$codigoFormulario}",
             "(h16_dtterm >= '{$dataConfiguracao}' or h16_dtterm is null) ",
             "eso13_empregador = {$cgmEmpregador}",
             "avaliacaopergunta.db103_identificadorcampo = 'codMotAfast'"
-        );
+        ];
 
         if ($this->filtraServidores()) {
             $where[] = $this->montarWhereServidores('eso12_rhpessoal');
@@ -566,23 +566,23 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoDesligamentoServidor($cgmEmpregador)
     {
-        $where = array(
+        $where = [
             "eso15_avaliacao = {$this->getCodigoFormulario()}",
             "eso15_cgmempregador = {$cgmEmpregador}"
-        );
+        ];
 
         if ($this->filtraServidores()) {
             $where[] = $this->montarWhereServidores('eso15_regist');
         }
 
-        $group = array("eso15_regist", "z01_cgccpf", "eso15_codigorescisao");
+        $group = ["eso15_regist", "z01_cgccpf", "eso15_codigorescisao"];
 
-        $campos = array(
+        $campos = [
             "max(eso15_avaliacaogruporesposta) as preenchimento",
             "eso15_regist as matricula",
             "z01_cgccpf as inscricao_empregador",
             'eso15_codigorescisao as referencia',
-        );
+        ];
 
         $dao = new \cl_avaliacaogruporespostarhpesrescisao();
         $consultaPreenchimento = $dao->sql_query_formulario($campos, $where, $group);
@@ -613,17 +613,17 @@ class Preenchimentos
     ) {
         $daoExclusaoEventos = new \cl_avaliacaogruporespostaexclusaoeventos();
 
-        $campos = array(
+        $campos = [
             "db107_sequencial AS preenchimento",
             "eso14_protocolo AS identificador",
             "z01_cgccpf AS inscricao_empregador",
             "db107_datalancamento as data_preenchimento",
-        );
+        ];
 
-        $where = array(
+        $where = [
             "db101_sequencial = {$this->codigoFormulario}",
             "eso14_cgm = '{$cgmEmpregador}'"
-        );
+        ];
 
         if (!empty($numeroRecibo)) {
             $where[] = "eso14_protocolo = '{$numeroRecibo}'";
@@ -655,25 +655,25 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoTSVEInicial($codigoFormulario, $cgmEmpregador)
     {
-        $where = array(
+        $where = [
             "eso16_avaliacao = {$codigoFormulario}",
             "eso16_empregador = {$cgmEmpregador}"
-        );
+        ];
 
         if ($this->filtraServidores()) {
             $where[] = $this->montarWhereServidores('eso16_rhpessoal');
         }
 
-        $group = array("eso16_rhpessoal, z01_cgccpf");
+        $group = ["eso16_rhpessoal, z01_cgccpf"];
 
-        $campos = array(
+        $campos = [
             "eso16_rhpessoal as matricula",
             "max(eso16_avaliacaogruporesposta) as preenchimento",
             "z01_cgccpf as inscricao_empregador"
-        );
+        ];
 
         $dao = new \cl_avaliacaogruporespostatsveinicial;
-        $sql = $dao->sql_avaliacao_preenchida($campos, array(), $where, $group);
+        $sql = $dao->sql_avaliacao_preenchida($campos, [], $where, $group);
         $rs = \db_query($sql);
 
         if (!$rs) {
@@ -696,21 +696,21 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoTSVETermino($codigoFormulario, $cgmEmpregador)
     {
-        $where = array(
+        $where = [
             "eso24_avaliacao = {$codigoFormulario}",
             "eso24_cgmempregador = {$cgmEmpregador} "
-        );
+        ];
 
         if ($this->filtraServidores()) {
             $where[] = $this->montarWhereServidores('eso24_rhpessoal');
         }
 
-        $campos = array(
+        $campos = [
             "max(eso24_avaliacaogruporesposta) as preenchimento",
             "eso24_rhpessoal as matricula ",
             "eso24_codigorescisao as referencia ",
             "z01_cgccpf as inscricao_empregador "
-        );
+        ];
 
         $group = " group by eso24_rhpessoal, z01_cgccpf, eso24_codigorescisao";
         $dao = new \cl_avaliacaogruporespostatertrabasemvinc();
@@ -738,16 +738,16 @@ class Preenchimentos
     {
         $daoTrabalhoIntermitente = new \cl_avaliacaogruporespostatrabintermitente();
 
-        $campos = array(
+        $campos = [
             "db107_sequencial AS preenchimento",
             "eso19_codigoconvocacao AS identificador",
             "z01_cgccpf AS inscricao_empregador",
-        );
+        ];
 
-        $where = array(
+        $where = [
             "db101_sequencial = {$this->codigoFormulario}",
             "eso19_cgm = '{$cgmEmpregador}'"
-        );
+        ];
 
         $sqlTrabalhoIntermitente = $daoTrabalhoIntermitente->buscarRespostasPreenchimento($campos, $where);
         $rsTrabalhoIntermitente = \db_query($sqlTrabalhoIntermitente);
@@ -772,21 +772,21 @@ class Preenchimentos
     public function buscarUltimoPreenchimentoAlteracaoDadosServidor($codigoInstituicao, $codigoCgmEmpregador)
     {
 
-        $where = array(
+        $where = [
             "avaliacao.db101_sequencial = {$this->getCodigoFormulario()}",
             "rhlota.r70_numcgm = {$codigoCgmEmpregador}",
             "rhlota.r70_instit = {$codigoInstituicao}",
-        );
+        ];
 
         if ($this->filtraServidores()) {
             $where[] = $this->montarWhereServidores('eso17_rhpessoal');
         }
 
-        $campos = array(
+        $campos = [
             'eso17_rhpessoal as matricula',
             'max(db107_sequencial) as preenchimento',
             "(select z01_cgccpf from cgm where z01_numcgm = {$codigoCgmEmpregador}) as inscricao_empregador "
-        );
+        ];
 
         $dao = new \cl_avaliacaogruporespostarhpessoalalteracao();
         $sSql = " group by eso17_rhpessoal";
@@ -814,16 +814,16 @@ class Preenchimentos
     {
         $daoReintegracao = new \cl_avaliacaogruporespostareintegracao();
 
-        $campos = array(
+        $campos = [
             "db107_sequencial AS preenchimento",
             "eso21_matricula AS identificador",
             "z01_cgccpf AS inscricao_empregador",
-        );
+        ];
 
-        $where = array(
+        $where = [
             "db101_sequencial = {$this->codigoFormulario}",
             "eso21_cgm = '{$cgmEmpregador}'"
-        );
+        ];
 
         $sqlReintegracao = $daoReintegracao->buscarRespostasPreenchimento($campos, $where);
         $rsReintegracao = \db_query($sqlReintegracao);
@@ -843,16 +843,16 @@ class Preenchimentos
     {
         $daoAlteracaoContratual = new \cl_avaliacaogruporespostaaltercontratual();
 
-        $campos = array(
+        $campos = [
             "db107_sequencial AS preenchimento",
             "eso20_rhpessoal AS identificador",
             "z01_cgccpf AS inscricao_empregador",
-        );
+        ];
 
-        $where = array(
+        $where = [
             "db101_sequencial = {$this->codigoFormulario}",
             "eso20_cgm = '{$cgmEmpregador}'"
-        );
+        ];
 
         if ($this->filtraServidores()) {
             $where[] = $this->montarWhereServidores('eso20_rhpessoal');
@@ -912,16 +912,16 @@ class Preenchimentos
     {
         $daoAlteracaoCadastral = new \cl_avaliacaogruporespostacontribuinte();
 
-        $campos = array(
+        $campos = [
             "db107_sequencial AS preenchimento",
             "eso27_cgm AS identificador",
             "z01_cgccpf AS inscricao_contribuinte",
-        );
+        ];
 
-        $where = array(
+        $where = [
             "db101_sequencial = {$this->codigoFormulario}",
             "eso27_cgm = '{$this->responsavelPreenchimento}'"
-        );
+        ];
 
         $sqlAlteracaoCadastral = $daoAlteracaoCadastral->buscarRespostasPreenchimento($campos, $where);
         $rsAlteracaoCadastral = \db_query($sqlAlteracaoCadastral);
@@ -941,11 +941,11 @@ class Preenchimentos
     {
         $daoRemuneracaoRGPS = new \cl_avaliacaogruporespostaremuneracaorgps();
 
-        $campos = array(
+        $campos = [
             "eso28_avaliacaogruporesposta as identificador",
             "max(db107_sequencial) as preenchimento",
             "(select z01_cgccpf from cgm where z01_numcgm = {$cgmEmpregador}) as inscricao_empregador"
-        );
+        ];
 
         $agrupar = "eso28_avaliacaogruporesposta";
         $sqlRemuneracaoRGPS = $daoRemuneracaoRGPS->buscarRespostasPorPergunta(
@@ -970,16 +970,16 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoEFDProcessos()
     {
-        $where = array(
+        $where = [
             "efd02_cgm = {$this->responsavelPreenchimento}",
             "efd02_avaliacao = {$this->codigoFormulario}"
-        );
+        ];
 
-        $campos = array(
+        $campos = [
             'efd02_avaliacaogruporesposta as preenchimento',
             'efd02_processo AS identificador',
             'z01_cgccpf AS inscricao_contribuinte'
-        );
+        ];
         $dao = new \cl_avaliacaogruporespostaefdprocesso();
         $sql = $dao->sql_query(null, implode(', ', $campos), null, implode(' and ', $where));
 
@@ -1000,17 +1000,17 @@ class Preenchimentos
     {
         $daoRetServicosTomados = new \cl_avaliacaogruporespostaretservicostomados();
 
-        $campos = array(
+        $campos = [
             "db107_sequencial AS preenchimento",
             "efd04_cgmcontribuinte AS identificador",
             "cgmcontribuinte.z01_cgccpf AS inscricao_contribuinte",
-        );
+        ];
 
 
-        $where = array(
+        $where = [
             "db101_sequencial = {$this->codigoFormulario}",
             "efd04_cgmprestador = '{$this->responsavelPreenchimento}'"
-        );
+        ];
 
 
         if (isset($ano)) {
@@ -1030,7 +1030,7 @@ class Preenchimentos
 
         if (pg_num_rows($rsRetServicosTomados) == 0) {
             //throw new \DBException("Nenhum preenchimento de retenção de serviços tomados encontrado.");
-            return array();
+            return [];
         }
 
         return db_utils::getCollectionByRecord($rsRetServicosTomados);
@@ -1040,17 +1040,17 @@ class Preenchimentos
     {
         $dao = new \cl_avaliacaogruporespostaexclusaoeventosefd();
 
-        $campos = array(
+        $campos = [
             "db107_sequencial AS preenchimento",
             "eso29_protocolo AS identificador",
             "eso29_data as data",
             "z01_cgccpf AS inscricao_contribuinte",
-        );
+        ];
 
-        $where = array(
+        $where = [
             "db101_sequencial = {$this->codigoFormulario}",
             "eso29_cgm = '{$this->responsavelPreenchimento}'"
-        );
+        ];
 
         $sql = $dao->buscarRespostasPreenchimento($campos, $where);
         $rs = \db_query($sql);
@@ -1068,16 +1068,16 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoEFDServicosPrestados()
     {
-        $where = array(
+        $where = [
             "efd05_cgm = {$this->responsavelPreenchimento}",
             "efd05_avaliacao = {$this->codigoFormulario}"
-        );
+        ];
 
-        $campos = array(
+        $campos = [
             'efd05_avaliacaogruporesposta as preenchimento',
             'efd05_competencia AS identificador',
             'z01_cgccpf AS inscricao_contribuinte'
-        );
+        ];
         $dao = new \cl_avaliacaogruporespostaefdr2020();
         $sql = $dao->sql_query(null, implode(', ', $campos), null, implode(' and ', $where));
 
@@ -1102,19 +1102,19 @@ class Preenchimentos
     public function buscarUltimoPreenchimentoTotalizacaoPagamentosContingencia()
     {
         $dao = new \cl_avaliacaogruporespostatotalizacaopagamentocontingencia();
-        $campos = array(
+        $campos = [
             "eso34_sequencial as identificador",
             "eso34_avaliacaogruporesposta as preenchimento",
             "z01_cgccpf AS inscricao_empregador",
             "eso34_indicativoapuracao as indicativo_apuracao",
             "eso34_periodo as periodo_apuracao"
 
-        );
-        $where = array(
+        ];
+        $where = [
             "eso34_empregador = $this->responsavelPreenchimento"
-        );
+        ];
 
-        $ordem = array("eso34_indicativoapuracao", "eso34_periodo");
+        $ordem = ["eso34_indicativoapuracao", "eso34_periodo"];
         $sql = $dao->preenchimentos($campos, $ordem, $where);
         $rs = db_query($sql);
 
@@ -1136,25 +1136,25 @@ class Preenchimentos
     public function buscarUltimoPreenchimentoFechamentoEventosPeriodicos($indicativoPeriodoApuracao, $ano, $mes = null)
     {
         $dao = new \cl_avaliacaogruporespostaesocials1299();
-        $campos = array(
+        $campos = [
             "eso33_sequencial as identificador",
             "eso33_avaliacaogruporesposta as preenchimento",
             "z01_cgccpf AS inscricao_empregador",
             "eso33_indicativoapuracao as indicativo_apuracao",
             "eso33_periodo as periodo_apuracao"
 
-        );
+        ];
         $periodo = $ano;
         if ($indicativoPeriodoApuracao == 1) {
-            $periodo = "{$ano}-" . str_pad($mes, 2, 0, STR_PAD_LEFT);
+            $periodo = "{$ano}-" . str_pad((string) $mes, 2, 0, STR_PAD_LEFT);
         }
-        $where = array(
+        $where = [
             "eso33_empregador = $this->responsavelPreenchimento",
             "eso33_avaliacao = $this->codigoFormulario",
             "eso33_periodo = '$periodo'"
-        );
+        ];
 
-        $ordem = array("eso33_indicativoapuracao", "eso33_periodo");
+        $ordem = ["eso33_indicativoapuracao", "eso33_periodo"];
         $sql = $dao->preenchimentos($campos, $ordem, $where);
         $rs = db_query($sql);
 
@@ -1178,11 +1178,11 @@ class Preenchimentos
             "eso32_mes = {$mes}",
         ];
 
-        $campos = array(
+        $campos = [
             "eso32_avaliacaogruporesposta as preenchimento",
             "concat(eso32_ano, '-', lpad(eso32_mes::text, 2, '0')) as identificador",
             "z01_cgccpf AS inscricao_contribuinte"
-        );
+        ];
         $dao = new \cl_avaliacaogruporespostafechamentoefd();
         $sql = $dao->sql_query(null, implode(', ', $campos), null, implode(' and ', $where));
 
@@ -1221,9 +1221,7 @@ class Preenchimentos
      */
     private function montarWhereServidores($coluna)
     {
-        $matriculas = implode(', ', array_map(function (Servidor $servidor) {
-            return $servidor->getMatricula();
-        }, $this->servidores));
+        $matriculas = implode(', ', array_map(fn(Servidor $servidor) => $servidor->getMatricula(), $this->servidores));
 
         return "{$coluna} IN ({$matriculas})";
     }
@@ -1236,7 +1234,7 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoCat($codigoFormulario, $cgmEmpregador, $dataInicio, $dataFim)
     {
-        $where = array(" db101_sequencial = {$codigoFormulario} ");
+        $where = [" db101_sequencial = {$codigoFormulario} "];
         if (!empty($cgmEmpregador)) {
             $where[] = "eso36_empregador = {$cgmEmpregador}";
         }
@@ -1283,7 +1281,7 @@ class Preenchimentos
         $dataInicio,
         $dataFim
     ) {
-        $where = array(" db101_sequencial = {$codigoFormulario} ");
+        $where = [" db101_sequencial = {$codigoFormulario} "];
         if (!empty($dataInicio) && !empty($dataFim)) {
             $where[] = "eso37_dataatestado between '{$dataInicio}' and '{$dataFim}' ";
         }

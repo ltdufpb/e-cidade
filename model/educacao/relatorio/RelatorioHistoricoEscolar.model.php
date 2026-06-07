@@ -421,7 +421,7 @@ class RelatorioHistoricoEscolar
             'FALECIDO' => 'FALEC',
         ];
 
-        if (array_key_exists($sSituacao, $aSituacoes)) {
+        if (array_key_exists((string) $sSituacao, $aSituacoes)) {
             $sTermoFinal = $aSituacoes[$sSituacao];
         }
 
@@ -630,7 +630,7 @@ class RelatorioHistoricoEscolar
                     $oObservacao = new stdClass();
                     $oObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-                    if (trim($oObservacao->aParagrafos[1]->oParag->db02_texto)) {
+                    if (trim((string) $oObservacao->aParagrafos[1]->oParag->db02_texto)) {
                         $aObservacao[] = "- " . $oObservacao->aParagrafos[1]->oParag->db02_texto;
                     }
 

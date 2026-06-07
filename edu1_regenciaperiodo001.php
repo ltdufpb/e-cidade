@@ -63,7 +63,7 @@ $sSqlRegencia0   = $clregencia->sql_query( "", "count(*) as qtdreg", "", $sWhere
 $result0         = $clregencia->sql_record( $sSqlRegencia0 );
 db_fieldsmemory( $result0, 0 );
 
-if ( trim( $ed57_c_medfreq ) == "PERÌODOS" ) {
+if ( trim( (string) $ed57_c_medfreq ) == "PERÌODOS" ) {
   $tipofreq = "Aulas Dadas";
 } else {
   $tipofreq = "Dias Letivos";
@@ -243,7 +243,7 @@ if ( isset( $alterar ) ) {
                 <form name="form1" method="post" action="">
                 <br>
                 <?php
-                  if ( trim( $ed57_c_medfreq ) == "PERÌODOS" ) { ?>
+                  if ( trim( (string) $ed57_c_medfreq ) == "PERÌODOS" ) { ?>
                     Informe as aulas dadas desta discilpina em cada período de avaliação:
                 <?php } else {?>
                     Informe os dias letivos em cada período de avaliação:
@@ -252,7 +252,7 @@ if ( isset( $alterar ) ) {
                 <table border="0" cellspacing="0" cellpadding="2">
                   <tr align="center">
                   <?php
-                    $disabled            = trim( $ed59_c_freqglob ) == "A" ? "disabled" : "";
+                    $disabled            = trim( (string) $ed59_c_freqglob ) == "A" ? "disabled" : "";
                     $sWhereProcAvaliacao = "ed41_i_procedimento = {$ed220_i_procedimento} AND ed78_i_regencia = {$regencia}";
                     $sSqlProcAvaliacao   = $clprocavaliacao->sql_query_regper( "", "*", "ed09_i_sequencia", $sWhereProcAvaliacao );
                     $result1             = $clprocavaliacao->sql_record( $sSqlProcAvaliacao );
@@ -282,7 +282,7 @@ if ( isset( $alterar ) ) {
                                    maxlength="3" 
                                    style="text-align:center;" 
                                    onclick="alert('Existem alunos com avaliações encerradas para esta disciplina!');" 
-                                   <?=trim( $ed59_c_freqglob ) == "A" ? "disabled" : "readonly"?> >
+                                   <?=trim( (string) $ed59_c_freqglob ) == "A" ? "disabled" : "readonly"?> >
                           </td>
                         <?php 
                         } else {

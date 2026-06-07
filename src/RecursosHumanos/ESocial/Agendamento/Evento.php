@@ -8,33 +8,6 @@ class Evento
 {
 
     /**
-     * Código do Evento do eSocial
-     *
-     * @var integer
-     */
-    private $tipoEvento;
-
-    /**
-     * Código do empregador
-     *
-     * @var integer
-     */
-    private $empregador;
-
-    /**
-     * Código do responsavel pelo evento
-     * @var mixed
-     */
-    private $responsavelPreenchimento;
-
-    /**
-     * Dados do Evento
-     *
-     * @var \stdClass
-     */
-    private $dado;
-
-    /**
      * md5 do objeto salvo
      *
      * @var string
@@ -53,29 +26,38 @@ class Evento
      * @param integer $empregador
      * @param string $responsavelPreenchimento
      * @param \stdClass $dados
+     * @param \stdClass $dado
      */
-    public function __construct($tipoEvento, $empregador, $responsavelPreenchimento, $dado)
+    public function __construct(/**
+     * Código do Evento do eSocial
+     */
+    private $tipoEvento, /**
+     * Código do empregador
+     */
+    private $empregador, /**
+     * Código do responsavel pelo evento
+     */
+    private $responsavelPreenchimento, /**
+     * Dados do Evento
+     */
+    private $dado)
     {
-        $this->tipoEvento = $tipoEvento;
-        $this->empregador = $empregador;
-        $this->responsavelPreenchimento = $responsavelPreenchimento;
-        $this->dado = $dado;
         $this->iContador = 1;
 
-        $dado = json_encode(\DBString::utf8_encode_all($this->dado));
-        if (is_null($dado)) {
+        $this->dado = json_encode(\DBString::utf8_encode_all($this->dado));
+        if (is_null($this->dado)) {
             throw new \Exception("Erro ao codificar dados para envio.");
         }
-        $this->md5 = md5($dado);
+        $this->md5 = md5($this->dado);
     }
 
     public function adicionarFila($adicionarTarefa = false, $validaMd5 = true)
     {
-        $where = array(
+        $where = [
             "rh213_evento = '{$this->tipoEvento}'",
             "rh213_empregador = {$this->empregador}",
             "rh213_responsavelpreenchimento = '{$this->responsavelPreenchimento}'"
-        );
+        ];
 
         $where = implode(" and ", $where);
         $dao = new \cl_esocialenvio();
@@ -143,7 +125,7 @@ class Evento
 
         if (empty($mensagem) && empty($this->mensagem)) {
             $integracao = 'eSocial';
-            if (strpos($this->tipoEvento, 'R') === 0) {
+            if (str_starts_with($this->tipoEvento, 'R')) {
                 $integracao = 'EFD-reinf';
             }
             $mensagem  = "Aguardando envio na rotina ";

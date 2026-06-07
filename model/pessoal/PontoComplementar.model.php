@@ -83,7 +83,7 @@ class PontoComplementar extends Ponto {
 
     require_once modification("model/pessoal/RubricaRepository.model.php");
 
-    $aRetorno     = array();
+    $aRetorno     = [];
     $iInstituicao = db_getsession("DB_instit");
     $oDaoRubricas = db_utils::getDao("rhrubricas");
     $sSql         = $oDaoRubricas->sql_query_file(null,null,'rh27_rubric','rh27_rubric','rh27_complementarautomatica is true and rh27_instit = '.$iInstituicao);
@@ -108,6 +108,7 @@ class PontoComplementar extends Ponto {
    * @param RegistroPonto $oRegistro
    * @return bool
    */
+  #[\Override]
   public function adicionarRegistro( RegistroPonto $oRegistroPonto, $lSubstituir = true) {
     
     /**
@@ -136,7 +137,7 @@ class PontoComplementar extends Ponto {
      * @var Array
      */
     $aRubricasAutomatica = PontoComplementar::getRubricasAutomaticas();
-    $aCodigoRubricas     = array();
+    $aCodigoRubricas     = [];
     
     /**
      * Percorre as rubricas automaticas pegando seu código
@@ -183,6 +184,7 @@ class PontoComplementar extends Ponto {
    * @param Registro $oRegistro
    * @return bool
    */
+  #[\Override]
   public function removerRegistro( Rubrica $oRubrica) {
   
     parent::removerRegistro($oRubrica);    
@@ -196,7 +198,7 @@ class PontoComplementar extends Ponto {
     }
     
     $this->limpar();
-    $this->aRegistros = array();
+    $this->aRegistros = [];
     return true;
   }
   

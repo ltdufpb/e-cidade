@@ -109,7 +109,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed50_i_codigo"=>@$ed50_i_codigo,"ed50_i_aluno"=>@$ed50_i_aluno,"z01_nome"=>@$z01_nome,"ed50_i_tipotelefone"=>@$ed50_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed50_i_numero"=>@$ed50_i_numero,"ed50_i_ramal"=>@$ed50_i_ramal,"ed50_t_obs"=>@$ed50_t_obs);
+   $chavepri= ["ed50_i_codigo"=>@$ed50_i_codigo,"ed50_i_aluno"=>@$ed50_i_aluno,"z01_nome"=>@$z01_nome,"ed50_i_tipotelefone"=>@$ed50_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed50_i_numero"=>@$ed50_i_numero,"ed50_i_ramal"=>@$ed50_i_ramal,"ed50_t_obs"=>@$ed50_t_obs];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltelefonealuno->sql_query("","*","","ed50_i_aluno = $ed50_i_aluno");
    $cliframe_alterar_excluir->campos  = "ed50_i_codigo,ed13_c_descr,ed50_i_numero,ed50_i_ramal";

@@ -48,7 +48,7 @@ $sPresid = $sPresidente;
 
 function maiusculo(&$string) {
 	
-  $string = strtoupper($string);
+  $string = strtoupper((string) $string);
   $string = str_replace("Ã¡","Ã",$string);
   $string = str_replace("Ã©","Ã",$string);
   $string = str_replace("Ã­","Ã",$string);
@@ -69,7 +69,7 @@ function maiusculo(&$string) {
 }
 
 
-$sDataVotacao       = substr($iData,6,4)."-".substr($iData,3,2)."-".substr($iData,0,2);
+$sDataVotacao       = substr((string) $iData,6,4)."-".substr((string) $iData,3,2)."-".substr((string) $iData,0,2);
 
 $sSqlDadosTelEscola = $clTelefoneEscola->sql_query("",
                                                    "ed26_i_ddd,ed26_i_numero,ed26_i_ramal",
@@ -159,7 +159,7 @@ $fpdf->Addpage('P');
 
 $data         = date($sDataVotacao);
 $sDataExtenso        = db_dataextenso(db_strtotime($sDataVotacao));
-$mes_extenso  = array("01"=>"janeiro",
+$mes_extenso  = ["01"=>"janeiro",
                       "02"=>"fevereiro",
                       "03"=>"março",
                       "04"=>"abril",
@@ -171,9 +171,9 @@ $mes_extenso  = array("01"=>"janeiro",
                       "10"=>"outubro",
                       "11"=>"novembro",
                       "12"=>"dezembro"
-                     );
+                     ];
 
-$cidade = mb_strtolower($mun_escola);
+$cidade = mb_strtolower((string) $mun_escola);
 $ArrayNomeCidade = explode(" ", $cidade);
 
 for($i = 0; $i < count($ArrayNomeCidade); $i++){
@@ -186,7 +186,7 @@ $cidadeescola =   ucfirst($cidade);
 $sDataFinal = $cidadeescola.", ".$sDataExtenso;
 db_fieldsmemory($sResult,0);
 
-if ( trim($iCodigoReferencia) != null ) {
+if ( trim((string) $iCodigoReferencia) != null ) {
   $sNomeEscola = "{$iCodigoReferencia} - {$sNomeEscola}";
 }
 

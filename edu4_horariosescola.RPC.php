@@ -52,7 +52,7 @@ try {
      */
     case 'buscaHorariosEscola':
 
-      $oRetorno->aHorariosEscola = array();
+      $oRetorno->aHorariosEscola = [];
 
       $oDaoHorarioEscola   = new cl_horarioescola();
       $sWhereHorarioEscola = "ed123_escola = {$oParam->iEscola} ";
@@ -95,14 +95,14 @@ try {
       $oHorarioEscola->setHoraFinal($oParam->sHorarioFim);
       $oHorarioEscola->salvar();
 
-      $oRetorno->sMensagem = urlencode( _M(MENSAGEM_HORARIOESCOLA_RPC . "salvo_sucesso") );
+      $oRetorno->sMensagem = urlencode( (string) _M(MENSAGEM_HORARIOESCOLA_RPC . "salvo_sucesso") );
       break;
 
     case 'excluiHoraEscola':
 
       $oHorarioEscola = new HorarioEscola( $oParam->iHorarioEscola );
       $oHorarioEscola->remover();
-      $oRetorno->sMensagem = urlencode( _M(MENSAGEM_HORARIOESCOLA_RPC . "excluido_sucesso") );
+      $oRetorno->sMensagem = urlencode( (string) _M(MENSAGEM_HORARIOESCOLA_RPC . "excluido_sucesso") );
       break;
   }
 

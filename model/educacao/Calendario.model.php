@@ -328,7 +328,7 @@ class Calendario {
 
           $oDadosFeriado        = db_utils::fieldsMemory($rsFeriado, $i);
 
-          $lDiaLetivo           = strtoupper($oDadosFeriado->ed54_c_dialetivo) == "S" ? true : false;
+          $lDiaLetivo           = strtoupper((string) $oDadosFeriado->ed54_c_dialetivo) == "S" ? true : false;
           $oCalendarioEvento    =   new CalendarioEvento();
 
           $oCalendarioEvento->setCodigoEvento($oDadosFeriado->ed54_i_codigo);

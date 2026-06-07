@@ -34,6 +34,7 @@ class EstruturalReceita extends Estrutural
      * EX: 3.3.3.9.0.30.0.0.00.00.00
      * @return string
      */
+    #[\Override]
     public function getEstruturalComMascara()
     {
         return db_formatar($this->estrutural, 'ementario_receita');

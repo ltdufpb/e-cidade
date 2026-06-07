@@ -66,6 +66,7 @@ class CadastroBeneficioFormatter extends Formatter
      * @return array|\Assentamento[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $this->dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
@@ -246,7 +247,7 @@ class CadastroBeneficioFormatter extends Formatter
         $instPenMorte->dtInst = '';
         $instPenMorte->cpfInst = '';
 
-        if (pg_numrows($rs) > 0) {
+        if (pg_num_rows($rs) > 0) {
             $servidorPensao = \ServidorRepository::getInstanciaByCodigo($matricula, null, null, null, false);
             $instPenMorte->cpfInst = $servidorPensao->getCgm()->getCpf();
             /**
@@ -262,6 +263,7 @@ class CadastroBeneficioFormatter extends Formatter
     /**
      * @param  CgmJuridico  $empregador
      */
+    #[\Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;
@@ -269,37 +271,20 @@ class CadastroBeneficioFormatter extends Formatter
 
     public function deParaCodigos($codigo)
     {
-        switch ($codigo) {
-            case "0102":
-            case "0106":
-                return "0801";
-                break;
-            case "0105":
-            case "0103":
-            case "0101":
-                return "0802";
-                break;
-            case "0302":
-                return "0804";
-                break;
-            case "0301":
-                return "0803";
-                break;
-            case "0601":
-                return "0808";
-                break;
-            case "0603":
-                return "0807";
-                break;
-            default:
-                return $codigo;
-            break;
-        }
+        return match ($codigo) {
+            "0102", "0106" => "0801",
+            "0105", "0103", "0101" => "0802",
+            "0302" => "0804",
+            "0301" => "0803",
+            "0601" => "0808",
+            "0603" => "0807",
+            default => $codigo,
+        };
     }
 
     private function deParaGrupoBeneficios($codigo)
     {
-        $grupo = substr($codigo, 0, 2);
+        $grupo = substr((string) $codigo, 0, 2);
         $grupos = ['01', '02', '03', '04', '06', '11'];
         if (in_array($grupo, $grupos)) {
             return true;

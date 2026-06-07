@@ -113,13 +113,13 @@ class DataPagamentoFolha
      */
     public function toArray()
     {
-        return array(
+        return [
           'sequencial'       => $this->getSequencial(),
           'instituicao'      => $this->getInstituicao()->toArray(),
           'ano'              => $this->getAno(),
           'mes'              => $this->getMes(),
           'dataPagamento'    => $this->getDataPagamento()->getDate(DBDate::DATA_PTBR)
-        );
+        ];
     }
 
     public function getSequencial()

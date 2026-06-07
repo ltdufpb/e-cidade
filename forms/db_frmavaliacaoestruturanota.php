@@ -122,7 +122,7 @@ MsgAviso(db_getsession("DB_coddepto"),"escola");
             </td>
             <td>
               <?php 
-                $x = array("f"=>"NAO","t"=>"SIM");
+                $x = ["f"=>"NAO","t"=>"SIM"];
                 db_select('ed315_ativo',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -133,7 +133,7 @@ MsgAviso(db_getsession("DB_coddepto"),"escola");
             </td>
             <td>
               <?php 
-                $x = array("f"=>"NAO","t"=>"SIM");
+                $x = ["f"=>"NAO","t"=>"SIM"];
                 db_select('ed315_arredondamedia',$x,true,$db_opcao," onchange='js_verificaArredondar();'");
               ?>
             </td>
@@ -329,7 +329,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_avaliacaoestruturanota.hide();
   <?php 
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }
@@ -348,7 +348,7 @@ function js_preenchepesquisaregraarredondamento(chave) {
   db_iframe_regraarredondamento.hide();
   <?php 
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

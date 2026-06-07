@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censoorgemissrg_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clcensoorgemissrg = new cl_censoorgemissrg;
 ?>
 <html>
@@ -64,9 +64,9 @@ $clcensoorgemissrg = new cl_censoorgemissrg;
               ed132_c_descr
              ";
    $sql = $clcensoorgemissrg->sql_query("",$campos,"ed132_i_codigo","");
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_ed1321_i_codigo)){
-    $repassa = array("chave_ed132_i_codigo"=>@$chave_ed132_i_codigo);
+    $repassa = ["chave_ed132_i_codigo"=>@$chave_ed132_i_codigo];
    }
    db_lovrot($sql,25,"","","","","NoMe",$repassa);
    ?>

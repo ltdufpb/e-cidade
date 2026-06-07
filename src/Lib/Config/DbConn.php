@@ -10,46 +10,27 @@ class DbConn
     public static $instance;
 
     /**
-     * @var string
-     */
-    private $servidor;
-
-    /**
-     * @var string
-     */
-    private $base;
-
-    /**
-     * @var string
-     */
-    private $porta;
-
-    /**
-     * @var string
-     */
-    private $usuario;
-
-    /**
      * @var null string
      */
     private $senha;
 
+    /**
+     * @param string $DB_SERVIDOR
+     * @param string $DB_BASE
+     * @param string $DB_PORTA
+     * @param string $DB_USUARIO
+     */
     private function __construct(
-        $DB_SERVIDOR = null,
-        $DB_BASE = null,
-        $DB_PORTA = null,
-        $DB_USUARIO = null,
+        private $servidor = null,
+        private $base = null,
+        private $porta = null,
+        private $usuario = null,
         $DB_SENHA = null
     ) {
         /***
          * Legacy compat
          */
         require_once(modification("libs/db_conn.php"));
-
-        $this->servidor = $DB_SERVIDOR;
-        $this->base = $DB_BASE;
-        $this->porta = $DB_PORTA;
-        $this->usuario = $DB_USUARIO;
         $this->senha = $DB_SENHA;
     }
 

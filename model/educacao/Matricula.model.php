@@ -529,7 +529,7 @@ class Matricula {
    */
   protected function validarSituacaoMatricula($sSituacao) {
 
-    if (in_array(trim($sSituacao), $this->aSituacaoMatricula)) {
+    if (in_array(trim((string) $sSituacao), $this->aSituacaoMatricula)) {
       return true;
     }
     return false;
@@ -1011,9 +1011,9 @@ class Matricula {
     /*@todo Adicionar Classificação*/
 
       $oDadosMatricula      = db_utils::fieldsMemory($rsMatricula, 0);
-      $oMsgErro->aluno      = trim($oDadosMatricula->aluno);
-      $oMsgErro->turma      = trim($oDadosMatricula->turma);
-      $oMsgErro->calendario = trim($oDadosMatricula->matricula_atual);
+      $oMsgErro->aluno      = trim((string) $oDadosMatricula->aluno);
+      $oMsgErro->turma      = trim((string) $oDadosMatricula->turma);
+      $oMsgErro->calendario = trim((string) $oDadosMatricula->matricula_atual);
       $oMsgErro->situacao   = $oDadosMatricula->ed60_c_situacao;
       $oMsgErro->menu       = "Procedimentos -> Matrículas -> Alterar Situação da Matrícula";
 

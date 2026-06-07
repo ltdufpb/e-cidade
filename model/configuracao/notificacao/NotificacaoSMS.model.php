@@ -81,6 +81,7 @@ final class NotificacaoSMS extends Notificacao implements INotificacao {
     return $this->lEnviada;
   }
   
+  #[\Override]
   public function getMensagemErro() {
     return $this->sErroMensagem;
   }

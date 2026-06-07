@@ -64,7 +64,7 @@ class MaterialEstoqueAlmoxarifado {
   /**
    * @type MaterialEstoqueItem[]
    */
-  private $aEstoqueItem = array();
+  private $aEstoqueItem = [];
 
   /**
    * @param null $iCodigo
@@ -123,7 +123,7 @@ class MaterialEstoqueAlmoxarifado {
    */
   public function getItens() {
 
-    $this->aEstoqueItem = array();
+    $this->aEstoqueItem = [];
     $oDaoEstoqueItem = new cl_matestoqueitem();
     $sSqlEstoqueItem = $oDaoEstoqueItem->sql_query_file(null, "m71_codlanc", null, "m71_codmatestoque = {$this->iCodigo}");
     $rsEstoqueItem   = $oDaoEstoqueItem->sql_record($sSqlEstoqueItem);

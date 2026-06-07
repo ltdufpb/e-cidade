@@ -3,35 +3,35 @@
 //CLASSE DA ENTIDADE grupotaxadiversos
 class cl_grupotaxadiversos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y118_sequencial = 0; 
-   var $y118_descricao = null; 
-   var $y118_inflator = null; 
-   var $y118_procedencia = 0; 
+   public $y118_sequencial = 0; 
+   public $y118_descricao = null; 
+   public $y118_inflator = null; 
+   public $y118_procedencia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y118_sequencial = int8 = Sequencial 
                  y118_descricao = varchar(100) = Descrição 
                  y118_inflator = varchar(5) = Código Inflator 
                  y118_procedencia = int4 = Procedência 
                  ";
    //funcao construtor da classe 
-   function cl_grupotaxadiversos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("grupotaxadiversos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_grupotaxadiversos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y118_sequencial = pg_result($result,0,0); 
+       $this->y118_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from grupotaxadiversos_y118_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y118_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y118_sequencial)){
          $this->erro_sql = " Campo y118_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_grupotaxadiversos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grupo de Taxas de Diversos ($this->y118_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grupo de Taxas de Diversos já Cadastrado";
@@ -159,13 +159,13 @@ class cl_grupotaxadiversos {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22046,'$this->y118_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3971,22046,'','".AddSlashes(pg_result($resaco,0,'y118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3971,22047,'','".AddSlashes(pg_result($resaco,0,'y118_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3971,22048,'','".AddSlashes(pg_result($resaco,0,'y118_inflator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3971,22050,'','".AddSlashes(pg_result($resaco,0,'y118_procedencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3971,22046,'','".AddSlashes(pg_fetch_result($resaco,0,'y118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3971,22047,'','".AddSlashes(pg_fetch_result($resaco,0,'y118_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3971,22048,'','".AddSlashes(pg_fetch_result($resaco,0,'y118_inflator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3971,22050,'','".AddSlashes(pg_fetch_result($resaco,0,'y118_procedencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_grupotaxadiversos {
       $this->atualizacampos();
      $sql = " update grupotaxadiversos set ";
      $virgula = "";
-     if(trim($this->y118_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_sequencial"])){ 
+     if(trim((string) $this->y118_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_sequencial"])){ 
        $sql  .= $virgula." y118_sequencial = $this->y118_sequencial ";
        $virgula = ",";
-       if(trim($this->y118_sequencial) == null ){ 
+       if(trim((string) $this->y118_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "y118_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_grupotaxadiversos {
          return false;
        }
      }
-     if(trim($this->y118_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_descricao"])){ 
+     if(trim((string) $this->y118_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_descricao"])){ 
        $sql  .= $virgula." y118_descricao = '$this->y118_descricao' ";
        $virgula = ",";
-       if(trim($this->y118_descricao) == null ){ 
+       if(trim((string) $this->y118_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "y118_descricao";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_grupotaxadiversos {
          return false;
        }
      }
-     if(trim($this->y118_inflator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_inflator"])){ 
+     if(trim((string) $this->y118_inflator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_inflator"])){ 
        $sql  .= $virgula." y118_inflator = '$this->y118_inflator' ";
        $virgula = ",";
-       if(trim($this->y118_inflator) == null ){ 
+       if(trim((string) $this->y118_inflator) == null ){ 
          $this->erro_sql = " Campo Código Inflator não informado.";
          $this->erro_campo = "y118_inflator";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_grupotaxadiversos {
          return false;
        }
      }
-     if(trim($this->y118_procedencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_procedencia"])){ 
+     if(trim((string) $this->y118_procedencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y118_procedencia"])){ 
        $sql  .= $virgula." y118_procedencia = $this->y118_procedencia ";
        $virgula = ",";
-       if(trim($this->y118_procedencia) == null ){ 
+       if(trim((string) $this->y118_procedencia) == null ){ 
          $this->erro_sql = " Campo Procedência não informado.";
          $this->erro_campo = "y118_procedencia";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_grupotaxadiversos {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22046,'$this->y118_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y118_sequencial"]) || $this->y118_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3971,22046,'".AddSlashes(pg_result($resaco,$conresaco,'y118_sequencial'))."','$this->y118_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3971,22046,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y118_sequencial'))."','$this->y118_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y118_descricao"]) || $this->y118_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3971,22047,'".AddSlashes(pg_result($resaco,$conresaco,'y118_descricao'))."','$this->y118_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3971,22047,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y118_descricao'))."','$this->y118_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y118_inflator"]) || $this->y118_inflator != "")
-             $resac = db_query("insert into db_acount values($acount,3971,22048,'".AddSlashes(pg_result($resaco,$conresaco,'y118_inflator'))."','$this->y118_inflator',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3971,22048,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y118_inflator'))."','$this->y118_inflator',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y118_procedencia"]) || $this->y118_procedencia != "")
-             $resac = db_query("insert into db_acount values($acount,3971,22050,'".AddSlashes(pg_result($resaco,$conresaco,'y118_procedencia'))."','$this->y118_procedencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3971,22050,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y118_procedencia'))."','$this->y118_procedencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_grupotaxadiversos {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22046,'$y118_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3971,22046,'','".AddSlashes(pg_result($resaco,$iresaco,'y118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3971,22047,'','".AddSlashes(pg_result($resaco,$iresaco,'y118_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3971,22048,'','".AddSlashes(pg_result($resaco,$iresaco,'y118_inflator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3971,22050,'','".AddSlashes(pg_result($resaco,$iresaco,'y118_procedencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3971,22046,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y118_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3971,22047,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y118_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3971,22048,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y118_inflator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3971,22050,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y118_procedencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

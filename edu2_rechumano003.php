@@ -163,7 +163,7 @@ for($c=0;$c<$linhas;$c++){
         $pdf->cell(35,4,$rh30_descr,'B',0,"C",$cor);
 
         if(!empty($ed75_i_saidaescola)){
-            $dtsaida = date('d/m/Y', strtotime($ed75_i_saidaescola));
+            $dtsaida = date('d/m/Y', strtotime((string) $ed75_i_saidaescola));
             $pdf->cell(13,4,$dtsaida,'B',0,"C",$cor);
             $continat++;
         } else {

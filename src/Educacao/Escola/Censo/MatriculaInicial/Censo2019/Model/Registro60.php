@@ -926,7 +926,7 @@ class Registro60
      */
     public function setComposicaoItinerarioIntegrado($tipoBase)
     {
-        $composicaoItIntegrado = json_decode($tipoBase['ed182_compos_itinerario_integrado']);
+        $composicaoItIntegrado = json_decode((string) $tipoBase['ed182_compos_itinerario_integrado']);
         $enum = ComposicaoItinerarioFormativoIntegradoEnum::getAll();
 
         foreach ($composicaoItIntegrado as $composicao) {

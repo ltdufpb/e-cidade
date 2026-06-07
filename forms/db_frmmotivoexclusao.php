@@ -72,7 +72,7 @@ value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Exclui
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed249_i_codigo"=>@$ed249_i_codigo,"ed249_c_motivo"=>@$ed249_c_motivo);
+   $chavepri= ["ed249_i_codigo"=>@$ed249_i_codigo,"ed249_c_motivo"=>@$ed249_c_motivo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clmotivoexclusao->sql_query("","*","ed249_c_motivo","");
    $cliframe_alterar_excluir->campos  ="ed249_i_codigo,ed249_c_motivo";

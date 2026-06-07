@@ -76,7 +76,7 @@ class Coluna
     /**
      * @var ColunaEstrutural[]
      */
-    private $colunaEstruturais = array();
+    private $colunaEstruturais = [];
 
     /**
      * @param array $state
@@ -133,13 +133,13 @@ class Coluna
      */
     public function toArray()
     {
-        $colunas = array();
+        $colunas = [];
 
         foreach ($this->getColunaEstruturais() as $colunaEstrutural) {
             $colunas[] = $colunaEstrutural->toArray();
         }
 
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'ano' => $this->getAno(),
             'descricao' => $this->getDescricao(),
@@ -150,7 +150,7 @@ class Coluna
             'origem' => $this->getOrigem(),
             'relatorio' => $this->getRelatorio() instanceof Relatorio ? $this->getRelatorio()->getSequencial() : null,
             'contas' => $colunas,
-        );
+        ];
     }
 
     /**

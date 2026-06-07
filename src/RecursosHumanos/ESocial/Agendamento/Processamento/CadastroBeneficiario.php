@@ -48,11 +48,6 @@ class CadastroBeneficiario extends ProcessamentoAbstract implements Processament
     /**
      * @var
      */
-    private $cgm;
-
-    /**
-     * @var
-     */
     private $ano;
 
     /**
@@ -65,9 +60,13 @@ class CadastroBeneficiario extends ProcessamentoAbstract implements Processament
      *
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**

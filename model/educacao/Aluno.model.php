@@ -376,8 +376,8 @@ class Aluno {
       if ($rsAluno && $oDaoAluno->numrows > 0 ) {
         $oAluno = db_utils::fieldsMemory($rsAluno, 0);
         $this->iCodigoAluno                 = $oAluno->ed47_i_codigo;
-        $this->sNome                        = trim($oAluno->ed47_v_nome);
-        $this->sNomeSocial                  = trim($oAluno->ed47_v_nomesocial);
+        $this->sNome                        = trim((string) $oAluno->ed47_v_nome);
+        $this->sNomeSocial                  = trim((string) $oAluno->ed47_v_nomesocial);
         $this->sDataNascimento              = $oAluno->ed47_d_nasc;
         $this->sNomePai                     = $oAluno->ed47_v_pai;
         $this->sNomeMae                     = $oAluno->ed47_v_mae;
@@ -407,7 +407,7 @@ class Aluno {
         $this->paisResidencia               = $oAluno->ed47_paisresidencia;
         $this->certidaoCartorio             = $oAluno->ed47_c_certidaocart;
         $this->localizacaoDiferenciada      = $oAluno->ed47_localizacaodiferenciada;
-        $this->sFoto                        = trim($oAluno->ed47_c_foto);
+        $this->sFoto                        = trim((string) $oAluno->ed47_c_foto);
         $this->cpf                          = $oAluno->ed47_v_cpf;
         $this->dEmissaoIdentidade           = $oAluno->ed47_d_identdtexp;
         $this->iUFIdentidade                = $oAluno->ed47_i_censoufident;
@@ -622,7 +622,7 @@ class Aluno {
       $oDaoMatricula = new cl_matricula();
       $sWhere        = " ed60_i_aluno = {$this->getCodigoAluno()}";
       $sSqlMatricula = $oDaoMatricula->sql_query_file(null, 'ed60_i_codigo, ed60_d_datamatricula', 'ed60_matricula',
-                                                      $sWhere,'ed60_d_datamatricula');
+                                                      $sWhere);
       $rsMatricula   = $oDaoMatricula->sql_record($sSqlMatricula);
       $iTotalLinhas  = $oDaoMatricula->numrows;
 
@@ -767,7 +767,7 @@ class Aluno {
     $rsAnoMesDia     = db_query($sSqlAnoMesDia);
     if ($rsAnoMesDia && pg_num_rows($rsAnoMesDia) > 0) {
 
-      $aDadosIdade   = explode(',', db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
+      $aDadosIdade   = explode(',', (string) db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
       $oIdade->anos  = trim($aDadosIdade[0]);
       $oIdade->meses = trim($aDadosIdade[1]);
       $oIdade->dias  = trim($aDadosIdade[2]);

@@ -39,7 +39,7 @@ require_once (modification("classes/db_censolinguaindig_classe.php"));
 require_once (modification("classes/db_db_depart_classe.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("libs/db_jsplibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clescola           = new cl_escola;
 $clcensouf          = new cl_censouf;
 $clcensomunic       = new cl_censomunic;

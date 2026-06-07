@@ -96,11 +96,11 @@ class Disciplina {
         $oEnsino                      = EnsinoRepository::getEnsinoByCodigo($oDadosDisciplina->ed10_i_codigo);
         $this->iCodigoDisciplinaGeral = $oDadosDisciplina->ed232_i_codigo;
 
-        $this->setNomeDisciplina(trim($oDadosDisciplina->ed232_c_descr));
+        $this->setNomeDisciplina(trim((string) $oDadosDisciplina->ed232_c_descr));
         $this->nomeCompleto = $oDadosDisciplina->ed232_c_descrcompleta;
         $oEnsino->setNome($oDadosDisciplina->ed10_c_descr);
 
-        $this->setAbreviatura(trim($oDadosDisciplina->ed232_c_abrev));
+        $this->setAbreviatura(trim((string) $oDadosDisciplina->ed232_c_abrev));
         $this->setEnsino($oEnsino);
         $this->setCodigoCensoDisciplina($oDadosDisciplina->ed294_censodisciplina);
         unset($oDadosDisciplina);

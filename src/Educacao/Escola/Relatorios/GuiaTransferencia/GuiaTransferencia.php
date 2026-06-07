@@ -37,7 +37,7 @@ class GuiaTransferencia
     public function __construct($orientation, public $tipoTransferencia = "", $modelo = null, public $notificar = false, $escola = "")
     {
         $this->escola = $escola;
-        $this->orientation = strtoupper($orientation);
+        $this->orientation = strtoupper((string) $orientation);
         $this->pdf = new FpdfMultiCellBorder($orientation);
         $this->pdf->Open();
         $this->pdf->AliasNbPages();
@@ -75,7 +75,7 @@ class GuiaTransferencia
 
     public function setAssinatura($diretor)
     {
-        $arrayAssinatura = $diretor != "" ? explode("|", $diretor) : null;
+        $arrayAssinatura = $diretor != "" ? explode("|", (string) $diretor) : null;
         $this->assinatura['nome'] = !is_null($arrayAssinatura) ? $arrayAssinatura[1] : null;
         $this->assinatura['atividade'] = !is_null($arrayAssinatura) ? $arrayAssinatura[0] . " desta escola," : null;
         $funcao = trim($arrayAssinatura[2]) != "" ? $arrayAssinatura[2] : "";

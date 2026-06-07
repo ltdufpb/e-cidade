@@ -65,7 +65,7 @@ try {
 
       if ( isset($oParam->iTurma) && isset($oParam->iEtapa) ) {
 
-        $oRetorno->aAlunos   = array();
+        $oRetorno->aAlunos   = [];
 
         $oTurma = EducacaoSessionManager::carregarTurma($oParam->iTurma);
         $oEtapa = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
@@ -138,7 +138,7 @@ try {
                   } else {
 
                     $oDadosAlunos->iEscolaAtual        = $oAvaliacaoAproveitamento->getEscola()->getCodigo();
-                    $oDadosAlunos->sNomeEscolaAtual    = urlencode(strtoupper($oAvaliacaoAproveitamento->getEscola()
+                    $oDadosAlunos->sNomeEscolaAtual    = urlencode(strtoupper((string) $oAvaliacaoAproveitamento->getEscola()
                                                                                                        ->getNome()));
                     $oDadosAlunos->sTipoAtual          = urlencode('FORA DA REDE');
                     $oDadosAlunos->sTipoAbreviadoAtual = 'F';
@@ -149,9 +149,9 @@ try {
                       $oDadosAlunos->sTipoAbreviadoAtual = 'M';
                     }
 
-                    $oDadosAlunos->sMunicipioAtual     = urlencode(strtoupper($oAvaliacaoAproveitamento->getEscola()
+                    $oDadosAlunos->sMunicipioAtual     = urlencode(strtoupper((string) $oAvaliacaoAproveitamento->getEscola()
                                                                                                        ->getMunicipio()));
-                    $oDadosAlunos->sUfAtual            = urlencode(strtoupper($oAvaliacaoAproveitamento->getEscola()
+                    $oDadosAlunos->sUfAtual            = urlencode(strtoupper((string) $oAvaliacaoAproveitamento->getEscola()
                                                                                                        ->getUf()));
                     $oDadosAlunos->lEscolaRede         = false;
 

@@ -125,7 +125,7 @@ class CadTipo
 
     public static function check($cadtipo)
     {
-        $cadtipoSuportados = array(
+        $cadtipoSuportados = [
             self::ISSQN_FIXO,
             self::ISSQN_VARIAVEL,
             self::CONTRIBUICAO_DE_MELHORIA,
@@ -148,7 +148,7 @@ class CadTipo
             self::AUTO_DE_INFRACAO_FISCAL,
             self::IPTU,
             self::NAO_INFORMADO
-        );
+        ];
 
         return in_array($cadtipo, $cadtipoSuportados);
     }

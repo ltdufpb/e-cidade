@@ -36,8 +36,8 @@ include(modification("classes/db_escola_classe.php"));
 include(modification("classes/db_escolaestrutura_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clturmaac          = new cl_turmaac;
 $clturmaacmatricula = new cl_turmaacmatricula;
 $clescola           = new cl_escola;
@@ -132,7 +132,7 @@ if (isset($alterar)) {
   }
   
   $clturmaac->ed268_c_aee   = $ed268_c_aee;
-  $clturmaac->ed268_c_descr = trim($ed268_c_descr);
+  $clturmaac->ed268_c_descr = trim((string) $ed268_c_descr);
   $clturmaac->alterar($ed268_i_codigo);
   db_fim_transacao();
   $db_botao = true;

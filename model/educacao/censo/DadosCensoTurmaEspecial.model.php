@@ -106,11 +106,11 @@ class DadosCensoTurmaEspecial extends DadosCenso {
     }
 
     $oDadosTurma = db_utils::fieldsMemory($rsDadosTurma, 0);
-    $oDadosTurma->nome_turma                           = $this->removeCaracteres(trim($oDadosTurma->nome_turma), 2);
-    $oDadosTurma->horario_turma_horario_inicial_hora   = substr($oDadosTurma->horario_inicial, 0, 2);
-    $oDadosTurma->horario_turma_horario_inicial_minuto = substr($oDadosTurma->horario_inicial, 3, 2);
-    $oDadosTurma->horario_turma_horario_final_hora     = substr($oDadosTurma->horario_final, 0, 2);
-    $oDadosTurma->horario_turma_horario_final_minuto   = substr($oDadosTurma->horario_final, 3, 2);
+    $oDadosTurma->nome_turma                           = $this->removeCaracteres(trim((string) $oDadosTurma->nome_turma), 2);
+    $oDadosTurma->horario_turma_horario_inicial_hora   = substr((string) $oDadosTurma->horario_inicial, 0, 2);
+    $oDadosTurma->horario_turma_horario_inicial_minuto = substr((string) $oDadosTurma->horario_inicial, 3, 2);
+    $oDadosTurma->horario_turma_horario_final_hora     = substr((string) $oDadosTurma->horario_final, 0, 2);
+    $oDadosTurma->horario_turma_horario_final_minuto   = substr((string) $oDadosTurma->horario_final, 3, 2);
     $this->iCodigoEscola                               = $oDadosTurma->ed268_i_escola;
 
     unset($oDadosTurma->horario_final);
@@ -138,17 +138,17 @@ class DadosCensoTurmaEspecial extends DadosCenso {
      * as informações de Atendimento Educacional Especializado,
      * devem apenas preenchidas quando existe turma de AEE.
      */
-    $oDadosTurma->aee_ensino_sistema_braille                         = substr($oDadosTurma->atividades_apoio, 0, 1);
-    $oDadosTurma->aee_ensino_uso_recursos_opticos_nao_opticos        = substr($oDadosTurma->atividades_apoio, 2, 1);
-    $oDadosTurma->aee_estrategias_desenvolvimento_processos_mentais  = substr($oDadosTurma->atividades_apoio, 3, 1);
-    $oDadosTurma->aee_tecnicas_orientacao_mobilidade                 = substr($oDadosTurma->atividades_apoio, 4, 1);
-    $oDadosTurma->aee_ensino_lingua_brasileira_sinais_libras         = substr($oDadosTurma->atividades_apoio, 5, 1);
-    $oDadosTurma->aee_ensino_comunicacao_alternativa_aumentativa     = substr($oDadosTurma->atividades_apoio, 6, 1);
-    $oDadosTurma->aee_estrategia_enriquecimento_curricular           = substr($oDadosTurma->atividades_apoio, 7, 1);
-    $oDadosTurma->aee_ensino_uso_soroban                             = substr($oDadosTurma->atividades_apoio, 8, 1);
-    $oDadosTurma->aee_ensino_usabilidade_funcionalidades_informatica = substr($oDadosTurma->atividades_apoio, 9, 1);
-    $oDadosTurma->aee_ensino_lingua_portuguesa_modalidade_escrita    = substr($oDadosTurma->atividades_apoio, 10, 1);
-    $oDadosTurma->aee_estrategias_autonomia_ambiente_escolar         = substr($oDadosTurma->atividades_apoio, 11, 1);
+    $oDadosTurma->aee_ensino_sistema_braille                         = substr((string) $oDadosTurma->atividades_apoio, 0, 1);
+    $oDadosTurma->aee_ensino_uso_recursos_opticos_nao_opticos        = substr((string) $oDadosTurma->atividades_apoio, 2, 1);
+    $oDadosTurma->aee_estrategias_desenvolvimento_processos_mentais  = substr((string) $oDadosTurma->atividades_apoio, 3, 1);
+    $oDadosTurma->aee_tecnicas_orientacao_mobilidade                 = substr((string) $oDadosTurma->atividades_apoio, 4, 1);
+    $oDadosTurma->aee_ensino_lingua_brasileira_sinais_libras         = substr((string) $oDadosTurma->atividades_apoio, 5, 1);
+    $oDadosTurma->aee_ensino_comunicacao_alternativa_aumentativa     = substr((string) $oDadosTurma->atividades_apoio, 6, 1);
+    $oDadosTurma->aee_estrategia_enriquecimento_curricular           = substr((string) $oDadosTurma->atividades_apoio, 7, 1);
+    $oDadosTurma->aee_ensino_uso_soroban                             = substr((string) $oDadosTurma->atividades_apoio, 8, 1);
+    $oDadosTurma->aee_ensino_usabilidade_funcionalidades_informatica = substr((string) $oDadosTurma->atividades_apoio, 9, 1);
+    $oDadosTurma->aee_ensino_lingua_portuguesa_modalidade_escrita    = substr((string) $oDadosTurma->atividades_apoio, 10, 1);
+    $oDadosTurma->aee_estrategias_autonomia_ambiente_escolar         = substr((string) $oDadosTurma->atividades_apoio, 11, 1);
 
     unset($oDadosTurma->atividades_apoio);
     /**

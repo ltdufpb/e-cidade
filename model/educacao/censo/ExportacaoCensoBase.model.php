@@ -222,7 +222,7 @@ abstract class ExportacaoCensoBase {
    */
   public function logErro($MensagemLog, $iTipoLog) {
 
-    $this->aLogCenso[$iTipoLog][] = urlencode($MensagemLog);
+    $this->aLogCenso[$iTipoLog][] = urlencode((string) $MensagemLog);
   }
 
   /**

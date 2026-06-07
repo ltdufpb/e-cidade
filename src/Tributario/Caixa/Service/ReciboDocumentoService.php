@@ -8,11 +8,8 @@ use ECidade\Tributario\Library\Service;
 
 final class ReciboDocumentoService extends Service
 {
-    private $reciboCast;
-
-    public function __construct(ReciboCast $reciboCast)
+    public function __construct(private readonly ReciboCast $reciboCast)
     {
-        $this->reciboCast = $reciboCast;
     }
 
     /**
@@ -25,7 +22,7 @@ final class ReciboDocumentoService extends Service
         $reciboModel = $this->reciboCast->toModel($recibo);
 
         $relatorioRecibo = new RelatorioRecibo();
-        $reciboPath = $relatorioRecibo->imprimir(array($reciboModel));
+        $reciboPath = $relatorioRecibo->imprimir([$reciboModel]);
 
         return $reciboPath;
     }

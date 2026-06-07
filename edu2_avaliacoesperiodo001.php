@@ -99,7 +99,7 @@ $oRotulo  = new rotulocampo();
               </td>
               <td nowrap id="ctnCboNumeroAvaliacoes">
                 <?php
-                $aAvaliacoes = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6);
+                $aAvaliacoes = [1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6];
                 db_select('iNumeroAvaliacoes', $aAvaliacoes, true, $db_opcao);
                 ?>
               </td>
@@ -110,7 +110,7 @@ $oRotulo  = new rotulocampo();
               </td>
               <td nowrap id="ctnCboTrocaTurma">
                 <?php
-                $aTrocaTurma = array(1=>"Não", 2=>"Sim");
+                $aTrocaTurma = [1=>"Não", 2=>"Sim"];
                 db_select('trocaTurma', $aTrocaTurma, true, $db_opcao);
                 ?>
               </td>

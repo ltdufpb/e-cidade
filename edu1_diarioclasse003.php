@@ -126,7 +126,7 @@ $escola = db_getsession("DB_nomedepto");
              inner join matriculaserie on ed221_i_matricula = ed60_i_codigo
              inner join serie on ed11_i_codigo = ed221_i_serie
              inner join base on ed31_i_codigo = ed57_i_base
-            WHERE ed11_i_sequencia >= ".pg_result($query3,0,"inicial")." AND ed11_i_sequencia <= ".pg_result($query3,0,"final")." AND ed11_i_ensino = ".pg_result($query3,0,"ensino")."
+            WHERE ed11_i_sequencia >= ".pg_fetch_result($query3,0,"inicial")." AND ed11_i_sequencia <= ".pg_fetch_result($query3,0,"final")." AND ed11_i_ensino = ".pg_fetch_result($query3,0,"ensino")."
             AND ed57_i_calendario = $calendario
             AND ed57_i_escola = $codescola
             AND ed31_i_regimemat = $ed31_i_regimemat
@@ -186,8 +186,8 @@ $escola = db_getsession("DB_nomedepto");
       }else{
        $cor = $cor1;
       }
-      $cod = pg_result($result,$c,0);
-      $proximo = pg_result($result,$c,1);
+      $cod = pg_fetch_result($result,$c,0);
+      $proximo = pg_fetch_result($result,$c,1);
       if(isset($mudar) && $mudar==true){?>
        <tr bgcolor="<?=$cor?>" onclick="javascript:location.href='<?=$destino.$cod?>&ed57_c_descr=<?=$proximo?>'" style="Cursor='hand';" onmouseover="bgColor='#DEB887'" onmouseout="bgColor='<?=$cor?>'">
       <?php }else{?>
@@ -200,7 +200,7 @@ $escola = db_getsession("DB_nomedepto");
          $align = "";
         }
         ?>
-         <td class='aluno' align="<?=$align?>"><?=pg_result($result,$c,$b)?></td>
+         <td class='aluno' align="<?=$align?>"><?=pg_fetch_result($result,$c,$b)?></td>
        <?php }?>
       </tr>
       <?php 

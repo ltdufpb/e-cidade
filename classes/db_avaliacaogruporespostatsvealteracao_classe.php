@@ -42,7 +42,7 @@ class cl_avaliacaogruporespostatsvealteracao extends DAOBasica
         parent::__construct('esocial.avaliacaogruporespostatsvealteracao');
     }
 
-    public function sql_query_busca_avaliacao(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function sql_query_busca_avaliacao(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $sql  = " select ".implode(', ', $campos);
         $sql .= "   from avaliacaogruporespostatsvealteracao ";

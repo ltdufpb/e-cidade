@@ -62,7 +62,7 @@ class AcordoItemTipoCalculoMesDia implements IAcordoItemTipoCalculo {
    * Array de períodos de um item
    * @var array
    */
-  protected $aPeriodosItem = array();
+  protected $aPeriodosItem = [];
 
   /**
    * Construtor
@@ -113,8 +113,8 @@ class AcordoItemTipoCalculoMesDia implements IAcordoItemTipoCalculo {
    */
   public function calcular($iAcordo, $oParametro = null) {
 
-    list($iDiaInicial, $iMesInicial, $iAnoInicial) = explode("/", $this->dtDataInicial);
-    list($iDiaFinal, $iMesFinal, $iAnoFinal)       = explode("/", $this->dtDataFinal);
+    [$iDiaInicial, $iMesInicial, $iAnoInicial] = explode("/", $this->dtDataInicial);
+    [$iDiaFinal, $iMesFinal, $iAnoFinal]       = explode("/", $this->dtDataFinal);
 
     $iDiaMes = cal_days_in_month(CAL_GREGORIAN, $iMesInicial, $iAnoInicial);
     if ($iDiaInicial > 1) {

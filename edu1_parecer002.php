@@ -37,7 +37,7 @@ require_once(modification("classes/db_parecerperiodo_classe.php"));
 require_once(modification("classes/db_parecer_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 $oPost     = db_utils::postMemory($_POST);
 $clparecer = new cl_parecer;

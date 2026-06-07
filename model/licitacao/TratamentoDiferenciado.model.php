@@ -39,11 +39,6 @@ class TratamentoDiferenciado {
   const SUFIXO_LOTE_RESERVA = "_RESERVA";
 
   /**
-   * @var licitacao
-   */
-  private $oLicitacao;
-
-  /**
    * @var integer
    */
   private $iCodigoOrcamento;
@@ -56,14 +51,12 @@ class TratamentoDiferenciado {
   /**
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
 
   /**
    * @param licitacao $oLicitacao
    */
-  public function __construct(licitacao $oLicitacao) {
-
-    $this->oLicitacao = $oLicitacao;
+  public function __construct(private readonly licitacao $oLicitacao) {
 
     /**
      * Verifica se o objeto da licitação está com os dados carregados
@@ -73,7 +66,7 @@ class TratamentoDiferenciado {
     }
 
     $this->oAtributosLicitacao = new LicitacaoAtributosDinamicos();
-    $this->oAtributosLicitacao->setCodigoLicitacao($oLicitacao->getCodigo());
+    $this->oAtributosLicitacao->setCodigoLicitacao($this->oLicitacao->getCodigo());
     $this->iCodigoOrcamento = $this->oLicitacao->getCodigoOrcamento();
   }
 
@@ -85,7 +78,7 @@ class TratamentoDiferenciado {
   public function temBeneficio() {
 
   	$sTipoBeneficio = $this->oAtributosLicitacao->getAtributo('tipobeneficiomicroepp');
-    if (in_array($sTipoBeneficio, array(self::TIPO_BENEFICIO_TRATAMENTO_DIFERENCIADO, self::TIPO_BENEFICIO_COTAS_MEEPP))) {
+    if (in_array($sTipoBeneficio, [self::TIPO_BENEFICIO_TRATAMENTO_DIFERENCIADO, self::TIPO_BENEFICIO_COTAS_MEEPP])) {
       return true;
     }
 
@@ -170,7 +163,7 @@ class TratamentoDiferenciado {
     $oDaoOrcamentoItemLicitacao = new cl_pcorcamitemlic;
     $oDaoOrcamentoItemLicitacao->pc26_orcamitem = $oDaoOrcamentoItem->pc22_orcamitem;
     $oDaoOrcamentoItemLicitacao->pc26_liclicitem = $oItemLicitacao->getCodigo();
-    $oDaoOrcamentoItemLicitacao->incluir(null);
+    $oDaoOrcamentoItemLicitacao->incluir();
 
     if ($oDaoOrcamentoItemLicitacao->erro_status == '0') {
       throw new DBException("Não foi possível salvar o item do orçamento da licitação.");
@@ -476,9 +469,7 @@ class TratamentoDiferenciado {
    */
   private function removeDotacaoItemReserva(itemSolicitacao $oItemSolicitacaoReserva, itemSolicitacao $oItemSolicitacaoOrigem) {
 
-    $aDotacoesOrigem = array_map(function($oDotacaoOrigem) {
-      return $oDotacaoOrigem->oDotacao->getCodigo();
-    }, $oItemSolicitacaoOrigem->getDotacoes());
+    $aDotacoesOrigem = array_map(fn($oDotacaoOrigem) => $oDotacaoOrigem->oDotacao->getCodigo(), $oItemSolicitacaoOrigem->getDotacoes());
 
     $aDotacoesReserva = $oItemSolicitacaoReserva->getDotacoes();
     foreach ($aDotacoesReserva as $oDotacaoReserva) {

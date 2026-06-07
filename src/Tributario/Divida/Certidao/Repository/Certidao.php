@@ -47,6 +47,7 @@ class Certidao extends \BaseClassRepository
     /** @var bool */
     private $persistPropagation;
 
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -128,7 +129,7 @@ class Certidao extends \BaseClassRepository
             return null;
         }
 
-        $certidoes = array();
+        $certidoes = [];
         foreach (pg_fetch_all($result) as $item) {
             $certidoes[] = $this->make((object) $item);
         }
@@ -287,7 +288,7 @@ class Certidao extends \BaseClassRepository
 
         $result = \db_query($sql);
 
-        $certidoes = array();
+        $certidoes = [];
         foreach (pg_fetch_all($result) as $item) {
             $certidoes[] = $this->make((object) $item);
         }

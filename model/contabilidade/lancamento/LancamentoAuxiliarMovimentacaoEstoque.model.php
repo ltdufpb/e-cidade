@@ -329,7 +329,7 @@ class LancamentoAuxiliarMovimentacaoEstoque extends LancamentoAuxiliarBase imple
     
     $oLancamentoAuxiliar->setSaida(false);
     
-    if(in_array($oStdLancamentoMovimentacao->c71_coddoc, array(400, 404))) {
+    if(in_array($oStdLancamentoMovimentacao->c71_coddoc, [400, 404])) {
       $oLancamentoAuxiliar->setSaida(true);
     }
 

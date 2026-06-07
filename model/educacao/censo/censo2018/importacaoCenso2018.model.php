@@ -40,6 +40,7 @@ class importacaoCenso2018 extends importacaoCenso2015
         $this->validarArquivoEscola = false;
     }
 
+    #[\Override]
     public function importarCodigoInep($aLinhasArquivo)
     {
         foreach ($aLinhasArquivo as $iIndLinha => $oLinha) {
@@ -105,6 +106,7 @@ class importacaoCenso2018 extends importacaoCenso2015
      * @throws DBException
      * @return boolean
      */
+    #[\Override]
     protected function validaTurma(DBLayoutLinha $oLinha)
     {
         $sNomeTurmaCensoNovo = str_replace(['ª', 'º'], ['', ''], trim($oLinha->nome_turma));
@@ -146,6 +148,7 @@ class importacaoCenso2018 extends importacaoCenso2015
      * @throws DBException
      * @return boolean
      */
+    #[\Override]
     protected function atualizaCodigoInepAluno(DBLayoutLinha $oLinha)
     {
         $aDadosAluno = $this->getDadosAluno($oLinha);
@@ -164,7 +167,7 @@ class importacaoCenso2018 extends importacaoCenso2015
 
                 $oDaoAluno = new cl_aluno();
                 if (!empty($oLinha->identificacao_unica_aluno)) {
-                    $oDaoAluno->ed47_c_codigoinep = trim($oLinha->identificacao_unica_aluno);
+                    $oDaoAluno->ed47_c_codigoinep = trim((string) $oLinha->identificacao_unica_aluno);
                 }
 
                 $oDaoAluno->ed47_i_codigo = $oDadosAluno->ed47_i_codigo;
@@ -190,6 +193,7 @@ class importacaoCenso2018 extends importacaoCenso2015
      * @throws DBException
      * @return boolean
      */
+    #[\Override]
     protected function atualizaCodigoInepTurma(DBLayoutLinha $oLinha)
     {
         /**
@@ -242,13 +246,13 @@ class importacaoCenso2018 extends importacaoCenso2015
     private function isTurmaEspecial($linhaAluno)
     {
         $tumasEscola = $this->linhasTurmas[$linhaAluno->codigo_escola_inep];
-        if (!array_key_exists($linhaAluno->codigo_turma_inep, $tumasEscola)) {
+        if (!array_key_exists((string) $linhaAluno->codigo_turma_inep, $tumasEscola)) {
             return false;
         }
 
         $linhaTurma = $tumasEscola[$linhaAluno->codigo_turma_inep];
 
-        if (in_array(trim($linhaTurma->tipo_atendimento),
+        if (in_array(trim((string) $linhaTurma->tipo_atendimento),
                 [4, 5]) && $linhaAluno->codigo_turma_inep === $linhaTurma->codigo_turma_inep) {
             return true;
         }

@@ -62,7 +62,7 @@ $oDaoAreaConhecimento->rotulo->label();
         </td>
         <td> 
           <?php 
-            $aOpcoes = array("2" => "NÃO", "1" => "SIM");
+            $aOpcoes = ["2" => "NÃO", "1" => "SIM"];
             db_select('ed293_ativo', $aOpcoes, true, $db_opcao, '');
           ?>
         </td>

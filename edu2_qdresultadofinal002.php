@@ -130,7 +130,7 @@ if ($clturma->numrows == 0) {?>
 }
 if ($diretor != "") {
     
-  $arr_diretor   = explode("|",$diretor);
+  $arr_diretor   = explode("|",(string) $diretor);
   $nomediretor   = $arr_diretor[1];
   $funcaodiretor = $arr_diretor[0].(trim($arr_diretor[2]) != ""?" ($arr_diretor[2])":"");
   
@@ -143,7 +143,7 @@ if ($diretor != "") {
 
 if ($secretario != "") {
     
-  $arr_secretario   = explode("|",$secretario);
+  $arr_secretario   = explode("|",(string) $secretario);
   $nomesecretario   = $arr_secretario[1];
   $funcaosecretario = $arr_secretario[0].(trim($arr_secretario[2]) != ""?" ($arr_secretario[2])":"");
   
@@ -191,16 +191,16 @@ for ($x = 0; $x < $linhas; $x++) {
     $regente = "";
   }
   $fpdf->setfillcolor(223);
-  $dia = substr($ed52_d_resultfinal,8,2);
-  $mes = db_mes(substr($ed52_d_resultfinal,5,2));
-  $ano = substr($ed52_d_resultfinal,0,4);
+  $dia = substr((string) $ed52_d_resultfinal,8,2);
+  $mes = db_mes(substr((string) $ed52_d_resultfinal,5,2));
+  $ano = substr((string) $ed52_d_resultfinal,0,4);
   $fpdf->addpage('L');
   $sSql = "select nomeinst,trim(ender)||','||trim(numero::varchar) as ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit");
   $dados = db_query($conn,$sSql);
-    $url = @pg_result($dados,0,"url");
+    $url = @pg_fetch_result($dados,0,"url");
     $fpdf->SetXY(1,1);
   if ($brasao == "b1") {
-    $fpdf->Image('imagens/files/'.pg_result($dados,0,"logo"),7,3,20);
+    $fpdf->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),7,3,20);
   } else {
     $fpdf->Image('',7,3,20);  
   } 
@@ -209,7 +209,7 @@ for ($x = 0; $x < $linhas; $x++) {
   $fpdf->multicell(120,4,$sCabecalho,0,"C",0,0);
   $fpdf->setXY(175,5);
   $result_mant     = db_query($conn,"select nomeinst from db_config where codigo = ".db_getsession("DB_instit"));
-  $mantenedora     = pg_result($result_mant,0,'nomeinst');
+  $mantenedora     = pg_fetch_result($result_mant,0,'nomeinst');
   $sCampos         = "ed05_c_finalidade,ed05_c_numero,ed05_d_vigora,ed05_d_publicado";
   $sWhere          = " ed29_i_codigo in ($ed29_i_codigo) AND ed18_i_codigo = $escola";
   $result_cursoato = $clcursoato->sql_record($clcursoato->sql_query("",
@@ -373,14 +373,14 @@ for ($x = 0; $x < $linhas; $x++) {
         if ($ed60_c_parecer == "S") {
           $ed37_c_tipo = "PARECER";
         }
-        if (trim($ed60_c_situacao) != "MATRICULADO") {
+        if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
         	
-          $aproveitamento = substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
+          $aproveitamento = substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
           $frequencia     = "";
           
         } else {
         	
-         if (trim($ed81_c_todoperiodo) == "S") {
+         if (trim((string) $ed81_c_todoperiodo) == "S") {
          	
            if ($ed81_i_justificativa != "") {
              $aproveitamento = "AMP.";
@@ -390,7 +390,7 @@ for ($x = 0; $x < $linhas; $x++) {
            $frequencia = "";
          } else {
          	
-           if (trim($ed59_c_freqglob) == "F") {
+           if (trim((string) $ed59_c_freqglob) == "F") {
            	
              $aproveitamento = "-";
              if ($resultedu == 'S') { 
@@ -399,9 +399,9 @@ for ($x = 0; $x < $linhas; $x++) {
                $frequencia = number_format($ed74_i_percfreq,0);
              }
              
-           } else if(trim($ed59_c_freqglob) == "A") {
+           } else if(trim((string) $ed59_c_freqglob) == "A") {
            	
-             if (trim($ed37_c_tipo) == "NOTA") {
+             if (trim((string) $ed37_c_tipo) == "NOTA") {
              	
                if ($resultedu == 'S') {
                  $aproveitamento = number_format($ed74_c_valoraprov,2,".",".");
@@ -409,7 +409,7 @@ for ($x = 0; $x < $linhas; $x++) {
                  $aproveitamento = number_format($ed74_c_valoraprov,0);
                }
                
-             } else if (trim($ed37_c_tipo) == "PARECER") {
+             } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                $aproveitamento = "Parecer";
              } else {
                $aproveitamento = $ed74_c_valoraprov;
@@ -427,13 +427,13 @@ for ($x = 0; $x < $linhas; $x++) {
              $result_f = db_query($sql_f);
              $linhas_f = pg_num_rows($result_f);
              if ($resultedu == 'S') {
-               $frequencia = number_format(pg_result($result_f,0,'ed74_i_percfreq'),2,".",".");
+               $frequencia = number_format(pg_fetch_result($result_f,0,'ed74_i_percfreq'),2,".",".");
              } else {
-               $frequencia = number_format(pg_result($result_f,0,'ed74_i_percfreq'),0);
+               $frequencia = number_format(pg_fetch_result($result_f,0,'ed74_i_percfreq'),0);
              }
            } else {
            	
-             if (trim($ed37_c_tipo) == "NOTA") {
+             if (trim((string) $ed37_c_tipo) == "NOTA") {
              	
                if ($resultedu == 'S') {
                  $aproveitamento = number_format($ed74_c_valoraprov,2,".",".");
@@ -441,7 +441,7 @@ for ($x = 0; $x < $linhas; $x++) {
                  $aproveitamento = number_format($ed74_c_valoraprov,0);
                }
                
-             } else if (trim($ed37_c_tipo) == "PARECER") {
+             } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                $aproveitamento = "Parecer";
              } else {
                $aproveitamento = $ed74_c_valoraprov;
@@ -464,7 +464,7 @@ for ($x = 0; $x < $linhas; $x++) {
     } else {
     	
       $fpdf->setfont('arial','b',7);
-      $fpdf->cell(12,4,substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
+      $fpdf->cell(12,4,substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
       $fpdf->cell(10,4,"",1,0,"C",$cor);
       $fpdf->setfont('arial','',9);
       $cont3++;
@@ -488,7 +488,7 @@ for ($x = 0; $x < $linhas; $x++) {
     $sql6   .= "      AND ed59_c_condicao = 'OB' AND ed74_c_resultadofinal != 'A' ";
     $result6 = db_query($sql6);
     $linhas6 = pg_num_rows($result6);
-    if (trim($ed60_c_situacao) != "MATRICULADO" || $linhas5 == 0) {
+    if (trim((string) $ed60_c_situacao) != "MATRICULADO" || $linhas5 == 0) {
       $rf = "";
     } else {
     	
@@ -499,7 +499,7 @@ for ($x = 0; $x < $linhas; $x++) {
      }
      if ($ed74_c_valoraprov == "") {
        
-       if (trim($ed59_c_freqglob) == "F") {
+       if (trim((string) $ed59_c_freqglob) == "F") {
           
          $aDadosTermo = DBEducacaoTermo::getTermoEncerramento($ed11_i_ensino, $ed74_c_resultadofreq);
          if (isset($aDadosTermo[0])) {
@@ -526,7 +526,7 @@ for ($x = 0; $x < $linhas; $x++) {
       for ($y = 0; $y < $clregencia->numrows; $y++) {
       	
         db_fieldsmemory($result2,$y);
-        $fpdf->cell(30,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),1,0,"L",0);
+        $fpdf->cell(30,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),1,0,"L",0);
         
       }
       $fpdf->setY($alt_conv+10);
@@ -635,7 +635,7 @@ for ($x = 0; $x < $linhas; $x++) {
   for ($y = 0; $y < $clregencia->numrows; $y++) {
   	
     db_fieldsmemory($result2,$y);
-    $fpdf->cell(30.9,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),1,0,"L",0);
+    $fpdf->cell(30.9,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),1,0,"L",0);
     
   }
   $fpdf->setY($alt_conv+10);
@@ -774,14 +774,14 @@ for ($x = 0; $x < $linhas; $x++) {
           if ($ed60_c_parecer == "S") {
             $ed37_c_tipo = "PARECER";
           }
-          if (trim($ed60_c_situacao) != "MATRICULADO") {
+          if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
           	
-            $aproveitamento = substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
+            $aproveitamento = substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
             $frequencia = "";
             
           } else {
           	
-            if (trim($ed81_c_todoperiodo) == "S") {
+            if (trim((string) $ed81_c_todoperiodo) == "S") {
             	
               if ($ed81_i_justificativa != "") {
                 $aproveitamento = "AMP.";
@@ -791,7 +791,7 @@ for ($x = 0; $x < $linhas; $x++) {
               $frequencia = "";
             } else {
             	
-              if (trim($ed59_c_freqglob) == "F") {
+              if (trim((string) $ed59_c_freqglob) == "F") {
               	
                 $aproveitamento = "-";
                 if ($resultedu == 'S') {
@@ -800,9 +800,9 @@ for ($x = 0; $x < $linhas; $x++) {
                   $frequencia = number_format($ed74_i_percfreq,0);
                 }
                 
-              } else if (trim($ed59_c_freqglob) == "A") {
+              } else if (trim((string) $ed59_c_freqglob) == "A") {
               	
-                if (trim($ed37_c_tipo) == "NOTA") {
+                if (trim((string) $ed37_c_tipo) == "NOTA") {
                 	
                   if ($rsultedu=='S') {
                     $aproveitamento = number_format($ed74_c_valoraprov,2,".",".");
@@ -810,7 +810,7 @@ for ($x = 0; $x < $linhas; $x++) {
                     $aproveitamento = number_format($ed74_c_valoraprov,0);
                   }
                   
-                } else if (trim($ed37_c_tipo) == "PARECER") {
+                } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                   $aproveitamento = "Parecer";
                 } else {
                   $aproveitamento = $ed74_c_valoraprov;
@@ -827,14 +827,14 @@ for ($x = 0; $x < $linhas; $x++) {
                 $result_f = db_query($sql_f);
                 $linhas_f = pg_num_rows($result_f);
                 if ($resultedu == 'S') {
-                  $frequencia = number_format(pg_result($result_f,0,'ed74_i_percfreq'),2,".",".");
+                  $frequencia = number_format(pg_fetch_result($result_f,0,'ed74_i_percfreq'),2,".",".");
                 } else {
-                  $frequencia = number_format(pg_result($result_f,0,'ed74_i_percfreq'),0);
+                  $frequencia = number_format(pg_fetch_result($result_f,0,'ed74_i_percfreq'),0);
                 }
                 
               } else {
               	
-                if (trim($ed37_c_tipo) == "NOTA") {
+                if (trim((string) $ed37_c_tipo) == "NOTA") {
                 	
                   if ($resultedu == 'S') {
                     $aproveitamento = number_format($ed74_c_valoraprov,2,".",".");
@@ -842,7 +842,7 @@ for ($x = 0; $x < $linhas; $x++) {
                     $aproveitamento = number_format($ed74_c_valoraprov,0);
                   }
                   
-                } else if (trim($ed37_c_tipo) == "PARECER") {
+                } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                   $aproveitamento = "Parecer";
                 } else {
                   $aproveitamento = $ed74_c_valoraprov;
@@ -867,7 +867,7 @@ for ($x = 0; $x < $linhas; $x++) {
       } else {
       	
         $fpdf->setfont('arial','b',7);
-        $fpdf->cell(12,4,substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
+        $fpdf->cell(12,4,substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
         $fpdf->cell(10,4,"",1,0,"C",$cor);
         $fpdf->setfont('arial','',9);
         $cont3++;
@@ -891,7 +891,7 @@ for ($x = 0; $x < $linhas; $x++) {
       $sql6   .= "     AND ed74_c_resultadofinal != 'A' ";
       $result6 = db_query($sql6);
       $linhas6 = pg_num_rows($result6);
-      if (trim($ed60_c_situacao)!="MATRICULADO") {
+      if (trim((string) $ed60_c_situacao)!="MATRICULADO") {
         $rf = "";
       } else {
       	
@@ -920,7 +920,7 @@ for ($x = 0; $x < $linhas; $x++) {
         for ($y = 0; $y < $clregencia->numrows; $y++) {
         	
           db_fieldsmemory($result2,$y);
-          $fpdf->cell(30,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),1,0,"L",0);
+          $fpdf->cell(30,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),1,0,"L",0);
           
         }
         $fpdf->setY($alt_conv+10);
@@ -1029,7 +1029,7 @@ for ($x = 0; $x < $linhas; $x++) {
     for ($y = 0; $y < $clregencia->numrows; $y++) {
     	
       db_fieldsmemory($result2,$y);
-      $fpdf->cell(30,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),1,0,"L",0);
+      $fpdf->cell(30,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),1,0,"L",0);
       
     }
     $fpdf->setY($alt_conv+10);

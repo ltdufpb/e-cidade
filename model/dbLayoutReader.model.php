@@ -39,14 +39,14 @@ class DBLayoutReader {
 	 *
 	 * @var array
 	 */
-  private $aLinhas             = array();
+  private $aLinhas             = [];
   
   /**
    * Propriedades de cada campo da linha
    *
    * @var array
    */
-  private $aPropriedadesCampos = array(); 
+  private $aPropriedadesCampos = []; 
   
   protected $sCaminhoArquivo   = false;
   /**
@@ -135,7 +135,7 @@ class DBLayoutReader {
   			 *  a localização do campo dentro da linha do arquivo
   			 */
   			$this->aPropriedadesCampos[$oDadosLayout->identificador]
-  			                          [$oDadosLayout->nome_campo]   = array($oDadosLayout->posicao_campo,
+  			                          [$oDadosLayout->nome_campo]   = [$oDadosLayout->posicao_campo,
   			                                                                $oDadosLayout->tamanho_campo,
                                                                         $oDadosLayout->separador_campo,
                                                                         $iIndice, 
@@ -144,8 +144,8 @@ class DBLayoutReader {
                                                                         $oDadosLayout->descricao_campo, 
                                                                         $oDadosLayout->observacao_campo,
                 'id'=>$oDadosLayout->id
-                                                                       ); 
-  			$iTamanhoIdent = strlen($oDadosLayout->identificador);
+                                                                       ]; 
+  			$iTamanhoIdent = strlen((string) $oDadosLayout->identificador);
   			$iIndice++;
   		}
   	}
@@ -186,7 +186,7 @@ class DBLayoutReader {
         
         if ($aCampo[5] ) {
           
-          $sValorIdentificadorLinha = substr($sLinha, $aCampo[0]-1, $aCampo[1]);
+          $sValorIdentificadorLinha = substr((string) $sLinha, $aCampo[0]-1, $aCampo[1]);
           if ($sValorIdentificadorLinha == $sIdentificador) {
             return $sIdentificador;
           }
@@ -221,7 +221,7 @@ class DBLayoutReader {
     if ( $lLocalizarIdentificadorLinha && $sLinhaNova ) {
       $sIdentLinha = $sLinhaNova;        
     } else if (!$lLocalizarIdentificadorLinha) {
-      $sIdentLinha = substr($sLinhaArquivo, 0, $iTamanhoIdent);  
+      $sIdentLinha = substr((string) $sLinhaArquivo, 0, $iTamanhoIdent);  
     }
 
     if (isset($this->aPropriedadesCampos[$sIdentLinha])) {

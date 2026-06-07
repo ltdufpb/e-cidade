@@ -45,15 +45,15 @@ db_app::import("exceptions.*");
 
 $oGet  = db_utils::postMemory($_GET);
 $oTurma            = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aDisciplinas      = explode(",", $oGet->aDisciplinas);
+$aDisciplinas      = explode(",", (string) $oGet->aDisciplinas);
 $aEtapas           = $oTurma->getEtapas();
 $oEtapSelecionada = null;
 
 // ini_set('display_errors',1);
 // ini_set('display_startup_erros',1);
 // error_reporting(E_ALL);
-$oEtapaT = explode(",", $oGet->iEtapa);
-$arrayEtapa = explode(",", $oGet->iEtapa);
+$oEtapaT = explode(",", (string) $oGet->iEtapa);
+$arrayEtapa = explode(",", (string) $oGet->iEtapa);
 foreach ($aEtapas as $oEtapaTurma) {
     $oEtapaLista[$oGet->iTurma][$oEtapaTurma->getEtapa()->getCodigo()] = $oEtapaTurma->getEtapa()->getNome();
     $tituloEtapa = $oEtapaTurma->getEtapa()->getNome();
@@ -139,7 +139,7 @@ $iTamanhoNomeAluno      = $oDadosRelatorio->iAvaliacoes == 6 ? 59 : 70;
     $oPdf->SetFillColor(230);
     $oPdf->SetMargins(8, 10);
     $lPrimeiroLaco = true;
-    $aRegenciasSelecionadas = array();
+    $aRegenciasSelecionadas = [];
 	foreach ($oTurma->getDisciplinasPorEtapas($oEtapaT) as $oRegencia) {
 		if (in_array(strval($oRegencia->getCodigo()), $aDisciplinas)) {
 			$aRegenciasSelecionadas[] = $oRegencia;

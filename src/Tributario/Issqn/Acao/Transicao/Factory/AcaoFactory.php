@@ -13,7 +13,7 @@ use ECidade\V3\Extension\Registry;
 
 final class AcaoFactory
 {
-    const
+    const int
         ACAO_GERAR_INSCRICAO = 1,
         ACAO_GERAR_CALCULO   = 2,
         ACAO_GERAR_BOLETO    = 3,

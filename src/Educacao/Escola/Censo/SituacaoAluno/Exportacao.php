@@ -23,11 +23,6 @@ class Exportacao
     private $oLayout = null;
 
     /**
-     * @var Escola
-     */
-    private $oEscola = null;
-
-    /**
      * @var DadosInterface
      */
     private $oDadosEscola = null;
@@ -41,9 +36,8 @@ class Exportacao
      */
     private $aDadosAlunoDepois = [];
 
-    public function __construct(private Censo $oCenso, \Escola $oEscola)
+    public function __construct(private readonly Censo $oCenso, private readonly \Escola $oEscola)
     {
-        $this->oEscola = $oEscola;
     }
 
     /**

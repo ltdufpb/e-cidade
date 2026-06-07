@@ -44,6 +44,7 @@ use InstituicaoRepository;
  */
 class RemuneracaoRGPS extends \BaseClassRepository
 {
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -131,9 +132,7 @@ SQL;
             throw new DBException($mensagem);
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, function ($retorno) {
-            return $retorno->cgm;
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, fn($retorno) => $retorno->cgm);
     }
 
     /**

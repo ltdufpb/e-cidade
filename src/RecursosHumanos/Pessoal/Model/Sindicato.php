@@ -92,13 +92,13 @@ class Sindicato
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'sequencial' => $this->getSequencial(),
             'codigo' => $this->getCodigo(),
             'razaoSocial' => $this->getRazaoSocial(),
             'cnpj' => $this->getCnpj(),
             'mesDataBase' => $this->getMesDataBase()
-        );
+        ];
 
         return $retorno;
     }

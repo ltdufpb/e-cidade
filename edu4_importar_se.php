@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 ?>
@@ -87,8 +87,8 @@ $db_botao = true;
              where ed129_i_escola = $escola
             ";
      $result = db_query($sql);
-     $ultima_atualizacaoes = trim(pg_result($result,0,'ed129_i_ultatualizes'));
-     $array_arquivo = explode("_",$name);
+     $ultima_atualizacaoes = trim(pg_fetch_result($result,0,'ed129_i_ultatualizes'));
+     $array_arquivo = explode("_",(string) $name);
      $escola_arquivo = trim($array_arquivo[0]);
      $base_arquivo = trim($array_arquivo[1]);
      $data_arquivo = trim($array_arquivo[2]);
@@ -127,7 +127,7 @@ $db_botao = true;
        if(empty($linha)){
         continue;
        }
-       if(substr($linha,0,2)!="--"){
+       if(!str_starts_with($linha, "--")){
         if(substr($linha,12,10)=="rechumano "){
          $cod_rh = str_replace(");","",trim(substr($linha,29)));
          $sql2 = "select * from rechumano where ed20_i_codigo = $cod_rh";
@@ -161,7 +161,7 @@ $db_botao = true;
          break;
         }else{
          $array = explode(" ",$linha);
-         if(substr($linha,0,6)=="UPDATE"){
+         if(str_starts_with($linha, "UPDATE")){
           $tabela = $array[1];
          }else{
           $tabela = $array[2];

@@ -13,6 +13,7 @@ class ServidorMatriculas extends \BaseClassRepository
     /**
      * @var ServidorMatriculas
      */
+    #[\Override]
     protected static $oInstance;
 
 

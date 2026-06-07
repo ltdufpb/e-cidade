@@ -39,7 +39,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("model/educacao/Escola.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clturmaac          = new cl_turmaac;
 $clturmaacmatricula = new cl_turmaacmatricula;
 $clescola           = new cl_escola;
@@ -159,7 +159,7 @@ if (isset($incluir)) {
   
   $clturmaac->ed268_programamaiseducacao = $ed268_programamaiseducacao;
   $clturmaac->ed268_c_aee                = $ed268_c_aee;
-  $clturmaac->ed268_c_descr              = trim($ed268_c_descr);
+  $clturmaac->ed268_c_descr              = trim((string) $ed268_c_descr);
   $clturmaac->incluir($ed268_i_codigo);
   db_fim_transacao();
 }

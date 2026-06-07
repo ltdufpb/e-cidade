@@ -94,7 +94,7 @@ if ($oDaoEduRelatModel->numrows > 0) {
 
 if ($sDiretor != "") {
 
-  $aDiretor       = explode("-", $sDiretor);
+  $aDiretor       = explode("-", (string) $sDiretor);
   $sNomeDiretor   = $aDiretor[1];
   $sFuncaoDiretor = $aDiretor[0].(trim($aDiretor[2]) != "" ? " ($aDiretor[2])":"");
 
@@ -107,7 +107,7 @@ if ($sDiretor != "") {
 
 if ($sSecretario != "") {
 
-  $aSecretario       = explode("-", $sSecretario);
+  $aSecretario       = explode("-", (string) $sSecretario);
   $sNomeSecretario   = $aSecretario[1];
   $sFuncaoSecretario = $aSecretario[0].(trim($aSecretario[2]) != "" ? " ($aSecretario[2])":"");
 
@@ -182,15 +182,15 @@ for ($iContAluno = 0; $iContAluno < $oDaoAluno->numrows; $iContAluno++) {
   if ($iLinhasAno > 0) {
 
     $oDadosAno = db_utils::fieldsmemory($rsAnoHist, 0);
-    if (trim($oDadosAno->ultimoanorede) == "" && trim($oDadosAno->ultimoanofora) == "") {
+    if (trim((string) $oDadosAno->ultimoanorede) == "" && trim((string) $oDadosAno->ultimoanofora) == "") {
       $iUtilmoAno = date("Y", db_getsession("DB_datausu"));
-    } else if (trim($oDadosAno->ultimoanorede) == "" && trim($oDadosAno->ultimoanofora) != "") {
+    } else if (trim((string) $oDadosAno->ultimoanorede) == "" && trim((string) $oDadosAno->ultimoanofora) != "") {
       $iUtilmoAno = $oDadosAno->ultimoanofora;
-    } else if (trim($oDadosAno->ultimoanorede) != "" && trim($oDadosAno->ultimoanofora) == "") {
+    } else if (trim((string) $oDadosAno->ultimoanorede) != "" && trim((string) $oDadosAno->ultimoanofora) == "") {
       $iUtilmoAno = $oDadosAno->ultimoanorede;
-    } else if (trim($oDadosAno->ultimoanorede) != "" && trim($oDadosAno->ultimoanofora) != "") {
+    } else if (trim((string) $oDadosAno->ultimoanorede) != "" && trim((string) $oDadosAno->ultimoanofora) != "") {
 
-      if (trim($oDadosAno->ultimoanorede) > trim($oDadosAno->ultimoanofora)) {
+      if (trim((string) $oDadosAno->ultimoanorede) > trim((string) $oDadosAno->ultimoanofora)) {
         $iUtilmoAno = $oDadosAno->ultimoanorede;
       } else {
         $iUtilmoAno = $oDadosAno->ultimoanofora;
@@ -300,23 +300,23 @@ if ($sDisposicao == 1) {
     $oFpdf->setfont('arial', 'b', 8);
     $oFpdf->cell(93, 4, $oDadosAluno->ed47_v_nome, 0, 1, "L", 0);
     $oFpdf->setfont('arial', '', 7);
-    $anacionalidade = array("1" => "brasileiro",
+    $anacionalidade = ["1" => "brasileiro",
                             "2" => "estrangeiro",
                             "3" => "brasileiro nascido no exterior ou naturalizado"
-                           );
+                           ];
     $oFpdf->cell(18, 4, "Nacionalidade:", 0, 0, "L", 0);
     $oFpdf->cell(43, 4, $anacionalidade[$oDadosAluno->ed47_i_nacion], 0, 0, "L", 0);
     $oFpdf->cell(13, 4, "Identidade: ", 0, 0, "L", 0);
     $oFpdf->cell(5, 4, $oDadosAluno->ed47_v_ident, 0, 1, "L", 0);
 
 
-    if (trim($oDadosAluno->ed47_v_pai) == "" && trim($oDadosAluno->ed47_v_mae) == "") {
+    if (trim((string) $oDadosAluno->ed47_v_pai) == "" && trim((string) $oDadosAluno->ed47_v_mae) == "") {
       $sFiliacao = "";
-    } else if (trim($oDadosAluno->ed47_v_pai) == "" && trim($oDadosAluno->ed47_v_mae) != "") {
+    } else if (trim((string) $oDadosAluno->ed47_v_pai) == "" && trim((string) $oDadosAluno->ed47_v_mae) != "") {
       $sFiliacao = $oDadosAluno->ed47_v_mae;
-    } else if (trim($oDadosAluno->ed47_v_pai) != "" && trim($oDadosAluno->ed47_v_mae) == "") {
+    } else if (trim((string) $oDadosAluno->ed47_v_pai) != "" && trim((string) $oDadosAluno->ed47_v_mae) == "") {
       $sFiliacao = $oDadosAluno->ed47_v_pai;
-    } else if (trim($oDadosAluno->ed47_v_pai) !== "" && trim($oDadosAluno->ed47_v_mae) != "") {
+    } else if (trim((string) $oDadosAluno->ed47_v_pai) !== "" && trim((string) $oDadosAluno->ed47_v_mae) != "") {
       $sFiliacao = "$oDadosAluno->ed47_v_pai e de $oDadosAluno->ed47_v_mae";
     }
     $oFpdf->cell(13, 4, "Filho(a) de: ", 0, 0, "l", 0);
@@ -396,19 +396,19 @@ if ($sDisposicao == 1) {
     $oFpdf->setfont('arial', 'b', 6);
     $oFpdf->cell(95, 4, $oDadosAluno->ed47_v_nome, 0, 0, "L", 0);
     $oFpdf->setfont('arial', '', 6);
-    $anacionalidade = array("1"=>"brasileiro", "2"=>"estrangeiro", "3"=>"brasileiro nascido no exterior ou naturalizado");
+    $anacionalidade = ["1"=>"brasileiro", "2"=>"estrangeiro", "3"=>"brasileiro nascido no exterior ou naturalizado"];
     $oFpdf->cell(15, 4, "Nacionalidade:", 0, 0, "L", 0);
     $oFpdf->cell(48, 4, $anacionalidade[$oDadosAluno->ed47_i_nacion], 0, 0, "L", 0);
     $oFpdf->cell(12, 4, "Identidade: ", 0, 0, "L", 0);
     $oFpdf->cell(5, 4, $oDadosAluno->ed47_v_ident, 0, 1, "L", 0);
     $oFpdf->cell(12, 4, "Filho(a) de:", 0, 0, "l", 0);
-    if (trim($oDadosAluno->ed47_v_pai) == "" && trim($oDadosAluno->ed47_v_mae) == "") {
+    if (trim((string) $oDadosAluno->ed47_v_pai) == "" && trim((string) $oDadosAluno->ed47_v_mae) == "") {
       $sfiliacao = "";
-    } else if (trim($oDadosAluno->ed47_v_pai) == "" && trim($oDadosAluno->ed47_v_mae) != "") {
+    } else if (trim((string) $oDadosAluno->ed47_v_pai) == "" && trim((string) $oDadosAluno->ed47_v_mae) != "") {
       $sfiliacao = $oDadosAluno->ed47_v_mae;
-    } else if (trim($oDadosAluno->ed47_v_pai) != "" && trim($oDadosAluno->ed47_v_mae) == "") {
+    } else if (trim((string) $oDadosAluno->ed47_v_pai) != "" && trim((string) $oDadosAluno->ed47_v_mae) == "") {
       $sfiliacao = $oDadosAluno->ed47_v_pai;
-    } else if (trim($oDadosAluno->ed47_v_pai) !== "" && trim($oDadosAluno->ed47_v_mae) != "") {
+    } else if (trim((string) $oDadosAluno->ed47_v_pai) !== "" && trim((string) $oDadosAluno->ed47_v_mae) != "") {
       $sfiliacao = "$oDadosAluno->ed47_v_pai e de $oDadosAluno->ed47_v_mae";
     }
 
@@ -426,13 +426,13 @@ if ($sDisposicao == 1) {
 
   $sCamposEtapa = " distinct ed11_i_sequencia,ed11_i_codigo,ed61_i_curso,ed11_c_abrev";
   $sWhereEtapa  = " ed61_i_aluno in ($oDadosAluno->ed47_i_codigo)";
-  $sWhereEtapa .=  str_replace(array("ed62_i_anoref", "ed62_c_resultadofinal"),
-                               array('ano', 'resfinal'),
+  $sWhereEtapa .=  str_replace(["ed62_i_anoref", "ed62_c_resultadofinal"],
+                               ['ano', 'resfinal'],
                                $sCondicaoHistMps
                               );
 
-   $sWhereEtapa .=  str_replace(array("ed99_i_anoref", "ed99_c_resultadofinal"),
-                               array('ano', 'resfinal'),
+   $sWhereEtapa .=  str_replace(["ed99_i_anoref", "ed99_c_resultadofinal"],
+                               ['ano', 'resfinal'],
                                $sCondicaoHistMpsFora
                               );
 
@@ -446,7 +446,7 @@ if ($sDisposicao == 1) {
 
   $oFpdf->cell(60, 4, "Componentes Curriculares", 1, 0, "C", 0);
 
-$aOrdemEtapa     = array();
+$aOrdemEtapa     = [];
   for ($iContEtapa = 0; $iContEtapa < $iLinhasEtapa; $iContEtapa++) {
 
     $oDadosEtapa = db_utils::fieldsmemory($rsEtapa, $iContEtapa);
@@ -459,7 +459,7 @@ $aOrdemEtapa     = array();
     $aOrdemEtapa[] = $oDadosEtapa;
     $oFpdf->cell(15, 4, $oDadosEtapa->ed11_c_abrev, 1, $iQuebraEtapa, "C", 0);
   }
-  
+
   //após o término das etapas, vai o for abaixo
   for ($iContRestantes = $iLinhasEtapa; $iContRestantes < $iNumColunas; $iContRestantes++) {
 
@@ -553,12 +553,12 @@ $aOrdemEtapa     = array();
       $sSqlUnionRes    = $sSqlRes;
       $sSqlUnionRes   .= " UNION ";
       $sSqlUnionRes   .= $sSqlResFora;
-      
+
       $rsUnionRes      = $oDaoDisc->sql_record($sSqlUnionRes);
       $iLinhasUnionRes = $oDaoDisc->numrows;
 
       if ($iLinhasUnionRes > 0) {
-        
+
         $oDadosResultado = db_utils::fieldsmemory($rsUnionRes, 0);
         $oDadosResultado->resultado = $oDadosResultado->resultado;
 
@@ -649,7 +649,7 @@ $aOrdemEtapa     = array();
           $iAlturaAnterior = $iAlturaFinal;
         }
         $oDadosSerie     = db_utils::fieldsmemory($rsSerie, $iContador);
-        switch (trim($oDadosSerie->ed62_c_resultadofinal)) {
+        switch (trim((string) $oDadosSerie->ed62_c_resultadofinal)) {
 
           case 'A':
 
@@ -694,10 +694,10 @@ $aOrdemEtapa     = array();
             $iCargaHoraria = '';
           }
         } else {
-        	
+
           $iCargaHoraria = (int)$oDadosSerie->ed62_i_qtdch;
           if ($oDadosSerie->ed62_lancamentoautomatico == 'f') {
-          	$iCargaHoraria = trim(db_formatar($oDadosSerie->ed62_i_qtdch, 'f'));
+          	$iCargaHoraria = trim((string) db_formatar($oDadosSerie->ed62_i_qtdch, 'f'));
           }
         }
 
@@ -730,7 +730,7 @@ $aOrdemEtapa     = array();
 
       }
       $oFpdf->setY($iAlturaFinal);
-      
+
       /**
        * Fechamos o quadro das etapas cursadas
        */
@@ -744,7 +744,7 @@ $aOrdemEtapa     = array();
       $oFpdf->line(195, $iAlturaInicialQuadroEscolas, 195, $iAlturaFinal);
       $oFpdf->line(205, $iAlturaInicialQuadroEscolas, 205, $iAlturaFinal);
       $iLimiteObs = 1500-($iLinhasSerie*100);
-      $oFpdf->setfont('arial', '', 6, $oDadosRelatModel->gradeetapa);
+      $oFpdf->setfont('arial', '', 6);
       $iPosY = $oFpdf->getY();
       $sObsConselho          = "";
       $sCamposAprovConselho  = " cgmrh.z01_nome, ed253_i_data, ed232_c_descr as disc_conselho, ed253_t_obs, ed47_v_nome,";
@@ -798,11 +798,11 @@ $aOrdemEtapa     = array();
           $oDadosTrocaSerie  = db_utils::fieldsmemory($rsTrocaSerie, $iContTrocaSerie) ;
           $sObsTroca        .= $sSepTroca."-".($oDadosTrocaSerie->ed101_c_tipo == "A" ?
                                                "AVANÇADO" : "CLASSIFICADO")."(A) DA ETAPA ".
-                                               (trim($oDadosTrocaSerie->ed11_c_origem))." PARA ETAPA ".
-                                               (trim($oDadosTrocaSerie->ed11_c_destino))." EM ".
-                                                substr($oDadosTrocaSerie->ed101_d_data, 8, 2)."/".substr
-                                               ($oDadosTrocaSerie->ed101_d_data, 5, 2)."/".substr
-                                               ($oDadosTrocaSerie->ed101_d_data, 0, 4);
+                                               (trim((string) $oDadosTrocaSerie->ed11_c_origem))." PARA ETAPA ".
+                                               (trim((string) $oDadosTrocaSerie->ed11_c_destino))." EM ".
+                                                substr((string) $oDadosTrocaSerie->ed101_d_data, 8, 2)."/".substr
+                                               ((string) $oDadosTrocaSerie->ed101_d_data, 5, 2)."/".substr
+                                               ((string) $oDadosTrocaSerie->ed101_d_data, 0, 4);
           $sObsTroca        .= ",  CONFORME LEI FEDERAL N° 9394/96 - ARTIGO 23,  § 1o ,  ";
           $sObsTroca        .= " PARECER CEED N° 740/99 E REGIMENTO ESCOLAR";
           $sSepTroca         = "\n";
@@ -832,8 +832,8 @@ $aOrdemEtapa     = array();
       }
       $oFpdf->setfont('arial','',$oDadosRelatModel->observacao);
       $oFpdf->setY($oFpdf->getY() + 4);
-      $oFpdf->multicell(30, 5, "Observações:", 0, 10, "LR", "J", 0, 0);
-      $oFpdf->multicell(190, 3, $oDadosRelatModel->ed217_t_obs.''.$sConvencoes."\n \n{$sObservacaoHistorico}", 0, 10, "LR", "J", 0, 0);
+      $oFpdf->multicell(30, 5, "Observações:", 0, 10, "LR", "J");
+      $oFpdf->multicell(190, 3, $oDadosRelatModel->ed217_t_obs.''.$sConvencoes."\n \n{$sObservacaoHistorico}", 0, 10, "LR", "J");
 
       $iYFinalObservacoes = $oFpdf->getY();
       $oFpdf->Rect(10, $iYInicialObservacoes, 195, ($oFpdf->h - 45) - $iYInicialObservacoes); //retangulo da observacao
@@ -848,7 +848,7 @@ $aOrdemEtapa     = array();
       $mMsg = "    Certifico que o(a) aluno(a) $oDadosAluno->ed47_v_nome concluiu ".$sCurso;
       $mMsg .= " no ano de {$oDadosSerie->ed62_i_anoref}, nos termos da Lei 9.394 de 20 de dezembro de 1996, ";
       $mMsg .= "Art. 24, Inciso VII e Regimento Escolar, tendo obtido os resultados constantes neste certificado.";
-      $oFpdf->multicell(190, 3, $mMsg, 0, 120, "LR", "J", 0, 0);
+      $oFpdf->multicell(190, 3, $mMsg, 0, 120, "LR", "J");
 
       $oFpdf->setXY(60, $oFpdf->h - 25);
       $oFpdf->cell(90, 5, $oDadosEscola->mun_escola.",  ".date("d", db_getsession("DB_datausu")).

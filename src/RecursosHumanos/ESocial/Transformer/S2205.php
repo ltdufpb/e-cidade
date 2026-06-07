@@ -18,11 +18,6 @@ use ECidade\RecursosHumanos\ESocial\Mapeadores\Tabelas\CategoriaCNH;
 class S2205
 {
     /**
-     * @var string $matricula
-     */
-    private $matricula;
-
-    /**
      * @var mixed $dados
      */
     private $dados;
@@ -35,10 +30,10 @@ class S2205
     /**
      * S2205 constructor.
      * @param $matricula
+     * @param string $matricula
      */
-    public function __construct($matricula)
+    public function __construct(private $matricula)
     {
-        $this->matricula = $matricula;
     }
 
     /**
@@ -164,7 +159,7 @@ class S2205
         }
 
         $oReturn = new  \stdClass();
-        $oEvento = json_decode($this->dados->evento);
+        $oEvento = json_decode((string) $this->dados->evento);
 
         if (empty($oEvento)) {
             return;
@@ -175,7 +170,7 @@ class S2205
             $oReturn->cpfTrab = db_formatar($oEvento->trabalhador->cpfTrab, 'CPF');
 
             if (!empty($oEvento->trabalhador->sexo)) {
-                $oReturn->sexo->option = "sexo_" . strtolower($oEvento->trabalhador->sexo);
+                $oReturn->sexo->option = "sexo_" . strtolower((string) $oEvento->trabalhador->sexo);
             }
 
             $oReturn->nmTrab   = $oEvento->trabalhador->nmTrab;

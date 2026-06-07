@@ -113,7 +113,7 @@ class AmparoDisciplina {
    * Instancia um novo amparo, ou carrega os dados de um amparo existente para uma discipplina de um aluno
    * @param DiarioAvaliacaoDisciplina $oDiarioAvaliacaoDisciplina
    */
-  public function __construct(private DiarioAvaliacaoDisciplina $oDiarioAvaliacaoDisciplina) {
+  public function __construct(private readonly DiarioAvaliacaoDisciplina $oDiarioAvaliacaoDisciplina) {
 
     $oDaoAmparo           = db_utils::getDao("amparo");
     $sWhere               = "ed81_i_diario = {$this->oDiarioAvaliacaoDisciplina->getCodigoDiario()}";

@@ -74,7 +74,7 @@ class LoteCartaoIdentificacao {
 		return true;	
 	}
 	
-	public function adicionarCarteira(CarteiraIdentificacao $oCarteira = null) {
+	public function adicionarCarteira(?CarteiraIdentificacao $oCarteira = null) {
 		$this->aCarteiras[] = $oCarteira;
 	}
 	
@@ -105,7 +105,7 @@ class LoteCartaoIdentificacao {
 			}
 			$aFotosGeradas[] = $sPathArquivoFoto;  
 			$aArquivosZip[]  = str_replace("tmp/","",$sPathArquivoFoto);						
-			$sDataNascimento = implode("/", array_reverse(explode("-",$oAluno->getDataNascimento())));
+			$sDataNascimento = implode("/", array_reverse(explode("-",(string) $oAluno->getDataNascimento())));
 			$sArquivoCSV    .= "{$oAluno->getCodigoAluno()};{$oAluno->getNome()};{$sDataNascimento};{$oAluno->getNomeMae()};";
 			$sArquivoCSV    .= "{$oAluno->getNomePai()};{$oAluno->getNomeResponsavelLegal()};{$sPathArquivoFoto}\n";
 		}

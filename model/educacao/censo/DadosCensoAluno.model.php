@@ -79,7 +79,7 @@ class DadosCensoAluno extends DadosCenso
              */
             if (!empty($oAlunos->registro60->identificacao_unica_aluno)) {
 
-                if (strlen($oAlunos->registro60->identificacao_unica_aluno) < 12) {
+                if (strlen((string) $oAlunos->registro60->identificacao_unica_aluno) < 12) {
 
                     $sMsgErro = "Aluno(a) {$sAluno}: \n";
                     $sMsgErro .= "Código INEP do aluno possui tamanho inferior a 12 dígitos.";
@@ -159,7 +159,7 @@ class DadosCensoAluno extends DadosCenso
                         $lDadosValidos = false;
                     }
 
-                    if (strpos($oAlunos->registro60->nome_mae, '  ')) {
+                    if (strpos((string) $oAlunos->registro60->nome_mae, '  ')) {
 
                         $sMsgErro = "Aluno(a) {$sAluno}: \n";
                         $sMsgErro .= "O nome da mãe deve conter apenas espaços simples.";
@@ -178,7 +178,7 @@ class DadosCensoAluno extends DadosCenso
                         $lDadosValidos = false;
                     }
 
-                    if (strpos($oAlunos->registro60->nome_pai, '  ')) {
+                    if (strpos((string) $oAlunos->registro60->nome_pai, '  ')) {
 
                         $sMsgErro = "Aluno(a) {$sAluno}: \n";
                         $sMsgErro .= "O nome do pai deve conter apenas espaços simples.";
@@ -462,7 +462,7 @@ class DadosCensoAluno extends DadosCenso
                         $lDadosValidos = false;
                     }
 
-                    if (trim($oAlunos->registro70->codigo_cartorio) == '') {
+                    if (trim((string) $oAlunos->registro70->codigo_cartorio) == '') {
 
                         $sMsgErro = "Aluno(a) {$sAluno}: \n";
                         $sMsgErro .= "Campo Cartório de emissão não informado. ";
@@ -524,8 +524,8 @@ class DadosCensoAluno extends DadosCenso
                     }
                 }
             }
-            $sDataEmissao = implode("-", array_reverse(explode("/", $oAlunos->registro70->data_emissao_certidao)));
-            $sDataNascimento = implode("-", array_reverse(explode("/", $oAlunos->registro60->data_nascimento)));
+            $sDataEmissao = implode("-", array_reverse(explode("/", (string) $oAlunos->registro70->data_emissao_certidao)));
+            $sDataNascimento = implode("-", array_reverse(explode("/", (string) $oAlunos->registro60->data_nascimento)));
             if ($sDataEmissao != "" && db_strtotime($sDataEmissao) < db_strtotime($sDataNascimento)) {
 
                 $sMsgErro = "Aluno(a) {$sAluno}: \n";
@@ -1017,15 +1017,15 @@ class DadosCensoAluno extends DadosCenso
     public static function validarCertidadaoNova($sCertidao, $iAnoCenso, $iAnoNascimento = null)
     {
 
-        if (strlen($sCertidao) <> 32) {
+        if (strlen((string) $sCertidao) <> 32) {
             throw new Exception("Número da certidão inválida. deve ser 12 caracteres");
         }
 
-        $sAcervo = substr($sCertidao, 6, 2);
-        $sNumeroServico = substr($sCertidao, 8, 2);
-        $iAnoCertidao = substr($sCertidao, 10, 4);
-        $iTipoLivro = substr($sCertidao, 14, 1);
-        $iDigitoCertidao = substr($sCertidao, 30, 2);
+        $sAcervo = substr((string) $sCertidao, 6, 2);
+        $sNumeroServico = substr((string) $sCertidao, 8, 2);
+        $iAnoCertidao = substr((string) $sCertidao, 10, 4);
+        $iTipoLivro = substr((string) $sCertidao, 14, 1);
+        $iDigitoCertidao = substr((string) $sCertidao, 30, 2);
         if (!in_array($sAcervo, ['01', '02'])) {
             throw new Exception("Tipo do acervo inválido. deve ser '01' ou '02'. Foi informado '{$sAcervo}'");
         }
@@ -1076,7 +1076,7 @@ class DadosCensoAluno extends DadosCenso
                 }
                 continue;
             }
-            $iCaractere = (int)substr($sCertidao, $i, 1);
+            $iCaractere = (int)substr((string) $sCertidao, $i, 1);
             $iCalculo = $iCalculo + ($iCaractere * $iPeso);
             $iPeso++;
             if ($iPeso > 10) {
@@ -1228,7 +1228,7 @@ class DadosCensoAluno extends DadosCenso
 
         $oDadosAluno = db_utils::fieldsMemory($rsDadosAluno, 0);
         $iRacaAluno = 0;
-        $iRacaAluno = match (trim($oDadosAluno->ed47_c_raca)) {
+        $iRacaAluno = match (trim((string) $oDadosAluno->ed47_c_raca)) {
             "BRANCA" => 1,
             "PRETA" => 2,
             "PARDA" => 3,
@@ -1238,7 +1238,7 @@ class DadosCensoAluno extends DadosCenso
         };
 
         $iTipoFiliacao = 0;
-        if (trim($oDadosAluno->ed47_v_mae) != "" || trim($oDadosAluno->ed47_v_pai) != "") {
+        if (trim((string) $oDadosAluno->ed47_v_mae) != "" || trim((string) $oDadosAluno->ed47_v_pai) != "") {
             $iTipoFiliacao = 1;
         }
 
@@ -1490,15 +1490,15 @@ class DadosCensoAluno extends DadosCenso
         $this->oDadosDocumento->certidao_civil = $iCertidaoNova;
         $this->oDadosDocumento->tipo_certidao_civil = $iTipoCertidao;
         $this->oDadosDocumento->numero_termo = $oDadosDocumento->ed47_c_certidaonum;
-        $this->oDadosDocumento->folha = $this->removeCaracteres(strtoupper($oDadosDocumento->ed47_c_certidaofolha), 8);
-        $this->oDadosDocumento->livro = strtoupper($oDadosDocumento->ed47_c_certidaolivro);
+        $this->oDadosDocumento->folha = $this->removeCaracteres(strtoupper((string) $oDadosDocumento->ed47_c_certidaofolha), 8);
+        $this->oDadosDocumento->livro = strtoupper((string) $oDadosDocumento->ed47_c_certidaolivro);
         $this->oDadosDocumento->data_emissao_certidao = db_formatar($oDadosDocumento->ed47_c_certidaodata, "d");
         $this->oDadosDocumento->uf_cartorio = $oDadosDocumento->ed47_i_censoufcert;
         $this->oDadosDocumento->municipio_cartorio = $oDadosDocumento->ed47_i_censomuniccert;
         $this->oDadosDocumento->codigo_cartorio = $oDadosDocumento->ed47_i_censocartorio;
         $this->oDadosDocumento->numero_matricula = $oDadosDocumento->ed47_certidaomatricula;
         $this->oDadosDocumento->numero_cpf = $oDadosDocumento->ed47_v_cpf;
-        $this->oDadosDocumento->documento_estrangeiro_passaporte = $this->removeCaracteres(strtoupper($oDadosDocumento->ed47_c_passaporte),
+        $this->oDadosDocumento->documento_estrangeiro_passaporte = $this->removeCaracteres(strtoupper((string) $oDadosDocumento->ed47_c_passaporte),
           8);
         $this->oDadosDocumento->localizacao_zona_residencia = $oDadosDocumento->ed47_c_zona;
         $this->oDadosDocumento->numero_identificacao_social = $this->oDadosAluno->numero_identificacao_social;
@@ -1988,7 +1988,7 @@ class DadosCensoAluno extends DadosCenso
         $oDaoAluno->ed47_i_censoorgemissrg = $oLinha->orgao_emissor_identidade;
         $oDaoAluno->ed47_i_censoufident = $oLinha->uf_identidade;
 
-        if (trim($oLinha->data_expedicao_identidade) != "") {
+        if (trim((string) $oLinha->data_expedicao_identidade) != "") {
             $oDaoAluno->ed47_d_identdtexp = importacaoCenso::formataData($oLinha->data_expedicao_identidade);
         }
 
@@ -2004,7 +2004,7 @@ class DadosCensoAluno extends DadosCenso
         $oDaoAluno->ed47_c_certidaofolha = $oLinha->folha;
         $oDaoAluno->ed47_c_certidaolivro = $oLinha->livro;
 
-        if (trim($oLinha->data_emissao_certidao) != "") {
+        if (trim((string) $oLinha->data_emissao_certidao) != "") {
             $oDaoAluno->ed47_c_certidaodata = importacaoCenso::formataData($oLinha->data_emissao_certidao);
         }
 
@@ -2014,16 +2014,16 @@ class DadosCensoAluno extends DadosCenso
 
         if ($oLinha->certidao_civil == 2) {
 
-            $iCartorio = substr($oLinha->numero_matricula, 0, 6);
+            $iCartorio = substr((string) $oLinha->numero_matricula, 0, 6);
             $oDaoAluno->ed47_i_censocartorio = importacaoCenso::getCartorio(null, null, $iCartorio);
-            $sTipoAcervo = substr($oLinha->numero_matricula, 6, 2);
-            $sNumeroServico = substr($oLinha->numero_matricula, 8, 2);
-            $sAnoRegistro = substr($oLinha->numero_matricula, 10, 4);
-            $sTipoLivro = substr($oLinha->numero_matricula, 14, 1);
-            $oDaoAluno->ed47_c_certidaolivro = substr($oLinha->numero_matricula, 15, 5);
-            $oDaoAluno->ed47_c_certidaofolha = substr($oLinha->numero_matricula, 20, 3);
-            $oDaoAluno->ed47_c_certidaonum = substr($oLinha->numero_matricula, 23, 7);
-            $sCodigoVerificador = substr($oLinha->numero_matricula, 30, 2);
+            $sTipoAcervo = substr((string) $oLinha->numero_matricula, 6, 2);
+            $sNumeroServico = substr((string) $oLinha->numero_matricula, 8, 2);
+            $sAnoRegistro = substr((string) $oLinha->numero_matricula, 10, 4);
+            $sTipoLivro = substr((string) $oLinha->numero_matricula, 14, 1);
+            $oDaoAluno->ed47_c_certidaolivro = substr((string) $oLinha->numero_matricula, 15, 5);
+            $oDaoAluno->ed47_c_certidaofolha = substr((string) $oLinha->numero_matricula, 20, 3);
+            $oDaoAluno->ed47_c_certidaonum = substr((string) $oLinha->numero_matricula, 23, 7);
+            $sCodigoVerificador = substr((string) $oLinha->numero_matricula, 30, 2);
             $oDaoAluno->ed47_certidaomatricula = $oLinha->numero_matricula;
         }
 

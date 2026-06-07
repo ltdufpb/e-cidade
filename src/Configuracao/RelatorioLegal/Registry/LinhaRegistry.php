@@ -37,7 +37,7 @@ class LinhaRegistry
     /**
      * @var Linha[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Relatorio $relatorio

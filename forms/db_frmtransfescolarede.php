@@ -201,12 +201,12 @@ $oClRotulo->label("nome");
     <td colspan="3">
       <b>Auxílio Brasil:</b>
     <?php
-      $x = array("1" => "NÃO", "2" => "SIM");
+      $x = ["1" => "NÃO", "2" => "SIM"];
       db_select('ed283_c_bolsafamilia', $x, true, @$db_opcao, "");
     ?>
       <b>Formato do Relatório:</b>
     <?php
-      $x = array("P" => "Retrato", "L" => "Paisagem");
+      $x = ["P" => "Retrato", "L" => "Paisagem"];
       db_select('formato', $x, true, @$db_opcao, "");
     ?>
     </td>
@@ -458,7 +458,7 @@ function js_pesquisaed103_i_atestvaga(mostra){
 <?php 
   if ($db_opcao != 1) {
 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 
   }
 ?>

@@ -82,10 +82,10 @@ class DBSoapClient {
    * @param string $sFuncao - nome da funcao chamada
    * @param array $aArgumentos. Argumentos da função
    */
-  public function __call($sFuncao, array $aArgumentos = array()) {
+  public function __call($sFuncao, array $aArgumentos = []) {
 
     if(!method_exists($this, $sFuncao)) {
-      return call_user_func_array( array($this->oSoap, $sFuncao),$aArgumentos);
+      return call_user_func_array( [$this->oSoap, $sFuncao],$aArgumentos);
     }
   }
 

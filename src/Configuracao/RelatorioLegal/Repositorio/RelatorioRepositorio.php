@@ -19,7 +19,7 @@ class RelatorioRepositorio extends Repositorio
      * @return bool|Relatorio
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_orcparamrel();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -87,7 +87,7 @@ class RelatorioRepositorio extends Repositorio
      * @param Relatorio|null $relatorio
      * @throws Exception
      */
-    public function delete(Relatorio $relatorio = null)
+    public function delete(?Relatorio $relatorio = null)
     {
         $id = $relatorio instanceof Relatorio ? $relatorio->getSequencial() : null;
 

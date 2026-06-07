@@ -75,7 +75,7 @@ if($clturma->numrows==0){?>
  exit;
 }
 db_fieldsmemory($result, 0);
-$result_proc = $clprocresultado->sql_record($clprocresultado->sql_query("","ed43_i_codigo,ed37_c_tipo as tipores,ed43_c_arredmedia as arredmedia,ed43_c_minimoaprov as minimoaprovres, ed43_c_obtencao as obtencao",""," ed43_c_geraresultado = 'S' AND ed43_i_procedimento = ".pg_result($result,0,'ed220_i_procedimento').""));
+$result_proc = $clprocresultado->sql_record($clprocresultado->sql_query("","ed43_i_codigo,ed37_c_tipo as tipores,ed43_c_arredmedia as arredmedia,ed43_c_minimoaprov as minimoaprovres, ed43_c_obtencao as obtencao",""," ed43_c_geraresultado = 'S' AND ed43_i_procedimento = ".pg_fetch_result($result,0,'ed220_i_procedimento').""));
 if($clprocresultado->numrows==0){?>
  <table width='100%'>
   <tr>
@@ -183,9 +183,9 @@ function checkPeriodo($ed41_i_procedimento, $ed41_i_periodoavaliacao){
 
 function Abreviar($nome,$max,$substr=false){
 	
-  if(strlen(trim($nome))>$max){
+  if(strlen(trim((string) $nome))>$max){
   	
-  	$strinv = strrev(trim($nome));
+  	$strinv = strrev(trim((string) $nome));
   	$ultnome = substr($strinv,0,strpos($strinv," "));
   	$ultnome = strrev($ultnome);
   	$nome = strrev($strinv);
@@ -213,9 +213,9 @@ function Abreviar($nome,$max,$substr=false){
  }
  
  if (!$substr){
-  return trim($nome);
+  return trim((string) $nome);
  }else{
- 	return substr(trim($nome),0,25);
+ 	return substr(trim((string) $nome),0,25);
  }
 }
 
@@ -265,9 +265,9 @@ for ($x=0;$x<$linhas;$x++) {
  
  $pdf->setfillcolor(223);
  
- $dia = substr($ed52_d_resultfinal,8,2);
- $mes = db_mes(substr($ed52_d_resultfinal,5,2));
- $ano = substr($ed52_d_resultfinal,0,4);
+ $dia = substr((string) $ed52_d_resultfinal,8,2);
+ $mes = db_mes(substr((string) $ed52_d_resultfinal,5,2));
+ $ano = substr((string) $ed52_d_resultfinal,0,4);
  
  $result5 = $clregenteconselho->sql_record($clregenteconselho->sql_query("","case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as regente",""," ed235_i_turma = $ed57_i_codigo"));
  
@@ -349,12 +349,12 @@ for ($x=0;$x<$linhas;$x++) {
  for($y=0;$y<$clregencia->numrows;$y++){
   if($y<$iNumeroColunas){
    if($permitenotaembranco=="S"){
-    $pdf->cell(9,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+    $pdf->cell(9,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
     $pdf->cell(8,4,"NP",1,0,"C",0);
     $pdf->cell(4,4,"Ft.",1,0,"C",0);
     $pdf->cell(1,4,"",1,0,"C",0);
    }else{
-    $pdf->cell(15,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+    $pdf->cell(15,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
     $pdf->cell(6,4,"Ft.",1,0,"C",0);
     $pdf->cell(1,4,"",1,0,"C",0);
    }
@@ -401,7 +401,7 @@ for ($x=0;$x<$linhas;$x++) {
   }else{
    $cor = $cor1;
   }
- switch (trim($ed60_c_situacao)) {
+ switch (trim((string) $ed60_c_situacao)) {
 
     case 'MATRICULA TRANCADA' :
 
@@ -455,7 +455,7 @@ for ($x=0;$x<$linhas;$x++) {
   }
   
   $pdf->cell(40,4,Abreviar($ed47_v_nome,20,true),1,0,"L",0);
-  $pdf->cell(5,4,trim($ed60_c_situacao)!="MATRICULADO"?$ed60_c_situacao:"",1,0,"L",0);
+  $pdf->cell(5,4,trim((string) $ed60_c_situacao)!="MATRICULADO"?$ed60_c_situacao:"",1,0,"L",0);
   $pdf->cell(10,4,$ed47_i_codigo,1,0,"C",0);
   
   //A coluna pareceres só deve aparecer NAO caso seja o ultimo periodo de avaliacao
@@ -498,12 +498,12 @@ for ($x=0;$x<$linhas;$x++) {
     if($ed60_c_parecer=="S"){
      $ed37_c_tipo = "PARECER";
     }
-    if ((trim($ed37_c_tipo)=="NOTA") && $ed72_i_valornota != "") {
+    if ((trim((string) $ed37_c_tipo)=="NOTA") && $ed72_i_valornota != "") {
       $ed72_i_valornota = number_format(DBNumber::truncate($ed72_i_valornota, $iCasasDecimais), $iCasasDecimais, ".", "");
     }
     $result_proc = $clprocresultado->sql_record($clprocresultado->sql_query("","ed37_c_tipo as tipores,ed43_c_arredmedia as arredmedia, ed43_c_obtencao as obtencao",""," ed43_c_geraresultado = 'S' AND ed43_i_procedimento = $ed220_i_procedimento"));
     db_fieldsmemory($result_proc,0);
-    if(trim($ed81_c_todoperiodo)=="S" || trim($ed72_c_amparo)=="S"){
+    if(trim((string) $ed81_c_todoperiodo)=="S" || trim((string) $ed72_c_amparo)=="S"){
      if($ed81_i_justificativa!=""){
       $aproveitamento = "AMP";
      }else{
@@ -511,22 +511,22 @@ for ($x=0;$x<$linhas;$x++) {
      }
      $frequencia = "";
     }else{
-     if(trim($ed59_c_freqglob)=="F"){
+     if(trim((string) $ed59_c_freqglob)=="F"){
       $aproveitamento = "-";
       $frequencia = $ed72_i_numfaltas;
-     }elseif(trim($ed59_c_freqglob)=="A"){
-      if(trim($ed37_c_tipo)=="NOTA"){
+     }elseif(trim((string) $ed59_c_freqglob)=="A"){
+      if(trim((string) $ed37_c_tipo)=="NOTA"){
         $aproveitamento = $ed72_i_valornota!=""?($ed72_i_valornota):$ed72_i_valornota;
-      }elseif(trim($ed37_c_tipo)=="PARECER"){
+      }elseif(trim((string) $ed37_c_tipo)=="PARECER"){
        $aproveitamento = "Parec";
       }else{
        $aproveitamento = $ed72_c_valorconceito;
       }
       $frequencia = $ed72_i_numfaltas;
      }else{
-      if(trim($ed37_c_tipo)=="NOTA"){
+      if(trim((string) $ed37_c_tipo)=="NOTA"){
        $aproveitamento = $ed72_i_valornota!=""?$ed72_i_valornota:$ed72_i_valornota;
-      }elseif(trim($ed37_c_tipo)=="PARECER"){
+      }elseif(trim((string) $ed37_c_tipo)=="PARECER"){
        $aproveitamento = "Parec";
       }else{
        $aproveitamento = $ed72_c_valorconceito;
@@ -543,13 +543,13 @@ for ($x=0;$x<$linhas;$x++) {
     }
     
     if($permitenotaembranco=="S" && $ed81_c_todoperiodo!="S" && ($obtencao=="ME" || $obtencao=="MP" || $obtencao=="SO" )){
-     if(trim($ed37_c_tipo)=="NOTA"){
-      if(trim($obtencao)=="ME"){
+     if(trim((string) $ed37_c_tipo)=="NOTA"){
+      if(trim((string) $obtencao)=="ME"){
       	
         $result_media = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","sum(ed72_i_valornota)/count(ed72_i_valornota) as aprvto",""," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' AND ed72_i_valornota is not null AND ed09_c_somach = 'S' AND ed41_i_sequencia <= $ed41_i_sequencia"));
         db_fieldsmemory($result_media,0);
         $resfinal = $aprvto;
-      } elseif(trim($obtencao) == "MP") {
+      } elseif(trim((string) $obtencao) == "MP") {
 
       	//Calcula NP apenas se ha mais de periodo informado
         $sql_r = "SELECT sum(ed72_i_valornota*ed44_i_peso)/sum(ed44_i_peso) as aprvto
@@ -584,37 +584,37 @@ for ($x=0;$x<$linhas;$x++) {
        	$resfinal = '';
        }
          
-      } elseif(trim($obtencao) == "SO") {
+      } elseif(trim((string) $obtencao) == "SO") {
 
         $sql = $cldiarioavaliacao->sql_query("","sum(ed72_i_valornota) as aprvto,sum(to_number(ed37_c_minimoaprov,'999')) as somaminimo", ""," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' AND ed72_i_valornota is not null AND ed09_c_somach = 'S' AND ed41_i_sequencia <= $ed41_i_sequencia");
         $result_soma = $cldiarioavaliacao->sql_record($sql);
         db_fieldsmemory($result_soma,0);
         $resfinal = $aprvto;
-      } elseif(trim($obtencao)=="MN") {
+      } elseif(trim((string) $obtencao)=="MN") {
 
         $result_maior = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","max(ed72_i_valornota) as aprvto",""," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' AND ed72_i_valornota is not null  AND ed41_i_sequencia <= $ed41_i_sequencia"));
         db_fieldsmemory($result_maior,0);
         $resfinal = $aprvto;
-      } elseif(trim($obtencao)=="UN"){
+      } elseif(trim((string) $obtencao)=="UN"){
 
         $result_ultima = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed72_c_amparo as ultamparo,ed72_i_valornota as aprvto","ed41_i_sequencia DESC LIMIT 1"," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo"));
         db_fieldsmemory($result_ultima,0);
          $resfinal = $aprvto;
       }
-      $resfinal = trim($ed60_c_situacao)!="MATRICULADO"||$aprvto==""?"":ArredondamentoNota::formatar($resfinal, $ed52_i_ano);
+      $resfinal = trim((string) $ed60_c_situacao)!="MATRICULADO"||$aprvto==""?"":ArredondamentoNota::formatar($resfinal, $ed52_i_ano);
      }
     }
-    $frequencia = trim($ed81_c_todoperiodo)=="S"?"":$frequencia;
+    $frequencia = trim((string) $ed81_c_todoperiodo)=="S"?"":$frequencia;
     if($permitenotaembranco=="S"){
-     $resfinal = trim($ed81_c_todoperiodo)=="S"?"":@$resfinal;
-     if(trim($ed37_c_tipo)=="NOTA" && $aproveitamento<$ed37_c_minimoaprov){
+     $resfinal = trim((string) $ed81_c_todoperiodo)=="S"?"":@$resfinal;
+     if(trim((string) $ed37_c_tipo)=="NOTA" && $aproveitamento<$ed37_c_minimoaprov){
       $pdf->setfont('arial','b',9);
       $pdf->cell(9,4,$NE.$aproveitamento,1,0,"C",0);
       $pdf->setfont('arial','',8);
      }else{
       $pdf->cell(9,4,$NE.$aproveitamento,1,0,"C",0);
      }
-     if(trim($ed37_c_tipo)=="NOTA" && $resfinal < $ed37_c_minimoaprov){
+     if(trim((string) $ed37_c_tipo)=="NOTA" && $resfinal < $ed37_c_minimoaprov){
       $pdf->setfont('arial','b',9);
       $pdf->cell(8,4, $ed41_i_sequencia == 1 ? '':$resfinal,1,0,"C",0);
       $pdf->setfont('arial','',8);
@@ -624,7 +624,7 @@ for ($x=0;$x<$linhas;$x++) {
      $pdf->cell(4,4,$frequencia,1,0,"C",0);
      $pdf->cell(1,4,"",1,0,"C",0);
     }else{
-     if(trim($ed37_c_tipo)=="NOTA" && $aproveitamento < $ed37_c_minimoaprov){
+     if(trim((string) $ed37_c_tipo)=="NOTA" && $aproveitamento < $ed37_c_minimoaprov){
       $pdf->setfont('arial','b',9);
       $pdf->cell(15,4,$NE.$aproveitamento,1,0,"C",0);
       $pdf->setfont('arial','',8);
@@ -670,7 +670,7 @@ for ($x=0;$x<$linhas;$x++) {
   if($cont4==$limite && $cont_geral4<$clmatricula->numrows){
    //inicio rodape
    $pdf->cell($iColunaRegenteWith,6,"Regente Conselheiro:______________________________________________","TLR",1,"C",0);
-   $pdf->cell($iColunaRegenteWith,4,"                    ".trim($regente),"LRB",1,"C",0);
+   $pdf->cell($iColunaRegenteWith,4,"                    ".trim((string) $regente),"LRB",1,"C",0);
    $pdf->addpage('L');
    //inicio cabeçalho
    $pdf->setfont('arial','b',7);
@@ -728,12 +728,12 @@ for ($x=0;$x<$linhas;$x++) {
    for($y=0;$y<$clregencia->numrows;$y++){
     if($y<$iNumeroColunas){
      if($permitenotaembranco=="S"){
-      $pdf->cell(9,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+      $pdf->cell(9,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
       $pdf->cell(8,4,"NP",1,0,"C",0);
       $pdf->cell(4,4,"Ft.",1,0,"C",0);
       $pdf->cell(1,4,"",1,0,"C",0);
      }else{
-      $pdf->cell(15,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+      $pdf->cell(15,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
       $pdf->cell(6,4,"Ft.",1,0,"C",0);
       $pdf->cell(1,4,"",1,0,"C",0);
      }
@@ -796,7 +796,7 @@ for ($x=0;$x<$linhas;$x++) {
  }
  //inicio rodape
  $pdf->cell($iColunaRegenteWith,6,"Regente Conselheiro:______________________________________________","LRT",1,"C",0);
- $pdf->cell($iColunaRegenteWith,4,"                    ".trim($regente),"LRB",1,"C",0);
+ $pdf->cell($iColunaRegenteWith,4,"                    ".trim((string) $regente),"LRB",1,"C",0);
  //fim rodape
  $sql2= $clregencia->sql_query("","ed59_i_codigo,ed232_c_abrev,ed232_c_descr,ed59_i_ordenacao","ed59_i_ordenacao"," ed59_i_turma = $ed57_i_codigo AND ed59_i_codigo not in ($reg_pagina) AND ed59_i_serie = $ed223_i_serie");
  $result2 = $clregencia->sql_record($sql2);
@@ -807,19 +807,19 @@ for ($x=0;$x<$linhas;$x++) {
   $pdf->addpage('L');
   $pdf->setfont('arial','b',7);
   $inicio = $pdf->getY();
-  
+
   //Testa se é para mostrar a classificação do aluno na turma
   if($lShowNumAluno){
   	$pdf->cell(5,4,"","LRT",0,"C",0);
   }
-  
+
   $pdf->cell(55,4,"","LRT",0,"R",0);
-  
+
   //A coluna pareceres só deve aparecer NAO caso seja o ultimo periodo de avaliacao
   if($lShowPareceres){
   	$pdf->cell(18,4,"Pareceres","LRT",0,"C",0);
   }
-  
+
   $cont = 0;
   $reg_pagina = 0;
   $sep = "";
@@ -838,33 +838,33 @@ for ($x=0;$x<$linhas;$x++) {
    $pdf->cell(1,4,"","LRT",0,"C",0);
   }
   $pdf->cell(5,4,"TF",1,1,"C",0);
-  
+
   //Testa se é para mostrar a classificação do aluno na turma
   if($lShowNumAluno){
   	$pdf->cell(5,4,"N°",1,0,"C",0);
   }
-  
+
   $pdf->cell(40,4,"Nome do Aluno",1,0,"C",0);
   $pdf->cell(5,4,"S",1,0,"C",0);
   $pdf->cell(10,4,"Código",1,0,"C",0);
-  
+
   //A coluna pareceres só deve aparecer NAO caso seja o ultimo periodo de avaliacao
   if($lShowPareceres){
   	$pdf->cell(6,4,"",1,0,"C",0);
   	$pdf->cell(6,4,"",1,0,"C",0);
   	$pdf->cell(6,4,"",1,0,"C",0);
   }
-  
+
   $cont2 = 0;
   for($y=0;$y<$clregencia->numrows;$y++){
    if($y<$iNumeroColunas){
     if($permitenotaembranco=="S"){
-     $pdf->cell(9,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+     $pdf->cell(9,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
      $pdf->cell(8,4,"NP",1,0,"C",0);
      $pdf->cell(4,4,"Ft.",1,0,"C",0);
      $pdf->cell(1,4,"",1,0,"C",0);
     }else{
-     $pdf->cell(15,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+     $pdf->cell(15,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
      $pdf->cell(6,4,"Ft.",1,0,"C",0);
      $pdf->cell(1,4,"",1,0,"C",0);
     }
@@ -904,73 +904,73 @@ for ($x=0;$x<$linhas;$x++) {
    }else{
     $cor = $cor1;
    }
-   switch (trim($ed60_c_situacao)) {
-   
+   switch (trim((string) $ed60_c_situacao)) {
+
    	case 'MATRICULA TRANCADA' :
-   
+
    		$ed60_c_situacao = 'MT';
    		break;
-   
+
    	case 'MATRICULA INDEFERIDA' :
-   
+
    		$ed60_c_situacao = 'IN';
    		break;
-   
+
    	case 'MATRICULA INDEVIDA' :
-   
+
    		$ed60_c_situacao = 'MI';
    		break;
-   
+
    	case 'TRANSFERIDO REDE':
-   
+
    		$ed60_c_situacao = 'TE';
    		break;
-   
+
    	case 'TRANSFERIDO FORA':
-   
+
    		$ed60_c_situacao = 'TF';
    		break;
-   
+
    	case 'TROCA DE MODALIDADE':
-   
+
    		$ed60_c_situacao = 'TM';
    		break;
-   
+
    	case 'CANCELADO':
-   
+
    		$ed60_c_situacao = 'C';
    		break;
-   
+
    	case 'EVADIDO':
-   
+
    		$ed60_c_situacao = 'E';
    		break;
-   
+
    	case 'FALECIDO':
-   
+
    		$ed60_c_situacao = 'F';
    		break;
    }
-   
+
    $cont4++;
    $cont_geral4++;
-   
+
    //Testa se é para mostrar a classificação do aluno na turma
    if($lShowNumAluno){
    		$pdf->cell(5,4,$ed60_i_numaluno,1,0,"C",0);
    }
-   
+
    $pdf->cell(40,4,Abreviar($ed47_v_nome,20,true),1,0,"L",0);
-   $pdf->cell(5,4,trim($ed60_c_situacao)!="MATRICULADO"?substr($ed60_c_situacao,0,2):"",1,0,"L",0);
+   $pdf->cell(5,4,trim((string) $ed60_c_situacao)!="MATRICULADO"?substr((string) $ed60_c_situacao,0,2):"",1,0,"L",0);
    $pdf->cell(10,4,$ed47_i_codigo,1,0,"C",0);
-   
+
    //A coluna pareceres só deve aparecer NAO caso seja o ultimo periodo de avaliacao
    if($lShowPareceres){
    	$pdf->cell(6,4,"",1,0,"L",0);
    	$pdf->cell(6,4,"",1,0,"L",0);
    	$pdf->cell(6,4,"",1,0,"L",0);
    }
-   
+
    $pdf->setfont('arial','',8);
    $sql5 = "SELECT ed72_i_valornota,ed72_c_valorconceito,ed72_i_numfaltas,ed81_c_todoperiodo,ed37_c_tipo,ed59_c_freqglob,ed89_i_disciplina,
                    ed72_c_amparo,ed59_i_codigo,ed220_i_procedimento,ed81_i_justificativa,ed81_i_convencaoamp,ed250_c_abrev,
@@ -992,7 +992,7 @@ for ($x=0;$x<$linhas;$x++) {
            AND ed95_i_regencia in ($reg_pagina)
            AND ed72_i_procavaliacao = $periodo
            ORDER BY ed59_i_ordenacao";
-   
+
    $result5 = db_query($sql5);
    $linhas5 = pg_num_rows($result5);
    $cont3 = 0;
@@ -1003,10 +1003,10 @@ for ($x=0;$x<$linhas;$x++) {
      if($ed60_c_parecer=="S"){
       $ed37_c_tipo = "PARECER";
      }
-     if ((trim($ed37_c_tipo)=="NOTA") && $ed72_i_valornota != "") {
+     if ((trim((string) $ed37_c_tipo)=="NOTA") && $ed72_i_valornota != "") {
       $ed72_i_valornota = number_format(DBNumber::truncate($ed72_i_valornota, $iCasasDecimais), $iCasasDecimais, ".", "");
      }
-     if(trim($ed81_c_todoperiodo)=="S" || trim($ed72_c_amparo)=="S"){
+     if(trim((string) $ed81_c_todoperiodo)=="S" || trim((string) $ed72_c_amparo)=="S"){
       if($ed81_i_justificativa!=""){
        $aproveitamento = "AMP";
       }else{
@@ -1014,22 +1014,22 @@ for ($x=0;$x<$linhas;$x++) {
       }
       $frequencia = "";
      }else{
-      if(trim($ed59_c_freqglob)=="F"){
+      if(trim((string) $ed59_c_freqglob)=="F"){
        $aproveitamento = "-";
        $frequencia = $ed72_i_numfaltas;
-      } elseif(trim($ed59_c_freqglob)=="A") {
-       if(trim($ed37_c_tipo)=="NOTA"){
+      } elseif(trim((string) $ed59_c_freqglob)=="A") {
+       if(trim((string) $ed37_c_tipo)=="NOTA"){
          $aproveitamento = $ed72_i_valornota!=""?($ed72_i_valornota):$ed72_i_valornota;
-       }elseif(trim($ed37_c_tipo)=="PARECER"){
+       }elseif(trim((string) $ed37_c_tipo)=="PARECER"){
         $aproveitamento = "Parec";
        }else{
         $aproveitamento = $ed72_c_valorconceito;
        }
        $frequencia = $ed72_i_numfaltas;
       }else{
-       if(trim($ed37_c_tipo)=="NOTA") {
+       if(trim((string) $ed37_c_tipo)=="NOTA") {
          $aproveitamento = $ed72_i_valornota!=""?($ed72_i_valornota):$ed72_i_valornota;
-       }elseif(trim($ed37_c_tipo)=="PARECER") {
+       }elseif(trim((string) $ed37_c_tipo)=="PARECER") {
         $aproveitamento = "Parec";
        }else{
         $aproveitamento = $ed72_c_valorconceito;
@@ -1046,12 +1046,12 @@ for ($x=0;$x<$linhas;$x++) {
 
      if($permitenotaembranco=="S" && $ed81_c_todoperiodo!="S"){
        if(trim($ed37_c_tipo=="NOTA")){
-         if(trim($obtencao)=="ME"){
+         if(trim((string) $obtencao)=="ME"){
 
            $result_media = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","sum(ed72_i_valornota)/count(ed72_i_valornota) as aprvto",""," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' AND ed72_i_valornota is not null AND ed41_i_sequencia <= $ed41_i_sequencia"));
            db_fieldsmemory($result_media,0);
            $resfinal = $aprvto;
-         } elseif (trim($obtencao)=="MP"){
+         } elseif (trim((string) $obtencao)=="MP"){
            //Calcula NP apenas se ha mais de periodo informado
 				   $sql_r = "SELECT sum(ed72_i_valornota*ed44_i_peso)/sum(ed44_i_peso) as aprvto
 				               FROM diario
@@ -1076,7 +1076,7 @@ for ($x=0;$x<$linhas;$x++) {
 											                AND ed72_c_amparo   = 'N'
 											                AND ed72_i_valornota is not null
 											                AND ed09_c_somach   = 'S' )";
-				        
+
 				   $result_media = db_query($sql_r);
 				   db_fieldsmemory($result_media,0);
 				   if(isset($aprvto)){
@@ -1084,35 +1084,35 @@ for ($x=0;$x<$linhas;$x++) {
 				   }else{
 				     	$resfinal = '';
 				   }
-				         	
-         }elseif(trim($obtencao)=="SO"){
+
+         }elseif(trim((string) $obtencao)=="SO"){
 
            $result_soma = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","sum(ed72_i_valornota) as aprvto,sum(to_number(ed37_c_minimoaprov,'999')) as somaminimo",""," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' AND ed72_i_valornota is not null AND ed41_i_sequencia <= $ed41_i_sequencia"));
            db_fieldsmemory($result_soma,0);
            $resfinal = $aprvto;
-         }elseif(trim($obtencao)=="MN"){
+         }elseif(trim((string) $obtencao)=="MN"){
            $result_maior = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","max(ed72_i_valornota) as aprvto",""," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' AND ed72_i_valornota is not null AND ed41_i_sequencia <= $ed41_i_sequencia"));
            db_fieldsmemory($result_maior,0);
            $resfinal = $aprvto;
-         }elseif(trim($obtencao)=="UN"){
+         }elseif(trim((string) $obtencao)=="UN"){
            $result_ultima = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed72_c_amparo as ultamparo,ed72_i_valornota as aprvto","ed41_i_sequencia DESC LIMIT 1"," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo"));
            db_fieldsmemory($result_ultima,0);
            $resfinal = $aprvto;
          }
-         $resfinal = trim($ed60_c_situacao)!="MATRICULADO"||isset($aprvto)==""?"":ArredondamentoNota::formatar($resfinal, $ed52_i_ano);
+         $resfinal = trim((string) $ed60_c_situacao)!="MATRICULADO"||isset($aprvto)==""?"":ArredondamentoNota::formatar($resfinal, $ed52_i_ano);
        }
      }
-     $frequencia = trim($ed81_c_todoperiodo)=="S"?"":$frequencia;
+     $frequencia = trim((string) $ed81_c_todoperiodo)=="S"?"":$frequencia;
      if($permitenotaembranco=="S"){
-      $resfinal = trim($ed81_c_todoperiodo)=="S"?"":$resfinal;
-      if(trim($ed37_c_tipo)=="NOTA" && $aproveitamento<$ed37_c_minimoaprov){
+      $resfinal = trim((string) $ed81_c_todoperiodo)=="S"?"":$resfinal;
+      if(trim((string) $ed37_c_tipo)=="NOTA" && $aproveitamento<$ed37_c_minimoaprov){
        $pdf->setfont('arial','b',9);
        $pdf->cell(9,4,$NE.$aproveitamento,1,0,"C",0);
        $pdf->setfont('arial','',8);
       }else{
        $pdf->cell(9,4,$NE.$aproveitamento,1,0,"C",0);
       }
-      if(trim($ed37_c_tipo)=="NOTA" && $resfinal<$ed37_c_minimoaprov){ 
+      if(trim((string) $ed37_c_tipo)=="NOTA" && $resfinal<$ed37_c_minimoaprov){ 
        $pdf->setfont('arial','b',9);
        $pdf->cell(8,4, $ed41_i_sequencia == 1 ? '':$resfinal,1,0,"C",0);
        $pdf->setfont('arial','',8);
@@ -1122,7 +1122,7 @@ for ($x=0;$x<$linhas;$x++) {
       $pdf->cell(4,4,$frequencia,1,0,"C",0);
       $pdf->cell(1,4,"",1,0,"C",0);
      }else{
-      if(trim($ed37_c_tipo)=="NOTA" && $aproveitamento<$ed37_c_minimoaprov){
+      if(trim((string) $ed37_c_tipo)=="NOTA" && $aproveitamento<$ed37_c_minimoaprov){
        $pdf->setfont('arial','b',9);
        $pdf->cell(15,4,$NE.$aproveitamento,1,0,"C",0);
        $pdf->setfont('arial','',8);
@@ -1166,18 +1166,18 @@ for ($x=0;$x<$linhas;$x++) {
    if($cont4==$limite && $cont_geral4<$clmatricula->numrows){
     //inicio rodape
     $pdf->cell($iColunaRegenteWith,6,"Regente Conselheiro:______________________________________________","LRT",1,"C",0);
-    $pdf->cell($iColunaRegenteWith,4,"                    ".trim($regente),"LRB",1,"C",0);
+    $pdf->cell($iColunaRegenteWith,4,"                    ".trim((string) $regente),"LRB",1,"C",0);
     //fim rodape
     $pdf->addpage('L');
     //inicio cabeçalho
     $pdf->setfont('arial','b',7);
     $inicio = $pdf->getY();
-    
+
     //Testa se é para mostrar a classificação do aluno na turma
     if($lShowNumAluno){
     	$pdf->cell(5,4,"","LRT",0,"C",0);
     }
-    
+
     $pdf->cell(55,4,"","LRT",0,"R",0);
     $pdf->cell(18,4,"","LRT",0,"R",0);
     $sql2 = $clregencia->sql_query("","ed59_i_codigo,ed232_c_abrev,ed232_c_descr,ed59_i_ordenacao","ed59_i_ordenacao"," ed59_i_codigo in ($reg_pagina) AND ed59_i_serie = $ed223_i_serie");
@@ -1200,33 +1200,33 @@ for ($x=0;$x<$linhas;$x++) {
      $pdf->cell(1,4,"","LRT",0,"C",0);
     }
     $pdf->cell(5,4,"TF",1,1,"C",0);
-    
+
     //Testa se é para mostrar a classificação do aluno na turma
     if($lShowNumAluno){
     	$pdf->cell(5,4,"N°",1,0,"C",0);
     }
-    
+
     $pdf->cell(40,4,"Nome do Aluno",1,0,"C",0);
     $pdf->cell(5,4,"S",1,0,"C",0);
     $pdf->cell(10,4,"Código",1,0,"C",0);
-    
+
     //A coluna pareceres só deve aparecer NAO caso seja o ultimo periodo de avaliacao
     if($lShowPareceres){
     	$pdf->cell(6,4,"",1,0,"C",0);
     	$pdf->cell(6,4,"",1,0,"C",0);
     	$pdf->cell(6,4,"",1,0,"C",0);
     }
-    
+
     $cont2 = 0;
     for($y=0;$y<$clregencia->numrows;$y++){
      if($y<$iNumeroColunas){
       if($permitenotaembranco=="S"){
-       $pdf->cell(9,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+       $pdf->cell(9,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
        $pdf->cell(8,4,"NP",1,0,"C",0);
        $pdf->cell(4,4,"Ft.",1,0,"C",0);
        $pdf->cell(1,4,"",1,0,"C",0);
       }else{
-       $pdf->cell(15,4,substr($ed37_c_tipo,0,5),1,0,"C",0);
+       $pdf->cell(15,4,substr((string) $ed37_c_tipo,0,5),1,0,"C",0);
        $pdf->cell(6,4,"Ft.",1,0,"C",0);
        $pdf->cell(1,4,"",1,0,"C",0);
       }
@@ -1256,23 +1256,23 @@ for ($x=0;$x<$linhas;$x++) {
    }else{
     $cor = $cor1;
    }
-   
+
    //Testa se é para mostrar a classificação do aluno na turma
    if($lShowNumAluno){
    	$pdf->cell(5,4,"",1,0,"C",0);
    }
-   
+
    $pdf->cell(40,4,"",1,0,"C",0);
    $pdf->cell(5,4,"",1,0,"C",0);
    $pdf->cell(10,4,"",1,0,"C",0);
-   
+
    //A coluna pareceres só deve aparecer NAO caso seja o ultimo periodo de avaliacao
    if($lShowPareceres){
    	$pdf->cell(6,4,"",1,0,"C",0);
    	$pdf->cell(6,4,"",1,0,"C",0);
    	$pdf->cell(6,4,"",1,0,"C",0);
    }
-   
+
    for($q=0;$q<$iNumeroColunas;$q++){
     if($permitenotaembranco=="S"){
      $pdf->cell(9,4,"",1,0,"C",0);
@@ -1289,7 +1289,7 @@ for ($x=0;$x<$linhas;$x++) {
   }
   //inicio rodape
   $pdf->cell($iColunaRegenteWith,6,"Regente Conselheiro:______________________________________________","LRT",1,"C",0);
-  $pdf->cell($iColunaRegenteWith,4,"                    ".trim($regente),"LRB",1,"C",0);
+  $pdf->cell($iColunaRegenteWith,4,"                    ".trim((string) $regente),"LRB",1,"C",0);
   //fim rodape
  }
 }

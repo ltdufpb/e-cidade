@@ -44,7 +44,7 @@ abstract class DBFileExplorer {
    */
   public static function listarDiretorio( $sDiretorio, $lMostraDiretorios = true, $lMostraArquivos = true, $sRegexpIgnorar = null, $lRecursivo = false) {
   
-    $aRetorno = array();
+    $aRetorno = [];
     if ( !is_dir( $sDiretorio ) ) {
       throw new Exception("Nao e um diretorio.");
     }
@@ -112,7 +112,7 @@ abstract class DBFileExplorer {
 
       $lExisteArquivo = is_file( "{$sDiretorio}/{$sNomeArquivo}" );
       
-      $aArquivosExecucao = array();
+      $aArquivosExecucao = [];
       
       if ( $lExisteArquivo && filesize("{$sDiretorio}") > 0 )
         return "{$sDiretorio}/{$sNomeArquivo}";

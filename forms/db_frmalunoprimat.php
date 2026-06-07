@@ -39,7 +39,7 @@ $clrotulo->label("ed47_i_codigo");
     </td>
     <td>
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('ed76_i_codigo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -52,7 +52,7 @@ db_select('ed76_i_codigo',$x,true,$db_opcao,"");
     </td>
     <td>
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('ed76_i_aluno',$x,true,$db_opcao," onchange='js_pesquisaed76_i_aluno(false);'");
 ?>
     </td>
@@ -63,7 +63,7 @@ db_select('ed76_i_aluno',$x,true,$db_opcao," onchange='js_pesquisaed76_i_aluno(f
     </td>
     <td>
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('ed76_i_escola',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -74,7 +74,7 @@ db_select('ed76_i_escola',$x,true,$db_opcao,"");
     </td>
     <td>
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('ed76_d_data',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -125,7 +125,7 @@ function js_preenchepesquisa(chave){
   db_iframe_alunoprimat.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

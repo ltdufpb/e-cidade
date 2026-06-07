@@ -25,7 +25,7 @@ class EncerramentoAvaliacao {
         'DESISTENTE'
     ];
 
-  public function __construct(DBLogJSON $oLogger = null) {
+  public function __construct(?DBLogJSON $oLogger = null) {
     if (!empty($oLogger)) {
       $this->oLogger = $oLogger;
     }
@@ -672,7 +672,7 @@ class EncerramentoAvaliacao {
     if (!$oDisciplina->getRegencia()->isObrigatoria()) {
 
       $sResultadoFinal = 'A';
-      if (trim($sValorAproveitamento) == '') {
+      if (trim((string) $sValorAproveitamento) == '') {
         $sValorAproveitamento = '-';
       }
     }

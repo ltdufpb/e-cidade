@@ -36,7 +36,7 @@ class RelatorioRegistry
     /**
      * @var Relatorio[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param int $key

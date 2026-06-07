@@ -54,10 +54,10 @@ try {
             }
 
             foreach ($etapas as $etapa) {
-                $retorno->etapas[] = (object) array(
+                $retorno->etapas[] = (object) [
                     'codigo' => $etapa->getEtapa()->getCodigo(),
                     'nome' => $etapa->getEtapa()->getNome(),
-                );
+                ];
             }
 
             break;
@@ -70,10 +70,10 @@ try {
                 throw new Exception("Informe a etapa");
             }
 
-            $where = array(
+            $where = [
                 "ed59_i_turma = {$parametros->turma}",
                 "ed59_i_serie = {$parametros->etapa}",
-            );
+            ];
 
             $where = implode(' and ', $where);
             $sql = "
@@ -151,7 +151,7 @@ try {
                 throw new Exception("Erro ao buscar grade de horário.");
             }
 
-            $retorno->grade = array();
+            $retorno->grade = [];
             if (pg_num_rows($rs) > 0) {
                 $retorno->grade = db_utils::makeCollectionFromRecord($rs, function ($dado){
                     $dado->ativo = $dado->ativo === 't';

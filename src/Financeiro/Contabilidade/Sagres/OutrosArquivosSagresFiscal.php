@@ -36,39 +36,29 @@ use Instituicao;
 abstract class OutrosArquivosSagresFiscal
 {
     /**
-     * @var integer
-     */
-    protected $ano;
-    /**
-     * @var object
-     */
-    protected $params;
-    /**
      * @var array
      */
     protected $codigoInstituicoes = [];
-    /**
-     * @var integer
-     */
-    protected $codigoTCE;
     protected $linhas;
     protected $nameFile;
 
-    public function __construct($params, array $codigoInstituicoes, $ano, $codigoTCE)
+    /**
+     * @param int $ano
+     * @param object $params
+     * @param int $codigoTCE
+     */
+    public function __construct(protected $params, array $codigoInstituicoes, protected $ano, protected $codigoTCE)
     {
-        $this->params = $params;
         $this->codigoInstituicoes = $codigoInstituicoes;
-        $this->codigoTCE = $codigoTCE;
-        $this->ano = $ano;
 
         $oInstituicao = new Instituicao(db_getsession("DB_instit"));
 
         $codUG = $oInstituicao->getTribInst();
 
-        if ($params->periodo === "diario") {
+        if ($this->params->periodo === "diario") {
             $dDataGeracao = $this->params->dataSQL->dia.$this->params->dataSQL->mes.$this->params->dataSQL->ano;
             $this->nameFile = $codUG.$dDataGeracao.static::TAG;
-        } elseif ($params->periodo === "anual") {
+        } elseif ($this->params->periodo === "anual") {
             $this->nameFile = $codUG.$this->params->dataSQL->ano.static::TAG;
         } else {
             $this->nameFile = $codUG.$this->params->dataSQL->mes.$this->params->dataSQL->ano.static::TAG;
@@ -88,7 +78,7 @@ abstract class OutrosArquivosSagresFiscal
                 $linha = (array)$linha;
 
                 if (array_key_exists($tag, $linha)) {
-                    $elementoColuna = $xml->createElement($tag, htmlspecialchars($linha[$tag]));
+                    $elementoColuna = $xml->createElement($tag, htmlspecialchars((string) $linha[$tag]));
                 } else {
                     $elementoColuna = $xml->createElement($tag, '---');
                 }
@@ -121,7 +111,7 @@ abstract class OutrosArquivosSagresFiscal
                     );
                     fputs($fp, "$linhaLimpa");
                 } else {
-                    $sLinha = utf8_encode("---");
+                    $sLinha = mb_convert_encoding("---", 'UTF-8', 'ISO-8859-1');
                     fputs($fp, "$sLinha");
                 }
             }
@@ -174,7 +164,7 @@ abstract class OutrosArquivosSagresFiscal
     public function corrigeString($string)
     {
         return preg_replace(
-            array("/(á|à|ã|â|ä|ã)/",
+            ["/(á|à|ã|â|ä|ã)/",
                 "/(Á|À|Â|Ä|Ã)/",
                 "/(é|è|ê|ë)/",
                 "/(É|È|Ê|Ë)/",
@@ -187,9 +177,9 @@ abstract class OutrosArquivosSagresFiscal
                 "/(ñ)/",
                 "/(Ñ)/",
                 "/(ç)/",
-                "/(Ç)/"),
+                "/(Ç)/"],
             explode(" ", "a A e E i I o O u U n N c C"),
-            $string
+            (string) $string
         );
     }
 }

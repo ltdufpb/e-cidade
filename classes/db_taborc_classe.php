@@ -60,7 +60,7 @@ class cl_taborc
     public function __construct()
     {
         $this->rotulo = new rotulo("taborc");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -121,10 +121,10 @@ class cl_taborc
          $this->erro_status = "0";
          return false;
        }
-       $this->k02_codigo = pg_result($result,0,0);
+       $this->k02_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from tabrec_k02_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k02_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k02_codigo)){
          $this->erro_sql = " Campo k02_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -168,7 +168,7 @@ class cl_taborc
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->k02_anousu."-".$this->k02_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -198,10 +198,10 @@ class cl_taborc
       $this->atualizacampos();
      $sql = " update taborc set ";
      $virgula = "";
-     if(trim($this->k02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_codigo"])){
+     if(trim((string) $this->k02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_codigo"])){
        $sql  .= $virgula." k02_codigo = $this->k02_codigo ";
        $virgula = ",";
-       if(trim($this->k02_codigo) == null ){
+       if(trim((string) $this->k02_codigo) == null ){
          $this->erro_sql = " Campo Receita não informado.";
          $this->erro_campo = "k02_codigo";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_taborc
          return false;
        }
      }
-     if(trim($this->k02_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_anousu"])){
+     if(trim((string) $this->k02_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_anousu"])){
        $sql  .= $virgula." k02_anousu = $this->k02_anousu ";
        $virgula = ",";
-       if(trim($this->k02_anousu) == null ){
+       if(trim((string) $this->k02_anousu) == null ){
          $this->erro_sql = " Campo ano não informado.";
          $this->erro_campo = "k02_anousu";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_taborc
          return false;
        }
      }
-     if(trim($this->k02_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_codrec"])){
+     if(trim((string) $this->k02_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_codrec"])){
        $sql  .= $virgula." k02_codrec = $this->k02_codrec ";
        $virgula = ",";
-       if(trim($this->k02_codrec) == null ){
+       if(trim((string) $this->k02_codrec) == null ){
          $this->erro_sql = " Campo Código Reduzido não informado.";
          $this->erro_campo = "k02_codrec";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_taborc
          return false;
        }
      }
-     if(trim($this->k02_estorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_estorc"])){
+     if(trim((string) $this->k02_estorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_estorc"])){
        $sql  .= $virgula." k02_estorc = '$this->k02_estorc' ";
        $virgula = ",";
-       if(trim($this->k02_estorc) == null ){
+       if(trim((string) $this->k02_estorc) == null ){
          $this->erro_sql = " Campo Fonte da Receita não informado.";
          $this->erro_campo = "k02_estorc";
          $this->erro_banco = "";
@@ -250,8 +250,8 @@ class cl_taborc
          return false;
        }
      }
-     if(trim($this->k02_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_complemento"])){
-        if(trim($this->k02_complemento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k02_complemento"])){
+     if(trim((string) $this->k02_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k02_complemento"])){
+        if(trim((string) $this->k02_complemento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k02_complemento"])){
            $this->k02_complemento = "0" ;
         }
        $sql  .= $virgula." k02_complemento = $this->k02_complemento ";

@@ -52,7 +52,7 @@ class HonorarioParcelamentoRepository
     /**
      * @var array
      */
-    protected $colecao = array();
+    protected $colecao = [];
 
     /**
      * Retorna uma HonorarioParcelamento filtrando por código.

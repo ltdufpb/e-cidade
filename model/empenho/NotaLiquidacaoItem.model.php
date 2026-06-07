@@ -33,12 +33,6 @@
 final class NotaLiquidacaoItem {
 
   /**
-   * Codigo da nota
-   * @var integer
-   */
-  private $iCodigoNota;
-
-  /**
    * Material da nota
    * @var MaterialCompras
    */
@@ -66,13 +60,15 @@ final class NotaLiquidacaoItem {
    * Método construtor da classe
    * @param integer $iCodigoNota Código da Nota
    */
-  public function __construct($iCodigoNota = null) {
+  public function __construct(/**
+   * Codigo da nota
+   */
+  private $iCodigoNota = null) {
 
-    $this->iCodigoNota = $iCodigoNota;
-    if (!empty($iCodigoNota)) {
+    if (!empty($this->iCodigoNota)) {
 
       $oDaoEmpnotaItem = new cl_empnotaitem();
-      $sSqlDadosNota   = $oDaoEmpnotaItem->sql_query_ordemCompra($iCodigoNota);
+      $sSqlDadosNota   = $oDaoEmpnotaItem->sql_query_ordemCompra($this->iCodigoNota);
       $rsDadosNota     = $oDaoEmpnotaItem->sql_record($sSqlDadosNota);
       if ($oDaoEmpnotaItem->numrows > 0) {
 
@@ -165,7 +161,7 @@ final class NotaLiquidacaoItem {
    */
   public function getBensVinculados() {
 
-    $aBensVinculados     = array();
+    $aBensVinculados     = [];
     $oDaoBensEmpNotaItem = new cl_bensempnotaitem();
     $sWhereItem          = "e136_empnotaitem = {$this->getCodigoNota()}";
     $sSqlBuscaBensNota   = $oDaoBensEmpNotaItem->sql_query_file(null, "e136_bens", null, $sWhereItem);

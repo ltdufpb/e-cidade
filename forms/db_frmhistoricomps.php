@@ -39,7 +39,7 @@
  </table>
 </form>
 <script>
-var iEnsino = <?php echo isset( $ed11_i_ensino ) ? $ed11_i_ensino : null;?>
+var iEnsino = <?php echo $ed11_i_ensino ?? null;?>
 
 function js_direciona1() {
   var redireciona  = "edu1_historicomps001.php?ed62_i_historico=<?=$ed62_i_historico?>";
@@ -173,7 +173,7 @@ $lExcluir = false;
        </td>
        <td>
          <?php
-         $x = array(
+         $x = [
                      ''               => '',
                      'CONCLUÍDO'      => 'CONCLUÍDO',
                      'AMPARADO'       => 'AMPARADO',
@@ -183,7 +183,7 @@ $lExcluir = false;
                      'FALECIDO'       => 'FALECIDO',
                      'RECLASSIFICADO' => 'RECLASSIFICADO',
                      'AVANÇO'         => 'AVANÇO'
-                   );
+                   ];
          db_select( 'ed62_c_situacao', $x, true, $db_opcao, " onchange='js_situacao(this);'" );
          ?>
        </td>
@@ -204,7 +204,7 @@ $lExcluir = false;
            <fieldset>
              <legend>
                <?php
-               $ed62_c_situacao = isset( $ed62_c_situacao ) ? $ed62_c_situacao : "";
+               $ed62_c_situacao ??= "";
                ?>
                <input type="text"
                       name="legenda"
@@ -234,7 +234,7 @@ $lExcluir = false;
                  </td>
                  <td>
                    <?php
-                   $x = array( ''=>'', 'A'=>'APROVADO', 'R'=>'REPROVADO', 'P'=>'APROVADO PARCIALMENTE' );
+                   $x = [ ''=>'', 'A'=>'APROVADO', 'R'=>'REPROVADO', 'P'=>'APROVADO PARCIALMENTE' ];
                    db_select( 'ed62_c_resultadofinal', $x, true, $db_opcao );
                    ?>
                  </td>

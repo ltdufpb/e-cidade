@@ -89,7 +89,7 @@ class AcordoItem
      * Dotaçoes dos itens
      * @var array
      */
-    protected $aDotacoes = array();
+    protected $aDotacoes = [];
 
     /**
      * Código do item na licitação
@@ -152,7 +152,7 @@ class AcordoItem
     /**
      * Perídos do Item do Acordo
      */
-    protected $aPeriodo = array();
+    protected $aPeriodo = [];
 
     /**
      * Tipo de controle
@@ -165,7 +165,7 @@ class AcordoItem
      * Array de períodos de execução de um item do acordo
      * @var array
      */
-    protected $aPeriodosExecucao = array();
+    protected $aPeriodosExecucao = [];
 
 
     protected $sDescricaoUnidade;
@@ -194,7 +194,7 @@ class AcordoItem
      * Array de períodos que o usuário informa para um item do acordo
      * @var array
      */
-    protected $aPeriodosItem = array();
+    protected $aPeriodosItem = [];
 
     /**
      * Código do período previsão do item
@@ -247,7 +247,7 @@ class AcordoItem
      * Execuções do item
      * @var AcordoItemExecucao[]
      */
-    private $aExecucoes = array();
+    private $aExecucoes = [];
 
     /**
      * Quantidade Atualizada do Item
@@ -443,7 +443,7 @@ class AcordoItem
     public function removerDotacao($iDotacao = '')
     {
         if ($iDotacao == '') {
-            $this->aDotacoes = array();
+            $this->aDotacoes = [];
         } else {
             $iChaveExcluir = null;
             foreach ($this->aDotacoes as $iKey => $oDotacao) {
@@ -887,8 +887,8 @@ class AcordoItem
         foreach ($aPeriodoItens as $iIndicePeriodo => $oPeriodo) {
             $oDaoAcordoItemPeriodo->ac41_acordoitem = $this->getCodigo();
             $oDaoAcordoItemPeriodo->ac41_datainicial = implode("-",
-              array_reverse(explode("/", $oPeriodo->dtDataInicial)));
-            $oDaoAcordoItemPeriodo->ac41_datafinal = implode("-", array_reverse(explode("/", $oPeriodo->dtDataFinal)));
+              array_reverse(explode("/", (string) $oPeriodo->dtDataInicial)));
+            $oDaoAcordoItemPeriodo->ac41_datafinal = implode("-", array_reverse(explode("/", (string) $oPeriodo->dtDataFinal)));
 
             /**
              * Valida se deve ser feita a inclusão ou alteração do período de um item.
@@ -1014,11 +1014,11 @@ class AcordoItem
             $iContador = 0;
 
             foreach ($this->getPeriodos() as $oPeriodoExecucao) {
-                if (substr_count($oPeriodoExecucao->datainicial, "/")) {
+                if (substr_count((string) $oPeriodoExecucao->datainicial, "/")) {
                     $oPeriodoExecucao->datainicial = implode("-",
-                      array_reverse(explode("/", $oPeriodoExecucao->datainicial)));
+                      array_reverse(explode("/", (string) $oPeriodoExecucao->datainicial)));
                     $oPeriodoExecucao->datafinal = implode("-",
-                      array_reverse(explode("/", $oPeriodoExecucao->datafinal)));
+                      array_reverse(explode("/", (string) $oPeriodoExecucao->datafinal)));
                 }
 
                 $iContador++;
@@ -1104,7 +1104,7 @@ class AcordoItem
             }
         }
 
-        $this->aPeriodosExecucao = array();
+        $this->aPeriodosExecucao = [];
 
         return $this;
     }
@@ -1210,7 +1210,7 @@ class AcordoItem
         $rsSqlOrcElemento = $oDaoOrcElemento->sql_record($sSqlOrcElemento);
         $iNumRowsOrcElemento = $oDaoOrcElemento->numrows;
         if ($iNumRowsOrcElemento > 0) {
-            $sDesdobramento = substr(db_utils::fieldsMemory($rsSqlOrcElemento, 0)->o56_elemento, 0, 7);
+            $sDesdobramento = substr((string) db_utils::fieldsMemory($rsSqlOrcElemento, 0)->o56_elemento, 0, 7);
             $this->sDescricaoElemento = db_utils::fieldsMemory($rsSqlOrcElemento, 0)->o56_descr;
         }
 
@@ -1575,8 +1575,8 @@ class AcordoItem
             /**
              * Salvamos os dados dos periodos a baixa
              */
-            $sDataInicial = implode("-", array_reverse(explode("/", $oPeriodo->datainicial)));
-            $sDataFinal = implode("-", array_reverse(explode("/", $oPeriodo->datafinal)));
+            $sDataInicial = implode("-", array_reverse(explode("/", (string) $oPeriodo->datainicial)));
+            $sDataFinal = implode("-", array_reverse(explode("/", (string) $oPeriodo->datafinal)));
 
             $oDaoAcordoItemExecutadoPeriodo->ac38_acordoitemexecutado = $oDaoItemExecucao->ac29_sequencial;
             $oDaoAcordoItemExecutadoPeriodo->ac38_acordoitemprevisao = $oPeriodo->iPeriodo;
@@ -1685,7 +1685,7 @@ class AcordoItem
     {
         if (count($this->aPeriodosExecucao) == 0 || $lAtualizar == true) {
             if ($lAtualizar) {
-                $this->aPeriodosExecucao = array();
+                $this->aPeriodosExecucao = [];
             }
 
             $sSqlPeriodos = "select *, ";
@@ -1838,8 +1838,8 @@ class AcordoItem
              * Configura as datas inicial e final para utilizá-las durante as validações do
              * periodos de execução
              */
-            list($iDiaInicial, $iMesInicial, $iAnoInicial) = explode("/", $oPeriodo->dtDataInicial);
-            list($iDiaFinal, $iMesFinal, $iAnoFinal) = explode("/", $oPeriodo->dtDataFinal);
+            [$iDiaInicial, $iMesInicial, $iAnoInicial] = explode("/", (string) $oPeriodo->dtDataInicial);
+            [$iDiaFinal, $iMesFinal, $iAnoFinal] = explode("/", (string) $oPeriodo->dtDataFinal);
 
             /**
              * Calcula as diferenças de de meses entre a data inicial e data final
@@ -1868,14 +1868,14 @@ class AcordoItem
                     $dtDataInicialPeriodo = $oPeriodo->dtDataInicial;
                 } else {
                     if (isset($dtDataFinalPeriodo)) {
-                        list($dtDiaInicialPeriodo, $dtMesInicialPeriodo, $iAnoInicialPeriodo) = explode("/",
+                        [$dtDiaInicialPeriodo, $dtMesInicialPeriodo, $iAnoInicialPeriodo] = explode("/",
                           $dtDataFinalPeriodo);
                         $dtDataInicialPeriodo = date("d/m/Y",
                           mktime(0, 0, 0, ($dtMesInicialPeriodo + 1), 1, $iAnoInicialPeriodo));
                     }
                 }
 
-                list($iDiaInicial, $iMesInicial, $iAnoInicial) = explode("/", $dtDataInicialPeriodo);
+                [$iDiaInicial, $iMesInicial, $iAnoInicial] = explode("/", (string) $dtDataInicialPeriodo);
 
                 /*
                  * Busca o sequencial em acordoposicao de acordo com o mes/ano
@@ -1969,10 +1969,10 @@ class AcordoItem
         $iContadorItemPeriodo = 0;
 
         foreach ($aPeriodosItem as $iIndicePeriodo => $oPeriodo) {
-            $aDataInicial = explode("/", $oPeriodo->dtDataInicial);
+            $aDataInicial = explode("/", (string) $oPeriodo->dtDataInicial);
             $dtDataInicial = date("Y-m-d", mktime(0, 0, 0, $aDataInicial[1], $aDataInicial[0], $aDataInicial[2]));
 
-            $aDataFinal = explode("/", $oPeriodo->dtDataFinal);
+            $aDataFinal = explode("/", (string) $oPeriodo->dtDataFinal);
             $dtDataFinal = date("Y-m-d", mktime(0, 0, 0, $aDataFinal[1], $aDataFinal[0], $aDataFinal[2]));
 
             $sWhere = "     ac36_acordoposicao={$this->iCodigoPosicao}                                            ";
@@ -2013,8 +2013,8 @@ class AcordoItem
                     continue;
                 }
 
-                $aDataInicial = explode("-", $dtInicialPeriodo);
-                $aDataFinal = explode("-", $dtFinalPeriodo);
+                $aDataInicial = explode("-", (string) $dtInicialPeriodo);
+                $aDataFinal = explode("-", (string) $dtFinalPeriodo);
                 $dtFinalPeriodo = date("d/m/Y", mktime(0, 0, 0, $aDataFinal[1], $aDataFinal[2], $aDataFinal[0]));
                 $dtInicialPeriodo = date("d/m/Y",
                   mktime(0, 0, 0, $aDataInicial[1], $aDataInicial[2], $aDataInicial[0]));
@@ -2077,7 +2077,7 @@ class AcordoItem
      */
     public function getPrevisaoExecucao()
     {
-        $this->aPrevisaoExecucao = array();
+        $this->aPrevisaoExecucao = [];
         $oDaoItemPrevisao = new cl_acordoitemprevisao();
         $sSqlBuscaPrevisoes = $oDaoItemPrevisao->sql_query_file(null, "ac37_sequencial", 1,
           "ac37_acordoitem = {$this->iCodigo}");
@@ -2124,11 +2124,11 @@ class AcordoItem
          * Tratamos os dados passado pela assinatura do método para converter as datas
          * para o padrão americano YYYY-MM-DD
          */
-        $aPeriodosTimeStamp = array();
+        $aPeriodosTimeStamp = [];
 
         foreach ($aPeriodosExecucao as $iIndicePeriodo => $oPeriodo) {
-            $dtTimeStampInicial = implode("-", array_reverse(explode("/", $oPeriodo->dtDataInicial)));
-            $dtTimeStampFinal = implode("-", array_reverse(explode("/", $oPeriodo->dtDataFinal)));
+            $dtTimeStampInicial = implode("-", array_reverse(explode("/", (string) $oPeriodo->dtDataInicial)));
+            $dtTimeStampFinal = implode("-", array_reverse(explode("/", (string) $oPeriodo->dtDataFinal)));
 
             /*
              * Configuramos o objeto para comparação
@@ -2144,7 +2144,7 @@ class AcordoItem
          * será feita de 1 para 1. Sendo assim, todas serão validadas.
          */
         foreach ($aPeriodosTimeStamp as $iIndiceTimestamp => $oTimestamp) {
-            $aPeriodosValidar = array();
+            $aPeriodosValidar = [];
 
             for ($iRow = 0; $iRow < $iTotalPeriodos; $iRow++) {
                 if ($iRow == $iIndiceTimestamp) {
@@ -2165,8 +2165,8 @@ class AcordoItem
                 );
 
                 if ($lComparaDatas) {
-                    $sPeriodoInicial = implode("/", array_reverse(explode("-", $oPeriodo->dtInicial)));
-                    $sPeriodoFinal = implode("/", array_reverse(explode("-", $oPeriodo->dtFinal)));
+                    $sPeriodoInicial = implode("/", array_reverse(explode("-", (string) $oPeriodo->dtInicial)));
+                    $sPeriodoFinal = implode("/", array_reverse(explode("-", (string) $oPeriodo->dtFinal)));
                     $sMensagemErro = "A data {$sPeriodoInicial} e {$sPeriodoFinal} ";
                     $sMensagemErro .= "estão conflitando com uma ou mais datas informadas.";
                     throw new Exception($sMensagemErro);
@@ -2270,7 +2270,7 @@ class AcordoItem
      */
     public function getExecucoesPeriodo($iPeriodo)
     {
-        $aExecucoes = array();
+        $aExecucoes = [];
         $oDaoPeriodoExecutado = new cl_acordoitemprevisao();
         $sWhere = "ac38_acordoitemprevisao = {$iPeriodo}";
         $sSqlExecucoes = $oDaoPeriodoExecutado->sql_query_execucao(null, "*", 'ac38_sequencial', $sWhere);
@@ -2389,8 +2389,8 @@ class AcordoItem
          * Validamos o conflito de datas para mover o período.
          * Ao Mês inicial deve ser igual ao mês final. A mesma regra se aplica ao ANO
          */
-        list($iDiaInicialDestino, $iMesInicialDestino, $iAnoInicialDestino) = explode("/", $this->getDataInicial());
-        list($iDiaFinalDestino, $iMesFinalDestino, $iAnoFinalDestino) = explode("/", $this->getDataFinal());
+        [$iDiaInicialDestino, $iMesInicialDestino, $iAnoInicialDestino] = explode("/", $this->getDataInicial());
+        [$iDiaFinalDestino, $iMesFinalDestino, $iAnoFinalDestino] = explode("/", $this->getDataFinal());
 
         if ($iMesInicialDestino != $iMesFinalDestino || $iAnoInicialDestino != $iAnoFinalDestino) {
             throw new Exception("As datas informadas devem iniciar e terminar no mesmo mês e ano.");
@@ -2417,10 +2417,10 @@ class AcordoItem
          * Valido se a competencia (ano/mes) informado pelo cliente são as mesmas já cadastradas para o período
          * Caso seja, lançamos uma excessão.
          */
-        list($iAnoPrevisaoOrigemInicio, $iMesPrevisaoOrigemInicio, $iDiaPrevisaoOrigemInicio) = explode("-",
-          $oAcordoPrevisaoOrigem->ac37_datainicial);
-        list($iAnoPrevisaoOrigemFinal, $iMesPrevisaoOrigemFinal, $iDiaPrevisaoOrigemFinal) = explode("-",
-          $oAcordoPrevisaoOrigem->ac37_datafinal);
+        [$iAnoPrevisaoOrigemInicio, $iMesPrevisaoOrigemInicio, $iDiaPrevisaoOrigemInicio] = explode("-",
+          (string) $oAcordoPrevisaoOrigem->ac37_datainicial);
+        [$iAnoPrevisaoOrigemFinal, $iMesPrevisaoOrigemFinal, $iDiaPrevisaoOrigemFinal] = explode("-",
+          (string) $oAcordoPrevisaoOrigem->ac37_datafinal);
 
         if (($iMesPrevisaoOrigemInicio == $iMesInicialDestino && $iAnoPrevisaoOrigemInicio == $iAnoInicialDestino) ||
           ($iMesPrevisaoOrigemFinal == $iMesFinalDestino && $iAnoPrevisaoOrigemFinal == $iAnoFinalDestino)) {
@@ -2468,8 +2468,8 @@ class AcordoItem
              * dias suficientes para receber mais dias para executar
              */
             if ($this->getTipocontrole() == 2 || $this->getTipocontrole() == 3) {
-                list($iAnoDestino, $iMesDestino, $iDiaDestino) = explode("-",
-                  $oAcordoPrevisaoDestino->ac37_datainicial);
+                [$iAnoDestino, $iMesDestino, $iDiaDestino] = explode("-",
+                  (string) $oAcordoPrevisaoDestino->ac37_datainicial);
                 /**
                  * Total de dias no mês
                  */

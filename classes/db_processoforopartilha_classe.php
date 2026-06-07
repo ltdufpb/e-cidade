@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE processoforopartilha
 class cl_processoforopartilha {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v76_sequencial = 0;
-   var $v76_processoforo = 0;
-   var $v76_tipolancamento = 0;
-   var $v76_dtpagamento_dia = null;
-   var $v76_dtpagamento_mes = null;
-   var $v76_dtpagamento_ano = null;
-   var $v76_dtpagamento = null;
-   var $v76_obs = null;
-   var $v76_valorpartilha = 0;
-   var $v76_datapartilha_dia = null;
-   var $v76_datapartilha_mes = null;
-   var $v76_datapartilha_ano = null;
-   var $v76_datapartilha = null;
+   public $v76_sequencial = 0;
+   public $v76_processoforo = 0;
+   public $v76_tipolancamento = 0;
+   public $v76_dtpagamento_dia = null;
+   public $v76_dtpagamento_mes = null;
+   public $v76_dtpagamento_ano = null;
+   public $v76_dtpagamento = null;
+   public $v76_obs = null;
+   public $v76_valorpartilha = 0;
+   public $v76_datapartilha_dia = null;
+   public $v76_datapartilha_mes = null;
+   public $v76_datapartilha_ano = null;
+   public $v76_datapartilha = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v76_sequencial = int4 = Sequencial
                  v76_processoforo = int4 = Processo Foro
                  v76_tipolancamento = int4 = Forma de Lançamento
@@ -66,10 +66,10 @@ class cl_processoforopartilha {
                  v76_datapartilha = date = Data da Partilha
                  ";
    //funcao construtor da classe
-   function cl_processoforopartilha() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforopartilha");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -160,10 +160,10 @@ class cl_processoforopartilha {
          $this->erro_status = "0";
          return false;
        }
-       $this->v76_sequencial = pg_result($result,0,0);
+       $this->v76_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from processoforopartilha_v76_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v76_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v76_sequencial)){
          $this->erro_sql = " Campo v76_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -203,7 +203,7 @@ class cl_processoforopartilha {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Partilhas do Processo ($this->v76_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Partilhas do Processo já Cadastrado";
@@ -227,16 +227,16 @@ class cl_processoforopartilha {
      $resaco = $this->sql_record($this->sql_query_file($this->v76_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18255,'$this->v76_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3229,18255,'','".AddSlashes(pg_result($resaco,0,'v76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3229,18259,'','".AddSlashes(pg_result($resaco,0,'v76_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3229,18260,'','".AddSlashes(pg_result($resaco,0,'v76_tipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3229,18261,'','".AddSlashes(pg_result($resaco,0,'v76_dtpagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3229,18262,'','".AddSlashes(pg_result($resaco,0,'v76_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3229,19195,'','".AddSlashes(pg_result($resaco,0,'v76_valorpartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3229,19196,'','".AddSlashes(pg_result($resaco,0,'v76_datapartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3229,18255,'','".AddSlashes(pg_fetch_result($resaco,0,'v76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3229,18259,'','".AddSlashes(pg_fetch_result($resaco,0,'v76_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3229,18260,'','".AddSlashes(pg_fetch_result($resaco,0,'v76_tipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3229,18261,'','".AddSlashes(pg_fetch_result($resaco,0,'v76_dtpagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3229,18262,'','".AddSlashes(pg_fetch_result($resaco,0,'v76_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3229,19195,'','".AddSlashes(pg_fetch_result($resaco,0,'v76_valorpartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3229,19196,'','".AddSlashes(pg_fetch_result($resaco,0,'v76_datapartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -245,10 +245,10 @@ class cl_processoforopartilha {
       $this->atualizacampos();
      $sql = " update processoforopartilha set ";
      $virgula = "";
-     if(trim($this->v76_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_sequencial"])){
+     if(trim((string) $this->v76_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_sequencial"])){
        $sql  .= $virgula." v76_sequencial = $this->v76_sequencial ";
        $virgula = ",";
-       if(trim($this->v76_sequencial) == null ){
+       if(trim((string) $this->v76_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "v76_sequencial";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_processoforopartilha {
          return false;
        }
      }
-     if(trim($this->v76_processoforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_processoforo"])){
+     if(trim((string) $this->v76_processoforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_processoforo"])){
        $sql  .= $virgula." v76_processoforo = $this->v76_processoforo ";
        $virgula = ",";
-       if(trim($this->v76_processoforo) == null ){
+       if(trim((string) $this->v76_processoforo) == null ){
          $this->erro_sql = " Campo Processo Foro nao Informado.";
          $this->erro_campo = "v76_processoforo";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_processoforopartilha {
          return false;
        }
      }
-     if(trim($this->v76_tipolancamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_tipolancamento"])){
+     if(trim((string) $this->v76_tipolancamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_tipolancamento"])){
        $sql  .= $virgula." v76_tipolancamento = $this->v76_tipolancamento ";
        $virgula = ",";
-       if(trim($this->v76_tipolancamento) == null ){
+       if(trim((string) $this->v76_tipolancamento) == null ){
          $this->erro_sql = " Campo Forma de Lançamento nao Informado.";
          $this->erro_campo = "v76_tipolancamento";
          $this->erro_banco = "";
@@ -284,7 +284,7 @@ class cl_processoforopartilha {
          return false;
        }
      }
-     if(trim($this->v76_dtpagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_dtpagamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v76_dtpagamento_dia"] !="") ){
+     if(trim((string) $this->v76_dtpagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_dtpagamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v76_dtpagamento_dia"] !="") ){
        $sql  .= $virgula." v76_dtpagamento = '$this->v76_dtpagamento' ";
        $virgula = ",";
      }     else{
@@ -293,14 +293,14 @@ class cl_processoforopartilha {
          $virgula = ",";
        }
      }
-     if(trim($this->v76_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_obs"])){
+     if(trim((string) $this->v76_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_obs"])){
        $sql  .= $virgula." v76_obs = '$this->v76_obs' ";
        $virgula = ",";
      }
-     if(trim($this->v76_valorpartilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_valorpartilha"])){
+     if(trim((string) $this->v76_valorpartilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_valorpartilha"])){
        $sql  .= $virgula." v76_valorpartilha = $this->v76_valorpartilha ";
        $virgula = ",";
-       if(trim($this->v76_valorpartilha) == null ){
+       if(trim((string) $this->v76_valorpartilha) == null ){
          $this->erro_sql = " Campo Valor da Partilha nao Informado.";
          $this->erro_campo = "v76_valorpartilha";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_processoforopartilha {
          return false;
        }
      }
-     if(trim($this->v76_datapartilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_datapartilha_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v76_datapartilha_dia"] !="") ){
+     if(trim((string) $this->v76_datapartilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v76_datapartilha_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v76_datapartilha_dia"] !="") ){
        $sql  .= $virgula." v76_datapartilha = '$this->v76_datapartilha' ";
        $virgula = ",";
-       if(trim($this->v76_datapartilha) == null ){
+       if(trim((string) $this->v76_datapartilha) == null ){
          $this->erro_sql = " Campo Data da Partilha nao Informado.";
          $this->erro_campo = "v76_datapartilha_dia";
          $this->erro_banco = "";
@@ -326,7 +326,7 @@ class cl_processoforopartilha {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v76_datapartilha_dia"])){
          $sql  .= $virgula." v76_datapartilha = null ";
          $virgula = ",";
-         if(trim($this->v76_datapartilha) == null ){
+         if(trim((string) $this->v76_datapartilha) == null ){
            $this->erro_sql = " Campo Data da Partilha nao Informado.";
            $this->erro_campo = "v76_datapartilha_dia";
            $this->erro_banco = "";
@@ -345,23 +345,23 @@ class cl_processoforopartilha {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18255,'$this->v76_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v76_sequencial"]) || $this->v76_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3229,18255,'".AddSlashes(pg_result($resaco,$conresaco,'v76_sequencial'))."','$this->v76_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3229,18255,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v76_sequencial'))."','$this->v76_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v76_processoforo"]) || $this->v76_processoforo != "")
-           $resac = db_query("insert into db_acount values($acount,3229,18259,'".AddSlashes(pg_result($resaco,$conresaco,'v76_processoforo'))."','$this->v76_processoforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3229,18259,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v76_processoforo'))."','$this->v76_processoforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v76_tipolancamento"]) || $this->v76_tipolancamento != "")
-           $resac = db_query("insert into db_acount values($acount,3229,18260,'".AddSlashes(pg_result($resaco,$conresaco,'v76_tipolancamento'))."','$this->v76_tipolancamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3229,18260,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v76_tipolancamento'))."','$this->v76_tipolancamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v76_dtpagamento"]) || $this->v76_dtpagamento != "")
-           $resac = db_query("insert into db_acount values($acount,3229,18261,'".AddSlashes(pg_result($resaco,$conresaco,'v76_dtpagamento'))."','$this->v76_dtpagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3229,18261,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v76_dtpagamento'))."','$this->v76_dtpagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v76_obs"]) || $this->v76_obs != "")
-           $resac = db_query("insert into db_acount values($acount,3229,18262,'".AddSlashes(pg_result($resaco,$conresaco,'v76_obs'))."','$this->v76_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3229,18262,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v76_obs'))."','$this->v76_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v76_valorpartilha"]) || $this->v76_valorpartilha != "")
-           $resac = db_query("insert into db_acount values($acount,3229,19195,'".AddSlashes(pg_result($resaco,$conresaco,'v76_valorpartilha'))."','$this->v76_valorpartilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3229,19195,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v76_valorpartilha'))."','$this->v76_valorpartilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v76_datapartilha"]) || $this->v76_datapartilha != "")
-           $resac = db_query("insert into db_acount values($acount,3229,19196,'".AddSlashes(pg_result($resaco,$conresaco,'v76_datapartilha'))."','$this->v76_datapartilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3229,19196,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v76_datapartilha'))."','$this->v76_datapartilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -406,16 +406,16 @@ class cl_processoforopartilha {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18255,'$v76_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3229,18255,'','".AddSlashes(pg_result($resaco,$iresaco,'v76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3229,18259,'','".AddSlashes(pg_result($resaco,$iresaco,'v76_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3229,18260,'','".AddSlashes(pg_result($resaco,$iresaco,'v76_tipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3229,18261,'','".AddSlashes(pg_result($resaco,$iresaco,'v76_dtpagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3229,18262,'','".AddSlashes(pg_result($resaco,$iresaco,'v76_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3229,19195,'','".AddSlashes(pg_result($resaco,$iresaco,'v76_valorpartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3229,19196,'','".AddSlashes(pg_result($resaco,$iresaco,'v76_datapartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3229,18255,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3229,18259,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v76_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3229,18260,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v76_tipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3229,18261,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v76_dtpagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3229,18262,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v76_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3229,19195,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v76_valorpartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3229,19196,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v76_datapartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from processoforopartilha
@@ -475,7 +475,7 @@ class cl_processoforopartilha {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:processoforopartilha";
@@ -490,7 +490,7 @@ class cl_processoforopartilha {
    function sql_query ( $v76_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -518,7 +518,7 @@ class cl_processoforopartilha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,7 +531,7 @@ class cl_processoforopartilha {
    function sql_query_file ( $v76_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -552,7 +552,7 @@ class cl_processoforopartilha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -570,9 +570,9 @@ class cl_processoforopartilha {
      */
     public function sql_query_recibo_custas($v77_numnov, $processoForo = null)
     {
-        $where = array(
+        $where = [
           "v77_numnov = {$v77_numnov}"
-        );
+        ];
 
         if (!empty($processoForo)) {
           $where[] = "v76_processoforo = {$processoForo}";

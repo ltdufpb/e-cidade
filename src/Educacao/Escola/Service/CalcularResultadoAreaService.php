@@ -42,7 +42,7 @@ class CalcularResultadoAreaService
      * @param DiarioAvaliacaoDisciplina[] $diarioAvaliacoesDisciplinas
      * @throws Exception
      */
-    public function __construct(private AreaProcedimento $areaProcedimento, private array $diarioAvaliacoesDisciplinas)
+    public function __construct(private readonly AreaProcedimento $areaProcedimento, private readonly array $diarioAvaliacoesDisciplinas)
     {
     }
 

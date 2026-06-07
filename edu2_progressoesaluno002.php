@@ -47,7 +47,7 @@ $iTotalProgressoes = count( $aProgressoes );
 $oConfig                 = new stdClass();
 $oConfig->iLarguraMaxima = 290;
 $oConfig->iAlturaLinha   = 4;
-$oConfig->aSituacoes     = array( 0 => "TODAS", 1 => "ATIVA", 2 => "INATIVA", 3 => "CONCLUÍDA" );
+$oConfig->aSituacoes     = [ 0 => "TODAS", 1 => "ATIVA", 2 => "INATIVA", 3 => "CONCLUÍDA" ];
 
 $oPdf = new PDF();
 $oPdf->Open();

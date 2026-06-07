@@ -36,7 +36,7 @@
      * Collection de EventoContabilLancamento
      * @var array
      */
-    private $aInstancias = array();
+    private $aInstancias = [];
 
     /**
      * Instancia da classe

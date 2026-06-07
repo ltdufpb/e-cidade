@@ -36,7 +36,7 @@ class EventoContabilRepository {
      * Collection de EventoContabil
      * @var array
      */
-    private $aInstancia = array();
+    private $aInstancia = [];
 
     /**
      * Instancia da classe

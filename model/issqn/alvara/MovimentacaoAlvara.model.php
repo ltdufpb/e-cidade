@@ -356,7 +356,7 @@ abstract class MovimentacaoAlvara {
     $rsSqlMovAlvara   = $oDaoIssMovAlvara->sql_record($sSqlMovAlvara);
 
     if ($oDaoIssMovAlvara->numrows == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsSqlMovAlvara);

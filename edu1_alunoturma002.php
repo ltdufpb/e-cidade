@@ -35,8 +35,8 @@ require_once(modification('libs/db_utils.php'));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matricula_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 
 $oDaoEduNumAlunoBloqueado = db_utils::getdao('edu_numalunobloqueado');
 $clmatricula              = new cl_matricula;

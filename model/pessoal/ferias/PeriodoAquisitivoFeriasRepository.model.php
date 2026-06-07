@@ -31,7 +31,7 @@ class PeriodoAquisitivoFeriasRepository {
   /**
    * @var PeriodoAquisitivoFerias[]
    */
-  protected  $itens = array();
+  protected  $itens = [];
 
   /**
    * @var \PeriodoAquisitivoFeriasRepository
@@ -86,7 +86,7 @@ class PeriodoAquisitivoFeriasRepository {
    */
   public static function getPeriodosDisponiveisDoServidor( Servidor $oServidor, $lSomenteComDireitoFerias = false ) {
 
-    $aWhere = $lSomenteComDireitoFerias ? array('rh109_perdeudireitoferias is false') : array();
+    $aWhere = $lSomenteComDireitoFerias ? ['rh109_perdeudireitoferias is false'] : [];
     $oDaoRhFerias = new cl_rhferias();
     $sSqlRhferias = $oDaoRhFerias->sql_query_periodos_aquisitivos_com_saldo($oServidor->getMatricula(), '*', $aWhere);
     $rsRhFerias   = db_query($sSqlRhferias);
@@ -97,7 +97,7 @@ class PeriodoAquisitivoFeriasRepository {
     if ( !$rsRhFerias ) {
       throw new BusinessException(_M(
         PeriodoAquisitivoFerias::MENSAGENS . 'erro_buscar_periodo_aquisitivo',
-        (object) array('sErroBanco' => pg_last_error())
+        (object) ['sErroBanco' => pg_last_error()]
       ));
     }
 
@@ -109,12 +109,12 @@ class PeriodoAquisitivoFeriasRepository {
 
       throw new BusinessException(_M(
         PeriodoAquisitivoFerias::MENSAGENS . 'busca_periodo_aquisitivo_pela_matricula',
-        (object) array('iCodigo' => $oServidor->getMatricula())
+        (object) ['iCodigo' => $oServidor->getMatricula()]
       ));
     }
 
 
-    $aPeriodos   = array();
+    $aPeriodos   = [];
     for ($iLinha = 0; $iLinha < $iTotalLinhas; $iLinha++ ) {
 
       $oDadosPeriodoAquisitivo = db_utils::fieldsMemory($rsRhFerias, $iLinha);

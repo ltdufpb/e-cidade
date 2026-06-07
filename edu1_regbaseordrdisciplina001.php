@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clregencia = new cl_regencia;
 $turma=  $turma;
 if(isset($ordenacao)){
@@ -80,7 +80,7 @@ if(isset($ordenacao)){
          for($i=0;$i<$clregencia->numrows;$i++){
           db_fieldsmemory($result3,0);
           $dados1 = pg_fetch_array($result3);
-          echo "<option value=\"".$dados1["ed59_i_codigo"]."\">".trim($dados1["ed232_c_descr"])."</option>\n";
+          echo "<option value=\"".$dados1["ed59_i_codigo"]."\">".trim((string) $dados1["ed232_c_descr"])."</option>\n";
          }
          ?>
          </select>

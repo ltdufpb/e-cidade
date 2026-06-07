@@ -28,27 +28,27 @@
 //CLASSE DA ENTIDADE processoforopartilhacusta
 class cl_processoforopartilhacusta {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v77_sequencial = 0;
-   var $v77_taxa = 0;
-   var $v77_processoforopartilha = 0;
-   var $v77_valor = 0;
-   var $v77_numnov = 0;
-   var $v77_dispensalancamentorecibo = 'f';
+   public $v77_sequencial = 0;
+   public $v77_taxa = 0;
+   public $v77_processoforopartilha = 0;
+   public $v77_valor = 0;
+   public $v77_numnov = 0;
+   public $v77_dispensalancamentorecibo = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v77_sequencial = int4 = Sequencial
                  v77_taxa = int4 = Taxa
                  v77_processoforopartilha = int4 = Partilha do Processo
@@ -57,10 +57,10 @@ class cl_processoforopartilhacusta {
                  v77_dispensalancamentorecibo = bool = Dispensa cobrança
                  ";
    //funcao construtor da classe
-   function cl_processoforopartilhacusta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforopartilhacusta");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -136,10 +136,10 @@ class cl_processoforopartilhacusta {
          $this->erro_status = "0";
          return false;
        }
-       $this->v77_sequencial = pg_result($result,0,0);
+       $this->v77_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from processoforopartilhacusta_v77_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v77_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v77_sequencial)){
          $this->erro_sql = " Campo v77_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,7 +178,7 @@ class cl_processoforopartilhacusta {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Custas vinculadas a partilha do processo ($this->v77_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Custas vinculadas a partilha do processo já Cadastrado";
@@ -207,15 +207,15 @@ class cl_processoforopartilhacusta {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18256,'$this->v77_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3230,18256,'','".AddSlashes(pg_result($resaco,0,'v77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3230,18263,'','".AddSlashes(pg_result($resaco,0,'v77_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3230,18264,'','".AddSlashes(pg_result($resaco,0,'v77_processoforopartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3230,18265,'','".AddSlashes(pg_result($resaco,0,'v77_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3230,18266,'','".AddSlashes(pg_result($resaco,0,'v77_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3230,20752,'','".AddSlashes(pg_result($resaco,0,'v77_dispensalancamentorecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3230,18256,'','".AddSlashes(pg_fetch_result($resaco,0,'v77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3230,18263,'','".AddSlashes(pg_fetch_result($resaco,0,'v77_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3230,18264,'','".AddSlashes(pg_fetch_result($resaco,0,'v77_processoforopartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3230,18265,'','".AddSlashes(pg_fetch_result($resaco,0,'v77_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3230,18266,'','".AddSlashes(pg_fetch_result($resaco,0,'v77_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3230,20752,'','".AddSlashes(pg_fetch_result($resaco,0,'v77_dispensalancamentorecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -225,10 +225,10 @@ class cl_processoforopartilhacusta {
       $this->atualizacampos();
      $sql = " update processoforopartilhacusta set ";
      $virgula = "";
-     if(trim($this->v77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_sequencial"])){
+     if(trim((string) $this->v77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_sequencial"])){
        $sql  .= $virgula." v77_sequencial = $this->v77_sequencial ";
        $virgula = ",";
-       if(trim($this->v77_sequencial) == null ){
+       if(trim((string) $this->v77_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "v77_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_processoforopartilhacusta {
          return false;
        }
      }
-     if(trim($this->v77_taxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_taxa"])){
+     if(trim((string) $this->v77_taxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_taxa"])){
        $sql  .= $virgula." v77_taxa = $this->v77_taxa ";
        $virgula = ",";
-       if(trim($this->v77_taxa) == null ){
+       if(trim((string) $this->v77_taxa) == null ){
          $this->erro_sql = " Campo Taxa não informado.";
          $this->erro_campo = "v77_taxa";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_processoforopartilhacusta {
          return false;
        }
      }
-     if(trim($this->v77_processoforopartilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_processoforopartilha"])){
+     if(trim((string) $this->v77_processoforopartilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_processoforopartilha"])){
        $sql  .= $virgula." v77_processoforopartilha = $this->v77_processoforopartilha ";
        $virgula = ",";
-       if(trim($this->v77_processoforopartilha) == null ){
+       if(trim((string) $this->v77_processoforopartilha) == null ){
          $this->erro_sql = " Campo Partilha do Processo não informado.";
          $this->erro_campo = "v77_processoforopartilha";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_processoforopartilhacusta {
          return false;
        }
      }
-     if(trim($this->v77_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_valor"])){
+     if(trim((string) $this->v77_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_valor"])){
        $sql  .= $virgula." v77_valor = $this->v77_valor ";
        $virgula = ",";
-       if(trim($this->v77_valor) == null ){
+       if(trim((string) $this->v77_valor) == null ){
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "v77_valor";
          $this->erro_banco = "";
@@ -277,17 +277,17 @@ class cl_processoforopartilhacusta {
          return false;
        }
      }
-     if(trim($this->v77_numnov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_numnov"])){
-        if(trim($this->v77_numnov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v77_numnov"])){
+     if(trim((string) $this->v77_numnov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_numnov"])){
+        if(trim((string) $this->v77_numnov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v77_numnov"])){
            $this->v77_numnov = "0" ;
         }
        $sql  .= $virgula." v77_numnov = $this->v77_numnov ";
        $virgula = ",";
      }
-     if(trim($this->v77_dispensalancamentorecibo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_dispensalancamentorecibo"])){
+     if(trim((string) $this->v77_dispensalancamentorecibo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v77_dispensalancamentorecibo"])){
        $sql  .= $virgula." v77_dispensalancamentorecibo = '$this->v77_dispensalancamentorecibo' ";
        $virgula = ",";
-       if(trim($this->v77_dispensalancamentorecibo) == null ){
+       if(trim((string) $this->v77_dispensalancamentorecibo) == null ){
          $this->erro_sql = " Campo Dispensa cobrança não informado.";
          $this->erro_campo = "v77_dispensalancamentorecibo";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_processoforopartilhacusta {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,18256,'$this->v77_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v77_sequencial"]) || $this->v77_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3230,18256,'".AddSlashes(pg_result($resaco,$conresaco,'v77_sequencial'))."','$this->v77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3230,18256,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v77_sequencial'))."','$this->v77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v77_taxa"]) || $this->v77_taxa != "")
-             $resac = db_query("insert into db_acount values($acount,3230,18263,'".AddSlashes(pg_result($resaco,$conresaco,'v77_taxa'))."','$this->v77_taxa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3230,18263,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v77_taxa'))."','$this->v77_taxa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v77_processoforopartilha"]) || $this->v77_processoforopartilha != "")
-             $resac = db_query("insert into db_acount values($acount,3230,18264,'".AddSlashes(pg_result($resaco,$conresaco,'v77_processoforopartilha'))."','$this->v77_processoforopartilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3230,18264,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v77_processoforopartilha'))."','$this->v77_processoforopartilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v77_valor"]) || $this->v77_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3230,18265,'".AddSlashes(pg_result($resaco,$conresaco,'v77_valor'))."','$this->v77_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3230,18265,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v77_valor'))."','$this->v77_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v77_numnov"]) || $this->v77_numnov != "")
-             $resac = db_query("insert into db_acount values($acount,3230,18266,'".AddSlashes(pg_result($resaco,$conresaco,'v77_numnov'))."','$this->v77_numnov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3230,18266,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v77_numnov'))."','$this->v77_numnov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v77_dispensalancamentorecibo"]) || $this->v77_dispensalancamentorecibo != "")
-             $resac = db_query("insert into db_acount values($acount,3230,20752,'".AddSlashes(pg_result($resaco,$conresaco,'v77_dispensalancamentorecibo'))."','$this->v77_dispensalancamentorecibo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3230,20752,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v77_dispensalancamentorecibo'))."','$this->v77_dispensalancamentorecibo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -379,15 +379,15 @@ class cl_processoforopartilhacusta {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,18256,'$v77_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3230,18256,'','".AddSlashes(pg_result($resaco,$iresaco,'v77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3230,18263,'','".AddSlashes(pg_result($resaco,$iresaco,'v77_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3230,18264,'','".AddSlashes(pg_result($resaco,$iresaco,'v77_processoforopartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3230,18265,'','".AddSlashes(pg_result($resaco,$iresaco,'v77_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3230,18266,'','".AddSlashes(pg_result($resaco,$iresaco,'v77_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3230,20752,'','".AddSlashes(pg_result($resaco,$iresaco,'v77_dispensalancamentorecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3230,18256,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3230,18263,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v77_taxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3230,18264,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v77_processoforopartilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3230,18265,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v77_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3230,18266,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v77_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3230,20752,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v77_dispensalancamentorecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -613,8 +613,8 @@ function getProcessoForoByNumpreRecibo($iNumpreRecibo) {
    */
   function getProcessoForoByNumprePacelamento($iNumpre, $iCadTipo) {
 
-    $aRetorno       = array();
-    $aProcessoForo  = array();
+    $aRetorno       = [];
+    $aProcessoForo  = [];
     if ($iCadTipo == 13) {
 
       $sSqlProcessoForo  = "select distinct processoforoinicial.v71_processoforo           \n ";
@@ -656,7 +656,7 @@ function getProcessoForoByNumpreRecibo($iNumpreRecibo) {
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -695,7 +695,7 @@ function getProcessoForoByNumpreRecibo($iNumpreRecibo) {
 
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",$ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -718,7 +718,7 @@ function getProcessoForoByNumpreRecibo($iNumpreRecibo) {
      * Array com os Numnpres de Origem do Processo do foro
      * @var array
      */
-    $aNumpresOrigem = array();
+    $aNumpresOrigem = [];
 
     switch((int)$iCadTipo){
 
@@ -815,7 +815,7 @@ function getProcessoForoByNumpreRecibo($iNumpreRecibo) {
 
     if ( $sCampos != "*" ) {
 
-      $campos_sql = split("#", $sCampos);
+      $campos_sql = preg_split("#\\##m", $sCampos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -865,7 +865,7 @@ function getProcessoForoByNumpreRecibo($iNumpreRecibo) {
     if ( $sOrdem != null ) {
 
       $sSql       .= " order by ";
-      $campos_sql = split("#", $sOrdem);
+      $campos_sql = preg_split("#\\##m", $sOrdem);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

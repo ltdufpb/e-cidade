@@ -36,7 +36,7 @@ include(modification("classes/db_matriculamov_classe.php"));
 include(modification("classes/db_alunonecessidade_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatricula        = new cl_matricula;
 $clmatriculamov     = new cl_matriculamov;
 $clalunonecessidade = new cl_alunonecessidade;
@@ -133,7 +133,7 @@ if (isset($alterar)) {
   
   if ( !empty($aMatriculas ) && isset($aMatriculas[1] ) ) {
 
-    if ( in_array($aMatriculas[1]->getSituacao(), array('TRANSFERIDO REDE','TRANSFERIDO FORA') ) ) {
+    if ( in_array($aMatriculas[1]->getSituacao(), ['TRANSFERIDO REDE','TRANSFERIDO FORA'] ) ) {
       
       $oDataSaidaMatriculaAnterior = $aMatriculas[1]->getDataEncerramento();
       $lAplicaValidacao            = true;
@@ -181,8 +181,8 @@ if (isset($alterar)) {
       if ($clmatriculamov->numrows > 0) {
       	
         db_fieldsmemory($result11,0);
-        $dataevento                         = substr($ed60_d_datamatricula,6,4);
-        $dataevento                        .= "-".substr($ed60_d_datamatricula,3,2)."-".substr($ed60_d_datamatricula,0,2);
+        $dataevento                         = substr((string) $ed60_d_datamatricula,6,4);
+        $dataevento                        .= "-".substr((string) $ed60_d_datamatricula,3,2)."-".substr((string) $ed60_d_datamatricula,0,2);
         $clmatriculamov->ed229_d_dataevento = $dataevento;
         $clmatriculamov->ed229_i_codigo     = $codaltera;
         $clmatriculamov->alterar($codaltera);
@@ -207,7 +207,7 @@ if (isset($alterar)) {
     $clmatriculamov->incluir($ed229_i_codigo);
   }
   
-  if (isset($ed60_c_parecer) && trim($confereparec) != trim(@$ed60_c_parecer)) {
+  if (isset($ed60_c_parecer) && trim((string) $confereparec) != trim(@$ed60_c_parecer)) {
     LimpaResultadoFinal($ed60_i_codigo);   
   }
   
@@ -348,7 +348,7 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
      <?php if($clalunonecessidade->numrows>0 || $ed60_c_parecer=="S"){?>
       <?=@$Led60_c_parecer?>
       <?php 
-      $x = array("N"=>"NÃO","S"=>"SIM");
+      $x = ["N"=>"NÃO","S"=>"SIM"];
       db_select('ed60_c_parecer',$x,true,$db_opcao,"");
      }
      ?>
@@ -379,7 +379,7 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
     <td colspan="2">
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
       <?php 
-      $array_mov = array();
+      $array_mov = [];
       $sCampos  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,";
       $sCampos .= " ed57_c_descr,ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome";
       $sOrder   = " ed229_d_dataevento,ed229_i_codigo";
@@ -399,7 +399,7 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
           db_fieldsmemory($result,$f);
           $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
           $iContador = count($array_mov)-1; 
-          $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+          $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
           $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
           $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;          
         }
@@ -420,7 +420,7 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
         db_fieldsmemory($result1,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
         $iContador = count($array_mov)-1; 
-        $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+        $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
         $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
       }
@@ -441,7 +441,7 @@ $result_ne = $clalunonecessidade->sql_record($clalunonecessidade->sql_query("",
         db_fieldsmemory($result2,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
         $iContador = count($array_mov)-1; 
-        $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+        $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr."#".$ed229_c_procedimento;
         $array_mov[$iContador] .= "#".$ed229_t_descr."#".$nome;
       }

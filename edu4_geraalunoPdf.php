@@ -102,8 +102,8 @@ require_once(modification("libs/db_utils.php"));
     }
 
     
-    $oPdf->SetWidths(array(17, 20, 35, 50, 50,20,50,17));
-    $oPdf->SetAligns(array("L", "L", "L", "L", "L","L","L","L"));
+    $oPdf->SetWidths([17, 20, 35, 50, 50,20,50,17]);
+    $oPdf->SetAligns(["L", "L", "L", "L", "L","L","L","L"]);
 
    for ($iCont = 0; $iCont < $iLinhas ; $iCont++) {
    
@@ -134,7 +134,7 @@ require_once(modification("libs/db_utils.php"));
       $oDadosA->nomealuno           = $oBuscaInfo->ed47_v_nome;
       $oDadosA->codigoalunoinep     = $oBuscaInfo->ed47_c_codigoinep;
 
-      $aDado    = Array();
+      $aDado    = [];
       $aDado[0] = $oDadosA->idalunoinep;
       $aDado[1] = $oDadosA->municipionascimento;
       $aDado[2] = $oDadosA->ufnascimento;

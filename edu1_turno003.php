@@ -35,8 +35,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_turno_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 
 $oDaoTurno = db_utils::getdao('turno');
 $db_botao  = false;

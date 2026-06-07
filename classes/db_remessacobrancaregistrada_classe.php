@@ -3,31 +3,31 @@
 //CLASSE DA ENTIDADE remessacobrancaregistrada
 class cl_remessacobrancaregistrada { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k147_sequencial = 0; 
-   var $k147_instit = 0; 
-   var $k147_convenio = 0; 
-   var $k147_sequencialremessa = 0; 
-   var $k147_dataemissao_dia = null; 
-   var $k147_dataemissao_mes = null; 
-   var $k147_dataemissao_ano = null; 
-   var $k147_dataemissao = null; 
-   var $k147_horaemissao = null; 
-   var $k147_arquivoremessa = null; 
+   public $k147_sequencial = 0; 
+   public $k147_instit = 0; 
+   public $k147_convenio = 0; 
+   public $k147_sequencialremessa = 0; 
+   public $k147_dataemissao_dia = null; 
+   public $k147_dataemissao_mes = null; 
+   public $k147_dataemissao_ano = null; 
+   public $k147_dataemissao = null; 
+   public $k147_horaemissao = null; 
+   public $k147_arquivoremessa = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k147_sequencial = int4 = Sequencial 
                  k147_instit = int4 = Intituição 
                  k147_convenio = int4 = Convênio 
@@ -38,10 +38,10 @@ class cl_remessacobrancaregistrada {
                  k147_tiposemissao = varchar = Tipos de Débito da Remessa
                  ";
    //funcao construtor da classe 
-   function cl_remessacobrancaregistrada() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("remessacobrancaregistrada"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,10 +132,10 @@ class cl_remessacobrancaregistrada {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k147_sequencial = pg_result($result,0,0); 
+       $this->k147_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from remessacobrancaregistrada_k147_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k147_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k147_sequencial)){
          $this->erro_sql = " Campo k147_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -177,7 +177,7 @@ class cl_remessacobrancaregistrada {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "RemessaCobrancaRegistrada ($this->k147_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "RemessaCobrancaRegistrada já Cadastrado";
@@ -206,16 +206,16 @@ class cl_remessacobrancaregistrada {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22100,'$this->k147_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3981,22100,'','".AddSlashes(pg_result($resaco,0,'k147_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3981,22101,'','".AddSlashes(pg_result($resaco,0,'k147_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3981,22102,'','".AddSlashes(pg_result($resaco,0,'k147_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3981,22103,'','".AddSlashes(pg_result($resaco,0,'k147_sequencialremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3981,22104,'','".AddSlashes(pg_result($resaco,0,'k147_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3981,22105,'','".AddSlashes(pg_result($resaco,0,'k147_horaemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3981,22306,'','".AddSlashes(pg_result($resaco,0,'k147_arquivoremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3981,22100,'','".AddSlashes(pg_fetch_result($resaco,0,'k147_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3981,22101,'','".AddSlashes(pg_fetch_result($resaco,0,'k147_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3981,22102,'','".AddSlashes(pg_fetch_result($resaco,0,'k147_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3981,22103,'','".AddSlashes(pg_fetch_result($resaco,0,'k147_sequencialremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3981,22104,'','".AddSlashes(pg_fetch_result($resaco,0,'k147_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3981,22105,'','".AddSlashes(pg_fetch_result($resaco,0,'k147_horaemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3981,22306,'','".AddSlashes(pg_fetch_result($resaco,0,'k147_arquivoremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -225,10 +225,10 @@ class cl_remessacobrancaregistrada {
       $this->atualizacampos();
      $sql = " update remessacobrancaregistrada set ";
      $virgula = "";
-     if(trim($this->k147_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_sequencial"])){ 
+     if(trim((string) $this->k147_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_sequencial"])){ 
        $sql  .= $virgula." k147_sequencial = $this->k147_sequencial ";
        $virgula = ",";
-       if(trim($this->k147_sequencial) == null ){ 
+       if(trim((string) $this->k147_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "k147_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_remessacobrancaregistrada {
          return false;
        }
      }
-     if(trim($this->k147_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_instit"])){ 
+     if(trim((string) $this->k147_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_instit"])){ 
        $sql  .= $virgula." k147_instit = $this->k147_instit ";
        $virgula = ",";
-       if(trim($this->k147_instit) == null ){ 
+       if(trim((string) $this->k147_instit) == null ){ 
          $this->erro_sql = " Campo Intituição não informado.";
          $this->erro_campo = "k147_instit";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_remessacobrancaregistrada {
          return false;
        }
      }
-     if(trim($this->k147_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_convenio"])){ 
+     if(trim((string) $this->k147_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_convenio"])){ 
        $sql  .= $virgula." k147_convenio = $this->k147_convenio ";
        $virgula = ",";
-       if(trim($this->k147_convenio) == null ){ 
+       if(trim((string) $this->k147_convenio) == null ){ 
          $this->erro_sql = " Campo Convênio não informado.";
          $this->erro_campo = "k147_convenio";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_remessacobrancaregistrada {
          return false;
        }
      }
-     if(trim($this->k147_sequencialremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_sequencialremessa"])){ 
+     if(trim((string) $this->k147_sequencialremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_sequencialremessa"])){ 
        $sql  .= $virgula." k147_sequencialremessa = $this->k147_sequencialremessa ";
        $virgula = ",";
-       if(trim($this->k147_sequencialremessa) == null ){ 
+       if(trim((string) $this->k147_sequencialremessa) == null ){ 
          $this->erro_sql = " Campo Sequencial Remessa não informado.";
          $this->erro_campo = "k147_sequencialremessa";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_remessacobrancaregistrada {
          return false;
        }
      }
-     if(trim($this->k147_dataemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_dataemissao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k147_dataemissao_dia"] !="") ){ 
+     if(trim((string) $this->k147_dataemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_dataemissao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k147_dataemissao_dia"] !="") ){ 
        $sql  .= $virgula." k147_dataemissao = '$this->k147_dataemissao' ";
        $virgula = ",";
-       if(trim($this->k147_dataemissao) == null ){ 
+       if(trim((string) $this->k147_dataemissao) == null ){ 
          $this->erro_sql = " Campo Data de Emissão não informado.";
          $this->erro_campo = "k147_dataemissao_dia";
          $this->erro_banco = "";
@@ -293,7 +293,7 @@ class cl_remessacobrancaregistrada {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k147_dataemissao_dia"])){ 
          $sql  .= $virgula." k147_dataemissao = null ";
          $virgula = ",";
-         if(trim($this->k147_dataemissao) == null ){ 
+         if(trim((string) $this->k147_dataemissao) == null ){ 
            $this->erro_sql = " Campo Data de Emissão não informado.";
            $this->erro_campo = "k147_dataemissao_dia";
            $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_remessacobrancaregistrada {
          }
        }
      }
-     if(trim($this->k147_horaemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_horaemissao"])){ 
+     if(trim((string) $this->k147_horaemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_horaemissao"])){ 
        $sql  .= $virgula." k147_horaemissao = '$this->k147_horaemissao' ";
        $virgula = ",";
-       if(trim($this->k147_horaemissao) == null ){ 
+       if(trim((string) $this->k147_horaemissao) == null ){ 
          $this->erro_sql = " Campo Hora da Emissão não informado.";
          $this->erro_campo = "k147_horaemissao";
          $this->erro_banco = "";
@@ -317,7 +317,7 @@ class cl_remessacobrancaregistrada {
          return false;
        }
      }
-     if(trim($this->k147_arquivoremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_arquivoremessa"])){ 
+     if(trim((string) $this->k147_arquivoremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k147_arquivoremessa"])){ 
        $sql  .= $virgula." k147_arquivoremessa = $this->k147_arquivoremessa ";
        $virgula = ",";
      }
@@ -335,23 +335,23 @@ class cl_remessacobrancaregistrada {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22100,'$this->k147_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k147_sequencial"]) || $this->k147_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3981,22100,'".AddSlashes(pg_result($resaco,$conresaco,'k147_sequencial'))."','$this->k147_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3981,22100,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k147_sequencial'))."','$this->k147_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k147_instit"]) || $this->k147_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3981,22101,'".AddSlashes(pg_result($resaco,$conresaco,'k147_instit'))."','$this->k147_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3981,22101,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k147_instit'))."','$this->k147_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k147_convenio"]) || $this->k147_convenio != "")
-             $resac = db_query("insert into db_acount values($acount,3981,22102,'".AddSlashes(pg_result($resaco,$conresaco,'k147_convenio'))."','$this->k147_convenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3981,22102,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k147_convenio'))."','$this->k147_convenio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k147_sequencialremessa"]) || $this->k147_sequencialremessa != "")
-             $resac = db_query("insert into db_acount values($acount,3981,22103,'".AddSlashes(pg_result($resaco,$conresaco,'k147_sequencialremessa'))."','$this->k147_sequencialremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3981,22103,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k147_sequencialremessa'))."','$this->k147_sequencialremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k147_dataemissao"]) || $this->k147_dataemissao != "")
-             $resac = db_query("insert into db_acount values($acount,3981,22104,'".AddSlashes(pg_result($resaco,$conresaco,'k147_dataemissao'))."','$this->k147_dataemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3981,22104,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k147_dataemissao'))."','$this->k147_dataemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k147_horaemissao"]) || $this->k147_horaemissao != "")
-             $resac = db_query("insert into db_acount values($acount,3981,22105,'".AddSlashes(pg_result($resaco,$conresaco,'k147_horaemissao'))."','$this->k147_horaemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3981,22105,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k147_horaemissao'))."','$this->k147_horaemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k147_arquivoremessa"]) || $this->k147_arquivoremessa != "")
-             $resac = db_query("insert into db_acount values($acount,3981,22306,'".AddSlashes(pg_result($resaco,$conresaco,'k147_arquivoremessa'))."','$this->k147_arquivoremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3981,22306,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k147_arquivoremessa'))."','$this->k147_arquivoremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -405,16 +405,16 @@ class cl_remessacobrancaregistrada {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22100,'$k147_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3981,22100,'','".AddSlashes(pg_result($resaco,$iresaco,'k147_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3981,22101,'','".AddSlashes(pg_result($resaco,$iresaco,'k147_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3981,22102,'','".AddSlashes(pg_result($resaco,$iresaco,'k147_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3981,22103,'','".AddSlashes(pg_result($resaco,$iresaco,'k147_sequencialremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3981,22104,'','".AddSlashes(pg_result($resaco,$iresaco,'k147_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3981,22105,'','".AddSlashes(pg_result($resaco,$iresaco,'k147_horaemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3981,22306,'','".AddSlashes(pg_result($resaco,$iresaco,'k147_arquivoremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3981,22100,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k147_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3981,22101,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k147_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3981,22102,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k147_convenio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3981,22103,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k147_sequencialremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3981,22104,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k147_dataemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3981,22105,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k147_horaemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3981,22306,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k147_arquivoremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

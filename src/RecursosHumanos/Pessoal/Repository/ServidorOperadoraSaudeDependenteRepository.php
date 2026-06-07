@@ -42,7 +42,7 @@ class ServidorOperadoraSaudeDependenteRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -68,7 +68,7 @@ class ServidorOperadoraSaudeDependenteRepository
      * @param ServidorOperadoraSaudeDependente|null $servidorOperadoraSaudeDependente
      * @throws Exception
      */
-    public function delete(ServidorOperadoraSaudeDependente $servidorOperadoraSaudeDependente = null)
+    public function delete(?ServidorOperadoraSaudeDependente $servidorOperadoraSaudeDependente = null)
     {
         $id = $servidorOperadoraSaudeDependente instanceof ServidorOperadoraSaudeDependente ? $servidorOperadoraSaudeDependente->getSequencial() : null;
 
@@ -86,7 +86,7 @@ class ServidorOperadoraSaudeDependenteRepository
      * @return bool|ServidorOperadoraSaudeDependente
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_servidoroperadorasaudedependente();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -110,13 +110,13 @@ class ServidorOperadoraSaudeDependenteRepository
      * @return ServidorOperadoraSaudeDependente[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_servidoroperadorasaudedependente();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $servidorOperadorasSaudeDependente = array();
+        $servidorOperadorasSaudeDependente = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidorOperadorasSaudeDependente;
@@ -143,7 +143,7 @@ class ServidorOperadoraSaudeDependenteRepository
             throw new Exception("Não foi possível buscar o dependentes dos servidores.\nContate o suporte.");
         }
 
-        $servidorOperadorasSaudeDependente = array();
+        $servidorOperadorasSaudeDependente = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidorOperadorasSaudeDependente;
@@ -261,7 +261,7 @@ class ServidorOperadoraSaudeDependenteRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 }

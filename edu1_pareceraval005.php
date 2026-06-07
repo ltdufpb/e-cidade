@@ -35,7 +35,7 @@ include(modification("classes/db_parecer_classe.php"));
 include(modification("classes/db_parecerlegenda_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clpareceraval = new cl_pareceraval;
@@ -49,20 +49,20 @@ if(isset($incluir)){
   $result1 = $clpareceraval->sql_record($clpareceraval->sql_query("","ed93_i_codigo,ed93_t_parecer",""," ed93_i_diarioavaliacao = $ed93_i_diarioavaliacao"));
   if($clpareceraval->numrows>0){
    db_fieldsmemory($result1,0);
-   $conf_sequencial = trim($ed92_c_descr);
-   if(strstr($ed93_t_parecer,$conf_sequencial)){
+   $conf_sequencial = trim((string) $ed92_c_descr);
+   if(strstr((string) $ed93_t_parecer,$conf_sequencial)){
     $clpareceraval->erro_status = "0";
     $clpareceraval->erro_msg = "Parecer já Informado para este período.";
    }else{
     db_inicio_transacao();
-    $clpareceraval->ed93_t_parecer= trim($ed93_t_parecer)." ** ".$ed92_i_sequencial." - ".trim($ed92_c_descr).($ed91_c_descr!=""?" =>".trim($ed91_c_descr):"");
+    $clpareceraval->ed93_t_parecer= trim((string) $ed93_t_parecer)." ** ".$ed92_i_sequencial." - ".trim((string) $ed92_c_descr).($ed91_c_descr!=""?" =>".trim((string) $ed91_c_descr):"");
     $clpareceraval->ed93_i_codigo=$ed93_i_codigo;
     $clpareceraval->alterar($ed93_i_codigo);
     db_fim_transacao();
    }
   }else{
    db_inicio_transacao();
-   $clpareceraval->ed93_t_parecer= $ed92_i_sequencial." - ".trim($ed92_c_descr).($ed91_c_descr!=""?" => ".trim($ed91_c_descr):"");
+   $clpareceraval->ed93_t_parecer= $ed92_i_sequencial." - ".trim((string) $ed92_c_descr).($ed91_c_descr!=""?" => ".trim((string) $ed91_c_descr):"");
    $clpareceraval->ed93_i_diarioavaliacao=$ed93_i_diarioavaliacao;
    $clpareceraval->incluir(null);
    db_fim_transacao();
@@ -165,7 +165,7 @@ if($encerrado=="S"){
     for($y=0;$y<$clparecerlegenda->numrows;$y++){
      db_fieldsmemory($result,$y);
      ?>
-      <option value="<?=trim($ed91_c_descr)?>"><?=trim($ed91_c_descr)?></option>
+      <option value="<?=trim((string) $ed91_c_descr)?>"><?=trim((string) $ed91_c_descr)?></option>
      <?php 
     }
     ?>
@@ -183,7 +183,7 @@ if($encerrado=="S"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed93_i_codigo"=>@$ed93_i_codigo);
+   $chavepri= ["ed93_i_codigo"=>@$ed93_i_codigo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clpareceraval->sql_query("","*","ed93_i_codigo","ed93_i_diarioavaliacao = $ed93_i_diarioavaliacao");
    $cliframe_alterar_excluir->campos  ="ed93_t_parecer";

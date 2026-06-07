@@ -89,7 +89,7 @@ $db_opcao   = 1;
         "a7" => "",
         "a9" => ""
     ];
-    $clcriaabas->disabled      = array(
+    $clcriaabas->disabled      = [
         "a2" => "true",
         "a3" => "true",
         "a8" => "true",
@@ -97,7 +97,7 @@ $db_opcao   = 1;
         "a5" => "true",
         "a6" => "true",
         "a7" => "true"
-    );
+    ];
 
    $clcriaabas->cordisabled   = "#9b9b9b";
    $clcriaabas->iframe_height = "100%";

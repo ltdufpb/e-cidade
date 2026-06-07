@@ -106,7 +106,7 @@ if(isset($atualizar)){
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
         $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed107_i_codigo"]."\">".trim($dados["ed107_c_descr"])."</option>\n";
+         echo "<option value=\"".$dados["ed107_i_codigo"]."\">".trim((string) $dados["ed107_c_descr"])."</option>\n";
         }
        }
       ?>
@@ -128,7 +128,7 @@ if(isset($atualizar)){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed107_i_codigo"=>@$ed107_i_codigo,"ed107_c_descr"=>@$ed107_c_descr,"ed107_f_percentual"=>@$ed107_f_percentual);
+   $chavepri= ["ed107_i_codigo"=>@$ed107_i_codigo,"ed107_c_descr"=>@$ed107_c_descr,"ed107_f_percentual"=>@$ed107_f_percentual];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clprogclasse->sql_query($ed107_i_codigo,"*","ed107_i_sequencia");
    $cliframe_alterar_excluir->campos  ="ed107_i_codigo,ed107_c_descr,ed107_f_percentual,ed107_i_sequencia";

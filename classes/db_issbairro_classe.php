@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE issbairro
 class cl_issbairro { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q13_inscr = 0; 
-   var $q13_bairro = 0; 
+   public $q13_inscr = 0; 
+   public $q13_bairro = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q13_inscr = int4 = inscricao 
                  q13_bairro = int4 = bairro da inscricao 
                  ";
    //funcao construtor da classe 
-   function cl_issbairro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issbairro"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_issbairro {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->q13_inscr) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -129,11 +129,11 @@ class cl_issbairro {
      $resaco = $this->sql_record($this->sql_query_file($this->q13_inscr));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,281,'$this->q13_inscr','I')");
-       $resac = db_query("insert into db_acount values($acount,44,281,'','".AddSlashes(pg_result($resaco,0,'q13_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,44,282,'','".AddSlashes(pg_result($resaco,0,'q13_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,44,281,'','".AddSlashes(pg_fetch_result($resaco,0,'q13_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,44,282,'','".AddSlashes(pg_fetch_result($resaco,0,'q13_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_issbairro {
       $this->atualizacampos();
      $sql = " update issbairro set ";
      $virgula = "";
-     if(trim($this->q13_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q13_inscr"])){ 
+     if(trim((string) $this->q13_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q13_inscr"])){ 
        $sql  .= $virgula." q13_inscr = $this->q13_inscr ";
        $virgula = ",";
-       if(trim($this->q13_inscr) == null ){ 
+       if(trim((string) $this->q13_inscr) == null ){ 
          $this->erro_sql = " Campo inscricao nao Informado.";
          $this->erro_campo = "q13_inscr";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_issbairro {
          return false;
        }
      }
-     if(trim($this->q13_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q13_bairro"])){ 
+     if(trim((string) $this->q13_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q13_bairro"])){ 
        $sql  .= $virgula." q13_bairro = $this->q13_bairro ";
        $virgula = ",";
-       if(trim($this->q13_bairro) == null ){ 
+       if(trim((string) $this->q13_bairro) == null ){ 
          $this->erro_sql = " Campo bairro da inscricao nao Informado.";
          $this->erro_campo = "q13_bairro";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_issbairro {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,281,'$this->q13_inscr','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q13_inscr"]))
-           $resac = db_query("insert into db_acount values($acount,44,281,'".AddSlashes(pg_result($resaco,$conresaco,'q13_inscr'))."','$this->q13_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,44,281,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q13_inscr'))."','$this->q13_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q13_bairro"]))
-           $resac = db_query("insert into db_acount values($acount,44,282,'".AddSlashes(pg_result($resaco,$conresaco,'q13_bairro'))."','$this->q13_bairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,44,282,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q13_bairro'))."','$this->q13_bairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_issbairro {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,281,'$q13_inscr','E')");
-         $resac = db_query("insert into db_acount values($acount,44,281,'','".AddSlashes(pg_result($resaco,$iresaco,'q13_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,44,282,'','".AddSlashes(pg_result($resaco,$iresaco,'q13_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,44,281,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q13_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,44,282,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q13_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from issbairro
@@ -291,7 +291,7 @@ class cl_issbairro {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issbairro";
@@ -305,7 +305,7 @@ class cl_issbairro {
    function sql_query ( $q13_inscr=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -329,7 +329,7 @@ class cl_issbairro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -341,7 +341,7 @@ class cl_issbairro {
    function sql_query_file ( $q13_inscr=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,7 +362,7 @@ class cl_issbairro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

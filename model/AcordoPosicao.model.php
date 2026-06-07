@@ -136,12 +136,12 @@ class AcordoPosicao
      *
      * @var AcordoItem collection
      */
-    protected $aItens = array();
+    protected $aItens = [];
 
     /**
      * array de posicoes periodos
      */
-    protected $aPosicaoPeriodo = array();
+    protected $aPosicaoPeriodo = [];
 
     /**
      * observação da posição
@@ -504,7 +504,7 @@ class AcordoPosicao
      */
     public function getItens()
     {
-        $this->aItens = array();
+        $this->aItens = [];
         $oDaoAcordoItem = new cl_acordoitem();
         $sSqlAcordoitem = $oDaoAcordoItem->sql_query_file(null,
           "ac20_sequencial",
@@ -636,7 +636,7 @@ class AcordoPosicao
             $oItem->setCodigoPosicao($this->getCodigo());
             $oItem->setTipoControle($oItemAcordo->iFormaControle);
 
-            $aPeriodos = array();
+            $aPeriodos = [];
             $oPeriodos = new stdClass();
             $oPeriodos->dtDataInicial = $oItemAcordo->dtInicial;
             $oPeriodos->dtDataFinal = $oItemAcordo->dtFinal;
@@ -744,7 +744,7 @@ class AcordoPosicao
 
             $oItem->setTipoControle($oItemAcordo->iFormaControle);
 
-            $aPeriodos = array();
+            $aPeriodos = [];
             $oPeriodos = new stdClass();
             $oPeriodos->dtDataInicial = $oItemAcordo->dtInicial;
             $oPeriodos->dtDataFinal = $oItemAcordo->dtFinal;
@@ -891,7 +891,7 @@ class AcordoPosicao
             }
         }
 
-        $aDotacoes = array();
+        $aDotacoes = [];
 
         if ($iNumRows == 1) {
             $oItemOrigem = db_utils::fieldsMemory($rsDadosItem, 0);
@@ -938,7 +938,7 @@ class AcordoPosicao
 
         $iOrdemItem = 1;
         foreach ($this->aItens as $oItem) {
-            $oItem->setResumo(urldecode($oItem->getResumo()));
+            $oItem->setResumo(urldecode((string) $oItem->getResumo()));
             $oItem->setOrdem($iOrdemItem);
             $oItem->save();
             $iOrdemItem++;
@@ -1025,7 +1025,7 @@ class AcordoPosicao
         $aDtIni = explode("/", $dtDataInicial);
         $aDtFin = explode("/", $dtDataFinal);
 
-        $aPosicaoPeriodoMensais = array();
+        $aPosicaoPeriodoMensais = [];
 
         $iPer = self::calculaDiferencaMeses($iAcordo, $dtDataInicial, $dtDataFinal);
 
@@ -1149,7 +1149,7 @@ class AcordoPosicao
             throw new DBException("Erro ao pesquisar dados para o quadro de previsão ");
         }
 
-        $oQuadro->aPeriodos = array();
+        $oQuadro->aPeriodos = [];
         $iTotalPeriodos = pg_num_rows($rsPeriodos);
 
         for ($i = 0; $i < $iTotalPeriodos; $i++) {
@@ -1170,7 +1170,7 @@ class AcordoPosicao
             $oQuadro->aPeriodos[] = $oPeriodo;
         }
 
-        $oQuadro->aItens = array();
+        $oQuadro->aItens = [];
         $aItens = $this->getItens();
 
         foreach ($aItens as $oItemContrato) {
@@ -1231,8 +1231,8 @@ class AcordoPosicao
             return count($aPeriodos);
         }
 
-        $aDataInicial = explode("/", $dtDataInicial);
-        $aDataFinal = explode("/", $dtDataFinal);
+        $aDataInicial = explode("/", (string) $dtDataInicial);
+        $aDataFinal = explode("/", (string) $dtDataFinal);
         $iTotalMeses = 0;
 
         for ($iAnoInicial = $aDataInicial[2]; $iAnoInicial <= $aDataFinal[2]; $iAnoInicial++) {
@@ -1275,8 +1275,8 @@ class AcordoPosicao
      */
     public function getCodigoPosicaoPeriodo($dtDataInicial, $dtDataFinal)
     {
-        list($iDiaInicial, $iMesInicial, $iAnoInicial) = explode("/", $dtDataInicial);
-        list($iDiaFinal, $iMesFinal, $iAnoFinal) = explode("/", $dtDataFinal);
+        [$iDiaInicial, $iMesInicial, $iAnoInicial] = explode("/", $dtDataInicial);
+        [$iDiaFinal, $iMesFinal, $iAnoFinal] = explode("/", $dtDataFinal);
 
         $oDaoPosicaoPeriodo = new cl_acordoposicaoperiodo();
         $sCamposPosicaoPeriodo = " ac36_sequencial ";
@@ -1339,7 +1339,7 @@ class AcordoPosicao
             $oItem->setValorTotal($oItemEmpenho->e62_vltot);
             $oItem->setCodigoPosicao($this->getCodigo());
 
-            $aPeriodos = array();
+            $aPeriodos = [];
             $oPeriodos = new stdClass();
             $oPeriodos->dtDataInicial = $oStdItemContrato->dtInicial;
             $oPeriodos->dtDataFinal = $oStdItemContrato->dtFinal;
@@ -1370,8 +1370,8 @@ class AcordoPosicao
      */
     static public function calculaPeriodosComerciais($dtDataInicial, $dtDataFinal)
     {
-        $aDtIni = explode("/", $dtDataInicial);
-        $aDtFin = explode("/", $dtDataFinal);
+        $aDtIni = explode("/", (string) $dtDataInicial);
+        $aDtFin = explode("/", (string) $dtDataFinal);
 
         $iDiaInicial = (int)$aDtIni[0];
         $iMesInicial = (int)$aDtIni[1];
@@ -1381,7 +1381,7 @@ class AcordoPosicao
         $iMesFinal = (int)$aDtFin[1];
         $iAnoFinal = (int)$aDtFin[2];
 
-        $aDescricaoPeriodo = array();
+        $aDescricaoPeriodo = [];
         $aDescricaoPeriodo[1] = "Janeiro";
         $aDescricaoPeriodo[2] = "Fevereiro";
         $aDescricaoPeriodo[3] = "Março";
@@ -1395,13 +1395,13 @@ class AcordoPosicao
         $aDescricaoPeriodo[11] = "Novembro";
         $aDescricaoPeriodo[12] = "Dezembro";
 
-        $aDatas = array();
+        $aDatas = [];
         $iDiaInicialPeriodo = $iDiaInicial;
         $iMesInicialPeriodo = $iMesInicial;
         $iAnoInicialPeriodo = $iAnoInicial;
 
         $iTotalPeriodos = $iMesFinal - ($iMesInicial - 1) + ($iAnoFinal - $iAnoInicial) * 12;
-        $aMeses31 = array(1, 3, 5, 7, 8, 10, 12);
+        $aMeses31 = [1, 3, 5, 7, 8, 10, 12];
 
         for ($iPeriodo = 0; $iPeriodo < $iTotalPeriodos; $iPeriodo++) {
             $oDataInicialPeriodo = new DBDate("$iAnoInicialPeriodo-$iMesInicialPeriodo-$iDiaInicialPeriodo");

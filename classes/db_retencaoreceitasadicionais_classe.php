@@ -36,7 +36,7 @@ class cl_retencaoreceitasadicionais extends \DAOBasica {
     }
 
 
-    function sql_query_notascgmretencaoadicionais($where=array(), $campos="") {
+    function sql_query_notascgmretencaoadicionais($where=[], $campos="") {
 
         $sql = "SELECT ";
         if ($campos != "") {

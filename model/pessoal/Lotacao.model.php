@@ -266,7 +266,7 @@ class Lotacao extends DBEstrutura{
    * @return Boolean
    */
   public function isAnalitica() {
-    return (boolean)$this->lAnalitica;
+    return (bool) $this->lAnalitica;
   }
 
   /**
@@ -275,7 +275,7 @@ class Lotacao extends DBEstrutura{
    * @return Boolean
    */
   public function isAtiva() {
-    return (boolean)$this->lAtiva;
+    return (bool) $this->lAtiva;
   }
 
   /**

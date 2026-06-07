@@ -33,7 +33,7 @@ class RegimeCompetencia {
   /**
    * @var Parcela[]
    */
-  private $parcelas = array();
+  private $parcelas = [];
 
   public function __construct() {
   }
@@ -126,7 +126,7 @@ class RegimeCompetencia {
     
     $nValorPorParcela = round($valor / $numeroParcelas, 2);
     $mesAtual         = $mesInicial;
-    $aParcelas        = array();      
+    $aParcelas        = [];      
     $nValorTotalProcessado = 0;
     foreach (range(1, $numeroParcelas) as $parcela) {
       

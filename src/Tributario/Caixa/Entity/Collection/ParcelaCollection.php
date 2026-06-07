@@ -6,6 +6,7 @@ use ECidade\Tributario\Library\ArrayCollection;
 
 final class ParcelaCollection extends ArrayCollection
 {
+    #[\Override]
     public function add($parcela)
     {
         parent::add($parcela);

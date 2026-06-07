@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE conhistdocregra
 class cl_conhistdocregra {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c92_sequencial = 0;
-   var $c92_conhistdoc = 0;
-   var $c92_descricao = null;
-   var $c92_regra = null;
-   var $c92_anousu = 0;
+   public $c92_sequencial = 0;
+   public $c92_conhistdoc = 0;
+   public $c92_descricao = null;
+   public $c92_regra = null;
+   public $c92_anousu = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c92_sequencial = int4 = Sequencial
                  c92_conhistdoc = int4 = Documento
                  c92_descricao = varchar(100) = Descrição
@@ -56,10 +56,10 @@ class cl_conhistdocregra {
                  c92_anousu = int4 = Ano Exercício
                  ";
    //funcao construtor da classe
-   function cl_conhistdocregra() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conhistdocregra");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -131,10 +131,10 @@ class cl_conhistdocregra {
          $this->erro_status = "0";
          return false;
        }
-       $this->c92_sequencial = pg_result($result,0,0);
+       $this->c92_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from conhistdocregra_c92_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c92_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c92_sequencial)){
          $this->erro_sql = " Campo c92_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_conhistdocregra {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Regra para o Documento ($this->c92_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Regra para o Documento já Cadastrado";
@@ -194,14 +194,14 @@ class cl_conhistdocregra {
      $resaco = $this->sql_record($this->sql_query_file($this->c92_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18978,'$this->c92_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3375,18978,'','".AddSlashes(pg_result($resaco,0,'c92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3375,18980,'','".AddSlashes(pg_result($resaco,0,'c92_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3375,18982,'','".AddSlashes(pg_result($resaco,0,'c92_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3375,18981,'','".AddSlashes(pg_result($resaco,0,'c92_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3375,19282,'','".AddSlashes(pg_result($resaco,0,'c92_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3375,18978,'','".AddSlashes(pg_fetch_result($resaco,0,'c92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3375,18980,'','".AddSlashes(pg_fetch_result($resaco,0,'c92_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3375,18982,'','".AddSlashes(pg_fetch_result($resaco,0,'c92_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3375,18981,'','".AddSlashes(pg_fetch_result($resaco,0,'c92_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3375,19282,'','".AddSlashes(pg_fetch_result($resaco,0,'c92_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -210,10 +210,10 @@ class cl_conhistdocregra {
       $this->atualizacampos();
      $sql = " update conhistdocregra set ";
      $virgula = "";
-     if(trim($this->c92_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_sequencial"])){
+     if(trim((string) $this->c92_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_sequencial"])){
        $sql  .= $virgula." c92_sequencial = $this->c92_sequencial ";
        $virgula = ",";
-       if(trim($this->c92_sequencial) == null ){
+       if(trim((string) $this->c92_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "c92_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_conhistdocregra {
          return false;
        }
      }
-     if(trim($this->c92_conhistdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_conhistdoc"])){
+     if(trim((string) $this->c92_conhistdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_conhistdoc"])){
        $sql  .= $virgula." c92_conhistdoc = $this->c92_conhistdoc ";
        $virgula = ",";
-       if(trim($this->c92_conhistdoc) == null ){
+       if(trim((string) $this->c92_conhistdoc) == null ){
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "c92_conhistdoc";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_conhistdocregra {
          return false;
        }
      }
-     if(trim($this->c92_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_descricao"])){
+     if(trim((string) $this->c92_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_descricao"])){
        $sql  .= $virgula." c92_descricao = '$this->c92_descricao' ";
        $virgula = ",";
-       if(trim($this->c92_descricao) == null ){
+       if(trim((string) $this->c92_descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "c92_descricao";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_conhistdocregra {
          return false;
        }
      }
-     if(trim($this->c92_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_regra"])){
+     if(trim((string) $this->c92_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_regra"])){
        $sql  .= $virgula." c92_regra = '$this->c92_regra' ";
        $virgula = ",";
-       if(trim($this->c92_regra) == null ){
+       if(trim((string) $this->c92_regra) == null ){
          $this->erro_sql = " Campo Regra nao Informado.";
          $this->erro_campo = "c92_regra";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_conhistdocregra {
          return false;
        }
      }
-     if(trim($this->c92_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_anousu"])){
+     if(trim((string) $this->c92_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c92_anousu"])){
        $sql  .= $virgula." c92_anousu = $this->c92_anousu ";
        $virgula = ",";
-       if(trim($this->c92_anousu) == null ){
+       if(trim((string) $this->c92_anousu) == null ){
          $this->erro_sql = " Campo Ano Exercício nao Informado.";
          $this->erro_campo = "c92_anousu";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_conhistdocregra {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18978,'$this->c92_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c92_sequencial"]) || $this->c92_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3375,18978,'".AddSlashes(pg_result($resaco,$conresaco,'c92_sequencial'))."','$this->c92_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3375,18978,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c92_sequencial'))."','$this->c92_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c92_conhistdoc"]) || $this->c92_conhistdoc != "")
-           $resac = db_query("insert into db_acount values($acount,3375,18980,'".AddSlashes(pg_result($resaco,$conresaco,'c92_conhistdoc'))."','$this->c92_conhistdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3375,18980,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c92_conhistdoc'))."','$this->c92_conhistdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c92_descricao"]) || $this->c92_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3375,18982,'".AddSlashes(pg_result($resaco,$conresaco,'c92_descricao'))."','$this->c92_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3375,18982,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c92_descricao'))."','$this->c92_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c92_regra"]) || $this->c92_regra != "")
-           $resac = db_query("insert into db_acount values($acount,3375,18981,'".AddSlashes(pg_result($resaco,$conresaco,'c92_regra'))."','$this->c92_regra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3375,18981,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c92_regra'))."','$this->c92_regra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c92_anousu"]) || $this->c92_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,3375,19282,'".AddSlashes(pg_result($resaco,$conresaco,'c92_anousu'))."','$this->c92_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3375,19282,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c92_anousu'))."','$this->c92_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_conhistdocregra {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18978,'$c92_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3375,18978,'','".AddSlashes(pg_result($resaco,$iresaco,'c92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3375,18980,'','".AddSlashes(pg_result($resaco,$iresaco,'c92_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3375,18982,'','".AddSlashes(pg_result($resaco,$iresaco,'c92_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3375,18981,'','".AddSlashes(pg_result($resaco,$iresaco,'c92_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3375,19282,'','".AddSlashes(pg_result($resaco,$iresaco,'c92_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3375,18978,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3375,18980,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c92_conhistdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3375,18982,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c92_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3375,18981,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c92_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3375,19282,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c92_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conhistdocregra
@@ -407,7 +407,7 @@ class cl_conhistdocregra {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conhistdocregra";
@@ -445,7 +445,7 @@ class cl_conhistdocregra {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_conhistdocregra {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

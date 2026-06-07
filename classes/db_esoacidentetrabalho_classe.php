@@ -83,7 +83,7 @@ SQL;
         return $sql;
     }
 
-    public function avaliacaoPreenchida(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function avaliacaoPreenchida(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $campos = implode(', ', $campos);
         $sql = <<<SQL

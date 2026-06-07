@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE ppaestimativareceita
 class cl_ppaestimativareceita {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $o06_sequencial = 0;
-   var $o06_ppaestimativa = 0;
-   var $o06_codrec = 0;
-   var $o06_anousu = 0;
-   var $o06_ppaversao = 0;
-   var $o06_concarpeculiar = null;
+   public $o06_sequencial = 0;
+   public $o06_ppaestimativa = 0;
+   public $o06_codrec = 0;
+   public $o06_anousu = 0;
+   public $o06_ppaversao = 0;
+   public $o06_concarpeculiar = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  o06_sequencial = int4 = Código Sequencial
                  o06_ppaestimativa = int4 = Código Sequencial
                  o06_codrec = int4 = Receita
@@ -58,10 +58,10 @@ class cl_ppaestimativareceita {
                  o06_concarpeculiar = varchar(100) = Caracteristica Peculiar
                  ";
    //funcao construtor da classe
-   function cl_ppaestimativareceita() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ppaestimativareceita");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -143,10 +143,10 @@ class cl_ppaestimativareceita {
          $this->erro_status = "0";
          return false;
        }
-       $this->o06_sequencial = pg_result($result,0,0);
+       $this->o06_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from ppaestimativareceita_o06_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o06_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o06_sequencial)){
          $this->erro_sql = " Campo o06_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -192,15 +192,15 @@ class cl_ppaestimativareceita {
      $resaco = $this->sql_record($this->sql_query_file($this->o06_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13612,'$this->o06_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2384,13612,'','".AddSlashes(pg_result($resaco,0,'o06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2384,13613,'','".AddSlashes(pg_result($resaco,0,'o06_ppaestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2384,13614,'','".AddSlashes(pg_result($resaco,0,'o06_codrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2384,2741,'','".AddSlashes(pg_result($resaco,0,'o06_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2384,14461,'','".AddSlashes(pg_result($resaco,0,'o06_ppaversao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2384,14499,'','".AddSlashes(pg_result($resaco,0,'o06_concarpeculiar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2384,13612,'','".AddSlashes(pg_fetch_result($resaco,0,'o06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2384,13613,'','".AddSlashes(pg_fetch_result($resaco,0,'o06_ppaestimativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2384,13614,'','".AddSlashes(pg_fetch_result($resaco,0,'o06_codrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2384,2741,'','".AddSlashes(pg_fetch_result($resaco,0,'o06_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2384,14461,'','".AddSlashes(pg_fetch_result($resaco,0,'o06_ppaversao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2384,14499,'','".AddSlashes(pg_fetch_result($resaco,0,'o06_concarpeculiar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -209,10 +209,10 @@ class cl_ppaestimativareceita {
       $this->atualizacampos();
      $sql = " update ppaestimativareceita set ";
      $virgula = "";
-     if(trim($this->o06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_sequencial"])){
+     if(trim((string) $this->o06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_sequencial"])){
        $sql  .= $virgula." o06_sequencial = $this->o06_sequencial ";
        $virgula = ",";
-       if(trim($this->o06_sequencial) == null ){
+       if(trim((string) $this->o06_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o06_sequencial";
          $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_ppaestimativareceita {
          return false;
        }
      }
-     if(trim($this->o06_ppaestimativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_ppaestimativa"])){
+     if(trim((string) $this->o06_ppaestimativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_ppaestimativa"])){
        $sql  .= $virgula." o06_ppaestimativa = $this->o06_ppaestimativa ";
        $virgula = ",";
-       if(trim($this->o06_ppaestimativa) == null ){
+       if(trim((string) $this->o06_ppaestimativa) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o06_ppaestimativa";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_ppaestimativareceita {
          return false;
        }
      }
-     if(trim($this->o06_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_codrec"])){
+     if(trim((string) $this->o06_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_codrec"])){
        $sql  .= $virgula." o06_codrec = $this->o06_codrec ";
        $virgula = ",";
-       if(trim($this->o06_codrec) == null ){
+       if(trim((string) $this->o06_codrec) == null ){
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "o06_codrec";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_ppaestimativareceita {
          return false;
        }
      }
-     if(trim($this->o06_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_anousu"])){
+     if(trim((string) $this->o06_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_anousu"])){
        $sql  .= $virgula." o06_anousu = $this->o06_anousu ";
        $virgula = ",";
-       if(trim($this->o06_anousu) == null ){
+       if(trim((string) $this->o06_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "o06_anousu";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_ppaestimativareceita {
          return false;
        }
      }
-     if(trim($this->o06_ppaversao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_ppaversao"])){
+     if(trim((string) $this->o06_ppaversao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_ppaversao"])){
        $sql  .= $virgula." o06_ppaversao = $this->o06_ppaversao ";
        $virgula = ",";
-       if(trim($this->o06_ppaversao) == null ){
+       if(trim((string) $this->o06_ppaversao) == null ){
          $this->erro_sql = " Campo Perspectiva do ppa nao Informado.";
          $this->erro_campo = "o06_ppaversao";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_ppaestimativareceita {
          return false;
        }
      }
-     if(trim($this->o06_concarpeculiar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_concarpeculiar"])){
+     if(trim((string) $this->o06_concarpeculiar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o06_concarpeculiar"])){
        $sql  .= $virgula." o06_concarpeculiar = '$this->o06_concarpeculiar' ";
        $virgula = ",";
-       if(trim($this->o06_concarpeculiar) == null ){
+       if(trim((string) $this->o06_concarpeculiar) == null ){
          $this->erro_sql = " Campo Caracteristica Peculiar nao Informado.";
          $this->erro_campo = "o06_concarpeculiar";
          $this->erro_banco = "";
@@ -388,7 +388,7 @@ class cl_ppaestimativareceita {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ppaestimativareceita";
@@ -403,7 +403,7 @@ class cl_ppaestimativareceita {
    function sql_query ( $o06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_ppaestimativareceita {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_ppaestimativareceita {
    function sql_query_file ( $o06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,7 +465,7 @@ class cl_ppaestimativareceita {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_ppaestimativareceita {
    function sql_query_analitica ( $o06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_ppaestimativareceita {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_ppaestimativareceita {
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -557,7 +557,7 @@ class cl_ppaestimativareceita {
     if ($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -616,7 +616,7 @@ class cl_ppaestimativareceita {
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -645,7 +645,7 @@ class cl_ppaestimativareceita {
     if ($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];

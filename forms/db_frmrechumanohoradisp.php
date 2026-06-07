@@ -107,7 +107,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
     }
 
     $sql     = $clperiodoescola->sql_query( "", "*", "ed15_i_sequencia, ed08_i_sequencia", "ed17_i_escola = {$escola}" );
-    $result1 = $clperiodoescola->sql_record($sql) or die (pg_errormessage());
+    $result1 = $clperiodoescola->sql_record($sql) or die (pg_last_error());
 
     for($z=0;$z<$clperiodoescola->numrows;$z++){
     db_fieldsmemory($result1,$z);
@@ -115,7 +115,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
       ?>
     <tr bgcolor="#444444">
     <td onmouseover="MostraTurno('turno<?=$ed17_i_codigo?>');" onmouseout="OcultaTurno('turno<?=$ed17_i_codigo?>');" align="center" width="50" style="font-weight: bold; color: #DEB887;">
-     <?=pg_result($result1,$z,"ed15_c_nome");?>
+     <?=pg_fetch_result($result1,$z,"ed15_c_nome");?>
      <table cellpading="2" cellspacing="0" bgcolor="#f3f3f3" id="turno<?=$ed17_i_codigo?>" style="visibility:hidden;position:absolute;border:1px solid #666666;">
       <tr>
        <td>

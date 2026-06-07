@@ -81,7 +81,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top" width="70%">
   <?php 
-  $chavepri= array("ed219_i_codigo"=>@$ed219_i_codigo,"ed219_i_regimemat"=>@$ed219_i_regimemat,"ed218_c_nome"=>@$ed218_c_nome,"ed219_c_nome"=>@$ed219_c_nome,"ed219_c_abrev"=>@$ed219_c_abrev);
+  $chavepri= ["ed219_i_codigo"=>@$ed219_i_codigo,"ed219_i_regimemat"=>@$ed219_i_regimemat,"ed218_c_nome"=>@$ed218_c_nome,"ed219_c_nome"=>@$ed219_c_nome,"ed219_c_abrev"=>@$ed219_c_abrev];
   $cliframe_alterar_excluir->chavepri=$chavepri;
   $cliframe_alterar_excluir->sql = $clregimematdiv->sql_query("","*","ed219_i_ordenacao"," ed219_i_regimemat = $ed219_i_regimemat");
   $cliframe_alterar_excluir->campos  ="ed219_i_codigo,ed219_c_nome,ed219_c_abrev";
@@ -111,7 +111,7 @@ if(isset($opcao) && $opcao=="alterar"){
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
         $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed219_i_codigo"]."\">".trim($dados["ed219_c_abrev"])." - ".trim($dados["ed219_c_nome"])."</option>\n";
+         echo "<option value=\"".$dados["ed219_i_codigo"]."\">".trim((string) $dados["ed219_c_abrev"])." - ".trim((string) $dados["ed219_c_nome"])."</option>\n";
         }
        }
       ?>

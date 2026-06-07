@@ -48,7 +48,7 @@ class ItemProcessoCompraRepository {
    * @var ItemProcessoCompra[]
    * @access private
    */
-  private $aItens = array();
+  private $aItens = [];
   
   /**
    * Retorna instância do repository
@@ -75,7 +75,7 @@ class ItemProcessoCompraRepository {
    */
   public static function getItemByCodigo($iCodigo) {
     
-    if (!array_key_exists($iCodigo, ItemProcessoCompraRepository::getInstance()->aItens)) {
+    if (!array_key_exists($iCodigo, $this->getInstance()->aItens)) {
       
       $oDaoProcessoCompraItem        = new cl_pcprocitem();
       $sQueryDadosProcessoCompraItem = $oDaoProcessoCompraItem->sql_query_item_lote($iCodigo);
@@ -92,11 +92,11 @@ class ItemProcessoCompraRepository {
           $oItemProcessoCompras->setLote(LoteProcessoCompraRepository::getLoteByCodigo($iCodigoLote));
         }
         
-        ItemProcessoCompraRepository::getInstance()->aItens[$iCodigo] = $oItemProcessoCompras;
+        $this->getInstance()->aItens[$iCodigo] = $oItemProcessoCompras;
       }
     }
 
-    return ItemProcessoCompraRepository::getInstance()->aItens[$iCodigo];
+    return $this->getInstance()->aItens[$iCodigo];
   }
   
 }

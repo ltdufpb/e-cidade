@@ -58,6 +58,7 @@ class MonitoramentoSaudeFormatter extends Formatter
      * @return array|\Assentamento[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $this->ano = $dados->ano;

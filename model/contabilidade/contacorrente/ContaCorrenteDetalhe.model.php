@@ -43,14 +43,14 @@ class ContaCorrenteDetalhe {
   /**
    * @param ContaBancaria $oContaBancaria
    */
-  public function setContaBancaria(ContaBancaria $oContaBancaria = null) {
+  public function setContaBancaria(?ContaBancaria $oContaBancaria = null) {
     $this->oContaBancaria = $oContaBancaria;
   }
 
   /**
    * @param Recurso $oRecurso
    */
-  public function setRecurso(Recurso $oRecurso = null) {
+  public function setRecurso(?Recurso $oRecurso = null) {
     $this->oRecurso = $oRecurso;
   }
 
@@ -78,7 +78,7 @@ class ContaCorrenteDetalhe {
   /**
    * @param Dotacao $oDotacao
    */
-  public function setDotacao(Dotacao $oDotacao = null) {
+  public function setDotacao(?Dotacao $oDotacao = null) {
     $this->oDotacao = $oDotacao;
   }
 
@@ -99,7 +99,7 @@ class ContaCorrenteDetalhe {
   /**
    * @param EmpenhoFinanceiro $oEmpenho
    */
-  public function setEmpenho(EmpenhoFinanceiro $oEmpenho = null) {
+  public function setEmpenho(?EmpenhoFinanceiro $oEmpenho = null) {
     $this->oEmpenho = $oEmpenho;
   }
 
@@ -113,7 +113,7 @@ class ContaCorrenteDetalhe {
   /**
    * @param Acordo $oAcordo
    */
-  public function setAcordo(Acordo $oAcordo = null) {
+  public function setAcordo(?Acordo $oAcordo = null) {
     $this->oAcordo = $oAcordo;
   }
 
@@ -127,7 +127,7 @@ class ContaCorrenteDetalhe {
   /**
    * @param CgmBase $oCredor
    */
-  public function setCredor(CgmBase $oCredor = null) {
+  public function setCredor(?CgmBase $oCredor = null) {
     $this->oCredor = $oCredor;
   }
 

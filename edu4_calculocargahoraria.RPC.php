@@ -67,7 +67,7 @@ try {
       $oRegraCalculoHorariaDao->ed127_escola                = $iEscola;
       $oRegraCalculoHorariaDao->alterar( $oParam->iCalculoCargaHoraria );
 
-      $oRetorno->sMensagem = urlencode( _M( MENSAGEM_CALCULOCARGAHORARIARPC . "salvo_sucesso" ) );
+      $oRetorno->sMensagem = urlencode( (string) _M( MENSAGEM_CALCULOCARGAHORARIARPC . "salvo_sucesso" ) );
 
     break;
 
@@ -94,7 +94,7 @@ try {
       if ( pg_num_rows( $rsRegenciaEncerrada ) > 0 ) {
 
         $oRetorno->lBloquearAlteracao = true;
-        $oRetorno->sMensagem = urlencode( _M( MENSAGEM_CALCULOCARGAHORARIARPC . "alteracao_nao_permitida" ) );
+        $oRetorno->sMensagem = urlencode( (string) _M( MENSAGEM_CALCULOCARGAHORARIARPC . "alteracao_nao_permitida" ) );
       }
 
     break;

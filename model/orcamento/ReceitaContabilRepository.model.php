@@ -38,7 +38,7 @@
      * Collection de ReceitaContabil
      * @var array
      */
-    private $aReceitas = array();
+    private $aReceitas = [];
 
     /**
      * Instancia da classe

@@ -95,7 +95,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed222_i_codigo"=>@$ed222_i_codigo,"ed222_i_turmaac"=>@$ed222_i_turmaac,"ed268_c_descr"=>@$ed268_c_descr,"ed222_i_rechumano"=>@$ed222_i_rechumano,"z01_nome"=>@$z01_nome);
+   $chavepri= ["ed222_i_codigo"=>@$ed222_i_codigo,"ed222_i_turmaac"=>@$ed222_i_turmaac,"ed268_c_descr"=>@$ed268_c_descr,"ed222_i_rechumano"=>@$ed222_i_rechumano,"z01_nome"=>@$z01_nome];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clturmaacprof->sql_query("","*","","ed222_i_turmaac=$ed222_i_turmaac");
    $cliframe_alterar_excluir->campos  ="ed222_i_codigo,ed222_i_rechumano,z01_nome";
@@ -147,7 +147,7 @@ function js_preenchepesquisa(chave){
   db_iframe_turmaacprof.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

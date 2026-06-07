@@ -73,7 +73,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 2 - regra 2
-        if (strlen($this->iInep) < 8) {
+        if (strlen((string) $this->iInep) < 8) {
             $this->aErros[] = 'O campo "Código de escola - INEP" está com tamanho diferente do especificado.';
         }
 
@@ -94,7 +94,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 3 - regra 2
-        if (strlen($this->sCpf) != 11) {
+        if (strlen((string) $this->sCpf) != 11) {
             $this->aErros[] = 'O campo "Número do CPF do Gestor Escolar" está com tamanho diferente do especificado.';
         }
 

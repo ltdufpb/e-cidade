@@ -125,7 +125,7 @@ db_fieldsmemory( $result, 0 );
                    for ( $z = 0; $z < $clconceito->numrows; $z++ ) {
 
                      db_fieldsmemory( $result3, $z );
-                     $selected = trim( $ed44_c_minimoaprov) == trim( $ed39_c_conceito ) ? "selected" : "";
+                     $selected = trim( (string) $ed44_c_minimoaprov) == trim( (string) $ed39_c_conceito ) ? "selected" : "";
                      echo "<option value='{$ed39_c_conceito}' {$selected}>{$ed39_c_conceito}</option>";
                    }
                    echo "</select>";
@@ -150,7 +150,7 @@ db_fieldsmemory( $result, 0 );
              </td>
              <td>
                <?php 
-               $x = array('N'=>'NÃO','S'=>'SIM');
+               $x = ['N'=>'NÃO','S'=>'SIM'];
                db_select( 'ed44_c_obrigatorio', $x, true, 4 );
                ?>
              </td>
@@ -163,7 +163,7 @@ db_fieldsmemory( $result, 0 );
              </td>
              <td>
              <?php
-               $x = array( '0' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10' );
+               $x = [ '0' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10' ];
                db_select( 'ed44_i_peso', $x, true, $db_opcao, " style='visibility:hidden;'" );
              ?>
              </td>
@@ -220,7 +220,7 @@ db_fieldsmemory( $result, 0 );
                          WHERE ed68_i_procresultado = {$ed44_i_procresultado}
                         ORDER BY ed41_i_sequencia
                        ";
-                 $chavepri= array(
+                 $chavepri= [
                                    "ed44_i_codigo"        => @$ed44_i_codigo,
                                    "ed44_i_procavaliacao" => @$ed44_i_procavaliacao,
                                    "ed09_c_descr"         => @$ed09_c_descr,
@@ -228,7 +228,7 @@ db_fieldsmemory( $result, 0 );
                                    "ed44_i_peso"          => @$ed14_i_peso,
                                    "ed44_c_minimoaprov"   => @$ed44_c_minimoaprov,
                                    "ed44_c_obrigatorio"   => @$ed44_c_obrigatorio
-                                 );
+                                 ];
                  $cliframe_alterar_excluir->chavepri      = $chavepri;
                  @$cliframe_alterar_excluir->sql          = $sql;
                  $cliframe_alterar_excluir->campos        = "ed09_c_descr, ed44_c_obrigatorio, ed44_i_peso, ed44_c_minimoaprov";

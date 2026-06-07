@@ -104,7 +104,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed259_i_codigo"=>@$ed259_i_codigo,"ed259_i_serie"=>@$ed259_i_serie,"ed11_c_descr"=>@$ed11_c_descr,"ed11_i_ensino"=>@$ed11_i_ensino,"ed10_c_descr"=>@$ed10_c_descr,"ed259_i_idadeini"=>@$ed259_i_idadeini,"ed259_i_idadefim"=>@$ed259_i_idadefim);
+   $chavepri= ["ed259_i_codigo"=>@$ed259_i_codigo,"ed259_i_serie"=>@$ed259_i_serie,"ed11_c_descr"=>@$ed11_c_descr,"ed11_i_ensino"=>@$ed11_i_ensino,"ed10_c_descr"=>@$ed10_c_descr,"ed259_i_idadeini"=>@$ed259_i_idadeini,"ed259_i_idadefim"=>@$ed259_i_idadefim];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clserieidade->sql_query($ed259_i_codigo,"*","ed11_i_ensino,ed11_i_sequencia");
    $cliframe_alterar_excluir->campos  ="ed259_i_codigo,ed11_c_descr,ed10_c_descr,ed259_i_idadeini,ed259_i_idadefim";

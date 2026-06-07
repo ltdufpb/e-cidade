@@ -29,12 +29,6 @@
 class DBDivisaoDepartamento {
   
   /**
-   * Codigo
-   * @var integer
-   */
-  protected $iCodigo;
-  
-  /**
    * Descricao
    * @var string
    */
@@ -65,9 +59,11 @@ class DBDivisaoDepartamento {
    * @throws BusinessException
    * @return DBDivisaoDepartamento
    */
-  public function __construct($iCodigo=null) {
+  public function __construct(/**
+   * Codigo
+   */
+  protected $iCodigo=null) {
     
-    $this->iCodigo = $iCodigo;
     if (!empty($this->iCodigo)) {
       
       $oDaoDepartamentoDivisao = db_utils::getDao('departdiv');

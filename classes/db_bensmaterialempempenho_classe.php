@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE bensmaterialempempenho
 class cl_bensmaterialempempenho { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t11_sequencial = 0; 
-   var $t11_bensmaterial = 0; 
-   var $t11_empempenho = 0; 
+   public $t11_sequencial = 0; 
+   public $t11_bensmaterial = 0; 
+   public $t11_empempenho = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t11_sequencial = int4 = Sequencial 
                  t11_bensmaterial = int4 = Código do bem 
                  t11_empempenho = float4 = Empenho 
                  ";
    //funcao construtor da classe 
-   function cl_bensmaterialempempenho() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bensmaterialempempenho"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_bensmaterialempempenho {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t11_sequencial = pg_result($result,0,0); 
+       $this->t11_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bensmaterialempempenho_t11_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t11_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t11_sequencial)){
          $this->erro_sql = " Campo t11_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_bensmaterialempempenho {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "bensmaterialempempenho ($this->t11_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "bensmaterialempempenho já Cadastrado";
@@ -166,12 +166,12 @@ class cl_bensmaterialempempenho {
      $resaco = $this->sql_record($this->sql_query_file($this->t11_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17717,'$this->t11_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3129,17717,'','".AddSlashes(pg_result($resaco,0,'t11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3129,17718,'','".AddSlashes(pg_result($resaco,0,'t11_bensmaterial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3129,17719,'','".AddSlashes(pg_result($resaco,0,'t11_empempenho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3129,17717,'','".AddSlashes(pg_fetch_result($resaco,0,'t11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3129,17718,'','".AddSlashes(pg_fetch_result($resaco,0,'t11_bensmaterial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3129,17719,'','".AddSlashes(pg_fetch_result($resaco,0,'t11_empempenho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_bensmaterialempempenho {
       $this->atualizacampos();
      $sql = " update bensmaterialempempenho set ";
      $virgula = "";
-     if(trim($this->t11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t11_sequencial"])){ 
+     if(trim((string) $this->t11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t11_sequencial"])){ 
        $sql  .= $virgula." t11_sequencial = $this->t11_sequencial ";
        $virgula = ",";
-       if(trim($this->t11_sequencial) == null ){ 
+       if(trim((string) $this->t11_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "t11_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_bensmaterialempempenho {
          return false;
        }
      }
-     if(trim($this->t11_bensmaterial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t11_bensmaterial"])){ 
+     if(trim((string) $this->t11_bensmaterial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t11_bensmaterial"])){ 
        $sql  .= $virgula." t11_bensmaterial = $this->t11_bensmaterial ";
        $virgula = ",";
-       if(trim($this->t11_bensmaterial) == null ){ 
+       if(trim((string) $this->t11_bensmaterial) == null ){ 
          $this->erro_sql = " Campo Código do bem nao Informado.";
          $this->erro_campo = "t11_bensmaterial";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_bensmaterialempempenho {
          return false;
        }
      }
-     if(trim($this->t11_empempenho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t11_empempenho"])){ 
+     if(trim((string) $this->t11_empempenho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t11_empempenho"])){ 
        $sql  .= $virgula." t11_empempenho = $this->t11_empempenho ";
        $virgula = ",";
-       if(trim($this->t11_empempenho) == null ){ 
+       if(trim((string) $this->t11_empempenho) == null ){ 
          $this->erro_sql = " Campo Empenho nao Informado.";
          $this->erro_campo = "t11_empempenho";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_bensmaterialempempenho {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17717,'$this->t11_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t11_sequencial"]) || $this->t11_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3129,17717,'".AddSlashes(pg_result($resaco,$conresaco,'t11_sequencial'))."','$this->t11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3129,17717,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t11_sequencial'))."','$this->t11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t11_bensmaterial"]) || $this->t11_bensmaterial != "")
-           $resac = db_query("insert into db_acount values($acount,3129,17718,'".AddSlashes(pg_result($resaco,$conresaco,'t11_bensmaterial'))."','$this->t11_bensmaterial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3129,17718,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t11_bensmaterial'))."','$this->t11_bensmaterial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t11_empempenho"]) || $this->t11_empempenho != "")
-           $resac = db_query("insert into db_acount values($acount,3129,17719,'".AddSlashes(pg_result($resaco,$conresaco,'t11_empempenho'))."','$this->t11_empempenho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3129,17719,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t11_empempenho'))."','$this->t11_empempenho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_bensmaterialempempenho {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17717,'$t11_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3129,17717,'','".AddSlashes(pg_result($resaco,$iresaco,'t11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3129,17718,'','".AddSlashes(pg_result($resaco,$iresaco,'t11_bensmaterial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3129,17719,'','".AddSlashes(pg_result($resaco,$iresaco,'t11_empempenho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3129,17717,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3129,17718,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t11_bensmaterial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3129,17719,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t11_empempenho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bensmaterialempempenho
@@ -345,7 +345,7 @@ class cl_bensmaterialempempenho {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bensmaterialempempenho";
@@ -360,7 +360,7 @@ class cl_bensmaterialempempenho {
    function sql_query ( $t11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_bensmaterialempempenho {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,7 +404,7 @@ class cl_bensmaterialempempenho {
    function sql_query_file ( $t11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_bensmaterialempempenho {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

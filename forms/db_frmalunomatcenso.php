@@ -132,7 +132,7 @@
       <tr>
         <td valign="top"><br>
           <?php 
-            $chavepri= array("ed280_i_codigo"=>@$ed280_i_codigo, "ed280_i_aluno"=>@$ed280_i_aluno, "ed47_v_nome"=>@$ed47_v_nome, "ed280_i_matcenso"=>@$ed280_i_matcenso, "ed280_i_turmacenso"=>@$ed280_i_turmacenso, "ed280_i_ano"=>@$ed280_i_ano);
+            $chavepri= ["ed280_i_codigo"=>@$ed280_i_codigo, "ed280_i_aluno"=>@$ed280_i_aluno, "ed47_v_nome"=>@$ed47_v_nome, "ed280_i_matcenso"=>@$ed280_i_matcenso, "ed280_i_turmacenso"=>@$ed280_i_turmacenso, "ed280_i_ano"=>@$ed280_i_ano];
             $cliframe_alterar_excluir->chavepri      = $chavepri;
             @$cliframe_alterar_excluir->sql          = $clalunomatcenso->sql_query("","*","","ed280_i_aluno = $ed280_i_aluno");
             $cliframe_alterar_excluir->campos        = "ed280_i_codigo,ed47_v_nome,ed280_i_matcenso,ed280_i_turmacenso,ed280_i_ano";

@@ -153,6 +153,7 @@ class LancamentoAuxiliarSlip  extends LancamentoAuxiliarBase implements ILancame
     /**
      *  Incluindo vinculo do Lançamento com Empenho [conlancamemp]
      */
+    #[\Override]
     protected function salvarVinculoEmpenho() {
 
         $oDaoConLanCamEmp = new cl_conlancamemp();
@@ -283,6 +284,7 @@ class LancamentoAuxiliarSlip  extends LancamentoAuxiliarBase implements ILancame
    * Seta o código do favorecido
    * @param integer $iCodigoFavorecido
    */
+  #[\Override]
   public function setFavorecido($iCodigoFavorecido) {
   	$this->iCodigoFavorecido = $iCodigoFavorecido;
   }
@@ -291,6 +293,7 @@ class LancamentoAuxiliarSlip  extends LancamentoAuxiliarBase implements ILancame
    * Retorna o código do favorecido
    * @return integer
    */
+  #[\Override]
   public function getFavorecido() {
   	return $this->iCodigoFavorecido;
   }
@@ -315,6 +318,7 @@ class LancamentoAuxiliarSlip  extends LancamentoAuxiliarBase implements ILancame
    * Seta a observação do histórico da operação
    * @param string $sObservacaoHistorico
    */
+  #[\Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
     $this->sObservacaoHistorico = $sObservacaoHistorico;
   }
@@ -323,6 +327,7 @@ class LancamentoAuxiliarSlip  extends LancamentoAuxiliarBase implements ILancame
    * Retorna a observacao do historico
    * @see ILancamentoAuxiliar::getObservacaoHistorico()
    */
+  #[\Override]
   public function getObservacaoHistorico() {
     return $this->sObservacaoHistorico;
   }
@@ -557,6 +562,7 @@ class LancamentoAuxiliarSlip  extends LancamentoAuxiliarBase implements ILancame
     /**
      * @return mixed
      */
+    #[\Override]
     public function getEmpenho()
     {
         return $this->empenho;

@@ -77,7 +77,7 @@ class Registro60Builder
         $aluno = $this->matricula->getAluno();
         $this->registro->setCodigoInepEscola($this->matricula->getTurma()->getEscola()->getCodigoInep());
         $this->registro->setCodigoPessoa(Pessoa::buildCodigoAluno($aluno->getCodigo()));
-        $this->registro->setCodigoInep(trim($aluno->getCodigoInep()));
+        $this->registro->setCodigoInep(trim((string) $aluno->getCodigoInep()));
 
         $this->registro->setCodigoTurma(Turma::buildCodigoTurmaRegular($this->matricula->getTurma()->getCodigoTurma()));
         if (!$this->matricula->getTurma()->isEscolarizacao()) {
@@ -109,7 +109,7 @@ class Registro60Builder
             foreach ($disciplinas as $disciplina) {
                 $tipoBase = $disciplina->getTipoBase();
                 if (EstruturaCurricularEnum::ITINERARIO_FORMATIVO == $tipoBase['ed182_estrutura_curricular']) {
-                    $areasItinerario = json_decode($tipoBase['ed182_tipo_itinerario_informativo']);
+                    $areasItinerario = json_decode((string) $tipoBase['ed182_tipo_itinerario_informativo']);
                     foreach ($areasItinerario as $area) {
                         $this->registro->setAreasItinerarioFormativo($area);
                         if (intval($area) == TipoItinerarioFormativoEnum::ITINERARIO_FORMATIVO_INTEGRADO) {

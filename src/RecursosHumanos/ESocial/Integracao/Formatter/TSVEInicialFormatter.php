@@ -42,6 +42,7 @@ class TSVEInicialFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -285,14 +286,14 @@ class TSVEInicialFormatter extends Formatter
     private function regraContato(&$dadoServidor)
     {
         $dadoContato =  $dadoServidor->trabalhador['contato'];
-        $dadoContato['fonePrinc'] = preg_replace('/[\D]/', '', $dadoContato['fonePrinc']);
+        $dadoContato['fonePrinc'] = preg_replace('/[\D]/', '', (string) $dadoContato['fonePrinc']);
         if (strlen(trim($dadoContato['fonePrinc']))<10 || strlen(trim($dadoContato['fonePrinc']))>12) {
             unset($dadoContato['fonePrinc']);
         }
         if (isset($dadoContato) && empty($dadoContato['fonePrinc'])) {
             unset($dadoContato['fonePrinc']);
         } else {
-            $dadoContato['fonePrinc'] = trim($dadoContato['fonePrinc']);
+            $dadoContato['fonePrinc'] = trim((string) $dadoContato['fonePrinc']);
         }
 
         if (isset($dadoContato) && empty($dadoContato['emailPrinc'])) {
@@ -613,8 +614,8 @@ class TSVEInicialFormatter extends Formatter
         }
         if (!empty($dadoServidor->infoTSVInicio['infoComplementares']['FGTS']['dtOpcFGTS'])) {
             $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2)->getDate();
-            if (strtotime($dadoServidor->infoTSVInicio['infoComplementares']['FGTS']['dtOpcFGTS']) <
-                strtotime($dataObrigatoriedade)) {
+            if (strtotime((string) $dadoServidor->infoTSVInicio['infoComplementares']['FGTS']['dtOpcFGTS']) <
+                strtotime((string) $dataObrigatoriedade)) {
                 unset($dadoServidor->infoTSVInicio['infoComplementares']['FGTS']);
             }
         }

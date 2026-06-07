@@ -85,7 +85,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed32_i_codigo"=>@$ed32_i_codigo,"ed32_c_descr"=>@$ed32_c_descr,"ed32_c_abrev"=>@$ed32_c_abrev);
+   $chavepri= ["ed32_i_codigo"=>@$ed32_i_codigo,"ed32_c_descr"=>@$ed32_c_descr,"ed32_c_abrev"=>@$ed32_c_abrev];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cldiasemana->sql_query($ed32_i_codigo,"*","ed32_i_codigo");
    $cliframe_alterar_excluir->campos  ="ed32_i_codigo,ed32_c_descr,ed32_c_abrev";

@@ -38,7 +38,7 @@ class PackageMetadata extends AbstractMetadata {
    * status por usuario
    * @var array
    */
-  private $usersStatus = array();
+  private $usersStatus = [];
   
   /**
    * versao do package

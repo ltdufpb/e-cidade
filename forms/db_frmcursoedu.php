@@ -67,7 +67,7 @@ $clrotulo->label('ed10_c_descr');
         </td>
         <td>
           <?php
-            $x = array('S'=>'SIM', 'N'=>'NÃO');
+            $x = ['S'=>'SIM', 'N'=>'NÃO'];
             db_select('ed29_c_historico', $x, true, $db_opcao, "");
           ?>
         </td>
@@ -76,7 +76,7 @@ $clrotulo->label('ed10_c_descr');
         </td>
         <td>
           <?php
-            $aAvalParcial = array('1'=>'NÃO', '2'=>'SIM');
+            $aAvalParcial = ['1'=>'NÃO', '2'=>'SIM'];
             db_select('ed29_i_avalparcial', $aAvalParcial, true, $db_opcao, "");
           ?>
         </td>
@@ -85,7 +85,7 @@ $clrotulo->label('ed10_c_descr');
         <td><label for="ed29_ativo">Situação:</label></td>
         <td >
           <?php
-            $aSituacao = array('t'=>'ATIVO', 'f'=>'INATIVO');
+            $aSituacao = ['t'=>'ATIVO', 'f'=>'INATIVO'];
             db_select('ed29_ativo', $aSituacao, true, $db_opcao, "");
           ?>
         </td>
@@ -158,7 +158,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_curso.hide();
   <?php 
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
 
  ?>

@@ -45,12 +45,12 @@ class ContaPlanoPCASP extends ContaPlano
     /**
      * @var stdClass[]
      */
-    protected $aContasReduzidasNoAno = array();
+    protected $aContasReduzidasNoAno = [];
 
     /**
      * @var stdClass[]
      */
-    protected $aContasReduzidas = array();
+    protected $aContasReduzidas = [];
 
     /**
      * @var integer
@@ -67,6 +67,7 @@ class ContaPlanoPCASP extends ContaPlano
     /**
      * @var bool
      */
+    #[\Override]
     protected $saldoContinuo = false;
 
     /**
@@ -687,6 +688,7 @@ class ContaPlanoPCASP extends ContaPlano
      * Valida se já existe um reduzido cadastrado para o Ano e Instituição
      * @return boolean
      */
+    #[\Override]
     public function hasReduzidoAnoInstituicao()
     {
 
@@ -996,11 +998,11 @@ class ContaPlanoPCASP extends ContaPlano
     {
 
         $daoConplanoAtributos = new cl_conplanoatributos();
-        $where = array(
+        $where = [
             "c120_anousu >= {$this->getAno()}",
             "c120_conplanosistema = $sistema",
             "c120_conplano = {$this->getCodigoConta()}"
-        );
+        ];
         $daoConplanoAtributos->excluir(null, implode(" and ", $where));
         if ($daoConplanoAtributos->erro_status == 0) {
             throw new Exception("Erro ao remover informações complementares da conta {$this->getEstruturalComMascara()} = {$this->getDescricao()}");
@@ -1012,7 +1014,7 @@ class ContaPlanoPCASP extends ContaPlano
      * @param array $informacoesComplementares
      * @throws Exception
      */
-    public function adicionarInformacoesComplementares($sistema = 1, array $informacoesComplementares)
+    public function adicionarInformacoesComplementares($sistema = 1, array $informacoesComplementares = [])
     {
 
         $daoConplanoAtributos = new cl_conplanoatributos();
@@ -1093,10 +1095,10 @@ class ContaPlanoPCASP extends ContaPlano
 
     public function toArray()
     {
-        return array(
+        return [
           'codigoConta' => $this->getCodigoConta(),
           'estrutural' => $this->getEstrutural()
-        );
+        ];
     }
 
     /**

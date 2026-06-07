@@ -612,7 +612,7 @@ class RemuneracaoRGPSService
 
         if (pg_num_rows($rsReajusteSalarial) > 0) {
             $dadoCompetenciaPeriodo = \db_utils::fieldsMemory($rsReajusteSalarial, 0);
-            $competenciaPeriodo = explode('-', $dadoCompetenciaPeriodo->eso39_dataefeito);
+            $competenciaPeriodo = explode('-', (string) $dadoCompetenciaPeriodo->eso39_dataefeito);
             if (!empty($competenciaPeriodo[1])) {
                 $grupoIdePeriodo->perRef  = $competenciaPeriodo[0] . '-' . $competenciaPeriodo[1];
             }
@@ -743,7 +743,7 @@ class RemuneracaoRGPSService
         }
 
         $resultado = db_query($sql);
-        $registro = pg_numrows($resultado);
+        $registro = pg_num_rows($resultado);
         if ($registro > 0) {
             $grupoIdeEstabLot->nrInsc = \db_utils::fieldsMemory($resultado, 0)->cgc;
             $grupoIdeEstabLot->codLotacao = \db_utils::fieldsMemory($resultado, 0)->rh268_codigolotacao;

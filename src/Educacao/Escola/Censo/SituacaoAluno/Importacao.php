@@ -27,7 +27,7 @@ class Importacao
 
   private $lPossuiInconsistencia = false;
 
-  public function __construct(private CensoEscolar $oCenso, \Escola $oEscola)
+  public function __construct(private readonly CensoEscolar $oCenso, \Escola $oEscola)
   {
 
     $this->oEscola = $oEscola;
@@ -115,19 +115,19 @@ class Importacao
 
     $lValido = true;
     $sComplemento = "não possui valor ou o valor informado está inválido.";
-    if (empty($oLinha->codigo_turma_inep) || strlen($oLinha->codigo_turma_inep) > 10) {
+    if (empty($oLinha->codigo_turma_inep) || strlen((string) $oLinha->codigo_turma_inep) > 10) {
 
       $sMsg = "Linha [{$iLinha}] campo \"Código da turma - INEP\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;
     }
-    if (empty($oLinha->codigo_aluno_inep) || strlen($oLinha->codigo_aluno_inep) != 12) {
+    if (empty($oLinha->codigo_aluno_inep) || strlen((string) $oLinha->codigo_aluno_inep) != 12) {
       $sMsg = "Linha [{$iLinha}] campo \"Código de identificação única do aluno - INEP\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;
     }
 
-    if (empty($oLinha->codigo_matricula_inep) || strlen($oLinha->codigo_matricula_inep) > 12) {
+    if (empty($oLinha->codigo_matricula_inep) || strlen((string) $oLinha->codigo_matricula_inep) > 12) {
       $sMsg = "Linha [{$iLinha}] campo \"Código da Matrícula\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;

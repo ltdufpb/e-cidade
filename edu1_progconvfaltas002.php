@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_progconvfaltas_classe.php"));
 include(modification("classes/db_progconvocacaores_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprogconvfaltas = new cl_progconvfaltas;
 $clprogconvocacaores = new cl_progconvocacaores;
 $clprogconvfaltas->rotulo->label();
@@ -94,15 +94,15 @@ if(isset($excluir)){
    if(isset($opcao) && $opcao=="alterar"){
     $db_opcao = 2;
     $db_botao1 = true;
-    $ed128_d_data_dia = substr($ed128_d_data,0,2);
-    $ed128_d_data_mes = substr($ed128_d_data,3,2);
-    $ed128_d_data_ano = substr($ed128_d_data,6,4);
+    $ed128_d_data_dia = substr((string) $ed128_d_data,0,2);
+    $ed128_d_data_mes = substr((string) $ed128_d_data,3,2);
+    $ed128_d_data_ano = substr((string) $ed128_d_data,6,4);
    }elseif(isset($opcao) && $opcao=="excluir" || isset($db_opcao) && $db_opcao==3){
     $db_botao1 = true;
     $db_opcao = 3;
-    $ed128_d_data_dia = substr($ed128_d_data,0,2);
-    $ed128_d_data_mes = substr($ed128_d_data,3,2);
-    $ed128_d_data_ano = substr($ed128_d_data,6,4);
+    $ed128_d_data_dia = substr((string) $ed128_d_data,0,2);
+    $ed128_d_data_mes = substr((string) $ed128_d_data,3,2);
+    $ed128_d_data_ano = substr((string) $ed128_d_data,6,4);
    }else{
     if(isset($alterar)){
      $db_opcao = 2;
@@ -153,7 +153,7 @@ if(isset($excluir)){
      <tr>
       <td valign="top">
        <?php 
-       $chavepri= array("ed128_i_codigo"=>@$ed128_i_codigo,"ed128_d_data"=>@$ed128_d_data,"ed128_c_numfono"=>@$ed128_c_numfono);
+       $chavepri= ["ed128_i_codigo"=>@$ed128_i_codigo,"ed128_d_data"=>@$ed128_d_data,"ed128_c_numfono"=>@$ed128_c_numfono];
        $cliframe_alterar_excluir->chavepri=$chavepri;
        @$cliframe_alterar_excluir->sql = $clprogconvfaltas->sql_query("","*",""," ed128_c_abonada = 'N' AND ed128_i_progconvres = $ed128_i_progconvres");
        $cliframe_alterar_excluir->campos  ="ed128_i_codigo,ed128_d_data,ed128_c_numfono";

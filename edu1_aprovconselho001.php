@@ -35,7 +35,7 @@ include(modification("classes/db_regencia_classe.php"));
 include(modification("classes/db_regenteconselho_classe.php"));
 include(modification("classes/db_diariofinal_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claprovconselho = new cl_aprovconselho;
 $clregenteconselho = new cl_regenteconselho;
 $cldiariofinal = new cl_diariofinal;

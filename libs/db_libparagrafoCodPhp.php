@@ -28,10 +28,8 @@
 
 class libParagrafoCodPhp {
   
-  var $oParag = null;
-  
-  function libParagrafoCodPhp( $oParag  ){
-    $this->oParag = $oParag;    
+  function __construct(public $oParag)
+  {
   }
   
   function writeText( $pdf ){    

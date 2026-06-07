@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE proctransfer
 class cl_proctransfer {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $p62_codtran = 0;
-   var $p62_dttran_dia = null;
-   var $p62_dttran_mes = null;
-   var $p62_dttran_ano = null;
-   var $p62_dttran = null;
-   var $p62_id_usuario = 0;
-   var $p62_coddepto = 0;
-   var $p62_id_usorec = 0;
-   var $p62_coddeptorec = 0;
-   var $p62_hora = null;
+   public $p62_codtran = 0;
+   public $p62_dttran_dia = null;
+   public $p62_dttran_mes = null;
+   public $p62_dttran_ano = null;
+   public $p62_dttran = null;
+   public $p62_id_usuario = 0;
+   public $p62_coddepto = 0;
+   public $p62_id_usorec = 0;
+   public $p62_coddeptorec = 0;
+   public $p62_hora = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p62_codtran = int4 = Transferência
                  p62_dttran = date = Data
                  p62_id_usuario = int4 = id usuario
@@ -66,7 +66,7 @@ class cl_proctransfer {
    function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("proctransfer");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -156,10 +156,10 @@ class cl_proctransfer {
          $this->erro_status = "0";
          return false;
        }
-       $this->p62_codtran = pg_result($result,0,0);
+       $this->p62_codtran = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from proctransfer_p62_codtran_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p62_codtran)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p62_codtran)){
          $this->erro_sql = " Campo p62_codtran maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,7 +199,7 @@ class cl_proctransfer {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->p62_codtran) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -223,16 +223,16 @@ class cl_proctransfer {
      $resaco = $this->sql_record($this->sql_query_file($this->p62_codtran));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2474,'$this->p62_codtran','I')");
-       $resac = db_query("insert into db_acount values($acount,408,2474,'','".AddSlashes(pg_result($resaco,0,'p62_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,408,2475,'','".AddSlashes(pg_result($resaco,0,'p62_dttran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,408,2476,'','".AddSlashes(pg_result($resaco,0,'p62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,408,2477,'','".AddSlashes(pg_result($resaco,0,'p62_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,408,2478,'','".AddSlashes(pg_result($resaco,0,'p62_id_usorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,408,2479,'','".AddSlashes(pg_result($resaco,0,'p62_coddeptorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,408,6103,'','".AddSlashes(pg_result($resaco,0,'p62_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,408,2474,'','".AddSlashes(pg_fetch_result($resaco,0,'p62_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,408,2475,'','".AddSlashes(pg_fetch_result($resaco,0,'p62_dttran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,408,2476,'','".AddSlashes(pg_fetch_result($resaco,0,'p62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,408,2477,'','".AddSlashes(pg_fetch_result($resaco,0,'p62_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,408,2478,'','".AddSlashes(pg_fetch_result($resaco,0,'p62_id_usorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,408,2479,'','".AddSlashes(pg_fetch_result($resaco,0,'p62_coddeptorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,408,6103,'','".AddSlashes(pg_fetch_result($resaco,0,'p62_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -241,10 +241,10 @@ class cl_proctransfer {
       $this->atualizacampos();
      $sql = " update proctransfer set ";
      $virgula = "";
-     if(trim($this->p62_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_codtran"])){
+     if(trim((string) $this->p62_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_codtran"])){
        $sql  .= $virgula." p62_codtran = $this->p62_codtran ";
        $virgula = ",";
-       if(trim($this->p62_codtran) == null ){
+       if(trim((string) $this->p62_codtran) == null ){
          $this->erro_sql = " Campo Transferência nao Informado.";
          $this->erro_campo = "p62_codtran";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_proctransfer {
          return false;
        }
      }
-     if(trim($this->p62_dttran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_dttran_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p62_dttran_dia"] !="") ){
+     if(trim((string) $this->p62_dttran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_dttran_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p62_dttran_dia"] !="") ){
        $sql  .= $virgula." p62_dttran = '$this->p62_dttran' ";
        $virgula = ",";
-       if(trim($this->p62_dttran) == null ){
+       if(trim((string) $this->p62_dttran) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "p62_dttran_dia";
          $this->erro_banco = "";
@@ -270,7 +270,7 @@ class cl_proctransfer {
        if(isset($GLOBALS["HTTP_POST_VARS"]["p62_dttran_dia"])){
          $sql  .= $virgula." p62_dttran = null ";
          $virgula = ",";
-         if(trim($this->p62_dttran) == null ){
+         if(trim((string) $this->p62_dttran) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "p62_dttran_dia";
            $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_proctransfer {
          }
        }
      }
-     if(trim($this->p62_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_id_usuario"])){
+     if(trim((string) $this->p62_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_id_usuario"])){
        $sql  .= $virgula." p62_id_usuario = $this->p62_id_usuario ";
        $virgula = ",";
-       if(trim($this->p62_id_usuario) == null ){
+       if(trim((string) $this->p62_id_usuario) == null ){
          $this->erro_sql = " Campo id usuario nao Informado.";
          $this->erro_campo = "p62_id_usuario";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_proctransfer {
          return false;
        }
      }
-     if(trim($this->p62_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_coddepto"])){
+     if(trim((string) $this->p62_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_coddepto"])){
        $sql  .= $virgula." p62_coddepto = $this->p62_coddepto ";
        $virgula = ",";
-       if(trim($this->p62_coddepto) == null ){
+       if(trim((string) $this->p62_coddepto) == null ){
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "p62_coddepto";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_proctransfer {
          return false;
        }
      }
-     if(trim($this->p62_id_usorec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_id_usorec"])){
+     if(trim((string) $this->p62_id_usorec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_id_usorec"])){
        $sql  .= $virgula." p62_id_usorec = $this->p62_id_usorec ";
        $virgula = ",";
-       if(trim($this->p62_id_usorec) == null ){
+       if(trim((string) $this->p62_id_usorec) == null ){
          $this->erro_sql = " Campo recebimento nao Informado.";
          $this->erro_campo = "p62_id_usorec";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_proctransfer {
          return false;
        }
      }
-     if(trim($this->p62_coddeptorec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_coddeptorec"])){
+     if(trim((string) $this->p62_coddeptorec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_coddeptorec"])){
        $sql  .= $virgula." p62_coddeptorec = $this->p62_coddeptorec ";
        $virgula = ",";
-       if(trim($this->p62_coddeptorec) == null ){
+       if(trim((string) $this->p62_coddeptorec) == null ){
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "p62_coddeptorec";
          $this->erro_banco = "";
@@ -333,7 +333,7 @@ class cl_proctransfer {
          return false;
        }
      }
-     if(trim($this->p62_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_hora"])){
+     if(trim((string) $this->p62_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p62_hora"])){
        $sql  .= $virgula." p62_hora = '$this->p62_hora' ";
        $virgula = ",";
      }
@@ -345,23 +345,23 @@ class cl_proctransfer {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2474,'$this->p62_codtran','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p62_codtran"]))
-           $resac = db_query("insert into db_acount values($acount,408,2474,'".AddSlashes(pg_result($resaco,$conresaco,'p62_codtran'))."','$this->p62_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,408,2474,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p62_codtran'))."','$this->p62_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p62_dttran"]))
-           $resac = db_query("insert into db_acount values($acount,408,2475,'".AddSlashes(pg_result($resaco,$conresaco,'p62_dttran'))."','$this->p62_dttran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,408,2475,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p62_dttran'))."','$this->p62_dttran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p62_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,408,2476,'".AddSlashes(pg_result($resaco,$conresaco,'p62_id_usuario'))."','$this->p62_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,408,2476,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p62_id_usuario'))."','$this->p62_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p62_coddepto"]))
-           $resac = db_query("insert into db_acount values($acount,408,2477,'".AddSlashes(pg_result($resaco,$conresaco,'p62_coddepto'))."','$this->p62_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,408,2477,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p62_coddepto'))."','$this->p62_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p62_id_usorec"]))
-           $resac = db_query("insert into db_acount values($acount,408,2478,'".AddSlashes(pg_result($resaco,$conresaco,'p62_id_usorec'))."','$this->p62_id_usorec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,408,2478,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p62_id_usorec'))."','$this->p62_id_usorec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p62_coddeptorec"]))
-           $resac = db_query("insert into db_acount values($acount,408,2479,'".AddSlashes(pg_result($resaco,$conresaco,'p62_coddeptorec'))."','$this->p62_coddeptorec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,408,2479,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p62_coddeptorec'))."','$this->p62_coddeptorec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p62_hora"]))
-           $resac = db_query("insert into db_acount values($acount,408,6103,'".AddSlashes(pg_result($resaco,$conresaco,'p62_hora'))."','$this->p62_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,408,6103,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p62_hora'))."','$this->p62_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -406,16 +406,16 @@ class cl_proctransfer {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2474,'$p62_codtran','E')");
-         $resac = db_query("insert into db_acount values($acount,408,2474,'','".AddSlashes(pg_result($resaco,$iresaco,'p62_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,408,2475,'','".AddSlashes(pg_result($resaco,$iresaco,'p62_dttran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,408,2476,'','".AddSlashes(pg_result($resaco,$iresaco,'p62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,408,2477,'','".AddSlashes(pg_result($resaco,$iresaco,'p62_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,408,2478,'','".AddSlashes(pg_result($resaco,$iresaco,'p62_id_usorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,408,2479,'','".AddSlashes(pg_result($resaco,$iresaco,'p62_coddeptorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,408,6103,'','".AddSlashes(pg_result($resaco,$iresaco,'p62_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,408,2474,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p62_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,408,2475,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p62_dttran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,408,2476,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,408,2477,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p62_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,408,2478,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p62_id_usorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,408,2479,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p62_coddeptorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,408,6103,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p62_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from proctransfer
@@ -475,7 +475,7 @@ class cl_proctransfer {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:proctransfer";
@@ -512,7 +512,7 @@ class cl_proctransfer {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_proctransfer {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -590,7 +590,7 @@ class cl_proctransfer {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -625,7 +625,7 @@ class cl_proctransfer {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

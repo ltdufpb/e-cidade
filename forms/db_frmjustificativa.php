@@ -63,7 +63,7 @@ $oDaoJustificativa->rotulo->label();
     </td>
     <td>
      <?php 
-      $x = array('S'=>'SIM','N'=>'NÃO');
+      $x = ['S'=>'SIM','N'=>'NÃO'];
       db_select('ed06_c_ativo',$x,true,$db_opcao,"");
      ?>
    </td>
@@ -93,7 +93,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_justificativa.hide();
   <?php 
    if ($db_opcao != 1) {
-     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }
  ?>
  

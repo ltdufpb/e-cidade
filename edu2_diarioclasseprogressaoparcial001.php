@@ -100,7 +100,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 </td>
                 <td nowrap="nowrap" id='ctnNumeroColunas'>
                   <?php
-                    $aColunas = array();
+                    $aColunas = [];
                     for ($i = 30; $i <= 70; $i++) {
                       $aColunas[$i] = $i;
                     }

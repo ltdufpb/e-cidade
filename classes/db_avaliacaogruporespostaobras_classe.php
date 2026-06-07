@@ -79,7 +79,7 @@ class cl_avaliacaogruporespostaobras extends DAOBasica
         return $sql;
     }
 
-    public function avaliacaoPreenchida(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function avaliacaoPreenchida(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $sql = " select " . implode(', ', $campos);
         $sql .= "  from avaliacaogruporespostaobras ";

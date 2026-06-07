@@ -118,9 +118,9 @@ final class ProgressaoParcialAluno {
   /**
    * Constantes para as situações
    */
-  const ATIVA     = 1;
-  const INATIVA   = 2;
-  const CONCLUIDA = 3;
+  const int ATIVA     = 1;
+  const int INATIVA   = 2;
+  const int CONCLUIDA = 3;
 
   /**
    * Método construtor da classe

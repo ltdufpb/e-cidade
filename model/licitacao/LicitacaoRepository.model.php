@@ -34,7 +34,7 @@ class LicitacaoRepository {
 	 * Array com as licitações.
 	 * @var licitacao[]
 	 */
-	private $aLicitacoes = array();
+	private $aLicitacoes = [];
 
 	/**
 	 * Instância da classe
@@ -66,7 +66,7 @@ class LicitacaoRepository {
 	 */
 	public static function getByCodigo( $iCodigo ) {
 
-		if (!array_key_exists($iCodigo, self::getInstance()->aLicitacoes)) {
+		if (!array_key_exists((string) $iCodigo, self::getInstance()->aLicitacoes)) {
 			self::getInstance()->aLicitacoes[$iCodigo] = new licitacao($iCodigo);
 		}
 		return self::getInstance()->aLicitacoes[$iCodigo];

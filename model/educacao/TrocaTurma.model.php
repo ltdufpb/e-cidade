@@ -267,7 +267,7 @@ class TrocaTurma
      * mas equivalentes
      * @throws Exception
      */
-    public function trocarTurmaSemRegistro(array $aRegenciasVinculadas = null)
+    public function trocarTurmaSemRegistro(?array $aRegenciasVinculadas = null)
     {
         $this->validaTransacao();
         $this->validaRegencias($aRegenciasVinculadas);
@@ -357,7 +357,7 @@ class TrocaTurma
      * @throws BusinessException
      * @throws DBException
      */
-    public function atualizaMatriculaTurno(Matricula $matricula = null)
+    public function atualizaMatriculaTurno(?Matricula $matricula = null)
     {
         $daoMatriculaTurnoReferente = new cl_matriculaturnoreferente();
 
@@ -405,7 +405,7 @@ class TrocaTurma
         $dataAlteracao,
         Etapa $etapaDestino,
         $importarAvaliacoes,
-        array $aRegenciasVinculadas = null
+        ?array $aRegenciasVinculadas = null
     ) {
         $dataModificacao = new DBDate($dataAlteracao);
 

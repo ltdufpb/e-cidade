@@ -68,7 +68,7 @@ switch ($oParam->exec) {
                                                 );
 
       $rsTurma        = $oDaoTurma->sql_record($sSqlTurma);
-      $aTurmas        = array();
+      $aTurmas        = [];
       $iTotalTurmas   = $oDaoTurma->numrows;
       for ($iTurma = 0; $iTurma < $iTotalTurmas; $iTurma++) {
 
@@ -78,7 +78,7 @@ switch ($oParam->exec) {
           $oTurma->escola = "{$oTurma->ed18_codigoreferencia} - {$oTurma->escola}";
         }
 
-        $oTurma->aAlunos = array();
+        $oTurma->aAlunos = [];
 
         $sCampos         = "ed60_c_situacao as situacao,";
         $sCampos         = "ed60_i_aluno as matricula,";
@@ -96,7 +96,7 @@ switch ($oParam->exec) {
         for ($iAluno = 0; $iAluno < $iTotalAlunos; $iAluno++) {
           $oAluno             = db_utils::fieldsMemory($rsAlunos, $iAluno);
 
-          $aPartesIdade       = explode(",",$oAluno->idade);
+          $aPartesIdade       = explode(",",(string) $oAluno->idade);
           $oAluno->numero     = $iAluno + 1;
           $oAluno->idade      = str_pad(trim($aPartesIdade[0]), 2, "0", STR_PAD_LEFT)."|";
           $oAluno->idade     .= str_pad(trim($aPartesIdade[1]), 2, "0", STR_PAD_LEFT);
@@ -115,7 +115,7 @@ switch ($oParam->exec) {
         unset($aDados);
         unset($aAlunos);
 
-        $aDados[]  = array($oTurma);
+        $aDados[]  = [$oTurma];
         $aDados[]  = $oTurma->aAlunos;
         $oGerador->setDados($aDados);
         $oGerador->gerarArquivo();
@@ -135,14 +135,14 @@ switch ($oParam->exec) {
       $sSql             = $oCfauntent->sql_query(null,$sCampos);
       $rs               = $oCfauntent->sql_record($sSql);
       $iTam             = $oCfauntent->numrows;
-      $aImpressoraId    = array();
-      $aImpressoraDescr = array();
+      $aImpressoraId    = [];
+      $aImpressoraDescr = [];
       $iIpPadrao        = 0;
       for ($iInd = 0; $iInd < $iTam; $iInd++) {
 
         $oImpressora         = db_utils::fieldsmemory($rs, $iInd);
         $aImpressoraId[ ]    = $oImpressora->k11_id;
-        $aImpressoraDescr[ ] = $oImpressora->k11_ipimpcheque.' - '.urlencode($oImpressora->k11_local);
+        $aImpressoraDescr[ ] = $oImpressora->k11_ipimpcheque.' - '.urlencode((string) $oImpressora->k11_local);
         //verifica impressora padrão
         $iIp = $_SERVER['REMOTE_ADDR'];
         if ($iIp == $oImpressora->k11_ipimpcheque) {
@@ -164,7 +164,7 @@ switch ($oParam->exec) {
 
   case 'processarImpressaoDiarioClasse':
 
-    $aAlunos = array();
+    $aAlunos = [];
     $oTurma  = TurmaRepository::getTurmaByCodigo($oParam->iTurma);
 
     foreach( $oTurma->getUltimaMatriculaAlunos() as $oMatricula ) {
@@ -206,23 +206,12 @@ switch ($oParam->exec) {
     $aDisciplinas = db_utils::getCollectionByRecord($rsRegencia);
     try {
 
-      switch ($oParam->iModelo) {
-
-        case 1:
-          $sModelo = 'documentos/templates/txt/diario_classe_educacao_infantil_matricial.txt';
-        break;
-        case 2:
-          $sModelo = 'documentos/templates/txt/diario_classe_anos_iniciais_matricial.txt';
-        break;
-        case 3:
-          $sModelo = 'documentos/templates/txt/diario_classe_anos_finais_matricial.txt';
-        break;
-
-        default:
-
-          throw new Exception('Modelo de impressão não identificado');
-          break;
-      }
+      $sModelo = match ($oParam->iModelo) {
+          1 => 'documentos/templates/txt/diario_classe_educacao_infantil_matricial.txt',
+          2 => 'documentos/templates/txt/diario_classe_anos_iniciais_matricial.txt',
+          3 => 'documentos/templates/txt/diario_classe_anos_finais_matricial.txt',
+          default => throw new Exception('Modelo de impressão não identificado'),
+      };
 
       $oGerador = new DBProcessaTemplateTXT($sModelo);
       foreach ($aDisciplinas as $oDisciplina) {
@@ -231,11 +220,11 @@ switch ($oParam->exec) {
           $oDisciplina->escola = "{$oDisciplina->ed18_codigoreferencia} - {$oDisciplina->escola}";
         }
 
-        if (trim($oParam->sPeriodo)) {
+        if (trim((string) $oParam->sPeriodo)) {
           $oDisciplina->periodo = db_stdClass::normalizeStringJson($oParam->sPeriodo);
         }
-        $aDados    = array();
-        $aDados[]  = array($oDisciplina);
+        $aDados    = [];
+        $aDados[]  = [$oDisciplina];
         $aDados[]  = $aAlunos;
         $oGerador->setDados($aDados);
         $oGerador->gerarArquivo();
@@ -253,14 +242,14 @@ switch ($oParam->exec) {
       $sSql             = $oCfauntent->sql_query(null,$sCampos);
       $rs               = $oCfauntent->sql_record($sSql);
       $iTam             = $oCfauntent->numrows;
-      $aImpressoraId    = array();
-      $aImpressoraDescr = array();
+      $aImpressoraId    = [];
+      $aImpressoraDescr = [];
       $iIpPadrao        = 0;
       for ($iInd = 0; $iInd < $iTam; $iInd++) {
 
         $oImpressora         = db_utils::fieldsmemory($rs, $iInd);
         $aImpressoraId[ ]    = $oImpressora->k11_id;
-        $aImpressoraDescr[ ] = $oImpressora->k11_ipimpcheque.' - '.urlencode($oImpressora->k11_local);
+        $aImpressoraDescr[ ] = $oImpressora->k11_ipimpcheque.' - '.urlencode((string) $oImpressora->k11_local);
         //verifica impressora padrão
         $iIp = $_SERVER['REMOTE_ADDR'];
         if ($iIp == $oImpressora->k11_ipimpcheque) {

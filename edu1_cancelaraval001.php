@@ -68,7 +68,7 @@ if (isset($proximo)) {
     /**
      * Variável de alunos com progressão parcial encerrada em que a progressão é da etapa que se deseja cancelar o encerramento
      */
-    $aAlunosInconsistentes = array();
+    $aAlunosInconsistentes = [];
 
     for ($iCont = 0; $iCont < $tam; $iCont++) {
 

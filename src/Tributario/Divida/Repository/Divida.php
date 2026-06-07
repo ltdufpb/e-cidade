@@ -43,9 +43,10 @@ use Exception;
  */
 class Divida extends \BaseClassRepository implements TermoRepositoryInterface
 {
+    #[\Override]
     protected static $oInstance;
 
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * Retorna uma dívida filtrando por código.
@@ -96,7 +97,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
             throw new Exception('Nenhuma divida encontrada para certidao informada');
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }
@@ -120,7 +121,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
             throw new Exception("Não foi possível buscar as dívidas.");
         }
 
-        $dividas = array();
+        $dividas = [];
 
         if (pg_num_rows($rs) === 0) {
             return $dividas;

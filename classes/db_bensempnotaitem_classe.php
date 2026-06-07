@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE bensempnotaitem
 class cl_bensempnotaitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e136_sequencial = 0; 
-   var $e136_bens = 0; 
-   var $e136_empnotaitem = 0; 
+   public $e136_sequencial = 0; 
+   public $e136_bens = 0; 
+   public $e136_empnotaitem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e136_sequencial = int4 = Sequencial 
                  e136_bens = int4 = Bem 
                  e136_empnotaitem = int4 = Empnotaitem 
                  ";
    //funcao construtor da classe 
-   function cl_bensempnotaitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bensempnotaitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_bensempnotaitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e136_sequencial = pg_result($result,0,0); 
+       $this->e136_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bensempnotaitem_e136_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e136_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e136_sequencial)){
          $this->erro_sql = " Campo e136_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_bensempnotaitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "bensempnotaitem ($this->e136_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "bensempnotaitem já Cadastrado";
@@ -166,12 +166,12 @@ class cl_bensempnotaitem {
      $resaco = $this->sql_record($this->sql_query_file($this->e136_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18887,'$this->e136_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3349,18887,'','".AddSlashes(pg_result($resaco,0,'e136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3349,18888,'','".AddSlashes(pg_result($resaco,0,'e136_bens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3349,18889,'','".AddSlashes(pg_result($resaco,0,'e136_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3349,18887,'','".AddSlashes(pg_fetch_result($resaco,0,'e136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3349,18888,'','".AddSlashes(pg_fetch_result($resaco,0,'e136_bens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3349,18889,'','".AddSlashes(pg_fetch_result($resaco,0,'e136_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_bensempnotaitem {
       $this->atualizacampos();
      $sql = " update bensempnotaitem set ";
      $virgula = "";
-     if(trim($this->e136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e136_sequencial"])){ 
+     if(trim((string) $this->e136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e136_sequencial"])){ 
        $sql  .= $virgula." e136_sequencial = $this->e136_sequencial ";
        $virgula = ",";
-       if(trim($this->e136_sequencial) == null ){ 
+       if(trim((string) $this->e136_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "e136_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_bensempnotaitem {
          return false;
        }
      }
-     if(trim($this->e136_bens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e136_bens"])){ 
+     if(trim((string) $this->e136_bens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e136_bens"])){ 
        $sql  .= $virgula." e136_bens = $this->e136_bens ";
        $virgula = ",";
-       if(trim($this->e136_bens) == null ){ 
+       if(trim((string) $this->e136_bens) == null ){ 
          $this->erro_sql = " Campo Bem nao Informado.";
          $this->erro_campo = "e136_bens";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_bensempnotaitem {
          return false;
        }
      }
-     if(trim($this->e136_empnotaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e136_empnotaitem"])){ 
+     if(trim((string) $this->e136_empnotaitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e136_empnotaitem"])){ 
        $sql  .= $virgula." e136_empnotaitem = $this->e136_empnotaitem ";
        $virgula = ",";
-       if(trim($this->e136_empnotaitem) == null ){ 
+       if(trim((string) $this->e136_empnotaitem) == null ){ 
          $this->erro_sql = " Campo Empnotaitem nao Informado.";
          $this->erro_campo = "e136_empnotaitem";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_bensempnotaitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18887,'$this->e136_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e136_sequencial"]) || $this->e136_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3349,18887,'".AddSlashes(pg_result($resaco,$conresaco,'e136_sequencial'))."','$this->e136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3349,18887,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e136_sequencial'))."','$this->e136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e136_bens"]) || $this->e136_bens != "")
-           $resac = db_query("insert into db_acount values($acount,3349,18888,'".AddSlashes(pg_result($resaco,$conresaco,'e136_bens'))."','$this->e136_bens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3349,18888,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e136_bens'))."','$this->e136_bens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e136_empnotaitem"]) || $this->e136_empnotaitem != "")
-           $resac = db_query("insert into db_acount values($acount,3349,18889,'".AddSlashes(pg_result($resaco,$conresaco,'e136_empnotaitem'))."','$this->e136_empnotaitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3349,18889,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e136_empnotaitem'))."','$this->e136_empnotaitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_bensempnotaitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18887,'$e136_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3349,18887,'','".AddSlashes(pg_result($resaco,$iresaco,'e136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3349,18888,'','".AddSlashes(pg_result($resaco,$iresaco,'e136_bens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3349,18889,'','".AddSlashes(pg_result($resaco,$iresaco,'e136_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3349,18887,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3349,18888,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e136_bens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3349,18889,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e136_empnotaitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bensempnotaitem
@@ -345,7 +345,7 @@ class cl_bensempnotaitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bensempnotaitem";
@@ -392,7 +392,7 @@ class cl_bensempnotaitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_bensempnotaitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,7 +465,7 @@ class cl_bensempnotaitem {
       $sql .= $sql2;
       if($ordem != null ){
         $sql .= " order by ";
-        $campos_sql = explode("#",$ordem);
+        $campos_sql = explode("#",(string) $ordem);
         $virgula = "";
         for($i=0;$i<sizeof($campos_sql);$i++){
           $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_bensempnotaitem {
   		$sql .= $sql2;
   		if($ordem != null ){
   		$sql .= " order by ";
-  			$campos_sql = explode("#",$ordem);
+  			$campos_sql = explode("#",(string) $ordem);
   			$virgula = "";
   			for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];

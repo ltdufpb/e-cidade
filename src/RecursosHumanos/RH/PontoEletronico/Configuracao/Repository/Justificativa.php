@@ -114,10 +114,10 @@ class Justificativa {
    */
   private function validaExistenciaJustificativaMesmaSigla(JustificativaModel $oJustificativa, \Instituicao $oInstituicao) {
 
-    $aWhereValidaJustificativa = array(
+    $aWhereValidaJustificativa = [
       "rh194_sigla = '{$oJustificativa->getAbreviacao()}'",
       "rh194_instituicao = {$oInstituicao->getCodigo()}"
-    );
+    ];
 
     if($oJustificativa->getCodigo() != null) {
       $aWhereValidaJustificativa[] = "rh194_sequencial <> {$oJustificativa->getCodigo()}";
@@ -162,12 +162,10 @@ class Justificativa {
     }
 
     if(pg_num_rows($rsJustificativaTipoAsse) == 0) {
-      return array();
+      return [];
     }
 
-    return \db_utils::makeCollectionFromRecord($rsJustificativaTipoAsse, function($oRetorno) {
-      return \TipoAssentamentoRepository::getInstanciaPorCodigo($oRetorno->rh205_tipoasse);
-    });
+    return \db_utils::makeCollectionFromRecord($rsJustificativaTipoAsse, fn($oRetorno) => \TipoAssentamentoRepository::getInstanciaPorCodigo($oRetorno->rh205_tipoasse));
   }
 
   /**
@@ -212,10 +210,10 @@ class Justificativa {
    */
   public static function getAssentamentosPorMatriculaData($matricula, \DBDate $data) {
 
-    $aAssentamentos = array();
+    $aAssentamentos = [];
     
     $oServidor          = \ServidorRepository::getInstanciaByCodigo($matricula);
-    $aTipos             = array();
+    $aTipos             = [];
     $aTiposAssentamento = \TipoAssentamentoRepository::getInstanciasPorNaturezaComJustificativaConfigurada();
     $aTiposAssentamento = \TipoAssentamentoRepository::getInstanciasAfastamento();
 
@@ -287,13 +285,13 @@ class Justificativa {
    */
   public function getJustificativaPorTipoAssentamentoAfastamento($mTipoAssentamento) {
 
-    $aTiposAssentamento = array();
+    $aTiposAssentamento = [];
 
     if(is_array($mTipoAssentamento) && !empty($mTipoAssentamento)) {
       $aTiposAssentamento = $mTipoAssentamento;
     }
     
-    $aTiposAssentamento = explode(',', $mTipoAssentamento);
+    $aTiposAssentamento = explode(',', (string) $mTipoAssentamento);
     if(empty($aTiposAssentamento)) {
       $aTiposAssentamento[] = $mTipoAssentamento;
     }
@@ -344,11 +342,9 @@ class Justificativa {
       }
 
       if(pg_num_rows($rs) == 0) {
-          return array();
+          return [];
       }
 
-      return \db_utils::makeCollectionFromRecord($rs, function($oRetorno) {
-          return \TipoAssentamentoRepository::getInstanciaPorCodigo($oRetorno->rh205_tipoasse);
-      });
+      return \db_utils::makeCollectionFromRecord($rs, fn($oRetorno) => \TipoAssentamentoRepository::getInstanciaPorCodigo($oRetorno->rh205_tipoasse));
   }
 }

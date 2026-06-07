@@ -40,7 +40,7 @@ class EmpenhoFinanceiroRepository {
    *
    * @var EmpenhoFinanceiro[]
    */
-  private $aEmpenhoFinanceiro = array();
+  private $aEmpenhoFinanceiro = [];
 
   /**
    * Instancia da classe

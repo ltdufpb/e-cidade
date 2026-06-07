@@ -59,7 +59,7 @@ $oDaoEscolaProc->rotulo->label();
         </td>
         <td>
           <?php
-            $x = array('1'=>'MUNICIPAL','2'=>'ESTADUAL','3'=>'FEDERAL','4'=>'PARTICULAR');
+            $x = ['1'=>'MUNICIPAL','2'=>'ESTADUAL','3'=>'FEDERAL','4'=>'PARTICULAR'];
             db_select('ed82_c_mantenedora', $x, true, $oGet->db_opcao,"");
           ?>
         </td>

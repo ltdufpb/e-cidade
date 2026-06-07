@@ -16,7 +16,7 @@ class ArrepagaRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * DiversosRepository constructor.
@@ -62,7 +62,7 @@ class ArrepagaRepository
             throw new Exception("Não foi possível buscar os débitos pagos.");
         }
 
-        $debitos = array();
+        $debitos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $debitos;

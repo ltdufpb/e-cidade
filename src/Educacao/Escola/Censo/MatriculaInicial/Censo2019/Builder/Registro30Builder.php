@@ -250,22 +250,22 @@ class Registro30Builder extends BuilderFormulario
             }
             switch ($index) {
                 case 0:
-                    $this->registro->setNomeCurso1(trim($formacao->getCursoFormacao()->getNome()));
-                    $this->registro->setCodigoCurso1(trim($formacao->getCursoFormacao()->getCodigoCenso()));
+                    $this->registro->setNomeCurso1(trim((string) $formacao->getCursoFormacao()->getNome()));
+                    $this->registro->setCodigoCurso1(trim((string) $formacao->getCursoFormacao()->getCodigoCenso()));
                     $this->registro->setAnoConclusao1($formacao->getAnoConclusao());
                     $this->registro->setInstituicaoSuperior1($formacao->getCensoInstsuperior()->getCodigo());
                     $this->registro->setAtivo1($formacao->getCursoFormacao()->isAtivo());
                     break;
                 case 1:
-                    $this->registro->setNomeCurso2(trim($formacao->getCursoFormacao()->getNome()));
-                    $this->registro->setCodigoCurso2(trim($formacao->getCursoFormacao()->getCodigoCenso()));
+                    $this->registro->setNomeCurso2(trim((string) $formacao->getCursoFormacao()->getNome()));
+                    $this->registro->setCodigoCurso2(trim((string) $formacao->getCursoFormacao()->getCodigoCenso()));
                     $this->registro->setAnoConclusao2($formacao->getAnoConclusao());
                     $this->registro->setInstituicaoSuperior2($formacao->getCensoInstsuperior()->getCodigo());
                     $this->registro->setAtivo2($formacao->getCursoFormacao()->isAtivo());
                     break;
                 case 2:
-                    $this->registro->setNomeCurso3(trim($formacao->getCursoFormacao()->getNome()));
-                    $this->registro->setCodigoCurso3(trim($formacao->getCursoFormacao()->getCodigoCenso()));
+                    $this->registro->setNomeCurso3(trim((string) $formacao->getCursoFormacao()->getNome()));
+                    $this->registro->setCodigoCurso3(trim((string) $formacao->getCursoFormacao()->getCodigoCenso()));
                     $this->registro->setAnoConclusao3($formacao->getAnoConclusao());
                     $this->registro->setInstituicaoSuperior3($formacao->getCensoInstsuperior()->getCodigo());
                     $this->registro->setAtivo3($formacao->getCursoFormacao()->isAtivo());
@@ -358,12 +358,12 @@ class Registro30Builder extends BuilderFormulario
 
     private function buildAluno()
     {
-        $cpf = trim($this->alunoEscola->getCpf());
-        $nis = trim($this->alunoEscola->getNis());
+        $cpf = trim((string) $this->alunoEscola->getCpf());
+        $nis = trim((string) $this->alunoEscola->getNis());
         $certidaoNasc = $this->alunoEscola->getMatriculaCeridao();
         $this->registro->setCodigoInepEscola($this->inepEscola);
         $this->registro->setCodigoPessoa(Pessoa::buildCodigoAluno($this->alunoEscola->getCodigo()));
-        $this->registro->setCodigoInep(trim($this->alunoEscola->getCodigoInep()));
+        $this->registro->setCodigoInep(trim((string) $this->alunoEscola->getCodigoInep()));
         $this->registro->setCpf($cpf);
         $this->registro->setNome(mb_strtoupper(DBString::removerAcentuacao($this->alunoEscola->getNome())));
         $this->registro->setDataNascimento($this->alunoEscola->getDataNascimento()->getDate(DBDate::DATA_PTBR));
@@ -384,7 +384,7 @@ class Registro30Builder extends BuilderFormulario
 
         $this->registro->setCep($this->alunoEscola->getCep());
         $this->registro->setMunicipioResidencia($this->alunoEscola->getMunicipioEndereco());
-        $zona = mb_strtoupper($this->alunoEscola->getZonaResidencia()) == 'URBANA' ? 1 : 2;
+        $zona = mb_strtoupper((string) $this->alunoEscola->getZonaResidencia()) == 'URBANA' ? 1 : 2;
         $this->registro->setZonaResidencia($zona);
         $this->registro->setLocalizacaoDiferenciada($this->alunoEscola->getLocalizacaodiferenciada());
 
@@ -415,7 +415,7 @@ class Registro30Builder extends BuilderFormulario
     private function buildRacaAluno($raca)
     {
         $this->registro->setCorRaca(0);
-        if (array_key_exists($raca, $this->deParaRacaAluno)) {
+        if (array_key_exists((string) $raca, $this->deParaRacaAluno)) {
             $this->registro->setCorRaca($this->deParaRacaAluno[$raca]);
         }
     }

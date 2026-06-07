@@ -79,7 +79,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
+   $x = [''=>'','N'=>'NÃO','S'=>'SIM'];
    db_select('ed112_c_classeesp',$x,true,$db_opcao," style='width:80px;height:15px;font-size:10px;padding:0px;'");
    ?>
   </td>
@@ -90,7 +90,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
+   $x = [''=>'','N'=>'NÃO','S'=>'SIM'];
    db_select('ed112_c_dedicacao',$x,true,$db_opcao," style='width:80px;height:15px;font-size:10px;padding:0px;'");
    ?>
   </td>
@@ -112,14 +112,14 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
     $result1 = db_query($sql1);
     $linhas1 = pg_num_rows($result1);
     if($linhas1>0){
-     $x = array('S'=>'SIM');
+     $x = ['S'=>'SIM'];
      db_select('ed112_c_dacesso',$x,true,$db_opcao," style='width:80px;height:15px;font-size:10px;padding:0px;'");
      for($x=0;$x<$linhas1;$x++){
       db_fieldsmemory($result1,$x);
       echo "<br><b>Escola:</b> ".$ed18_i_codigo." - ".$ed18_c_nome." <b>Tipo:</b> ".$ed125_c_descr;
      }
     }else{
-     $x = array('N'=>'NÃO');
+     $x = ['N'=>'NÃO'];
      db_select('ed112_c_dacesso',$x,true,$db_opcao," style='width:80px;height:15px;font-size:10px;padding:0px;'");
     }
    }else{
@@ -158,7 +158,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
   </td>
   <td nowrap>
    <?php 
-   $x = array(''=>'','A'=>'ABERTA','E'=>'ENCERRADA','I'=>'INTERROMPIDA');
+   $x = [''=>'','A'=>'ABERTA','E'=>'ENCERRADA','I'=>'INTERROMPIDA'];
    db_select('ed112_c_situacao',$x,true,3,"");
    ?>
   </td>
@@ -174,7 +174,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
   </tr>
   <tr>
    <td><b>Motivo:</b></td>
-   <td><?=nl2br($ed123_t_motivo)?></td>
+   <td><?=nl2br((string) $ed123_t_motivo)?></td>
   </tr>
   <?php 
  }elseif(isset($ed112_c_situacao) && $ed112_c_situacao=="A" && $db_opcao!=1){
@@ -189,8 +189,8 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    for($x=0;$x<$clproglicencamatr->numrows;$x++){
     $dias_licenca = 0;
     db_fieldsmemory($result3,$x);
-    $data_inicio = mktime(0,0,0,substr($ed122_d_inicio,5,2),substr($ed122_d_inicio,8,2),substr($ed122_d_inicio,0,4));
-    $data_final = mktime(0,0,0,substr($ed122_d_final,5,2),substr($ed122_d_final,8,2),substr($ed122_d_final,0,4));
+    $data_inicio = mktime(0,0,0,substr((string) $ed122_d_inicio,5,2),substr((string) $ed122_d_inicio,8,2),substr((string) $ed122_d_inicio,0,4));
+    $data_final = mktime(0,0,0,substr((string) $ed122_d_final,5,2),substr((string) $ed122_d_final,8,2),substr((string) $ed122_d_final,0,4));
     $data_entre = $data_final - $data_inicio;
     $dias = ceil($data_entre/86400);
     if($ed121_i_tempolimite>0){
@@ -446,7 +446,7 @@ function js_preenchepesquisa(chave){
   db_iframe_progmatricula.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

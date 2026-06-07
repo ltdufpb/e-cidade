@@ -41,7 +41,7 @@ class cl_pcdotac
     public function __construct()
     {
         $this->rotulo = new rotulo("pcdotac");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -158,10 +158,10 @@ class cl_pcdotac
                 $this->erro_status = "0";
                 return false;
             }
-            $this->pc13_sequencial = pg_result($result, 0, 0);
+            $this->pc13_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from pcdotac_pc13_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $pc13_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $pc13_sequencial)) {
                 $this->erro_sql = " Campo pc13_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -207,7 +207,7 @@ class cl_pcdotac
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "dotacoes por item de cada solicitacao ($this->pc13_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "dotacoes por item de cada solicitacao já Cadastrado";
@@ -240,34 +240,34 @@ class cl_pcdotac
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11920,'$this->pc13_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,159,11920,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,11920,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,5559,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,5559,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,5560,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,5560,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_coddot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,5561,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,5561,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,5562,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,5562,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_depto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,5563,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,5563,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_quant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,6286,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,6286,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,6495,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,6495,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_codele')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,159,1010135,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,159,1010135,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'pc13_planoorcamentariolinhapacto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -280,10 +280,10 @@ class cl_pcdotac
         $this->atualizacampos();
         $sql = " update pcdotac set ";
         $virgula = "";
-        if (trim($this->pc13_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_sequencial"])) {
+        if (trim((string) $this->pc13_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_sequencial"])) {
             $sql .= $virgula . " pc13_sequencial = $this->pc13_sequencial ";
             $virgula = ",";
-            if (trim($this->pc13_sequencial) == null) {
+            if (trim((string) $this->pc13_sequencial) == null) {
                 $this->erro_sql = " Campo Código Sequencial não informado.";
                 $this->erro_campo = "pc13_sequencial";
                 $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_anousu"])) {
+        if (trim((string) $this->pc13_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_anousu"])) {
             $sql .= $virgula . " pc13_anousu = $this->pc13_anousu ";
             $virgula = ",";
-            if (trim($this->pc13_anousu) == null) {
+            if (trim((string) $this->pc13_anousu) == null) {
                 $this->erro_sql = " Campo Ano não informado.";
                 $this->erro_campo = "pc13_anousu";
                 $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_coddot) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_coddot"])) {
+        if (trim((string) $this->pc13_coddot) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_coddot"])) {
             $sql .= $virgula . " pc13_coddot = $this->pc13_coddot ";
             $virgula = ",";
-            if (trim($this->pc13_coddot) == null) {
+            if (trim((string) $this->pc13_coddot) == null) {
                 $this->erro_sql = " Campo Dotacao orcamentaria não informado.";
                 $this->erro_campo = "pc13_coddot";
                 $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_codigo"])) {
+        if (trim((string) $this->pc13_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_codigo"])) {
             $sql .= $virgula . " pc13_codigo = $this->pc13_codigo ";
             $virgula = ",";
-            if (trim($this->pc13_codigo) == null) {
+            if (trim((string) $this->pc13_codigo) == null) {
                 $this->erro_sql = " Campo Código sequencial do registro não informado.";
                 $this->erro_campo = "pc13_codigo";
                 $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_depto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_depto"])) {
+        if (trim((string) $this->pc13_depto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_depto"])) {
             $sql .= $virgula . " pc13_depto = $this->pc13_depto ";
             $virgula = ",";
-            if (trim($this->pc13_depto) == null) {
+            if (trim((string) $this->pc13_depto) == null) {
                 $this->erro_sql = " Campo Departamento não informado.";
                 $this->erro_campo = "pc13_depto";
                 $this->erro_banco = "";
@@ -350,10 +350,10 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_quant"])) {
+        if (trim((string) $this->pc13_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_quant"])) {
             $sql .= $virgula . " pc13_quant = $this->pc13_quant ";
             $virgula = ",";
-            if (trim($this->pc13_quant) == null) {
+            if (trim((string) $this->pc13_quant) == null) {
                 $this->erro_sql = " Campo quantidade solicitada não informado.";
                 $this->erro_campo = "pc13_quant";
                 $this->erro_banco = "";
@@ -364,10 +364,10 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_valor"])) {
+        if (trim((string) $this->pc13_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_valor"])) {
             $sql .= $virgula . " pc13_valor = $this->pc13_valor ";
             $virgula = ",";
-            if (trim($this->pc13_valor) == null) {
+            if (trim((string) $this->pc13_valor) == null) {
                 $this->erro_sql = " Campo Valor não informado.";
                 $this->erro_campo = "pc13_valor";
                 $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_codele) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_codele"])) {
+        if (trim((string) $this->pc13_codele) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_codele"])) {
             $sql .= $virgula . " pc13_codele = $this->pc13_codele ";
             $virgula = ",";
-            if (trim($this->pc13_codele) == null) {
+            if (trim((string) $this->pc13_codele) == null) {
                 $this->erro_sql = " Campo Código Elemento não informado.";
                 $this->erro_campo = "pc13_codele";
                 $this->erro_banco = "";
@@ -392,8 +392,8 @@ class cl_pcdotac
                 return false;
             }
         }
-        if (trim($this->pc13_planoorcamentariolinhapacto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_planoorcamentariolinhapacto"])) {
-            if (trim($this->pc13_planoorcamentariolinhapacto) == "" && isset($GLOBALS["HTTP_POST_VARS"]["pc13_planoorcamentariolinhapacto"])) {
+        if (trim((string) $this->pc13_planoorcamentariolinhapacto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc13_planoorcamentariolinhapacto"])) {
+            if (trim((string) $this->pc13_planoorcamentariolinhapacto) == "" && isset($GLOBALS["HTTP_POST_VARS"]["pc13_planoorcamentariolinhapacto"])) {
                 $this->pc13_planoorcamentariolinhapacto = "null";
             }
             $sql .= $virgula . " pc13_planoorcamentariolinhapacto = $this->pc13_planoorcamentariolinhapacto ";
@@ -414,51 +414,51 @@ class cl_pcdotac
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,11920,'$this->pc13_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_sequencial"]) || $this->pc13_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,11920,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,11920,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_sequencial')) . "','$this->pc13_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_anousu"]) || $this->pc13_anousu != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,5559,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,5559,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_anousu')) . "','$this->pc13_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_coddot"]) || $this->pc13_coddot != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,5560,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,5560,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_coddot')) . "','$this->pc13_coddot'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_codigo"]) || $this->pc13_codigo != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,5561,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,5561,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_codigo')) . "','$this->pc13_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_depto"]) || $this->pc13_depto != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,5562,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,5562,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_depto')) . "','$this->pc13_depto'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_quant"]) || $this->pc13_quant != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,5563,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,5563,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_quant')) . "','$this->pc13_quant'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_valor"]) || $this->pc13_valor != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,6286,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,6286,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_valor')) . "','$this->pc13_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_codele"]) || $this->pc13_codele != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,6495,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,6495,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_codele')) . "','$this->pc13_codele'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc13_planoorcamentariolinhapacto"]) || $this->pc13_planoorcamentariolinhapacto != "") {
-                        $resac = db_query("insert into db_acount values($acount,159,1010135,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,159,1010135,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'pc13_planoorcamentariolinhapacto')) . "','$this->pc13_planoorcamentariolinhapacto'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -519,34 +519,34 @@ class cl_pcdotac
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,11920,'$pc13_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,159,11920,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,11920,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,5559,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,5559,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,5560,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,5560,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_coddot')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,5561,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,5561,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,5562,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,5562,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_depto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,5563,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,5563,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_quant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,6286,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,6286,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,6495,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,6495,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_codele')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,159,1010135,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,159,1010135,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'pc13_planoorcamentariolinhapacto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -637,7 +637,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -764,7 +764,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -826,7 +826,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -846,7 +846,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -892,7 +892,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -951,7 +951,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1011,7 +1011,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1031,7 +1031,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1072,7 +1072,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1092,7 +1092,7 @@ class cl_pcdotac
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1151,7 +1151,7 @@ class cl_pcdotac
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

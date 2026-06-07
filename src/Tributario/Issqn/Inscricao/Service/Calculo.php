@@ -10,13 +10,8 @@ use \Empresa;
 
 final class Calculo extends BaseService
 {
-    private $session;
-    private $calculoIssqnProcedure;
-
-    public function __construct(Session $session, CalculoIssqn $calculoIssqnProcedure)
+    public function __construct(private readonly Session $session, private readonly CalculoIssqn $calculoIssqnProcedure)
     {
-        $this->session = $session;
-        $this->calculoIssqnProcedure = $calculoIssqnProcedure;
     }
 
     /**
@@ -28,7 +23,7 @@ final class Calculo extends BaseService
     public function execute(Empresa $empresa)
     {
         if ($empresa->isParalisada()) {
-            $erroMensagem = (object) array('iInscricao', $empresa->getInscricao());
+            $erroMensagem = (object) ['iInscricao', $empresa->getInscricao()];
             throw new \Exception(_M(Empresa::MENSAGENS . 'empresa_paralisada', $erroMensagem));
         }
 

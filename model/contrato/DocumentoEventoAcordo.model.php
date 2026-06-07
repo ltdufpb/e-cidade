@@ -73,7 +73,7 @@ class DocumentoEventoAcordo {
       return;
     }
     $oDaoDocumento = new cl_acordodocumentoevento();
-    if (!$oDadosDocumento = db_utils::getRowFromDao($oDaoDocumento, array($iCodigo))) {
+    if (!$oDadosDocumento = db_utils::getRowFromDao($oDaoDocumento, [$iCodigo])) {
       throw new BusinessException("Documento nao encontrato no sistema");
     }
 

@@ -13,17 +13,6 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 class Error
 {
     /**
-     * @var string - nome do evento
-     * @see ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo::getByLayout
-     */
-    private $eventName;
-
-    /**
-     * @var boolean
-     */
-    private $html = true;
-
-    /**
      * @var array
      */
     private $fieldsData;
@@ -32,10 +21,14 @@ class Error
      * @param string $eventName
      * @param boolean $html
      */
-    public function __construct($eventName, $html = true)
+    public function __construct(
+        /**
+         * @see ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo::getByLayout
+         */
+        private $eventName,
+        private $html = true
+    )
     {
-        $this->eventName = $eventName;
-        $this->html = $html;
     }
 
     public function loadFieldsData()
@@ -58,20 +51,20 @@ class Error
         $caminho = mb_convert_encoding($path, 'ISO-8859-1', 'UTF-8');
 
         if ($caminho == 'Produção do eSocial') {
-            return (object) array(
-                'group' => (object) array(
+            return (object) [
+                'group' => (object) [
                     'index' => 0,
                     'key' => 'eSocial',
                     'label' => 'eSocial',
-                ),
-                'field' => (object) array(
+                ],
+                'field' => (object) [
                     'key' => 'eSocial',
                     'label' => 'eSocial',
-                ),
-            );
+                ],
+            ];
         }
         $fieldsData = $this->fieldsData ?: $this->loadFieldsData();
-        $path = explode('/', ltrim($path, '/'));
+        $path = explode('/', ltrim((string) $path, '/'));
 
         // indice do evento, atualmente o ecidade envia um, entao ignoramos
         $index = array_shift($path);
@@ -84,7 +77,7 @@ class Error
         $index = null;
 
         $group = $fields[0];
-        $field = isset($fields[1]) ? $fields[1] : null;
+        $field = $fields[1] ?? null;
 
         // key eh numerico, grupo eh um array, extrai o index
         if (ctype_digit((string) $group)) {
@@ -120,17 +113,17 @@ class Error
             $fieldLabel = $fieldsData[$group]['fields'][$field];
         }
 
-        return (object) array(
-            'group' => (object) array(
+        return (object) [
+            'group' => (object) [
                 'index' => $index,
                 'key' => $group,
                 'label' => $groupLabel,
-            ),
-            'field' => (object) array(
+            ],
+            'field' => (object) [
                 'key' => $field,
                 'label' => $fieldLabel,
-            ),
-        );
+            ],
+        ];
     }
 
     public function formatLabels($data, $mask = " - %s")
@@ -158,7 +151,7 @@ class Error
 
     private function extractFieldsData($eventName)
     {
-        $data = array();
+        $data = [];
         $tipoEvento = Tipo::getByLayout($eventName);
 
         $esocialConfig = ConfiguracaoFactory::getInstanceByTipo($tipoEvento);
@@ -167,7 +160,7 @@ class Error
         $template = \ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory::get($eventName)->getDePara();
 
         $extractPropertiesHandler = function (array $properties) {
-            $data = array();
+            $data = [];
             foreach ($properties as $key => $property) {
                 $name = is_int($key) ? $property : $key;
                 $nameAPI = is_array($property) ? $name : $property;
@@ -177,12 +170,12 @@ class Error
                     $nameAPI = $property['nome_api'];
                 }
 
-                $data[$nameEcidade] = array(
+                $data[$nameEcidade] = [
                     'key' => $nameAPI,
                     'label' => (
                         is_array($property) && isset($property['label']) ? $property['label'] : null
                     ),
-                );
+                ];
             }
             return $data;
         };
@@ -195,13 +188,13 @@ class Error
                 }
 
                 if (!isset($data[$key])) {
-                    $data[$key] = array(
+                    $data[$key] = [
                         'key' => !empty($group['nome_api']) ? $group['nome_api'] : $key,
                         'label' => !empty($group['label']) ? $group['label'] : null,
-                        'groups' => !empty($group['groups']) ? array_keys($group['groups']) : array(),
-                        'fields' => array(),
-                        'type' => isset($group['type']) ? $group['type'] : null,
-                    );
+                        'groups' => !empty($group['groups']) ? array_keys($group['groups']) : [],
+                        'fields' => [],
+                        'type' => $group['type'] ?? null,
+                    ];
                 }
 
                 if (isset($group['properties'])) {
@@ -217,7 +210,7 @@ class Error
         };
 
         // extrai todos os grupos e campos do template, deixando todos no mesmo nivel
-        $templateData = array();
+        $templateData = [];
         $extractGroupDataHandler($template, $templateData);
 
         foreach ($avaliacao->getGrupos() as $grupo) {
@@ -230,12 +223,12 @@ class Error
             $groupKeyAPI = $templateData[$groupKey]['key'];
 
             if (!isset($data[$groupKeyAPI])) {
-                $data[$groupKeyAPI] = array(
+                $data[$groupKeyAPI] = [
                     'label' => $templateData[$groupKey]['label'] ?: $grupo->getDescricao(),
-                    'fields' => array(),
+                    'fields' => [],
                     'groups' => $templateData[$groupKey]['groups'],
                     'type' => $templateData[$groupKey]['type'],
-                );
+                ];
             }
 
             if ($data[$groupKeyAPI]['type'] == 'array') {
@@ -257,12 +250,12 @@ class Error
 
         // grupos que nao tem no ecidade
         foreach ($templateData as $group) {
-            $data[$group['key']] = array(
+            $data[$group['key']] = [
                 'label' => $group['label'] ?: $group['key'],
-                'fields' => array(),
+                'fields' => [],
                 'groups' => $group['groups'],
                 'type' => $group['type'],
-            );
+            ];
 
             foreach ($group['fields'] as $field) {
                 $data[$group['key']]['fields'][$field['key']] = $field['label'] ?: $field['key'];

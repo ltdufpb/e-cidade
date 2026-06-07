@@ -56,15 +56,15 @@ foreach ($oLogArquivo->aLogs as $oDados) {
   $oPdf->AddPage();
   $oPdf->SetFont("arial", "b", 7);
 
-  $oPdf->Cell(80,   4, "Turma: "      . urldecode( $oDados->sTurma ),      1, 0, "C", 1);
-  $oPdf->Cell(40,   4, "Etapa: "      . urldecode( $oDados->sEtapa ),      1, 0, "C", 1);
-  $oPdf->Cell(72,   4, "Calendário: " . urldecode( $oDados->sCalendario ), 1, 1, "C", 1);
+  $oPdf->Cell(80,   4, "Turma: "      . urldecode( (string) $oDados->sTurma ),      1, 0, "C", 1);
+  $oPdf->Cell(40,   4, "Etapa: "      . urldecode( (string) $oDados->sEtapa ),      1, 0, "C", 1);
+  $oPdf->Cell(72,   4, "Calendário: " . urldecode( (string) $oDados->sCalendario ), 1, 1, "C", 1);
   $oPdf->Cell(192,  4, "Alunos", 1, 1, "C", 1);
 
   foreach ($oDados->aAlunos as $sAluno) {
 
     $oPdf->SetFont("arial", "", 7);
-    $oPdf->Cell(192,  4, urldecode($sAluno), 1, 1, "L");
+    $oPdf->Cell(192,  4, urldecode((string) $sAluno), 1, 1, "L");
   }
 }
 

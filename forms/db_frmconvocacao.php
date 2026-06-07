@@ -33,9 +33,9 @@ $db_botao1 = false;
 if(isset($opcao) && $opcao=="alterar"){
  $db_opcao = 2;
  $db_botao1 = true;
- $ed111_d_data_dia = substr($ed111_d_data,0,2);
- $ed111_d_data_mes = substr($ed111_d_data,3,2);
- $ed111_d_data_ano = substr($ed111_d_data,6,4);
+ $ed111_d_data_dia = substr((string) $ed111_d_data,0,2);
+ $ed111_d_data_mes = substr((string) $ed111_d_data,3,2);
+ $ed111_d_data_ano = substr((string) $ed111_d_data,6,4);
 }elseif(isset($opcao) && $opcao=="excluir" || isset($db_opcao) && $db_opcao==3){
  $db_botao1 = true;
  $db_opcao = 3;
@@ -100,7 +100,7 @@ if($ed110_i_ptconvocacao==0 || $ed110_i_ptgeral==0){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed111_i_codigo"=>@$ed111_i_codigo,"ed111_c_titulo"=>@$ed111_c_titulo,"ed111_i_ano"=>@$ed111_i_ano,"ed111_d_data"=>@$ed111_d_data,"ed111_t_obs"=>@$ed111_t_obs);
+   $chavepri= ["ed111_i_codigo"=>@$ed111_i_codigo,"ed111_c_titulo"=>@$ed111_c_titulo,"ed111_i_ano"=>@$ed111_i_ano,"ed111_d_data"=>@$ed111_d_data,"ed111_t_obs"=>@$ed111_t_obs];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clconvocacao->sql_query($ed111_i_codigo,"*","ed111_d_data desc");
    $cliframe_alterar_excluir->campos  ="ed111_i_codigo,ed111_c_titulo,ed111_d_data,ed111_i_ano";

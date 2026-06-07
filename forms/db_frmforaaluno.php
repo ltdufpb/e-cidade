@@ -50,7 +50,7 @@ $escola = db_getsession("DB_coddepto");
     if($ed47_o_oid!=0){
      $arquivo = "tmp/".$ed47_c_foto;
      db_query("begin");
-     pg_loexport($ed47_o_oid,$arquivo);
+     pg_lo_export($ed47_o_oid,$arquivo);
      db_query("end");
      if($db_botao==true){
       echo "<br><a href='?chavepesquisa=$chavepesquisa&excluirfoto'>Excluir Foto</a>";
@@ -79,13 +79,13 @@ $escola = db_getsession("DB_coddepto");
   </td>
   <td>
    <?php 
-   $x = array('N'=>'NASCIMENTO','C'=>'CASAMENTO');
+   $x = ['N'=>'NASCIMENTO','C'=>'CASAMENTO'];
    db_select('ed47_c_certidaotipo',$x,true,$db_opcao,"");
    ?>
    <input type="button" value="+" name="certidao" onclick="document.getElementById('certidaoadic').style.visibility='visible'" style="width:10px;">
    <?=@$Led47_c_raca?>
    <?php 
-   $x = array('NÃO DECLARADA'=>'NÃO DECLARADA','BRANCA'=>'BRANCA','PRETA'=>'PRETA','PARDA'=>'PARDA','AMARELA'=>'AMARELA','INDÍGENA'=>'INDÍGENA');
+   $x = ['NÃO DECLARADA'=>'NÃO DECLARADA','BRANCA'=>'BRANCA','PRETA'=>'PRETA','PARDA'=>'PARDA','AMARELA'=>'AMARELA','INDÍGENA'=>'INDÍGENA'];
    db_select('ed47_c_raca',$x,true,$db_opcao,"");
    ?>
    <table id="certidaoadic" style="visibility:hidden;position:absolute;border:2px outset #000000;" bgcolor="#CCCCCC" cellspacing="2" cellpading="2">
@@ -194,17 +194,17 @@ $escola = db_getsession("DB_coddepto");
   </td>
   <td colspan="2">
    <?php 
-   $x = array(''=>'','HOSPITALAR'=>'HOSPITALAR','DOMICILIAR'=>'DOMICILIAR');
+   $x = [''=>'','HOSPITALAR'=>'HOSPITALAR','DOMICILIAR'=>'DOMICILIAR'];
    db_select('ed47_c_atendesp',$x,true,$db_opcao,"");
    ?>
    <?=@$Led47_c_transporte?>
    <?php 
-   $x = array(''=>'','MUNICIPAL'=>'MUNICIPAL','ESTADUAL'=>'ESTADUAL');
+   $x = [''=>'','MUNICIPAL'=>'MUNICIPAL','ESTADUAL'=>'ESTADUAL'];
    db_select('ed47_c_transporte',$x,true,$db_opcao,"onchange='js_transporte(this.value)';");
    ?>
    <?=@$Led47_c_zona?>
    <?php 
-   $x = array(''=>'','URBANA'=>'URBANA','RURAL'=>'RURAL');
+   $x = [''=>'','URBANA'=>'URBANA','RURAL'=>'RURAL'];
    db_select('ed47_c_zona',$x,true,$db_opcao,"onchange='js_transporte1(document.form1.ed47_c_transporte.value,this.value)';");
     ?>
   </td>
@@ -217,7 +217,7 @@ $escola = db_getsession("DB_coddepto");
    <?php db_input('ed47_c_nis',20,$Ied47_c_nis,true,'text',$db_opcao,"")?>
    <?=@$Led47_c_bolsafamilia?>
    <?php 
-   $x = array('N'=>'NÃO','S'=>'SIM');
+   $x = ['N'=>'NÃO','S'=>'SIM'];
    db_select('ed47_c_bolsafamilia',$x,true,$db_opcao,"");
    ?>
    <?=@$Led47_c_passaporte?>

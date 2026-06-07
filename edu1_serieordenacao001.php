@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_serieregimemat_classe.php"));
 include(modification("classes/db_ensino_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clserieregimemat = new cl_serieregimemat;
 $clensino = new cl_ensino;
 $db_opcao = 1;

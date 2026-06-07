@@ -155,10 +155,10 @@ class DadosCensoTurma extends DadosCenso {
       $oDadosTurma->etapa_ensino_turma = $this->iEtapaTurmaCenso;
     }
 
-    $oDadosTurma->horario_turma_horario_inicial_hora   = substr($oDadosTurma->horario_inicial, 0, 2);
-    $oDadosTurma->horario_turma_horario_inicial_minuto = substr($oDadosTurma->horario_inicial, 3, 2);
-    $oDadosTurma->horario_turma_horario_final_hora     = substr($oDadosTurma->horario_final, 0, 2);
-    $oDadosTurma->horario_turma_horario_final_minuto   = substr($oDadosTurma->horario_final, 3, 2);
+    $oDadosTurma->horario_turma_horario_inicial_hora   = substr((string) $oDadosTurma->horario_inicial, 0, 2);
+    $oDadosTurma->horario_turma_horario_inicial_minuto = substr((string) $oDadosTurma->horario_inicial, 3, 2);
+    $oDadosTurma->horario_turma_horario_final_hora     = substr((string) $oDadosTurma->horario_final, 0, 2);
+    $oDadosTurma->horario_turma_horario_final_minuto   = substr((string) $oDadosTurma->horario_final, 3, 2);
 
     switch ($oDadosTurma->modalidade_turma) {
 
@@ -461,7 +461,7 @@ class DadosCensoTurma extends DadosCenso {
       /**
        * Valida se o nome da turma contém mais de 80 caracteres
        */
-      if ( strlen($oDadosTurma->nome_turma) > 80 ) {
+      if ( strlen((string) $oDadosTurma->nome_turma) > 80 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Nome da Turma deve conter no máximo 80 caracteres.";
@@ -469,7 +469,7 @@ class DadosCensoTurma extends DadosCenso {
         $lDadosValidos = false;
       }
 
-      if ( preg_match ('/\s{2,}/',  $oDadosTurma->nome_turma) == 1) {
+      if ( preg_match ('/\s{2,}/',  (string) $oDadosTurma->nome_turma) == 1) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Nome da turma contém excesso de espaços.";
@@ -477,7 +477,7 @@ class DadosCensoTurma extends DadosCenso {
         $lDadosValidos = false;
       }
 
-      if (strlen($oDadosTurma->nome_turma) < 4) {
+      if (strlen((string) $oDadosTurma->nome_turma) < 4) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Nome da turma deve conter no mínimo 4 caracteres.";
@@ -488,7 +488,7 @@ class DadosCensoTurma extends DadosCenso {
       /**
        * Valida se a hora do horario inicial da turma possui 2 dígitos
        */
-      if ( strlen($oDadosTurma->horario_turma_horario_inicial_hora) != 2 ) {
+      if ( strlen((string) $oDadosTurma->horario_turma_horario_inicial_hora) != 2 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "A hora do horário inicial da turma deve conter 2 dígitos.";
@@ -511,7 +511,7 @@ class DadosCensoTurma extends DadosCenso {
       /**
        * Valida se os minutos do horario inicial da turma possui 2 dígitos
        */
-      if ( strlen($oDadosTurma->horario_turma_horario_inicial_minuto) != 2 ) {
+      if ( strlen((string) $oDadosTurma->horario_turma_horario_inicial_minuto) != 2 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Os minutos do horário inicial da turma devem conter 2 dígitos.";
@@ -538,7 +538,7 @@ class DadosCensoTurma extends DadosCenso {
       /**
        * Valida se a hora do horario final da turma possui 2 dígitos
        */
-      if ( strlen($oDadosTurma->horario_turma_horario_final_hora) != 2 ) {
+      if ( strlen((string) $oDadosTurma->horario_turma_horario_final_hora) != 2 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "A hora do horário final da turma deve conter 2 dígitos.";
@@ -561,7 +561,7 @@ class DadosCensoTurma extends DadosCenso {
       /**
        * Valida se os minutos do horario final da turma possui 2 dígitos
        */
-      if ( strlen($oDadosTurma->horario_turma_horario_final_minuto) != 2 ) {
+      if ( strlen((string) $oDadosTurma->horario_turma_horario_final_minuto) != 2 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Os minutos do horário final da turma devem conter 2 dígitos.";

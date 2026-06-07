@@ -67,13 +67,6 @@ class ServidorService
     private $servidorEntity;
 
     /**
-     * @var ServidorModel
-     */
-    private $servidor;
-
-    private $alteracao = false;
-
-    /**
      * Array que faz o dePara entre os códigos do e-cidade e do eSocial para Raça/Cor
      * Chave: código e-cidade
      * Valor: código eSocial
@@ -149,17 +142,6 @@ class ServidorService
         'O' => '99'
     ];
 
-
-    /**
-     * @var stdClass
-     */
-    private $dadosServidor;
-
-    /**
-     * @var ServidorMovimentacao
-     */
-    private $servidorMovimentacao;
-
     /**
      * Array que faz o dePara entre os códigos do e-cidade e do eSocial para Unidade de Pagamento
      * Chave: código e-cidade
@@ -195,18 +177,15 @@ class ServidorService
      * @param ServidorMovimentacao $servidorMovimentacao
      * @param $dadosServidor
      * @throws \Exception
+     * @param stdClass $dadosServidor
      */
     public function __construct(
-        ServidorModel $servidor,
-        ServidorMovimentacao $servidorMovimentacao,
-        $dadosServidor,
-        $alteracao = false
+        private readonly ServidorModel $servidor,
+        private readonly ServidorMovimentacao $servidorMovimentacao,
+        private $dadosServidor,
+        private $alteracao = false
     ) {
-        $this->alteracao = $alteracao;
-        $this->servidor = $servidor;
-        $this->servidorMovimentacao = $servidorMovimentacao;
         $this->servidorEntity = new ServidorEntity();
-        $this->dadosServidor = $dadosServidor;
         $this->admissaoMatricula = new Admissao($this->servidor->getMatricula());
         $this->endereco = new endereco($this->servidor->getCgm()->getEnderecoPrimario());
     }
@@ -317,7 +296,7 @@ class ServidorService
     private function documentosCtps()
     {
         if ($this->servidor->getDocumentos()->iNumeroCTPS !== '') {
-            $documentos = array();
+            $documentos = [];
             $documentos['nrCtps'] = $this->servidor->getDocumentos()->iNumeroCTPS;
             $documentos['serieCtps'] = $this->servidor->getDocumentos()->iSerieCTPS;
             $documentos['ufCtps'] = $this->servidor->getDocumentos()->sUfCTPS;
@@ -489,14 +468,14 @@ class ServidorService
     private function remuneracao()
     {
         if (!isset($this->dadosServidor->vinculo['infoContrato'])) {
-            $this->dadosServidor->vinculo['infoContrato'] = array();
+            $this->dadosServidor->vinculo['infoContrato'] = [];
         }
 
         if (!isset($this->dadosServidor->vinculo['infoContrato']['remuneracao'])) {
-            $this->dadosServidor->vinculo['infoContrato']['remuneracao'] = array();
+            $this->dadosServidor->vinculo['infoContrato']['remuneracao'] = [];
         }
 
-        $dadosRemuneracao = array();
+        $dadosRemuneracao = [];
         //Condição para o evento eSocial S2200
         if ($this->servidor->isCeletista()) {
             $dadosRemuneracao['vrSalFx'] = (float) number_format($this->servidor->getSalario(true), 2, '.', '');
@@ -532,7 +511,7 @@ class ServidorService
      */
     private function dadosFgts()
     {
-        $dadosFgts = array();
+        $dadosFgts = [];
         if (!empty($this->servidor->getDataOptanteFgts()->rh15_data)) {
             $dadosFgts['dtOpcFGTS'] = $this->servidor->getDataOptanteFgts()->rh15_data;
         }
@@ -547,7 +526,7 @@ class ServidorService
     private function filiacaoSindical()
     {
         if ($this->servidor->getSindicato() !== null) {
-            $dadosFiliacaoSindical = array();
+            $dadosFiliacaoSindical = [];
             $cnpj = preg_replace('\'[^0-9]\'', '', $this->servidor->getSindicato()->getCnpj());
 
             if (empty($cnpj)) {
@@ -769,9 +748,9 @@ class ServidorService
         $dependenteRepository = new DependenteRepository();
         $dependentes = $dependenteRepository
             ->scopeMatricula($this->servidor->getMatricula())
-            ->orderBy(array('rh31_nome'))
+            ->orderBy(['rh31_nome'])
             ->setUseJoin(true)
-            ->get(array(
+            ->get([
                 'rh31_nome',
                 'rh31_dtnasc',
                 'rh31_irf',
@@ -779,7 +758,7 @@ class ServidorService
                 'rh31_fins_previdenciarios',
                 'rh31_gparen',
                 'dp01_sexo'
-            ));
+            ]);
         $dadosDependentes = [];
 
         foreach ($dependentes as $dependente) {
@@ -906,7 +885,7 @@ class ServidorService
         $dadoDeficiente['defIntelectual'] = $deficiente->getIntelectual() == 't' ? 'S' : 'N';
         $dadoDeficiente['reabReadap'] = $deficiente->getReabilitado() == 't' ? 'S' : 'N';
         $dadoDeficiente['infoCota'] = $deficiente->getCota() == 't' ? 'S' : 'N';
-        $dadoDeficiente['observacao'] = trim(preg_replace('/\s+/', ' ', $deficiente->getObservacao()));
+        $dadoDeficiente['observacao'] = trim((string) preg_replace('/\s+/', ' ', $deficiente->getObservacao()));
         $this->servidorEntity->setDeficiente($dadoDeficiente);
     }
 
@@ -955,7 +934,7 @@ class ServidorService
         }
 
         if (!empty($servidorValidaData->db110_valor)) {
-            $dadoAfastamento['codMotAfast'] = str_pad($servidorValidaData->db110_valor, 2, "0", STR_PAD_LEFT);
+            $dadoAfastamento['codMotAfast'] = str_pad((string) $servidorValidaData->db110_valor, 2, "0", STR_PAD_LEFT);
         }
 
         $this->servidorEntity->setAfastamento($dadoAfastamento);

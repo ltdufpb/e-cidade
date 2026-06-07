@@ -171,7 +171,7 @@ class ResultadoHabilitacao
         }
 
         $iSituacao = db_utils::fieldsMemory($rResultado, 0)->l17_situacao;
-        $aSituacoes = array(1 => 'H', 2 => 'I', 3 => 'N');
+        $aSituacoes = [1 => 'H', 2 => 'I', 3 => 'N'];
 
         return pg_num_rows($rResultado) ? $aSituacoes[$iSituacao] : '';
     }

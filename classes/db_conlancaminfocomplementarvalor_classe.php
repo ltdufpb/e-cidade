@@ -125,7 +125,7 @@ class cl_conlancaminfocomplementarvalor extends DAOBasica {
      * @param $ano
      * @param $codigoInstituicao
      */
-    public function montarEstrutura($ano, $codigoInstituicao, $codigoContaCorrente, $tipoSistema=2, $unidadeGestora)
+    public function montarEstrutura($ano, $codigoInstituicao, $codigoContaCorrente, $tipoSistema=2, $unidadeGestora = null)
     {
         $whereConplanoSistemaAtributos     = "";
         $whereUnidadeGestora               = "";

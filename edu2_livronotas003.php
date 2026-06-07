@@ -64,7 +64,7 @@ $oControle->lExibeTrocaTurma                   = $oGet->iTrocaTurma == 2 ? true 
 /**
  * Nunca serao impressos no relatorio alunos com as situacoes
  */
-$aSituacoes = array("TRANSFERIDO FORA", "CANCELADO", "TROCA DE MODALIDADE");
+$aSituacoes = ["TRANSFERIDO FORA", "CANCELADO", "TROCA DE MODALIDADE"];
 
 foreach ($aTurmas as $oDadosTurma) {
 
@@ -121,7 +121,7 @@ foreach ($aTurmas as $oDadosTurma) {
        */
       if ($lPrimeiroLaco || $oPdf->gety() > $oPdf->h - 8) {
 
-        imprimeCabecalho($oPdf, $oControle, $oTurma, $aPeriodo, $oRegencia);
+        imprimeCabecalho($oPdf, $oControle);
         $lPrimeiroLaco = false;
       }
 
@@ -266,7 +266,7 @@ foreach ($aTurmas as $oDadosTurma) {
           }
 
           $iAlunosImpressos = 0;
-          imprimeCabecalho($oPdf, $oControle, $oTurma, $aPeriodo, $oRegencia);
+          imprimeCabecalho($oPdf, $oControle);
         }
       }
 
@@ -436,7 +436,7 @@ function imprimeCabecalho( scpdf $oPdf, $oControle, $oTurma, $aPeriodo, $oRegenc
 function organizaPeriodosPorPagina($iNumeroDePaginas, $iNumeroElementosAvaliacao, $oControle, $aElementosAvaliacao) {
 
   $iNumeroElementosMovidos      = 0;
-  $aElementosAvaliacaoPorPagina = array();
+  $aElementosAvaliacaoPorPagina = [];
 
   for ($iPagina = 1; $iPagina <= $iNumeroDePaginas; $iPagina++) {
 

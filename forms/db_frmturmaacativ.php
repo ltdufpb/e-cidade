@@ -122,7 +122,7 @@ if (isset($opcao) && $opcao=="alterar") {
               ed133_c_descr,
               (select ed274_c_nome from turmaacativnova where ed274_i_turmaacativ = ed267_i_codigo) as ed274_c_nome
              ";
-   $chavepri= array("ed267_i_codigo"=>@$ed267_i_codigo,"ed267_i_turmaac"=>@$ed267_i_turmaac,"ed268_c_descr"=>@$ed268_c_descr,"ed267_i_censoativcompl"=>@$ed267_i_censoativcompl,"ed133_c_descr"=>@$ed133_c_descr);
+   $chavepri= ["ed267_i_codigo"=>@$ed267_i_codigo,"ed267_i_turmaac"=>@$ed267_i_turmaac,"ed268_c_descr"=>@$ed268_c_descr,"ed267_i_censoativcompl"=>@$ed267_i_censoativcompl,"ed133_c_descr"=>@$ed133_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clturmaacativ->sql_query("",$campos,"ed133_c_descr"," ed267_i_turmaac = $ed267_i_turmaac");
    $cliframe_alterar_excluir->campos  ="ed267_i_censoativcompl,ed133_c_descr,ed274_c_nome";

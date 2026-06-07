@@ -41,7 +41,7 @@ class DisbancoRepository
     {
         $dao = new cl_disbanco();
         $where = implode(' AND ', $this->scopes);
-        $disbancos = array();
+        $disbancos = [];
 
         $sql = $dao->sql_query_file(null, '*', null, $where);
 

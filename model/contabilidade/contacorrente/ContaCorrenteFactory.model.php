@@ -100,7 +100,7 @@ class ContaCorrenteFactory {
       return false;
     }
 
-    $aClassesContaCorrente = array( '1'  => 'DisponibilidadeFinanceira',
+    $aClassesContaCorrente = [ '1'  => 'DisponibilidadeFinanceira',
                                     '2'  => 'DomicilioBancario',
                                     '3'  => 'CredorFornecedorDevedor',
                                     '19' => 'AdiantamentoConcessao',
@@ -113,9 +113,9 @@ class ContaCorrenteFactory {
                                     '105' => 'AC/ContaCorrenteMovimentacaoFinanceira',
                                     '106' => 'AC/ContaCorrenteRestosPagar',
                                     '107' => 'AC/ContaCorrenteContratosPassivos',
-                                    '108' => 'AC/ContaCorrenteAcordo' );
+                                    '108' => 'AC/ContaCorrenteAcordo' ];
 
-    if (!array_key_exists($oStdContaCorrente->c17_sequencial, $aClassesContaCorrente)) {
+    if (!array_key_exists((string) $oStdContaCorrente->c17_sequencial, $aClassesContaCorrente)) {
 
       $sMensagemErro  = "A conta corrente {$oStdContaCorrente->c17_contacorrente} - {$oStdContaCorrente->c17_descricao} ";
       $sMensagemErro .= "não foi localizada.\nContate o suporte";

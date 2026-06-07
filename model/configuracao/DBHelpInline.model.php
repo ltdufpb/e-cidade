@@ -15,10 +15,10 @@ class DBHelpInline extends DBHelp {
     $oHttpRequest->send($sUri);
     $sRetorno = $oHttpRequest->getBody();
 
-    $aFields = json_decode($sRetorno);
+    $aFields = json_decode((string) $sRetorno);
 
     if (!empty($aFields->error)) {
-      throw new BusinessException(utf8_decode($aFields->message));      
+      throw new BusinessException(mb_convert_encoding($aFields->message, 'ISO-8859-1'));      
     }
 
     $this->setData($aFields);

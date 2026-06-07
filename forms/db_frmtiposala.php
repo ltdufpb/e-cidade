@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </td>
   <td>
    <?php 
-   $x = array('N'=>'NÃO','S'=>'SIM');
+   $x = ['N'=>'NÃO','S'=>'SIM'];
    db_select('ed14_c_aula',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -82,7 +82,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed14_i_codigo"=>@$ed14_i_codigo,"ed14_c_descr"=>@$ed14_c_descr,"ed14_c_aula"=>@$ed14_c_aula);
+   $chavepri= ["ed14_i_codigo"=>@$ed14_i_codigo,"ed14_c_descr"=>@$ed14_c_descr,"ed14_c_aula"=>@$ed14_c_aula];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltiposala->sql_query($ed14_i_codigo,"*","ed14_c_descr");
    $cliframe_alterar_excluir->campos  ="ed14_i_codigo,ed14_c_descr,ed14_c_aula";

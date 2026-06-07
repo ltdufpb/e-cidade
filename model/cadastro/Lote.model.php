@@ -536,7 +536,7 @@ class Lote {
       throw new Exception('Erro ao consultar matriculas do lote.');
     }
 
-    $aImoveis    = array();
+    $aImoveis    = [];
 
     $aMatriculas = db_utils::getCollectionByRecord($rsIptubase);
 
@@ -563,7 +563,7 @@ class Lote {
 
     $aCarlote    = db_utils::getCollectionByRecord($rsCarlote);
 
-    $aCaracteristicas = array();
+    $aCaracteristicas = [];
 
     foreach ($aCarlote as $oCarlote) {
 
@@ -596,7 +596,7 @@ class Lote {
 
     $aCarface    = db_utils::getCollectionByRecord($rsCarface);
 
-    $aCaracteristicas = array();
+    $aCaracteristicas = [];
 
     foreach ($aCarface as $oCarface) {
 

@@ -50,10 +50,10 @@ $db_opcao = 1;
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1"=>"Alterar Resultado Final","a2"=>"Excluir Alteração de Resultado");
-   $clcriaabas->sizecampo  = array("a1"=>"30","a2"=>"30");
-   $clcriaabas->src        = array("a1" => "edu1_aprovconselho001.php?regencia=$regencia&iTrocaTurma=$iTrocaTurma",
-                                   "a2" => "edu1_aprovconselho003.php?regencia=$regencia&iTrocaTurma=$iTrocaTurma");
+   $clcriaabas->identifica = ["a1"=>"Alterar Resultado Final","a2"=>"Excluir Alteração de Resultado"];
+   $clcriaabas->sizecampo  = ["a1"=>"30","a2"=>"30"];
+   $clcriaabas->src        = ["a1" => "edu1_aprovconselho001.php?regencia=$regencia&iTrocaTurma=$iTrocaTurma",
+                                   "a2" => "edu1_aprovconselho003.php?regencia=$regencia&iTrocaTurma=$iTrocaTurma"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->cria_abas();

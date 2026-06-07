@@ -551,7 +551,7 @@ class Tipo
      */
     public static function getDescricoes($layout = null)
     {
-        $descricoesArquivos = array(
+        $descricoesArquivos = [
             Tipo::S1000 => "S1000 - Empregador",
             Tipo::S1005 => "S1005 - Estabelecimentos e Obras",
             Tipo::S1010 => "S1010 - Tabela de Rubricas",
@@ -607,7 +607,7 @@ class Tipo
             Tipo::R4020 => "R4020 - Pagamentos/créditos a beneficiário pessoa jurídica",
             Tipo::R4040 => "R4040 - Pagamentos/créditos a beneficiários não identificados",
             Tipo::R4099 => "R4099 - Fechamento/reabertura dos eventos da série R-4000"
-        );
+        ];
 
         if (!empty($layout) && !empty($descricoesArquivos[$layout])) {
             $descricoesArquivos = $descricoesArquivos[$layout];
@@ -674,14 +674,14 @@ class Tipo
      *
      * @param      null $tipo
      * @return     array|mixed
-     * @deprecated
      * @see        Tipo::getDescricoes()
      */
+    #[\Deprecated]
     public static function getTitulos($tipo = null)
     {
         $s1295 = "S1295 - Solicitação de Totalização para Pagamento em Contingência";
         $s2306 = "S2306 - Trabalhador Sem Vínculo de Emprego/Estatutário - Alteração Contratual";
-        $tituloArquivos = array(
+        $tituloArquivos = [
             Tipo::EMPREGADOR => "S1000/S1005 - Empregador/Obras",
             Tipo::RUBRICA => "S1010 - Tabela de Rubricas",
             Tipo::LOTACAO_TRIBUTARIA => "S1020 - Tabela de Lotações Tributárias",
@@ -732,7 +732,7 @@ class Tipo
             Tipo::EFD_PAGAMENTOS_CREDITOS_PJ => "R-4020 - Pagamentos/créditos a beneficiário pessoa jurídica",
             Tipo::EFD_PAGAMENTOS_CREDITOS_NI => "R-4040 - Pagamentos/créditos a beneficiários não identificados",
             Tipo::EFD_REABERTURA_FECH_R4000 => "R-4099 - Fechamento/reabertura dos eventos da série R-4000"
-        );
+        ];
 
         if (!empty($tipo) && !empty($tituloArquivos[$tipo])) {
             $tituloArquivos = $tituloArquivos[$tipo];
@@ -749,60 +749,60 @@ class Tipo
      */
     public static function getLayout($tipo)
     {
-        $tipoArquivos = array(
-            Tipo::EMPREGADOR => array(Tipo::S1000),
-            Tipo::OBRAS => array(Tipo::S1005),
-            Tipo::RUBRICA => array(Tipo::S1010),
-            Tipo::LOTACAO_TRIBUTARIA => array(Tipo::S1020),
-            Tipo::CARGO => array(Tipo::S1030),
-            Tipo::FUNCAO => array(Tipo::S1040),
-            Tipo::HORARIO => array(Tipo::S1050),
-            Tipo::PROCESSOS => array(Tipo::S1070),
-            Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA => array(Tipo::S1295),
-            Tipo::REABERTURA_EVENTOS_PERIODICOS => array(Tipo::S1298),
-            Tipo::FECHAMENTO_EVENTOS_PERIODICOS => array(Tipo::S1299),
-            Tipo::REMUNERACAO_RGPS => array(Tipo::S1200),
-            Tipo::REMUNERACAO_RPPS => array(Tipo::S1202),
+        $tipoArquivos = [
+            Tipo::EMPREGADOR => [Tipo::S1000],
+            Tipo::OBRAS => [Tipo::S1005],
+            Tipo::RUBRICA => [Tipo::S1010],
+            Tipo::LOTACAO_TRIBUTARIA => [Tipo::S1020],
+            Tipo::CARGO => [Tipo::S1030],
+            Tipo::FUNCAO => [Tipo::S1040],
+            Tipo::HORARIO => [Tipo::S1050],
+            Tipo::PROCESSOS => [Tipo::S1070],
+            Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA => [Tipo::S1295],
+            Tipo::REABERTURA_EVENTOS_PERIODICOS => [Tipo::S1298],
+            Tipo::FECHAMENTO_EVENTOS_PERIODICOS => [Tipo::S1299],
+            Tipo::REMUNERACAO_RGPS => [Tipo::S1200],
+            Tipo::REMUNERACAO_RPPS => [Tipo::S1202],
             Tipo::REMUNERACAO_BENEFICIOS_ENTES_PUBLICOS => [TIPO::S1207],
-            Tipo::PAGAMENTOS_RENDIMENTOS_TRABALHO => array(Tipo::S1210),
-            Tipo::CONTRIBUICAO_SINDICAL_PATRONAL => array(Tipo::S1300),
-            Tipo::ADMISSAO_PRELIMINAR => array(Tipo::S2190),
-            Tipo::SERVIDOR => array(Tipo::S2200),
-            Tipo::ALTERACAO_SERVIDOR => array(Tipo::S2205),
-            Tipo::ALTERACAO_CONTRATUAL => array(Tipo::S2206),
-            Tipo::MONITORAMENTO_SAUDE => array(Tipo::S2220),
-            Tipo::AFASTAMENTO_TEMPORARIO => array(Tipo::S2230),
-            Tipo::CESSAO_EXERCICIO => array(Tipo::S2231),
-            Tipo::EXPOSICAO_RISCO => array(Tipo::S2240),
-            Tipo::AVISO_PREVIO => array(Tipo::S2250),
-            Tipo::TRABALHO_INTERMITENTE => array(Tipo::S2260),
-            Tipo::REINTEGRACAO => array(Tipo::S2298),
-            Tipo::DESLIGAMENTO_SERVIDOR => array(Tipo::S2299),
-            Tipo::TRABALHADOR_SEM_VINCULO => array(Tipo::S2300),
-            Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO => array(Tipo::S2306),
-            Tipo::TERMINO_TRABALHADOR_SEM_VINCULO => array(Tipo::S2399),
-            Tipo::CADASTRO_BENEFICIARIO => array(Tipo::S2400),
-            Tipo::CADASTRO_BENEFICIARIO_ALTERACAO => array(Tipo::S2405),
-            Tipo::CADASTRO_BENEFICIO => array(Tipo::S2410),
+            Tipo::PAGAMENTOS_RENDIMENTOS_TRABALHO => [Tipo::S1210],
+            Tipo::CONTRIBUICAO_SINDICAL_PATRONAL => [Tipo::S1300],
+            Tipo::ADMISSAO_PRELIMINAR => [Tipo::S2190],
+            Tipo::SERVIDOR => [Tipo::S2200],
+            Tipo::ALTERACAO_SERVIDOR => [Tipo::S2205],
+            Tipo::ALTERACAO_CONTRATUAL => [Tipo::S2206],
+            Tipo::MONITORAMENTO_SAUDE => [Tipo::S2220],
+            Tipo::AFASTAMENTO_TEMPORARIO => [Tipo::S2230],
+            Tipo::CESSAO_EXERCICIO => [Tipo::S2231],
+            Tipo::EXPOSICAO_RISCO => [Tipo::S2240],
+            Tipo::AVISO_PREVIO => [Tipo::S2250],
+            Tipo::TRABALHO_INTERMITENTE => [Tipo::S2260],
+            Tipo::REINTEGRACAO => [Tipo::S2298],
+            Tipo::DESLIGAMENTO_SERVIDOR => [Tipo::S2299],
+            Tipo::TRABALHADOR_SEM_VINCULO => [Tipo::S2300],
+            Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO => [Tipo::S2306],
+            Tipo::TERMINO_TRABALHADOR_SEM_VINCULO => [Tipo::S2399],
+            Tipo::CADASTRO_BENEFICIARIO => [Tipo::S2400],
+            Tipo::CADASTRO_BENEFICIARIO_ALTERACAO => [Tipo::S2405],
+            Tipo::CADASTRO_BENEFICIO => [Tipo::S2410],
             Tipo::ALTERACAO_BENEFICIO => [Tipo::S2416],
             Tipo::BENEFICIO_TERMINO => [Tipo::S2420],
             Tipo::PROCESSO_TRABALHISTA => [Tipo::S2500],
             Tipo::TRIBUTO_TRABALHISTA => [Tipo::S2501],
-            Tipo::EXCLUSAO_EVENTOS => array(Tipo::S3000),
+            Tipo::EXCLUSAO_EVENTOS => [Tipo::S3000],
             Tipo::EXCLUSAO_PROCESSO_TRABALHISTA => [Tipo::S3500],
-            Tipo::CONTRIBUINTE => array(Tipo::R1000),
-            Tipo::EFD_PROCESSOS => array(Tipo::R1070),
-            Tipo::EFD_RETENCOES_SERVICOS_TOMADOS => array(Tipo::R2010),
-            Tipo::EFD_SERVICOS_PRESTADOS => array(Tipo::R2020),
-            Tipo::EFD_AQUISICAO_PRODUCAO_RURAL => array(Tipo::R2055),
-            Tipo::EFD_REABERTURA_EVENTOS => array(Tipo::R2098),
-            Tipo::EFD_FECHAMENTO_PERIODICOS => array(Tipo::R2099),
-            Tipo::EFD_EXCLUSAO_EVENTOS => array(Tipo::R9000),
-            Tipo::EFD_PAGAMENTOS_CREDITOS_PF => array(Tipo::R4010),
-            Tipo::EFD_PAGAMENTOS_CREDITOS_PJ => array(Tipo::R4020),
-            Tipo::EFD_PAGAMENTOS_CREDITOS_NI => array(Tipo::R4040),
-            Tipo::EFD_REABERTURA_FECH_R4000  => array(Tipo::R4099)
-        );
+            Tipo::CONTRIBUINTE => [Tipo::R1000],
+            Tipo::EFD_PROCESSOS => [Tipo::R1070],
+            Tipo::EFD_RETENCOES_SERVICOS_TOMADOS => [Tipo::R2010],
+            Tipo::EFD_SERVICOS_PRESTADOS => [Tipo::R2020],
+            Tipo::EFD_AQUISICAO_PRODUCAO_RURAL => [Tipo::R2055],
+            Tipo::EFD_REABERTURA_EVENTOS => [Tipo::R2098],
+            Tipo::EFD_FECHAMENTO_PERIODICOS => [Tipo::R2099],
+            Tipo::EFD_EXCLUSAO_EVENTOS => [Tipo::R9000],
+            Tipo::EFD_PAGAMENTOS_CREDITOS_PF => [Tipo::R4010],
+            Tipo::EFD_PAGAMENTOS_CREDITOS_PJ => [Tipo::R4020],
+            Tipo::EFD_PAGAMENTOS_CREDITOS_NI => [Tipo::R4040],
+            Tipo::EFD_REABERTURA_FECH_R4000  => [Tipo::R4099]
+        ];
 
         return $tipoArquivos[$tipo];
     }
@@ -813,7 +813,7 @@ class Tipo
      */
     public static function getByLayout($layout)
     {
-        $data = array(
+        $data = [
             Tipo::S1000 => Tipo::EMPREGADOR,
             Tipo::S1005 => Tipo::OBRAS,
             Tipo::S1010 => Tipo::RUBRICA,
@@ -868,7 +868,7 @@ class Tipo
             Tipo::R4020 => Tipo::EFD_PAGAMENTOS_CREDITOS_PJ,
             Tipo::R4040 => Tipo::EFD_PAGAMENTOS_CREDITOS_NI,
             Tipo::R4099 => Tipo::EFD_REABERTURA_FECH_R4000
-        );
+        ];
 
         return $data[$layout];
     }
@@ -879,62 +879,62 @@ class Tipo
      */
     public static function existe($tipo)
     {
-        $tipoArquivos = array(
-            Tipo::EMPREGADOR => array(Tipo::S1000, Tipo::S1005),
-            Tipo::RUBRICA => array(Tipo::S1010),
-            Tipo::LOTACAO_TRIBUTARIA => array(Tipo::S1020),
-            Tipo::CARGO => array(Tipo::S1030),
-            Tipo::FUNCAO => array(Tipo::S1040),
-            Tipo::HORARIO => array(Tipo::S1050),
-            Tipo::PROCESSOS => array(Tipo::S1070),
-            Tipo::REMUNERACAO_RGPS => array(Tipo::S1200),
-            Tipo::REMUNERACAO_RPPS => array(Tipo::S1202),
+        $tipoArquivos = [
+            Tipo::EMPREGADOR => [Tipo::S1000, Tipo::S1005],
+            Tipo::RUBRICA => [Tipo::S1010],
+            Tipo::LOTACAO_TRIBUTARIA => [Tipo::S1020],
+            Tipo::CARGO => [Tipo::S1030],
+            Tipo::FUNCAO => [Tipo::S1040],
+            Tipo::HORARIO => [Tipo::S1050],
+            Tipo::PROCESSOS => [Tipo::S1070],
+            Tipo::REMUNERACAO_RGPS => [Tipo::S1200],
+            Tipo::REMUNERACAO_RPPS => [Tipo::S1202],
             Tipo::REMUNERACAO_BENEFICIOS_ENTES_PUBLICOS => [Tipo::S1207],
-            Tipo::PAGAMENTOS_RENDIMENTOS_TRABALHO => array(Tipo::S1210),
-            Tipo::INFORMACOES_COMPLEMENTARES_EVENTOS_PERIODICOS => array(Tipo::S1280),
-            Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA => array(Tipo::S1295),
-            Tipo::REABERTURA_EVENTOS_PERIODICOS => array(Tipo::S1298),
-            Tipo::FECHAMENTO_EVENTOS_PERIODICOS => array(Tipo::S1299),
-            Tipo::CONTRIBUICAO_SINDICAL_PATRONAL => array(Tipo::S1300),
-            Tipo::ADMISSAO_PRELIMINAR => array(Tipo::S2190),
-            Tipo::SERVIDOR => array(Tipo::S2200),
-            Tipo::ALTERACAO_SERVIDOR => array(Tipo::S2205),
-            Tipo::ALTERACAO_CONTRATUAL => array(Tipo::S2206),
-            Tipo::MONITORAMENTO_SAUDE => array(Tipo::S2220),
-            Tipo::AFASTAMENTO_TEMPORARIO => array(Tipo::S2230),
-            Tipo::CESSAO_EXERCICIO => array(Tipo::S2231),
-            Tipo::EXPOSICAO_RISCO => array(Tipo::S2240),
-            Tipo::AVISO_PREVIO => array(Tipo::S2250),
-            Tipo::TRABALHO_INTERMITENTE => array(Tipo::S2260),
-            Tipo::REINTEGRACAO => array(Tipo::S2298),
-            Tipo::DESLIGAMENTO_SERVIDOR => array(Tipo::S2299),
-            Tipo::TRABALHADOR_SEM_VINCULO => array(Tipo::S2300),
-            Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO => array(Tipo::S2306),
-            Tipo::TERMINO_TRABALHADOR_SEM_VINCULO => array(Tipo::S2399),
-            Tipo::CADASTRO_BENEFICIARIO => array(Tipo::S2400),
-            Tipo::CADASTRO_BENEFICIARIO_ALTERACAO => array(Tipo::S2405),
+            Tipo::PAGAMENTOS_RENDIMENTOS_TRABALHO => [Tipo::S1210],
+            Tipo::INFORMACOES_COMPLEMENTARES_EVENTOS_PERIODICOS => [Tipo::S1280],
+            Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA => [Tipo::S1295],
+            Tipo::REABERTURA_EVENTOS_PERIODICOS => [Tipo::S1298],
+            Tipo::FECHAMENTO_EVENTOS_PERIODICOS => [Tipo::S1299],
+            Tipo::CONTRIBUICAO_SINDICAL_PATRONAL => [Tipo::S1300],
+            Tipo::ADMISSAO_PRELIMINAR => [Tipo::S2190],
+            Tipo::SERVIDOR => [Tipo::S2200],
+            Tipo::ALTERACAO_SERVIDOR => [Tipo::S2205],
+            Tipo::ALTERACAO_CONTRATUAL => [Tipo::S2206],
+            Tipo::MONITORAMENTO_SAUDE => [Tipo::S2220],
+            Tipo::AFASTAMENTO_TEMPORARIO => [Tipo::S2230],
+            Tipo::CESSAO_EXERCICIO => [Tipo::S2231],
+            Tipo::EXPOSICAO_RISCO => [Tipo::S2240],
+            Tipo::AVISO_PREVIO => [Tipo::S2250],
+            Tipo::TRABALHO_INTERMITENTE => [Tipo::S2260],
+            Tipo::REINTEGRACAO => [Tipo::S2298],
+            Tipo::DESLIGAMENTO_SERVIDOR => [Tipo::S2299],
+            Tipo::TRABALHADOR_SEM_VINCULO => [Tipo::S2300],
+            Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO => [Tipo::S2306],
+            Tipo::TERMINO_TRABALHADOR_SEM_VINCULO => [Tipo::S2399],
+            Tipo::CADASTRO_BENEFICIARIO => [Tipo::S2400],
+            Tipo::CADASTRO_BENEFICIARIO_ALTERACAO => [Tipo::S2405],
             Tipo::CADASTRO_BENEFICIO => [Tipo::S2410],
             Tipo::ALTERACAO_BENEFICIO => [Tipo::S2416],
             Tipo::BENEFICIO_TERMINO => [Tipo::S2420],
             Tipo::PROCESSO_TRABALHISTA => [Tipo::S2500],
             Tipo::TRIBUTO_TRABALHISTA => [Tipo::S2501],
-            Tipo::EXCLUSAO_EVENTOS => array(Tipo::S3000),
+            Tipo::EXCLUSAO_EVENTOS => [Tipo::S3000],
             Tipo::EXCLUSAO_PROCESSO_TRABALHISTA => [Tipo::S3500],
-            Tipo::CONTRIBUINTE => array(Tipo::R1000),
-            Tipo::EFD_PROCESSOS => array(Tipo::R1070),
-            Tipo::EFD_RETENCOES_SERVICOS_TOMADOS => array(Tipo::R2010),
-            Tipo::EFD_AQUISICAO_PRODUCAO_RURAL => array(Tipo::R2055),
-            Tipo::EFD_SERVICOS_PRESTADOS => array(Tipo::R2020),
-            Tipo::EFD_REABERTURA_EVENTOS => array(Tipo::R2098),
-            Tipo::EFD_FECHAMENTO_PERIODICOS => array(Tipo::R2099),
-            Tipo::EFD_EXCLUSAO_EVENTOS => array(Tipo::R9000),
-            Tipo::EFD_PAGAMENTOS_CREDITOS_PF => array(Tipo::R4010),
-            Tipo::EFD_PAGAMENTOS_CREDITOS_PJ => array(Tipo::R4020),
-            Tipo::EFD_PAGAMENTOS_CREDITOS_NI => array(Tipo::R4040),
-            Tipo::EFD_REABERTURA_FECH_R4000  => array(Tipo::R4099)
-        );
+            Tipo::CONTRIBUINTE => [Tipo::R1000],
+            Tipo::EFD_PROCESSOS => [Tipo::R1070],
+            Tipo::EFD_RETENCOES_SERVICOS_TOMADOS => [Tipo::R2010],
+            Tipo::EFD_AQUISICAO_PRODUCAO_RURAL => [Tipo::R2055],
+            Tipo::EFD_SERVICOS_PRESTADOS => [Tipo::R2020],
+            Tipo::EFD_REABERTURA_EVENTOS => [Tipo::R2098],
+            Tipo::EFD_FECHAMENTO_PERIODICOS => [Tipo::R2099],
+            Tipo::EFD_EXCLUSAO_EVENTOS => [Tipo::R9000],
+            Tipo::EFD_PAGAMENTOS_CREDITOS_PF => [Tipo::R4010],
+            Tipo::EFD_PAGAMENTOS_CREDITOS_PJ => [Tipo::R4020],
+            Tipo::EFD_PAGAMENTOS_CREDITOS_NI => [Tipo::R4040],
+            Tipo::EFD_REABERTURA_FECH_R4000  => [Tipo::R4099]
+        ];
 
-        return array_key_exists($tipo, $tipoArquivos);
+        return array_key_exists((string) $tipo, $tipoArquivos);
     }
 
     /**
@@ -943,7 +943,7 @@ class Tipo
      */
     public static function isEFDReinf($tipo)
     {
-        return strpos(self::getTitulos($tipo), 'R') === 0;
+        return str_starts_with((string) self::getTitulos($tipo), 'R');
     }
 
     /**
@@ -1133,7 +1133,7 @@ class Tipo
                 ["layout" => Tipo::R4040, "forcar" => false]
             ];
         }
-        return array(
+        return [
             [
                 "layout" => Tipo::R2010,
                 "forcar" => false
@@ -1286,7 +1286,7 @@ class Tipo
             ],
             ["layout" => Tipo::S2500],
             ["layout" => Tipo::S2501]
-        );
+        ];
     }
 
     /**

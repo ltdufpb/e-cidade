@@ -62,7 +62,7 @@ class EtapaRepository {
    */
   public static function getEtapaByCodigo($iCodigoEtapa) {
 
-    if (!array_key_exists($iCodigoEtapa, EtapaRepository::getInstance()->aEtapa)) {
+    if (!array_key_exists((string) $iCodigoEtapa, EtapaRepository::getInstance()->aEtapa)) {
       EtapaRepository::getInstance()->aEtapa[$iCodigoEtapa] = new Etapa($iCodigoEtapa);
     }
     return EtapaRepository::getInstance()->aEtapa[$iCodigoEtapa];

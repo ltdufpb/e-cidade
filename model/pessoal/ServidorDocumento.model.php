@@ -607,11 +607,11 @@ class ServidorDocumento
             throw new \Exception("A descrição do Órgão emissor não pode ser maior que 15 caracteres");
         }
 
-        if (strlen($this->getSecaoTituloDeEleitor()) > 4) {
+        if (strlen((string) $this->getSecaoTituloDeEleitor()) > 4) {
             throw new \Exception("A seção do titulo de eleitor não pode ser maior que 4 caracteres");
         }
 
-        if (strlen($this->getZonaTituloDeEleitor()) > 4) {
+        if (strlen((string) $this->getZonaTituloDeEleitor()) > 4) {
             throw new \Exception("A zona do titulo de eleitor não pode ser maior que 4 caracteres");
         }
 
@@ -716,7 +716,7 @@ class ServidorDocumento
         $documentoModel->setOrgaoClasse($documento->rh16_orgao_classe);
         $documentoModel->setOrgaoClasseData($documento->rh16_data_orgao_classe);
         $documentoModel->setOrgaoClasseEmissor($documento->rh16_orgao_emissor_classe);
-        $documentoModel->getOrgaoClasseValidade($documento->rh16_data_validade_orgao_classe);
+        $documentoModel->getOrgaoClasseValidade();
         $documentoModel->setRneOrgaoEmissor($documento->rh16_orgao_emissor_rne);
         $documentoModel->setRneEmissao($documento->rh16_data_emissao_rne);
         $documentoModel->setRneEntrada($documento->rh16_data_entrada_rne);

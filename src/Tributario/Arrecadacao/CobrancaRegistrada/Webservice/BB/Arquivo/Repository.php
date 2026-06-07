@@ -131,7 +131,7 @@ class Repository
      * @throws DBException
      * @throws BusinessException
      */
-    public function getDadosIncluiBoleto($iNumpre, $iConvenio, $nValor, $aEmitirPor = array())
+    public function getDadosIncluiBoleto($iNumpre, $iConvenio, $nValor, $aEmitirPor = [])
     {
         $oRegistro = new stdClass();
 
@@ -209,7 +209,7 @@ class Repository
 
         $oRegistro->codigoTipoInscricaoPagador = 2;
 
-        if (strlen($oCgm->z01_cgccpf) == 11) {
+        if (strlen((string) $oCgm->z01_cgccpf) == 11) {
             $oRegistro->codigoTipoInscricaoPagador = 1;
         }
 
@@ -229,9 +229,9 @@ class Repository
         $oRegistro->numeroCarteira = $oConvenio->ar13_carteira;
         $oRegistro->numeroVariacaoCarteira = $oConvenio->ar13_variacao;
         $oRegistro->codigoModalidadeTitulo = 1;
-        $oRegistro->dataEmissaoTitulo = date("d.m.Y", strtotime($oRecibo->data_emissao));
-        $oRegistro->dataVencimentoTitulo = date("d.m.Y", strtotime($oRecibo->data_vencimento));
-        $oRegistro->valorOriginalTitulo = (string) db_formatar($nValor, 'p', ' ', strlen($nValor));
+        $oRegistro->dataEmissaoTitulo = date("d.m.Y", strtotime((string) $oRecibo->data_emissao));
+        $oRegistro->dataVencimentoTitulo = date("d.m.Y", strtotime((string) $oRecibo->data_vencimento));
+        $oRegistro->valorOriginalTitulo = (string) db_formatar($nValor, 'p', ' ', strlen((string) $nValor));
         $oRegistro->codigoTipoDesconto = 0;
         $oRegistro->codigoTipoJuroMora = 3;
         $oRegistro->codigoTipoMulta = 0;
@@ -241,13 +241,13 @@ class Repository
 
         $oRegistro->textoNumeroTituloCliente = strval("000{$resultArrebanco->k00_numbco}");
 
-        $oRegistro->numeroInscricaoPagador = substr($oCgm->z01_cgccpf, 0, 15);
-        $oRegistro->nomePagador = substr(utf8_encode($oCgm->z01_nome), 0, 60);
-        $oRegistro->textoEnderecoPagador = substr(utf8_encode($oCgm->z01_ender), 0, 60);
-        $oRegistro->numeroCepPagador = substr($oCgm->z01_cep, 0, 8);
-        $oRegistro->nomeMunicipioPagador = substr(utf8_encode($oCgm->z01_munic), 0, 20);
-        $oRegistro->nomeBairroPagador = substr(utf8_encode($oCgm->z01_bairro), 0, 20);
-        $oRegistro->siglaUfPagador = substr($oCgm->z01_uf, 0, 2);
+        $oRegistro->numeroInscricaoPagador = substr((string) $oCgm->z01_cgccpf, 0, 15);
+        $oRegistro->nomePagador = substr(mb_convert_encoding($oCgm->z01_nome, 'UTF-8', 'ISO-8859-1'), 0, 60);
+        $oRegistro->textoEnderecoPagador = substr(mb_convert_encoding($oCgm->z01_ender, 'UTF-8', 'ISO-8859-1'), 0, 60);
+        $oRegistro->numeroCepPagador = substr((string) $oCgm->z01_cep, 0, 8);
+        $oRegistro->nomeMunicipioPagador = substr(mb_convert_encoding($oCgm->z01_munic, 'UTF-8', 'ISO-8859-1'), 0, 20);
+        $oRegistro->nomeBairroPagador = substr(mb_convert_encoding($oCgm->z01_bairro, 'UTF-8', 'ISO-8859-1'), 0, 20);
+        $oRegistro->siglaUfPagador = substr((string) $oCgm->z01_uf, 0, 2);
         $oRegistro->codigoChaveUsuario = $oParametro->ar28_chavej;
         $oRegistro->codigoTipoCanalSolicitacao = 5;
         $oRegistro->autenticacao = $oAutenticacao->getHash();

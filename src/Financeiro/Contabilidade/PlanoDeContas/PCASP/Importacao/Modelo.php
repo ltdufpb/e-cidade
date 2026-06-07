@@ -172,7 +172,7 @@ class Modelo {
 				throw new \ParameterException("Código do Modelo não foi informado.");
 			}
 
-			$this->aContas = array();
+			$this->aContas = [];
 
 			$oDao = new \cl_planocontadetalhe();
 			$sSql = $oDao->sql_query_file(null, "*", null, "c95_modeloplanoconta = {$iModelo}.");
@@ -211,7 +211,7 @@ class Modelo {
 
 	public static function getModelosByExercicio($iExercicio) {
 
-		$aModelos = array();
+		$aModelos = [];
 
 		if (!$iExercicio) {
 			throw new \DBException("Exercício não informado.");

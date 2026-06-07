@@ -132,10 +132,10 @@ if($clregencia->numrows==0){
  <tr>
   <td align="left">
    <?php 
-   $descserie = pg_result($result_proc,0,'descrserie');
-   $descrturma = pg_result($result_proc,0,'descrturma');
-   $descrcal = pg_result($result_proc,0,'descrcal');
-   $ed220_i_procedimento = pg_result($result_proc,0,'ed220_i_procedimento');
+   $descserie = pg_fetch_result($result_proc,0,'descrserie');
+   $descrturma = pg_fetch_result($result_proc,0,'descrturma');
+   $descrcal = pg_fetch_result($result_proc,0,'descrcal');
+   $ed220_i_procedimento = pg_fetch_result($result_proc,0,'ed220_i_procedimento');
    $titulo = "Disciplinas da Turma $descrturma Etapa $descserie em $descrcal";
    ?>
    <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
@@ -191,7 +191,7 @@ if($clregencia->numrows==0){
              ORDER BY ed41_i_sequencia
             ";
     $result3 = db_query($sql3);
-    $linhas3 = pg_num_rows($result3) or die (pg_errormessage());
+    $linhas3 = pg_num_rows($result3) or die (pg_last_error());
     for($c=0;$c<$clregencia->numrows;$c++){
      db_fieldsmemory($result_proc,$c);
      if($cor==$cor1){
@@ -248,7 +248,7 @@ if($clregencia->numrows==0){
       }
       for($q=0;$q<$linhas3;$q++){
        db_fieldsmemory($result3,$q);
-       if(trim($tipo)=="A"){
+       if(trim((string) $tipo)=="A"){
         $result5 = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query_file("","ed72_i_diario",""," ed72_i_diario = $ed95_i_codigo AND ed72_i_procavaliacao = $ed41_i_codigo"));
         if($cldiarioavaliacao->numrows==0){
          db_inicio_transacao();
@@ -256,7 +256,7 @@ if($clregencia->numrows==0){
          $cldiarioavaliacao->ed72_i_procavaliacao = $ed41_i_codigo;
 
          $sAprovMinimo = 'N';
-         if (trim($ed37_c_tipo) == "PARECER") {
+         if (trim((string) $ed37_c_tipo) == "PARECER") {
            $sAprovMinimo = 'S';
          }
          $cldiarioavaliacao->ed72_c_aprovmin = $sAprovMinimo;
@@ -272,8 +272,8 @@ if($clregencia->numrows==0){
          $result5 = $cldiarioresultado->sql_record($cldiarioresultado->sql_query_file("","ed73_i_diario",""," ed73_i_diario = $ed95_i_codigo AND ed73_i_procresultado = $ed41_i_codigo"));
          if($cldiarioresultado->numrows==0){
           db_inicio_transacao();
-          $aprovmin = trim($ed37_c_tipo) == "PARECER" ? "S" : "N";
-          if ($ed60_c_parecer == 'S' || trim($ed37_c_tipo) == "PARECER") {
+          $aprovmin = trim((string) $ed37_c_tipo) == "PARECER" ? "S" : "N";
+          if ($ed60_c_parecer == 'S' || trim((string) $ed37_c_tipo) == "PARECER") {
 						$aprovmin = 'S';
           }
           $cldiarioresultado->ed73_i_diario = $ed95_i_codigo;
@@ -340,7 +340,7 @@ if($clregencia->numrows==0){
    <td align="center">
      <b>Exibir Trocas de Turma: </b>
      <?php
-       $aTrocaTurma = array("1" => "Não", "2" => "Sim");
+       $aTrocaTurma = ["1" => "Não", "2" => "Sim"];
        db_select("iTrocaTurma", $aTrocaTurma, true, 1);
      ?>
    </td>

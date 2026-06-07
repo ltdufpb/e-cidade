@@ -50,11 +50,6 @@ class Extra {
   private $iDiurnas;
 
   /**
-   * @var integer
-   */
-  protected $iLimite;
-
-  /**
    * @return int
    */
 
@@ -78,10 +73,10 @@ class Extra {
    * Define o limite de horas
    * Extra constructor
    * @param $iLimite
+   * @param int $iLimite
    */
-  public function __construct($iLimite)
+  public function __construct(protected $iLimite)
   {
-    $this->iLimite = $iLimite;
   }
 
   /**
@@ -103,15 +98,11 @@ class Extra {
       $iResto = abs($iTotalMinutos);
     }
 
-    switch ($extraCalculada->getTipo()){
-      case self::TIPO_DIURNA:
-
-        $this->iDiurnas += $iMinutosAdicionar;
-        break;
-      case self::TIPO_NOTURNA:
-        $this->iNoturnas += $iMinutosAdicionar;
-        break;
-    }
+    match ($extraCalculada->getTipo()) {
+        self::TIPO_DIURNA => $this->iDiurnas += $iMinutosAdicionar,
+        self::TIPO_NOTURNA => $this->iNoturnas += $iMinutosAdicionar,
+        default => $iResto,
+    };
     return $iResto;
   }
 

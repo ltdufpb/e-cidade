@@ -45,12 +45,12 @@ class ControleRubricasParametrosRubricasRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @var array
      */
-    private $order = array();
+    private $order = [];
 
     /**
      * ControleHorasExtrasRepository constructor.
@@ -119,7 +119,7 @@ class ControleRubricasParametrosRubricasRepository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
 
@@ -128,12 +128,12 @@ class ControleRubricasParametrosRubricasRepository
 
     public function clearScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 
     public function clearOrder()
     {
-        $this->order = array();
+        $this->order = [];
     }
 
     public function reset()
@@ -149,7 +149,7 @@ class ControleRubricasParametrosRubricasRepository
      */
     public function buscarPorControleHorasExtras(ControleRubricasParametros $controleHorasExtras)
     {
-        $controleHorasExtrasRubricas = array();
+        $controleHorasExtrasRubricas = [];
         $where = "rh233_controlehorasextras = {$controleHorasExtras->getSequencial()}";
         $sql = $this->dao->sql_query_file(null, '*', 'rh233_rubrica', $where);
         $rs = db_query($sql);
@@ -175,10 +175,10 @@ class ControleRubricasParametrosRubricasRepository
      */
     public function removerPorControleHorasExtras(ControleRubricasParametros $controleHorasExtras)
     {
-        $where = array(
+        $where = [
             "rh233_controlehorasextras = {$controleHorasExtras->getSequencial()}",
             "rh233_permite_exclusao is true"
-        );
+        ];
 
         $this->dao->excluir(null, implode(" AND ", $where));
 
@@ -229,10 +229,10 @@ class ControleRubricasParametrosRubricasRepository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $registros = array();
+        $registros = [];
         while ($state = pg_fetch_array($rs)) {
             $registros[] = ControleRubricasParametrosRubricas::fromState($state);
         }
@@ -248,7 +248,7 @@ class ControleRubricasParametrosRubricasRepository
      * @return bool|ControleRubricasParametrosRubricas
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);

@@ -124,9 +124,9 @@ class Exercicio {
 			throw new \DBException("Não foram encontrados exercícios para importação.");
 		}
 
-		$aExercicios = array();
+		$aExercicios = [];
 		
-		for ($i=0; $i < pg_numrows($rsExercicio); $i++) { 
+		for ($i=0; $i < pg_num_rows($rsExercicio); $i++) { 
 
 			$oStd = \db_utils::fieldsMemory($rsExercicio, $i);
 
@@ -141,7 +141,7 @@ class Exercicio {
 				throw new \DBException("Houve uma falha ao verificar a importação do exercício {$oStd->ano}.");
 			}
 
-			$oExercicio->setImportado(pg_numrows($rsExercicio) == 0);
+			$oExercicio->setImportado(pg_num_rows($rsExercicio) == 0);
 			$aExercicios[$i] = $oExercicio;
 		}
 

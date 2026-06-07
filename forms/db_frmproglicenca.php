@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </td>
   <td>
    <?php 
-   $x = array('S'=>'SIM','N'=>'NÂO');
+   $x = ['S'=>'SIM','N'=>'NÂO'];
    db_select('ed121_c_suspensao',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -90,7 +90,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed121_i_codigo"=>@$ed121_i_codigo,"ed121_c_descr"=>@$ed121_c_descr,"ed121_c_suspensao"=>@$ed121_c_suspensao,"ed121_i_tempolimite"=>@$ed121_i_tempolimite);
+   $chavepri= ["ed121_i_codigo"=>@$ed121_i_codigo,"ed121_c_descr"=>@$ed121_c_descr,"ed121_c_suspensao"=>@$ed121_c_suspensao,"ed121_i_tempolimite"=>@$ed121_i_tempolimite];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clproglicenca->sql_query($ed121_i_codigo,"*","ed121_c_descr");
    $cliframe_alterar_excluir->campos  ="ed121_i_codigo,ed121_c_descr,ed121_c_suspensao,ed121_i_tempolimite";

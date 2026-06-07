@@ -39,7 +39,7 @@ include(modification("classes/db_escolabase_classe.php"));
 include(modification("classes/db_baseregimematdiv_classe.php"));
 include(modification("classes/db_regimemat_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clbase             = new cl_base;
 $clescolabase       = new cl_escolabase;
 $clbaseserie        = new cl_baseserie;
@@ -60,7 +60,7 @@ if (isset($incluir)) {
   $rsBase = $clbase->sql_record($clbase->sql_query("", "base.*,ed218_c_divisao", "", " ed31_i_codigo = $ed31_i_codigo"));
   $oBase  = db_utils::fieldsmemory($rsBase, 0);
   
-  $cod_regime               = explode("|", $ed31_i_regimemat_new);
+  $cod_regime               = explode("|", (string) $ed31_i_regimemat_new);
   $clbase->ed31_i_curso     = $oBase->ed31_i_curso;
   $clbase->ed31_c_descr     = $ed31_c_descr;
   $clbase->ed31_c_turno     = $oBase->ed31_c_turno;

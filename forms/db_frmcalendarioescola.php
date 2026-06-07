@@ -93,12 +93,12 @@ if($clescola->numrows>0){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed38_i_codigo"=>@$ed38_i_codigo,
+   $chavepri= ["ed38_i_codigo"=>@$ed38_i_codigo,
                     "ed38_i_escola"=>@$ed38_i_escola,
                     "ed18_c_nome"=>@$ed18_c_nome,
                     "ed38_i_calendario"=>@$ed38_i_calendario,
                     "ed52_c_descr"=>@$ed52_c_descr
-                    );
+                    ];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clcalendarioescola->sql_query("","*","ed18_c_nome"," ed38_i_calendario = $ed38_i_calendario");
    @$cliframe_alterar_excluir->sql_disabled = $clcalendarioescola->sql_query("","*","ed18_c_nome"," ed38_i_escola != $ed38_i_escola");

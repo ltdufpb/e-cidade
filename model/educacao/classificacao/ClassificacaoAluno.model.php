@@ -94,8 +94,8 @@ final class ClassificacaoAluno {
    */
   private $oMatriculaOrigem;
 
-  const CLASSIFICACAO   = 'C';
-  const RECLASSIFICACAO = 'R';
+  const string CLASSIFICACAO   = 'C';
+  const string RECLASSIFICACAO = 'R';
 
   /**
    * Cria uma instancia de ClassificacaoAluno

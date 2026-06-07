@@ -47,7 +47,7 @@ class ParametrosPessoalRepository {
    *
    * @var ParametrosPessoal[]
    */
-  private $aParametros = array();
+  private $aParametros = [];
   
   /**
    * Construtor private evita que a classe seja instanciada publicamente
@@ -125,7 +125,7 @@ class ParametrosPessoalRepository {
    * @param Instituicao $oInstituicao
    * @return ParametrosPessoal
    */
-  public static function getParametros(DBCompetencia $oCompetencia, Instituicao $oInstituicao = null) {
+  public static function getParametros(DBCompetencia $oCompetencia, ?Instituicao $oInstituicao = null) {
     
     $iAno         = $oCompetencia->getAno();
     $iMes         = $oCompetencia->getMes();

@@ -172,29 +172,15 @@ class Origem
         }
 
         if ($daoComplemento->erro_status == 0) {
-            switch ($origem) {
-                case self::AUTORIZACAO_EMPENHO:
-                    $texto = ' a autorização de empenho ';
-                    break;
-                case self::EMISSAO_EMPENHO:
-                case self::DESPESA:
-                    $texto = ' o empenho ';
-                    break;
-                case self::LANCAMENTO_CONTABIL:
-                    $texto = ' o lançamento contábil';
-                    break;
-                case self::PLANILHA_ARRECADACAO:
-                    $texto = ' a planilha de receita ';
-                    break;
-                case self::RECIBO:
-                    $texto = ' o recibo de receita ';
-                    break;
-                case self::COMPLEMENTO_PADRAO:
-                    $texto = ' o complemento padrão de receita ';
-                    break;
-                default:
-                    throw new Exception('Origem de complemeto não implementada');
-            }
+            $texto = match ($origem) {
+                self::AUTORIZACAO_EMPENHO => ' a autorização de empenho ',
+                self::EMISSAO_EMPENHO, self::DESPESA => ' o empenho ',
+                self::LANCAMENTO_CONTABIL => ' o lançamento contábil',
+                self::PLANILHA_ARRECADACAO => ' a planilha de receita ',
+                self::RECIBO => ' o recibo de receita ',
+                self::COMPLEMENTO_PADRAO => ' o complemento padrão de receita ',
+                default => throw new Exception('Origem de complemeto não implementada'),
+            };
             throw new Exception("Não foi possível salvar origem do complemento para {$texto} {$numero}.");
         }
         return true;

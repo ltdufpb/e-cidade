@@ -49,7 +49,7 @@ class LoteRegistrosPontoRepository {
    *
    * @var LoteRegistrosPonto[]
    */
-  private $aLotesRegistrosPonto = array();
+  private $aLotesRegistrosPonto = [];
 
   /**
    * Representa a instância da classe.
@@ -175,7 +175,7 @@ class LoteRegistrosPontoRepository {
    */
   private function removerRegistroPonto(LoteRegistrosPonto $oLoteRegistroPonto) {
 
-    $aSequencialPrePonto = array();
+    $aSequencialPrePonto = [];
 
     /**
      * Excluí os vínculos das tabelas "loteregistroponto" e "rhpreponto".
@@ -275,7 +275,7 @@ class LoteRegistrosPontoRepository {
      * @throws DBException
      */
 
-  public static function getLotesByCompetencia(DBCompetencia $oCompetencia, $lTodos = true, Instituicao $oInstituicao = null, $sSituacao = null, $lInfoServidores = true) {
+  public static function getLotesByCompetencia(DBCompetencia $oCompetencia, $lTodos = true, ?Instituicao $oInstituicao = null, $sSituacao = null, $lInfoServidores = true) {
 
     if (!$oInstituicao) {
       $oInstituicao = new Instituicao(db_getsession('DB_instit'));
@@ -303,7 +303,7 @@ class LoteRegistrosPontoRepository {
     }
 
     $aLoteRegistrosEncontrados = db_utils::getCollectionByRecord($rsLoteRegistroPonto);
-    $aLotes                    = array();
+    $aLotes                    = [];
 
     foreach ($aLoteRegistrosEncontrados as $oLote) {
       $aLotes[] = LoteRegistrosPontoRepository::getInstanceByCodigo($oLote->rh155_sequencial, $lInfoServidores);
@@ -320,7 +320,7 @@ class LoteRegistrosPontoRepository {
    * @param  Instituicao         $oInstituicao
    * @return LoteRegistrosPonto[] $aLotes
    */
-  public static function getLotesByUsuario(UsuarioSistema $oUsuario, DBCompetencia $oCompetencia = null, Instituicao $oInstituicao = null) {
+  public static function getLotesByUsuario(UsuarioSistema $oUsuario, ?DBCompetencia $oCompetencia = null, ?Instituicao $oInstituicao = null) {
 
     if (!$oInstituicao) {
       $oInstituicao = new Instituicao(db_getsession('DB_instit'));
@@ -351,7 +351,7 @@ class LoteRegistrosPontoRepository {
     }
 
     $aLoteRegistrosEncontrados = db_utils::getCollectionByRecord($rsLoteRegistroPonto);
-    $aLotes                = array();
+    $aLotes                = [];
 
     foreach ($aLoteRegistrosEncontrados as $oLote) {
       $aLotes[] = LoteRegistrosPontoRepository::getInstanceByCodigo($oLote->rh155_sequencial);
@@ -367,7 +367,7 @@ class LoteRegistrosPontoRepository {
    * @param   DBCompetencia $oCompetencia
    * @return  Array|LoteRegistroPonto
    */
-  public static function getLotesAssentamentosByMatricula($iMatricula, DBCompetencia $oCompetencia = null, $sNaturezaAssentamento = null) {
+  public static function getLotesAssentamentosByMatricula($iMatricula, ?DBCompetencia $oCompetencia = null, $sNaturezaAssentamento = null) {
 
     if (is_null($oCompetencia)) {
       $oCompetencia = DBPessoal::getCompetenciaFolha();
@@ -396,7 +396,7 @@ class LoteRegistrosPontoRepository {
       throw new DBException(_M(self::MENSAGEM . "erro_pesquisar_lote_competencia"));
     }
 
-    $aLotes = array();
+    $aLotes = [];
 
     for ($iLote = 0; $iLote <  pg_num_rows($rsRhprepontoloteregistroponto); $iLote++ ) {
 
@@ -460,7 +460,7 @@ class LoteRegistrosPontoRepository {
     if ( !$rsRhPrePontoLoteRegistroPonto ) {
       throw new BusinessException(_M(self::MENSAGEM . 'erro_consultar_vinculo_registro_ponto'));
     }
-    $aRegistrosLote                    = array();
+    $aRegistrosLote                    = [];
     $aVinculoPrePontoLoteRegistroPonto = db_utils::getCollectionByRecord($rsRhPrePontoLoteRegistroPonto);
 
     foreach ($aVinculoPrePontoLoteRegistroPonto as $iRegistroPrePonto => $oRegistroPrePonto) {
@@ -621,7 +621,7 @@ class LoteRegistrosPontoRepository {
        * Limpa as rubricas antes de inclui-las no ponto
        */
       foreach ($oRegistroLoteRegistrosPontoServidor as $oRegLoteRegsPonto) {
-        $oPonto->carregarRegistros(array($oRegLoteRegsPonto->getRubrica()->getCodigo()));
+        $oPonto->carregarRegistros([$oRegLoteRegsPonto->getRubrica()->getCodigo()]);
         $oPonto->limpar($oRegLoteRegsPonto->getRubrica()->getCodigo());
       }
 

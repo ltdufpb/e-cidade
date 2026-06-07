@@ -169,7 +169,7 @@ if (isset($atualizar)) {
                   if ($linhas > 0) {
                     for ($i = 0; $i < $linhas; $i++) {
                       $dados = pg_fetch_array($query);
-                      echo "<option value=\"".$dados["ed15_i_codigo"]."\">".trim($dados["ed15_c_nome"])."</option>\n";
+                      echo "<option value=\"".$dados["ed15_i_codigo"]."\">".trim((string) $dados["ed15_c_nome"])."</option>\n";
                     }
                   }
                 ?>
@@ -205,7 +205,7 @@ if (isset($atualizar)) {
                                     )
                        ) as ed231_i_referencia
                       ";
-            $chavepri= array("ed15_i_codigo"=>@$ed15_i_codigo,"ed15_c_nome"=>@$ed15_c_nome);
+            $chavepri= ["ed15_i_codigo"=>@$ed15_i_codigo,"ed15_c_nome"=>@$ed15_c_nome];
             $cliframe_alterar_excluir->chavepri=$chavepri;
             $cliframe_alterar_excluir->sql = $oDaoTurno->sql_query("",$campos,"ed15_i_sequencia","");
             $cliframe_alterar_excluir->campos  ="ed15_i_codigo,ed15_c_nome,ed231_i_referencia";

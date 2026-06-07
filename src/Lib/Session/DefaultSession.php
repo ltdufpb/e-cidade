@@ -36,6 +36,7 @@ class DefaultSession extends Session
     /**
      * @var DefaultSession
      */
+    #[\Override]
     public static $instance;
 
     /**
@@ -55,6 +56,7 @@ class DefaultSession extends Session
     /**
      * @return DefaultSession
      */
+    #[\Override]
     public static function getInstance()
     {
         if (is_null(static::$instance)) {
@@ -72,7 +74,7 @@ class DefaultSession extends Session
         if ($this->has($key)) {
             $this->set($key, $value);
         } else {
-            $this->add(array($key => $value));
+            $this->add([$key => $value]);
         }
     }
 
@@ -182,6 +184,7 @@ class DefaultSession extends Session
      * @return $this|Session
      * @throws Exception
      */
+    #[\Override]
     public function start()
     {
         parent::start();
@@ -199,11 +202,11 @@ class DefaultSession extends Session
     public function addFromRequest($request)
     {
         //Valores default
-        $sessaoMenu = array(
+        $sessaoMenu = [
             DefaultSession::DB_MODULO => 1,
             DefaultSession::DB_NOME_MODULO => 'Configuração',
             DefaultSession::DB_ACESSADO => 24
-        );
+        ];
 
         if (isset($request[self::DB_INSTIT])) {
             $sessaoMenu[self::DB_INSTIT] = $request[self::DB_INSTIT];

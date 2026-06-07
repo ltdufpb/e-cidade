@@ -91,7 +91,7 @@ if ($db_opcao == 1 && $iLinhasAlunoCurso > 0) {
 
 $oGet    = db_utils::postMemory( $_GET );
 $oAluno  = AlunoRepository::getAlunoByCodigo( $oGet->ed56_i_aluno );
-$aEtapas = array();
+$aEtapas = [];
 $sEtapas = "";
 
 foreach ( $oAluno->getProgressaoParcial() as $oProgressaoParcial ) {
@@ -245,7 +245,7 @@ $sEtapas = implode( ", ", $aEtapas );
                                         ed56_i_base, ed31_c_descr, ed56_i_calendario, ed56_c_situacao,
                                         ed52_c_descr, ed79_i_serie, ed11_c_descr, ed79_i_turno, ed15_c_nome";
 
-                  $chavepri = array("ed56_i_codigo"     => @$ed56_i_codigo,
+                  $chavepri = ["ed56_i_codigo"     => @$ed56_i_codigo,
                                     "ed79_i_codigo"     => @$ed79_i_codigo,
                                     "ed56_i_escola"     => @$ed56_i_escola,
                                     "ed18_c_nome"       => @$ed18_c_nome,
@@ -262,7 +262,7 @@ $sEtapas = implode( ", ", $aEtapas );
                                     "ed11_c_descr"      => @$ed11_c_descr,
                                     "ed79_i_turno"      => @$ed79_i_turno,
                                     "ed15_c_nome"       => @$ed15_c_nome
-                                   );
+                                   ];
 
                   $cliframe_alterar_excluir->chavepri     = $chavepri;
                   $cliframe_alterar_excluir->sql          = $oDaoAlunoCurso->sql_query("",

@@ -35,7 +35,7 @@ class Csv
         }
 
         $dados = [];
-        while (($data = fgetcsv($handle, 0, $this->delimiter, $this->enclosure)) !== false) {
+        while (($data = fgetcsv($handle, 0, $this->delimiter, $this->enclosure, escape: '\\')) !== false) {
             $dados[] = $data;
         };
 

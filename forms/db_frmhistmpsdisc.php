@@ -186,12 +186,12 @@ $clrotulo->label("ed29_c_descr");
               </td>
               <td>
                 <?php
-                $x = array(
+                $x = [
                             ''            => '',
                             'CONCLUÍDO'   => 'CONCLUÍDO',
                             'AMPARADO'    => 'AMPARADO',
                             'NÃO OPTANTE' => 'NÃO OPTANTE'
-                          );
+                          ];
 
                 $sScript = " onchange='js_situacao(this, $iTotalLinhas);' style='width:100px;height:15px;font-size:10px;padding:0px;' ".
                           ( $ed65_i_codigo == "" ? "disabled" : "" ) . "";
@@ -232,7 +232,7 @@ $clrotulo->label("ed29_c_descr");
                       $aTermos = DBEducacaoTermo::getTermoEncerramentoDoEnsino($ed11_i_ensino, $ed62_i_anoref);
                       if (count($aTermos) > 0) {
 
-                        $r =  array('' => '');
+                        $r =  ['' => ''];
                         foreach ($aTermos as $oTermo) {
                           $r[$oTermo->sReferencia] = $oTermo->sDescricao;
                         }

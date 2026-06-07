@@ -37,7 +37,7 @@ class cl_pontoeletronicoregistrojustificativa extends DAOBasica {
    * @param array $aWhere
    * @return string
    */
-  public function sqlJustificativasData($aCampos = array(), $sOrdenacao = '', $aWhere = array()) {
+  public function sqlJustificativasData($aCampos = [], $sOrdenacao = '', $aWhere = []) {
 
     $sCampos = count($aCampos) == 0 ? '*' : implode(', ', $aCampos);
     $sWhere  = count($aWhere) == 0 ? '' : ' WHERE ' . implode(' AND ', $aWhere);
@@ -59,7 +59,7 @@ class cl_pontoeletronicoregistrojustificativa extends DAOBasica {
    * @param array $aWhere
    * @return string
    */
-  public function sqlJustificativasTipoasse($aCampos = array(), $sOrdenacao = '', $aWhere = array()) {
+  public function sqlJustificativasTipoasse($aCampos = [], $sOrdenacao = '', $aWhere = []) {
 
     $sCampos = count($aCampos) == 0 ? '*' : implode(', ', $aCampos);
     $sWhere  = count($aWhere) == 0 ? '' : ' WHERE ' . implode(' AND ', $aWhere);

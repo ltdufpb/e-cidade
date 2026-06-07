@@ -47,6 +47,7 @@ class TermoInicial extends \BaseClassRepository
     /** @var bool */
     private $persistPropagation;
 
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -184,7 +185,7 @@ class TermoInicial extends \BaseClassRepository
             return null;
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }

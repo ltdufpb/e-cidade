@@ -3,38 +3,38 @@
 //CLASSE DA ENTIDADE diversoslancamentotaxa
 class cl_diversoslancamentotaxa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $dv14_sequencial = 0; 
-   var $dv14_diversos = 0; 
-   var $dv14_lancamentotaxadiversos = 0; 
-   var $dv14_data_calculo_dia = null; 
-   var $dv14_data_calculo_mes = null; 
-   var $dv14_data_calculo_ano = null; 
-   var $dv14_data_calculo = null; 
+   public $dv14_sequencial = 0; 
+   public $dv14_diversos = 0; 
+   public $dv14_lancamentotaxadiversos = 0; 
+   public $dv14_data_calculo_dia = null; 
+   public $dv14_data_calculo_mes = null; 
+   public $dv14_data_calculo_ano = null; 
+   public $dv14_data_calculo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  dv14_sequencial = int4 = Código 
                  dv14_diversos = int4 = Código do Diverso 
                  dv14_lancamentotaxadiversos = int4 = Código do Lançamento 
                  dv14_data_calculo = date = Data do Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_diversoslancamentotaxa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diversoslancamentotaxa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -103,10 +103,10 @@ class cl_diversoslancamentotaxa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->dv14_sequencial = pg_result($result,0,0); 
+       $this->dv14_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from diversoslancamentotaxa_dv14_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $dv14_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $dv14_sequencial)){
          $this->erro_sql = " Campo dv14_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -140,7 +140,7 @@ class cl_diversoslancamentotaxa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Diversos Lançados ($this->dv14_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Diversos Lançados já Cadastrado";
@@ -169,13 +169,13 @@ class cl_diversoslancamentotaxa {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22087,'$this->dv14_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3978,22087,'','".AddSlashes(pg_result($resaco,0,'dv14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3978,22088,'','".AddSlashes(pg_result($resaco,0,'dv14_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3978,22089,'','".AddSlashes(pg_result($resaco,0,'dv14_lancamentotaxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3978,22094,'','".AddSlashes(pg_result($resaco,0,'dv14_data_calculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3978,22087,'','".AddSlashes(pg_fetch_result($resaco,0,'dv14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3978,22088,'','".AddSlashes(pg_fetch_result($resaco,0,'dv14_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3978,22089,'','".AddSlashes(pg_fetch_result($resaco,0,'dv14_lancamentotaxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3978,22094,'','".AddSlashes(pg_fetch_result($resaco,0,'dv14_data_calculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -185,10 +185,10 @@ class cl_diversoslancamentotaxa {
       $this->atualizacampos();
      $sql = " update diversoslancamentotaxa set ";
      $virgula = "";
-     if(trim($this->dv14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_sequencial"])){ 
+     if(trim((string) $this->dv14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_sequencial"])){ 
        $sql  .= $virgula." dv14_sequencial = $this->dv14_sequencial ";
        $virgula = ",";
-       if(trim($this->dv14_sequencial) == null ){ 
+       if(trim((string) $this->dv14_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "dv14_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_diversoslancamentotaxa {
          return false;
        }
      }
-     if(trim($this->dv14_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_diversos"])){ 
+     if(trim((string) $this->dv14_diversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_diversos"])){ 
        $sql  .= $virgula." dv14_diversos = $this->dv14_diversos ";
        $virgula = ",";
-       if(trim($this->dv14_diversos) == null ){ 
+       if(trim((string) $this->dv14_diversos) == null ){ 
          $this->erro_sql = " Campo Código do Diverso não informado.";
          $this->erro_campo = "dv14_diversos";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_diversoslancamentotaxa {
          return false;
        }
      }
-     if(trim($this->dv14_lancamentotaxadiversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_lancamentotaxadiversos"])){ 
+     if(trim((string) $this->dv14_lancamentotaxadiversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_lancamentotaxadiversos"])){ 
        $sql  .= $virgula." dv14_lancamentotaxadiversos = $this->dv14_lancamentotaxadiversos ";
        $virgula = ",";
-       if(trim($this->dv14_lancamentotaxadiversos) == null ){ 
+       if(trim((string) $this->dv14_lancamentotaxadiversos) == null ){ 
          $this->erro_sql = " Campo Código do Lançamento não informado.";
          $this->erro_campo = "dv14_lancamentotaxadiversos";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_diversoslancamentotaxa {
          return false;
        }
      }
-     if(trim($this->dv14_data_calculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_data_calculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dv14_data_calculo_dia"] !="") ){ 
+     if(trim((string) $this->dv14_data_calculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dv14_data_calculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dv14_data_calculo_dia"] !="") ){ 
        $sql  .= $virgula." dv14_data_calculo = '$this->dv14_data_calculo' ";
        $virgula = ",";
-       if(trim($this->dv14_data_calculo) == null ){ 
+       if(trim((string) $this->dv14_data_calculo) == null ){ 
          $this->erro_sql = " Campo Data do Cálculo não informado.";
          $this->erro_campo = "dv14_data_calculo_dia";
          $this->erro_banco = "";
@@ -240,7 +240,7 @@ class cl_diversoslancamentotaxa {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dv14_data_calculo_dia"])){ 
          $sql  .= $virgula." dv14_data_calculo = null ";
          $virgula = ",";
-         if(trim($this->dv14_data_calculo) == null ){ 
+         if(trim((string) $this->dv14_data_calculo) == null ){ 
            $this->erro_sql = " Campo Data do Cálculo não informado.";
            $this->erro_campo = "dv14_data_calculo_dia";
            $this->erro_banco = "";
@@ -265,17 +265,17 @@ class cl_diversoslancamentotaxa {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22087,'$this->dv14_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["dv14_sequencial"]) || $this->dv14_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3978,22087,'".AddSlashes(pg_result($resaco,$conresaco,'dv14_sequencial'))."','$this->dv14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3978,22087,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv14_sequencial'))."','$this->dv14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["dv14_diversos"]) || $this->dv14_diversos != "")
-             $resac = db_query("insert into db_acount values($acount,3978,22088,'".AddSlashes(pg_result($resaco,$conresaco,'dv14_diversos'))."','$this->dv14_diversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3978,22088,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv14_diversos'))."','$this->dv14_diversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["dv14_lancamentotaxadiversos"]) || $this->dv14_lancamentotaxadiversos != "")
-             $resac = db_query("insert into db_acount values($acount,3978,22089,'".AddSlashes(pg_result($resaco,$conresaco,'dv14_lancamentotaxadiversos'))."','$this->dv14_lancamentotaxadiversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3978,22089,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv14_lancamentotaxadiversos'))."','$this->dv14_lancamentotaxadiversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["dv14_data_calculo"]) || $this->dv14_data_calculo != "")
-             $resac = db_query("insert into db_acount values($acount,3978,22094,'".AddSlashes(pg_result($resaco,$conresaco,'dv14_data_calculo'))."','$this->dv14_data_calculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3978,22094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dv14_data_calculo'))."','$this->dv14_data_calculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -329,13 +329,13 @@ class cl_diversoslancamentotaxa {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22087,'$dv14_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3978,22087,'','".AddSlashes(pg_result($resaco,$iresaco,'dv14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3978,22088,'','".AddSlashes(pg_result($resaco,$iresaco,'dv14_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3978,22089,'','".AddSlashes(pg_result($resaco,$iresaco,'dv14_lancamentotaxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3978,22094,'','".AddSlashes(pg_result($resaco,$iresaco,'dv14_data_calculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3978,22087,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3978,22088,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv14_diversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3978,22089,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv14_lancamentotaxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3978,22094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dv14_data_calculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

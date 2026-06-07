@@ -80,7 +80,7 @@ class Job {
    * Array contento as Periodicidades executadas
    * @var array
    */
-  private $aPeriodicidades = array();
+  private $aPeriodicidades = [];
 
   /**
    * Determnina com qual frequencia uma tarefa deve ser executada
@@ -98,7 +98,7 @@ class Job {
    * Parametros a serem repassados/informados para a classe
    * @var array
    */
-  private $aParametros = array();
+  private $aParametros = [];
 
   /**
    * Constante com a terminação do
@@ -300,7 +300,7 @@ class Job {
 
     $oXMLWriter = new XMLWriter;
 
-    if (!is_writable(dirname($this->getCaminhoTarefa()))) {
+    if (!is_writable(dirname((string) $this->getCaminhoTarefa()))) {
         throw new \Exception(sprintf("Sem permissão de escrita no diretório %s",$this->getCaminhoTarefa()));
     }
 

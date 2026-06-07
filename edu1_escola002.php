@@ -94,8 +94,8 @@ if( isset( $incluir ) ) {
     $clescola->ed18_c_tipo           = 'S';
     $clescola->ed18_c_logo           = $name;
     $clescola->ed18_c_mantprivada    = $ed18_c_mantprivada;
-    $clescola->ed18_i_categprivada   = isset( $ed18_i_categprivada ) ? $ed18_i_categprivada : "";
-    $clescola->ed18_i_conveniada     = isset( $ed18_i_conveniada ) ? $ed18_i_conveniada : "";
+    $clescola->ed18_i_categprivada   = $ed18_i_categprivada ?? "";
+    $clescola->ed18_i_conveniada     = $ed18_i_conveniada ?? "";
     $clescola->ed18_codigoreferencia = $ed18_codigoreferencia;
     $clescola->ed18_i_censoorgreg    = empty( $ed18_i_censoorgreg ) ? 'null' : $ed18_i_censoorgreg;
 
@@ -130,8 +130,8 @@ if( isset( $incluir ) ) {
     $clescola->ed18_c_tipo           = 'S';
     $clescola->ed18_c_logo           = $name;
     $clescola->ed18_c_mantprivada    = $ed18_c_mantprivada;
-    $clescola->ed18_i_categprivada   = isset( $ed18_i_categprivada ) ? $ed18_i_categprivada : "";
-    $clescola->ed18_i_conveniada     = isset( $ed18_i_conveniada ) ? $ed18_i_conveniada : "";
+    $clescola->ed18_i_categprivada   = $ed18_i_categprivada ?? "";
+    $clescola->ed18_i_conveniada     = $ed18_i_conveniada ?? "";
     $clescola->ed18_codigoreferencia = $ed18_codigoreferencia;
     $clescola->ed18_i_censoorgreg    = empty( $ed18_i_censoorgreg ) ? 'null' : $ed18_i_censoorgreg;
     $clescola->ed18_i_linguaindigena  = '';

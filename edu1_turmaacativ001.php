@@ -49,7 +49,7 @@ if(isset($incluir)) {
 
   db_inicio_transacao();
   $clturmaacativ->incluir($ed267_i_codigo);
-  if(trim($ed274_c_nome)!="") {
+  if(trim((string) $ed274_c_nome)!="") {
 
     $clturmaacativnova->ed274_i_turmaacativ = $clturmaacativ->ed267_i_codigo;
     $clturmaacativnova->incluir(null);
@@ -66,7 +66,7 @@ if ( isset($alterar) ) {
   if (pg_num_rows($result2)>0) {
 
     db_fieldsmemory($result2,0);
-    if (trim($ed274_c_nome)=="") {
+    if (trim((string) $ed274_c_nome)=="") {
       $clturmaacativnova->excluir($conferenova);
     } else {
 
@@ -76,7 +76,7 @@ if ( isset($alterar) ) {
     }
   } else {
 
-    if (trim($ed274_c_nome)!="") {
+    if (trim((string) $ed274_c_nome)!="") {
       $clturmaacativnova->ed274_i_turmaacativ = $clturmaacativ->ed267_i_codigo;
       $clturmaacativnova->incluir(null);
     }

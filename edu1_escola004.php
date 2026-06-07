@@ -37,7 +37,7 @@ include(modification("classes/db_censodistrito_classe.php"));
 include(modification("classes/db_censoorgreg_classe.php"));
 include(modification("classes/db_censolinguaindig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clescola = new cl_escola;
 $clcensouf = new cl_censouf;
 $clcensomunic = new cl_censomunic;

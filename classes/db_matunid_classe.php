@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE matunid
 class cl_matunid { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m61_codmatunid = 0; 
-   var $m61_descr = null; 
-   var $m61_usaquant = 'f'; 
-   var $m61_abrev = null; 
-   var $m61_usadec = 'f'; 
-   var $m61_codigotribunal = null; 
+   public $m61_codmatunid = 0; 
+   public $m61_descr = null; 
+   public $m61_usaquant = 'f'; 
+   public $m61_abrev = null; 
+   public $m61_usadec = 'f'; 
+   public $m61_codigotribunal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m61_codmatunid = int8 = Código da unidade 
                  m61_descr = varchar(40) = Descrição da unidade
                  m61_usaquant = bool = Se usa quantidade da unidade 
@@ -58,10 +58,10 @@ class cl_matunid {
                  m61_codigotribunal = varchar(5) = Código do Tribunal 
                  ";
    //funcao construtor da classe 
-   function cl_matunid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matunid"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,10 +134,10 @@ class cl_matunid {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m61_codmatunid = pg_result($result,0,0); 
+       $this->m61_codmatunid = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matunid_m61_codmatunid_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m61_codmatunid)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m61_codmatunid)){
          $this->erro_sql = " Campo m61_codmatunid maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -175,7 +175,7 @@ class cl_matunid {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Unidades dos materiais ($this->m61_codmatunid) não incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Unidades dos materiais já Cadastrado";
@@ -204,15 +204,15 @@ class cl_matunid {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6262,'$this->m61_codmatunid','I')");
-         $resac = db_query("insert into db_acount values($acount,1017,6262,'','".AddSlashes(pg_result($resaco,0,'m61_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1017,6263,'','".AddSlashes(pg_result($resaco,0,'m61_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1017,6461,'','".AddSlashes(pg_result($resaco,0,'m61_usaquant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1017,6603,'','".AddSlashes(pg_result($resaco,0,'m61_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1017,8637,'','".AddSlashes(pg_result($resaco,0,'m61_usadec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1017,21766,'','".AddSlashes(pg_result($resaco,0,'m61_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1017,6262,'','".AddSlashes(pg_fetch_result($resaco,0,'m61_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1017,6263,'','".AddSlashes(pg_fetch_result($resaco,0,'m61_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1017,6461,'','".AddSlashes(pg_fetch_result($resaco,0,'m61_usaquant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1017,6603,'','".AddSlashes(pg_fetch_result($resaco,0,'m61_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1017,8637,'','".AddSlashes(pg_fetch_result($resaco,0,'m61_usadec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1017,21766,'','".AddSlashes(pg_fetch_result($resaco,0,'m61_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -222,10 +222,10 @@ class cl_matunid {
       $this->atualizacampos();
      $sql = " update matunid set ";
      $virgula = "";
-     if(trim($this->m61_codmatunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_codmatunid"])){ 
+     if(trim((string) $this->m61_codmatunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_codmatunid"])){ 
        $sql  .= $virgula." m61_codmatunid = $this->m61_codmatunid ";
        $virgula = ",";
-       if(trim($this->m61_codmatunid) == null ){ 
+       if(trim((string) $this->m61_codmatunid) == null ){ 
          $this->erro_sql = " Campo Código da unidade não informado.";
          $this->erro_campo = "m61_codmatunid";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_matunid {
          return false;
        }
      }
-     if(trim($this->m61_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_descr"])){ 
+     if(trim((string) $this->m61_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_descr"])){ 
        $sql  .= $virgula." m61_descr = '$this->m61_descr' ";
        $virgula = ",";
-       if(trim($this->m61_descr) == null ){ 
+       if(trim((string) $this->m61_descr) == null ){ 
          $this->erro_sql = " Campo Unidade não informado.";
          $this->erro_campo = "m61_descr";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_matunid {
          return false;
        }
      }
-     if(trim($this->m61_usaquant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_usaquant"])){ 
+     if(trim((string) $this->m61_usaquant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_usaquant"])){ 
        $sql  .= $virgula." m61_usaquant = '$this->m61_usaquant' ";
        $virgula = ",";
-       if(trim($this->m61_usaquant) == null ){ 
+       if(trim((string) $this->m61_usaquant) == null ){ 
          $this->erro_sql = " Campo Se usa quantidade da unidade não informado.";
          $this->erro_campo = "m61_usaquant";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_matunid {
          return false;
        }
      }
-     if(trim($this->m61_abrev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_abrev"])){ 
+     if(trim((string) $this->m61_abrev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_abrev"])){ 
        $sql  .= $virgula." m61_abrev = '$this->m61_abrev' ";
        $virgula = ",";
-       if(trim($this->m61_abrev) == null ){ 
+       if(trim((string) $this->m61_abrev) == null ){ 
          $this->erro_sql = " Campo Abreviatura da descrição não informado.";
          $this->erro_campo = "m61_abrev";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_matunid {
          return false;
        }
      }
-     if(trim($this->m61_usadec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_usadec"])){ 
+     if(trim((string) $this->m61_usadec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_usadec"])){ 
        $sql  .= $virgula." m61_usadec = '$this->m61_usadec' ";
        $virgula = ",";
-       if(trim($this->m61_usadec) == null ){ 
+       if(trim((string) $this->m61_usadec) == null ){ 
          $this->erro_sql = " Campo Aceita casas decimais não informado.";
          $this->erro_campo = "m61_usadec";
          $this->erro_banco = "";
@@ -287,7 +287,7 @@ class cl_matunid {
          return false;
        }
      }
-     if(trim($this->m61_codigotribunal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_codigotribunal"])){ 
+     if(trim((string) $this->m61_codigotribunal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m61_codigotribunal"])){ 
        $sql  .= $virgula." m61_codigotribunal = '$this->m61_codigotribunal' ";
        $virgula = ",";
      }
@@ -305,21 +305,21 @@ class cl_matunid {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,6262,'$this->m61_codmatunid','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m61_codmatunid"]) || $this->m61_codmatunid != "")
-             $resac = db_query("insert into db_acount values($acount,1017,6262,'".AddSlashes(pg_result($resaco,$conresaco,'m61_codmatunid'))."','$this->m61_codmatunid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1017,6262,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m61_codmatunid'))."','$this->m61_codmatunid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m61_descr"]) || $this->m61_descr != "")
-             $resac = db_query("insert into db_acount values($acount,1017,6263,'".AddSlashes(pg_result($resaco,$conresaco,'m61_descr'))."','$this->m61_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1017,6263,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m61_descr'))."','$this->m61_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m61_usaquant"]) || $this->m61_usaquant != "")
-             $resac = db_query("insert into db_acount values($acount,1017,6461,'".AddSlashes(pg_result($resaco,$conresaco,'m61_usaquant'))."','$this->m61_usaquant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1017,6461,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m61_usaquant'))."','$this->m61_usaquant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m61_abrev"]) || $this->m61_abrev != "")
-             $resac = db_query("insert into db_acount values($acount,1017,6603,'".AddSlashes(pg_result($resaco,$conresaco,'m61_abrev'))."','$this->m61_abrev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1017,6603,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m61_abrev'))."','$this->m61_abrev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m61_usadec"]) || $this->m61_usadec != "")
-             $resac = db_query("insert into db_acount values($acount,1017,8637,'".AddSlashes(pg_result($resaco,$conresaco,'m61_usadec'))."','$this->m61_usadec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1017,8637,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m61_usadec'))."','$this->m61_usadec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m61_codigotribunal"]) || $this->m61_codigotribunal != "")
-             $resac = db_query("insert into db_acount values($acount,1017,21766,'".AddSlashes(pg_result($resaco,$conresaco,'m61_codigotribunal'))."','$this->m61_codigotribunal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1017,21766,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m61_codigotribunal'))."','$this->m61_codigotribunal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -373,15 +373,15 @@ class cl_matunid {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,6262,'$m61_codmatunid','E')");
-           $resac  = db_query("insert into db_acount values($acount,1017,6262,'','".AddSlashes(pg_result($resaco,$iresaco,'m61_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1017,6263,'','".AddSlashes(pg_result($resaco,$iresaco,'m61_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1017,6461,'','".AddSlashes(pg_result($resaco,$iresaco,'m61_usaquant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1017,6603,'','".AddSlashes(pg_result($resaco,$iresaco,'m61_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1017,8637,'','".AddSlashes(pg_result($resaco,$iresaco,'m61_usadec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1017,21766,'','".AddSlashes(pg_result($resaco,$iresaco,'m61_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1017,6262,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m61_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1017,6263,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m61_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1017,6461,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m61_usaquant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1017,6603,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m61_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1017,8637,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m61_usadec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1017,21766,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m61_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

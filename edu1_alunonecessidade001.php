@@ -36,7 +36,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_app::import("educacao.*");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clalunonecessidade = new cl_alunonecessidade;
 $db_opcao = 1;
 $db_botao = true;
@@ -181,8 +181,8 @@ if(isset($excluir)){
     }
    }
    if($maior==""){
-    $result1 = db_query("UPDATE alunonecessidade SET ed214_c_principal = 'SIM' WHERE ed214_i_codigo = ".pg_result($result,0,'ed214_i_codigo')."");
-    db_msgbox("ATENÇÃO! A necessidade especial ".trim(pg_result($result,0,'ed48_c_descr'))."\\nficou definida como necessidade Maior deste aluno!");
+    $result1 = db_query("UPDATE alunonecessidade SET ed214_c_principal = 'SIM' WHERE ed214_i_codigo = ".pg_fetch_result($result,0,'ed214_i_codigo')."");
+    db_msgbox("ATENÇÃO! A necessidade especial ".trim(pg_fetch_result($result,0,'ed48_c_descr'))."\\nficou definida como necessidade Maior deste aluno!");
    }
   }
   $clalunonecessidade->erro(true,false);

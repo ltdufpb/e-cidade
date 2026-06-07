@@ -3,7 +3,7 @@
 class PreMenus
 {
 
-    private $aTabelasPreMenus = array(
+    private $aTabelasPreMenus = [
         'db_sysarquivo',
         'db_sysarqmod',
         'db_sysarqarq',
@@ -59,13 +59,13 @@ class PreMenus
         'orcparamseqorcparamseqcoluna',
         'orcparamseqfiltropadrao',
         'orcparamrelperiodos'
-    );
+    ];
 
-    private $aOperacoes = array(
+    private $aOperacoes = [
         'insert',
         'update',
         'delete'
-    );
+    ];
 
     private $sArquivo = null;
 
@@ -125,7 +125,7 @@ class PreMenus
     public function verificaInstrucaoSql($sSql)
     {
 
-        $sInstrucaoSql = preg_replace('/\s{2,}/', ' ', trim($sSql));
+        $sInstrucaoSql = preg_replace('/\s{2,}/', ' ', trim((string) $sSql));
         $sInstrucaoSql .= ';';
 
         $aInstrucao = explode(' ', $sInstrucaoSql);

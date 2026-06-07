@@ -50,11 +50,11 @@ class Jornada {
     const PERIODO_2 = 2;
     const PERIODO_3 = 3;
 
-    public static $aTiposJornada = array(
+    public static $aTiposJornada = [
       Jornada::TIPO_DIA_TRABALHO => 'Dia de Trabalho',
       Jornada::TIPO_FOLGA        => 'Folga',
       Jornada::TIPO_DSR          => 'DSR'
-    );
+    ];
 
     /**
      * Código da jornada
@@ -96,7 +96,7 @@ class Jornada {
      * Coleção com as horas configuradas para jornada
      * @var array
      */
-    private $aHoras = array();
+    private $aHoras = [];
 
     /**
      * @var string
@@ -456,7 +456,7 @@ class Jornada {
 
     public function toArray()
     {
-        $horas = array();
+        $horas = [];
 
         foreach ($this->aHoras as $oHora) {
 

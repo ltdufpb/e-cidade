@@ -109,7 +109,7 @@ if($claprovconselho->numrows>0){
   $oDaoAprovConselhoTipo = db_utils::getDao("aprovconselhotipo");
   $sSqlAprovTipo         = $oDaoAprovConselhoTipo->sql_query_file();
   $rsAprovConselhoTipo   = $oDaoAprovConselhoTipo->sql_record($sSqlAprovTipo);
-  $aTipos = array();
+  $aTipos = [];
   for ($i = 0; $i < $oDaoAprovConselhoTipo->numrows; $i++) {
 
     $oDados = db_utils::fieldsmemory($rsAprovConselhoTipo, $i);

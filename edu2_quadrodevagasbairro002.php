@@ -36,13 +36,13 @@ if (!isset($iEscola)) {
 }
 
 $oEscola = EscolaRepository::getEscolaByCodigo($iEscola);
-$aEtapas = array(0);
-$aEscola = array($oEscola);
-$aCalendario = array($oCalendario);
+$aEtapas = [0];
+$aEscola = [$oEscola];
+$aCalendario = [$oCalendario];
 
 $oEscola = EscolaRepository::getEscolaByCodigo($iEscola);
 
-$calendarios = explode(",", $iCalendario);
+$calendarios = explode(",", (string) $iCalendario);
 
 if (!isset($calendario)) {
     $calendario = "";
@@ -83,7 +83,7 @@ if ($rs && pg_num_rows($rs) > 0) {
     }
 }
 
-$aEtapas = array();
+$aEtapas = [];
 $sCampos = " distinct ed11_i_codigo";
 $sWhere = "    ed57_i_escola IN (SELECT ed18_i_codigo FROM escola WHERE ed18_i_bairro IN ($bairros))";
 $sWhere .= " AND ed52_c_descr IN ('$calendarios') ";
@@ -105,14 +105,14 @@ $bBairros = "SELECT DISTINCT array_to_string(array_accum(trim(j13_descr)),',') F
 $rsBairros = db_query($bBairros);
 $nBairros = "";
 if ($rsBairros && pg_num_rows($rsBairros) > 0) {
-    $nBairros .= pg_result($rsBairros, 0);
+    $nBairros .= pg_fetch_result($rsBairros, 0);
 }
 
 $bEtapas = "SELECT DISTINCT array_to_string(array_accum(trim(ed11_c_descr)),',') FROM serie WHERE ed11_i_codigo IN ($iEtapas) ORDER BY 1";
 $rsEtapas = db_query($bEtapas);
 $nEtapas = "";
 if ($rsEtapas && pg_num_rows($rsEtapas) > 0) {
-    $nEtapas .= pg_result($rsEtapas, 0);
+    $nEtapas .= pg_fetch_result($rsEtapas, 0);
 }
 
 $cBairros = explode(",", $bairros);
@@ -125,7 +125,7 @@ $sqlBairrosTotal = "SELECT count(distinct(ed18_i_bairro))
                      INNER JOIN calendario ON  ed57_i_calendario = ed52_i_codigo
                           WHERE ed52_i_ano = " . db_getsession("DB_anousu") . "
                             AND j13_codi NOT IN (0)";
-$numBairrosTotal = pg_result(db_query($sqlBairrosTotal), 0);
+$numBairrosTotal = pg_fetch_result(db_query($sqlBairrosTotal), 0);
 if (($numBairrosTotal) == $numBairrosSel) {
     $nBairros = "TODOS";
 }

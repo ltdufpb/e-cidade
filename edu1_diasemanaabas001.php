@@ -55,9 +55,9 @@ $db_opcao = 1;
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1"=>"Dias da Semana","a2"=>"Dias Letivos");
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"25");
-   $clcriaabas->src        = array("a1"=>"edu1_diasemana001.php","a2"=>"edu1_dialetivo001.php");
+   $clcriaabas->identifica = ["a1"=>"Dias da Semana","a2"=>"Dias Letivos"];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"25"];
+   $clcriaabas->src        = ["a1"=>"edu1_diasemana001.php","a2"=>"edu1_dialetivo001.php"];
    //$clcriaabas->disabled   = array("a2"=>"true");
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->cria_abas();

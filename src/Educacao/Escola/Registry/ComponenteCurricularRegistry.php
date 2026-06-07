@@ -33,7 +33,7 @@ class ComponenteCurricularRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $componenteCurricular = ComponenteCurricularRepository::find($key);
             if (is_null($componenteCurricular)) {
                 return null;

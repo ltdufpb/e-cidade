@@ -62,7 +62,7 @@ class CertidaoRepository
         }
 
         $aCertidao    = pg_fetch_all($rsDadosCertidao);
-        $ListCertidao = array();
+        $ListCertidao = [];
                        
         foreach ($aCertidao as $item) {
             $oCertidao = new  Certidao(); 

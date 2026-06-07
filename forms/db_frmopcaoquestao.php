@@ -98,7 +98,7 @@ if(isset($atualizar)){
      </td>
      <td>
       <?php 
-      $x = array('S'=>'SIM','N'=>'NÃO');
+      $x = ['S'=>'SIM','N'=>'NÃO'];
       db_select('ed106_c_ativo',$x,true,$db_opcao,"");
       ?>
      </td>
@@ -124,7 +124,7 @@ if(isset($atualizar)){
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
         $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed106_i_codigo"]."\">".trim($dados["ed106_c_descr"])."</option>\n";
+         echo "<option value=\"".$dados["ed106_i_codigo"]."\">".trim((string) $dados["ed106_c_descr"])."</option>\n";
         }
        }
       ?>
@@ -147,7 +147,7 @@ if(isset($atualizar)){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed106_i_codigo"=>@$ed106_i_codigo,"ed106_c_descr"=>@$ed106_c_descr,"ed106_i_sequencia"=>@$ed106_i_sequencia,"ed106_f_pontuacao"=>@$ed106_f_pontuacao,"ed106_c_ativo"=>@$ed106_c_ativo);
+   $chavepri= ["ed106_i_codigo"=>@$ed106_i_codigo,"ed106_c_descr"=>@$ed106_c_descr,"ed106_i_sequencia"=>@$ed106_i_sequencia,"ed106_f_pontuacao"=>@$ed106_f_pontuacao,"ed106_c_ativo"=>@$ed106_c_ativo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clopcaoquestao->sql_query($ed106_i_codigo,"*","ed106_i_sequencia");
    $cliframe_alterar_excluir->campos  ="ed106_i_codigo,ed106_c_descr,ed106_f_pontuacao,ed106_c_ativo";

@@ -34,15 +34,15 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("model/educacao/ArredondamentoNota.model.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 
 $oDaoProcResultado       = db_utils::getdao("procresultado");
 $oDaoConceito            = db_utils::getdao("conceito");
 $db_botao                = false;
 $db_opcao                = 33;
 $db_opcao1               = 3;
-$sPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) ? $_GET['possuiTurmasEncerradas'] : '';
+$sPossuiTurmasEncerradas = $_GET['possuiTurmasEncerradas'] ?? '';
 
 function ElementosFreq($ed67_i_procresultado) {
 

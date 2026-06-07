@@ -33,6 +33,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
   private $sAluno           = '';
   private $oExportacaoCenso = null;
 
+  #[\Override]
   public static function validarDados(IExportacaoCenso $oExportacaoCenso) {
 
     $lValidou = true;
@@ -75,7 +76,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
     $lValidou    = true;
 
     $aStatusValidacao = [];
-    if (!empty($oRegistro60->identificacao_unica_aluno) && strlen($oRegistro60->identificacao_unica_aluno) < 12) {
+    if (!empty($oRegistro60->identificacao_unica_aluno) && strlen((string) $oRegistro60->identificacao_unica_aluno) < 12) {
 
       $sMsgErro  = "Aluno(a) {$sAluno}:\n";
       $sMsgErro .= "Código INEP do aluno possui tamanho inferior a 12 dígitos.";
@@ -207,7 +208,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
     $aStatusValidacao[] = static::validaRegistro60Coluna39($oExportacaoCenso, $oDadosAluno);
 
     if ( $lValidou ) {
-      $lValidou = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lValidou = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lValidou;
@@ -362,7 +363,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
     $aStatusValidacao[] = static::validaRegistro80Coluna10($oExportacaoCenso, $oDadosAluno);
 
     if ( $lValidou ) {
-      $lValidou = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lValidou = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lValidou;
@@ -446,7 +447,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
 
     // coluna 5 regra 3
     if ( $oRegistro60->nacionalidade_aluno != 3 && !empty($oRegistro70->numero_identidade) &&
-         preg_match("/[^a-zA-Z0-9\-ªº]/", $oRegistro70->numero_identidade) > 0 ) {
+         preg_match("/[^a-zA-Z0-9\-ªº]/", (string) $oRegistro70->numero_identidade) > 0 ) {
 
       $sMsgErro  = "Aluno(a) {$sAluno}: \n";
       $sMsgErro .= 'O campo "Número da identidade" foi preenchido com valor inválido.';
@@ -454,10 +455,10 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
       $lValidou = false;
     }
 
-    if (    trim( $oRegistro70->tipo_certidao_civil ) == ''
-         && (    trim( $oRegistro70->numero_termo    ) != ''
-              || trim( $oRegistro70->uf_cartorio     ) != ''
-              || trim( $oRegistro70->codigo_cartorio ) != ''
+    if (    trim( (string) $oRegistro70->tipo_certidao_civil ) == ''
+         && (    trim( (string) $oRegistro70->numero_termo    ) != ''
+              || trim( (string) $oRegistro70->uf_cartorio     ) != ''
+              || trim( (string) $oRegistro70->codigo_cartorio ) != ''
             )
        ) {
 
@@ -470,23 +471,23 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
     if( $oRegistro70->situacaodocumentacao == 0 ) {
 
       $aDocumentosAluno = [
-                                 trim( $oRegistro70->numero_identidade ),
-                                 trim( $oRegistro70->complemento_identidade ),
-                                 trim( $oRegistro70->orgao_emissor_identidade ),
-                                 trim( $oRegistro70->uf_identidade ),
-                                 trim( $oRegistro70->data_expedicao_identidade ),
-                                 trim( $oRegistro70->certidao_civil ),
-                                 trim( $oRegistro70->tipo_certidao_civil ),
-                                 trim( $oRegistro70->numero_termo ),
-                                 trim( $oRegistro70->folha ),
-                                 trim( $oRegistro70->livro ),
-                                 trim( $oRegistro70->data_emissao_certidao ),
-                                 trim( $oRegistro70->uf_cartorio ),
-                                 trim( $oRegistro70->municipio_cartorio ),
-                                 trim( $oRegistro70->codigo_cartorio ),
-                                 trim( $oRegistro70->numero_matricula ),
-                                 trim( $oRegistro70->numero_cpf ),
-                                 trim( $oRegistro70->documento_estrangeiro_passaporte )
+                                 trim( (string) $oRegistro70->numero_identidade ),
+                                 trim( (string) $oRegistro70->complemento_identidade ),
+                                 trim( (string) $oRegistro70->orgao_emissor_identidade ),
+                                 trim( (string) $oRegistro70->uf_identidade ),
+                                 trim( (string) $oRegistro70->data_expedicao_identidade ),
+                                 trim( (string) $oRegistro70->certidao_civil ),
+                                 trim( (string) $oRegistro70->tipo_certidao_civil ),
+                                 trim( (string) $oRegistro70->numero_termo ),
+                                 trim( (string) $oRegistro70->folha ),
+                                 trim( (string) $oRegistro70->livro ),
+                                 trim( (string) $oRegistro70->data_emissao_certidao ),
+                                 trim( (string) $oRegistro70->uf_cartorio ),
+                                 trim( (string) $oRegistro70->municipio_cartorio ),
+                                 trim( (string) $oRegistro70->codigo_cartorio ),
+                                 trim( (string) $oRegistro70->numero_matricula ),
+                                 trim( (string) $oRegistro70->numero_cpf ),
+                                 trim( (string) $oRegistro70->documento_estrangeiro_passaporte )
                                ];
 
       $iTotalDocumentos         = count( $aDocumentosAluno );
@@ -521,10 +522,10 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
         $lValidou = false;
       }
 
-      if (    trim( $oRegistro70->tipo_certidao_civil ) == ''
-           || trim( $oRegistro70->numero_termo        ) == ''
-           || trim( $oRegistro70->uf_cartorio         ) == ''
-           || trim( $oRegistro70->codigo_cartorio     ) == '' ) {
+      if (    trim( (string) $oRegistro70->tipo_certidao_civil ) == ''
+           || trim( (string) $oRegistro70->numero_termo        ) == ''
+           || trim( (string) $oRegistro70->uf_cartorio         ) == ''
+           || trim( (string) $oRegistro70->codigo_cartorio     ) == '' ) {
 
         $sMsgErro  = "Aluno(a) {$sAluno}: \n";
         $sMsgErro .= "Quando informado Certidão Civil igual a 'Modelo Antigo', os campos Tipo de Certidão Civil, ";
@@ -723,7 +724,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
         $oExportacaoCenso->logErro( $sMensagem, ExportacaoCensoBase::LOG_ALUNO );
       }
 
-      if (strlen($oRegistro70->cep) < 8) {
+      if (strlen((string) $oRegistro70->cep) < 8) {
 
         $lValidou = false;
         $sMensagem  = "Aluno(a) {$sAluno}: \n";
@@ -731,7 +732,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
         $oExportacaoCenso->logErro($sMensagem, ExportacaoCensoBase::LOG_ALUNO);
       }
 
-      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', $oRegistro70->cep)) {
+      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', (string) $oRegistro70->cep)) {
 
         $lValidou   = false;
         $sMensagem  = "Aluno(a) {$sAluno}: \n";
@@ -814,6 +815,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
    * @param DBLayoutLinha $oLinha
    * @return cl_aluno
    */
+  #[\Override]
   protected function preencherDaoAluno(DBLayoutLinha $oLinha) {
 
     $oDaoAluno                         = new cl_aluno();
@@ -879,6 +881,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
    * Atualiza as Necessidades Especiais do aluno
    * @param DBLayoutLinha $oLinha
    */
+  #[\Override]
   protected function atualizarNecessidadesEspeciais(DBLayoutLinha $oLinha) {
 
     if (isset($oLinha->alunos_deficiencia_transtorno_desenv_superdotacao)) {

@@ -55,7 +55,7 @@ try {
       $oProcedimento = ProcedimentoAvaliacaoRepository::getProcedimentoByCodigo($oParam->iProcedimento);
       $aRegencias    = RegenciaRepository::getRegenciaByProcedimento($oProcedimento);
 
-      $aTurmas = array();
+      $aTurmas = [];
       foreach ($aRegencias as $oRegencia) {
 
         $sHash = "{$oRegencia->getTurma()->getCodigo()}#{$oRegencia->getEtapa()->getCodigo()}";
@@ -64,7 +64,7 @@ try {
           $oTurmaEtapa             = new stdClass();
           $oTurmaEtapa->oTurma     = $oRegencia->getTurma();
           $oTurmaEtapa->oEtapa     = $oRegencia->getEtapa();
-          $oTurmaEtapa->aRegencias = array();
+          $oTurmaEtapa->aRegencias = [];
           $aTurmas[$sHash]         = $oTurmaEtapa;
         }
 
@@ -79,12 +79,12 @@ try {
 
         $oDadosLog              = new stdClass();
         $oDadosLog->iTurma      = $oTurmaEtapa->oTurma->getCodigo();
-        $oDadosLog->sTurma      = urlencode( $oTurmaEtapa->oTurma->getDescricao() );
+        $oDadosLog->sTurma      = urlencode( (string) $oTurmaEtapa->oTurma->getDescricao() );
         $oDadosLog->iEtapa      = $oTurmaEtapa->oEtapa->getCodigo();
-        $oDadosLog->sEtapa      = urlencode( $oTurmaEtapa->oEtapa->getNome() );
-        $oDadosLog->sCalendario = urlencode( $oTurmaEtapa->oTurma->getCalendario()->getDescricao() );
+        $oDadosLog->sEtapa      = urlencode( (string) $oTurmaEtapa->oEtapa->getNome() );
+        $oDadosLog->sCalendario = urlencode( (string) $oTurmaEtapa->oTurma->getCalendario()->getDescricao() );
 
-        $oDadosLog->aAlunos = array();
+        $oDadosLog->aAlunos = [];
         foreach ( $oTurmaEtapa->oTurma->getAlunosMatriculadosNaTurmaPorSerie($oTurmaEtapa->oEtapa) as $oMatricula) {
 
           /**
@@ -143,7 +143,7 @@ try {
         throw new Exception( _M( $sFonteMsg . "erro_salvar") );
       }
 
-      $oRetorno->sMessage = urlencode( _M( $sFonteMsg . "procedimento_atualizado") );
+      $oRetorno->sMessage = urlencode( (string) _M( $sFonteMsg . "procedimento_atualizado") );
 
       break;
 
@@ -158,7 +158,7 @@ try {
 
       $oRetorno->iNovoProcedimento = ProcedimentoAvaliacao::importar($oEscola, $oProcedimento, db_getsession('DB_anousu'));
 
-      $oRetorno->sMessage = urlencode( _M( $sFonteMsg . "procedimento_importado") );
+      $oRetorno->sMessage = urlencode( (string) _M( $sFonteMsg . "procedimento_importado") );
       break;
 
   }

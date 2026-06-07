@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE turmacensoturma
 class cl_turmacensoturma {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed343_sequencia = 0;
-   var $ed343_turmacenso = 0;
-   var $ed343_turma = 0;
-   var $ed343_principal = 'f';
+   public $ed343_sequencia = 0;
+   public $ed343_turmacenso = 0;
+   public $ed343_turma = 0;
+   public $ed343_principal = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed343_sequencia = int4 = Código
                  ed343_turmacenso = int4 = Turma Censo
                  ed343_turma = int4 = Turma
                  ed343_principal = bool = Principal
                  ";
    //funcao construtor da classe
-   function cl_turmacensoturma() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmacensoturma");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_turmacensoturma {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed343_sequencia = pg_result($result,0,0);
+       $this->ed343_sequencia = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from turmacensoturma_ed343_sequencia_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed343_sequencia)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed343_sequencia)){
          $this->erro_sql = " Campo ed343_sequencia maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_turmacensoturma {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Turma censo turma ($this->ed343_sequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Turma censo turma já Cadastrado";
@@ -185,13 +185,13 @@ class cl_turmacensoturma {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20584,'$this->ed343_sequencia','I')");
-         $resac = db_query("insert into db_acount values($acount,3704,20584,'','".AddSlashes(pg_result($resaco,0,'ed343_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3704,20586,'','".AddSlashes(pg_result($resaco,0,'ed343_turmacenso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3704,20587,'','".AddSlashes(pg_result($resaco,0,'ed343_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3704,20588,'','".AddSlashes(pg_result($resaco,0,'ed343_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3704,20584,'','".AddSlashes(pg_fetch_result($resaco,0,'ed343_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3704,20586,'','".AddSlashes(pg_fetch_result($resaco,0,'ed343_turmacenso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3704,20587,'','".AddSlashes(pg_fetch_result($resaco,0,'ed343_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3704,20588,'','".AddSlashes(pg_fetch_result($resaco,0,'ed343_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_turmacensoturma {
       $this->atualizacampos();
      $sql = " update turmacensoturma set ";
      $virgula = "";
-     if(trim($this->ed343_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_sequencia"])){
+     if(trim((string) $this->ed343_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_sequencia"])){
        $sql  .= $virgula." ed343_sequencia = $this->ed343_sequencia ";
        $virgula = ",";
-       if(trim($this->ed343_sequencia) == null ){
+       if(trim((string) $this->ed343_sequencia) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed343_sequencia";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_turmacensoturma {
          return false;
        }
      }
-     if(trim($this->ed343_turmacenso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_turmacenso"])){
+     if(trim((string) $this->ed343_turmacenso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_turmacenso"])){
        $sql  .= $virgula." ed343_turmacenso = $this->ed343_turmacenso ";
        $virgula = ",";
-       if(trim($this->ed343_turmacenso) == null ){
+       if(trim((string) $this->ed343_turmacenso) == null ){
          $this->erro_sql = " Campo Turma Censo não informado.";
          $this->erro_campo = "ed343_turmacenso";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_turmacensoturma {
          return false;
        }
      }
-     if(trim($this->ed343_turma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_turma"])){
+     if(trim((string) $this->ed343_turma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_turma"])){
        $sql  .= $virgula." ed343_turma = $this->ed343_turma ";
        $virgula = ",";
-       if(trim($this->ed343_turma) == null ){
+       if(trim((string) $this->ed343_turma) == null ){
          $this->erro_sql = " Campo Turma não informado.";
          $this->erro_campo = "ed343_turma";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_turmacensoturma {
          return false;
        }
      }
-     if(trim($this->ed343_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_principal"])){
+     if(trim((string) $this->ed343_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed343_principal"])){
        $sql  .= $virgula." ed343_principal = '$this->ed343_principal' ";
        $virgula = ",";
-       if(trim($this->ed343_principal) == null ){
+       if(trim((string) $this->ed343_principal) == null ){
          $this->erro_sql = " Campo Principal não informado.";
          $this->erro_campo = "ed343_principal";
          $this->erro_banco = "";
@@ -267,17 +267,17 @@ class cl_turmacensoturma {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20584,'$this->ed343_sequencia','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed343_sequencia"]) || $this->ed343_sequencia != "")
-             $resac = db_query("insert into db_acount values($acount,3704,20584,'".AddSlashes(pg_result($resaco,$conresaco,'ed343_sequencia'))."','$this->ed343_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3704,20584,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed343_sequencia'))."','$this->ed343_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed343_turmacenso"]) || $this->ed343_turmacenso != "")
-             $resac = db_query("insert into db_acount values($acount,3704,20586,'".AddSlashes(pg_result($resaco,$conresaco,'ed343_turmacenso'))."','$this->ed343_turmacenso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3704,20586,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed343_turmacenso'))."','$this->ed343_turmacenso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed343_turma"]) || $this->ed343_turma != "")
-             $resac = db_query("insert into db_acount values($acount,3704,20587,'".AddSlashes(pg_result($resaco,$conresaco,'ed343_turma'))."','$this->ed343_turma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3704,20587,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed343_turma'))."','$this->ed343_turma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed343_principal"]) || $this->ed343_principal != "")
-             $resac = db_query("insert into db_acount values($acount,3704,20588,'".AddSlashes(pg_result($resaco,$conresaco,'ed343_principal'))."','$this->ed343_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3704,20588,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed343_principal'))."','$this->ed343_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,13 +331,13 @@ class cl_turmacensoturma {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20584,'$ed343_sequencia','E')");
-           $resac  = db_query("insert into db_acount values($acount,3704,20584,'','".AddSlashes(pg_result($resaco,$iresaco,'ed343_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3704,20586,'','".AddSlashes(pg_result($resaco,$iresaco,'ed343_turmacenso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3704,20587,'','".AddSlashes(pg_result($resaco,$iresaco,'ed343_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3704,20588,'','".AddSlashes(pg_result($resaco,$iresaco,'ed343_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3704,20584,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed343_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3704,20586,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed343_turmacenso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3704,20587,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed343_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3704,20588,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed343_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -411,9 +411,9 @@ class cl_turmacensoturma {
    }
 
    /**
-    * @deprecated
     * @see sql_query2
     */
+   #[\Deprecated]
    public function sql_query ($ed343_sequencia = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";

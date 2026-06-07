@@ -69,7 +69,7 @@ abstract class DBString {
     $aPalavras      = explode(' ',$sString);
     $iTamanhoTotal  = 0;
     $iIndLinha      = 0;
-    $aRetornoString = array();
+    $aRetornoString = [];
 
     foreach ( $aPalavras as $iInd => $sPalavra ) {
 
@@ -198,7 +198,7 @@ abstract class DBString {
    */
   public static function isCPF($sCpf) {
 
-    $aBlackList = array(str_repeat("0",11),
+    $aBlackList = [str_repeat("0",11),
       str_repeat("1",11),
       str_repeat("2",11),
       str_repeat("3",11),
@@ -207,7 +207,7 @@ abstract class DBString {
       str_repeat("6",11),
       str_repeat("7",11),
       str_repeat("8",11),
-      str_repeat("9",11));
+      str_repeat("9",11)];
     /**
      * Validamos se a String tem o tamanho correto
      */
@@ -271,7 +271,7 @@ abstract class DBString {
    */
   public static function isCNPJ( $sCNPJ ) {
 
-    $aBlackList = array(
+    $aBlackList = [
       str_repeat("0",14),
       str_repeat("1",14),
       str_repeat("2",14),
@@ -282,7 +282,7 @@ abstract class DBString {
       str_repeat("7",14),
       str_repeat("8",14),
       str_repeat("9",14)
-    );
+    ];
     /**
      * Validamos se a String tem o tamanho correto
      */
@@ -366,7 +366,7 @@ abstract class DBString {
 
   public static function isNomeValido($sNome, $iRegra){
 
-    $aComposicaoNome = explode(' ', $sNome);
+    $aComposicaoNome = explode(' ', (string) $sNome);
 
     switch ( $iRegra ) {
       /**
@@ -395,7 +395,7 @@ abstract class DBString {
        */
     case DBString::NOME_REGRA_3:
 
-      $aComposicaoNome = explode(' ', $sNome);
+      $aComposicaoNome = explode(' ', (string) $sNome);
 
       if ( count($aComposicaoNome) < 2 ) {
         return false;
@@ -409,7 +409,7 @@ abstract class DBString {
     case DBString::NOME_REGRA_4:
 
       $sExpressao = '/([a-zA-Z¿-ˇ\s])\1{3}/';
-      return preg_match( $sExpressao, $sNome ) ? false : true;
+      return preg_match( $sExpressao, (string) $sNome ) ? false : true;
 
       break;
 
@@ -420,7 +420,7 @@ abstract class DBString {
 
       // $sExpressao = '/^([a-zA-Z\s]+)$/';
       $sExpressao = '/[¿-ˇ0-9.]/';
-      return preg_match($sExpressao, $sNome) ? false : true;
+      return preg_match($sExpressao, (string) $sNome) ? false : true;
 
       break;
 
@@ -449,7 +449,7 @@ abstract class DBString {
    */
   public static function validarTamanhoMinimo($sString, $iTamanhoMinimo) {
 
-    return (strlen($sString) >= $iTamanhoMinimo);
+    return (strlen((string) $sString) >= $iTamanhoMinimo);
   }
 
   /**
@@ -484,7 +484,7 @@ abstract class DBString {
     if ($lLetrasAcentuadas ) {
       $sRegex = '/^[a-zA-Z¿-ˇ\s]+$/';
     }
-    return preg_match($sRegex, $sPalavra) ? true : false;
+    return preg_match($sRegex, (string) $sPalavra) ? true : false;
   }
 
   /**
@@ -528,22 +528,22 @@ abstract class DBString {
   public static function removerAcentuacao($sString) {
 
     $sString = preg_replace("/[¡¿¬√]/", "A", $sString);
-    $sString = preg_replace("/[·‡‚„™]/","a", $sString);
+    $sString = preg_replace("/[·‡‚„™]/","a", (string) $sString);
 
-    $sString = preg_replace("/[…» ]/",  "E", $sString);
-    $sString = preg_replace("/[ÈËÍ]/",  "e", $sString);
+    $sString = preg_replace("/[…» ]/",  "E", (string) $sString);
+    $sString = preg_replace("/[ÈËÍ]/",  "e", (string) $sString);
 
-    $sString = preg_replace("/[”“‘’÷]/", "O", $sString);
-    $sString = preg_replace("/[ÛÚÙıˆ∫]/","o", $sString);
+    $sString = preg_replace("/[”“‘’÷]/", "O", (string) $sString);
+    $sString = preg_replace("/[ÛÚÙıˆ∫]/","o", (string) $sString);
 
-    $sString = preg_replace("/[⁄Ÿ€‹]/",  "U", $sString);
-    $sString = preg_replace("/[˙˘˚¸]/",  "u", $sString);
+    $sString = preg_replace("/[⁄Ÿ€‹]/",  "U", (string) $sString);
+    $sString = preg_replace("/[˙˘˚¸]/",  "u", (string) $sString);
 
-    $sString = preg_replace("/[ÕÃŒ]/",  "I", $sString);
-    $sString = preg_replace("/[ÌÏÓ]/",  "i", $sString);
+    $sString = preg_replace("/[ÕÃŒ]/",  "I", (string) $sString);
+    $sString = preg_replace("/[ÌÏÓ]/",  "i", (string) $sString);
 
-    $sString = preg_replace("/«/", "C", $sString);
-    $sString = preg_replace("/Á/", "c", $sString);
+    $sString = preg_replace("/«/", "C", (string) $sString);
+    $sString = preg_replace("/Á/", "c", (string) $sString);
 
     return $sString;
   }
@@ -606,7 +606,7 @@ abstract class DBString {
    */
   public static function abreviaSobrenome($sNome, $lRemoverPreposicoes = true) {
 
-    $aConectivos = array('do', 'da', 'de', 'dos', 'das', 'des');
+    $aConectivos = ['do', 'da', 'de', 'dos', 'das', 'des'];
 
     $aNome  = explode(" ", $sNome);
     $iNomes = count($aNome);
@@ -615,7 +615,7 @@ abstract class DBString {
       return $sNome;
     }
 
-    $aNovoNome   = array();
+    $aNovoNome   = [];
     $aNovoNome[] = array_shift($aNome);
     $sUltimoNome = array_pop($aNome);
 
@@ -658,7 +658,7 @@ abstract class DBString {
    */
   static public function numeroPorExtenso($iNumero, $lMaiusculo = false) {
 
-    $nValor = ereg_replace(",", "\.", $iNumero);
+    $nValor = preg_replace("#,#m", "\.", $iNumero);
 
     $zeros = '000.000.000,00';
     $nValor = number_format($nValor,2);
@@ -668,7 +668,7 @@ abstract class DBString {
     $sMilhao .= ( (substr($nValor,0,3) > 1) ? 'milhıes' : '' );
     $sMilhar  = self::transcreveNumero(substr($nValor,4,3));
 
-    if (trim($sMilhar) == "um") {
+    if (trim((string) $sMilhar) == "um") {
       $sMilhar = 'mil';
     } else {
       $sMilhar .= ( (substr($nValor,4,3) > 0) ? 'mil' : '' );
@@ -706,28 +706,28 @@ abstract class DBString {
 
   static private function transcreveNumero($nValor) {
 
-    $aUnidade  = array('','um ','dois ','trÍs ','quatro ','cinco ','seis ','sete ','oito ','nove ');
-    $aDezenas  = array('',' ','vinte ','trinta ','quarenta ', 'cinquenta ', 'sessenta ', 'setenta ','oitenta ','noventa ');
-    $aCentenas = array('','cento ','duzentos ','trezentos ','quatrocentos ','quinhentos ','seiscentos ','setecentos ','oitocentos ','novecentos ');
-    $aExcessao = array('dez ', 'onze ', 'doze ', 'treze ', 'quatorze ', 'quinze ', 'desesseis ', 'desessete ', 'dezoito ', 'desenove ');
+    $aUnidade  = ['','um ','dois ','trÍs ','quatro ','cinco ','seis ','sete ','oito ','nove '];
+    $aDezenas  = ['',' ','vinte ','trinta ','quarenta ', 'cinquenta ', 'sessenta ', 'setenta ','oitenta ','noventa '];
+    $aCentenas = ['','cento ','duzentos ','trezentos ','quatrocentos ','quinhentos ','seiscentos ','setecentos ','oitocentos ','novecentos '];
+    $aExcessao = ['dez ', 'onze ', 'doze ', 'treze ', 'quatorze ', 'quinze ', 'desesseis ', 'desessete ', 'dezoito ', 'desenove '];
 
-    $nPosicao1 = substr($nValor,0,1);
-    $nPosicao2 = substr($nValor,1,1);
-    $nPosicao3 = substr($nValor,2,1);
+    $nPosicao1 = substr((string) $nValor,0,1);
+    $nPosicao2 = substr((string) $nValor,1,1);
+    $nPosicao3 = substr((string) $nValor,2,1);
 
     $sCentena  = $aCentenas[($nPosicao1)];
     $sDezena   = $aDezenas[($nPosicao2)];
     $sUnidade  = $aUnidade[($nPosicao3)];
 
-    if (substr($nValor,0,3) == '100')
+    if (str_starts_with((string) $nValor, '100'))
     { $sCentena = 'cem '; }
 
-    if (substr($nValor,1,1) == '1') {
+    if (substr((string) $nValor,1,1) == '1') {
       $sDezena = $aExcessao[$nPosicao3];
       $sUnidade = '';
     }
 
-    $aResultado = array();
+    $aResultado = [];
     if (!empty($sCentena)) {
       $aResultado[] = $sCentena;
     }
@@ -790,7 +790,7 @@ abstract class DBString {
     return \DBString::formatStringRecursive($entrada, function($string) {
 
       if (!db_utils::isUTF8($string)) {
-       $string = utf8_encode($string);
+       $string = mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
       }
       return $string;
     });
@@ -806,7 +806,7 @@ abstract class DBString {
     return \DBString::formatStringRecursive($entrada, function($string) {
 
       if (db_utils::isUTF8($string)) {
-        $string = utf8_decode($string);
+        $string = mb_convert_encoding($string, 'ISO-8859-1');
       }
       return $string;
     });
@@ -814,18 +814,12 @@ abstract class DBString {
 
   public static function urldecode_all($entrada) {
 
-    return \DBString::formatStringRecursive($entrada, function($string) {
-
-      return urldecode($string);
-    });
+    return \DBString::formatStringRecursive($entrada, fn($string) => urldecode((string) $string));
   }
 
   public static function urlencode_all($entrada) {
 
-    return \DBString::formatStringRecursive($entrada, function($string) {
-
-      return urlencode($string);
-    });
+    return \DBString::formatStringRecursive($entrada, fn($string) => urlencode((string) $string));
   }
 
   /**
@@ -870,7 +864,7 @@ abstract class DBString {
     $response = \DBString::removerAcentuacao($string);
     $response = \DBString::removerCaracteresEspeciais($response);
     $response = preg_replace("/\s+/",  "-", $response);
-    $response = mb_strtolower($response);
+    $response = mb_strtolower((string) $response);
     return $response;
   }
 
@@ -883,13 +877,7 @@ abstract class DBString {
      */
     public static function contem($haystack, $needles)
     {
-        foreach ((array)$needles as $needle) {
-            if ($needle !== '' && mb_strpos($haystack, $needle) !== false) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any((array)$needles, fn($needle) => $needle !== '' && mb_strpos($haystack, (string) $needle) !== false);
     }
 
     /**
@@ -919,7 +907,7 @@ abstract class DBString {
 
         $has = false;
         foreach ($array as $item) {
-            $has = strpos($valor, $item) !== false;
+            $has = str_contains((string) $valor, (string) $item);
             if ($has) {
                 break;
             }
@@ -936,7 +924,7 @@ abstract class DBString {
      */
     public static function removeMascaraTelefone($string)
     {
-        return preg_replace("/\s|[A-z]|-|\(|\)+/",  "", $string);
+        return preg_replace("/\s|[A-z]|-|\(|\)+/",  "", (string) $string);
     }
 
     public static function removerCaracteresEspeciaisAcentos($string)
@@ -951,7 +939,7 @@ abstract class DBString {
     public static function upperCaseCaracteresComAcentos($string, $chageEncodeUT8toISO88591 = true)
     {
         $string  =  preg_replace("[^a-zA-Z0-9]", "", strtr($string, "·‡„‚ÈÍÌÛÙı˙¸Á", "¡¿√¬… Õ”‘’⁄‹«"));
-        if (mb_detect_encoding($string) == "UTF-8" and $chageEncodeUT8toISO88591===true) {
+        if (mb_detect_encoding((string) $string) == "UTF-8" and $chageEncodeUT8toISO88591===true) {
             $string = mb_convert_encoding($string, "ISO-8859-1");
         }
         return $string;

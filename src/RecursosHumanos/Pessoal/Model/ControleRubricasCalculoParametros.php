@@ -11,39 +11,9 @@ use Servidor;
 class ControleRubricasCalculoParametros
 {
     /**
-     * @var Instituicao
-     */
-    private $instituicao;
-
-    /**
      * @var DBCompetencia
      */
     private $competencia;
-
-    /**
-     * @var Servidor
-     */
-    private $servidor;
-
-    /**
-     * @var Rubrica
-     */
-    private $rubrica;
-
-    /**
-     * @var float
-     */
-    private $quantidadeAdicionada = 0;
-
-    /**
-     * @var bool
-     */
-    private $isAlteracao = false;
-
-    /**
-     * @var string
-     */
-    private $tabela;
 
     /**
      * ControleHorasExtrasCalculoParametros constructor.
@@ -56,21 +26,15 @@ class ControleRubricasCalculoParametros
      * @param string $tabela
      */
     public function __construct(
-        Instituicao $instituicao,
+        private Instituicao $instituicao,
         DBCompetencia $competencia,
-        Servidor $servidor,
-        Rubrica $rubrica,
-        $quantidadeAdicionada,
-        $isAlteracao,
-        $tabela
+        private Servidor $servidor,
+        private Rubrica $rubrica,
+        private $quantidadeAdicionada,
+        private $isAlteracao,
+        private $tabela
     ) {
-        $this->instituicao = $instituicao;
         $this->competencia = $competencia;
-        $this->servidor = $servidor;
-        $this->rubrica = $rubrica;
-        $this->quantidadeAdicionada = $quantidadeAdicionada;
-        $this->isAlteracao = $isAlteracao;
-        $this->tabela = $tabela;
     }
 
     /**

@@ -115,14 +115,14 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
       $oDadosGestor = db_utils::fieldsMemory($rsEscolaGestor, 0);
       $oDadosGestorEscola->numero_cpf_gestor_escolar = $oDadosGestor->z01_cgccpf;
-      $oDadosGestorEscola->nome_gestor_escolar       = $this->removeCaracteres(trim($oDadosGestor->z01_nome), 1);
+      $oDadosGestorEscola->nome_gestor_escolar       = $this->removeCaracteres(trim((string) $oDadosGestor->z01_nome), 1);
       $oDadosGestorEscola->cargo_gestor_escolar      = 1;
 
       if (empty($oDadosGestor->ed254_i_codigo)) {
         $oDadosGestorEscola->cargo_gestor_escolar = 2;
       }
 
-      $oDadosGestorEscola->endereco_eletronico_gestor_escolar = strtoupper(trim($oDadosGestor->ed325_email));
+      $oDadosGestorEscola->endereco_eletronico_gestor_escolar = strtoupper(trim((string) $oDadosGestor->ed325_email));
     }
     return $oDadosGestorEscola;
   }
@@ -233,6 +233,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     return $oDadosInfraEstrutura;
   }
 
+  #[\Override]
   public function getDadosInfraEstrutura() {
 
     $oDadosInfraEstrutura = $this->criarObjetoInfraestrutura();
@@ -322,6 +323,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @param  stdClass $oDadosInfra dados da infraestrutura
    * @return array
    */
+  #[\Override]
   public function getDadosAvaliacao ($oDadosInfra) {
 
     /**
@@ -469,7 +471,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
           $aPerguntas[$oPergunta->campo] = $oPergunta;
         }
 
-        if (trim($iRespostaPergunta) != "" ) {
+        if (trim((string) $iRespostaPergunta) != "" ) {
           $aPerguntas[$oPergunta->campo]->respostas = $aRespostasObjetivas[$iRespostaPergunta];
         }
 
@@ -479,13 +481,13 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
          * Caso a pergunta seja 3000010 (equipamentos existentes) e a resposta esteja como zero, setamos a resposta
          * como vazio
          */
-        $mResposta = trim($oPergunta->respostas);
+        $mResposta = trim((string) $oPergunta->respostas);
         if ( in_array($oPergunta->db103_sequencial, $aPerguntasLimparValorZero) && empty($mResposta) ) {
           $oPergunta->respostas = '';
         }
         $aPerguntas[$oPergunta->campo] = $oPergunta;
 
-        if ( in_array($oPergunta->db103_sequencial, $aPerguntasRespostaObrigatoria) && trim($oPergunta->respostas) == '') {
+        if ( in_array($oPergunta->db103_sequencial, $aPerguntasRespostaObrigatoria) && trim((string) $oPergunta->respostas) == '') {
           $aPerguntas[$oPergunta->campo]->respostas = 0;
         }
       }
@@ -500,6 +502,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @param IExportacaoCenso instancia da Importacao do censo
    * @return boolean
    */
+    #[\Override]
     public static function validarDados(IExportacaoCenso $oExportacaoCenso) {
 
     $lTodosDadosValidos = true;
@@ -509,14 +512,14 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     /**
      * Início da validação dos campos obrigatórios
     */
-    if( trim( $oDadosEscola->registro00->codigo_escola_inep ) == '' ) {
+    if( trim( (string) $oDadosEscola->registro00->codigo_escola_inep ) == '' ) {
 
       $sMensagem          = "É necessário informar o código INEP da escola.";
       $lTodosDadosValidos = false;
       $oExportacaoCenso->logErro( $sMensagem, ExportacaoCenso2015::LOG_ESCOLA );
     }
     // Validações do código INEP
-    if( trim( $oDadosEscola->registro00->codigo_escola_inep ) != '' ) {
+    if( trim( (string) $oDadosEscola->registro00->codigo_escola_inep ) != '' ) {
 
       if( !DBNumber::isInteger( $oDadosEscola->registro00->codigo_escola_inep ) ) {
 
@@ -525,7 +528,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
         $oExportacaoCenso->logErro( $sMensagem, ExportacaoCenso2015::LOG_ESCOLA );
       }
 
-      if( strlen( trim( $oDadosEscola->registro00->codigo_escola_inep ) ) != 8 ) {
+      if( strlen( trim( (string) $oDadosEscola->registro00->codigo_escola_inep ) ) != 8 ) {
 
         $sMensagem          = "Código INEP da escola inválido. O código INEP deve conter 8 dígitos.";
         $lTodosDadosValidos = false;
@@ -542,13 +545,13 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     /**
      * Valida dados identificação
      */
-    if (trim($oDadosEscola->registro00->nome_escola) == '') {
+    if (trim((string) $oDadosEscola->registro00->nome_escola) == '') {
 
       $lTodosDadosValidos = false;
       $oExportacaoCenso->logErro("Nome da Escola não pode ser vazio", ExportacaoCenso2015::LOG_ESCOLA);
     }
 
-    if ( trim( $oDadosEscola->registro00->nome_escola ) != '' && strlen($oDadosEscola->registro00->nome_escola) < 4 ) {
+    if ( trim( (string) $oDadosEscola->registro00->nome_escola ) != '' && strlen((string) $oDadosEscola->registro00->nome_escola) < 4 ) {
 
       $lTodosDadosValidos = false;
       $oExportacaoCenso->logErro("Nome da Escola deve conter no mínimo 4 dígitos", ExportacaoCenso2015::LOG_ESCOLA);
@@ -575,13 +578,13 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
         $oExportacaoCenso->logErro( $sMensagem, ExportacaoCenso2015::LOG_ESCOLA );
       }
 
-      if (strlen($oDadosEscola->registro00->cep) < 8) {
+      if (strlen((string) $oDadosEscola->registro00->cep) < 8) {
 
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro("CEP  da escola deve conter 8 dígitos.", ExportacaoCenso2015::LOG_ESCOLA);
       }
 
-      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', $oDadosEscola->registro00->cep)) {
+      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', (string) $oDadosEscola->registro00->cep)) {
 
         $lTodosDadosValidos = false;
         $sMensagem          = "O Campo CEP foi preenchido com um valor inválido. CEP: {$oDadosEscola->registro00->cep}";
@@ -646,7 +649,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
      */
     if ($oDadosEscola->registro00->situacao_funcionamento == 1) {
 
-      if (trim($oDadosEscola->registro00->codigo_orgao_regional_ensino) == '' && $oDadosEscola->registro00->lOrgaoEnsinoObrigatorio) {
+      if (trim((string) $oDadosEscola->registro00->codigo_orgao_regional_ensino) == '' && $oDadosEscola->registro00->lOrgaoEnsinoObrigatorio) {
 
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro("Orgão Regional de Ensino obrigatório.", ExportacaoCenso2015::LOG_ESCOLA);
@@ -661,7 +664,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
         $oDataTermino = null;
         try {
           $oDataInicio  = new DBDate( $dtInicioAnoLetivo );
-        } catch( Exception $o) {
+        } catch( Exception) {
 
           $sMensagem  = "Data de início do ano letivo não é válida. Data informada: {$dtInicioAnoLetivo}. ";
           $sMensagem .= "Formato válido: dd/mm/aaaa.";
@@ -736,15 +739,15 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
         if( $oDadosEscola->registro00->{$sPropriedadeTelefone} != '' ) {
 
-          if( strlen( $oDadosEscola->registro00->{$sPropriedadeTelefone} ) < 8 ) {
+          if( strlen( (string) $oDadosEscola->registro00->{$sPropriedadeTelefone} ) < 8 ) {
 
             $sMensagem          = "Campo {$sMensagemTelefone} deve conter 8 dígitos";
             $lTodosDadosValidos = false;
             $oExportacaoCenso->logErro( $sMensagem, ExportacaoCenso2015::LOG_ESCOLA );
           }
 
-          if (    substr($oDadosEscola->registro00->{$sPropriedadeTelefone}, 0, 1) != 9
-               && strlen($oDadosEscola->registro00->{$sPropriedadeTelefone}) == 9
+          if (    substr((string) $oDadosEscola->registro00->{$sPropriedadeTelefone}, 0, 1) != 9
+               && strlen((string) $oDadosEscola->registro00->{$sPropriedadeTelefone}) == 9
              ) {
 
             $sMensagem          = "Campo {$sMensagemTelefone}, ao conter 9 dígitos, o primeiro algarismo deve ser 9.";
@@ -756,7 +759,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
       if ($oDadosEscola->registro00->fax != '') {
 
-        if (strlen($oDadosEscola->registro00->fax) < 8) {
+        if (strlen((string) $oDadosEscola->registro00->fax) < 8) {
 
           $lTodosDadosValidos = false;
           $oExportacaoCenso->logErro("Campo Fax deve conter 8 dígitos", ExportacaoCenso2015::LOG_ESCOLA);
@@ -841,7 +844,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
           $oExportacaoCenso->logErro("O CNPJ da escola deve ser informado quando escola for privada.", ExportacaoCenso2015::LOG_ESCOLA);
         }
 
-        if(    trim( $oDadosEscola->registro00->cnpj_escola_privada ) != ''
+        if(    trim( (string) $oDadosEscola->registro00->cnpj_escola_privada ) != ''
             && !DBString::isCNPJ( $oDadosEscola->registro00->cnpj_escola_privada )
           ) {
 
@@ -894,7 +897,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $oExportacaoCenso->logErro("Número do CPF do gestor é obrigatório", ExportacaoCenso2015::LOG_ESCOLA);
     }
 
-    if ( in_array( trim($oDados->numero_cpf_gestor_escolar), ["00000000191", "00000000000"] ) ) {
+    if ( in_array( trim((string) $oDados->numero_cpf_gestor_escolar), ["00000000191", "00000000000"] ) ) {
 
       $lValidou  = false;
       $sMensagem           = "Número do CPF ({$oDados->numero_cpf_gestor_escolar}) do";
@@ -909,7 +912,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     }
 
     $sExpressao          = '/[^a-zA-Z\s]+/';
-    $lValidacaoExpressao = preg_match($sExpressao, $oDados->nome_gestor_escolar) ? true : false;
+    $lValidacaoExpressao = preg_match($sExpressao, (string) $oDados->nome_gestor_escolar) ? true : false;
 
     if ($lValidacaoExpressao) {
 
@@ -946,21 +949,21 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     $sRegexCoordenadas = '/[^\-0-9.]+/i';
     if ( !empty($oDados->latitude) ) {
 
-      if ( strlen($oDados->latitude) > 20 ) {
+      if ( strlen((string) $oDados->latitude) > 20 ) {
 
         $sMensagem  = "Latitude deve conter no máximo 20 caractéres.";
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro($sMensagem, ExportacaoCenso2015::LOG_ESCOLA);
       }
 
-      if ( preg_match ('/[^\-0-9.]+/i',  $oDados->latitude) ) {
+      if ( preg_match ('/[^\-0-9.]+/i',  (string) $oDados->latitude) ) {
 
         $sMensagem  = "Latitude aceita deve conter somente os seguintes caractéres entre parêntesis(0123456789.-).";
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro($sMensagem, ExportacaoCenso2015::LOG_ESCOLA);
       }
 
-      if ( strpos($oDados->latitude, "-") > 0 ) {
+      if ( strpos((string) $oDados->latitude, "-") > 0 ) {
 
         $sMensagem  = "O sinal de subtração(-) só pode vir na posição inicial.";
         $lTodosDadosValidos = false;
@@ -977,21 +980,21 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
     if ( !empty($oDados->longitude) ) {
 
-      if ( strlen($oDados->longitude) > 20 ) {
+      if ( strlen((string) $oDados->longitude) > 20 ) {
 
         $sMensagem  = "Longitude deve conter no máximo 20 caractéres.";
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro($sMensagem, ExportacaoCenso2015::LOG_ESCOLA);
       }
 
-      if ( preg_match ('/[^\-0-9.]+/i',  $oDados->longitude) ) {
+      if ( preg_match ('/[^\-0-9.]+/i',  (string) $oDados->longitude) ) {
 
         $sMensagem  = "Latitude aceita deve conter somente os seguintes caractéres entre parêntesis(0123456789.-).";
         $lTodosDadosValidos = false;
         $oExportacaoCenso->logErro($sMensagem, ExportacaoCenso2015::LOG_ESCOLA);
       }
 
-      if ( strpos($oDados->longitude, "-") > 0 ) {
+      if ( strpos((string) $oDados->longitude, "-") > 0 ) {
 
         $sMensagem  = "O sinal de subtração(-) só pode vir na posição inicial.";
         $lTodosDadosValidos = false;
@@ -1014,6 +1017,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @param IExportacaoCenso $oExportacaoCenso
    * @return bool
    */
+    #[\Override]
     protected static function validarDadosInfraEstrutura(IExportacaoCenso $oExportacaoCenso)
     {
 
@@ -1034,7 +1038,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     $aValidou[] = static::validarRegistro10Colunas21a25( $oExportacaoCenso );
     $aValidou[] = static::validarRegistro10Colunas105a107( $oExportacaoCenso );
 
-    $lValidou = array_reduce( $aValidou, 'validaVerdadeiro');
+    $lValidou = array_reduce( $aValidou, validaVerdadeiro(...));
 
     return $lValidou;
   }
@@ -1166,7 +1170,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     $lNumeroSalasExistentesValido = true;
 
     if( $oDadosEscola->registro10->numero_salas_aula_existentes_escola != ''
-      && !DBNumber::isInteger( trim( $oDadosEscola->registro10->numero_salas_aula_existentes_escola ) ) ) {
+      && !DBNumber::isInteger( trim( (string) $oDadosEscola->registro10->numero_salas_aula_existentes_escola ) ) ) {
 
       $sMensagem                    = "Valor do 'N° de Salas de Aula Existentes na Escola' inválido. Deve ser";
       $sMensagem                   .= " informado somente números.";
@@ -1180,7 +1184,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $aErros[] = "O valor do campo 'N° de Salas de Aula Existentes na Escola' deve ser maior que 0.";
     }
 
-    if ( strlen($oDadosEscola->registro10->numero_salas_aula_existentes_escola) > 4 ) {
+    if ( strlen((string) $oDadosEscola->registro10->numero_salas_aula_existentes_escola) > 4 ) {
       $aErros[] = 'O campo "Número de salas de aula existentes na escola" está maior que o especificado.';
     }
 
@@ -1190,7 +1194,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
 
     $lNumeroSalasUsadasValido = true;
     if( $oDadosEscola->registro10->numero_salas_usadas_como_salas_aula !== ''
-      && !DBNumber::isInteger( trim( $oDadosEscola->registro10->numero_salas_usadas_como_salas_aula ) ) ) {
+      && !DBNumber::isInteger( trim( (string) $oDadosEscola->registro10->numero_salas_usadas_como_salas_aula ) ) ) {
 
       $lNumeroSalasUsadasValido = false;
       $sMensagem                = "Valor do 'N° de Salas Utilizadas como Sala de Aula' inválido. Deve ser";
@@ -1202,7 +1206,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $aErros[] = "O valor do campo 'N° de Salas Utilizadas como Sala de Aula' deve ser maior de 0.";
     }
 
-    if ( strlen($oDadosEscola->registro10->numero_salas_usadas_como_salas_aula) > 4 ) {
+    if ( strlen((string) $oDadosEscola->registro10->numero_salas_usadas_como_salas_aula) > 4 ) {
       $aErros[] = 'O campo "Número de salas utilizadas como sala de aula - Dentro e fora do prédio" está maior que o especificado.';
     }
 
@@ -1255,7 +1259,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $aErros[] = "Quantidade de computadores de uso administrativo não pode ser zero (0).";
     }
 
-    if ( strlen($oRegistro10->quantidade_computadores_uso_administrativo) > 4 ) {
+    if ( strlen((string) $oRegistro10->quantidade_computadores_uso_administrativo) > 4 ) {
       $aErros[] = 'O campo "Quantidade de computadores de uso administrativo" está maior que o especificado.';
     }
 
@@ -1271,7 +1275,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
       $aErros[] = "Quantidade de computadores de uso dos alunos não pode maior que os computadores existentes na escola.";
     }
 
-    if ( strlen($oRegistro10->quantidade_computadores_uso_alunos) > 4 ) {
+    if ( strlen((string) $oRegistro10->quantidade_computadores_uso_alunos) > 4 ) {
       $aErros[] = 'O campo "Quantidade de computadores de uso dos alunos" está maior que o especificado.';
     }
 
@@ -1704,6 +1708,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @throws DBException
    * @return boolean
    */
+  #[\Override]
   public function atualizarDados(DBLayoutLinha $oLinha)  {
 
     $oDaoEscola                        = new cl_escola();
@@ -1769,14 +1774,14 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
         $oExportacaoCenso->logErro( $sMsgErro, ExportacaoCenso2015::LOG_ESCOLA );
       }
 
-      if ( !empty($sValue) && strlen($sValue) != 8 ) {
+      if ( !empty($sValue) && strlen((string) $sValue) != 8 ) {
 
         $sMsgErro  = "O campo \"{$sCompartilha}\" deve ter 8 caractéres.";
         $lValidou   = false;
         $oExportacaoCenso->logErro( $sMsgErro, ExportacaoCenso2015::LOG_ESCOLA );
       }
 
-      if ( preg_match("/[^1-9]/", $sValue) ) {
+      if ( preg_match("/[^1-9]/", (string) $sValue) ) {
 
         $sMsgErro  = "O campo \"{$sCompartilha}\", quando preenchido, apenas números podem ser informados.";
         $lValidou   = false;

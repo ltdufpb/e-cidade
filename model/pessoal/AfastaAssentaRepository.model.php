@@ -29,7 +29,7 @@ class AfastaAssentaRepository {
 
   public static function getAfastamentosPorAssentamento(Assentamento $oAssentamento) {
 
-    $aLista = array();
+    $aLista = [];
     $oDaoAfastaAssenta   = new cl_afastaassenta;
     $sWhereAfastaAssenta = " h81_assenta = ". $oAssentamento->getCodigo();
     $sSqlAfastaAssenta   = $oDaoAfastaAssenta->sql_query_file(null, "*", null, $sWhereAfastaAssenta);

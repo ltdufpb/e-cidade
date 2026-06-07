@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-$aFuncoesExercidas   = array();
+$aFuncoesExercidas   = [];
 $oDocente            = DocenteRepository::getDocenteByCodigo( $oGet->cgm  );
 $aProfissionalEscola = ProfissionalEscolaRepository::getEscolasProfissionalByCGM( $oDocente->getCgm() );
 
@@ -48,8 +48,8 @@ foreach ($aProfissionalEscola as $oProfissional) {
     $oDadosAtividade = new stdClass();
     $oDadosAtividade->iCodigo          = $oAtividade->getCodigo();
     $oDadosAtividade->iCodigoAtividade = $oAtividade->getAtividadeEscolar()->getCodigo();
-    $oDadosAtividade->sEscola          = utf8_encode($sEscola);
-    $oDadosAtividade->sDescricao       = utf8_encode( $oAtividade->getAtividadeEscolar()->getDescricao() );
+    $oDadosAtividade->sEscola          = mb_convert_encoding($sEscola, 'UTF-8', 'ISO-8859-1');
+    $oDadosAtividade->sDescricao       = mb_convert_encoding( $oAtividade->getAtividadeEscolar()->getDescricao(), 'UTF-8', 'ISO-8859-1' );
 
     $sSaida = " Em Andamento ";
     if ( $oProfissional->getDataSaida() instanceof DBDate) {
@@ -58,7 +58,7 @@ foreach ($aProfissionalEscola as $oProfissional) {
 
     $oDadosAtividade->sAdimicao  = $oProfissional->getDataIngresso()->convertTo(DBDate::DATA_PTBR);
     $oDadosAtividade->sAdimicao .= " - {$sSaida} ";
-    $oDadosAtividade->sAdimicao  = utf8_encode($oDadosAtividade->sAdimicao);
+    $oDadosAtividade->sAdimicao  = mb_convert_encoding($oDadosAtividade->sAdimicao, 'UTF-8', 'ISO-8859-1');
 
     $oAtoLegal                      = $oAtividade->getAtoLegal();
     $oDadosAtividade->iCodigoAto    = "";
@@ -66,25 +66,25 @@ foreach ($aProfissionalEscola as $oProfissional) {
     if ( !is_null($oAtoLegal) ) {
 
       $oDadosAtividade->iCodigoAto    = $oAtividade->getAtoLegal()->getCodigoAtoLegal();
-      $oDadosAtividade->sDescricaoAto = utf8_encode( $oAtividade->getAtoLegal()->getFinalidade() );
+      $oDadosAtividade->sDescricaoAto = mb_convert_encoding( $oAtividade->getAtoLegal()->getFinalidade(), 'UTF-8', 'ISO-8859-1' );
     }
 
-    $oDadosAtividade->aResumoTurno = array();
-    $oDadosAtividade->aAgendas     = array();
+    $oDadosAtividade->aResumoTurno = [];
+    $oDadosAtividade->aAgendas     = [];
 
     foreach ( $oAtividade->getAgenda() as $oAgenda ) {
 
       $oDadosAgenda              = new stdClass();
       $oDadosAgenda->iCodigo     = $oAgenda->getCodigo();
       $oDadosAgenda->iDiaSemana  = $oAgenda->getDiaSemana();
-      $oDadosAgenda->sDiaSemana  = utf8_encode( $oAgenda->getNomeDiaSemana() );
+      $oDadosAgenda->sDiaSemana  = mb_convert_encoding( $oAgenda->getNomeDiaSemana(), 'UTF-8', 'ISO-8859-1' );
       $oDadosAgenda->iTurno      = $oAgenda->getTurnoReferente();
-      $oDadosAgenda->sTurno      = utf8_encode( $oAgenda->getDescricaoTurno() );
+      $oDadosAgenda->sTurno      = mb_convert_encoding( $oAgenda->getDescricaoTurno(), 'UTF-8', 'ISO-8859-1' );
       $oDadosAgenda->sHoraInicio = $oAgenda->getHoraInicio();
       $oDadosAgenda->sHoraFim    = $oAgenda->getHoraFim();
 
       $oDadosAgenda->iTipoHoraTrabalho = $oAgenda->getTipoHoraTrabalho()->getCodigo();
-      $oDadosAgenda->sTipoHoraTrabalho = utf8_encode( $oAgenda->getTipoHoraTrabalho()->getDescricao() );
+      $oDadosAgenda->sTipoHoraTrabalho = mb_convert_encoding( $oAgenda->getTipoHoraTrabalho()->getDescricao(), 'UTF-8', 'ISO-8859-1' );
 
       $oDadosAtividade->aAgendas[]     = $oDadosAgenda;
 
@@ -95,7 +95,7 @@ foreach ($aProfissionalEscola as $oProfissional) {
       $oResumo = new stdClass();
 
       $oResumo->sTurno            = $oDadosAgenda->sTurno;
-      $oResumo->sTipoHoraTrabalho = utf8_encode( $oDadosAgenda->sTipoHoraTrabalho );
+      $oResumo->sTipoHoraTrabalho = mb_convert_encoding( $oDadosAgenda->sTipoHoraTrabalho, 'UTF-8', 'ISO-8859-1' );
       $oResumo->iTurno            = $oDadosAgenda->iTurno;
       $oResumo->iTipoHoraTrabalho = $oDadosAgenda->iTipoHoraTrabalho;
 

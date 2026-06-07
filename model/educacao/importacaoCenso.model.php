@@ -442,7 +442,7 @@ abstract class importacaoCenso
     {
 
         $sData = $aLinha[3];
-        $aData = explode("/", $sData);
+        $aData = explode("/", (string) $sData);
 
         if (!empty($aData[2]) && $this->iAnoEscolhido != $aData[2]) {
             throw new Exception(" Arquivo informado não pertence ao ano de " . $this->iAnoEscolhido);
@@ -560,49 +560,49 @@ abstract class importacaoCenso
 
         if ($oDadosEscola != null) {
             if ($oLinha->sit_funcionamento != ""
-              && $oLinha->sit_funcionamento != trim($oDadosEscola->ed18_i_funcionamento)
+              && $oLinha->sit_funcionamento != trim((string) $oDadosEscola->ed18_i_funcionamento)
             ) {
                 $oDaoEscola->ed18_i_funcionamento = $oLinha->sit_funcionamento;
             }
 
             if ($oLinha->cep != ""
-              && $oLinha->cep != trim($oDadosEscola->ed18_c_cep)
+              && $oLinha->cep != trim((string) $oDadosEscola->ed18_c_cep)
             ) {
                 $oDaoEscola->ed18_c_cep = $oLinha->cep;
             }
 
             if ($oLinha->numero != ""
-              && $oLinha->numero != trim($oDadosEscola->ed18_i_numero)
+              && $oLinha->numero != trim((string) $oDadosEscola->ed18_i_numero)
             ) {
                 $oDaoEscola->ed18_i_numero = $oLinha->numero;
             }
 
             if ($oLinha->complemento != ""
-              && $oLinha->complemento != trim($oDadosEscola->ed18_c_compl)
+              && $oLinha->complemento != trim((string) $oDadosEscola->ed18_c_compl)
             ) {
                 $oDaoEscola->ed18_c_complemento = $oLinha->complemento;
             }
 
             if ($oLinha->email_esc != ""
-              && $oLinha->email_esc != trim($oDadosEscola->ed18_c_email)
+              && $oLinha->email_esc != trim((string) $oDadosEscola->ed18_c_email)
             ) {
                 $oDaoEscola->ed18_c_email = $oLinha->email_esc;
             }
 
             if ($oLinha->uf != ""
-              && $oLinha->uf != trim($oDadosEscola->ed18_i_censouf)
+              && $oLinha->uf != trim((string) $oDadosEscola->ed18_i_censouf)
             ) {
                 $oDaoEscola->ed18_i_censouf = $oLinha->uf;
             }
 
             if ($oLinha->mun_esc != ""
-              && $oLinha->mun_esc != trim($oDadosEscola->ed18_i_censomunic)
+              && $oLinha->mun_esc != trim((string) $oDadosEscola->ed18_i_censomunic)
             ) {
                 $oDaoEscola->ed18_i_censomunic = $oLinha->mun_esc;
             }
 
             if ($oLinha->distrito_esc != ""
-              && $oLinha->distrito_esc != trim($oDadosEscola->ed18_i_censodistrito)
+              && $oLinha->distrito_esc != trim((string) $oDadosEscola->ed18_i_censodistrito)
             ) {
                 $oDaoCensoDistrito = db_utils::getdao('censodistrito');
                 $sWhere = "ed262_i_censomunic = " . $oLinha->mun_esc;
@@ -618,7 +618,7 @@ abstract class importacaoCenso
             }
 
             if ($oLinha->orgregensino != ""
-              && $oLinha->orgregensino != trim($oDadosEscola->ed18_i_censoorgreg)
+              && $oLinha->orgregensino != trim((string) $oDadosEscola->ed18_i_censoorgreg)
             ) {
                 $oDaoCensoOrgReg = db_utils::getdao('censoorgreg');
                 $sWhereCensoOrg = "ed263_i_censouf = " . $oLinha->uf . " and ed263_i_codigocenso = '" . $oLinha->orgregensino . "'";
@@ -633,43 +633,43 @@ abstract class importacaoCenso
             }
 
             if ($oLinha->local_esc != ""
-              && $oLinha->local_esc != trim($oDadosEscola->ed18_c_local)
+              && $oLinha->local_esc != trim((string) $oDadosEscola->ed18_c_local)
             ) {
                 $oDaoEscola->ed18_c_local = $oLinha->local_escola;
             }
 
             if ($oLinha->catprivada_esc != ""
-              && $oLinha->catprivada_esc != trim($oDadosEscola->ed18_i_categprivada)
+              && $oLinha->catprivada_esc != trim((string) $oDadosEscola->ed18_i_categprivada)
             ) {
                 $oDaoEscola->ed18_i_categprivada = $oLinha->catprivada_esc;
             }
 
             if ($oLinha->conveniada != ""
-              && $oLinha->conveniada != trim($oDadosEscola->ed18_i_conveniada)
+              && $oLinha->conveniada != trim((string) $oDadosEscola->ed18_i_conveniada)
             ) {
                 $oDaoEscola->ed18_i_conveniada = $oLinha->conveniada;
             }
 
             if ($oLinha->cnas != ""
-              && $oLinha->cnas != trim($oDadosEscola->ed18_i_cnas)
+              && $oLinha->cnas != trim((string) $oDadosEscola->ed18_i_cnas)
             ) {
                 $oDaoEscola->ed18_i_cnas = $oLinha->cnas;
             }
 
             if ($oLinha->cebas != ""
-              && $oLinha->cebas != trim($oDadosEscola->ed18_i_cebas)
+              && $oLinha->cebas != trim((string) $oDadosEscola->ed18_i_cebas)
             ) {
                 $oDaoEscola->ed18_i_cebas = $oLinha->cebas;
             }
 
             if ($oLinha->mant_empresa != ""
-              && $oLinha->mant_empresa != trim($oDadosEscola->ed18_c_mantprivada)
+              && $oLinha->mant_empresa != trim((string) $oDadosEscola->ed18_c_mantprivada)
             ) {
                 $oDaoEscola->ed18_c_mantprivada = $oLinha->mant_empresa;
             }
 
             if ($oLinha->cnpj_escprivada != ""
-              && $oLinha->cnpj_escprivada != trim($oDadosEscola->ed18_i_cnpj)
+              && $oLinha->cnpj_escprivada != trim((string) $oDadosEscola->ed18_i_cnpj)
             ) {
                 $oDaoEscola->ed18_i_cnpj = $oLinha->cnpj_escprivada;
             }
@@ -692,7 +692,7 @@ abstract class importacaoCenso
             }
 
             if ($oLinha->credenciamento != ""
-              && $oLinha->credenciamento != trim($oDadosEscola->ed18_i_credenciamento)
+              && $oLinha->credenciamento != trim((string) $oDadosEscola->ed18_i_credenciamento)
             ) {
                 $oDaoEscola->ed18_i_credenciamento = $oLinha->credenciamento;
             }
@@ -755,31 +755,31 @@ abstract class importacaoCenso
 
         if ($oDadosEscola != null) {
             if ($oLinha->educindigena != ""
-              && $oLinha->educindigena != trim($oDadosEscola->ed18_i_educindigena)
+              && $oLinha->educindigena != trim((string) $oDadosEscola->ed18_i_educindigena)
             ) {
                 $oDaoEscola->ed18_i_educindigena = $oLinha->educindigena;
             }
 
             if ($oLinha->linguaindigenaministrado != ""
-              && $oLinha->linguaindigenaministrado != trim($oDadosEscola->ed18_i_tipolinguain)
+              && $oLinha->linguaindigenaministrado != trim((string) $oDadosEscola->ed18_i_tipolinguain)
             ) {
                 $oDaoEscola->ed18_i_tipolinguain = $oLinha->linguaindigenaministrado;
             }
 
             if ($oLinha->linguaportministrado != ""
-              && $oLinha->linguaportministrado != trim($oDadosEscola->ed18_i_tipolinguapt)
+              && $oLinha->linguaportministrado != trim((string) $oDadosEscola->ed18_i_tipolinguapt)
             ) {
                 $oDaoEscola->ed18_i_tipolinguapt = $oLinha->linguaportministrado;
             }
 
             if ($oLinha->codigoindigena != ""
-              && $oLinha->codigoindigena != trim($oDadosEscola->ed18_i_linguaindigena)
+              && $oLinha->codigoindigena != trim((string) $oDadosEscola->ed18_i_linguaindigena)
             ) {
                 $oDaoEscola->ed18_i_linguaindigena = $oLinha->codigoindigena;
             }
 
             if ($oLinha->localdifescola != ""
-              && $oLinha->localdifescola != trim($oDadosEscola->ed18_i_locdiferenciada)
+              && $oLinha->localdifescola != trim((string) $oDadosEscola->ed18_i_locdiferenciada)
             ) {
                 $oDaoEscola->ed18_i_locdiferenciada = $oLinha->localdifescola;
             }
@@ -799,7 +799,7 @@ abstract class importacaoCenso
                 $oDadosEscolaEstrutura = db_utils::fieldsmemory($rsEscolaEstrutura, 0);
 
                 if ($oLinha->prediocompartilhado != ""
-                  && $oLinha->prediocompartilhado != trim($oDadosEscolaEstrutura->ed255_i_compartilhado)
+                  && $oLinha->prediocompartilhado != trim((string) $oDadosEscolaEstrutura->ed255_i_compartilhado)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_compartilhado = $oLinha->prediocompartilhado;
                 }
@@ -824,13 +824,13 @@ abstract class importacaoCenso
 
 
                 if ($oLinha->salaexistentes != ""
-                  && $oLinha->salaexistentes != trim($oDadosEscolaEstrutura->ed255_i_salaexistente)
+                  && $oLinha->salaexistentes != trim((string) $oDadosEscolaEstrutura->ed255_i_salaexistente)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_salaexistente = $oLinha->salaexistentes;
                 }
 
                 if ($oLinha->salautilizada != ""
-                  && $oLinha->salautilizada != trim($oDadosEscolaEstrutura->ed255_i_salautilizada)
+                  && $oLinha->salautilizada != trim((string) $oDadosEscolaEstrutura->ed255_i_salautilizada)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_salautilizada = $oLinha->salautilizada;
                 }
@@ -866,7 +866,7 @@ abstract class importacaoCenso
 
 
                 if ($oLinha->aguaconsaluno != ""
-                  && $oLinha->aguaconsaluno != trim($oDadosEscolaEstrutura->ed255_i_aguafiltrada)
+                  && $oLinha->aguaconsaluno != trim((string) $oDadosEscolaEstrutura->ed255_i_aguafiltrada)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_aguafiltrada = $oLinha->aguaconsaluno;
                 }
@@ -983,61 +983,61 @@ abstract class importacaoCenso
 
 
                 if ($oLinha->equipcomputador != ""
-                  && $oLinha->equipcomputador != trim($oDadosEscolaEstrutura->ed255_i_computadores)
+                  && $oLinha->equipcomputador != trim((string) $oDadosEscolaEstrutura->ed255_i_computadores)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_computadores = $oLinha->equipcomputador;
                 }
 
                 if ($oLinha->qtdcomp != ""
-                  && $oLinha->qtdcomp != trim($oDadosEscolaEstrutura->ed255_i_qtdcomp)
+                  && $oLinha->qtdcomp != trim((string) $oDadosEscolaEstrutura->ed255_i_qtdcomp)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_qtdcomp = $oLinha->qtdcomp;
                 }
 
                 if ($oLinha->qtdcompadm != ""
-                  && $oLinha->qtdcompadm != trim($oDadosEscolaEstrutura->ed255_i_qtdcompadm)
+                  && $oLinha->qtdcompadm != trim((string) $oDadosEscolaEstrutura->ed255_i_qtdcompadm)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_qtdcompadm = $oLinha->qtdcompadm;
                 }
 
                 if ($oLinha->qtdcompaluno != ""
-                  && $oLinha->qtdcompaluno != trim($oDadosEscolaEstrutura->ed255_i_qtdcompalu)
+                  && $oLinha->qtdcompaluno != trim((string) $oDadosEscolaEstrutura->ed255_i_qtdcompalu)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_qtdcompalu = $oLinha->qtdcompaluno;
                 }
 
                 if ($oLinha->internet != ""
-                  && $oLinha->internet != trim($oDadosEscolaEstrutura->ed255_i_internet)
+                  && $oLinha->internet != trim((string) $oDadosEscolaEstrutura->ed255_i_internet)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_internet = $oLinha->internet;
                 }
 
                 if ($oLinha->bandalarga != ""
-                  && $oLinha->bandalarga != trim($oDadosEscolaEstrutura->ed255_i_bandalarga)
+                  && $oLinha->bandalarga != trim((string) $oDadosEscolaEstrutura->ed255_i_bandalarga)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_bandalarga = $oLinha->bandalarga;
                 }
 
                 if ($oLinha->alimentacao != ""
-                  && $oLinha->alimentacao != trim($oDadosEscolaEstrutura->ed255_i_alimentacao)
+                  && $oLinha->alimentacao != trim((string) $oDadosEscolaEstrutura->ed255_i_alimentacao)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_alimentacao = $oLinha->alimentacao;
                 }
 
                 if ($oLinha->ativcomplementar != ""
-                  && $oLinha->ativcomplementar != trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar)
+                  && $oLinha->ativcomplementar != trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_ativcomplementar = $oLinha->ativcomplementar;
                 }
 
                 if ($oLinha->atendaee != ""
-                  && $oLinha->atendaee != trim($oDadosEscolaEstrutura->ed255_i_aee)
+                  && $oLinha->atendaee != trim((string) $oDadosEscolaEstrutura->ed255_i_aee)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_aee = $oLinha->atendaee;
                 }
 
                 if ($oLinha->ensinoorgciclo != ""
-                  && $oLinha->ensinoorgciclo != trim($oDadosEscolaEstrutura->ed255_i_efciclos)
+                  && $oLinha->ensinoorgciclo != trim((string) $oDadosEscolaEstrutura->ed255_i_efciclos)
                 ) {
                     $oDaoEscolaEstrutura->ed255_i_efciclos = $oLinha->ensinoorgciclo;
                 }
@@ -1053,7 +1053,7 @@ abstract class importacaoCenso
                     $oDaoEscolaEstrutura->ed255_c_materdidatico = $sMaterialDidatico;
                 }
 
-                if (isset($oLinha->formaocupacao) && trim($oDadosEscolaEstrutura->ed255_i_formaocupacao)) {
+                if (isset($oLinha->formaocupacao) && trim((string) $oDadosEscolaEstrutura->ed255_i_formaocupacao)) {
                     $oDaoEscolaEstrutura->ed255_i_formaocupacao = $oLinha->formaocupacao;
                 }
 
@@ -1082,9 +1082,9 @@ abstract class importacaoCenso
     {
 
         $sNomeTurmaCensoNovo = $oLinha->nometurma;
-        $iCodigoInepTurma = trim($oLinha->codigoinepturma);
-        $iTipoAtendimento = trim($oLinha->tpatend);
-        $iEtapa = trim($oLinha->etapaensino);
+        $iCodigoInepTurma = trim((string) $oLinha->codigoinepturma);
+        $iTipoAtendimento = trim((string) $oLinha->tpatend);
+        $iEtapa = trim((string) $oLinha->etapaensino);
 
         if ($oLinha->tpatend == 0 || $oLinha->tpatend == 1
           || $oLinha->tpatend == 2 || $oLinha->tpatend == 3
@@ -1107,7 +1107,7 @@ abstract class importacaoCenso
 
             if (isset($oLinha->modalidade) && !empty($oLinha->modalidade)) {
                 $sWhereTurma .= (empty($sWhereTurma) ? "" : " AND ");
-                $sWhereTurma .= "      ed10_i_tipoensino = " . trim($oLinha->modalidade);
+                $sWhereTurma .= "      ed10_i_tipoensino = " . trim((string) $oLinha->modalidade);
             }
 
             $sWhereTurma .= "      AND ed18_c_codigoinep = '" . $this->iCodigoInepEscola . "'";
@@ -1161,13 +1161,13 @@ abstract class importacaoCenso
                     $oDaoTurmaac->ed268_i_codigoinep = $oDadosTurmaac->ed268_i_codigoinep;
 
                     if ($oLinha->freqsemanal != ""
-                      && $oLinha->freqsemanal != trim($oDadosTurmaac->ed268_i_ativqtd)
+                      && $oLinha->freqsemanal != trim((string) $oDadosTurmaac->ed268_i_ativqtd)
                     ) {
                         $oDaoTurmaac->ed268_i_ativqtd = $oLinha->freqsemanal;
                     }
 
                     if ($oLinha->ensinobraile != ""
-                      && $oLinha->ensinobraile != trim($oDadosTurmaac->ed268_c_aee)
+                      && $oLinha->ensinobraile != trim((string) $oDadosTurmaac->ed268_c_aee)
                     ) {
                         $oDaoTurmaac->ed268_c_aee = $oLinha->ensinobraile;
                         $oDaoTurmaac->ed268_c_aee .= $oLinha->ensinoptico;
@@ -1210,7 +1210,7 @@ abstract class importacaoCenso
 
             for ($iCont = 0; $iCont < $iTam; $iCont++) {
                 if ($this->lImportarDocente) {
-                    if (trim($aDadosRechumano[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+                    if (trim((string) $aDadosRechumano[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
                         $sMsg = "Recurso Humano [" . $aDadosRechumano[$iCont]->ed20_i_codigoinep . "] " . $aDadosRechumano[$iCont]->z01_nome;
                         $sMsg .= ": Recurso Humano não está mais vinculado a esta escola.\n";
                         $this->log($sMsg);
@@ -1223,43 +1223,43 @@ abstract class importacaoCenso
                 $oDaoRechumano->ed20_i_pais = "";
 
                 if (isset($oLinha->inepdocente)
-                  && $oLinha->inepdocente != trim($aDadosRechumano[$iCont]->ed20_i_codigoinep)
+                  && $oLinha->inepdocente != trim((string) $aDadosRechumano[$iCont]->ed20_i_codigoinep)
                 ) {
                     $oDaoRechumano->ed20_i_codigoinep = $oLinha->inepdocente;
                 }
 
                 if ($oLinha->nis != ""
-                  && $oLinha->nis != trim($aDadosRechumano[$iCont]->ed20_c_nis)
+                  && $oLinha->nis != trim((string) $aDadosRechumano[$iCont]->ed20_c_nis)
                 ) {
                     $oDaoRechumano->ed20_c_nis = $oLinha->nis;
                 }
 
                 if ($oLinha->raca != ""
-                  && $oLinha->raca != trim($aDadosRechumano[$iCont]->ed20_i_raca)
+                  && $oLinha->raca != trim((string) $aDadosRechumano[$iCont]->ed20_i_raca)
                 ) {
                     $oDaoRechumano->ed20_i_raca = $oLinha->raca;
                 }
 
                 if ($oLinha->nacionalidade != ""
-                  && $oLinha->nacionalidade != trim($aDadosRechumano[$iCont]->ed20_i_nacionalidade)
+                  && $oLinha->nacionalidade != trim((string) $aDadosRechumano[$iCont]->ed20_i_nacionalidade)
                 ) {
                     $oDaoRechumano->ed20_i_nacionalidade = $oLinha->nacionalidade;
                 }
 
                 if (!empty($oLinha->pais)
-                  && $oLinha->pais != trim($aDadosRechumano[$iCont]->ed228_i_paisonu)
+                  && $oLinha->pais != trim((string) $aDadosRechumano[$iCont]->ed228_i_paisonu)
                 ) {
                     $oDaoRechumano->ed20_i_pais = $this->getPais($oLinha->pais);
                 }
 
                 if ($oLinha->ufnasc != ""
-                  && $oLinha->ufnasc != trim($aDadosRechumano[$iCont]->ed20_i_censoufnat)
+                  && $oLinha->ufnasc != trim((string) $aDadosRechumano[$iCont]->ed20_i_censoufnat)
                 ) {
                     $oDaoRechumano->ed20_i_censoufnat = $oLinha->ufnasc;
                 }
 
                 if ($oLinha->municnasc != ""
-                  && $oLinha->municnasc != trim($aDadosRechumano[$iCont]->ed20_i_censomunicnat)
+                  && $oLinha->municnasc != trim((string) $aDadosRechumano[$iCont]->ed20_i_censomunicnat)
                 ) {
                     $oDaoRechumano->ed20_i_censomunicnat = $oLinha->municnasc;
                 }
@@ -1288,7 +1288,7 @@ abstract class importacaoCenso
     public function getMatriculasRechumano($oLinha)
     {
 
-        $iCodDocenteEsc = trim($oLinha->codigodocenteescola);
+        $iCodDocenteEsc = trim((string) $oLinha->codigodocenteescola);
 
         $oDaoRechumano = db_utils::getdao('rechumano');
         $sCampos = 'rechumano.*, ed228_i_paisonu, escola.ed18_c_codigoinep as vinculo_escola, ';
@@ -1406,13 +1406,13 @@ abstract class importacaoCenso
                 $oDaoRechumano->ed20_i_pais = "";
 
                 if ($oLinha->uf != ""
-                  && $oLinha->uf != trim($aDadosRechumano[$iCont]->ed20_i_censoufender)
+                  && $oLinha->uf != trim((string) $aDadosRechumano[$iCont]->ed20_i_censoufender)
                 ) {
                     $oDaoRechumano->ed20_i_censoufender = $oLinha->uf;
                 }
 
                 if ($oLinha->munic != ""
-                  && $oLinha->munic != trim($aDadosRechumano[$iCont]->ed20_i_censomunicender)
+                  && $oLinha->munic != trim((string) $aDadosRechumano[$iCont]->ed20_i_censomunicender)
                 ) {
                     $oDaoRechumano->ed20_i_censomunicender = $oLinha->munic;
                 }
@@ -1445,7 +1445,7 @@ abstract class importacaoCenso
                 $oDaoRechumano->ed20_i_pais = "";
 
                 if (isset($oLinha->escolaridade) && !empty($oLinha->escolaridade)
-                  && $oLinha->escolaridade != trim($aDadosRechumano[$iCont]->ed20_i_escolaridade)
+                  && $oLinha->escolaridade != trim((string) $aDadosRechumano[$iCont]->ed20_i_escolaridade)
                 ) {
                     $oDaoRechumano->ed20_i_escolaridade = $oLinha->escolaridade;
                 }
@@ -1654,7 +1654,7 @@ abstract class importacaoCenso
                 }
 
                 if ($this->lImportarAlunoAtivo) {
-                    if (trim($aDadosAluno[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+                    if (trim((string) $aDadosAluno[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
                         if ($this->lInepEscola) {
                             $sMsg = "Aluno [" . $aDadosAluno[$iCont]->ed47_c_codigoinep . "] " . $aDadosAluno[$iCont]->ed47_v_nome . ": aluno";
                             $sMsg .= " não está mais vinculado a esta escola.\n";
@@ -1666,49 +1666,49 @@ abstract class importacaoCenso
                 } //fecha o if $this->lImportarAlunoAtivo
 
                 if ($oLinha->inepaluno != ""
-                  && $oLinha->inepaluno != trim($aDadosAluno[$iCont]->ed47_c_codigoinep)
+                  && $oLinha->inepaluno != trim((string) $aDadosAluno[$iCont]->ed47_c_codigoinep)
                 ) {
                     $oDaoAluno->ed47_c_codigoinep = $oLinha->inepaluno;
                 }
 
                 if ($oLinha->nis != ""
-                  && $oLinha->nis != trim($aDadosAluno[$iCont]->ed47_c_nis)
+                  && $oLinha->nis != trim((string) $aDadosAluno[$iCont]->ed47_c_nis)
                 ) {
                     $oDaoAluno->ed47_c_nis = $oLinha->nis;
                 }
 
                 if ($oLinha->filiacao != ""
-                  && $oLinha->filiacao != trim($aDadosAluno[$iCont]->ed47_i_filiacao)
+                  && $oLinha->filiacao != trim((string) $aDadosAluno[$iCont]->ed47_i_filiacao)
                 ) {
                     $oDaoAluno->ed47_i_filiacao = $oLinha->filiacao;
                 }
 
                 if ($oLinha->nacionalidade != ""
-                  && $oLinha->nacionalidade != trim($aDadosAluno[$iCont]->ed47_i_nacion)
+                  && $oLinha->nacionalidade != trim((string) $aDadosAluno[$iCont]->ed47_i_nacion)
                 ) {
                     $oDaoAluno->ed47_i_nacion = $oLinha->nacionalidade;
                 }
 
                 if ($oLinha->paisorigem != ""
-                  && $oLinha->paisorigem != trim($aDadosAluno[$iCont]->ed228_i_paisonu)
+                  && $oLinha->paisorigem != trim((string) $aDadosAluno[$iCont]->ed228_i_paisonu)
                 ) {
                     $oDaoAluno->ed47_i_pais = $this->getPais($oLinha->paisorigem);
                 }//fecha o if do pais
 
                 if ($oLinha->uf != ""
-                  && $oLinha->uf != trim($aDadosAluno[$iCont]->ed47_i_censoufnat)
+                  && $oLinha->uf != trim((string) $aDadosAluno[$iCont]->ed47_i_censoufnat)
                 ) {
                     $oDaoAluno->ed47_i_censoufnat = $oLinha->uf;
                 }
 
                 if ($oLinha->municnasc != ""
-                  && $oLinha->municnasc != trim($aDadosAluno[$iCont]->ed47_i_censomunicnat)
+                  && $oLinha->municnasc != trim((string) $aDadosAluno[$iCont]->ed47_i_censomunicnat)
                 ) {
                     $oDaoAluno->ed47_i_censomunicnat = $oLinha->municnasc;
                 }
 
                 if ($oLinha->defglobal != ""
-                  && $oLinha->defglobal != trim($aDadosAluno[$iCont]->ed47_i_atendespec)
+                  && $oLinha->defglobal != trim((string) $aDadosAluno[$iCont]->ed47_i_atendespec)
                 ) {
                     $oDaoAluno->ed47_i_atendespec = $oLinha->defglobal;
                 }
@@ -1908,37 +1908,37 @@ abstract class importacaoCenso
 
             for ($iCont = 0; $iCont < $iTam; $iCont++) {
                 if ($oLinha->identidade != ""
-                  && $oLinha->identidade != trim($aDadosAluno[$iCont]->ed47_v_ident)
+                  && $oLinha->identidade != trim((string) $aDadosAluno[$iCont]->ed47_v_ident)
                 ) {
                     $oDaoAluno->ed47_v_ident = $oLinha->identidade;
                 }
 
                 if (!empty($oLinha->complidentidade)
-                  && $oLinha->complidentidade != trim($aDadosAluno[$iCont]->ed47_v_identcompl)
+                  && $oLinha->complidentidade != trim((string) $aDadosAluno[$iCont]->ed47_v_identcompl)
                 ) {
                     $oDaoAluno->ed47_v_identcompl = $oLinha->complidentidade;
                 }
 
                 if ($oLinha->orgaoidentidade != ""
-                  && $oLinha->orgaoidentidade != trim($aDadosAluno[$iCont]->ed47_i_censoorgemissrg)
+                  && $oLinha->orgaoidentidade != trim((string) $aDadosAluno[$iCont]->ed47_i_censoorgemissrg)
                 ) {
                     $oDaoAluno->ed47_i_censoorgemissrg = $oLinha->orgaoidentidade;
                 }
 
                 if ($oLinha->ufidentidade != ""
-                  && $oLinha->ufidentidade != trim($aDadosAluno[$iCont]->ed47_i_censoufident)
+                  && $oLinha->ufidentidade != trim((string) $aDadosAluno[$iCont]->ed47_i_censoufident)
                 ) {
                     $oDaoAluno->ed47_i_censoufident = $oLinha->ufidentidade;
                 }
 
                 if (!empty($oLinha->dataexpedidentidade)
-                  && $oLinha->dataexpedidentidade != trim($aDadosAluno[$iCont]->ed47_d_identdtexp)
+                  && $oLinha->dataexpedidentidade != trim((string) $aDadosAluno[$iCont]->ed47_d_identdtexp)
                 ) {
                     $oDaoAluno->ed47_d_identdtexp = static::formataData($oLinha->dataexpedidentidade);
                 }
 
                 if (!empty($oLinha->tipodecertidao)
-                  && $oLinha->tipodecertidao != trim($aDadosAluno[$iCont]->ed47_c_certidaotipo)
+                  && $oLinha->tipodecertidao != trim((string) $aDadosAluno[$iCont]->ed47_c_certidaotipo)
                 ) {
                     if ($oLinha->tipodecertidao == 1) {
                         $oDaoAluno->ed47_c_certidaotipo = 'N';
@@ -1950,32 +1950,32 @@ abstract class importacaoCenso
                 }//fecha if do tipo de certidao
 
                 if ($oLinha->numerotermo != ""
-                  && $oLinha->numerotermo != trim($aDadosAluno[$iCont]->ed47_c_certidaonum)
+                  && $oLinha->numerotermo != trim((string) $aDadosAluno[$iCont]->ed47_c_certidaonum)
                 ) {
                     $oDaoAluno->ed47_c_certidaonum = $oLinha->numerotermo;
                 }
 
                 if ($oLinha->folha != ""
-                  && $oLinha->folha != trim($aDadosAluno[$iCont]->ed47_c_certidaofolha)
+                  && $oLinha->folha != trim((string) $aDadosAluno[$iCont]->ed47_c_certidaofolha)
                 ) {
                     $oDaoAluno->ed47_c_certidaofolha = $oLinha->folha;
                 }
 
                 if ($oLinha->livro != ""
-                  && $oLinha->livro != trim($aDadosAluno[$iCont]->ed47_c_certidaolivro)
+                  && $oLinha->livro != trim((string) $aDadosAluno[$iCont]->ed47_c_certidaolivro)
                 ) {
                     $oDaoAluno->ed47_c_certidaolivro = $oLinha->livro;
                 }
 
                 if (!empty($oLinha->dataemisscertidao)
-                  && $oLinha->dataemisscertidao != trim($aDadosAluno[$iCont]->ed47_c_certidaodata)
+                  && $oLinha->dataemisscertidao != trim((string) $aDadosAluno[$iCont]->ed47_c_certidaodata)
                 ) {
                     $oDaoAluno->ed47_c_certidaodata = static::formataData($oLinha->dataemisscertidao);
                 }
 
                 if ($this->iAnoEscolhido == 2010) {
                     if ($oLinha->codigocartorio != ""
-                      && ($oLinha->codigocartorio != trim($aDadosAluno[$iCont]->ed47_i_censocartorio))
+                      && ($oLinha->codigocartorio != trim((string) $aDadosAluno[$iCont]->ed47_i_censocartorio))
                     ) {
                         $oDaoAluno->ed47_i_censocartorio = $this->getCartorio(null, $oLinha->codigocartorio);
                     }
@@ -1986,25 +1986,25 @@ abstract class importacaoCenso
                 }
 
                 if ($oLinha->ufcartorio != ""
-                  && $oLinha->ufcartorio != trim($aDadosAluno[$iCont]->ed47_i_censoufcert)
+                  && $oLinha->ufcartorio != trim((string) $aDadosAluno[$iCont]->ed47_i_censoufcert)
                 ) {
                     $oDaoAluno->ed47_i_censoufcert = $oLinha->ufcartorio;
                 }
 
                 if (!empty($oLinha->cpf)
-                  && $oLinha->cpf != trim($aDadosAluno[$iCont]->ed47_v_cpf)
+                  && $oLinha->cpf != trim((string) $aDadosAluno[$iCont]->ed47_v_cpf)
                 ) {
                     $oDaoAluno->ed47_v_cpf = $oLinha->cpf;
                 }
 
                 if (!empty($oLinha->passaporte)
-                  && $oLinha->passaporte != trim($aDadosAluno[$iCont]->ed47_c_passaporte)
+                  && $oLinha->passaporte != trim((string) $aDadosAluno[$iCont]->ed47_c_passaporte)
                 ) {
                     $oDaoAluno->ed47_c_passaporte = $oLinha->passaporte;
                 }
 
                 if (!empty($oLinha->localzona)
-                  && $oLinha->localzona != trim($aDadosAluno[$iCont]->ed47_c_zona)
+                  && $oLinha->localzona != trim((string) $aDadosAluno[$iCont]->ed47_c_zona)
                 ) {
                     if ($oLinha->localzona == 1) {
                         $oDaoAluno->ed47_c_zona = 'URBANA';
@@ -2014,43 +2014,43 @@ abstract class importacaoCenso
                 }//fecha o if do local
 
                 if (!empty($oLinha->cep)
-                  && $oLinha->cep != trim($aDadosAluno[$iCont]->ed47_v_cep)
+                  && $oLinha->cep != trim((string) $aDadosAluno[$iCont]->ed47_v_cep)
                 ) {
                     $oDaoAluno->ed47_v_cep = $oLinha->cep;
                 }
 
                 if (!empty($oLinha->endereco)
-                  && $oLinha->endereco != trim($aDadosAluno[$iCont]->ed47_v_ender)
+                  && $oLinha->endereco != trim((string) $aDadosAluno[$iCont]->ed47_v_ender)
                 ) {
                     $oDaoAluno->ed47_v_ender = $oLinha->endereco;
                 }
 
                 if (!empty($oLinha->numero)
-                  && $oLinha->numero != trim($aDadosAluno[$iCont]->ed47_c_numero)
+                  && $oLinha->numero != trim((string) $aDadosAluno[$iCont]->ed47_c_numero)
                 ) {
                     $oDaoAluno->ed47_c_numero = $oLinha->numero;
                 }
 
                 if (!empty($oLinha->complemento)
-                  && $oLinha->complemento != trim($aDadosAluno[$iCont]->ed47_v_compl)
+                  && $oLinha->complemento != trim((string) $aDadosAluno[$iCont]->ed47_v_compl)
                 ) {
                     $oDaoAluno->ed47_v_compl = $oLinha->complemento;
                 }
 
                 if (!empty($oLinha->bairro)
-                  && $oLinha->bairro != trim($aDadosAluno[$iCont]->ed47_v_bairro)
+                  && $oLinha->bairro != trim((string) $aDadosAluno[$iCont]->ed47_v_bairro)
                 ) {
-                    $oDaoAluno->ed47_v_bairro = substr($oLinha->bairro, 0, 40);
+                    $oDaoAluno->ed47_v_bairro = substr((string) $oLinha->bairro, 0, 40);
                 }
 
                 if ($oLinha->ufendere != ""
-                  && $oLinha->ufendere != trim($aDadosAluno[$iCont]->ed47_i_censoufend)
+                  && $oLinha->ufendere != trim((string) $aDadosAluno[$iCont]->ed47_i_censoufend)
                 ) {
                     $oDaoAluno->ed47_i_censoufend = $oLinha->ufendere;
                 }
 
                 if ($oLinha->municipio != ""
-                  && $oLinha->municipio != trim($aDadosAluno[$iCont]->ed47_i_censomunicend)
+                  && $oLinha->municipio != trim((string) $aDadosAluno[$iCont]->ed47_i_censomunicend)
                 ) {
                     $oDaoAluno->ed47_i_censomunicend = $this->getCensoMunicipioCertidao($oLinha->municipio);
                 }
@@ -2168,18 +2168,18 @@ abstract class importacaoCenso
 
             for ($iCont = 0; $iCont < $iTam; $iCont++) {
                 if ($oLinha->escolarizacaoespaco != ""
-                  && $oLinha->escolarizacaoespaco != trim($aDadosAluno[$iCont]->ed47_c_atenddifer)
+                  && $oLinha->escolarizacaoespaco != trim((string) $aDadosAluno[$iCont]->ed47_c_atenddifer)
                 ) {
                     $oDaoAluno->ed47_c_atenddifer = $oLinha->escolarizacaoespaco;
                 }
 
                 if ($oLinha->transescopubl != ""
-                  && $oLinha->transescopubl != trim($aDadosAluno[$iCont]->ed47_i_transpublico)
+                  && $oLinha->transescopubl != trim((string) $aDadosAluno[$iCont]->ed47_i_transpublico)
                 ) {
                     $oDaoAluno->ed47_i_transpublico = $oLinha->transescopubl;
                 }
 
-                if ($oLinha->poderpublico != trim($aDadosAluno[$iCont]->ed47_c_transporte)) {
+                if ($oLinha->poderpublico != trim((string) $aDadosAluno[$iCont]->ed47_c_transporte)) {
                     if ($oLinha->transescopubl == "") {
                         $oLinha->poderpublico = "0";
                     }

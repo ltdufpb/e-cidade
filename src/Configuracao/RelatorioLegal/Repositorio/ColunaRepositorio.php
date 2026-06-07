@@ -36,7 +36,7 @@ class ColunaRepositorio extends Repositorio
      * @return Coluna|null
      * @throws Exception
      */
-    public static function find($sequence, array $columns = array('*'))
+    public static function find($sequence, array $columns = ['*'])
     {
         $dao = new cl_orcparamseqcoluna();
         $sql = $dao->sql_query($sequence, implode(', ', $columns));
@@ -113,7 +113,7 @@ class ColunaRepositorio extends Repositorio
      * @param Coluna $coluna
      * @throws Exception
      */
-    public function delete(Coluna $coluna = null)
+    public function delete(?Coluna $coluna = null)
     {
         $id = $coluna instanceof Coluna ? $coluna->getSequencial() : null;
 
@@ -142,7 +142,7 @@ class ColunaRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar a coluna.\nContate o suporte.");
         }
 
-        $colunas = array();
+        $colunas = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $colunas;
@@ -217,7 +217,7 @@ class ColunaRepositorio extends Repositorio
      * @return Coluna[]
      * @throws Exception
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         $dao = new cl_orcparamseqcoluna();
 
@@ -237,7 +237,7 @@ class ColunaRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar a configuração da coluna.\nContate o suporte.");
         }
 
-        $colunas = array();
+        $colunas = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $colunas;

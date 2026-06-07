@@ -34,7 +34,7 @@ include(modification( "classes/db_amparo_classe.php" ));
 include(modification( "classes/db_regencia_classe.php" ));
 include(modification( "classes/db_diarioavaliacao_classe.php" ));
 include(modification( "dbforms/db_funcoes.php" ));
-db_postmemory ($HTTP_POST_VARS);
+db_postmemory ($_POST);
 $clamparo = new cl_amparo;
 $clregencia = new cl_regencia;
 $cldiarioavaliacao = new cl_diarioavaliacao;
@@ -72,7 +72,7 @@ function excluiRecuperacaoPeriodoAmparado($iDiario, $iProcedimentoAvaliacao) {
       if ( $oDaoDiarioRecuperacao->erro_status == 0 ) {
 
         db_msgbox("Não foi possível excluir a recuperação do aluno.");
-        db_inicio_transacao(true);
+        db_inicio_transacao();
         ?>
         <script> location.href = 'edu1_amparo001.php?opcao='+opcao+'&diario='+diario+'&regencia='+regencia; </script>
         <?php

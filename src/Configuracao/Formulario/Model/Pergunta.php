@@ -54,13 +54,13 @@ class Pergunta
     private $campoCarga;
     private $identificadorCampo;
 
-    private $respostas = array();
+    private $respostas = [];
 
     /**
      * opções de Resposta da pergunta
      * @var array
      */
-    private $opcoes = array();
+    private $opcoes = [];
 
     /**
      * @return mixed

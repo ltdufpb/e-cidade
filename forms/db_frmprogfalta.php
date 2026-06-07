@@ -98,7 +98,7 @@ if($ed110_i_numfaltas==0){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
+   $x = [''=>'','N'=>'NÃO','S'=>'SIM'];
    db_select('ed118_c_abonada',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -159,7 +159,7 @@ function js_preenchepesquisa(chave){
  db_iframe_progfalta.hide();
  <?php 
  if($db_opcao!=1){
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }
  ?>
 }

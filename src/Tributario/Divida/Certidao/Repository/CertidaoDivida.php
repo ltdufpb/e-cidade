@@ -45,6 +45,7 @@ class CertidaoDivida extends \BaseClassRepository
     /** @var bool */
     private $persistPropagation;
 
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -234,7 +235,7 @@ class CertidaoDivida extends \BaseClassRepository
      */
     private function makeCollection($result)
     {
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }

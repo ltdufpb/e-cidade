@@ -35,7 +35,7 @@ $oGet = db_utils::postMemory($_GET);
  */
 $oParametros                    = new stdClass();
 $oParametros->iEscola           = $oGet->iEscola;
-$oParametros->aListaCalendarios = explode(",", $oGet->aCalendarios);
+$oParametros->aListaCalendarios = explode(",", (string) $oGet->aCalendarios);
 $oParametros->iEtapa            = $oGet->iEtapa;
 
 /**
@@ -66,7 +66,7 @@ $oParametros->lEscreverCabecalho = true;
 $oParametros->sFonte  = 'Arial';
 
 $sWhere      = '';
-$aFiltros    = array("ed47_i_transpublico = 1");
+$aFiltros    = ["ed47_i_transpublico = 1"];
 $sNomeEtapa  = "TODAS";
 $sNomeEscola = "TODAS";
 if (!empty($oParametros->iEscola)) {
@@ -106,7 +106,7 @@ $sOrder = " ed18_c_nome, ed11_i_ensino,ed11_i_sequencia,ed57_c_descr, ed47_v_nom
 $sSqlMatricula    = $oDaoMatricula->sql_query_bolsafamilia("", $sCampos, $sOrder, $sWhere);
 $rsMatricula      = $oDaoMatricula->sql_record($sSqlMatricula);
 $iLinhasMatricula = $oDaoMatricula->numrows;
-$aEscolas         = array();
+$aEscolas         = [];
 
 for ($i = 0; $i < $iLinhasMatricula; $i++) {
   
@@ -117,7 +117,7 @@ for ($i = 0; $i < $iLinhasMatricula; $i++) {
     $oEscola                = new stdClass();
     $oEscola->iCodigoEscola = $oDadosMatricula->ed57_i_escola;
     $oEscola->sNomeEscola   = $oDadosMatricula->ed18_c_nome;
-    $oEscola->aEtapas       = array();
+    $oEscola->aEtapas       = [];
     $aEscolas[$oEscola->iCodigoEscola] = $oEscola;
   }
   
@@ -128,7 +128,7 @@ for ($i = 0; $i < $iLinhasMatricula; $i++) {
     $oEtapa->iCodigoEtapa = $oDadosMatricula->ed11_i_codigo;
     $oEtapa->iOrdemEtapa  = $oDadosMatricula->ed11_i_sequencia;
     $oEtapa->sNomeEtapa   = $oDadosMatricula->ed11_c_descr;
-    $oEtapa->aAlunos      = array();
+    $oEtapa->aAlunos      = [];
     $oEscola->aEtapas[$oDadosMatricula->ed11_i_codigo] = $oEtapa;
   }
   
@@ -199,9 +199,9 @@ foreach ($aEscolas as $oEscola) {
       }
       
       $oPdf->SetFont($oParametros->sFonte, '', '6');
-      $oPdf->Cell( $oParametros->iLarguraAluno,       $oParametros->iAlturaLinha, substr( $oAluno->sNome, 0, 46 ),     "{$sBordaAluno}"    );
-      $oPdf->Cell( $oParametros->iLarguraTurma,       $oParametros->iAlturaLinha, substr( $oAluno->sTurma, 0, 16 ),    "{$sBordaAluno}"    );
-      $oPdf->Cell( $oParametros->iLarguraEndereco,    $oParametros->iAlturaLinha, substr( $oAluno->sEndereco, 0, 70 ), "{$sBordaAluno}"    );
+      $oPdf->Cell( $oParametros->iLarguraAluno,       $oParametros->iAlturaLinha, substr( (string) $oAluno->sNome, 0, 46 ),     "{$sBordaAluno}"    );
+      $oPdf->Cell( $oParametros->iLarguraTurma,       $oParametros->iAlturaLinha, substr( (string) $oAluno->sTurma, 0, 16 ),    "{$sBordaAluno}"    );
+      $oPdf->Cell( $oParametros->iLarguraEndereco,    $oParametros->iAlturaLinha, substr( (string) $oAluno->sEndereco, 0, 70 ), "{$sBordaAluno}"    );
       $oPdf->Cell( $oParametros->iLarguraResponsavel, $oParametros->iAlturaLinha, $oAluno->sTipoTransporte,            "{$sBordaAluno}", 1 );
       
       if ($oAluno->sTransporteUtilizado != "") {

@@ -238,7 +238,7 @@ class Turma
                 $this->iBaseCurricular = $oTurma->ed57_i_base;
                 $this->mObservacao = $oTurma->ed57_t_obs;
                 $this->iTipoCalculoAulas = Turma::CH_PERIODO;
-                if (trim($oTurma->ed57_c_medfreq) == 'DIAS LETIVOS') {
+                if (trim((string) $oTurma->ed57_c_medfreq) == 'DIAS LETIVOS') {
                     $this->iTipoCalculoAulas = Turma::CH_DIA_LETIVO;
                 }
                 $this->oEscola = EscolaRepository::getEscolaByCodigo($oTurma->ed57_i_escola);
@@ -588,7 +588,7 @@ class Turma
      * @return ProgressaoParcialAluno[]
      * @throws DBException
      */
-    public function getAlunosProgressaoParcial(Etapa $oEtapa = null)
+    public function getAlunosProgressaoParcial(?Etapa $oEtapa = null)
     {
 
         if (count($this->aAlunosProgressaoParcial) == 0 || $oEtapa != null) {
@@ -894,7 +894,7 @@ class Turma
         if (pg_num_rows($rsDiariosEncerrados) > 0) {
 
             $sSituacao = db_utils::fieldsMemory($rsDiariosEncerrados, 0)->situacao;
-            $aSituacoes = explode(",", $sSituacao);
+            $aSituacoes = explode(",", (string) $sSituacao);
 
             if (in_array("S", $aSituacoes) && in_array("N", $aSituacoes)) {
                 return true;
@@ -1341,7 +1341,7 @@ class Turma
      * @return Matricula[]
      * @throws DBException
      */
-    public function getUltimaMatriculaAlunos($lOrdenarNome = true, Etapa $oEtapaOrigem = null)
+    public function getUltimaMatriculaAlunos($lOrdenarNome = true, ?Etapa $oEtapaOrigem = null)
     {
 
         $aMatriculas = [];

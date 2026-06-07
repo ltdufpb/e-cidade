@@ -566,8 +566,8 @@ class Regencia
     /**
      * Retorna se disciplina é lançada no histórico
      * @return bool
-     * @deprecated
      */
+    #[\Deprecated]
     public function isLancadaNoHistorico()
     {
         return $this->lLancadaHistorico;
@@ -585,8 +585,8 @@ class Regencia
     /**
      * Retorna se disciplina é lançada na documentação
      * @return bool
-     * @deprecated
      */
+    #[\Deprecated]
     public function isLancadaDocumentacao()
     {
         return $this->lLancadaHistorico;
@@ -1080,7 +1080,7 @@ class Regencia
      * @return integer
      * @throws DBException
      */
-    public function getTotalHorasAula(PeriodoAvaliacao $oPeriodoAvaliacao = null)
+    public function getTotalHorasAula(?PeriodoAvaliacao $oPeriodoAvaliacao = null)
     {
         $oCalculoCargaHoraria = FormaCalculoCargaHorariaRepository::getByCalendario($this->getTurma()->getCalendario());
 
@@ -1140,7 +1140,7 @@ class Regencia
      * @param  PeriodoAvaliacao $oPeriodoAvaliacao se for para calcular apenas de um determinado período de avaliação
      * @return integer                             carga horária da
      */
-    private function somaAulasDadas(PeriodoAvaliacao $oPeriodoAvaliacao = null)
+    private function somaAulasDadas(?PeriodoAvaliacao $oPeriodoAvaliacao = null)
     {
         if (!empty($oPeriodoAvaliacao)) {
             return $this->getTotalDeAulasNoPeriodo($oPeriodoAvaliacao);
@@ -1154,7 +1154,7 @@ class Regencia
      * @param  PeriodoAvaliacao $oPeriodoAvaliacao se for para calcular apenas de um determinado período de avaliação
      * @return integer                             carga horária da
      */
-    private function calcularDuracaoPeriodo(PeriodoAvaliacao $oPeriodoAvaliacao = null)
+    private function calcularDuracaoPeriodo(?PeriodoAvaliacao $oPeriodoAvaliacao = null)
     {
         $oDaoRegencia = new cl_regencia();
         $sCamposRegencia = "ed17_duracao";
@@ -1173,7 +1173,7 @@ class Regencia
 
         if (pg_num_rows($rsRegencia)) {
             $sDuracaoPeriodo = db_utils::fieldsMemory($rsRegencia, 0)->ed17_duracao;
-            $aDuracao = explode(':', $sDuracaoPeriodo);
+            $aDuracao = explode(':', (string) $sDuracaoPeriodo);
 
             $iMinutos += (int)$aDuracao[0] > 0 ? (int)$aDuracao[0] * 60 : 0;
             $iMinutos += (int)$aDuracao[1] > 0 ? (int)$aDuracao[1] : 0;

@@ -39,6 +39,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
    * @param IExportacaoCenso $oExportacaoCenso da Importacao do censo
    * @return boolean
    */
+    #[\Override]
     public static function validarDados(IExportacaoCenso $oExportacaoCenso)
     {
 
@@ -95,7 +96,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       /**
        * Valida se o Código da Turma na Entidade/Escola contém mais de 20 caracteres
        */
-      if ( strlen($oDadosTurma->codigo_turma_entidade_escola) > 20 ) {
+      if ( strlen((string) $oDadosTurma->codigo_turma_entidade_escola) > 20 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Código da Turma na Entidade/Escola deve conter no máximo 20 caracteres.";
@@ -118,7 +119,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       /**
        * Valida se o nome da turma contém mais de 80 caracteres
        */
-      if ( strlen($oDadosTurma->nome_turma) > 80 ) {
+      if ( strlen((string) $oDadosTurma->nome_turma) > 80 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Nome da Turma deve conter no máximo 80 caracteres.";
@@ -129,7 +130,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       /**
        * Valida para aceitar somente os caracteres (ABCDEFGHIJKLMNOPQRSTUWXYZ 0123456789ªº-)
        */
-      if ( preg_match ('/[^a-z0-9ªº\s\-]+/i',  $oDadosTurma->nome_turma) == 1 ) {
+      if ( preg_match ('/[^a-z0-9ªº\s\-]+/i',  (string) $oDadosTurma->nome_turma) == 1 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Nome da turma contém excesso de espaços.";
@@ -495,7 +496,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     if ( $lDadosValidos ) {
-      $lDadosValidos = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lDadosValidos = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lDadosValidos;
@@ -897,7 +898,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
      * Validado para quando tipo de ensino for infantil não permitir informar disciplinas
      * OBS.:Utilizamos a função strlen para que as possições contendo 0 fossem mantidas
      */
-    $aDisciplinasPreenchidas = array_filter( $aDisciplinas, 'strlen' );
+    $aDisciplinasPreenchidas = array_filter( $aDisciplinas, strlen(...) );
 
     // regra 1
     if ( count($aDisciplinasPreenchidas) == 0 &&
@@ -1027,7 +1028,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       }
 
       if ($lDadosValidos && !empty($aValidaDisciplina) ) {
-        $lDadosValidos = array_reduce( $aValidaDisciplina, 'validaVerdadeiro');
+        $lDadosValidos = array_reduce( $aValidaDisciplina, validaVerdadeiro(...));
       }
     }
 
@@ -1064,7 +1065,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       }
     }
 
-      $disciplinas = array_key_exists($iEtapa, static::$aEtapasDisciplinas) ? static::$aEtapasDisciplinas[$iEtapa] : [];
+      $disciplinas = array_key_exists((string) $iEtapa, static::$aEtapasDisciplinas) ? static::$aEtapasDisciplinas[$iEtapa] : [];
 
       if (!in_array($iDisciplina, $disciplinas)) {
 

@@ -37,7 +37,7 @@ class cl_assentamentofuncional extends DAOBasica {
 
     if(!empty($mCampos)) {
       if(is_array($mCampos) && count($mCampos) > 0) {
-        $sql .= join($mCampos);
+        $sql .= join('', $mCampos);
       } else {
         $sql .= $mCampos;
       }
@@ -61,7 +61,7 @@ class cl_assentamentofuncional extends DAOBasica {
 
     if(!empty($mOrdem)) {
       if(is_array($mOrdem) && count($mOrdem)) {
-        $sql .= " ORDER BY ". join($mOrdem);
+        $sql .= " ORDER BY ". join('', $mOrdem);
       } else {
         $sql .= " ORDER BY {$mOrdem}";
       }

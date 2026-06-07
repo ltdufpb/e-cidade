@@ -85,7 +85,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </td>
   <td>
    <?php 
-   $x = array('OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL');
+   $x = ['OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL'];
    db_select('ed35_c_condicao',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -100,7 +100,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <td valign="top"><br>
   <?php 
    $campos = "ed35_i_codigo,ed35_i_base,ed31_c_descr,ed35_i_disciplina,ed232_c_descr,ed35_i_qtdperiodo,ed35_i_chtotal, case when ed35_c_condicao='OB' then 'OBRIGATÒRIA' else 'OPCIONAL' end as ed35_c_condicao";
-   $chavepri= array("ed35_i_codigo"=>@$ed35_i_codigo,"ed31_c_descr"=>@$ed31_c_descr,"ed35_i_disciplina"=>@$ed35_i_disciplina,"ed232_c_descr"=>@$ed232_c_descr,"ed35_i_qtdperiodo"=>@$ed35_i_qtdperiodo,"ed35_i_chtotal"=>@$ed35_i_chtotal,"ed35_c_condicao"=>@$ed35_c_condicao);
+   $chavepri= ["ed35_i_codigo"=>@$ed35_i_codigo,"ed31_c_descr"=>@$ed31_c_descr,"ed35_i_disciplina"=>@$ed35_i_disciplina,"ed232_c_descr"=>@$ed232_c_descr,"ed35_i_qtdperiodo"=>@$ed35_i_qtdperiodo,"ed35_i_chtotal"=>@$ed35_i_chtotal,"ed35_c_condicao"=>@$ed35_c_condicao];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clbasempd->sql_query("",$campos,"ed34_i_ordenacao"," ed35_i_base = $ed35_i_base");
    $cliframe_alterar_excluir->campos  ="ed232_c_descr,ed35_i_qtdperiodo,ed35_c_condicao";

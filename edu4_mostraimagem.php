@@ -49,7 +49,7 @@ include(modification("dbforms/db_funcoes.php"));
     db_postmemory($GLOBALS["_FILES"]["ed47_o_oid"]);
     if ( $error == 0 ) {
 
-      $aTipos = array('image/jpeg', 'image/pjpeg', 'image/png');
+      $aTipos = ['image/jpeg', 'image/pjpeg', 'image/png'];
       if (!in_array($type, $aTipos)) {
 
         db_msgbox("Imagem não é um formato válido!\\n\\nUtilize somente imagens no formato JPG!");
@@ -68,7 +68,7 @@ include(modification("dbforms/db_funcoes.php"));
           $sExtencao = ".png";
         }
 
-        $imagem_gerada = "tmp/".rand(0,999999999)."$sExtencao";
+        $imagem_gerada = "tmp/".random_int(0,999999999)."$sExtencao";
         // Se a imagem não está no tmp/ ela é criada
         if (!file_exists($imagem_gerada)) {
 
@@ -98,8 +98,6 @@ include(modification("dbforms/db_funcoes.php"));
               imagepng($img_new, $imagem_gerada);
               break;
           }
-          imagedestroy($origem);
-          imagedestroy($img_new);
         }
         //retira o 'tmp/' do nome da imagem para gravar no bd
         $parentname = str_replace("tmp/","",$imagem_gerada);

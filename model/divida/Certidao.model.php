@@ -74,7 +74,7 @@ class Certidao {
    * Array de Inconsistencias
    * @var array
    */
-  private $aInconsistencias = array();
+  private $aInconsistencias = [];
 
   /**
    * Construtor da classe
@@ -478,7 +478,7 @@ class Certidao {
         }
 
         $oVencimento = db_utils::fieldsMemory($rsVencimento, 0);
-        $oDataVencimento = new DBDate(date("Y-m-d", strtotime($oVencimento->vencimento)));
+        $oDataVencimento = new DBDate(date("Y-m-d", strtotime((string) $oVencimento->vencimento)));
 
       }
 
@@ -486,7 +486,7 @@ class Certidao {
        * Regra de calculo de juros e multa
        */
       $sDataVencimento    = $oDataEmissao->getDate();
-      $oParametrosDivida  = db_stdClass::getParametro("pardiv", array($oInstituicao->getSequencial()));
+      $oParametrosDivida  = db_stdClass::getParametro("pardiv", [$oInstituicao->getSequencial()]);
 
       if (isset($oParametrosDivida[0]->v04_cobrarjurosmultacda) && $oParametrosDivida[0]->v04_cobrarjurosmultacda == 't') {
         $sDataVencimento = $oDataVencimento->getDate();
@@ -505,7 +505,7 @@ class Certidao {
         CobrancaRegistrada::adicionarRecibo($oRecibo, $oRegraEmissao->getConvenio());
       }
 
-    } catch(Exception $oErro) {
+    } catch(Exception) {
 
       $oStdMensagemErro                  = new stdClass();
       $oStdMensagemErro->codigo_certidao = $this->iSequencial;
@@ -705,11 +705,11 @@ class Certidao {
      */
     $oRetorno = new StdClass();
     $oRetorno->sNomeArquivo    = $sNomeArquivo;
-    $oRetorno->aDadosRelatorio = array( 'iCertidao'    => $this->iSequencial,
+    $oRetorno->aDadosRelatorio = [ 'iCertidao'    => $this->iSequencial,
                                         'sNome'        => $sNome,
                                         'iArrecadacao' => $oPdf->numpre,
                                         'iNumnov'      => $iNumnov,
-                                        'iValor'       => db_formatar($oRecibo->getTotalRecibo(),'f') );
+                                        'iValor'       => db_formatar($oRecibo->getTotalRecibo(),'f') ];
     $oRetorno->oDataVencimento = $oDataVencimento;
 
     return $oRetorno;

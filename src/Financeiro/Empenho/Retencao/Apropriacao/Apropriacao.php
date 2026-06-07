@@ -23,21 +23,9 @@ use stdClass;
 class Apropriacao
 {
     /**
-     * @var \EmpenhoFinanceiro
-     */
-    private $empenho;
-
-    /**
      * @var \DateTime
      */
     private $dataEvento = null;
-
-    /**
-     * Ano do processamento
-     *
-     * @var int
-     */
-    private $ano;
 
     /**
      * Nota que deve ser estornada
@@ -80,7 +68,7 @@ class Apropriacao
      *
      * @var array
      */
-    private $codigosLancamentos = array();
+    private $codigosLancamentos = [];
 
     /**
      * Apropriação de retençoes em e um empenho
@@ -88,12 +76,16 @@ class Apropriacao
      *
      * @param \EmpenhoFinanceiro $empenho
      * @param $ano
+     * @param int $ano
      */
-    public function __construct(\EmpenhoFinanceiro $empenho, $ano)
+    public function __construct(
+        private \EmpenhoFinanceiro $empenho,
+        /**
+         * Ano do processamento
+         */
+        private $ano
+    )
     {
-
-        $this->empenho = $empenho;
-        $this->ano = $ano;
     }
 
     /**
@@ -168,7 +160,7 @@ class Apropriacao
             /**
              * Baixamos as retenções
              */
-            $oRetencaoNota->baixarRetencoes(array($retencao));
+            $oRetencaoNota->baixarRetencoes([$retencao]);
         }
         return $stringAutenticacao;
     }
@@ -540,7 +532,7 @@ class Apropriacao
         $dataRecibo = $this->dataEvento->format("Y-m-d");
         $sHistoricoRecibo = "Neste pagamento  foi lançada uma retenção ";
         $sHistoricoRecibo .= "para o empenho {$empenho->getCodigo()}/{$empenho->getAno()} ";
-        $sHistoricoRecibo .= "no valor de R$ " . trim(db_formatar($retencao->e23_valorretencao, "f"));
+        $sHistoricoRecibo .= "no valor de R$ " . trim((string) db_formatar($retencao->e23_valorretencao, "f"));
         $sHistoricoRecibo .= " pela Ordem de Pagamento n° {$this->ordemPagamento}";
         $sHistoricoRecibo .= " CGM: " . $empenho->getCgm()->getCodigo() . " - " . $nomeCgm;
 

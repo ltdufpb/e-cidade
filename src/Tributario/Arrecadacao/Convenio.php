@@ -226,7 +226,7 @@ class Convenio
             } else {
                 $this->sSiglaTipoConvenio = 'SR';
             }
-            $this->iCodAgencia   = substr(str_pad($oConvenio->codagencia, 5, "0", STR_PAD_LEFT), 1, 4);
+            $this->iCodAgencia   = substr(str_pad((string) $oConvenio->codagencia, 5, "0", STR_PAD_LEFT), 1, 4);
         } elseif ($this->iTipoConvenio == static::TIPO_CONVENIO_COMPENSACAO_SIGCB) {
             $this->sSiglaTipoConvenio = $oConvenio->ar12_sigla;
             $this->iCodAgencia   = $oConvenio->codagencia;

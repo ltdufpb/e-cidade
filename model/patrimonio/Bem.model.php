@@ -178,7 +178,7 @@ class Bem
     /** Códigos dos itens da tabela empitemnota
      * @var integer[]
      */
-    protected $aCodigosNotas = array();
+    protected $aCodigosNotas = [];
 
     /**
      * Valor depreciavel do bem
@@ -194,7 +194,7 @@ class Bem
      * Notas fiscais da compra do bem
      * @var NotaLiquidacao[]
      */
-    protected $aNotasFiscais = array();
+    protected $aNotasFiscais = [];
 
     /**
      * @var integer
@@ -902,7 +902,7 @@ class Bem
 
         if ($oDaoBens->erro_status == 0) {
             throw new Exception(_M('patrimonial.patrimonio.Bem.erro_salvar',
-              (object)array("erro_msg" => $oDaoBens->erro_msg)));
+              (object)["erro_msg" => $oDaoBens->erro_msg]));
         }
 
         $lRealizarEscrituracao = $this->criaVinculoBemNotas();
@@ -1122,11 +1122,11 @@ class Bem
 
         $oid = null;
         if (!empty($caminhoArquivo)) {
-            $mimeExtensions = array(
+            $mimeExtensions = [
                 'application/msword' => 'doc',
                 'application/pdf' => 'pdf',
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx'
-            );
+            ];
 
             if (!array_key_exists(mime_content_type($caminhoArquivo), $mimeExtensions)) {
                 throw new Exception('Extensão do arquivo deve ser doc, docx ou pdf.');
@@ -1185,7 +1185,7 @@ class Bem
 
                             foreach ($oNota->getItens() as $oItemNota) {
                                 if ($oItemNota->getCodigoNota() == $iNotaItem) {
-                                    $aCodigoBensVinculados = array();
+                                    $aCodigoBensVinculados = [];
                                     foreach ($oItemNota->getBensVinculados() as $oBem) {
                                         $aCodigoBensVinculados[] = $oBem->getCodigoBem();
                                     }
@@ -1290,7 +1290,7 @@ class Bem
 
         if ($oDaoBensBaixa->erro_status == 0) {
             throw new Exception(_M('patrimonial.patrimonio.Bem.erro_reativar_bem',
-              (object)array("erro_msg" => $oDaoBensBaixa->erro_msg)));
+              (object)["erro_msg" => $oDaoBensBaixa->erro_msg]));
         }
 
         $oDataAtual = new DBDate(date('Y-m-d', db_getsession("DB_datausu")));
@@ -1655,7 +1655,7 @@ class Bem
 
         if ($oDaoBensDepreciacao->erro_status == "0") {
             $sMsg = _M('patrimonial.patrimonio.Bem.erro_salvar_calculo',
-              (object)array("erro_msg" => $oDaoBensDepreciacao->erro_msg));
+              (object)["erro_msg" => $oDaoBensDepreciacao->erro_msg]);
             throw new Exception($sMsg);
         }
 
@@ -1704,7 +1704,7 @@ class Bem
 
             if ($oDaoBensEmpNotaItem->erro_status == 0) {
                 $sMensagemErro = _M('patrimonial.patrimonio.Bem.nao_possivel_criar_vinculo',
-                  (object)array("erro_msg" => $oDaoBensEmpNotaItem->erro_msg));
+                  (object)["erro_msg" => $oDaoBensEmpNotaItem->erro_msg]);
                 throw new Exception($sMensagemErro);
             }
 
@@ -1743,7 +1743,7 @@ class Bem
      * @throws DBException
      * @throws ParameterException
      */
-    public function processaLancamentoContabil($aCodigosBens = array())
+    public function processaLancamentoContabil($aCodigosBens = [])
     {
         $aNotas = $this->getNotasFiscais();
         $lRealizouLancamento = false;

@@ -15,29 +15,20 @@ use ECidade\Tributario\Caixa\Enum\Cadtipomod;
 
 final class GerarBoleto extends AcaoBase implements AcaoInterface
 {
-    private $reciboService;
-    private $arretipoRepository;
-
     /**
      * @var DebitoCollection
      */
     private $debitos;
-    private $inscricaoDebitoRepository;
-    private $reciboDocumentoService;
 
     public function __construct(
         $processo,
         IssbaseRepository $issbaseRepository,
-        ReciboService $service,
-        ArretipoRepository $arretipoRepository,
-        InscricaoDebitoRepository $inscricaoDebitoRepository,
-        ReciboDocumentoService $reciboDocumentoService
+        private readonly ReciboService $reciboService,
+        private readonly ArretipoRepository $arretipoRepository,
+        private readonly InscricaoDebitoRepository $inscricaoDebitoRepository,
+        private readonly ReciboDocumentoService $reciboDocumentoService
     ) {
         parent::__construct($processo, $issbaseRepository);
-        $this->reciboService = $service;
-        $this->arretipoRepository = $arretipoRepository;
-        $this->inscricaoDebitoRepository = $inscricaoDebitoRepository;
-        $this->reciboDocumentoService = $reciboDocumentoService;
     }
 
     /**

@@ -31,7 +31,7 @@ class cl_avaliacaogruporespostatotalizacaopagamentocontingencia extends DAOBasic
     	parent::__construct("esocial.avaliacaogruporespostatotpgcontingencia");
   	}
 
-  	public function preenchimentos($campos = array(), $ordem = array(), $where = array())
+  	public function preenchimentos($campos = [], $ordem = [], $where = [])
     {
         $campos = empty($campos) ? " * " : implode(', ', $campos);
         $sql = " 

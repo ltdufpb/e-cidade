@@ -68,7 +68,7 @@ class cl_avaliacao
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("avaliacao");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -159,11 +159,11 @@ class cl_avaliacao
                 $this->erro_status = "0";
                 return false;
             }
-            $this->db101_sequencial = pg_result($result, 0, 0);
+            $this->db101_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM avaliacao_db101_sequencial_seq");
             if (empty($this->db101_sequencial)) {
-                if (($result != false) && (pg_result($result, 0, 0) < $db101_sequencial)) {
+                if (($result != false) && (pg_fetch_result($result, 0, 0) < $db101_sequencial)) {
                     $this->erro_sql = " Campo db101_sequencial maior que último número da sequencia.";
                     $this->erro_banco = "Sequencia menor que este número.";
                     $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -214,7 +214,7 @@ class cl_avaliacao
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Avaliação ($this->db101_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Avaliação já Cadastrado";
@@ -253,34 +253,34 @@ class cl_avaliacao
             $resaco = $this->sql_record($this->sql_query_file($this->db101_sequencial));
             if (($resaco != false) || ($this->numrows != 0)) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,16908,'$this->db101_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,2980,16908,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,16908,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")"
                 );
-                $resac = db_query("insert into db_acount values($acount,2980,16909,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,16909,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_avaliacaotipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")"
                 );
-                $resac = db_query("insert into db_acount values($acount,2980,16910,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,16910,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")"
                 );
-                $resac = db_query("insert into db_acount values($acount,2980,19376,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,19376,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_identificador')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2980,16911,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,16911,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2980,17079,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,17079,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2980,1009306,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,1009306,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_cargadados')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2980,1009309,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2980,1009309,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'db101_permiteedicao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -294,10 +294,10 @@ class cl_avaliacao
         $this->atualizacampos();
         $sql = " update avaliacao set ";
         $virgula = "";
-        if (trim($this->db101_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_sequencial"])) {
+        if (trim((string) $this->db101_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_sequencial"])) {
             $sql .= $virgula . " db101_sequencial = $this->db101_sequencial ";
             $virgula = ",";
-            if (trim($this->db101_sequencial) == null) {
+            if (trim((string) $this->db101_sequencial) == null) {
                 $this->erro_sql = " Campo Sequencial não informado.";
                 $this->erro_campo = "db101_sequencial";
                 $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_avaliacao
                 return false;
             }
         }
-        if (trim($this->db101_avaliacaotipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_avaliacaotipo"])) {
+        if (trim((string) $this->db101_avaliacaotipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_avaliacaotipo"])) {
             $sql .= $virgula . " db101_avaliacaotipo = $this->db101_avaliacaotipo ";
             $virgula = ",";
-            if (trim($this->db101_avaliacaotipo) == null) {
+            if (trim((string) $this->db101_avaliacaotipo) == null) {
                 $this->erro_sql = " Campo Avaliação Tipo não informado.";
                 $this->erro_campo = "db101_avaliacaotipo";
                 $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_avaliacao
                 return false;
             }
         }
-        if (trim($this->db101_descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_descricao"])) {
+        if (trim((string) $this->db101_descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_descricao"])) {
             $sql .= $virgula . " db101_descricao = '$this->db101_descricao' ";
             $virgula = ",";
-            if (trim($this->db101_descricao) == null) {
+            if (trim((string) $this->db101_descricao) == null) {
                 $this->erro_sql = " Campo Descrição não informado.";
                 $this->erro_campo = "db101_descricao";
                 $this->erro_banco = "";
@@ -336,18 +336,18 @@ class cl_avaliacao
                 return false;
             }
         }
-        if (trim($this->db101_identificador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_identificador"])) {
+        if (trim((string) $this->db101_identificador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_identificador"])) {
             $sql .= $virgula . " db101_identificador = '$this->db101_identificador' ";
             $virgula = ",";
         }
-        if (trim($this->db101_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_obs"])) {
+        if (trim((string) $this->db101_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_obs"])) {
             $sql .= $virgula . " db101_obs = '$this->db101_obs' ";
             $virgula = ",";
         }
-        if (trim($this->db101_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_ativo"])) {
+        if (trim((string) $this->db101_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_ativo"])) {
             $sql .= $virgula . " db101_ativo = '$this->db101_ativo' ";
             $virgula = ",";
-            if (trim($this->db101_ativo) == null) {
+            if (trim((string) $this->db101_ativo) == null) {
                 $this->erro_sql = " Campo Ativo não informado.";
                 $this->erro_campo = "db101_ativo";
                 $this->erro_banco = "";
@@ -358,11 +358,11 @@ class cl_avaliacao
                 return false;
             }
         }
-        if (trim($this->db101_cargadados) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_cargadados"])) {
+        if (trim((string) $this->db101_cargadados) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_cargadados"])) {
             $sql .= $virgula . " db101_cargadados = '$this->db101_cargadados' ";
             $virgula = ",";
         }
-        if (trim($this->db101_permiteedicao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_permiteedicao"])) {
+        if (trim((string) $this->db101_permiteedicao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db101_permiteedicao"])) {
             $sql .= $virgula . " db101_permiteedicao = '$this->db101_permiteedicao' ";
             $virgula = ",";
         }
@@ -380,46 +380,46 @@ class cl_avaliacao
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,16908,'$this->db101_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_sequencial"]) || $this->db101_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,16908,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,16908,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_sequencial')) . "','$this->db101_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_avaliacaotipo"]) || $this->db101_avaliacaotipo != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,16909,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,16909,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_avaliacaotipo')) . "','$this->db101_avaliacaotipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_descricao"]) || $this->db101_descricao != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,16910,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,16910,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_descricao')) . "','$this->db101_descricao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_identificador"]) || $this->db101_identificador != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,19376,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,19376,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_identificador')) . "','$this->db101_identificador'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_obs"]) || $this->db101_obs != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,16911,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,16911,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_obs')) . "','$this->db101_obs'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_ativo"]) || $this->db101_ativo != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,17079,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,17079,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_ativo')) . "','$this->db101_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_cargadados"]) || $this->db101_cargadados != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,1009306,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,1009306,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_cargadados')) . "','$this->db101_cargadados'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["db101_permiteedicao"]) || $this->db101_permiteedicao != "") {
-                        $resac = db_query("insert into db_acount values($acount,2980,1009309,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,2980,1009309,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'db101_permiteedicao')) . "','$this->db101_permiteedicao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -481,31 +481,31 @@ class cl_avaliacao
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,16908,'$db101_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,2980,16908,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,16908,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,2980,16909,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,16909,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_avaliacaotipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,2980,16910,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,16910,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,2980,19376,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,19376,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_identificador')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,2980,16911,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,16911,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,2980,17079,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,17079,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,2980,1009306,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,1009306,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_cargadados')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,2980,1009309,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2980,1009309,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'db101_permiteedicao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -616,7 +616,7 @@ class cl_avaliacao
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -654,7 +654,7 @@ class cl_avaliacao
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

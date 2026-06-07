@@ -85,8 +85,8 @@ if ( $oPost->sAction == 'PesquisaProxMensal' ) {
 
   } elseif ( $oPost->ult_mes == "" && $oPost->ult_dtfim != "" ) {
 
-    $ultimo_mes = substr($oPost->ult_dtfim,5,2);
-    $ultimo_ano = substr($oPost->ult_dtfim,0,4);
+    $ultimo_mes = substr((string) $oPost->ult_dtfim,5,2);
+    $ultimo_ano = substr((string) $oPost->ult_dtfim,0,4);
 
     if ( $ultimo_mes==12 ) {
 
@@ -115,7 +115,7 @@ if ( $oPost->sAction == 'PesquisaProxMensal' ) {
 if ( $oPost->sAction == 'PesquisaProxPeriodo' ) {
 
   if ( $oPost->ult_dtfim != "" ) {
-    $data_ini = date("Y-m-d",mktime(0, 0, 0, substr($oPost->ult_dtfim,5,2), substr($oPost->ult_dtfim,8,2)+1, substr($oPost->ult_dtfim,0,4)));
+    $data_ini = date("Y-m-d",mktime(0, 0, 0, substr((string) $oPost->ult_dtfim,5,2), substr((string) $oPost->ult_dtfim,8,2)+1, substr((string) $oPost->ult_dtfim,0,4)));
   }else{
     $data_ini = date("Y-m-d",mktime(0, 0, 0, date("m"), 1, date("Y")));
   }
@@ -125,8 +125,8 @@ if ( $oPost->sAction == 'PesquisaProxPeriodo' ) {
 
 if ( $oPost->sAction == 'VerificaInclusao' ) {
 
-  $ed98_d_dataini = substr($oPost->dt_ini, 6, 4) . "-" . substr($oPost->dt_ini, 3, 2) . "-" . substr($oPost->dt_ini, 0, 2);
-  $ed98_d_datafim = substr($oPost->dt_fim, 6, 4) . "-" . substr($oPost->dt_fim, 3, 2) . "-" . substr($oPost->dt_fim, 0, 2);
+  $ed98_d_dataini = substr((string) $oPost->dt_ini, 6, 4) . "-" . substr((string) $oPost->dt_ini, 3, 2) . "-" . substr((string) $oPost->dt_ini, 0, 2);
+  $ed98_d_datafim = substr((string) $oPost->dt_fim, 6, 4) . "-" . substr((string) $oPost->dt_fim, 3, 2) . "-" . substr((string) $oPost->dt_fim, 0, 2);
   $result         = $clefetividaderh->sql_record($clefetividaderh->sql_query("","ed98_i_mes,ed98_i_ano,ed98_d_dataini,ed98_d_datafim,ed98_c_tipo,ed98_c_tipocomp"," ed98_d_datafim desc limit 1"," ed98_i_escola = {$oPost->iEscola} AND ed98_c_tipo = '{$oPost->tipo}' AND (ed98_d_dataini BETWEEN '$ed98_d_dataini' AND '$ed98_d_datafim' OR ed98_d_datafim BETWEEN '$ed98_d_dataini' AND '$ed98_d_datafim')"));
  if ( $clefetividaderh->numrows>0 ) {
   db_fieldsmemory($result,0);
@@ -138,14 +138,14 @@ if ( $oPost->sAction == 'VerificaInclusao' ) {
    $descricao = "Data Inicial: ".db_formatar($ed98_d_dataini,'d')." Data Final: ".db_formatar($ed98_d_datafim,'d');
  }
  $retorno = "Competência informada está em conflito \ncom o registro abaixo, já cadastrado anteriormente:\n\n";
- $retorno .= "Tipo de Efetividade: ".(trim($ed98_c_tipo)=="P"?"PROFESSORES":"FUNCIONÁRIOS")." \n";
+ $retorno .= "Tipo de Efetividade: ".(trim((string) $ed98_c_tipo)=="P"?"PROFESSORES":"FUNCIONÁRIOS")." \n";
  $retorno .= "Tipo de Competência: $tipo \n";
  $retorno .= "$descricao \n";
 }else{
   $retorno = 0;
 }
 $oJson = new services_json();
-echo $oJson->encode(urlencode($retorno));
+echo $oJson->encode(urlencode((string) $retorno));
 }
 
 if ($oPost->sAction == 'Relatorio') {

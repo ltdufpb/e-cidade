@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE coremp
 class cl_coremp { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k12_id = 0; 
-   var $k12_data_dia = null; 
-   var $k12_data_mes = null; 
-   var $k12_data_ano = null; 
-   var $k12_data = null; 
-   var $k12_autent = 0; 
-   var $k12_empen = 0; 
-   var $k12_cheque = 0; 
-   var $k12_codord = 0; 
+   public $k12_id = 0; 
+   public $k12_data_dia = null; 
+   public $k12_data_mes = null; 
+   public $k12_data_ano = null; 
+   public $k12_data = null; 
+   public $k12_autent = 0; 
+   public $k12_empen = 0; 
+   public $k12_cheque = 0; 
+   public $k12_codord = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k12_id = int4 = Autenticação 
                  k12_data = date = Data Autenticação 
                  k12_autent = int4 = Código Autenticação 
@@ -61,10 +61,10 @@ class cl_coremp {
                  k12_codord = int8 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_coremp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("coremp"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -167,7 +167,7 @@ class cl_coremp {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Autentica Empenhos ($this->k12_id."-".$this->k12_data."-".$this->k12_autent) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Autentica Empenhos já Cadastrado";
@@ -191,17 +191,17 @@ class cl_coremp {
      $resaco = $this->sql_record($this->sql_query_file($this->k12_id,$this->k12_data,$this->k12_autent));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1139,'$this->k12_id','I')");
        $resac = db_query("insert into db_acountkey values($acount,1140,'$this->k12_data','I')");
        $resac = db_query("insert into db_acountkey values($acount,1141,'$this->k12_autent','I')");
-       $resac = db_query("insert into db_acount values($acount,208,1139,'','".AddSlashes(pg_result($resaco,0,'k12_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,208,1140,'','".AddSlashes(pg_result($resaco,0,'k12_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,208,1141,'','".AddSlashes(pg_result($resaco,0,'k12_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,208,1162,'','".AddSlashes(pg_result($resaco,0,'k12_empen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,208,1163,'','".AddSlashes(pg_result($resaco,0,'k12_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,208,6212,'','".AddSlashes(pg_result($resaco,0,'k12_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,208,1139,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,208,1140,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,208,1141,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,208,1162,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_empen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,208,1163,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,208,6212,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_coremp {
       $this->atualizacampos();
      $sql = " update coremp set ";
      $virgula = "";
-     if(trim($this->k12_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_id"])){ 
+     if(trim((string) $this->k12_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_id"])){ 
        $sql  .= $virgula." k12_id = $this->k12_id ";
        $virgula = ",";
-       if(trim($this->k12_id) == null ){ 
+       if(trim((string) $this->k12_id) == null ){ 
          $this->erro_sql = " Campo Autenticação nao Informado.";
          $this->erro_campo = "k12_id";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_coremp {
          return false;
        }
      }
-     if(trim($this->k12_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"] !="") ){ 
+     if(trim((string) $this->k12_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"] !="") ){ 
        $sql  .= $virgula." k12_data = '$this->k12_data' ";
        $virgula = ",";
-       if(trim($this->k12_data) == null ){ 
+       if(trim((string) $this->k12_data) == null ){ 
          $this->erro_sql = " Campo Data Autenticação nao Informado.";
          $this->erro_campo = "k12_data_dia";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_coremp {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k12_data_dia"])){ 
          $sql  .= $virgula." k12_data = null ";
          $virgula = ",";
-         if(trim($this->k12_data) == null ){ 
+         if(trim((string) $this->k12_data) == null ){ 
            $this->erro_sql = " Campo Data Autenticação nao Informado.";
            $this->erro_campo = "k12_data_dia";
            $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_coremp {
          }
        }
      }
-     if(trim($this->k12_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_autent"])){ 
+     if(trim((string) $this->k12_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_autent"])){ 
        $sql  .= $virgula." k12_autent = $this->k12_autent ";
        $virgula = ",";
-       if(trim($this->k12_autent) == null ){ 
+       if(trim((string) $this->k12_autent) == null ){ 
          $this->erro_sql = " Campo Código Autenticação nao Informado.";
          $this->erro_campo = "k12_autent";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_coremp {
          return false;
        }
      }
-     if(trim($this->k12_empen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_empen"])){ 
+     if(trim((string) $this->k12_empen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_empen"])){ 
        $sql  .= $virgula." k12_empen = $this->k12_empen ";
        $virgula = ",";
-       if(trim($this->k12_empen) == null ){ 
+       if(trim((string) $this->k12_empen) == null ){ 
          $this->erro_sql = " Campo Empenho nao Informado.";
          $this->erro_campo = "k12_empen";
          $this->erro_banco = "";
@@ -276,17 +276,17 @@ class cl_coremp {
          return false;
        }
      }
-     if(trim($this->k12_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_cheque"])){ 
-        if(trim($this->k12_cheque)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_cheque"])){ 
+     if(trim((string) $this->k12_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_cheque"])){ 
+        if(trim((string) $this->k12_cheque)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_cheque"])){ 
            $this->k12_cheque = "0" ; 
         } 
        $sql  .= $virgula." k12_cheque = $this->k12_cheque ";
        $virgula = ",";
      }
-     if(trim($this->k12_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_codord"])){ 
+     if(trim((string) $this->k12_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_codord"])){ 
        $sql  .= $virgula." k12_codord = $this->k12_codord ";
        $virgula = ",";
-       if(trim($this->k12_codord) == null ){ 
+       if(trim((string) $this->k12_codord) == null ){ 
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "k12_codord";
          $this->erro_banco = "";
@@ -310,23 +310,23 @@ class cl_coremp {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1139,'$this->k12_id','A')");
          $resac = db_query("insert into db_acountkey values($acount,1140,'$this->k12_data','A')");
          $resac = db_query("insert into db_acountkey values($acount,1141,'$this->k12_autent','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_id"]))
-           $resac = db_query("insert into db_acount values($acount,208,1139,'".AddSlashes(pg_result($resaco,$conresaco,'k12_id'))."','$this->k12_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,208,1139,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_id'))."','$this->k12_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_data"]))
-           $resac = db_query("insert into db_acount values($acount,208,1140,'".AddSlashes(pg_result($resaco,$conresaco,'k12_data'))."','$this->k12_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,208,1140,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_data'))."','$this->k12_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_autent"]))
-           $resac = db_query("insert into db_acount values($acount,208,1141,'".AddSlashes(pg_result($resaco,$conresaco,'k12_autent'))."','$this->k12_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,208,1141,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_autent'))."','$this->k12_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_empen"]))
-           $resac = db_query("insert into db_acount values($acount,208,1162,'".AddSlashes(pg_result($resaco,$conresaco,'k12_empen'))."','$this->k12_empen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,208,1162,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_empen'))."','$this->k12_empen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_cheque"]))
-           $resac = db_query("insert into db_acount values($acount,208,1163,'".AddSlashes(pg_result($resaco,$conresaco,'k12_cheque'))."','$this->k12_cheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,208,1163,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_cheque'))."','$this->k12_cheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_codord"]))
-           $resac = db_query("insert into db_acount values($acount,208,6212,'".AddSlashes(pg_result($resaco,$conresaco,'k12_codord'))."','$this->k12_codord',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,208,6212,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_codord'))."','$this->k12_codord',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -371,17 +371,17 @@ class cl_coremp {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1139,'$k12_id','E')");
          $resac = db_query("insert into db_acountkey values($acount,1140,'$k12_data','E')");
          $resac = db_query("insert into db_acountkey values($acount,1141,'$k12_autent','E')");
-         $resac = db_query("insert into db_acount values($acount,208,1139,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,208,1140,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,208,1141,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,208,1162,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_empen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,208,1163,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,208,6212,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,208,1139,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,208,1140,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,208,1141,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,208,1162,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_empen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,208,1163,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,208,6212,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from coremp
@@ -453,7 +453,7 @@ class cl_coremp {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:coremp";
@@ -467,7 +467,7 @@ class cl_coremp {
    function sql_query ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,7 +513,7 @@ class cl_coremp {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,7 +525,7 @@ class cl_coremp {
    function sql_query_file ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_coremp {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_coremp {
    function sql_query_nome ( $k12_id=null,$k12_data=null,$k12_autent=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -618,7 +618,7 @@ class cl_coremp {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

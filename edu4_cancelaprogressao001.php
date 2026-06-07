@@ -536,7 +536,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
             </script>
             <div class="center">
               <input type="hidden" name="codigoprogressao" value="<?=$ed101_i_codigo?>">
-              <input type="hidden" name="codigoaluno"      value="<?=isset( $codigoaluno ) ? $codigoaluno : ''?>">
+              <input type="hidden" name="codigoaluno"      value="<?=$codigoaluno ?? ''?>">
               <input type="submit" name="incluir"          value="Confirmar Cancelamento" onclick="return js_confirma();">
             </div>
             <?php }?>

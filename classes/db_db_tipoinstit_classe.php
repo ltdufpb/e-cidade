@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_tipoinstit
 class cl_db_tipoinstit { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db21_codtipo = 0; 
-   var $db21_nome = null; 
-   var $db21_idtribunal = null; 
-   var $db21_codigosiconfi = null; 
+   public $db21_codtipo = 0; 
+   public $db21_nome = null; 
+   public $db21_idtribunal = null; 
+   public $db21_codigosiconfi = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db21_codtipo = int4 = Codigo do Tipo 
                  db21_nome = varchar(40) = Nome do Tipo 
                  db21_idtribunal = char(6) = Identificador no Tribunal de Contas 
                  db21_codigosiconfi = varchar(6) = Código do SICONFI 
                  ";
    //funcao construtor da classe 
-   function cl_db_tipoinstit() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_tipoinstit"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -124,7 +124,7 @@ class cl_db_tipoinstit {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->db21_codtipo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -153,13 +153,13 @@ class cl_db_tipoinstit {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8976,'$this->db21_codtipo','I')");
-         $resac = db_query("insert into db_acount values($acount,1536,8976,'','".AddSlashes(pg_result($resaco,0,'db21_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1536,8977,'','".AddSlashes(pg_result($resaco,0,'db21_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1536,8978,'','".AddSlashes(pg_result($resaco,0,'db21_idtribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1536,1009634,'','".AddSlashes(pg_result($resaco,0,'db21_codigosiconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1536,8976,'','".AddSlashes(pg_fetch_result($resaco,0,'db21_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1536,8977,'','".AddSlashes(pg_fetch_result($resaco,0,'db21_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1536,8978,'','".AddSlashes(pg_fetch_result($resaco,0,'db21_idtribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1536,1009634,'','".AddSlashes(pg_fetch_result($resaco,0,'db21_codigosiconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -169,10 +169,10 @@ class cl_db_tipoinstit {
       $this->atualizacampos();
      $sql = " update db_tipoinstit set ";
      $virgula = "";
-     if(trim($this->db21_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_codtipo"])){ 
+     if(trim((string) $this->db21_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_codtipo"])){ 
        $sql  .= $virgula." db21_codtipo = $this->db21_codtipo ";
        $virgula = ",";
-       if(trim($this->db21_codtipo) == null ){ 
+       if(trim((string) $this->db21_codtipo) == null ){ 
          $this->erro_sql = " Campo Codigo do Tipo não informado.";
          $this->erro_campo = "db21_codtipo";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_db_tipoinstit {
          return false;
        }
      }
-     if(trim($this->db21_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_nome"])){ 
+     if(trim((string) $this->db21_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_nome"])){ 
        $sql  .= $virgula." db21_nome = '$this->db21_nome' ";
        $virgula = ",";
-       if(trim($this->db21_nome) == null ){ 
+       if(trim((string) $this->db21_nome) == null ){ 
          $this->erro_sql = " Campo Nome do Tipo não informado.";
          $this->erro_campo = "db21_nome";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_db_tipoinstit {
          return false;
        }
      }
-     if(trim($this->db21_idtribunal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_idtribunal"])){ 
+     if(trim((string) $this->db21_idtribunal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_idtribunal"])){ 
        $sql  .= $virgula." db21_idtribunal = '$this->db21_idtribunal' ";
        $virgula = ",";
-       if(trim($this->db21_idtribunal) == null ){ 
+       if(trim((string) $this->db21_idtribunal) == null ){ 
          $this->erro_sql = " Campo Identificador no Tribunal de Contas não informado.";
          $this->erro_campo = "db21_idtribunal";
          $this->erro_banco = "";
@@ -208,7 +208,7 @@ class cl_db_tipoinstit {
          return false;
        }
      }
-     if(trim($this->db21_codigosiconfi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_codigosiconfi"])){ 
+     if(trim((string) $this->db21_codigosiconfi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db21_codigosiconfi"])){ 
        $sql  .= $virgula." db21_codigosiconfi = '$this->db21_codigosiconfi' ";
        $virgula = ",";
      }
@@ -226,17 +226,17 @@ class cl_db_tipoinstit {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,8976,'$this->db21_codtipo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db21_codtipo"]) || $this->db21_codtipo != "")
-             $resac = db_query("insert into db_acount values($acount,1536,8976,'".AddSlashes(pg_result($resaco,$conresaco,'db21_codtipo'))."','$this->db21_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1536,8976,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db21_codtipo'))."','$this->db21_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db21_nome"]) || $this->db21_nome != "")
-             $resac = db_query("insert into db_acount values($acount,1536,8977,'".AddSlashes(pg_result($resaco,$conresaco,'db21_nome'))."','$this->db21_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1536,8977,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db21_nome'))."','$this->db21_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db21_idtribunal"]) || $this->db21_idtribunal != "")
-             $resac = db_query("insert into db_acount values($acount,1536,8978,'".AddSlashes(pg_result($resaco,$conresaco,'db21_idtribunal'))."','$this->db21_idtribunal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1536,8978,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db21_idtribunal'))."','$this->db21_idtribunal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db21_codigosiconfi"]) || $this->db21_codigosiconfi != "")
-             $resac = db_query("insert into db_acount values($acount,1536,1009634,'".AddSlashes(pg_result($resaco,$conresaco,'db21_codigosiconfi'))."','$this->db21_codigosiconfi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1536,1009634,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db21_codigosiconfi'))."','$this->db21_codigosiconfi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -290,13 +290,13 @@ class cl_db_tipoinstit {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,8976,'$db21_codtipo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1536,8976,'','".AddSlashes(pg_result($resaco,$iresaco,'db21_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1536,8977,'','".AddSlashes(pg_result($resaco,$iresaco,'db21_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1536,8978,'','".AddSlashes(pg_result($resaco,$iresaco,'db21_idtribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1536,1009634,'','".AddSlashes(pg_result($resaco,$iresaco,'db21_codigosiconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1536,8976,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db21_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1536,8977,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db21_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1536,8978,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db21_idtribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1536,1009634,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db21_codigosiconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -48,16 +48,6 @@ class Periodo {
     private $oInstituicao;
 
     /**
-     * @var int|null
-     */
-    private $iExercicio;
-
-    /**
-     * @var bool
-     */
-    private $lTodasEfetividades = false;
-
-    /**
      * @var null|string
      */
     private $iAnoSessao;
@@ -69,7 +59,7 @@ class Periodo {
      * @param bool $lTodasEfetividades
      * @param null|int $iAnoSessao
      */
-    public function __construct($oInstituicao = null, $iExercicio = null, $lTodasEfetividades = false, $iAnoSessao = null) {
+    public function __construct($oInstituicao = null, private $iExercicio = null, private $lTodasEfetividades = false, $iAnoSessao = null) {
 
         if($oInstituicao == null) {
             $this->oInstituicao = \InstituicaoRepository::getInstituicaoSessao();
@@ -78,9 +68,6 @@ class Periodo {
         if(empty($iAnoSessao)) {
             $this->iAnoSessao = db_getsession("DB_instit");
         }
-
-        $this->iExercicio         = $iExercicio;
-        $this->lTodasEfetividades = $lTodasEfetividades;
 
         $this->getCollection();
     }
@@ -143,7 +130,7 @@ class Periodo {
      */
     public function getCollection() {
 
-        $aWhereConfiguracoesEfetividade = array("rh186_instituicao = {$this->oInstituicao->getCodigo()}");
+        $aWhereConfiguracoesEfetividade = ["rh186_instituicao = {$this->oInstituicao->getCodigo()}"];
         $sOrder                         = 'rh186_exercicio, rh186_competencia';
 
         if(!is_null($this->iExercicio)) {
@@ -193,7 +180,7 @@ class Periodo {
             throw new \BusinessException('Nenhum período de efetividade encontrado entre as datas informadas.');
         }
 
-        $aPeriodosRetorno = array();
+        $aPeriodosRetorno = [];
         $aDatasIntervalo  = \DBDate::getDatasNoIntervalo($oDataInicio, $oDataFim);
 
         if($this->oCollection->getPrimeiroPeriodo()->getDataInicio()->getTimeStamp() > $oDataInicio->getTimeStamp()) {

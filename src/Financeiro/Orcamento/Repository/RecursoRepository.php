@@ -59,10 +59,7 @@ class RecursoRepository
 
         return self::getValorPorRecursoNaCompetencia($ano, $mes, $estrutural, $instituicoes, $processarSaldoAnterior);
 
-        $tribunais = array_map(function (Instituicao $instituicao) {
-
-            return $instituicao->getCodigoTribunal();
-        }, $instituicoes);
+        $tribunais = array_map(fn(Instituicao $instituicao) => $instituicao->getCodigoTribunal(), $instituicoes);
 
         $tribunais = implode('|', $tribunais);
 
@@ -121,10 +118,7 @@ class RecursoRepository
     ) {
 
 
-        $codigoInstituicoes = array_map(function (Instituicao $instituicao) {
-
-            return $instituicao->getCodigo();
-        }, $instituicoes);
+        $codigoInstituicoes = array_map(fn(Instituicao $instituicao) => $instituicao->getCodigo(), $instituicoes);
 
         $codigoInstituicoes = implode(', ', $codigoInstituicoes);
 
@@ -140,7 +134,7 @@ class RecursoRepository
             $estrutural,
             $processarSaldoAnterior
         );
-        $rescursosParaRetorno = array();
+        $rescursosParaRetorno = [];
         foreach ($recursos as $recurso) {
             $total = $recurso->natureza_saldo_final == 'D' ? $recurso->saldo_final * -1 : $recurso->saldo_final;
             $recursoStd = new \stdClass();
@@ -158,7 +152,7 @@ class RecursoRepository
      */
     public static function getByCodigo($recurso)
     {
-        if (!array_key_exists($recurso, self::getInstance()->recursos)) {
+        if (!array_key_exists((string) $recurso, self::getInstance()->recursos)) {
             self::getInstance()->recursos[$recurso] = new Recurso($recurso);
         }
         return self::getInstance()->recursos[$recurso];
@@ -223,8 +217,6 @@ class RecursoRepository
     {
         $recursos = self::getRecursosValidosPorFonteRecurso($fonteRecurso, $outrosFiltros);
 
-        return array_map(function ($recurso) {
-            return $recurso->o15_codigo;
-        }, $recursos);
+        return array_map(fn($recurso) => $recurso->o15_codigo, $recursos);
     }
 }

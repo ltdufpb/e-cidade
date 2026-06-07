@@ -58,7 +58,7 @@ include(modification("classes/db_alunonecessidade_classe.php"));
 include(modification("classes/db_turmaacmatricula_classe.php"));
 include(modification("classes/db_turmaserieregimemat_classe.php"));
 include(modification("classes/db_turmaachorario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo              = new rotulocampo;
 $clcalendarioescola    = new cl_calendarioescola;
 $cltelefoneescola      = new cl_telefoneescola;
@@ -99,9 +99,9 @@ function RetiraAcento($string) {
   $letras     = 'AEIOUAEIOUAAAAEEOOUUIIOONNAAOOCCAA ';
   $new_string = '';
 
-  for ($x = 0; $x < strlen($string); $x++) {
+  for ($x = 0; $x < strlen((string) $string); $x++) {
 
-    $let = substr($string, $x, 1);
+    $let = substr((string) $string, $x, 1);
     for ($y = 0; $y < strlen($acentos); $y++) {
 
       if ($let == substr($acentos, $y, 1)) {
@@ -214,7 +214,7 @@ function TiraCaracteres(&$string,$tipo) {
 
   }
 
-  $string = strtoupper(RetiraAcento($string));
+  $string = strtoupper((string) RetiraAcento($string));
   return $string;
 
 }
@@ -504,7 +504,7 @@ if (!isset($ed52_i_ano)) {
    if (isset($gerararquivo)) {
     
      $clescola     = new cl_escola;
-     $data_censo   = substr($data_censo,6,4)."-".substr($data_censo,3,2)."-".substr($data_censo,0,2);
+     $data_censo   = substr((string) $data_censo,6,4)."-".substr((string) $data_censo,3,2)."-".substr((string) $data_censo,0,2);
      $hoje         = date("Y-m-d");
      $arquivo_txt  = "tmp/censo_".$escola."_".db_getsession("DB_id_usuario")."_".date("dmY")."_".date("His")."_";
      $arquivo_txt .= str_replace("/","",db_formatar($data_censo,'d'))."_".$ed52_i_ano.".txt";
@@ -561,7 +561,7 @@ if (!isset($ed52_i_ano)) {
          $oDadosEscola = db_utils::fieldsmemory($sResultEscola, $a);
          db_atutermometro_edu($a, $clescola->numrows , 'termometro',1,'...Processando Escola');
          
-         if (strlen($oDadosEscola->ed18_c_codigoinep) < 8) {
+         if (strlen((string) $oDadosEscola->ed18_c_codigoinep) < 8) {
              
            $sMsgErro = "ESCOLA: Campo Código INEP deve conter 8 dígitos.\n";
            fwrite($ponteiro2,$sMsgErro);
@@ -585,7 +585,7 @@ if (!isset($ed52_i_ano)) {
            
          }
          
-         if ($oDadosEscola->ed18_c_cep != "" && strlen($oDadosEscola->ed18_c_cep) < 8) {
+         if ($oDadosEscola->ed18_c_cep != "" && strlen((string) $oDadosEscola->ed18_c_cep) < 8) {
              
            $sMsgErro = "ESCOLA: Campo CEP deve conter 8 dígitos.\n";
            fwrite($ponteiro2,$sMsgErro);
@@ -623,7 +623,7 @@ if (!isset($ed52_i_ano)) {
            $sSqlOrgreg    = $clcensoorgreg->sql_query("","ed260_c_sigla as uforgreg","",$sWhereOrgreg);
            $sResultOrgreg = $clcensoorgreg->sql_record($sSqlOrgreg);
            
-           if ($clcensoorgreg->numrows > 0 && trim($oDadosEscola->ed18_i_censoorgreg) == "") {
+           if ($clcensoorgreg->numrows > 0 && trim((string) $oDadosEscola->ed18_i_censoorgreg) == "") {
                
              $uforgreg = db_utils::fieldsmemory($sResultOrgreg, 0)->uforgreg;
              $sMsgErro = "ESCOLA: Campo Órgão de Ensino deve ser preenchido para o estado $uforgreg.\n";
@@ -633,7 +633,7 @@ if (!isset($ed52_i_ano)) {
            }              
          } 
          
-         if ($oDadosEscola->ed18_c_email != "" && (!strstr($oDadosEscola->ed18_c_email,"@")  || !strstr($oDadosEscola->ed18_c_email,"."))) {
+         if ($oDadosEscola->ed18_c_email != "" && (!strstr((string) $oDadosEscola->ed18_c_email,"@")  || !strstr((string) $oDadosEscola->ed18_c_email,"."))) {
              
            $sMsgErro = "ESCOLA: Campo Email deve conter arroba e ponto.\n";
            fwrite($ponteiro2,$sMsgErro);
@@ -736,7 +736,7 @@ if (!isset($ed52_i_ano)) {
              $ddd              = $oTelefonesEscola->ed26_i_ddd;
              $telefones        = $oTelefonesEscola->ed26_i_numero;
              
-             if (strlen($oTelefonesEscola->ed26_i_numero) < 7 || strlen($oTelefonesEscola->ed26_i_numero) > 8) {
+             if (strlen((string) $oTelefonesEscola->ed26_i_numero) < 7 || strlen((string) $oTelefonesEscola->ed26_i_numero) > 8) {
                  
                $sMsgErro = "ESCOLA: N° do telefone deve possuir 7 ou 8 dígitos.\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -772,7 +772,7 @@ if (!isset($ed52_i_ano)) {
              
            $oDadosDiretor = db_utils::fieldsmemory($sResultEscolaDiretor, 0);
            
-           if (($oDadosDiretor->z01_cgccpf != "" && strlen($oDadosDiretor->z01_cgccpf) != 11) 
+           if (($oDadosDiretor->z01_cgccpf != "" && strlen((string) $oDadosDiretor->z01_cgccpf) != 11) 
                 || $oDadosDiretor->z01_cgccpf == "00000000000" || $oDadosDiretor->z01_cgccpf == "00000000191") {
 
              $sMsgErro = "ESCOLA: Campo CPF do Diretor inválido.\n";
@@ -789,7 +789,7 @@ if (!isset($ed52_i_ano)) {
              
            }
            
-           if ($oDadosDiretor->ed254_c_email != "" && (!strstr($oDadosDiretor->ed254_c_email,"@")  || !strstr($oDadosDiretor->ed254_c_email,"."))) {
+           if ($oDadosDiretor->ed254_c_email != "" && (!strstr((string) $oDadosDiretor->ed254_c_email,"@")  || !strstr((string) $oDadosDiretor->ed254_c_email,"."))) {
                
              $sMsgErro = "ESCOLA: Campo Email do diretor deve conter arroba e ponto.\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -840,7 +840,7 @@ if (!isset($ed52_i_ano)) {
          if ($clescolaestrutura->numrows > 0) {
              
            $oDadosEscolaEstrutura = db_utils::fieldsmemory($sResultEscolaEstrutura, 0);
-           if (substr($oDadosEscolaEstrutura->ed255_c_localizacao,0,1) == 1 && $oDadosEscolaEstrutura->ed255_i_salaexistente == "") {
+           if (substr((string) $oDadosEscolaEstrutura->ed255_c_localizacao,0,1) == 1 && $oDadosEscolaEstrutura->ed255_i_salaexistente == "") {
                
              $sMsgErro = " ESCOLA: Campo N° de Sala de Aula Existentes na Escola deve ser informado quando Prédio ";
              $sMsgErro = " Escolar(Local de Funcionamento da Escola) estiver marcado.\n";
@@ -857,7 +857,7 @@ if (!isset($ed52_i_ano)) {
              
            }
            
-           if (substr($oDadosEscolaEstrutura->ed255_c_localizacao,0,1)==1 && $oDadosEscolaEstrutura->ed255_i_formaocupacao == "") {
+           if (substr((string) $oDadosEscolaEstrutura->ed255_c_localizacao,0,1)==1 && $oDadosEscolaEstrutura->ed255_i_formaocupacao == "") {
                
              $sMsgErro = " ESCOLA: Campo Forma de Ocupação do Prédio deve ser informado quando Prédio ";
              $sMsgErro .= " Escolar(Local de Funcionamento da Escola) estiver marcado.\n";
@@ -944,7 +944,7 @@ if (!isset($ed52_i_ano)) {
            for ($c = 0; $c < $clmatricula->numrows; $c++) {
                 
              $codtipoensino = db_utils::fieldsmemory($sResultModalidade, $c)->codtipoensino;
-             if (trim($modal) == trim($codtipoensino)) {
+             if (trim($modal) == trim((string) $codtipoensino)) {
                  
                $modalidades_ens .= "1|";
                $naotem           = true;
@@ -1006,7 +1006,7 @@ if (!isset($ed52_i_ano)) {
          $oDadosEscola->j14_nome                    = TiraCaracteres($oDadosEscola->j14_nome,3);
          $oDadosEscola->ed18_i_numero               = ($oDadosEscola->ed18_i_numero==0?"":$oDadosEscola->ed18_i_numero);
          $oDadosEscola->ed18_c_compl                = TiraCaracteres($oDadosEscola->ed18_c_compl,3);
-         $oDadosEscola->j13_descr                   = TiraCaracteres(substr($oDadosEscola->j13_descr,0,50),3);
+         $oDadosEscola->j13_descr                   = TiraCaracteres(substr((string) $oDadosEscola->j13_descr,0,50),3);
          $oDadosEscola->ed18_i_censouf              = $oDadosEscola->ed18_i_censouf;
          $oDadosEscola->ed18_i_censomunic           = $oDadosEscola->ed18_i_censomunic;
          $oDadosEscola->ed262_i_coddistrito         = $oDadosEscola->ed262_i_coddistrito;
@@ -1014,24 +1014,24 @@ if (!isset($ed52_i_ano)) {
          $oDadosEscola->ed263_i_codigocenso         = $oDadosEscola->ed263_i_codigocenso;
          $oDadosEscola->ed18_c_mantenedora          = ($oDadosEscola->ed18_c_mantenedora==""?"3":$oDadosEscola->ed18_c_mantenedora);
          $oDadosEscola->ed18_c_local                = ($oDadosEscola->ed18_c_local==""?"1":$oDadosEscola->ed18_c_local);
-         $oDadosEscola->ed18_i_cnpj                 = trim($oDadosEscola->ed18_i_cnpj);               
+         $oDadosEscola->ed18_i_cnpj                 = trim((string) $oDadosEscola->ed18_i_cnpj);               
          $oDadosEscola->ed18_i_categprivada         = $oDadosEscola->ed18_i_categprivada;
          $oDadosEscola->ed18_i_conveniada           = $oDadosEscola->ed18_i_conveniada;
          $oDadosEscola->ed18_i_cnas                 = ($oDadosEscola->ed18_i_cnas=="0"?"":$oDadosEscola->ed18_i_cnas);
          $oDadosEscola->ed18_i_cebas                = ($oDadosEscola->ed18_i_cebas=="0"?"":$oDadosEscola->ed18_i_cebas);
-         $oDadosEscola->ed18_c_mantprivada          = trim($oDadosEscola->ed18_c_mantprivada);//!=4?"":$oDadosEscola->ed18_c_mantprivada);
+         $oDadosEscola->ed18_c_mantprivada          = trim((string) $oDadosEscola->ed18_c_mantprivada);//!=4?"":$oDadosEscola->ed18_c_mantprivada);
          $oDadosEscola->ed18_c_mantprivada          = ($oDadosEscola->ed18_c_mantenedora!=4?"":$oDadosEscola->ed18_c_mantprivada[0]).
                                         "|".($oDadosEscola->ed18_c_mantenedora!=4?"":$oDadosEscola->ed18_c_mantprivada[1]).
                                         "|".($oDadosEscola->ed18_c_mantenedora!=4?"":$oDadosEscola->ed18_c_mantprivada[2]).
                                         "|".($oDadosEscola->ed18_c_mantenedora!=4?"":$oDadosEscola->ed18_c_mantprivada[3]);
-         $oDadosEscola->ed18_i_cnpjprivada          = trim($oDadosEscola->ed18_i_cnpjprivada);
+         $oDadosEscola->ed18_i_cnpjprivada          = trim((string) $oDadosEscola->ed18_i_cnpjprivada);
          $oDadosEscola->ed18_i_credenciamento       = $oDadosEscola->ed18_i_credenciamento;      
          $oDadosEscola->ed18_i_cnpjmantprivada      = $oDadosEscola->ed18_i_cnpjmantprivada;
          $oDadosDiretor->z01_nome                    = TiraCaracteres($oDadosDiretor->z01_nome,1);
          $oDadosDiretor->z01_cgccpf                  = $oDadosDiretor->z01_cgccpf;
          $oDadosDiretor->rh37_descr                  = TiraCaracteres($oDadosDiretor->rh37_descr,2);
          $oDadosDiretor->ed254_c_email               = TiraCaracteres($oDadosDiretor->ed254_c_email,4);
-         $oDadosEscolaEstrutura->ed255_c_localizacao         = trim($oDadosEscolaEstrutura->ed255_c_localizacao);
+         $oDadosEscolaEstrutura->ed255_c_localizacao         = trim((string) $oDadosEscolaEstrutura->ed255_c_localizacao);
          $oDadosEscolaEstrutura->ed255_c_localizacao         = $oDadosEscolaEstrutura->ed255_c_localizacao[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_localizacao[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_localizacao[2].
@@ -1045,29 +1045,29 @@ if (!isset($ed52_i_ano)) {
          $oDadosEscolaEstrutura->ed255_i_escolacompartilhada = ($oDadosEscolaEstrutura->ed255_i_escolacompartilhada==0?"":$oDadosEscolaEstrutura->ed255_i_escolacompartilhada);
          $restoescolacompartilhada    = "||||";
          $oDadosEscolaEstrutura->ed255_i_aguafiltrada        = $oDadosEscolaEstrutura->ed255_i_aguafiltrada;
-         $oDadosEscolaEstrutura->ed255_c_abastagua           = trim($oDadosEscolaEstrutura->ed255_c_abastagua);
+         $oDadosEscolaEstrutura->ed255_c_abastagua           = trim((string) $oDadosEscolaEstrutura->ed255_c_abastagua);
          $oDadosEscolaEstrutura->ed255_c_abastagua           = $oDadosEscolaEstrutura->ed255_c_abastagua[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_abastagua[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_abastagua[2].
                                         "|".$oDadosEscolaEstrutura->ed255_c_abastagua[3].
                                         "|".$oDadosEscolaEstrutura->ed255_c_abastagua[4]; 
-         $oDadosEscolaEstrutura->ed255_c_abastenergia        = trim($oDadosEscolaEstrutura->ed255_c_abastenergia);
+         $oDadosEscolaEstrutura->ed255_c_abastenergia        = trim((string) $oDadosEscolaEstrutura->ed255_c_abastenergia);
          $oDadosEscolaEstrutura->ed255_c_abastenergia         = $oDadosEscolaEstrutura->ed255_c_abastenergia[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_abastenergia[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_abastenergia[2].
                                         "|".$oDadosEscolaEstrutura->ed255_c_abastenergia[3];
-         $oDadosEscolaEstrutura->ed255_c_esgotosanitario     = trim($oDadosEscolaEstrutura->ed255_c_esgotosanitario);
+         $oDadosEscolaEstrutura->ed255_c_esgotosanitario     = trim((string) $oDadosEscolaEstrutura->ed255_c_esgotosanitario);
          $oDadosEscolaEstrutura->ed255_c_esgotosanitario     = $oDadosEscolaEstrutura->ed255_c_esgotosanitario[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_esgotosanitario[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_esgotosanitario[2];
-         $oDadosEscolaEstrutura->ed255_c_destinolixo         = trim($oDadosEscolaEstrutura->ed255_c_destinolixo);
+         $oDadosEscolaEstrutura->ed255_c_destinolixo         = trim((string) $oDadosEscolaEstrutura->ed255_c_destinolixo);
          $oDadosEscolaEstrutura->ed255_c_destinolixo         = $oDadosEscolaEstrutura->ed255_c_destinolixo[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_destinolixo[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_destinolixo[2].
                                         "|".$oDadosEscolaEstrutura->ed255_c_destinolixo[3].
                                         "|".$oDadosEscolaEstrutura->ed255_c_destinolixo[4].
                                         "|".$oDadosEscolaEstrutura->ed255_c_destinolixo[5];
-         $oDadosEscolaEstrutura->ed255_c_dependencias        = trim($oDadosEscolaEstrutura->ed255_c_dependencias);
+         $oDadosEscolaEstrutura->ed255_c_dependencias        = trim((string) $oDadosEscolaEstrutura->ed255_c_dependencias);
          $oDadosEscolaEstrutura->ed255_c_dependencias        = $oDadosEscolaEstrutura->ed255_c_dependencias[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_dependencias[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_dependencias[2].                                                       
@@ -1088,7 +1088,7 @@ if (!isset($ed52_i_ano)) {
                                         "|".$oDadosEscolaEstrutura->ed255_c_dependencias[17];                                        
          $oDadosEscolaEstrutura->ed255_i_salaexistente       = $oDadosEscolaEstrutura->ed255_i_salaexistente;
          $oDadosEscolaEstrutura->ed255_i_salautilizada       = $oDadosEscolaEstrutura->ed255_i_salautilizada;
-         $oDadosEscolaEstrutura->ed255_c_equipamentos        = trim($oDadosEscolaEstrutura->ed255_c_equipamentos);
+         $oDadosEscolaEstrutura->ed255_c_equipamentos        = trim((string) $oDadosEscolaEstrutura->ed255_c_equipamentos);
          $oDadosEscolaEstrutura->ed255_c_equipamentos        = $oDadosEscolaEstrutura->ed255_c_equipamentos[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_equipamentos[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_equipamentos[2].
@@ -1108,7 +1108,7 @@ if (!isset($ed52_i_ano)) {
          $oDadosEscolaEstrutura->ed255_i_efciclos            = $oDadosEscolaEstrutura->ed255_i_efciclos;
          $oDadosEscolaEstrutura->ed255_i_ativcomplementar    = $oDadosEscolaEstrutura->ed255_i_ativcomplementar;
          $oDadosEscola->ed18_i_locdiferenciada      = $oDadosEscola->ed18_i_locdiferenciada;
-         $oDadosEscolaEstrutura->ed255_c_materdidatico       = trim($oDadosEscolaEstrutura->ed255_c_materdidatico);
+         $oDadosEscolaEstrutura->ed255_c_materdidatico       = trim((string) $oDadosEscolaEstrutura->ed255_c_materdidatico);
          $oDadosEscolaEstrutura->ed255_c_materdidatico       = $oDadosEscolaEstrutura->ed255_c_materdidatico[0].
                                         "|".$oDadosEscolaEstrutura->ed255_c_materdidatico[1].
                                         "|".$oDadosEscolaEstrutura->ed255_c_materdidatico[2];
@@ -1122,41 +1122,41 @@ if (!isset($ed52_i_ano)) {
              
          	// registro 00 refere-se ao cadastro da escola
            $num_linha++;
-           $write_linha   = "00|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosEscola->ed18_i_funcionamento);
-           $write_linha  .= "|".trim($calinicio)."|".trim($calfinal)."|".trim($oDadosEscola->ed18_c_nome);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_c_cep)."|".trim($oDadosEscola->j14_nome)."|".trim($oDadosEscola->ed18_i_numero);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_c_compl)."|".trim($oDadosEscola->j13_descr);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_i_censouf)."|".trim($oDadosEscola->ed18_i_censomunic);
-           $write_linha  .= "|".trim($oDadosEscola->ed262_i_coddistrito)."|".trim($ddd)."|".trim($telefones);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_c_email)."|".trim($oDadosEscola->ed263_i_codigocenso);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_c_mantenedora)."|".trim($oDadosEscola->ed18_c_local);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_i_categprivada)."|".trim($oDadosEscola->ed18_i_conveniada);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_i_cnas)."|".trim($oDadosEscola->ed18_i_cebas);
+           $write_linha   = "00|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosEscola->ed18_i_funcionamento);
+           $write_linha  .= "|".trim((string) $calinicio)."|".trim((string) $calfinal)."|".trim((string) $oDadosEscola->ed18_c_nome);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_c_cep)."|".trim((string) $oDadosEscola->j14_nome)."|".trim((string) $oDadosEscola->ed18_i_numero);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_c_compl)."|".trim((string) $oDadosEscola->j13_descr);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_i_censouf)."|".trim((string) $oDadosEscola->ed18_i_censomunic);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed262_i_coddistrito)."|".trim((string) $ddd)."|".trim($telefones);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_c_email)."|".trim((string) $oDadosEscola->ed263_i_codigocenso);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_c_mantenedora)."|".trim((string) $oDadosEscola->ed18_c_local);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_i_categprivada)."|".trim((string) $oDadosEscola->ed18_i_conveniada);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_i_cnas)."|".trim((string) $oDadosEscola->ed18_i_cebas);
            $write_linha  .= "|".$oDadosEscola->ed18_c_mantprivada;
-           $write_linha  .= "|".trim($oDadosEscola->ed18_i_cnpjmantprivada)."|".trim($oDadosEscola->ed18_i_cnpjprivada);
-           $write_linha  .= "|".trim($oDadosEscola->ed18_i_credenciamento)."|\n";
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_i_cnpjmantprivada)."|".trim($oDadosEscola->ed18_i_cnpjprivada);
+           $write_linha  .= "|".trim((string) $oDadosEscola->ed18_i_credenciamento)."|\n";
            fwrite($ponteiro,$write_linha);
            $num_linha++;
            
            //registro 10 refere-se ao cadastro de escola aba estrutura
-           $write_linha  = "10|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosDiretor->z01_cgccpf)."|".trim($oDadosDiretor->z01_nome);
-           $write_linha .= "|".trim($oDadosDiretor->rh37_descr)."|".trim($oDadosDiretor->ed254_c_email);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_c_localizacao)."|".trim($oDadosEscolaEstrutura->ed255_i_formaocupacao);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_i_compartilhado)."|".trim($oDadosEscolaEstrutura->ed255_i_escolacompartilhada);
-           $write_linha .= "|".trim($restoescolacompartilhada)."|".trim($oDadosEscolaEstrutura->ed255_i_aguafiltrada);           
+           $write_linha  = "10|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosDiretor->z01_cgccpf)."|".trim((string) $oDadosDiretor->z01_nome);
+           $write_linha .= "|".trim((string) $oDadosDiretor->rh37_descr)."|".trim((string) $oDadosDiretor->ed254_c_email);
+           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_c_localizacao)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_formaocupacao);
+           $write_linha .= "|".trim((string) $oDadosEscolaEstrutura->ed255_i_compartilhado)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_escolacompartilhada);
+           $write_linha .= "|".trim($restoescolacompartilhada)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_aguafiltrada);           
            $write_linha .= "|".$oDadosEscolaEstrutura->ed255_c_abastagua."|".$oDadosEscolaEstrutura->ed255_c_abastenergia;
            $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_c_esgotosanitario)."|".trim($oDadosEscolaEstrutura->ed255_c_destinolixo);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_c_dependencias)."|".trim($oDadosEscolaEstrutura->ed255_i_salaexistente);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_i_salautilizada)."|".trim($oDadosEscolaEstrutura->ed255_c_equipamentos)."|".trim($oDadosEscolaEstrutura->ed255_i_computadores);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_i_qtdcomp)."|".trim($oDadosEscolaEstrutura->ed255_i_qtdcompadm);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_i_qtdcompalu)."|".trim($oDadosEscolaEstrutura->ed255_i_internet);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_i_bandalarga)."|".trim($qtdrechumano);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_i_alimentacao)."|".trim($oDadosEscolaEstrutura->ed255_i_aee);
-           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar)."|".trim($modalidades_ens);
-           $write_linha .= "".trim($etapa_ens)."".trim($oDadosEscolaEstrutura->ed255_i_efciclos);
-           $write_linha .= "|".trim($oDadosEscola->ed18_i_locdiferenciada)."|".trim($oDadosEscolaEstrutura->ed255_c_materdidatico);
-           $write_linha .= "|".trim($oDadosEscola->ed18_i_educindigena)."|".trim($oDadosEscola->ed18_i_tipolinguain);
-           $write_linha .= "|".trim($oDadosEscola->ed18_i_tipolinguapt)."|".trim($oDadosEscola->ed18_i_linguaindigena)."|\n";
+           $write_linha .= "|".trim($oDadosEscolaEstrutura->ed255_c_dependencias)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_salaexistente);
+           $write_linha .= "|".trim((string) $oDadosEscolaEstrutura->ed255_i_salautilizada)."|".trim($oDadosEscolaEstrutura->ed255_c_equipamentos)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_computadores);
+           $write_linha .= "|".trim((string) $oDadosEscolaEstrutura->ed255_i_qtdcomp)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_qtdcompadm);
+           $write_linha .= "|".trim((string) $oDadosEscolaEstrutura->ed255_i_qtdcompalu)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_internet);
+           $write_linha .= "|".trim((string) $oDadosEscolaEstrutura->ed255_i_bandalarga)."|".trim((string) $qtdrechumano);
+           $write_linha .= "|".trim((string) $oDadosEscolaEstrutura->ed255_i_alimentacao)."|".trim((string) $oDadosEscolaEstrutura->ed255_i_aee);
+           $write_linha .= "|".trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar)."|".trim($modalidades_ens);
+           $write_linha .= "".trim($etapa_ens)."".trim((string) $oDadosEscolaEstrutura->ed255_i_efciclos);
+           $write_linha .= "|".trim((string) $oDadosEscola->ed18_i_locdiferenciada)."|".trim($oDadosEscolaEstrutura->ed255_c_materdidatico);
+           $write_linha .= "|".trim((string) $oDadosEscola->ed18_i_educindigena)."|".trim((string) $oDadosEscola->ed18_i_tipolinguain);
+           $write_linha .= "|".trim((string) $oDadosEscola->ed18_i_tipolinguapt)."|".trim((string) $oDadosEscola->ed18_i_linguaindigena)."|\n";
            fwrite($ponteiro,$write_linha);
            
          }
@@ -1183,10 +1183,10 @@ if (!isset($ed52_i_ano)) {
          $sSqlTurma     = $clturma->sql_query("",$sCamposTurma,"ed57_c_descr",$sWhereTurma); 
          $sResultTurma  = $clturma->sql_record($sSqlTurma);
          
-         if ((trim($oDadosEscolaEstrutura->ed255_i_aee) == 2 || trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2) && $clturma->numrows > 0) {
+         if ((trim((string) $oDadosEscolaEstrutura->ed255_i_aee) == 2 || trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2) && $clturma->numrows > 0) {
              
-           if (trim($oDadosEscolaEstrutura->ed255_i_aee) == 2) $descr_tipo = "Atendimento Educacional Especial - AEE";
-           if (trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2) $descr_tipo = "Atividade Complementar";
+           if (trim((string) $oDadosEscolaEstrutura->ed255_i_aee) == 2) $descr_tipo = "Atendimento Educacional Especial - AEE";
+           if (trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2) $descr_tipo = "Atividade Complementar";
            $sMsgErro  = " TURMA: Escola oferece EXCLUSIVAMENTE $descr_tipo ";
            $sMsgErro .= "(Cadastros -> Dados da Escola -> Aba infra Estrutura). Turmas de ensinos Regular, Eja e";
            $sMsgErro .= " Especial não devem ser informadas. \n";
@@ -1219,7 +1219,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($clcensoetapa->numrows == 0) {
                  
-               $sMsgErro  = " TURMA: Turma ".trim($oDadosTurma->ed57_c_descr)." - ".trim($oDadosTurma->ed11_c_descr)." -> Etapa desta turma não é";
+               $sMsgErro  = " TURMA: Turma ".trim((string) $oDadosTurma->ed57_c_descr)." - ".trim((string) $oDadosTurma->ed11_c_descr)." -> Etapa desta turma não é";
                $sMsgErro .= " compatível com a modalidade de ensino: Etapa - $ed11_i_codcenso";
                $sMsgErro .= " Modalidade - $oDadosTurma->ed36_i_codigo.\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -1230,7 +1230,7 @@ if (!isset($ed52_i_ano)) {
              if (($oDadosTurma->ed57_i_tipoatend == 2 || $oDadosTurma->ed57_i_tipoatend == 3) && ($ed11_i_codcenso == 1 || $ed11_i_codcenso == 2 
                   || $ed11_i_codcenso == 3 || $ed11_i_codcenso == 56)) {
 
-               $sMsgErro  = " TURMA: Turma ".trim($oDadosTurma->ed57_c_descr)." - ".trim($oDadosTurma->ed11_c_descr)." -> Etapa desta turma não";
+               $sMsgErro  = " TURMA: Turma ".trim((string) $oDadosTurma->ed57_c_descr)." - ".trim((string) $oDadosTurma->ed11_c_descr)." -> Etapa desta turma não";
                $sMsgErro .= " é compatível com o Tipo de Atendimento Unidade Prisional e/ou Unidade de Internação:";
                $sMsgErro .= " Etapa - $ed11_i_codcenso.\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -1243,7 +1243,7 @@ if (!isset($ed52_i_ano)) {
                      || $ed11_i_codcenso == 33  || $ed11_i_codcenso == 34 
                      || $ed11_i_codcenso == 39 || $ed11_i_codcenso == 40)) {
                          
-               $sMsgErro  = " TURMA: Turma ".trim($oDadosTurma->ed57_c_descr)." - ".trim($oDadosTurma->ed11_c_descr)." -> Curso";
+               $sMsgErro  = " TURMA: Turma ".trim((string) $oDadosTurma->ed57_c_descr)." - ".trim((string) $oDadosTurma->ed11_c_descr)." -> Curso";
                $sMsgErro .= " Profissionalizante deve ser informado.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroTurma = true;
@@ -1255,7 +1255,7 @@ if (!isset($ed52_i_ano)) {
                      || $ed11_i_codcenso == 33  || $ed11_i_codcenso == 34 || $ed11_i_codcenso == 39 
                      || $ed11_i_codcenso == 40 || $ed11_i_codcenso == 62 || $ed11_i_codcenso == 63)) {
                  
-               $sMsgErro  = "TURMA: Turma ".trim($oDadosTurma->ed57_c_descr)." - ".trim($oDadosTurma->ed11_c_descr)." -> Curso Profissionalizante";
+               $sMsgErro  = "TURMA: Turma ".trim((string) $oDadosTurma->ed57_c_descr)." - ".trim((string) $oDadosTurma->ed11_c_descr)." -> Curso Profissionalizante";
                $sMsgErro .= " deve ser informado.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroTurma = true;
@@ -1265,7 +1265,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosTurma->ed57_i_censocursoprofiss == "" && $oDadosTurma->ed36_i_codigo == 3  
                 && ($ed11_i_codcenso == 62 || $ed11_i_codcenso == 63)) {
                  
-               $sMsgErro  = "TURMA: Turma ".trim($oDadosTurma->ed57_c_descr)." - ".trim($oDadosTurma->ed11_c_descr)." -> Curso Profissionalizante";
+               $sMsgErro  = "TURMA: Turma ".trim((string) $oDadosTurma->ed57_c_descr)." - ".trim((string) $oDadosTurma->ed11_c_descr)." -> Curso Profissionalizante";
                $sMsgErro .= " deve ser informado.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroTurma = true;
@@ -1274,8 +1274,8 @@ if (!isset($ed52_i_ano)) {
              
              if ($ed11_i_codcenso != 1 && $ed11_i_codcenso != 2 && $ed11_i_codcenso != 3) {
                  
-               $array_disciplina = array("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17",
-                                         "20","21","23","25","26","27","99");
+               $array_disciplina = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17",
+                                         "20","21","23","25","26","27","99"];
                $sCamposRegencia  = "ed59_i_codigo as codregencia,ed232_i_codigo,ed232_i_codcenso";
                $sSqlRegencia     = $clregencia->sql_query("",$sCamposRegencia,""," ed59_i_turma = $oDadosTurma->ed57_i_codigo");
                $sResultRegencia  = $clregencia->sql_record($sSqlRegencia);
@@ -1296,7 +1296,7 @@ if (!isset($ed52_i_ano)) {
                      
                      if ($clcensoregradisc->numrows == 0) {
                          
-                       $sMsgErro  = "TURMA: Turma ".trim($oDadosTurma->ed57_c_descr)." - ".trim($oDadosTurma->ed11_c_descr)." -> Disciplina desta";
+                       $sMsgErro  = "TURMA: Turma ".trim((string) $oDadosTurma->ed57_c_descr)." - ".trim((string) $oDadosTurma->ed11_c_descr)." -> Disciplina desta";
                        $sMsgErro .= " turma não compatível com a Etapa: Disciplina - $oDadosRegencia->ed232_i_codcenso";
                        $sMsgErro .= " Etapa - $ed11_i_codcenso.\n";
                        fwrite($ponteiro2,$sMsgErro);
@@ -1350,11 +1350,11 @@ if (!isset($ed52_i_ano)) {
                  
              	///registro 20 refere-se ao cadastro de turma
                $num_linha++;
-               $write_linha  = "20|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosTurma->ed57_i_codigoinep);
-               $write_linha .= "|".trim($oDadosTurma->ed57_i_codigo)."|".trim($oDadosTurma->ed57_c_descr)."|".trim($oDadosTurma->horario);
-               $write_linha .= "|".trim($oDadosTurma->ed57_i_tipoatend)."|".trim($oDadosTurma->ed57_i_ativqtd);
-               $write_linha .= "|".trim($ativcomplementar)."|".trim($turma_aee)."|".trim($oDadosTurma->ed36_i_codigo);
-               $write_linha .= "|".trim($ed11_i_codcenso)."|".trim($oDadosTurma->ed57_i_censocursoprofiss);
+               $write_linha  = "20|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosTurma->ed57_i_codigoinep);
+               $write_linha .= "|".trim((string) $oDadosTurma->ed57_i_codigo)."|".trim((string) $oDadosTurma->ed57_c_descr)."|".trim($oDadosTurma->horario);
+               $write_linha .= "|".trim((string) $oDadosTurma->ed57_i_tipoatend)."|".trim($oDadosTurma->ed57_i_ativqtd);
+               $write_linha .= "|".trim($ativcomplementar)."|".trim($turma_aee)."|".trim((string) $oDadosTurma->ed36_i_codigo);
+               $write_linha .= "|".trim((string) $ed11_i_codcenso)."|".trim((string) $oDadosTurma->ed57_i_censocursoprofiss);
                $write_linha .= trim($disciplinas)."|\n";
                fwrite($ponteiro,$write_linha);
                
@@ -1384,7 +1384,7 @@ if (!isset($ed52_i_ano)) {
          $sSqlTurmaAc     = $clturmaac->sql_query("",$sCamposTurmaac,"ed268_c_descr",$sWhereTurmaAc);
          $sResultTurmaAc  = $clturmaac->sql_record($sSqlTurmaAc);
          
-         if (trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2 && $clturmaac->numrows > 0) {
+         if (trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2 && $clturmaac->numrows > 0) {
              
            $sMsgErro  = "TURMA AEE: Escola oferece EXCLUSIVAMENTE Atividade Complementar (Cadastros ->";
            $sMsgErro .= " Dados da Escola -> Aba infra Estrutura). Turmas de AEE não devem ser informadas. \n";
@@ -1393,7 +1393,7 @@ if (!isset($ed52_i_ano)) {
            
          }
          
-         if ((trim($oDadosEscolaEstrutura->ed255_i_aee) == 2 || trim($oDadosEscolaEstrutura->ed255_i_aee) == 1) && $clturmaac->numrows == 0) {
+         if ((trim((string) $oDadosEscolaEstrutura->ed255_i_aee) == 2 || trim((string) $oDadosEscolaEstrutura->ed255_i_aee) == 1) && $clturmaac->numrows == 0) {
              
            $sMsgErro  = "TURMA AEE: Escola oferece Atendimento Educacional Especializado (Cadastros ->";
            $sMsgErro .= " Dados da Escola -> Aba infra Estrutura) e não contém no sistema alunos";
@@ -1401,7 +1401,7 @@ if (!isset($ed52_i_ano)) {
            fwrite($ponteiro2,$sMsgErro);
            $lErroTurma = true;
            
-         } else if (trim($oDadosEscolaEstrutura->ed255_i_aee) == 0 && $clturmaac->numrows > 0) {
+         } else if (trim((string) $oDadosEscolaEstrutura->ed255_i_aee) == 0 && $clturmaac->numrows > 0) {
              
            $sMsgErro  = "TURMA AEE: Escola não oferece Atendimento Educacional Especializado (Cadastros ->";
            $sMsgErro .= " Dados da Escola -> Aba infra Estrutura) e contém informadas no sistema turmas deste tipo.\n";
@@ -1420,7 +1420,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($clturmaachorario->numrows == 0) {
                  
-               $sMsgErro = "TURMA AEE: Turma ".trim($oDadosTurmaAc->ed268_c_descr)." -> Sem docentes vinculados.\n";
+               $sMsgErro = "TURMA AEE: Turma ".trim((string) $oDadosTurmaAc->ed268_c_descr)." -> Sem docentes vinculados.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroTurma = true;
                
@@ -1437,7 +1437,7 @@ if (!isset($ed52_i_ano)) {
                                           "|".$oDadosTurmaAc->horario[6].$oDadosTurmaAc->horario[7];
              $oDadosTurmaAc->ed268_i_tipoatend         = $oDadosTurmaAc->ed268_i_tipoatend;
              $oDadosTurmaAc->ed268_i_ativqtd           = $oDadosTurmaAc->ed268_i_ativqtd;
-             $oDadosTurmaAc->ed268_c_aee               = trim($oDadosTurmaAc->ed268_c_aee);              
+             $oDadosTurmaAc->ed268_c_aee               = trim((string) $oDadosTurmaAc->ed268_c_aee);              
              $oDadosTurmaAc->ed268_c_aee               = $oDadosTurmaAc->ed268_c_aee[0].
                                           "|".$oDadosTurmaAc->ed268_c_aee[1].
                                           "|".$oDadosTurmaAc->ed268_c_aee[3].
@@ -1456,9 +1456,9 @@ if (!isset($ed52_i_ano)) {
              if ($lErroTurma == false) {
                  
                $num_linha++;
-               $write_linha  = "20|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosTurmaAc->ed268_i_codigoinep);
-               $write_linha .= "|".trim($oDadosTurmaAc->ed268_i_codigo)."|".trim($oDadosTurmaAc->ed268_c_descr)."|".trim($oDadosTurmaAc->horario);
-               $write_linha .= "|".trim($oDadosTurmaAc->ed268_i_tipoatend)."|".trim($oDadosTurmaAc->ed268_i_ativqtd)."|".trim($iAtividades);
+               $write_linha  = "20|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosTurmaAc->ed268_i_codigoinep);
+               $write_linha .= "|".trim((string) $oDadosTurmaAc->ed268_i_codigo)."|".trim((string) $oDadosTurmaAc->ed268_c_descr)."|".trim($oDadosTurmaAc->horario);
+               $write_linha .= "|".trim((string) $oDadosTurmaAc->ed268_i_tipoatend)."|".trim((string) $oDadosTurmaAc->ed268_i_ativqtd)."|".trim($iAtividades);
                $write_linha .= "|".trim($oDadosTurmaAc->ed268_c_aee)."||";
                $write_linha .= "|".trim($oDadosTurmaAc->ed268_i_censocursoprofiss)."|".trim($disciplinas)."|\n";
                fwrite($ponteiro,$write_linha);
@@ -1490,7 +1490,7 @@ if (!isset($ed52_i_ano)) {
          $sResultTurmaac  = $clturmaac->sql_record($sSqlTurmaac);
          //echo '<br><br>'.$sSqlTurmaac;
          
-         if (trim($oDadosEscolaEstrutura->ed255_i_aee) == 2 && $clturmaac->numrows > 0) {
+         if (trim((string) $oDadosEscolaEstrutura->ed255_i_aee) == 2 && $clturmaac->numrows > 0) {
              
            $sMsgErro  = "TURMA ATIVIDADE COMPLEMENTAR: Escola oferece EXCLUSIVAMENTE Atendimento Educacional Especial";
            $sMsgErro .= " - AEE (Cadastros -> Dados da Escola -> Aba infra Estrutura). Turmas de Atividade";
@@ -1500,8 +1500,8 @@ if (!isset($ed52_i_ano)) {
            
          }
          
-         if ((trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2 
-              || trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 1) && $clturmaac->numrows == 0) {
+         if ((trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 2 
+              || trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 1) && $clturmaac->numrows == 0) {
                   
            $sMsgErro  = "TURMA ATIVIDADE COMPLEMENTAR: Escola oferece Atividade Complementar (Cadastros ->";
            $sMsgErro .= " Dados da Escola -> Aba infra Estrutura) e não contém no sistema alunos vinculados";
@@ -1509,7 +1509,7 @@ if (!isset($ed52_i_ano)) {
            fwrite($ponteiro2,$sMsgErro);
            $lErroTurma = true;
            
-         } else if (trim($oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 0 && $clturmaac->numrows > 0) {
+         } else if (trim((string) $oDadosEscolaEstrutura->ed255_i_ativcomplementar) == 0 && $clturmaac->numrows > 0) {
              
            $sMsgErro  = "TURMA ATIVIDADE COMPLEMENTAR: Escola não oferece Atividade Complementar (Cadastros ->";
            $sMsgErro .= " Dados da Escola -> Aba infra Estrutura) e contém informadas no sistema turmas deste tipo.\n";
@@ -1530,7 +1530,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($clturmaacativ->numrows == 0 && $oDadosTurmaAc2->ed268_i_tipoatend == 4) {
                  
-               $sMsgErro  = "TURMA ATIVIDADE COMPLEMENTAR: Turma ".trim($oDadosTurmaAc2->ed268_c_descr)." -> Sem atividade";
+               $sMsgErro  = "TURMA ATIVIDADE COMPLEMENTAR: Turma ".trim((string) $oDadosTurmaAc2->ed268_c_descr)." -> Sem atividade";
                $sMsgErro .= " complementar cadastrada.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroTurma = true;
@@ -1542,7 +1542,7 @@ if (!isset($ed52_i_ano)) {
              $sResultTurmaacHorario = $clturmaachorario->sql_record($sSqlTurmaacHorario);
              if ($clturmaachorario->numrows == 0) {
                  
-               $sMsgErro = "TURMA ATIVIDADE COMPLEMENTAR: Turma ".trim($oDadosTurmaAc2->ed268_c_descr)." -> Sem docentes vinculados.\n";
+               $sMsgErro = "TURMA ATIVIDADE COMPLEMENTAR: Turma ".trim((string) $oDadosTurmaAc2->ed268_c_descr)." -> Sem docentes vinculados.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroTurma = true;
                
@@ -1569,7 +1569,7 @@ if (!isset($ed52_i_ano)) {
                                           "|".$oDadosTurmaAc2->horario[6].$oDadosTurmaAc2->horario[7];                                      
              $oDadosTurmaAc2->ed268_i_tipoatend         = $oDadosTurmaAc2->ed268_i_tipoatend;
              $oDadosTurmaAc2->ed268_i_ativqtd           = $oDadosTurmaAc2->ed268_i_ativqtd;
-             $oDadosTurmaAc2->ed268_c_aee               = trim($oDadosTurmaAc2->ed268_c_aee);              
+             $oDadosTurmaAc2->ed268_c_aee               = trim((string) $oDadosTurmaAc2->ed268_c_aee);              
              $oDadosTurmaAc2->ed268_c_aee               = "||||||||||||"; 
              $oDadosTurmaAc2->ed268_i_censocursoprofiss = "";
              $disciplinas               = "|||||||||||||||||||||||";
@@ -1577,9 +1577,9 @@ if (!isset($ed52_i_ano)) {
              if ($lErroTurma == false) {
                  
                $num_linha++;
-               $write_linha  = "20|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosTurmaAc2->ed268_i_codigoinep);
-               $write_linha .= "|".trim($oDadosTurmaAc2->ed268_i_codigo)."|".($oDadosTurmaAc2->ed268_c_descr)."|".trim($oDadosTurmaAc2->horario);
-               $write_linha .= "|".trim($oDadosTurmaAc2->ed268_i_tipoatend)."|".trim($oDadosTurmaAc2->ed268_i_ativqtd)."|".trim($atividades);
+               $write_linha  = "20|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosTurmaAc2->ed268_i_codigoinep);
+               $write_linha .= "|".trim((string) $oDadosTurmaAc2->ed268_i_codigo)."|".($oDadosTurmaAc2->ed268_c_descr)."|".trim($oDadosTurmaAc2->horario);
+               $write_linha .= "|".trim((string) $oDadosTurmaAc2->ed268_i_tipoatend)."|".trim((string) $oDadosTurmaAc2->ed268_i_ativqtd)."|".trim($atividades);
                $write_linha .= trim($oDadosTurmaAc2->ed268_c_aee)."||";
                $write_linha .= trim($oDadosTurmaAc2->ed268_i_censocursoprofiss)."|";
                $write_linha .= trim($disciplinas)."\n";
@@ -1699,7 +1699,7 @@ if (!isset($ed52_i_ano)) {
                
                if ($clformacao->numrows == 0) {
                    
-                 $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Escolaridade SUPERIOR";
+                 $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Escolaridade SUPERIOR";
                  $sMsgErro .= " COMPLETO deve ter pelo menos um curso de formação cadastrado (Formação).\n";
                  fwrite($ponteiro2,$sMsgErro);
                  $lErroDocente = true;
@@ -1713,7 +1713,7 @@ if (!isset($ed52_i_ano)) {
                                   
                  if ($oDadosFormacao->ed27_i_cursoformacao == "") {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim($oDadosDocente->z01_nome)." -> Campo Curso de Formação";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Curso de Formação";
                    $sMsgErro .= " não informado (Formação).\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -1722,7 +1722,7 @@ if (!isset($ed52_i_ano)) {
                  
                  if ($oDadosFormacao->ed27_i_anoconclusao == "" && $oDadosFormacao->ed27_c_situacao=="CON") {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim($oDadosDocente->z01_nome)." -> Campo Ano de Conclusão";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Ano de Conclusão";
                    $sMsgErro .= " não informado (Formação).\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -1731,7 +1731,7 @@ if (!isset($ed52_i_ano)) {
                  
                if ($oDadosFormacao->ed27_i_licenciatura == 1 && $oDadosFormacao->ed27_i_formacaopedag == 1) {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim($oDadosDocente->z01_nome)." -> Campo Formação pedagógica";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Formação pedagógica";
                    $sMsgErro .= " só podera ser informado  quando o curso for Bacharelado (Formação).\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -1740,7 +1740,7 @@ if (!isset($ed52_i_ano)) {
                  
                  if ($oDadosFormacao->ed27_i_anoinicio == "" && $oDadosFormacao->ed27_c_situacao=="CUR") {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim($oDadosDocente->z01_nome)." -> Campo Ano de Início";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Ano de Início";
                    $sMsgErro .= " não informado (Formação).\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -1749,7 +1749,7 @@ if (!isset($ed52_i_ano)) {
                  
                  if ($oDadosFormacao->ed27_i_censoinstsuperior == "") {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim($oDadosDocente->z01_nome)." -> Campo Instituição de";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Instituição de";
                    $sMsgErro .= " Ensino Superior não informado (Formação).\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -1762,7 +1762,7 @@ if (!isset($ed52_i_ano)) {
                        
                      if ($cod_cursoformacao[0] == $cod_cursoformacao[1]) {
                          
-                       $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim($oDadosDocente->z01_nome)." -> Mesmo Código do Curso";
+                       $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim((string) $oDadosDocente->z01_nome)." -> Mesmo Código do Curso";
                        $sMsgErro .= " Superior informado mais de uma vez (Formação).\n";
                        fwrite($ponteiro2,$sMsgErro);
                        $lErroDocente = true;
@@ -1776,7 +1776,7 @@ if (!isset($ed52_i_ano)) {
                          || $cod_cursoformacao[0] == $cod_cursoformacao[2] 
                          || $cod_cursoformacao[1] == $cod_cursoformacao[2]) {
                          
-                       $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim($oDadosDocente->z01_nome)." -> Mesmo Código do Curso";
+                       $sMsgErro  = "DOCENTE: Docente ".$oDadosFormacao->codrechumano." ".trim((string) $oDadosDocente->z01_nome)." -> Mesmo Código do Curso";
                        $sMsgErro .= " Superior informado mais de uma vez (Formação).\n";
                        fwrite($ponteiro2,$sMsgErro);
                        $lErroDocente = true;
@@ -1832,24 +1832,24 @@ if (!isset($ed52_i_ano)) {
              $sResultHorarioAc       = $clturmaachorario->sql_record($sSqlHorarioAc);
              if ($clregenciahorario->numrows == 0 && $clturmaachorario->numrows == 0) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Nenhum vínculo com turmas";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Nenhum vínculo com turmas";
                $sMsgErro .= " informado (Horário da Turma).\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
                
              }
              
-             if ($oDadosRecHumano->ed20_i_codigoinep != "" && strlen($oDadosRecHumano->ed20_i_codigoinep) < 12) {
+             if ($oDadosRecHumano->ed20_i_codigoinep != "" && strlen((string) $oDadosRecHumano->ed20_i_codigoinep) < 12) {
                  
-               $sMsgErro = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Código INEP inválido.\n";
+               $sMsgErro = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Código INEP inválido.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
                
              }
              
-             if ($oDadosDocente->z01_email != "" && (!strstr($oDadosDocente->z01_email,"@")  || !strstr($oDadosDocente->z01_email,"."))) {
+             if ($oDadosDocente->z01_email != "" && (!strstr((string) $oDadosDocente->z01_email,"@")  || !strstr((string) $oDadosDocente->z01_email,"."))) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Email deve conter";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Email deve conter";
                $sMsgErro .= " arroba e ponto.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -1858,13 +1858,13 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosDocente->rh01_nasc != "") {
                  
-               $oDadosDocente->rh01_nasc_dia = substr($oDadosDocente->rh01_nasc,8,2);
-               $oDadosDocente->rh01_nasc_mes = substr($oDadosDocente->rh01_nasc,5,2);
-               $oDadosDocente->rh01_nasc_ano = substr($oDadosDocente->rh01_nasc,0,4);
+               $oDadosDocente->rh01_nasc_dia = substr((string) $oDadosDocente->rh01_nasc,8,2);
+               $oDadosDocente->rh01_nasc_mes = substr((string) $oDadosDocente->rh01_nasc,5,2);
+               $oDadosDocente->rh01_nasc_ano = substr((string) $oDadosDocente->rh01_nasc,0,4);
                
                if (!checkdate($oDadosDocente->rh01_nasc_mes,$oDadosDocente->rh01_nasc_dia,$oDadosDocente->rh01_nasc_ano)) {
                    
-                 $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de";
+                 $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de";
                  $sMsgErro .= " nascimento inválido.\n";
                  fwrite($ponteiro2,$sMsgErro);
                  $lErroDocente = true;
@@ -1873,7 +1873,7 @@ if (!isset($ed52_i_ano)) {
                    
                  if (str_replace("-","",$oDadosDocente->rh01_nasc) >= str_replace("-","",$hoje)) {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de";
                    $sMsgErro .= " nascimento deve ser menor que a data corrente.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -1882,7 +1882,7 @@ if (!isset($ed52_i_ano)) {
                  
                  if ($oDadosDocente->rh01_nasc_ano < 1919) {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Ano da Data de nascimento";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Ano da Data de nascimento";
                    $sMsgErro .= " deve ser maior ou igual a 1919.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -1892,7 +1892,7 @@ if (!isset($ed52_i_ano)) {
                
              } else {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de nascimento";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de nascimento";
                $sMsgErro .= " não informado.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -1901,7 +1901,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosDocente->rh01_sexo == "") {
                  
-               $sMsgErro = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Sexo não informado.\n";
+               $sMsgErro = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Sexo não informado.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
                
@@ -1909,7 +1909,7 @@ if (!isset($ed52_i_ano)) {
              
              if (($oDadosRecHumano->ed20_i_nacionalidade == 1 || $oDadosRecHumano->ed20_i_nacionalidade == 2) && $oDadosRecHumano->ed228_i_paisonu != 76) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Nacionalidade Brasileira";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Nacionalidade Brasileira";
                $sMsgErro .= " ou Brasileira no Exterior. Campo pais deve ser BRASIL.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -1918,7 +1918,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_i_nacionalidade == 3 && $oDadosRechumano->ed228_i_paisonu == 76) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Nacionalidade Estrangeira.";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Nacionalidade Estrangeira.";
                $sMsgErro .= " Campo pais deve ser diferente de BRASIL.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -1927,7 +1927,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_i_nacionalidade == 1 && ($oDadosRecHumano->ed20_i_censoufnat == "" || $oDadosRecHumano->ed20_i_censomunicnat == "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Nacionalidade Brasileira.";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Nacionalidade Brasileira.";
                $sMsgErro .= " UF de Nascimento e Naturalidade devem ser informados.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -1937,7 +1937,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_i_nacionalidade == 3 && ($oDadosDocente->z01_ident != "" || $oDadosRecHumano->ed20_c_identcompl != "" 
                  || $oDadosRecHumano->ed20_i_censoorgemiss != "" || $oDadosRecHumano->ed20_i_censoufident != "" || $oDadosRecHumano->ed20_d_dataident != "")) {
                   
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Nacionalidade Estrangeira.";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Nacionalidade Estrangeira.";
                $sMsgErro .= " Campos referente a Identidade NÃO devem ser informados.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -1947,7 +1947,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosDocente->z01_ident == "" && ($oDadosRecHumano->ed20_c_identcompl != "" || $oDadosRecHumano->ed20_i_censoorgemiss != "" 
                  || $oDadosRecHumano->ed20_i_censoufident != "" || $oDadosRecHumano->ed20_d_dataident != "")) {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo N° Identidade deve ser";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo N° Identidade deve ser";
                $sMsgErro .= " informado quando um dos campos estiverem informados: (Complemento - UF Identidade -";
                $sMsgErro .= " Órgao Emissor - Data Expedição Identidade).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -1957,7 +1957,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_i_censoorgemiss == "" && ($oDadosDocente->z01_ident != "" || $oDadosRecHumano->ed20_i_censoufident != "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Órgão Emissor deve";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Órgão Emissor deve";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados:";
                $sMsgErro .= " (N° Identidade - UF Identidade).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -1967,7 +1967,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_i_censoufident == "" && ($oDadosDocente->z01_ident != "" || $oDadosRecHumano->ed20_i_censoorgemiss != "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo UF Identidade deve";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo UF Identidade deve";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados:";
                $sMsgErro .= " (N° Identidade - Órgão Emissor).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -1978,7 +1978,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_c_identcompl != "" && $oDadosDocente->z01_ident == "" && $oDadosRecHumano->ed20_i_censoorgemiss == " " 
                  && $oDadosRecHumano->ed20_i_censoufident == "") {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Complemento só pode";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Complemento só pode";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados: (N° Identidade - Órgão Emissor";
                $sMsgErro .= " - UF Identidade).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -1989,7 +1989,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_d_dataident != "" && $oDadosDocente->z01_ident == "" && $oDadosRecHumano->ed20_i_censoorgemiss == "" 
                  && $oDadosRecHumano->ed20_i_censoufident == "") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data Expedição";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data Expedição";
                $sMsgErro .= " Identidade só pode ser informado quando um dos campos estiverem informados:";
                $sMsgErro .= " (N° Identidade - Órgão Emissor - UF Identidade).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -1999,13 +1999,13 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_d_dataident != "") {
                  
-               $oDadosRecHumano->ed20_d_dataident_dia = substr($oDadosRecHumano->ed20_d_dataident,8,2);
-               $oDadosRecHumano->ed20_d_dataident_mes = substr($oDadosRecHumano->ed20_d_dataident,5,2);
-               $oDadosRecHumano->ed20_d_dataident_ano = substr($oDadosRecHumano->ed20_d_dataident,0,4);
+               $oDadosRecHumano->ed20_d_dataident_dia = substr((string) $oDadosRecHumano->ed20_d_dataident,8,2);
+               $oDadosRecHumano->ed20_d_dataident_mes = substr((string) $oDadosRecHumano->ed20_d_dataident,5,2);
+               $oDadosRecHumano->ed20_d_dataident_ano = substr((string) $oDadosRecHumano->ed20_d_dataident,0,4);
                
                if (!checkdate($oDadosRecHumano->ed20_d_dataident_mes,$oDadosRecHumano->ed20_d_dataident_dia,$oDadosRecHumano->ed20_d_dataident_ano)) {
                    
-                 $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Data de expedição da";
+                 $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Data de expedição da";
                  $sMsgErro .= " identidade inválida.\n";
                  fwrite($ponteiro2,$sMsgErro);
                  $lErroDocente = true;
@@ -2014,7 +2014,7 @@ if (!isset($ed52_i_ano)) {
                    
                  if ($oDadosRecHumano->ed20_d_dataident < 1900) {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Ano da Data de expedição";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Ano da Data de expedição";
                    $sMsgErro .= " da identidade não deve ser menor que 1900.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -2023,7 +2023,7 @@ if (!isset($ed52_i_ano)) {
                      
                    if (str_replace("-","",$oDadosRecHumano->ed20_d_dataident) >= str_replace("-","",$hoje)) {
                        
-                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Data de expedição da";
+                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Data de expedição da";
                      $sMsgErro .= " identidade deve ser menor que a data corrente.\n";
                      fwrite($ponteiro2,$sMsgErro);
                      $lErroDocente = true;
@@ -2032,7 +2032,7 @@ if (!isset($ed52_i_ano)) {
                    
                    if (str_replace("-","",$oDadosRecHumano->ed20_d_dataident) <= str_replace("-","",$oDadosDocente->rh01_nasc)) {
                        
-                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Data de expedição da";
+                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Data de expedição da";
                      $sMsgErro .= " identidade deve ser maior que a data de nascimento do docente.\n";
                      fwrite($ponteiro2,$sMsgErro);
                      $lErroDocente = true;
@@ -2046,7 +2046,7 @@ if (!isset($ed52_i_ano)) {
                  || $oDadosRecHumano->ed20_c_certidaofolha != "" || $oDadosRecHumano->ed20_c_certidaolivro != "" || $oDadosRecHumano->ed20_c_certidaocart != "" 
                  || $oDadosRecHumano->ed20_c_certidaodata != "" || $oDadosRecHumano->ed20_i_censoufcert != "")) {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Nacionalidade Estrangeira.";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Nacionalidade Estrangeira.";
                $sMsgErro .= " Campos referente a Certidão NÃO devem ser informados.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -2057,7 +2057,7 @@ if (!isset($ed52_i_ano)) {
                  || $oDadosRecHumano->ed20_c_certidaolivro != "" || $oDadosRecHumano->ed20_c_certidaodata != "" || $oDadosRecHumano->ed20_i_censoufcert != "" 
                  || $oDadosRecHumano->ed20_c_certidaocart != "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Tipo de Certidão deve";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Tipo de Certidão deve";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados: (Número do Termo - Folha";
                $sMsgErro .= " - Livro - Data da Emissão - UF Cartório - Cartório).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2068,7 +2068,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_c_certidaonum == "" && ($oDadosRecHumano->ed20_i_certidaotipo != "" 
                  || $oDadosRecHumano->ed20_i_censoufcert != "" || $oDadosRecHumano->ed20_c_certidaocart != "")) {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Número do Termo deve";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Número do Termo deve";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados:";
                $sMsgErro .= " (Tipo de Certidão - UF Cartório - Cartório).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2079,7 +2079,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_c_certidaocart == "" && ($oDadosRecHumano->ed20_i_certidaotipo != "" 
                  || $oDadosRecHumano->ed20_i_censoufcert != "" || $oDadosRecHumano->ed20_c_certidaonum != "")) {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Cartório deve ser";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Cartório deve ser";
                $sMsgErro .= " informado quando um dos campos estiverem informados: (Tipo de Certidão";
                $sMsgErro .= " - UF Cartório - Número do Termo).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2090,7 +2090,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_i_censoufcert == "" && ($oDadosRecHumano->ed20_i_certidaotipo != "" 
                  || $oDadosRecHumano->ed20_c_certidaocart != "" || $oDadosRecHumano->ed20_c_certidaonum != "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo UF Cartório deve";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo UF Cartório deve";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados: (Tipo de Certidão - Cartório";
                $sMsgErro .= " - Número do Termo).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2101,7 +2101,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_c_certidaofolha != "" && $oDadosRecHumano->ed20_i_certidaotipo == "" && $oDadosRecHumano->ed20_c_certidaonum == "" 
                  && $oDadosRecHumano->ed20_i_censoufcert == "" && $oDadosRecHumano->ed20_c_certidaocart == "") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Folha só pode ser";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Folha só pode ser";
                $sMsgErro .= " informado quando um dos campos estiverem informados: (Tipo de Certidão -";
                $sMsgErro .= " Número do Termo - UF Cartório - Cartório).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2112,7 +2112,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_c_certidaolivro != "" && $oDadosRecHumano->ed20_i_certidaotipo == "" && $oDadosRecHumano->ed20_c_certidaonum == "" 
                  && $oDadosRecHumano->ed20_i_censoufcert == "" && $oDadosRecHumano->ed20_c_certidaocart == "") {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Livro só pode ser";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Livro só pode ser";
                $sMsgErro .= " informado quando um dos campos estiverem informados: (Tipo de Certidão -";
                $sMsgErro .= " Número do Termo - UF Cartório - Cartório).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2123,7 +2123,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosRecHumano->ed20_c_certidaodata != "" && $oDadosRecHumano->ed20_i_certidaotipo == "" && $oDadosRecHumano->ed20_c_certidaonum == "" 
                  && $oDadosRecHumano->ed20_i_censoufcert == "" && $oDadosRecHumano->ed20_c_certidaocart == "") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de Emissão só";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de Emissão só";
                $sMsgErro .= " pode ser informado quando um dos campos estiverem informados: (Tipo de Certidão";
                $sMsgErro .= " - Número do Termo - UF Cartório - Cartório).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2133,13 +2133,13 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_c_certidaodata != "") {
                  
-               $oDadosRecHumano->ed20_c_certidaodata_dia = substr($oDadosRecHumano->ed20_c_certidaodata,8,2);
-               $oDadosRecHumano->ed20_c_certidaodata_mes = substr($oDadosRecHumano->ed20_c_certidaodata,5,2);
-               $oDadosRecHumano->ed20_c_certidaodata_ano = substr($oDadosRecHumano->ed20_c_certidaodata,0,4);
+               $oDadosRecHumano->ed20_c_certidaodata_dia = substr((string) $oDadosRecHumano->ed20_c_certidaodata,8,2);
+               $oDadosRecHumano->ed20_c_certidaodata_mes = substr((string) $oDadosRecHumano->ed20_c_certidaodata,5,2);
+               $oDadosRecHumano->ed20_c_certidaodata_ano = substr((string) $oDadosRecHumano->ed20_c_certidaodata,0,4);
                
                if (!checkdate($oDadosRecHumano->ed20_c_certidaodata_mes,$oDadosRecHumano->ed20_c_certidaodata_dia,$oDadosRecHumano->ed20_c_certidaodata_ano)) {
                    
-                 $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de emissão";
+                 $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de emissão";
                  $sMsgErro .= " da certidão inválido.\n";
                  fwrite($ponteiro2,$sMsgErro);
                  $lErroDocente = true;
@@ -2148,7 +2148,7 @@ if (!isset($ed52_i_ano)) {
                    
                  if (str_replace("-","",$oDadosRecHumano->ed20_c_certidaodata) >= str_replace("-","",$hoje)) {
                      
-                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de emissão";
+                   $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de emissão";
                    $sMsgErro .= " da certidão deve ser menor que a data corrente.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroDocente = true;
@@ -2159,7 +2159,7 @@ if (!isset($ed52_i_ano)) {
                      
                    if (str_replace("-","",$oDadosRecHumano->ed20_c_certidaodata) < str_replace("-","",$oDadosDocente->rh01_nasc)) {
                        
-                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de Emissão";
+                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de Emissão";
                      $sMsgErro .= " da certidão deve ser maior ou igual a data de nascimento do docente.\n";
                      fwrite($ponteiro2,$sMsgErro);
                      $lErroDocente = true;
@@ -2170,7 +2170,7 @@ if (!isset($ed52_i_ano)) {
                      
                    if (str_replace("-","",$oDadosRecHumano->ed20_c_certidaodata) <= str_replace("-","",$oDadosDocente->rh01_nasc)) {
                        
-                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Data de Emissão";
+                     $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Data de Emissão";
                      $sMsgErro .= " da certidão deve ser maior que a data de nascimento do docente.\n";
                      fwrite($ponteiro2,$sMsgErro);
                      $lErroDocente = true;
@@ -2182,17 +2182,17 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_i_nacionalidade != 3 && $oDadosRecHumano->ed20_c_passaporte != "") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo N° Passaporte só pode";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo N° Passaporte só pode";
                $sMsgErro .= " ser informado quando nacionalidade do aluno for Estrangeira.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
                
              }
              
-             if (($oDadosDocente->z01_cgccpf != "" && strlen($oDadosDocente->z01_cgccpf) != 11) 
+             if (($oDadosDocente->z01_cgccpf != "" && strlen((string) $oDadosDocente->z01_cgccpf) != 11) 
                   || $oDadosDocente->z01_cgccpf == "00000000000" || $oDadosDocente->z01_cgccpf == "00000000191") {
                       
-               $sMsgErro = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo CPF inválido.\n";
+               $sMsgErro = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo CPF inválido.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
                
@@ -2201,7 +2201,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosDocente->z01_cep == "" && ($oDadosDocente->z01_ender != "" || $oDadosDocente->z01_numero != "" || $oDadosDocente->z01_compl != "" || $oDadosDocente->z01_bairro != "" 
                  || $oDadosRecHumano->ed20_i_censoufender != "" || $oDadosRecHumano->ed20_i_censomunicender != "")) {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo CEP deve ser informado";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo CEP deve ser informado";
                $sMsgErro .= " quando um dos campos estiverem informados: (Endereço - Número - Complemento";
                $sMsgErro .= " - Bairro - UF - Município).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2210,7 +2210,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosDocente->z01_ender == "" && ($oDadosDocente->z01_cep != "" || $oDadosRecHumano->ed20_i_censoufender != "" || $oDadosRecHumano->ed20_i_censomunicender != "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Endereço deve ser";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Endereço deve ser";
                $sMsgErro .= " informado quando um dos campos estiverem informados: (CEP - UF - Município).\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -2219,7 +2219,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_i_censoufender == "" && ($oDadosDocente->z01_cep != "" || $oDadosRecHumano->ed20_i_censomunicender != "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo UF deve ser informado";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo UF deve ser informado";
                $sMsgErro .= " quando um dos campos estiverem informados: (CEP - Município).\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -2228,7 +2228,7 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_i_censomunicender == "" && ($oDadosDocente->z01_cep != "" || $oDadosRecHumano->ed20_i_censoufender != "")) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Município deve ser";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Município deve ser";
                $sMsgErro .= " informado quando um dos campos estiverem informados: (CEP - UF).\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -2238,7 +2238,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosDocente->z01_numero != "" && $oDadosDocente->z01_cep == "" && $oDadosDocente->z01_ender == "" 
                  && $oDadosRecHumano->ed20_i_censoufender == "" && $oDadosRecHumano->ed20_i_censomunicender == "") {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Número só pode";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Número só pode";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados:";
                $sMsgErro .= " (CEP - Endereço - UF - Município).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2249,7 +2249,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosDocente->z01_compl != "" && $oDadosDocente->z01_cep == "" && $oDadosDocente->z01_ender == "" 
                  && $oDadosRecHumano->ed20_i_censoufender == "" && $oDadosRecHumano->ed20_i_censomunicender == "") {
                      
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Complemento só";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Complemento só";
                $sMsgErro .= " pode ser informado quando um dos campos estiverem informados:";
                $sMsgErro .= " (CEP - Endereço - UF - Município).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2260,7 +2260,7 @@ if (!isset($ed52_i_ano)) {
              if ($oDadosDocente->z01_bairro != "" && $oDadosDocente->z01_cep == "" && $oDadosDocente->z01_ender == "" && $oDadosRecHumano->ed20_i_censoufender == "" 
                  && $oDadosRecHumano->ed20_i_censomunicender == "") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Bairro só pode";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Bairro só pode";
                $sMsgErro .= " ser informado quando um dos campos estiverem informados:";
                $sMsgErro .= " (CEP - Endereço - UF - Município).\n";
                fwrite($ponteiro2,$sMsgErro);
@@ -2268,9 +2268,9 @@ if (!isset($ed52_i_ano)) {
                
              }
              
-             if ($oDadosDocente->z01_cep != "" && strlen($oDadosDocente->z01_cep) != 8) {
+             if ($oDadosDocente->z01_cep != "" && strlen((string) $oDadosDocente->z01_cep) != 8) {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo CEP deve";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo CEP deve";
                $sMsgErro .= " conter 8 dígitos.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -2279,25 +2279,25 @@ if (!isset($ed52_i_ano)) {
              
              if ($oDadosRecHumano->ed20_c_outroscursos == "" || $oDadosRecHumano->ed20_c_outroscursos == "000000") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Outros Cursos";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Outros Cursos";
                $sMsgErro .= " não informado.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
                
              }
              
-             if ($oDadosRecHumano->ed20_i_escolaridade == 6 && trim($oDadosRecHumano->ed20_c_posgraduacao) == "") {
+             if ($oDadosRecHumano->ed20_i_escolaridade == 6 && trim((string) $oDadosRecHumano->ed20_c_posgraduacao) == "") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Pós-Graduação deve";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Pós-Graduação deve";
                $sMsgErro .= " ser informado quando Escolaridade for SUPERIOR COMPLETO.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
                
              }
              
-             if ($oDadosRecHumano->ed20_i_escolaridade != 6 && trim($oDadosRecHumano->ed20_c_posgraduacao) != "0000" && trim($oDadosRecHumano->ed20_c_posgraduacao) != "") {
+             if ($oDadosRecHumano->ed20_i_escolaridade != 6 && trim((string) $oDadosRecHumano->ed20_c_posgraduacao) != "0000" && trim((string) $oDadosRecHumano->ed20_c_posgraduacao) != "") {
                  
-               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim($oDadosDocente->z01_nome)." -> Campo Pós-Graduação somente";
+               $sMsgErro  = "DOCENTE: Docente ".$oDadosRecHumano->ed20_i_codigo." ".trim((string) $oDadosDocente->z01_nome)." -> Campo Pós-Graduação somente";
                $sMsgErro .= " deve ser informado quando Escolaridade for SUPERIOR COMPLETO.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroDocente = true;
@@ -2331,43 +2331,43 @@ if (!isset($ed52_i_ano)) {
              $oDadosRecHumano->ed20_i_censoufender    = $oDadosRecHumano->ed20_i_censoufender;
              $oDadosRecHumano->ed20_i_censomunicender = $oDadosRecHumano->ed20_i_censomunicender;     
              $oDadosRecHumano->ed20_i_escolaridade    = $oDadosRecHumano->ed20_i_escolaridade;
-             $oDadosRecHumano->ed20_c_posgraduacao    = ($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr($oDadosRecHumano->ed20_c_posgraduacao,0,1)).
-                                       "|".($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr($oDadosRecHumano->ed20_c_posgraduacao,1,1)).
-                                       "|".($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr($oDadosRecHumano->ed20_c_posgraduacao,2,1)).
-                                       "|".($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr($oDadosRecHumano->ed20_c_posgraduacao,3,1));
-             $oDadosRecHumano->ed20_c_outroscursos    = trim($oDadosRecHumano->ed20_c_outroscursos)==""?"0":$oDadosRecHumano->ed20_c_outroscursos;            
-             $oDadosRecHumano->ed20_c_outroscursos    = substr($oDadosRecHumano->ed20_c_outroscursos,0,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,1,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,2,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,3,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,4,1). 
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,5,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,6,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,7,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,8,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,9,1).
-                                       "|".substr($oDadosRecHumano->ed20_c_outroscursos,10,1);
+             $oDadosRecHumano->ed20_c_posgraduacao    = ($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr((string) $oDadosRecHumano->ed20_c_posgraduacao,0,1)).
+                                       "|".($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr((string) $oDadosRecHumano->ed20_c_posgraduacao,1,1)).
+                                       "|".($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr((string) $oDadosRecHumano->ed20_c_posgraduacao,2,1)).
+                                       "|".($oDadosRecHumano->ed20_i_escolaridade!=6?"":substr((string) $oDadosRecHumano->ed20_c_posgraduacao,3,1));
+             $oDadosRecHumano->ed20_c_outroscursos    = trim((string) $oDadosRecHumano->ed20_c_outroscursos)==""?"0":$oDadosRecHumano->ed20_c_outroscursos;            
+             $oDadosRecHumano->ed20_c_outroscursos    = substr((string) $oDadosRecHumano->ed20_c_outroscursos,0,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,1,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,2,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,3,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,4,1). 
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,5,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,6,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,7,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,8,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,9,1).
+                                       "|".substr((string) $oDadosRecHumano->ed20_c_outroscursos,10,1);
              
              if ($lErroDocente == false) {
                  
                $num_linha++;
-               $write_linha  = "30|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosRecHumano->ed20_i_codigoinep);
-               $write_linha .= "|".trim($oDadosDocente->z01_numcgm)."|".trim($oDadosDocente->z01_nome)."|".trim($oDadosDocente->z01_email)."|".trim($oDadosRecHumano->ed20_c_nis);
-               $write_linha .= "|".trim($oDadosDocente->rh01_nasc)."|".trim($oDadosDocente->rh01_sexo)."|".trim($oDadosRecHumano->ed20_i_raca);
-               $write_linha .= "|".trim($oDadosDocente->z01_mae)."|".trim($oDadosRecHumano->ed20_i_nacionalidade)."|".trim($oDadosRecHumano->ed228_i_paisonu);
-               $write_linha .= "|".trim($oDadosRecHumano->ed20_i_censoufnat)."|".trim($oDadosRecHumano->ed20_i_censomunicnat)."|\n";               
+               $write_linha  = "30|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosRecHumano->ed20_i_codigoinep);
+               $write_linha .= "|".trim((string) $oDadosDocente->z01_numcgm)."|".trim((string) $oDadosDocente->z01_nome)."|".trim((string) $oDadosDocente->z01_email)."|".trim((string) $oDadosRecHumano->ed20_c_nis);
+               $write_linha .= "|".trim((string) $oDadosDocente->rh01_nasc)."|".trim($oDadosDocente->rh01_sexo)."|".trim((string) $oDadosRecHumano->ed20_i_raca);
+               $write_linha .= "|".trim((string) $oDadosDocente->z01_mae)."|".trim((string) $oDadosRecHumano->ed20_i_nacionalidade)."|".trim((string) $oDadosRecHumano->ed228_i_paisonu);
+               $write_linha .= "|".trim((string) $oDadosRecHumano->ed20_i_censoufnat)."|".trim((string) $oDadosRecHumano->ed20_i_censomunicnat)."|\n";               
                fwrite($ponteiro,$write_linha);
                
                $num_linha++;
-               $write_linha  = "40|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosRecHumano->ed20_i_codigoinep);
-               $write_linha .= "|".trim($oDadosDocente->z01_numcgm)."|".trim($oDadosDocente->z01_cgccpf)."|".trim($oDadosDocente->z01_cep)."|".trim($oDadosDocente->z01_ender);
-               $write_linha .= "|".trim($oDadosDocente->z01_numero)."|".trim($oDadosDocente->z01_compl)."|".trim($oDadosDocente->z01_bairro);
-               $write_linha .= "|".trim($oDadosRecHumano->ed20_i_censoufender)."|".trim($oDadosRecHumano->ed20_i_censomunicender)."|\n";
+               $write_linha  = "40|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosRecHumano->ed20_i_codigoinep);
+               $write_linha .= "|".trim((string) $oDadosDocente->z01_numcgm)."|".trim((string) $oDadosDocente->z01_cgccpf)."|".trim((string) $oDadosDocente->z01_cep)."|".trim((string) $oDadosDocente->z01_ender);
+               $write_linha .= "|".trim((string) $oDadosDocente->z01_numero)."|".trim((string) $oDadosDocente->z01_compl)."|".trim((string) $oDadosDocente->z01_bairro);
+               $write_linha .= "|".trim((string) $oDadosRecHumano->ed20_i_censoufender)."|".trim((string) $oDadosRecHumano->ed20_i_censomunicender)."|\n";
                fwrite($ponteiro,$write_linha);
                
                $num_linha++;
-               $write_linha  = "50|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosRecHumano->ed20_i_codigoinep);
-               $write_linha .= "|".trim($oDadosDocente->z01_numcgm)."|".trim($oDadosRecHumano->ed20_i_escolaridade)."|".trim($formacaorh);
+               $write_linha  = "50|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosRecHumano->ed20_i_codigoinep);
+               $write_linha .= "|".trim((string) $oDadosDocente->z01_numcgm)."|".trim((string) $oDadosRecHumano->ed20_i_escolaridade)."|".trim($formacaorh);
                $write_linha .= "|".trim($oDadosRecHumano->ed20_c_posgraduacao)."|".trim($oDadosRecHumano->ed20_c_outroscursos)."|\n";
                fwrite($ponteiro,$write_linha);
                
@@ -2382,7 +2382,7 @@ if (!isset($ed52_i_ano)) {
                      $funcao = '1'; 
                      $sCampos                = "DISTINCT ed232_i_codcenso";
                      $sWhereRegHorario       = " case when ed20_i_tiposervidor = 1 then cgmrh.z01_numcgm else ";
-                     $sWhereRegHorario      .= " cgmcgm.z01_numcgm end = ".trim($oDadosDocente->z01_numcgm)." AND ed57_i_codigo =";
+                     $sWhereRegHorario      .= " cgmcgm.z01_numcgm end = ".trim((string) $oDadosDocente->z01_numcgm)." AND ed57_i_codigo =";
                      $sWhereRegHorario      .= " $oDadosRegenciaHorario->ed57_i_codigo AND ed57_i_escola = $oDadosEscola->ed18_i_codigo";
                      $sSqlRegenciaHorario    = $clregenciahorario->sql_query("",$sCampos,"",$sWhereRegHorario);                     
                      $sResultRegenciaHorario = $clregenciahorario->sql_record($sSqlRegenciaHorario);
@@ -2433,8 +2433,8 @@ if (!isset($ed52_i_ano)) {
                    $oDadosTurmaAcHorario->ed268_i_codigoinep = $oDadosTurmaAcHorario->ed268_i_codigoinep;
                    $oDadosTurmaAcHorario->ed268_i_codigo     = $oDadosTurmaAcHorario->ed268_i_codigo;                   
                    $num_linha++;                   
-                   $write_linha  = "51|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosRecHumano->ed20_i_codigoinep)."|".trim($oDadosDocente->z01_numcgm);
-                   $write_linha .= "|".trim($oDadosTurmaAcHorario->ed268_i_codigoinep)."|".trim($oDadosTurmaAcHorario->ed268_i_codigo);
+                   $write_linha  = "51|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosRecHumano->ed20_i_codigoinep)."|".trim((string) $oDadosDocente->z01_numcgm);
+                   $write_linha .= "|".trim((string) $oDadosTurmaAcHorario->ed268_i_codigoinep)."|".trim((string) $oDadosTurmaAcHorario->ed268_i_codigo);
                    $write_linha .= "|".trim($funcao)."|".$oDadosRecHumano->informecenso."|".trim($disciplinas)."|\n";
                    fwrite($ponteiro,$write_linha);
                    
@@ -2503,21 +2503,21 @@ if (!isset($ed52_i_ano)) {
            $codigo_aluno = $oDadosAluno->ed47_i_codigo;
            db_atutermometro_edu($x, $clmatricula->numrows , 'termometro',1,'...Processando Alunos');
            
-           if (trim($oDadosAluno->ed47_c_codigoinep) != "" && strlen(trim($oDadosAluno->ed47_c_codigoinep)) != 12) {
+           if (trim((string) $oDadosAluno->ed47_c_codigoinep) != "" && strlen(trim((string) $oDadosAluno->ed47_c_codigoinep)) != 12) {
                
-             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Código INEP inválido.\n";
+             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Código INEP inválido.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
            }
            
-           $oDadosAluno->ed47_d_nasc_dia = substr($oDadosAluno->ed47_d_nasc,8,2);
-           $oDadosAluno->ed47_d_nasc_mes = substr($oDadosAluno->ed47_d_nasc,5,2);
-           $oDadosAluno->ed47_d_nasc_ano = substr($oDadosAluno->ed47_d_nasc,0,4);
+           $oDadosAluno->ed47_d_nasc_dia = substr((string) $oDadosAluno->ed47_d_nasc,8,2);
+           $oDadosAluno->ed47_d_nasc_mes = substr((string) $oDadosAluno->ed47_d_nasc,5,2);
+           $oDadosAluno->ed47_d_nasc_ano = substr((string) $oDadosAluno->ed47_d_nasc,0,4);
            
            if ($oDadosAluno->ed47_d_nasc == "") {
                
-             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Data de nascimento não informada.\n";
+             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Data de nascimento não informada.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
@@ -2525,7 +2525,7 @@ if (!isset($ed52_i_ano)) {
                
              if (!checkdate($oDadosAluno->ed47_d_nasc_mes,$oDadosAluno->ed47_d_nasc_dia,$oDadosAluno->ed47_d_nasc_ano)) {
                  
-               $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Data de nascimento inválida.\n";
+               $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Data de nascimento inválida.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
                
@@ -2533,7 +2533,7 @@ if (!isset($ed52_i_ano)) {
                  
                if ($oDadosAluno->ed47_d_nasc_ano < 1914) {
                    
-                 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Ano de nascimento não deve";
+                 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Ano de nascimento não deve";
                  $sMsgErro .= " ser menor que 1914.\n";
                  fwrite($ponteiro2,$sMsgErro);
                  $lErroAluno = true;
@@ -2542,7 +2542,7 @@ if (!isset($ed52_i_ano)) {
                    
                  if (str_replace("-","",$oDadosAluno->ed47_d_nasc) >= str_replace("-","",$hoje)) {
                      
-                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Data de nascimento deve";
+                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Data de nascimento deve";
                    $sMsgErro .= " ser menor que a data corrente.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroAluno = true;
@@ -2554,7 +2554,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_filiacao == 1 && $oDadosAluno->ed47_v_pai == "" && $oDadosAluno->ed47_v_mae == "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Filiação = (Pai e/ou Mãe).";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Filiação = (Pai e/ou Mãe).";
              $sMsgErro .= " Pai e/ou Mãe deve ser informados.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2563,16 +2563,16 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_filiacao == 0 && ($oDadosAluno->ed47_v_pai != "" || $oDadosAluno->ed47_v_mae != "")) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Filiação = (Não Declarado/Ignorado).";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Filiação = (Não Declarado/Ignorado).";
              $sMsgErro .= " Pai e Mãe não devem ser informados.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
            }
            
-           if ($oDadosAluno->ed47_v_pai != "" && $oDadosAluno->ed47_v_mae != "" && trim($oDadosAluno->ed47_v_pai) == trim($oDadosAluno->ed47_v_mae)) {
+           if ($oDadosAluno->ed47_v_pai != "" && $oDadosAluno->ed47_v_mae != "" && trim((string) $oDadosAluno->ed47_v_pai) == trim((string) $oDadosAluno->ed47_v_mae)) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Pai e Mãe não devem";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Pai e Mãe não devem";
              $sMsgErro .= " ter nomes diferentes.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2581,7 +2581,7 @@ if (!isset($ed52_i_ano)) {
            
            if (($oDadosAluno->ed47_i_nacion == 1 || $oDadosAluno->ed47_i_nacion == 2) && $oDadosAluno->ed228_i_paisonu != 76) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Nacionalidade Brasileira ou";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Nacionalidade Brasileira ou";
              $sMsgErro .= " Brasileira no Exterior. Campo pais deve ser BRASIL.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2590,7 +2590,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_nacion == 3 && $oDadosAluno->ed228_i_paisonu == 76) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Nacionalidade Estrangeira.";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Nacionalidade Estrangeira.";
              $sMsgErro .= " Campo pais deve ser diferente de BRASIL.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2599,7 +2599,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_nacion==1 && ($oDadosAluno->ed47_i_censoufnat=="" || $oDadosAluno->ed47_i_censomunicnat=="")){
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Nacionalidade Brasileira.";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Nacionalidade Brasileira.";
              $sMsgErro .= " UF de Nascimento e Naturalidade devem ser informados.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2609,7 +2609,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_i_nacion == 3 && ($oDadosAluno->ed47_v_ident != "" || $oDadosAluno->ed47_v_identcompl != "" 
                || $oDadosAluno->ed47_i_censoorgemissrg != "" || $oDadosAluno->ed47_i_censoufident != "" || $oDadosAluno->ed47_d_identdtexp != "")) {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Nacionalidade Estrangeira.";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Nacionalidade Estrangeira.";
              $sMsgErro .= " Campos referente a Identidade NÃO devem ser informados.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2619,7 +2619,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_v_ident == "" && ($oDadosAluno->ed47_v_identcompl != "" || $oDadosAluno->ed47_i_censoorgemissrg != "" 
                || $oDadosAluno->ed47_i_censoufident != "" || $oDadosAluno->ed47_d_identdtexp != "")) {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo N° Identidade deve ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo N° Identidade deve ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (Complemento - UF Identidade";
              $sMsgErro .= " - Órgao Emissor - Data Expedição Identidade).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2629,7 +2629,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_censoorgemissrg == "" && ($oDadosAluno->ed47_v_ident != "" || $oDadosAluno->ed47_i_censoufident != "")){
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Órgão Emissor deve ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Órgão Emissor deve ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (N° Identidade - UF Identidade).\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2638,7 +2638,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_censoufident == "" && ($oDadosAluno->ed47_v_ident != "" || $oDadosAluno->ed47_i_censoorgemissrg != "")) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo UF Identidade deve ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo UF Identidade deve ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (N° Identidade - Órgão Emissor).\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2648,7 +2648,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_v_identcompl != "" && $oDadosAluno->ed47_v_ident == "" 
                && $oDadosAluno->ed47_i_censoorgemissrg == " " && $oDadosAluno->ed47_i_censoufident == "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Complemento só pode ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Complemento só pode ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (N° Identidade";
              $sMsgErro .= " - Órgão Emissor - UF Identidade).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2659,7 +2659,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_d_identdtexp != "" && $oDadosAluno->ed47_v_ident == "" 
                && $oDadosAluno->ed47_i_censoorgemissrg == "" && $oDadosAluno->ed47_i_censoufident == "") {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Data Expedição Identidade";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Data Expedição Identidade";
              $sMsgErro .= " só pode ser informado quando um dos campos estiverem informados: (N° Identidade";
              $sMsgErro .= " - Órgão Emissor - UF Identidade).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2669,13 +2669,13 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_d_identdtexp != "") {
                
-             $oDadosAluno->ed47_d_identdtexp_dia = substr($oDadosAluno->ed47_d_identdtexp,8,2);
-             $oDadosAluno->ed47_d_identdtexp_mes = substr($oDadosAluno->ed47_d_identdtexp,5,2);
-             $oDadosAluno->ed47_d_identdtexp_ano = substr($oDadosAluno->ed47_d_identdtexp,0,4);
+             $oDadosAluno->ed47_d_identdtexp_dia = substr((string) $oDadosAluno->ed47_d_identdtexp,8,2);
+             $oDadosAluno->ed47_d_identdtexp_mes = substr((string) $oDadosAluno->ed47_d_identdtexp,5,2);
+             $oDadosAluno->ed47_d_identdtexp_ano = substr((string) $oDadosAluno->ed47_d_identdtexp,0,4);
              
              if (!checkdate($oDadosAluno->ed47_d_identdtexp_mes,$oDadosAluno->ed47_d_identdtexp_dia,$oDadosAluno->ed47_d_identdtexp_ano)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Data de expedição da";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Data de expedição da";
                $sMsgErro .= " identidade inválida.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -2684,7 +2684,7 @@ if (!isset($ed52_i_ano)) {
                  
                if ($oDadosAluno->ed47_d_identdtexp_ano < 1904) {
                    
-                 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Ano da Data de expedição da";
+                 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Ano da Data de expedição da";
                  $sMsgErro .= " identidade não deve ser menor que 1904.\n";
                  fwrite($ponteiro2,$sMsgErro);
                  $lErroAluno = true;
@@ -2693,7 +2693,7 @@ if (!isset($ed52_i_ano)) {
                    
                  if (str_replace("-","",$oDadosAluno->ed47_d_identdtexp) >= str_replace("-","",$hoje)) {
                      
-                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Data de expedição da";
+                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Data de expedição da";
                    $sMsgErro .= " identidade deve ser menor que a data corrente.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroAluno = true;
@@ -2702,7 +2702,7 @@ if (!isset($ed52_i_ano)) {
                  
                  if (str_replace("-","",$oDadosAluno->ed47_d_identdtexp) <= str_replace("-","",$oDadosAluno->ed47_d_nasc)) {
                      
-                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Data de expedição da";
+                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Data de expedição da";
                    $sMsgErro .= " identidade deve ser maior que a data de nascimento do aluno.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroAluno = true;
@@ -2716,7 +2716,7 @@ if (!isset($ed52_i_ano)) {
                || $oDadosAluno->ed47_c_certidaofolha != "" || $oDadosAluno->ed47_c_certidaolivro != "" || $oDadosAluno->ed47_i_censocartorio != "" 
                || $oDadosAluno->ed47_c_certidaodata != "" || $oDadosAluno->ed47_i_censoufcert != "")) {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Nacionalidade Estrangeira. Campos";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Nacionalidade Estrangeira. Campos";
              $sMsgErro .= " referente a Certidão NÃO devem ser informados.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2727,7 +2727,7 @@ if (!isset($ed52_i_ano)) {
                || $oDadosAluno->ed47_c_certidaolivro != "" || $oDadosAluno->ed47_c_certidaodata != "" 
                || $oDadosAluno->ed47_i_censoufcert != "" || $oDadosAluno->ed47_i_censocartorio != "" || $oDadosAluno->ed47_i_censomuniccert != "")) {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".$sMsgErro =trim($oDadosAluno->ed47_v_nome)." - Campo Tipo de Certidão";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".$sMsgErro =trim((string) $oDadosAluno->ed47_v_nome)." - Campo Tipo de Certidão";
              $sMsgErro .= " deve ser informado quando um dos campos estiverem informados: (Número do Termo";
              $sMsgErro .= " - Folha - Livro - Data da Emissão - UF Cartório - Cartório - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2738,7 +2738,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_c_certidaonum == "" && ($oDadosAluno->ed47_c_certidaotipo != "" 
                || $oDadosAluno->ed47_i_censoufcert != "" || $oDadosAluno->ed47_i_censocartorio != "" || $oDadosAluno->ed47_i_censomuniccert != "")) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Número do Termo deve ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Número do Termo deve ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (Tipo de Certidão";
              $sMsgErro .= " - UF Cartório - Cartório - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2749,7 +2749,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_i_censocartorio == "" && ($oDadosAluno->ed47_c_certidaotipo != "" 
                || $oDadosAluno->ed47_i_censoufcert != "" || $oDadosAluno->ed47_c_certidaonum != "" || $oDadosAluno->ed47_i_censomuniccert != "")) {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Cartório deve ser informado";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Cartório deve ser informado";
              $sMsgErro .= " quando um dos campos estiverem informados: (Tipo de Certidão";
              $sMsgErro .= " - UF Cartório - Número do Termo - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2760,7 +2760,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_i_censoufcert == "" && ($oDadosAluno->ed47_c_certidaotipo != "" 
                || $oDadosAluno->ed47_i_censocartorio != "" || $oDadosAluno->ed47_c_certidaonum != "" || $oDadosAluno->ed47_i_censomuniccert != "")) {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo UF Cartório deve ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo UF Cartório deve ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (Tipo de Certidão";
              $sMsgErro .= " - Cartório - Número do Termo - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2771,7 +2771,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_c_certidaofolha != "" && $oDadosAluno->ed47_c_certidaotipo == "" && $oDadosAluno->ed47_c_certidaonum == "" 
                && $oDadosAluno->ed47_i_censoufcert == "" && $oDadosAluno->ed47_i_censocartorio == "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Folha só pode ser informado";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Folha só pode ser informado";
              $sMsgErro .= " quando um dos campos estiverem informados: (Tipo de Certidão - Número do Termo";
              $sMsgErro .= " - UF Cartório - Cartório - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2782,7 +2782,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_c_certidaolivro != "" && $oDadosAluno->ed47_c_certidaotipo == "" && $oDadosAluno->ed47_c_certidaonum == "" 
                && $oDadosAluno->ed47_i_censoufcert == "" && $oDadosAluno->ed47_i_censocartorio == "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Livro só pode ser informado";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Livro só pode ser informado";
              $sMsgErro .= " quando um dos campos estiverem informados: (Tipo de Certidão - Número do Termo";
              $sMsgErro .= " - UF Cartório - Cartório - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2793,7 +2793,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_c_certidaodata != "" && $oDadosAluno->ed47_c_certidaotipo == "" && $oDadosAluno->ed47_c_certidaonum == "" 
                && $oDadosAluno->ed47_i_censoufcert == "" && $oDadosAluno->ed47_i_censocartorio == "") {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Data de Emissão só pode";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Data de Emissão só pode";
              $sMsgErro .= " ser informado quando um dos campos estiverem informados: (Tipo de Certidão";
              $sMsgErro .= " - Número do Termo - UF Cartório - Cartório - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2810,7 +2810,7 @@ if (!isset($ed52_i_ano)) {
               $iModeloCertidao = "1";
             }
            if ($iModeloCertidao == '1' && ($oDadosAluno->ed47_c_certidaotipo =="" || $oDadosAluno->ed47_c_certidaonum == "" || $oDadosAluno->ed47_i_censoufcert == "" || $oDadosAluno->ed47_i_censomuniccert == "" || $oDadosAluno->ed47_i_censocartorio == "")) {
-           	 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo certidão civil só pode";
+           	 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo certidão civil só pode";
              $sMsgErro .= " ser informado quando um dos campos estiverem informados: (Tipo de Certidão";
              $sMsgErro .= " - Número do Termo - UF Cartório - Cartório - Município Cartório).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2820,13 +2820,13 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_c_certidaodata != "") {
                
-             $oDadosAluno->ed47_c_certidaodata_dia = substr($oDadosAluno->ed47_c_certidaodata,8,2);
-             $oDadosAluno->ed47_c_certidaodata_mes = substr($oDadosAluno->ed47_c_certidaodata,5,2);
-             $oDadosAluno->ed47_c_certidaodata_ano = substr($oDadosAluno->ed47_c_certidaodata,0,4);
+             $oDadosAluno->ed47_c_certidaodata_dia = substr((string) $oDadosAluno->ed47_c_certidaodata,8,2);
+             $oDadosAluno->ed47_c_certidaodata_mes = substr((string) $oDadosAluno->ed47_c_certidaodata,5,2);
+             $oDadosAluno->ed47_c_certidaodata_ano = substr((string) $oDadosAluno->ed47_c_certidaodata,0,4);
              
              if (!checkdate($oDadosAluno->ed47_c_certidaodata_mes,$oDadosAluno->ed47_c_certidaodata_dia,$oDadosAluno->ed47_c_certidaodata_ano)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Data de emissão da";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Data de emissão da";
                $sMsgErro .= " certidão inválida.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -2835,7 +2835,7 @@ if (!isset($ed52_i_ano)) {
                  
                if (str_replace("-","",$oDadosAluno->ed47_c_certidaodata) >= str_replace("-","",$hoje)) {
                    
-                 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Data de emissão da";
+                 $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Data de emissão da";
                  $sMsgErro .= " certidão deve ser menor que a data corrente.\n";
                  fwrite($ponteiro2,$sMsgErro);
                  $lErroAluno = true;
@@ -2846,7 +2846,7 @@ if (!isset($ed52_i_ano)) {
                    
                  if (str_replace("-","",$oDadosAluno->ed47_c_certidaodata) < str_replace("-","",$oDadosAluno->ed47_d_nasc)) {
                      
-                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Data de Emissão da";
+                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Data de Emissão da";
                    $sMsgErro .= " certidão deve ser maior ou igual a data de nascimento do aluno.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroAluno = true;
@@ -2857,7 +2857,7 @@ if (!isset($ed52_i_ano)) {
                    
                  if (str_replace("-","",$oDadosAluno->ed47_c_certidaodata) <= str_replace("-","",$oDadosAluno->ed47_d_nasc)) {
                      
-                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Data de Emissão";
+                   $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Data de Emissão";
                    $sMsgErro .= " da certidão deve ser maior que a data de nascimento do aluno.\n";
                    fwrite($ponteiro2,$sMsgErro);
                    $lErroAluno = true;
@@ -2878,17 +2878,17 @@ if (!isset($ed52_i_ano)) {
           
            if ($oDadosAluno->ed47_i_nacion != 3 && $oDadosAluno->ed47_c_passaporte != "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo N° Passaporte só pode ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo N° Passaporte só pode ser";
              $sMsgErro .= " informado quando nacionalidade do aluno for Estrangeira.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
            }
            
-           if (($oDadosAluno->ed47_v_cpf != "" && strlen($oDadosAluno->ed47_v_cpf) != 11) 
+           if (($oDadosAluno->ed47_v_cpf != "" && strlen((string) $oDadosAluno->ed47_v_cpf) != 11) 
                 || $oDadosAluno->ed47_v_cpf == "00000000000" || $oDadosAluno->ed47_v_cpf == "00000000191") {
                     
-             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo CPF inválido.\n";
+             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo CPF inválido.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
@@ -2897,7 +2897,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_v_cep == "" && ($oDadosAluno->ed47_v_ender != "" || $oDadosAluno->ed47_c_numero != "" || $oDadosAluno->ed47_v_compl != "" 
                || $oDadosAluno->ed47_v_bairro != "" || $oDadosAluno->ed47_i_censoufend != "" || $oDadosAluno->ed47_i_censomunicend != "")){
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo CEP deve ser informado";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo CEP deve ser informado";
              $sMsgErro .= " quando um dos campos estiverem informados: (Endereço - Número - Complemento";
              $sMsgErro .= " - Bairro - UF - Município).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2907,7 +2907,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_v_ender == "" && ($oDadosAluno->ed47_v_cep != "" || $oDadosAluno->ed47_i_censoufend != "" || $oDadosAluno->ed47_i_censomunicend != "")) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Endereço deve ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Endereço deve ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (CEP - UF - Município).\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2916,7 +2916,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_censoufend == "" && ($oDadosAluno->ed47_v_cep != "" || $oDadosAluno->ed47_i_censomunicend != "")) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo UF deve ser informado";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo UF deve ser informado";
              $sMsgErro .= " quando um dos campos estiverem informados: (CEP - Município).\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2925,7 +2925,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_censomunicend == "" && ($oDadosAluno->ed47_v_cep != "" || $oDadosAluno->ed47_i_censoufend != "")) {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Município deve ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Município deve ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (CEP - UF).\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2935,7 +2935,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_c_numero != "" && $oDadosAluno->ed47_v_cep == "" && $oDadosAluno->ed47_v_ender == "" 
                && $oDadosAluno->ed47_i_censoufend == "" && $oDadosAluno->ed47_i_censomunicend == "") {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Número só pode ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Número só pode ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (CEP - Endereço - UF - Município).\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2945,7 +2945,7 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_v_compl != "" && $oDadosAluno->ed47_v_cep == "" && $oDadosAluno->ed47_v_ender == "" 
                && $oDadosAluno->ed47_i_censoufend == "" && $oDadosAluno->ed47_i_censomunicend == "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Complemento só pode";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Complemento só pode";
              $sMsgErro .= " ser informado quando um dos campos estiverem informados:";
              $sMsgErro .= " (CEP - Endereço - UF - Município).\n";
              fwrite($ponteiro2,$sMsgErro);
@@ -2956,16 +2956,16 @@ if (!isset($ed52_i_ano)) {
            if ($oDadosAluno->ed47_v_bairro != "" && $oDadosAluno->ed47_v_cep == "" && $oDadosAluno->ed47_v_ender == "" 
                && $oDadosAluno->ed47_i_censoufend == "" && $oDadosAluno->ed47_i_censomunicend == "") {
                    
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Bairro só pode ser";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Bairro só pode ser";
              $sMsgErro .= " informado quando um dos campos estiverem informados: (CEP - Endereço - UF - Município).\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
            }
            
-           if ($oDadosAluno->ed47_v_cep != "" && strlen($oDadosAluno->ed47_v_cep) != 8) {
+           if ($oDadosAluno->ed47_v_cep != "" && strlen((string) $oDadosAluno->ed47_v_cep) != 8) {
                
-             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo CEP deve conter 8 dígitos.\n";
+             $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo CEP deve conter 8 dígitos.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
@@ -2973,7 +2973,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_transpublico == 0 && $oDadosAluno->ed47_c_transporte != "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Poder Publico Responsável";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Poder Publico Responsável";
              $sMsgErro .= " só pode ser informado quando campo Transporte Escolar Público for igual a Utiliza.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2982,7 +2982,7 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed47_i_transpublico == 1 && $oDadosAluno->ed47_c_transporte == "") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Campo Poder Publico Responsável";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Campo Poder Publico Responsável";
              $sMsgErro .= " deve ser informado quando campo Transporte Escolar Público for igual a Utiliza.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
@@ -2997,7 +2997,7 @@ if (!isset($ed52_i_ano)) {
                
              $necessidades     = "1|";
              $tiponecessidades = "";
-             $aCodNec          = array();
+             $aCodNec          = [];
              
              for ($d = 101; $d <= 113; $d++) {
                   
@@ -3025,7 +3025,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(101,$aCodNec) && in_array(102,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e BAIXA";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e BAIXA";
                $sMsgErro .= " VISAO não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3034,7 +3034,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(101,$aCodNec) && in_array(103,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e SURDEZ";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e SURDEZ";
                $sMsgErro .= " não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3043,7 +3043,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(101,$aCodNec) && in_array(104,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e";
                $sMsgErro .= " DEFICIENCIA AUDITIVA não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3052,7 +3052,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(101,$aCodNec) && in_array(105,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências CEGUEIRA e";
                $sMsgErro .= " SURDOCEGUEIRA não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3061,7 +3061,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(102,$aCodNec) && in_array(103,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências BAIXA VISAO";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências BAIXA VISAO";
                $sMsgErro .= " e SURDEZ não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3070,7 +3070,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(102,$aCodNec) && in_array(104,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências BAIXA VISAO";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências BAIXA VISAO";
                $sMsgErro .= " e DEFICIENCIA AUDITIVA não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3079,7 +3079,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(102,$aCodNec) && in_array(105,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências BAIXA VISAO";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências BAIXA VISAO";
                $sMsgErro .= " e SURDOCEGUEIRA não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3088,7 +3088,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(103,$aCodNec) && in_array(104,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências SURDEZ e DEFICIENCIA";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências SURDEZ e DEFICIENCIA";
                $sMsgErro .= " AUDITIVA não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3097,7 +3097,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(103,$aCodNec) && in_array(105,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências SURDEZ";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências SURDEZ";
                $sMsgErro .= " e SURDOCEGUEIRA não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3106,7 +3106,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(104,$aCodNec) && in_array(105,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA";
                $sMsgErro .= " AUDITIVA e SURDOCEGUEIRA não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3115,7 +3115,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(107,$aCodNec) && in_array(113,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA MENTAL";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA MENTAL";
                $sMsgErro .= " e ALTAS HABILIDADES/SUPERDOTACAO não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3124,7 +3124,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(108,$aCodNec) && in_array(114,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA MÚLTIPLA";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA MÚLTIPLA";
                $sMsgErro .= " e DEFICIÊNCIA INTELECTUAL não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3133,7 +3133,7 @@ if (!isset($ed52_i_ano)) {
              
              if (in_array(108,$aCodNec) && in_array(115,$aCodNec)) {
                  
-               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA MÚLTIPLA";
+               $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiências DEFICIENCIA MÚLTIPLA";
                $sMsgErro .= " e AUTISMO INFANTIL não podem ser informadas simultaneamente.\n";
                fwrite($ponteiro2,$sMsgErro);
                $lErroAluno = true;
@@ -3153,7 +3153,7 @@ if (!isset($ed52_i_ano)) {
                        
                } else {
                    
-                 $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Deficiência DEFICIENCIA";
+                 $sMsgErro = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Deficiência DEFICIENCIA";
                  $sMsgErro .= " MULTIPLA somente poderá ser informada se existir a informação nas";
                  $sMsgErro .= " deficiências simultaneamente: ";
                  $sMsgErro .= "Cegueira e Deficiência Física OU "; 
@@ -3179,30 +3179,30 @@ if (!isset($ed52_i_ano)) {
            
            if ($oDadosAluno->ed10_i_tipoensino == 2 && $tiponecessidades == "0000000000000") {
                
-             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim($oDadosAluno->ed47_v_nome)." - Aluno está vinculado a uma";
+             $sMsgErro  = "ALUNO: Aluno ".$oDadosAluno->ed47_i_codigo." ".trim((string) $oDadosAluno->ed47_v_nome)." - Aluno está vinculado a uma";
              $sMsgErro .= " turma de Educação Especial mas não contém Necessidades Especiais cadastradas no sistema.\n";
              fwrite($ponteiro2,$sMsgErro);
              $lErroAluno = true;
              
            }
            
-           if (trim($oDadosAluno->ed47_c_raca) == "BRANCA") {
+           if (trim((string) $oDadosAluno->ed47_c_raca) == "BRANCA") {
              $oDadosAluno->ed47_c_raca = "1";
-           } else if (trim($oDadosAluno->ed47_c_raca) == "PRETA") {
+           } else if (trim((string) $oDadosAluno->ed47_c_raca) == "PRETA") {
              $oDadosAluno->ed47_c_raca = "2";
-           } else if (trim($oDadosAluno->ed47_c_raca) == "PARDA") {
+           } else if (trim((string) $oDadosAluno->ed47_c_raca) == "PARDA") {
              $oDadosAluno->ed47_c_raca = "3";
-           } else if (trim($oDadosAluno->ed47_c_raca) == "AMARELA") {
+           } else if (trim((string) $oDadosAluno->ed47_c_raca) == "AMARELA") {
              $oDadosAluno->ed47_c_raca = "4";
-           } else if (trim($oDadosAluno->ed47_c_raca) == "INDÍGENA") {
+           } else if (trim((string) $oDadosAluno->ed47_c_raca) == "INDÍGENA") {
              $oDadosAluno->ed47_c_raca = "5";
            } else {
              $oDadosAluno->ed47_c_raca = "0";
            }
            
-           if (trim($oDadosAluno->ed47_c_certidaotipo) == "N") {
+           if (trim((string) $oDadosAluno->ed47_c_certidaotipo) == "N") {
              $oDadosAluno->ed47_c_certidaotipo = "1";
-           } else if (trim($oDadosAluno->ed47_c_certidaotipo) == "C") {
+           } else if (trim((string) $oDadosAluno->ed47_c_certidaotipo) == "C") {
              $oDadosAluno->ed47_c_certidaotipo = "2";
            } else {
              $oDadosAluno->ed47_c_certidaotipo = "";
@@ -3284,38 +3284,38 @@ if (!isset($ed52_i_ano)) {
            if ($lErroAluno == false) {
                
              $num_linha++;
-             $write_linha  = "60|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosAluno->ed47_c_codigoinep);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_codigo)."|".trim($oDadosAluno->ed47_v_nome)."|".trim($oDadosAluno->ed47_c_nis);
-             $write_linha .= "|".trim($oDadosAluno->ed47_d_nasc)."|".trim($oDadosAluno->ed47_v_sexo)."|".trim($oDadosAluno->ed47_c_raca);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_filiacao)."|".trim($oDadosAluno->ed47_v_mae)."|".trim($oDadosAluno->ed47_v_pai);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_nacion)."|".trim($oDadosAluno->ed228_i_paisonu)."|".trim($oDadosAluno->ed47_i_censoufnat);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_censomunicnat)."|".trim($necessidades)."".trim($tiponecessidades)."\n";
+             $write_linha  = "60|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosAluno->ed47_c_codigoinep);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_codigo)."|".trim((string) $oDadosAluno->ed47_v_nome)."|".trim((string) $oDadosAluno->ed47_c_nis);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_d_nasc)."|".trim($oDadosAluno->ed47_v_sexo)."|".trim($oDadosAluno->ed47_c_raca);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_filiacao)."|".trim((string) $oDadosAluno->ed47_v_mae)."|".trim((string) $oDadosAluno->ed47_v_pai);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_nacion)."|".trim((string) $oDadosAluno->ed228_i_paisonu)."|".trim((string) $oDadosAluno->ed47_i_censoufnat);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_censomunicnat)."|".trim($necessidades)."".trim($tiponecessidades)."\n";
              fwrite($ponteiro,$write_linha);
              $num_linha++;
              
-             $write_linha  = "70|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosAluno->ed47_c_codigoinep);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_codigo)."|".trim($oDadosAluno->ed47_v_ident);
-             $write_linha .= "|".trim($oDadosAluno->ed47_v_identcompl);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_censoorgemissrg);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_censoufident)."|".trim($oDadosAluno->ed47_d_identdtexp)."|".$iModeloCertidao;
-             $write_linha .= "|".trim($oDadosAluno->ed47_c_certidaotipo)."|".trim($oDadosAluno->ed47_c_certidaonum);
-             $write_linha .= "|".trim($oDadosAluno->ed47_c_certidaofolha)."|".trim($oDadosAluno->ed47_c_certidaolivro);
-             $write_linha .= "|".trim($oDadosAluno->ed47_c_certidaodata)."|".trim($oDadosAluno->ed47_i_censoufcert);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_censomuniccert)."|".trim($oDadosAluno->ed47_i_censocartorio);
-             $write_linha .= "|".$matriculacertidao."|".trim($oDadosAluno->ed47_v_cpf)."|".trim($oDadosAluno->ed47_c_passaporte);
-             $write_linha .= "|".trim($oDadosAluno->ed47_c_zona)."|".trim($oDadosAluno->ed47_v_cep);
-             $write_linha .= "|".trim($oDadosAluno->ed47_v_ender)."|".trim($oDadosAluno->ed47_c_numero)."|".trim($oDadosAluno->ed47_v_compl);
-             $write_linha .= "|".trim($oDadosAluno->ed47_v_bairro)."|".trim($oDadosAluno->ed47_i_censoufend);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_censomunicend)."|\n";
+             $write_linha  = "70|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosAluno->ed47_c_codigoinep);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_codigo)."|".trim((string) $oDadosAluno->ed47_v_ident);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_v_identcompl);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_censoorgemissrg);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_censoufident)."|".trim((string) $oDadosAluno->ed47_d_identdtexp)."|".$iModeloCertidao;
+             $write_linha .= "|".trim($oDadosAluno->ed47_c_certidaotipo)."|".trim((string) $oDadosAluno->ed47_c_certidaonum);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_c_certidaofolha)."|".trim((string) $oDadosAluno->ed47_c_certidaolivro);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_c_certidaodata)."|".trim((string) $oDadosAluno->ed47_i_censoufcert);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_censomuniccert)."|".trim((string) $oDadosAluno->ed47_i_censocartorio);
+             $write_linha .= "|".$matriculacertidao."|".trim((string) $oDadosAluno->ed47_v_cpf)."|".trim((string) $oDadosAluno->ed47_c_passaporte);
+             $write_linha .= "|".trim($oDadosAluno->ed47_c_zona)."|".trim((string) $oDadosAluno->ed47_v_cep);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_v_ender)."|".trim((string) $oDadosAluno->ed47_c_numero)."|".trim((string) $oDadosAluno->ed47_v_compl);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_v_bairro)."|".trim((string) $oDadosAluno->ed47_i_censoufend);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_censomunicend)."|\n";
              fwrite($ponteiro,$write_linha);
              $num_linha++;
              
-             $write_linha = "80|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosAluno->ed47_c_codigoinep);
-             $write_linha .= "|".trim($oDadosAluno->ed47_i_codigo)."|".trim($oDadosAluno->ed57_i_codigoinep);
-             $write_linha .= "|".trim($oDadosAluno->ed60_i_turma)."|";
-             $write_linha .= "|".trim($turmaunificada)."|".trim($turmamultietapa);
-             $write_linha .= "|".trim($oDadosAluno->ed47_c_atenddifer)."|".trim($oDadosAluno->ed47_i_transpublico);
-             $write_linha .= "|".trim($oDadosAluno->ed47_c_transporte)."|\n";
+             $write_linha = "80|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosAluno->ed47_c_codigoinep);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_codigo)."|".trim((string) $oDadosAluno->ed57_i_codigoinep);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed60_i_turma)."|";
+             $write_linha .= "|".trim($turmaunificada)."|".trim((string) $turmamultietapa);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_c_atenddifer)."|".trim((string) $oDadosAluno->ed47_i_transpublico);
+             $write_linha .= "|".trim((string) $oDadosAluno->ed47_c_transporte)."|\n";
              fwrite($ponteiro,$write_linha);
              
              $sCamposTurmaAcMat       = "ed268_i_codigo,ed268_i_codigoinep";
@@ -3332,10 +3332,10 @@ if (!isset($ed52_i_ano)) {
                  $turmaunificada     = "";
                  $turmamultietapa    = "";
                  $num_linha++;
-                 $write_linha  = "80|".trim($oDadosEscola->ed18_c_codigoinep)."|".trim($oDadosAluno->ed47_c_codigoinep);
-                 $write_linha .= "|".trim($oDadosAluno->ed47_i_codigo)."|".trim($oDadosTurmaAcInep->ed268_i_codigoinep);
-                 $write_linha .= "|".trim($oDadosTurmaAcInep->ed268_i_codigo)."||".trim($turmaunificada)."|".trim($turmamultietapa);
-                 $write_linha .= "|".trim($oDadosAluno->ed47_c_atenddifer)."|".trim($oDadosAluno->ed47_i_transpublico)."|".trim($oDadosAluno->ed47_c_transporte)."|\n";
+                 $write_linha  = "80|".trim((string) $oDadosEscola->ed18_c_codigoinep)."|".trim((string) $oDadosAluno->ed47_c_codigoinep);
+                 $write_linha .= "|".trim((string) $oDadosAluno->ed47_i_codigo)."|".trim((string) $oDadosTurmaAcInep->ed268_i_codigoinep);
+                 $write_linha .= "|".trim((string) $oDadosTurmaAcInep->ed268_i_codigo)."||".trim($turmaunificada)."|".trim($turmamultietapa);
+                 $write_linha .= "|".trim((string) $oDadosAluno->ed47_c_atenddifer)."|".trim((string) $oDadosAluno->ed47_i_transpublico)."|".trim((string) $oDadosAluno->ed47_c_transporte)."|\n";
                  fwrite($ponteiro,$write_linha);
                  
                }

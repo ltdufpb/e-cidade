@@ -127,7 +127,7 @@ if (!isset($incluir)) {
           $sSqlRegenciaOrigem     = $clregencia->sql_query(null, $sCamposRegenciaOrigem, "ed59_i_ordenacao", $sWhereRegenciaOrigem);
 
           $result      = $clregencia->sql_record($sSqlRegenciaOrigem);
-          $procorigem  = pg_result($result, 0, 'procorigem');
+          $procorigem  = pg_fetch_result($result, 0, 'procorigem');
           $linhas      = $clregencia->numrows;
 
           $sCamposRegenciaDestino  = " ed59_i_codigo as regdestino,ed232_i_codigo as coddestino,ed232_c_descr as descrdestino, ";
@@ -137,17 +137,17 @@ if (!isset($incluir)) {
           $sSqlRegenciaDestino     = $clregencia->sql_query("", $sCamposRegenciaDestino, "ed59_i_ordenacao", $sWhereRegenciaDestino);
 
           $result1     = $clregencia->sql_record($clregencia->sql_query("", "ed59_i_codigo as regdestino, ed232_i_codigo as coddestino,ed232_c_descr as descrdestino,ed220_i_procedimento as procdestino,ed57_c_descr as ed57_c_descrdest,ed57_i_escola as ed57_i_escoladest,fc_nomeetapaturma(ed59_i_turma) as ed11_c_descrdest,ed59_i_ordenacao", "ed59_i_ordenacao", " ed59_i_turma = $turmadestino AND ed59_i_serie in ($codequivorig)"));
-          $procdestino = pg_result($result1, 0, 'procdestino');
+          $procdestino = pg_fetch_result($result1, 0, 'procdestino');
           $linhas1 = $clregencia->numrows;
           ?>
 
           <tr>
             <td colspan="2" width="48%" valign="top" bgcolor="#CCCCCC">
-              <b>TURMA DE ORIGEM: ( <?= pg_result($result, 0, 'ed57_c_descr') ?>&nbsp;&nbsp;&nbsp;<?= pg_result($result, 0, 'ed11_c_descr') ?> - Escola: <?= pg_result($result, 0, 'ed57_i_escola') ?> )</b>
+              <b>TURMA DE ORIGEM: ( <?= pg_fetch_result($result, 0, 'ed57_c_descr') ?>&nbsp;&nbsp;&nbsp;<?= pg_fetch_result($result, 0, 'ed11_c_descr') ?> - Escola: <?= pg_fetch_result($result, 0, 'ed57_i_escola') ?> )</b>
             </td>
             <td></td>
             <td colspan="2" width="48%" valign="top" bgcolor="#CCCCCC">
-              <b>TURMA ATUAL: ( <?= pg_result($result1, 0, 'ed57_c_descrdest') ?>&nbsp;&nbsp;&nbsp;<?= pg_result($result1, 0, 'ed11_c_descrdest') ?> - Escola: <?= pg_result($result1, 0, 'ed57_i_escoladest') ?> )</b>
+              <b>TURMA ATUAL: ( <?= pg_fetch_result($result1, 0, 'ed57_c_descrdest') ?>&nbsp;&nbsp;&nbsp;<?= pg_fetch_result($result1, 0, 'ed11_c_descrdest') ?> - Escola: <?= pg_fetch_result($result1, 0, 'ed57_i_escoladest') ?> )</b>
             </td>
           </tr>
 
@@ -181,16 +181,16 @@ if (!isset($incluir)) {
                       for ($v = 0; $v < $cldiarioavaliacao->numrows; $v++) {
 
                         db_fieldsmemory($result_diario, $v);
-                        if (trim($ed37_c_tipo) == "NOTA") {
+                        if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                           if ($resultedu == 'S') {
                             $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 2, ",", ".") : "";
                           } else {
                             $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 0) : "";
                           }
-                        } elseif (trim($ed37_c_tipo) == "NIVEL") {
+                        } elseif (trim((string) $ed37_c_tipo) == "NIVEL") {
                           $aproveitamento = $ed72_c_valorconceito;
-                        } elseif (trim($ed37_c_tipo) == "PARECER") {
+                        } elseif (trim((string) $ed37_c_tipo) == "PARECER") {
                           $aproveitamento =  'Parecer';
                         } else {
                           $aproveitamento = "";
@@ -280,13 +280,13 @@ if (!isset($incluir)) {
                     } else {
                       for ($v = 0; $v < $cldiarioavaliacao->numrows; $v++) {
                         db_fieldsmemory($result_diario, $v);
-                        if (trim($ed37_c_tipo) == "NOTA") {
+                        if (trim((string) $ed37_c_tipo) == "NOTA") {
                           if ($resultedu == 'S') {
                             $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 2, ",", ".") : "";
                           } else {
                             $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 0) : "";
                           }
-                        } elseif (trim($ed37_c_tipo) == "NIVEL") {
+                        } elseif (trim((string) $ed37_c_tipo) == "NIVEL") {
                           $aproveitamento = $ed72_c_valorconceito;
                         } else {
                           $aproveitamento = "";
@@ -699,9 +699,9 @@ if (isset($incluir)) {
 
   $result = $clturma->sql_record($clturma->sql_query("", "ed57_i_calendario,ed57_i_escola", "", " ed57_i_codigo = $turmadestino"));
   db_fieldsmemory($result, 0);
-  $periodos      = explode("X", $perequiv);
+  $periodos      = explode("X", (string) $perequiv);
 
-  $aDisciplinasConversao = array(); // todas disciplinas que devem ser convertidas
+  $aDisciplinasConversao = []; // todas disciplinas que devem ser convertidas
 
   for ($x = 0; $x < count($periodos); $x++) {
 
@@ -709,7 +709,7 @@ if (isset($incluir)) {
     $periodoorigem  = $divideperiodos[0];
     $periododestino = $divideperiodos[1];
 
-    $regencias = explode("X", $regequiv);
+    $regencias = explode("X", (string) $regequiv);
 
     for ($r = 0; $r < count($regencias); $r++) {
 
@@ -839,8 +839,8 @@ if (isset($incluir)) {
        */
       $ed72_c_convertido = "N";
       if (
-        trim($tipoorigem) != trim($tipodestino) ||
-        (trim($tipoorigem) == trim($tipodestino) && $mvorigem != $mvdestino)
+        trim((string) $tipoorigem) != trim((string) $tipodestino) ||
+        (trim((string) $tipoorigem) == trim((string) $tipodestino) && $mvorigem != $mvdestino)
       ) {
 
         $ed72_c_convertido = "S";

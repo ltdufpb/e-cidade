@@ -59,7 +59,7 @@ $oParametros->sFonte  = 'Arial';
 $iTotalMasculinoEscola = 0;
 $iTotalFemininoEscola  = 0;
 
-$aFiltros    = array();
+$aFiltros    = [];
 $sNomeEscola = "TODAS";
 $sNomeEnsino ="TODAS";
 $sNomeEtapa  = "TODAS";
@@ -129,7 +129,7 @@ if ($iLinhas == 0) {
 /**
  * Realizamos o agrupamento dos dados
  */
-$aAlunos = array();
+$aAlunos = [];
 for ($i = 0; $i < $iLinhas; $i++) {
 
   $oDados = db_utils::fieldsMemory($rsMatricula, $i);
@@ -138,7 +138,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
   $iIndexEscola = $oDados->ed18_i_codigo;
   $iIndexEtapa  = "{$oDados->ed11_i_ensino}#{$oDados->ed11_i_sequencia}";
 
-  if (!array_key_exists($iIndexEscola, $aAlunos)) {
+  if (!array_key_exists((string) $iIndexEscola, $aAlunos)) {
 
     $oEscola             = new stdClass();
     $oEscola->sEscola    = $oDados->escola;
@@ -146,7 +146,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
     $oEscola->iTotal     = 0;
     $oEscola->iMasculino = 0;
     $oEscola->iFeminino  = 0;
-    $oEscola->aEtapas    = array();
+    $oEscola->aEtapas    = [];
 
     $aAlunos[$iIndexEscola] = $oEscola;
   }
@@ -158,7 +158,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
     $oEtapa->iTotal     = 0;
     $oEtapa->iMasculino = 0;
     $oEtapa->iFeminino  = 0;
-    $oEtapa->aDados     = array();
+    $oEtapa->aDados     = [];
 
     $aAlunos[$iIndexEscola]->aEtapas[$iIndexEtapa] = $oEtapa;
   }

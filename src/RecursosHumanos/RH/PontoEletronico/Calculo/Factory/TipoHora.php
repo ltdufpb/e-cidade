@@ -57,71 +57,25 @@ abstract class TipoHora
     {
         $oTipoHora = null;
 
-        switch ($iTipoHora) {
-            case BaseHora::HORAS_ADICIONAL_NOTURNO:
-                $oTipoHora = new AdicionalNoturno($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_EXTRA50:
-                $oTipoHora = new Extra50Diurna($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_EXTRA75:
-                $oTipoHora = new Extra75Diurna($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_EXTRA100:
-                $oTipoHora = new Extra100Diurna($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_FALTA:
-                $oTipoHora = new Falta($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_ATRASO:
-                $oTipoHora = new FaltaAtraso($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_SAIDA_ANTECIPADA:
-                $oTipoHora = new FaltaSaidaAntecipada($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_EXTRA50_NOTURNA:
-                $oTipoHora = new Extra50Noturna($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_EXTRA75_NOTURNA:
-                $oTipoHora = new Extra75Noturna($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_EXTRA100_NOTURNA:
-                $oTipoHora = new Extra100Noturna($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_EXTRAS_EVENTO:
-                switch ($oDiaTrabalho->getEvento()->considerarHorarioTrabalhado()) {
-                    case true:
-                        $oTipoHora = new HoraTrabalhada($oDiaTrabalho);
-                        break;
-
-                    default:
-                        $oTipoHora = new HoraEvento($oDiaTrabalho);
-                        break;
-                }
-                break;
-
-            case BaseHora::HORAS_EXTRA_CALCULO:
-                $oTipoHora = new HoraExtraCalculo($oDiaTrabalho);
-                break;
-
-            case BaseHora::HORAS_CALCULO_EXTRA_LINEAR:
-                $oTipoHora = new CalculoExtraLinear($oDiaTrabalho);
-                break;
-
-            default:
-                $oTipoHora = new Trabalho($oDiaTrabalho);
-                break;
-        }
+        $oTipoHora = match ($iTipoHora) {
+            BaseHora::HORAS_ADICIONAL_NOTURNO => new AdicionalNoturno($oDiaTrabalho),
+            BaseHora::HORAS_EXTRA50 => new Extra50Diurna($oDiaTrabalho),
+            BaseHora::HORAS_EXTRA75 => new Extra75Diurna($oDiaTrabalho),
+            BaseHora::HORAS_EXTRA100 => new Extra100Diurna($oDiaTrabalho),
+            BaseHora::HORAS_FALTA => new Falta($oDiaTrabalho),
+            BaseHora::HORAS_ATRASO => new FaltaAtraso($oDiaTrabalho),
+            BaseHora::HORAS_SAIDA_ANTECIPADA => new FaltaSaidaAntecipada($oDiaTrabalho),
+            BaseHora::HORAS_EXTRA50_NOTURNA => new Extra50Noturna($oDiaTrabalho),
+            BaseHora::HORAS_EXTRA75_NOTURNA => new Extra75Noturna($oDiaTrabalho),
+            BaseHora::HORAS_EXTRA100_NOTURNA => new Extra100Noturna($oDiaTrabalho),
+            BaseHora::HORAS_EXTRAS_EVENTO => match ($oDiaTrabalho->getEvento()->considerarHorarioTrabalhado()) {
+                true => new HoraTrabalhada($oDiaTrabalho),
+                default => new HoraEvento($oDiaTrabalho),
+            },
+            BaseHora::HORAS_EXTRA_CALCULO => new HoraExtraCalculo($oDiaTrabalho),
+            BaseHora::HORAS_CALCULO_EXTRA_LINEAR => new CalculoExtraLinear($oDiaTrabalho),
+            default => new Trabalho($oDiaTrabalho),
+        };
 
         return $oTipoHora;
     }

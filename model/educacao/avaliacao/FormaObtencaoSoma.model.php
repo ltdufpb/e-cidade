@@ -109,6 +109,7 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
    * @param AvaliacaoAproveitamento[] $aElementosAvaliacoes
    * @return string
    */
+  #[\Override]
   public function calcularNotaProjetada(array $aElementosAvaliacoes) {
 
     $nMinimoAprovacao = $this->oResultadoAvaliacao->getAproveitamentoMinimo();

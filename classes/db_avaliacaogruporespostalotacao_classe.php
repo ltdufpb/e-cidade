@@ -38,7 +38,7 @@ class cl_avaliacaogruporespostalotacao extends DAOBasica
         parent::__construct("esocial.avaliacaogruporespostalotacao");
     }
 
-    public function avaliacaoPreenchida(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function avaliacaoPreenchida(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $sql = " select " . implode(', ', $campos);
         $sql .= "  from avaliacaogruporespostalotacao ";

@@ -123,7 +123,7 @@
     public static function getMunicipioPorNome($nomeMunicipio,$codigoEstado){
     
       $municipioCenso = new stdClass(); 
-      $nomeMunicipio = strtoupper($nomeMunicipio);
+      $nomeMunicipio = strtoupper((string) $nomeMunicipio);
       $where = "ed261_c_nome  = '$nomeMunicipio'";
       $where .= " and ed261_i_censouf  = $codigoEstado";
       $oDaoCensoMunic     = new cl_censomunic();

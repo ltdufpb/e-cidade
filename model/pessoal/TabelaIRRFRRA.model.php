@@ -43,7 +43,7 @@
  	/**
  	 * Faixas da tabela do IRRF multiplicadas pelo NM
  	 */
- 	private $aFaixasMultiplicadas = array();
+ 	private $aFaixasMultiplicadas = [];
 
  	function __construct($iCodigoTabela = null) {
  		parent::__construct($iCodigoTabela);
@@ -76,7 +76,7 @@
 
  		if(count($this->getFaixas()) > 0) {
 
-			$this->aFaixasMultiplicadas = array();
+			$this->aFaixasMultiplicadas = [];
 
  			foreach ($this->getFaixas() as $oFaixa) {
 

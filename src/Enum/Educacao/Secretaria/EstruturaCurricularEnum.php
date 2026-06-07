@@ -11,11 +11,11 @@ class EstruturaCurricularEnum extends Enum
     const FORMACAO_GERAL_BASICA = 0;
     const ITINERARIO_FORMATIVO = 1;
     const NAO_APLICA = 2;
-    private static $descricoes = array(
+    private static $descricoes = [
             self::FORMACAO_GERAL_BASICA => "Formação Geral Básica",
             self::ITINERARIO_FORMATIVO => "Itinerário Formativo",
             self::NAO_APLICA => "Não se aplica"
-    );
+    ];
 
     /**
      * @return string

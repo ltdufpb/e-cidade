@@ -76,7 +76,7 @@ $pdf->exibeHeader(true, \Fpdf\Pdf::HEADER_ESCOLA);
 $pdf->setExibeBrasao(true);
 
 $head1 = "RELATÓRIO DE DOCUMENTOS PENDENTES";
-$head2 = "Calendário: ".pg_result($result,0,'ed52_c_descr');
+$head2 = "Calendário: ".pg_fetch_result($result,0,'ed52_c_descr');
 $pdf->addTitulo('');
 $pdf->addTitulo($head1, 1);
 $pdf->addTitulo($head2, 2);

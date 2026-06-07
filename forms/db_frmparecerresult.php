@@ -85,7 +85,7 @@ if($clparecerresult->numrows>0){
       for($y=0;$y<$clparecerlegenda->numrows;$y++){
        db_fieldsmemory($result_leg,$y);
        ?>
-        <option value="<?=$ed91_i_codigo?>" <?=@$ed63_i_parecerlegenda==$ed91_i_codigo?"selected":""?>><?=trim($ed91_c_descr)?></option>
+        <option value="<?=$ed91_i_codigo?>" <?=@$ed63_i_parecerlegenda==$ed91_i_codigo?"selected":""?>><?=trim((string) $ed91_c_descr)?></option>
        <?php 
       }
       ?>

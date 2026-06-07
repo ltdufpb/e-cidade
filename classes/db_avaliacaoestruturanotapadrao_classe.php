@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE avaliacaoestruturanotapadrao
 class cl_avaliacaoestruturanotapadrao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed139_sequencial = 0;
-   var $ed139_db_estrutura = 0;
-   var $ed139_ativo = 'f';
-   var $ed139_arredondamedia = 'f';
-   var $ed139_regraarredondamento = 0;
-   var $ed139_observacao = null;
-   var $ed139_ano = 0;
+   public $ed139_sequencial = 0;
+   public $ed139_db_estrutura = 0;
+   public $ed139_ativo = 'f';
+   public $ed139_arredondamedia = 'f';
+   public $ed139_regraarredondamento = 0;
+   public $ed139_observacao = null;
+   public $ed139_ano = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed139_sequencial = int4 = Código
                  ed139_db_estrutura = int4 = Estrutural
                  ed139_ativo = bool = Ativo
@@ -60,10 +60,10 @@ class cl_avaliacaoestruturanotapadrao {
                  ed139_ano = int4 = Ano
                  ";
    //funcao construtor da classe
-   function cl_avaliacaoestruturanotapadrao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaoestruturanotapadrao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -140,10 +140,10 @@ class cl_avaliacaoestruturanotapadrao {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed139_sequencial = pg_result($result,0,0);
+       $this->ed139_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from avaliacaoestruturanotapadrao_ed139_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed139_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed139_sequencial)){
          $this->erro_sql = " Campo ed139_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -183,7 +183,7 @@ class cl_avaliacaoestruturanotapadrao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configuração da Nota ($this->ed139_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configuração da Nota já Cadastrado";
@@ -212,16 +212,16 @@ class cl_avaliacaoestruturanotapadrao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22148,'$this->ed139_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3990,22148,'','".AddSlashes(pg_result($resaco,0,'ed139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3990,22149,'','".AddSlashes(pg_result($resaco,0,'ed139_db_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3990,22150,'','".AddSlashes(pg_result($resaco,0,'ed139_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3990,22151,'','".AddSlashes(pg_result($resaco,0,'ed139_arredondamedia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3990,22152,'','".AddSlashes(pg_result($resaco,0,'ed139_regraarredondamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3990,22153,'','".AddSlashes(pg_result($resaco,0,'ed139_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3990,22154,'','".AddSlashes(pg_result($resaco,0,'ed139_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3990,22148,'','".AddSlashes(pg_fetch_result($resaco,0,'ed139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3990,22149,'','".AddSlashes(pg_fetch_result($resaco,0,'ed139_db_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3990,22150,'','".AddSlashes(pg_fetch_result($resaco,0,'ed139_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3990,22151,'','".AddSlashes(pg_fetch_result($resaco,0,'ed139_arredondamedia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3990,22152,'','".AddSlashes(pg_fetch_result($resaco,0,'ed139_regraarredondamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3990,22153,'','".AddSlashes(pg_fetch_result($resaco,0,'ed139_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3990,22154,'','".AddSlashes(pg_fetch_result($resaco,0,'ed139_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -231,10 +231,10 @@ class cl_avaliacaoestruturanotapadrao {
       $this->atualizacampos();
      $sql = " update avaliacaoestruturanotapadrao set ";
      $virgula = "";
-     if(trim($this->ed139_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_sequencial"])){
+     if(trim((string) $this->ed139_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_sequencial"])){
        $sql  .= $virgula." ed139_sequencial = $this->ed139_sequencial ";
        $virgula = ",";
-       if(trim($this->ed139_sequencial) == null ){
+       if(trim((string) $this->ed139_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed139_sequencial";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_avaliacaoestruturanotapadrao {
          return false;
        }
      }
-     if(trim($this->ed139_db_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_db_estrutura"])){
+     if(trim((string) $this->ed139_db_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_db_estrutura"])){
        $sql  .= $virgula." ed139_db_estrutura = $this->ed139_db_estrutura ";
        $virgula = ",";
-       if(trim($this->ed139_db_estrutura) == null ){
+       if(trim((string) $this->ed139_db_estrutura) == null ){
          $this->erro_sql = " Campo Estrutural não informado.";
          $this->erro_campo = "ed139_db_estrutura";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_avaliacaoestruturanotapadrao {
          return false;
        }
      }
-     if(trim($this->ed139_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_ativo"])){
+     if(trim((string) $this->ed139_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_ativo"])){
        $sql  .= $virgula." ed139_ativo = '$this->ed139_ativo' ";
        $virgula = ",";
-       if(trim($this->ed139_ativo) == null ){
+       if(trim((string) $this->ed139_ativo) == null ){
          $this->erro_sql = " Campo Ativo não informado.";
          $this->erro_campo = "ed139_ativo";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_avaliacaoestruturanotapadrao {
          return false;
        }
      }
-     if(trim($this->ed139_arredondamedia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_arredondamedia"])){
+     if(trim((string) $this->ed139_arredondamedia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_arredondamedia"])){
        $sql  .= $virgula." ed139_arredondamedia = '$this->ed139_arredondamedia' ";
        $virgula = ",";
-       if(trim($this->ed139_arredondamedia) == null ){
+       if(trim((string) $this->ed139_arredondamedia) == null ){
          $this->erro_sql = " Campo Arredonda média não informado.";
          $this->erro_campo = "ed139_arredondamedia";
          $this->erro_banco = "";
@@ -283,21 +283,21 @@ class cl_avaliacaoestruturanotapadrao {
          return false;
        }
      }
-     if(trim($this->ed139_regraarredondamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_regraarredondamento"])){
-        if(trim($this->ed139_regraarredondamento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed139_regraarredondamento"])){
+     if(trim((string) $this->ed139_regraarredondamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_regraarredondamento"])){
+        if(trim((string) $this->ed139_regraarredondamento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed139_regraarredondamento"])){
            $this->ed139_regraarredondamento = "0" ;
         }
        $sql  .= $virgula." ed139_regraarredondamento = $this->ed139_regraarredondamento ";
        $virgula = ",";
      }
-     if(trim($this->ed139_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_observacao"])){
+     if(trim((string) $this->ed139_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_observacao"])){
        $sql  .= $virgula." ed139_observacao = '$this->ed139_observacao' ";
        $virgula = ",";
      }
-     if(trim($this->ed139_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_ano"])){
+     if(trim((string) $this->ed139_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed139_ano"])){
        $sql  .= $virgula." ed139_ano = $this->ed139_ano ";
        $virgula = ",";
-       if(trim($this->ed139_ano) == null ){
+       if(trim((string) $this->ed139_ano) == null ){
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "ed139_ano";
          $this->erro_banco = "";
@@ -321,23 +321,23 @@ class cl_avaliacaoestruturanotapadrao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22148,'$this->ed139_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed139_sequencial"]) || $this->ed139_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3990,22148,'".AddSlashes(pg_result($resaco,$conresaco,'ed139_sequencial'))."','$this->ed139_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3990,22148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed139_sequencial'))."','$this->ed139_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed139_db_estrutura"]) || $this->ed139_db_estrutura != "")
-             $resac = db_query("insert into db_acount values($acount,3990,22149,'".AddSlashes(pg_result($resaco,$conresaco,'ed139_db_estrutura'))."','$this->ed139_db_estrutura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3990,22149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed139_db_estrutura'))."','$this->ed139_db_estrutura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed139_ativo"]) || $this->ed139_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,3990,22150,'".AddSlashes(pg_result($resaco,$conresaco,'ed139_ativo'))."','$this->ed139_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3990,22150,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed139_ativo'))."','$this->ed139_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed139_arredondamedia"]) || $this->ed139_arredondamedia != "")
-             $resac = db_query("insert into db_acount values($acount,3990,22151,'".AddSlashes(pg_result($resaco,$conresaco,'ed139_arredondamedia'))."','$this->ed139_arredondamedia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3990,22151,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed139_arredondamedia'))."','$this->ed139_arredondamedia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed139_regraarredondamento"]) || $this->ed139_regraarredondamento != "")
-             $resac = db_query("insert into db_acount values($acount,3990,22152,'".AddSlashes(pg_result($resaco,$conresaco,'ed139_regraarredondamento'))."','$this->ed139_regraarredondamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3990,22152,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed139_regraarredondamento'))."','$this->ed139_regraarredondamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed139_observacao"]) || $this->ed139_observacao != "")
-             $resac = db_query("insert into db_acount values($acount,3990,22153,'".AddSlashes(pg_result($resaco,$conresaco,'ed139_observacao'))."','$this->ed139_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3990,22153,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed139_observacao'))."','$this->ed139_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed139_ano"]) || $this->ed139_ano != "")
-             $resac = db_query("insert into db_acount values($acount,3990,22154,'".AddSlashes(pg_result($resaco,$conresaco,'ed139_ano'))."','$this->ed139_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3990,22154,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed139_ano'))."','$this->ed139_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -391,16 +391,16 @@ class cl_avaliacaoestruturanotapadrao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22148,'$ed139_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3990,22148,'','".AddSlashes(pg_result($resaco,$iresaco,'ed139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3990,22149,'','".AddSlashes(pg_result($resaco,$iresaco,'ed139_db_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3990,22150,'','".AddSlashes(pg_result($resaco,$iresaco,'ed139_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3990,22151,'','".AddSlashes(pg_result($resaco,$iresaco,'ed139_arredondamedia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3990,22152,'','".AddSlashes(pg_result($resaco,$iresaco,'ed139_regraarredondamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3990,22153,'','".AddSlashes(pg_result($resaco,$iresaco,'ed139_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3990,22154,'','".AddSlashes(pg_result($resaco,$iresaco,'ed139_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3990,22148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed139_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3990,22149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed139_db_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3990,22150,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed139_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3990,22151,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed139_arredondamedia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3990,22152,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed139_regraarredondamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3990,22153,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed139_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3990,22154,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed139_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -109,7 +109,7 @@ class EscolaEstruturalNota extends EstruturalNota {
     $oDaoEstrutura->ed315_db_estrutura   = $oParametro->iEstrutural;
     $oDaoEstrutura->ed315_ativo          = $oParametro->lAtivo          ? 't' : 'false';
     $oDaoEstrutura->ed315_arredondamedia = $oParametro->lArredondaMedia ? 't' : 'false';
-    $oDaoEstrutura->ed315_observacao     = trim($oParametro->sObservacao);
+    $oDaoEstrutura->ed315_observacao     = trim((string) $oParametro->sObservacao);
     $oDaoEstrutura->ed315_ano            = $oParametro->iAno;
 
     if (empty($oParametro->iCodigo) ) {

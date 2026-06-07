@@ -35,7 +35,7 @@ include(modification("classes/db_feriado_classe.php"));
 include(modification("classes/db_periodoavaliacao_classe.php"));
 include(modification("classes/db_periodocalendario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clferiado = new cl_feriado;
 $clperiodoavaliacao = new cl_periodoavaliacao;
 $clperiodocalendario = new cl_periodocalendario;
@@ -63,7 +63,7 @@ if(isset($data_inicio)){
    <?php 
   }else{
    $data_in = mktime(0,0,0,substr($data_inicio,5,2),substr($data_inicio,8,2),substr($data_inicio,0,4));
-   $data_out = mktime(0,0,0,substr($data_fim,5,2),substr($data_fim,8,2),substr($data_fim,0,4));
+   $data_out = mktime(0,0,0,substr((string) $data_fim,5,2),substr((string) $data_fim,8,2),substr((string) $data_fim,0,4));
    #pega a data de saida em UNIX_TIMESTAMP e diminui da data de entrada UNIX_TIMESTAMP
    $data_entre = $data_out - $data_in;
    #divide a diferenca das datas pelo numero de segundos de um dia e arredonda, para saber o numero de dias inteiro que tem
@@ -98,7 +98,7 @@ if(isset($data_inicio)){
        if(pg_num_rows($res)==0){
         $nao_util++;
        }else{
-        if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+        if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
          $nao_util++;
         }
        }
@@ -116,7 +116,7 @@ if(isset($data_inicio)){
        if(pg_num_rows($res)==0){
         $nao_util++;
        }else{
-        if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+        if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
          $nao_util++;
         }
        }
@@ -152,7 +152,7 @@ if(isset($data_inicio)){
         if(pg_num_rows($res)==0){
          $nao_util++;
         }else{
-         if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+         if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
           $nao_util++;
          }
         }
@@ -170,7 +170,7 @@ if(isset($data_inicio)){
         if(pg_num_rows($res)==0){
          $nao_util++;
         }else{
-         if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+         if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
           $nao_util++;
          }
         }
@@ -210,7 +210,7 @@ if(isset($data_inicio)){
          if(pg_num_rows($res)==0){
           $nao_util++;
          }else{
-          if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+          if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
            $nao_util++;
           }
          }
@@ -228,7 +228,7 @@ if(isset($data_inicio)){
          if(pg_num_rows($res)==0){
           $nao_util++;
          }else{
-          if(pg_result($res,0,'ed54_c_dialetivo')=="N"){
+          if(pg_fetch_result($res,0,'ed54_c_dialetivo')=="N"){
            $nao_util++;
           }
          }

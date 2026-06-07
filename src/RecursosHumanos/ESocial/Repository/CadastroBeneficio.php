@@ -41,6 +41,7 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
  */
 class CadastroBeneficio extends \BaseClassRepository
 {
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -54,7 +55,7 @@ class CadastroBeneficio extends \BaseClassRepository
         $selecao = null,
         $alteracao = false
     ) {
-        $retorno = array();
+        $retorno = [];
 
         $servidorMovimentacaoRepository = new ServidorMovimentacaoRepository();
         $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();

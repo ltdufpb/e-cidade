@@ -28,9 +28,9 @@
 include(modification("fpdf151/pdfwebseller.php"));
 include(modification("classes/db_calendario_classe.php"));
 $clcalendario = new cl_calendario;
-$data_censo_dia = substr($data_censo, 0, 2);
-$data_censo_mes = substr($data_censo, 3, 2);
-$data_censo_ano = substr($data_censo, 6, 4);
+$data_censo_dia = substr((string) $data_censo, 0, 2);
+$data_censo_mes = substr((string) $data_censo, 3, 2);
+$data_censo_ano = substr((string) $data_censo, 6, 4);
 $data_censo = $data_censo_ano . "-" . $data_censo_mes . "-" . $data_censo_dia;
 $sql0 = " SELECT ed52_d_fim,ed52_i_diasletivos ";
 $sql0 .= "   FROM calendario ";
@@ -43,8 +43,8 @@ $result0 = db_query($sql0);
 $linhas0 = pg_num_rows($result0);
 
 if ($linhas0 > 0) {
-    $datarel = pg_result($result0, 0, 0);
-    $diasletivos = pg_result($result0, 0, 1);
+    $datarel = pg_fetch_result($result0, 0, 0);
+    $diasletivos = pg_fetch_result($result0, 0, 1);
 } else {
     $datarel = date("Y-m-d");
     $diasletivos = 200;

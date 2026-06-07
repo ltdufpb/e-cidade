@@ -47,10 +47,6 @@ class AreaGradeAproveitamentoRelatorio
      */
     private $pdf;
     /**
-     * @var Matricula
-     */
-    private $matricula;
-    /**
      * @var GradeAproveitamentoAreaPorAreaService
      */
     private $gradeService;
@@ -70,14 +66,13 @@ class AreaGradeAproveitamentoRelatorio
      * @param integer $tamanhoLinha
      * @throws Exception
      */
-    public function __construct(FPDF $pdf, Matricula $matricula, private $tamanhoLinha)
+    public function __construct(FPDF $pdf, private readonly Matricula $matricula, private $tamanhoLinha)
     {
         $this->pdf = $pdf;
         $this->pdf->SetFillColor(230);
-        $this->matricula = $matricula;
 
         db_inicio_transacao();
-        $diarioClasse = $matricula->getDiarioDeClasse();
+        $diarioClasse = $this->matricula->getDiarioDeClasse();
         db_fim_transacao();
         $this->gradeService = new GradeAproveitamentoAreaPorAreaService($diarioClasse);
         $this->mapper = $this->gradeService->getGradeAproveitamento();

@@ -120,7 +120,7 @@ class PensaoRepository
      * @param  Pensao|null $pensao
      * @throws BusinessException
      */
-    public function delete(Pensao $pensao = null)
+    public function delete(?Pensao $pensao = null)
     {
         $id = $pensao instanceof Pensao ? $pensao->getSequencial() : null;
 
@@ -138,7 +138,7 @@ class PensaoRepository
      * @return bool| Pensao
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessopensao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

@@ -177,13 +177,13 @@ db_fieldsmemory($result, 0);
   <tr>
     <td valign="top">
       <?php
-        $chavepri= array(
+        $chavepri= [
                           "ed75_i_codigo"    => @$ed75_i_codigo,
                           "ed75_i_rechumano" => @$ed75_i_rechumano,
                           "z01_nome"         => @$z01_nome,
                           "ed75_i_escola"    => @$ed75_i_escola,
                           "ed18_c_nome"      => @$ed18_c_nome
-                        );
+                        ];
         $sOrdenacao          = "ed18_c_nome, ed75_d_ingresso";
         $sWhere              = "ed75_i_rechumano = {$ed75_i_rechumano}";
         $sSqlRecHumanoEscola = $clrechumanoescola->sql_query( "", "*", $sOrdenacao, $sWhere );

@@ -16,6 +16,7 @@ class FuncaoFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -31,7 +32,7 @@ class FuncaoFormatter extends Formatter
     private function posProcessamento($dadosFormatado)
     {
         foreach ($dadosFormatado as $dados) {
-            if (!isset($dados->ideFuncao->fimValid) || empty($dados->ideFuncao->fimValid) || trim($dados->ideFuncao->fimValid) == "") {
+            if (!isset($dados->ideFuncao->fimValid) || empty($dados->ideFuncao->fimValid) || trim((string) $dados->ideFuncao->fimValid) == "") {
                 $dados->ideFuncao->fimValid = null;
             }
         }

@@ -18,7 +18,7 @@ class Material
             return (int)$quantidade;
         }
 
-        $quantidade = rtrim($quantidade, 0);
+        $quantidade = rtrim((string) $quantidade, 0);
 
         $decimais = explode('.', $quantidade);
         if (isset($decimais[1]) && strlen($decimais[1]) > 3) {

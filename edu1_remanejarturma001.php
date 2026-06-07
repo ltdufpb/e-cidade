@@ -546,8 +546,8 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       <fieldset style="width:250;align:center">
         Para selecionar mais de uma turma<br>mantenha pressionada a tecla CTRL <br>e clique sobre o nome da turma.
       </fieldset>
-      <input type="hidden" name="base" value="<?php echo isset($base) ? $base : ''?>">
-      <input type="hidden" name="curso" value="<?php echo isset($curso) ? $curso : ''?>">
+      <input type="hidden" name="base" value="<?php echo $base ?? ''?>">
+      <input type="hidden" name="curso" value="<?php echo $curso ?? ''?>">
      </td>
     </tr>
  <?php }?>

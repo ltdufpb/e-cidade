@@ -96,7 +96,7 @@ class ProcessoDocumento
      * @var array
      * @access private
      */
-    private $aExtensoesInvalidas = array('exe');
+    private $aExtensoesInvalidas = ['exe'];
 
     /**
      * Caminho completo do arquivo
@@ -175,7 +175,7 @@ class ProcessoDocumento
         $rsDocumento = $oDaoProtprocessodocumento->sql_record($sSqlDocumento);
 
         if ($oDaoProtprocessodocumento->erro_status == "0") {
-            $oStdMsgErro = (object)array("iDocumento" => "$iCodigo");
+            $oStdMsgErro = (object)["iDocumento" => "$iCodigo"];
             throw new BusinessException(_M(
                 URL_MENSAGEM_PROCESSO_DOCUMENTO . 'erro_buscar_documento_pelo_codigo',
                 $oStdMsgErro
@@ -193,7 +193,7 @@ class ProcessoDocumento
         $this->oUsuario = new UsuarioSistema($oDocumento->p01_usuario);
 
         $this->data = $oDocumento->p01_data;
-        $this->sNomeDocumento = substr($oDocumento->p01_descricao, 0, 15) . " " . $oDocumento->p01_nomedocumento;
+        $this->sNomeDocumento = substr((string) $oDocumento->p01_descricao, 0, 15) . " " . $oDocumento->p01_nomedocumento;
 
         $this->p01_nomedocumento = $oDocumento->p01_nomedocumento;
 
@@ -609,7 +609,7 @@ class ProcessoDocumento
         if ($this->isStorage()) {
             try {
                 return StorageHelper::downloadArquivo($this->getOID());
-            } catch (\Exception $ex) {
+            } catch (\Exception) {
             }
         }
 

@@ -64,7 +64,7 @@ if (isset($codigo)) {
                   Mínimo para aprovação: ".$sClasse::formatar($ed37_c_minimoaprov, db_getsession("DB_anousu"));
   } elseif ($ed37_c_tipo == "NIVEL") {
 
-    $aConceitos = array();
+    $aConceitos = [];
     for($x=0;$x<$clformaavaliacao->numrows;$x++){
 
       db_fieldsmemory($result,$x);

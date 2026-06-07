@@ -37,7 +37,7 @@ include(modification("classes/db_parecer_classe.php"));
 include(modification("classes/db_parecerturma_classe.php"));
 include(modification("classes/db_parecerlegenda_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clparecerresult = new cl_parecerresult;
 $clparecerlegenda = new cl_parecerlegenda;
 $cldiarioresultado = new cl_diarioresultado;

@@ -68,6 +68,7 @@ class AlteracaoBeneficioFormatter extends CadastroBeneficioFormatter
      * @return array|\Assentamento[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosServidor = parent::formatar($dados);
@@ -179,7 +180,7 @@ class AlteracaoBeneficioFormatter extends CadastroBeneficioFormatter
                     /**
                      * Caso encontre
                      */
-                    if (pg_numrows($rs) > 0) {
+                    if (pg_num_rows($rs) > 0) {
                         $possuiSuspensao = true;
                     }
                 }

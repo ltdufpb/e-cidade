@@ -60,7 +60,7 @@ class ProcessamentoMatriz
     /**
      * @var Instituicao[] $instituicoes
      */
-    private $instituicoes = array();
+    private $instituicoes = [];
 
     /**
      * @var Lancamento
@@ -143,7 +143,7 @@ class ProcessamentoMatriz
         }
 
         $this->repository->setDeParaRecursos($this->getDeParaRecurso($this->ano));
-        $this->repository->setDeParaFonteRecursos($this->getDeParaFonteRecurso($this->ano));
+        $this->repository->setDeParaFonteRecursos($this->getDeParaFonteRecurso());
 
         $this->repository->setDeParaPo($this->getDeParaPO());
         $this->repository->setSaldoImportado($this->temSaldoImportado($this->ano));
@@ -170,9 +170,9 @@ class ProcessamentoMatriz
             throw new ParameterException("Por favor, informe uma instituição para ter os lançamentos processados.");
         }
 
-        $tipoDocumentos = array();
+        $tipoDocumentos = [];
         if ($this->mes == 12 && $this->encerramento) {
-            $tipoDocumentos = array(1000);
+            $tipoDocumentos = [1000];
         }
 
         $this->repository->removerLancamentosCompetencia(
@@ -243,13 +243,13 @@ class ProcessamentoMatriz
         $siConfi->setCodigoSiconfi($codigoSiconfi);
         $siConfi->setEncerramento($this->encerramento);
 
-        $dadosMatriz = array();
+        $dadosMatriz = [];
         foreach ($aLancamentos as $lancamento) {
             $matriz_modelo = $siConfi->getColunas();
             $matriz_modelo['CONTA'] = $lancamento['begin']->estrutura;
             foreach ($lancamento['begin']->informacoesComplementares as $key => $informacaoComplementar) {
                 $key++;
-                list($valor, $info) = explode('#', $informacaoComplementar);
+                [$valor, $info] = explode('#', (string) $informacaoComplementar);
                 $matriz_modelo['IC' . $key] = $valor;
                 $matriz_modelo['TIPO' . $key] = $info;
             }
@@ -326,7 +326,7 @@ class ProcessamentoMatriz
      * @return bool
      * @throws Exception
      */
-    protected function processarLancamentos(array $codigoLancamentos = null)
+    protected function processarLancamentos(?array $codigoLancamentos = null)
     {
         global $conn;
 
@@ -378,7 +378,7 @@ class ProcessamentoMatriz
 
         $instancia = $this;
         $i = 0;
-        $codigosParaUpdate = array();
+        $codigosParaUpdate = [];
 
         db_utils::makeCollectionFromRecord(
             $rsLancamentos,
@@ -422,7 +422,7 @@ class ProcessamentoMatriz
      */
     protected function getCodigoInstituicoes()
     {
-        $aInstituicoes = array();
+        $aInstituicoes = [];
 
         if (!empty($this->instituicoes)) {
             foreach ($this->instituicoes as $oInstituicao) {
@@ -479,10 +479,10 @@ class ProcessamentoMatriz
 
         $dados = pg_fetch_all($rs);
 
-        $instituicoesErro = array();
+        $instituicoesErro = [];
 
         foreach ($dados as $dado) {
-            $tipos = explode(',', $dado['tipos']);
+            $tipos = explode(',', (string) $dado['tipos']);
             if (count($tipos) < 2) {
                 $instituicoesErro[] = $dado['nomeinst'];
             }
@@ -661,7 +661,7 @@ class ProcessamentoMatriz
 
         $result = db_query($sSql);
 
-        $deParaPO = array();
+        $deParaPO = [];
         db_utils::makeCollectionFromRecord($result, function ($item) use (&$deParaPO) {
             $deParaPO[$item->codtrib] = $item->db21_codigosiconfi;
         });

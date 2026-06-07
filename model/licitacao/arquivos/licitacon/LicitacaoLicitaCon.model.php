@@ -31,7 +31,7 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
 {
     const NOME_ARQUIVO = 'LICITACAO';
 
-    protected $aRemoveQuebraLinhas = array('DS_OBJETO');
+    protected $aRemoveQuebraLinhas = ['DS_OBJETO'];
 
     /**
      * LicitacaoLicitaCon constructor.
@@ -51,8 +51,8 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $aLicitacoes = array();
-        $aCampos = array(
+        $aLicitacoes = [];
+        $aCampos = [
             'distinct l20_codigo',
             'l20_procadmin',
             'l20_usaregistropreco',
@@ -69,7 +69,7 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
             'l16_cadattdinamicovalorgrupo',
             '(select l11_data from liclicitasituacao where l11_liclicita = l20_codigo and l11_licsituacao = ' . SituacaoLicitacao::SITUACAO_ADJUDICADA . ') as data_adjudicacao',
             '(select l11_data from liclicitasituacao where l11_liclicita = l20_codigo and l11_licsituacao = ' . SituacaoLicitacao::SITUACAO_HOMOLOGADA . ') as data_homologacao'
-        );
+        ];
 
         $aWhere = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
             $this->oCabecalho->getDataGeracao());
@@ -93,7 +93,7 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
 
             $oDataAbertura = new DBDate($oStdLicitacao->l20_dataaber);
 
-            $aProcesso = explode('/', $oStdLicitacao->l20_procadmin);
+            $aProcesso = explode('/', (string) $oStdLicitacao->l20_procadmin);
             if (count($aProcesso) != 2) {
                 $aProcesso[0] = null;
                 $aProcesso[1] = $oStdLicitacao->l20_procadmin;
@@ -112,9 +112,9 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
             $oDados->ANO_LICITACAO = $oLicitacao->getAno();
             $oDados->CD_TIPO_FASE_ATUAL = self::getSiglaFase($oStdLicitacao->fase_atual);
             $oDados->CD_TIPO_MODALIDADE = $sModalidade;
-            $oDados->NR_COMISSAO = preg_replace('/[^0-9]/', '', $oStdLicitacao->l30_portaria);
+            $oDados->NR_COMISSAO = preg_replace('/[^0-9]/', '', (string) $oStdLicitacao->l30_portaria);
             $oDados->ANO_COMISSAO = $oStdLicitacao->ano_comissao;
-            $oDados->TP_COMISSAO = isset(ComissaoLicitaCon::$aTipos[$oStdLicitacao->l30_tipo]) ? ComissaoLicitaCon::$aTipos[$oStdLicitacao->l30_tipo] : '';
+            $oDados->TP_COMISSAO = ComissaoLicitaCon::$aTipos[$oStdLicitacao->l30_tipo] ?? '';
             $oDados->NR_PROCESSO = $oStdLicitacao->p58_numero ?: $numeroProcesso;
             $oDados->ANO_PROCESSO = $oStdLicitacao->p58_ano ?: $iAnoProcesso;
             $oDados->TP_NIVEL_JULGAMENTO = $this->oRegra->getTipoJulgamentoSigla();
@@ -144,7 +144,7 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
             );
 
             if (in_array($oDados->CD_TIPO_MODALIDADE,
-                    array('CHP', 'CNC', 'CNV', 'CPC', 'PRE', 'PRP', 'RDC', 'RIN', 'TMP'))
+                    ['CHP', 'CNC', 'CNV', 'CPC', 'PRE', 'PRP', 'RDC', 'RIN', 'TMP'])
                 && empty($oDados->BL_PERMITE_SUBCONTRATACAO)) {
                 $oDados->BL_PERMITE_SUBCONTRATACAO = 'N';
             }
@@ -159,17 +159,17 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
                 $oDados->DT_HOMOLOGACAO = $oDataHomologacao->getDate(DBDate::DATA_PTBR);
             }
 
-            if (in_array($oDados->CD_TIPO_MODALIDADE, array('PRI', 'PRD'))) {
+            if (in_array($oDados->CD_TIPO_MODALIDADE, ['PRI', 'PRD'])) {
                 $oDados->NR_COMISSAO = null;
                 $oDados->ANO_COMISSAO = null;
                 $oDados->TP_COMISSAO = null;
             }
 
-            if (in_array($oDados->CD_TIPO_MODALIDADE, array('CPC', 'CNS'))) {
+            if (in_array($oDados->CD_TIPO_MODALIDADE, ['CPC', 'CNS'])) {
                 $oDados->DT_ABERTURA = null;
             }
 
-            if (in_array($oDados->CD_TIPO_MODALIDADE, array('CPC'))) {
+            if (in_array($oDados->CD_TIPO_MODALIDADE, ['CPC'])) {
                 $oDados->DT_HOMOLOGACAO = null;
                 $oDados->DT_ADJUDICACAO = null;
             }
@@ -201,15 +201,15 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
     {
         if (
             !(
-                in_array($modalidade, array('RDC', 'RDE', 'EST', 'ESE'))
-                && in_array($tipoLicitacao, array('MPR', 'TPR', 'MOP'))
+                in_array($modalidade, ['RDC', 'RDE', 'EST', 'ESE'])
+                && in_array($tipoLicitacao, ['MPR', 'TPR', 'MOP'])
             )
             && !(
-                in_array($modalidade, array('PCP', 'PCE'))
-                && in_array($tipoLicitacao, array('MPR', 'TPR'))
+                in_array($modalidade, ['PCP', 'PCE'])
+                && in_array($tipoLicitacao, ['MPR', 'TPR'])
             )
             && !(
-                in_array($modalidade, array('CCP', 'CPE', 'PRP', 'PRE', 'PDE'))
+                in_array($modalidade, ['CCP', 'CPE', 'PRP', 'PRE', 'PDE'])
                 && $tipoLicitacao == 'MPR'
             )
         ) {
@@ -422,13 +422,13 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
      */
     public static function getSiglaFase($iCodigoFase)
     {
-        $aSiglasFases = array(
+        $aSiglasFases = [
             EventoLicitacao::FASE_ADJUDICACAO_HOMOLOGACAO => 'ADH',
             EventoLicitacao::FASE_EDITAL_PUBLICADO => 'EPU',
             EventoLicitacao::FASE_HABILITACAO_PROPOSTAS => 'HAP',
             EventoLicitacao::FASE_INTERNA => 'INT',
             EventoLicitacao::FASE_PUBLICACAO => 'PUB'
-        );
+        ];
 
         if (!array_key_exists($iCodigoFase, $aSiglasFases)) {
             return null;
@@ -446,11 +446,11 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
      */
     public static function getWhereLicitacao(Instituicao $oInstituicao, DBDate $oData)
     {
-        $aWhere = array(
+        $aWhere = [
             "l20_instit = {$oInstituicao->getCodigo()}",
             "(l18_sequencial is null or l18_data >= '{$oData->getDate(DBDate::DATA_EN)}')",
             "exists (select 1 from liclicitem itemlicitacao where itemlicitacao.l21_codliclicita = liclicita.l20_codigo)"
-        );
+        ];
 
         return $aWhere;
     }

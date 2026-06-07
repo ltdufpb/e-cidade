@@ -10,10 +10,8 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
-            'DataBaseLegacy' => function ($container) {
-                return \ECidade\V3\Datasource\Database::getInstance();
-            },
+        $this->content = [
+            'DataBaseLegacy' => fn($container) => \ECidade\V3\Datasource\Database::getInstance(),
             'Workflow\Repository\Acoes' => function ($container) {
 
                 $database = $container->get('DataBaseLegacy');
@@ -26,7 +24,7 @@ final class Container extends ContainerAbstract
 
                 return new TransicaoService($acaoRepository);
             }
-        );
+        ];
 
         foreach ($this->content as $name => $value) {
             $this->register($name, $value);

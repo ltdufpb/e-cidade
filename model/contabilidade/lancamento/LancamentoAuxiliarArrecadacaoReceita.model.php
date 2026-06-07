@@ -54,6 +54,7 @@ class LancamentoAuxiliarArrecadacaoReceita extends LancamentoAuxiliarBase implem
      * Complemento do lancamento
      * @var string
      */
+    #[\Override]
     protected $sObservacao;
 
     /**
@@ -247,11 +248,13 @@ class LancamentoAuxiliarArrecadacaoReceita extends LancamentoAuxiliarBase implem
         $this->iCodigoCGM = $iCodigoCGM;
     }
 
+    #[\Override]
     public function setFavorecido($iFavorecido)
     {
         $this->iCodigoCGM = $iFavorecido;
     }
 
+    #[\Override]
     public function getFavorecido()
     {
         return $this->iCodigoCGM;
@@ -353,6 +356,7 @@ class LancamentoAuxiliarArrecadacaoReceita extends LancamentoAuxiliarBase implem
      * Retorna o complemento do lancamento contabil
      * @see ILancamentoAuxiliar::getObservacaoHistorico()
      */
+    #[\Override]
     public function getObservacaoHistorico()
     {
         return $this->sObservacao;
@@ -362,6 +366,7 @@ class LancamentoAuxiliarArrecadacaoReceita extends LancamentoAuxiliarBase implem
      * Seta o complemento do lancamento contabil
      * @see ILancamentoAuxiliar::setObservacaoHistorico()
      */
+    #[\Override]
     public function setObservacaoHistorico($sObservacao)
     {
         $this->sObservacao = $sObservacao;
@@ -562,6 +567,7 @@ class LancamentoAuxiliarArrecadacaoReceita extends LancamentoAuxiliarBase implem
      * @throws BusinessException
      * @return boolean
      */
+    #[\Override]
     protected function salvarVinculoCGM()
     {
 

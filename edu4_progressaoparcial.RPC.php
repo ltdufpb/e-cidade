@@ -84,7 +84,7 @@ try {
   	    throw new ParameterException( _M( CAMINHO_MENSAGENS."aluno_nao_informado" ) );
   	  }
 
-  	  $oRetorno->aProgressoes = array();
+  	  $oRetorno->aProgressoes = [];
   	  $oAluno                 = AlunoRepository::getAlunoByCodigo( $oParam->iAluno );
 
   	  if (count( $oAluno->getProgressaoParcial(true) ) > 0 ) {
@@ -153,7 +153,7 @@ try {
 
   	  }
 
-  	  $oRetorno->message = urlencode( _M( CAMINHO_MENSAGENS."progressao_atualizada" ) );
+  	  $oRetorno->message = urlencode( (string) _M( CAMINHO_MENSAGENS."progressao_atualizada" ) );
   	  db_fim_transacao();
 
   	  break;
@@ -181,7 +181,7 @@ try {
         throw new DBException( _M( CAMINHO_MENSAGENS."erro_buscar_progressao" ) );
       }
 
-      $oRetorno->aDadosProgressao = array();
+      $oRetorno->aDadosProgressao = [];
       $iLinha                     = pg_num_rows( $rsProgressao );
 
       if ( $iLinha > 0 ) {
@@ -198,8 +198,8 @@ try {
           $oDadosProgressao->iAno            = $oRegencia->getTurma()->getCalendario()->getAnoExecucao();
           $oDadosProgressao->iTurma          = $oRegencia->getTurma()->getCodigo();
           $oDadosProgressao->sTurma          = urlencode( $oRegencia->getTurma()->getDescricao() );
-          $oDadosProgressao->sAproveitamento = urlencode( $oDadosProgressaoMatricula->aproveitamento );
-          $oDadosProgressao->sResultadoFinal = urlencode( $oDadosProgressaoMatricula->ed121_resultadofinal );
+          $oDadosProgressao->sAproveitamento = urlencode( (string) $oDadosProgressaoMatricula->aproveitamento );
+          $oDadosProgressao->sResultadoFinal = urlencode( (string) $oDadosProgressaoMatricula->ed121_resultadofinal );
           $oRetorno->aDadosProgressao[]      = $oDadosProgressao;
         }
       }

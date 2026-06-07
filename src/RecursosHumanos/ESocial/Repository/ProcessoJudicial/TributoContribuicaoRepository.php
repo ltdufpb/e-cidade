@@ -109,7 +109,7 @@ class TributoContribuicaoRepository
      * @param TributoContribuicao|null $tributoContribuicao
      * @throws Exception
      */
-    public function delete(TributoContribuicao $tributoContribuicao = null)
+    public function delete(?TributoContribuicao $tributoContribuicao = null)
     {
         $id = $tributoContribuicao instanceof TributoContribuicao ? $tributoContribuicao->getSequencial() : null;
 
@@ -127,7 +127,7 @@ class TributoContribuicaoRepository
      * @return bool|TributoContribuicao
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessoTributoContribuicao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

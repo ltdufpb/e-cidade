@@ -37,7 +37,7 @@ require_once(modification("libs/db_jsplibwebseller.php"));
 
 function getData($dData) {
 
-  $aTemp = explode("/", $dData);
+  $aTemp = explode("/", (string) $dData);
   return $aTemp[2]."-".$aTemp[1]."-".$aTemp[0];
 
 }
@@ -50,7 +50,7 @@ if (!isset($ed297_data_dia)) {
  
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoMatricula            = db_utils::getdao('matricula');
 $oDaoTurma                = db_utils::getdao('turma');
 $oDaoTurmaSerieRegimeMat  = db_utils::getdao('turmaserieregimemat');

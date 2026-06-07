@@ -42,8 +42,8 @@ include(modification("classes/db_rhinstrucao_classe.php"));
 include(modification("classes/db_rhestcivil_classe.php"));
 include(modification("classes/db_rhnacionalidade_classe.php"));
 include(modification("classes/db_rhfotos_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clrechumano = new cl_rechumano;
 $cltelefonerechumano = new cl_telefonerechumano;
 $clrechumanoescola = new cl_rechumanoescola;
@@ -117,7 +117,7 @@ if(isset($chavepesquisa)){
       </td>
       <td nowrap>
        <?php 
-       $arr_sexo = array('M' => 'Masculino','F'=>'Feminino');
+       $arr_sexo = ['M' => 'Masculino','F'=>'Feminino'];
        db_select("rh01_sexo",$arr_sexo,true,3,"");
        ?>
       </td>
@@ -254,12 +254,12 @@ if(isset($chavepesquisa)){
       <td nowrap title="<?=@$Trh01_tipadm?>">
        <?=@$Lrh01_tipadm?>
        <?php 
-       $h01_tipadm = array(
+       $h01_tipadm = [
                            1 => 'Admissao do 1o emprego',
                            2 => 'Admissao c/ emprego anterior',
                            3 => 'Transf de empreg s/ onus p/ a cedente',
                            4 => 'Transf de empreg c/ onus p/ a cedente'
-                          );
+                          ];
        db_select("rh01_tipadm",$h01_tipadm,true,3,"");
        ?>
       </td>

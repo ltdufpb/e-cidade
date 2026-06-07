@@ -29,7 +29,7 @@ class cl_censoregiao
     public function __construct()
     {
         $this->rotulo = new rotulo("censoregiao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -96,7 +96,7 @@ class cl_censoregiao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Regiões Administrativas ($this->ed174_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Regiões Administrativas já Cadastrado";
@@ -125,12 +125,12 @@ class cl_censoregiao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013159,'$this->ed174_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010784,1013159,'','".AddSlashes(pg_result($resaco,0,'ed174_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010784,1013160,'','".AddSlashes(pg_result($resaco,0,'ed174_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010784,1013161,'','".AddSlashes(pg_result($resaco,0,'ed174_censomunic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010784,1013159,'','".AddSlashes(pg_fetch_result($resaco,0,'ed174_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010784,1013160,'','".AddSlashes(pg_fetch_result($resaco,0,'ed174_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010784,1013161,'','".AddSlashes(pg_fetch_result($resaco,0,'ed174_censomunic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -141,10 +141,10 @@ class cl_censoregiao
       $this->atualizacampos();
      $sql = " update censoregiao set ";
      $virgula = "";
-     if(trim($this->ed174_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed174_codigo"])){ 
+     if(trim((string) $this->ed174_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed174_codigo"])){ 
        $sql  .= $virgula." ed174_codigo = $this->ed174_codigo ";
        $virgula = ",";
-       if(trim($this->ed174_codigo) == null ){ 
+       if(trim((string) $this->ed174_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo não informado.";
          $this->erro_campo = "ed174_codigo";
          $this->erro_banco = "";
@@ -154,10 +154,10 @@ class cl_censoregiao
          return false;
        }
      }
-     if(trim($this->ed174_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed174_nome"])){ 
+     if(trim((string) $this->ed174_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed174_nome"])){ 
        $sql  .= $virgula." ed174_nome = '$this->ed174_nome' ";
        $virgula = ",";
-       if(trim($this->ed174_nome) == null ){ 
+       if(trim((string) $this->ed174_nome) == null ){ 
          $this->erro_sql = " Campo Nome da Região não informado.";
          $this->erro_campo = "ed174_nome";
          $this->erro_banco = "";
@@ -167,10 +167,10 @@ class cl_censoregiao
          return false;
        }
      }
-     if(trim($this->ed174_censomunic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed174_censomunic"])){ 
+     if(trim((string) $this->ed174_censomunic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed174_censomunic"])){ 
        $sql  .= $virgula." ed174_censomunic = $this->ed174_censomunic ";
        $virgula = ",";
-       if(trim($this->ed174_censomunic) == null ){ 
+       if(trim((string) $this->ed174_censomunic) == null ){ 
          $this->erro_sql = " Campo Municipio não informado.";
          $this->erro_campo = "ed174_censomunic";
          $this->erro_banco = "";
@@ -194,15 +194,15 @@ class cl_censoregiao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013159,'$this->ed174_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed174_codigo"]) || $this->ed174_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010784,1013159,'".AddSlashes(pg_result($resaco,$conresaco,'ed174_codigo'))."','$this->ed174_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010784,1013159,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed174_codigo'))."','$this->ed174_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed174_nome"]) || $this->ed174_nome != "")
-             $resac = db_query("insert into db_acount values($acount,1010784,1013160,'".AddSlashes(pg_result($resaco,$conresaco,'ed174_nome'))."','$this->ed174_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010784,1013160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed174_nome'))."','$this->ed174_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed174_censomunic"]) || $this->ed174_censomunic != "")
-             $resac = db_query("insert into db_acount values($acount,1010784,1013161,'".AddSlashes(pg_result($resaco,$conresaco,'ed174_censomunic'))."','$this->ed174_censomunic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010784,1013161,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed174_censomunic'))."','$this->ed174_censomunic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -256,12 +256,12 @@ class cl_censoregiao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013159,'$ed174_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010784,1013159,'','".AddSlashes(pg_result($resaco,$iresaco,'ed174_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010784,1013160,'','".AddSlashes(pg_result($resaco,$iresaco,'ed174_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010784,1013161,'','".AddSlashes(pg_result($resaco,$iresaco,'ed174_censomunic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010784,1013159,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed174_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010784,1013160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed174_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010784,1013161,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed174_censomunic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

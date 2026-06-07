@@ -312,7 +312,7 @@ class LancamentoTaxaDiversos
    */
   public static function getDescricaoUnidade($iIndice = null) {
 
-    $aUnidades = array(
+    $aUnidades = [
       '-------',
       'm',
       'm²',
@@ -326,7 +326,7 @@ class LancamentoTaxaDiversos
       'Milheiro',
       'Veículo',
       'Unidade'
-    );
+    ];
 
     if(!empty($iIndice) || $iIndice === 0 || $iIndice === '0') {
       return $aUnidades[$iIndice];
@@ -353,7 +353,7 @@ class LancamentoTaxaDiversos
     }
 
     if(pg_num_rows($rsDiversos) == 0) {
-      return array();
+      return [];
     }
 
     return \db_utils::makeCollectionFromRecord($rsDiversos, function($oDebitos) {

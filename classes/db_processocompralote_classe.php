@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE processocompralote
 class cl_processocompralote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc68_sequencial = 0; 
-   var $pc68_nome = null; 
-   var $pc68_pcproc = 0; 
+   public $pc68_sequencial = 0; 
+   public $pc68_nome = null; 
+   public $pc68_pcproc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc68_sequencial = int4 = Sequencial 
                  pc68_nome = varchar(100) = Nome do Lote 
                  pc68_pcproc = int8 = Processo de Compra 
                  ";
    //funcao construtor da classe 
-   function cl_processocompralote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processocompralote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_processocompralote {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc68_sequencial = pg_result($result,0,0); 
+       $this->pc68_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from processocompralote_pc68_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc68_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc68_sequencial)){
          $this->erro_sql = " Campo pc68_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_processocompralote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lote ($this->pc68_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lote já Cadastrado";
@@ -145,12 +145,12 @@ class cl_processocompralote {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20764,'$this->pc68_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3736,20764,'','".AddSlashes(pg_result($resaco,0,'pc68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3736,20766,'','".AddSlashes(pg_result($resaco,0,'pc68_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3736,20765,'','".AddSlashes(pg_result($resaco,0,'pc68_pcproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3736,20764,'','".AddSlashes(pg_fetch_result($resaco,0,'pc68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3736,20766,'','".AddSlashes(pg_fetch_result($resaco,0,'pc68_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3736,20765,'','".AddSlashes(pg_fetch_result($resaco,0,'pc68_pcproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_processocompralote {
       $this->atualizacampos();
      $sql = " update processocompralote set ";
      $virgula = "";
-     if(trim($this->pc68_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc68_sequencial"])){ 
+     if(trim((string) $this->pc68_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc68_sequencial"])){ 
        $sql  .= $virgula." pc68_sequencial = $this->pc68_sequencial ";
        $virgula = ",";
-       if(trim($this->pc68_sequencial) == null ){ 
+       if(trim((string) $this->pc68_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "pc68_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_processocompralote {
          return false;
        }
      }
-     if(trim($this->pc68_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc68_nome"])){ 
+     if(trim((string) $this->pc68_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc68_nome"])){ 
        $sql  .= $virgula." pc68_nome = '$this->pc68_nome' ";
        $virgula = ",";
-       if(trim($this->pc68_nome) == null ){ 
+       if(trim((string) $this->pc68_nome) == null ){ 
          $this->erro_sql = " Campo Nome do Lote não informado.";
          $this->erro_campo = "pc68_nome";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_processocompralote {
          return false;
        }
      }
-     if(trim($this->pc68_pcproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc68_pcproc"])){ 
+     if(trim((string) $this->pc68_pcproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc68_pcproc"])){ 
        $sql  .= $virgula." pc68_pcproc = $this->pc68_pcproc ";
        $virgula = ",";
-       if(trim($this->pc68_pcproc) == null ){ 
+       if(trim((string) $this->pc68_pcproc) == null ){ 
          $this->erro_sql = " Campo Processo de Compra não informado.";
          $this->erro_campo = "pc68_pcproc";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_processocompralote {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20764,'$this->pc68_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc68_sequencial"]) || $this->pc68_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3736,20764,'".AddSlashes(pg_result($resaco,$conresaco,'pc68_sequencial'))."','$this->pc68_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3736,20764,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc68_sequencial'))."','$this->pc68_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc68_nome"]) || $this->pc68_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3736,20766,'".AddSlashes(pg_result($resaco,$conresaco,'pc68_nome'))."','$this->pc68_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3736,20766,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc68_nome'))."','$this->pc68_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc68_pcproc"]) || $this->pc68_pcproc != "")
-             $resac = db_query("insert into db_acount values($acount,3736,20765,'".AddSlashes(pg_result($resaco,$conresaco,'pc68_pcproc'))."','$this->pc68_pcproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3736,20765,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc68_pcproc'))."','$this->pc68_pcproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_processocompralote {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20764,'$pc68_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3736,20764,'','".AddSlashes(pg_result($resaco,$iresaco,'pc68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3736,20766,'','".AddSlashes(pg_result($resaco,$iresaco,'pc68_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3736,20765,'','".AddSlashes(pg_result($resaco,$iresaco,'pc68_pcproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3736,20764,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3736,20766,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc68_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3736,20765,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc68_pcproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

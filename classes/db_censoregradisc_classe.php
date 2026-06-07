@@ -28,35 +28,35 @@
 //CLASSE DA ENTIDADE censoregradisc
 class cl_censoregradisc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed272_i_codigo = 0; 
-   var $ed272_i_censoetapa = 0; 
-   var $ed272_i_censodisciplina = 0; 
-   var $ed272_ano = 0; 
+   public $ed272_i_codigo = 0; 
+   public $ed272_i_censoetapa = 0; 
+   public $ed272_i_censodisciplina = 0; 
+   public $ed272_ano = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed272_i_codigo = int4 = Código 
                  ed272_i_censoetapa = int4 = Etapa 
                  ed272_i_censodisciplina = int4 = Disciplina 
                  ed272_ano = int4 = Ano 
                  ";
    //funcao construtor da classe 
-   function cl_censoregradisc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("censoregradisc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -118,10 +118,10 @@ class cl_censoregradisc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed272_i_codigo = pg_result($result,0,0); 
+       $this->ed272_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from censoregradisc_ed272_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed272_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed272_i_codigo)){
          $this->erro_sql = " Campo ed272_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -155,7 +155,7 @@ class cl_censoregradisc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Regras Disciplinas x Etapas ($this->ed272_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Regras Disciplinas x Etapas já Cadastrado";
@@ -184,13 +184,13 @@ class cl_censoregradisc {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13991,'$this->ed272_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2457,13991,'','".AddSlashes(pg_result($resaco,0,'ed272_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2457,13992,'','".AddSlashes(pg_result($resaco,0,'ed272_i_censoetapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2457,13993,'','".AddSlashes(pg_result($resaco,0,'ed272_i_censodisciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2457,21111,'','".AddSlashes(pg_result($resaco,0,'ed272_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2457,13991,'','".AddSlashes(pg_fetch_result($resaco,0,'ed272_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2457,13992,'','".AddSlashes(pg_fetch_result($resaco,0,'ed272_i_censoetapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2457,13993,'','".AddSlashes(pg_fetch_result($resaco,0,'ed272_i_censodisciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2457,21111,'','".AddSlashes(pg_fetch_result($resaco,0,'ed272_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -200,10 +200,10 @@ class cl_censoregradisc {
       $this->atualizacampos();
      $sql = " update censoregradisc set ";
      $virgula = "";
-     if(trim($this->ed272_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_codigo"])){ 
+     if(trim((string) $this->ed272_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_codigo"])){ 
        $sql  .= $virgula." ed272_i_codigo = $this->ed272_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed272_i_codigo) == null ){ 
+       if(trim((string) $this->ed272_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed272_i_codigo";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_censoregradisc {
          return false;
        }
      }
-     if(trim($this->ed272_i_censoetapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_censoetapa"])){ 
+     if(trim((string) $this->ed272_i_censoetapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_censoetapa"])){ 
        $sql  .= $virgula." ed272_i_censoetapa = $this->ed272_i_censoetapa ";
        $virgula = ",";
-       if(trim($this->ed272_i_censoetapa) == null ){ 
+       if(trim((string) $this->ed272_i_censoetapa) == null ){ 
          $this->erro_sql = " Campo Etapa não informado.";
          $this->erro_campo = "ed272_i_censoetapa";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_censoregradisc {
          return false;
        }
      }
-     if(trim($this->ed272_i_censodisciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_censodisciplina"])){ 
+     if(trim((string) $this->ed272_i_censodisciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_censodisciplina"])){ 
        $sql  .= $virgula." ed272_i_censodisciplina = $this->ed272_i_censodisciplina ";
        $virgula = ",";
-       if(trim($this->ed272_i_censodisciplina) == null ){ 
+       if(trim((string) $this->ed272_i_censodisciplina) == null ){ 
          $this->erro_sql = " Campo Disciplina não informado.";
          $this->erro_campo = "ed272_i_censodisciplina";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_censoregradisc {
          return false;
        }
      }
-     if(trim($this->ed272_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_ano"])){ 
+     if(trim((string) $this->ed272_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed272_ano"])){ 
        $sql  .= $virgula." ed272_ano = $this->ed272_ano ";
        $virgula = ",";
-       if(trim($this->ed272_ano) == null ){ 
+       if(trim((string) $this->ed272_ano) == null ){ 
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "ed272_ano";
          $this->erro_banco = "";
@@ -266,17 +266,17 @@ class cl_censoregradisc {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,13991,'$this->ed272_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_codigo"]) || $this->ed272_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2457,13991,'".AddSlashes(pg_result($resaco,$conresaco,'ed272_i_codigo'))."','$this->ed272_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2457,13991,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed272_i_codigo'))."','$this->ed272_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_censoetapa"]) || $this->ed272_i_censoetapa != "")
-             $resac = db_query("insert into db_acount values($acount,2457,13992,'".AddSlashes(pg_result($resaco,$conresaco,'ed272_i_censoetapa'))."','$this->ed272_i_censoetapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2457,13992,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed272_i_censoetapa'))."','$this->ed272_i_censoetapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed272_i_censodisciplina"]) || $this->ed272_i_censodisciplina != "")
-             $resac = db_query("insert into db_acount values($acount,2457,13993,'".AddSlashes(pg_result($resaco,$conresaco,'ed272_i_censodisciplina'))."','$this->ed272_i_censodisciplina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2457,13993,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed272_i_censodisciplina'))."','$this->ed272_i_censodisciplina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed272_ano"]) || $this->ed272_ano != "")
-             $resac = db_query("insert into db_acount values($acount,2457,21111,'".AddSlashes(pg_result($resaco,$conresaco,'ed272_ano'))."','$this->ed272_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2457,21111,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed272_ano'))."','$this->ed272_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -330,13 +330,13 @@ class cl_censoregradisc {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,13991,'$ed272_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2457,13991,'','".AddSlashes(pg_result($resaco,$iresaco,'ed272_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2457,13992,'','".AddSlashes(pg_result($resaco,$iresaco,'ed272_i_censoetapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2457,13993,'','".AddSlashes(pg_result($resaco,$iresaco,'ed272_i_censodisciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2457,21111,'','".AddSlashes(pg_result($resaco,$iresaco,'ed272_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2457,13991,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed272_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2457,13992,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed272_i_censoetapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2457,13993,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed272_i_censodisciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2457,21111,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed272_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -73,7 +73,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
         </td>
         <td>
           <?php 
-            $x = array('N'=>'NÃO','S'=>'SIM');
+            $x = ['N'=>'NÃO','S'=>'SIM'];
             db_select('ed233_c_notabranca',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -111,7 +111,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
         </td>
         <td>
           <?php 
-            $x = array('S'=>'SIM','N'=>'NÃO');
+            $x = ['S'=>'SIM','N'=>'NÃO'];
             db_select('ed233_c_consistirmat',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -122,7 +122,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
         </td>
         <td>
           <?php
-            $aReclassificao = array( 't' => 'SIM', 'f' => 'NÃO');
+            $aReclassificao = [ 't' => 'SIM', 'f' => 'NÃO'];
             db_select('ed233_reclassificaetapaanterior', $aReclassificao, true, $db_opcao );
           ?>
         </td>
@@ -133,7 +133,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
         </td>
         <td>
          <?php 
-           $x = array('S'=>'SIM','N'=>'NÃO');
+           $x = ['S'=>'SIM','N'=>'NÃO'];
            db_select('ed233_c_avalalternativa',$x,true,$db_opcao,"");
          ?>
         </td>
@@ -154,7 +154,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
         </td>
         <td>
           <?php 
-            $r = array('1' => 'SIM', '2' => 'NÃO');
+            $r = ['1' => 'SIM', '2' => 'NÃO'];
             db_select('ed233_i_habilitaordemalfabeticaturma',$r,true,$db_opcao,"");
           ?>
         </td>
@@ -176,7 +176,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
         </td>
         <td>
           <?php 
-            $x = array('t'=>'SIM','f'=>'NÃO');
+            $x = ['t'=>'SIM','f'=>'NÃO'];
             db_select('ed233_bloqueioalteracaoavaliacao',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -193,7 +193,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
                 </td>
                 <td rel="ignore-css">
                   <?php 
-                    $aDeslocamentoCursor = array('1' => 'NOTA > FALTA', '2' => 'NOTA > NOTA');
+                    $aDeslocamentoCursor = ['1' => 'NOTA > FALTA', '2' => 'NOTA > NOTA'];
                     db_select('ed233_deslocamentocursor',$aDeslocamentoCursor,true,$db_opcao," class='field-size-max' rel='ignore-css'");
                   ?>
                 </td>
@@ -204,7 +204,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
                 </td>
                 <td>
                   <?php
-                    db_select('ed233_apresentarnotaproporcional', array('t'=>'SIM','f'=>'NÃO'), true, $db_opcao);
+                    db_select('ed233_apresentarnotaproporcional', ['t'=>'SIM','f'=>'NÃO'], true, $db_opcao);
                   ?>
                 </td>
               </tr>

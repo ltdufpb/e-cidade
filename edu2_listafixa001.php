@@ -259,7 +259,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
          $sql   .= "  $where ";
          $sql   .= "  ORDER BY ed57_c_descr,ed11_c_descr ";          
          $result = db_query($sql);
-         echo pg_errormessage();
+         echo pg_last_error();
          $linhas = pg_num_rows($result);
        ?>
       <b>Turmas:</b><br>
@@ -350,8 +350,8 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
     <input name="pesquisar" type="button" id="pesquisar" value="Processar" 
            onclick="js_pesquisa(document.form1.subgrupo.value);" disabled>
     <br><br>
-    <input type="hidden" name="base" value="<?=isset( $base ) ? $base : ""?>">
-    <input type="hidden" name="curso" value="<?=isset( $curso ) ? $curso : ""?>">
+    <input type="hidden" name="base" value="<?=$base ?? ""?>">
+    <input type="hidden" name="curso" value="<?=$curso ?? ""?>">
    </td>
   </tr>
  <?php }?>

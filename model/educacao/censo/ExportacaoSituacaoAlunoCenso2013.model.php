@@ -47,12 +47,6 @@ class ExportacaoSituacaoAlunoCenso2013 {
   private $oLayout;
 
   /**
-   * Instância de Log
-   * @var DBLogJSON
-   */
-  private $oLog;
-
-  /**
    * Ano do censo
    * @var interger
    */
@@ -133,11 +127,13 @@ class ExportacaoSituacaoAlunoCenso2013 {
    * @param $iAno     ano do censo
    * @return
    */
-  public function __construct(DBLogJSON $oLog, $iAno = 2013) {
+  public function __construct(/**
+   * Instância de Log
+   */
+  private readonly DBLogJSON $oLog, $iAno = 2013) {
 
     $this->sNomeArquivo = "tmp/situacao_aluno_censo_{$iAno}.txt";
     $this->oLayout      = new db_layouttxt(self::LAYOUT, $this->sNomeArquivo, "", 1, true);
-    $this->oLog         = $oLog;
     $this->iAno         = $iAno;
   }
 
@@ -149,7 +145,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
 
     $this->lTemInconsistencia  = true;
     $oMensagem                 = new stdClass();
-    $oMensagem->sErro          = utf8_encode($MensagemLog);
+    $oMensagem->sErro          = mb_convert_encoding($MensagemLog, 'UTF-8', 'ISO-8859-1');
     $oMensagem->iIdentificador = $iIdentificador;
     $this->oLog->log($oMensagem, DBLog::LOG_ERROR);
   }
@@ -274,7 +270,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
       /**
        * Se aluno ja esta no array, significa que já foi encontrado qual o dado correto para valida-lo
        */
-      if ( array_key_exists($oDadosAluno->codigo_aluno_escola, $aAlunosFiltrados) ) {
+      if ( array_key_exists((string) $oDadosAluno->codigo_aluno_escola, $aAlunosFiltrados) ) {
         continue;
       }
 
@@ -379,7 +375,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
       $oLinha->em_andamento          = 1;
       $oLinha->separador_final       = '';
 
-      if ( array_key_exists($oAluno->situacao, $this->aMovimento) ) {
+      if ( array_key_exists((string) $oAluno->situacao, $this->aMovimento) ) {
 
         $oLinha->movimento    = $this->aMovimento[$oAluno->situacao];
         $oLinha->em_andamento = '';
@@ -423,7 +419,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
        * Validamos se aluno já não foi escrito no registro 90]
        * Não podemos repetir aluno no registro 91
        */
-      if ( array_key_exists($oAluno->codigo_aluno_escola, $this->aAlunosAntesCenso) ) {
+      if ( array_key_exists((string) $oAluno->codigo_aluno_escola, $this->aAlunosAntesCenso) ) {
         continue;
       }
 
@@ -454,7 +450,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
       $oLinha->em_andamento          = 1;                                              // 16
       $oLinha->separador_final       = '';
 
-      if ( array_key_exists($oAluno->situacao, $this->aMovimento) ) {
+      if ( array_key_exists((string) $oAluno->situacao, $this->aMovimento) ) {
 
         $oLinha->movimento    = $this->aMovimento[$oAluno->situacao];
         $oLinha->em_andamento = '';
@@ -615,7 +611,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
      * Valida se o nome do gestor possui 4 letras repetidas em sequência
      */
     $sExpressao          = '/([a-zA-Z])\1{3}/';
-    $lValidacaoExpressao = preg_match( $sExpressao, $oDados->nome_gestor_escolar ) ? true : false;
+    $lValidacaoExpressao = preg_match( $sExpressao, (string) $oDados->nome_gestor_escolar ) ? true : false;
 
     if ( $lValidacaoExpressao ) {
 

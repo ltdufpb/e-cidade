@@ -54,7 +54,7 @@ class CensoMunicipioRegistry
      */
     public static function get($id)
     {
-        if (!array_key_exists($id, self::$storage)) {
+        if (!array_key_exists((string) $id, self::$storage)) {
             $censoMunicipio = CensoMunicipioRepository::find($id);
             if (is_null($censoMunicipio)) {
                 return null;

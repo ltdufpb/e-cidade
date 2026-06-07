@@ -55,10 +55,10 @@ $db_opcao = 1;
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1"=>"Parecer","a2"=>"Parecer por Turmas");
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"25");
-   $clcriaabas->src        = array("a1"=>"edu1_parecer001.php","a2"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Parecer","a2"=>"Parecer por Turmas"];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"25"];
+   $clcriaabas->src        = ["a1"=>"edu1_parecer001.php","a2"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_height = "1000";
    $clcriaabas->iframe_width = "100%";

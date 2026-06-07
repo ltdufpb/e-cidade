@@ -60,7 +60,7 @@ class cl_pctipocompratribunal
     public function __construct()
     {
         $this->rotulo = new rotulo("pctipocompratribunal");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -132,10 +132,10 @@ class cl_pctipocompratribunal
          $this->erro_status = "0";
          return false;
        }
-       $this->l44_sequencial = pg_result($result,0,0);
+       $this->l44_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from pctipocompratribunal_l44_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l44_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l44_sequencial)){
          $this->erro_sql = " Campo l44_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -173,7 +173,7 @@ class cl_pctipocompratribunal
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "pctipocompratribunal ($this->l44_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "pctipocompratribunal já Cadastrado";
@@ -202,15 +202,15 @@ class cl_pctipocompratribunal
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17813,'$this->l44_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3145,17813,'','".AddSlashes(pg_result($resaco,0,'l44_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3145,17814,'','".AddSlashes(pg_result($resaco,0,'l44_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3145,17815,'','".AddSlashes(pg_result($resaco,0,'l44_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3145,17816,'','".AddSlashes(pg_result($resaco,0,'l44_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3145,21717,'','".AddSlashes(pg_result($resaco,0,'l44_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3145,1011941,'','".AddSlashes(pg_result($resaco,0,'l44_obrigalicitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3145,17813,'','".AddSlashes(pg_fetch_result($resaco,0,'l44_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3145,17814,'','".AddSlashes(pg_fetch_result($resaco,0,'l44_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3145,17815,'','".AddSlashes(pg_fetch_result($resaco,0,'l44_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3145,17816,'','".AddSlashes(pg_fetch_result($resaco,0,'l44_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3145,21717,'','".AddSlashes(pg_fetch_result($resaco,0,'l44_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3145,1011941,'','".AddSlashes(pg_fetch_result($resaco,0,'l44_obrigalicitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -221,10 +221,10 @@ class cl_pctipocompratribunal
       $this->atualizacampos();
      $sql = " update pctipocompratribunal set ";
      $virgula = "";
-     if(trim($this->l44_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_sequencial"])){
+     if(trim((string) $this->l44_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_sequencial"])){
        $sql  .= $virgula." l44_sequencial = $this->l44_sequencial ";
        $virgula = ",";
-       if(trim($this->l44_sequencial) == null ){
+       if(trim((string) $this->l44_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "l44_sequencial";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_pctipocompratribunal
          return false;
        }
      }
-     if(trim($this->l44_codigotribunal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_codigotribunal"])){
+     if(trim((string) $this->l44_codigotribunal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_codigotribunal"])){
        $sql  .= $virgula." l44_codigotribunal = '$this->l44_codigotribunal' ";
        $virgula = ",";
-       if(trim($this->l44_codigotribunal) == null ){
+       if(trim((string) $this->l44_codigotribunal) == null ){
          $this->erro_sql = " Campo Código do Tribunal não informado.";
          $this->erro_campo = "l44_codigotribunal";
          $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_pctipocompratribunal
          return false;
        }
      }
-     if(trim($this->l44_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_descricao"])){
+     if(trim((string) $this->l44_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_descricao"])){
        $sql  .= $virgula." l44_descricao = '$this->l44_descricao' ";
        $virgula = ",";
-       if(trim($this->l44_descricao) == null ){
+       if(trim((string) $this->l44_descricao) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "l44_descricao";
          $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_pctipocompratribunal
          return false;
        }
      }
-     if(trim($this->l44_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_uf"])){
+     if(trim((string) $this->l44_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_uf"])){
        $sql  .= $virgula." l44_uf = '$this->l44_uf' ";
        $virgula = ",";
-       if(trim($this->l44_uf) == null ){
+       if(trim((string) $this->l44_uf) == null ){
          $this->erro_sql = " Campo UF não informado.";
          $this->erro_campo = "l44_uf";
          $this->erro_banco = "";
@@ -273,14 +273,14 @@ class cl_pctipocompratribunal
          return false;
        }
      }
-     if(trim($this->l44_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_sigla"])){
+     if(trim((string) $this->l44_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_sigla"])){
        $sql  .= $virgula." l44_sigla = '$this->l44_sigla' ";
        $virgula = ",";
      }
-     if(trim($this->l44_obrigalicitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_obrigalicitacao"])){
+     if(trim((string) $this->l44_obrigalicitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l44_obrigalicitacao"])){
        $sql  .= $virgula." l44_obrigalicitacao = '$this->l44_obrigalicitacao' ";
        $virgula = ",";
-       if(trim($this->l44_obrigalicitacao) == null ){
+       if(trim((string) $this->l44_obrigalicitacao) == null ){
          $this->erro_sql = " Campo Obriga informar licitação não informado.";
          $this->erro_campo = "l44_obrigalicitacao";
          $this->erro_banco = "";
@@ -304,21 +304,21 @@ class cl_pctipocompratribunal
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,17813,'$this->l44_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l44_sequencial"]) || $this->l44_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3145,17813,'".AddSlashes(pg_result($resaco,$conresaco,'l44_sequencial'))."','$this->l44_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3145,17813,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l44_sequencial'))."','$this->l44_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l44_codigotribunal"]) || $this->l44_codigotribunal != "")
-             $resac = db_query("insert into db_acount values($acount,3145,17814,'".AddSlashes(pg_result($resaco,$conresaco,'l44_codigotribunal'))."','$this->l44_codigotribunal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3145,17814,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l44_codigotribunal'))."','$this->l44_codigotribunal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l44_descricao"]) || $this->l44_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3145,17815,'".AddSlashes(pg_result($resaco,$conresaco,'l44_descricao'))."','$this->l44_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3145,17815,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l44_descricao'))."','$this->l44_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l44_uf"]) || $this->l44_uf != "")
-             $resac = db_query("insert into db_acount values($acount,3145,17816,'".AddSlashes(pg_result($resaco,$conresaco,'l44_uf'))."','$this->l44_uf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3145,17816,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l44_uf'))."','$this->l44_uf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l44_sigla"]) || $this->l44_sigla != "")
-             $resac = db_query("insert into db_acount values($acount,3145,21717,'".AddSlashes(pg_result($resaco,$conresaco,'l44_sigla'))."','$this->l44_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3145,21717,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l44_sigla'))."','$this->l44_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l44_obrigalicitacao"]) || $this->l44_obrigalicitacao != "")
-             $resac = db_query("insert into db_acount values($acount,3145,1011941,'".AddSlashes(pg_result($resaco,$conresaco,'l44_obrigalicitacao'))."','$this->l44_obrigalicitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3145,1011941,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l44_obrigalicitacao'))."','$this->l44_obrigalicitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -372,15 +372,15 @@ class cl_pctipocompratribunal
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,17813,'$l44_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3145,17813,'','".AddSlashes(pg_result($resaco,$iresaco,'l44_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3145,17814,'','".AddSlashes(pg_result($resaco,$iresaco,'l44_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3145,17815,'','".AddSlashes(pg_result($resaco,$iresaco,'l44_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3145,17816,'','".AddSlashes(pg_result($resaco,$iresaco,'l44_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3145,21717,'','".AddSlashes(pg_result($resaco,$iresaco,'l44_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3145,1011941,'','".AddSlashes(pg_result($resaco,$iresaco,'l44_obrigalicitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3145,17813,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l44_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3145,17814,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l44_codigotribunal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3145,17815,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l44_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3145,17816,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l44_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3145,21717,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l44_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3145,1011941,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l44_obrigalicitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

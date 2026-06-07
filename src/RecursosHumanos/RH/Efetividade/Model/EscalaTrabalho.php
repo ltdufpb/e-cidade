@@ -60,7 +60,7 @@ class EscalaTrabalho {
      * Jornadas configuradas para escala
      * @var array
      */
-    private $aJornadas = array();
+    private $aJornadas = [];
 
     /**
      * @var bool|Revezamento
@@ -162,7 +162,7 @@ class EscalaTrabalho {
      */
     public function setExtraAutomaticaFeriado($lExtraAutomaticaFeriado)
     {
-        $this->lExtraAutomaticaFeriado = (boolean)$lExtraAutomaticaFeriado;
+        $this->lExtraAutomaticaFeriado = (bool) $lExtraAutomaticaFeriado;
         return $this;
     }
 

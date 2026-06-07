@@ -586,7 +586,7 @@ final class GradeAproveitamentoAluno {
   protected function encodeString($sString) {
 
     if ($this->lEncodeUTF) {
-      $sString = utf8_encode($sString);
+      $sString = mb_convert_encoding($sString, 'UTF-8', 'ISO-8859-1');
     }
     if ($this->lEncode) {
 

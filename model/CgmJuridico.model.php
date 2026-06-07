@@ -183,6 +183,7 @@ class CgmJuridico  extends CgmBase {
    * Salva os dados informados do CGM, caso o CGM já exista então
    * é alterado o registro apartir do código (numcgm) informado
    */
+  #[\Override]
   public function save() {
     $sMsgErro = 'Falha ao salvar CGM Jurídico';
 
@@ -335,10 +336,11 @@ class CgmJuridico  extends CgmBase {
     /**
      * @return array
      */
+    #[\Override]
     public function toArray()
     {
-        return array_merge(parent::toArray(), array(
+        return array_merge(parent::toArray(), [
             'cnpj' => $this->getCnpj()
-        ));
+        ]);
     }
 }

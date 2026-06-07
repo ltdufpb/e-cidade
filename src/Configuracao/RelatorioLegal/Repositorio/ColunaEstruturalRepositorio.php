@@ -63,7 +63,7 @@ class ColunaEstruturalRepositorio extends Repositorio
      * @param ColunaEstrutural|null $colunaEstrutural
      * @throws Exception
      */
-    public function delete(ColunaEstrutural $colunaEstrutural = null)
+    public function delete(?ColunaEstrutural $colunaEstrutural = null)
     {
         $id = $colunaEstrutural instanceof ColunaEstrutural ? $colunaEstrutural->getSequencial() : null;
 
@@ -81,7 +81,7 @@ class ColunaEstruturalRepositorio extends Repositorio
      * @return bool|ColunaEstrutural
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_orcparamseqcolunaestruturais();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -129,13 +129,13 @@ class ColunaEstruturalRepositorio extends Repositorio
      * @return ColunaEstrutural[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_orcparamseqcolunaestruturais();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $colunaEstruturais = array();
+        $colunaEstruturais = [];
 
         if (pg_num_rows($rs) === 0) {
             return $colunaEstruturais;
@@ -252,7 +252,7 @@ class ColunaEstruturalRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar a(s) conta(s) vinculada(s) a coluna.\nContate o suporte.");
         }
 
-        $colunaEstruturais = array();
+        $colunaEstruturais = [];
 
         if (pg_num_rows($rs) === 0) {
             return $colunaEstruturais;

@@ -78,7 +78,7 @@ class DiarioClasse
     public function __construct(/**
      * Dados da matrícula de um aluno
      */
-    private Matricula $oMatricula, $lCriarDiario = true)
+    private readonly Matricula $oMatricula, $lCriarDiario = true)
     {
         if ($lCriarDiario) {
             $this->criarDiarioClasseAluno();
@@ -113,9 +113,11 @@ class DiarioClasse
      * @return AvaliacaoPeriodica[]|ResultadoAvaliacao[]
      * @throws BusinessException
      * @throws DBException
-     * @deprecated a partir da versão 2.3.32 os periodos de avaliação devem ser vistos de acordo com o
-     *             procedimento de avaliação de cada regência
      */
+    #[\Deprecated(message: <<<'TXT'
+    a partir da versão 2.3.32 os periodos de avaliação devem ser vistos de acordo com o
+                 procedimento de avaliação de cada regência
+    TXT)]
     public function getPeriodoAvaliacao($iCodigoEtapa = '')
     {
         if (count($this->aPeriodosAvaliacao) == 0) {
@@ -887,7 +889,7 @@ class DiarioClasse
      * @throws ParameterException
      * @throws Exception
      */
-    public function atualizar(DiarioClasse $oDiario, array $aListaRegenciasSubstituir = null)
+    public function atualizar(DiarioClasse $oDiario, ?array $aListaRegenciasSubstituir = null)
     {
         if (empty($oDiario)) {
             throw new ParameterException('Parâmetro $oDiario não foi informado.');

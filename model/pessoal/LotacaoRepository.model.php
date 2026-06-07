@@ -43,7 +43,7 @@ class LotacaoRepository {
    */
   private static $oInstance;
 
-  private $aLotacoes = array();
+  private $aLotacoes = [];
 
   private function __construct(){}
 
@@ -113,7 +113,7 @@ class LotacaoRepository {
    * @access public
    * @return Lotacao instância de lotação
    */
-  public static function getLotacoesByInstituicao(Instituicao $oInstituicao = null, $lAtivas = null) {
+  public static function getLotacoesByInstituicao(?Instituicao $oInstituicao = null, $lAtivas = null) {
 
     if (empty($oInstituicao)){
       $oInstituicao = new Instituicao(db_getsession('DB_instit'));
@@ -145,7 +145,7 @@ class LotacaoRepository {
 
     }
 
-    $aLotacoesInstituicao  = array();
+    $aLotacoesInstituicao  = [];
     $aColecaoLotacao       = db_utils::getColectionByRecord($rsLotacao);
 
     if ( count($aColecaoLotacao) > 0 ){
@@ -191,7 +191,7 @@ class LotacaoRepository {
   * @param  UsuarioSistema $oUsuario 
   * @return array          $aLotacoesUsuario
   */
-  public static function getLotacoesByUsuario(UsuarioSistema $oUsuario, Instituicao $oInstituicao = null) {
+  public static function getLotacoesByUsuario(UsuarioSistema $oUsuario, ?Instituicao $oInstituicao = null) {
 
     $oDaoUsuariosRhLota   = new cl_db_usuariosrhlota;
 
@@ -203,7 +203,7 @@ class LotacaoRepository {
 
     $sSqlLotacoesUsuario  = $oDaoUsuariosRhLota->sql_query(null,'*',null, $sWhere);
     $rsLotacoesUsuario    = db_query($sSqlLotacoesUsuario);
-    $aLotacoesUsuario     = array();
+    $aLotacoesUsuario     = [];
 
     if (!$rsLotacoesUsuario) {
       throw new DBException(_M(self::MENSAGEM.'erro_buscar_lotacao_usuario'));
@@ -236,7 +236,7 @@ class LotacaoRepository {
       throw new DBException(_M(self::MENSAGEM.'erro_buscar_usuario_lotacao'));
     }
 
-    $aUsuarios = array();
+    $aUsuarios = [];
 
     for ($iUsuario = 0; $iUsuario < pg_num_rows($rsUsuariosLotacao); $iUsuario++) {
       $aUsuarios[] = db_utils::fieldsMemory($rsUsuariosLotacao, $iUsuario)->rh157_usuario;
@@ -282,14 +282,14 @@ class LotacaoRepository {
    * @access public
    * @param  Lotacao $oLotacao Lotação a ser excluida.
    */
-  public static function excluir(Lotacao $oLotacao = null, UsuarioSistema $oUsuario = null) {
+  public static function excluir(?Lotacao $oLotacao = null, ?UsuarioSistema $oUsuario = null) {
 
     $oDaoUsuariosLotacao = new cl_db_usuariosrhlota();
 
     if (!is_null($oLotacao)) {
       $sWhere = "rh157_lotacao = {$oLotacao->getCodigoLotacao()}";
     }
-    
+
     if (!is_null($oUsuario)) {
       $sWhere = "rh157_usuario = {$oUsuario->getCodigo()}";
     }

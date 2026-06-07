@@ -39,7 +39,7 @@ include(modification("classes/db_alunopassagem_classe.php"));
 include(modification("classes/db_alunopassagemqtd_classe.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrechumano = new cl_rechumano;
 $clcgm = new cl_cgm;
 $claluno = new cl_aluno;
@@ -121,7 +121,7 @@ if(isset($chavepesquisa)){
              if($ed47_o_oid!=0){
               $arquivo = "tmp/".$ed47_c_foto;
               db_query("begin");
-              pg_loexport($ed47_o_oid,$arquivo);
+              pg_lo_export($ed47_o_oid,$arquivo);
               db_query("end");
              }else{
               $arquivo = "imagens/none1.jpeg";

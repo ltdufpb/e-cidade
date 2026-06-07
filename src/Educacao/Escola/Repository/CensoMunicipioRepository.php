@@ -103,7 +103,7 @@ class CensoMunicipioRepository extends Repository
      */
     public function scopeNome($nome)
     {
-        $this->scopes['nome'] = sprintf("trim(ed261_c_nome) = '%s'", trim($nome));
+        $this->scopes['nome'] = sprintf("trim(ed261_c_nome) = '%s'", trim((string) $nome));
         return $this;
     }
 }

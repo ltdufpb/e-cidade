@@ -46,6 +46,7 @@ final class OcorrenciaFalta extends Ocorrencia {
    * Tipo da ocorrencia;
    * @var integer
    */
+  #[\Override]
   protected $iTipo = 1;
   
   /**
@@ -70,6 +71,7 @@ final class OcorrenciaFalta extends Ocorrencia {
   /**
    * salva os dados da ocorrencia
    */
+  #[\Override]
   public function salvar() {
     
     parent::salvar();

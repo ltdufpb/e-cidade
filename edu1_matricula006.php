@@ -34,7 +34,7 @@ include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_matriculamov_classe.php"));
 include(modification("classes/db_logmatricula_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatricula    = new cl_matricula;
 $clmatriculamov = new cl_matriculamov;
 $cllogmatricula = new cl_logmatricula;
@@ -111,7 +111,7 @@ db_fieldsmemory($result,0);
     <td valign="top" >
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
       <?php 
-      $array_mov = array();
+      $array_mov = [];
       $sCamposResult  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,ed57_c_descr,";
       $sCamposResult .= " ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome, ed60_matricula";
       $sOrderResult   = " ed229_d_dataevento,ed229_i_codigo";
@@ -133,7 +133,7 @@ db_fieldsmemory($result,0);
           $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
           $iContador = count($array_mov)-1; 
           $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
-          $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+          $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
           $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
           $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;   
              
@@ -156,7 +156,7 @@ db_fieldsmemory($result,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
         $iContador = count($array_mov)-1; 
         $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
-        $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+        $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
         $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;      
         
@@ -178,7 +178,7 @@ db_fieldsmemory($result,0);
         $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
         $iContador = count($array_mov)-1; 
         $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
-        $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+        $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
         $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
         $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;  
             

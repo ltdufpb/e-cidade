@@ -48,7 +48,7 @@ class LoteProcessoCompraRepository {
    * @var LoteProcessoCompra[]
    * @access private
    */
-  private $aLotes = array();
+  private $aLotes = [];
   
   /**
    * Retorna instância do repository
@@ -75,10 +75,10 @@ class LoteProcessoCompraRepository {
    */
   public static function getLoteByCodigo($iCodigo) {
     
-    if (!array_key_exists($iCodigo, LoteProcessoCompraRepository::getInstance()->aLotes)) {
-      LoteProcessoCompraRepository::getInstance()->aLotes[$iCodigo] = new LoteProcessoCompra($iCodigo);
+    if (!array_key_exists($iCodigo, $this->getInstance()->aLotes)) {
+      $this->getInstance()->aLotes[$iCodigo] = new LoteProcessoCompra($iCodigo);
     }
-    return LoteProcessoCompraRepository::getInstance()->aLotes[$iCodigo];
+    return $this->getInstance()->aLotes[$iCodigo];
   }
   
 }

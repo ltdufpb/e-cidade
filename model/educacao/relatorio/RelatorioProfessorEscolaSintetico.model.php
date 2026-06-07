@@ -63,7 +63,7 @@ class RelatorioProfessorEscolaSintetico extends RelatorioProfessorEscola {
 
       foreach ($oProfessor->aAreaTrabalho as $oAreaTrabalho) {
 
-        if ( !array_key_exists($oAreaTrabalho->iAreaTrabalho, $oDadosProfissional->aAreas) ) {
+        if ( !array_key_exists((string) $oAreaTrabalho->iAreaTrabalho, $oDadosProfissional->aAreas) ) {
 
           $oArea                  = new stdClass();
           $oArea->sAreaTrabalho   = $oAreaTrabalho->sAreaTrabalho;

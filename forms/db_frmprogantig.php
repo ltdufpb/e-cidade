@@ -37,7 +37,7 @@ if($ed110_i_ptantiguidade==0 || $ed110_i_ptgeral==0){
  $db_opcao1 = 3;
  $db_botao = false;
 }
-if(trim(@$ed112_c_situacao)!="A"){
+if(trim((string) @$ed112_c_situacao)!="A"){
  $db_botao = false;
 }
 ?>
@@ -138,7 +138,7 @@ function js_preenchepesquisa(chave){
  db_iframe_progantig.hide();
  <?php 
  if($db_opcao!=1){
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }
  ?>
 }

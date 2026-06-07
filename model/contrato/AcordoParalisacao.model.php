@@ -66,10 +66,10 @@ class AcordoParalisacao {
    * Lista de Periodos da paralizacao
    * @var array
    */
-  protected $aPeriodos = array();
+  protected $aPeriodos = [];
   
   
-  protected $aPeriodosReativados = array();
+  protected $aPeriodosReativados = [];
   
 
   /**
@@ -191,7 +191,7 @@ class AcordoParalisacao {
                                                $sCamposMovimentacao, "ac48_sequencial", "ac48_acordoparalisacao = {$this->iCodigo}");
       $rsAcordoParalisacaoMovimentacao   = $oDaoAcordoParalisacaoMovimentacao->sql_record( $sSqlMovimentacao );
 
-      $aMovimentacoes = array();
+      $aMovimentacoes = [];
       for ($iMovimentacao = 0; $iMovimentacao <  $oDaoAcordoParalisacaoMovimentacao->numrows; $iMovimentacao++) {
 
         $oDadosMovimentacao = db_utils::fieldsMemory($rsAcordoParalisacaoMovimentacao, $iMovimentacao);
@@ -349,7 +349,7 @@ class AcordoParalisacao {
       throw new DBException (_M(ACORDO_PARALISACAO_MENSAGEM . "erro_excluir_paralisacao" , $oErro));
     }
 
-    $this->aMovimentacoes = array();
+    $this->aMovimentacoes = [];
 
   }
   

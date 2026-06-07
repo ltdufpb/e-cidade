@@ -57,6 +57,7 @@ class Termo extends \BaseClassRepository
      */
     private $persistPropagation;
 
+    #[\Override]
     protected static $oInstance;
 
     private $scopes;
@@ -291,7 +292,7 @@ class Termo extends \BaseClassRepository
      */
     public function getParcelamentosPorNumpre(array $numpres)
     {
-        $parcelamentos = array();
+        $parcelamentos = [];
         $dao = new \cl_termo();
         $sql = $dao->sql_query_file(null, "DISTINCT *", null, "v07_numpre in (".implode(', ', $numpres).")");
 
@@ -421,7 +422,7 @@ class Termo extends \BaseClassRepository
             throw new DBException("Tipo de parcelamento não encontrado.");
         }
 
-        $numpres = array();
+        $numpres = [];
 
         while ($origem = pg_fetch_object($rsOrigem)) {
             $numpres[] = $origem->k00_numpre;
@@ -429,10 +430,10 @@ class Termo extends \BaseClassRepository
 
         $repository = TermoOrigemRepositoryFactory::get($tipoParcelamento->tabela);
 
-        return array(
+        return [
             'numpres' => $numpres,
             'repository' => $repository
-        );
+        ];
     }
 
     /**
@@ -456,7 +457,7 @@ class Termo extends \BaseClassRepository
      * @return Entity[]
      * @throws Exception
      */
-    public function get($campos = array('*'))
+    public function get($campos = ['*'])
     {
         $dao = new cl_termo();
         $sql = $dao->sql_query_file(
@@ -471,9 +472,9 @@ class Termo extends \BaseClassRepository
             throw new Exception("Não foi possível buscar os débitos.");
         }
 
-        $this->scopes = array();
+        $this->scopes = [];
 
-        $arrTermo = array();
+        $arrTermo = [];
 
         if (pg_num_rows($rs) === 0) {
             return $arrTermo;

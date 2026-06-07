@@ -90,7 +90,7 @@ if($ed110_i_ptavalpedag==0 || $ed110_i_ptgeral==0){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','A'=>'AVALIAÇÃO','U'=>'AUTO-AVALIAÇÃO');
+   $x = [''=>'','A'=>'AVALIAÇÃO','U'=>'AUTO-AVALIAÇÃO'];
    db_select('ed117_c_tipo',$x,true,$db_opcao,"");
    ?>
    <b>Pontuação:</b>
@@ -248,7 +248,7 @@ function js_preenchepesquisa(chave){
  db_iframe_progavalpedag.hide();
  <?php 
  if($db_opcao!=1){
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }
  ?>
 }

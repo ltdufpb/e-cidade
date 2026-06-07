@@ -38,9 +38,9 @@ $oDadosRelatorio             = new stdClass();
 $oDadosRelatorio->sEnsino    = "TODOS";
 $oDadosRelatorio->sEtapa     = "TODOS";
 $oDadosRelatorio->dtCenso    = null;
-$oDadosRelatorio->aAlunos    = array();
-$oDadosRelatorio->aCabecalho = array();
-$oDadosRelatorio->aColunas   = array();
+$oDadosRelatorio->aAlunos    = [];
+$oDadosRelatorio->aCabecalho = [];
+$oDadosRelatorio->aColunas   = [];
 
 $oDadosRelatorio->iLarguraLinha = 6;
 
@@ -73,16 +73,16 @@ try {
     throw new ParameterException("Não foi informado o alinhamento das colunas.");
   }
 
-  $oDadosRelatorio->aCabecalho   = explode('|', $cabecalho);
+  $oDadosRelatorio->aCabecalho   = explode('|', (string) $cabecalho);
   $oDadosRelatorio->aColunas     = explode('|', $colunas);
-  $oDadosRelatorio->aAlinhamento = explode('|', $alinhamento);
+  $oDadosRelatorio->aAlinhamento = explode('|', (string) $alinhamento);
 
   $oDadosRelatorio->iLarguraLinha += array_sum($oDadosRelatorio->aColunas);
 
   $oDaoMatricula = new cl_matricula;
   $iEscola       = db_getsession("DB_coddepto");
 
-  $aWhere   = array("calendario.ed52_i_ano = $ano_censo");
+  $aWhere   = ["calendario.ed52_i_ano = $ano_censo"];
   $aWhere[] = " turma.ed57_i_escola = {$iEscola} ";
 
   if ( !empty($ensino) ) {
@@ -133,11 +133,11 @@ try {
    * Como exemplo, podemos ressaltar alunos com troca de turma com movimentação. Dentre estes, devemos localizar e
    * apresentar a matricula que realmente foi no arquivo do censo.
    */
-  $aAlunosFiltrados = array();
+  $aAlunosFiltrados = [];
   for ($i = 0; $i < $iLinhas; $i++) {
 
     $oDados = db_utils::fieldsMemory($rsAlunos, $i);
-    if ( !array_key_exists($oDados->ed60_matricula, $aAlunosFiltrados) ) {
+    if ( !array_key_exists((string) $oDados->ed60_matricula, $aAlunosFiltrados) ) {
 
       $aAlunosFiltrados[$oDados->ed60_matricula] = $oDados;
       continue;
@@ -190,36 +190,36 @@ try {
    */
   foreach ($aAlunosFiltrados as $oDadosAlunos) {
 
-    if ( !array_key_exists($oDadosAlunos->ed10_i_codigo, $oDadosRelatorio->aAlunos) ) {
+    if ( !array_key_exists((string) $oDadosAlunos->ed10_i_codigo, $oDadosRelatorio->aAlunos) ) {
 
       $oEnsino             = new stdClass();
       $oEnsino->lTotaliza  = $tt_ensino     == 'yes';
       $oEnsino->lApresenta = $titulo_ensino == 'yes';
       $oEnsino->sDescricao = $oDadosAlunos->ed10_c_descr;
       $oEnsino->iTotal     = 0;
-      $oEnsino->aEtapas    = array();
+      $oEnsino->aEtapas    = [];
 
       $oDadosRelatorio->aAlunos[$oDadosAlunos->ed10_i_codigo] = $oEnsino;
     }
 
     $oEnsino = $oDadosRelatorio->aAlunos[$oDadosAlunos->ed10_i_codigo];
-    if ( !array_key_exists($oDadosAlunos->ed11_i_codigo, $oEnsino->aEtapas) ) {
+    if ( !array_key_exists((string) $oDadosAlunos->ed11_i_codigo, $oEnsino->aEtapas) ) {
 
       $oEtapa             = new stdClass();
       $oEtapa->lTotaliza  = $tt_serie     == 'yes';
       $oEtapa->lApresenta = $titulo_serie == 'yes';
       $oEtapa->sDescricao = $oDadosAlunos->ed11_c_descr;
       $oEtapa->iTotal     = 0;
-      $oEtapa->aTurmas    = array();
+      $oEtapa->aTurmas    = [];
 
       $oEnsino->aEtapas[$oDadosAlunos->ed11_i_codigo] = $oEtapa;
     }
 
     $oEtapa = $oEnsino->aEtapas[$oDadosAlunos->ed11_i_codigo];
-    if ( !array_key_exists($oDadosAlunos->ed57_i_codigo, $oEtapa->aTurmas ) ) {
+    if ( !array_key_exists((string) $oDadosAlunos->ed57_i_codigo, $oEtapa->aTurmas ) ) {
 
       $oTuma          = new stdClass();
-      $oTuma->aAlunos = array();
+      $oTuma->aAlunos = [];
 
       $oEtapa->aTurmas[$oDadosAlunos->ed57_i_codigo] = $oTuma;
     }
@@ -288,7 +288,7 @@ foreach ($oDadosRelatorio->aAlunos as $oDadosEnsino) {
 
           $sDado = $aAluno[$i];
 
-          if ( !!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $sDado, $matches) ) {
+          if ( !!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', (string) $sDado, $matches) ) {
             $sDado = db_formatar($sDado, 'd');
           }
 

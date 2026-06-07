@@ -75,9 +75,9 @@
 
       	$sCgcCpf = db_utils::fieldsMemory($rsCgm,0)->z01_cgccpf;
 
-      	if ( strlen(trim($sCgcCpf)) == '14' ) {
+      	if ( strlen(trim((string) $sCgcCpf)) == '14' ) {
       		return new CgmJuridico($iCgm);
-      	} else if ( strlen(trim($sCgcCpf)) == '11' ) {
+      	} else if ( strlen(trim((string) $sCgcCpf)) == '11' ) {
       		return new CgmFisico($iCgm);
       	} else {
       		return new CgmFisico($iCgm);

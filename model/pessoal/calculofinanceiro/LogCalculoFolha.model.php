@@ -45,7 +45,7 @@ abstract class LogCalculoFolha {
   /**
    * Guarda os Dados do log do Cálculo 
    */
-  private static $aLog = array();
+  private static $aLog = [];
   /**
    * Recupera LOG armazenado
    *
@@ -92,7 +92,7 @@ abstract class LogCalculoFolha {
       return;
     }
     $iIndiceLog = LogCalculoFolha::$iIndiceLog++;
-    $aPartes    = explode("\n", $sLog);
+    $aPartes    = explode("\n", (string) $sLog);
     $aRastros   = debug_backtrace();
     $iLinha     = $aRastros[0]['line'];
     $sArquivo   = explode("/",$aRastros[0]['file']);

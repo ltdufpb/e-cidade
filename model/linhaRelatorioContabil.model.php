@@ -41,8 +41,6 @@ use ECidade\V3\Extension\Registry;
  */
 class linhaRelatorioContabil
 {
-    private $codigo = null;
-    private $relatorio = null;
     private $lEncode = false;
     private $iPeriodo = null;
     private $iOrdem = 0;
@@ -56,10 +54,6 @@ class linhaRelatorioContabil
      * @var int
      */
     private $iOrigemDados = 0;
-    /**
-     * @var int
-     */
-    private $ano;
     /**
      * @var DeRecursoParaFonteRecursos
      */
@@ -77,16 +71,12 @@ class linhaRelatorioContabil
 
     /**
      * Instância uma nova linha do relatório contábil
-     * @param integer $iCodRel código do relatório
-     * @param integer $iCodLinha código da linha
+     * @param integer $relatorio código do relatório
+     * @param integer $codigo código da linha
      * @param int $ano ano dos parâmetros cadastrado pelo usuário para a linha
      */
-    public function __construct($iCodRel, $iCodLinha, $ano = null)
+    public function __construct(private $relatorio, private $codigo, private $ano = null)
     {
-        $this->ano = $ano;
-
-        $this->codigo = $iCodLinha;
-        $this->relatorio = $iCodRel;
         $oDaoLinhasRel = new cl_orcparamseq;
 
         $campos = "o69_labelrel, o69_totalizador, o69_desdobrarlinha, o69_ordem, o69_origem, ";
@@ -188,7 +178,7 @@ class linhaRelatorioContabil
         $sSqlLinhas .= $sWhere;
         $sSqlLinhas .= "  order by o117_instit, o117_linha,o116_ordem ";
         $rsLinhas = db_query($sSqlLinhas);
-        $aLinhas = array();
+        $aLinhas = [];
         $iLinha = 0;
         $iNumRows = pg_num_rows($rsLinhas);
         for ($i = 0; $i < $iNumRows; $i++) {
@@ -253,7 +243,7 @@ class linhaRelatorioContabil
         $sSqlLinhas .= $sWhere;
         $sSqlLinhas .= "  order by o117_instit, o117_linha,o116_ordem ";
         $rsLinhas = db_query($sSqlLinhas);
-        $aLinhas = array();
+        $aLinhas = [];
         $iLinha = 0;
         $iNumRows = pg_num_rows($rsLinhas);
         for ($i = 0; $i < $iNumRows; $i++) {
@@ -308,7 +298,7 @@ class linhaRelatorioContabil
         $sSqlLinhas .= " group by o117_linha,o116_orcparamseqcoluna,o115_tipo,o116_ordem,o115_nomecoluna";
         $sSqlLinhas .= " order by o117_linha,o116_ordem";
         $rsLinhas = db_query($sSqlLinhas);
-        $aLinhas = array();
+        $aLinhas = [];
         $iLinha = 0;
         $iNumRows = pg_num_rows($rsLinhas);
         for ($i = 0; $i < $iNumRows; $i++) {
@@ -626,7 +616,7 @@ class linhaRelatorioContabil
                 if (trim($oRecursoLinha->item(0)->getAttribute("numerolinha")) != "") {
                     $oFiltro->recursocontalinha = $oRecursoLinha->item(0)->getAttribute("numerolinha");
                     $aLinhasCadastradas = explode(",", trim($oRecursoLinha->item(0)->getAttribute("numerolinha")));
-                    $aRecursosLinha = array();
+                    $aRecursosLinha = [];
 
                     foreach ($aLinhasCadastradas as $iLinha) {
                         $oLinhaBase = new linhaRelatorioContabil($this->relatorio, $iLinha);
@@ -639,30 +629,23 @@ class linhaRelatorioContabil
                         $aContas = $aParametrosContaRecurso->contas;
 
                         foreach ($aContas as $oConta) {
-                            switch ($oLinhaBase->getOrigemDados()) {
-                                case OrigemDadosEnum::BALANCETE_RECEITA:
-                                    $aRecursos = $this->getRecursosOrigemReceita(
-                                        db_getsession("DB_anousu"),
-                                        $sInstit,
-                                        $oConta
-                                    );
-
-                                    break;
-                                case OrigemDadosEnum::BALANCETE_DESPESA:
-                                    $aRecursos = $this->getRecursosOrigemDespesa(
-                                        db_getsession("DB_anousu"),
-                                        $sInstit,
-                                        $oConta
-                                    );
-
-                                    break;
-                                default:
-                                    $aRecursos = $this->getRecursosPlanoDeContas(
-                                        db_getsession("DB_anousu"),
-                                        $sInstit,
-                                        $oConta
-                                    );
-                            } // switch
+                            $aRecursos = match ($oLinhaBase->getOrigemDados()) {
+                                OrigemDadosEnum::BALANCETE_RECEITA => $this->getRecursosOrigemReceita(
+                                    db_getsession("DB_anousu"),
+                                    $sInstit,
+                                    $oConta
+                                ),
+                                OrigemDadosEnum::BALANCETE_DESPESA => $this->getRecursosOrigemDespesa(
+                                    db_getsession("DB_anousu"),
+                                    $sInstit,
+                                    $oConta
+                                ),
+                                default => $this->getRecursosPlanoDeContas(
+                                    db_getsession("DB_anousu"),
+                                    $sInstit,
+                                    $oConta
+                                ),
+                            }; // switch
 
                             $aRecursosLinha = array_unique(array_merge($aRecursosLinha, $aRecursos));
                         } // foreach
@@ -717,56 +700,56 @@ class linhaRelatorioContabil
         }
 
         $oParametroLinha->contas = $oFiltro->contas;
-        $oFiltro->orgao->valor = explode(",", $oFiltro->orgao->valor);
+        $oFiltro->orgao->valor = explode(",", (string) $oFiltro->orgao->valor);
         if (count($oFiltro->orgao->valor) == 1 && $oFiltro->orgao->valor[0] == "") {
-            $oFiltro->orgao->valor = array();
+            $oFiltro->orgao->valor = [];
         }
         $oParametroLinha->orcamento = new stdClass();
         $oParametroLinha->orcamento->orgao = $oFiltro->orgao;
 
-        $oFiltro->unidade->valor = explode(",", $oFiltro->unidade->valor);
+        $oFiltro->unidade->valor = explode(",", (string) $oFiltro->unidade->valor);
         if (count($oFiltro->unidade->valor) == 1 && $oFiltro->unidade->valor[0] == "") {
-            $oFiltro->unidade->valor = array();
+            $oFiltro->unidade->valor = [];
         }
         $oParametroLinha->orcamento->unidade = $oFiltro->unidade;
 
-        $oFiltro->funcao->valor = explode(",", $oFiltro->funcao->valor);
+        $oFiltro->funcao->valor = explode(",", (string) $oFiltro->funcao->valor);
         if (count($oFiltro->funcao->valor) == 1 && $oFiltro->funcao->valor[0] == "") {
-            $oFiltro->funcao->valor = array();
+            $oFiltro->funcao->valor = [];
         }
         $oParametroLinha->orcamento->funcao = $oFiltro->funcao;
 
-        $oFiltro->subfuncao->valor = explode(",", $oFiltro->subfuncao->valor);
+        $oFiltro->subfuncao->valor = explode(",", (string) $oFiltro->subfuncao->valor);
         if (count($oFiltro->subfuncao->valor) == 1 && $oFiltro->subfuncao->valor[0] == "") {
-            $oFiltro->subfuncao->valor = array();
+            $oFiltro->subfuncao->valor = [];
         }
         $oParametroLinha->orcamento->subfuncao = $oFiltro->subfuncao;
 
-        $oFiltro->programa->valor = explode(",", $oFiltro->programa->valor);
+        $oFiltro->programa->valor = explode(",", (string) $oFiltro->programa->valor);
         if (count($oFiltro->programa->valor) == 1 && $oFiltro->programa->valor[0] == "") {
-            $oFiltro->programa->valor = array();
+            $oFiltro->programa->valor = [];
         }
         $oParametroLinha->orcamento->programa = $oFiltro->programa;
 
-        $oFiltro->projativ->valor = explode(",", $oFiltro->projativ->valor);
+        $oFiltro->projativ->valor = explode(",", (string) $oFiltro->projativ->valor);
         if (count($oFiltro->projativ->valor) == 1 && $oFiltro->projativ->valor[0] == "") {
-            $oFiltro->projativ->valor = array();
+            $oFiltro->projativ->valor = [];
         }
         $oParametroLinha->orcamento->projativ = $oFiltro->projativ;
 
-        $oFiltro->recurso->valor = explode(",", trim($oFiltro->recurso->valor));
+        $oFiltro->recurso->valor = explode(",", trim((string) $oFiltro->recurso->valor));
         if (count($oFiltro->recurso->valor) == 1 && $oFiltro->recurso->valor[0] == "") {
-            $oFiltro->recurso->valor = array();
+            $oFiltro->recurso->valor = [];
         }
         $oParametroLinha->orcamento->recurso = $oFiltro->recurso;
 
-        $oFiltro->fonterecurso->valor = explode(',', $oFiltro->fonterecurso->valor);
+        $oFiltro->fonterecurso->valor = explode(',', (string) $oFiltro->fonterecurso->valor);
         if (count($oFiltro->fonterecurso->valor) === 1 and $oFiltro->fonterecurso->valor[0] == '') {
             $oFiltro->fonterecurso->valor = [];
         }
         $oParametroLinha->orcamento->fonterecurso = $oFiltro->fonterecurso;
 
-        $oFiltro->complemento->valor = explode(',', $oFiltro->complemento->valor);
+        $oFiltro->complemento->valor = explode(',', (string) $oFiltro->complemento->valor);
         if (count($oFiltro->complemento->valor) === 1 and $oFiltro->complemento->valor[0] == '') {
             $oFiltro->complemento->valor = [];
         }
@@ -804,12 +787,12 @@ class linhaRelatorioContabil
         switch ($iOrigem) {
             case 1:
                 $iContaParametro = $oDadosOrigem->o57_fonte;
-                if (trim($oConta->nivel) != '' || $oConta->nivel != 0) {
+                if (trim((string) $oConta->nivel) != '' || $oConta->nivel != 0) {
                     if ($oConta->estrutural == $iContaParametro) {
                         return $oRetorno;
                     } else {
-                        $oConta->estrutural = substr($oConta->estrutural, 0, trim($oConta->nivel));
-                        $iContaParametro = substr($iContaParametro, 0, trim($oConta->nivel));
+                        $oConta->estrutural = substr((string) $oConta->estrutural, 0, trim((string) $oConta->nivel));
+                        $iContaParametro = substr((string) $iContaParametro, 0, trim((string) $oConta->nivel));
                     }
                 }
 
@@ -849,9 +832,9 @@ class linhaRelatorioContabil
             case 2:
                 $iContaParametro = $oDadosOrigem->o58_elemento . "00";
                 $iContaVerificar = $oConta->estrutural;
-                if (trim($oConta->nivel) != '' || $oConta->nivel != 0) {
-                    $iContaVerificar = substr($iContaVerificar, 0, trim($oConta->nivel));
-                    $iContaParametro = substr($iContaParametro, 0, trim($oConta->nivel));
+                if (trim((string) $oConta->nivel) != '' || $oConta->nivel != 0) {
+                    $iContaVerificar = substr((string) $iContaVerificar, 0, trim((string) $oConta->nivel));
+                    $iContaParametro = substr($iContaParametro, 0, trim((string) $oConta->nivel));
                 }
                 if ($oConta->exclusao) {
                     $oRetorno->exclusao = true;
@@ -1010,12 +993,12 @@ class linhaRelatorioContabil
             case 3:
                 $iContaParametro = $oDadosOrigem->estrutural;
                 $iEstrutural = $oConta->estrutural;
-                if (trim($oConta->nivel) != '' || $oConta->nivel != 0) {
+                if (trim((string) $oConta->nivel) != '' || $oConta->nivel != 0) {
                     if ($iEstrutural == $iContaParametro) {
                         return $oRetorno;
                     } else {
-                        $iEstrutural = substr($iEstrutural, 0, trim($oConta->nivel));
-                        $iContaParametro = substr($iContaParametro, 0, trim($oConta->nivel));
+                        $iEstrutural = substr((string) $iEstrutural, 0, trim((string) $oConta->nivel));
+                        $iContaParametro = substr((string) $iContaParametro, 0, trim((string) $oConta->nivel));
                     }
                 }
 
@@ -1026,8 +1009,8 @@ class linhaRelatorioContabil
 
                     $oRetorno->match = true;
 
-                    if (trim($oConta->indicador) != '') {
-                        $oRetorno->match = (trim($oConta->indicador) == $oDadosOrigem->isf);
+                    if (trim((string) $oConta->indicador) != '') {
+                        $oRetorno->match = (trim((string) $oConta->indicador) == $oDadosOrigem->isf);
                     }
 
                     /**
@@ -1064,9 +1047,9 @@ class linhaRelatorioContabil
             case 4:
                 $iContaParametro = $oDadosOrigem->o56_elemento . "00";
                 $iContaVerificar = $oConta->estrutural;
-                if (trim($oConta->nivel) != '' || $oConta->nivel != 0) {
-                    $iContaVerificar = substr($iContaVerificar, 0, trim($oConta->nivel));
-                    $iContaParametro = substr($iContaParametro, 0, trim($oConta->nivel));
+                if (trim((string) $oConta->nivel) != '' || $oConta->nivel != 0) {
+                    $iContaVerificar = substr((string) $iContaVerificar, 0, trim((string) $oConta->nivel));
+                    $iContaParametro = substr($iContaParametro, 0, trim((string) $oConta->nivel));
                 }
                 if ($oConta->exclusao) {
                     $oRetorno->exclusao = true;
@@ -1482,7 +1465,7 @@ class linhaRelatorioContabil
                 if (trim($oRecursoLinha->item(0)->getAttribute("numerolinha")) != "") {
                     $oFiltro->recursocontalinha = $oRecursoLinha->item(0)->getAttribute("numerolinha");
                     $aLinhasCadastradas = explode(",", trim($oRecursoLinha->item(0)->getAttribute("numerolinha")));
-                    $aRecursosLinha = array();
+                    $aRecursosLinha = [];
 
                     foreach ($aLinhasCadastradas as $iLinha) {
                         $oLinhaBase = new linhaRelatorioContabil($this->relatorio, $iLinha);
@@ -1495,30 +1478,23 @@ class linhaRelatorioContabil
                         $aContas = $aParametrosContaRecurso->contas;
 
                         foreach ($aContas as $oConta) {
-                            switch ($oLinhaBase->getOrigemDados()) {
-                                case OrigemDadosEnum::BALANCETE_RECEITA:
-                                    $aRecursos = $this->getRecursosOrigemReceita(
-                                        db_getsession("DB_anousu"),
-                                        db_getsession("DB_instit"),
-                                        $oConta
-                                    );
-
-                                    break;
-                                case OrigemDadosEnum::BALANCETE_DESPESA:
-                                    $aRecursos = $this->getRecursosOrigemDespesa(
-                                        db_getsession("DB_anousu"),
-                                        db_getsession("DB_instit"),
-                                        $oConta
-                                    );
-
-                                    break;
-                                default:
-                                    $aRecursos = $this->getRecursosPlanoDeContas(
-                                        db_getsession("DB_anousu"),
-                                        db_getsession("DB_instit"),
-                                        $oConta
-                                    );
-                            } // switch
+                            $aRecursos = match ($oLinhaBase->getOrigemDados()) {
+                                OrigemDadosEnum::BALANCETE_RECEITA => $this->getRecursosOrigemReceita(
+                                    db_getsession("DB_anousu"),
+                                    db_getsession("DB_instit"),
+                                    $oConta
+                                ),
+                                OrigemDadosEnum::BALANCETE_DESPESA => $this->getRecursosOrigemDespesa(
+                                    db_getsession("DB_anousu"),
+                                    db_getsession("DB_instit"),
+                                    $oConta
+                                ),
+                                default => $this->getRecursosPlanoDeContas(
+                                    db_getsession("DB_anousu"),
+                                    db_getsession("DB_instit"),
+                                    $oConta
+                                ),
+                            }; // switch
 
                             $aRecursosLinha = array_unique(array_merge($aRecursosLinha, $aRecursos));
                         } // foreach
@@ -1776,10 +1752,10 @@ class linhaRelatorioContabil
     private function getRecursosOrigemReceita($iAno, $sInstituicao, StdClass $oConta)
     {
         $sWhere = " o70_anousu = {$iAno}";
-        $aRecursos = array();
+        $aRecursos = [];
 
         if ($oConta->nivel != "") {
-            $sWhere .= " and o57_fonte ilike '" . substr($oConta->estrutural, 0, $oConta->nivel) . "%' ";
+            $sWhere .= " and o57_fonte ilike '" . substr((string) $oConta->estrutural, 0, $oConta->nivel) . "%' ";
         } else {
             $sWhere .= " and o57_fonte = '{$oConta->estrutural}'";
         }
@@ -1813,10 +1789,10 @@ class linhaRelatorioContabil
     private function getRecursosOrigemDespesa($iAno, $sInstituicao, StdClass $oConta)
     {
         $sWhere = " c61_anousu = {$iAno}";
-        $aRecursos = array();
+        $aRecursos = [];
 
         if ($oConta->nivel != "") {
-            $sWhere .= " and c60_estrut like '" . substr($oConta->estrutural, 0, $oConta->nivel) . "%' ";
+            $sWhere .= " and c60_estrut like '" . substr((string) $oConta->estrutural, 0, $oConta->nivel) . "%' ";
         } else {
             $sWhere .= " and c60_estrut = '{$oConta->estrutural}'";
         }
@@ -1855,10 +1831,10 @@ class linhaRelatorioContabil
     {
         $oDaoConplanoReduz = new cl_conplanoreduz();
         $sWhere = " c61_anousu = {$iAno}";
-        $aRecursos = array();
+        $aRecursos = [];
 
         if ($oConta->nivel != "") {
-            $sWhere .= " and c60_estrut like '" . substr($oConta->estrutural, 0, $oConta->nivel) . "%' ";
+            $sWhere .= " and c60_estrut like '" . substr((string) $oConta->estrutural, 0, $oConta->nivel) . "%' ";
         } else {
             $sWhere .= " and c60_estrut = '{$oConta->estrutural}'";
         }
@@ -1901,7 +1877,7 @@ class linhaRelatorioContabil
     private function montaStdClassFiltros()
     {
         $oFiltro = new stdClass();
-        $oFiltro->contas = array();
+        $oFiltro->contas = [];
         $oFiltro->orgao = new stdClass();
         $oFiltro->orgao->operador = 'in';
         $oFiltro->orgao->valor = '';
@@ -2013,7 +1989,7 @@ class linhaRelatorioContabil
     protected function getEstruturalAteNivel($natureza)
     {
         $estrutural = new EstruturalReceita($natureza);
-        if ((strpos($natureza, '3') === 0) || (strpos($natureza, '1') === 0)) {
+        if ((str_starts_with((string) $natureza, '3')) || (str_starts_with((string) $natureza, '1'))) {
             $estrutural = new Estrutural($natureza);
         }
 
@@ -2023,9 +1999,7 @@ class linhaRelatorioContabil
     private function getEstruturaisAnaliticosReceita($ateNivel)
     {
         $receitas = $this->getReceitasAnaliticas();
-        return array_filter($receitas, function ($estrutural) use ($ateNivel) {
-            return strpos($estrutural, $ateNivel) === 0;
-        });
+        return array_filter($receitas, fn($estrutural) => str_starts_with((string) $estrutural, (string) $ateNivel));
     }
 
     private function getReceitasAnaliticas()
@@ -2052,8 +2026,6 @@ class linhaRelatorioContabil
         $ateNivel = $this->getEstruturalAteNivel($estrutural);
 
 
-        $contasProcessadas = array_filter($contasProcessadas, function ($natureza) use ($ateNivel) {
-            return strpos($natureza, $ateNivel) !== 0;
-        });
+        $contasProcessadas = array_filter($contasProcessadas, fn($natureza) => !str_starts_with((string) $natureza, $ateNivel));
     }
 }

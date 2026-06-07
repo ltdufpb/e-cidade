@@ -72,7 +72,7 @@ try {
                 $turmaTurnoReferente = [];
                 $turno = [];
                 $keyTurma = $dado['codigo_turma'];
-                if (!array_key_exists($keyTurma, $turmas)) {
+                if (!array_key_exists((string) $keyTurma, $turmas)) {
                     $turma = new Turma($keyTurma);
                     $etapas = $turma->getEtapas();
                     $etapaTurma = array_shift($etapas);
@@ -107,7 +107,7 @@ try {
                 }
 
                 $keyEtapa = $dado['codigo_etapa'];
-                if (!array_key_exists($keyEtapa, $turmas[$keyTurma]->etapas)) {
+                if (!array_key_exists((string) $keyEtapa, $turmas[$keyTurma]->etapas)) {
                     $stdEtapa = (object)[
                         'codigo' => $dado['codigo_etapa'],
                         'nome' => $dado['nome_etapa'],
@@ -119,7 +119,7 @@ try {
                 $keyDisciplina = $dado['codigo_regencia'];
 
 
-                if (!array_key_exists($keyDisciplina, $turmas[$keyTurma]->etapas[$keyEtapa]->regencias)) {
+                if (!array_key_exists((string) $keyDisciplina, $turmas[$keyTurma]->etapas[$keyEtapa]->regencias)) {
                     $stdRegencia = (object)[
                         'codigo' => $dado['codigo_regencia'],
                         'codigo_disciplina' => $dado['codigo_disciplina'],

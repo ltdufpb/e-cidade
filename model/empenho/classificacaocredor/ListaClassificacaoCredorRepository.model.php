@@ -35,7 +35,7 @@ class ListaClassificacaoCredorRepository {
   /**
    * @var ListaClassificacaoCredor[]
    */
-  private $aListaClassificacaoCredor = array();
+  private $aListaClassificacaoCredor = [];
 
   /**
    * @var ListaClassificacaoCredorRepository
@@ -144,7 +144,7 @@ class ListaClassificacaoCredorRepository {
    */
   protected static function classificaAtributosEmpenho(AtributosEmpenho $oAtributosEmpenho) {
 
-    $aRegras = array();
+    $aRegras = [];
 
     $oRegraValores           = new RegraClassificacaoCredorValores();
     $oRegraPrestacaoContas   = new RegraClassificacaoCredorPrestacaoContas();

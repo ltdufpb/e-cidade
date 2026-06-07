@@ -152,7 +152,7 @@ if (isset($opcao) && $opcao == "alterar") {
   <td align="left">
    <?=@$Led59_c_condicao?>
    <?php 
-   $x = array('OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL');
+   $x = ['OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL'];
    db_select('ed59_c_condicao',$x,true,$db_opcao,"onchange='js_lancarHistorico(this.value)'");
    ?>
   </td>
@@ -164,13 +164,13 @@ if (isset($opcao) && $opcao == "alterar") {
   <td>
    <?php 
    if($frequencia=="I"){
-    $x = array('I'=>'INDIVIDUAL');
+    $x = ['I'=>'INDIVIDUAL'];
    }elseif($frequencia=="G" && $glob==true){
-    $x = array('F'=>'GLOBALIZADA (F)','FA'=>'GLOBALIZADA (FA)');
+    $x = ['F'=>'GLOBALIZADA (F)','FA'=>'GLOBALIZADA (FA)'];
    }elseif($frequencia=="G" && $glob==false && isset($opcao)){
-    $x = array('A'=>'TRATADA');
+    $x = ['A'=>'TRATADA'];
    }elseif($frequencia=="G" && !isset($opcao)){
-    $x = array('F'=>'GLOBALIZADA (F)','FA'=>'GLOBALIZADA (FA)','A'=>'TRATADA');
+    $x = ['F'=>'GLOBALIZADA (F)','FA'=>'GLOBALIZADA (FA)','A'=>'TRATADA'];
    }
    db_select('ed59_c_freqglob',$x,true,$db_opcao,"");
    ?>
@@ -180,7 +180,7 @@ if (isset($opcao) && $opcao == "alterar") {
      <?php echo (isset($ed59_c_condicao) && $ed59_c_condicao != 'OB') ? 'block' : 'none'; ?>">
      <?=@$Led59_lancarhistorico?>
      <?php
-       $aOpcoes = array('f'=>'NÃO', 't'=>'SIM');
+       $aOpcoes = ['f'=>'NÃO', 't'=>'SIM'];
        db_select('ed59_lancarhistorico',$aOpcoes,true,$db_opcao,"", 'ed59_lancarhistorico');
      ?>
        </div>
@@ -232,7 +232,7 @@ if(isset($opcao) && $opcao=="alterar" && $glob==true && $frequencia =="G"){
              end as ed59_c_freqglob,
              ed59_lancarhistorico
             ";
-   $chavepri = array("ed59_i_codigo"          => @$ed59_i_codigo,
+   $chavepri = ["ed59_i_codigo"          => @$ed59_i_codigo,
                      "ed59_i_serie"           => @$ed59_i_serie,
                      "ed11_c_descr"           => @$ed11_c_descr,
                      "ed59_i_disciplina"      => @$ed59_i_disciplina,
@@ -243,7 +243,7 @@ if(isset($opcao) && $opcao=="alterar" && $glob==true && $frequencia =="G"){
                      "ed59_c_freqglob"        => @$ed59_c_freqglob,
                      "ed232_areaconhecimento" => @$ed232_areaconhecimento,
                      "ed59_lancarhistorico"   => @$ed59_lancarhistorico
-                    );
+                    ];
    $cliframe_alterar_excluir->chavepri      = $chavepri;
    $sWhereObrigatorias                      = " ed59_i_turma = $ed59_i_turma AND ed59_i_serie = $ed59_i_serie AND ed59_c_condicao = 'OB'";
    $cliframe_alterar_excluir->sql           = $clregencia->sql_query_censo("", $campos, "ed59_i_ordenacao", $sWhereObrigatorias);

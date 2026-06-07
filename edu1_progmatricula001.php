@@ -44,7 +44,7 @@ include(modification("classes/db_convocacao_classe.php"));
 include(modification("classes/db_opcaoquestao_classe.php"));
 include(modification("classes/db_progclasse_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clproginterrompe = new cl_proginterrompe;
 $clprogmatricula = new cl_progmatricula;
 $clprogconfig = new cl_progconfig;

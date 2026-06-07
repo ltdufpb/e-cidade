@@ -108,7 +108,7 @@ class SituacaoLicitacao {
       throw new ParameterException("Código da Situação Informado é inválido.");
     }
 
-    $aSituacoesJulgadas = array(self::SITUACAO_JULGADA, self::SITUACAO_ADJUDICADA, self::SITUACAO_HOMOLOGADA);
+    $aSituacoesJulgadas = [self::SITUACAO_JULGADA, self::SITUACAO_ADJUDICADA, self::SITUACAO_HOMOLOGADA];
     return in_array($iSituacao, $aSituacoesJulgadas);
   }
 }

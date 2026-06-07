@@ -21,50 +21,41 @@ class ESocial
     private $httpRequest;
 
     /**
-     * Configuração da aplicação
-     *
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * Recurso para envio dos dados
-     *
-     * @var string
-     */
-    private $recurso;
-
-    /**
      * Dados a ser enviados
      *
      * @var array|\stdClass
      */
     private $dados;
 
-    public function __construct(Config $config, $recurso)
+    /**
+     * @param string $recurso
+     */
+    public function __construct(/**
+     * Configuração da aplicação
+     */
+    private readonly Config $config, /**
+     * Recurso para envio dos dados
+     */
+    private $recurso)
     {
-        $this->config = $config;
-
         $this->validaConfiguracao();
 
         $dadosAPI = $this->config->get('app.api');
         $httpRequest = new DBHttpRequest(Registry::get('app.config'));
-        $httpRequest->addOptions(array(
+        $httpRequest->addOptions([
             'baseUrl' => $dadosAPI['esocial']['url'] ,
-            'headers' => array(
+            'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-            )
-        ));
+            ]
+        ]);
         $this->httpRequest = $httpRequest;
 
-        $httpRequest->addOptions(array(
-            'headers' => array(
+        $httpRequest->addOptions([
+            'headers' => [
                 'X-Access-Token' => $this->login()
-            )
-        ));
-
-        $this->recurso = $recurso;
+            ]
+        ]);
     }
 
     /**
@@ -88,11 +79,11 @@ class ESocial
     {
         $data = json_encode($this->dados);
 
-        $this->httpRequest->send($this->recurso, $method, array(
+        $this->httpRequest->send($this->recurso, $method, [
             'body' => $data
-        ));
+        ]);
 
-        $result = json_decode($this->httpRequest->getBody());
+        $result = json_decode((string) $this->httpRequest->getBody());
         $code = $this->httpRequest->getResponseCode();
 
         if ($code >= 400) {
@@ -140,14 +131,14 @@ class ESocial
         unset($dadosAPI['esocial']['url']);
 
         try {
-            $this->httpRequest->send('/auth/login', 'POST', array(
+            $this->httpRequest->send('/auth/login', 'POST', [
                 'body' => \json_encode((object) $dadosAPI['esocial'])
-            ));
-        } catch (\Exception $e) {
+            ]);
+        } catch (\Exception) {
             throw new ESocialContextException("Erro ao conectar na API do eSocial.");
         }
 
-        $result = json_decode($this->httpRequest->getBody());
+        $result = json_decode((string) $this->httpRequest->getBody());
         $code = $this->httpRequest->getResponseCode();
 
         if (!isset($result->access_token)) {

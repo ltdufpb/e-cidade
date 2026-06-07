@@ -33,12 +33,6 @@ class custoPlanilhaLinha {
   
   protected $iCodigo            = null;
   
-  protected $nValor             = null;
-  
-  protected $nQuantidade        = null;
-  
-  protected $iDesdobramento     = null;
-  
   protected $iOrigem            = null;
   
   protected $sDescricaoElemento = null;
@@ -48,17 +42,11 @@ class custoPlanilhaLinha {
   protected $iCodigoOrigem      = null;
   
   protected $lAutomatico        = true;
-  
-  protected $iContaPlano        = null;
   /**
    * 
    */
-  function __construct($id = null,  $nQuantidade = 0, $nValor = 0, $iContaPlano = null, $iDesdobramento = null) {
+  function __construct($id = null,  protected $nQuantidade = 0, protected $nValor = 0, protected $iContaPlano = null, protected $iDesdobramento = null) {
    
-     $this->nValor         = $nValor;
-     $this->nQuantidade    = $nQuantidade;
-     $this->iDesdobramento = $iDesdobramento;
-     $this->iContaPlano    = $iContaPlano;
      if (!empty($id)) {
        
        $oDaoCustoLinha  = db_utils::getdao("custoplanilhaapuracao");

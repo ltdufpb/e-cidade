@@ -35,18 +35,11 @@ class solicitacaoCompra
     const FONTE_MSG = 'patrimonial.compras.solicitacaocompras.';
 
     /**
-     * Código da solicitação
-     *
-     * @var integer
-     */
-    private $iSolicitacao;
-
-    /**
      * array das contrapartidas cadastradas
      *
      * @var unknown_type
      */
-    private $aContrapartida = array();
+    private $aContrapartida = [];
 
 
     /**
@@ -99,17 +92,19 @@ class solicitacaoCompra
      *
      * @param integer $iSolicitacao
      */
-    function __construct($iSolicitacao)
+    function __construct(/**
+     * Código da solicitação
+     */
+    private $iSolicitacao)
     {
 
-        $this->iSolicitacao = $iSolicitacao;
         $this->oDaoSolicita = new cl_solicita;
 
         $oDaoSolicita = new cl_solicita;
 
-        if (isset($iSolicitacao) && !empty($iSolicitacao)) {
+        if (isset($this->iSolicitacao) && !empty($this->iSolicitacao)) {
 
-            $sSqlSolicita = $oDaoSolicita->sql_query_file($iSolicitacao);
+            $sSqlSolicita = $oDaoSolicita->sql_query_file($this->iSolicitacao);
             $rsSolicita = $oDaoSolicita->sql_record($sSqlSolicita);
             if ($oDaoSolicita->numrows > 0) {
 
@@ -503,10 +498,10 @@ class solicitacaoCompra
             if ($oCompilacao->getFormaDeControle() == aberturaRegistroPreco::CONTROLA_VALOR) {
 
                 $sNomeclaturaSaldo = "Valor";
-                $sTextoSaldo = "Valor disponível do Item: R$" . trim(db_formatar(($oSaldosItem->saldo + $nValorVerificar), 'f'));
+                $sTextoSaldo = "Valor disponível do Item: R$" . trim((string) db_formatar(($oSaldosItem->saldo + $nValorVerificar), 'f'));
             }
             $sErroMsg = "Não foi possível incluir o item.\\n";
-            $sErroMsg .= "{$sNomeclaturaSaldo} solicitado do item " . urldecode($oItem->getDescricaoMaterial()) . " maior que o {$sNomeclaturaSaldo} disponível.\\n";
+            $sErroMsg .= "{$sNomeclaturaSaldo} solicitado do item " . urldecode((string) $oItem->getDescricaoMaterial()) . " maior que o {$sNomeclaturaSaldo} disponível.\\n";
             $sErroMsg .= $sTextoSaldo;
             throw new Exception($sErroMsg);
         }
@@ -544,7 +539,7 @@ class solicitacaoCompra
         $oDaopcOrcamVal->pc23_orcamforne = $iCodigoFornecedor;
         $oDaopcOrcamVal->pc23_orcamitem = $iCodigoItemOrcamento;
         $oDaopcOrcamVal->pc23_quant = "$nQuantidade";
-        $oDaopcOrcamVal->pc23_obs = addslashes($oDadosFornecedor->obsorcamento);
+        $oDaopcOrcamVal->pc23_obs = addslashes((string) $oDadosFornecedor->obsorcamento);
         $oDaopcOrcamVal->pc23_vlrun = $oDadosFornecedor->valorunitario;
         $oDaopcOrcamVal->pc23_valor = $oDadosFornecedor->valorunitario * $nQuantidade;
         $oDaopcOrcamVal->incluir($iCodigoFornecedor, $iCodigoItemOrcamento);
@@ -754,7 +749,7 @@ class solicitacaoCompra
             if ($nQuantidade > ($oSaldosItem->saldo + $nQuantidadeAnterior)) {
 
                 $sErroMsg = "Não foi possível alterar item\n";
-                $sErroMsg .= "Saldo solicitado do item " . urldecode($oItem->getDescricaoMaterial()) . " maior que o disponível.\n";
+                $sErroMsg .= "Saldo solicitado do item " . urldecode((string) $oItem->getDescricaoMaterial()) . " maior que o disponível.\n";
                 $sErroMsg .= "Saldo Disponivel no Departamento: " . ($oSaldosItem->saldo + $nQuantidadeAnterior);
                 throw new Exception($sErroMsg);
             }
@@ -880,7 +875,7 @@ class solicitacaoCompra
 
         $rsSolicitacao = $oDaoSolicita->sql_record($sSqlSolicitacao);
         $iRowSolicitacao = $oDaoSolicita->numrows;
-        $aItens = array();
+        $aItens = [];
 
         if ($iRowSolicitacao > 0) {
 
@@ -990,7 +985,7 @@ class solicitacaoCompra
                     }
                 }
 
-                $oDados->autorizacaogeradas = array();
+                $oDados->autorizacaogeradas = [];
                 if (!empty($oDados->codigoitemprocesso)) {
                     $lic = new licitacao();
                     $oDados->autorizacaogeradas = $lic->getAutorizacoes($oDados->codigoitemprocesso, $oDados->codigodotacao);
@@ -1150,7 +1145,7 @@ class solicitacaoCompra
         /**
          * Pega os itens selecionados em tela
          */
-        $aItensSolicitacao = array();
+        $aItensSolicitacao = [];
 
         foreach ($aDadosAutorizacao as $oAutorizacao) {
 
@@ -1159,7 +1154,7 @@ class solicitacaoCompra
             }
         }
 
-        $aAutorizacoes = array();
+        $aAutorizacoes = [];
         $oProcessoCompra = new ProcessoCompras();
         $oProcessoCompra->setCodigoDepartamento(db_getsession("DB_coddepto"));
         $oProcessoCompra->setDataEmissao(date("Y-m-d", db_getsession("DB_datausu")));
@@ -1211,10 +1206,10 @@ class solicitacaoCompra
                  * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e a solictacao
                  */
 
-                $aReservas = itemSolicitacao::getReservasSaldoDotacao($oItem->pcdotac);
+                $aReservas = (new itemSolicitacao())->getReservasSaldoDotacao($oItem->pcdotac);
 
                 $iUnidade = db_getsession("DB_coddepto");
-                $numrows = pg_numrows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
+                $numrows = pg_num_rows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
                 $iInstit = db_getsession("DB_instit");
                 $clpcparam  = new cl_pcparam();
                 $rspcparam  = $clpcparam->sql_record($clpcparam->sql_query_file($iInstit, "pc30_bloqueiaautemp"));
@@ -1338,7 +1333,7 @@ class solicitacaoCompra
             $oAutorizacao->setTipoEmpenho($oDados->tipoempenho);
             $oAutorizacao->setCaracteristicaPeculiar($oDados->concarpeculiar);
 
-            $aItemSolcitem = array();
+            $aItemSolcitem = [];
 
 
             foreach ($oDados->itens as $oItem) {
@@ -1350,7 +1345,7 @@ class solicitacaoCompra
             $oAutorizacao->setDestino($oDados->destino);
             $oAutorizacao->setContato($oDados->sContato);
             $oAutorizacao->setTelefone($oDados->sTelefone);
-            $oAutorizacao->setResumo(addslashes($sResumo));
+            $oAutorizacao->setResumo(addslashes((string) $sResumo));
             $oAutorizacao->setTipoCompra($oDados->tipocompra);
             $oAutorizacao->setPrazoEntrega($oDados->prazoentrega);
             $oAutorizacao->setTipoLicitacao($oDados->sTipoLicitacao);
@@ -1420,7 +1415,7 @@ class solicitacaoCompra
         $sSqlBuscaDotacao = $oDaoSolicitem->sql_query_ancoradotorc(null, $sCamposDotacao, null, $sWhereDotacao);
         $rsBuscaDotacao = $oDaoSolicitem->sql_record($sSqlBuscaDotacao);
         $iRowDotacao = $oDaoSolicitem->numrows;
-        $aSolicitacao = array();
+        $aSolicitacao = [];
 
         if ($iRowDotacao > 0) {
 
@@ -1442,7 +1437,7 @@ class solicitacaoCompra
     public function getItensSolicitacao()
     {
 
-        $aItens = array();
+        $aItens = [];
         $iSolicitao = $this->getCodigo();
         $oDaoSolicitem = new cl_solicitem;
 
@@ -1507,10 +1502,10 @@ class solicitacaoCompra
             throw new ParameterException(_M('patrimonial.compras.com4_anularsolicitacaocompras001.motivo_vazio'));
         }
 
-        $aWhere = array(
+        $aWhere = [
             "solicitem.pc11_numero = {$this->iSolicitacao}",
             "empautoriza.e54_anulad is null"
-        );
+        ];
 
         if ($this->possuiAnulacao()) {
             throw new BusinessException(_M('patrimonial.compras.com4_anularsolicitacaocompras001.solicitacao_ja_anulada'));

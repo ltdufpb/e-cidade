@@ -13,7 +13,7 @@ class ServidorMovimentacaoRepository
     /**
      * @var array
      */
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * @param ServidorMovimentacao $servidorMovimentacao
@@ -138,7 +138,7 @@ class ServidorMovimentacaoRepository
      * @return ServidorMovimentacao|null
      * @throws Exception
      */
-    public function first($columns = array('*'))
+    public function first($columns = ['*'])
     {
         $registros = $this->get($columns);
 
@@ -152,7 +152,7 @@ class ServidorMovimentacaoRepository
      * @return ServidorMovimentacao[]
      * @throws Exception
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         $dao = new cl_rhpessoalmov();
         $sql = $dao->sql_query_file_regime(
@@ -170,7 +170,7 @@ class ServidorMovimentacaoRepository
             );
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $registros;

@@ -31,7 +31,7 @@ class ConfirmacaoRematriculaService
      * ConfirmacaoRematriculaService constructor.
      * @param stdClass $parametros
      */
-    public function __construct(private stdClass $parametros)
+    public function __construct(private readonly stdClass $parametros)
     {
         $this->repositorio = new ConfirmacaoRematriculaRepository();
     }

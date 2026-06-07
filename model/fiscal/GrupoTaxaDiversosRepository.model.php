@@ -34,6 +34,7 @@ class GrupoTaxaDiversosRepository extends BaseClassRepository {
    * Sobrescreve o atributo da classe pai para
    * manter apenas as referências da classe atual
    */
+  #[\Override]
   protected static $oInstance;
   
   

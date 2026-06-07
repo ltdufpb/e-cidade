@@ -48,6 +48,7 @@ class DesligamentoServidorFormatter extends Formatter
      * @throws \BusinessException
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($servidores)
     {
         $dadosServidor = [];
@@ -125,7 +126,7 @@ class DesligamentoServidorFormatter extends Formatter
         $this->inicializaEventosFinanceiros();
 
         $infoDeslig->mtvDeslig = str_pad(
-            $this->servidorAtual->getDadosRescisao()->r59_motivoesocial,
+            (string) $this->servidorAtual->getDadosRescisao()->r59_motivoesocial,
             2,
             '0',
             STR_PAD_LEFT
@@ -180,8 +181,8 @@ class DesligamentoServidorFormatter extends Formatter
         $ideEstabLot->tpInsc = 1; //CNPJ=1, CAEPF= 2, CNO = 3 VERIQUEI OUTRO METODO ESTA COM A MESMA VALIDACAO
         $ideEstabLot->nrInsc = $this->getEmpregador()->getCnpj(); //VERIFICAR SE PODE SER CNPJ
         $ideEstabLot->codLotacao = '01';
-        $anoRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
-        $mesRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
+        $anoRescisao = (int) substr((string) $this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
+        $mesRescisao = (int) substr((string) $this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
         $infoRubrica = [];
 
         foreach ($this->eventosRescisao as $eventoRescisao) {
@@ -263,7 +264,7 @@ class DesligamentoServidorFormatter extends Formatter
         $this->rubricaPensaoAlimenticia[] = PagamentosRendTrabalhoRepository::buscarParametroRubricaPensaoAlimenticia(
             $competencia
         );
-        $this->rubricaPensaoAlimenticia[] = "4" . substr($this->rubricaPensaoAlimenticia[0], 1, 3);
+        $this->rubricaPensaoAlimenticia[] = "4" . substr((string) $this->rubricaPensaoAlimenticia[0], 1, 3);
     }
 
     /**
@@ -271,6 +272,7 @@ class DesligamentoServidorFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[\Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -283,6 +285,7 @@ class DesligamentoServidorFormatter extends Formatter
      *
      * @return  self
      */
+    #[\Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

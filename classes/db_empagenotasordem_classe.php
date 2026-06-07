@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE empagenotasordem
 class cl_empagenotasordem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e43_sequencial = 0; 
-   var $e43_ordempagamento = 0; 
-   var $e43_empagemov = 0; 
-   var $e43_autorizado = 'f'; 
-   var $e43_valor = 0; 
+   public $e43_sequencial = 0; 
+   public $e43_ordempagamento = 0; 
+   public $e43_empagemov = 0; 
+   public $e43_autorizado = 'f'; 
+   public $e43_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e43_sequencial = int4 = Código  Sequencial 
                  e43_ordempagamento = int4 = Código ordem pagamento 
                  e43_empagemov = int4 = Código do movimento da agenda 
@@ -56,10 +56,10 @@ class cl_empagenotasordem {
                  e43_valor = float8 = Valor Liberado 
                  ";
    //funcao construtor da classe 
-   function cl_empagenotasordem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagenotasordem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,10 +125,10 @@ class cl_empagenotasordem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e43_sequencial = pg_result($result,0,0); 
+       $this->e43_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empagenotasordem_e43_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e43_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e43_sequencial)){
          $this->erro_sql = " Campo e43_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,7 +164,7 @@ class cl_empagenotasordem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "notas de ordem do pagamento ($this->e43_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "notas de ordem do pagamento já Cadastrado";
@@ -188,14 +188,14 @@ class cl_empagenotasordem {
      $resaco = $this->sql_record($this->sql_query_file($this->e43_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12323,'$this->e43_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2150,12323,'','".AddSlashes(pg_result($resaco,0,'e43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2150,12324,'','".AddSlashes(pg_result($resaco,0,'e43_ordempagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2150,12325,'','".AddSlashes(pg_result($resaco,0,'e43_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2150,12326,'','".AddSlashes(pg_result($resaco,0,'e43_autorizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2150,12330,'','".AddSlashes(pg_result($resaco,0,'e43_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2150,12323,'','".AddSlashes(pg_fetch_result($resaco,0,'e43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2150,12324,'','".AddSlashes(pg_fetch_result($resaco,0,'e43_ordempagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2150,12325,'','".AddSlashes(pg_fetch_result($resaco,0,'e43_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2150,12326,'','".AddSlashes(pg_fetch_result($resaco,0,'e43_autorizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2150,12330,'','".AddSlashes(pg_fetch_result($resaco,0,'e43_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -204,10 +204,10 @@ class cl_empagenotasordem {
       $this->atualizacampos();
      $sql = " update empagenotasordem set ";
      $virgula = "";
-     if(trim($this->e43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_sequencial"])){ 
+     if(trim((string) $this->e43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_sequencial"])){ 
        $sql  .= $virgula." e43_sequencial = $this->e43_sequencial ";
        $virgula = ",";
-       if(trim($this->e43_sequencial) == null ){ 
+       if(trim((string) $this->e43_sequencial) == null ){ 
          $this->erro_sql = " Campo Código  Sequencial nao Informado.";
          $this->erro_campo = "e43_sequencial";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_ordempagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_ordempagamento"])){ 
+     if(trim((string) $this->e43_ordempagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_ordempagamento"])){ 
        $sql  .= $virgula." e43_ordempagamento = $this->e43_ordempagamento ";
        $virgula = ",";
-       if(trim($this->e43_ordempagamento) == null ){ 
+       if(trim((string) $this->e43_ordempagamento) == null ){ 
          $this->erro_sql = " Campo Código ordem pagamento nao Informado.";
          $this->erro_campo = "e43_ordempagamento";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_empagemov"])){ 
+     if(trim((string) $this->e43_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_empagemov"])){ 
        $sql  .= $virgula." e43_empagemov = $this->e43_empagemov ";
        $virgula = ",";
-       if(trim($this->e43_empagemov) == null ){ 
+       if(trim((string) $this->e43_empagemov) == null ){ 
          $this->erro_sql = " Campo Código do movimento da agenda nao Informado.";
          $this->erro_campo = "e43_empagemov";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_autorizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_autorizado"])){ 
+     if(trim((string) $this->e43_autorizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_autorizado"])){ 
        $sql  .= $virgula." e43_autorizado = '$this->e43_autorizado' ";
        $virgula = ",";
-       if(trim($this->e43_autorizado) == null ){ 
+       if(trim((string) $this->e43_autorizado) == null ){ 
          $this->erro_sql = " Campo Pagamento autorizado nao Informado.";
          $this->erro_campo = "e43_autorizado";
          $this->erro_banco = "";
@@ -256,8 +256,8 @@ class cl_empagenotasordem {
          return false;
        }
      }
-     if(trim($this->e43_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){ 
-        if(trim($this->e43_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){ 
+     if(trim((string) $this->e43_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){ 
+        if(trim((string) $this->e43_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"])){ 
            $this->e43_valor = "0" ; 
         } 
        $sql  .= $virgula." e43_valor = $this->e43_valor ";
@@ -271,19 +271,19 @@ class cl_empagenotasordem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12323,'$this->e43_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e43_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2150,12323,'".AddSlashes(pg_result($resaco,$conresaco,'e43_sequencial'))."','$this->e43_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2150,12323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e43_sequencial'))."','$this->e43_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e43_ordempagamento"]))
-           $resac = db_query("insert into db_acount values($acount,2150,12324,'".AddSlashes(pg_result($resaco,$conresaco,'e43_ordempagamento'))."','$this->e43_ordempagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2150,12324,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e43_ordempagamento'))."','$this->e43_ordempagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e43_empagemov"]))
-           $resac = db_query("insert into db_acount values($acount,2150,12325,'".AddSlashes(pg_result($resaco,$conresaco,'e43_empagemov'))."','$this->e43_empagemov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2150,12325,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e43_empagemov'))."','$this->e43_empagemov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e43_autorizado"]))
-           $resac = db_query("insert into db_acount values($acount,2150,12326,'".AddSlashes(pg_result($resaco,$conresaco,'e43_autorizado'))."','$this->e43_autorizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2150,12326,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e43_autorizado'))."','$this->e43_autorizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e43_valor"]))
-           $resac = db_query("insert into db_acount values($acount,2150,12330,'".AddSlashes(pg_result($resaco,$conresaco,'e43_valor'))."','$this->e43_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2150,12330,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e43_valor'))."','$this->e43_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -328,14 +328,14 @@ class cl_empagenotasordem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12323,'$e43_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2150,12323,'','".AddSlashes(pg_result($resaco,$iresaco,'e43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2150,12324,'','".AddSlashes(pg_result($resaco,$iresaco,'e43_ordempagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2150,12325,'','".AddSlashes(pg_result($resaco,$iresaco,'e43_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2150,12326,'','".AddSlashes(pg_result($resaco,$iresaco,'e43_autorizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2150,12330,'','".AddSlashes(pg_result($resaco,$iresaco,'e43_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2150,12323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2150,12324,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e43_ordempagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2150,12325,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e43_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2150,12326,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e43_autorizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2150,12330,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e43_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empagenotasordem
@@ -395,7 +395,7 @@ class cl_empagenotasordem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empagenotasordem";
@@ -410,7 +410,7 @@ class cl_empagenotasordem {
    function sql_query ( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_empagenotasordem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_empagenotasordem {
    function sql_query_file ( $e43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_empagenotasordem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_empagenotasordem {
     
     $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,7 +525,7 @@ class cl_empagenotasordem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

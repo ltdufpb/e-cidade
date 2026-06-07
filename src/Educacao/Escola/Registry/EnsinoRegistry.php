@@ -33,7 +33,7 @@ class EnsinoRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $aluno = EnsinoRepository::find($key);
             if (is_null($aluno)) {
                 return null;

@@ -65,7 +65,7 @@ $oJson = new Services_JSON();
 
 $aTurmasSelecionadas = $oJson->decode(str_replace("\\", "", $oGet->oTurmas));
 
-$aFiltroParametro = array();
+$aFiltroParametro = [];
 $aFiltroParametro[] = null;
 $aFiltroParametro[] = "ed233_c_notabranca";
 $aFiltroParametro[] = null;
@@ -111,7 +111,7 @@ $oConfigRelatorio->iLarguraTotalDisciplinas  = 282 - $iSomaColunasDadosAluno;
 $oConfigRelatorio->iLarguraTotalDisciplinas -= (0.3 * $oConfigRelatorio->iMaximoDisciplinaPagina);
 $oConfigRelatorio->lCalculaMediaParcial      = $aParametroGlobal[0]->ed233_c_notabranca == 'S' ? true : false;
 
-$aTurmas = array();
+$aTurmas = [];
 /**
  * Cria a instancia de todas turmas selecionas no filtro
  * Organizamos os dados a serem impressos no relatório
@@ -126,8 +126,8 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
   }
 
   $oTurmaEtapa           = new stdClass();
-  $oTurmaEtapa->aAlunos  = array();
-  $oTurmaEtapa->aPaginas = array();
+  $oTurmaEtapa->aAlunos  = [];
+  $oTurmaEtapa->aPaginas = [];
   $iContDisciplinas      = 0;
 
   /**
@@ -206,7 +206,7 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
     $oDadosAluno->sSituacao           = $oMatricula->getSituacao();
     $oDadosAluno->oDtMatricula        = $oMatricula->getDataMatricula();
     $oDadosAluno->iClassificacao      = $oMatricula->getNumeroOrdemAluno();
-    $oDadosAluno->aAvaliacao          = array();
+    $oDadosAluno->aAvaliacao          = [];
     $oDadosAluno->iTotalFaltas        = 0;
     $oDadosAluno->lAvaliadoPorParecer = $oMatricula->isAvaliadoPorParecer();
 
@@ -219,7 +219,7 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
     foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia) {
 
       $iContDisciplinas ++;
-      $oDisciplinaDiario        = $oDiarioDeClasse->getDisciplinasPorRegencia($oRegencia, $oAvaliacaoPeriodica);
+      $oDisciplinaDiario        = $oDiarioDeClasse->getDisciplinasPorRegencia($oRegencia);
       $oAvaliacaoAproveitamento = $oDisciplinaDiario->getAvaliacoesPorOrdem($oAvaliacaoPeriodica->getOrdemSequencia());
 
       $oAvaliacao = new stdClass();
@@ -719,7 +719,7 @@ function getSituacoes() {
   /**
    * Array com as situaçõe da matricula do aluno indexado pela abreviatura
    */
-  $aSituacoes       = array();
+  $aSituacoes       = [];
   $aSituacoes['MT'] = 'MATRICULA TRANCADA';
   $aSituacoes['IN'] = 'MATRICULA INDEFERIDA';
   $aSituacoes['MI'] = 'MATRICULA INDEVIDA';

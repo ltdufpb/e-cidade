@@ -65,7 +65,7 @@ class LancamentoEmpenhoEmLiquidacao {
     /**
      * Material permanente
      */
-    if (in_array($iCodigoDocumentoExecutar, array(208, 209, 214, 215))) {
+    if (in_array($iCodigoDocumentoExecutar, [208, 209, 214, 215])) {
 
       $oLancamentoAuxiliarEmLiquidacao = new LancamentoAuxiliarEmLiquidacaoMaterialPermanente();
       if ( !UTILIZA_INCORPORACAO_BEM ) {
@@ -74,7 +74,7 @@ class LancamentoEmpenhoEmLiquidacao {
 
     }
 
-    if (in_array($iCodigoDocumentoExecutar, array(210, 211, 212, 213))) {
+    if (in_array($iCodigoDocumentoExecutar, [210, 211, 212, 213])) {
 
       $oLancamentoAuxiliarEmLiquidacao = new LancamentoAuxiliarEmpenhoEmLiquidacaoMaterialAlmoxarifado();
       $oLancamentoAuxiliarEmLiquidacao->setGrupoMaterial(new MaterialGrupo($oStdDadosLancamento->iCodigoGrupo));

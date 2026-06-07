@@ -27,7 +27,7 @@ class cl_empautorizacaoautorizada
     public function __construct()
     {
         $this->rotulo = new rotulo("empautorizacaoautorizada");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -82,7 +82,7 @@ class cl_empautorizacaoautorizada
         $result = db_query($sql);
         if ($result==false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = " ($this->id) não Incluído. Inclusão Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -112,10 +112,10 @@ class cl_empautorizacaoautorizada
         $this->atualizacampos();
         $sql = " update empautorizacaoautorizada set ";
         $virgula = "";
-        if (trim($this->id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
+        if (trim((string) $this->id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
             $sql  .= $virgula." id = $this->id ";
             $virgula = ",";
-            if (trim($this->id) == null) {
+            if (trim((string) $this->id) == null) {
                 $this->erro_sql = " Campo id não informado.";
                 $this->erro_campo = "id";
                 $this->erro_banco = "";
@@ -125,10 +125,10 @@ class cl_empautorizacaoautorizada
                 return false;
             }
         }
-        if (trim($this->empautoriza_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["empautoriza_id"])) {
+        if (trim((string) $this->empautoriza_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["empautoriza_id"])) {
             $sql  .= $virgula." empautoriza_id = $this->empautoriza_id ";
             $virgula = ",";
-            if (trim($this->empautoriza_id) == null) {
+            if (trim((string) $this->empautoriza_id) == null) {
                 $this->erro_sql = " Campo Id da autorização não informado.";
                 $this->erro_campo = "empautoriza_id";
                 $this->erro_banco = "";

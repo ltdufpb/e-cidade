@@ -4,10 +4,10 @@ namespace ECidade\V3\Extension;
 
 class Registry {
 
-  private static $data = array();
+  private static $data = [];
 
   public static function has($key) {
-    return array_key_exists($key, static::$data);
+    return array_key_exists((string) $key, static::$data);
   }
 
   public static function set($key, $value) {
@@ -15,7 +15,7 @@ class Registry {
   }
 
   public static function get($key, $default = null) {
-    return array_key_exists($key, static::$data) ? static::$data[$key] : $default;
+    return array_key_exists((string) $key, static::$data) ? static::$data[$key] : $default;
   }
 
 }

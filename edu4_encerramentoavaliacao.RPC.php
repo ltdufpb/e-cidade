@@ -59,7 +59,7 @@ switch($oParam->exec) {
         $aAlunosMatriculadosTurma = $oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa);
         $iCodigoEnsino            = $oTurma->getBaseCurricular()->getCurso()->getEnsino()->getCodigo();
         $iAnoCalendario           = $oTurma->getCalendario()->getAnoExecucao();
-        $oRetorno->aDadosAlunos   = array();
+        $oRetorno->aDadosAlunos   = [];
         $aTermosAprovado          = DBEducacaoTermo::getTermoEncerramento($iCodigoEnsino, 'A', $iAnoCalendario);
 
         if (count($aTermosAprovado) > 0) {
@@ -82,16 +82,16 @@ switch($oParam->exec) {
             $oDadosAluno->iMatricula             = $oMatricula->getCodigo();
             $oDadosAluno->sNomeAluno             = urlencode($oMatricula->getAluno()->getNome());
             $oDadosAluno->iOrdemAluno            = $oMatricula->getNumeroOrdemAluno();
-            $oDadosAluno->sSituacao              = urlencode($oMatricula->getSituacao());
+            $oDadosAluno->sSituacao              = urlencode((string) $oMatricula->getSituacao());
             $oDadosAluno->lConcluido             = $oMatricula->isConcluida();
             $oDadosAluno->lEncerrado             = false;  // Adicionado para compor as variaveis padrao de retorno
             $oDadosAluno->sDisciplina            = "";
             $oDadosAluno->sEncerrado             = "";
-            $oDadosAluno->aPendencias            = array();
+            $oDadosAluno->aPendencias            = [];
             $oDadosAluno->lTemMatriculaPosterior = false;
             $oDadosAluno->lSemPendencia          = false;
 
-            if( isset( $oParam->lCancelamento ) || in_array($oMatricula->getSituacao(), array("TRANSFERIDO REDE", "TRANSFERIDO FORA") ) ) {
+            if( isset( $oParam->lCancelamento ) || in_array($oMatricula->getSituacao(), ["TRANSFERIDO REDE", "TRANSFERIDO FORA"] ) ) {
                 $oDadosAluno->lTemMatriculaPosterior = MatriculaPosterior( $oMatricula->getCodigo() );
             }
 
@@ -135,7 +135,7 @@ switch($oParam->exec) {
                     );
 
                     if (count($aTermosEncerramento) > 0) {
-                        $oDadosAluno->sResultadoFinal = urlencode($aTermosEncerramento[0]->sDescricao);
+                        $oDadosAluno->sResultadoFinal = urlencode((string) $aTermosEncerramento[0]->sDescricao);
                     }
 
                     if (is_null($areaProcedimento) && $oMatricula->getDiarioDeClasse()->aprovadoComProgressaoParcial()) {
@@ -163,9 +163,9 @@ switch($oParam->exec) {
                 }
 
                 //corrige a codificação das pendências
-                $aPendenciasTratadas = array();
+                $aPendenciasTratadas = [];
                 foreach($oDadosAluno->aPendencias as $sPendencia){
-                    $aPendenciasTratadas[] = urlencode($sPendencia);
+                    $aPendenciasTratadas[] = urlencode((string) $sPendencia);
                 }
                 $oDadosAluno->aPendencias = $aPendenciasTratadas;
             }
@@ -192,7 +192,7 @@ switch($oParam->exec) {
         $oTurma                 = new Turma($oParam->iCodigoTurma);
         $iCodigoEnsino          = $oTurma->getBaseCurricular()->getCurso()->getEnsino()->getCodigo();
         $aAlunosDeProgressao    = $oTurma->getAlunosProgressaoParcial(EtapaRepository::getEtapaByCodigo($oParam->iEtapa));
-        $oRetorno->aDadosAlunos = array();
+        $oRetorno->aDadosAlunos = [];
         $iOrdemAluno            = 1;
         $iAnoCalendario         = $oTurma->getCalendario()->getAnoExecucao();
 
@@ -225,7 +225,7 @@ switch($oParam->exec) {
                 $aTermosEncerramento = DBEducacaoTermo::getTermoEncerramento($iCodigoEnsino, $oDadosAlunoProgressao->sResultadoFinal, $iAnoCalendario);
 
                 if (count($aTermosEncerramento) > 0) {
-                    $oDadosAlunoProgressao->sResultadoFinal = urlencode($aTermosEncerramento[0]->sDescricao);
+                    $oDadosAlunoProgressao->sResultadoFinal = urlencode((string) $aTermosEncerramento[0]->sDescricao);
                 }
             }
 
@@ -253,7 +253,7 @@ switch($oParam->exec) {
          */
         $oRetorno->sNomeAluno         = urlencode($oMatricula->getAluno()->getNome());
         $oRetorno->iCodigoAluno       = $oMatricula->getAluno()->getCodigoAluno();
-        $oRetorno->sSituacaoAluno     = urlencode($oMatricula->getSituacao());
+        $oRetorno->sSituacaoAluno     = urlencode((string) $oMatricula->getSituacao());
         $oRetorno->iCodigoTurma       = $oMatricula->getTurma()->getCodigo();
         $oRetorno->dtMatricula        = $oMatricula->getDataMatricula()->convertTo(DBDate::DATA_PTBR);
         $oRetorno->dtSaida            = str_repeat("&nbsp;", 10);
@@ -264,7 +264,7 @@ switch($oParam->exec) {
         $oRetorno->sTurma             = urlencode($oMatricula->getTurma()->getDescricao());
 
         $oGradeAproveitamento         = new GradeAproveitamentoAluno($oMatricula);
-        $oRetorno->mMinimoAprovacao   = urlencode($oGradeAproveitamento->getMinimoParaAprovacao());
+        $oRetorno->mMinimoAprovacao   = urlencode((string) $oGradeAproveitamento->getMinimoParaAprovacao());
         break;
 
     /**
@@ -272,7 +272,7 @@ switch($oParam->exec) {
      */
     case 'encerrarProgressaoParcial':
 
-        $aAlunosNaoProcessados = array();
+        $aAlunosNaoProcessados = [];
         $oRetorno->lImprimeRel = true;
 
         if (count($oParam->aAlunos) > 0) {
@@ -315,7 +315,7 @@ switch($oParam->exec) {
      */
     case 'cancelarEncerramentoProgressaoParcial':
 
-        $aAlunosNaoProcessados = array();
+        $aAlunosNaoProcessados = [];
         $oRetorno->lImprimeRel = true;
 
         if (count($oParam->aAlunos) > 0) {
@@ -361,7 +361,7 @@ switch($oParam->exec) {
 
             $oEncerramento                = new EncerramentoAvaliacao(new DBLogJSON("tmp/encerramento.json"));
             $oRetorno->lImprimeRel        = false;
-            $oRetorno->aTurmasProcessadas = array();
+            $oRetorno->aTurmasProcessadas = [];
             $oRetorno->message            = "Encerramento processado com sucesso!";
             $oRetorno->status             = 1;
             foreach ($oParam->aTurmas as $oTurmaEtapa) {
@@ -397,7 +397,7 @@ switch($oParam->exec) {
         try {
 
             $oEncerramento                = new EncerramentoAvaliacao(new DBLogJSON("tmp/encerramento.json"));
-            $oRetorno->aTurmasProcessadas = array();
+            $oRetorno->aTurmasProcessadas = [];
             $oRetorno->lImprimeRel        = false; // Para manter compatibilidade
             $oRetorno->status             = 1;
             $oRetorno->message            = "Encerramento processado com sucesso!";
@@ -440,7 +440,7 @@ switch($oParam->exec) {
 
             $oEncerramento                = new EncerramentoAvaliacao(new DBLogJSON("tmp/encerramento.json"));
             $oRetorno->lImprimeRel        = false;
-            $oRetorno->aTurmasProcessadas = array();
+            $oRetorno->aTurmasProcessadas = [];
 
             foreach ($oParam->aTurmas as $oTurmaEtapa) {
 
@@ -478,7 +478,7 @@ switch($oParam->exec) {
         try {
 
             $oEncerramento                = new EncerramentoAvaliacao(new DBLogJSON("tmp/encerramento.json"));
-            $oRetorno->aTurmasProcessadas = array();
+            $oRetorno->aTurmasProcessadas = [];
             $oRetorno->lImprimeRel        = false; // Para manter compatibilidade
 
             foreach ($oParam->aTurmas as $oTurmaEtapa) {
@@ -526,7 +526,7 @@ switch($oParam->exec) {
             $oEtapa        = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
             $oEncerramento = new EncerramentoAvaliacao();
 
-            if ($oEncerramento->semAulasDadas($oTurma, $oEtapa, false)) {
+            if ($oEncerramento->semAulasDadas($oTurma, $oEtapa)) {
 
                 $oRetorno->lTurmaEncerrada = true;
                 $oRetorno->status          = 1;
@@ -559,8 +559,8 @@ echo $oJson->encode($oRetorno);
  */
 function getMatriculasAlunoTurma( $oDadosMatriculaAluno, $oTurma ) {
 
-    $aMatriculas        = array();
-    $aAlunosPercorridos = array();
+    $aMatriculas        = [];
+    $aAlunosPercorridos = [];
 
     if (count($oDadosMatriculaAluno->aAlunos) == 0) {
         throw new Exception("Nenhum aluno selecionado.");
@@ -579,7 +579,7 @@ function getMatriculasAlunoTurma( $oDadosMatriculaAluno, $oTurma ) {
         foreach( $aMatriculasAluno as $oMatricula ) {
 
             if( MatriculaPosterior( $oMatricula->getCodigo() )
-                && in_array($oMatricula->getSituacao(), array("TRANSFERIDO REDE", "TRANSFERIDO FORA") ) ) {
+                && in_array($oMatricula->getSituacao(), ["TRANSFERIDO REDE", "TRANSFERIDO FORA"] ) ) {
                 continue;
             }
 

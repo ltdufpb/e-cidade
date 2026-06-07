@@ -78,7 +78,7 @@ if($ed110_i_ptconhecimento==0 || $ed110_i_ptgeral==0){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed109_i_codigo"=>@$ed109_i_codigo,"ed109_c_descr"=>@$ed109_c_descr);
+   $chavepri= ["ed109_i_codigo"=>@$ed109_i_codigo,"ed109_c_descr"=>@$ed109_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoconhecimento->sql_query($ed109_i_codigo,"*","ed109_c_descr");
    $cliframe_alterar_excluir->campos  ="ed109_i_codigo,ed109_c_descr";

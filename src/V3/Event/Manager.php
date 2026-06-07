@@ -15,10 +15,10 @@ class Manager {
   public function __construct() {
 
     $this->zendEventManager = new ZendEventManager();
-    $this->zendEventManager->setIdentifiers(array(
-      __CLASS__,
-      get_called_class()
-    ));
+    $this->zendEventManager->setIdentifiers([
+      self::class,
+      static::class
+    ]);
 
   }
 
@@ -30,7 +30,7 @@ class Manager {
     $this->zendEventManager->detach($callback);
   }
 
-  public function trigger($event, $target = null, array $params = array()) {
+  public function trigger($event, $target = null, array $params = []) {
     $this->zendEventManager->trigger($event, $target, $params);
   }
 

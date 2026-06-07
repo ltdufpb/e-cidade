@@ -40,6 +40,7 @@ class Evento extends \BaseClassRepository
      * Sobrescreve o atributo da classe pai para
      * manter apenas as referências da classe atual
      */
+    #[\Override]
     protected static $oInstance;
 
     /**
@@ -275,9 +276,7 @@ class Evento extends \BaseClassRepository
 
         for ($rowServidor = 0; $rowServidor < $totalRegistros; $rowServidor++) {
             $evento->adicionarServidor(
-                \db_utils::makeFromRecord($resBuscaMatriculas, function ($stdServidor) {
-                    return \ServidorRepository::getInstanciaByCodigo($stdServidor->rh208_rhpessoal);
-                }, $rowServidor)
+                \db_utils::makeFromRecord($resBuscaMatriculas, fn($stdServidor) => \ServidorRepository::getInstanciaByCodigo($stdServidor->rh208_rhpessoal), $rowServidor)
             );
         }
 
@@ -388,7 +387,7 @@ class Evento extends \BaseClassRepository
 
         $oDados = new \stdClass();
         $oDados->dadosEvento = new \stdClass();
-        $oDados->dadosEvento->descricao .= pg_result($resBuscaEventoDia, 0, 0);
+        $oDados->dadosEvento->descricao .= pg_fetch_result($resBuscaEventoDia, 0, 0);
 
         if (pg_num_rows($resBuscaEventoDia) === 0) {
             return false;
@@ -409,7 +408,7 @@ class Evento extends \BaseClassRepository
         $whereEventoEfetividadeAberta[] = "rh186_instituicao = {$codigoInstituicao}";
         $whereEventoEfetividadeAberta[] = "rh186_processado = FALSE";
 
-        $campos = array(
+        $campos = [
           'distinct rh207_sequencial',
           'rh207_datainicial',
           "
@@ -423,7 +422,7 @@ class Evento extends \BaseClassRepository
                                                     FROM configuracoesdatasefetividade
                                                    WHERE rh186_instituicao = {$codigoInstituicao}) )
       ) as conflito_data "
-        );
+        ];
 
         $buscaEventoDia = $daoEvento->sql_query_join_configuracoesdatasefetividade(
             null,
@@ -438,7 +437,7 @@ class Evento extends \BaseClassRepository
         }
 
         if (pg_num_rows($resBuscaEventoDia) === 0) {
-            return array();
+            return [];
         }
 
         $eventoRepository = $this;

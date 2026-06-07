@@ -10,13 +10,10 @@ use \Recibo as ReciboLegacy;
  * Class ReciboCast
  * @package ECidade\Tributario\Caixa\Cast
  */
-final class ReciboCast
+final readonly class ReciboCast
 {
-    private $regraEmissaoService;
-
-    public function __construct(RegraEmissaoService $regraEmissaoService)
+    public function __construct(private RegraEmissaoService $regraEmissaoService)
     {
-        $this->regraEmissaoService = $regraEmissaoService;
     }
 
     /**

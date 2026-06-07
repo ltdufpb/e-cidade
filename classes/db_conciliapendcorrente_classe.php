@@ -40,7 +40,7 @@ class cl_conciliapendcorrente
     public function __construct()
     {
         $this->rotulo = new rotulo("conciliapendcorrente"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -133,10 +133,10 @@ class cl_conciliapendcorrente
          $this->erro_status = "0";
          return false; 
        }
-       $this->k89_sequencial = pg_result($result,0,0); 
+       $this->k89_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conciliapendcorrente_k89_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k89_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k89_sequencial)){
          $this->erro_sql = " Campo k89_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,7 +176,7 @@ class cl_conciliapendcorrente
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Pendencias do corrente ($this->k89_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Pendencias do corrente já Cadastrado";
@@ -205,16 +205,16 @@ class cl_conciliapendcorrente
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10087,'$this->k89_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1733,10087,'','".AddSlashes(pg_result($resaco,0,'k89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1733,10086,'','".AddSlashes(pg_result($resaco,0,'k89_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1733,10083,'','".AddSlashes(pg_result($resaco,0,'k89_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1733,10084,'','".AddSlashes(pg_result($resaco,0,'k89_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1733,10085,'','".AddSlashes(pg_result($resaco,0,'k89_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1733,10171,'','".AddSlashes(pg_result($resaco,0,'k89_conciliaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1733,19286,'','".AddSlashes(pg_result($resaco,0,'k89_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1733,10087,'','".AddSlashes(pg_fetch_result($resaco,0,'k89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1733,10086,'','".AddSlashes(pg_fetch_result($resaco,0,'k89_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1733,10083,'','".AddSlashes(pg_fetch_result($resaco,0,'k89_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1733,10084,'','".AddSlashes(pg_fetch_result($resaco,0,'k89_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1733,10085,'','".AddSlashes(pg_fetch_result($resaco,0,'k89_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1733,10171,'','".AddSlashes(pg_fetch_result($resaco,0,'k89_conciliaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1733,19286,'','".AddSlashes(pg_fetch_result($resaco,0,'k89_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -225,10 +225,10 @@ class cl_conciliapendcorrente
       $this->atualizacampos();
      $sql = " update conciliapendcorrente set ";
      $virgula = "";
-     if(trim($this->k89_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_sequencial"])){ 
+     if(trim((string) $this->k89_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_sequencial"])){ 
        $sql  .= $virgula." k89_sequencial = $this->k89_sequencial ";
        $virgula = ",";
-       if(trim($this->k89_sequencial) == null ){ 
+       if(trim((string) $this->k89_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial não informado.";
          $this->erro_campo = "k89_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_conciliapendcorrente
          return false;
        }
      }
-     if(trim($this->k89_concilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_concilia"])){ 
+     if(trim((string) $this->k89_concilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_concilia"])){ 
        $sql  .= $virgula." k89_concilia = $this->k89_concilia ";
        $virgula = ",";
-       if(trim($this->k89_concilia) == null ){ 
+       if(trim((string) $this->k89_concilia) == null ){ 
          $this->erro_sql = " Campo Codigo da conciliação não informado.";
          $this->erro_campo = "k89_concilia";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_conciliapendcorrente
          return false;
        }
      }
-     if(trim($this->k89_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_id"])){ 
+     if(trim((string) $this->k89_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_id"])){ 
        $sql  .= $virgula." k89_id = $this->k89_id ";
        $virgula = ",";
-       if(trim($this->k89_id) == null ){ 
+       if(trim((string) $this->k89_id) == null ){ 
          $this->erro_sql = " Campo Autenticação não informado.";
          $this->erro_campo = "k89_id";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_conciliapendcorrente
          return false;
        }
      }
-     if(trim($this->k89_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k89_data_dia"] !="") ){ 
+     if(trim((string) $this->k89_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k89_data_dia"] !="") ){ 
        $sql  .= $virgula." k89_data = '$this->k89_data' ";
        $virgula = ",";
-       if(trim($this->k89_data) == null ){ 
+       if(trim((string) $this->k89_data) == null ){ 
          $this->erro_sql = " Campo Data Autenticação não informado.";
          $this->erro_campo = "k89_data_dia";
          $this->erro_banco = "";
@@ -280,7 +280,7 @@ class cl_conciliapendcorrente
        if(isset($GLOBALS["HTTP_POST_VARS"]["k89_data_dia"])){ 
          $sql  .= $virgula." k89_data = null ";
          $virgula = ",";
-         if(trim($this->k89_data) == null ){ 
+         if(trim((string) $this->k89_data) == null ){ 
            $this->erro_sql = " Campo Data Autenticação não informado.";
            $this->erro_campo = "k89_data_dia";
            $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_conciliapendcorrente
          }
        }
      }
-     if(trim($this->k89_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_autent"])){ 
+     if(trim((string) $this->k89_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_autent"])){ 
        $sql  .= $virgula." k89_autent = $this->k89_autent ";
        $virgula = ",";
-       if(trim($this->k89_autent) == null ){ 
+       if(trim((string) $this->k89_autent) == null ){ 
          $this->erro_sql = " Campo Código Autenticação não informado.";
          $this->erro_campo = "k89_autent";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_conciliapendcorrente
          return false;
        }
      }
-     if(trim($this->k89_conciliaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_conciliaorigem"])){ 
+     if(trim((string) $this->k89_conciliaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_conciliaorigem"])){ 
        $sql  .= $virgula." k89_conciliaorigem = $this->k89_conciliaorigem ";
        $virgula = ",";
-       if(trim($this->k89_conciliaorigem) == null ){ 
+       if(trim((string) $this->k89_conciliaorigem) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "k89_conciliaorigem";
          $this->erro_banco = "";
@@ -317,7 +317,7 @@ class cl_conciliapendcorrente
          return false;
        }
      }
-     if(trim($this->k89_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_justificativa"])){ 
+     if(trim((string) $this->k89_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k89_justificativa"])){ 
        $sql  .= $virgula." k89_justificativa = '$this->k89_justificativa' ";
        $virgula = ",";
      }
@@ -335,23 +335,23 @@ class cl_conciliapendcorrente
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,10087,'$this->k89_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k89_sequencial"]) || $this->k89_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1733,10087,'".AddSlashes(pg_result($resaco,$conresaco,'k89_sequencial'))."','$this->k89_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1733,10087,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k89_sequencial'))."','$this->k89_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k89_concilia"]) || $this->k89_concilia != "")
-             $resac = db_query("insert into db_acount values($acount,1733,10086,'".AddSlashes(pg_result($resaco,$conresaco,'k89_concilia'))."','$this->k89_concilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1733,10086,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k89_concilia'))."','$this->k89_concilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k89_id"]) || $this->k89_id != "")
-             $resac = db_query("insert into db_acount values($acount,1733,10083,'".AddSlashes(pg_result($resaco,$conresaco,'k89_id'))."','$this->k89_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1733,10083,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k89_id'))."','$this->k89_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k89_data"]) || $this->k89_data != "")
-             $resac = db_query("insert into db_acount values($acount,1733,10084,'".AddSlashes(pg_result($resaco,$conresaco,'k89_data'))."','$this->k89_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1733,10084,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k89_data'))."','$this->k89_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k89_autent"]) || $this->k89_autent != "")
-             $resac = db_query("insert into db_acount values($acount,1733,10085,'".AddSlashes(pg_result($resaco,$conresaco,'k89_autent'))."','$this->k89_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1733,10085,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k89_autent'))."','$this->k89_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k89_conciliaorigem"]) || $this->k89_conciliaorigem != "")
-             $resac = db_query("insert into db_acount values($acount,1733,10171,'".AddSlashes(pg_result($resaco,$conresaco,'k89_conciliaorigem'))."','$this->k89_conciliaorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1733,10171,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k89_conciliaorigem'))."','$this->k89_conciliaorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k89_justificativa"]) || $this->k89_justificativa != "")
-             $resac = db_query("insert into db_acount values($acount,1733,19286,'".AddSlashes(pg_result($resaco,$conresaco,'k89_justificativa'))."','$this->k89_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1733,19286,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k89_justificativa'))."','$this->k89_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -405,16 +405,16 @@ class cl_conciliapendcorrente
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,10087,'$k89_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1733,10087,'','".AddSlashes(pg_result($resaco,$iresaco,'k89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1733,10086,'','".AddSlashes(pg_result($resaco,$iresaco,'k89_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1733,10083,'','".AddSlashes(pg_result($resaco,$iresaco,'k89_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1733,10084,'','".AddSlashes(pg_result($resaco,$iresaco,'k89_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1733,10085,'','".AddSlashes(pg_result($resaco,$iresaco,'k89_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1733,10171,'','".AddSlashes(pg_result($resaco,$iresaco,'k89_conciliaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1733,19286,'','".AddSlashes(pg_result($resaco,$iresaco,'k89_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1733,10087,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1733,10086,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k89_concilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1733,10083,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k89_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1733,10084,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k89_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1733,10085,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k89_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1733,10171,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k89_conciliaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1733,19286,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k89_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

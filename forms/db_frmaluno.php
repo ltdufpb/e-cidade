@@ -40,7 +40,7 @@ if ($db_opcao != 1 && $chavepesquisa != "") {
 
   if ($linhas4 == 0) {
     $db_botao = true;
-  } elseif ($iEscola != pg_result($query,0,0)) {
+  } elseif ($iEscola != pg_fetch_result($query,0,0)) {
     $db_botao = false;
   } else {
     $db_botao = true;
@@ -125,7 +125,7 @@ if ($ed47_i_nacion == 3) {
               </td>
               <td>
                 <?php
-                  $x = array('' => '', 'N' => 'NASCIMENTO', 'C' => 'CASAMENTO');
+                  $x = ['' => '', 'N' => 'NASCIMENTO', 'C' => 'CASAMENTO'];
                   db_select('ed47_c_certidaotipo', $x, true, $db_opcao1, "");
 
                   echo @$Led47_c_certidaonum;
@@ -299,7 +299,7 @@ if ($ed47_i_nacion == 3) {
                   db_input('ed47_v_cnh', 15, $Ied47_v_cnh, true, 'text', $db_opcao1, "");
                   echo @$Led47_v_categoria;
 
-                  $y = array("" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E");
+                  $y = ["" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E"];
                   db_select('ed47_v_categoria', $y, true, $db_opcao1);
 
                   echo @$Led47_d_dtemissao;

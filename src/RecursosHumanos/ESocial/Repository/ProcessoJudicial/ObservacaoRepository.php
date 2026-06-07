@@ -95,7 +95,7 @@ class ObservacaoRepository
      * @param Observacao|null $contrato
      * @throws Exception
      */
-    public function delete(Observacao $observacao = null)
+    public function delete(?Observacao $observacao = null)
     {
         $id = $observacao instanceof Observacao ? $observacao->getSequencial() : null;
 
@@ -113,7 +113,7 @@ class ObservacaoRepository
      * @return bool|Observacao
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessoobservacao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

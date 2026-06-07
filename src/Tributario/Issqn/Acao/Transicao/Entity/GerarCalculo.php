@@ -8,19 +8,17 @@ use ECidade\Tributario\Issqn\Inscricao\Service\Calculo as CalculoService;
 
 final class GerarCalculo extends AcaoBase implements AcaoInterface
 {
-    private $calculoService;
     private $empresa;
 
     /**
      * GerarCalculo constructor.
      * @param $processo
      * @param IssbaseRepository $issbaseRepository
-     * @param CalculoService $calculo
+     * @param CalculoService $calculoService
      */
-    public function __construct($processo, IssbaseRepository $issbaseRepository, CalculoService $calculo)
+    public function __construct($processo, IssbaseRepository $issbaseRepository, private readonly CalculoService $calculoService)
     {
         parent::__construct($processo, $issbaseRepository);
-        $this->calculoService = $calculo;
     }
 
     /**

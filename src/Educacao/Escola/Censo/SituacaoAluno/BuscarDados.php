@@ -15,10 +15,6 @@ use Exception;
  */
 class BuscarDados
 {
-    /**
-     * @var Escola
-     */
-    private $oEscola;
     private $aCodigoAlunoAntes = [];
 
     /**
@@ -26,9 +22,8 @@ class BuscarDados
      * @param Censo $oCenso
      * @param Escola $oEscola
      */
-    public function __construct(private Censo $oCenso, Escola $oEscola)
+    public function __construct(private readonly Censo $oCenso, private readonly Escola $oEscola)
     {
-        $this->oEscola = $oEscola;
     }
 
     /**

@@ -51,7 +51,7 @@ class ContaCorrente
     /**
      * @var Atributo[]
      */
-    private $atributos = array();
+    private $atributos = [];
 
     /**
      * @return int

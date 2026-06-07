@@ -416,7 +416,7 @@ final class LancamentoAvaliacaoAluno {
         $oDadosParecerDisciplina            = db_utils::fieldsMemory($rsParecerDisciplina, $iContadorParecer);
         $oParecerDisciplina                 = new stdClass();
         $oParecerDisciplina->iCodigoParecer = $oDadosParecerDisciplina->ed92_i_codigo;
-        $oParecerDisciplina->sDescricao     = urlencode($oDadosParecerDisciplina->ed92_c_descr);
+        $oParecerDisciplina->sDescricao     = urlencode((string) $oDadosParecerDisciplina->ed92_c_descr);
         $aPareceres[]                       = $oParecerDisciplina;
       }
       unset($oParecerDisciplina);
@@ -440,7 +440,7 @@ final class LancamentoAvaliacaoAluno {
         $oDadosLegenda            = db_utils::fieldsMemory($rsLegenda, $iContadorLegenda);
         $oLegenda                 = new stdClass();
         $oLegenda->iCodigoLegenda = $oDadosLegenda->ed91_i_codigo;
-        $oLegenda->sSigla         = urlencode($oDadosLegenda->ed91_sigla);
+        $oLegenda->sSigla         = urlencode((string) $oDadosLegenda->ed91_sigla);
         $aLegendas[]              = $oLegenda;
       }
     }

@@ -58,7 +58,7 @@
      */
     public static function getByCodigo($iCodigoCurso) {
 
-      if (!array_key_exists($iCodigoCurso, CursoRepository::getInstance()->aCurso)) {
+      if (!array_key_exists((string) $iCodigoCurso, CursoRepository::getInstance()->aCurso)) {
         CursoRepository::getInstance()->aCurso[$iCodigoCurso] = new Curso($iCodigoCurso);
       }
       return CursoRepository::getInstance()->aCurso[$iCodigoCurso];

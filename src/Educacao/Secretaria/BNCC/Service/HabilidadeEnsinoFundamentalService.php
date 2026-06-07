@@ -18,7 +18,7 @@ class HabilidadeEnsinoFundamentalService
      * @param ParametrosGlobais $configuracao
      * @param null $ano
      */
-    public function __construct(private ParametrosGlobais $configuracao, private $ano = null)
+    public function __construct(private readonly ParametrosGlobais $configuracao, private $ano = null)
     {
         if (is_null($this->ano)) {
             $this->ano = date('Y');

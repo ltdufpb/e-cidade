@@ -45,7 +45,7 @@ class ProfissionalEscolaRepository extends Repository
      * @return ProfissionalEscola[]
      * @throws Exception
      */
-    public function getProfissionaisAtivos(Escola $escola, DBDate $dataLimiteCenso = null)
+    public function getProfissionaisAtivos(Escola $escola, ?DBDate $dataLimiteCenso = null)
     {
         $where = [];
         if ($dataLimiteCenso) {
@@ -100,7 +100,7 @@ class ProfissionalEscolaRepository extends Repository
      * Filtra os profissionais que não tem ausencia até a data informada
      * @param DBDate $date
      */
-    public function scopeDocentePresente(DBDate $date = null)
+    public function scopeDocentePresente(?DBDate $date = null)
     {
         if (is_null($date)) {
             $this->scopes['docente_presente'] = "

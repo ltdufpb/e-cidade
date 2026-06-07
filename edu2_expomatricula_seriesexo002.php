@@ -60,7 +60,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
   if ($oDaoEduParametros->numrows > 0) {
 
   $oDadosEscola = db_utils::fieldsmemory($rsParametros, 0);
-  if (!strstr($oDadosEscola->ed233_c_database, "/")) {
+  if (!strstr((string) $oDadosEscola->ed233_c_database, "/")) {
   ?>
 
   <table width='100%'>
@@ -69,7 +69,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
      <font color='#FF0000' face='arial'>
       <b>Parâmetro Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
          deve estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
-         Valor atual do parâmetro: <?=trim($oDadosEscola->ed233_c_database) == "" ? "Não informado":
+         Valor atual do parâmetro: <?=trim((string) $oDadosEscola->ed233_c_database) == "" ? "Não informado":
                                      $oDadosEscola->ed233_c_database
                                    ?><br><br></b>
       <input type='button' value='Fechar' onclick='window.close()'>
@@ -82,7 +82,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
 
  }
 
- if (!strstr($oDadosEscola->ed233_c_limitemov, "/")) {
+ if (!strstr((string) $oDadosEscola->ed233_c_limitemov, "/")) {
 
   ?>
   <table width='100%'>
@@ -91,7 +91,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
      <font color='#FF0000' face='arial'>
       <b>Parâmetro Dia/Mês Limite da Movimentação (Procedimentos->Parâmetros)<br>
          deve estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
-         Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?= trim($oDadosEscola->ed233_c_limitemov) == "" ?
+         Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?= trim((string) $oDadosEscola->ed233_c_limitemov) == "" ?
                                                                     "Não informado":$oDadosEscola->ed233_c_limitemov
                                                                   ?><br>
       <input type='button' value='Fechar' onclick='window.close()'>
@@ -104,7 +104,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
 
  }
 
- $aDataBase    = explode("/", $oDadosEscola->ed233_c_database);
+ $aDataBase    = explode("/", (string) $oDadosEscola->ed233_c_database);
  $iDiaDatabase = $aDataBase[0];
  $iMesDatabase = $aDataBase[1];
  if (@!checkdate($iMesDatabase, $iDiaDatabase, $oDadosCalendario->ano_calendario)) {
@@ -130,7 +130,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
 
  }
 
- $aLimiteMov    = explode("/",$oDadosEscola->ed233_c_limitemov);
+ $aLimiteMov    = explode("/",(string) $oDadosEscola->ed233_c_limitemov);
  $iDiaLimiteMov = $aLimiteMov[0];
  $iMesLimiteMov = $aLimiteMov[1];
  if (@!checkdate($iMesLimiteMov, $iDiaLimiteMov, $oDadosCalendario->ano_calendario)) {
@@ -142,7 +142,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
      <font color='#FF0000' face='arial'>
       <b>Parâmetro Dia/Mês Limite da Movimentação (Procedimentos->Parâmetros)<br>
          deve estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e deve ser uma data válida.<br><br>
-         Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?= trim($oDadosEscola->ed233_c_limitemov) == ""?
+         Valor atual do parâmetro Dia/Mês Limite da Movimentação: <?= trim((string) $oDadosEscola->ed233_c_limitemov) == ""?
                                                                     "Não informado" : $oDadosEscola->ed233_c_limitemov
                                                                   ?><br>
          Data Limite da Movimentação: <?= $iDiaLimiteMov."/".$iMesLimiteMov."/".
@@ -172,7 +172,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
 
 if ($sDiretor!= "") {
 
-  $aAssinatura = explode("-", $sDiretor);
+  $aAssinatura = explode("-", (string) $sDiretor);
   $z01_nome    = $aAssinatura[1];
   $sFuncao     = $aAssinatura[0].":";
 
@@ -240,7 +240,7 @@ $head3       = "Calendário: ".$oDadosCalendario->descr_calendario;
 $head4       = "Data Base calculo da idade: ".db_formatar($dDataBaseCalc, 'd');
 $head5       = "Nível de ensino:";
 $head6       = '';
-$aCodEnsinos = explode(",", $iNivelEnsino);
+$aCodEnsinos = explode(",", (string) $iNivelEnsino);
 for ($iCont = 0; $iCont < count($aCodEnsinos); $iCont++) {
 
   $sSql3        = $oDaoEnsino->sql_query("", "ed10_c_descr as descrensino", "", " ed10_i_codigo = $aCodEnsinos[$iCont]");
@@ -1243,7 +1243,7 @@ if ($sImprimeLista == "yes") {
        $oPdf->setfont('arial', '', 7);
        $oPdf->cell(10, 4, $iContador, 0, 0, "C", 0);
        $oPdf->cell(10, 4, $oDadosMatricula->idadealuno, 0, 0, "C", 0);
-       $oPdf->cell(25, 4, trim($oDadosMatricula->ed47_d_nasc) == "" ? "Nao Informado":db_formatar
+       $oPdf->cell(25, 4, trim((string) $oDadosMatricula->ed47_d_nasc) == "" ? "Nao Informado":db_formatar
                    ($oDadosMatricula->ed47_d_nasc, 'd'), 0, 0, "C", 0
                   );
        $oPdf->cell(15, 4, $oDadosMatricula->ed47_i_codigo, 0, 0, "C", 0);

@@ -63,7 +63,7 @@ if ($ed49_i_aluno != "") {
   $linhas4 = pg_num_rows($query4);
   if ($linhas4 == 0) {
     $db_botao = true;
-  } else if (db_getsession("DB_coddepto") != pg_result($query4,0,0)) {
+  } else if (db_getsession("DB_coddepto") != pg_fetch_result($query4,0,0)) {
     $db_botao = false;
   } else {
     $db_botao = true;
@@ -130,12 +130,12 @@ if ($ed49_i_aluno != "") {
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri                                = array("ed49_i_codigo"=>@$ed49_i_codigo,
+   $chavepri                                = ["ed49_i_codigo"=>@$ed49_i_codigo,
                                                     "ed49_i_aluno"=>@$ed49_i_aluno,
                                                     "ed49_i_documentacao"=>@$ed49_i_documentacao,
                                                     "ed02_c_descr"=>@$ed02_c_descr,
                                                     "ed49_t_obs"=>@$ed49_t_obs
-                                                   );
+                                                   ];
    $cliframe_alterar_excluir->chavepri      =$chavepri;
    @$cliframe_alterar_excluir->sql          = $cldocaluno->sql_query("","*","","ed49_i_aluno = $ed49_i_aluno");
    $cliframe_alterar_excluir->campos        = "ed18_c_nome,ed02_c_descr,ed49_t_obs";
@@ -151,7 +151,7 @@ if ($ed49_i_aluno != "") {
    $cliframe_alterar_excluir->tamfontecorpo = 9;
    if ($linhas4 == 0) {
      $cliframe_alterar_excluir->opcoes = 1;
-   } else if (db_getsession("DB_coddepto") != pg_result($query4,0,0)) {
+   } else if (db_getsession("DB_coddepto") != pg_fetch_result($query4,0,0)) {
      $cliframe_alterar_excluir->opcoes = 4;
    }
    $cliframe_alterar_excluir->formulario = false;

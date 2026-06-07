@@ -159,7 +159,7 @@ class Registro20Builder
             $this->registro->setDomingo(0);
 
             foreach ($this->diasLetivo as $diaSemana) {
-                switch (mb_strtoupper($diaSemana)) {
+                switch (mb_strtoupper((string) $diaSemana)) {
                     case "SEGUNDA":
                         $this->registro->setSegundaFeira(1);
                         break;
@@ -316,7 +316,7 @@ class Registro20Builder
         }
 
         $tipoTurma = $this->dadosTurma->getTipoTurma();
-        if (array_key_exists($tipoTurma, self::$deParaModalidadeTurma)) {
+        if (array_key_exists((string) $tipoTurma, self::$deParaModalidadeTurma)) {
             $this->registro->setModalidade(self::$deParaModalidadeTurma[$tipoTurma]);
         }
         $codigoCurso = $this->dadosTurma->getCodigoCurso();
@@ -550,7 +550,7 @@ class Registro20Builder
     private function removerAcentuacao($sString)
     {
 
-        $sString = preg_replace("/[¡¿¬√]/", "A", $sString);
+        $sString = preg_replace("/[¡¿¬√]/", "A", (string) $sString);
         $sString = preg_replace("/[·‡‚„]/", "a", $sString);
 
         $sString = preg_replace("/[…» ]/", "E", $sString);

@@ -34,12 +34,12 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("std/DBDate.php"));
 
 $oGet       = db_utils::postMemory($_GET);
-$aRegencias = array();
+$aRegencias = [];
 
 if (isset($oGet->disciplinas)) {
   $aRegencias = explode(",", $oGet->disciplinas);
 }
-$aMatricula = explode(",", $oGet->alunos);
+$aMatricula = explode(",", (string) $oGet->alunos);
 
 /**
  * Busca os dados informacoes da turma selecionada
@@ -160,7 +160,7 @@ foreach ($aMatricula as $iMatricula) {
    * configurado na tela
    * @var $aDisciplinaParecer
    */
-  $aDisciplinaParecer  = array();
+  $aDisciplinaParecer  = [];
 
   $oPdf->SetFont('arial', '', 8);
 
@@ -204,7 +204,7 @@ foreach ($aMatricula as $iMatricula) {
   $iTamanhoDoQuadroDeParecer   = ($oPdf->w - 15) - (45 + ($iTamanhoColunaPeriodo * ($iNumeroDePeriodosAvaliacao)));
   $oPdf->Cell($iTamanhoDoQuadroDeParecer, 8, "PARECER DESCRITIVO - ANOS INICIAIS", 1, 1, "C");
 
-  $aTotalFaltas = array();
+  $aTotalFaltas = [];
   $oPdf->SetFont('arial', '', 7);
   $iYAntesImprimirDisciplina = $oPdf->GetY();
 

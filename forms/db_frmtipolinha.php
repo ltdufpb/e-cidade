@@ -57,7 +57,7 @@ db_input('ed226_c_descr',40,$Ied226_c_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('N'=>'NÃO','S'=>'SIM');
+$x = ['N'=>'NÃO','S'=>'SIM'];
 db_select('ed226_c_tarifa',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -75,7 +75,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tipolinha.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

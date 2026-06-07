@@ -33,28 +33,28 @@ class cl_conlancam
 
     // cria variaveis de erro
 
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $c70_codlan = 0;
-    var $c70_anousu = 0;
-    var $c70_data_dia = null;
-    var $c70_data_mes = null;
-    var $c70_data_ano = null;
-    var $c70_data = null;
-    var $c70_valor = 0;
+    public $c70_codlan = 0;
+    public $c70_anousu = 0;
+    public $c70_data_dia = null;
+    public $c70_data_mes = null;
+    public $c70_data_ano = null;
+    public $c70_data = null;
+    public $c70_valor = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  c70_codlan = int4 = Código Lançamento
                  c70_anousu = int4 = Exercício
                  c70_data = date = Data
@@ -69,7 +69,7 @@ class cl_conlancam
         //classes dos rotulos dos campos
 
         $this->rotulo = new rotulo("conlancam");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -158,10 +158,10 @@ class cl_conlancam
 
                 return false;
             }
-            $this->c70_codlan = pg_result($result, 0, 0);
+            $this->c70_codlan = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM conlancam_c70_codlan_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $c70_codlan)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $c70_codlan)) {
                 $this->erro_sql = " Campo c70_codlan maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -199,7 +199,7 @@ class cl_conlancam
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Lançamentos Contábeis ($this->c70_codlan) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Lançamentos Contábeis já Cadastrado";
@@ -229,19 +229,19 @@ class cl_conlancam
             $resaco = $this->sql_record($this->sql_query_file($this->c70_codlan));
             if (($resaco != false) || ($this->numrows != 0)) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5217,'$this->c70_codlan','I')");
-                $resac = db_query("insert into db_acount values($acount,760,5217,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,760,5217,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c70_codlan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,760,5218,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,760,5218,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c70_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,760,5219,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,760,5219,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c70_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,760,5839,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,760,5839,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'c70_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -258,10 +258,10 @@ class cl_conlancam
         $this->atualizacampos();
         $sql = " UPDATE conlancam SET ";
         $virgula = "";
-        if (trim($this->c70_codlan) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_codlan"])) {
+        if (trim((string) $this->c70_codlan) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_codlan"])) {
             $sql .= $virgula . " c70_codlan = $this->c70_codlan ";
             $virgula = ",";
-            if (trim($this->c70_codlan) == null) {
+            if (trim((string) $this->c70_codlan) == null) {
                 $this->erro_sql = " Campo Código Lançamento nao Informado.";
                 $this->erro_campo = "c70_codlan";
                 $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_conlancam
                 return false;
             }
         }
-        if (trim($this->c70_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_anousu"])) {
+        if (trim((string) $this->c70_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_anousu"])) {
             $sql .= $virgula . " c70_anousu = $this->c70_anousu ";
             $virgula = ",";
-            if (trim($this->c70_anousu) == null) {
+            if (trim((string) $this->c70_anousu) == null) {
                 $this->erro_sql = " Campo Exercício nao Informado.";
                 $this->erro_campo = "c70_anousu";
                 $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_conlancam
                 return false;
             }
         }
-        if (trim($this->c70_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_data_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["c70_data_dia"] != "")) {
+        if (trim((string) $this->c70_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_data_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["c70_data_dia"] != "")) {
             $sql .= $virgula . " c70_data = '$this->c70_data' ";
             $virgula = ",";
-            if (trim($this->c70_data) == null) {
+            if (trim((string) $this->c70_data) == null) {
                 $this->erro_sql = " Campo Data nao Informado.";
                 $this->erro_campo = "c70_data_dia";
                 $this->erro_banco = "";
@@ -306,7 +306,7 @@ class cl_conlancam
             if (isset($GLOBALS["HTTP_POST_VARS"]["c70_data_dia"])) {
                 $sql .= $virgula . " c70_data = null ";
                 $virgula = ",";
-                if (trim($this->c70_data) == null) {
+                if (trim((string) $this->c70_data) == null) {
                     $this->erro_sql = " Campo Data nao Informado.";
                     $this->erro_campo = "c70_data_dia";
                     $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_conlancam
                 }
             }
         }
-        if (trim($this->c70_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_valor"])) {
+        if (trim((string) $this->c70_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c70_valor"])) {
             $sql .= $virgula . " c70_valor = $this->c70_valor ";
             $virgula = ",";
-            if (trim($this->c70_valor) == null) {
+            if (trim((string) $this->c70_valor) == null) {
                 $this->erro_sql = " Campo Valor do Lançamento nao Informado.";
                 $this->erro_campo = "c70_valor";
                 $this->erro_banco = "";
@@ -344,26 +344,26 @@ class cl_conlancam
             if ($this->numrows > 0) {
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,5217,'$this->c70_codlan','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_codlan"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5217,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,760,5217,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c70_codlan')) . "','$this->c70_codlan'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_anousu"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5218,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,760,5218,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c70_anousu')) . "','$this->c70_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_data"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5219,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,760,5219,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c70_data')) . "','$this->c70_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["c70_valor"])) {
-                        $resac = db_query("insert into db_acount values($acount,760,5839,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,760,5839,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'c70_valor')) . "','$this->c70_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -424,19 +424,19 @@ class cl_conlancam
             if (($resaco != false) || ($this->numrows != 0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,5217,'$c70_codlan','E')");
-                    $resac = db_query("insert into db_acount values($acount,760,5217,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,760,5217,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c70_codlan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,760,5218,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,760,5218,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c70_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,760,5219,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,760,5219,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c70_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,760,5839,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,760,5839,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'c70_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -511,7 +511,7 @@ class cl_conlancam
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:conlancam";
@@ -531,7 +531,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -554,7 +554,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -570,7 +570,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -593,7 +593,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -609,7 +609,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -644,7 +644,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -721,7 +721,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -751,7 +751,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -768,7 +768,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -795,7 +795,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -812,7 +812,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -847,7 +847,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -863,7 +863,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -894,7 +894,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -910,7 +910,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -945,7 +945,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -961,7 +961,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -990,7 +990,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1012,7 +1012,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1065,7 +1065,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1081,7 +1081,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1112,7 +1112,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1141,7 +1141,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1167,7 +1167,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1314,7 +1314,7 @@ class cl_conlancam
 
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1365,7 +1365,7 @@ class cl_conlancam
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1397,7 +1397,7 @@ class cl_conlancam
         return $sql;
     }
 
-    public function sql_query_lancamentos_by_competencia($sCampos_1 = '*', $sCampos_2, $sWhere = null, $sOrderBy = null)
+    public function sql_query_lancamentos_by_competencia($sCampos_1 = '*', $sCampos_2 = null, $sWhere = null, $sOrderBy = null)
     {
 
         if (empty($sCampos_2)) {

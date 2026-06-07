@@ -34,7 +34,7 @@ include(modification("classes/db_abonofalta_classe.php"));
 include(modification("classes/db_diarioavaliacao_classe.php"));
 include(modification("classes/db_regencia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $resultedu         = eduparametros(db_getsession("DB_coddepto"));
 $clabonofalta      = new cl_abonofalta;
 $cldiarioavaliacao = new cl_diarioavaliacao;

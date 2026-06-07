@@ -192,9 +192,7 @@ class RubricaMapeador implements FormularioMapeador
             throw new DBException("Erro ao buscar as informações do sistema.");
         }
 
-        $this->dadosEcidade =\db_utils::makeCollectionFromRecord($rs, function ($dadoEcidade) {
-            return (get_object_vars($dadoEcidade));
-        });
+        $this->dadosEcidade =\db_utils::makeCollectionFromRecord($rs, fn($dadoEcidade) => get_object_vars($dadoEcidade));
     }
 
     public function getColunas()

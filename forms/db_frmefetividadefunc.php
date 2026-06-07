@@ -199,23 +199,23 @@ if ($linhas > 0) {
               if ( DBDate::dataEstaNoIntervalo( $oDataInicioAusencia, $oDataInicioEfetividade, $oDataTerminoEfetividade ) ) {
 
                 $sLicenca .= "{$oDadosAusencia->ed320_descricao} - {$oDataInicioAusencia->convertTo(DBDate::DATA_PTBR)}";
-                continue;
+                break;
               } elseif ( $oDataInicioEfetividade->getTimeStamp() >= $oDataInicioAusencia->getTimeStamp() ) {
 
                 $sLicenca .= "{$oDadosAusencia->ed320_descricao} - {$oDataInicioAusencia->convertTo(DBDate::DATA_PTBR)}";
-                continue;
+                break;
               }
             } else {
 
               $aPeriodoEfetividadeAux = DBDate::getDatasNoIntervalo( $oDataInicioEfetividade, $oDataTerminoEfetividade );
-              $aPeriodoEfetividade    = array();
+              $aPeriodoEfetividade    = [];
 
               foreach ( $aPeriodoEfetividadeAux as $oDataEfetividade ) {
                 $aPeriodoEfetividade[] = $oDataEfetividade->convertTo(DBDate::DATA_PTBR);
               }
 
               $aPeriodoLicencaAux = DBDate::getDatasNoIntervalo( $oDataInicioAusencia, $oDataTerminoAusencia );
-              $aPeriodoLicenca    = array();
+              $aPeriodoLicenca    = [];
 
               foreach ( $aPeriodoLicencaAux as $oDataLicenca ) {
                 $aPeriodoLicenca[] = $oDataLicenca->convertTo(DBDate::DATA_PTBR);
@@ -228,7 +228,7 @@ if ($linhas > 0) {
                 $sLicenca .= "{$oDadosAusencia->ed320_descricao} - {$oDataInicioAusencia->convertTo(DBDate::DATA_PTBR)}";
                 $sLicenca .= " à {$oDataTerminoAusencia->convertTo(DBDate::DATA_PTBR)}";
 
-                continue;
+                break;
               }
             }
 
@@ -309,7 +309,7 @@ if ($linhas > 0) {
     </td>
     <td align="center">
       <textarea name="ed97_t_obs" id="ed97_t_obs" rows="1" cols="30" style="<?=$sStyle?>" <?=$sDisabled?>>
-        <?= (isset($ed97_t_obs)) ? $ed97_t_obs : '' ?>
+        <?= $ed97_t_obs ?? '' ?>
       </textarea>
     </td>
   </tr>

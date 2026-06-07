@@ -128,9 +128,9 @@ if ($linhas1 > 0) {
   <td>
    <?php 
    if(isset($ed34_i_qtdperiodo) && $ed34_i_qtdperiodo>0 && $discglob!=0){
-    $x = array('OB'=>'OBRIGATÓRIA');
+    $x = ['OB'=>'OBRIGATÓRIA'];
    }else{
-    $x = array('OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL');
+    $x = ['OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL'];
    }
    db_select('ed34_c_condicao',$x,true,$db_opcao,"onchange='js_lancarHistorico(this.value)'");
    ?>
@@ -143,7 +143,7 @@ if ($linhas1 > 0) {
    </td>
    <td>
      <?php
-       $aOpcoes = array('f'=>'NÃO', 't'=>'SIM');
+       $aOpcoes = ['f'=>'NÃO', 't'=>'SIM'];
        db_select('ed34_lancarhistorico',$aOpcoes,true,$db_opcao,"", 'ed34_lancarhistorico');
      ?>
    </td>
@@ -170,7 +170,7 @@ if ($linhas1 > 0) {
    $campos  = "ed34_i_codigo, ed34_i_base, ed31_c_descr, ed34_i_serie, ed11_c_descr, ed34_i_disciplina, ed232_c_descr";
    $campos .= ", ed34_i_qtdperiodo, ed34_lancarhistorico, ed34_i_chtotal, ed293_descr as ed232_areaconhecimento";
    $campos .= ", case when ed34_c_condicao='OB' then 'OBRIGATÒRIA' else 'OPCIONAL' end as ed34_c_condicao";
-   $chavepri= array("ed34_i_codigo"        => @$ed34_i_codigo,
+   $chavepri= ["ed34_i_codigo"        => @$ed34_i_codigo,
                     "ed31_c_descr"         => @$ed31_c_descr,
                     "ed34_i_disciplina"    => @$ed34_i_disciplina,
                     "ed232_c_descr"        => @$ed232_c_descr,
@@ -179,7 +179,7 @@ if ($linhas1 > 0) {
                     "ed34_i_qtdperiodo"    => @$ed34_i_qtdperiodo,
                     "ed34_i_chtotal"       => @$ed34_i_chtotal,
                     "ed34_c_condicao"      => @$ed34_c_condicao,
-                    "ed34_lancarhistorico" => @$ed34_lancarhistorico);
+                    "ed34_lancarhistorico" => @$ed34_lancarhistorico];
 
    $cliframe_alterar_excluir->chavepri      = $chavepri;
    $sWhere = " ed34_i_base = $ed34_i_base AND ed34_i_serie = $ed34_i_serie";

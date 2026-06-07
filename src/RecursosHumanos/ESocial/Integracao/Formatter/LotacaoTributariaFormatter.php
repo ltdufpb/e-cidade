@@ -20,6 +20,7 @@ class LotacaoTributariaFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -37,7 +38,7 @@ class LotacaoTributariaFormatter extends Formatter
             }
 
             if (!empty($dadoLotacao->dadosLotacao->tpLotacao)) {
-                if (in_array($dadoLotacao->dadosLotacao->tpLotacao, array('01', '10', '21', '24', '90', '91'))) {
+                if (in_array($dadoLotacao->dadosLotacao->tpLotacao, ['01', '10', '21', '24', '90', '91'])) {
                     unset($dadoLotacao->dadosLotacao->tpInsc);
                     unset($dadoLotacao->dadosLotacao->nrInsc);
                 }

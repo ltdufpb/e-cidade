@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoMatricula  = db_utils::getdao("matricula");
 $oDaoCalendario = db_utils::getdao("calendario");
 $db_opcao       = 1;
@@ -151,11 +151,11 @@ function GetDadosEscola($iModulo) {
 
         $oCalendario = CalendarioRepository::getCalendarioByCodigo($calendario);
         $oEscola     = EscolaRepository::getEscolaByCodigo($iEscola);
-        $aEtapas     = array($etapa);
+        $aEtapas     = [$etapa];
 
         if ($etapa == 0) {
 
-          $aEtapas   = array();
+          $aEtapas   = [];
           $sCampos   = "distinct (ed11_i_codigo), ed11_i_ensino, ed11_i_sequencia";
           $sWhere    = "     ed57_i_escola     = $iEscola ";
           $sWhere   .= " and ed57_i_calendario = $calendario ";

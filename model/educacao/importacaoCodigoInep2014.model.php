@@ -36,10 +36,10 @@ class importacaoCodigoInep2014 extends importacaoCenso {
   function atualizaCodigoInepTurma($oLinha) {
 
     $sNomeTurmaCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_turma);
-    $iTipoAtendimento    = trim($oLinha->tipo_atendimento);
+    $iTipoAtendimento    = trim((string) $oLinha->tipo_atendimento);
     $iCodTurma           = $oLinha->codigo_turma_entidade_escola ?? '';
-    $iModalidade         = trim($oLinha->modalidade_turma);
-    $iEtapa              = trim($oLinha->etapa_ensino_turma);
+    $iModalidade         = trim((string) $oLinha->modalidade_turma);
+    $iEtapa              = trim((string) $oLinha->etapa_ensino_turma);
 
     if ($oLinha->tipo_atendimento == 0 || $oLinha->tipo_atendimento == 1 
         || $oLinha->tipo_atendimento == 2 || $oLinha->tipo_atendimento == 3) {
@@ -198,7 +198,7 @@ class importacaoCodigoInep2014 extends importacaoCenso {
 
         if ($this->lImportarAlunoAtivo) { 
 
-          if (trim($aDadosAluno[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+          if (trim((string) $aDadosAluno[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
 
             $sMsg  = "Aluno [".$aDadosAluno[$iCont]->ed47_c_codigoinep."] ".$aDadosAluno[$iCont]->ed47_v_nome.": aluno";
             $sMsg .= " não está mais vinculado a esta escola.\n";      
@@ -209,7 +209,7 @@ class importacaoCodigoInep2014 extends importacaoCenso {
 
         } //fecha o if $this->lImportarAlunoAtivo
 
-        if ($oLinha->identificacao_unica_aluno != "" && $oLinha->identificacao_unica_aluno != trim($aDadosAluno[$iCont]->ed47_c_codigoinep)) {                      
+        if ($oLinha->identificacao_unica_aluno != "" && $oLinha->identificacao_unica_aluno != trim((string) $aDadosAluno[$iCont]->ed47_c_codigoinep)) {                      
           $oDaoAluno->ed47_c_codigoinep = $oLinha->identificacao_unica_aluno;                 
         }
 
@@ -236,6 +236,7 @@ class importacaoCodigoInep2014 extends importacaoCenso {
    * (non-PHPdoc)
    * @see importacaoCenso::importarArquivo()
    */
+  #[\Override]
   function importarArquivo() {
 
     $sMsgErro = "Importação de Arquivo Censo abortada!\n";    
@@ -306,6 +307,7 @@ class importacaoCodigoInep2014 extends importacaoCenso {
    * @param boolean $lbuscaNome = true busca pelo nome 
    *                              false busca pelo codigo inep do aluno
    */
+  #[\Override]
   function getDadosAluno($oLinha, $lPesquisaInep = false) {
 
     $oDaoAluno    = db_utils::getdao('aluno');        
@@ -361,9 +363,10 @@ class importacaoCodigoInep2014 extends importacaoCenso {
    * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
    * @return object com os dados do rechumano caso tiver registro, caso contrario retorna null
    */
+  #[\Override]
   function getMatriculasRechumano($oLinha) {
 
-    $iCodDocenteEsc  = trim($oLinha->codigo_docente_entidade_escola);
+    $iCodDocenteEsc  = trim((string) $oLinha->codigo_docente_entidade_escola);
     $oDaoRechumano   = db_utils::getdao('rechumano');
     $sCampos         = 'rechumano.*, ed228_i_paisonu, escola.ed18_c_codigoinep as vinculo_escola, ';
     $sCampos        .= 'case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome';

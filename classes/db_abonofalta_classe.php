@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE abonofalta
 class cl_abonofalta {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed80_i_codigo = 0;
-   var $ed80_i_diarioavaliacao = 0;
-   var $ed80_i_justificativa = 0;
-   var $ed80_i_numfaltas = 0;
+   public $ed80_i_codigo = 0;
+   public $ed80_i_diarioavaliacao = 0;
+   public $ed80_i_justificativa = 0;
+   public $ed80_i_numfaltas = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed80_i_codigo = int8 = Código
                  ed80_i_diarioavaliacao = int8 = Período de Avaliação
                  ed80_i_justificativa = int8 = Justificativa Legal
                  ed80_i_numfaltas = int4 = Faltas Abonadas
                  ";
    //funcao construtor da classe
-   function cl_abonofalta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abonofalta");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -113,10 +113,10 @@ class cl_abonofalta {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed80_i_codigo = pg_result($result,0,0);
+       $this->ed80_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from abonofalta_ed80_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed80_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed80_i_codigo)){
          $this->erro_sql = " Campo ed80_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -150,7 +150,7 @@ class cl_abonofalta {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Abono para as faltas ($this->ed80_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Abono para as faltas já Cadastrado";
@@ -174,13 +174,13 @@ class cl_abonofalta {
      $resaco = $this->sql_record($this->sql_query_file($this->ed80_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1008697,'$this->ed80_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1010125,1008697,'','".AddSlashes(pg_result($resaco,0,'ed80_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010125,1008698,'','".AddSlashes(pg_result($resaco,0,'ed80_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010125,1008699,'','".AddSlashes(pg_result($resaco,0,'ed80_i_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010125,1008700,'','".AddSlashes(pg_result($resaco,0,'ed80_i_numfaltas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010125,1008697,'','".AddSlashes(pg_fetch_result($resaco,0,'ed80_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010125,1008698,'','".AddSlashes(pg_fetch_result($resaco,0,'ed80_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010125,1008699,'','".AddSlashes(pg_fetch_result($resaco,0,'ed80_i_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010125,1008700,'','".AddSlashes(pg_fetch_result($resaco,0,'ed80_i_numfaltas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -189,10 +189,10 @@ class cl_abonofalta {
       $this->atualizacampos();
      $sql = " update abonofalta set ";
      $virgula = "";
-     if(trim($this->ed80_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_codigo"])){
+     if(trim((string) $this->ed80_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_codigo"])){
        $sql  .= $virgula." ed80_i_codigo = $this->ed80_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed80_i_codigo) == null ){
+       if(trim((string) $this->ed80_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed80_i_codigo";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_abonofalta {
          return false;
        }
      }
-     if(trim($this->ed80_i_diarioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_diarioavaliacao"])){
+     if(trim((string) $this->ed80_i_diarioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_diarioavaliacao"])){
        $sql  .= $virgula." ed80_i_diarioavaliacao = $this->ed80_i_diarioavaliacao ";
        $virgula = ",";
-       if(trim($this->ed80_i_diarioavaliacao) == null ){
+       if(trim((string) $this->ed80_i_diarioavaliacao) == null ){
          $this->erro_sql = " Campo Período de Avaliação nao Informado.";
          $this->erro_campo = "ed80_i_diarioavaliacao";
          $this->erro_banco = "";
@@ -215,17 +215,17 @@ class cl_abonofalta {
          return false;
        }
      }
-     if(trim($this->ed80_i_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_justificativa"])){
-        if(trim($this->ed80_i_justificativa)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_justificativa"])){
+     if(trim((string) $this->ed80_i_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_justificativa"])){
+        if(trim((string) $this->ed80_i_justificativa)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_justificativa"])){
            $this->ed80_i_justificativa = "null" ;
         }
        $sql  .= $virgula." ed80_i_justificativa = $this->ed80_i_justificativa ";
        $virgula = ",";
      }
-     if(trim($this->ed80_i_numfaltas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_numfaltas"])){
+     if(trim((string) $this->ed80_i_numfaltas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_numfaltas"])){
        $sql  .= $virgula." ed80_i_numfaltas = $this->ed80_i_numfaltas ";
        $virgula = ",";
-       if(trim($this->ed80_i_numfaltas) == null ){
+       if(trim((string) $this->ed80_i_numfaltas) == null ){
          $this->erro_sql = " Campo Faltas Abonadas nao Informado.";
          $this->erro_campo = "ed80_i_numfaltas";
          $this->erro_banco = "";
@@ -243,17 +243,17 @@ class cl_abonofalta {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008697,'$this->ed80_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1010125,1008697,'".AddSlashes(pg_result($resaco,$conresaco,'ed80_i_codigo'))."','$this->ed80_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010125,1008697,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed80_i_codigo'))."','$this->ed80_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_diarioavaliacao"]))
-           $resac = db_query("insert into db_acount values($acount,1010125,1008698,'".AddSlashes(pg_result($resaco,$conresaco,'ed80_i_diarioavaliacao'))."','$this->ed80_i_diarioavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010125,1008698,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed80_i_diarioavaliacao'))."','$this->ed80_i_diarioavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_justificativa"]))
-           $resac = db_query("insert into db_acount values($acount,1010125,1008699,'".AddSlashes(pg_result($resaco,$conresaco,'ed80_i_justificativa'))."','$this->ed80_i_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010125,1008699,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed80_i_justificativa'))."','$this->ed80_i_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed80_i_numfaltas"]))
-           $resac = db_query("insert into db_acount values($acount,1010125,1008700,'".AddSlashes(pg_result($resaco,$conresaco,'ed80_i_numfaltas'))."','$this->ed80_i_numfaltas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010125,1008700,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed80_i_numfaltas'))."','$this->ed80_i_numfaltas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -298,13 +298,13 @@ class cl_abonofalta {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008697,'$ed80_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1010125,1008697,'','".AddSlashes(pg_result($resaco,$iresaco,'ed80_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010125,1008698,'','".AddSlashes(pg_result($resaco,$iresaco,'ed80_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010125,1008699,'','".AddSlashes(pg_result($resaco,$iresaco,'ed80_i_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010125,1008700,'','".AddSlashes(pg_result($resaco,$iresaco,'ed80_i_numfaltas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010125,1008697,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed80_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010125,1008698,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed80_i_diarioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010125,1008699,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed80_i_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010125,1008700,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed80_i_numfaltas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from abonofalta
@@ -364,7 +364,7 @@ class cl_abonofalta {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:abonofalta";
@@ -403,7 +403,7 @@ class cl_abonofalta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,7 +436,7 @@ class cl_abonofalta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
