@@ -57,7 +57,6 @@ class Termo extends \BaseClassRepository
      */
     private $persistPropagation;
 
-    #[\Override]
     protected static $oInstance;
 
     private $scopes;

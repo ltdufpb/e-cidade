@@ -46,7 +46,6 @@ final class OcorrenciaFalta extends Ocorrencia {
    * Tipo da ocorrencia;
    * @var integer
    */
-  #[\Override]
   protected $iTipo = 1;
   
   /**

@@ -39,7 +39,6 @@ class Atributo extends \BaseClassRepository
     /**
      * @var Atributo
      */
-    #[\Override]
     protected static $oInstance;
 
 

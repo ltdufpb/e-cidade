@@ -54,7 +54,6 @@ class LancamentoAuxiliarArrecadacaoReceita extends LancamentoAuxiliarBase implem
      * Complemento do lancamento
      * @var string
      */
-    #[\Override]
     protected $sObservacao;
 
     /**

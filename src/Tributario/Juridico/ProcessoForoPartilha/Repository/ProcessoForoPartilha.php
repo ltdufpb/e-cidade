@@ -51,7 +51,6 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
     /**
      * @var ProcessoForoPartilha
      */
-    #[\Override]
     protected static $oInstance;
 
     /**

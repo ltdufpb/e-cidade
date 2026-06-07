@@ -14,7 +14,6 @@ class Rescisao extends \BaseClassRepository
     /**
      * @var Rescisao
      */
-    #[\Override]
     protected static $oInstance;
 
 

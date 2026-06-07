@@ -35,7 +35,6 @@ class importacaoCenso2016 extends importacaoCenso2015
      * Propriedade que guarda a coluna que contem o nome da escola no registro 00 do layout
      * @var int
      */
-    #[\Override]
     protected $iColunaNomeEscola = 9;
 
     /**

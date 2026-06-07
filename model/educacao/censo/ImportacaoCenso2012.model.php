@@ -31,7 +31,6 @@ require_once(modification('model/educacao/importacaoCenso.model.php'));
 class ImportacaoCenso2012 extends importacaoCenso
 {
 
-    #[\Override]
     protected $sCampoChave = 'tipo_registro';
 
     /**

@@ -34,7 +34,6 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
   private   $sDadosDocente          = '';
   private   $oExportacaoCenso       = '';
-  #[\Override]
   protected $aEtapasCensoTurma      = [1, 2, 3, 65];
   protected static $aCursosFormacao = [];
 

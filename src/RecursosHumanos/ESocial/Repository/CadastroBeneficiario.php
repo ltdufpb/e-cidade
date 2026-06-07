@@ -42,7 +42,6 @@ use InstituicaoRepository;
  */
 class CadastroBeneficiario extends \BaseClassRepository
 {
-    #[\Override]
     protected static $oInstance;
 
     /**

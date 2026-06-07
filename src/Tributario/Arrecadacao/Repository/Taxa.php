@@ -45,7 +45,6 @@ class Taxa extends \BaseClassRepository
      * manter apenas as referências da classe atual
      * @var Taxa
      */
-    #[\Override]
     protected static $oInstance;
 
     /**

@@ -45,7 +45,6 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
      * @var RecuperacaoDiasLetivos
      * @access protected
      */
-    #[\Override]
     protected static $oInstance;
 
     /**

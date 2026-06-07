@@ -36,7 +36,6 @@ class DefaultSession extends Session
     /**
      * @var DefaultSession
      */
-    #[\Override]
     public static $instance;
 
     /**

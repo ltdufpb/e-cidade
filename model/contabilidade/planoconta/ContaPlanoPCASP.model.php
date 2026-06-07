@@ -67,7 +67,6 @@ class ContaPlanoPCASP extends ContaPlano
     /**
      * @var bool
      */
-    #[\Override]
     protected $saldoContinuo = false;
 
     /**

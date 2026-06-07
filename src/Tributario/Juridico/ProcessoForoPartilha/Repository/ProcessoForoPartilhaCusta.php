@@ -39,7 +39,6 @@ class ProcessoForoPartilhaCusta extends \BaseClassRepository
     /**
      * @var ProcessoForoPartilhaCustas
      */
-    #[\Override]
     protected static $oInstance;
 
     /**

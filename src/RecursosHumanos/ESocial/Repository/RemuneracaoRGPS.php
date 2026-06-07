@@ -44,7 +44,6 @@ use InstituicaoRepository;
  */
 class RemuneracaoRGPS extends \BaseClassRepository
 {
-    #[\Override]
     protected static $oInstance;
 
     /**

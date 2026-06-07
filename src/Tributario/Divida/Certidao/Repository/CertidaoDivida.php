@@ -45,7 +45,6 @@ class CertidaoDivida extends \BaseClassRepository
     /** @var bool */
     private $persistPropagation;
 
-    #[\Override]
     protected static $oInstance;
 
     /**

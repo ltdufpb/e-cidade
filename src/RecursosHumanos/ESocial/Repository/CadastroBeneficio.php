@@ -41,7 +41,6 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
  */
 class CadastroBeneficio extends \BaseClassRepository
 {
-    #[\Override]
     protected static $oInstance;
 
     /**

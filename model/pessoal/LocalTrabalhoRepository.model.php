@@ -30,7 +30,6 @@ class LocalTrabalhoRepository extends BaseClassRepository
     /**
      * @var LocalTrabalhoRepository
      */
-    #[\Override]
     protected static $oInstance;
 
     private $locaisTrabalhoServidor = [];

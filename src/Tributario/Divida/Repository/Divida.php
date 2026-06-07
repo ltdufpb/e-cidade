@@ -43,7 +43,6 @@ use Exception;
  */
 class Divida extends \BaseClassRepository implements TermoRepositoryInterface
 {
-    #[\Override]
     protected static $oInstance;
 
     protected $scopes = [];

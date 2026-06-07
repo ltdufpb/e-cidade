@@ -62,7 +62,6 @@ class MaterialGrupo extends DBEstruturaValor  {
    * Descrição do Tipo de Estrutural
    * @var string
    */
-  #[\Override]
   protected $sTipoEstrutural = 'Grupo/Subgrupo';
 
   /**

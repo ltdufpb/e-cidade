@@ -47,7 +47,6 @@ class ProcessoForo extends \BaseClassRepository
     /**
      * @var ProcessoForo
      */
-    #[\Override]
     protected static $oInstance;
 
     /**

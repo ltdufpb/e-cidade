@@ -39,7 +39,6 @@ use Exception;
  */
 class InicialNome extends \BaseClassRepository
 {
-    #[\Override]
     protected static $oInstance;
 
     /**

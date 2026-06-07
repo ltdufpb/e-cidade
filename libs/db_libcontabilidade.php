@@ -1003,7 +1003,6 @@ class cl_translan extends cl_contranslan
     public $arr_seqtranslr = null;
     public $coddoc = null;
     public $sql = null;
-    #[\Override]
     public $numrows = null;
     public $result = null;
     public $conta_emp = null; //variavel usada no pagamento de RP

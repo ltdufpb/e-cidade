@@ -29,7 +29,6 @@
 class importacaoCenso2015 extends ImportacaoCenso2012
 {
 
-    #[\Override]
     protected $sCampoChave = 'tipo_registro';
 
     private $iCodigoEscola = null;

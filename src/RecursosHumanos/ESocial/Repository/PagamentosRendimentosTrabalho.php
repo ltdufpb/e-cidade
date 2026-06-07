@@ -45,7 +45,6 @@ use Exception;
  */
 class PagamentosRendimentosTrabalho extends BaseClassRepository
 {
-    #[\Override]
     protected static $oInstance;
 
     /**
