@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ $oParametrosJuridico = $aParametrosJuridico[0];
   <fieldset>
     <legend>Relatórios - Reemite Petição - Parcelamento</legend>
     <table class="form-container">
-    <? 
+    <?php  
       if ( ( isset($oPost->inicial) && !empty($oPost->inicial) ) &&  isset($oPost->emite) ) {
         
         $rsInicial       = $clinicial->sql_record( $clinicial->sql_query_file($inicial,"1", null) );
@@ -137,18 +137,18 @@ $oParametrosJuridico = $aParametrosJuridico[0];
     ?>
       <tr>
         <td>
-          <?db_ancora('Petições:','js_pesquisa(true);',$db_opcao);?>
+          <?php db_ancora('Petições:','js_pesquisa(true);',$db_opcao);?>
         </td>
         <td>
-		      <? db_input('v60_peticao',8,$Iv60_peticao,true,'text',$db_opcao,"onchange='js_pesquisa(false);'")?>
-		      <? db_input('inicial',8,$Iv60_inicial,true,'hidden',$db_opcao)?>
+		      <?php  db_input('v60_peticao',8,$Iv60_peticao,true,'text',$db_opcao,"onchange='js_pesquisa(false);'")?>
+		      <?php  db_input('inicial',8,$Iv60_inicial,true,'hidden',$db_opcao)?>
         </td>
       </tr>
     </table>
   </fieldset>
-  <input  name="emite" id="emite" type="submit" value="Emitir" <? echo $db_opcao == 3 ? "disabled" : ""; ?> >
+  <input  name="emite" id="emite" type="submit" value="Emitir" <?php  echo $db_opcao == 3 ? "disabled" : ""; ?> >
 </form>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -190,7 +190,7 @@ function js_mostra1(chave1, chave2){
 </script>
 
 
-<?
+<?php 
 if ( isset($ordem) ) {
 	
   echo " <script>      \n";

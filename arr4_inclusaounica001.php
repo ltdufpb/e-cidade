@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -84,10 +84,10 @@ $oGet  = db_utils::postMemory($_GET);
               <?php if($oGet->tipo == "individual") {?>
                <tr>
                   <td nowrap="nowrap" width="150">
-                    <b><? db_ancora ( "CGM :", "js_pesquisacgm(true)", 1 )?></b>
+                    <b><?php  db_ancora ( "CGM :", "js_pesquisacgm(true)", 1 )?></b>
                   </td>
                   <td>
-                    <?
+                    <?php 
                       db_input ( "z01_numcgm", 10, "", true, "text", 1, " onchange='js_pesquisacgm(false);' " );
                       db_input ( "z01_nome", 40, "", true, "text", 3 );
                     ?>
@@ -97,10 +97,10 @@ $oGet  = db_utils::postMemory($_GET);
 
               <tr>
                 <td>
-                  <b><? db_ancora("Matricula :",' js_matri(true); ',1); ?></b>
+                  <b><?php  db_ancora("Matricula :",' js_matri(true); ',1); ?></b>
                 </td>
                 <td>
-                  <?
+                  <?php 
                     db_input('j01_matric', 10, 0, true, 'text', 1, "onchange='js_matri(false)'");
                     //db_input('z01_nome'  , 40, 0, true, 'text', 3, "");
                   ?>
@@ -110,11 +110,11 @@ $oGet  = db_utils::postMemory($_GET);
               <tr>
                 <td>
                  <b>
-                   <?db_ancora("Inscrição :",' js_inscr(true); ',1); ?>
+                   <?php db_ancora("Inscrição :",' js_inscr(true); ',1); ?>
                  </b>
                 </td>
                 <td>
-                 <?
+                 <?php 
                   db_input('q02_inscr',10,"",true,'text',1,"onchange='js_inscr(false)'");
                   //db_input('z01_nome',40,0,true,'text',3,"");
                  ?>
@@ -149,7 +149,7 @@ $oGet  = db_utils::postMemory($_GET);
 
 
 
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),

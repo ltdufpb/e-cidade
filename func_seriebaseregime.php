@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrotulo->label("ed11_c_descr");
        <?=$Led11_i_codigo?>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed11_i_codigo",20,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
+       <?php db_input("ed11_i_codigo",20,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
       </td>
      </tr>
      <tr>
@@ -63,7 +63,7 @@ $clrotulo->label("ed11_c_descr");
        <?=$Led11_c_descr?>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
+       <?php db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
       </td>
      </tr>
      <tr>
@@ -79,7 +79,7 @@ $clrotulo->label("ed11_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $condicao = " ed11_i_ensino = $codensino AND ed223_i_regimemat = $codregime";
    if(isset($inicial)){
     $result1 = $clserieregimemat->sql_record($clserieregimemat->sql_query("","ed223_i_ordenacao as seq",""," $condicao AND ed11_i_codigo = $inicial "));

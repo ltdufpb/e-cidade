@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,23 +86,23 @@ if (count($_POST ) > 0) {
 						
 						
 						<tr>
-							<td><?
+							<td><?php 
 							db_ancora($Lz01_nome,' js_cgm(true); ',1);
 							?> 
 							<input type='hidden' id='sPesquisar' name='sPesquisar' />
 							</td>
-							<td><?
+							<td><?php 
 							db_input('z01_numcgm', 10, $Iz01_numcgm,true,'text',1,"class='pesquisa' onchange='js_cgm(false);js_Limpa(this.value, this.id);'", 'chave_z01_numcgm');
 							db_input('z01_nome',60,0,true,'text',3,"class='label'","z01_nomecgm");
 							?>
 							</td>
 						</tr>
 						<tr>
-							<td><?
+							<td><?php 
 							db_ancora($Lj01_matric,' js_matri(true); ',1);
 							?>
 							</td>
-							<td><?
+							<td><?php 
 							db_input('k00_matric',10,$Ij01_matric,true,'text',1,"class='pesquisa' onchange='js_matri(false);js_Limpa(this.value, this.id);'", 'chave_k00_matric');
 							db_input('z01_nome',60,0, true,'text',3,"class='label'","z01_nomematri");
 							?>
@@ -110,11 +110,11 @@ if (count($_POST ) > 0) {
 						</tr>
 
 						<tr>
-							<td><?
+							<td><?php 
 							db_ancora($Lq02_inscr,' js_inscr(true); ',1);
 							?>
 							</td>
-							<td><?
+							<td><?php 
 							db_input('k00_inscr', 10, $Iq02_inscr,true,'text',1,"class='pesquisa' onchange='js_inscr(false);js_Limpa(this.value, this.id);'", 'chave_k00_inscr');
 							db_input('z01_nome', 60, 0          ,true,'text',3,"class='label'","z01_nomeinscr");
 							?>
@@ -127,7 +127,7 @@ if (count($_POST ) > 0) {
 							<td width="4%" align="left" nowrap title="<?=$Tk20_codigo?>"><strong>Código
 									do Cancelamento:</strong>
 							</td>
-							<td width="96%" align="left" nowrap><?
+							<td width="96%" align="left" nowrap><?php 
 							db_input("k20_codigo", 10, $Ik20_codigo, true,"text", 4, "", "chave_k20_codigo");
 							?>
 							</td>
@@ -136,16 +136,16 @@ if (count($_POST ) > 0) {
 							<td width="4%" align="left" nowrap title="<?=$Tk20_data?>"><strong>Data
 									do Cancelamento:</strong>
 							</td>
-							<td width="96%" align="left" nowrap><?
+							<td width="96%" align="left" nowrap><?php 
 							//db_input("k20_data",10,$Ik20_data,true,"text",1,"","chave_k20_data");
 							db_inputdata("k20_data", null, null, null, true, null, 1, null, 'chave_k20_data' )
-							?> à <? db_inputdata("k20_dataFim", null, null, null, true, null, 1, null, 'chave_k20_dataFim' )?>
+							?> à <?php  db_inputdata("k20_dataFim", null, null, null, true, null, 1, null, 'chave_k20_dataFim' )?>
 							</td>
 						</tr>
 						<tr>
 							<td width="4%" align="left" nowrap title="<?=$Tk20_descr?>"><?=$Lk20_descr?>
 							</td>
-							<td width="96%" align="left" nowrap><?db_input("k20_descr", 74, $Ik20_descr, true, "text", 4, "", "chave_k20_descr");?>
+							<td width="96%" align="left" nowrap><?php db_input("k20_descr", 74, $Ik20_descr, true, "text", 4, "", "chave_k20_descr");?>
 							</td>
 						</tr>
 						<tr>
@@ -167,7 +167,7 @@ if (count($_POST ) > 0) {
 			</td>
 		</tr>
 		<tr>
-			<td align="center" valign="top"><?
+			<td align="center" valign="top"><?php 
 			if (!isset($pesquisa_chave)) {
 
 			  $sql  = "select distinct                                                                                               ";
@@ -261,7 +261,7 @@ if (count($_POST ) > 0) {
 </html>
 
 
-<?
+<?php 
 if(!isset($pesquisa_chave)){
 
   echo "<script>";

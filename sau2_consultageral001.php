@@ -56,7 +56,7 @@ require_once(modification('dbforms/db_funcoes.php'));
                   <td>
                     <input type='checkbox' id='ck1' value='1' name='opcoes' checked>
                     <label for='ck1'>Documentos</label>
-                    <?
+                    <?php 
                     db_input('z01_i_cgsund', 10, '', true, 'hidden', 3, '');
                     ?>
                   </td>
@@ -109,14 +109,14 @@ require_once(modification('dbforms/db_funcoes.php'));
                     <label for='ck9'>Hiperdia</label>
                   </td>
                 </tr>
-                <? if (db_permissaomenu(date('Y'), db_getsession('DB_modulo'), 8813) == 'true') { ?>
+                <?php  if (db_permissaomenu(date('Y'), db_getsession('DB_modulo'), 8813) == 'true') { ?>
                 <tr>
                   <td>
                     <input type='checkbox' id='ck10' value='10' name='opcoes' checked>
                     <label for='ck10'>CID's</label>
                   </td>
                 </tr>
-                <?}?>
+                <?php }?>
               </table>  
             </fieldset>
           </td>
@@ -126,11 +126,11 @@ require_once(modification('dbforms/db_funcoes.php'));
                 <tr>
                   <td><b>Inicio:</b></td>
                   <td>
-                    <? db_inputdata('dIni',@$dia1,@$mes1,@$ano1,true,'text',1,"") ?>
+                    <?php  db_inputdata('dIni',@$dia1,@$mes1,@$ano1,true,'text',1,"") ?>
                   </td>
                   <td><b>Fim:</b></td>
                   <td>
-                    <? db_inputdata('dFim',@$dia2,@$mes2,@$ano2,true,'text',1,"") ?>
+                    <?php  db_inputdata('dFim',@$dia2,@$mes2,@$ano2,true,'text',1,"") ?>
                   </td>
                 </tr>
               </table>
@@ -141,7 +141,7 @@ require_once(modification('dbforms/db_funcoes.php'));
                 <tr>
                   <td><b>Tipo:</b></td>
                   <td>
-                    <?
+                    <?php 
                       $aX = array('1'=>'Analitico', '2'=>'Sintetico');
                       db_select('iTipo', $aX, true, 1, '');
                     ?>

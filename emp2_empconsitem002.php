@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ if(isset($newsql) && $newsql=="true"){
      <tr>
      <td align="center" nowrap wrap="false"> 
       Período:
-      <?  db_inputdata('dt1',@$dia,@$mes,@$ano,true,'text',1,"");   		          
+      <?php   db_inputdata('dt1',@$dia,@$mes,@$ano,true,'text',1,"");   		          
           echo " a ";
           db_inputdata('dt2',@$dia,@$mes,@$ano,true,'text',1,"");
        ?>
@@ -97,7 +97,7 @@ if(isset($newsql) && $newsql=="true"){
   <!---  end filtro --->
   <tr> 
     <td align="center" valign="top"> 
-      <?//---
+      <?php //---
         $data1=0;
         $data2=0;
         @$data1= "$dt1_ano-$dt1_mes-$dt1_dia";
@@ -112,7 +112,7 @@ if(isset($newsql) && $newsql=="true"){
 	$campos=" distinct e60_numemp,e60_codemp,e60_emiss,e60_vencim,z01_nome,e60_vlremp,e60_vlrliq,e60_vlrpag,e60_vlranu";
 	$sql = "";
 	if (isset($e60_numemp) and $e60_numemp!=""){  
-	   ?><script> parent.js_consulta003('<?=$e60_numemp ?>'); </script> <?
+	   ?><script> parent.js_consulta003('<?=$e60_numemp ?>'); </script> <?php 
 		 flush();
 	   exit;
   	}  
@@ -233,7 +233,7 @@ if (isset($pc01_codmater) and $pc01_codmater !=""){
        }
       ?>
       <script> sql= "<?=$sql?>"; </script>
-      <? 
+      <?php  
        if(isset($newsql) && $newsql=="true"){
         db_lovrot($sql1,15,"()","","js_abre|o58_coddot");
        }else{

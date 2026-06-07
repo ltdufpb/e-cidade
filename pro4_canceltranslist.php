@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ function js_marca(obj){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <form name="form1">
-  <?  
+  <?php   
        $where = " and not exists ( select * 
                                      from processosapensados 
                                     where p30_procapensado  = p58_codproc limit 1)  ";

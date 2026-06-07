@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -107,7 +107,7 @@ background-color:#ccddcc;
 </tr>
 <tr>
     <td colspan=2 align='center' >
-  <? 
+  <?php  
     db_input("processar","10","",true,"hidden",3);
     db_input("emitir","10","",true,"hidden",3);  
   $txt_where = " e60_anousu = ".db_getsession("DB_anousu")." and e60_instit = ".db_getsession("DB_instit");
@@ -176,7 +176,7 @@ background-color:#ccddcc;
   </table>
   </form>
 </center>
-<?
+<?php 
  // db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clserie->rotulo->label("ed11_c_descr");
       <?=$Led11_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed11_i_codigo",10,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
+      <?php db_input("ed11_i_codigo",10,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -66,15 +66,15 @@ $clserie->rotulo->label("ed11_c_descr");
       <?=$Led11_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
+      <?php db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
      </td>
     </tr>
     <tr>
      <td colspan="2" align="center">
       <input name="curso" type="hidden" value="<?=$curso?>">
-      <?if(isset($inicial)){?>
+      <?php if(isset($inicial)){?>
        <input name="inicial" type="hidden" value="<?=$inicial?>">
-      <?}?>
+      <?php }?>
       <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
       <input name="limpar" type="reset" id="limpar" value="Limpar" >
       <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_serie.hide();">
@@ -91,7 +91,7 @@ $clserie->rotulo->label("ed11_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $result = $clbaseserie->sql_record($clbaseserie->sql_query("","si.ed11_i_sequencia as inicial,sf.ed11_i_sequencia as final,si.ed11_i_ensino as ensino",""," ed87_i_codigo = $base"));
    db_fieldsmemory($result,0);
    if(!isset($pesquisa_chave)){

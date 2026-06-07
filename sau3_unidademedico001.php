@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,9 +60,9 @@ $clrotulo->label("sd02_c_nome");
     <table>
      <tr>
       <td nowrap title="Unidade">
-       <?db_ancora("Unidade","js_pesquisasd02_i_unidade(true);",@$db_opcao);?>
-       <?db_input('unidade',10,@$Isd08_i_unidade,true,'text',@$db_opcao," onchange='js_pesquisasd02_i_unidade(false);'")?>
-       <?db_input('sd02_c_nome',40,@$Isd02_c_nome,true,'text',3,'')?>
+       <?php db_ancora("Unidade","js_pesquisasd02_i_unidade(true);",@$db_opcao);?>
+       <?php db_input('unidade',10,@$Isd08_i_unidade,true,'text',@$db_opcao," onchange='js_pesquisasd02_i_unidade(false);'")?>
+       <?php db_input('sd02_c_nome',40,@$Isd02_c_nome,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -72,7 +72,7 @@ $clrotulo->label("sd02_c_nome");
      </tr>
     </table>
     </form>
-    <?
+    <?php 
      if(isset($Processar)){
       $sql = "select sd03_i_id, z01_nome from unidademedicos
               inner join medicos on medicos.sd03_i_id = unidademedicos.sd04_i_medico
@@ -120,7 +120,7 @@ $clrotulo->label("sd02_c_nome");
   </td>
  </tr>
 </table>
-<?
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -104,7 +104,7 @@ function js_emite(){
         <strong>Ano / Mes:</strong>
         </td>
         <td>
-          <?
+          <?php 
 	  if(!isset($DBtxt23) || (isset($DBtxt23) && ($DBtxt23 == "" || $DBtxt23 == 0))){
 	    $DBtxt23 = db_anofolha();
 	  }
@@ -112,7 +112,7 @@ function js_emite(){
             db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'onchange="document.form1.submit();"');
           ?>
 	  &nbsp;/&nbsp;
-          <?
+          <?php 
 	  if(!isset($DBtxt25) || (isset($DBtxt25) && ($DBtxt25 == "" || $DBtxt25 == 0))){
 	    $DBtxt25 = db_mesfolha();
 	  }
@@ -123,30 +123,30 @@ function js_emite(){
       </tr>
       <tr> 
         <td align="right" nowrap title="Seleção:" >
-        <?
+        <?php 
 	db_ancora("<b>Seleção:</b>","js_pesquisasel(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php 
           db_input('r44_selec',4,$Ir44_selec,true,'text',2,'onchange="js_pesquisasel(false)"');
           db_input('r44_descr',40,$Ir44_selec,true,'text',3,'');
           ?>
 	</td>
       </tr>
-      <?
+      <?php 
       if(!isset($tipo) || (isset($tipo) && $tipo != "T")){
         $geraform->gera_form();
 	?>
-      <?}else{?>
+      <?php }else{?>
       <tr> 
         <td align="right" nowrap title="<?=@$Trh55_estrut?>" >
-        <?
+        <?php 
 	db_ancora("<b>Local inicial:</b>","js_pesquisaDBtxt27(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php 
 	  $DBtxt27 = "";
 	  $DBtxt27_descr = "";
           db_input('rh55_estrut',4,$Irh55_estrut,true,'text',2,'onchange="js_pesquisaDBtxt27(false)"',"DBtxt27");
@@ -156,12 +156,12 @@ function js_emite(){
       </tr>
       <tr> 
         <td align="right" nowrap title="<?=@$Trh55_estrut?>" >
-        <?
+        <?php 
 	db_ancora("<b>Local final:</b>","js_pesquisaDBtxt28(true)",1);
 	?>
         </td>
         <td>
-          <?
+          <?php 
 	  $DBtxt28 = "";
 	  $DBtxt28_descr = "";
           db_input('rh55_estrut',4,$Irh55_estrut,true,'text',2,'onchange="js_pesquisaDBtxt28(false)"',"DBtxt28");
@@ -169,12 +169,12 @@ function js_emite(){
           ?>
 	</td>
       </tr>
-      <?}?>
+      <?php }?>
       <tr>
         <td align="right"><strong>Tipo de Resumo:</strong>
         </td>
         <td>
-          <?
+          <?php 
           $arr_tipo = array("G"=>"Geral", "L"=>"Lotação", "R"=>"Recurso", "O"=>"Órgão", "T"=>"Locais de trabalho");
           db_select('tipo',$arr_tipo,true,4,"onchange='document.form1.submit();'");
           ?>
@@ -184,7 +184,7 @@ function js_emite(){
         <td align="right"><strong>Tipo de Folha :</strong>
         </td>
         <td>
-          <?
+          <?php 
           $arr_folha = array("r14"=>"Salário", "r48"=>"Complementar", "r20"=>"Rescisão", "r35"=>"13o. Salário", "r22"=>"Adiantamento");
           db_select('folha',$arr_folha,true,4,"onchange='document.form1.submit();'");
           ?>
@@ -194,7 +194,7 @@ function js_emite(){
         <td align="right"><strong>Regime:</strong>
         </td>
         <td>
-          <?
+          <?php 
       $result_regimes = db_query("select rh52_regime, rh52_descr from rhcadregime");
       if(pg_num_rows($result_regimes) > 0){
 	$arr_regimes[0] = "Todos";
@@ -208,7 +208,7 @@ function js_emite(){
           ?>
        </td>
      </tr>
-     <?
+     <?php 
      if(isset($folha) && $folha == "r48"){
        $result_semest = $clgerfcom->sql_record($clgerfcom->sql_query_file($anosqlcom,$messqlcom,null,null,"distinct r48_semest"));
        if($clgerfcom->numrows > 0){
@@ -243,7 +243,7 @@ function js_emite(){
         <td align="right" nowrap title="Vinculo" ><strong>Vinculo :</strong>
         </td>
         <td align="left">
-          <?
+          <?php 
           $v = array("g"=>"Geral", "a"=>"Ativo", "i"=>"Inativo", "p"=>"Pensionista", "ip"=>"Inativo/Pensionista");
           db_select('vinculo',$v,true,4,"");
           ?>
@@ -254,7 +254,7 @@ function js_emite(){
         <td align="right" nowrap title="Ordem" ><strong>Ordem</strong>
         </td>
         <td align="left">
-          <?
+          <?php 
           $o = array("n"=>"Numerica","a"=>"Alfabetica");
           db_select('ordem',$o,true,4,"");
           ?>
@@ -273,7 +273,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -375,7 +375,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?
+<?php 
 if(isset($ordem)){
   echo "<script>
        // js_emite();

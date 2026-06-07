@@ -317,7 +317,7 @@ $iAnousu        = db_getsession('DB_anousu');
 
          if ($result && pg_numrows($result) > 0) { ?>
           <label for="totcheck">Unicas:</label>
-      <? } ?>
+      <?php  } ?>
       </td>
     </tr>
 
@@ -333,7 +333,7 @@ $iAnousu        = db_getsession('DB_anousu');
                 $expressao = $k00_dtvenc . "=" . $k00_dtoper . "=" . $k00_percdes;
                 ?>
                 <input type="checkbox" value="<?=$expressao?>" name="check_<?=$iIndice?>" checked><?php echo "Vencimento: ".db_formatar($k00_dtvenc,"d")."- Lançamento: ".db_formatar($k00_dtoper,"d")."- Desconto: ".$k00_percdes."<br/>" ?>
-                <?
+                <?php 
               }
             }
 

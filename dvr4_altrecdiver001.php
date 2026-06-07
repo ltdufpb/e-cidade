@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ input {
 </head>
 <body bgcolor=#CCCCCC>
   <form class="container" name="form1" method="post" action="">
-   <?
+   <?php 
    if (isset($pesquisar)){
    	   db_input('dv05_coddiver',5,$Idv05_coddiver,true,'hidden',1,"");
    	   db_input('dv05_numcgm',5,$Idv05_numcgm,true,'hidden',1,"");
@@ -85,15 +85,15 @@ input {
        <table class="form-container">
          <tr >
         <td align="right" nowrap title="<?=@$Tk02_codigo?>" >
-          <?
+          <?php 
              db_ancora(@$Lk02_codigo,"js_pesquisatabrec(true);",4)
           ?>
         </td>
         <td>
-          <?
+          <?php 
             db_input('k02_codigo',4,$Ik02_codigo,true,'text',4,"onchange='js_pesquisatabrec(false);'")
           ?>
-          <?
+          <?php 
             db_input('k02_drecei',40,$Ik02_drecei,true,'text',3,'')
           ?>
 
@@ -105,7 +105,7 @@ input {
         </td>
           
         <td>
-       		<?
+       		<?php 
        		$tipos = array("t"=>"Todos","v"=>"Débitos Vencidos","n"=>"Débitos Não Vencidos");
        		db_select("tipo",$tipos,true,"text",1);
        		?>
@@ -115,7 +115,7 @@ input {
       </fieldset>
 	   		 <input type="submit" name="processar" value="Processar" onclick="return js_processa();">
 
-   <?  
+   <?php   
    }else if (isset($processar)){   	
    	db_criatermometro('termometro', 'Concluido...', 'blue', 1);   	
    }else{
@@ -125,12 +125,12 @@ input {
     <table class="form-container">
      <tr>   
        <td>
-      <?
+      <?php 
        db_ancora($Ldv05_coddiver,'js_diver(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php 
        db_input('dv05_coddiver',5,$Idv05_coddiver,true,'text',1,"onchange='js_diver(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomediver");
       ?>
@@ -138,12 +138,12 @@ input {
      </tr>
      <tr>   
       <td>
-      <?
+      <?php 
        db_ancora($Ldv05_numcgm,' js_cgm(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php 
        db_input('dv05_numcgm',5,$Idv05_numcgm,true,'text',1,"onchange='js_cgm(false)'","dv05_numcgm");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomecgm");
       ?>
@@ -151,12 +151,12 @@ input {
      </tr>
      <tr>   
        <td>
-      <?
+      <?php 
        db_ancora($Lj01_matric,' js_matri(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php 
        db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomematri");
       ?>
@@ -164,12 +164,12 @@ input {
      </tr>     
      <tr>   
        <td>
-      <?
+      <?php 
        db_ancora($Lq02_inscr,' js_inscr(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php 
        db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomeinscr");
       ?>
@@ -177,12 +177,12 @@ input {
      </tr>
      <tr>   
        <td>
-      <?
+      <?php 
        db_ancora($Ldv09_procdiver,'js_proc(true); ',1);
       ?>
        </td>
        <td> 
-      <?
+      <?php 
        db_input('dv09_procdiver',5,$Idv09_procdiver,true,'text',1,"onchange='js_proc(false)'");
        db_input('z01_nome',40,0,true,'text',3,"","z01_nomeproc");
       ?>
@@ -191,10 +191,10 @@ input {
      </table>
      </fieldset>
 	   <input type="submit" name="pesquisar" value="Pesquisar" onclick="return js_pesquisa();" >
-     <?}?> 
+     <?php }?> 
 
   </form>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -337,7 +337,7 @@ function js_mostratabrec1(chave1,chave2){
      db_iframe_tabrec.hide();
 }
 </script>
-<?
+<?php 
 if (isset($processar)){
 	 db_inicio_transacao();
 	 $tab = "";

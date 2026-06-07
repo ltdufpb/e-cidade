@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ if(netscape)
       <?=$Lrh01_regist?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("rh01_regist",10,$Irh01_regist,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_regist");?>
+      <?php db_input("rh01_regist",10,$Irh01_regist,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_regist");?>
      </td>
     </tr>
     <tr>
@@ -90,7 +90,7 @@ if(netscape)
       <?=$Lrh01_numcgm?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("rh01_numcgm",10,$Irh01_numcgm,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_numcgm");?>
+      <?php db_input("rh01_numcgm",10,$Irh01_numcgm,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_rh01_numcgm");?>
      </td>
     </tr>
     <tr>
@@ -98,7 +98,7 @@ if(netscape)
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap colspan='3'>
-      <?db_input("z01_nome",80,$Iz01_nome,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_z01_nome");?>
+      <?php db_input("z01_nome",80,$Iz01_nome,true,"text",4,"onFocus=\"nextfield='pesquisar2'\"","chave_z01_nome");?>
      </td>
     </tr>
     <tr>
@@ -114,7 +114,7 @@ if(netscape)
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $instit = db_getsession("DB_instit");
    $ano = db_anofolha();
    $mes = db_mesfolha();

@@ -90,7 +90,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_descricao ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_descricao", 50, @$Iar44_descricao, "ar44_descricao", "text", 1);
                                 ?>
                             </td>
@@ -100,7 +100,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_valorinflator ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_valorinflator", 5, @$Iar44_valorinflator, "ar44_valorinflator", "text", 1);
                                 ?>
                             </td>
@@ -112,7 +112,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_inflator", 5, @$Iar44_inflator, true, "text", 4, "onchange='js_pesquisaInflator(false);'");
                                 db_input("i01_descr", 40, false, true, "text");
                                 ?>
@@ -123,7 +123,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_diasvencimento ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_diasvencimento", 5, @$Iar44_diasvencimento, true, "text", 1);
                                 ?>
                             </td>
@@ -148,7 +148,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_receitaxaexpediente", 5, @$Iar44_receitaxaexpediente, true, "text", 4, "onchange='js_pesquisaReceita(false);'");
                                 db_input("k02_descr", 40, false, true, "text");
                                 ?>
@@ -159,7 +159,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_valortaxaexpediente ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_valortaxaexpediente", 5, @$Iar44_valortaxaexpediente, "ar44_valortaxaexpediente", "text", 1);
                                 ?>
                             </td>
@@ -169,7 +169,7 @@ $clrotulo->label("ar44_origem");
                                 <?= @$Lar44_datavigencia ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_inputdata("ar44_datavigencia", "", "", "", true, 'text', 1)
                                 ?>
                             </td>
@@ -200,7 +200,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_procedencia", 5, @$Iar44_procedencia, true, "text", 4, "onchange='js_pesquisaProcedencia(false);'");
                                 db_input("dv09_descr", 40, false, true, "text");
                                 ?>
@@ -213,7 +213,7 @@ $clrotulo->label("ar44_origem");
                                 ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_receita", 5, @$Iar44_receita, true, "text", 4, "onchange='js_pesquisaReceita(false, 1);'");
                                 db_input("k02_descr1", 40, false, true, "text");
                                 ?>
@@ -273,7 +273,7 @@ $clrotulo->label("ar44_origem");
         <div class="container">
             <div id="ctnGridTaxas"></div>
         </div>
-        <? db_menu(); ?>
+        <?php  db_menu(); ?>
     </body>
 </html>
 <script>

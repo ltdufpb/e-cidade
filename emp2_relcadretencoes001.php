@@ -68,7 +68,7 @@ $oClretencaotiporecgrupo = new cl_retencaotiporecgrupo();
 	            <strong>Tipo de Cálculo: </strong>
 	          </td>
 	          <td>
-	            <? 
+	            <?php  
 		            $sCampos               = "e32_sequencial ,e32_descricao";
 		            $sSqlRetencaoTipoCalc  = $oClretencaotipocalc->sql_query("", $sCampos, "e32_sequencial", "");
 		            $rsSqlRetencaoTipoCalc = $oClretencaotipocalc->sql_record($sSqlRetencaoTipoCalc);
@@ -81,7 +81,7 @@ $oClretencaotiporecgrupo = new cl_retencaotiporecgrupo();
 	            <strong>Grupo:</strong>
 	          </td>
 	          <td>
-	            <?
+	            <?php 
 	              $sCampos                   = "e01_sequencial, e01_descricao";
 	              $sSqlRetencaoTipoRecGrupo  = $oClretencaotiporecgrupo->sql_query("", $sCampos, "e01_sequencial", "");
 	              $rsSqlRetencaoTipoRecGrupo = $oClretencaotiporecgrupo->sql_record($sSqlRetencaoTipoRecGrupo);

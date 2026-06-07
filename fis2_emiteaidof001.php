@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,9 +84,9 @@ function js_testacod(cod,erro){
       </tr>
   <tr> 
     <td  align="left" nowrap title="<?=$Ty08_codigo?>">
-    <?db_ancora(@$Ly08_codigo,"js_pesquisa_aidof(true);",1);?></td>
+    <?php db_ancora(@$Ly08_codigo,"js_pesquisa_aidof(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("y08_codigo",6,$Iy08_codigo,true,"text",4,"onchange='js_pesquisa_aidof(false);'");
+      <?php  db_input("y08_codigo",6,$Iy08_codigo,true,"text",4,"onchange='js_pesquisa_aidof(false);'");
          ?></td>
   </tr>
       <tr>
@@ -101,7 +101,7 @@ function js_testacod(cod,erro){
 
   </form>
     </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -132,7 +132,7 @@ function js_mostraaidof1(chave1){
    db_iframe_aidof.hide();
 }
 </script>
-<?
+<?php 
 if(isset($ordem)){
   echo "<script>
        js_emite();

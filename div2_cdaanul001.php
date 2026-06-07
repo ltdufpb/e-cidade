@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -82,7 +82,7 @@ function js_valano(){
 			CDA de :
         </td>
         <td>
-		  <? 
+		  <?php  
 			$arr_tipo = array("d"=>"Divida","p"=>"Parcelamento");
 			db_select("tipocda",$arr_tipo,true,2,"onchange='document.form1.submit();'"); 
 		  ?>
@@ -93,14 +93,14 @@ function js_valano(){
           Período
 		</td>
 		<td>
-          <? 
+          <?php  
 	        db_inputdata('data1','','','',true,'text',1,"");   		          
             echo "&nbsp;<b> a</b>&nbsp;";
             db_inputdata('data2','','','',true,'text',1,"");
           ?>          
        	</td>
       </tr>
-	  <?
+	  <?php 
 		if (!isset($tipocda)||(isset($tipocda)&&$tipocda=="d")){ 
 	  ?>
       <tr>
@@ -108,14 +108,14 @@ function js_valano(){
           Exercício
 		</td>
 		<td>
-          <? 
+          <?php  
 	        db_input('exercini',6,'',true,'text',1,"onchange=document.form1.exercfim.value='';");   		          
             echo "&nbsp;<b> a</b>&nbsp; ";
             db_input('exercfim',6,'',true,'text',1,"onchange='js_valano();'");
           ?>
        	</td>
       </tr>
-	  <?}?>
+	  <?php }?>
         <tr>
            <td><strong>Ordenar por:</strong></td>
            <td>
@@ -136,7 +136,7 @@ function js_valano(){
   </fieldset>
   <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" >
 </form>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -58,7 +58,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
             <?=$Led12_i_codigo?>
           </td>
           <td width="96%"  nowrap>
-            <?db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
+            <?php db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
           </td>
         </tr>
         <tr>
@@ -66,7 +66,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
             <b>Descrição da Disciplina:</b>
           </td>
           <td width="96%" nowrap>
-            <?db_input("ed232_c_descr",40,$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
+            <?php db_input("ed232_c_descr",40,$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
           </td>
         </tr>
         <tr>
@@ -74,7 +74,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
             <b>Nível de Ensino:</b>
           </td>
           <td width="96%" nowrap>
-            <?
+            <?php 
              $sSqlEnsino = $clcursoescola->sql_query(null,
                                                      "distinct ed10_i_codigo, ed10_c_descr",
                                                      "ed10_c_descr",
@@ -97,7 +97,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
       <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_disciplinaparecer.hide();">
     </form>
     <div style="margin-top: 10px;">
-      <?
+      <?php 
         $sCampos  = "distinct ed12_i_codigo, ed10_c_descr,";
         $sCampos .= "trim(ed10_c_abrev)::varchar as ed10_c_abrev, trim(ed232_c_descr)::varchar as ed232_c_descr ";
         $aWhere   = array();

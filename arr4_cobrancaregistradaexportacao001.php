@@ -37,7 +37,7 @@ require_once modification("dbforms/db_funcoes.php");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?PHP 
+    <?php PHP 
       db_app::load("scripts.js, strings.js, prototype.js, estilos.css, classes/http/http.js");
       db_app::load("AjaxRequest.js, DBLookUp.widget.js, windowAux.widget.js, DBDownload.widget.js");
       db_app::load("widgets/DBToogle.widget.js, widgets/DBLancador.widget.js");

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,17 +75,17 @@ db_fieldsmemory($result,0);
 	<tr>
 		<td width="10%" valign = 'top'> <b>Motivo:</b>
 		</td>
-		<td > <?db_textarea('motivo',8, 100,0, true, 'text', $db_opcao, "") ?>
+		<td > <?php db_textarea('motivo',8, 100,0, true, 'text', $db_opcao, "") ?>
 		</td>
 	</tr>
 	<tr>
     	<td nowrap title="<?=@$Tv22_processo?>">
-	    	<?
+	    	<?php 
 	       	db_ancora(@$Lv22_processo,"js_pesquisaq14_proces(true);",$db_opcao);
 	       	?>
     	</td>
    		<td>
-			<?
+			<?php 
 				db_input('v22_processo',10,$Iv22_processo,true,'text',$db_opcao," onchange='js_pesquisaq14_proces(false);'");
 				//db_input('p58_codproc',40,$Ip58_codproc,true,'text',3,'');
 				db_input('p58_requer',40,$Ip58_codproc,true,'text',3,'')
@@ -97,7 +97,7 @@ db_fieldsmemory($result,0);
 			<input name="anular" type="button"  value="Anular Parcelamento" onclick="return js_anula();" >
 		</td>
 	</tr>
-	<?
+	<?php 
 	db_input('parcel',10,"",true,'hidden',3,'');
 	db_input('usu',10,"",true,'hidden',3,'');
 	?>

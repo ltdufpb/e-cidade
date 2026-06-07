@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ if (isset($script) && $script != "") {
 
 	?>
 		<script>
-	<?
+	<?php 
 			$vals = "";
 			$vir  = "";
 			$camp = split(",",$valores);
@@ -79,7 +79,7 @@ if (isset($script) && $script != "") {
 			echo $script."(".$vals.")";
 	?>
 		</script>
-	<?
+	<?php 
 	exit;
 }
 
@@ -126,7 +126,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
     document.form_busca_dados.submit();
   }
 	
-	<?
+	<?php 
 		if(isset($testanome) and $testanome==true and !isset($pesquisa_chave)){
 	?>
   
@@ -140,7 +140,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
     
 	  valcpf = true;
     
-	<?
+	<?php 
 	  
 	  if (isset($incproc) && ($incproc!="")) {
 		$result_protparam = db_query("select * from protparam where p90_instit = ".db_getsession("DB_instit"));
@@ -149,7 +149,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 		  if ($p90_valcpfcnpj == 'f'){
 	?>
 	   	    valcpf = false;
-    <?
+    <?php 
 		  }
 		}
 	  }
@@ -163,7 +163,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
         
     if(alerta != "" && <?=$testanome?> == true){
 	  alert("O Contribuinte não possui o CGM atualizado");
-	 <?
+	 <?php 
       //testa permissao de menu
  	  echo "location.href = 'prot1_cadcgm002.php?chavepesquisa='+z01_numcgm+'&testanome=$func_antes&valores=$valores&funcao_js=".$func_antes.$valores."';";
      ?>
@@ -171,7 +171,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 	 <?=$func_antes."(".$camp.")"?>;
 	}
   }
-<?
+<?php 
 }
 ?>
 
@@ -183,7 +183,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
     <td height="63" align="center" valign="top">
       <table width="100%" border="0" cellspacing="0">
 				<form name="form2" method="post" action="" >
-         <?  
+         <?php   
             db_input('filtro',6,"",true,'hidden',3);
 						db_input('incproc',6,"",true,'hidden',3); 
 					?>
@@ -192,21 +192,21 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 							C&oacute;digo: 
 						</td>
 						<td >
-							<?
+							<?php 
 								db_input('z01_numcgm',6,$Iz01_numcgm,true,'text',4,"","numcgmDigitadoParaPesquisa");
 							?>
 						</td>
 						<td align="right">
-            <? if ($filtro==1 || $filtro==0){?>
+            <?php  if ($filtro==1 || $filtro==0){?>
 						
                 &nbsp;<?=$DBtxt30?>: 
 						</td>
 						<td>
-							<?
+							<?php 
 								db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"",'cpf');
 							?>
            
-            <? } ?> 
+            <?php  } ?> 
 						</td>
 					</tr>
           <tr> 
@@ -214,19 +214,19 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 							&nbsp;Nome: 
 						</td>
 						<td>
-							<?
+							<?php 
 								db_input('z01_nome',40,$Iz01_nome,true,'text',4,"",'nomeDigitadoParaPesquisa');
 							?>
 						</td>
 						<td align="right">
-            <? if ($filtro==2 || $filtro==0){?>
+            <?php  if ($filtro==2 || $filtro==0){?>
 							&nbsp;<?=$DBtxt31?>: 
 						</td>
 						<td>
-							<?
+							<?php 
 								db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"",'cnpj');
 							?>
-             <? } ?>
+             <?php  } ?>
 						</td>
 					</tr>
 					<tr> 
@@ -235,11 +235,11 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 							<input name="limpar"		type="button" id="naoencontrado2" value="Limpar" onClick="js_limpa()">
 							<input name="Fechar"	  type="button" id="limpar"					value="Fechar" 
 							       onClick="<?=isset($ifrname) ? 'parent.func_nome.hide();' : 'js_close();';?>">
-							<?
+							<?php 
 							if((!isset($nomeDigitadoParaPesquisa) || trim($nomeDigitadoParaPesquisa) == "") && isset($lTelaCgmAlt)){
 							?>
 								<input name='proccgmalt' type='button' id='proccgmalt' value='Procurar Nomes Alterados' onClick="js_pesquisacgmalt(document.form2.nomeDigitadoParaPesquisa.value);"> 	 
-							<?
+							<?php 
 							}
 							
 							if(isset($testanome)){
@@ -255,7 +255,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 									}
 								
 								</script>
-							<?
+							<?php 
 								}
 							?>
 						</td>
@@ -287,7 +287,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
   </tr>
 	<tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
         if ($filtro==1){
           $sMetodoExecutar="sql_query_cpf";
         }elseif($filtro==2){
@@ -373,7 +373,7 @@ $sql = "";
 											  </td>
 										  </tr>
 									  </table>
-									<?	 
+									<?php 	 
 							  }else{
 									?>
 									  <table>
@@ -391,7 +391,7 @@ $sql = "";
 											  </td>
 										  </tr>
 									  </table>
-						      <?
+						      <?php 
 								}
 						 }else{
 							 if($lTelaCgmAlt){
@@ -406,7 +406,7 @@ $sql = "";
 												 <table>
 													 <tr>
 														 <td>
-															 <?
+															 <?php 
 																 db_lovrot($sql,14,"()","",$funcao_js);
 															 ?>
 														 </td>
@@ -416,7 +416,7 @@ $sql = "";
 										 </td>
 									 </tr>
 								 </table>
-								 <?
+								 <?php 
 							 }else{
                  $aVarRepassa = array("nomeDigitadoParaPesquisa" => "$nomeDigitadoParaPesquisa");
                

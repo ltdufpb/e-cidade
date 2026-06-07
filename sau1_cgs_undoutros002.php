@@ -132,7 +132,7 @@ if( isset( $chavepesquisa ) ) {
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body class="body-default">
-  <?include(modification("forms/db_frmcgs_undoutros.php"));?>
+  <?php include(modification("forms/db_frmcgs_undoutros.php"));?>
 </body>
 </html>
 <?php

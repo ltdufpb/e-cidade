@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $instit = db_getsession("DB_instit");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js");
   db_app::load("prototype.js");
   db_app::load("datagrid.widget.js");
@@ -134,28 +134,28 @@ function js_retorno(oAjax){
           <legend><strong>Anular Prescrição por Lista</strong></legend>
        <table>
 				  <tr id="numcgm">
-				    <td><?db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
+				    <td><?php db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
 				    <td> 
-				        <? db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
-				        <? db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
+				        <?php  db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
+				        <?php  db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
 				    </td>    
 				  </tr>
 				  <tr id="matricula">
-				     <td><?db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
+				     <td><?php db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
 				     <td> 
-				        <? db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
+				        <?php  db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
 				     </td>    
 				   </tr>
 				   <tr id="inscr">
-				    <td><?db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
+				    <td><?php db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
 				    <td> 
-				        <? db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
+				        <?php  db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
 				    </td>    
 				  </tr>
        
             <tr>
               <td align="right" colspan="2" ><fieldset><legend><b> <?=@$Lk31_obs?></b></legend> 
-              <? db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></fieldset></td>
+              <?php  db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></fieldset></td>
             </tr>
 
         </table>
@@ -382,7 +382,7 @@ function js_preencheinscricao1(chave,erro){
 
 </script>  
 
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

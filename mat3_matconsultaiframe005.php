@@ -51,7 +51,7 @@ $clrotulo->label("");
   }
   </script>
   <style>
-  <?//$cor="#999999"?>
+  <?php //$cor="#999999"?>
   .bordas{
       border: 2px solid #cccccc;
       border-top-color: #999999;
@@ -84,7 +84,7 @@ $clrotulo->label("");
       ?>
       </td>
     </tr>
-  <?
+  <?php 
   if (!isset($filtroquery)){
   if (isset($codmater)&&$codmater!="") {
     $where="";

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,7 +62,7 @@ $claluno->rotulo->label("ed47_i_codigo");
       <b>Código do Aluno:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed47_i_codigo",11,@$Ied47_i_codigo,true,"text",1,"","chave_ed47_i_codigo","");?>
+      <?php db_input("ed47_i_codigo",11,@$Ied47_i_codigo,true,"text",1,"","chave_ed47_i_codigo","");?>
      </td>
     </tr>	
     <tr>
@@ -70,7 +70,7 @@ $claluno->rotulo->label("ed47_i_codigo");
       <?=$Lz01_cgccpf?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("z01_cgccpf",11,@$Iz01_cgccpf,true,"text",1,"","chave_z01_cgccpf","");?>
+      <?php db_input("z01_cgccpf",11,@$Iz01_cgccpf,true,"text",1,"","chave_z01_cgccpf","");?>
      </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ $claluno->rotulo->label("ed47_i_codigo");
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("z01_nome",40,@$Iz01_nome,true,"text",1,"","chave_z01_nome","");?>
+      <?php db_input("z01_nome",40,@$Iz01_nome,true,"text",1,"","chave_z01_nome","");?>
      </td>
     </tr>
     <tr>
@@ -94,7 +94,7 @@ $claluno->rotulo->label("ed47_i_codigo");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    if(isset($chave_z01_cgccpf) && (trim($chave_z01_cgccpf)!="") ){
     $sql1 = " ed47_v_cpf = '$chave_z01_cgccpf'";

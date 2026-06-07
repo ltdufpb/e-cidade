@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -60,17 +60,17 @@ $clisscalcloginscr = new cl_isscalcloginscr;
       <form name="form1" action="" method="post" >
         <table class="form-container">
           <tr>
-            <td><?db_criatermometro('termometro','Concluido...','blue',1);?></td>
+            <td><?php db_criatermometro('termometro','Concluido...','blue',1);?></td>
           </tr>
         </table>
       </form>
     </div>
-		<?
+		<?php 
 		db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 		?>
 	</body>
 </html>
-<?
+<?php 
 
 flush();
 if(isset($calcular)){

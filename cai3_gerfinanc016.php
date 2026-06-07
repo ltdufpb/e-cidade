@@ -91,7 +91,7 @@ td {
 </head>
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?
+<?php 
 if(isset($tipo_cert) && !isset($_POST["procurar"])) {
 ?>
 <br><br>
@@ -101,7 +101,7 @@ if(isset($tipo_cert) && !isset($_POST["procurar"])) {
       <tr> 
         <td width="12%" class="tabs" nowrap><strong>Data Inicial:</strong></td>
         <td width="88%" class="tabs"> 
-          <?
+          <?php 
 		  include(modification("dbforms/db_funcoes.php"));
     db_inputdata('datainicial',@$datainicial_dia,@$datainicial_mes,@$datainicial_ano,true,'text',4);
 	  ?>
@@ -110,7 +110,7 @@ if(isset($tipo_cert) && !isset($_POST["procurar"])) {
       <tr> 
         <td class="tabs" nowrap><strong>Data Final:</strong></td>
         <td class="tabs"> 
-          <?
+          <?php 
 					@$datafinal_dia = date('d',db_getsession('DB_datausu') );
 					@$datafinal_mes = date('m',db_getsession('DB_datausu') );
 					@$datafinal_ano = date('Y',db_getsession('DB_datausu') );
@@ -142,7 +142,7 @@ function js_validar() {
 }
 
 </script>
-<?
+<?php 
 } else {
   
   $tabela = " arrecant ";
@@ -276,7 +276,7 @@ function js_validar() {
       <th width="12%" nowrap>descri&ccedil;&atilde;o</th>
       <th width="9%" nowrap>valor</th>
     </tr>
-	<?
+	<?php 
     $totalpago = 0;
     for ($x=0;$x<pg_numrows($dados);$x++) {
 	    db_fieldsmemory($dados,$x);
@@ -312,7 +312,7 @@ function js_validar() {
       <td width="12%" align="center" nowrap><?=$k02_drecei?></td>
       <td width="9%" nowrap align="right"><?=db_formatar(($k00_valor*-1),"f")?>&nbsp;</td>
     </tr>
-    <?
+    <?php 
     $totalpago += $k00_valor;
   	  }
 	?> 
@@ -366,14 +366,14 @@ function js_imprime(){
   jan.moveTo(0,0);
 }
 </script>
-    <? 
+    <?php  
     } else 
 	  $DB_ERRO = "Não existe cancelamentos efetuados para este numpre.";
     ?>
 </center>
 </body>
 </html>
-<?
+<?php 
 } //fim do isset($tipo_cert) acima
 if(isset($DB_ERRO)) {
   ?>
@@ -382,6 +382,6 @@ if(isset($DB_ERRO)) {
     parent.document.getElementById('processando').style.visibility = 'visible';
 	history.back();
   </script>
-  <?
+  <?php 
 }
 ?>

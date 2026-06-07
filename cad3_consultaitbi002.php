@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,7 +47,7 @@ $campos = " j01_matric,z01_numcgm,j34_setor,j34_quadra,z01_nome,j14_nome";
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc">
-<?
+<?php 
 if(isset($j34_setor) && (trim($j34_setor)!="") ){
   $where = " where ";
   if($j34_quadra != ""){
@@ -80,7 +80,7 @@ if(isset($j34_setor) && (trim($j34_setor)!="") ){
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top">
-      <? 
+      <?php  
         db_lovrot($sql,15,"()","",$funcao_js);
       ?>
      </td>

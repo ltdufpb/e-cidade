@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clensino->rotulo->label("ed10_c_descr");
       <?=$Led10_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed10_i_codigo",10,$Ied10_i_codigo,true,"text",4,"","chave_ed10_i_codigo");?>
+      <?php db_input("ed10_i_codigo",10,$Ied10_i_codigo,true,"text",4,"","chave_ed10_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $clensino->rotulo->label("ed10_c_descr");
       <?=@$Led10_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed10_c_descr",30,@$Ied10_c_descr,true,"text",4,"","chave_ed10_c_descr");?>
+      <?php db_input("ed10_c_descr",30,@$Ied10_c_descr,true,"text",4,"","chave_ed10_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $clensino->rotulo->label("ed10_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_ensino.php")==true){

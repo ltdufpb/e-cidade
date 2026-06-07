@@ -257,7 +257,7 @@ $iMesImplantacao = $aImplantacao[1];
       <input type="hidden" id="mesImplantacao" value="<?php echo $iMesImplantacao; ?>" />
     
         <center>
-        <?  
+        <?php   
       $mensagem_semdebitos = false;
       $com_debitos = true;
       if(isset($HTTP_POST_VARS["pesquisar"]) || isset($matricula) ) {
@@ -559,7 +559,7 @@ $iMesImplantacao = $aImplantacao[1];
                             </tr>
                             <tr>
                               <td class="tabcols" title="Clique Aqui para ver os dados cadastrais." nowrap>  
-                                <?
+                                <?php 
                                 parse_str($arg);
                                 $Label = "<a href='' onclick='js_mostrapessoal();return false;'>$Lr01_regist</a>";
                                 echo "<strong style=\"color:blue\">$Label</strong>";
@@ -1207,7 +1207,7 @@ $iMesImplantacao = $aImplantacao[1];
                 <table border="0" height="100%" width="100%" cellspacing="0" cellpadding="0">
                   <tr> 
                     <td align="center">
-                      <iframe id="debitos" height="100%" width="100%" name="debitos" border="0" src="pes3_gerfinanc018.php?opcao=<?=$xopcao?>&numcgm=<?=$z01_numcgm?>&matricula=<?=$matricula?>&ano=<?=$ano?>&mes=<?=$mes?>&tbprev=<?$r01_tbprev?>&bases=<?=@$bases?>&rub_bases=<?=@$rub_bases?>&rub_cond=<?=@$rub_cond?>&rub_formula=<?=@$rub_formula?>"></iframe> 
+                      <iframe id="debitos" height="100%" width="100%" name="debitos" border="0" src="pes3_gerfinanc018.php?opcao=<?=$xopcao?>&numcgm=<?=$z01_numcgm?>&matricula=<?=$matricula?>&ano=<?=$ano?>&mes=<?=$mes?>&tbprev=<?php $r01_tbprev?>&bases=<?=@$bases?>&rub_bases=<?=@$rub_bases?>&rub_cond=<?=@$rub_cond?>&rub_formula=<?=@$rub_formula?>"></iframe> 
                       <input type="hidden" name="matricula"  value="<?=$matricula?>">
                       <input type="hidden" name="numcgm"  value="<?=$z01_numcgm?>">
                       <input type="hidden" name="opcao"  value="<?=$xopcao?>">
@@ -1223,7 +1223,7 @@ $iMesImplantacao = $aImplantacao[1];
             </tr>
             <tr> 
               <td height="28px" valign="middle" colspan="2" align="center"> 
-                <?
+                <?php 
                 if(!isset($novapesquisa)){
                   $novapesquisa = "pes3_gerfinanc001.php";
                 } 
@@ -1282,13 +1282,13 @@ $iMesImplantacao = $aImplantacao[1];
               <input class="field-size3" name="retornar"  type="button" id="retornar" value="Nova Pesquisa" title="Inicio da Consulta" onclick="location.href='<?=($novapesquisa)?>'"> 
               <input class="field-size2" name="pesquisar" type="submit" id="pesquisar"  title="Atualiza a Consulta" value="Atualizar">  
               <input class="field-size2" name="imprimir"  type="button" id="imprimir" value="Imprimir" title="Imprimir" onclick="js_relatorio();">
-              <?}?>
+              <?php }?>
               <span id="boxToglePeriodo">
-                <a id="togglePeriodo"  <? echo $lReadOnly ? "" : "href=''"; ?>><strong>Período:</strong></a>
+                <a id="togglePeriodo"  <?php  echo $lReadOnly ? "" : "href=''"; ?>><strong>Período:</strong></a>
                 <span id="ctnPeriodoAno"></span>
                 <span id="ctnPeriodoMes"></span>
                 <span id="ctnPeriodoInput">
-                <?
+                <?php 
                   db_input("ano", 4, '', true, 'text', ($lReadOnly ? 3 : 4), null, null, null, "display:none;");
                   db_input("mes", 2, '', true, 'text', ($lReadOnly ? 3 : 4), null, null, null, "display:none;");
                 ?>
@@ -1299,7 +1299,7 @@ $iMesImplantacao = $aImplantacao[1];
              </tr>
           </table>
         </form>
-      <?
+      <?php 
     } else {
     ?>
         <form name="form1" id='form1' method="post">
@@ -1314,7 +1314,7 @@ $iMesImplantacao = $aImplantacao[1];
               </tr>
               <tr> 
                 <td align="right" title="<?=$Tr01_regist?>"> 
-                  <?
+                  <?php 
                     $iDbOpcao = 1;
                     if(isset($_GET['lConsulta'])){
                       $iDbOpcao = 3;
@@ -1324,7 +1324,7 @@ $iMesImplantacao = $aImplantacao[1];
                   &nbsp;&nbsp;&nbsp;
                 </td >
                 <td align="left" > 
-                  <?
+                  <?php 
                     db_input("r01_regist",8,$Ir01_regist,true,'text',$iDbOpcao,"onchange='js_pesquisaregist(false);'");
                     db_input("z01_nome",40,$Iz01_nome,true,'text',3);
                   ?>
@@ -1337,11 +1337,11 @@ $iMesImplantacao = $aImplantacao[1];
               </tr>
             </table>
           </form>
-        <?  }
+        <?php   }
       ?>
       </center>
       </div>
-    <?if (!$lReadOnly) {
+    <?php if (!$lReadOnly) {
      db_menu();
      }
     ?>
@@ -1958,7 +1958,7 @@ function js_Pesquisa(solicitacao) {
 }
 
 </script>
-<?
+<?php 
 
 $func_nome = new janela('db_iframepessoal','');
 $func_nome ->posX=1;

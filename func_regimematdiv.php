@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clregimematdiv->rotulo->label("ed219_c_nome");
       <?=$Led219_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed219_i_codigo",20,$Ied219_i_codigo,true,"text",4,"","chave_ed219_i_codigo");?>
+      <?php db_input("ed219_i_codigo",20,$Ied219_i_codigo,true,"text",4,"","chave_ed219_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,7 +62,7 @@ $clregimematdiv->rotulo->label("ed219_c_nome");
       <?=$Led219_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed219_c_nome",30,$Ied219_c_nome,true,"text",4,"","chave_ed219_c_nome");?>
+      <?php db_input("ed219_c_nome",30,$Ied219_c_nome,true,"text",4,"","chave_ed219_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ $clregimematdiv->rotulo->label("ed219_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $condicao = " ed219_i_regimemat = $regime";
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){

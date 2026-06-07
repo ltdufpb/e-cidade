@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cltipoconhecimento->rotulo->label("ed109_c_descr");
       <?=$Led109_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed109_i_codigo",10,$Ied109_i_codigo,true,"text",4,"","chave_ed109_i_codigo");?>
+      <?php db_input("ed109_i_codigo",10,$Ied109_i_codigo,true,"text",4,"","chave_ed109_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,7 +62,7 @@ $cltipoconhecimento->rotulo->label("ed109_c_descr");
       <?=$Led109_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed109_c_descr",10,$Ied109_c_descr,true,"text",4,"","chave_ed109_c_descr");?>
+      <?php db_input("ed109_c_descr",10,$Ied109_c_descr,true,"text",4,"","chave_ed109_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ $cltipoconhecimento->rotulo->label("ed109_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_tipoconhecimento.php")==true){

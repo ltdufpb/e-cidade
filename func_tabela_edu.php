@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
       <b>Descrição:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("tabela",30,'',true,"text",4,"","chave_tabela");?>
+      <?php db_input("tabela",30,'',true,"text",4,"","chave_tabela");?>
      </td>
     </tr>
     <tr>
@@ -67,7 +67,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($chave_tabela) && (trim($chave_tabela)!="") ){
      $where = " AND db_sysarquivo.nomearq like '$chave_tabela%'";

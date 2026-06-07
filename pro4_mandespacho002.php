@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -97,7 +97,7 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
            <?=$Lp58_codproc;?>
        </td>
        <td>
-          <?db_input("p58_codproc",15,$Ip58_codproc,true,"text",3,"");?>
+          <?php db_input("p58_codproc",15,$Ip58_codproc,true,"text",3,"");?>
        </td>
     </tr>
     <tr>
@@ -113,7 +113,7 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
           <?=$Lp58_despacho;?>
       </td>
       <td>
-        <?db_textarea('p58_despacho',10,60,$Ip58_despacho,true,'text',$db_opcao,"");?>
+        <?php db_textarea('p58_despacho',10,60,$Ip58_despacho,true,'text',$db_opcao,"");?>
 
       </td>
      </tr>
@@ -122,7 +122,7 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
        <?=$Lp58_publico?>
     </td>
     <td>
-	       <?
+	       <?php 
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('p58_publico',$x,true,1,"");
 	       
@@ -136,12 +136,12 @@ if($p61_coddepto != db_getsession("DB_coddepto")){
      </tr>
 </table>
  </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if($p61_coddepto != db_getsession("DB_coddepto")){
 //  echo $p61_coddepto;
   if($p61_coddepto==0){

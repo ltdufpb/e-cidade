@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clfar_fechalivro->rotulo->label("fa16_i_codigo");
               <?=$Lfa26_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa26_i_codigo",10,$Ifa26_i_codigo,true,"text",4,"","chave_fa26_i_codigo");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clfar_fechalivro->rotulo->label("fa16_i_codigo");
               <?=$Lfa26_c_nomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa26_c_nomearq",20,$Ifa26_c_nomearq,true,"text",4,"","chave_fa26_c_nomearq");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $clfar_fechalivro->rotulo->label("fa16_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top">     
-      <?       
+      <?php        
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_fechalivro.php")==true){
@@ -130,12 +130,12 @@ $clfar_fechalivro->rotulo->label("fa16_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

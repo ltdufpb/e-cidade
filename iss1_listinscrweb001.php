@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -272,7 +272,7 @@ function js_emite(){
       <tr bgcolor="#bababa">
         <td colspan="6" align="center"><b>Listas Aguardando Liberação:</b></td>
       </tr>
-       <?
+       <?php 
        //busca listas
        $result = $cllistainscrcab->sql_record($cllistainscrcab->sql_query("","*","","p11_fechado = 't' and p11_processado = 'f'"));
        if($cllistainscrcab->numrows==0){
@@ -290,7 +290,7 @@ function js_emite(){
          <td><b>Nome/Razão Social</b></td>
          <td width="5%">&nbsp;</td>
         </tr>
-        <?
+        <?php 
         for($x=0;$x<$cllistainscrcab->numrows;$x++){
          db_fieldsmemory($result,$x);
          if($cor==$cor1)
@@ -306,7 +306,7 @@ function js_emite(){
           <td>&nbsp;<?=$z01_nome?></td>
           <td><input type="button" name="imprimir" value="Imprimir" style="height:18;font-size:10" onclick="js_imprimir('<?=$p11_codigo?>')"></td>
          </tr>
-         <?
+         <?php 
         }
        ?>
       <tr>
@@ -314,10 +314,10 @@ function js_emite(){
           <input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_confirma(<?=$cllistainscrcab->numrows?>)" >
         </td>
       </tr>
-     <?}?>
+     <?php }?>
     </table>
 </form>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

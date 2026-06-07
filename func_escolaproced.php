@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ $clrotulo->label("ed18_c_nome");
       <?=$Led18_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
+      <?php db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ $clrotulo->label("ed18_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(isset($chave_ed18_c_nome) && (trim($chave_ed18_c_nome)!="") ){
     $where  = " WHERE ed18_c_nome like '$chave_ed18_c_nome%' ";
     $where1 = " WHERE ed82_c_nome like '$chave_ed18_c_nome%' ";

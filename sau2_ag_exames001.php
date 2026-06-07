@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ function js_abre(){
    query += "&grupo="+obj.s108_i_grupoexame.value;
    query += "&exame="+obj.s108_i_codigo.value;
    query += "&producao="+obj.producao.value;
-   //query += "&departamento=<?//=db_getsession("DB_coddepto")?>";
+   //query += "&departamento=<?php //=db_getsession("DB_coddepto")?>";
    //alert (query);
    var jan = window.open('sau2_ag_exames002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
    jan.moveTo(0,0);
@@ -94,7 +94,7 @@ function js_abre(){
       <tr>
       	<td><b>Classificações:</b></td>
       	<td>
-      	<? 
+      	<?php  
       		$aClass = array("1"=>"Por Prestadora / Grupo / Exames / Paciente",
       										 "2"=>"Por Prestadora / Exames / Pacientes",
       										 "3"=>"Por Grupo / Prestadora / Exames / Paciente");
@@ -107,7 +107,7 @@ function js_abre(){
           <b> Período: </b>
 				</td>
 				<td>
-          <? 
+          <?php  
 	          db_inputdata('perini','','','',true,'text',1,"");
 						echo " Até: ";   		          
 	          db_inputdata('perfim','','','',true,'text',1,"");   		          
@@ -117,7 +117,7 @@ function js_abre(){
 			<tr>
 				<td><b>Protocolados:</b></td>
 				<td>
-				<? 
+				<?php  
       		$aProtocolados = array(	"1"=>"SIM",
       										 				"2"=>"NÂO",
       													);
@@ -127,30 +127,30 @@ function js_abre(){
 			</tr>
       	<tr>
 				<td>
-		    <?
+		    <?php 
 		       db_ancora('<b>Prestadoras:</b>',"js_pesquisa_prestadoras(true);",$db_opcao);
 		    ?>
 		    </td>
 		    <td nowrap> 
-		     <?
+		     <?php 
 		      db_input('s110_i_codigo',10,$Is110_i_codigo,true,'text',$db_opcao," onchange='js_pesquisa_prestadoras(false);'")
 		     ?>
-		     <?
+		     <?php 
 		      db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')
 		     ?>
 		    </td>
 			</tr>
 			<tr>
 				<td>
-		    <?
+		    <?php 
 		       db_ancora('<b>Exames:</b>',"js_pesquisa_exames(true);",$db_opcao);
 		    ?>
 		    </td>
 		    <td nowrap> 
-		     <?
+		     <?php 
 		      db_input('s108_i_codigo',10,$Is108_i_codigo,true,'text',$db_opcao," onchange='js_pesquisa_exames(false);'")
 		     ?>
-		     <?
+		     <?php 
 		      db_input('s108_c_exame',40,@$Is108_c_exame,true,'text',3,'')
 		     ?>
 		    </td>
@@ -158,13 +158,13 @@ function js_abre(){
 				
 				 <tr>
     <td nowrap title="<?=@$Ts108_i_grupoexame?>">
-       <? db_ancora('<b>Grupo:</b>',"js_pesquisa_s108_i_grupoexame(true)",$db_opcao)?>
+       <?php  db_ancora('<b>Grupo:</b>',"js_pesquisa_s108_i_grupoexame(true)",$db_opcao)?>
     </td>
     <td> 
-			<?
+			<?php 
         db_input('s108_i_grupoexame',10,$Is108_i_grupoexame,true,'text',$db_opcao," onchange='js_pesquisa_s108_i_grupoexame(false);' onFocus=\"nextfield='db_opcao'\" ");
       ?>
-      <?
+      <?php 
         db_input('s130_c_descricao',40,$Is130_c_descricao,true,'text',3,'');
       ?>
     </td>
@@ -172,7 +172,7 @@ function js_abre(){
 				<tr>
 				<td><b>Por Produção:</b></td>
 				<td>
-				<? 
+				<?php  
       		$aProducao = array("1"=>"Nao",
       						   "2"=>"Sim",
       									);
@@ -192,7 +192,7 @@ function js_abre(){
     </form>
 
    </center>
-    <? 
+    <?php  
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

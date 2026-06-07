@@ -65,7 +65,7 @@ $sSqlBuscaManutencoes = $clveicmanut->sql_query_info(null, $sCampos, "ve62_dtman
 <body>
   <center>
     <fieldset>
-      <?db_lovrot($sSqlBuscaManutencoes, 15, "()", "%", $funcao_js)?>
+      <?php db_lovrot($sSqlBuscaManutencoes, 15, "()", "%", $funcao_js)?>
     </fieldset>
   </center>
 </body>

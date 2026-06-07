@@ -68,16 +68,16 @@ $clrotulo->label('h12_descr');
             </tr>
             <tr>
                 <td nowrap title="<?=@$Th12_codigo?>">
-                    <?
+                    <?php 
       db_ancora(@$Lh12_codigo,"js_pesquisah12_codigo(true);",1);
       ?>
                 </td>
 
                 <td nowrap>
-                    <?
+                    <?php 
       db_input('h12_codigo',6,$h12_codigo,true,'text',3,"onchange='js_pesquisah12_codigo(false);'")
       ?>
-                    <?
+                    <?php 
       db_input('h12_descr',40,$Ih12_descr,true,'text',3,'')
       ?>
                 </td>
@@ -90,7 +90,7 @@ $clrotulo->label('h12_descr');
             </tr>
         </table>
     </form>
-    <? 
+    <?php  
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

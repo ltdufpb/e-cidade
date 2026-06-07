@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,7 +83,7 @@ if (isset($turma)) {
     <td><b>Turma</b></td>
     <td colspan="2"><b>Opções</b></td>      
    </tr>
-   <?   
+   <?php    
    for ($c = 0;$c < $clturmalog->numrows; $c++) {
    	
      db_fieldsmemory($result,$c); 
@@ -94,7 +94,7 @@ if (isset($turma)) {
      <td class="aluno"  align="center"><a href="javascript:js_turma002(<?=$ed57_i_codigo?>)">Alterar</a></td>
      <td class="aluno"  align="center"><a href="javascript:js_turma003(<?=$ed57_i_codigo?>)">Excluir</a></td>
     </tr>
-    <?
+    <?php 
    }
    ?>
    <tr>
@@ -117,13 +117,13 @@ function js_turma002(ed57_i_codigo) {
 	var iTop  = ( document.body.clientHeight - 600) / 2;
 	var iLeft = ( document.body.clientWidth - 900 ) / 2;
 
-  <?if (isset($ed57_i_codigo)) {?>
+  <?php if (isset($ed57_i_codigo)) {?>
       js_OpenJanelaIframe("",
                           "db_iframe_remanejarturma",
                           "edu1_remanejarturma002.php?chavepesquisa="+ed57_i_codigo+"&abre=true",
                           "Alunos Matriculados na Turma",true,iTop, iLeft, 900,400);
 	 	
-    <?}?>
+    <?php }?>
 }
 
 function js_turma003(ed57_i_codigo) {
@@ -131,13 +131,13 @@ function js_turma003(ed57_i_codigo) {
 	var iTop  = ( document.body.clientHeight - 600) / 2;
 	var iLeft = ( document.body.clientWidth - 900 ) / 2;
 
-   <?if (isset($ed57_i_codigo)) {?>
+   <?php if (isset($ed57_i_codigo)) {?>
 	   js_OpenJanelaIframe("",
 	                       "db_iframe_remanejarturma",
 	                       "edu1_remanejarturma003.php?chavepesquisa="+ed57_i_codigo+"&abre=true",
 	                       "Alunos Matriculados na Turma",true, iTop, iLeft, 900, 400);
 		 	
-   <?}?>
+   <?php }?>
 }
 
 function js_novo() {

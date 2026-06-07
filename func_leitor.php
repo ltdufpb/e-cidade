@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ db_fieldsmemory($result_bib,0);
       <?=$Lbi10_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
+      <?php db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
      </td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ db_fieldsmemory($result_bib,0);
       <b>Código do Aluno:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed47_i_codigo",6,@$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
+      <?php db_input("ed47_i_codigo",6,@$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ db_fieldsmemory($result_bib,0);
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
      </td>
     </tr>
     <tr>
@@ -109,7 +109,7 @@ db_fieldsmemory($result_bib,0);
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(isset($chave_bi07_biblioteca) && (trim($chave_bi07_biblioteca)!="") ){
     $restricao = " exists(select * from carteira
                            inner join leitorcategoria on bi07_codigo = bi16_leitorcategoria

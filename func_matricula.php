@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrotulo->label("ed47_v_nome");
       <?=$Led60_matricula?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed60_matricula",10,$Ied60_matricula,true,"text",4,"","chave_ed60_matricula");?>
+      <?php db_input("ed60_matricula",10,$Ied60_matricula,true,"text",4,"","chave_ed60_matricula");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $clrotulo->label("ed47_v_nome");
       <?=$Led47_v_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed47_v_nome",50,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+      <?php db_input("ed47_v_nome",50,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $clrotulo->label("ed47_v_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(isset($excluir) && $excluir == "no") {
      
      $where  = " AND ed60_c_situacao != 'TRANSFERIDO REDE' AND ed60_c_situacao != 'TRANSFERIDO FORA' ";

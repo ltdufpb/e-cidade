@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -180,10 +180,10 @@ input {
         <table width="55%" border="0" cellspacing="0" cellpadding="5">
           <tr> 
             <td width="90%"> 
-              <?
+              <?php 
 			  db_label("db_sysarquivo","tabela");
 			  ?>
-              <? 
+              <?php  
 			    if(isset($HTTP_POST_VARS["dbh_tabela"])) {
 				  $result = db_query("select codarq,nomearq from db_sysarquivo where codarq = $dbh_tabela");
 				  db_fieldsmemory($result,0);			    
@@ -195,7 +195,7 @@ input {
           </tr> 
           <tr> 
             <td> <strong>Campos:</strong><br> <select name="campos" id="campos" onChange="document.form1.atualizar.value = 'Atualizar'" size="17" style="width:250px">
-                <?
+                <?php 
                 if(isset($HTTP_POST_VARS["dbh_tabela"])) {
                   $result = db_query("select c.codcam,c.nomecam,ac.codsequencia from db_syscampo c inner join db_sysarqcamp ac on ac.codcam = c.codcam  where ac.codarq = $dbh_tabela");
                   $numrows = pg_numrows($result);
@@ -275,7 +275,7 @@ input {
     </td>
   </tr>
 </table>
-      <?
+      <?php 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ if($clbiblioteca->numrows!=0){
      <?=$Lbi06_seq?>
     </td>
     <td width="96%" align="left" nowrap>
-     <?db_input("bi06_seq",10,$Ibi06_seq,true,"text",4,"","chave_bi06_seq");?>
+     <?php db_input("bi06_seq",10,$Ibi06_seq,true,"text",4,"","chave_bi06_seq");?>
     </td>
    </tr>
    <tr>
@@ -69,7 +69,7 @@ if($clbiblioteca->numrows!=0){
      <?=$Lbi06_titulo?>
     </td>
     <td width="96%" align="left" nowrap>
-     <?db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+     <?php db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
     </td>
    </tr>
    <tr>
@@ -86,7 +86,7 @@ if($clbiblioteca->numrows!=0){
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $where = "";
    if(isset($chave_bi06_seq) && (trim($chave_bi06_seq)!="") ){
     $where = " AND bi06_seq = $chave_bi06_seq";

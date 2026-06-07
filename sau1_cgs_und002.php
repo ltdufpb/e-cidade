@@ -193,7 +193,7 @@ if ( isset($alterar) ) {
 </script>
 </head>
 <body class="body-default">
-  <?include(modification("forms/db_frmcgs_und.php"));?>
+  <?php include(modification("forms/db_frmcgs_und.php"));?>
 </body>
 </html>
 
@@ -239,7 +239,7 @@ if ( isset($alterar) ) {
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      = 'sau1_cgs_undoutros002.php?chavepesquisa=<?=$z01_i_cgsund?>&db_value=Alterar';
       parent.mo_camada('a2');
     </script>
-    <?
+    <?php 
   }
 }
 

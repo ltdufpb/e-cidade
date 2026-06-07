@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $escola = db_getsession("DB_coddepto");
       <?=$Lme01_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
+      <?php db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -70,7 +70,7 @@ $escola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if (!isset($pesquisa_chave)) {
    	
     if (isset($campos)==false) {

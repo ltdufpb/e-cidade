@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $claluno->rotulo->label("ed47_v_nome");
       <?=$Lme24_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me24_i_codigo",4,$Ime24_i_codigo,true,"text",4,"","chave_me24_i_codigo");?>
+      <?php db_input("me24_i_codigo",4,$Ime24_i_codigo,true,"text",4,"","chave_me24_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $claluno->rotulo->label("ed47_v_nome");
       <?=$Led47_v_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed47_v_nome",70,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+      <?php db_input("ed47_v_nome",70,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $claluno->rotulo->label("ed47_v_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if (!isset($pesquisa_chave)) {
    	
     if (isset($campos)==false) {
