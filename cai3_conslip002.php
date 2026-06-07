@@ -1,4 +1,4 @@
-<?PHP
+<?php PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -150,7 +150,7 @@ $sql = "         select slip.k17_codigo,
     </tr>
 </table>
 <center>
-    <?
+    <?php 
     $funcao_js = 'teste|k17_codigo';
     db_lovrot($sql, 15, "()", "", $funcao_js);
     ?>

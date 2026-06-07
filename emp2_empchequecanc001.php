@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -89,15 +89,15 @@ $ano=date('Y',db_getsession("DB_datausu"));
 	
       <tr>
 	 <td nowrap><b>De:</b></td>
-	 <td><?db_inputdata("dtini","$dia","$mes","$ano","true","text",2)    ?> 
-	 <b>Ate:</b><?db_inputdata("dtfim","$dia","$mes","$ano","true","text",2) ?> </td>
+	 <td><?php db_inputdata("dtini","$dia","$mes","$ano","true","text",2)    ?> 
+	 <b>Ate:</b><?php db_inputdata("dtfim","$dia","$mes","$ano","true","text",2) ?> </td>
       </tr>
       <tr>
          <td >
            <b>Conta:</b>
          </td>
          <td colspan=2>
-         <?
+         <?php 
            
         $result05  = $clempagetipo->sql_record($clempagetipo->sql_query(null,"e83_codtipo as codtipo,e83_descr,e83_conta","e83_descr"));
         $numrows05 = $clempagetipo->numrows;
@@ -126,7 +126,7 @@ $ano=date('Y',db_getsession("DB_datausu"));
   </tr>
 </table>
 <!---  menu --->
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <!--- --->
 <script>
 variavel = 1;

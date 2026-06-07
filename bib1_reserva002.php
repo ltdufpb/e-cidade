@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,7 +86,7 @@ if (isset($alterar)) {
         location.href = "bib1_leitor000.php?opcao=2&chavepesquisa=<?=$bi14_leitor?>";
       }
     </script>
-    <?
+    <?php 
     $erro = true;
   } else if(    @$bi14_leitor != "" 
              && $clcarteira->numrows > 0 
@@ -99,7 +99,7 @@ if (isset($alterar)) {
         location.href = "bib1_leitor000.php?opcao=2&chavepesquisa=<?=$codleitor?>";
       }
     </script>
-    <?
+    <?php 
     $erro = true;
   } else if ($datadigitada - date("Ymd") < 0) {
 
@@ -153,7 +153,7 @@ if (isset($alterar)) {
     <table border="0" cellspacing="0" cellpadding="0">
      <tr>
       <td>
-       <?require_once(modification("forms/db_frmreserva.php"));?>
+       <?php require_once(modification("forms/db_frmreserva.php"));?>
       </td>
      </tr>
     </table>
@@ -165,7 +165,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:92%"><legend><b>Reservas em aberto:</b></legend>
-    <?
+    <?php 
     $campos = "ov02_nome as ov02_nome2,
                bi14_codigo as bi14_codigo2,
                bi14_data as bi14_data2,
@@ -189,7 +189,7 @@ if (isset($alterar)) {
           <td><b>Hora</b></td>
           <td><b>Situação</b></td>
         </tr>
-      <?
+      <?php 
       for ($y = 0; $y < $clreserva->numrows; $y++) {
 
         db_fieldsmemory($result, $y);
@@ -217,7 +217,7 @@ if (isset($alterar)) {
           <td align="center" >
             <?=$bi14_horareserva2?>
           </td>
-          <?
+          <?php 
           $difdata = str_replace("-","",$bi14_datareserva2)-date("Ymd");
           $difhora = str_replace(":","",$bi14_horareserva2)-date("Hi");
           
@@ -235,11 +235,11 @@ if (isset($alterar)) {
             <?=$situacao?>
           </td>
         </tr>
-        <?
+        <?php 
       }
      ?>
      </table>
-     <?
+     <?php 
     } else {
       echo "Nenhuma reserva em aberto.";
     }
@@ -249,10 +249,10 @@ if (isset($alterar)) {
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($clreserva->erro_status == "0") {
@@ -316,7 +316,7 @@ if (isset($emprestimo)) {
                                            +'&lista=<?=$lista?>&dev='+devolucao
                                            +'&reserva='+codreserva;
     </script>
-    <?
+    <?php 
     exit;
   }
 }

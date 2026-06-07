@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -83,9 +83,9 @@ function js_mostrapcorcamsol(chave){
     <td ></td>
   </tr>
   <tr> 
-    <td  align="right" nowrap title="<?=$Tpc20_codorc?>"> <? db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
+    <td  align="right" nowrap title="<?=$Tpc20_codorc?>"> <?php  db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php 
          db_input("pc20_codorc",8,$Ipc20_codorc,true,"text",3,"onchange='js_pesquisa_pcorcam(false);'"); 
       ?>
     </td>
@@ -105,7 +105,7 @@ function js_mostrapcorcamsol(chave){
 </table>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_limparcampos(){

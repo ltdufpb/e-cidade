@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ function js_testacampo(){
 </body>
 </html>
 <script>
-<? if (isset($_GET["clone"]) && !isset($href)) {
+<?php  if (isset($_GET["clone"]) && !isset($href)) {
   echo "var cloneFormulario='{$_GET["clone"]}';\n";
  ?>
   
@@ -98,7 +98,7 @@ function js_testacampo(){
    $('teste').appendChild(formteste);
    formteste.submit();
  }
- <?} 
+ <?php } 
   if (isset($href)) {
     
     if (!$lFail) {

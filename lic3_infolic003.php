@@ -52,7 +52,7 @@ $clrotulo->label("");
 <script>
 </script>
 <style>
-<?//$cor="#999999"?>
+<?php //$cor="#999999"?>
 .bordas{
     border: 2px solid #cccccc;
     border-top-color: #999999;
@@ -79,7 +79,7 @@ $clrotulo->label("");
 <table border='0'>
   </tr>
 
-<?
+<?php 
 
 if (isset($l20_codigo) && !empty($l20_codigo)) {
 

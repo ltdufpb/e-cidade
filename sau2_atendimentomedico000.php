@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,7 +50,7 @@ $clcriaabas     = new cl_criaabas;
 <table valign="top" marginwidth="0" height="100%" width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
+     <?php 
 	 $clcriaabas->identifica = array("a1"=>"Profissional","a2"=>"UPS");
 	 $clcriaabas->src        = array("a1"=>"sau2_atendimentomedico001.php","a2"=>"sau2_atendimentomedico003.php");
 	 //$clcriaabas->disabled   = array("medicos"=>"true");
@@ -61,7 +61,7 @@ $clcriaabas     = new cl_criaabas;
     </td>
    </tr>
 </table>
-<? 
+<?php  
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
  </body>

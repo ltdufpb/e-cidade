@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,23 +74,23 @@ if(isset($excluir)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Cadastro de Forma de Aquisição</b></legend>
-    <?include(modification("forms/db_frmaquisicao.php"));?>
+    <?php include(modification("forms/db_frmaquisicao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 js_tabulacaoforms("form1","bi04_forma",true,1,"bi04_forma",true);
 </script>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
   if($claquisicao->erro_status=="0"){
     $claquisicao->erro(true,false);

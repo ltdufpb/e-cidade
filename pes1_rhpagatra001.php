@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -155,28 +155,28 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php 
       include(modification("forms/db_frmrhpagatra.php"));
       ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-<?if(!isset($rh57_regist) || !isset($rh57_seq)){?>
+<?php if(!isset($rh57_regist) || !isset($rh57_seq)){?>
 js_tabulacaoforms("form1","rh57_regist",true,1,"rh57_regist",true);
-<?}else if($db_opcao == 3){?>
+<?php }else if($db_opcao == 3){?>
 js_tabulacaoforms("form1","excluir",true,1,"excluir",true);
-<?}else{?>
+<?php }else{?>
 js_tabulacaoforms("form1","rh58_tipoocor",true,1,"rh58_tipoocor",true);
-<?}?>
+<?php }?>
 </script>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($clrhpagocor->erro_status=="0"){
     $clrhpagocor->erro(true,false);

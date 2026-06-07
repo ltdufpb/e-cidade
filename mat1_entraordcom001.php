@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,9 +79,9 @@ function js_limpa(){
 </tr>
 
   <tr> 
-    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><b><?db_ancora('Código da Ordem de Compra:',"js_pesquisa_matordem(true);",1);?></b></td>
+    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><b><?php db_ancora('Código da Ordem de Compra:',"js_pesquisa_matordem(true);",1);?></b></td>
     <td align="left" nowrap>
-      <? db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
+      <?php  db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
          ?></td>
   </tr>
 
@@ -98,14 +98,14 @@ function js_limpa(){
   </td>
   </tr>
   </table>
-    <?
+    <?php 
        db_input("m51_depto",100,0,true,"hidden",3);
     ?>
   </form>
  
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisa_matordem(mostra){

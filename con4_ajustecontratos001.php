@@ -1,4 +1,4 @@
-<?PHP
+<?php PHP
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_cone"."cta.php"));

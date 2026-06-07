@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -55,7 +55,7 @@ $clrotulo->label("m60_descr");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js, 
                 strings.js, 
                 prototype.js, 
@@ -142,7 +142,7 @@ fieldset table td:first-child {
       </div>
 </center>
 
-<?PHP db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php PHP db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 
 </body>
 

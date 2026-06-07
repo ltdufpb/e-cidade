@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -90,7 +90,7 @@ $numdec = 2;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?//$cor="#999999"?>
+<?php //$cor="#999999"?>
 .bordas{
   border: 2px solid #cccccc;
   border-top-color: #999999;
@@ -105,7 +105,7 @@ $numdec = 2;
   background-color: #999999;
   */	 
 }
-<?//$cor="999999"?>
+<?php //$cor="999999"?>
 .bordas_corp{
   /*       border: 1px solid #cccccc;
   border-right-color: <?=$cor?>;
@@ -128,7 +128,7 @@ $numdec = 2;
 <center>
 <table border='0' >   
 
-<?
+<?php 
 
 
 
@@ -479,7 +479,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
         ?>
         <td class='bordas_corp' align='center' nowrap ><small>
         <input name='Incluir' type='button' value='Incluir' onclick='js_novomatmater(<?=@$pc01_codmater?>,<?=@$e62_numemp?>,<?=@$e62_sequen?>);' >	       
-        <?
+        <?php 
         
         
         

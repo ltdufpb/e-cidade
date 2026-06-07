@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -84,7 +84,7 @@ $numrows= $clempageconf->numrows;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -156,7 +156,7 @@ function js_calcula(campo){
           <td class='bordas02' align='center'><small><b><?=$RLe83_codtipo?></b></small></td>
           <td class='bordas02' align='center' ><small><b><?=$RLz01_nome?></b></small></td>
 	</tr>
-        <?
+        <?php 
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
 
@@ -187,7 +187,7 @@ function js_calcula(campo){
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right' nowrap><small><?=$e83_descr?></small></td>
           <td class='bordas'  <?=($desab1==true?$cor:"")?>align='left' nowrap><small >&nbsp; <?=$z01_nome?></small></td>
 	</tr>
-        <?
+        <?php 
 	  }
 	?>
       </table>

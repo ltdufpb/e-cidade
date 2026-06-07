@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,7 +86,7 @@ function js_emite() {
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <br>
 <center>
 <fieldset align="center" style="width:95%"><legend><b>Relatório de Carteiras</b></legend>
@@ -94,7 +94,7 @@ function js_emite() {
  <form name="form1" method="post" action="">
  <tr>
   <td>
-   <?
+   <?php 
    $sCampos = ' bi16_codigo, nomeleitor, identleitor, cpfleitor ';
    $sSql    = $clcarteira->sql_query_leitor('', $sCampos, 'lower(to_ascii(nomeleitor))',  '',
                                             " bi16_valida = 'S' AND bi17_codigo = $bi17_codigo"
@@ -105,7 +105,7 @@ function js_emite() {
    <b>Leitores:</b><br>
    <select name="alunospossib" id="alunospossib" size="10" onclick="js_desabinc()" 
            style="font-size:9px;width:330px;height:180px" multiple>
-    <?
+    <?php 
     
     if ($clcarteira->numrows > 0) {
     	    
@@ -188,7 +188,7 @@ function js_emite() {
 </table>
 </fieldset>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

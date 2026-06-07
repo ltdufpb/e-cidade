@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,11 +43,11 @@ if($clfar_retirada->numrows==0){?>
  parent.parent.document.formaba.a2.disabled = true;  
  parent.parent.document.formaba.a3.disabled = true; 	
  </script>
-<?}else{?>
+<?php }else{?>
 <script>
  parent.parent.document.formaba.a2.disabled = false;  
  </script>	
-<?}
+<?php }
 ?>
 <html>
 <body>
@@ -69,7 +69,7 @@ if($clfar_retirada->numrows==0){?>
 		Medicamento
 	</td>
 </tr>	
-<?
+<?php 
 
 for($i=0;$i<$clfar_retirada->numrows;$i++){
  db_fieldsmemory($result,$i);
@@ -84,7 +84,7 @@ for($i=0;$i<$clfar_retirada->numrows;$i++){
 		<input name="consultas" type="button" id="consultas" value="Consultar Medicamento" onClick='js_consulta(<?=$fa04_i_codigo?>);' >
 	</td>
 </tr>				
-<?}
+<?php }
 ?>
  
 </table>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -193,12 +193,12 @@ function js_confirmar() {
 <table border='0'>
   <tr><td colspan="2">&nbsp;</td></tr>
   <tr>
-<?
+<?php 
 db_input("l20_codigo",10,"",true,"hidden",3);
 db_input("coditens", 500,"",true,"hidden",3);
 ?>
     <td colspan="2">
-<?
+<?php 
      $campos        = "l21_codigo,pc01_descrmater,pc11_resum";
      $sql           = $clliclicitem->sql_query_anulados(null,"$campos","l21_codigo","l21_codliclicita=$l20_codigo and l08_altera is true");
      $sql_disabled  = $clliclicitem->sql_query_anulados(null,"$campos","l21_codigo","l21_codliclicita=$l20_codigo and l08_altera is true and l21_situacao = 0");
@@ -230,7 +230,7 @@ db_input("coditens", 500,"",true,"hidden",3);
     <td colspan="2" align="center">
       <input name="confirmar" type="submit" onClick="return js_confirmar();" value="Confirmar" <?=($db_botao == true?"disabled":"")?>>
       <input name="voltar"    type="button" onClick="location.href='lic1_liclicitemcancanu001.php';" value="Voltar">
-<?
+<?php 
    if (trim(@$erro_msg) != ""){
         db_msgbox($erro_msg);
    }
@@ -240,7 +240,7 @@ db_input("coditens", 500,"",true,"hidden",3);
 </table>
 </form>
 </center>
-<? 
+<?php  
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

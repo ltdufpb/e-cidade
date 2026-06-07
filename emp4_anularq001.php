@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,15 +100,15 @@ if(isset($cancelar)){
 	  <td ></td>
 	</tr>
 	<tr> 
-	  <td align="right" nowrap title="<?=$Te87_codgera?>" width='45%'> <? db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
+	  <td align="right" nowrap title="<?=$Te87_codgera?>" width='45%'> <?php  db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
 	  <td align="left" nowrap>
-	  <?
+	  <?php 
 	   db_input("e87_codgera",8,$Ie87_codgera,true,"text",4,"onchange='js_pesquisa_gera(false);'"); 
 	   db_input("e87_descgera",40,$Ie87_descgera,true,"text",3);
 	  ?>
 	  </td>
 	</tr>
-        <?
+        <?php 
 	$desabilita = " disabled ";
 	if(isset($e87_codgera) && trim($e87_codgera)!=""){
 	  db_input("movimentos",10,"",true,"hidden",3);
@@ -130,7 +130,7 @@ if(isset($cancelar)){
       </table>
     </form>
   </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_enviarmovimentos(){
@@ -188,7 +188,7 @@ function js_mostragera1(chave1,chave2){
 </script>
 </body>
 </html>
-<?
+<?php 
 if(isset($cancelar)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

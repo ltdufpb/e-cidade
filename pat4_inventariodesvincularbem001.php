@@ -1,4 +1,4 @@
-<?PHP
+<?php PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -127,7 +127,7 @@ $db_opcao = 3;
        <?php echo @$Lt75_exercicio?>
     </td>
     <td>
-      <?
+      <?php 
         db_input('t75_exercicio',10,$It75_exercicio,true,'text', 3,"")
       ?>
     </td>
@@ -139,7 +139,7 @@ $db_opcao = 3;
        ?>
     </td>
     <td>
-      <?
+      <?php 
         db_input('t75_processo',10,$It75_processo,true,'hidden',$db_opcao," onchange='js_pesquisat75_processo(false);'");
         db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'');
       ?>
@@ -147,12 +147,12 @@ $db_opcao = 3;
   </tr>
   <tr>
     <td nowrap title="<?php echo @$Tt75_acordocomissao?>">
-       <?
+       <?php 
          db_ancora(@$Lt75_acordocomissao,"js_pesquisat75_acordocomissao(true);",$db_opcao);
        ?>
     </td>
     <td>
-      <?
+      <?php 
         db_input('t75_acordocomissao',10,$It75_acordocomissao,true,'text',$db_opcao," onchange='js_pesquisat75_acordocomissao(false);'");
         db_input('ac08_descricao',39,$Iac08_descricao,true,'text',3,'');
       ?>
@@ -178,7 +178,7 @@ $db_opcao = 3;
   <input onclick='js_excluirBens();' name="excluir" type="button" id="db_opcao" value="Desvincular Ítens"  >
 </form>
 
-<?PHP  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php PHP  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>
 <script>

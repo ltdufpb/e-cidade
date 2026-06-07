@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $clrotulo->label("z01_nome");
 <table border="0">
   <tr>
     <td align="top" colspan="2">
-<?
+<?php 
 if(isset($j34_setor)&& $j34_setor!=""){
   $cliframe_seleciona->campos  = "j37_setor,j37_quadra";
   $cliframe_seleciona->legenda="QUADRAS";
@@ -86,12 +86,12 @@ if(isset($j34_setor)&& $j34_setor!=""){
  <script>
    tempo = setInterval('quadras.js_marca();clearInterval(tempo)',500);
  </script>
- <?
+ <?php 
 }else{
 ?>
 <br>
 <strong>SELECIONE UM SETOR PARA ESCOLHER A(S) QUADRAS(S)</strong>
-<?  
+<?php   
 }
 ?>   
    </td>

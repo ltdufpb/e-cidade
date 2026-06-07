@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -108,7 +108,7 @@ if(isset($processar)){
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <br>
 <center>
 <fieldset align="center" style="width:95%"><legend><b>Cancelar Impressão de Etiquetas</b></legend>
@@ -120,16 +120,16 @@ if(isset($processar)){
  </tr>
  <tr>
   <td align="left" nowrap title="Ordem Alfabética/Numérica" >
-   <?db_ancora("<b>Impressão:</b>","js_pesquisabi24_codigo();",$db_opcao);?><br>
+   <?php db_ancora("<b>Impressão:</b>","js_pesquisabi24_codigo();",$db_opcao);?><br>
   </td>
   <td>
-   <?db_input('bi24_codigo',10,@$Ibi06_aquisicao,true,'text',3,'')?>
-   <?db_input('bi24_modelo',10,@$Ibi24_modelo,true,'text',3,"")?>
-   <?db_inputdata('bi24_data',@$bi24_data_dia,@$bi24_data_mes,@$bi24_data_ano,true,'text',3,'')?>
-   <?db_input('bi24_hora',5,@$Ibi24_hora,true,'text',3,"")?>
+   <?php db_input('bi24_codigo',10,@$Ibi06_aquisicao,true,'text',3,'')?>
+   <?php db_input('bi24_modelo',10,@$Ibi24_modelo,true,'text',3,"")?>
+   <?php db_inputdata('bi24_data',@$bi24_data_dia,@$bi24_data_mes,@$bi24_data_ano,true,'text',3,'')?>
+   <?php db_input('bi24_hora',5,@$Ibi24_hora,true,'text',3,"")?>
   </td>
  </tr>
- <?if(isset($bi24_codigo)&&$bi24_codigo!=""){?>
+ <?php if(isset($bi24_codigo)&&$bi24_codigo!=""){?>
  <tr>
   <td colspan="2">
    <br>
@@ -141,7 +141,7 @@ if(isset($processar)){
      <td>Exemplar</td>
      <td>Cód.Barras</td>
     </tr>
-    <?
+    <?php 
     $result = $climpexemplaritem->sql_record($climpexemplaritem->sql_query("","bi23_codigo,bi06_titulo,bi23_codbarras","bi06_titulo"," bi25_impexemplar = $bi24_codigo"));
     for($t=0;$t<$climpexemplaritem->numrows;$t++){
      db_fieldsmemory($result,$t);
@@ -152,7 +152,7 @@ if(isset($processar)){
       <td><?=$bi06_titulo?></td>
       <td><?=$bi23_codbarras?></td>
      </tr>
-     <?
+     <?php 
     }
     ?>
    </table>
@@ -161,18 +161,18 @@ if(isset($processar)){
  <tr>
   <td colspan="2" align="center">
    <br><br>
-   <?	
+   <?php 	
    	 db_input('exemplares', 10, true, 1, 'hidden');
    ?>
    <input type="submit" name="processar" value="Cancelar Impressão">
   </td>
  </tr>
- <?}?>
+ <?php }?>
 </table>
 </form>
 </fieldset>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
