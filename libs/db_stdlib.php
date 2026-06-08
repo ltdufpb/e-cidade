@@ -14,14 +14,19 @@ $GLOBALS["HTTP_GET_VARS"]     = $_GET     ?? [];
 $GLOBALS["HTTP_COOKIE_VARS"]  = $_COOKIE  ?? [];
 $GLOBALS["HTTP_SESSION_VARS"] = $_SESSION ?? [];
 $GLOBALS["HTTP_ENV_VARS"]     = $_ENV     ?? [];
-// Tambem cria as variaveis locais no escopo global, ja que o legado
-// faz uso direto em alguns lugares (por exemplo: db_postmemory($HTTP_POST_VARS)).
-$_SERVER  = &$GLOBALS["HTTP_SERVER_VARS"];
-$_POST    = &$GLOBALS["HTTP_POST_VARS"];
-$_GET     = &$GLOBALS["HTTP_GET_VARS"];
-$_COOKIE  = &$GLOBALS["HTTP_COOKIE_VARS"];
-$_SESSION = &$GLOBALS["HTTP_SESSION_VARS"];
-$_ENV     = &$GLOBALS["HTTP_ENV_VARS"];
+// Tambem cria as variaveis locais $HTTP_*_VARS (nomes antigos PHP 4)
+// no escopo global, ja que o legado faz uso direto em alguns lugares
+// (por exemplo: db_postmemory($HTTP_POST_VARS), parse_str($HTTP_SERVER_VARS[...])).
+// IMPORTANTE: nao sobrescrever $_SERVER/$_POST/$_SESSION/etc. — isso quebra
+// o mecanismo interno do PHP que repopula $_SESSION em session_start() e
+// causa "Sessao invalida" em todo login. Bug introduzido por engano no
+// hotfix5 e corrigido em 2026-06-08.
+$HTTP_SERVER_VARS  = &$GLOBALS["HTTP_SERVER_VARS"];
+$HTTP_POST_VARS    = &$GLOBALS["HTTP_POST_VARS"];
+$HTTP_GET_VARS     = &$GLOBALS["HTTP_GET_VARS"];
+$HTTP_COOKIE_VARS  = &$GLOBALS["HTTP_COOKIE_VARS"];
+$HTTP_SESSION_VARS = &$GLOBALS["HTTP_SESSION_VARS"];
+$HTTP_ENV_VARS     = &$GLOBALS["HTTP_ENV_VARS"];
 
 /*
  *     E-cidade Software Publico para Gestao Municipal
