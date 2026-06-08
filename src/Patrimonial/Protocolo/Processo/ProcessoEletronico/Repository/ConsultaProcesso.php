@@ -3,7 +3,6 @@
 namespace ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Repository;
 
 use \DBDate;
-use \BusinessException;
 use \DBException;
 use \db_utils;
 use \db_query;

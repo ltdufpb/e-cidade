@@ -33,7 +33,7 @@
  * @version $Revision: 1.56 $
  * @revision $Author: dbandrio.costa $
  */
-class DBDate implements \Stringable
+class DBDate implements Stringable
 {
     /**
      * Data no formato timestamp
@@ -281,7 +281,7 @@ class DBDate implements \Stringable
      *
      * @see getIntervaloEntreDatas
      */
-    #[\Deprecated(message: 'quando e intervalo de mes, o mesmo encontra-se fixo com 30 dias.')]
+    #[Deprecated(message: 'quando e intervalo de mes, o mesmo encontra-se fixo com 30 dias.')]
     public static function calculaIntervaloEntreDatas(DBDate $oDt1, DBDate $oDt2, $sIntervalo)
     {
         $nIntervalo = 1;
@@ -379,7 +379,7 @@ class DBDate implements \Stringable
         DBDate $oDtInicio,
         DBDate $oDtFim,
         ?array $aDiasSemana = null,
-        ?\Closure $fFormatter = null
+        ?Closure $fFormatter = null
     ) {
         if (is_null($fFormatter)) {
             $fFormatter = (fn(DBDate $oData) => $oData);
@@ -711,7 +711,7 @@ class DBDate implements \Stringable
      */
     public function isFeriado()
     {
-        $dao = new \cl_rhcadcalend();
+        $dao = new cl_rhcadcalend();
         dump($this->getDate());
         $sql = $dao->sql_feriado($this->getDate());
         $rs = \db_query($sql);

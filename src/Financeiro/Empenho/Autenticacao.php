@@ -2,6 +2,12 @@
 
 namespace ECidade\Financeiro\Empenho;
 
+use EmpenhoFinanceiro;
+use DateTime;
+use Exception;
+use db_utils;
+use Instituicao;
+
 class Autenticacao
 {
 
@@ -18,7 +24,7 @@ class Autenticacao
     private $grupoAutenticacao = null;
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $instituicao = null;
 
@@ -51,14 +57,14 @@ class Autenticacao
 
     /**
      * Autenticacao constructor.
-     * @param \EmpenhoFinanceiro $empenhoFinanceiro
+     * @param EmpenhoFinanceiro $empenhoFinanceiro
      * @param $movimento
      * @param $valor
-     * @param \DateTime $data
+     * @param DateTime $data
      * @param float $valor
      */
     public function __construct(
-        private readonly \EmpenhoFinanceiro $empenhoFinanceiro,
+        private readonly EmpenhoFinanceiro $empenhoFinanceiro,
         /**
          * movimento da agenda
          */
@@ -67,14 +73,14 @@ class Autenticacao
          *  valor que deve ser Autenticado
          */
         private $valor,
-        private \DateTime $data
+        private DateTime $data
     )
     {
     }
 
     /**
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function autenticar()
     {
@@ -84,7 +90,7 @@ class Autenticacao
     /**
      * Realiza o externo da o valor do empenho
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function estornar()
     {
@@ -124,7 +130,7 @@ class Autenticacao
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getData()
     {
@@ -132,7 +138,7 @@ class Autenticacao
     }
 
     /**
-     * @param \DateTime $data
+     * @param DateTime $data
      */
     public function setData($data)
     {
@@ -225,13 +231,13 @@ class Autenticacao
      * @param $tipo
      * @param $contaPagadora
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     private function processar($tipo)
     {
         $codigoGrupoAutenticacao = $this->grupoAutenticacao;
         if ($codigoGrupoAutenticacao == null) {
-            throw new \Exception("Grupo da autenticação nao informado.\nProcessamento Cancelado");
+            throw new Exception("Grupo da autenticação nao informado.\nProcessamento Cancelado");
         }
 
         $iCodigoAgenda = $this->movimento;
@@ -240,7 +246,7 @@ class Autenticacao
         $nValorAutenticar = $this->valor;
 
 
-        $oDaoAutentica = \db_utils::getDao("cfautent");
+        $oDaoAutentica = db_utils::getDao("cfautent");
         $rsTipoAutentica = $oDaoAutentica->sql_record($oDaoAutentica->sql_query_file(null, "k11_tipautent",
             '',
             "k11_ipterm = '{$sIpUsuario}'
@@ -248,10 +254,10 @@ class Autenticacao
         if ($oDaoAutentica->numrows == 0) {
 
             $sErroMsg = "Cadastre o ip {$sIpUsuario} como um caixa na instituicao ".db_getsession("DB_instit")." antes de realizar o pagamento.";
-            throw new \Exception($sErroMsg);
+            throw new Exception($sErroMsg);
         }
 
-        $dadosAutenticadora = \db_utils::fieldsMemory($rsTipoAutentica, 0);
+        $dadosAutenticadora = db_utils::fieldsMemory($rsTipoAutentica, 0);
         $sExecFuncao = "fc_autentemp";
         if ($tipo == 2) {
 
@@ -268,7 +274,7 @@ class Autenticacao
 
                 /*RESTO A PAGAR*/
                 if ($this->getContaExtraOrcamentaria() == "") {
-                    throw new \Exception("Verifique o tipo do RP e o cadastro das transações !");
+                    throw new Exception("Verifique o tipo do RP e o cadastro das transações !");
                 }
                 $sSqlAut = "select {$sExecFuncao}({$empenho->getNumero()},";
                 $sSqlAut .= $this->getContaPagadora() . ", ";
@@ -300,16 +306,16 @@ class Autenticacao
 
                 $sErroMsg = "Erro na autenticação do empenho {$empenho->getCodigo()}/{$empenho->getAno()}.\n";
                 $sErroMsg .= "Contate suporte." . pg_last_error();
-                throw new \Exception($sErroMsg);
+                throw new Exception($sErroMsg);
             }
 
-            $oAut = \db_utils::fieldsMemory($rsAut, 0);
+            $oAut = db_utils::fieldsMemory($rsAut, 0);
             $retornoAutentica = $oAut->retorno;
 
             if (!str_starts_with((string) $oAut->retorno, '1')) {
 
                 $sErroMsg = $oAut->retorno;
-                throw new \Exception($sErroMsg);
+                throw new Exception($sErroMsg);
             }
         }
         return $retornoAutentica;

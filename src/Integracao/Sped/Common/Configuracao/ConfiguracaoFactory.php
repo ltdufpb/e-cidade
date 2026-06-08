@@ -27,6 +27,8 @@
 namespace ECidade\Integracao\Sped\Common\Configuracao;
 
 
+use stdClass;
+use Exception;
 use ECidade\Integracao\Sped\EFDReinf\Configuracao\Configuracao as ConfiguracaoEFD;
 use ECidade\RecursosHumanos\ESocial\Model\Configuracao as ConfiguracaoESocial;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
@@ -54,8 +56,8 @@ class ConfiguracaoFactory
 
     /**
      * @param int $integracao
-     * @return \stdClass[]
-     * @throws \Exception
+     * @return stdClass[]
+     * @throws Exception
      */
     public static function getFormulariosVersaoAtual($integracao = Tipo::ESOCIAL)
     {
@@ -68,8 +70,8 @@ class ConfiguracaoFactory
 
     /**
      * @param int $integracao
-     * @return \stdClass|null
-     * @throws \Exception
+     * @return stdClass|null
+     * @throws Exception
      */
     public static function getFormularioDoTipoNaVersaoAtual($integracao = Tipo::ESOCIAL, $tipoFormulario = null)
     {

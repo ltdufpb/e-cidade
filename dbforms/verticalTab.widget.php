@@ -31,7 +31,7 @@
  * @revision $Revision: 1.7 $
  */
 
-class verticalTab implements \Stringable {
+class verticalTab implements Stringable {
 
 
   /**

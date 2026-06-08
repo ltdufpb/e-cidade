@@ -2,6 +2,7 @@
 
 namespace ECidade\Patrimonial\Protocolo\Processo\AlvaraOnline\Parser\Factory;
 
+use Exception;
 use App\Domain\Tributario\ISSQN\Services\Redesim\InclusaoEmpresa\AtendimentoInclusaoInscricaoJsonService;
 use BusinessException;
 use ParameterException;
@@ -39,7 +40,7 @@ class ParserAlvaraFactory
      * @return ParserAlvaraAutonomo|ParserAlvaraEmpresa|ParserAlvaraMei
      * @throws BusinessException
      * @throws ParameterException
-     * @throws \Exception
+     * @throws Exception
      */
     public function create($filtroProcessos, ParametrosProcessoEletronicoBag $parameterBag)
     {

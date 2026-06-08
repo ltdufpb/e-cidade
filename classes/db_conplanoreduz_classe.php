@@ -573,7 +573,7 @@ class cl_conplanoreduz
      * @return string
      *
      */
-    #[\Deprecated]
+    #[Deprecated]
     function sql_query_contabancaria(
       $c61_codcon = null,
       $c61_anousu = null,

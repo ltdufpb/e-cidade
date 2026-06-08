@@ -927,7 +927,7 @@ class AssentamentoRepository
 
     public static function servidorValidaData($servidor, $dataObrigatoriedade)
     {
-        $assenta = new \cl_assenta;
+        $assenta = new cl_assenta;
         $sqlAssenta = $assenta->sql_dados_afastamento_esocial($servidor->getMatricula(),
         'a.h16_dtconc, db110_valor',
         "(a.h16_dtterm is null or a.h16_dtterm >= '".$dataObrigatoriedade->getDate()."')" . 
@@ -935,7 +935,7 @@ class AssentamentoRepository
         'a.h16_dtconc');
         $resultado = $assenta->sql_record($sqlAssenta);
         if($resultado) {
-            return \db_utils::fieldsMemory($resultado, 0);
+            return db_utils::fieldsMemory($resultado, 0);
         }
         return false;
     }

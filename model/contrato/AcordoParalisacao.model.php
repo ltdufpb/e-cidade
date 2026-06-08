@@ -108,35 +108,35 @@ class AcordoParalisacao {
   }
 
   /**
-   * @param \Acordo $oAcordo
+   * @param Acordo $oAcordo
    */
   public function setAcordo(Acordo $oAcordo) {
     $this->oAcordo = $oAcordo;
   }
 
   /**
-   * @return \Acordo
+   * @return Acordo
    */
   public function getAcordo() {
     return $this->oAcordo;
   }
 
   /**
-   * @param \DBDate $oDataInicio
+   * @param DBDate $oDataInicio
    */
   public function setDataInicio($oDataInicio) {
     $this->oDataInicio = $oDataInicio;
   }
 
   /**
-   * @return \DBDate
+   * @return DBDate
    */
   public function getDataInicio() {
     return $this->oDataInicio;
   }
 
   /**
-   * @param \DBDate|int $oDataTermino
+   * @param DBDate|int $oDataTermino
    */
   public function setDataTermino(DBDate $oDataTermino) {
     $this->oDataTermino = $oDataTermino;

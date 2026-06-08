@@ -7,7 +7,7 @@ use DOMDocument, DOMXpath, Exception;
 class XML {
 
   /**
-   * @var \DOMDocument
+   * @var DOMDocument
    */
   protected $dom;
 

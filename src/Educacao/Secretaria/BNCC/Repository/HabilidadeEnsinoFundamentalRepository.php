@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Secretaria\BNCC\Repository;
 
+use Override;
 use cl_bnccensinofundamental;
 use ECidade\Educacao\Escola\Model\HabilidadeDesenvolvida;
 use ECidade\Educacao\Escola\Repository\Repository;
@@ -292,7 +293,7 @@ class HabilidadeEnsinoFundamentalRepository extends Repository
     /**
      * @return HabilidadeEnsinoFundamentalRepository|void
      */
-    #[\Override]
+    #[Override]
     public function resetScopes()
     {
         parent::resetScopes();

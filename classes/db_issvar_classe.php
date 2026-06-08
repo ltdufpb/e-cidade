@@ -1911,7 +1911,7 @@ class cl_issvar {
             throw new Exception("Erro ao buscar o tipo de empresa");
         }
 
-        $oCgmtipoempresa = \db_utils::fieldsMemory($rCgmtipoempresa, 0);
+        $oCgmtipoempresa = db_utils::fieldsMemory($rCgmtipoempresa, 0);
 
         /**
          * Se existir tipo de empresa cadastrado

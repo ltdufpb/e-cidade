@@ -757,7 +757,7 @@ class CgmFisico extends CgmBase
     /**
      * @return string
      */
-    #[\Override]
+    #[Override]
     public function getNomeMae()
     {
         return $this->sNomeMae;
@@ -766,7 +766,7 @@ class CgmFisico extends CgmBase
     /**
      * @param $sNomeMae
      */
-    #[\Override]
+    #[Override]
     public function setNomeMae($sNomeMae)
     {
         $this->sNomeMae = $sNomeMae;
@@ -1066,7 +1066,7 @@ class CgmFisico extends CgmBase
      * é alterado o registro apartir do código (numcgm) informado
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     public function save()
     {
         $sMsgErro = 'Falha ao salvar CGM Fisico';
@@ -1178,7 +1178,7 @@ class CgmFisico extends CgmBase
         /**
         * inseri registro na cgmendereco {Secundário}
         */
-        $oDaoCgmEndereco = new \cl_cgmendereco();
+        $oDaoCgmEndereco = new cl_cgmendereco();
 
         if ($this->getEnderecoSecundario() != "" && $this->getEnderecoSecundario() != null) {
             $this->salvaCgmEnderecoSecundario();
@@ -1624,7 +1624,7 @@ class CgmFisico extends CgmBase
     /**
      * @return array
      */
-    #[\Override]
+    #[Override]
     public function toArray()
     {
         return [

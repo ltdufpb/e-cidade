@@ -32,6 +32,7 @@ require(modification('fpdf151/fpdf.php'));
 class PDF extends FPDF
 {
 //Page header
+#[Override]
 function Header()
 {
     //Logo
@@ -47,6 +48,7 @@ function Header()
 }
 
 //Page footer
+#[Override]
 function Footer()
 {
     //Position at 1.5 cm from bottom

@@ -28,7 +28,6 @@
 use ECidade\Educacao\Secretaria\BNCC\Registry\HabilidadeReferencialCurricularEstadualRegistry;
 use ECidade\Educacao\Secretaria\BNCC\Resource\BnccOriginalEducacaoInfantilResource;
 use ECidade\Educacao\Secretaria\BNCC\Resource\BnccOriginalEnsinoFundamentalResource;
-use ECidade\Educacao\Secretaria\BNCC\Repository\HabilidadeEnsinoFundamentalRepository;
 use ECidade\Educacao\Secretaria\BNCC\Resource\HabilidadeEnsinoFundamentalResource;
 use ECidade\Educacao\Secretaria\BNCC\Resource\HabilidadeReferencialCurricularResource;
 use ECidade\Educacao\Secretaria\BNCC\Service\BnccService;

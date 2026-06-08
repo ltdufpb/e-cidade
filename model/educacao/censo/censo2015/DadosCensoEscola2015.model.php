@@ -233,7 +233,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
     return $oDadosInfraEstrutura;
   }
 
-  #[\Override]
+  #[Override]
   public function getDadosInfraEstrutura() {
 
     $oDadosInfraEstrutura = $this->criarObjetoInfraestrutura();
@@ -323,7 +323,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @param  stdClass $oDadosInfra dados da infraestrutura
    * @return array
    */
-  #[\Override]
+  #[Override]
   public function getDadosAvaliacao ($oDadosInfra) {
 
     /**
@@ -502,7 +502,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @param IExportacaoCenso instancia da Importacao do censo
    * @return boolean
    */
-    #[\Override]
+    #[Override]
     public static function validarDados(IExportacaoCenso $oExportacaoCenso) {
 
     $lTodosDadosValidos = true;
@@ -1017,7 +1017,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @param IExportacaoCenso $oExportacaoCenso
    * @return bool
    */
-    #[\Override]
+    #[Override]
     protected static function validarDadosInfraEstrutura(IExportacaoCenso $oExportacaoCenso)
     {
 
@@ -1708,7 +1708,7 @@ class DadosCensoEscola2015 extends DadosCensoEscola {
    * @throws DBException
    * @return boolean
    */
-  #[\Override]
+  #[Override]
   public function atualizarDados(DBLayoutLinha $oLinha)  {
 
     $oDaoEscola                        = new cl_escola();

@@ -3,7 +3,6 @@
 namespace ECidade\Lib\Mail;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use Exception;
 
 class SendMail extends PHPMailer

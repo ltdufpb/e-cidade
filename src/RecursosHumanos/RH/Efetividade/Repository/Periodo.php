@@ -27,6 +27,15 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Repository;
 
+use InstituicaoRepository;
+use ParameterException;
+use cl_configuracoesdatasefetividade;
+use DBException;
+use BusinessException;
+use db_utils;
+use DBDate;
+use cl_pontoeletronicoarquivo;
+use Instituicao;
 use \ECidade\RecursosHumanos\RH\Efetividade\Model\Periodo as PeriodoModel;
 use \ECidade\RecursosHumanos\RH\Efetividade\Collection\Periodo as PeriodoCollection;
 
@@ -43,7 +52,7 @@ class Periodo {
     private $oCollection;
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $oInstituicao;
 
@@ -54,7 +63,7 @@ class Periodo {
 
     /**
      * Periodo constructor.
-     * @param null|\Instituicao $oInstituicao
+     * @param null|Instituicao $oInstituicao
      * @param null|int $iExercicio
      * @param bool $lTodasEfetividades
      * @param null|int $iAnoSessao
@@ -62,7 +71,7 @@ class Periodo {
     public function __construct($oInstituicao = null, private $iExercicio = null, private $lTodasEfetividades = false, $iAnoSessao = null) {
 
         if($oInstituicao == null) {
-            $this->oInstituicao = \InstituicaoRepository::getInstituicaoSessao();
+            $this->oInstituicao = InstituicaoRepository::getInstituicaoSessao();
         }
 
         if(empty($iAnoSessao)) {
@@ -76,27 +85,27 @@ class Periodo {
      * Retorna um período de efetividade
      * @param $iExercicio
      * @param $iCompetencia
-     * @param null|\Instituicao $oInstituicao
+     * @param null|Instituicao $oInstituicao
      * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\Periodo
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      */
     public static function getInstanciaPorExercicioCompetencia($iExercicio, $iCompetencia, $oInstituicao = null) {
 
         if($oInstituicao == null) {
-            $oInstituicao = \InstituicaoRepository::getInstituicaoSessao();
+            $oInstituicao = InstituicaoRepository::getInstituicaoSessao();
         }
 
         if(empty($iExercicio)) {
-            throw new \ParameterException('Exercício não informado.');
+            throw new ParameterException('Exercício não informado.');
         }
 
         if(empty($iCompetencia)) {
-            throw new \ParameterException('Competência não informada.');
+            throw new ParameterException('Competência não informada.');
         }
 
-        $oDaoPeriodoEfetividade    = new \cl_configuracoesdatasefetividade();
+        $oDaoPeriodoEfetividade    = new cl_configuracoesdatasefetividade();
         $sWherePeriodoEfetividade  = "     rh186_exercicio::integer   = {$iExercicio}";
         $sWherePeriodoEfetividade .= " AND rh186_competencia::integer = {$iCompetencia}";
         $sWherePeriodoEfetividade .= " AND rh186_instituicao::integer = {$oInstituicao->getCodigo()}";
@@ -104,20 +113,20 @@ class Periodo {
         $rsPeriodoEfetividade      = db_query($sSqlPeriodoEfetividade);
 
         if(!$rsPeriodoEfetividade) {
-            throw new \DBException('Erro ao buscar as informações do período da efetividade.');
+            throw new DBException('Erro ao buscar as informações do período da efetividade.');
         }
 
         if(pg_num_rows($rsPeriodoEfetividade) == 0) {
-            throw new \BusinessException('Período de efetividade não encontrado.');
+            throw new BusinessException('Período de efetividade não encontrado.');
         }
 
-        return \db_utils::makeFromRecord($rsPeriodoEfetividade, function($oRetorno) {
+        return db_utils::makeFromRecord($rsPeriodoEfetividade, function($oRetorno) {
 
             $oPeriodoEfetividade = new PeriodoModel();
             $oPeriodoEfetividade->setExercicio($oRetorno->rh186_exercicio);
             $oPeriodoEfetividade->setCompetencia($oRetorno->rh186_competencia);
-            $oPeriodoEfetividade->setDataInicio(new \DBDate($oRetorno->rh186_datainicioefetividade));
-            $oPeriodoEfetividade->setDataFim(new \DBDate($oRetorno->rh186_datafechamentoefetividade));
+            $oPeriodoEfetividade->setDataInicio(new DBDate($oRetorno->rh186_datainicioefetividade));
+            $oPeriodoEfetividade->setDataFim(new DBDate($oRetorno->rh186_datafechamentoefetividade));
             $oPeriodoEfetividade->setProcessado($oRetorno->rh186_processado == 't');
 
             return $oPeriodoEfetividade;
@@ -126,7 +135,7 @@ class Periodo {
 
     /**
      * Cria a coleção de períodos
-     * @throws \DBException
+     * @throws DBException
      */
     public function getCollection() {
 
@@ -146,7 +155,7 @@ class Periodo {
         $sCamposConfiguracoesEfetividade .= ', rh186_datainicioefetividade, rh186_datafechamentoefetividade';
         $sCamposConfiguracoesEfetividade .= ', rh186_instituicao, rh186_processado';
 
-        $oDaoConfiguracoesEfetividade = new \cl_configuracoesdatasefetividade();
+        $oDaoConfiguracoesEfetividade = new cl_configuracoesdatasefetividade();
         $sSqlConfiguracoesEfetividade = $oDaoConfiguracoesEfetividade->sql_query_file(
           null,
           $sCamposConfiguracoesEfetividade,
@@ -157,52 +166,52 @@ class Periodo {
         $rsConfiguracoesEfetividade = db_query($sSqlConfiguracoesEfetividade);
 
         if(!$rsConfiguracoesEfetividade) {
-            throw new \DBException('Erro ao buscar o período de efetividade aberto.');
+            throw new DBException('Erro ao buscar o período de efetividade aberto.');
         }
 
         if(pg_num_rows($rsConfiguracoesEfetividade) == 0) {
             $this->oCollection = new PeriodoCollection();
         }
 
-        $this->oCollection = PeriodoCollection::makeCollectionFromArray(\db_utils::getCollectionByRecord($rsConfiguracoesEfetividade));
+        $this->oCollection = PeriodoCollection::makeCollectionFromArray(db_utils::getCollectionByRecord($rsConfiguracoesEfetividade));
     }
 
     /**
      * Retorna os períodos existentes entre as datas informadas
-     * @param \DBDate $oDataInicio
-     * @param \DBDate $oDataFim
+     * @param DBDate $oDataInicio
+     * @param DBDate $oDataFim
      * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\Periodo[]
-     * @throws \BusinessException
+     * @throws BusinessException
      */
-    public function getPeriodosEntreDatas(\DBDate $oDataInicio, \DBDate $oDataFim) {
+    public function getPeriodosEntreDatas(DBDate $oDataInicio, DBDate $oDataFim) {
 
         if(count($this->oCollection->getPeriodos()) == 0) {
-            throw new \BusinessException('Nenhum período de efetividade encontrado entre as datas informadas.');
+            throw new BusinessException('Nenhum período de efetividade encontrado entre as datas informadas.');
         }
 
         $aPeriodosRetorno = [];
-        $aDatasIntervalo  = \DBDate::getDatasNoIntervalo($oDataInicio, $oDataFim);
+        $aDatasIntervalo  = DBDate::getDatasNoIntervalo($oDataInicio, $oDataFim);
 
         if($this->oCollection->getPrimeiroPeriodo()->getDataInicio()->getTimeStamp() > $oDataInicio->getTimeStamp()) {
 
             $sMensagem  = "Data de início informada é menor que a data do primeiro período de efetividade configurado";
             $sMensagem .= " (Exercício: {$this->oCollection->getPrimeiroPeriodo()->getExercicio()}";
-            $sMensagem .= " - {$this->oCollection->getPrimeiroPeriodo()->getDataInicio()->getDate(\DBDate::DATA_PTBR)}).";
+            $sMensagem .= " - {$this->oCollection->getPrimeiroPeriodo()->getDataInicio()->getDate(DBDate::DATA_PTBR)}).";
             $sMensagem .= "\nPara configuração dos períodos de efetividade, acesse:";
             $sMensagem .= "\n- RH > Procedimentos > Efetividade > Parâmetros > Períodos de Efetividade";
 
-            throw new \BusinessException($sMensagem);
+            throw new BusinessException($sMensagem);
         }
 
         if($this->oCollection->getUltimoPeriodo()->getDataFim()->getTimeStamp() < $oDataFim->getTimeStamp()) {
 
             $sMensagem  = "Data de fim informada é maior que a data do último período de efetividade configurado";
             $sMensagem .= " (Exercício: {$this->oCollection->getUltimoPeriodo()->getExercicio()}";
-            $sMensagem .= " - {$this->oCollection->getUltimoPeriodo()->getDataFim()->getDate(\DBDate::DATA_PTBR)}).";
+            $sMensagem .= " - {$this->oCollection->getUltimoPeriodo()->getDataFim()->getDate(DBDate::DATA_PTBR)}).";
             $sMensagem .= "\nPara configuração dos períodos de efetividade, acesse:";
             $sMensagem .= "\n- RH > Procedimentos > Efetividade > Parâmetros > Períodos de Efetividade";
 
-            throw new \BusinessException($sMensagem);
+            throw new BusinessException($sMensagem);
         }
 
         foreach($this->oCollection->getPeriodos() as $oPeriodo) {
@@ -211,7 +220,7 @@ class Periodo {
 
             foreach($aDatasIntervalo as $oData) {
 
-                if(    \DBDate::dataEstaNoIntervalo($oData, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())
+                if(    DBDate::dataEstaNoIntervalo($oData, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())
                   && !array_key_exists($sChave, $aPeriodosRetorno)
                 )
                 {
@@ -235,11 +244,11 @@ class Periodo {
      * Busca o código do arquivo importado a qual competência está vinculada
      * @param PeriodoModel $oPeriodoModel
      * @return PeriodoModel
-     * @throws \DBException
+     * @throws DBException
      */
     public function getCodigoArquivoPorPeriodo(PeriodoModel $oPeriodoModel) {
 
-        $oDaoPontoArquivo = new \cl_pontoeletronicoarquivo();
+        $oDaoPontoArquivo = new cl_pontoeletronicoarquivo();
 
         $sWherePontoArquivo  = "     rh196_efetividade_exercicio   = {$oPeriodoModel->getExercicio()}";
         $sWherePontoArquivo .= " AND rh196_efetividade_competencia = '{$oPeriodoModel->getCompetencia()}'";
@@ -249,11 +258,11 @@ class Periodo {
         $rsPontoArquivo   = db_query($sSqlPontoArquivo);
 
         if(!$rsPontoArquivo) {
-            throw new \DBException('Erro ao buscar o arquivo ao qual a competência está vinculado. Contate o suporte');
+            throw new DBException('Erro ao buscar o arquivo ao qual a competência está vinculado. Contate o suporte');
         }
 
         if(pg_num_rows($rsPontoArquivo) > 0) {
-            $oPeriodoModel->setCodigoArquivo(\db_utils::fieldsMemory($rsPontoArquivo, 0)->rh196_sequencial);
+            $oPeriodoModel->setCodigoArquivo(db_utils::fieldsMemory($rsPontoArquivo, 0)->rh196_sequencial);
         }
 
         return $oPeriodoModel;

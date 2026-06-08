@@ -79,7 +79,7 @@ class cl_conlancaminfocomplementarvalor extends DAOBasica {
 
         $rsLancamentos = db_query($sql);
         if (!$rsLancamentos) {
-            throw new \Exception("Erro ao ajustar o valor das informações complementares de acordo com a configurações do lançamento.");
+            throw new Exception("Erro ao ajustar o valor das informações complementares de acordo com a configurações do lançamento.");
         }
 
         return true;
@@ -98,7 +98,7 @@ class cl_conlancaminfocomplementarvalor extends DAOBasica {
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new \DBException("Erro ao alterar o valor da informação complementar.");
+            throw new DBException("Erro ao alterar o valor da informação complementar.");
         }
 
         return true;
@@ -117,7 +117,7 @@ class cl_conlancaminfocomplementarvalor extends DAOBasica {
         $rsQueryResult = db_query($sql);
 
         if (!$rsQueryResult) {
-            throw new \Exception("Erro ao excluir valores das informações complementares");
+            throw new Exception("Erro ao excluir valores das informações complementares");
         }
     }
 

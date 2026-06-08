@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Mapeadores\Relatorios;
 
+use db_utils;
+
 class TrabalhadorSemVinculoMapeador implements FormularioMapeador
 {
     private $dadosEcidade = [];
@@ -106,7 +108,7 @@ class TrabalhadorSemVinculoMapeador implements FormularioMapeador
             throw new DBException("Erro ao buscar as informações do sistema.");
         }
 
-        $this->dadosEcidade =\db_utils::makeCollectionFromRecord($rs, fn($dadoEcidade) => get_object_vars($dadoEcidade));
+        $this->dadosEcidade =db_utils::makeCollectionFromRecord($rs, fn($dadoEcidade) => get_object_vars($dadoEcidade));
     }
 
     public function getColunas()

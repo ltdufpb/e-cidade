@@ -27,6 +27,9 @@
 
 namespace ECidade\Tributario\Divida\Termo\Repository;
 
+use BaseClassRepository;
+use DateTime;
+use stdClass;
 use cl_termo;
 use cl_termoreparc;
 use DBException;
@@ -45,7 +48,7 @@ use Exception;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class Termo extends \BaseClassRepository
+class Termo extends BaseClassRepository
 {
     /**
      * @var bool
@@ -70,7 +73,7 @@ class Termo extends \BaseClassRepository
      */
     public function persist(Entity $entity)
     {
-        $dao = new \cl_termo();
+        $dao = new cl_termo();
 
         $dataLancamento = $entity->getDataLancamento();
         if (!empty($dataLancamento)) {
@@ -139,7 +142,7 @@ class Termo extends \BaseClassRepository
     }
 
     /**
-     * @param \stdClass $data
+     * @param stdClass $data
      *
      * @return Entity
      * @throws Exception
@@ -149,14 +152,14 @@ class Termo extends \BaseClassRepository
         $entity = new Entity();
         $entity
             ->setCodigo($data->v07_parcel)
-            ->setDataLancamento(new \DateTime($data->v07_dtlanc))
+            ->setDataLancamento(new DateTime($data->v07_dtlanc))
             ->setValor($data->v07_valor)
             ->setNumpre($data->v07_numpre)
             ->setTotalParcelas($data->v07_totpar)
             ->setValorParcela($data->v07_vlrpar)
-            ->setDataVencimento(new \DateTime($data->v07_dtvenc))
+            ->setDataVencimento(new DateTime($data->v07_dtvenc))
             ->setValorEntrada($data->v07_vlrent)
-            ->setDataPrimeiraParcela(new \DateTime($data->v07_datpri))
+            ->setDataPrimeiraParcela(new DateTime($data->v07_datpri))
             ->setValorMulta($data->v07_vlrmul)
             ->setValorJuros($data->v07_vlrjur)
             ->setPercentualJuros($data->v07_perjur)
@@ -177,7 +180,7 @@ class Termo extends \BaseClassRepository
             ->setDescontoCorrigido($data->v07_desccor);
 
         if ($this->isReturnFullItem()) {
-            $termoInicialRepository = TermoInicial::getInstance()
+            $termoInicialRepository = TermoInicialRepository::getInstance()
                 ->setReturnFullItem(true);
 
             $termosIniciais = $termoInicialRepository->getByTermo($data->v07_parcel);
@@ -250,7 +253,7 @@ class Termo extends \BaseClassRepository
      */
     public function getByCode($code)
     {
-        $dao = new \cl_termo();
+        $dao = new cl_termo();
         $sql = $dao->sql_query($code);
 
         $result = \db_query($sql);
@@ -292,7 +295,7 @@ class Termo extends \BaseClassRepository
     public function getParcelamentosPorNumpre(array $numpres)
     {
         $parcelamentos = [];
-        $dao = new \cl_termo();
+        $dao = new cl_termo();
         $sql = $dao->sql_query_file(null, "DISTINCT *", null, "v07_numpre in (".implode(', ', $numpres).")");
 
         $result = \db_query($sql);
@@ -321,7 +324,7 @@ class Termo extends \BaseClassRepository
      */
     public function getByNumpre($numpre)
     {
-        $dao = new \cl_termo();
+        $dao = new cl_termo();
         $sql = $dao->sql_query_file(null, "*", null, "v07_numpre = $numpre");
 
         $result = \db_query($sql);

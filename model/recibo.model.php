@@ -1,4 +1,6 @@
 <?php
+use ECidade\Tributario\Issqn\Model\Issbase;
+use ECidade\Tributario\Cadastro\Model\Iptubase;
 use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 use ECidade\Tributario\Arrecadacao\Repository\TaxaEspecifica as TaxaEspecificaRepository;
 use ECidade\Tributario\Arrecadacao\Service\TaxaEspecifica as TaxaEspecificaService;
@@ -270,7 +272,7 @@ class Recibo
      * Essencialmente, é ou o Cgm, ou a Inscrição, ou a Matrícula usada
      * na hora de pesquisar alguém na consulta geral financeira.
      *
-     * @var CgmBase|\ECidade\Tributario\Issqn\Model\Issbase|\ECidade\Tributario\Cadastro\Model\Iptubase
+     * @var CgmBase|Issbase|Iptubase
      */
     private $identificacao;
 
@@ -726,7 +728,7 @@ class Recibo
 
         if (!empty($this->dtVencRecibo) && $lCobrancaRegistrada) {
             if (!empty($iCodigoConvenio)) {
-                $oDaoConvenio = new \cl_cadconvenio();
+                $oDaoConvenio = new cl_cadconvenio();
                 $sSqConvenio  = $oDaoConvenio->sql_query_convenio_cobranca($iCodigoConvenio, "ar12_sequencial");
                 $rsConvenio   = \db_query($sSqConvenio);
 
@@ -845,7 +847,7 @@ class Recibo
                 }
             }
 
-            $cl_reciboavulsoboleto = new \cl_reciboavulsoboleto();
+            $cl_reciboavulsoboleto = new cl_reciboavulsoboleto();
 
             $cl_reciboavulsoboleto->k201_numpre = $this->iNumpre;
             $cl_reciboavulsoboleto->k201_data = date("Y-m-d H:i:s");
@@ -855,7 +857,7 @@ class Recibo
             $cl_reciboavulsoboleto->incluir();
 
             if ($cl_reciboavulsoboleto->erro_status == "0") {
-                throw new \Exception($cl_reciboavulsoboleto->erro_msg);
+                throw new Exception($cl_reciboavulsoboleto->erro_msg);
             }
 
             if (count($this->aVinculoCgm) > 0) {
@@ -1266,8 +1268,8 @@ class Recibo
      * @param null $iSequencialEmpenho
      *
      * @return bool
-     * @throws \BusinessException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws Exception
      */
     function autenticarRecibo($dtAutenticacao, $sCaracteristicaPeculiar = null, $iSequencialEmpenho = null, $retencao = null, $tipo = 3)
     {
@@ -1746,7 +1748,7 @@ class Recibo
     }
 
     /**
-     * @return CgmBase|\ECidade\Tributario\Issqn\Model\Issbase|\ECidade\Tributario\Cadastro\Model\Iptubase
+     * @return CgmBase|Issbase|Iptubase
      */
     public function getIdentificacao()
     {
@@ -1754,7 +1756,7 @@ class Recibo
     }
 
     /**
-     * @param CgmBase|\ECidade\Tributario\Issqn\Model\Issbase|\ECidade\Tributario\Cadastro\Model\Iptubase $identificacao
+     * @param CgmBase|Issbase|Iptubase $identificacao
      */
     public function setIdentificacao($identificacao)
     {

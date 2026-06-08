@@ -27,6 +27,7 @@
 
 namespace ECidade\Integracao\Sped\EFDReinf\Configuracao;
 
+use stdClass;
 use cl_efdreinfversao;
 use cl_efdreinfversaoformulario;
 use db_utils;
@@ -88,7 +89,7 @@ class Configuracao implements ConfiguracaoInterface
 
     /**
      * @param $sVersao
-     * @return \stdClass[]
+     * @return stdClass[]
      * @throws Exception
      */
     public function getFormulariosPorVersao($sVersao)
@@ -127,8 +128,8 @@ class Configuracao implements ConfiguracaoInterface
     /**
      * Retorna todos formulários da versão atual
      *
-     * @return \stdClass[]
-     * @throws \Exception
+     * @return stdClass[]
+     * @throws Exception
      */
     public static function getFormulariosVersaoAtual()
     {

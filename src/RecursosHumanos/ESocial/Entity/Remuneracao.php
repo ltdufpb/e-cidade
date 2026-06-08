@@ -26,7 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Entity;
 
-use ECidade\RecursosHumanos\Pessoal\Model\ServidorOperadoraSaude;
+use Servidor;
+use stdClass;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorOutrosVinculos;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorProcessosJudiciaisFolha;
 
@@ -58,20 +59,20 @@ class Remuneracao
     }
 
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidor;
 
     /**
-     * @param \Servidor $servidor
+     * @param Servidor $servidor
      */
-    public function setServidor(\Servidor $servidor)
+    public function setServidor(Servidor $servidor)
     {
         $this->servidor = $servidor;
     }
 
     /**
-     * @return \Servidor
+     * @return Servidor
      */
     public function getServidor()
     {
@@ -101,12 +102,12 @@ class Remuneracao
     }
 
     /**
-     * @var \stdClass
+     * @var stdClass
      */
     private $dadosTrabalhador;
 
     /**
-     * @return \stdClass
+     * @return stdClass
      */
     public function getDadosTrabalhador()
     {
@@ -114,9 +115,9 @@ class Remuneracao
     }
 
     /**
-     * @param \stdClass $dadosTrabalhador
+     * @param stdClass $dadosTrabalhador
      */
-    public function setDadosTrabalhador(\stdClass $dadosTrabalhador)
+    public function setDadosTrabalhador(stdClass $dadosTrabalhador)
     {
         $this->dadosTrabalhador = $dadosTrabalhador;
     }

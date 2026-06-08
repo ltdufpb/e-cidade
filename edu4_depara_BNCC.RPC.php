@@ -1,5 +1,6 @@
 <?php
 
+use ECidade\Educacao\Escola\Registry\ComponenteCurricularRegistry;
 use ECidade\Educacao\Escola\Resource\ComponenteCurricularResource;
 use ECidade\Educacao\Secretaria\BNCC\Model\DisciplinaEquivalente;
 use ECidade\Educacao\Secretaria\BNCC\Registry\DisciplinaRegistry;
@@ -86,7 +87,7 @@ try {
             }
 
             $disciplina = DisciplinaRegistry::get($parametros->disciplina_bncc);
-            $componentes = array_map(\ECidade\Educacao\Escola\Registry\ComponenteCurricularRegistry::get(...), $parametros->disciplinas);
+            $componentes = array_map(ComponenteCurricularRegistry::get(...), $parametros->disciplinas);
 
             $service = new EquivalenciaDisciplinasService();
             $service->salvarEquivalencia($disciplina, $componentes);

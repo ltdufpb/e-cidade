@@ -27,6 +27,10 @@
 
 namespace ECidade\Financeiro\Contabilidade\ContaCorrente\Repository;
 
+use BaseClassRepository;
+use cl_conplanoatributos;
+use db_utils;
+use cl_conplanosistemaatributos;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Model\Atributo as AtributoModel;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Model\ContaCorrente as ContaCorrenteModel;
 
@@ -34,7 +38,7 @@ use ECidade\Financeiro\Contabilidade\ContaCorrente\Model\ContaCorrente as ContaC
  * Class Atributo
  * @package ECidade\Financeiro\Contabilidade\ContaCorrente\Model
  */
-class Atributo extends \BaseClassRepository
+class Atributo extends BaseClassRepository
 {
     /**
      * @var Atributo
@@ -55,7 +59,7 @@ class Atributo extends \BaseClassRepository
         $instance = self::getInstance();
         $anoSessao = db_getsession('DB_anousu');
         $instituicaoSessao = db_getsession('DB_instit');
-        $oDaoConplanoAtributos = new \cl_conplanoatributos();
+        $oDaoConplanoAtributos = new cl_conplanoatributos();
         $aWhere = [];
 
         $aWhere[] = "c120_anousu = {$anoSessao}";
@@ -83,7 +87,7 @@ class Atributo extends \BaseClassRepository
 
         $atributos = [];
         for ($row = 0; $row < $totalAtributos; $row++) {
-            $stdDados = \db_utils::fieldsMemory($rsAtributos, $row);
+            $stdDados = db_utils::fieldsMemory($rsAtributos, $row);
             $atributos[] = $instance->make($stdDados);
         }
 
@@ -104,7 +108,7 @@ class Atributo extends \BaseClassRepository
 
         $instance = self::getInstance();
 
-        $daoAtributos = new \cl_conplanosistemaatributos();
+        $daoAtributos = new cl_conplanosistemaatributos();
         $where        = "c129_conplanosistema = {$contaCorrente->getCodigo()}";
         $campos = "conplanoinfocomplementar.*";
         $sqlAtributos = $daoAtributos->sql_query(null, "$campos", "c129_ordem", $where);
@@ -117,7 +121,7 @@ class Atributo extends \BaseClassRepository
 
         $atributos = [];
         for ($row = 0; $row < $totalAtributos; $row++) {
-            $stdDados = \db_utils::fieldsMemory($rsAtributos, $row);
+            $stdDados = db_utils::fieldsMemory($rsAtributos, $row);
             //if (!empty($instance->aColecao[$stdDados->c121_sequencial])) {
             //    return $instance->aColecao[$stdDados->c121_sequencial];
             //}

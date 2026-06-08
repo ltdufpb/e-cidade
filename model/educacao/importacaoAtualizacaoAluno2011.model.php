@@ -39,7 +39,7 @@ class importacaoAtualizacaoAluno2011 extends importacaoCenso {
    *                              false busca pelo codigo inep do aluno
    * @override 
    */
-  #[\Override]
+  #[Override]
   function getDadosAluno($oLinha, $lPesquisaInep = \false) {
 
   	$oDaoAluno     = db_utils::getdao('aluno');

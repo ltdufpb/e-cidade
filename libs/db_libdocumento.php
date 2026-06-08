@@ -25,7 +25,7 @@
  *                licenca/licenca_pt.txt
  */
 
-class libdocumento implements \Stringable {
+class libdocumento implements Stringable {
 
   public $aParagrafos     = [];
   public $aParametros     = [];

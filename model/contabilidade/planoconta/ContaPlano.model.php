@@ -227,7 +227,7 @@ abstract class ContaPlano {
   /**
    * Valida a estrutura do Plano de Contas
    * @return bool
-   * @throws \Exception
+   * @throws Exception
    */
   protected function validaEstrutural() {
 
@@ -962,7 +962,7 @@ abstract class ContaPlano {
    * @return string
    * @see self::getEstruturalAteNivel
    */
-  #[\Deprecated]
+  #[Deprecated]
   public function getEstruturaAteNivel($sEstrutura, $iNivel) {
 
     $aPartesEstrutural = explode(".", (string) $sEstrutura);

@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Divida\Certidao;
 
+use InstituicaoRepository;
+use Exception;
 use DateTime;
 use ECidade\Tributario\Divida\Certidao\CertidaoDivida as CertidaoDividaEntity;
 
@@ -84,7 +86,7 @@ class Certidao
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataEmissao()
     {
@@ -92,7 +94,7 @@ class Certidao
     }
 
     /**
-     * @param \DateTime $dataEmissao
+     * @param DateTime $dataEmissao
      * @return Certidao
      */
     public function setDataEmissao($dataEmissao)
@@ -214,7 +216,7 @@ class Certidao
     /**
      * @param  $state
      * @return Certidao
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState($state)
     {
@@ -237,7 +239,7 @@ class Certidao
         }
 
         if (array_key_exists('v13_instit', $state)) {
-            $instituicao = \InstituicaoRepository::getInstituicaoByCodigo($state['v13_instit']);
+            $instituicao = InstituicaoRepository::getInstituicaoByCodigo($state['v13_instit']);
             $self->setInstituicao($instituicao);
         }
 

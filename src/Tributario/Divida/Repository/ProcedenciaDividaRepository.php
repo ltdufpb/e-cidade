@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Divida\Repository;
 
+use cl_proced;
 use ECidade\Tributario\Divida\Procedencia;
 use Exception;
 
@@ -36,7 +37,7 @@ class ProcedenciaDividaRepository
      */
     public function find($codigo)
     {
-        $dao = new \cl_proced();
+        $dao = new cl_proced();
         $sql = $dao->sql_query_file($codigo);
         $rs = db_query($sql);
 

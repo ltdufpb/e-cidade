@@ -425,7 +425,7 @@ class DadosCensoEscola extends DadosCenso {
     return $aEtapas;
   }
 
-  #[\Deprecated(message: 'só usado até 2014 ver DadosCensoEscola2015.model.php -> getDadosAvaliacao')]
+  #[Deprecated(message: 'só usado até 2014 ver DadosCensoEscola2015.model.php -> getDadosAvaliacao')]
   public function getDadosAvaliacao ($oDadosInfra) {
 
     /**

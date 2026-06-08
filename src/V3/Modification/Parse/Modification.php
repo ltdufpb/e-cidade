@@ -2,7 +2,7 @@
 
 namespace ECidade\V3\Modification\Parse;
 
-use DOMDocument, Exception;
+use Exception;
 
 use \ECidade\V3\Extension\Parse\XML as XMLParse;
 use \ECidade\V3\Extension\Glob;

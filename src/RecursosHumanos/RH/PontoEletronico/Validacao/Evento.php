@@ -26,6 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Validacao;
 
+use Servidor;
+use ParameterException;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Model\Evento as EventoModel;
 
 /**
@@ -46,16 +48,16 @@ class Evento extends PontoEletronico implements InterfacePontoEletronico {
 
   /**
    * @return bool
-   * @throws \ParameterException
+   * @throws ParameterException
    */
   public function validar() {
 
-    if (empty($this->servidor) || !$this->servidor instanceof \Servidor) {
-      throw new \ParameterException("Informe o servidor para ser validado.");
+    if (empty($this->servidor) || !$this->servidor instanceof Servidor) {
+      throw new ParameterException("Informe o servidor para ser validado.");
     }
 
     if (empty($this->evento) || !$this->evento instanceof EventoModel) {
-      throw new \ParameterException("Informe o evento para ser validado.");
+      throw new ParameterException("Informe o evento para ser validado.");
     }
 
     if ($this->possuiAfastamentoNoRHNaData($this->evento->getDataInicial())) {

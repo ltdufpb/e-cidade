@@ -2,6 +2,11 @@
 
 namespace ECidade\Financeiro\Orcamento\Recurso;
 
+use cl_origemcomplementorecurso;
+use db_utils;
+use EmpenhoFinanceiro;
+use stdClass;
+use _db_fields;
 use Exception;
 
 /**
@@ -25,19 +30,19 @@ class Origem
             "o206_origem = {$origem}",
             "o206_numero = {$numero}",
         ]);
-        $dao = new \cl_origemcomplementorecurso();
+        $dao = new cl_origemcomplementorecurso();
         $sql = $dao->sql_query_complemento("*", $where);
         $res = db_query($sql);
         if (!$res || pg_num_rows($res) == 0) {
             return false;
         }
-        return \db_utils::fieldsMemory($res, 0);
+        return db_utils::fieldsMemory($res, 0);
     }
 
     /**
      * Retorna a origem selecionada pelo usuário na autorização do empenho.
      * @param $numero
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getAutorizacao($numero)
     {
@@ -48,7 +53,7 @@ class Origem
      * Retorna a origem selecionada pelo usuário na emissão do empenho.
      * @param $numero
      * @param $ano ano que esta processando
-     * @return \_db_fields|bool|\stdClass
+     * @return _db_fields|bool|stdClass
      */
     public static function getEmpenho($numero, $ano)
     {
@@ -159,7 +164,7 @@ class Origem
     public static function set($origem, $numero, $recurso, $complemento)
     {
         $codigoOrigem = self::get($numero, $origem);
-        $daoComplemento = new \cl_origemcomplementorecurso();
+        $daoComplemento = new cl_origemcomplementorecurso();
         $daoComplemento->o206_numero = $numero;
         $daoComplemento->o206_origem = $origem;
         $daoComplemento->o206_complementorecurso = $complemento;
@@ -189,7 +194,7 @@ class Origem
     /**
      * @param $numero
      *
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getPlanilhaArrecadacao($numero)
     {
@@ -199,7 +204,7 @@ class Origem
     /**
      * @param $numero
      *
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getRecibo($numero)
     {
@@ -209,7 +214,7 @@ class Origem
     /**
      * @param $numero
      *
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getPadrao($numero)
     {
@@ -224,7 +229,7 @@ class Origem
      */
     private static function empenhoIsRP($numero, $ano)
     {
-        $empenho = new \EmpenhoFinanceiro($numero);
+        $empenho = new EmpenhoFinanceiro($numero);
         return $empenho->isRP($ano);
     }
 
@@ -240,7 +245,7 @@ class Origem
             "o206_origem = {$origem}",
             "o206_numero = {$numero}",
         ]);
-        $dao = new \cl_origemcomplementorecurso();
+        $dao = new cl_origemcomplementorecurso();
         $dao->excluir(null, $where);
         if ($dao->erro_status == 0) {
             throw new Exception("Erro ao excluir origem.");

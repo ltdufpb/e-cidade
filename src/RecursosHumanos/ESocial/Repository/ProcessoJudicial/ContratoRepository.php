@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessocontrato;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Contrato as ContratoProcessual;
 use Exception;
-use DBDate;
 
 class ContratoRepository
 {

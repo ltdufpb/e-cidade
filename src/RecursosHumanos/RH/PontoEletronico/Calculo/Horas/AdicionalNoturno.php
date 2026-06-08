@@ -27,6 +27,10 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use Override;
+use Deprecated;
+use stdClass;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 
 /**
@@ -72,7 +76,7 @@ class AdicionalNoturno extends BaseHora implements Horas
 
     protected function calcularHoras()
     {
-        $mHora = new \DateTime("00:00");
+        $mHora = new DateTime("00:00");
         $aMarcacoes = $this->marcacoes->getMarcacoes();
         $aHorasJornada = $this->getDiaTrabalho()->getJornada()->getHoras();
 
@@ -111,7 +115,7 @@ class AdicionalNoturno extends BaseHora implements Horas
                     $this->marcacoes->getMarcacaoEntrada1()->getMarcacao(),
                     $this->marcacoes->getMarcacaoSaida1()->getMarcacao()
                 );
-                $hora = ($adicionalNoturno instanceof \DateTime ? $adicionalNoturno->format('H:i') : '__:__');
+                $hora = ($adicionalNoturno instanceof DateTime ? $adicionalNoturno->format('H:i') : '__:__');
                 $this->logger->debug('-- AdicionalNoturno-Periodo1........:' . $hora);
 
                 $mHora->modify("+{$adicionalNoturno->format('H')} hour +{$adicionalNoturno->format('i')} minutes");
@@ -126,7 +130,7 @@ class AdicionalNoturno extends BaseHora implements Horas
                     $this->marcacoes->getMarcacaoEntrada2()->getMarcacao(),
                     $this->marcacoes->getMarcacaoSaida2()->getMarcacao()
                 );
-                $hora = ($adicionalNoturno instanceof \DateTime ? $adicionalNoturno->format('H:i') : '__:__');
+                $hora = ($adicionalNoturno instanceof DateTime ? $adicionalNoturno->format('H:i') : '__:__');
                 $this->logger->debug('-- AdicionalNoturno-Periodo2........:' . $hora);
 
                 $mHora->modify("+{$adicionalNoturno->format('H')} hour +{$adicionalNoturno->format('i')} minutes");
@@ -136,21 +140,21 @@ class AdicionalNoturno extends BaseHora implements Horas
 
         $this->logger->debug('------------------------------------------------------');
 
-        return $mHora instanceof \DateTime ? $mHora->format('H:i') : $mHora->format('%H:%i');
+        return $mHora instanceof DateTime ? $mHora->format('H:i') : $mHora->format('%H:%i');
     }
 
     /**
      * @todo Deletar função para utilizar apenas a função da classe pai BaseHora. Deve-se tomar cuidado com os impactos.
-     * @param \DateTime $primeiraMarcacao
-     * @param \DateTime $segundaMarcacao
+     * @param DateTime $primeiraMarcacao
+     * @param DateTime $segundaMarcacao
      * @param bool $apenasHorasNoturnas
-     * @return \stdClass | \DateTime
+     * @return stdClass|DateTime
      */
-    #[\Override]
-    #[\Deprecated]
+    #[Override]
+    #[Deprecated]
     public function percorreMinutoAMinuto(
-        \DateTime $primeiraMarcacao,
-        \DateTime $segundaMarcacao,
+        DateTime $primeiraMarcacao,
+        DateTime $segundaMarcacao,
         $diurnasNoturnas = false
     ) {
         $this->logger->debug('-- Metodo percorreMinutoAMinuto()');

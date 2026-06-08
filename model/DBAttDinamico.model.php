@@ -110,7 +110,7 @@ class DBAttDinamico {
   }
 
   /**
-   * @return \DBAttDinamicoAtributo[]
+   * @return DBAttDinamicoAtributo[]
    */
   public function getAtributos(){
     return $this->aAtributos;
@@ -118,7 +118,7 @@ class DBAttDinamico {
 
   /**
    * Retorna somente os atributos dinâmicos ATIVOS
-   * @return \DBAttDinamicoAtributo[]
+   * @return DBAttDinamicoAtributo[]
    */
   public function getAtributosAtivos() {
 

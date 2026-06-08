@@ -2,6 +2,10 @@
 
 namespace ECidade\Tributario\Issqn\Inscricao\Service;
 
+use Exception;
+use DateTime;
+use BusinessException;
+use DBException;
 use ECidade\Tributario\Library\Service as BaseService;
 use ECidade\Tributario\Issqn\Inscricao\Service\Procedure\CalculoIssqn;
 use ECidade\Tributario\Library\Session;
@@ -17,25 +21,25 @@ final class Calculo extends BaseService
     /**
      * @param Issbase $issbase
      * @return string
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function execute(Empresa $empresa)
     {
         if ($empresa->isParalisada()) {
             $erroMensagem = (object) ['iInscricao', $empresa->getInscricao()];
-            throw new \Exception(_M(Empresa::MENSAGENS . 'empresa_paralisada', $erroMensagem));
+            throw new Exception(_M(Empresa::MENSAGENS . 'empresa_paralisada', $erroMensagem));
         }
 
         $ano = $this->session->get('DB_anousu');
         $instituicao = $this->session->get('DB_instit');
         $dataCalculo = $this->session->getData();
 
-        $dataInicio = new \DateTime($empresa->getDataInicioAtividades()->getDate());
+        $dataInicio = new DateTime($empresa->getDataInicioAtividades()->getDate());
 
         if ((int)$dataInicio->format('Y') > (int)$ano) {
             $mensagem = "Empresa mais nova que ano do Calculo: \n Ano Inicio Empresa: ".$dataInicio->format('Y');
-            throw new \BusinessException($mensagem);
+            throw new BusinessException($mensagem);
         }
 
         return $this->calculoIssqnProcedure->execute($empresa, $dataCalculo, $instituicao, $ano);

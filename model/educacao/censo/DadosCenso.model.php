@@ -155,14 +155,14 @@ class DadosCenso {
     // usar nos endereções
     if ($tipo == 7 ) {
 
-      $string = $this->retiraAcento( trim($string) );
+      $string = $this->retiraAcento( trim((string) $string) );
       $string = preg_replace("/[^a-zA-Z0-9ªº\-\s\/.,]/", "", (string) $string);
       $retira_acentos = false;
     }
 
     if ( $tipo == 8 ) {
 
-      $string = $this->retiraAcento( trim($string) );
+      $string = $this->retiraAcento( trim((string) $string) );
       $string = preg_replace("/[^a-zA-Z0-9\s]/", "", (string) $string);
       $retira_acentos = false;
     }

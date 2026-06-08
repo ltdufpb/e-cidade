@@ -27,10 +27,23 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao;
 
+use Servidor;
+use Instituicao;
+use Exception;
+use DBDate;
+use BusinessException;
+use DateTime;
+use stdClass;
+use DateInterval;
+use cl_pontoeletronicoarquivoimportacaoregistro;
+use DBException;
+use db_utils;
+use AssentamentoRepository;
+use Assentamento;
+use ParameterException;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Periodo;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaServidor;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\ProcessamentoPontoEletronico;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Repository\DiaTrabalho as DiaTrabalhoRepository;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho as DiaTrabalhoModel;
@@ -94,18 +107,18 @@ class EspelhoPonto
 
     /**
      * EspelhoPonto constructor.
-     * @param \Servidor $oServidor
+     * @param Servidor $oServidor
      * @param Periodo[] $aPeriodos
-     * @param \Instituicao $oInstituicao
-     * @throws \BusinessException
+     * @param Instituicao $oInstituicao
+     * @throws BusinessException
      */
-    public function __construct(private readonly \Servidor $oServidor, $aPeriodos, private readonly \Instituicao $oInstituicao)
+    public function __construct(private readonly Servidor $oServidor, $aPeriodos, private readonly Instituicao $oInstituicao)
     {
 
         if ($this->oServidor->isRescindido()) {
             $periodo = reset($aPeriodos);
             if ($this->oServidor->getDataRescisao()->getTimestamp() < $periodo->getDataInicio()->getTimestamp()) {
-                throw new \Exception("Servidor {$this->oServidor->getCgm()->getNome()} foi rescindo em {$this->oServidor->getDataRescisao()->format("d/m/Y")}");
+                throw new Exception("Servidor {$this->oServidor->getCgm()->getNome()} foi rescindo em {$this->oServidor->getDataRescisao()->format("d/m/Y")}");
             }
         }
         $this->aPeriodos = $aPeriodos;
@@ -163,21 +176,21 @@ class EspelhoPonto
 
     /**
      * Retorna um array de todas as datas de um período de efetividade
-     * @return \DBDate[]
+     * @return DBDate[]
      */
     private function getDatasEfetividade()
     {
-        return \DBDate::getDatasNoIntervalo($this->oPeriodoEfetividade->getDataInicio(),
+        return DBDate::getDatasNoIntervalo($this->oPeriodoEfetividade->getDataInicio(),
             $this->oPeriodoEfetividade->getDataFim());
     }
 
     /**
      * Retorna a escala do servidor em uma data
-     * @param \DBDate $oDataEfetividade
-     * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaServidor
-     * @throws \BusinessException
+     * @param DBDate $oDataEfetividade
+     * @return EscalaServidor
+     * @throws BusinessException
      */
-    private function getEscalaServidorNaData(\DBDate $oDataEfetividade)
+    private function getEscalaServidorNaData(DBDate $oDataEfetividade)
     {
 
         if ($this->oServidor->getEscalas() == null) {
@@ -187,7 +200,7 @@ class EspelhoPonto
             $sMensagem .= ' Para configurá-la, acesse o menu:';
             $sMensagem .= "\n- RH > Procedimentos > Efetividade > Manutenção da Escala de Funcionários";
 
-            throw new \BusinessException($sMensagem);
+            throw new BusinessException($sMensagem);
         }
 
         $oEscala = ProcessamentoPontoEletronico::getEscalaNaData($this->oServidor->getEscalas(), $oDataEfetividade);
@@ -195,11 +208,11 @@ class EspelhoPonto
         if (is_null($oEscala)) {
 
             $sMensagem = "Servidor {$this->oServidor->getMatricula()} - {$this->oServidor->getCgm()->getNome()} não possui";
-            $sMensagem .= " escala de trabalho configurada no dia {$oDataEfetividade->getDate(\DBDate::DATA_PTBR)}.";
+            $sMensagem .= " escala de trabalho configurada no dia {$oDataEfetividade->getDate(DBDate::DATA_PTBR)}.";
             $sMensagem .= ' Para verificar as escalas, acesse o menu:';
             $sMensagem .= "\n- RH > Procedimentos > Efetividade > Manutenção da Escala de Funcionários";
 
-            throw new \BusinessException($sMensagem);
+            throw new BusinessException($sMensagem);
         }
 
         return $oEscala;
@@ -209,8 +222,8 @@ class EspelhoPonto
      * Retorna uma instância de DiaTrabalho
      * @param $oDataEfetividade
      * @return DiaTrabalhoModel
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function getDiaTrabalho($oDataEfetividade)
     {
@@ -229,8 +242,8 @@ class EspelhoPonto
     /**
      * Preenche os dados do servidor
      * @return object
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function getDadosServidor()
     {
@@ -243,7 +256,7 @@ class EspelhoPonto
             $sMensagem .= "Para o funcionamento correto do espelho ponto são necessárias as configurações de Tolerância e Horas Extras da lotação do servidor. \n";
             $sMensagem .= "Para configurá-las acesse:\nRH > Procedimentos > Ponto Eletrônico > Configurações > Lotação";
 
-            throw new \BusinessException($sMensagem);
+            throw new BusinessException($sMensagem);
         }
 
         $localTrabalho = "";
@@ -256,7 +269,7 @@ class EspelhoPonto
         return (object)[
             'nome' => $this->oServidor->getCgm()->getNome(),
             'matricula' => $this->oServidor->getMatricula(),
-            'admissao' => $this->oServidor->getDataAdmissao()->getDate(\DBDate::DATA_PTBR),
+            'admissao' => $this->oServidor->getDataAdmissao()->getDate(DBDate::DATA_PTBR),
             'pispasep' => $this->oServidor->getPISPASEP(),
             'lotacao' => $this->oServidor->getCodigoLotacao(),
             'rescisao'   => $this->oServidor->getDataRescisao(),
@@ -280,27 +293,27 @@ class EspelhoPonto
     /**
      * Preenche os valores referentes ao dia de trabalho
      * @param DiaTrabalhoModel $oDiaTrabalho
-     * @return \stdClass
-     * @throws \DBException
+     * @return stdClass
+     * @throws DBException
      */
     private function montarValoresGrade(DiaTrabalhoModel $oDiaTrabalho)
     {
 
-        $diaSemana = new \DateTime($oDiaTrabalho->getData()->getDate());
-        $oDados = new \stdClass;
+        $diaSemana = new DateTime($oDiaTrabalho->getData()->getDate());
+        $oDados = new stdClass;
         $oDados->possuiEvento = false;
-        $oDados->dadosEvento = new \stdClass();
+        $oDados->dadosEvento = new stdClass();
         $oDados->dadosEvento->descricao = '';
 
         $oJornada = $oDiaTrabalho->getJornada();
 
-        $oDados->oPeriodoEfetividade = new \stdClass();
+        $oDados->oPeriodoEfetividade = new stdClass();
         $oDados->oPeriodoEfetividade->iExercicio = $this->oPeriodoEfetividade->getExercicio();
         $oDados->oPeriodoEfetividade->iCompetencia = $this->oPeriodoEfetividade->getCompetencia();
 
         $oDados->codigo_data = $oDiaTrabalho->getCodigo();
-        $oDados->data = $oDiaTrabalho->getData()->getDate(\DBDate::DATA_PTBR);
-        $oDados->data_dia = $oDiaTrabalho->getData()->getDate(\DBDate::DATA_PTBR) . ' - ' . $this->diaSemana($diaSemana->format('w'),
+        $oDados->data = $oDiaTrabalho->getData()->getDate(DBDate::DATA_PTBR);
+        $oDados->data_dia = $oDiaTrabalho->getData()->getDate(DBDate::DATA_PTBR) . ' - ' . $this->diaSemana($diaSemana->format('w'),
                 true);
         $oDados->lTemMarcacoes      = !$oDiaTrabalho->getMarcacoes()->isEmpty();
         $oDados->lFeriado           = $oDiaTrabalho->getFeriado() != null;
@@ -321,20 +334,20 @@ class EspelhoPonto
             }
         }
 
-        $oDados->oJornada = new \stdClass();
+        $oDados->oJornada = new stdClass();
         $oDados->oJornada->codigo = $oJornada->getCodigo();
         $oDados->oJornada->descricao = $oJornada->getDescricao();
         $oDados->oJornada->dsr_folga = !$oJornada->isDiaTrabalhado();
         $oDados->oJornada->tipo_descricao = $oJornada->getTipoDescricao();
 
-        $oEntradaSaida1 = new \stdClass();
-        $oEntradaSaida2 = new \stdClass();
-        $oEntradaSaida3 = new \stdClass();
+        $oEntradaSaida1 = new stdClass();
+        $oEntradaSaida2 = new stdClass();
+        $oEntradaSaida3 = new stdClass();
 
         for ($iContador = 1; $iContador <= 6; $iContador++) {
             $oMarcacao = $oDiaTrabalho->getMarcacoesSemAlteracao()->getMarcacao($iContador);
 
-            $oDadosMarcacao = new \stdClass();
+            $oDadosMarcacao = new stdClass();
             $oDadosMarcacao->codigo = null;
             $oDadosMarcacao->hora = '';
             $oDadosMarcacao->tipo = $iContador;
@@ -349,7 +362,7 @@ class EspelhoPonto
                 $oDadosMarcacao->data = $oMarcacao->getData()->getDate();
 
                 if ($oMarcacao->getJustificativa() != null) {
-                    $oDadosMarcacao->oJustificativa = new \stdClass();
+                    $oDadosMarcacao->oJustificativa = new stdClass();
                     $oDadosMarcacao->oJustificativa->codigo = $oMarcacao->getJustificativa()->getCodigo();
                     $oDadosMarcacao->oJustificativa->descricao = $oMarcacao->getJustificativa()->getDescricao();
                     $oDadosMarcacao->oJustificativa->abreviacao = $oMarcacao->getJustificativa()->getAbreviacao();
@@ -391,57 +404,57 @@ class EspelhoPonto
 
         $oDados->aMarcacoes = [$oEntradaSaida1, $oEntradaSaida2, $oEntradaSaida3];
         $oDados->aMarcacoesOriginais = $aMarcacoesOriginais;
-        $oDados->normais = $this->validaHoraZerada($oDiaTrabalho->getHorasTrabalho() != '' ? new \DateTime($oDiaTrabalho->getHorasTrabalho()) : '',
+        $oDados->normais = $this->validaHoraZerada($oDiaTrabalho->getHorasTrabalho() != '' ? new DateTime($oDiaTrabalho->getHorasTrabalho()) : '',
             true);
-        $oDados->faltas = $this->validaHoraZerada($oDiaTrabalho->getHorasFalta() != '' ? new \DateTime($oDiaTrabalho->getHorasFalta()) : '',
+        $oDados->faltas = $this->validaHoraZerada($oDiaTrabalho->getHorasFalta() != '' ? new DateTime($oDiaTrabalho->getHorasFalta()) : '',
             true);
-        $oDados->faltasNoturna = $this->validaHoraZerada($oDiaTrabalho->getHorasFaltaNoturna() != '' ? new \DateTime($oDiaTrabalho->getHorasFaltaNoturna()) : '',
+        $oDados->faltasNoturna = $this->validaHoraZerada($oDiaTrabalho->getHorasFaltaNoturna() != '' ? new DateTime($oDiaTrabalho->getHorasFaltaNoturna()) : '',
             true);
-        $oDados->ext50diurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra50()) : '');
-        $oDados->ext50noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50Noturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra50Noturna()) : '');
-        $oDados->ext75diurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra75()) : '');
-        $oDados->ext75noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75Noturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra75Noturna()) : '');
-        $oDados->ext100diurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra100()) : '');
-        $oDados->ext100noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100Noturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra100Noturna()) : '');
-        $oDados->ext50 = $this->validaHoraZerada(new \DateTime(static::somarTotalizador([
+        $oDados->ext50diurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50() != '' ? new DateTime($oDiaTrabalho->getHorasExtra50()) : '');
+        $oDados->ext50noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50Noturna() != '' ? new DateTime($oDiaTrabalho->getHorasExtra50Noturna()) : '');
+        $oDados->ext75diurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75() != '' ? new DateTime($oDiaTrabalho->getHorasExtra75()) : '');
+        $oDados->ext75noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75Noturna() != '' ? new DateTime($oDiaTrabalho->getHorasExtra75Noturna()) : '');
+        $oDados->ext100diurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100() != '' ? new DateTime($oDiaTrabalho->getHorasExtra100()) : '');
+        $oDados->ext100noturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100Noturna() != '' ? new DateTime($oDiaTrabalho->getHorasExtra100Noturna()) : '');
+        $oDados->ext50 = $this->validaHoraZerada(new DateTime(static::somarTotalizador([
             $oDados->ext50diurnas,
             $oDados->ext50noturnas
         ])), true);
-        $oDados->ext75 = $this->validaHoraZerada(new \DateTime(static::somarTotalizador([
+        $oDados->ext75 = $this->validaHoraZerada(new DateTime(static::somarTotalizador([
             $oDados->ext75diurnas,
             $oDados->ext75noturnas
         ])), true);
-        $oDados->ext100 = $this->validaHoraZerada(new \DateTime(static::somarTotalizador([
+        $oDados->ext100 = $this->validaHoraZerada(new DateTime(static::somarTotalizador([
             $oDados->ext100diurnas,
             $oDados->ext100noturnas
         ])), true);
-        $oDados->adicional = $this->validaHoraZerada($oDiaTrabalho->getHorasAdicionalNoturno() != '' ? new \DateTime($oDiaTrabalho->getHorasAdicionalNoturno()) : '',
+        $oDados->adicional = $this->validaHoraZerada($oDiaTrabalho->getHorasAdicionalNoturno() != '' ? new DateTime($oDiaTrabalho->getHorasAdicionalNoturno()) : '',
             true);
-        $oDados->saidaAntecipada = $this->validaHoraZerada($oDiaTrabalho->getHorasSaidaAntecipada() != '' ? new \DateTime($oDiaTrabalho->getHorasSaidaAntecipada()) : '',
+        $oDados->saidaAntecipada = $this->validaHoraZerada($oDiaTrabalho->getHorasSaidaAntecipada() != '' ? new DateTime($oDiaTrabalho->getHorasSaidaAntecipada()) : '',
             true);
-        $oDados->saidaAntecipadaNoturna = $this->validaHoraZerada($oDiaTrabalho->getHorasSaidaAntecipadaNoturna() != '' ? new \DateTime($oDiaTrabalho->getHorasSaidaAntecipadaNoturna()) : '',
-            true);
-
-        $oDados->atrasoDesmembrado = $this->validaHoraZerada($oDiaTrabalho->getHorasAtraso() != '' ? new \DateTime($oDiaTrabalho->getHorasAtraso()) : '',
-            true);
-        $oDados->atrasoNoturno = $this->validaHoraZerada($oDiaTrabalho->getHorasAtrasoNoturno() != '' ? new \DateTime($oDiaTrabalho->getHorasAtrasoNoturno()) : '',
+        $oDados->saidaAntecipadaNoturna = $this->validaHoraZerada($oDiaTrabalho->getHorasSaidaAntecipadaNoturna() != '' ? new DateTime($oDiaTrabalho->getHorasSaidaAntecipadaNoturna()) : '',
             true);
 
-        $oDados->totalHorasExt50NaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50NaoAutorizadas() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra50NaoAutorizadas()) : '',
+        $oDados->atrasoDesmembrado = $this->validaHoraZerada($oDiaTrabalho->getHorasAtraso() != '' ? new DateTime($oDiaTrabalho->getHorasAtraso()) : '',
             true);
-        $oDados->totalHorasExt50NaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50NaoAutorizadasNoturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra50NaoAutorizadasNoturna()) : '',
+        $oDados->atrasoNoturno = $this->validaHoraZerada($oDiaTrabalho->getHorasAtrasoNoturno() != '' ? new DateTime($oDiaTrabalho->getHorasAtrasoNoturno()) : '',
             true);
-        $oDados->totalHorasExt75NaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75NaoAutorizadas() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra75NaoAutorizadas()) : '',
+
+        $oDados->totalHorasExt50NaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50NaoAutorizadas() != '' ? new DateTime($oDiaTrabalho->getHorasExtra50NaoAutorizadas()) : '',
             true);
-        $oDados->totalHorasExt75NaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75NaoAutorizadasNoturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra75NaoAutorizadasNoturna()) : '',
+        $oDados->totalHorasExt50NaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra50NaoAutorizadasNoturna() != '' ? new DateTime($oDiaTrabalho->getHorasExtra50NaoAutorizadasNoturna()) : '',
             true);
-        $oDados->totalHorasExt100NaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100NaoAutorizadas() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra100NaoAutorizadas()) : '',
+        $oDados->totalHorasExt75NaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75NaoAutorizadas() != '' ? new DateTime($oDiaTrabalho->getHorasExtra75NaoAutorizadas()) : '',
             true);
-        $oDados->totalHorasExt100NaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100NaoAutorizadasNoturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtra100NaoAutorizadasNoturna()) : '',
+        $oDados->totalHorasExt75NaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra75NaoAutorizadasNoturna() != '' ? new DateTime($oDiaTrabalho->getHorasExtra75NaoAutorizadasNoturna()) : '',
             true);
-        $oDados->totalHorasExtNaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtraNaoAutorizadas() != '' ? new \DateTime($oDiaTrabalho->getHorasExtraNaoAutorizadas()) : '',
+        $oDados->totalHorasExt100NaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100NaoAutorizadas() != '' ? new DateTime($oDiaTrabalho->getHorasExtra100NaoAutorizadas()) : '',
             true);
-        $oDados->totalHorasExtNaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtraNaoAutorizadasNoturna() != '' ? new \DateTime($oDiaTrabalho->getHorasExtraNaoAutorizadasNoturna()) : '',
+        $oDados->totalHorasExt100NaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtra100NaoAutorizadasNoturna() != '' ? new DateTime($oDiaTrabalho->getHorasExtra100NaoAutorizadasNoturna()) : '',
+            true);
+        $oDados->totalHorasExtNaoAutorizadasnoturnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtraNaoAutorizadas() != '' ? new DateTime($oDiaTrabalho->getHorasExtraNaoAutorizadas()) : '',
+            true);
+        $oDados->totalHorasExtNaoAutorizadasdiurnas = $this->validaHoraZerada($oDiaTrabalho->getHorasExtraNaoAutorizadasNoturna() != '' ? new DateTime($oDiaTrabalho->getHorasExtraNaoAutorizadasNoturna()) : '',
             true);
 
         $minutosSaidaAntecipada = $this->converteHorasEmMinutos($oDiaTrabalho->getHorasSaidaAntecipada());
@@ -466,13 +479,13 @@ class EspelhoPonto
 
     /**
      * Seta os dados do evento para serem apresentados em tela
-     * @param \stdClass $oDados
-     * @return bool|\stdClass
+     * @param stdClass $oDados
+     * @return bool|stdClass
      */
-    private function verificarExistenciaDeEvento(\stdClass $oDados)
+    private function verificarExistenciaDeEvento(stdClass $oDados)
     {
 
-        $dia = new \DBDate($oDados->data);
+        $dia = new DBDate($oDados->data);
         $evento = Evento::getInstance()->possuiEventoNoDiaParaServidor($dia, $this->oServidor);
         if (!$evento) {
             return false;
@@ -576,17 +589,17 @@ class EspelhoPonto
             $oStdDiaTrabalho->ext100diurnas = '00:00';
         }
 
-        $oExtra50Noturna = new \DateTime($oStdDiaTrabalho->ext50noturnas);
-        $oExtra75Noturna = new \DateTime($oStdDiaTrabalho->ext75noturnas);
-        $oExtra100Noturna = new \DateTime($oStdDiaTrabalho->ext100noturnas);
+        $oExtra50Noturna = new DateTime($oStdDiaTrabalho->ext50noturnas);
+        $oExtra75Noturna = new DateTime($oStdDiaTrabalho->ext75noturnas);
+        $oExtra100Noturna = new DateTime($oStdDiaTrabalho->ext100noturnas);
 
-        $oInterval50 = new \DateInterval("PT{$oExtra50Noturna->format('H')}H{$oExtra50Noturna->format('i')}M");
-        $oInterval75 = new \DateInterval("PT{$oExtra75Noturna->format('H')}H{$oExtra75Noturna->format('i')}M");
-        $oInterval100 = new \DateInterval("PT{$oExtra100Noturna->format('H')}H{$oExtra100Noturna->format('i')}M");
+        $oInterval50 = new DateInterval("PT{$oExtra50Noturna->format('H')}H{$oExtra50Noturna->format('i')}M");
+        $oInterval75 = new DateInterval("PT{$oExtra75Noturna->format('H')}H{$oExtra75Noturna->format('i')}M");
+        $oInterval100 = new DateInterval("PT{$oExtra100Noturna->format('H')}H{$oExtra100Noturna->format('i')}M");
 
-        $oTotalExtra50 = new \DateTime($oStdDiaTrabalho->ext50diurnas);
-        $oTotalExtra75 = new \DateTime($oStdDiaTrabalho->ext75diurnas);
-        $oTotalExtra100 = new \DateTime($oStdDiaTrabalho->ext100diurnas);
+        $oTotalExtra50 = new DateTime($oStdDiaTrabalho->ext50diurnas);
+        $oTotalExtra75 = new DateTime($oStdDiaTrabalho->ext75diurnas);
+        $oTotalExtra100 = new DateTime($oStdDiaTrabalho->ext100diurnas);
 
         $oTotalExtra50->add($oInterval50);
         $oTotalExtra75->add($oInterval75);
@@ -715,7 +728,7 @@ class EspelhoPonto
      * @param $data
      * @param $matricula
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
     private function getMarcacoesOriginais($data, $matricula)
     {
@@ -732,21 +745,21 @@ class EspelhoPonto
             "rh229_data       = '{$data->getDate()}'"
         ];
 
-        $oDaoPontoEletronicoArquivoImportacaoRegistro = new \cl_pontoeletronicoarquivoimportacaoregistro;
+        $oDaoPontoEletronicoArquivoImportacaoRegistro = new cl_pontoeletronicoarquivoimportacaoregistro;
 
         $sqlRegistros = $oDaoPontoEletronicoArquivoImportacaoRegistro->sql_query_file(null,
             ' DISTINCT ' . implode(', ', $camposRegistros), 'data, hora', implode(' AND ', $whereRegistros));
         $rsRegistros = db_query($sqlRegistros);
 
         if (!$rsRegistros) {
-            throw new \DBException("Ocorreu um erro ao consultar as marcações originais do servidor. ({$matricula})");
+            throw new DBException("Ocorreu um erro ao consultar as marcações originais do servidor. ({$matricula})");
         }
 
         if (pg_num_rows($rsRegistros) == 0) {
             return [];
         }
 
-        return \db_utils::makeCollectionFromRecord($rsRegistros, fn($retorno) => (object)[
+        return db_utils::makeCollectionFromRecord($rsRegistros, fn($retorno) => (object)[
             'pis' => $retorno->pis,
             'matricula' => $retorno->matricula,
             'data' => $retorno->data,
@@ -758,13 +771,13 @@ class EspelhoPonto
     /**
      * @param $diaTrabalho
      * @return null|string
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
     private function getHorasExtrasAutorizadasNaData($diaTrabalho)
     {
-        $assentamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($diaTrabalho->getServidor(),
-            'S', $diaTrabalho->getData(), \Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA);
+        $assentamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($diaTrabalho->getServidor(),
+            'S', $diaTrabalho->getData(), Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA);
         $horasAutorizadas = [];
 
         if (!empty($assentamentos)) {
@@ -780,14 +793,14 @@ class EspelhoPonto
     /**
      * @param $diaTrabalho
      * @return bool
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
     private function hasHorasExtrasManuais($diaTrabalho)
     {
 
-        $assentamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($diaTrabalho->getServidor(),
-            'S', $diaTrabalho->getData(), \Assentamento::NATUREZA_HE_MANUAL);
+        $assentamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($diaTrabalho->getServidor(),
+            'S', $diaTrabalho->getData(), Assentamento::NATUREZA_HE_MANUAL);
 
         if (!empty($assentamentos)) {
             return true;
@@ -799,11 +812,11 @@ class EspelhoPonto
     /**
      * @param $hora
      * @return float|int
-     * @throws \Exception
+     * @throws Exception
      */
     private function converteHorasEmMinutos($hora)
     {
-        $intervalo = new \DateInterval('PT0H0M');
+        $intervalo = new DateInterval('PT0H0M');
         $minutos = 0;
 
         if ($hora != '') {
@@ -816,9 +829,9 @@ class EspelhoPonto
 
     /**
      * @param DiaTrabalhoModel $diaTrabalho
-     * @return \stdClass[]
+     * @return stdClass[]
      */
-    public function totalizarHorasAssentamentosServidorNaData(DiaTrabalho $diaTrabalho)
+    public function totalizarHorasAssentamentosServidorNaData(DiaTrabalhoModel $diaTrabalho)
     {
         if (empty($this->totalHorasAssentamentos)) {
             $this->totalHorasAssentamentos = array_merge($this->totalizarHorasGeraisNaData(), $this->totalizarAssentamentoNaDataPorNatureza($diaTrabalho), $this->totalizarAfastamentoNaData($diaTrabalho));
@@ -830,18 +843,18 @@ class EspelhoPonto
     /**
      * @param DiaTrabalhoModel $diaTrabalho
      * @param array $naturezas
-     * @return \stdClass[]
-     * @throws \DBException
-     * @throws \ParameterException
+     * @return stdClass[]
+     * @throws DBException
+     * @throws ParameterException
      */
-    private function totalizarAssentamentoNaDataPorNatureza(DiaTrabalho $diaTrabalho, $naturezas = [\Assentamento::NATUREZA_JUSTIFICATIVA, \Assentamento::NATUREZA_ABONO_FALTA, \Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA])
+    private function totalizarAssentamentoNaDataPorNatureza(DiaTrabalhoModel $diaTrabalho, $naturezas = [Assentamento::NATUREZA_JUSTIFICATIVA, Assentamento::NATUREZA_ABONO_FALTA, Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA])
     {
         $justificativaRepository = new JustivicativaRepository();
         $tipoAssentamentosJustificativas = $justificativaRepository->getTipoAssentamentosConfigurados();
 
         $assentamentos = [];
         foreach ($naturezas as $natureza) {
-            $assentamentosFiltrados = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->oServidor,
+            $assentamentosFiltrados = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->oServidor,
                 'S',
                 $diaTrabalho->getData(),
                 $natureza);
@@ -853,7 +866,7 @@ class EspelhoPonto
 
         if (count($assentamentos) > 0) {
             $assentamentos = array_filter($assentamentos, function ($assentamento) use ($tipoAssentamentosJustificativas) {
-                if ($assentamento->getInstanciaTipoAssentamento()->getNatureza() != \Assentamento::NATUREZA_JUSTIFICATIVA) {
+                if ($assentamento->getInstanciaTipoAssentamento()->getNatureza() != Assentamento::NATUREZA_JUSTIFICATIVA) {
                     return $assentamento;
                 }
 
@@ -871,7 +884,7 @@ class EspelhoPonto
             $assentamento->calcularHorasDiurnasNoturnasNoDia($diaTrabalho);
 
             if (!array_key_exists((string) $assentamento->getTipoAssentamento(), $assentamentosAgrupados)) {
-                $totalizadorAssentamento = new \stdClass();
+                $totalizadorAssentamento = new stdClass();
                 $totalizadorAssentamento->sequencial = $assentamento->getInstanciaTipoAssentamento()->getSequencial();
                 $totalizadorAssentamento->descricao = $assentamento->getInstanciaTipoAssentamento()->getDescricao();
                 $totalizadorAssentamento->natureza = $assentamento->getInstanciaTipoAssentamento()->getNatureza();
@@ -893,13 +906,13 @@ class EspelhoPonto
 
     /**
      * @param DiaTrabalhoModel $diaTrabalho
-     * @return \stdClass[]
-     * @throws \DBException
-     * @throws \ParameterException
+     * @return stdClass[]
+     * @throws DBException
+     * @throws ParameterException
      */
-    private function totalizarAfastamentoNaData(DiaTrabalho $diaTrabalho)
+    private function totalizarAfastamentoNaData(DiaTrabalhoModel $diaTrabalho)
     {
-        $afastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->oServidor,
+        $afastamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->oServidor,
             'A',
             $diaTrabalho->getData());
         $afastamentos ??= [];
@@ -908,7 +921,7 @@ class EspelhoPonto
         foreach ($afastamentos as $afastamento) {
             $afastamento->calcularHorasDiurnasNoturnasNoDia($diaTrabalho);
 
-            $totalizadorAssentamento = new \stdClass();
+            $totalizadorAssentamento = new stdClass();
             $totalizadorAssentamento->sequencial = $afastamento->getInstanciaTipoAssentamento()->getSequencial();
             $totalizadorAssentamento->descricao = $afastamento->getInstanciaTipoAssentamento()->getDescricao();
             $totalizadorAssentamento->natureza = $afastamento->getInstanciaTipoAssentamento()->getNatureza();
@@ -1023,7 +1036,7 @@ class EspelhoPonto
             $horas = $this->aDados[$mapeador->totalizador];
             $horasNoturnas = $this->aDados[$mapeador->totalizadorNoturno];
 
-            $totalizadorAssentamento = new \stdClass();
+            $totalizadorAssentamento = new stdClass();
 
             $totalizadorAssentamento->sequencial = $mapeador->sequencial;
             $totalizadorAssentamento->descricao = $mapeador->descricao;

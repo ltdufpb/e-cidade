@@ -26,7 +26,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Educacao\Escola\Model\DiarioArea;
+
 use ECidade\Educacao\Escola\Model\DiarioAreaAvaliacao;
 
 require_once(modification("fpdf151/scpdf.php"));

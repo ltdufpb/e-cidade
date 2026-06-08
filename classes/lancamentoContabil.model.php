@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\ComplementoRecurso;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Services\Processamento;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\PosProcessamento;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\Service\ComplementoLancamentoService;
@@ -575,11 +575,11 @@ class lancamentoContabil
         $dadosRecurso = new \ECidade\Financeiro\Contabilidade\LancamentoContabil\Recurso();
         $dadosRecurso->processar($oConLancam->c70_codlan);
 
-        $complementoRecurso = new \ECidade\Financeiro\Contabilidade\LancamentoContabil\ComplementoRecurso();
+        $complementoRecurso = new ComplementoRecurso();
         $complementoRecurso->processar($oConLancam->c70_codlan, $this->iAnoUsu);
 
         $instituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession("DB_instit"));
-        $data = new \DBDate($this->dDataLanc);
+        $data = new DBDate($this->dDataLanc);
         $competencia = new DBCompetencia($data->getAno(), $data->getMes());
         $oProcessamento = new Processamento($instituicao, $competencia);
         $oProcessamento->processar([$oConLancam->c70_codlan]);

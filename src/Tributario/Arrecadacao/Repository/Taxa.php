@@ -27,6 +27,10 @@
 
 namespace ECidade\Tributario\Arrecadacao\Repository;
 
+use BaseClassRepository;
+use Deprecated;
+use stdClass;
+use Exception;
 use Taxa as TaxaModel;
 use \cl_taxa;
 use \DBException;
@@ -36,7 +40,7 @@ use \DBException;
  * @package ECidade\Tributario\Arrecadacao\Repository
  * @author Davi Busanello <davi@dbseller.com.br>
  */
-class Taxa extends \BaseClassRepository
+class Taxa extends BaseClassRepository
 {
     protected static $itens = [];
 
@@ -91,7 +95,7 @@ class Taxa extends \BaseClassRepository
      * @param $iCodigo
      * @return null|TaxaModel
      * @throws DBException
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByCodigo($iCodigo)
     {
@@ -113,7 +117,7 @@ class Taxa extends \BaseClassRepository
     /**
      * @param $dados
      * @return null|TaxaModel
-     * @throws \Exception
+     * @throws Exception
      */
     protected function make($dados)
     {
@@ -149,7 +153,7 @@ class Taxa extends \BaseClassRepository
      * @return null|TaxaModel[]
      * @throws DBException
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function getTodasComProcesso()
     {
         $oDaoTaxa = new cl_taxa();
@@ -168,7 +172,7 @@ class Taxa extends \BaseClassRepository
     /**
      * @param $rsResult
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private function makeCollection($rsResult)
     {
@@ -196,7 +200,7 @@ class Taxa extends \BaseClassRepository
     {
         $dadoTaxas = [];
         foreach ($taxas as $taxa) {
-            $dado = new \stdClass();
+            $dado = new stdClass();
 
             $dado->id = $taxa->getCodigoTaxa();
             $dado->receita = $taxa->getReceita();

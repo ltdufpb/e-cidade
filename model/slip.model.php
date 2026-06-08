@@ -1355,14 +1355,14 @@ class slip
         $daoSlipRetencao = new cl_slipempagemovslips();
         $daoSlipRetencao->excluir(null, "k108_slip = {$this->iSlip}");
         if ($daoSlipRetencao->erro_status == 0) {
-            throw new \BusinessException("Errp salvar slip. As retenções não foram desvinculadas do slip.");
+            throw new BusinessException("Errp salvar slip. As retenções não foram desvinculadas do slip.");
         }
         foreach ($this->retencoes as $retencao) {
             $daoSlipRetencao->k108_empagemovslips = $retencao;
             $daoSlipRetencao->k108_slip            = $this->iSlip;
             $daoSlipRetencao->incluir(null);
             if ($daoSlipRetencao->erro_status == 0) {
-                throw new \BusinessException("Errp ao salvar slip. As retenções não foram vinculadas do slip.");
+                throw new BusinessException("Errp ao salvar slip. As retenções não foram vinculadas do slip.");
             }
         }
     }

@@ -32,7 +32,6 @@ use DBCompetencia;
 use ECidade\RecursosHumanos\Pessoal\Model\ControleRubricasParametros;
 use ECidade\RecursosHumanos\Pessoal\Model\ControleRubricasParametrosRubricas;
 use ECidade\RecursosHumanos\Pessoal\Repository\ControleRubricasParametrosRepository;
-use ECidade\RecursosHumanos\Pessoal\Repository\RubricasUsuarioRepository;
 use Instituicao;
 use Exception;
 use RubricaRepository;

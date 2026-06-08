@@ -2,8 +2,9 @@
 
 namespace ECidade\Tributario\Divida\Model;
 
+use InstituicaoRepository;
+use Exception;
 use DateTime;
-use Instituicao;
 
 class Inicial
 {
@@ -173,7 +174,7 @@ class Inicial
     /**
      * @param  $state
      * @return Diversos
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState($state)
     {
@@ -205,7 +206,7 @@ class Inicial
 
 
         if (array_key_exists('v50_instit', $state)) {
-            $instituicao = \InstituicaoRepository::getInstituicaoByCodigo($state['v50_instit']);
+            $instituicao = InstituicaoRepository::getInstituicaoByCodigo($state['v50_instit']);
             $self->setInstituicao($instituicao);
         }
 

@@ -27,17 +27,12 @@
 
 namespace ECidade\RecursosHumanos\RH\Assentamento;
 
+use Override;
 use Assentamento;
-use AssentamentoRepository;
-use BusinessException;
-use DateTime;
-use db_utils;
 use DBDate;
-use DBException;
 use DBPessoal;
 use ECidade\RecursosHumanos\RH\Assentamento\Model\ControleMedico;
 use Exception;
-use Servidor;
 use ServidorRepository;
 
 /**
@@ -90,7 +85,7 @@ class AssentamentoControleMedico extends Assentamento
         $this->controleMedico = $controleMedico;
     }
 
-    #[\Override]
+    #[Override]
     public function toArray()
     {
         $servidor = ServidorRepository::getInstanciaByCodigo(

@@ -27,6 +27,7 @@
 
 namespace ECidade\Educacao\Escola\Censo\Identificacao\Service;
 
+use InstituicaoRepository;
 use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\Identificacao\Builder\PessoaBuilder;
 use ECidade\Educacao\Escola\Censo\Identificacao\Model\Pessoa;
@@ -154,7 +155,7 @@ class ExportacaoService
 
     private function municipioIBGEInstituicao()
     {
-        $instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $instituicao = InstituicaoRepository::getInstituicaoSessao();
         $repository = new CensoMunicipioRepository();
 
         $municipio = $instituicao->getMunicipio();

@@ -1,6 +1,7 @@
 <?php
 namespace ECidade\Tributario\Caixa\Service;
 
+use Exception;
 use ECidade\Tributario\Arrecadacao\Custas\Relatorio\RelatorioRecibo;
 use ECidade\Tributario\Caixa\Cast\ReciboCast;
 use ECidade\Tributario\Caixa\Entity\Recibo;
@@ -15,7 +16,7 @@ final class ReciboDocumentoService extends Service
     /**
      * @param Recibo $recibo
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function execute(Recibo $recibo)
     {

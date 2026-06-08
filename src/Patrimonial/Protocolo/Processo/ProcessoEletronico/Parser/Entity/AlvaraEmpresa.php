@@ -2,8 +2,7 @@
 
 namespace ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Parser\Entity;
 
-use \ParameterException;
-use \BusinessException;
+use stdClass;
 use \JSON;
 
 class AlvaraEmpresa extends SolicitacaoAlvara
@@ -182,7 +181,7 @@ class AlvaraEmpresa extends SolicitacaoAlvara
         ];
 
         foreach ($sociosInformados as $key => $socio) {
-            $socioSolicitacao = new \stdClass();
+            $socioSolicitacao = new stdClass();
 
             foreach ($secaoSociosCampos as $campoSocio) {
                 $value = $this->getResposta($campoSocio, $socio->{$campoSocio->nome});

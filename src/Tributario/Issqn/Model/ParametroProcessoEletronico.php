@@ -2,7 +2,6 @@
 
 namespace ECidade\Tributario\Issqn\Model;
 
-use DateTime;
 use Exception;
 
 class ParametroProcessoEletronico

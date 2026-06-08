@@ -2,7 +2,6 @@
 
 namespace ECidade\Tributario\Caixa\Collection;
 
-use \DateTime;
 use ECidade\Tributario\Library\ModelCollection;
 use ECidade\Tributario\Caixa\Model\Dbreciboweb;
 

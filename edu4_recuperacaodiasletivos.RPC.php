@@ -48,30 +48,30 @@ try {
     switch ($parametro->executa) {
         case 'salvar':
             if ($parametro->turno == null) {
-                throw new \ParameterException('Turno não informado.');
+                throw new ParameterException('Turno não informado.');
             }
 
             if ($parametro->periodos == null) {
-                throw new \ParameterException('Nenhum período informado.');
+                throw new ParameterException('Nenhum período informado.');
             }
 
             if ($parametro->rechumano == null) {
-                throw new \ParameterException('Regente não informado.');
+                throw new ParameterException('Regente não informado.');
             }
 
             if ($parametro->data == null) {
-                throw new \ParameterException('Data não informada.');
+                throw new ParameterException('Data não informada.');
             }
 
             if ($parametro->regencia == null) {
-                throw new \ParameterException('Disciplina não informada.');
+                throw new ParameterException('Disciplina não informada.');
             }
 
             $recuperacaoDiasLetivosModel = new RecuperacaoDiasLetivosModel();
             $recuperacaoDiasLetivosModel->setTurno(TurnoRepository::getTurnoByCodigo($parametro->turno));
             $recuperacaoDiasLetivosModel->setRegencia(RegenciaRepository::getRegenciaByCodigo($parametro->regencia));
             $recuperacaoDiasLetivosModel->setRechumano($parametro->rechumano);
-            $recuperacaoDiasLetivosModel->setData(new \DBDate($parametro->data));
+            $recuperacaoDiasLetivosModel->setData(new DBDate($parametro->data));
 
             foreach ($parametro->periodos as $periodo) {
                 $recuperacaoDiasLetivosModel->adicionarPeriodo(PeriodoEscolaRepository::getByCodigo($periodo));
@@ -85,11 +85,11 @@ try {
 
         case 'buscarRegistros':
             if (empty($parametro->turma)) {
-                throw new \ParameterException('Turma não informada.');
+                throw new ParameterException('Turma não informada.');
             }
 
             if (empty($parametro->etapa)) {
-                throw new \ParameterException('Etapa não informada.');
+                throw new ParameterException('Etapa não informada.');
             }
 
             $retorno->registros = $recuperacaoDiasLetivosRepository->getRecuperacaoDiasLetivosPorTurma(

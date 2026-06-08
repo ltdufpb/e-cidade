@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Integracao\JuntaComercial\Model;
 
+use DateTime;
+
 /**
  * Class Atividade
  * @package ECidade\Tributario\Integracao\JuntaComercial\Model
@@ -39,17 +41,17 @@ class Atividade
   private $iCodigo;
 
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oDataInicio = null;
 
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oDataFim = null;
 
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oDataBaixa = null;
 
@@ -161,7 +163,7 @@ class Atividade
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getDataInicio()
   {
@@ -169,7 +171,7 @@ class Atividade
   }
 
   /**
-   * @param \DateTime $oDataInicio
+   * @param DateTime $oDataInicio
    */
   public function setDataInicio($oDataInicio)
   {
@@ -177,7 +179,7 @@ class Atividade
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getDataFim()
   {
@@ -185,7 +187,7 @@ class Atividade
   }
 
   /**
-   * @param \DateTime $oDataFim
+   * @param DateTime $oDataFim
    */
   public function setDataFim($oDataFim)
   {
@@ -193,7 +195,7 @@ class Atividade
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getDataBaixa()
   {
@@ -201,7 +203,7 @@ class Atividade
   }
 
   /**
-   * @param \DateTime $oDataBaixa
+   * @param DateTime $oDataBaixa
    */
   public function setDataBaixa($oDataBaixa)
   {

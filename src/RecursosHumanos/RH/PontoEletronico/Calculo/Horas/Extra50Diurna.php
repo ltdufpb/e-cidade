@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use DateInterval;
 use ECidade\Configuracao\Cadastro\Model\Feriado;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 
@@ -81,7 +83,7 @@ class Extra50Diurna extends Extra50 implements Horas {
 
   /**
    * Calcula o número de horas extra 50% em determinado dia
-   * @return \DateTime
+   * @return DateTime
    */
   public function calcular() {
 
@@ -117,7 +119,7 @@ class Extra50Diurna extends Extra50 implements Horas {
      */
     $this->oHoraExtra = $this->totalHorasExtraIgualTotal($this->oHoraExtraDiurna, $this->oHoraExtraTotal);
 
-    if($this->oHoraExtra instanceof \DateTime) {
+    if($this->oHoraExtra instanceof DateTime) {
       return $this->oHoraExtra;
     }
 
@@ -139,7 +141,7 @@ class Extra50Diurna extends Extra50 implements Horas {
   }
 
   /**
-   * @return \DateTime|null
+   * @return DateTime|null
    */
   private function validacoesTotalMaiorConfigurado() {
 
@@ -165,7 +167,7 @@ class Extra50Diurna extends Extra50 implements Horas {
           return $this->oHoraExtra;
         }
 
-        $this->oHorasDescontadas = new \DateTime(
+        $this->oHorasDescontadas = new DateTime(
           $this->getDiaTrabalho()->getData()->getDate() . ' ' .
           $this->oHoraExtraInicialNoturna->format('H:i')
         );
@@ -178,7 +180,7 @@ class Extra50Diurna extends Extra50 implements Horas {
 
         if(!$this->oMarcacaoEntrada->diff($oHoraInicioPeriodoNoturnoNoDia)->invert) {
 
-          $oHoraDiurnaInicial = new \DateTime(
+          $oHoraDiurnaInicial = new DateTime(
             $this->getDiaTrabalho()->getData()->getDate() . ' ' .
             $this->oMarcacaoEntrada->diff($oHoraInicioPeriodoNoturnoNoDia)->format('%H:%i')
           );
@@ -227,7 +229,7 @@ class Extra50Diurna extends Extra50 implements Horas {
         return $this->oHoraExtra;
       }
 
-      $oHorasIniciaisSobrando = new \DateTime(
+      $oHorasIniciaisSobrando = new DateTime(
         $this->getDiaTrabalho()->getData()->getDate() . ' ' .
         $this->getMaximoHorasExtras50()->diff($this->oHoraExtraInicialNoturna)->format('%H:%i')
       );
@@ -246,7 +248,7 @@ class Extra50Diurna extends Extra50 implements Horas {
        */
       if(!$oHorasIniciaisSobrando->diff($this->oHoraExtraInicialDiurna)->invert) {
 
-        $oIntervalExtraFinalDiurna = new \DateInterval("PT{$this->oHoraExtraFinalDiurna->format('H')}H{$this->oHoraExtraFinalDiurna->format('i')}M");
+        $oIntervalExtraFinalDiurna = new DateInterval("PT{$this->oHoraExtraFinalDiurna->format('H')}H{$this->oHoraExtraFinalDiurna->format('i')}M");
         $oHoraDiurnaSomada         = clone $this->oHoraExtraInicialDiurna;
         $oHoraDiurnaSomada->add($oIntervalExtraFinalDiurna);
 
@@ -269,11 +271,11 @@ class Extra50Diurna extends Extra50 implements Horas {
   }
 
   /**
-   * @return \DateTime|null
+   * @return DateTime|null
    */
   private function validacoesTotalMenorConfigurado() {
 
-    $oIntervalFinalDiurna = new \DateInterval("PT{$this->oHoraExtraFinalDiurna->format('H')}H{$this->oHoraExtraFinalDiurna->format('i')}M");
+    $oIntervalFinalDiurna = new DateInterval("PT{$this->oHoraExtraFinalDiurna->format('H')}H{$this->oHoraExtraFinalDiurna->format('i')}M");
     $oHoraDiurnaSomada    = clone $this->oHoraExtraInicialDiurna;
     $oHoraDiurnaSomada->add($oIntervalFinalDiurna);
 
@@ -303,14 +305,14 @@ class Extra50Diurna extends Extra50 implements Horas {
        * RETORNO: total de horas extras inicial e final diurna
        */
       if($this->getMaximoHorasExtras50()->diff($oHoraDiurnaSomada)->invert) {
-        return new \DateTime($this->getMaximoHorasExtras50()->diff($oHoraDiurnaSomada)->format('%H:%i'));
+        return new DateTime($this->getMaximoHorasExtras50()->diff($oHoraDiurnaSomada)->format('%H:%i'));
       }
     }
 
 
     $oMarcacaoEntrada         = clone $this->oMarcacaoEntrada;
     $oMarcacaoEntradaFicticia = clone $oMarcacaoEntrada;
-    $oMarcacaoEntradaFicticia->add(new \DateInterval("PT". $this->getMaximoHorasExtras50()->format('H') .'H'. $this->getMaximoHorasExtras50()->format('i') .'M'));
+    $oMarcacaoEntradaFicticia->add(new DateInterval("PT". $this->getMaximoHorasExtras50()->format('H') .'H'. $this->getMaximoHorasExtras50()->format('i') .'M'));
 
     /**
      * Se a hora ficticia (marcação mais configuração de extra 50) for maior que o inicio do perído noturno (22:00) então devo verificar se a hora de entrada real fazer a diferença
@@ -341,8 +343,8 @@ class Extra50Diurna extends Extra50 implements Horas {
     /**
      * Há hora extra inicial noturna
      */
-    $oHorasIniciaisSobrando    = new \DateTime($this->getDiaTrabalho()->getData()->getDate() . ' ' . $this->oHoraExtraInicial->format('H:i'));
-    $oIntervalExtraFinalDiurna = new \DateInterval("PT{$this->oHoraExtraFinalDiurna->format('H')}H{$this->oHoraExtraFinalDiurna->format('i')}M");
+    $oHorasIniciaisSobrando    = new DateTime($this->getDiaTrabalho()->getData()->getDate() . ' ' . $this->oHoraExtraInicial->format('H:i'));
+    $oIntervalExtraFinalDiurna = new DateInterval("PT{$this->oHoraExtraFinalDiurna->format('H')}H{$this->oHoraExtraFinalDiurna->format('i')}M");
 
     $oHorasIniciaisSobrando->add($oIntervalExtraFinalDiurna);
 
@@ -359,7 +361,7 @@ class Extra50Diurna extends Extra50 implements Horas {
      */
     if($this->lJornadaIniciaPeriodoNoturno) {
 
-      $oDiferencaMaximoComInicialNoturna = new \DateTime(
+      $oDiferencaMaximoComInicialNoturna = new DateTime(
         $this->getDiaTrabalho()->getData()->getDate() . ' ' .
         $this->getMaximoHorasExtras50()->diff($this->oHoraExtraInicialNoturna)->format('%H:%i')
       );
@@ -376,7 +378,7 @@ class Extra50Diurna extends Extra50 implements Horas {
        * Total de horas extras diurnas(inicial e final) é maior que o valor máximo para hora extra 50%
        * RETORNO: número de horas dentro do limite
        */
-      return new \DateTime(
+      return new DateTime(
         $this->getDiaTrabalho()->getData()->getDate() . ' ' .
         $oDiferencaMaximoComInicialNoturna->diff($this->oHoraExtraDiurna)->format('%H:%i')
       );
@@ -386,23 +388,23 @@ class Extra50Diurna extends Extra50 implements Horas {
   }
 
   /**
-   * @param \DateTime $oHora
-   * @return \DateTime
+   * @param DateTime $oHora
+   * @return DateTime
    */
-  private function calculaSemHorasDesconto(\DateTime $oHora) {
+  private function calculaSemHorasDesconto(DateTime $oHora) {
 
     if(empty($this->oHorasDescontadas)) {
       return $oHora;
     }
 
-    return new \DateTime(
+    return new DateTime(
       $this->getDiaTrabalho()->getData()->getDate() . ' ' .
       $oHora->diff($this->oHorasDescontadas)->format('%H:%i')
     );
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   protected function calcularFolga() {
 
@@ -504,11 +506,11 @@ class Extra50Diurna extends Extra50 implements Horas {
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   private function getMarcacaoEntradaComMaximoExtra50() {
 
-    $oIntervalMaximoExtras50 = new \DateInterval(
+    $oIntervalMaximoExtras50 = new DateInterval(
       "PT{$this->getMaximoHorasExtras50()->format('H')}H{$this->getMaximoHorasExtras50()->format('i')}M"
     );
 

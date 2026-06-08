@@ -1,12 +1,14 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Model;
 
+use cl_servidoralteracao;
+use BusinessException;
 use DBDate;
 
 class ServidorAlteracao
 {
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataS2205 = null;
 
@@ -16,7 +18,7 @@ class ServidorAlteracao
     private $processamentoS2205 = false;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataS2206 = null;
 
@@ -26,7 +28,7 @@ class ServidorAlteracao
     private $processamentoS2206 = false;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataS2306 = null;
 
@@ -36,7 +38,7 @@ class ServidorAlteracao
     private $processamentoS2306 = false;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataS2405 = null;
 
@@ -46,7 +48,7 @@ class ServidorAlteracao
     private $processamentoS2405 = false;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataS2416 = null;
 
@@ -74,7 +76,7 @@ class ServidorAlteracao
 
     public function save()
     {
-        $dao = new \cl_servidoralteracao();
+        $dao = new cl_servidoralteracao();
         $dao->eso38_sequencial = $this->getCodigo();
         $dao->eso38_matricula = $this->getMatricula();
 
@@ -119,19 +121,19 @@ class ServidorAlteracao
             $dao->incluir(null);
         }
         if ($dao->erro_status == "0") {
-            throw new \BusinessException($dao->erro_msg);
+            throw new BusinessException($dao->erro_msg);
         }
     }
 
     public function delete()
     {
-        $dao = new \cl_servidoralteracao();
+        $dao = new cl_servidoralteracao();
         $dao->eso38_sequencial = $this->getCodigo();
         $dao->excluir($this->getCodigo());
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataS2205()
     {
@@ -139,7 +141,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @param \DBDate|null $dataS2205
+     * @param DBDate|null $dataS2205
      */
     public function setDataS2205($dataS2205)
     {
@@ -167,7 +169,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataS2206()
     {
@@ -175,7 +177,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @param \DBDate|null $dataS2206
+     * @param DBDate|null $dataS2206
      */
     public function setDataS2206($dataS2206)
     {
@@ -203,7 +205,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataS2306()
     {
@@ -211,7 +213,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @param \DBDate|null $dataS2306
+     * @param DBDate|null $dataS2306
      */
     public function setDataS2306($dataS2306)
     {
@@ -239,7 +241,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataS2405()
     {
@@ -247,7 +249,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @param \DBDate|null $dataS2405
+     * @param DBDate|null $dataS2405
      */
     public function setDataS2405($dataS2405)
     {
@@ -275,7 +277,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataS2416()
     {
@@ -283,7 +285,7 @@ class ServidorAlteracao
     }
 
     /**
-     * @param \DBDate|null $dataS2416
+     * @param DBDate|null $dataS2416
      */
     public function setDataS2416($dataS2416)
     {

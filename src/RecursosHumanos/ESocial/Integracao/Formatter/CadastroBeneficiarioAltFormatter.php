@@ -27,14 +27,18 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
+use Servidor;
+use Override;
+use stdClass;
+use Assentamento;
+use DBException;
 use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 class CadastroBeneficiarioAltFormatter extends CadastroBeneficiarioFormatter
 {
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidorAtual;
 
@@ -45,10 +49,10 @@ class CadastroBeneficiarioAltFormatter extends CadastroBeneficiarioFormatter
 
     /**
      * @param array $dados
-     * @return array|\Assentamento[]
-     * @throws \DBException
+     * @return array|Assentamento[]
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $return = [];
@@ -68,7 +72,7 @@ class CadastroBeneficiarioAltFormatter extends CadastroBeneficiarioFormatter
     private function processar($servidor)
     {
         $this->servidorAtual = $servidor;
-        $dadoServidor = new \stdClass();
+        $dadoServidor = new stdClass();
 
         $dadoServidor->inscricao_empregador = $this->getEmpregador()->getCnpj();
         $dadoServidor->referencia = $servidor->referencia;
@@ -98,15 +102,15 @@ class CadastroBeneficiarioAltFormatter extends CadastroBeneficiarioFormatter
         /*
          * Grupo 13 - ideBenef
          */
-        $dadoServidor->ideBenef = new \stdClass();
+        $dadoServidor->ideBenef = new stdClass();
         $dadoServidor->ideBenef->cpfBenef = $this->servidorAtual->beneficiario['cpfBenef'];
 
         /**
          * Grupo 15 - alteracao
          */
-        $dadoServidor->alteracao = new \stdClass();
+        $dadoServidor->alteracao = new stdClass();
         $dadoServidor->alteracao->dtAlteracao = $this->dataAlteracao->getDataS2405()->getDate();
-        $dadoServidor->alteracao->dadosBenef = new \stdClass();
+        $dadoServidor->alteracao->dadosBenef = new stdClass();
         $dadoServidor->alteracao->dadosBenef->nmBenefic = $this->servidorAtual->beneficiario['nmBenefic'];
         $dadoServidor->alteracao->dadosBenef->sexo = $this->servidorAtual->beneficiario['sexo'];
         $dadoServidor->alteracao->dadosBenef->racaCor = $this->servidorAtual->beneficiario['racaCor'];
@@ -118,7 +122,7 @@ class CadastroBeneficiarioAltFormatter extends CadastroBeneficiarioFormatter
         /**
          * Grupo 23 - endereco
          */
-        $dadoServidor->alteracao->dadosBenef->endereco = new \stdClass();
+        $dadoServidor->alteracao->dadosBenef->endereco = new stdClass();
         if (!empty($this->servidorAtual->beneficiario['endereco']['brasil'])) {
             $dadoServidor->alteracao->dadosBenef->endereco->brasil =
                 $this->servidorAtual->beneficiario['endereco']['brasil'];

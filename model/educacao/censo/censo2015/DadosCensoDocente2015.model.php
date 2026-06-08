@@ -42,7 +42,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
    * @param IExportacaoCenso $oExportacaoCenso  Importacao do censo
    * @return boolean
    */
-  #[\Override]
+  #[Override]
   public static function validarDados( IExportacaoCenso $oExportacaoCenso ) {
 
     $lDadosValidos    = true;

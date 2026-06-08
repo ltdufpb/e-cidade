@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use BusinessException;
 use cl_rhpessoalprocessoabono;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Abono;
-use DBDate;
 
 class AbonoRepository
 {

@@ -761,9 +761,9 @@ class TratamentoDiferenciado {
   }
 
   /**
-   * @param \itemSolicitacao $oItemSolicitacaoReserva
-   * @param \itemSolicitacao $oItemSolicitacaoOrigem
-   * @throws \DBException
+   * @param itemSolicitacao $oItemSolicitacaoReserva
+   * @param itemSolicitacao $oItemSolicitacaoOrigem
+   * @throws DBException
    */
   private function incluirItemRegistroPreco(itemSolicitacao $oItemSolicitacaoReserva, itemSolicitacao $oItemSolicitacaoOrigem) {
     

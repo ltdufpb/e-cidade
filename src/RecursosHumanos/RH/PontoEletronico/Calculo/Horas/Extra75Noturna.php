@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use DateInterval;
 use ECidade\Configuracao\Cadastro\Model\Feriado;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 
@@ -117,7 +119,7 @@ class Extra75Noturna extends Extra75 implements Horas {
       return $this->getHoraZerada();
     }
 
-    $oLimiteExtra75Noturna = new \DateTime($this->getDiaTrabalho()->getData()->getDate() .' '. $this->getConfiguracoesLotacao()->getHoraExtra75());
+    $oLimiteExtra75Noturna = new DateTime($this->getDiaTrabalho()->getData()->getDate() .' '. $this->getConfiguracoesLotacao()->getHoraExtra75());
     $oHorasExtra50Noturnas = clone $this->getHoraExtra50Noturna();
 
     $this->verificarLimiteExtra75Noturna($oLimiteExtra75Noturna);
@@ -154,7 +156,7 @@ class Extra75Noturna extends Extra75 implements Horas {
     $oHoraFimPeriodoNoturnoDiaAnterior = clone $oHoraFimPeriodoNoturno;
     $aHorasJornada                     = $this->getDiaTrabalho()->getJornada()->getHoras();
     $oHoraJornadaFinal                 = end($aHorasJornada)->oHora;
-    $oMaximoExtra75                    = new \DateTime(
+    $oMaximoExtra75                    = new DateTime(
       $this->getDiaTrabalho()->getData()->getDate() .' '. $this->getConfiguracoesLotacao()->getHoraExtra75()
     );
 
@@ -198,9 +200,9 @@ class Extra75Noturna extends Extra75 implements Horas {
       }
 
       $oComecoExtra75    = clone $oHoraJornadaFinal;
-      $oComecoExtra75->add(new \DateInterval("PT". $this->getHoraExtra50()->format('H') ."H". $this->getHoraExtra50()->format('i') ."M"));
-      $oComecoExtra75->add(new \DateInterval("PT". $oLimiteExtra75Noturna->format('H') ."H". $oLimiteExtra75Noturna->format('i') ."M"));
-      $oComecoExtra75->sub(new \DateInterval("PT". $this->getHoraExtraInicial()->format('H') ."H". $this->getHoraExtraInicial()->format('i') ."M"));
+      $oComecoExtra75->add(new DateInterval("PT". $this->getHoraExtra50()->format('H') ."H". $this->getHoraExtra50()->format('i') ."M"));
+      $oComecoExtra75->add(new DateInterval("PT". $oLimiteExtra75Noturna->format('H') ."H". $oLimiteExtra75Noturna->format('i') ."M"));
+      $oComecoExtra75->sub(new DateInterval("PT". $this->getHoraExtraInicial()->format('H') ."H". $this->getHoraExtraInicial()->format('i') ."M"));
 
       /**
        * Se o final da jornada acrescido das extras 50 e do limite de extra 75
@@ -217,7 +219,7 @@ class Extra75Noturna extends Extra75 implements Horas {
        */
       if($this->horaEstaNoIntervalo($oComecoExtra75, $oHoraInicioPeriodoNoturno, $oHoraFimPeriodoNoturno)) {
 
-        $oComecoExtra75->sub(new \DateInterval("PT". $oLimiteExtra75Noturna->format('H') ."H". $oLimiteExtra75Noturna->format('i') ."M"));
+        $oComecoExtra75->sub(new DateInterval("PT". $oLimiteExtra75Noturna->format('H') ."H". $oLimiteExtra75Noturna->format('i') ."M"));
 
         $iHora   = $oComecoExtra75->diff($oHoraFimPeriodoNoturno)->h;
         $iMinuto = $oComecoExtra75->diff($oHoraFimPeriodoNoturno)->i;
@@ -240,8 +242,8 @@ class Extra75Noturna extends Extra75 implements Horas {
     if(!$this->getHoraExtra50()->diff($this->getHoraExtraInicial())->invert) {
 
       $oComecoExtra75 = clone $this->getDiaTrabalho()->getMarcacoes()->getMarcacaoEntrada1()->getMarcacao();
-      $oComecoExtra75->add(new \DateInterval("PT". $this->getHoraExtra50()->format('H') ."H". $this->getHoraExtra50()->format('i') ."M"));
-      $oComecoExtra75->add(new \DateInterval("PT". $oLimiteExtra75Noturna->format('H') ."H". $oLimiteExtra75Noturna->format('i') ."M"));
+      $oComecoExtra75->add(new DateInterval("PT". $this->getHoraExtra50()->format('H') ."H". $this->getHoraExtra50()->format('i') ."M"));
+      $oComecoExtra75->add(new DateInterval("PT". $oLimiteExtra75Noturna->format('H') ."H". $oLimiteExtra75Noturna->format('i') ."M"));
 
       if(!$this->horaEstaNoIntervalo($oComecoExtra75, $oHoraInicioPeriodoNoturno, $oHoraFimPeriodoNoturno)) {
         if(!$oHoraFimPeriodoNoturnoDiaAnterior->diff($oComecoExtra75)->invert) {

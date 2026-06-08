@@ -52,7 +52,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     } 
   }
 
-  #[\Override]
+  #[Override]
   public function check() {
 
     $lidos = $this->getMudancasLidas();
@@ -60,7 +60,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     return count($lidos) < count($arquivos);
   }
 
-  #[\Override]
+  #[Override]
   public function getCaminhoArquivo($sNomeArquivo = null, $sVersao = null) {
     return $this->sNomeArquivoAtual;
   }
@@ -80,7 +80,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   /**
    * Método responsavel por retornar a primeira versão que ainda não foi lida
    */
-  #[\Override]
+  #[Override]
   public function getPrimeiraVersaoNaoLida() {}
 
   public function procurarPrimeiroArquivoNaoLido() {
@@ -237,9 +237,9 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   }
 
   // paginacao das versoes
-  #[\Override]
+  #[Override]
   public function getProximaVersao() {}
-  #[\Override]
+  #[Override]
   public function getVersaoAnterior() {}
 
   public function getVersaoSistema() {
@@ -247,7 +247,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   }
 
   // paginação interna das versoes
-  #[\Override]
+  #[Override]
   public function getArquivoAnterior() {
 
     if (!$this->lSomenteNaoLidos && isset($this->aListaArquivos[$this->iIndiceAtual-1])) {
@@ -267,7 +267,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     return "";
   }
 
-  #[\Override]
+  #[Override]
   public function getProximoArquivo() {
 
     if (!$this->lSomenteNaoLidos &&  isset($this->aListaArquivos[$this->iIndiceAtual+1])) {
@@ -391,7 +391,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     return $result ? $aMatches[1] : false;
   }
 
-  #[\Override]
+  #[Override]
   public function buildData() {
   
     $oRetorno = parent::buildData();

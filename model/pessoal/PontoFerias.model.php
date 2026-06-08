@@ -249,7 +249,7 @@ class PontoFerias extends Ponto {
    * @throws DBException
    * @access public
    */
-  #[\Override]
+  #[Override]
   public function carregarRegistros( $mRubrica = null ) {
      
     $oDaoPonto = new cl_pontofe();
@@ -317,7 +317,7 @@ class PontoFerias extends Ponto {
    * @param RegistroPontoFerias $oRegistro
    * @return bool
    */
-  #[\Override]
+  #[Override]
   public function adicionarRegistro( RegistroPontoFerias $oRegistroPonto, $lSubstituir = true ) {
 
     $sCodigoRubrica = $oRegistroPonto->getRubrica()->getCodigo().$oRegistroPonto->getTipoPagamento();

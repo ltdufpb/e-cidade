@@ -63,7 +63,7 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @example FolhaPagamentoSuplementar::hasFolhaAberta()
    * @return  boolean
    */
-  #[\Override]
+  #[Override]
   public static function hasFolhaAberta( ?DBCompetencia $oCompetencia = null) {
     return FolhaPagamento::hasFolhaAberta(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR, $oCompetencia);
   }
@@ -102,7 +102,7 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @example  FolhaPagamento:getProximoNumero(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR)
    * @return   Integer  Próximo numero de folha suplementar
    */
-  #[\Override]
+  #[Override]
   public static function getProximoNumero($iTipoFolha) {
     return FolhaPagamento::getProximoNumero(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR);
   }
@@ -320,7 +320,7 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @param  DBCompetencia $oCompetencia Competencia da Folha
    * @return FolhaPagamentoSuplementar[]
    */
-  #[\Override]
+  #[Override]
   public static function getFolhasFechadasCompetencia( DBCompetencia $oCompetencia, $iTipoFolha = \null ) {
     return FolhaPagamento::getFolhasFechadasCompetencia($oCompetencia, FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR);
   }

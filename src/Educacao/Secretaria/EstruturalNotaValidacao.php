@@ -2,6 +2,12 @@
 
 namespace ECidade\Educacao\Secretaria;
 
+use cl_avaliacaoestruturanotapadrao;
+use cl_avaliacaoestruturanota;
+use Exception;
+use SecretariaEstruturalNota;
+use EscolaEstruturalNota;
+
 /**
  * Realiza as validações para inclusão do estrutural da nota
  *
@@ -13,13 +19,13 @@ class EstruturalNotaValidacao {
    * Valida se é possível incluir uma configuração para nota na secretaria de educação
    *
    * @param  integer $iAno Ano para o qual o estrutural foi configurado
-   * @throws \Exception
+   * @throws Exception
    * @return boolean
    */
   static public function permiteInclusaoEstruturaNotaSecretaria( $iAno ) {
 
     $sWhere = " ed139_ativo is true and ed139_ano = {$iAno} ";
-    return self::validarConfiguracaoNota(new \cl_avaliacaoestruturanotapadrao(), $sWhere);
+    return self::validarConfiguracaoNota(new cl_avaliacaoestruturanotapadrao(), $sWhere);
   }
 
   /**
@@ -38,7 +44,7 @@ class EstruturalNotaValidacao {
     }
 
     $sWhere = " ed139_ativo is true and ed139_ano = {$iAno} and ed139_sequencial <> {$iCodigo}";
-    return self::validarConfiguracaoNota(new \cl_avaliacaoestruturanotapadrao(), $sWhere);
+    return self::validarConfiguracaoNota(new cl_avaliacaoestruturanotapadrao(), $sWhere);
   }
 
   /**
@@ -46,13 +52,13 @@ class EstruturalNotaValidacao {
    *
    * @param  integer     $iEscola
    * @param  integer     $iAno     Ano para o qual o estrutural foi configurado
-   * @throws \Exception
+   * @throws Exception
    * @return boolean
    */
   static public function permiteInclusaoEstruturaNotaEscola( $iEscola, $iAno ) {
 
     $sWhere = " ed315_ativo is true and ed315_escola = {$iEscola} and ed315_ano = {$iAno} ";
-    return self::validarConfiguracaoNota(new \cl_avaliacaoestruturanota(), $sWhere);
+    return self::validarConfiguracaoNota(new cl_avaliacaoestruturanota(), $sWhere);
   }
 
 
@@ -72,7 +78,7 @@ class EstruturalNotaValidacao {
     }
 
     $sWhere = " ed315_ativo is true and ed315_ano = {$iAno} and ed315_sequencial <> {$iCodigo}";
-    return self::validarConfiguracaoNota(new \cl_avaliacaoestruturanota(), $sWhere);
+    return self::validarConfiguracaoNota(new cl_avaliacaoestruturanota(), $sWhere);
   }
 
   /**
@@ -88,7 +94,7 @@ class EstruturalNotaValidacao {
     $rs   = db_query($sSql);
 
     if ( !$rs ) {
-      throw new \Exception("Não foi possível validar configuração da nota.");
+      throw new Exception("Não foi possível validar configuração da nota.");
     }
 
     if (pg_num_rows($rs) > 0) {
@@ -108,7 +114,7 @@ class EstruturalNotaValidacao {
    * @param  EscolaEstruturalNota     $oEscolaEstruturalNota
    * @return boolean
    */
-  static public function isDifirente(\SecretariaEstruturalNota $oSecretariaEstruturalNota, \EscolaEstruturalNota $oEscolaEstruturalNota) {
+  static public function isDifirente(SecretariaEstruturalNota $oSecretariaEstruturalNota, EscolaEstruturalNota $oEscolaEstruturalNota) {
 
     if ( $oSecretariaEstruturalNota->deveArredondarMedia() != $oEscolaEstruturalNota->deveArredondarMedia() ) {
       return true;

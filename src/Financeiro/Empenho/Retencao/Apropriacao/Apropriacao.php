@@ -2,14 +2,31 @@
 
 namespace ECidade\Financeiro\Empenho\Retencao\Apropriacao;
 
-use App\Domain\Financeiro\Orcamento\Models\Recurso;
+use cl_corgrupo;
+use cl_translan;
+use cl_empnota;
+use cl_empelemento;
+use cl_pagordemele;
+use cl_empempenho;
+use cl_corgrupocorrente;
+use EventoContabil;
+use LancamentoAuxiliarApropriacaoRetencao;
+use cl_conlancamcorgrupocorrente;
+use cl_empagemovslips;
+use Transferencia;
+use cl_retencaocorgrupocorrente;
+use db_stdClass;
+use BusinessException;
+use EventoContabilRepository;
+use DateTime;
+use _db_fields;
+use DBException;
+use ParameterException;
 use cl_saltes;
-use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoDotacao;
 use db_utils;
 use ECidade\Financeiro\Empenho\Autenticacao;
 use EmpenhoFinanceiro;
 use Exception;
-use Instituicao;
 use planilhaRetencao;
 use recibo;
 use retencaoNota;
@@ -23,7 +40,7 @@ use stdClass;
 class Apropriacao
 {
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dataEvento = null;
 
@@ -74,12 +91,12 @@ class Apropriacao
      * Apropriação de retençoes em e um empenho
      * Apropriacao constructor.
      *
-     * @param \EmpenhoFinanceiro $empenho
+     * @param EmpenhoFinanceiro $empenho
      * @param $ano
      * @param int $ano
      */
     public function __construct(
-        private \EmpenhoFinanceiro $empenho,
+        private EmpenhoFinanceiro $empenho,
         /**
          * Ano do processamento
          */
@@ -103,7 +120,7 @@ class Apropriacao
          * Incluindo grupo de autenticação
          */
         if (empty($codigoGrupoAutenticacao)) {
-            $oDaoGruoAutenticacao = new \cl_corgrupo();
+            $oDaoGruoAutenticacao = new cl_corgrupo();
             $oDaoGruoAutenticacao->k104_tipo = 1;
             $oDaoGruoAutenticacao->incluir(null);
             if ($oDaoGruoAutenticacao->erro_status == '0') {
@@ -136,7 +153,7 @@ class Apropriacao
         $oRetencaoNota->setCodigoMovimento($movimento);
 
         $retencoes = $oRetencaoNota->getRetencoesFromDB($ordemPagamento, false);
-        $contaPagadora = \cl_translan::getContaParaPagamento($this->empenho->getNumero(), $dadosNota->e50_anousu);
+        $contaPagadora = cl_translan::getContaParaPagamento($this->empenho->getNumero(), $dadosNota->e50_anousu);
 
         $oRetencaoNota->setGrupoAutenticacao($codigoGrupoAutenticacao);
         $oRetencaoNota->setConta($contaPagadora);
@@ -218,7 +235,7 @@ class Apropriacao
          * Incluindo grupo de autenticação
          */
         if (empty($codigoGrupoAutenticacao)) {
-            $oDaoGruoAutenticacao = new \cl_corgrupo();
+            $oDaoGruoAutenticacao = new cl_corgrupo();
             $oDaoGruoAutenticacao->k104_tipo = 2;
             $oDaoGruoAutenticacao->incluir(null);
             if ($oDaoGruoAutenticacao->erro_status == '0') {
@@ -248,7 +265,7 @@ class Apropriacao
         $this->atualizarValorEmpenho($nValorTotalRetencoes * -1, $ordemPagamento);
         $oRetencaoNota->setINotaLiquidacao($ordemPagamento);
         $oRetencaoNota->setCodigoMovimento($movimento);
-        $contaPagadora = \cl_translan::getContaParaPagamento($this->empenho->getNumero(), $dadosNota->e50_anousu);
+        $contaPagadora = cl_translan::getContaParaPagamento($this->empenho->getNumero(), $dadosNota->e50_anousu);
         $oRetencaoNota->setGrupoAutenticacao($codigoGrupoAutenticacao);
         $oRetencaoNota->setConta($contaPagadora);
         $oRetencaoNota->setDataBase($data);
@@ -282,7 +299,7 @@ class Apropriacao
      */
     private function getObservacaoDaRetencao($retencao)
     {
-        $dao = new \cl_empnota();
+        $dao = new cl_empnota();
         $sql = $dao->sql_query_file($this->nota, 'e69_numero');
         $numeroNota = db_utils::fieldsMemory(db_query($sql), 0)->e69_numero;
 
@@ -307,9 +324,9 @@ class Apropriacao
     {
 
         $codigoEmpenho = $this->empenho->getNumero();
-        $oDaoEmpElemento = new \cl_empelemento();
+        $oDaoEmpElemento = new cl_empelemento();
         $rsElemento = $oDaoEmpElemento->sql_record($oDaoEmpElemento->sql_query_file($codigoEmpenho));
-        $oElemento = \db_utils::fieldsMemory($rsElemento, 0);
+        $oElemento = db_utils::fieldsMemory($rsElemento, 0);
 
         $valorElemento = $oElemento->e64_vlrpag + $valor;
         $oDaoEmpElemento->e64_numemp = $codigoEmpenho;
@@ -322,14 +339,14 @@ class Apropriacao
             throw new Exception($sErroMsg);
         }
 
-        $oDaoPagOrdemEle = new \cl_pagordemele;
+        $oDaoPagOrdemEle = new cl_pagordemele;
         $rsElementoOrdem = $oDaoPagOrdemEle->sql_record($oDaoPagOrdemEle->sql_query_file($ordemPagamento));
         if ($oDaoPagOrdemEle->numrows == 0) {
             $sErroMsg = "Erro [4] - Ordem de pagamento {$ordemPagamento}";
             $sErroMsg .= "não possui elemento cadastrado. Operação cancelada";
             throw new Exception($sErroMsg);
         }
-        $oPagOrdemEle = \db_utils::fieldsMemory($rsElementoOrdem, 0);
+        $oPagOrdemEle = db_utils::fieldsMemory($rsElementoOrdem, 0);
 
         $valorOrdem = $oPagOrdemEle->e53_vlrpag + $valor;
         $oDaoPagOrdemEle->e53_vlrpag = "{$valorOrdem}";
@@ -343,7 +360,7 @@ class Apropriacao
         }
 
         $valorEmpenho = $this->empenho->getValorPagoDasOrdens();
-        $oDaoEmpenho = new \cl_empempenho;
+        $oDaoEmpenho = new cl_empempenho;
         $oDaoEmpenho->e60_numemp = $codigoEmpenho;
         $oDaoEmpenho->e60_vlrpag = (string)"{$valorEmpenho}";
         $oDaoEmpenho->alterar($codigoEmpenho);
@@ -366,7 +383,7 @@ class Apropriacao
      */
     private function getCodigoGrupoLancamentos($codigoGrupoCorrente)
     {
-        $oDaoCorrenteGrupo = new \cl_corgrupocorrente;
+        $oDaoCorrenteGrupo = new cl_corgrupocorrente;
         $sSqlCorgrupo = $oDaoCorrenteGrupo->sql_query_file(
             null,
             "*",
@@ -377,11 +394,11 @@ class Apropriacao
         if ($oDaoCorrenteGrupo->numrows == 0) {
             throw new Exception("Não Foi possivel encontrar grupo de lançamentos.");
         }
-        return \db_utils::fieldsMemory($rsCorGrupo, 0)->k105_sequencial;
+        return db_utils::fieldsMemory($rsCorGrupo, 0)->k105_sequencial;
     }
 
     /**
-     * @return \EmpenhoFinanceiro
+     * @return EmpenhoFinanceiro
      */
     public function getEmpenho()
     {
@@ -389,7 +406,7 @@ class Apropriacao
     }
 
     /**
-     * @param \EmpenhoFinanceiro $empenho
+     * @param EmpenhoFinanceiro $empenho
      */
     public function setEmpenho($empenho)
     {
@@ -397,7 +414,7 @@ class Apropriacao
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataEvento()
     {
@@ -405,7 +422,7 @@ class Apropriacao
     }
 
     /**
-     * @param \DateTime $dataEvento
+     * @param DateTime $dataEvento
      */
     public function setDataEvento($dataEvento)
     {
@@ -416,15 +433,15 @@ class Apropriacao
      * REaliza o lancamento contabil de cada retencao
      *
      * @param  $retencao
-     * @throws \BusinessException
+     * @throws BusinessException
      * @throws Exception
      */
     protected function realizarLancamentoContabilDaRetencao($retencao)
     {
         $codigoDocumento = $this->getDocumentoExecutar($retencao);
-        $oEventoContabilRetencao = new \EventoContabil($codigoDocumento, $this->ano);
+        $oEventoContabilRetencao = new EventoContabil($codigoDocumento, $this->ano);
 
-        $oLancamentoAuxiliarRetencao = new \LancamentoAuxiliarApropriacaoRetencao();
+        $oLancamentoAuxiliarRetencao = new LancamentoAuxiliarApropriacaoRetencao();
         $oLancamentoAuxiliarRetencao->setObservacaoHistorico($this->getObservacaoDaRetencao($retencao));
         $oLancamentoAuxiliarRetencao->setFavorecido($this->empenho->getFornecedor()->getCodigo());
         $oLancamentoAuxiliarRetencao->setCodigoElemento($this->empenho->getDesdobramentoEmpenho());
@@ -441,7 +458,7 @@ class Apropriacao
         $this->codigoLancamentoEmpenho = $codigoLancamento;
         $this->codigosLancamentos[] = $codigoLancamento;
 
-        $oDaoConlancamCorrente = new \cl_conlancamcorgrupocorrente;
+        $oDaoConlancamCorrente = new cl_conlancamcorgrupocorrente;
         $oDaoConlancamCorrente->c23_conlancam = $codigoLancamento;
         $oDaoConlancamCorrente->c23_corgrupocorrente = $this->getCodigoGrupoLancamentos($this->codigoGrupoAutenticacao);
         $oDaoConlancamCorrente->incluir(null);
@@ -454,7 +471,7 @@ class Apropriacao
      */
     private function gerarDadosParaSlip($retencao, $movimento)
     {
-        $oDaoEmpAgeSlip = new \cl_empagemovslips;
+        $oDaoEmpAgeSlip = new cl_empagemovslips;
         $oDaoEmpAgeSlip->k107_data = $this->dataEvento->format("Y-m-d");
         $oDaoEmpAgeSlip->k107_empagemov = $movimento;
         $oDaoEmpAgeSlip->k107_valor = $retencao->e23_valorretencao;
@@ -486,14 +503,14 @@ class Apropriacao
         if (pg_num_rows($rsTipoRec) == 0) {
             return null;
         }
-        return \db_utils::fieldsMemory($rsTipoRec, 0)->k02_reduz;
+        return db_utils::fieldsMemory($rsTipoRec, 0)->k02_reduz;
     }
 
     /**
      * Realiza o lancamento contabil de cada retencao
      *
      * @param  $retencao
-     * @throws \BusinessException
+     * @throws BusinessException
      * @throws Exception
      *     *
      */
@@ -520,7 +537,7 @@ class Apropriacao
      *
      * @param  $instituicao
      * @param  $retencao
-     * @throws \BusinessException
+     * @throws BusinessException
      * @throws Exception
      */
     public function gerarRecibosDeArrecadacaoNaInstituicaoParaRetencao($instituicao, $retencao)
@@ -536,7 +553,7 @@ class Apropriacao
         $sHistoricoRecibo .= " pela Ordem de Pagamento n° {$this->ordemPagamento}";
         $sHistoricoRecibo .= " CGM: " . $empenho->getCgm()->getCodigo() . " - " . $nomeCgm;
 
-        $conta = \Transferencia::getContaPagadoraParaRetencaoDoCredor($retencao->credor);
+        $conta = Transferencia::getContaPagadoraParaRetencaoDoCredor($retencao->credor);
 
         if ($retencao->e21_retencaotipocalc != 5) {
             $oReciboAvulso = new recibo(1, $empenho->getCgm()->getCodigo());
@@ -574,7 +591,7 @@ class Apropriacao
             if ($retencao->e21_retencaotipocalc == 5) {
                 $sSqlCgm = "select cgc, numcgm from db_config where codigo = " . $instituicao;
                 $rsCgm = db_query($sSqlCgm);
-                $oCgm = \db_utils::fieldsMemory($rsCgm, 0);
+                $oCgm = db_utils::fieldsMemory($rsCgm, 0);
                 /*
                  * Consultamos o cnpj do credor da ordem de pagamento
                 */
@@ -586,8 +603,8 @@ class Apropriacao
                     $str = "Não Foi possível efetuar a baixa da Retenção. Credor com CPF/CNPJ nulo ou inválido.";
                     throw new Exception($str);
                 }
-                $oPlanilha = new \planilhaRetencao(null, $oCgm->numcgm);
-                $oNotaPlanilha = new \stdClass();
+                $oPlanilha = new planilhaRetencao(null, $oCgm->numcgm);
+                $oNotaPlanilha = new stdClass();
 
                 $dadosDaNota = $this->getDadosDaNota($this->nota);
                 $oNotaPlanilha->sCnpj = $oCgm->numcgm;
@@ -632,7 +649,7 @@ class Apropriacao
                 if (($nValorRecibo == 0) || $nValorRecibo != $retencao->e23_valorretencao) {
                     $sMsgValorRetencao = "A retenção {$retencao->k02_codigo} com valor {$retencao->e23_valorretencao}";
                     $sMsgValorRetencao .= " é diferente do valor total do recibo {$nValorRecibo}.";
-                    throw new \Exception($sMsgValorRetencao);
+                    throw new Exception($sMsgValorRetencao);
                 }
             }
         }
@@ -640,7 +657,7 @@ class Apropriacao
         /**
          * Vinculamos a retencao ao grupo do lancamento
          */
-        $oDaoCorrenteGrupo = new \cl_corgrupocorrente;
+        $oDaoCorrenteGrupo = new cl_corgrupocorrente;
         $sSqlCorgrupo = $oDaoCorrenteGrupo->sql_query_file(
             null,
             "*",
@@ -651,8 +668,8 @@ class Apropriacao
         if ($oDaoCorrenteGrupo->numrows == 0) {
             throw new Exception("Não Foi possivel encontrar grupo de lancamentos.");
         }
-        $oDaoRetencaoCorrente = new \cl_retencaocorgrupocorrente;
-        $oDaoRetencaoCorrente->e47_corgrupocorrente = \db_utils::fieldsMemory($rsCorGrupo, 0)->k105_sequencial;
+        $oDaoRetencaoCorrente = new cl_retencaocorgrupocorrente;
+        $oDaoRetencaoCorrente->e47_corgrupocorrente = db_utils::fieldsMemory($rsCorGrupo, 0)->k105_sequencial;
         $oDaoRetencaoCorrente->e47_retencaoreceita = $retencao->e23_sequencial;
         $oDaoRetencaoCorrente->incluir(null);
         if ($oDaoRetencaoCorrente->erro_status == 0) {
@@ -669,7 +686,7 @@ class Apropriacao
      * Retorna os dados da nota de liquidacao;.
      *
      * @param  $nota
-     * @return \_db_fields|\stdClass
+     * @return _db_fields|stdClass
      */
     private function getDadosDaNota($nota)
     {
@@ -681,7 +698,7 @@ class Apropriacao
         $sSqlDadosNota .= "       inner join pagordemele on e50_codord = e53_codord";
         $sSqlDadosNota .= "   where e69_codnota = {$nota}";
         $rsDadosNota = db_query($sSqlDadosNota);
-        return \db_utils::fieldsMemory($rsDadosNota, 0);
+        return db_utils::fieldsMemory($rsDadosNota, 0);
     }
 
     /**
@@ -784,9 +801,9 @@ class Apropriacao
      *
      * @param  $oRetencao
      * @return bool
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      * @throws Exception
      */
     public function estornarRecidosNoEnteRecebedor($oRetencao)
@@ -794,8 +811,8 @@ class Apropriacao
 
         $oDotacao = $this->empenho->getDotacao();
         $cgm = $this->empenho->getCgm();
-        $oInstit = \db_stdClass::getDadosInstit();
-        $conta = \Transferencia::getContaPagadoraParaRetencaoDoCredor($oRetencao->credor);
+        $oInstit = db_stdClass::getDadosInstit();
+        $conta = Transferencia::getContaPagadoraParaRetencaoDoCredor($oRetencao->credor);
         if ($oRetencao->e23_valorretencao > 0) {
             if ($oRetencao->e21_retencaotipocalc != 5 || $oInstit->prefeitura == "f") {
                 $oReciboAvulso = new recibo(1, $cgm->getCodigo());
@@ -917,11 +934,11 @@ class Apropriacao
                 $mensagem .= "( DB:FINANCEIRO > Tesouraria > Cadastros > Manutenção de Receitas  ),\n";
                 $mensagem .= "esteja vinculada a uma conta contábil (DB:FINANCEIRO > Contabilidade > Cadastros ";
                 $mensagem .= "> Plano de Contas Orçamentario).";
-                throw new \BusinessException($mensagem);
+                throw new BusinessException($mensagem);
             }
 
             $documento = !$estorno ? 6012 : 6013;
-            $oLancamentoAuxiliarRetencao = new \LancamentoAuxiliarApropriacaoRetencao();
+            $oLancamentoAuxiliarRetencao = new LancamentoAuxiliarApropriacaoRetencao();
             $oLancamentoAuxiliarRetencao->setObservacaoHistorico($this->getObservacaoDaRetencao($retencao));
             $oLancamentoAuxiliarRetencao->setFavorecido($this->empenho->getFornecedor()->getCodigo());
             $oLancamentoAuxiliarRetencao->setEmpenhoFinanceiro($this->empenho);
@@ -931,7 +948,7 @@ class Apropriacao
             $oLancamentoAuxiliarRetencao->setCodigoReduzido($receitaPagadora);
             $oLancamentoAuxiliarRetencao->setTipoCalculoRetencao($retencao->e21_retencaotipocalc);
             $oLancamentoAuxiliarRetencao->setEstorno($this->estorno);
-            $oEventoContabil = \EventoContabilRepository::getEventoContabilByCodigo(
+            $oEventoContabil = EventoContabilRepository::getEventoContabilByCodigo(
                 $documento,
                 db_getsession("DB_anousu"),
                 $retencao->e21_enterecebedor
@@ -940,7 +957,7 @@ class Apropriacao
             $_SESSION["DB_instit"] = $instituicaoSessao;
         } catch (Exception $e) {
             $_SESSION["DB_instit"] = $instituicaoSessao;
-            throw new \Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 

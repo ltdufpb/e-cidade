@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use DateInterval;
+use DBDate;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPontoSaida;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacoesPontoCollection;
@@ -54,14 +57,14 @@ class Trabalho extends BaseHora implements Horas {
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function calcular() {
 
         $this->logger->debug("------------------------------------------------------");
         $this->logger->debug("-------------- CALCULO DE HORAS TRABALHO -------------");
 
-        $oDiaTrabalhado    = new \DateTime($this->getDiaTrabalho()->getData()->getDate().' 00:00');
+        $oDiaTrabalhado    = new DateTime($this->getDiaTrabalho()->getData()->getDate().' 00:00');
         $jornada           = $this->getDiaTrabalho()->getJornada();
         $horasDaJornada    = $jornada->getHoras();
 
@@ -128,7 +131,7 @@ class Trabalho extends BaseHora implements Horas {
                             $marcacao->add($intervalo);
                         }
 
-                        $debug = "-- Proxima marcacao:". (($proximaMarcacao->getMarcacao() instanceof \DateTime) ? $proximaMarcacao->getMarcacao()->format('H:i') : '');
+                        $debug = "-- Proxima marcacao:". (($proximaMarcacao->getMarcacao() instanceof DateTime) ? $proximaMarcacao->getMarcacao()->format('H:i') : '');
                         $this->logger->debug($debug);
                     }
 
@@ -238,7 +241,7 @@ class Trabalho extends BaseHora implements Horas {
                 $intervaloTrabalhado = $marcacaoCalculo->getHorarioTrabalhado();
 
                 $debug  = ' -- Calculado intervalo: ';
-                $debug .= ($intervaloTrabalhado instanceof \DateInterval ? $intervaloTrabalhado->format('%H:%I') . ' com a marcacao: '. MarcacaoPonto::getDescricaoTipoMarcacao($marcacaoCalculo->getTipo()) : '__:__');
+                $debug .= ($intervaloTrabalhado instanceof DateInterval ? $intervaloTrabalhado->format('%H:%I') . ' com a marcacao: '. MarcacaoPonto::getDescricaoTipoMarcacao($marcacaoCalculo->getTipo()) : '__:__');
 
                 if(!empty($intervaloTrabalhado)) {
                     $oDiaTrabalhado->add($intervaloTrabalhado);
@@ -246,7 +249,7 @@ class Trabalho extends BaseHora implements Horas {
             }
         }
 
-        $dataTrabalhada = new \DBDate($oDiaTrabalhado->format('Y-m-d'));
+        $dataTrabalhada = new DBDate($oDiaTrabalhado->format('Y-m-d'));
 
         if($dataTrabalhada->getTimeStamp() < $this->getDiaTrabalho()->getData()->getTimeStamp()) {
             $oDiaTrabalhado->setDate(
@@ -264,7 +267,7 @@ class Trabalho extends BaseHora implements Horas {
     }
 
     /**
-     * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacoesPontoCollection
+     * @return MarcacoesPontoCollection
      */
     public function getMarcacoes()
     {
@@ -285,11 +288,11 @@ class Trabalho extends BaseHora implements Horas {
 
     /**
      * Calcula a Hora total Trabalhada
-     * @return \DateTime
+     * @return DateTime
      */
     public function calcularHoraTrabalhoTotal() {
 
-        $oDiaTrabalhado = new \DateTime($this->getDiaTrabalho()->getData()->getDate().' 00:00');
+        $oDiaTrabalhado = new DateTime($this->getDiaTrabalho()->getData()->getDate().' 00:00');
         $oMarcacoes     = clone $this->getMarcacoesReais();
 
         if($oMarcacoes->getMarcacoes() == null) {
@@ -355,11 +358,11 @@ class Trabalho extends BaseHora implements Horas {
 
     /**
      * Calcula a hora trabalhada do servidor com horário noturno
-     * @return \DateTime
+     * @return DateTime
      */
     private function calcularHoratrabalhadaComHorarioNoturno() {
 
-        $cargaHoraria = new \DateTime($this->getDiaTrabalho()->getData()->getDate());
+        $cargaHoraria = new DateTime($this->getDiaTrabalho()->getData()->getDate());
         
         $debug = "-- Metodo calcularHoratrabalhadaComHorarioNoturno() ";
         $this->logger->debug($debug);
@@ -412,7 +415,7 @@ class Trabalho extends BaseHora implements Horas {
         $cargaHoraria->modify("+ {$cargaHorariaNoturnaConvertida} minutes");
         $cargaHoraria->modify("+ {$cargaHorariaDiurna} minutes");
 
-        $debug = "-- Carga Horaria...................: " . ($cargaHoraria instanceof \DateTime ? $cargaHoraria->format('H:i') : '');
+        $debug = "-- Carga Horaria...................: " . ($cargaHoraria instanceof DateTime ? $cargaHoraria->format('H:i') : '');
         $this->logger->debug($debug);
 
         $debug = "-- Carga HoráriaDiurna.............: " . ($cargaHorariaDiurna);
@@ -648,8 +651,8 @@ class Trabalho extends BaseHora implements Horas {
         } else {
             if ($entradaNoDia && ($jornada->getHora(MarcacaoPonto::ENTRADA_1)->oHora->getTimestamp() < $entradaNoDia->getTimestamp())) {
                 // TODO solucao imediata
-                $tolerancia = new \DateTime(date("Y-m-d h:i",$jornada->getHora(MarcacaoPonto::ENTRADA_1)->oHora->getTimestamp()));
-                $tolerancia = $tolerancia->add(new \DateInterval('PT' . $this->getDiaTrabalho()->getTolerancia() . 'M'));
+                $tolerancia = new DateTime(date("Y-m-d h:i",$jornada->getHora(MarcacaoPonto::ENTRADA_1)->oHora->getTimestamp()));
+                $tolerancia = $tolerancia->add(new DateInterval('PT' . $this->getDiaTrabalho()->getTolerancia() . 'M'));
                 // Verifica se a batida de entrada esta dentro da tolerancia de tempo configurada
                 if ($tolerancia->getTimestamp() > $entradaNoDia->getTimestamp()) {                
                     if (isset($jornada->getHora(MarcacaoPonto::ENTRADA_1)->oHora) && !empty($jornada->getHora(MarcacaoPonto::ENTRADA_1)->oHora)) {

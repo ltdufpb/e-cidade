@@ -114,7 +114,7 @@ class Avaliacao
      * @return int
      * @see getCodigo
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function getAvaliacao()
     {
         return $this->iAvaliacao;
@@ -143,7 +143,7 @@ class Avaliacao
      * @return $this
      * @see setCodigo
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function setAvaliacao($iAvaliacao)
     {
         $this->iAvaliacao = $iAvaliacao;
@@ -543,7 +543,7 @@ class Avaliacao
         if (empty($this->sIdentificador)) {
             $this->sIdentificador = $identifier->slugify($this->sDescricao);
         } else if (!$identifier->validate($this->sIdentificador)) {
-            throw new \DBException("Identificador da avaliação já cadastrado: '$this->sIdentificador'");
+            throw new DBException("Identificador da avaliação já cadastrado: '$this->sIdentificador'");
         }
 
         $oDao = new cl_avaliacao;
@@ -563,7 +563,7 @@ class Avaliacao
         }
 
         if ($oDao->erro_status == 0) {
-            throw new \Exception("Não foi possível salvar a avaliação.");
+            throw new Exception("Não foi possível salvar a avaliação.");
         }
 
         $this->iAvaliacao = $oDao->db101_sequencial;

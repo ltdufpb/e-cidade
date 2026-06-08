@@ -45,7 +45,7 @@ class FormaObtencaoMediaPonderada extends FormaObtencao implements IFormaObtenca
    * @see IFormaObtencao::processarResultado()
    * @param array $aAproveitamentos
    * @throws ParameterException
-   * @return \ValorAproveitamentoNota
+   * @return ValorAproveitamentoNota
    */
   public function processarResultado( $aAproveitamentos, $iAno ) {
 
@@ -100,7 +100,7 @@ class FormaObtencaoMediaPonderada extends FormaObtencao implements IFormaObtenca
    * @param AvaliacaoAproveitamento[] $aElementosAvaliacoes
    * @return string
    */
-  #[\Override]
+  #[Override]
   public function calcularNotaProjetada(array $aElementosAvaliacoes) {
 
     $nMinimoAprovacao = $this->oResultadoAvaliacao->getAproveitamentoMinimo();

@@ -312,12 +312,12 @@ class ServidorDeficiente
         if (empty($this->getId())) {
             $deficienteDao->incluir();
             if ($deficienteDao->erro_status == "0") {
-                throw new \Exception($deficienteDao->erro_msg);
+                throw new Exception($deficienteDao->erro_msg);
             }
         } else {
             $deficienteDao->alterar($this->getId());
             if ($deficienteDao->erro_status == "0") {
-                throw new \Exception($deficienteDao->erro_msg);
+                throw new Exception($deficienteDao->erro_msg);
             }
         }
     }

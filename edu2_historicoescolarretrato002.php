@@ -1,4 +1,6 @@
 <?php
+use ECidade\Pdf\Pdf;
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -39,7 +41,7 @@ $aAlunosSelecionados = explode(",", (string) $oGet->alunos);
 $lExibirReclassificao = $oGet->sExibirReclassificacao == 't' ? true : false;
 $iAnoLimite = (int)$oGet->sAno;
 $sDataEmissao = $oGet->dataemissao;
-$oFpdf = new \ECidade\Pdf\Pdf("P");
+$oFpdf = new Pdf("P");
 $oFpdf->init(false, false, false, false, false);
 $oFpdf->AliasNbPages();
 $oFpdf->SetMargins(8, 10);

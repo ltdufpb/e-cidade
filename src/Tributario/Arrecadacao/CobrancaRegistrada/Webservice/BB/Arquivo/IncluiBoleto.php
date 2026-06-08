@@ -28,6 +28,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo;
 
+use stdClass;
 use DOMDocument;
 
 /**
@@ -43,7 +44,7 @@ class IncluiBoleto implements RequisicaoInterface
      *
      * @param stdClass $oRegistro
      */
-    public function __construct(private readonly \stdClass $oRegistro)
+    public function __construct(private readonly stdClass $oRegistro)
     {
         $this->oXml = new DOMDocument("1.0", "utf-8");
         $this->oXml->preserveWhiteSpace = false;

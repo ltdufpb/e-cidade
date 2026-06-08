@@ -27,9 +27,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use stdClass;
+use cl_avaliacaogrupoperguntaresposta;
+use BusinessException;
 use db_utils;
-use Exception;
-use ParameterException;
 
 use \ECidade\Configuracao\Formulario\Repository\Formulario;
 use ECidade\Configuracao\Formulario\Resposta\Repository\Resposta;
@@ -57,7 +58,7 @@ class FormularioRepository
         }
 
         $perguntasMapeadas = $mapeador->getPerguntas();
-        $dados = new \stdClass();
+        $dados = new stdClass();
         $dados->fields = [];
         $dados->respostas =[];
 
@@ -66,7 +67,7 @@ class FormularioRepository
 
         foreach ($formulario->getPerguntas() as $pergunta) {
             $listaColunas[] = $pergunta->getIdentificador();
-            $campo = new \stdClass();
+            $campo = new stdClass();
 
             $campo->identificador = strtolower($pergunta->getIdentificadorCampo());
             $campo->descricao = self::removeHtmlContent($pergunta->getDescricao());
@@ -81,7 +82,7 @@ class FormularioRepository
             }
             $listaColunas = $novasColunas;
         }
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
         $aWhere   = ["db101_sequencial = {$formulario->getCodigo()}"];
 
         $group  = " group by db106_resposta ";
@@ -115,13 +116,13 @@ class FormularioRepository
 
         $rsRespostas = db_query($sSqlRespostas);
         if (!$rsRespostas) {
-            throw new \BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
+            throw new BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
         }
-        $dados->respostas = \db_utils::makeCollectionFromRecord(
+        $dados->respostas = db_utils::makeCollectionFromRecord(
             $rsRespostas,
             function ($dados) use ($formulario, $listaColunas) {
                 $oResposta = Resposta::make($dados, $formulario);
-                $oRespostaRetorno = new \stdClass();
+                $oRespostaRetorno = new stdClass();
                 $respostas = [];
                 foreach ($oResposta->getRespostas() as $valorResposta) {
                     $identificadorCampo = strtolower($valorResposta->getPergunta()->getIdentificadorCampo());
@@ -166,10 +167,10 @@ class FormularioRepository
 
         $where = '';
 
-        $dados = new \stdClass();
+        $dados = new stdClass();
         $dados->respostas =[];
 
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
         $aWhere   = ["db101_sequencial = {$formulario->getCodigo()}"];
 
         $sSqlRespostas  = $oDaoAvaliacaoResposta->sql_query_avaliacao(
@@ -196,9 +197,9 @@ class FormularioRepository
         };
         $rsRespostas = db_query($sSqlRespostas);
         if (!$rsRespostas) {
-            throw new \BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
+            throw new BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
         }
-        $dados->respostas = \db_utils::makeCollectionFromRecord(
+        $dados->respostas = db_utils::makeCollectionFromRecord(
             $rsRespostas,
             function ($dados) use ($formulario) {
                 $oResposta = Resposta::make($dados, $formulario);
@@ -212,7 +213,7 @@ class FormularioRepository
     {
         $where = " and db103_identificadorcampo = 'codRubr' and db106_resposta = '{$rubrica}'";
 
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
         $aWhere   = ["db101_sequencial = {$codigoFormulario}"];
 
         $sSqlRespostas  = $oDaoAvaliacaoResposta->sql_query_avaliacao(
@@ -240,10 +241,10 @@ class FormularioRepository
         $rsRespostas = db_query($sSqlRespostas);
         if (!$rsRespostas) {
             $mensagem = "Erro ao pesquisar as respostas do formulário {$codigoFormulario}, rubrica {$rubrica}.";
-            throw new \BusinessException($mensagem);
+            throw new BusinessException($mensagem);
         }
 
-        $respostas = \db_utils::fieldsMemory($rsRespostas, 0);
+        $respostas = db_utils::fieldsMemory($rsRespostas, 0);
 
         return $respostas->db107_sequencial;
     }

@@ -25,8 +25,6 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Educacao\Escola\Repository\AreaProcedimentoAvaliacaoRepository;
-use ECidade\Educacao\Escola\Resource\ProcedimentoAvaliacao\AreaProcedimentoAvaliacaoResource;
 use ECidade\Educacao\Escola\Resource\ProcedimentoAvaliacao\AreaProcedimentoResource;
 use ECidade\Educacao\Escola\Resource\ProcedimentoAvaliacao\ProcedimentoResource;
 use ECidade\Educacao\Escola\Service\AreaProcedimentoService;

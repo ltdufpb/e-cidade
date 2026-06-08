@@ -2,6 +2,8 @@
 
 namespace ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Helper;
 
+use CgmFactory;
+use processoProtocolo;
 use \InstituicaoRepository;
 use ECidade\Tributario\Issqn\ParametrosProcessoEletronicoBag;
 use ECidade\Patrimonial\Protocolo\Servicos\InclusaoCgmLegacy;
@@ -106,7 +108,7 @@ class ProcessoEletronicoHelper
         if (array_key_exists('escritorio_contabil', $outrosDados)
             && self::getValueJson($outrosDados->escritorio_contabil->value) != null
         ) {
-            $cgms['cgmEscritorio'] = \CgmFactory::getInstanceByCgm(self::getValueJson(
+            $cgms['cgmEscritorio'] = CgmFactory::getInstanceByCgm(self::getValueJson(
                 $outrosDados->escritorio_contabil->value
             ));
         }
@@ -227,7 +229,7 @@ class ProcessoEletronicoHelper
         if (array_key_exists('escritorio_contabil', $outrosDados)
             && self::getValueJson($outrosDados->escritorio_contabil->value) != null
         ) {
-            $cgms['cgmEscritorio'] = \CgmFactory::getInstanceByCgm(self::getValueJson(
+            $cgms['cgmEscritorio'] = CgmFactory::getInstanceByCgm(self::getValueJson(
                 $outrosDados->escritorio_contabil->value
             ));
         }
@@ -242,7 +244,7 @@ class ProcessoEletronicoHelper
     }
 
     public static function andamentoProcesso(
-        \processoProtocolo $oProcesso,
+        processoProtocolo $oProcesso,
         $despacho,
         $departamentoOrigem,
         $departamentoDestino

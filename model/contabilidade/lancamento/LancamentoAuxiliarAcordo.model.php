@@ -169,7 +169,7 @@ class LancamentoAuxiliarAcordo extends LancamentoAuxiliarBase implements ILancam
      * Retorna o empenho financeiro
      * @return EmpenhoFinanceiro
      */
-    #[\Override]
+    #[Override]
     public function getEmpenho()
     {
         return $this->oEmpenhoFinanceiro;

@@ -26,7 +26,7 @@
  */
 
 
-use ECidade\Educacao\Escola\Registry\AlunoRegistry;
+
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_app.utils.php"));

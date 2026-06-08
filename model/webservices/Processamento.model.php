@@ -148,7 +148,7 @@ class Processamento {
   /**
    * Abre o arquivo a partir do metodo informado
    * @return bool
-   * @throws \Exception
+   * @throws Exception
    */
   private function abrirArquivo() {
 
@@ -576,7 +576,7 @@ class Processamento {
   /**
    * Executa Classes
    * @return mixed
-   * @throws \Exception
+   * @throws Exception
    */
   private function executarClasse() {
 

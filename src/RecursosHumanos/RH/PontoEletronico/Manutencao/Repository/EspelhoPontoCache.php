@@ -27,6 +27,12 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\Repository;
 
+use DBDate;
+use DBException;
+use ParameterException;
+use cl_pontoeletronicoarquivodata;
+use db_utils;
+
 class EspelhoPontoCache {
 
     /**
@@ -60,11 +66,11 @@ class EspelhoPontoCache {
     }
 
     /**
-     * @param \DBDate $data
+     * @param DBDate $data
      * @param int $matricula
-     * @throws \DBException
+     * @throws DBException
      */
-    public function invalidarCache(\DBDate $data, $matricula)
+    public function invalidarCache(DBDate $data, $matricula)
     {   
         $oDaoPontoEletronicoData = $this->getPontoeletronicoarquivodata($data, $matricula);
         
@@ -74,38 +80,38 @@ class EspelhoPontoCache {
             $oDaoPontoEletronicoData->alterar($oDaoPontoEletronicoData->rh197_sequencial);
             
             if(!$oDaoPontoEletronicoData->erro_status) {
-                throw new \DBException($oDaoPontoEletronicoData->erro_msg);
+                throw new DBException($oDaoPontoEletronicoData->erro_msg);
             }
         }
     }
 
     /**
      * @param int $matricula
-     * @param \DBDate $dataInicial
-     * @param \DBDate $dataFinal
-     * @throws \DBException
-     * @throws \ParameterException
+     * @param DBDate $dataInicial
+     * @param DBDate $dataFinal
+     * @throws DBException
+     * @throws ParameterException
      */
-    public function invalidarCacheNoPeriodo($matricula, \DBDate $dataInicial, \DBDate $dataFinal)
+    public function invalidarCacheNoPeriodo($matricula, DBDate $dataInicial, DBDate $dataFinal)
     {
         if ($dataInicial->getTimeStamp() > $dataFinal->getTimeStamp()) {
-            throw new \ParameterException('Data inicial não pode ser maior que data final.');
+            throw new ParameterException('Data inicial não pode ser maior que data final.');
         }
 
         // die('data inicial: '.$dataInicial.', data final:'.$dataFinal);
-        $datas = \DBDate::getDatasNoIntervalo($dataInicial, $dataFinal);
+        $datas = DBDate::getDatasNoIntervalo($dataInicial, $dataFinal);
         foreach ($datas as $data) {
             $this->invalidarCache($data, $matricula);
         }
     }
 
     /**
-     * @param \DBDate $data
+     * @param DBDate $data
      * @param $matricula
      * @return mixed|null
-     * @throws \DBException
+     * @throws DBException
      */
-    public function getEspelhoPontoCache(\DBDate $data, $matricula)
+    public function getEspelhoPontoCache(DBDate $data, $matricula)
     {
         $oDaoPontoEletronicoData = $this->getPontoeletronicoarquivodata($data, $matricula);
         
@@ -117,14 +123,14 @@ class EspelhoPontoCache {
     }
 
     /**
-     * @param \DBDate $data
+     * @param DBDate $data
      * @param $matricula
-     * @return \cl_pontoeletronicoarquivodata|null
-     * @throws \DBException
+     * @return cl_pontoeletronicoarquivodata|null
+     * @throws DBException
      */
-    private function getPontoeletronicoarquivodata(\DBDate $data, $matricula)
+    private function getPontoeletronicoarquivodata(DBDate $data, $matricula)
     {
-        $oDaoPontoEletronicoData    = new \cl_pontoeletronicoarquivodata();
+        $oDaoPontoEletronicoData    = new cl_pontoeletronicoarquivodata();
         $sWherePontoEletronicoData  = "     rh197_data      = '{$data->getDate()}'";
         $sWherePontoEletronicoData .= " AND rh197_matricula = {$matricula}";
         $sSqlPontoEletronicoData    = $oDaoPontoEletronicoData->sql_query_file(
@@ -137,12 +143,12 @@ class EspelhoPontoCache {
         $rsPontoEletronicoData = db_query($sSqlPontoEletronicoData);
 
         if(!$rsPontoEletronicoData) {
-            throw new \DBException('Erro ao buscar as informações do ponto no dia.');
+            throw new DBException('Erro ao buscar as informações do ponto no dia.');
         }
 
         if(pg_num_rows($rsPontoEletronicoData) > 0) {
 
-            $oDadosRetorno = \db_utils::fieldsMemory($rsPontoEletronicoData, 0);
+            $oDadosRetorno = db_utils::fieldsMemory($rsPontoEletronicoData, 0);
 
             $oDaoPontoEletronicoData->rh197_sequencial             = $oDadosRetorno->rh197_sequencial;
             $oDaoPontoEletronicoData->rh197_pontoeletronicoarquivo = $oDadosRetorno->rh197_pontoeletronicoarquivo;
@@ -170,21 +176,21 @@ class EspelhoPontoCache {
     }
 
     /**
-     * @param \DBDate $data
+     * @param DBDate $data
      * @param $matricula
      * @param $espelhoPontoCache
-     * @throws \DBException
+     * @throws DBException
      */
-    public function persist(\DBDate $data, $matricula, $espelhoPontoCache)
+    public function persist(DBDate $data, $matricula, $espelhoPontoCache)
     {
         if (!is_array($espelhoPontoCache)) {
-            throw new \ParameterException('Coleção de dados do Espelho Ponto a ser salvo está no formato errado.');
+            throw new ParameterException('Coleção de dados do Espelho Ponto a ser salvo está no formato errado.');
         }
 
         $oDaoPontoEletronicoData = $this->getPontoeletronicoarquivodata($data, $matricula);
         
         if(empty($oDaoPontoEletronicoData)) {
-            $oDaoPontoEletronicoData = new \cl_pontoeletronicoarquivodata();
+            $oDaoPontoEletronicoData = new cl_pontoeletronicoarquivodata();
             $oDaoPontoEletronicoData->rh197_data = $data->getDate();
             $oDaoPontoEletronicoData->rh197_matricula = $matricula;
         }
@@ -197,20 +203,20 @@ class EspelhoPontoCache {
         $oDaoPontoEletronicoData->{$sAcao}($oDaoPontoEletronicoData->rh197_sequencial);
 
         if(!$oDaoPontoEletronicoData->erro_status) {
-            throw new \DBException($oDaoPontoEletronicoData->erro_msg);
+            throw new DBException($oDaoPontoEletronicoData->erro_msg);
         }
     }
 
     /**
      * @param int[] $matriculas
-     * @param \DBDate $dataInicial
-     * @param \DBDate $dataFinal
+     * @param DBDate $dataInicial
+     * @param DBDate $dataFinal
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
-    public function getEspelhoPontoCacheValido($matriculas, \DBDate $dataInicial, \DBDate $dataFinal, $cacheValido = true, $retornaDados = true)
+    public function getEspelhoPontoCacheValido($matriculas, DBDate $dataInicial, DBDate $dataFinal, $cacheValido = true, $retornaDados = true)
     {
-        $oDaoPontoEletronicoData = new \cl_pontoeletronicoarquivodata();
+        $oDaoPontoEletronicoData = new cl_pontoeletronicoarquivodata();
         $where  = "     rh197_data  between '{$dataInicial->getDate()}' and '{$dataFinal->getDate()}'";
         $where .= ' AND rh197_matricula in (' . implode(',', $matriculas) .')';
         $where .= ' AND rh197_cache_valido = ' . ($cacheValido ? 'true' : 'false');
@@ -223,11 +229,11 @@ class EspelhoPontoCache {
         $rs = \db_query($sql);
 
         if (!$rs) {
-            throw new \DBException('Não foi possível buscar as matriculas com cache inválido.');
+            throw new DBException('Não foi possível buscar as matriculas com cache inválido.');
         }
 
         $matriculasValidas = [];
-        \db_utils::makeCollectionFromRecord($rs, function ($retorno) use (&$matriculasValidas, $retornaDados) {
+        db_utils::makeCollectionFromRecord($rs, function ($retorno) use (&$matriculasValidas, $retornaDados) {
             $matriculasValidas[$retorno->rh197_matricula][$retorno->rh197_data] = $retornaDados ? unserialize(stripslashes((string) $retorno->rh197_espelho_ponto_cache)) : true;
         });
 

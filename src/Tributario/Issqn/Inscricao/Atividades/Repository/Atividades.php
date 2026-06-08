@@ -2,7 +2,6 @@
 
 namespace ECidade\Tributario\Issqn\Inscricao\Atividades\Repository;
 
-use \BusinessException;
 use \DBException;
 use \db_utils;
 use \db_query;

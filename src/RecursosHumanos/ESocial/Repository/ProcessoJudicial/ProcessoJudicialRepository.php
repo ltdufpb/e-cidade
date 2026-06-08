@@ -27,27 +27,20 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 
+use cl_cadendermunicipiosistema;
+use db_utils;
 use cl_rhpessoalprocessojudicialesocial;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\ProcessoJudicial;
-use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Servidor as ServidorProcesso;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ContratoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\MudancaRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\UnicidadeRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\VinculoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\PeriodoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ServidorRepository as ServidorRepositoryProcesso;
-use ECidade\RecursosHumanos\Pessoal\Repository\DependenteRepository;
-use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
-use Cedencia;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Contrato\Model\ContratoJornada;
-use ECidade\RecursosHumanos\Pessoal\Model\ContratoEmergencial;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
-use ECidade\RecursosHumanos\Pessoal\Repository\DataPagamentoFolhaRepository;
 use Exception;
 use ServidorRepository as ServidorFolhaRepository;
 use stdClass;
 use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
-use Admissao;
 use db_stdClass;
 
 class ProcessoJudicialRepository
@@ -892,7 +885,7 @@ class ProcessoJudicialRepository
      */
     public static function getListaCodigoMunicipioIBGE()
     {
-        $dao = new \cl_cadendermunicipiosistema();
+        $dao = new cl_cadendermunicipiosistema();
         $campos = ['db125_codigosistema as codigoIBGE'];
         $where = 'db125_db_sistemaexterno = 4';
         $order = 'db125_codigosistema';
@@ -907,7 +900,7 @@ class ProcessoJudicialRepository
             return $listaMunicipioIBGE;
         }
 
-        $codigosMunicipiosIBGE = \db_utils::getCollectionByRecord($rs);
+        $codigosMunicipiosIBGE = db_utils::getCollectionByRecord($rs);
 
         foreach ($codigosMunicipiosIBGE as $codigoMunicipioIBGE) {
             $listaMunicipioIBGE[] = $codigoMunicipioIBGE->codigoibge;

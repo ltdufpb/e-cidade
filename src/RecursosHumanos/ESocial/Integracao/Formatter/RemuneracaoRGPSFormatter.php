@@ -2,12 +2,16 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use InstituicaoRepository;
+use Cedencia;
+use Instituicao;
+use BusinessException;
+use DBException;
 use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
 use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRGPS;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
 use ECidade\RecursosHumanos\ESocial\Service\RemuneracaoRGPSService;
-use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
-use cl_avaliacaogruporespostarhpessoal;
 use cl_avaliacaogruporespostalotacao;
 use Rubrica;
 use RubricaRepository;
@@ -17,7 +21,6 @@ use db_utils;
 use CgmRepository;
 use ServidorRepository;
 use AdmissaoDado;
-use Lotacao;
 use CgmJuridico;
 
 /**
@@ -68,7 +71,7 @@ class RemuneracaoRGPSFormatter extends Formatter
     private $possuiNaturezaSaude;
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $instituicao;
 
@@ -155,10 +158,10 @@ class RemuneracaoRGPSFormatter extends Formatter
      *
      * @param array $dados
      * @return array|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -167,7 +170,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         $this->mesCompetencia = $dados->mesCompetencia;
         $this->rubricasRepository = new ESocialRubricasRepository();
         $this->rubricasValidas = $this->rubricasRepository->validarRubricas('1200');
-        $this->instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $this->instituicao = InstituicaoRepository::getInstituicaoSessao();
         $this->possuiNaturezaSaude = false;
         $this->competencia = CompetenciaHelper::get($this->anoCompetencia, $this->mesCompetencia);
         $this->rubricaDiferenca = $dados->rubricaDiferenca;
@@ -188,8 +191,8 @@ class RemuneracaoRGPSFormatter extends Formatter
     /**
      * @param $cgm
      * @return stdClass
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarDadosECidade($cgm)
     {
@@ -432,7 +435,7 @@ class RemuneracaoRGPSFormatter extends Formatter
     /**
      * @param $dadoFormatado
      * @param $index
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     private function organizarDadosPagamentos(&$dadoFormatado, $folha, $index = 0, $indexDmDev = 0)
     {
@@ -451,7 +454,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         // caso seja cedencia
         if (in_array($this->codigoCategoria, $categoriasAgentesNocivosOrigem)) {
             // buscamos os dados de cedencia
-            $cedencia = new \Cedencia($this->remuneracaoRGPS->getServidor()->getMatricula());
+            $cedencia = new Cedencia($this->remuneracaoRGPS->getServidor()->getMatricula());
             //validamos se a categoria de origem pertence a configuracao dos agentes nocivos
             if (in_array($cedencia->getCodCategoriaOrigem(), $categoriasAgentesNocivos)) {
                 $validaAgente = true;
@@ -1162,7 +1165,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         }
     }
 
-    #[\Override]
+    #[Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));

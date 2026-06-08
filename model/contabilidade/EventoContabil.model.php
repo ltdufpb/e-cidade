@@ -24,12 +24,11 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\PosProcessamento;
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\Recurso;
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\ComplementoRecurso;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Services\Processamento;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\Documento;
-use ECidade\Financeiro\Contabilidade\LancamentoContabil;
-use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\ProcessamentoMatriz;
-use ECidade\Financeiro\Orcamento\Recurso\Origem as OrigemRecurso;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\Service\ComplementoLancamentoService;
 
 define("URL_MENSAGEM_EVENTOCONTABIL", "financeiro.contabilidade.EventoContabil.");
@@ -567,7 +566,7 @@ class EventoContabil
 
         if (empty($options['ignorar_conta_corrente'])) {
             $instituicao = InstituicaoRepository::getInstituicaoByCodigo($this->getInstituicao());
-            $data = new \DBDate($dtDataUsu);
+            $data = new DBDate($dtDataUsu);
             $competencia = new DBCompetencia($data->getAno(), $data->getMes());
             $oProcessamento = new Processamento($instituicao, $competencia);
             $oProcessamento->processar([$oDaoLancamento->c70_codlan]);
@@ -578,7 +577,7 @@ class EventoContabil
         if (!empty($options['itens_ignorar_pos']) && is_array($options['itens_ignorar_pos'])) {
             $itensParaIgnorar = $options['itens_ignorar_pos'];
         }
-        LancamentoContabil\PosProcessamento::processar($oDaoLancamento->c70_codlan, $itensParaIgnorar);
+        PosProcessamento::processar($oDaoLancamento->c70_codlan, $itensParaIgnorar);
 
         /**
          * Quando executar uma Transferência de Cobertura Financeiro tem que ajustar a tabela conlancamrecurso
@@ -838,10 +837,10 @@ class EventoContabil
      */
     protected function lancarRecurso($lancamentoAuxiliar)
     {
-        $dadosRecurso = new \ECidade\Financeiro\Contabilidade\LancamentoContabil\Recurso();
+        $dadosRecurso = new Recurso();
         $dadosRecurso->processar($this->getCodigoLancamento(), $lancamentoAuxiliar);
 
-        $complementoRecurso = new LancamentoContabil\ComplementoRecurso();
+        $complementoRecurso = new ComplementoRecurso();
         $complementoRecurso->processar($this->getCodigoLancamento(), $this->getAnoUso());
     }
 

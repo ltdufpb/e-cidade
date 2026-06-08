@@ -27,7 +27,6 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
-use BusinessException;
 use Instituicao;
 use InstituicaoRepository;
 use Servidor;

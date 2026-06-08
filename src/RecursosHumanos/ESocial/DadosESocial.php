@@ -26,12 +26,15 @@
  */
 namespace ECidade\RecursosHumanos\ESocial;
 
+use stdClass;
+use InstituicaoRepository;
+use db_utils;
+use Instituicao;
 use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
 use ECidade\RecursosHumanos\ESocial\Formatter\DadosPreenchimento as DadosPreenchimentoFormatter;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Preenchimentos;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\RecursosHumanos\Pessoal\Servidor\Repository\Rescisao as RescisaoRepository;
-use AssentamentoRepository;
 use BusinessException;
 use DBCompetencia;
 use DBException;
@@ -69,7 +72,7 @@ class DadosESocial
     private $responsavelPreenchimento;
 
     /**
-     * @var \Instituicao $instituicao
+     * @var Instituicao $instituicao
      */
     private $instituicao;
 
@@ -254,8 +257,8 @@ class DadosESocial
     /**
      * Busca os preenchimentos conforme o tipo de formulário informado
      *
-     * @throws \Exception
-     * @return \stdClass[]
+     * @throws Exception
+     * @return stdClass[]
      */
     private function buscaPreenchimentos()
     {
@@ -438,11 +441,11 @@ class DadosESocial
      * Identifica o responsável pelo preenchimento
      * O responsável é a figura "dona" das respostas/ que preencheu o formulário
      *
-     * @param \stdClass $preenchimento
-     * @throws \Exception
+     * @param stdClass $preenchimento
+     * @throws Exception
      * @return integer
      */
-    private function identificaResponsavel(\stdClass $preenchimento)
+    private function identificaResponsavel(stdClass $preenchimento)
     {
         return match ($this->tipo) {
             Tipo::SERVIDOR, Tipo::TRABALHADOR_SEM_VINCULO, Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO, Tipo::AVISO_PREVIO, Tipo::ADMISSAO_PRELIMINAR, Tipo::ALTERACAO_SERVIDOR => $preenchimento->matricula,
@@ -458,7 +461,7 @@ class DadosESocial
     }
 
     /**
-     * @return \Instituicao
+     * @return Instituicao
      */
     public function getInstituicao()
     {
@@ -466,7 +469,7 @@ class DadosESocial
     }
 
     /**
-     * @param \Instituicao $instituicao
+     * @param Instituicao $instituicao
      */
     public function setInstituicao($instituicao)
     {
@@ -515,7 +518,7 @@ class DadosESocial
 
         switch ($tipo) {
             case Tipo::AFASTAMENTO_TEMPORARIO:
-                $instituicao = \InstituicaoRepository::getInstituicaoSessao();
+                $instituicao = InstituicaoRepository::getInstituicaoSessao();
                 $servidores = ServidorRepository::getServidoresByMatriculas(
                     $competencia->ano,
                     $competencia->mes,
@@ -548,7 +551,7 @@ class DadosESocial
                 if ($rs) {
                     $contador = pg_num_rows($rs);
                     for ($i = 0; $i < $contador; $i++) {
-                        $assentamento = \db_utils::fieldsMemory($rs, $i);
+                        $assentamento = db_utils::fieldsMemory($rs, $i);
                         $codigosAssentamentos[] = $assentamento->identificador;
                     }
                 }
@@ -619,7 +622,7 @@ class DadosESocial
                 if ((isset($competencia->ano) && empty($competencia->ano))
                     || (isset($competencia->mes) && empty($competencia->mes))
                 ) {
-                    $competencia = new \stdClass();
+                    $competencia = new stdClass();
                     $competencia->ano = DBPessoal::getAnoFolha();
                     $competencia->mes = DBPessoal::getMesFolha();
                 }
@@ -674,7 +677,7 @@ class DadosESocial
                 }
                 // Caso nao seja informada a competencia, é setada a competencia atual
                 if (empty($competencia)) {
-                    $competencia = new \stdClass();
+                    $competencia = new stdClass();
                     $competencia->ano = DBPessoal::getAnoFolha();
                     $competencia->mes = DBPessoal::getMesFolha();
                 }
@@ -722,7 +725,7 @@ class DadosESocial
 
                 // Caso nao seja informada a competencia, é setada a competencia atual
                 if (empty($competencia)) {
-                    $competencia = new \stdClass();
+                    $competencia = new stdClass();
                     $competencia->ano = DBPessoal::getAnoFolha();
                     $competencia->mes = DBPessoal::getMesFolha();
                 }
@@ -755,7 +758,7 @@ class DadosESocial
                 }
 
                 if (empty($competencia)) {
-                    $competencia = new \stdClass();
+                    $competencia = new stdClass();
                     $competencia->ano = DBPessoal::getAnoFolha();
                     $competencia->mes = DBPessoal::getMesFolha();
                 }
@@ -778,14 +781,14 @@ class DadosESocial
                 if ((isset($competencia->ano) && empty($competencia->ano))
                     || (isset($competencia->mes) && empty($competencia->mes))
                 ) {
-                    $competencia = new \stdClass();
+                    $competencia = new stdClass();
                     $competencia->ano = DBPessoal::getAnoFolha();
                     $competencia->mes = DBPessoal::getMesFolha();
                 }
                 if (!empty($referencias)) {
                     $matriculaServidores = $referencias;
                 } else {
-                    $instituicao = \InstituicaoRepository::getInstituicaoSessao();
+                    $instituicao = InstituicaoRepository::getInstituicaoSessao();
                     $dataInicio = "{$competencia->ano}-{$competencia->mes}-01";
                     $quantidadeDias = DBDate::getQuantidadeDiasMes($competencia->mes, $competencia->ano);
                     $dataFim = "{$competencia->ano}-{$competencia->mes}-{$quantidadeDias}";
@@ -803,7 +806,7 @@ SQL;
                     if (!$rs) {
                         throw new DBException("Erro ao buscar matriculas para envio do evento S-2416.");
                     }
-                    $servidores = \db_utils::getCollectionByRecord($rs);
+                    $servidores = db_utils::getCollectionByRecord($rs);
                     foreach ($servidores as $servidor) {
                         $matriculaServidores[] = $servidor->matricula;
                     }
@@ -815,7 +818,7 @@ SQL;
                 if ((isset($competencia->ano) && empty($competencia->ano))
                     || (isset($competencia->mes) && empty($competencia->mes))
                 ) {
-                    $competencia = new \stdClass();
+                    $competencia = new stdClass();
                     $competencia->ano = DBPessoal::getAnoFolha();
                     $competencia->mes = DBPessoal::getMesFolha();
                 }

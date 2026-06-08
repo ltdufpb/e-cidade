@@ -26,6 +26,11 @@
  */
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use DBException;
+use BusinessException;
+use db_utils;
+use DBDate;
+
 class LocalTrabalhoRegistroAmbiental
 {
     /**
@@ -69,12 +74,12 @@ class LocalTrabalhoRegistroAmbiental
     private $ufOrgao;
 
     /**
-     * @var null|\DBDate
+     * @var null|DBDate
      */
     private $periodoInicial = null;
 
     /**
-     * @var null|\DBDate
+     * @var null|DBDate
      */
     private $periodoFinal = null;
 
@@ -96,14 +101,14 @@ class LocalTrabalhoRegistroAmbiental
 
             if (!$rs) {
                 $msg = "Houve um erro ao buscar informações do registro ambiental código {$codigo}.";
-                throw new \DBException();
+                throw new DBException();
             }
 
             if (pg_num_rows($rs) == 0) {
-                throw new \BusinessException("Registro ambiental código {$codigo} não encontrado.");
+                throw new BusinessException("Registro ambiental código {$codigo} não encontrado.");
             }
 
-            $registroAmbiental = \db_utils::fieldsMemory($rs, 0);
+            $registroAmbiental = db_utils::fieldsMemory($rs, 0);
             $this->setCodigo($registroAmbiental->rh258_sequencial);
             $this->setCodigoLocalTrabalho($registroAmbiental->rh258_rhlocaltrab);
             $this->setCpf($registroAmbiental->rh258_cpfresponsavel);
@@ -112,10 +117,10 @@ class LocalTrabalhoRegistroAmbiental
             $this->setDescricaoOrgao($registroAmbiental->rh258_descricaoorgao);
             $this->setUfOrgao($registroAmbiental->rh258_uforgao);
             if (!empty($registroAmbiental->rh258_periodoinicial)) {
-                $this->setPeriodoInicial(new \DBDate($registroAmbiental->rh258_periodoinicial));
+                $this->setPeriodoInicial(new DBDate($registroAmbiental->rh258_periodoinicial));
             }
             if (!empty($registroAmbiental->rh258_periodofinal)) {
-                $this->setPeriodoFinal(new \DBDate($registroAmbiental->rh258_periodofinal));
+                $this->setPeriodoFinal(new DBDate($registroAmbiental->rh258_periodofinal));
             }
         }
     }
@@ -249,7 +254,7 @@ class LocalTrabalhoRegistroAmbiental
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getPeriodoInicial()
     {
@@ -257,7 +262,7 @@ class LocalTrabalhoRegistroAmbiental
     }
 
     /**
-     * @param \DBDate|null $periodoInicial
+     * @param DBDate|null $periodoInicial
      */
     public function setPeriodoInicial($periodoInicial)
     {
@@ -265,7 +270,7 @@ class LocalTrabalhoRegistroAmbiental
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getPeriodoFinal()
     {
@@ -273,7 +278,7 @@ class LocalTrabalhoRegistroAmbiental
     }
 
     /**
-     * @param \DBDate|null $periodoFinal
+     * @param DBDate|null $periodoFinal
      */
     public function setPeriodoFinal($periodoFinal)
     {
@@ -297,16 +302,16 @@ class LocalTrabalhoRegistroAmbiental
             $rs = \db_query($sql);
             if (!$rs) {
                 $msg = "Houve um erro ao buscar o local de trabalho código {$codigoLocalTrabalho}.";
-                throw new \DBException($msg);
+                throw new DBException($msg);
             }
 
             $totalRegistro = pg_num_rows($rs);
             for ($i = 0; $i < $totalRegistro; $i++) {
-                $registroAmbiental = \db_utils::fieldsMemory($rs, $i);
+                $registroAmbiental = db_utils::fieldsMemory($rs, $i);
                 $registrosAmbientais[] = new LocalTrabalhoRegistroAmbiental($registroAmbiental->rh258_sequencial);
             }
         } else {
-            throw new \BusinessException("Código do local de trabalho não informado.");
+            throw new BusinessException("Código do local de trabalho não informado.");
         }
         return $registrosAmbientais;
     }

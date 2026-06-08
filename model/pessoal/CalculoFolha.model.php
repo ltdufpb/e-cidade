@@ -1700,7 +1700,7 @@ abstract class CalculoFolha
             // É a quantidade de dias no mês do calculo.
             $quantidadeNaCompetencia = 0;
 
-            $competencia = new \DBCompetencia(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());
+            $competencia = new DBCompetencia(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());
 
             // Pega o último dia da competência.
             $ultimoDiaCompetencia = cal_days_in_month(

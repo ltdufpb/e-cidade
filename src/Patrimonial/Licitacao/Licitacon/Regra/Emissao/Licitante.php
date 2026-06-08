@@ -27,6 +27,7 @@
 
 namespace ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao;
 
+use licitacao;
 use TratamentoDiferenciado;
 use FornecedorBase;
 
@@ -52,12 +53,12 @@ class Licitante extends BaseAbstract
 
     /**
      * Retorna o valor para o campo BL_BENEFICIO_MICRO_EPP do licitante para uso no arquivo LICITANTE.TXT
-     * @param \licitacao $oLicitacao
+     * @param licitacao $oLicitacao
      * @param           $iTipoEmpresa
      *
      * @return string
      */
-    public function getBeneficioMicroEpp(\licitacao $oLicitacao, $iTipoEmpresa)
+    public function getBeneficioMicroEpp(licitacao $oLicitacao, $iTipoEmpresa)
     {
         $oTratamentoDiferenciado = new TratamentoDiferenciado($oLicitacao);
         if ($oTratamentoDiferenciado->temBeneficio()) {

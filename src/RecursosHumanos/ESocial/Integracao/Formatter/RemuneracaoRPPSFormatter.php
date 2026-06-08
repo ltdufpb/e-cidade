@@ -2,9 +2,13 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use InstituicaoRepository;
+use Instituicao;
+use BusinessException;
+use DBException;
 use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
 use CgmFisico;
-use CgmJuridico;
 use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRPPS;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
 use ECidade\RecursosHumanos\ESocial\Service\RemuneracaoRPPSService;
@@ -59,7 +63,7 @@ class RemuneracaoRPPSFormatter extends Formatter
 
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $instituicao;
 
@@ -125,10 +129,10 @@ class RemuneracaoRPPSFormatter extends Formatter
      *
      * @param array $dados
      * @return array|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -137,7 +141,7 @@ class RemuneracaoRPPSFormatter extends Formatter
         $this->mesCompetencia = $dados->mesCompetencia;
         $this->rubricasRepository = new ESocialRubricasRepository();
         $this->rubricasValidas = $this->rubricasRepository->validarRubricas('1202');
-        $this->instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $this->instituicao = InstituicaoRepository::getInstituicaoSessao();
         $this->possuiNaturezaSaude = false;
         $this->competencia = CompetenciaHelper::get($this->anoCompetencia, $this->mesCompetencia);
         $this->rubricaDiferenca = $dados->rubricaDiferenca;
@@ -161,8 +165,8 @@ class RemuneracaoRPPSFormatter extends Formatter
     /**
      * @param $cgm
      * @return stdClass
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarDadosECidade($cgm)
     {
@@ -375,7 +379,7 @@ class RemuneracaoRPPSFormatter extends Formatter
     /**
      * @param $dadoFormatado
      * @param $index
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     private function organizarDadosPagamentos(&$dadoFormatado, $folha, $index = 0, $indexDmDev = 0)
     {
@@ -653,7 +657,7 @@ class RemuneracaoRPPSFormatter extends Formatter
         }
     }
 
-    #[\Override]
+    #[Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));

@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhprocessotributocontribuicao;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\TributoContribuicao;
 use Exception;
-use DBDate;
 
 class TributoContribuicaoRepository
 {

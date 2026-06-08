@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Model;
 
+use cl_empautorizaprocesso;
+
 class ProcessoAdministrativo
 {
     /**
@@ -21,7 +23,7 @@ class ProcessoAdministrativo
     public function __construct($codigoAutorizacao = null)
     {
         if ($codigoAutorizacao) {
-            $dao = new \cl_empautorizaprocesso();
+            $dao = new cl_empautorizaprocesso();
             $sql = $dao->sql_query_file(null, null, null, "e150_empautoriza = {$codigoAutorizacao}");
             $rs = $dao->sql_record($sql);
 

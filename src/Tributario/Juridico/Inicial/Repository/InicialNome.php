@@ -27,6 +27,9 @@
 
 namespace ECidade\Tributario\Juridico\Inicial\Repository;
 
+use BaseClassRepository;
+use cl_inicialnomes;
+use stdClass;
 use ECidade\Tributario\Juridico\Inicial\InicialNome as Entity;
 use Exception;
 
@@ -37,7 +40,7 @@ use Exception;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class InicialNome extends \BaseClassRepository
+class InicialNome extends BaseClassRepository
 {
     protected static $oInstance;
 
@@ -51,7 +54,7 @@ class InicialNome extends \BaseClassRepository
      */
     public function persist(Entity $entity, $initial)
     {
-        $dao = new \cl_inicialnomes();
+        $dao = new cl_inicialnomes();
 
         if ($this->getByInitialAndName($initial, $entity->getCgm())) {
             return $entity;
@@ -80,7 +83,7 @@ class InicialNome extends \BaseClassRepository
             return null;
         }
 
-        $dao = new \cl_inicialnomes();
+        $dao = new cl_inicialnomes();
         $sql = $dao->sql_query_file($initial, $name);
 
         $result = \db_query($sql);
@@ -107,7 +110,7 @@ class InicialNome extends \BaseClassRepository
      */
     public function getByInitial($initial)
     {
-        $dao = new \cl_inicialnomes();
+        $dao = new cl_inicialnomes();
         $sql = $dao->sql_query_file($initial);
 
         $result = \db_query($sql);
@@ -195,7 +198,7 @@ class InicialNome extends \BaseClassRepository
      */
     public function deleteByInitial($inicial)
     {
-        $dao = new \cl_inicialnomes();
+        $dao = new cl_inicialnomes();
         $dao->excluir($inicial);
 
         if ($dao->erro_status == 0) {
@@ -206,7 +209,7 @@ class InicialNome extends \BaseClassRepository
     }
 
     /**
-     * @param \stdClass $data
+     * @param stdClass $data
      *
      * @return Entity
      */

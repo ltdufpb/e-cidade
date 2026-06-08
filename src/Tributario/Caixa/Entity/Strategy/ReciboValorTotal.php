@@ -4,7 +4,6 @@ namespace ECidade\Tributario\Caixa\Entity\Strategy;
 
 use ECidade\Tributario\Library\StrategyCalculator;
 use ECidade\Tributario\Library\Entity;
-use ECidade\Tributario\Caixa\Entity\Recibo;
 
 final class ReciboValorTotal implements StrategyCalculator
 {

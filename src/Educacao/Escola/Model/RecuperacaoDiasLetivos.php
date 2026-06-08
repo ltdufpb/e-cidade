@@ -27,6 +27,11 @@
 
 namespace ECidade\Educacao\Escola\Model;
 
+use Turno;
+use Regencia;
+use PeriodoEscola;
+use DBDate;
+
 /**
  * Class RecuperacaoDiasLetivos
  * @package ECidade\Educacao\Escola\Model
@@ -39,12 +44,12 @@ class RecuperacaoDiasLetivos
     private $regenciaHorario;
 
     /**
-     * @var \Turno
+     * @var Turno
      */
     private $turno;
 
     /**
-     * @var \Regencia
+     * @var Regencia
      */
     private $regencia;
 
@@ -59,12 +64,12 @@ class RecuperacaoDiasLetivos
     private $rechumanoDescricao;
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     private $data;
 
     /**
-     * @var \PeriodoEscola[]
+     * @var PeriodoEscola[]
      */
     private $periodos = [];
 
@@ -85,7 +90,7 @@ class RecuperacaoDiasLetivos
     }
 
     /**
-     * @return \Turno
+     * @return Turno
      */
     public function getTurno()
     {
@@ -93,15 +98,15 @@ class RecuperacaoDiasLetivos
     }
 
     /**
-     * @param \Turno $turno
+     * @param Turno $turno
      */
-    public function setTurno(\Turno $turno)
+    public function setTurno(Turno $turno)
     {
         $this->turno = $turno;
     }
 
     /**
-     * @return \Regencia
+     * @return Regencia
      */
     public function getRegencia()
     {
@@ -109,9 +114,9 @@ class RecuperacaoDiasLetivos
     }
 
     /**
-     * @param \Regencia $regencia
+     * @param Regencia $regencia
      */
-    public function setRegencia(\Regencia $regencia)
+    public function setRegencia(Regencia $regencia)
     {
         $this->regencia = $regencia;
     }
@@ -133,7 +138,7 @@ class RecuperacaoDiasLetivos
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getData()
     {
@@ -141,7 +146,7 @@ class RecuperacaoDiasLetivos
     }
 
     /**
-     * @param \DBDate $data
+     * @param DBDate $data
      */
     public function setData($data)
     {
@@ -157,7 +162,7 @@ class RecuperacaoDiasLetivos
     }
 
     /**
-     * @param \PeriodoEscola[] $periodos
+     * @param PeriodoEscola[] $periodos
      */
     public function setPeriodos($periodos)
     {
@@ -165,9 +170,9 @@ class RecuperacaoDiasLetivos
     }
 
     /**
-     * @param \PeriodoEscola $periodoEscola
+     * @param PeriodoEscola $periodoEscola
      */
-    public function adicionarPeriodo(\PeriodoEscola $periodoEscola)
+    public function adicionarPeriodo(PeriodoEscola $periodoEscola)
     {
         $this->periodos[] = $periodoEscola;
     }

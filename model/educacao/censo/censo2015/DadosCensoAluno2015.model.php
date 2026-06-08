@@ -33,7 +33,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
   private $sAluno           = '';
   private $oExportacaoCenso = null;
 
-  #[\Override]
+  #[Override]
   public static function validarDados(IExportacaoCenso $oExportacaoCenso) {
 
     $lValidou = true;
@@ -815,7 +815,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
    * @param DBLayoutLinha $oLinha
    * @return cl_aluno
    */
-  #[\Override]
+  #[Override]
   protected function preencherDaoAluno(DBLayoutLinha $oLinha) {
 
     $oDaoAluno                         = new cl_aluno();
@@ -881,7 +881,7 @@ class DadosCensoAluno2015 extends DadosCensoAluno {
    * Atualiza as Necessidades Especiais do aluno
    * @param DBLayoutLinha $oLinha
    */
-  #[\Override]
+  #[Override]
   protected function atualizarNecessidadesEspeciais(DBLayoutLinha $oLinha) {
 
     if (isset($oLinha->alunos_deficiencia_transtorno_desenv_superdotacao)) {

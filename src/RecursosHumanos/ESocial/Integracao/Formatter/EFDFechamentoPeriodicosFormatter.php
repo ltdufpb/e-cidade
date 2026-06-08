@@ -2,10 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use cl_avaliacaogruporespostafechamentoefd;
-use DBException;
-use db_utils;
-
+use Override;
 /**
  * Formata os dados da Rubrica
  *
@@ -19,7 +16,7 @@ class EFDFechamentoPeriodicosFormatter extends Formatter
      * @param array $dados
      * @return array
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

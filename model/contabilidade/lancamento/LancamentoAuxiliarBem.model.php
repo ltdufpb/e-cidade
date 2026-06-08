@@ -154,7 +154,7 @@ class LancamentoAuxiliarBem extends LancamentoAuxiliarBase implements ILancament
    * Seta valor para o complemento do lançamento contábil
    * @see LancamentoAuxiliarBase::setObservacaoHistorico()
    */
-  #[\Override]
+  #[Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
   	$this->sComplemento = $sObservacaoHistorico;
   }
@@ -163,7 +163,7 @@ class LancamentoAuxiliarBem extends LancamentoAuxiliarBase implements ILancament
    * Retorna o complemento do lançamento contábil
    * @see LancamentoAuxiliarBase::getObservacaoHistorico()
    */
-  #[\Override]
+  #[Override]
   public function getObservacaoHistorico() {
   	return $this->sComplemento;
   }

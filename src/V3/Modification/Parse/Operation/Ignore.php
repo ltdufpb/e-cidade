@@ -2,8 +2,6 @@
 
 namespace ECidade\V3\Modification\Parse\Operation;
 
-use \ECidade\V3\Extension\Encode;
-
 class Ignore
 {
     private $content;

@@ -2,6 +2,12 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use InstituicaoRepository;
+use CgmFisico;
+use Instituicao;
+use BusinessException;
+use DBException;
 use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
 use ECidade\RecursosHumanos\ESocial\Service\RemuneracaoBeneficioService;
@@ -63,7 +69,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
     private $possuiNaturezaSaude;
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $instituicao;
 
@@ -116,10 +122,10 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
      *
      * @param array $dados
      * @return array|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -128,7 +134,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         $this->mesCompetencia = $dados->mesCompetencia;
         $this->rubricasRepository = new ESocialRubricasRepository();
         $this->rubricasValidas = $this->rubricasRepository->validarRubricas('1207');
-        $this->instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $this->instituicao = InstituicaoRepository::getInstituicaoSessao();
         $this->possuiNaturezaSaude = false;
         $this->competencia = CompetenciaHelper::get($this->anoCompetencia, $this->mesCompetencia);
         $this->rubricaDiferenca = $dados->rubricaDiferenca;
@@ -137,7 +143,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
 
         foreach ($dados->cgms as $cgm) {
             $cgmServidor = CgmRepository::getByCodigo($cgm);
-            if ($cgmServidor instanceof \CgmFisico) {
+            if ($cgmServidor instanceof CgmFisico) {
                 $dado = $this->buscarDadosECidade($cgm);
                 if ($dado) {
                     $dadosFormatados[] = $dado;
@@ -150,8 +156,8 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
     /**
      * @param $cgm
      * @return stdClass
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarDadosECidade($cgm)
     {
@@ -180,7 +186,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         $cgmRemuneracao = CgmRepository::getByCodigo($cgm);
 
         $remuneracoes = false;
-        if ($cgmRemuneracao instanceof \CgmFisico) {
+        if ($cgmRemuneracao instanceof CgmFisico) {
             $remuneracoes = $this->remuneracaoService->buscarPorCGM($cgmRemuneracao);
         }
         // Caso nao tenha remuneracao no mes, retorna false
@@ -189,7 +195,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
             $this->cgmNaoEnviado[] = $retorno;
             return false;
         }
-        $dadoFormatado->ideBenef = new \stdClass();
+        $dadoFormatado->ideBenef = new stdClass();
         $dadoFormatado->ideBenef->cpfBenef = $remuneracoes[0]->getServidor()->getCgm()->getCpf();
 
         $indiceDmDev = 0;
@@ -300,9 +306,9 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
                 $dmDev->infoPerApur->ideEstab = [];
                 $dmDev->infoPerApur->ideEstab[0] = $ideEstab;
             } else {
-                $dmDev->infoPerAnt = new \stdClass();
+                $dmDev->infoPerAnt = new stdClass();
                 $dmDev->infoPerAnt->idePeriodo = [];
-                $idePeriodo = new \stdClass();
+                $idePeriodo = new stdClass();
                 $idePeriodo->perRef = $this->periodoAnterior;
                 $idePeriodo->ideEstab[0] = $ideEstab;
                 $dmDev->infoPerAnt->idePeriodo[] = $idePeriodo;
@@ -316,7 +322,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
     /**
      * @param $dadoFormatado
      * @param $index
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     private function organizarDadosPagamentos(&$dadoFormatado, $folha, $index = 0, $indexDmDev = 0)
     {
@@ -389,9 +395,9 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
                     $ideEstab->itensRemun = [];
                     $dmDev = $dadoFormatado
                         ->dmDev[$indexDmDev];
-                    $dmDev->infoPerAnt = new \stdClass();
+                    $dmDev->infoPerAnt = new stdClass();
                     $dmDev->infoPerAnt->idePeriodo = [];
-                    $idePeriodo = new \stdClass();
+                    $idePeriodo = new stdClass();
                     $idePeriodo->perRef = $this->anoCompetencia . '-' . $this->mesCompetencia;
                     $idePeriodo->ideEstab[0] = $ideEstab;
                     $dmDev->infoPerAnt->idePeriodo[] = $idePeriodo;
@@ -514,7 +520,7 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
         return $removeIndice;
     }
 
-    #[\Override]
+    #[Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));
@@ -536,9 +542,9 @@ class RemuneracaoBeneficioEntePublicoFormatter extends Formatter
             // teste do perAnt
             //$apurAnt = $this->geraPerApurAnt(746251);
             if ($apurAnt) {
-                $dmDev->infoPerAnt = new \stdClass();
+                $dmDev->infoPerAnt = new stdClass();
                 $dmDev->infoPerAnt->idePeriodo = [];
-                $idePeriodo = new \stdClass();
+                $idePeriodo = new stdClass();
                 $idePeriodo->perRef = $apurAnt;
                 $this->ajusteItens($dmDev->infoPerApur->ideEstab);
                 $idePeriodo->ideEstab = $dmDev->infoPerApur->ideEstab;

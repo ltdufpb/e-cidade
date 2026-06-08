@@ -27,6 +27,8 @@
 
 namespace ECidade\Configuracao\Formulario\Arquivo\Yaml;
 
+use DBString;
+use Exception;
 use Avaliacao;
 use ECidade\Configuracao\Formulario\Arquivo\DumperInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -53,7 +55,7 @@ class Dumper implements DumperInterface
      * Converte a Avaliação (Objeto) em um arquivo yaml
      *
      * @return mixed|null|string no formato yaml
-     * @throws \Exception
+     * @throws Exception
      */
     public function dump()
     {
@@ -70,14 +72,14 @@ class Dumper implements DumperInterface
         $content = Yaml::dump($data, $inline, $indent);
 
         // retorna o conteudo em utf8
-        return \DBString::utf8_encode_all($content);
+        return DBString::utf8_encode_all($content);
     }
 
     /**
      * Organiza a avaliação em um array
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private function dumpEvaluation()
     {

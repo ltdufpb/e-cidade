@@ -27,6 +27,12 @@
 
 namespace ECidade\Educacao\Escola\Censo\Importacao\Factory;
 
+use importacaoAtualizacaoAluno2010;
+use importacaoAtualizacaoAluno2011;
+use ImportacaoCenso2012;
+use importacaoCenso2015;
+use importacaoCenso2016;
+
 /**
  * Class ArquivoImportacao
  * @package Ecidade\Educacao\Escola\Censo\Importacao\Factory
@@ -37,7 +43,7 @@ abstract class ArquivoImportacao
     /**
      * @param $iAno
      * @param $iCodigoInepEscola
-     * @return \importacaoAtualizacaoAluno2010|\importacaoAtualizacaoAluno2011|\ImportacaoCenso2012|\importacaoCenso2015|\importacaoCenso2016|null
+     * @return importacaoAtualizacaoAluno2010|importacaoAtualizacaoAluno2011|ImportacaoCenso2012|importacaoCenso2015|importacaoCenso2016|null
      */
     public static function getArquivoPorAno($iAno, $iCodigoInepEscola)
     {
@@ -46,13 +52,13 @@ abstract class ArquivoImportacao
 
         switch ($iAno) {
             case 2010:
-                $oCenso = new \importacaoAtualizacaoAluno2010($iAno, $iCodigoInepEscola, 98);
+                $oCenso = new importacaoAtualizacaoAluno2010($iAno, $iCodigoInepEscola, 98);
                 $oCenso->lLayoutComPipe = false;
 
                 break;
 
             case 2011:
-                $oCenso = new \importacaoAtualizacaoAluno2011($iAno, $iCodigoInepEscola, 96);
+                $oCenso = new importacaoAtualizacaoAluno2011($iAno, $iCodigoInepEscola, 96);
 
                 break;
 
@@ -69,7 +75,7 @@ abstract class ArquivoImportacao
                     $iCodigoLayout = 219;
                 }
 
-                $oCenso = new \ImportacaoCenso2012($iAno, $iCodigoInepEscola = null, $iCodigoLayout);
+                $oCenso = new ImportacaoCenso2012($iAno, $iCodigoInepEscola = null, $iCodigoLayout);
                 $oCenso->lImportarAluno = true;
                 $oCenso->lIncluirAlunoNaoEncontrado = true;
                 $oCenso->lImportarAlunoAtivo = false;
@@ -77,7 +83,7 @@ abstract class ArquivoImportacao
                 break;
 
             case 2015:
-                $oCenso = new \importacaoCenso2015($iAno, $iCodigoInepEscola, 226);
+                $oCenso = new importacaoCenso2015($iAno, $iCodigoInepEscola, 226);
                 $oCenso->lImportarAluno = true;
                 $oCenso->lImportarAlunoAtivo = false;
                 $oCenso->lModuloEscola = false;
@@ -91,7 +97,7 @@ abstract class ArquivoImportacao
             case 2020:
             case 2021:
                 $iCodigoLayout = $iAno == 2016 ? 255 : 281;
-                $oCenso = new \importacaoCenso2016($iAno, $iCodigoInepEscola = null, $iCodigoLayout);
+                $oCenso = new importacaoCenso2016($iAno, $iCodigoInepEscola = null, $iCodigoLayout);
 
                 break;
         }

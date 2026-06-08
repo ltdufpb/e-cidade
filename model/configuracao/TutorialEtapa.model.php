@@ -127,11 +127,11 @@ class TutorialEtapa {
 
   /**
    * Retorna os dados da classe no formato de stdClass
-   * @return \stdClass Objeto de retorno
+   * @return stdClass Objeto de retorno
    */
   public function toObject() {
 
-    $obj = new \stdClass();
+    $obj = new stdClass();
 
     $obj->id = $this->getId();
     $obj->descricao = $this->getDescricao();

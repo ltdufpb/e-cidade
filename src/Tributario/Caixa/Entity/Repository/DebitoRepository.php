@@ -5,7 +5,6 @@ namespace ECidade\Tributario\Caixa\Entity\Repository;
 use ECidade\Tributario\Library\DataBase;
 use ECidade\Tributario\Library\DataBaseRepository;
 use ECidade\Tributario\Caixa\Repository\ArrecadRepository;
-use ECidade\Tributario\Caixa\Entity\Collection\DebitoCollection;
 use ECidade\Tributario\Caixa\Cast\ArrecadCollectionCast;
 
 class DebitoRepository extends DataBaseRepository

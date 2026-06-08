@@ -28,6 +28,8 @@
 
 namespace ECidade\Financeiro\Orcamento\Recurso;
 
+use Deprecated;
+use ECidade\Financeiro\Orcamento\Model\Complemento;
 use cl_orctiporec;
 use db_utils;
 use DBDate;
@@ -124,7 +126,7 @@ class Recurso
     protected $codigoComplemento;
 
     /**
-     * @var \ECidade\Financeiro\Orcamento\Model\Complemento
+     * @var Complemento
      */
     protected $complemento;
 
@@ -197,7 +199,7 @@ class Recurso
      * @return int
      * @see getCodigo
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function getCodigoRecurso()
     {
         return $this->iCodigoRecurso;
@@ -563,7 +565,7 @@ class Recurso
     }
 
     /**
-     * @return \ECidade\Financeiro\Orcamento\Model\Complemento
+     * @return Complemento
      * @throws Exception
      */
     public function getComplementoRecursoVinculado()

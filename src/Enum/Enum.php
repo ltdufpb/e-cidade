@@ -2,6 +2,7 @@
 
 namespace ECidade\Enum;
 
+use Stringable;
 use BadMethodCallException;
 use Exception;
 use JsonSerializable;
@@ -18,7 +19,7 @@ use UnexpectedValueException;
  * @author Daniel Costa <danielcosta@gmail.com>
  * @author Miros?aw Filip <mirfilip@gmail.com>
  */
-abstract class Enum implements JsonSerializable, \Stringable
+abstract class Enum implements JsonSerializable, Stringable
 {
     /**
      * Enum value

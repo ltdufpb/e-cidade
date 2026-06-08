@@ -2,6 +2,8 @@
 
 namespace ECidade\Configuracao\Workflow\Repository;
 
+use ECidade\Configuracao\Workflow\Collection\Acoes;
+use BusinessException;
 use ECidade\Lib\Database\DataBaseRepository;
 use \DBException;
 use \cl_transicaoacao;
@@ -11,10 +13,10 @@ class Acao extends DataBaseRepository
 {
 
     /**
-    * @param $atividadeDestino
-    * @return \ECidade\Configuracao\Workflow\Collection\Acoes
-    * @throws \BusinessException
-    */
+     * @param $atividadeDestino
+     * @return Acoes
+     * @throws BusinessException
+     */
     public function getAcoes($filtro)
     {
 

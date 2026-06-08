@@ -296,7 +296,7 @@ class LancamentoTaxaDiversos
     $valor = db_utils::fieldsMemory($rsFormula, 0)->valor;
 
     if ($valor <= 0) {
-      throw new \BusinessException(
+      throw new BusinessException(
         "O valor calculado está inválido: ". number_format($valor, 2, ',', '.') . PHP_EOL .
         "Revise os dados informados no lançamento ou revise o cadastro da fórmula: {$this->getNaturezaTaxa()->getFormulaBase()}"
       );
@@ -356,7 +356,7 @@ class LancamentoTaxaDiversos
       return [];
     }
 
-    return \db_utils::makeCollectionFromRecord($rsDiversos, function($oDebitos) {
+    return db_utils::makeCollectionFromRecord($rsDiversos, function($oDebitos) {
 
       $oDadosDebito               = new stdClass();
       $oDadosDebito->sValor       = $oDebitos->dv05_valor;

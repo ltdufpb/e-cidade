@@ -2,9 +2,6 @@
 
 namespace ECidade\Patrimonial\Acordo\AlteracaoContratado\Model;
 
-use cl_acordoalteracaocontratado;
-use db_utils;
-
 class AlteracaoContratado
 {
 

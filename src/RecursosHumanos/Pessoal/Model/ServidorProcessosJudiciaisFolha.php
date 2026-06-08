@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use BusinessException;
+use DBException;
 use Instituicao;
 use Servidor;
 use ServidorRepository;
@@ -99,8 +101,8 @@ class ServidorProcessosJudiciaisFolha
     /**
      * @param array $state
      * @return ServidorProcessosJudiciaisFolha
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public static function fromState(array $state)
     {

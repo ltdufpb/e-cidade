@@ -2,6 +2,8 @@
 
 namespace ECidade\Patrimonial\Compras\ItemEmpenho\Model;
 
+use cl_pcmater;
+
 class Item
 {
 
@@ -78,7 +80,7 @@ class Item
     public function __construct($codigoItem = null)
     {
         if ($codigoItem) {
-            $dao = new \cl_pcmater();
+            $dao = new cl_pcmater();
             $sql = $dao->sql_query_file($codigoItem);
 
             $rs = $dao->sql_record($sql);

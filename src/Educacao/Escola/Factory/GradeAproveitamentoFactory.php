@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Escola\Factory;
 
+use Exception;
 use ECidade\Educacao\Escola\Relatorios\AreaGradeAproveitamentoRelatorio;
 use Matricula;
 use RelatorioGradeAproveitamento;
@@ -18,7 +19,7 @@ class GradeAproveitamentoFactory
      * @param $pdf
      * @param $tamanhoLinha
      * @return AreaGradeAproveitamentoRelatorio|RelatorioGradeAproveitamento
-     * @throws \Exception
+     * @throws Exception
      */
     public static function get(Matricula $matricula, $pdf, $tamanhoLinha)
     {

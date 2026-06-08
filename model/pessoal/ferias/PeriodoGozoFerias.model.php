@@ -1305,7 +1305,7 @@ class PeriodoGozoFerias
     private function processarPecunia()
     {
         $oPeriodoAquisitivo = $this->getPeriodoAquisitivo();
-        $oCompetenciaPagamento = new \DBCompetencia($this->getAnoPagamento(), $this->getMesPagamento());
+        $oCompetenciaPagamento = new DBCompetencia($this->getAnoPagamento(), $this->getMesPagamento());
         if (empty($oCompetenciaPagamento)) {
             throw new BusinessException("Terço de férias não processadas");
         }

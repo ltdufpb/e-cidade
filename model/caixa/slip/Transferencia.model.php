@@ -152,7 +152,7 @@ abstract class Transferencia
      * @return bool
      * @throws BusinessException
      * @throws DBException
-     * @throws \Exception
+     * @throws Exception
      */
     public function executarLancamentoContabil($sDataLancamento = null, $lEstorno = false, $iCodigoMovimento = null, $devolverParaAgenda = false)
     {
@@ -1267,7 +1267,7 @@ abstract class Transferencia
             return;
         }
         $dadosEmpenho = $retencoes[0];
-        $data = new \DateTime(implode("-", array_reverse(explode("/", $this->getData()))));
+        $data = new DateTime(implode("-", array_reverse(explode("/", $this->getData()))));
         $empenho = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($dadosEmpenho->e50_numemp);
         $apropriacaoRetencao = new Apropriacao($empenho,
             $data->format("Y")
@@ -1288,10 +1288,10 @@ abstract class Transferencia
                     $apropriacaoRetencao->estornarRecidosNoEnteRecebedor($retencao);
                 }
                 Apropriacao::restaurarInstituicaoUsuario();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
 
                 Apropriacao::restaurarInstituicaoUsuario();
-                throw new \Exception($e->getMessage());
+                throw new Exception($e->getMessage());
             }
         }
         Apropriacao::restaurarInstituicaoUsuario();
@@ -1335,7 +1335,7 @@ abstract class Transferencia
         if ($this->getCodigoSlip() == '') {
             return null;
         }
-        $daoEmpagemovSlips = new \cl_slipempagemovslips();
+        $daoEmpagemovSlips = new cl_slipempagemovslips();
         $where = "k108_slip = {$this->getCodigoSlip()}";
         $sqlEmpenho = $daoEmpagemovSlips->sql_query(null, "e81_numemp as empenho", null, $where);
 
@@ -1362,7 +1362,7 @@ abstract class Transferencia
         if ($this->getCodigoSlip() == '') {
             return null;
         }
-        $daoEmpagemovSlips = new \cl_slipempagemovslips();
+        $daoEmpagemovSlips = new cl_slipempagemovslips();
         $where = "k108_slip = {$this->getCodigoSlip()}";
         $sqlEmpenho = $daoEmpagemovSlips->sql_query_retencao(null, "e21_sequencial as retencao", null, $where);
         if ($estorno) {
@@ -1531,7 +1531,7 @@ abstract class Transferencia
         if ($this->getCodigoSlip() == '') {
             return null;
         }
-        $daoEmpagemovSlips = new \cl_slipempagemovslips();
+        $daoEmpagemovSlips = new cl_slipempagemovslips();
         $where = "k108_slip = {$this->getCodigoSlip()}";
         $sqlEmpenho = $daoEmpagemovSlips->sql_query_retencao(null, "e20_pagordem as ordem_pagamento", null, $where);
 

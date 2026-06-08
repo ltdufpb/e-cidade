@@ -96,7 +96,7 @@ class UnidadeMaterial {
    * @return string
    * @see getAbreviatura
    */
-  #[\Deprecated]
+  #[Deprecated]
   public function getSAbreviatura() {
     return $this->sAbreviatura;
   }

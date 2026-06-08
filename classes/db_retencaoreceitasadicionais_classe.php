@@ -29,10 +29,10 @@
 /**
  * Class cl_retencaoreceitasadicionais
  */
-class cl_retencaoreceitasadicionais extends \DAOBasica {
+class cl_retencaoreceitasadicionais extends DAOBasica {
 
-    public function __construct() {
-        parent::__construct("empenho.retencaoreceitasadicionais");
+    public function __construct()
+    {
     }
 
 

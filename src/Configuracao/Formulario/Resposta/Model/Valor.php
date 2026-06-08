@@ -26,6 +26,9 @@
  */
 namespace ECidade\Configuracao\Formulario\Resposta\Model;
 
+use ECidade\Configuracao\Formulario\Model\Opcao;
+use ECidade\Configuracao\Formulario\Model\Pergunta;
+
 /**
  * Class Resposta
  * @package ECidade\Configuracao\Formulario\Model
@@ -50,15 +53,14 @@ class Valor
     private $valor;
 
   /**
-   * codigo da opcao da resposta
-   * @var \ECidade\Configuracao\Formulario\Model\Opcao
-   */
+     * codigo da opcao da resposta
+     * @var Opcao
+     */
     private $opcao;
 
   /**
-   * @return \ECidade\Configuracao\Formulario\Model\Pergunta
-   *
-   */
+     * @return Pergunta
+     */
     public function getPergunta()
     {
 
@@ -93,8 +95,8 @@ class Valor
     }
 
   /**
-   * @return \ECidade\Configuracao\Formulario\Model\Opcao
-   */
+     * @return Opcao
+     */
     public function getOpcao()
     {
 
@@ -102,8 +104,8 @@ class Valor
     }
 
   /**
-   * @param \ECidade\Configuracao\Formulario\Model\Opcao $opcao
-   */
+     * @param Opcao $opcao
+     */
     public function setOpcao($opcao)
     {
 

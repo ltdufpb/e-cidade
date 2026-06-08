@@ -57,7 +57,7 @@ class importacaoCenso2016 extends importacaoCenso2015
      * @return bool
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     protected function validaAnoArquivo($aLinha)
     {
         $sData = $aLinha[7];

@@ -111,7 +111,7 @@ class CaracteristicaPeculiar extends DBEstruturaValor  {
    *
    * @return CaracteristicaPeculiar
    */
-  #[\Override]
+  #[Override]
   function salvar() {
     
     if (!db_utils::inTransaction()) {
@@ -152,7 +152,7 @@ class CaracteristicaPeculiar extends DBEstruturaValor  {
    * 
    * @return boolean
    */
-  #[\Override]
+  #[Override]
   function remover() {
     
     $lRetornoExcluir = false;

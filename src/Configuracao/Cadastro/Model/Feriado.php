@@ -27,6 +27,8 @@
 
 namespace ECidade\Configuracao\Cadastro\Model;
 
+use DBDate;
+
 /**
  * Classe que representa a entidade Feriado
  * Class Feriado
@@ -47,8 +49,8 @@ class Feriado
     private $sDescricao;
 
   /**
-   * @var \DBDate
-   */
+     * @var DBDate
+     */
     private $oData;
 
   /**
@@ -68,8 +70,8 @@ class Feriado
     }
 
   /**
-   * @return \DBDate
-   */
+     * @return DBDate
+     */
     public function getData()
     {
         return $this->oData;
@@ -92,9 +94,9 @@ class Feriado
     }
 
   /**
-   * @param \DBDate $oData
-   */
-    public function setData(\DBDate $oData)
+     * @param DBDate $oData
+     */
+    public function setData(DBDate $oData)
     {
         $this->oData = $oData;
     }

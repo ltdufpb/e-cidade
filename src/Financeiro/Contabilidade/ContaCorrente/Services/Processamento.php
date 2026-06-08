@@ -27,6 +27,24 @@
 
 namespace ECidade\Financeiro\Contabilidade\ContaCorrente\Services;
 
+use Instituicao;
+use DBCompetencia;
+use DBRegistry;
+use cl_conplanosistema;
+use DBException;
+use db_utils;
+use Exception;
+use DBDate;
+use stdClass;
+use NotFoundException;
+use cl_conplanoatributosaldo;
+use cl_infocomplementarvalor;
+use BusinessException;
+use cl_conplanoexe;
+use cl_conplanoatributolancamentos;
+use ContaPlanoPCASPRepository;
+use ParameterException;
+use _db_fields;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Repository\ContaCorrente;
 use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\Model\InformacaoComplementar;
 use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\Model\Lancamento as LancamentoModel;
@@ -44,28 +62,28 @@ class Processamento
 
     /**
      * Processamento constructor.
-     * @param \Instituicao $instituicao
+     * @param Instituicao $instituicao
      * @param \DBCompetencia $competencia
-     * @throws \DBException
+     * @throws DBException
      */
-    public function __construct(private \Instituicao $instituicao, \DBCompetencia $competencia)
+    public function __construct(private Instituicao $instituicao, DBCompetencia $competencia)
     {
         $this->competencia = $competencia;
-        if (!\DBRegistry::has('conta_corrente_atributos')) {
-            $daoConplanoSistema = new \cl_conplanosistema();
+        if (!DBRegistry::has('conta_corrente_atributos')) {
+            $daoConplanoSistema = new cl_conplanosistema();
             $sqlContaCorrentes = $daoConplanoSistema->sql_query_file(null, "c122_sequencial", null, " c122_tipo = 2");
             $rsContaCorrentes = db_query($sqlContaCorrentes);
             if (!$rsContaCorrentes) {
-                throw new \DBException("Erro ao pesquisar dados dos conta correntes");
+                throw new DBException("Erro ao pesquisar dados dos conta correntes");
             }
-            $this->atributosContaCorrente = \db_utils::makeCollectionFromRecord($rsContaCorrentes, fn($dados) => $dados->c122_sequencial);
-            \DBRegistry::add('conta_corrente_atributos', $this->atributosContaCorrente);
+            $this->atributosContaCorrente = db_utils::makeCollectionFromRecord($rsContaCorrentes, fn($dados) => $dados->c122_sequencial);
+            DBRegistry::add('conta_corrente_atributos', $this->atributosContaCorrente);
         }
-        $this->atributosContaCorrente = \DBRegistry::get('conta_corrente_atributos');
+        $this->atributosContaCorrente = DBRegistry::get('conta_corrente_atributos');
     }
 
     /**
-     * @return \Instituicao
+     * @return Instituicao
      */
     public function getInstituicao()
     {
@@ -73,7 +91,7 @@ class Processamento
     }
 
     /**
-     * @param \Instituicao $instituicao
+     * @param Instituicao $instituicao
      */
     public function setInstituicao($instituicao)
     {
@@ -119,7 +137,7 @@ class Processamento
     /**
      * Metodo que itera em um array de lancamentos e lanca os atributos
      * @param array $lancamento
-     * @throws \ParameterException|\Exception
+     * @throws ParameterException|Exception
      */
     public function processar(array $lancamento, ?array $contas = null)
     {
@@ -138,13 +156,13 @@ class Processamento
         $rsLancamentos = db_query($lancamentos);
         if (!$rsLancamentos) {
             $mensagem = "Não foi possível encontrar os atributos configurados para os lançamentos informados..";
-            throw new \Exception($mensagem);
+            throw new Exception($mensagem);
         }
         $totalLinhas = pg_num_rows($rsLancamentos);
         $lancamentos = [];
 
         for ($i = 0; $i < $totalLinhas; $i++) {
-            $dadosLancamento = \db_utils::fieldsMemory($rsLancamentos, $i);
+            $dadosLancamento = db_utils::fieldsMemory($rsLancamentos, $i);
 
             if (!empty($contas) && !in_array($dadosLancamento->conta_reduzida, $contas)) {
                 continue;
@@ -153,7 +171,7 @@ class Processamento
             $lancamento = new LancamentoModel();
 
             $lancamento->setSistema($dadosLancamento->conta_corrente);
-            $lancamento->setData(new \DBDate($dadosLancamento->data_lancamento));
+            $lancamento->setData(new DBDate($dadosLancamento->data_lancamento));
             $lancamento->setValor($dadosLancamento->valor);
             $lancamento->setCodigoLancamento($dadosLancamento->codigo_lancamento);
             $lancamento->setNatureza($dadosLancamento->natureza);
@@ -240,14 +258,14 @@ class Processamento
      * @param $mes
      * @param $sistema
      * @param $competencia
-     * @throws \ParameterException|\Exception
+     * @throws ParameterException|Exception
      */
     public static function atualizaSaldoContaCorrente($hash, $valor, $ano, $mes, $sistema, $competencia)
     {
 
         $saldo = self::getSaldoDohash($hash, db_getsession('DB_instit'));
         if (!$saldo) {
-            $saldo = new \stdClass();
+            $saldo = new stdClass();
             $saldo->c125_sequencial = null;
             $saldo->c125_anousu = $ano;
             $saldo->c125_mesusu = $mes;
@@ -260,13 +278,13 @@ class Processamento
         } else {
             $competenciaSaldo = null;
             if ($saldo->c125_mesusu != 0) {
-                $competenciaSaldo = new \DBCompetencia($saldo->c125_anousu, $saldo->c125_mesusu);
+                $competenciaSaldo = new DBCompetencia($saldo->c125_anousu, $saldo->c125_mesusu);
             }
 
             if ((empty($competenciaSaldo)) ||
                 (!empty($competenciaSaldo) && $competenciaSaldo->comparar(
                     $competencia,
-                    \DBCompetencia::COMPARACAO_MENOR
+                    DBCompetencia::COMPARACAO_MENOR
                 )
                 )
             ) {
@@ -298,7 +316,7 @@ class Processamento
             $insert = db_query($insert);
             if (!$insert) {
                 $mensagem = "Erro ao incluir novo registro em conplanoatributosaldo." . pg_last_error();
-                throw new \DBException($mensagem);
+                throw new DBException($mensagem);
             }
         } else {
             $update = "update conplanoatributosaldo ";
@@ -323,7 +341,7 @@ class Processamento
             $contaComSistema .= $informacaoComplementar->getCodigoSistema();
 
             if (empty($hashes[$contaComSistema])) {
-                $hash = new \stdClass();
+                $hash = new stdClass();
                 $hash->estrutural = $informacaoComplementar->getContaEstrutura();
                 $hash->reduzido = $informacaoComplementar->getContaReduzida();
                 $hash->atributos = [];
@@ -353,7 +371,7 @@ class Processamento
         $valorHash = "$hash->estrutural|" . implode("|", $hash->atributos);
         $valorFinanceiro = $natureza === "C" ? $valor * -1 : $valor;
         if (empty($listaHashes[$valorHash])) {
-            $objetoHash = new \stdClass();
+            $objetoHash = new stdClass();
             $objetoHash->valor = 0;
             $objetoHash->natureza = $natureza;
             $objetoHash->hash = $valorHash;
@@ -371,7 +389,7 @@ class Processamento
      * Metodo para salvar lancamentos do contacorrente
      * @param $lancamentos
      * @param LancamentoRepository $repository
-     * @throws \Exception
+     * @throws Exception
      */
     public static function salvarLancamentos($lancamentos, LancamentoRepository $repository)
     {
@@ -385,10 +403,10 @@ class Processamento
      * Reprocessa os lancamnentos das contas informadas
      * @param $contaCorrente
      * @param array|null $contas
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \NotFoundException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws NotFoundException
+     * @throws ParameterException
      */
     public function reprocessar($contaCorrente, ?array $contas = null)
     {
@@ -399,7 +417,7 @@ class Processamento
         if (count($lancamentos) == 0) {
             $mensagem = "Para esse conta corrente e nesta competência já foram reprocessados todos dados.";
             $mensagem .= "Informe outro conta corrente e/ou outra competência.";
-            throw new \NotFoundException($mensagem);
+            throw new NotFoundException($mensagem);
         }
         $this->seAtributosDoTipoContaCorrente([$contaCorrente]);
         $this->processar($lancamentos, $contas);
@@ -409,8 +427,8 @@ class Processamento
      * Remove os dados da conta corrente
      * @param $contaCorrente
      * @param $contas
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     protected function limparDadosContaCorrente($contaCorrente, $contas = null)
     {
@@ -429,11 +447,11 @@ class Processamento
      * Remove todos os saldos da conta
      * @param $contaCorrente
      * @param $estruturais
-     * @throws \DBException
+     * @throws DBException
      */
     protected function removerSaldoFinalNacompetenciaDaContaCorrente($contaCorrente, $estruturais)
     {
-        $daoConplanoatributoSaldo = new \cl_conplanoatributosaldo();
+        $daoConplanoatributoSaldo = new cl_conplanoatributosaldo();
         $where = [
             "substr(c125_hashcontaatributos, 1, 15) in ('" . implode("', '", $estruturais) . "')",
             "c125_anousu = {$this->competencia->getAno()}",
@@ -444,14 +462,14 @@ class Processamento
 
         $daoConplanoatributoSaldo->excluir(null, implode(" and ", $where));
         if ($daoConplanoatributoSaldo->erro_status == 0) {
-            throw new \DBException("Erro ao remover os dados da conta corrente");
+            throw new DBException("Erro ao remover os dados da conta corrente");
         }
     }
 
     /**
      * remove todos os lancamentos e seus atributos
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function removerLancamentosDaContaCorrente($contaCorrente, array $lancamentos)
     {
@@ -467,7 +485,7 @@ class Processamento
         $rsInfo = db_query($sqlInfo);
         if (!$rsInfo) {
             $mensagem = "Erro ao excluir as informações complementares dos lançamentos da competência: {$mes}/{$ano}.";
-            throw new \Exception($mensagem);
+            throw new Exception($mensagem);
         }
 
         $sqlAtributos = "delete from conplanoatributolancamentos ";
@@ -479,7 +497,7 @@ class Processamento
 
         $rsAtributos = db_query($sqlAtributos);
         if (!$rsAtributos) {
-            throw new \Exception("Erro ao excluir os atributos dos lançamentos da competência: {$mes}/{$ano}.");
+            throw new Exception("Erro ao excluir os atributos dos lançamentos da competência: {$mes}/{$ano}.");
         }
     }
 
@@ -487,12 +505,12 @@ class Processamento
      * retorna todos os movimentos que devem ser removidos
      * @param $contaCorrente
      * @param $contas
-     * @return \stdClass
-     * @throws \BusinessException
+     * @return stdClass
+     * @throws BusinessException
      */
     private function getLancamentosParaExclusao($contaCorrente, $contas)
     {
-        $daoInfoComplamentarValor = new \cl_infocomplementarvalor();
+        $daoInfoComplamentarValor = new cl_infocomplementarvalor();
         $where = ["c123_conplanosistema = {$contaCorrente}"];
         $where[] = "extract(year from c124_data) = {$this->getCompetencia()->getAno()}";
         $where[] = "extract(month from c124_data) = {$this->getCompetencia()->getMes()}";
@@ -506,12 +524,12 @@ class Processamento
         $sql = $daoInfoComplamentarValor->sql_query_lancamento($campos, implode(" and ", $where));
         $rs = db_query($sql);
         if (!$rs) {
-            throw new \BusinessException("Erro ao pesquisar lançamentos para remover.");
+            throw new BusinessException("Erro ao pesquisar lançamentos para remover.");
         }
-        $lancamentos = new \stdClass;
+        $lancamentos = new stdClass;
         $lancamentos->lancamentos = [];
         $lancamentos->estruturais = [];
-        \db_utils::makeCollectionFromRecord($rs, function ($dados) use (&$lancamentos) {
+        db_utils::makeCollectionFromRecord($rs, function ($dados) use (&$lancamentos) {
 
             $lancamentos->lancamentos[] = $dados->codigo_lancamento;
             if (!in_array($dados->estrutural, $lancamentos->estruturais)) {
@@ -562,7 +580,7 @@ class Processamento
         $sqlLancamentos .= "  and  extract(month from c69_data) = {$this->getCompetencia()->getMes()} ";
 
         $rsLancamentos = db_query($sqlLancamentos);
-        $lancamentos = \db_utils::makeCollectionFromRecord($rsLancamentos, fn($dados) => $dados->c69_codlan);
+        $lancamentos = db_utils::makeCollectionFromRecord($rsLancamentos, fn($dados) => $dados->c69_codlan);
         return $lancamentos;
     }
 
@@ -574,11 +592,11 @@ class Processamento
      * @param $ano
      * @param $sistema
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     private function calcularSaldoInicialDaConta($hash, $ano, $sistema)
     {
-        $daoConplano = new \cl_conplanoexe();
+        $daoConplano = new cl_conplanoexe();
 
         $partesHash = explode("|", (string) $hash->hash);
         $estrutural = $partesHash[0];
@@ -594,10 +612,10 @@ class Processamento
         if ($totalLinhas == 0) {
             return false;
         }
-        $saldoConta = \db_utils::fieldsMemory($rsSaldoInicial, 0);
+        $saldoConta = db_utils::fieldsMemory($rsSaldoInicial, 0);
 
         $lancamento = new LancamentoModel();
-        $lancamento->setData(new \DBDate("{$ano}-01-01"));
+        $lancamento->setData(new DBDate("{$ano}-01-01"));
         $lancamento->setNatureza($saldoConta->natureza);
         $lancamento->setSistema($sistema);
         $lancamento->setTipoLancamento(1);
@@ -651,8 +669,8 @@ class Processamento
     /**
      * retorna o ultimo saldo
      * @param $hash
-     * @return \_db_fields|bool|\stdClass
-     * @throws \Exception
+     * @return _db_fields|bool|stdClass
+     * @throws Exception
      */
     public static function getSaldoDohash($hash, $instituicao)
     {
@@ -668,14 +686,14 @@ SQL;
 
         $rsUltimoSaldo = db_query($sSql);
         if (!$rsUltimoSaldo) {
-            throw new \Exception("Houve um problema ao buscar o saldo do conta corrente.");
+            throw new Exception("Houve um problema ao buscar o saldo do conta corrente.");
         }
 
         $totalLinhas = pg_num_rows($rsUltimoSaldo);
         if ($totalLinhas == 0) {
             return false;
         }
-        return \db_utils::fieldsMemory($rsUltimoSaldo, 0);
+        return db_utils::fieldsMemory($rsUltimoSaldo, 0);
     }
 
 
@@ -683,20 +701,20 @@ SQL;
      * @param integer $reduzido
      * @param float $valor
      * @param integer $codigoLancamento
-     * @param \DBDate $data
+     * @param DBDate $data
      * @return bool
-     * @throws \Exception
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws Exception
+     * @throws DBException
+     * @throws ParameterException
      */
-    public static function atualizarSaldoPorContaLancamento($reduzido, $valor, $codigoLancamento, \DBDate $data)
+    public static function atualizarSaldoPorContaLancamento($reduzido, $valor, $codigoLancamento, DBDate $data)
     {
 
 
         /**
          * Busca os atributos envolvidos no lancamento contabil
          */
-        $daoAtributoLancamento = new \cl_conplanoatributolancamentos();
+        $daoAtributoLancamento = new cl_conplanoatributolancamentos();
         $buscaAtributos = $daoAtributoLancamento->sql_query_file(
             null,
             "*",
@@ -706,7 +724,7 @@ SQL;
         $buscaAtributos = db_query($buscaAtributos);
         if (!$buscaAtributos) {
             $mensagem = "Não foi possível consultar os valores dos atributos de conta corrente do lançamento.";
-            throw new \Exception($mensagem);
+            throw new Exception($mensagem);
         }
 
         if (pg_num_rows($buscaAtributos) == 0) {
@@ -739,7 +757,7 @@ SQL;
         $buscaValorAtributos = db_query($buscaValorAtributos);
         if (!$buscaValorAtributos) {
             $mensagem = "Ocorreu um erro ao consultar os atributos e seus valores para atualização de saldo.";
-            throw new \DBException($mensagem);
+            throw new DBException($mensagem);
         }
 
         $totalRegistros = pg_num_rows($buscaValorAtributos);
@@ -753,18 +771,18 @@ SQL;
         $atributos = [];
         $codigoContaCorrente = null;
         for ($rowAtributo = 0; $rowAtributo < $totalRegistros; $rowAtributo++) {
-            $stdDados = \db_utils::fieldsMemory($buscaValorAtributos, $rowAtributo);
+            $stdDados = db_utils::fieldsMemory($buscaValorAtributos, $rowAtributo);
             $codigoContaCorrente = $stdDados->codigo_conta_corrente;
             $atributos[] = "{$stdDados->valor_atributo}#{$stdDados->sigla}";
         }
-        $contaPlano = \ContaPlanoPCASPRepository::getContaPorReduzido($stdDados->reduzido, $data->getAno());
+        $contaPlano = ContaPlanoPCASPRepository::getContaPorReduzido($stdDados->reduzido, $data->getAno());
         /**
          * cria o hash de acordo com a classe de processamento.
          */
         $hashEncontrado = $contaPlano->getEstrutural() . "|" . implode('|', $atributos);
 
         $hash = (object)['hash' => $hashEncontrado];
-        $competencia = new \DBCompetencia($data->getAno(), $data->getMes());
+        $competencia = new DBCompetencia($data->getAno(), $data->getMes());
         self::atualizaSaldoContaCorrente(
             $hash,
             $valor,
@@ -780,7 +798,7 @@ SQL;
      * Reprocessa saldo inicial das contas
      * @param integer $reduzido
      * @param integer $contaCorrente
-     * @throws \Exception
+     * @throws Exception
      */
     public function reprocessarSaldoInicial($reduzido, $contaCorrente)
     {
@@ -800,29 +818,29 @@ SQL;
              and c123_reduzido = {$reduzido}";
         $buscaLancamentos = db_query($buscaLancamentos);
         if (!$buscaLancamentos) {
-            throw new \DBException("Ocorreu um erro ao consultar os dados do lançamento.");
+            throw new DBException("Ocorreu um erro ao consultar os dados do lançamento.");
         }
 
-        $codigosLancamentoAtributo = \db_utils::fieldsMemory($buscaLancamentos, 0)->codigos;
+        $codigosLancamentoAtributo = db_utils::fieldsMemory($buscaLancamentos, 0)->codigos;
         if (empty($codigosLancamentoAtributo)) {
             $mensagem = "Não foram encontrados lançamentos para o reduzido {$reduzido} no conta corrente selecionado.";
-            throw new \BusinessException($mensagem);
+            throw new BusinessException($mensagem);
         }
 
         $deleteComplementarValor = db_query("delete 
                                                from infocomplementarvalor 
                                             where c123_conplanoatributolancamentos in ({$codigosLancamentoAtributo})");
         if (!$deleteComplementarValor) {
-            throw new \DBException("Erro ao excluir de infocomplementarvalor. " . pg_last_error());
+            throw new DBException("Erro ao excluir de infocomplementarvalor. " . pg_last_error());
         }
 
         $deleteAtributoLancamento = db_query("delete 
                          from conplanoatributolancamentos where c124_sequencial in ({$codigosLancamentoAtributo})");
         if (!$deleteAtributoLancamento) {
-            throw new \DBException("Erro ao excluir de conplanoatributolancamentos. " . pg_last_error());
+            throw new DBException("Erro ao excluir de conplanoatributolancamentos. " . pg_last_error());
         }
 
-        $contaPlanoPcasp = \ContaPlanoPCASPRepository::getContaPorReduzido(
+        $contaPlanoPcasp = ContaPlanoPCASPRepository::getContaPorReduzido(
             $reduzido,
             $this->getCompetencia()->getAno()
         );
@@ -834,7 +852,7 @@ SQL;
         ]);
         $deleteAtributoSaldo = db_query("delete from conplanoatributosaldo where {$where}");
         if (!$deleteAtributoSaldo) {
-            throw new \DBException("Erro ao excluir de conplanoatributosaldo. " . pg_last_error());
+            throw new DBException("Erro ao excluir de conplanoatributosaldo. " . pg_last_error());
         }
 
         $hashCriado = (object)[

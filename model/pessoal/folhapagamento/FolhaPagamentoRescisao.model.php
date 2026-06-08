@@ -68,7 +68,7 @@ class FolhaPagamentoRescisao extends FolhaPagamento {
    * @example FolhaPagamentoRescisao::hasFolhaAberta()
    * @return  boolean
    */
-  #[\Override]
+  #[Override]
   public static function hasFolhaAberta( ?DBCompetencia $oCompetencia = null) {
     return FolhaPagamento::hasFolhaAberta(FolhaPagamento::TIPO_FOLHA_RESCISAO, $oCompetencia);
   }
@@ -161,7 +161,7 @@ class FolhaPagamentoRescisao extends FolhaPagamento {
   * @return boolean
   * @throws DBException
   */
-  #[\Override]
+  #[Override]
   public function cancelarFechamento() {
     parent::cancelarFechamento();
   }

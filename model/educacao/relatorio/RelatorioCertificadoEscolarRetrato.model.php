@@ -54,7 +54,7 @@ class RelatorioCertificadoEscolarRetrato extends RelatorioHistoricoEscolarRetrat
      * - Colocar na observação se os dados da trocou de série se houver
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     public function montaQuadroObservacao()
     {
         $sObsParametros = $this->oParametros->observacao;

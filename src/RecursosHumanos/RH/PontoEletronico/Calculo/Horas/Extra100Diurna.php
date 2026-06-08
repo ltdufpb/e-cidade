@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\Configuracao\Cadastro\Model\Feriado;
 
@@ -49,7 +50,7 @@ class Extra100Diurna extends Extra100 implements Horas {
 
   /**
    * Calcula o número de horas extra 100% em determinado dia
-   * @return \DateTime
+   * @return DateTime
    */
   public function calcular() {
 
@@ -75,7 +76,7 @@ class Extra100Diurna extends Extra100 implements Horas {
     return $this->calcularExtras($oHoraExtra);
   }
 
-  public function calcularExtrasFeriadoDSR(\DateTime $oHoraExtra) {
+  public function calcularExtrasFeriadoDSR(DateTime $oHoraExtra) {
 
     $this->totalHorasExtrasFeriadoFolga();
 
@@ -92,7 +93,7 @@ class Extra100Diurna extends Extra100 implements Horas {
     return $oHoraExtra;
   }
 
-  public function calcularExtrasFolga(\DateTime $oHoraExtra) {
+  public function calcularExtrasFolga(DateTime $oHoraExtra) {
 
     $this->totalHorasExtrasFeriadoFolga();
 
@@ -108,7 +109,7 @@ class Extra100Diurna extends Extra100 implements Horas {
     return $this->calcularExtras($oHoraExtra);
   }
 
-  public function calcularExtras(\DateTime $oHoraExtra) {
+  public function calcularExtras(DateTime $oHoraExtra) {
 
     $oMaximoExtra100 = $this->verificarExistenciaHorasExtras($oHoraExtra, BaseHora::HORAS_EXTRA100);
 

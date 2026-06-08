@@ -83,9 +83,9 @@ class LancamentoRRARepository {
    *
    * @access private
    * @param  LancamentoRRA $oLancamentoRRA
-   * @return \LancamentoRRA|\LancamentoRRA[]
-   * @throws \DBException
-   * @throws \ParameterException
+   * @return LancamentoRRA|LancamentoRRA[]
+   * @throws DBException
+   * @throws ParameterException
    */
   private static function make($oLancamentoRRA) {
 
@@ -180,8 +180,8 @@ class LancamentoRRARepository {
    * @static
    * @access public
    * @param  AssentamentoRRA $oAssentamentoRRA
-   * @return \LancamentoRRA[]
-   * @throws \BusinessException
+   * @return LancamentoRRA[]
+   * @throws BusinessException
    */
   public static function getInstanciasByAssentamento(AssentamentoRRA $oAssentamentoRRA) {
 

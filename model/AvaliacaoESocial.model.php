@@ -25,7 +25,7 @@ class AvaliacaoESocial
 
     /**
      * Instancia do cgm
-     * @var \CgmBase
+     * @var CgmBase
      */
     private $oCgm;
 
@@ -51,7 +51,7 @@ class AvaliacaoESocial
 
     /**
      * Define do servidor da Avaliacao
-     * @param \Servidor $oServidor
+     * @param Servidor $oServidor
      */
     public function setServidor(Servidor $oServidor)
     {
@@ -279,7 +279,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os dados da avaliacao do servidor
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirAlteracaoDadosServidor()
     {
@@ -337,7 +337,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao do Cgm
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosCgm()
     {
@@ -401,21 +401,21 @@ class AvaliacaoESocial
 
     /**
      *
-     * @return \CgmBase
+     * @return CgmBase
      */
     public function getCgm()
     {
         return $this->oCgm;
     }
 
-    public function setCgm(\CgmBase $oCgm)
+    public function setCgm(CgmBase $oCgm)
     {
         $this->oCgm = $oCgm;
     }
 
     /**
      * Persiste os ddos da Avaliacao da Lotacao
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosLotacao()
     {
@@ -441,7 +441,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao dos Processos
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosProcessos($aProcesso)
     {
@@ -455,13 +455,13 @@ class AvaliacaoESocial
         $rsTipoProcesso = db_query($sSql);
 
         if (pg_num_rows($rsTipoProcesso) == 0) {
-            throw new \DBException("Tipo de processo não encontrado.");
+            throw new DBException("Tipo de processo não encontrado.");
         }
 
-        $tipoProcesso = \db_utils::fieldsMemory($rsTipoProcesso, 0)->db104_valorresposta;
+        $tipoProcesso = db_utils::fieldsMemory($rsTipoProcesso, 0)->db104_valorresposta;
 
         if (empty($tipoProcesso)) {
-            throw new \DBException("Ocorreu algum problema ao buscar o tipo de processo.");
+            throw new DBException("Ocorreu algum problema ao buscar o tipo de processo.");
         }
 
         // Valida se o processo e tipo ja foram preenchidos com grupos de respostas diferentes
@@ -505,7 +505,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao de Obras
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosObras($aObras)
     {
@@ -552,7 +552,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao de CAT
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosCat($aCat)
     {
@@ -609,7 +609,7 @@ class AvaliacaoESocial
 
         /**
      * Persiste os ddos da Avaliacao de CAT
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosMonitoriamentoSaude($aCat)
     {
@@ -701,7 +701,7 @@ class AvaliacaoESocial
             throw new Exception("Não foi informado o vínculo do servidor e o afastamento.");
         }
 
-        $dao = new \cl_avaliacaogruporespostaafastamentoesocial();
+        $dao = new cl_avaliacaogruporespostaafastamentoesocial();
         $sql = $dao->sql_query_file(null, "*", null, " eso13_afastamentoservidoresocial = {$parametros['vinculo']}");
         $rs = db_query($sql);
 

@@ -244,7 +244,7 @@ final class Periodo
      * Retorna a data final do período informado
      * @param  integer $iPeriodo código do período
      * @param  integer $iAno     ano
-     * @throws \Exception
+     * @throws Exception
      * @return DBDate
      */
     public static function dataFinalPeriodo($iPeriodo, $iAno)
@@ -252,48 +252,48 @@ final class Periodo
         switch ($iPeriodo) {
             case 12: // 1º SEMESTRE
             case 22: // JUNHO
-                return new \DBDate("{$iAno}-06-30");
+                return new DBDate("{$iAno}-06-30");
             break;
             case 13: // 2º SEMESTRE
             case 16: // 3º QUADRIMESTRE
             case 28: // DEZEMBRO
-                return new \DBDate("{$iAno}-12-31");
+                return new DBDate("{$iAno}-12-31");
             break;
             case 14: // 1º QUADRIMESTRE
             case 20: // ABRIL
-                return new \DBDate("{$iAno}-04-30");
+                return new DBDate("{$iAno}-04-30");
             break;
             case 15: // 2º QUADRIMESTRE
             case 24: // AGOSTO
-                return new \DBDate("{$iAno}-08-31");
+                return new DBDate("{$iAno}-08-31");
             break;
             case 17: // JANEIRO
-                return new \DBDate("{$iAno}-01-31");
+                return new DBDate("{$iAno}-01-31");
             break;
             case 18:
                 $iDia = cal_days_in_month(CAL_GREGORIAN, '02', $iAno);
-                return new \DBDate("{$iAno}-02-{$iDia}");
+                return new DBDate("{$iAno}-02-{$iDia}");
             break;
             case 19: // MARÇO
-                return new \DBDate("{$iAno}-03-31");
+                return new DBDate("{$iAno}-03-31");
             break;
             case 21: // MAIO
-                return new \DBDate("{$iAno}-05-31");
+                return new DBDate("{$iAno}-05-31");
             break;
             case 23: // JULHO
-                return new \DBDate("{$iAno}-07-31");
+                return new DBDate("{$iAno}-07-31");
             break;
             case 25: // SETEMBRO
-                return new \DBDate("{$iAno}-09-30");
+                return new DBDate("{$iAno}-09-30");
             break;
             case 26: // OUTUBRO
-                return new \DBDate("{$iAno}-10-31");
+                return new DBDate("{$iAno}-10-31");
             break;
             case 27: // NOVEMBRO
-                return new \DBDate("{$iAno}-11-30");
+                return new DBDate("{$iAno}-11-30");
             break;
             default:
-                throw new \Exception("Período não implementado.");
+                throw new Exception("Período não implementado.");
             break;
         }
     }

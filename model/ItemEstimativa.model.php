@@ -82,7 +82,7 @@ final class ItemEstimativa extends itemSolicitacao {
    * @throws Exception
    * @return ItemEstimativa
    */
-  #[\Override]
+  #[Override]
   public function save($iSolicitacao = '') {
 
     parent::save($iSolicitacao);
@@ -120,7 +120,7 @@ final class ItemEstimativa extends itemSolicitacao {
    * @param float $nQuantidade Quantidade do item
    * @return ItemEstimativa
    */
-  #[\Override]
+  #[Override]
   public function setQuantidade($nQuantidade) {
     $nPercentual                 = ParametroRegistroPreco::getPercentualExecedente();
     $this->nQuantidade           = $nQuantidade;
@@ -355,7 +355,7 @@ final class ItemEstimativa extends itemSolicitacao {
     return $this->iCodigoRegistro;
   }
 
-  #[\Override]
+  #[Override]
   public function remover() {
 
     /**

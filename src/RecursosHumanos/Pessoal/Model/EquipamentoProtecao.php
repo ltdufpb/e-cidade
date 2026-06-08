@@ -26,8 +26,9 @@
  */
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
-use ECidade\Configuracao\Instituicao\Model\Instituicao;
-
+use DBException;
+use BusinessException;
+use db_utils;
 class EquipamentoProtecao
 {
     /**
@@ -109,14 +110,14 @@ class EquipamentoProtecao
             $rs = \db_query($sql);
 
             if (!$rs) {
-                throw new \DBException("Houve um erro ao buscar o equipamento de proteção código {$codigo}.");
+                throw new DBException("Houve um erro ao buscar o equipamento de proteção código {$codigo}.");
             }
 
             if (pg_num_rows($rs) == 0) {
-                throw new \BusinessException("Equipamento de proteção código {$codigo} não encontrado.");
+                throw new BusinessException("Equipamento de proteção código {$codigo} não encontrado.");
             }
 
-            $equipamento = \db_utils::fieldsMemory($rs, 0);
+            $equipamento = db_utils::fieldsMemory($rs, 0);
             $this->setCodigo($equipamento->rh257_sequencial);
             $this->setCodigoAgenteNocivo($equipamento->rh257_rhlocaltrabagentesnocivos);
             $this->setUtilizaEpc($equipamento->rh257_utilizaepc);
@@ -340,15 +341,15 @@ class EquipamentoProtecao
 
             if (!$rs) {
                 $msg = "Houve um erro ao buscar o equipamento de proteção do agente código {$codigoAgente}.";
-                throw new \DBException($msg);
+                throw new DBException($msg);
             }
 
             if (pg_num_rows($rs) == 0) {
                 $msg = "Equipamento de proteção do agente código {$codigoAgente} não encontrado.";
-                throw new \BusinessException($msg);
+                throw new BusinessException($msg);
             }
 
-            $equipamento = \db_utils::fieldsMemory($rs, 0);
+            $equipamento = db_utils::fieldsMemory($rs, 0);
             return new EquipamentoProtecao($equipamento->rh257_sequencial);
         }
     }

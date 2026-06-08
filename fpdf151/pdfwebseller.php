@@ -10,8 +10,8 @@ if(!defined('DB_BIBLIOT')){
   require_once(modification("libs/db_conecta.php"));
   require_once(modification("libs/db_sessoes.php"));
   require_once(modification("libs/db_usuariosonline.php"));
-  db_postmemory($HTTP_POST_VARS);
-  db_postmemory($HTTP_SERVER_VARS);
+  db_postmemory($_POST);
+  db_postmemory($_SERVER);
 
   define('FPDF_FONTPATH','fpdf151/font/');
   require_once(modification('fpdf151/fpdf.php'));
@@ -41,6 +41,7 @@ class PDF extends FPDF {
 
 //Page header
 
+  #[Override]
   function Header() {
 //#00#//header
 //#10#//Este método é usado gerar o cabeçalho da página. É chamado automaticamente por |addPage| e não
@@ -74,14 +75,14 @@ class PDF extends FPDF {
 //   $dados = db_query("select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit"));
 
     $dados = db_query($conn,"select nomeinst,trim(ender)||','||trim(cast(numero as text)) as ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit"));
-    $url = @pg_result($dados,0,"url");
+    $url = @pg_fetch_result($dados,0,"url");
     $this->SetXY(1,1);
-    $this->Image('imagens/files/'.pg_result($dados,0,"logo"),7,3,20);
+    $this->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),7,3,20);
    if ($_SESSION["DB_modulo"] == 1100747) {
     if (!isset($iEscola)){
       $iEscola = 	db_getsession("DB_coddepto");
     }
-    
+
   //$this->Cell(100,32,"",1);
     $dados1 = db_query($conn,"select ed18_c_nome,
                                    j14_nome,
@@ -103,10 +104,10 @@ class PDF extends FPDF {
                               left join ceplogradouros on ceplogradouros.cp06_codlogradouro = logradcep.j65_ceplog
                               left join ceplocalidades on ceplocalidades.cp05_codlocalidades = ceplogradouros.cp06_codlocalidade
                              where ed18_i_codigo = ".$iEscola);
-    $nome = pg_result($dados,0,"nomeinst");
-    $nomeescola = pg_result($dados1,0,"ed18_c_nome");
+    $nome = pg_fetch_result($dados,0,"nomeinst");
+    $nomeescola = pg_fetch_result($dados1,0,"ed18_c_nome");
     global $nomeinst;
-    $nomeinst = pg_result($dados,0,"nomeinst");
+    $nomeinst = pg_fetch_result($dados,0,"nomeinst");
     if(strlen($nome) > 42 || strlen($nomeescola) > 42)
       $TamFonteNome = 8;
     else
@@ -120,18 +121,18 @@ class PDF extends FPDF {
       $widthHeader = 70;
     }
 
-    if(trim(pg_result($dados1,0,"ed18_c_logo"))!=""){
-     $this->Image('imagens/'.trim(pg_result($dados1,0,"ed18_c_logo")), $positionXImage, 4, 20);
+    if(trim(pg_fetch_result($dados1,0,"ed18_c_logo"))!=""){
+     $this->Image('imagens/'.trim(pg_fetch_result($dados1,0,"ed18_c_logo")), $positionXImage, 4, 20);
     }
-    $ruaescola = trim(pg_result($dados1,0,"j14_nome"));
-    $numescola = trim(pg_result($dados1,0,"ed18_i_numero"));
-    $bairroescola = trim(pg_result($dados1,0,"j13_descr"));
-    $cidadeescola = trim(pg_result($dados1,0,"ed261_c_nome"));
-    $estadoescola = trim(pg_result($dados1,0,"ed260_c_sigla"));
-    $emailescola = trim(pg_result($dados1,0,"ed18_c_email"));
+    $ruaescola = trim(pg_fetch_result($dados1,0,"j14_nome"));
+    $numescola = trim(pg_fetch_result($dados1,0,"ed18_i_numero"));
+    $bairroescola = trim(pg_fetch_result($dados1,0,"j13_descr"));
+    $cidadeescola = trim(pg_fetch_result($dados1,0,"ed261_c_nome"));
+    $estadoescola = trim(pg_fetch_result($dados1,0,"ed260_c_sigla"));
+    $emailescola = trim(pg_fetch_result($dados1,0,"ed18_c_email"));
     $dados2 = db_query($conn,"select ed26_i_numero from telefoneescola where ed26_i_escola = ".db_getsession("DB_coddepto")." LIMIT 1");
     if(pg_num_rows($dados2)>0){
-     $telefoneescola = trim(pg_result($dados2,0,"ed26_i_numero"));
+     $telefoneescola = trim(pg_fetch_result($dados2,0,"ed26_i_numero"));
     }else{
      $telefoneescola = "";
     }
@@ -139,7 +140,7 @@ class PDF extends FPDF {
     /**
      * Valida se a escola possui um código referente cadastrado e o adiciona antes do nome da escola
      */
-    $iCodigoReferencia = trim(pg_result($dados1,0,"ed18_codigoreferencia"));
+    $iCodigoReferencia = trim(pg_fetch_result($dados1,0,"ed18_codigoreferencia"));
 
     if ( $iCodigoReferencia != null ) {
       $nomeescola = "{$iCodigoReferencia} - {$nomeescola}";
@@ -151,7 +152,7 @@ class PDF extends FPDF {
 
     $this->setXY(33, 12);
     $this->multicell( $widthHeader,   4, $nomeescola, 0,   1, "L", 0 );
-    
+
     $this->SetFont('Arial','I',7);
     $this->setXY(33, 20);
     $this->cell( $widthHeader,   4, $ruaescola.", ".$numescola." - ".$bairroescola, 0,   1, "L", 0 );
@@ -188,7 +189,7 @@ class PDF extends FPDF {
     $this->setleftmargin($margemesquerda);
     $this->SetY(35);
    } else {
-     
+
      $dados = db_query($conn,"select nomeinst,
                                    db21_compl,
                                    trim(ender)||',
@@ -203,31 +204,31 @@ class PDF extends FPDF {
                                    url,
                                    logo
                             from db_config where codigo = ".db_getsession("DB_instit"));
-     $url = @pg_result($dados,0,"url");
+     $url = @pg_fetch_result($dados,0,"url");
      $this->SetXY(1,1);
-     $this->Image('imagens/files/'.pg_result($dados,0,"logo"),7,3,20);
-     
+     $this->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),7,3,20);
+
      //$this->Cell(100,32,"",1);
-     $nome = pg_result($dados,0,"nomeinst");
+     $nome = pg_fetch_result($dados,0,"nomeinst");
      global $nomeinst;
-     $nomeinst = pg_result($dados,0,"nomeinst");
-     
+     $nomeinst = pg_fetch_result($dados,0,"nomeinst");
+
      if(strlen($nome) > 42)
        $TamFonteNome = 8;
      else
        $TamFonteNome = 9;
-     
+
      $this->SetFont('Arial','BI',$TamFonteNome);
      $this->Text(33,9,$nome);
      $this->SetFont('Arial','I',8);
-     $sComplento = substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+     $sComplento = substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
      if ($sComplento != '' || $sComplento != null ) {
-       $sComplento = ", ".substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+       $sComplento = ", ".substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
      }
-     $this->Text(33,14,trim(pg_result($dados,0,"rua")).", ".trim(pg_result($dados,0,"numero")).$sComplento );
-     $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));
-     $this->Text(33,22,trim(pg_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_result($dados,0,"cgc"),"cnpj"));
-     $this->Text(33,26,trim(pg_result($dados,0,"email")));
+     $this->Text(33,14,trim(pg_fetch_result($dados,0,"rua")).", ".trim(pg_fetch_result($dados,0,"numero")).$sComplento );
+     $this->Text(33,18,trim(pg_fetch_result($dados,0,"munic"))." - ".pg_fetch_result($dados,0,"uf"));
+     $this->Text(33,22,trim(pg_fetch_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_fetch_result($dados,0,"cgc"),"cnpj"));
+     $this->Text(33,26,trim(pg_fetch_result($dados,0,"email")));
      $comprim = ($this->w - $this->rMargin - $this->lMargin);
      $this->Text(33,30,$url);
      $Espaco = $this->w - 80 ;
@@ -254,6 +255,7 @@ class PDF extends FPDF {
   }
 
 //Page footer
+  #[Override]
   function Footer() {
 //#00#//footer
 //#10#//Este método é usado para criar o rodapé da página. Ele é automaticamente chamado por |addPage|
@@ -283,22 +285,23 @@ class PDF extends FPDF {
             $this->SetFont('Arial','I',6);
             $this->SetY(-10);
             $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-            $nome = substr($nome,strrpos($nome,"/")+1);
+            $nome = substr((string) $nome,strrpos((string) $nome,"/")+1);
             $result_nomeusu = db_query("select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario"));
-            if (pg_numrows($result_nomeusu)>0){
-                    $nomeusu = pg_result($result_nomeusu,0,0);
+            if (pg_num_rows($result_nomeusu)>0){
+                    $nomeusu = pg_fetch_result($result_nomeusu,0,0);
             }
             if (isset($nomeusu)&&$nomeusu!=""){
                     $emissor = $nomeusu;
             }else{
                     $emissor = @$GLOBALS["DB_login"];
             }
-            $this->Cell(0,10,$nome.'     Emissor: '.substr(ucwords(strtolower($emissor)),0,30).'     Exercício: '.db_getsession("DB_anousu").'    Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'C');
+            $this->Cell(0,10,$nome.'     Emissor: '.substr(ucwords(strtolower((string) $emissor)),0,30).'     Exercício: '.db_getsession("DB_anousu").'    Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'C');
             $this->Cell(0,10,'Página '.$this->PageNo().' de {nb}',0,1,'R');
     }
   }
 
 // mudar o angulo do texto
+#[Override]
 function TextWithDirection($x,$y,$txt,$direction='R')
 {
     $txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));
@@ -317,6 +320,7 @@ function TextWithDirection($x,$y,$txt,$direction='R')
 
 // rotacionar o texto
 
+#[Override]
 function TextWithRotation($x,$y,$txt,$txt_angle,$font_angle=0)
 {
     $txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));

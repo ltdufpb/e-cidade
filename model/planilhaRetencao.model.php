@@ -165,7 +165,7 @@ class planilhaRetencao {
    * @return void
    * @see -  planilhaRetencao::adicionarNota();
    */
-  #[\Deprecated]
+  #[Deprecated]
   function adicionaNota($oNota) {
     
     if (!db_utils::inTransaction()) {

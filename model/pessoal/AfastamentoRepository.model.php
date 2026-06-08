@@ -208,7 +208,7 @@ class AfastamentoRepository {
    *
    * @param  Afastamento $oAfastamento
    * @return bool
-   * @throws \DBException
+   * @throws DBException
    */
   public static function remove($oAfastamento) {
 
@@ -224,9 +224,9 @@ class AfastamentoRepository {
 
   /**
    * Retorna todos os assentamentos do servidor
-   * @param \Servidor $oServidor
+   * @param Servidor $oServidor
    * @return Afastamento[]
-   * @throws \DBException
+   * @throws DBException
    */
   public static function getAfastamentosPorServidor(Servidor $oServidor) {
 
@@ -253,10 +253,10 @@ class AfastamentoRepository {
 
   /**
    * Retorna todos os assentamentos do servidor pelo tipo de afastameto informado
-   * @param \Servidor $oServidor
+   * @param Servidor $oServidor
    * @param int $tipo
    * @return Afastamento[]
-   * @throws \DBException
+   * @throws DBException
    */
   public static function getAfastamentosPorServidorETipo(Servidor $oServidor, $tipo) {
 
@@ -351,14 +351,14 @@ class AfastamentoRepository {
         }
 
         $iLinhasAfastamento = pg_num_rows($rsAfastamentos);
-        $dataInicial = new \DBDate($dataInicio);
-        $dataFinal = new \DBDate($dataFim);
+        $dataInicial = new DBDate($dataInicio);
+        $dataFinal = new DBDate($dataFim);
         for ($iAfastamento = 0; $iAfastamento < $iLinhasAfastamento; $iAfastamento++) {
             $afastamento = db_utils::fieldsMemory($rsAfastamentos, $iAfastamento);
-            $dataInicialAfastamento = new \DBDate($afastamento->r45_dtafas);
+            $dataInicialAfastamento = new DBDate($afastamento->r45_dtafas);
             $dataFinalAfastamento = $dataFinal;
             if (!empty($afastamento->r45_dtreto)) {
-                $dataFinalAfastamento = new \DBDate($afastamento->r45_dtreto);
+                $dataFinalAfastamento = new DBDate($afastamento->r45_dtreto);
             }
             if ($dataInicialAfastamento->getTimeStamp() <= $dataInicial->getTimeStamp()) {
                 $dataInicialAfastamento = $dataInicial;

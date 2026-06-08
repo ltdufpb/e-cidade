@@ -637,7 +637,7 @@ class ContaOrcamento extends ContaPlano {
   * Valida se já existe um reduzido cadastrado para o Ano e Instituição
   * @return boolean
   */
-  #[\Override]
+  #[Override]
   public function hasReduzidoAnoInstituicao() {
 
     $oDaoReduzido       = db_utils::getDao("conplanoorcamentoanalitica");

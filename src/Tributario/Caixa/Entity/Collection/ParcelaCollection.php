@@ -2,11 +2,12 @@
 
 namespace ECidade\Tributario\Caixa\Entity\Collection;
 
+use Override;
 use ECidade\Tributario\Library\ArrayCollection;
 
 final class ParcelaCollection extends ArrayCollection
 {
-    #[\Override]
+    #[Override]
     public function add($parcela)
     {
         parent::add($parcela);

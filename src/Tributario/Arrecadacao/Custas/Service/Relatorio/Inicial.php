@@ -27,7 +27,15 @@
 
 namespace ECidade\Tributario\Arrecadacao\Custas\Service\Relatorio;
 
-use ECidade\Tributario\Arrecadacao\Custas;
+use ECidade\Tributario\Arrecadacao\Custas\Interfaces\Service;
+use db_utils;
+use Exception;
+use DBDate;
+use regraEmissao;
+use taxa;
+use ECidade\Tributario\Arrecadacao\Custas\Service\Recibo;
+use DBException;
+use ParameterException;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 use ECidade\Tributario\Juridico\Inicial\Repository\Inicial as InicialRepository;
 use ECidade\Tributario\Juridico\ProcessoForo\Repository\ProcessoForo as ProcessoForoRepository;
@@ -44,12 +52,12 @@ use ECidade\Tributario\Juridico\Inicial\Inicial as InicialEntity;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class Inicial implements Custas\Interfaces\Service
+class Inicial implements Service
 {
     /** @var array */
     private $iniciais;
 
-    /** @var \DBDate */
+    /** @var DBDate */
     private $dataUsuario;
 
     /** @var array  */
@@ -61,19 +69,19 @@ class Inicial implements Custas\Interfaces\Service
      */
     public function __construct(private $tipoDebito, private $cadTipo, $iniciais)
     {
-        if (!\db_utils::inTransaction()) {
-            throw new \Exception('Transação não iniciada');
+        if (!db_utils::inTransaction()) {
+            throw new Exception('Transação não iniciada');
         }
         $this->iniciais = array_unique($iniciais);
-        $this->dataUsuario = \DBDate::createFromTimestamp(db_getsession("DB_datausu"));
+        $this->dataUsuario = DBDate::createFromTimestamp(db_getsession("DB_datausu"));
     }
 
     /**
      * Processamento do serviço
      * @return array
-     * @throws \Exception
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws Exception
+     * @throws DBException
+     * @throws ParameterException
      */
     public function processar()
     {
@@ -110,7 +118,7 @@ class Inicial implements Custas\Interfaces\Service
 
         $this->validarIniciais($processos, $iniciais);
 
-        $regraEmissao = new \regraEmissao(
+        $regraEmissao = new regraEmissao(
             $this->tipoDebito,
             19,
             db_getsession('DB_instit'),
@@ -161,7 +169,7 @@ class Inicial implements Custas\Interfaces\Service
      * Monta as partilhas de acordo com o tipo de débito.
      * @param \ECidade\Tributario\Juridico\Inicial\Inicial $debito
      * @param array $custas
-     * @throws \Exception
+     * @throws Exception
      */
     private function buildPartilha($debito, $custas)
     {
@@ -183,7 +191,7 @@ class Inicial implements Custas\Interfaces\Service
                     continue;
                 }
 
-                $taxa = new \taxa($custa->taxa);
+                $taxa = new taxa($custa->taxa);
 
                 if ($debito instanceof ProcessoForoEntity) {
                     $partilhaCusta = new ProcessoForoPartilhaCustaEntity();
@@ -218,7 +226,7 @@ class Inicial implements Custas\Interfaces\Service
      * @param ProcessoForoEntity[] $processos
      * @param InicialEntity[] $iniciais
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validarIniciais($processos, $iniciais)
     {
@@ -226,7 +234,7 @@ class Inicial implements Custas\Interfaces\Service
         foreach ($processos as $processo) {
             foreach ($processo->getIniciais() as $inicial) {
                 if (!empty($exists[$inicial->getCodigo()])) {
-                    throw new \Exception('Foi encontrado uma mesma inicial no array de processos');
+                    throw new Exception('Foi encontrado uma mesma inicial no array de processos');
                 }
 
                 $exists[$inicial->getCodigo()] = $inicial->getCodigo();
@@ -235,7 +243,7 @@ class Inicial implements Custas\Interfaces\Service
 
         foreach ($iniciais as $inicial) {
             if (!empty($exists[$inicial->getCodigo()])) {
-                throw new \Exception('Foi encontrado uma mesma inicial no array de iniciais');
+                throw new Exception('Foi encontrado uma mesma inicial no array de iniciais');
             }
 
             $exists[$inicial->getCodigo()] = $inicial->getCodigo();
@@ -244,16 +252,16 @@ class Inicial implements Custas\Interfaces\Service
 
     /**
      * @param $iniciais
-     * @param \regraEmissao $regraEmissao
+     * @param regraEmissao $regraEmissao
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
-    private function processarCustas($iniciais, \regraEmissao $regraEmissao)
+    private function processarCustas($iniciais, regraEmissao $regraEmissao)
     {
         $recibo = $this->emissaoRecibo($iniciais, $regraEmissao);
         $this->datasVencimentos[] = $recibo->getDataVencimento();
 
-        $reciboService = new Custas\Service\Recibo($this->cadTipo);
+        $reciboService = new Recibo($this->cadTipo);
         $reciboService->setIniciais($iniciais);
         $reciboService->validaUsoDeCustas();
         $reciboService->setRecibo($recibo);
@@ -278,11 +286,11 @@ class Inicial implements Custas\Interfaces\Service
 
     /**
      * @param $iniciais
-     * @param \regraEmissao $regraEmissao
+     * @param regraEmissao $regraEmissao
      * @return \recibo
-     * @throws \Exception
+     * @throws Exception
      */
-    private function emissaoRecibo($iniciais, \regraEmissao $regraEmissao)
+    private function emissaoRecibo($iniciais, regraEmissao $regraEmissao)
     {
         $recibo = new \recibo(2, null, 1);
 
@@ -301,9 +309,9 @@ class Inicial implements Custas\Interfaces\Service
     /**
      * @param \recibo $recibo
      * @param $iniciais
-     * @return \DBDate|null
-     * @throws \Exception
-     * @throws \ParameterException
+     * @return DBDate|null
+     * @throws Exception
+     * @throws ParameterException
      */
     private function getDataVencimento(\recibo $recibo, $iniciais)
     {
@@ -318,11 +326,11 @@ class Inicial implements Custas\Interfaces\Service
             $sSqlinicial .= "  where v59_inicial = " . $inicial;
             $rsInicial = db_query($sSqlinicial);
 
-            $aInicial = \db_utils::getCollectionByRecord($rsInicial);
+            $aInicial = db_utils::getCollectionByRecord($rsInicial);
 
             foreach ($aInicial as $inicialNumpre) {
                 $recibo->addNumpre($inicialNumpre->numpre, $inicialNumpre->numpar);
-                $novaData = new \DBDate($inicialNumpre->data_vencimento);
+                $novaData = new DBDate($inicialNumpre->data_vencimento);
 
                 if ($dataVencimento === null || $dataVencimento->getTimeStamp() > $novaData->getTimeStamp()) {
                     $dataVencimento = $novaData;

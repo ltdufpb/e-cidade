@@ -2,6 +2,20 @@
 
 namespace ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model;
 
+use cl_emphist;
+use cl_empauthist;
+use cl_empprestatip;
+use cl_empautpresta;
+use cl_empautorizaprocesso;
+use DotacaoRepository;
+use cl_empautidot;
+use cl_pcmater;
+use cl_empautitem;
+use fornecedor;
+use InstituicaoRepository;
+use DBDepartamentoRepository;
+use dotacao;
+use Exception;
 use Cassandra\Date;
 use DateTime;
 use Instituicao;
@@ -13,7 +27,6 @@ use ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Model\TipoPrestacao;
 use ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Repository\TipoPrestacaoRepository;
 use ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Repository\ProcessoAdministrativoRepository;
 use ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Model\ProcessoAdministrativo;
-use ECidade\Patrimonial\Compras\ItemEmpenho\Model\Item;
 use ECidade\Patrimonial\Compras\ItemEmpenho\Repository\ItemRepository;
 
 class Autorizacao
@@ -159,7 +172,7 @@ class Autorizacao
     private $itens;
 
     /**
-     * @var \dotacao
+     * @var dotacao
      */
     private $dotacao;
 
@@ -596,13 +609,13 @@ class Autorizacao
 
     /**
      * @return self
-     * @throws \Exception
+     * @throws Exception
      */
     public function withHistorico()
     {
         if (empty($this->historico)) {
-            $repository = new HistoricoRepository(new \cl_emphist);
-            $historico = $repository->getHistoricoPorAutorizacao(new \cl_empauthist(), $this);
+            $repository = new HistoricoRepository(new cl_emphist);
+            $historico = $repository->getHistoricoPorAutorizacao(new cl_empauthist(), $this);
             $this->setHistorico($historico);
         }
         return $this;
@@ -614,8 +627,8 @@ class Autorizacao
     public function withPrestacao()
     {
         if (empty($this->prestacao)) {
-            $repository = new TipoPrestacaoRepository(new \cl_empprestatip);
-            $tipoPrestacao = $repository->getTipoPrestacaoPorAutorizacao(new \cl_empautpresta(), $this);
+            $repository = new TipoPrestacaoRepository(new cl_empprestatip);
+            $tipoPrestacao = $repository->getTipoPrestacaoPorAutorizacao(new cl_empautpresta(), $this);
             $this->setTipoPrestacao($tipoPrestacao);
         }
         return $this;
@@ -627,7 +640,7 @@ class Autorizacao
     public function withProcessoAdministrativo()
     {
         if (empty($this->processoAdministrativo)) {
-            $repository = new ProcessoAdministrativoRepository(new \cl_empautorizaprocesso);
+            $repository = new ProcessoAdministrativoRepository(new cl_empautorizaprocesso);
             $processoAdministrativo = $repository->getProcessoAdministrativoPorAutorizacao($this);
             $this->setProcessoAdministrativo($processoAdministrativo);
         }
@@ -636,13 +649,13 @@ class Autorizacao
 
     /**
      * @return self
-     * @throws \Exception
+     * @throws Exception
      */
     public function withDotacao()
     {
         if (empty($this->dotacao)) {
-            $repository = \DotacaoRepository::getInstance();
-            $dotacao = $repository->getDotacaoPorAutorizacao(new \cl_empautidot(), $this);
+            $repository = DotacaoRepository::getInstance();
+            $dotacao = $repository->getDotacaoPorAutorizacao(new cl_empautidot(), $this);
             $this->setDotacao($dotacao);
         }
         return $this;
@@ -654,8 +667,8 @@ class Autorizacao
     public function withItens()
     {
         if (empty($this->itens)) {
-            $repository = new ItemRepository(new \cl_pcmater());
-            $itens = $repository->getItensPorAutorizacao(new \cl_empautitem(), $this);
+            $repository = new ItemRepository(new cl_pcmater());
+            $itens = $repository->getItensPorAutorizacao(new cl_empautitem(), $this);
             $this->setItens($itens);
         }
         return $this;
@@ -712,7 +725,7 @@ class Autorizacao
     /**
      * @param array $state
      * @return Autorizacao
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState(array $state)
     {
@@ -723,7 +736,7 @@ class Autorizacao
         }
 
         if (array_key_exists('e54_numcgm', $state)) {
-            $autorizacao->setFornecedor(new \fornecedor((int)$state['e54_numcgm']));
+            $autorizacao->setFornecedor(new fornecedor((int)$state['e54_numcgm']));
         }
 
         if (array_key_exists('e54_login', $state)) {
@@ -799,12 +812,12 @@ class Autorizacao
         }
 
         if (array_key_exists('e54_instit', $state)) {
-            $autorizacao->setInstituicao(\InstituicaoRepository::getInstituicaoByCodigo((int)$state['e54_instit']));
+            $autorizacao->setInstituicao(InstituicaoRepository::getInstituicaoByCodigo((int)$state['e54_instit']));
         }
 
         if (array_key_exists('e54_depto', $state)) {
             $autorizacao->setDepartamento(
-                \DBDepartamentoRepository::getDBDepartamentoByCodigo((int)$state['e54_depto'])
+                DBDepartamentoRepository::getDBDepartamentoByCodigo((int)$state['e54_depto'])
             );
         }
 

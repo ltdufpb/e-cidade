@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use Exception;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacoesPontoCollection;
@@ -41,12 +43,12 @@ use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta;
 class FaltaSaidaAntecipada extends BaseHora implements Horas
 {
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oDiaFalta;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oDiaFaltaNoturna;
 
@@ -92,7 +94,7 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
     /**
      * Calcula o número de horas falta em determinado dia
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function calcular()
     {
@@ -101,7 +103,7 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
 
         $horasFalta = $this->calcularHorasFalta();
 
-        $debug = "-- Hora Calculada..........: ". (($horasFalta instanceof \DateTime) ? $horasFalta->format('H:i') : '_:__');
+        $debug = "-- Hora Calculada..........: ". (($horasFalta instanceof DateTime) ? $horasFalta->format('H:i') : '_:__');
         $this->logger->debug($debug);
 
         $horasFalta = $this->posCalcular($horasFalta);
@@ -113,8 +115,8 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
-     * @throws \Exception
+     * @return DateTime
+     * @throws Exception
      */
     protected function calcularHorasFalta()
     {
@@ -146,8 +148,8 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
          */
         if ($horasTrabalhadas->getTimestamp() > $cargaHoraria->getTimestamp() || $this->getDiaTrabalho()->getMarcacoes()->isEmpty()) {
 
-            $this->logger->debug("-- Horas Trabalhadas.............:" . ($horasTrabalhadas instanceof \DateTime ? $horasTrabalhadas->format('H:i') : ''));
-            $this->logger->debug("-- Carga Horária.................:" . ($cargaHoraria instanceof \DateTime ? $cargaHoraria->format('H:i') : ''));
+            $this->logger->debug("-- Horas Trabalhadas.............:" . ($horasTrabalhadas instanceof DateTime ? $horasTrabalhadas->format('H:i') : ''));
+            $this->logger->debug("-- Carga Horária.................:" . ($cargaHoraria instanceof DateTime ? $cargaHoraria->format('H:i') : ''));
             $this->logger->debug("-- Marcacoes Vazias..............:" . ($this->getDiaTrabalho()->getMarcacoes()->isEmpty() ? 'SIM' : 'NAO'));
             return $this->oDiaFalta;
         }
@@ -223,8 +225,8 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
 
         $this->oDiaFalta->add(($ultimaMarcacao->getMarcacao()->diff($ultimaHoraJornada)));
         $this->logger->debug("-- Saida antecipada..............: ". $this->oDiaFalta->format('H:i'));
-        $this->logger->debug("-- Ultima marcacao...............: ". ($ultimaMarcacao->getMarcacao() instanceof \DateTime ? $ultimaMarcacao->getMarcacao()->format('H:i') : ''));
-        $this->logger->debug("-- Ultima hora da jornada........: ". ($ultimaHoraJornada instanceof \DateTime ? $ultimaHoraJornada->format('H:i') : ''));
+        $this->logger->debug("-- Ultima marcacao...............: ". ($ultimaMarcacao->getMarcacao() instanceof DateTime ? $ultimaMarcacao->getMarcacao()->format('H:i') : ''));
+        $this->logger->debug("-- Ultima hora da jornada........: ". ($ultimaHoraJornada instanceof DateTime ? $ultimaHoraJornada->format('H:i') : ''));
 
         if($jornada->temIntervalo() && $marcacoesReais->getQuantidadeMarcacoes() == 2) {
 
@@ -283,7 +285,7 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     private function calculaComJustificativaNoPrimeiroPeriodo()
     {
@@ -306,7 +308,7 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     private function calculaComJustificativaNoSegundoPeriodo()
     {
@@ -329,10 +331,10 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
 
     /**
      * @param $horasFalta
-     * @return \DateTime
-     * @throws \Exception
+     * @return DateTime
+     * @throws Exception
      */
-    protected function posCalcular(\DateTime $horasFalta)
+    protected function posCalcular(DateTime $horasFalta)
     {
         $this->logger->debug("-- POS CALCULO DE SAIDA ANTECIPADA");
 
@@ -365,13 +367,13 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
             $tipoComparar = $jornada->temIntervalo() ? 4 : 2;
 
             $this->horaAssentamentoAbonoFalta = $this->listaAssentamentosAbonoFaltaGera->getSaldoHoras();
-            $horaAssentamento = new \DateTime($this->horaAssentamentoAbonoFalta);
+            $horaAssentamento = new DateTime($this->horaAssentamentoAbonoFalta);
             $horaAssentamento->setDate(
               $diaTrabalho->getData()->getAno(),
               $diaTrabalho->getData()->getMes(),
               $diaTrabalho->getData()->getDia()
             );
-            $this->logger->debug("-- Hora Assentamento encontradas.: ". ($horaAssentamento instanceof \DateTime ? $horaAssentamento->format('H:i') : ''));
+            $this->logger->debug("-- Hora Assentamento encontradas.: ". ($horaAssentamento instanceof DateTime ? $horaAssentamento->format('H:i') : ''));
 
             $primeiraHoraMarcacao = $diaTrabalho->getMarcacoesSemAlteracao()->getMarcacaoEntrada1();
             $primeiraHoraJornada = $jornada->getInicioJornada();
@@ -380,9 +382,9 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
 
             if($horaZerada->getTimestamp() > $horaAssentamento->getTimestamp()) {
 
-                $this->logger->debug("-- Hora Zerada...................: ". ($horaZerada instanceof \DateTime ? $horaZerada->format('H:i') : ''));
-                $this->logger->debug("-- Hora Assentamento.............: ". ($horaAssentamento instanceof \DateTime ? $horaAssentamento->format('H:i') : ''));
-                $this->logger->debug("-- Hora Saida antecipada.........: ". ($horasFalta instanceof \DateTime ? $horasFalta->format('H:i') : ''));
+                $this->logger->debug("-- Hora Zerada...................: ". ($horaZerada instanceof DateTime ? $horaZerada->format('H:i') : ''));
+                $this->logger->debug("-- Hora Assentamento.............: ". ($horaAssentamento instanceof DateTime ? $horaAssentamento->format('H:i') : ''));
+                $this->logger->debug("-- Hora Saida antecipada.........: ". ($horasFalta instanceof DateTime ? $horasFalta->format('H:i') : ''));
                 return $horasFalta;
             }
 
@@ -429,7 +431,7 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
             }
         }
 
-        $debug = "-- Hora Saida Antecipada.........: ". (($horasFalta instanceof \DateTime) ? $horasFalta->format('H:i') : '_:__');
+        $debug = "-- Hora Saida Antecipada.........: ". (($horasFalta instanceof DateTime) ? $horasFalta->format('H:i') : '_:__');
         $this->logger->debug($debug);
 
 
@@ -437,7 +439,7 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     protected function calcularHorasNoturna()
     {
@@ -453,7 +455,7 @@ class FaltaSaidaAntecipada extends BaseHora implements Horas
 
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasSaidaAntecipadaNoturna()
     {

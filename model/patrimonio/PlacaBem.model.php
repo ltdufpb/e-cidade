@@ -232,7 +232,7 @@ class PlacaBem {
     public function getInfoPlacaDisponivel()
     {
         $dados = ['bem' => '', 'historico' => ''];
-        $dao = new \cl_bensplaca();
+        $dao = new cl_bensplaca();
         $sql = $dao->sqlQueryIsPlacaDisponivel(!empty($this->sPlaca) ? $this->sPlaca : $this->sPlacaSeq);
         $rs = $dao->sql_record($sql);
         if ($rs !== false && $dao->numrows > 0) {

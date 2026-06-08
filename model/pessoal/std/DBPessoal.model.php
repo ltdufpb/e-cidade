@@ -422,7 +422,7 @@ abstract class DBPessoal
      * @param DBCompetencia $oCompetencia
      * @return bool
      */
-    #[\Deprecated(message: 'Não necessária a utilização')]
+    #[Deprecated(message: 'Não necessária a utilização')]
     public static function declararEstruturaFolhaPagamento(Instituicao $oInstituicao, DBCompetencia $oCompetencia)
     {
         return true;

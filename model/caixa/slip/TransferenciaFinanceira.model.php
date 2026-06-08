@@ -74,7 +74,7 @@ class TransferenciaFinanceira extends Transferencia {
    * Metodo que salva um slip do tipo transferencia bancaria
    * @see Transferencia::salvar()
    */
-  #[\Override]
+  #[Override]
   public function salvar() {
 
     parent::salvar();
@@ -291,7 +291,7 @@ class TransferenciaFinanceira extends Transferencia {
    * @throws BusinessException
    * @throws Exception
    */
-  #[\Override]
+  #[Override]
   public function anular($sMotivo) {
 
     /**

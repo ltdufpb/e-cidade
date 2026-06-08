@@ -2,7 +2,11 @@
 
 namespace ECidade\Lib\Collection;
 
-abstract class Collection implements \Countable, \Iterator, \ArrayAccess
+use Countable;
+use Iterator;
+use ArrayAccess;
+
+abstract class Collection implements Countable, Iterator, ArrayAccess
 {
     protected $size;
 

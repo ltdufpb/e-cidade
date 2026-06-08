@@ -28,11 +28,16 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
+use CgmFisico;
+use ServidorRepository;
+use AssentamentoRepository;
+use cl_rhcargo;
+use DBException;
+use cl_rhfuncao;
+use cl_rhcedencia;
+use BusinessException;
 use cl_curric;
-use cl_tabcurri;
-use cl_tabcurritipo;
 use db_utils;
-use ECidade\RecursosHumanos\Pessoal\Model\InfoEndereco;
 use ECidade\RecursosHumanos\Pessoal\Repository\DependenteRepository;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor as ServidorEntity;
 use ECidade\RecursosHumanos\Pessoal\Model\Deficiente;
@@ -40,7 +45,6 @@ use ECidade\RecursosHumanos\Pessoal\Model\ContratoEmergencial;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorMovimentacao;
 use AdmissaoDado;
 use Admissao;
-use DateTime;
 use DBDate;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Contrato\Model\ContratoJornada;
 use Servidor as ServidorModel;
@@ -176,7 +180,7 @@ class ServidorService
      * @param ServidorModel $servidor
      * @param ServidorMovimentacao $servidorMovimentacao
      * @param $dadosServidor
-     * @throws \Exception
+     * @throws Exception
      * @param stdClass $dadosServidor
      */
     public function __construct(
@@ -192,8 +196,8 @@ class ServidorService
 
     /**
      * @return ServidorEntity
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function buscarDadosServidor()
     {
@@ -233,7 +237,7 @@ class ServidorService
 
         $dadosTrabalhador = [];
 
-        if ($this->servidor->getCgm() instanceof \CgmFisico) {
+        if ($this->servidor->getCgm() instanceof CgmFisico) {
             $dadosTrabalhador['cpfTrab'] = $this->servidor->getCgm()->getCpf();
             $dadosTrabalhador['nmTrab'] = $this->servidor->getCgm()->getNomeCompleto();
             $dadosTrabalhador['sexo'] = $this->servidor->getSexo();
@@ -272,7 +276,7 @@ class ServidorService
 
     /**
      * Responsável por chamar os métodos do grupo de documentos
-     * @throws \DBException
+     * @throws DBException
      */
     private function documentos()
     {
@@ -291,7 +295,7 @@ class ServidorService
 
     /**
      * Organiza os dados do grupo 'trabalhador->documentos'
-     * @throws \DBException
+     * @throws DBException
      */
     private function documentosCtps()
     {
@@ -307,7 +311,7 @@ class ServidorService
 
     /**
      * Organiza os dados do grupo 'trabalhador->endereco'
-     * @throws \DBException
+     * @throws DBException
      */
     private function dadosEndereco()
     {
@@ -315,7 +319,7 @@ class ServidorService
         $this->dadosServidor->trabalhador['endereco']['brasil'] = [];
 
         $dadosEndereco = [];
-        if ($this->servidor->getCgm() instanceof \CgmFisico) {
+        if ($this->servidor->getCgm() instanceof CgmFisico) {
             $dadosEndereco['brasil']['dscLograd'] = $this->servidor->getCgm()->getLogradouro();
             $dadosEndereco['brasil']['nrLograd'] = $this->servidor->getCgm()->getNumero();
 
@@ -355,7 +359,7 @@ class ServidorService
 
     /**
      * Organiza os dados do grupo 'vinculo' (Grupo de informações do vínculo)
-     * @throws \DBException
+     * @throws DBException
      */
     private function dadosVinculoTrabalho()
     {
@@ -424,8 +428,8 @@ class ServidorService
             }
             if (!empty($this->servidor->getDataOptanteFgts())) {
                 $categoria = (int) $this->servidor->getVinculo()->getCodigoCategoria();
-                $dataBase1 = new \DBDate('1988-10-05');
-                $dataBase2 = new \DBDate('2015-10-01');
+                $dataBase1 = new DBDate('1988-10-05');
+                $dataBase2 = new DBDate('2015-10-01');
                 if ($dadosCeletista['infoCeletista']['tpAdmissao'] == 6
                     || ($categoria != 114 && $this->servidor->getDataAdmissao() >= $dataBase1)
                     || ($categoria == 114 && $this->servidor->getDataAdmissao() >= $dataBase2)
@@ -463,7 +467,7 @@ class ServidorService
 
     /**
      * Organiza os dados do grupo 'vinculo->infoContrato->remuneracao'
-     * @throws \DBException
+     * @throws DBException
      */
     private function remuneracao()
     {
@@ -621,7 +625,7 @@ class ServidorService
 
     /**
      * Organiza os dados do grupo 'vinculo->desligamento'
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     private function dadosDesligamento()
     {
@@ -639,7 +643,7 @@ class ServidorService
     }
     /**
      * Organiza os dados do grupo 'vinculo->infoContrato->duracao'
-     * @throws \DBException
+     * @throws DBException
      */
     private function duracaoContrato()
     {
@@ -673,7 +677,7 @@ class ServidorService
 
     /**
      * Organiza os dados do grupo 'vinculo->infoContrato->localTrabalho'
-     * @throws \DBException
+     * @throws DBException
      */
     private function localTrabalhoContrato()
     {
@@ -925,9 +929,9 @@ class ServidorService
      */
     private function dadosAfastamento()
     {
-        $servidor = \ServidorRepository::getInstanciaByCodigo($this->servidor->getMatricula());
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
-        $servidorValidaData = \AssentamentoRepository::servidorValidaData($servidor, $dataObrigatoriedade);
+        $servidor = ServidorRepository::getInstanciaByCodigo($this->servidor->getMatricula());
+        $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
+        $servidorValidaData = AssentamentoRepository::servidorValidaData($servidor, $dataObrigatoriedade);
         $dadoAfastamento = [];
         if (!empty($servidorValidaData->h16_dtconc)) {
             $dadoAfastamento['dtIniAfast'] = $servidorValidaData->h16_dtconc;
@@ -953,7 +957,7 @@ class ServidorService
 
     /**
      * Cargos e funções
-     * @throws \DBException
+     * @throws DBException
      */
     private function dadosCargoFuncao()
     {
@@ -971,27 +975,27 @@ class ServidorService
 
         //Se não há preenchimento de cargo
         if (!empty($this->servidorMovimentacao->getCargo())) {
-            $daoFuncao = new \cl_rhcargo;
+            $daoFuncao = new cl_rhcargo;
             $sSql = $daoFuncao->
                 sql_query_file($this->servidorMovimentacao->getCargo(), db_getsession("DB_instit"), 'rh04_descr');
             $rsFuncao = db_query($sSql);
             if (!$rsFuncao) {
-                throw new \DBException("Erro ao executar a query: {$sSql}");
+                throw new DBException("Erro ao executar a query: {$sSql}");
             }
-            $funcao = \db_utils::fieldsMemory($rsFuncao, 0)->rh04_descr;
+            $funcao = db_utils::fieldsMemory($rsFuncao, 0)->rh04_descr;
             if (empty($funcao)) {
                 $funcao = '';
             }
 
-            $daoCboFuncao = new \cl_rhfuncao;
+            $daoCboFuncao = new cl_rhfuncao;
             $sql = $daoCboFuncao->
                 sql_query_file($this->servidorMovimentacao->getFuncao(), db_getsession("DB_instit"), 'rh37_cbo');
 
             $rsCboFuncao = db_query($sql);
             if (!$rsCboFuncao) {
-                throw new \DBException("Erro ao executar a query: {$sql}");
+                throw new DBException("Erro ao executar a query: {$sql}");
             }
-            $cboFuncao = \db_utils::fieldsMemory($rsCboFuncao, 0)->rh37_cbo;
+            $cboFuncao = db_utils::fieldsMemory($rsCboFuncao, 0)->rh37_cbo;
             if (empty($cboFuncao)) {
                 $cboFuncao = '';
             }
@@ -1023,8 +1027,8 @@ class ServidorService
 
     /**
      * Estagiário
-    * @throws \DBException
-    */
+     * @throws DBException
+     */
     private function estagiario()
     {
         $estagiario = new cl_rhestagiovinculo();
@@ -1044,7 +1048,7 @@ class ServidorService
         $resultado = $estagiario->sql_query(null, $campos, null, "rh260_matricula = " . $numMatricula);
         $rsEstagiario = db_query($resultado);
         if (!$rsEstagiario) {
-            throw new \DBException("Erro ao executar a query: {$resultado}");
+            throw new DBException("Erro ao executar a query: {$resultado}");
         }
         $estagiario = db_utils::fieldsMemory($rsEstagiario, 0);
 
@@ -1052,9 +1056,9 @@ class ServidorService
     }
 
     /**
-    * Estagiário eSocial
-    * @throws \DBException
-    */
+     * Estagiário eSocial
+     * @throws DBException
+     */
     private function dadosEstagiario()
     {
      //Condição para o evento eSocial S2300
@@ -1085,7 +1089,7 @@ class ServidorService
 
     private function cedenciaEsocial()
     {
-        $cedencia = new \cl_rhcedencia();
+        $cedencia = new cl_rhcedencia();
         $numMatricula =$this->servidor->getMatricula();
         $campos = ['rh261_seqpes',
                    'rh261_credencial',
@@ -1102,7 +1106,7 @@ class ServidorService
         $sql_cedencia = $cedencia->sql_query(null, $campos, "rh261_seqpes desc", "rh261_regist = " . $numMatricula);
         $rsCedencia = db_query($sql_cedencia);
         if (!$rsCedencia) {
-            throw new \DBException("Erro ao executar a query: {$sql_cedencia}");
+            throw new DBException("Erro ao executar a query: {$sql_cedencia}");
         }
         $cedencia = db_utils::fieldsMemory($rsCedencia, 0);
         return $cedencia;
@@ -1141,7 +1145,7 @@ class ServidorService
 
     /**
      * Cargos e funções sem vinculo
-     * @throws \DBException
+     * @throws DBException
      */
     private function dadosCargoFuncaoSemViculo()
     {
@@ -1153,7 +1157,7 @@ class ServidorService
             $dadoCargoFuncao['nmCargo'] = $this->servidor->getDadosCargo()->rh37_descr;
             $dadoCargoFuncao['CBOCargo'] = $this->servidor->getDadosCargo()->rh37_cbo;
 
-            $daoCboFuncao = new \cl_rhcargo;
+            $daoCboFuncao = new cl_rhcargo;
             if (!empty($this->servidorMovimentacao->getCargo())) {
                 $sql = $daoCboFuncao->sql_query_file(
                     $this->servidorMovimentacao->getCargo(),
@@ -1162,9 +1166,9 @@ class ServidorService
                 );
                 $rsCboFuncao = db_query($sql);
                 if (!$rsCboFuncao) {
-                    throw new \DBException("Erro ao executar a query: {$sql}");
+                    throw new DBException("Erro ao executar a query: {$sql}");
                 }
-                $dadoCargoFuncao['nmFuncao'] = \db_utils::fieldsMemory($rsCboFuncao, 0)->rh04_descr;
+                $dadoCargoFuncao['nmFuncao'] = db_utils::fieldsMemory($rsCboFuncao, 0)->rh04_descr;
                 $dadoCargoFuncao['CBOFuncao'] = $this->servidor->getDadosCargo()->rh37_cbo;
             }
             $this->servidorEntity->setCargoFuncaoSemVinculo($dadoCargoFuncao);
@@ -1173,7 +1177,7 @@ class ServidorService
 
     /**
      * Alteração contratual sem vinculo
-     * @throws \DBException
+     * @throws DBException
      */
     private function dadosAlteracaoContratualSemVinculo()
     {

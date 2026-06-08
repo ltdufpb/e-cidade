@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Patrimonial\Material\Helpers\Material;
+
 
 require_once(modification("model/contabilidade/planoconta/SistemaConta.model.php"));
 require_once(modification("model/contabilidade/planoconta/SubSistemaConta.model.php"));

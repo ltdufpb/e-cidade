@@ -2,6 +2,7 @@
 
 namespace ECidade\Educacao\Secretaria\BNCC\Repository;
 
+use cl_bnccetapas;
 use ECidade\Educacao\Escola\Repository\Repository;
 use ECidade\Educacao\Secretaria\BNCC\Model\Etapa;
 use ECidade\Enum\Educacao\BNCC\EnsinoEnum;
@@ -25,7 +26,7 @@ class EtapaRepository extends Repository
      */
     public static function find($id)
     {
-        $dao = new \cl_bnccetapas();
+        $dao = new cl_bnccetapas();
         $sql = $dao->sql_query_file($id);
         $rs = db_query($sql);
 
@@ -42,7 +43,7 @@ class EtapaRepository extends Repository
      */
     public function get()
     {
-        $dao = new \cl_bnccetapas();
+        $dao = new cl_bnccetapas();
         $sql = $dao->sql_query_file(null, '*', $this->ordem, implode(' and ', $this->scopes));
         $rs = db_query($sql);
 

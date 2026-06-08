@@ -224,7 +224,7 @@ class aberturaRegistroPreco extends solicitacaoCompra {
    * @return
    */
 
-  #[\Override]
+  #[Override]
   public function anular($sMotivo, $sProcessoAdministrativo = null) {
 
   	$lSolicitaAnulada = $this->isAnulada();
@@ -449,7 +449,7 @@ class aberturaRegistroPreco extends solicitacaoCompra {
    * retorno a resumo da Abertura
    * @return string
    */
-  #[\Override]
+  #[Override]
   public function getResumo() {
     return $this->sResumo;
   }
@@ -460,7 +460,7 @@ class aberturaRegistroPreco extends solicitacaoCompra {
    * @param string $sResumo Resumo
    * @return aberturaRegistroPreco
    */
-  #[\Override]
+  #[Override]
   public function setResumo($sResumo) {
 
     $this->sResumo = $sResumo;

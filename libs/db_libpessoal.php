@@ -1380,7 +1380,7 @@ function numero_faltas($registro, $data_inicio, $data_final ){
  * @param unknown $r30_peraf
  * @return number
  */
-#[\Deprecated]
+#[Deprecated]
 function retorna_avos($r30_perai,$r30_peraf_ant,$r30_peraf){
 
 
@@ -1937,7 +1937,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
  * @access public
  * @return array
  */
-#[\Deprecated]
+#[Deprecated]
 function retornaCompetenciasByPeriodo ( DBDate $oDataInicial, DBDate $oDataFinal ) {
  
   /**

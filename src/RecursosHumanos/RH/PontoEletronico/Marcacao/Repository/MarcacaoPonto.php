@@ -27,6 +27,13 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\Repository;
 
+use cl_pontoeletronicoarquivodataregistro;
+use BusinessException;
+use db_utils;
+use DBException;
+use DateTime;
+use cl_pontoeletronicoregistrojustificativa;
+use TipoAssentamentoRepository;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
@@ -47,7 +54,7 @@ class MarcacaoPonto
      */
     public $lBuscaJustificativa = true;
     /**
-     * @var \cl_pontoeletronicoarquivodataregistro
+     * @var cl_pontoeletronicoarquivodataregistro
      */
     private $oDao;
     /**
@@ -57,7 +64,7 @@ class MarcacaoPonto
 
     public function __construct()
     {
-        $this->oDao = new \cl_pontoeletronicoarquivodataregistro();
+        $this->oDao = new cl_pontoeletronicoarquivodataregistro();
     }
 
     /**
@@ -79,13 +86,13 @@ class MarcacaoPonto
     /**
      * @param DiaTrabalho $oDiaTrabalho
      * @return MarcacoesPontoCollection|null
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function getCollectionMarcacaoPonto(DiaTrabalho $oDiaTrabalho)
     {
 
         if ($this->oJornada == null) {
-            throw new \BusinessException('Jornada não informada.');
+            throw new BusinessException('Jornada não informada.');
         }
 
         $rsMarcacao = $this->getMarcacoesNaData($oDiaTrabalho);
@@ -108,14 +115,14 @@ class MarcacaoPonto
          * em um dia e terminam no dia seguinte.
          * Com esta validação, essas marcações não serão vinculadas de maneira errada ao dia errado
          */
-        $sDataBase = \db_utils::fieldsMemory($rsMarcacao, 0)->rh197_data;
+        $sDataBase = db_utils::fieldsMemory($rsMarcacao, 0)->rh197_data;
         if ($oDiaTrabalho->getData()->getDate() != $sDataBase) {
             return null;
         }
 
         $oMarcacaoPontoRepository = $this;
 
-        $aMarcacoes = \db_utils::makeCollectionFromRecord(
+        $aMarcacoes = db_utils::makeCollectionFromRecord(
             $rsMarcacao,
             function ($oRetorno) use ($oMarcacaoPontoRepository) {
 
@@ -145,7 +152,7 @@ class MarcacaoPonto
     /**
      * @param DiaTrabalho $oDiaTrabalho
      * @return bool|null|resource
-     * @throws \DBException
+     * @throws DBException
      */
     private function getMarcacoesNaData(DiaTrabalho $oDiaTrabalho)
     {
@@ -160,7 +167,7 @@ class MarcacaoPonto
             'rh198_data'
         ];
 
-        $oDaoMarcacao = new \cl_pontoeletronicoarquivodataregistro();
+        $oDaoMarcacao = new cl_pontoeletronicoarquivodataregistro();
         $sWhereMarcacao = "     rh197_matricula = {$oDiaTrabalho->getServidor()->getMatricula()}";
         $sWhereMarcacao .= " AND rh197_data      = '{$oDiaTrabalho->getData()->getDate()}'";
 
@@ -173,7 +180,7 @@ class MarcacaoPonto
         $rsMarcacao = db_query($sSqlMarcacao);
 
         if (!$rsMarcacao) {
-            throw new \DBException("Erro ao buscar as marcações do servidor.");
+            throw new DBException("Erro ao buscar as marcações do servidor.");
         }
 
         if (pg_num_rows($rsMarcacao) == 6 || !$oDiaTrabalho->getJornada()->isDiaTrabalhado()) {
@@ -186,14 +193,14 @@ class MarcacaoPonto
     /**
      * @param DiaTrabalho $oDiaTrabalho
      * @return bool|null|resource
-     * @throws \DBException
+     * @throws DBException
      */
     private function getMarcacoesEntrePeriodos(DiaTrabalho $oDiaTrabalho)
     {
 
         $aHoras = $this->oJornada->getHoras();
-        $oDataInicio = new \DateTime("{$oDiaTrabalho->getData()->getDate()}");
-        $oDataFim = new \DateTime("{$oDiaTrabalho->getData()->getDate()}");
+        $oDataInicio = new DateTime("{$oDiaTrabalho->getData()->getDate()}");
+        $oDataFim = new DateTime("{$oDiaTrabalho->getData()->getDate()}");
 
         if (!empty($aHoras)) {
             $oUltimaHora = end($aHoras);
@@ -228,12 +235,12 @@ class MarcacaoPonto
             'rh198_data'
         ];
 
-        $oDao = new \cl_pontoeletronicoarquivodataregistro();
+        $oDao = new cl_pontoeletronicoarquivodataregistro();
         $sSqlMarcacao = $oDao->sql_query(null, implode(' , ', $aCampos), 'rh197_data, rh198_ordem', $sWhereMarcacao);
         $rsMarcacao = db_query($sSqlMarcacao);
 
         if (!$rsMarcacao) {
-            throw new \DBException("Erro ao buscar as marcações do servidor.");
+            throw new DBException("Erro ao buscar as marcações do servidor.");
         }
 
         if (pg_num_rows($rsMarcacao) == 0) {
@@ -246,32 +253,32 @@ class MarcacaoPonto
     /**
      * @param MarcacaoPontoModel $oMarcacaoPonto
      * @return Justificativa|null
-     * @throws \DBException
+     * @throws DBException
      */
     public function getJustificativasPorMarcacao(MarcacaoPontoModel $oMarcacaoPonto)
     {
 
         $sWhereJustificativa = "rh199_pontoeletronicoarquivodataregistro = {$oMarcacaoPonto->getCodigo()}";
-        $oDaoJustificativa = new \cl_pontoeletronicoregistrojustificativa();
+        $oDaoJustificativa = new cl_pontoeletronicoregistrojustificativa();
         $sSqlJustificativa = $oDaoJustificativa->sqlJustificativasTipoasse([], '', [$sWhereJustificativa]);
         $rsJustificativa = db_query($sSqlJustificativa);
 
         if (!$rsJustificativa) {
-            throw new \DBException('Erro ao buscar justificativa lançada para marcação.');
+            throw new DBException('Erro ao buscar justificativa lançada para marcação.');
         }
 
         if (pg_num_rows($rsJustificativa) == 0) {
             return null;
         }
 
-        return \db_utils::makeFromRecord($rsJustificativa, function ($oRetorno) {
+        return db_utils::makeFromRecord($rsJustificativa, function ($oRetorno) {
 
             $oJustificativa = new Justificativa();
             $oJustificativa->setCodigo($oRetorno->rh194_sequencial);
             $oJustificativa->setDescricao($oRetorno->rh194_descricao);
             $oJustificativa->setAbreviacao($oRetorno->rh194_sigla);
 
-            $oTipoAssentamento = \TipoAssentamentoRepository::getInstanciaPorCodigo($oRetorno->rh205_tipoasse);
+            $oTipoAssentamento = TipoAssentamentoRepository::getInstanciaPorCodigo($oRetorno->rh205_tipoasse);
 
             if ($oTipoAssentamento) {
                 if ($oTipoAssentamento->isGerarFaltas()) {

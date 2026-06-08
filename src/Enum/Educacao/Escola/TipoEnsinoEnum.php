@@ -3,6 +3,7 @@
 
 namespace ECidade\Enum\Educacao\Escola;
 
+use Override;
 use ECidade\Enum\Educacao\BNCC\EnsinoEnum;
 use ECidade\Enum\Enum;
 use Exception;
@@ -43,7 +44,7 @@ class TipoEnsinoEnum extends Enum
      * @return array
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();

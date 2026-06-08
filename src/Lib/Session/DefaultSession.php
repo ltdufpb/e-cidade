@@ -3,6 +3,7 @@
 
 namespace ECidade\Lib\Session;
 
+use Override;
 use DateTime;
 use DBException;
 use DBSeller\Session\Session;
@@ -55,7 +56,7 @@ class DefaultSession extends Session
     /**
      * @return DefaultSession
      */
-    #[\Override]
+    #[Override]
     public static function getInstance()
     {
         if (is_null(static::$instance)) {
@@ -183,7 +184,7 @@ class DefaultSession extends Session
      * @return $this|Session
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     public function start()
     {
         parent::start();

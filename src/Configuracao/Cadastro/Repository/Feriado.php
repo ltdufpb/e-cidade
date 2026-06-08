@@ -27,6 +27,11 @@
 
 namespace ECidade\Configuracao\Cadastro\Repository;
 
+use Instituicao;
+use cl_rhcadcalend;
+use DBException;
+use db_utils;
+use DBDate;
 use ECidade\Configuracao\Cadastro\Collection\Feriado as FeriadoCollection;
 use ECidade\Configuracao\Cadastro\Model\Feriado as FeriadoModel;
 
@@ -55,14 +60,14 @@ class Feriado
     private $oFeriado;
 
   /**
-   * Feriado constructor.
-   * @param \Instituicao $oInstituicao
-   * @param null|int $iLotacao
-   */
-    public function __construct(private readonly \Instituicao $oInstituicao, private $iLotacao = null)
+     * Feriado constructor.
+     * @param Instituicao $oInstituicao
+     * @param null|int $iLotacao
+     */
+    public function __construct(private readonly Instituicao $oInstituicao, private $iLotacao = null)
     {
 
-        $this->oDao         = new \cl_rhcadcalend();
+        $this->oDao         = new cl_rhcadcalend();
     }
 
   /**
@@ -74,9 +79,9 @@ class Feriado
     }
 
     /**
-    * Alimenta a variável com a coleção de Feriado
-    * @throws \DBException
-    */
+     * Alimenta a variável com a coleção de Feriado
+     * @throws DBException
+     */
     public function getCollectionFeriados()
     {
 
@@ -91,10 +96,10 @@ class Feriado
         $rsFeriados   = db_query($sSqlFeriados);
 
         if (!$rsFeriados) {
-            throw new \DBException('Erro ao buscar os feriados.');
+            throw new DBException('Erro ao buscar os feriados.');
         }
 
-        $aFeriados = \db_utils::getCollectionByRecord($rsFeriados);
+        $aFeriados = db_utils::getCollectionByRecord($rsFeriados);
         $this->oCollectionFeriados = FeriadoCollection::makeCollectionFromArray($aFeriados);
     }
 
@@ -110,10 +115,10 @@ class Feriado
     }
 
   /**
-   * @param \DBDate $oData
-   * @return FeriadoModel
-   */
-    public function getFeriadoNaData(\DBDate $oData)
+     * @param DBDate $oData
+     * @return FeriadoModel
+     */
+    public function getFeriadoNaData(DBDate $oData)
     {
 
         $this->getCollectionFeriados();

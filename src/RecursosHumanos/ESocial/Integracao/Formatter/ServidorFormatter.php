@@ -2,6 +2,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use BusinessException;
+use DBException;
+use Exception;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
 use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
@@ -29,10 +33,10 @@ class ServidorFormatter extends Formatter
     /**
      * @param  array $dados
      * @return mixed|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados, $alteracao = false)
     {
         $this->alteracao = $alteracao;
@@ -101,8 +105,8 @@ class ServidorFormatter extends Formatter
     /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -436,9 +440,9 @@ class ServidorFormatter extends Formatter
 
     /**
      * @param  $dadoServidor
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws DBException
+     * @throws Exception
      */
     private function atualizarDadosServidor(&$dadoServidor)
     {
@@ -821,7 +825,7 @@ class ServidorFormatter extends Formatter
     {
         $dadoContato =  $dadoServidor->trabalhador['contato'];
         $dadoContato['fonePrinc'] = preg_replace('/[\D]/', '', (string) $dadoContato['fonePrinc']);
-        if (strlen(trim($dadoContato['fonePrinc']))<10 || strlen(trim($dadoContato['fonePrinc']))>12) {
+        if (strlen(trim((string) $dadoContato['fonePrinc']))<10 || strlen(trim((string) $dadoContato['fonePrinc']))>12) {
             unset($dadoContato['fonePrinc']);
         }
         if (isset($dadoContato) && empty($dadoContato['fonePrinc'])) {
@@ -962,7 +966,7 @@ class ServidorFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
-    #[\Override]
+    #[Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -975,7 +979,7 @@ class ServidorFormatter extends Formatter
      *
      * @return  self
      */
-    #[\Override]
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

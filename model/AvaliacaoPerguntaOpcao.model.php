@@ -275,7 +275,7 @@ class AvaliacaoPerguntaOpcao {
     if ( empty($this->sIdentificador) ) {
       $this->sIdentificador = $identifier->slugify($this->sDescricao);
     } else if ( !$identifier->validate($this->sIdentificador) ) {
-      throw new \DBException("Identificador da opção de resposta já cadastrado: '$this->sIdentificador'");
+      throw new DBException("Identificador da opção de resposta já cadastrado: '$this->sIdentificador'");
     }
 
     $oDao = new cl_avaliacaoperguntaopcao();
@@ -429,13 +429,13 @@ class AvaliacaoPerguntaOpcao {
   }
 
     /**
-     * @param \stdClass $oDados
+     * @param stdClass $oDados
      * @param AvaliacaoPergunta $pergunta
      * @return AvaliacaoPerguntaOpcao
      * @throws BusinessException
      * @throws DBException
      */
-    public static function make(\stdClass $oDados, AvaliacaoPergunta $pergunta)
+    public static function make(stdClass $oDados, AvaliacaoPergunta $pergunta)
     {
         $opcao = new AvaliacaoPerguntaOpcao(null);
         $opcao->setCodigo($oDados->db104_sequencial);

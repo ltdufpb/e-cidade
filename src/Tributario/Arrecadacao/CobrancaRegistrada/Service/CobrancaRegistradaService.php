@@ -2,6 +2,8 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Service;
 
+use BusinessException;
+use DBException;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 use ECidade\Tributario\Caixa\Entity\Recibo;
 use ECidade\Tributario\Caixa\Entity\RegraEmissao;
@@ -26,8 +28,8 @@ final class CobrancaRegistradaService extends Service
     /**
      * @param Recibo $recibo
      * @param RegraEmissao $regraEmissao
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function execute(Recibo $recibo, RegraEmissao $regraEmissao)
     {

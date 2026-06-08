@@ -28,6 +28,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB;
 
+use stdClass;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo\RequisicaoInterface;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo\RetornoBoleto;
 use ECidade\Lib\Request\Curl;
@@ -44,14 +45,14 @@ abstract class ConexaoCurl
     /**
      * Objeto com os dados de retorno da requisição
      *
-     * @var \stdClass
+     * @var stdClass
      */
     protected $oRetornoCurl;
 
     /**
      * Processamos a requisição conforme informações disponibilizadas
      *
-     * @return \stdClass
+     * @return stdClass
      */
     public function processarRequisicao()
     {

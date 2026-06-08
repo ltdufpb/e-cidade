@@ -3,6 +3,7 @@
 
 namespace ECidade\Enum\Educacao\Escola;
 
+use Override;
 use ECidade\Enum\Enum;
 use Exception;
 
@@ -52,7 +53,7 @@ class FormaObtencaoEnum extends Enum
      * @return array
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();

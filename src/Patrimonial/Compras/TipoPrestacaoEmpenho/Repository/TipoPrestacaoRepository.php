@@ -27,6 +27,8 @@
 
 namespace ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Repository;
 
+use Exception;
+use cl_empautpresta;
 use ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Model\TipoPrestacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 
@@ -54,7 +56,7 @@ class TipoPrestacaoRepository
      * @param $id
      * @param array $columns
      * @return bool|TipoPrestacao
-     * @throws \Exception
+     * @throws Exception
      */
     public function find($id, $columns = ['*'])
     {
@@ -62,7 +64,7 @@ class TipoPrestacaoRepository
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new \Exception("");
+            throw new Exception("");
         }
 
         if (pg_num_rows($rs) === 0) {
@@ -75,10 +77,10 @@ class TipoPrestacaoRepository
     }
 
     /**
-     * @param \cl_empautpresta $daoTipoPrestacaoAutorizacao
+     * @param cl_empautpresta $daoTipoPrestacaoAutorizacao
      * @param Autorizacao $autorizacao
      * @return TipoPrestacao
-     * @throws \Exception
+     * @throws Exception
      */
     public function getTipoPrestacaoPorAutorizacao($daoTipoPrestacaoAutorizacao, Autorizacao $autorizacao)
     {

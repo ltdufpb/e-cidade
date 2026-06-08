@@ -42,7 +42,7 @@ class FileSync extends Storage
      *
      * @param string $path
      * @param string $user
-     * @return \ECidade\V3\Modification\Data\File | false
+     * @return File|false
      */
     public static function update($path, $user = null)
     {

@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\RH\Assentamento;
 
+use Override;
 use Assentamento;
 use AssentamentoRepository;
 use BusinessException;
@@ -155,7 +156,7 @@ class AssentamentoAbonoFalta extends Assentamento
     /**
      * @param string $sHora
      */
-    #[\Override]
+    #[Override]
     public function setHora($sHora)
     {
         parent::setHora($sHora);
@@ -177,7 +178,7 @@ class AssentamentoAbonoFalta extends Assentamento
      * @return $this|mixed
      * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function persist()
     {
         parent::persist();
@@ -376,7 +377,7 @@ class AssentamentoAbonoFalta extends Assentamento
      * @param DiaTrabalho $diaTrabalho
      * @return null|String
      */
-    #[\Override]
+    #[Override]
     public function calcularHorasDiurnasNoturnasNoDia(DiaTrabalho $diaTrabalho)
     {
         $horasTotais = [];

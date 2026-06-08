@@ -5,7 +5,7 @@ class DBReleaseNotePrevia extends DBReleaseNoteSistema {
   /**
    * @inherited
    */
-  #[\Override]
+  #[Override]
   public function filtrarVersao($sVersao) {    
     return $sVersao > $this->sVersaoSistema;
   }
@@ -15,7 +15,7 @@ class DBReleaseNotePrevia extends DBReleaseNoteSistema {
    * @param  integer $idItem
    * @return string
    */
-  #[\Override]
+  #[Override]
   public function render() {
 
     if (empty($this->sNomeArquivo)) {

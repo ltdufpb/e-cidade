@@ -2,6 +2,7 @@
 
 namespace ECidade\Educacao\Escola\Repository;
 
+use cl_historicompsforaarea;
 use cl_areahistmpsdiscfora;
 use DisciplinaHistoricoForaRede;
 use ECidade\Educacao\Escola\Model\AreaConhecimento;
@@ -32,7 +33,7 @@ class AreaHistoricoForaRepository extends Repository
      */
     public function get()
     {
-        $dao = new \cl_historicompsforaarea();
+        $dao = new cl_historicompsforaarea();
         $sql = $dao->sql_query_file(null, "*", null, implode(' AND ', $this->scopes));
         $rs = db_query($sql);
 
@@ -71,7 +72,7 @@ class AreaHistoricoForaRepository extends Repository
      */
     public function salvar(AreaHistoricoFora $areaHistoricoFora)
     {
-        $dao = new \cl_historicompsforaarea();
+        $dao = new cl_historicompsforaarea();
         $dao->ed172_codigo = $areaHistoricoFora->getCodigo();
         $dao->ed172_historicompsfora = $areaHistoricoFora->getHistoricoEtapaForaRede()->getCodigoEtapa();
         $dao->ed172_areaconhecimento = $areaHistoricoFora->getAreaConhecimento()->getCodigo();
@@ -106,7 +107,7 @@ class AreaHistoricoForaRepository extends Repository
      */
     public function excluir(AreaHistoricoFora $areaHistoricoFora)
     {
-        $dao = new \cl_historicompsforaarea();
+        $dao = new cl_historicompsforaarea();
         $dao->ed172_codigo = $areaHistoricoFora->getCodigo();
         $dao->excluir($dao->ed172_codigo);
 

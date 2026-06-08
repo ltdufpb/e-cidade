@@ -271,7 +271,7 @@ class ContaPlanoPCASP extends ContaPlano
                 $daoConplanoAtributos->c120_conplanosistema = $atributo->c129_conplanosistema;
                 $daoConplanoAtributos->incluir(null);
                 if ($daoConplanoAtributos->erro_status == 0) {
-                    throw new \Exception("Erro ao vincular atributos a conta. Erro interno [{$daoConplanoAtributos->erro_msg}]");
+                    throw new Exception("Erro ao vincular atributos a conta. Erro interno [{$daoConplanoAtributos->erro_msg}]");
                 }
             }
         }
@@ -687,7 +687,7 @@ class ContaPlanoPCASP extends ContaPlano
      * Valida se já existe um reduzido cadastrado para o Ano e Instituição
      * @return boolean
      */
-    #[\Override]
+    #[Override]
     public function hasReduzidoAnoInstituicao()
     {
 
@@ -981,7 +981,7 @@ class ContaPlanoPCASP extends ContaPlano
 
     /**
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function validarEstrutural()
     {

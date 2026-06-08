@@ -2,6 +2,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use stdClass;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
@@ -25,7 +27,7 @@ class AlteracaoContratualFormatter extends ServidorFormatter
      * @param array $dados
      * @return array
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados, $alteracao = true)
     {
         $retorno = [];
@@ -56,7 +58,7 @@ class AlteracaoContratualFormatter extends ServidorFormatter
     private function processamento($servidor)
     {
 
-        $novoDado = new \stdClass();
+        $novoDado = new stdClass();
         $novoDado->inscricao_empregador = $this->getEmpregador()->getCnpj();
         $novoDado->referencia = $servidor->referencia;
         if (!empty($novoDado->inscricao_empregador)) {

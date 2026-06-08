@@ -26,16 +26,16 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
+use DBPessoal;
+use db_utils;
+use DBException;
 use BusinessException;
 use ECidade\RecursosHumanos\ESocial\Entity\PagamentosRendimentosTrabalho;
-use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRGPS;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
 use ECidade\RecursosHumanos\ESocial\Integracao\Recurso;
-use ECidade\RecursosHumanos\ESocial\Repository\PagamentosRendimentosTrabalho as PagamentosRendimentosTrabalhoRepository;
 use ECidade\RecursosHumanos\Pessoal\Service\DataPagamentoFolhaService;
 use ECidade\V3\Extension\Registry;
 use ServidorRepository;
-use Servidor;
 use stdClass;
 use DBCompetencia;
 use CgmFisico;
@@ -101,7 +101,7 @@ class PagamentosRendimentosTrabalhoService
     /**
      * @param CgmFisico $cgm
      * @return PagamentosRendimentosTrabalho|null
-     * @throws \DBException
+     * @throws DBException
      */
     public function buscarPorCGM(CgmFisico $cgm, $tipoEvento, $servidores = null)
     {
@@ -358,7 +358,7 @@ class PagamentosRendimentosTrabalhoService
                 $pagamentoRescisao->vrLiq = $this->truncar($calculoFinanceiroRescisao->getValorLiquido());
                 $pagamentoRescisao->perRef = "{$this->anoCompetencia}-{$this->mesCompetencia}";
                 $pagamentos[$pagamentoRescisao->ideDmDev] = $pagamentoRescisao;
-                $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(3);
+                $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(3);
                 // Se nao tiver configurada a data de obrigatoriedade, desconsideramos os dados
                 if (empty($dataObrigatoriedade)) {
                     return false;
@@ -460,7 +460,7 @@ class PagamentosRendimentosTrabalhoService
             $sql = "select count(*) as qtdServidores from pessoal.rhpessoal where rh01_numcgm = {$numeroCgm} ";
             $resultado = db_query($sql);
             if (pg_num_rows($resultado) == 1) {
-                return (int) \db_utils::fieldsMemory($resultado, 0)->qtdservidores;
+                return (int) db_utils::fieldsMemory($resultado, 0)->qtdservidores;
             }
         }
         return 1;

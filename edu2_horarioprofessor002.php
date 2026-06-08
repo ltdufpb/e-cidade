@@ -469,7 +469,7 @@ if (count($aSimult) > 0) { // Tem atendimento simultâneo
     $pdf->setXY($nX, $nYTmp);
     $texto  = $sQuebra."\n Turma: ". substr(trim((string) $aSimult[$a]->sNomeTurma),0,8)."\n";
     $texto .= "Disciplina: ".substr(trim((string) $aSimult[$a]->sNomeDisciplina),0,10);
-    $pdf->multicell($larg_dia - 2, $alt_multi, $texto, 0, 1, 'J', false, 0);
+    $pdf->multicell($larg_dia - 2, $alt_multi, $texto, 0, 1, 'J', false);
     
     $nYmaior  = $nYmaior > $pdf->getY() ? $nYmaior : $pdf->getY();
     $lNovoPer = false;

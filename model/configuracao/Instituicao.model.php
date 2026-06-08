@@ -357,7 +357,7 @@ class Instituicao
      * @return integer
      * @see prefeitura
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function isPrefeitura()
     {
         return $this->lPrefeitura;

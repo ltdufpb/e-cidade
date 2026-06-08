@@ -772,7 +772,7 @@ for ($iContAluno = 0; $iContAluno < $oDaoAluno->numrows; $iContAluno++) {
       */
       $oFpdf->line(10, $oFpdf->getY(), 205, $oFpdf->GetY());
       $iLimiteObs = 1500-($iLinhasSerie*100);
-      $oFpdf->setfont('arial', '', 6, $oDadosRelatModel->gradeetapa);
+      $oFpdf->setfont('arial', '', 6);
       $iPosY = $oFpdf->getY();
       $sObsConselho          = "";
       $sCamposAprovConselho  = " cgmrh.z01_nome, ed253_i_data,ed232_c_descrcompleta as disc_conselho, ed253_t_obs, ed47_v_nome,";
@@ -885,8 +885,8 @@ for ($iContAluno = 0; $iContAluno < $oDaoAluno->numrows; $iContAluno++) {
       $sConteudoMultiCell   = "{$sObservacao} {$sConvencoes}\n {$sObservacaoHistorico} {$sObsTroca}";
       $oFpdf->setfont('arial','',$oDadosRelatModel->observacao);
       $oFpdf->setY($oFpdf->getY() + 4);
-      $oFpdf->multicell(30, 5, "Observações:", 0, 10, "LR", "J", 0, 0);
-			$oFpdf->multicell(190, 3, "{$sConteudoMultiCell}", 0, 10, "LR", "J", 0, 0);
+      $oFpdf->multicell(30, 5, "Observações:", 0, 10, "LR", "J");
+			$oFpdf->multicell(190, 3, "{$sConteudoMultiCell}", 0, 10, "LR", "J");
 
       $iYFinalObservacoes = $oFpdf->getY();
       $oFpdf->Rect(10, $iYInicialObservacoes, 195, ($oFpdf->h - 35) - $iYInicialObservacoes); //retangulo da observacao

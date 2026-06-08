@@ -3,6 +3,7 @@
 
 namespace ECidade\Financeiro\Orcamento\Service;
 
+use ECidade\Financeiro\Orcamento\Recurso\Recurso;
 use Dotacao;
 use ECidade\Financeiro\Orcamento\Recurso\Origem;
 use Exception;
@@ -16,7 +17,7 @@ class LancarComlementoService extends Origem
     /**
      * @param Dotacao $dotacao
      * @param $complemento
-     * @return \ECidade\Financeiro\Orcamento\Recurso\Recurso
+     * @return Recurso
      * @throws Exception
      */
     public function identificaRecurso(Dotacao $dotacao, $complemento)

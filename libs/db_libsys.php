@@ -113,7 +113,7 @@ class cl_dbagata {
   public $arquivo = "";
 
   function __construct($_relatorio='') {
-    $this->api = new \AgataAPI;
+    $this->api = new AgataAPI;
     $this->api->setLanguage('pt'); //'en', 'pt', 'es', 'de', 'fr', 'it', 'se'
 
     if(!empty($_relatorio)) {

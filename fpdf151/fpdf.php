@@ -413,7 +413,7 @@ function AliasNbPages($alias='{nb}')
   $this->AliasNbPages=$alias;
 }
 
-function Error($msg)
+function Error($msg): never
 {
   //Fatal error
   die('<B>FPDF error: </B>'.$msg);
@@ -2847,7 +2847,7 @@ function WriteText($text)
         $this->ws=0;
         $this->_out('0 Tw');
       }
-      $this->AddPage($this->CurOrientation,$this->CurPageFormat);
+      $this->AddPage($this->CurOrientation);
       $this->x=$x;
       if($ws>0)
       {

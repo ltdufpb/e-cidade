@@ -132,7 +132,7 @@ class db_stdClass
      * @return string
      * @see db_stripTagsJsonSemEscape
      */
-    #[\Deprecated(message: 'db_stripTagsJsonSemEscape')]
+    #[Deprecated(message: 'db_stripTagsJsonSemEscape')]
     public static function db_stripTagsJson($sString)
     {
 
@@ -382,10 +382,10 @@ class db_stdClass
      * @return String decodificada
      * @see db_stdClass::normalizeStringJsonEscapeString
      */
-    #[\Deprecated(message: 'normalizeStringJsonEscapeString')]
+    #[Deprecated(message: 'normalizeStringJsonEscapeString')]
     public static function normalizeStringJson($sString)
     {
-        return urlDecode((string) \DBString::utf8_decode_all(db_stdclass::db_stripTagsJson($sString)));
+        return urlDecode((string) DBString::utf8_decode_all(db_stdclass::db_stripTagsJson($sString)));
     }
 
 
@@ -401,7 +401,7 @@ class db_stdClass
     public static function normalizeStringJsonEscapeString($sString)
     {
         return pg_escape_string(
-            \DBString::utf8_decode_all(db_stdclass::db_stripTagsJsonSemEscape(urlDecode($sString)))
+            DBString::utf8_decode_all(db_stdclass::db_stripTagsJsonSemEscape(urlDecode($sString)))
         );
     }
 

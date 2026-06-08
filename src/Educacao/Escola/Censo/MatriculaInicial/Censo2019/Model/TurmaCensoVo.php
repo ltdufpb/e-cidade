@@ -27,7 +27,6 @@
 
 namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Model;
 
-use ECidade\Educacao\Escola\Model\CensoDisciplina;
 use ECidade\Enum\Educacao\Secretaria\EstruturaCurricularEnum;
 use Escola;
 use EscolaRepository;

@@ -26,6 +26,34 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Model\Formulario;
 
+use cl_avaliacaogruporespostaadmissaopreliminar;
+use cl_avaliacaogruporespostacgm;
+use cl_avaliacaogruporespostaobras;
+use cl_rhlota;
+use cl_avaliacaogruporespostalotacao;
+use cl_avaliacaogruporespostaprocesso;
+use cl_cargo;
+use cl_avaliacaogruporespostaavisoprevio;
+use cl_avaliacaogruporespostarhpesrescisao;
+use cl_avaliacaogruporespostaexclusaoeventos;
+use cl_avaliacaogruporespostatsveinicial;
+use cl_avaliacaogruporespostatertrabasemvinc;
+use cl_avaliacaogruporespostatrabintermitente;
+use cl_avaliacaogruporespostarhpessoalalteracao;
+use cl_avaliacaogruporespostareintegracao;
+use cl_avaliacaogruporespostaaltercontratual;
+use cl_avaliacaogruporespostatsvealteracao;
+use cl_avaliacaogruporespostacontribuinte;
+use cl_avaliacaogruporespostaremuneracaorgps;
+use cl_avaliacaogruporespostaefdprocesso;
+use cl_avaliacaogruporespostaretservicostomados;
+use cl_avaliacaogruporespostaexclusaoeventosefd;
+use cl_avaliacaogruporespostaefdr2020;
+use cl_avaliacaogruporespostatotalizacaopagamentocontingencia;
+use cl_avaliacaogruporespostaesocials1299;
+use cl_avaliacaogruporespostafechamentoefd;
+use cl_esoacidentetrabalho;
+use cl_avaliacaogruporespostamonitoramentosaude;
 use BusinessException;
 use cl_avaliacaogruporesposta;
 use cl_avaliacaogruporespostaafastamentoesocial;
@@ -89,7 +117,7 @@ class Preenchimentos
         $campos .= 'eso18_cpf as identificador, eso18_cgm as cgm, db107_sequencial as preenchimento, ';
         $campos .= '(select z01_cgccpf from cgm where z01_numcgm = eso18_cgm) as inscricao_empregador, ';
         $campos .= 'eso18_regist as matricula ';
-        $dao = new \cl_avaliacaogruporespostaadmissaopreliminar();
+        $dao = new cl_avaliacaogruporespostaadmissaopreliminar();
         $sql = $dao->sql_avaliacao_preenchida(null, $campos, null, $where);
         $rs = \db_query($sql);
 
@@ -124,7 +152,7 @@ class Preenchimentos
         $group = " group by eso03_cgm";
         $campos = 'eso03_cgm as cgm, max(db107_sequencial) as preenchimento, ';
         $campos .= '(select z01_cgccpf from cgm where z01_numcgm = eso03_cgm) as inscricao_empregador ';
-        $dao = new \cl_avaliacaogruporespostacgm;
+        $dao = new cl_avaliacaogruporespostacgm;
         $sql = $dao->sql_avaliacao_preenchida(null, $campos, null, $where . $group);
         $rs = \db_query($sql);
 
@@ -154,7 +182,7 @@ class Preenchimentos
         $group = " group by eso35_empregador, eso35_cnpj";
         $campos = ['eso35_empregador as cgm', 'max(db107_sequencial) as preenchimento', 'eso35_cnpj as cnpj_obras'];
         $campos[] = '(select z01_cgccpf from cgm where z01_numcgm = eso35_empregador) as inscricao_empregador ';
-        $dao = new \cl_avaliacaogruporespostaobras();
+        $dao = new cl_avaliacaogruporespostaobras();
         $sql = $dao->avaliacaoPreenchida($campos, $where, $group);
 
         $rs = \db_query($sql);
@@ -284,7 +312,7 @@ class Preenchimentos
         $dadosDoPreenchimento = db_utils::getCollectionByRecord($rs);
 
         $campos = ' distinct z01_numcgm as cgm, z01_cgccpf as documento, z01_nome as nome, r70_instit as instituicao';
-        $dao = new \cl_rhlota();
+        $dao = new cl_rhlota();
 
         $where = "r70_instit = {$instituicao} ";
         $where .= "and z01_numcgm = {$cgmEmpregador}";
@@ -330,7 +358,7 @@ class Preenchimentos
             '(select z01_cgccpf from cgm where z01_numcgm = eso04_cgm) as inscricao_empregador'
         ];
 
-        $dao = new \cl_avaliacaogruporespostalotacao;
+        $dao = new cl_avaliacaogruporespostalotacao;
         $sql = $dao->avaliacaoPreenchida($campos, $where, $group);
         $rs = \db_query($sql);
 
@@ -360,7 +388,7 @@ class Preenchimentos
             '(select z01_cgccpf from cgm where z01_numcgm = eso05_cgm) as inscricao_empregador'
         ];
 
-        $dao = new \cl_avaliacaogruporespostaprocesso;
+        $dao = new cl_avaliacaogruporespostaprocesso;
         $sql = $dao->avaliacaoPreenchida($campos, $where, $group);
         $rs = \db_query($sql);
 
@@ -372,7 +400,7 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoCargo($codigoFormulario, $instituicao = false, $cgmEmpregador = null)
     {
-        $dao = new \cl_cargo();
+        $dao = new cl_cargo();
         $sql = $dao->avaliacaoPreenchida($codigoFormulario, $instituicao, $this->responsavelPreenchimento);
         $rs = \db_query($sql);
 
@@ -387,7 +415,7 @@ class Preenchimentos
         $dadosDoPreenchimento = db_utils::getCollectionByRecord($rs);
 
         $campos = ' distinct z01_numcgm as cgm, z01_cgccpf as documento, z01_nome as nome, r70_instit as instituicao';
-        $dao = new \cl_rhlota();
+        $dao = new cl_rhlota();
 
         $where = "r70_instit = {$instituicao} ";
         $where .= "and z01_numcgm = {$cgmEmpregador}";
@@ -488,7 +516,7 @@ class Preenchimentos
 
     public function buscarUltimoAvisoPrevio($cgm)
     {
-        $daoAvaliacaoAvisoPrevio = new \cl_avaliacaogruporespostaavisoprevio();
+        $daoAvaliacaoAvisoPrevio = new cl_avaliacaogruporespostaavisoprevio();
 
         $campos = [
             'distinct db107_sequencial as preenchimento',
@@ -584,7 +612,7 @@ class Preenchimentos
             'eso15_codigorescisao as referencia',
         ];
 
-        $dao = new \cl_avaliacaogruporespostarhpesrescisao();
+        $dao = new cl_avaliacaogruporespostarhpesrescisao();
         $consultaPreenchimento = $dao->sql_query_formulario($campos, $where, $group);
         $consultaPreenchimento = db_query($consultaPreenchimento);
 
@@ -611,7 +639,7 @@ class Preenchimentos
         $dataInicio = null,
         $dataFim = null
     ) {
-        $daoExclusaoEventos = new \cl_avaliacaogruporespostaexclusaoeventos();
+        $daoExclusaoEventos = new cl_avaliacaogruporespostaexclusaoeventos();
 
         $campos = [
             "db107_sequencial AS preenchimento",
@@ -672,7 +700,7 @@ class Preenchimentos
             "z01_cgccpf as inscricao_empregador"
         ];
 
-        $dao = new \cl_avaliacaogruporespostatsveinicial;
+        $dao = new cl_avaliacaogruporespostatsveinicial;
         $sql = $dao->sql_avaliacao_preenchida($campos, [], $where, $group);
         $rs = \db_query($sql);
 
@@ -713,7 +741,7 @@ class Preenchimentos
         ];
 
         $group = " group by eso24_rhpessoal, z01_cgccpf, eso24_codigorescisao";
-        $dao = new \cl_avaliacaogruporespostatertrabasemvinc();
+        $dao = new cl_avaliacaogruporespostatertrabasemvinc();
         $sql = $dao->sql_query_avaliacao_servidor_sem_vinculo($campos, $where, $group);
         $rs = \db_query($sql);
 
@@ -736,7 +764,7 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoTrabalhoIntermitente($cgmEmpregador)
     {
-        $daoTrabalhoIntermitente = new \cl_avaliacaogruporespostatrabintermitente();
+        $daoTrabalhoIntermitente = new cl_avaliacaogruporespostatrabintermitente();
 
         $campos = [
             "db107_sequencial AS preenchimento",
@@ -788,7 +816,7 @@ class Preenchimentos
             "(select z01_cgccpf from cgm where z01_numcgm = {$codigoCgmEmpregador}) as inscricao_empregador "
         ];
 
-        $dao = new \cl_avaliacaogruporespostarhpessoalalteracao();
+        $dao = new cl_avaliacaogruporespostarhpessoalalteracao();
         $sSql = " group by eso17_rhpessoal";
 
         $buscaPreenchimento = $dao->sql_query_avaliacao_alteracao_servidor($campos, $where, $sSql);
@@ -812,7 +840,7 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoReintegracao($cgmEmpregador)
     {
-        $daoReintegracao = new \cl_avaliacaogruporespostareintegracao();
+        $daoReintegracao = new cl_avaliacaogruporespostareintegracao();
 
         $campos = [
             "db107_sequencial AS preenchimento",
@@ -841,7 +869,7 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoAlteracaoContratual($cgmEmpregador)
     {
-        $daoAlteracaoContratual = new \cl_avaliacaogruporespostaaltercontratual();
+        $daoAlteracaoContratual = new cl_avaliacaogruporespostaaltercontratual();
 
         $campos = [
             "db107_sequencial AS preenchimento",
@@ -893,7 +921,7 @@ class Preenchimentos
         $campos = " eso23_rhpessoal as matricula, max(db107_sequencial) as preenchimento, ";
         $campos .= " (select z01_cgccpf from cgm where z01_numcgm = {$cgmEmpregador}) as inscricao_empregador ";
 
-        $dao = new \cl_avaliacaogruporespostatsvealteracao;
+        $dao = new cl_avaliacaogruporespostatsvealteracao;
         $sql = $dao->sql_avaliacao_preenchida(null, $campos, null, $where . $group);
         $rs = \db_query($sql);
 
@@ -910,7 +938,7 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoContribuinte()
     {
-        $daoAlteracaoCadastral = new \cl_avaliacaogruporespostacontribuinte();
+        $daoAlteracaoCadastral = new cl_avaliacaogruporespostacontribuinte();
 
         $campos = [
             "db107_sequencial AS preenchimento",
@@ -939,7 +967,7 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoRemuneracaoRGPS($cgmEmpregador)
     {
-        $daoRemuneracaoRGPS = new \cl_avaliacaogruporespostaremuneracaorgps();
+        $daoRemuneracaoRGPS = new cl_avaliacaogruporespostaremuneracaorgps();
 
         $campos = [
             "eso28_avaliacaogruporesposta as identificador",
@@ -980,7 +1008,7 @@ class Preenchimentos
             'efd02_processo AS identificador',
             'z01_cgccpf AS inscricao_contribuinte'
         ];
-        $dao = new \cl_avaliacaogruporespostaefdprocesso();
+        $dao = new cl_avaliacaogruporespostaefdprocesso();
         $sql = $dao->sql_query(null, implode(', ', $campos), null, implode(' and ', $where));
 
         $rs = \db_query($sql);
@@ -998,7 +1026,7 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoEFDServicosTomados($ano = null, $mes = null)
     {
-        $daoRetServicosTomados = new \cl_avaliacaogruporespostaretservicostomados();
+        $daoRetServicosTomados = new cl_avaliacaogruporespostaretservicostomados();
 
         $campos = [
             "db107_sequencial AS preenchimento",
@@ -1038,7 +1066,7 @@ class Preenchimentos
 
     public function buscarUltimoPreenchimentoEFDExclusaoEventos()
     {
-        $dao = new \cl_avaliacaogruporespostaexclusaoeventosefd();
+        $dao = new cl_avaliacaogruporespostaexclusaoeventosefd();
 
         $campos = [
             "db107_sequencial AS preenchimento",
@@ -1078,7 +1106,7 @@ class Preenchimentos
             'efd05_competencia AS identificador',
             'z01_cgccpf AS inscricao_contribuinte'
         ];
-        $dao = new \cl_avaliacaogruporespostaefdr2020();
+        $dao = new cl_avaliacaogruporespostaefdr2020();
         $sql = $dao->sql_query(null, implode(', ', $campos), null, implode(' and ', $where));
 
         $rs = \db_query($sql);
@@ -1101,7 +1129,7 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoTotalizacaoPagamentosContingencia()
     {
-        $dao = new \cl_avaliacaogruporespostatotalizacaopagamentocontingencia();
+        $dao = new cl_avaliacaogruporespostatotalizacaopagamentocontingencia();
         $campos = [
             "eso34_sequencial as identificador",
             "eso34_avaliacaogruporesposta as preenchimento",
@@ -1135,7 +1163,7 @@ class Preenchimentos
      */
     public function buscarUltimoPreenchimentoFechamentoEventosPeriodicos($indicativoPeriodoApuracao, $ano, $mes = null)
     {
-        $dao = new \cl_avaliacaogruporespostaesocials1299();
+        $dao = new cl_avaliacaogruporespostaesocials1299();
         $campos = [
             "eso33_sequencial as identificador",
             "eso33_avaliacaogruporesposta as preenchimento",
@@ -1183,7 +1211,7 @@ class Preenchimentos
             "concat(eso32_ano, '-', lpad(eso32_mes::text, 2, '0')) as identificador",
             "z01_cgccpf AS inscricao_contribuinte"
         ];
-        $dao = new \cl_avaliacaogruporespostafechamentoefd();
+        $dao = new cl_avaliacaogruporespostafechamentoefd();
         $sql = $dao->sql_query(null, implode(', ', $campos), null, implode(' and ', $where));
 
         $rs = \db_query($sql);
@@ -1250,7 +1278,7 @@ class Preenchimentos
             'eso36_cpf as cpf_cat',
             'eso36_data as data_cat'
         ];
-        $dao = new \cl_esoacidentetrabalho();
+        $dao = new cl_esoacidentetrabalho();
         $sql = $dao->avaliacaoPreenchida($campos, $where, $group);
 
         $rs = \db_query($sql);
@@ -1294,7 +1322,7 @@ class Preenchimentos
             'max(db107_sequencial) as preenchimento',
             'eso37_cpf as cpf'
         ];
-        $dao = new \cl_avaliacaogruporespostamonitoramentosaude();
+        $dao = new cl_avaliacaogruporespostamonitoramentosaude();
         $sql = $dao->avaliacaoPreenchida($campos, $where, $group);
 
         $rs = \db_query($sql);

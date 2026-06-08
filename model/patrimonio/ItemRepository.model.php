@@ -26,7 +26,6 @@
  */
 
 require_once modification("model/patrimonio/Item.model.php");
-use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 
 /**
  * Item

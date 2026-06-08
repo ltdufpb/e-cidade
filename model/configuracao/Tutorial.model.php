@@ -82,7 +82,7 @@ class Tutorial {
 
   public function toObject() {
 
-    $objTutorial = new \stdClass();
+    $objTutorial = new stdClass();
 
     $objTutorial->id = $this->getId();
     $objTutorial->descricao = $this->getDescricao();
@@ -127,7 +127,7 @@ class Tutorial {
     }
 
     if ($alteracao) {
-      foreach(\TutorialEtapaRepository::getByTutorial($this) as $step) {
+      foreach(TutorialEtapaRepository::getByTutorial($this) as $step) {
         if (!in_array($step->getId(), $etapasSalvas)) {
           $step->remove();
         }

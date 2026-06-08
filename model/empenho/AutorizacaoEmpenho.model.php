@@ -1062,7 +1062,7 @@ class AutorizacaoEmpenho
 
     /**
      * Retorna a licitação de origem
-     * @return \licitacao
+     * @return licitacao
      */
     public function getLicitacao()
     {
@@ -1083,7 +1083,7 @@ class AutorizacaoEmpenho
 
     /**
      * Retorna o processo de compras de origem
-     * @return \ProcessoCompras
+     * @return ProcessoCompras
      */
     public function getProcessoCompras()
     {
@@ -1393,7 +1393,7 @@ class AutorizacaoEmpenho
                     } else {
                         $oItemLicitacao = new ItemLicitacao($item->liclicitem);
                         $pccoddot = new itemSolicitacao($oItemLicitacao->getItemSolicitacao()->getCodigoItemSolicitacao());
-                        $aReservas = (new itemSolicitacao())->getReservasSaldoDotacao($pccoddot->getDotacoes()[0]->iCodigoDotacaoItem);
+                        $aReservas = new itemSolicitacao()->getReservasSaldoDotacao($pccoddot->getDotacoes()[0]->iCodigoDotacaoItem);
                         for ($i = 0; $i < count($aReservas); $i++){
                             $oDaoOrcReservaSol->excluir("", "o82_codres = {$aReservas[$i]->codigoreserva}");
                             $oDaoOrcReserva->excluir($aReservas[$i]->codigoreserva);

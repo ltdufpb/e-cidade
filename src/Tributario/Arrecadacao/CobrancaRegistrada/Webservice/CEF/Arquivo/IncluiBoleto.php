@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo;
 
+use stdClass;
+use DBString;
 use DOMDocument;
 
 /**
@@ -46,7 +48,7 @@ class IncluiBoleto implements RequisicaoInterface
    *
    * @param stdClass $oRegistro
    */
-  public function __construct(private readonly \stdClass $oRegistro)
+  public function __construct(private readonly stdClass $oRegistro)
   {
     $this->oXml      = new DOMDocument("1.0", "utf-8");
     $this->sOperacao = "INCLUI_BOLETO";
@@ -167,7 +169,7 @@ class IncluiBoleto implements RequisicaoInterface
       $oNome     = $this->oXml->createElement("NOME", htmlspecialchars(mb_convert_encoding($this->oRegistro->nome, 'UTF-8', 'ISO-8859-1')));
     }
 
-    $mensagemRecibo = \DBString::removerAcentuacao(\DBString::removerCaracteresEspeciais($this->oRegistro->mensagemRecibo));
+    $mensagemRecibo = DBString::removerAcentuacao(DBString::removerCaracteresEspeciais($this->oRegistro->mensagemRecibo));
     
     if (!empty($mensagemRecibo)) {
       

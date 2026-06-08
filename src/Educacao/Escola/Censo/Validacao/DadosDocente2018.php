@@ -2,6 +2,7 @@
 
 namespace ECidade\Educacao\Escola\Censo\Validacao;
 
+use Override;
 use DadosCensoDocente2016;
 use DBString;
 use ExportacaoCensoBase;
@@ -9,7 +10,7 @@ use IExportacaoCenso;
 
 class DadosDocente2018 extends DadosCensoDocente2016
 {
-    #[\Override]
+    #[Override]
     protected static function validarRegistro40Coluna5Regra1($dadosDocente, $registro30, $registro40, IExportacaoCenso $exportacao)
     {
         if ($registro30->nacionalidade_docente != 3 && empty($registro40->numero_cpf)) {
@@ -25,7 +26,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return true;
     }
 
-    #[\Override]
+    #[Override]
     protected static function validarRegistro30Coluna12($dadosDocente, $exportacao, $registro30, $registro40)
     {
         $valido = true;
@@ -53,7 +54,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return $valido;
     }
 
-    #[\Override]
+    #[Override]
     protected static function validarRegistro30Coluna13($dadosDocente, $exportacao, $registro30, $registro40)
     {
         $valido = true;
@@ -85,7 +86,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return $valido;
     }
 
-    #[\Override]
+    #[Override]
     protected static function validarRegistro30Coluna12Regra1($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
         if ($registro30->filiacao == 0 && !empty($registro30->filiacao_1)) {
@@ -171,7 +172,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return true;
     }
 
-    #[\Override]
+    #[Override]
     protected static function validarRegistro30Coluna13Regra4($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
         $filiacao1 = trim((string) $registro30->filiacao_1);
@@ -188,7 +189,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return true;
     }
 
-    #[\Override]
+    #[Override]
     protected static function validarRegistro30Coluna13Regra5($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
         if (!DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_4)) {

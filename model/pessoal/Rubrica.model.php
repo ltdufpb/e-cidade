@@ -891,7 +891,7 @@ class Rubrica
     }
 
     /**
-     * @return \CgmFisico|\CgmJuridico
+     * @return CgmFisico|CgmJuridico
      */
     public function getEmpresaPrevidenciaPrivada()
     {

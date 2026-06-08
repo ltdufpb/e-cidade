@@ -102,21 +102,21 @@ class convenio {
 
   private function geraLinhaBarra($iNumpre,$iNumpar,$sValor,$sVlrbar,$dDataVenc,$iTercDig,$dataVencimento = null) {
     if ($dataVencimento != null) {
-      $dataSelecionada = new \DBDate($dDataVenc);
-      $dataSelecionada = $dataSelecionada->convertTo(\DBDate::DATA_EN);
-      $dataVencimento = new \DBDate($dataVencimento);
-      $dataVencimento = $dataVencimento->convertTo(\DBDate::DATA_EN);
+      $dataSelecionada = new DBDate($dDataVenc);
+      $dataSelecionada = $dataSelecionada->convertTo(DBDate::DATA_EN);
+      $dataVencimento = new DBDate($dataVencimento);
+      $dataVencimento = $dataVencimento->convertTo(DBDate::DATA_EN);
       $data = $dataVencimento >= $dataSelecionada ? $dataVencimento : $dataSelecionada;
 
-      $dataVencimento = new \DBDate($data);
-      $dDataVenc = $dataVencimento->convertTo(\DBDate::DATA_PTBR);
+      $dataVencimento = new DBDate($data);
+      $dDataVenc = $dataVencimento->convertTo(DBDate::DATA_PTBR);
     }else{
       $data = $dDataVenc;
       $data = str_replace("/","",$data);
     }
     $sDataVencimento = str_replace("-","",$data);
 
-    $this->vencimento = new \DBDate($dDataVenc);
+    $this->vencimento = new DBDate($dDataVenc);
 
     if ($this->iModalidadeConvenio == 1) {
 
@@ -254,7 +254,7 @@ class convenio {
 
       //Ajustado transações para poder gerar recibo a partir da API do Laravel
       if (is_null($conn)) {
-          \DB::beginTransaction();
+          DB::beginTransaction();
       } else {
           db_query($conn, "begin");
       }
@@ -264,7 +264,7 @@ class convenio {
 	    pg_lo_export  ( "$oBanco->db90_logo",$sCaminho);
 
         if (is_null($conn)) {
-            \DB::commit();
+            DB::commit();
         } else {
             db_query($conn, "commit");
         }

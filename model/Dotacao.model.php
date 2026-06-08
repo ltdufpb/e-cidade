@@ -320,7 +320,7 @@ class Dotacao
      * @return integer
      * @see getAno
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function getAnoUsu()
     {
         return $this->iAnoUsu;

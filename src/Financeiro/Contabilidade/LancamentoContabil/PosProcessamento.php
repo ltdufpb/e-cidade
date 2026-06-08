@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\Financeiro\Contabilidade\LancamentoContabil;
 
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Conta;
+
 /**
  * Class PosProcessamento
  * Classe utilizada para executar validações no pos processamento
@@ -12,7 +14,7 @@ class PosProcessamento
      * @var array
      */
     private static $classes = [
-        \ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Conta::class,
+        Conta::class,
         '\ECidade\Financeiro\Contabilidade\LancamentoContabil\Validacao\Atributos'
     ];
 

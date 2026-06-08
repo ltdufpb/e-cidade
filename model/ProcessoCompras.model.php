@@ -619,7 +619,7 @@ class ProcessoCompras
                 }
                 $oDados->autorizacaogeradas = [];
                 if (!empty($oDados->codigoitemprocesso)) {
-                    $oDados->autorizacaogeradas = (new licitacao())->getAutorizacoes($oDados->codigoitemprocesso, $oDados->codigodotacao);
+                    $oDados->autorizacaogeradas = new licitacao()->getAutorizacoes($oDados->codigoitemprocesso, $oDados->codigodotacao);
                 }
                 /**
                  * busca o parametro de casas decimais para formatar o valor jogado na grid
@@ -772,7 +772,7 @@ class ProcessoCompras
                  * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e a solictacao
                  */
 
-                $aReservas = (new itemSolicitacao())->getReservasSaldoDotacao($oItem->pcdotac);
+                $aReservas = new itemSolicitacao()->getReservasSaldoDotacao($oItem->pcdotac);
 
 
                 $iUnidade = db_getsession("DB_coddepto");
@@ -1155,21 +1155,21 @@ class ProcessoCompras
         $sql = $oDaoSolicitacao->sql_query_consulta(null, "pc12_tipo, pc10_numero", '', $where);
         $rs = $oDaoSolicitacao->sql_record($sql);
 
-        $solicita = \db_utils::fieldsMemory($rs, 0)->pc10_numero;
-        $iTipoCompra = \db_utils::fieldsMemory($rs, 0)->pc12_tipo;
+        $solicita = db_utils::fieldsMemory($rs, 0)->pc10_numero;
+        $iTipoCompra = db_utils::fieldsMemory($rs, 0)->pc12_tipo;
 
         $oDaoSolicitaVinculo = new cl_solicitavinculo();
         $where = "pc53_solicitafilho = {$solicita}";
         $sql = $oDaoSolicitaVinculo->sql_query_file('', 'pc53_solicitapai', "", $where);
 
         $rs = $oDaoSolicitaVinculo->sql_record($sql);
-        $solicitaVinculo = \db_utils::fieldsMemory($rs, 0)->pc53_solicitapai;
+        $solicitaVinculo = db_utils::fieldsMemory($rs, 0)->pc53_solicitapai;
 
         $clliclicitem = new cl_liclicitem();
         $where = "pc11_numero={$solicitaVinculo} and l03_codcom = {$iTipoCompra}";
         $sql = $clliclicitem->sql_query(null, "distinct l20_codigo", "l20_codigo", $where);
         $rs = $clliclicitem->sql_record($sql);
-        $l20_codigo = \db_utils::fieldsMemory($rs, 0)->l20_codigo;
+        $l20_codigo = db_utils::fieldsMemory($rs, 0)->l20_codigo;
 
         return new licitacao($l20_codigo);
     }

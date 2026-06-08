@@ -40,7 +40,7 @@ class importacaoCenso2018 extends importacaoCenso2015
         $this->validarArquivoEscola = false;
     }
 
-    #[\Override]
+    #[Override]
     public function importarCodigoInep($aLinhasArquivo)
     {
         foreach ($aLinhasArquivo as $iIndLinha => $oLinha) {
@@ -106,7 +106,7 @@ class importacaoCenso2018 extends importacaoCenso2015
      * @throws DBException
      * @return boolean
      */
-    #[\Override]
+    #[Override]
     protected function validaTurma(DBLayoutLinha $oLinha)
     {
         $sNomeTurmaCensoNovo = str_replace(['ª', 'º'], ['', ''], trim($oLinha->nome_turma));
@@ -148,7 +148,7 @@ class importacaoCenso2018 extends importacaoCenso2015
      * @throws DBException
      * @return boolean
      */
-    #[\Override]
+    #[Override]
     protected function atualizaCodigoInepAluno(DBLayoutLinha $oLinha)
     {
         $aDadosAluno = $this->getDadosAluno($oLinha);
@@ -193,7 +193,7 @@ class importacaoCenso2018 extends importacaoCenso2015
      * @throws DBException
      * @return boolean
      */
-    #[\Override]
+    #[Override]
     protected function atualizaCodigoInepTurma(DBLayoutLinha $oLinha)
     {
         /**

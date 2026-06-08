@@ -73,11 +73,11 @@ class Admissao
             $resultadoAdmissao = \db_query($sqlAdmissao);
 
             if (!$resultadoAdmissao) {
-                throw new \DBException("Houve um erro ao buscar dados admissional da matrícula {$matricula}.");
+                throw new DBException("Houve um erro ao buscar dados admissional da matrícula {$matricula}.");
             }
 
             if (pg_num_rows($resultadoAdmissao) > 0) {
-                $admissao = \db_utils::fieldsMemory($resultadoAdmissao, 0);
+                $admissao = db_utils::fieldsMemory($resultadoAdmissao, 0);
                 $this->setIsTemporario($admissao->h07_tempor);
                 $this->setJustificativaLegal($admissao->h07_justif);
                 $this->setTipoAdmissaoMatricula($admissao->h07_tipadm);

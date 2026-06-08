@@ -2,6 +2,8 @@
 
 namespace ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Model;
 
+use cl_empprestatip;
+
 class TipoPrestacao
 {
 
@@ -33,7 +35,7 @@ class TipoPrestacao
     public function __construct($codigoTipoPrestacao = null)
     {
         if ($codigoTipoPrestacao) {
-            $dao = new \cl_empprestatip();
+            $dao = new cl_empprestatip();
             $sql = $dao->sql_query_file($codigoTipoPrestacao);
 
             $rs = $dao->sql_record($sql);

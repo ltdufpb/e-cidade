@@ -1,6 +1,9 @@
 <?php
 namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Importar;
 
+use TurmaRepository;
+use AlunoMatriculaCenso;
+use TurmaCenso;
 use Aluno;
 use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\Helpers\Pessoa;
@@ -217,7 +220,7 @@ class Importar implements ImportarInterface
 
         $turmas = $this->buscarCodigoTurmaSistema($codigoTurma);
         foreach ($turmas as $codigo) {
-            $turma = \TurmaRepository::getTurmaByCodigo($codigo);
+            $turma = TurmaRepository::getTurmaByCodigo($codigo);
 
             if (is_null($turma->getCodigo())) {
                 $mensagem = sprintf(
@@ -313,7 +316,7 @@ class Importar implements ImportarInterface
         $aluno->setCodigoInep($registro->getCodigoInep());
         $aluno->salvar();
 
-        $oAlunoMatriculaCenso = new \AlunoMatriculaCenso($aluno, $this->censo->getAno());
+        $oAlunoMatriculaCenso = new AlunoMatriculaCenso($aluno, $this->censo->getAno());
         $oAlunoMatriculaCenso->setTurmaCenso($registro->getCodigoTurmaInep());
         $oAlunoMatriculaCenso->setMatriculaCenso($registro->getCodigoMatricula());
         $oAlunoMatriculaCenso->salvar();
@@ -338,7 +341,7 @@ class Importar implements ImportarInterface
         $turmas = $this->buscarCodigoTurmaSistema($codigoTurma);
 
         foreach ($turmas as $codigo) {
-            $oTurma = \TurmaRepository::getTurmaByCodigo($codigo);
+            $oTurma = TurmaRepository::getTurmaByCodigo($codigo);
             $oTurma->setCodigoInep($registro->getCodigoTurmaInep());
             $oTurma->salvar();
         }
@@ -352,7 +355,7 @@ class Importar implements ImportarInterface
         if (Turma::isTurmaUnificada($codigoTurma)) {
             $codigo = Turma::decodeCodigoTurma($codigoTurma);
 
-            $turmaCenso = new \TurmaCenso($codigo);
+            $turmaCenso = new TurmaCenso($codigo);
             $turmasCensoTurma = $turmaCenso->getTurmaCensoTurma();
             foreach ($turmasCensoTurma as $turmaCensoTurma) {
                 $turmas[] = $turmaCensoTurma->getTurma()->getCodigo();

@@ -24,10 +24,9 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\Financeiro\Empenho\Model\Liquidacao;
 use ECidade\Financeiro\Empenho\Enum\HistoricoDocumento;
 use ECidade\Financeiro\Empenho\Mapper\TiposNotasParaiba;
-use ECidade\Financeiro\Empenho\Model;
 use ECidade\Patrimonial\Acordo\RegimeCompetencia\Repository\Reconhecimento;
 use ECidade\Patrimonial\Acordo\RegimeCompetencia\Repository\RegimeCompetencia;
 
@@ -410,7 +409,7 @@ class empenho
                     }
                 }
 
-                $oDaoExec = new \cl_conlancamemp();
+                $oDaoExec = new cl_conlancamemp();
                 $sWhere ="c75_numemp = {$oEmpenhoFinanceiro->getNumero()} and c71_coddoc = 4010";
                 $sqlBuscaocumento = $oDaoExec->sql_query_documentos(null, 'c71_coddoc', null, $sWhere);
                 $rsBuscaDocumento = db_query($sqlBuscaocumento);
@@ -475,7 +474,7 @@ class empenho
                 }
 
                 if ($documento == HistoricoDocumento::LIQUIDACAO) {
-                    $liquidacaoModel = new Model\Liquidacao();
+                    $liquidacaoModel = new Liquidacao();
                     $sHistoricoOrdem = $liquidacaoModel->obterComplemento($oEmpenhoFinanceiro->getCodigoContrato(), $this->getCompetenciaLiquidacao(), $sHistoricoOrdem);
                 }
 
@@ -926,7 +925,7 @@ class empenho
                 }
             }
 
-            $oDaoExec = new \cl_conlancamemp();
+            $oDaoExec = new cl_conlancamemp();
             $sWhere ="c75_numemp = {$oEmpenhoFinanceiro->getNumero()} and c71_coddoc = 333";
             $sqlBuscaocumento = $oDaoExec->sql_query_documentos(null, 'c71_coddoc', null, $sWhere);
             $rsBuscaDocumento = db_query($sqlBuscaocumento);

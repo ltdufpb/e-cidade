@@ -28,6 +28,11 @@
 
 namespace ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao;
 
+use cl_importacaoplanoconta;
+use DBException;
+use cl_modeloplanoconta;
+use db_utils;
+
 class Exercicio {
 
 	/**
@@ -70,12 +75,12 @@ class Exercicio {
 
 	public static function exercicioImportado($iExercicio){
 
-		$oDaoImportacao = new \cl_importacaoplanoconta();
+		$oDaoImportacao = new cl_importacaoplanoconta();
 		$sSqlImportacao = $oDaoImportacao->sql_query(null, "1", null, "c94_exercicio = {$iExercicio}");
 		$rsImportacao   = db_query($sSqlImportacao);
 
 		if (!$rsImportacao) {
-			throw new \DBException("Houve uma falha ao verificar a importação do exercício {$iExercicio}.");
+			throw new DBException("Houve uma falha ao verificar a importação do exercício {$iExercicio}.");
 		}
 
 		if(pg_num_rows($rsImportacao) > 0){
@@ -87,9 +92,9 @@ class Exercicio {
     /**
      * Busca os exercícios para atualização do plano de contas do PCASP
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
-	public static function getExercicioPlanoContaPcasp()
+    public static function getExercicioPlanoContaPcasp()
     {
         return self::getExercicios('c94_sequencial < 1000');
     }
@@ -97,7 +102,7 @@ class Exercicio {
     /**
      * Busca os exercícios disponíveis par ao ementário da receita
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
     public static function getExercicioEmentarioDaReceita()
     {
@@ -107,38 +112,38 @@ class Exercicio {
     /**
      * @param null $where
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
-	private static function getExercicios($where = null) {
+    private static function getExercicios($where = null) {
 
-		$oDaoModelo 		= new \cl_modeloplanoconta();
+		$oDaoModelo 		= new cl_modeloplanoconta();
 		$sSqlExercicios = $oDaoModelo->sql_query_file(null, "distinct c94_exercicio as ano", "c94_exercicio", $where);
 
 		$rsExercicio 		= db_query($sSqlExercicios);
 
 		if (!$rsExercicio) {
-			throw new \DBException("Houve uma falha ao buscar os exercícios disponíveis.");
+			throw new DBException("Houve uma falha ao buscar os exercícios disponíveis.");
 		}
 
 		if (pg_num_rows($rsExercicio) == 0) {
-			throw new \DBException("Não foram encontrados exercícios para importação.");
+			throw new DBException("Não foram encontrados exercícios para importação.");
 		}
 
 		$aExercicios = [];
 		
 		for ($i=0; $i < pg_num_rows($rsExercicio); $i++) { 
 
-			$oStd = \db_utils::fieldsMemory($rsExercicio, $i);
+			$oStd = db_utils::fieldsMemory($rsExercicio, $i);
 
 			$oExercicio = new Exercicio();
 			$oExercicio->setAno($oStd->ano);
 	
-			$oDaoImportacao = new \cl_importacaoplanoconta();
+			$oDaoImportacao = new cl_importacaoplanoconta();
 			$sSqlImportacao = $oDaoImportacao->sql_query(null, "1", null, "c94_exercicio = {$oStd->ano}");
 			$rsImportacao   = db_query($sSqlImportacao);
 
 			if (!$rsImportacao) {
-				throw new \DBException("Houve uma falha ao verificar a importação do exercício {$oStd->ano}.");
+				throw new DBException("Houve uma falha ao verificar a importação do exercício {$oStd->ano}.");
 			}
 
 			$oExercicio->setImportado(pg_num_rows($rsExercicio) == 0);

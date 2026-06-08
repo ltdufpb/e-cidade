@@ -2,6 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\Formatter;
 use Exception;
 use RubricaRepository;
@@ -21,7 +22,7 @@ class RubricaFormatter extends Formatter
      * @param array $dados
      * @return array
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $rubricasValidas = [];

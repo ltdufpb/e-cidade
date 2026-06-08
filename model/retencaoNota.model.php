@@ -979,7 +979,7 @@ class retencaoNota {
                                 $rsMovimento        = $oDaoEmpageMovSlips->sql_record($sSqlSlipMovimento);
                                 if ($oDaoEmpageMovSlips->numrows > 0) {
 
-                                    $oMovimentoSlip = \db_utils::fieldsMemory($rsMovimento,0);
+                                    $oMovimentoSlip = db_utils::fieldsMemory($rsMovimento,0);
                                     $nValorRetencao                      = round(($oMovimentoSlip->k107_valor - $oRetencao->e23_valorretencao),2);
                                     $oDaoEmpageMovSlips->k107_valor      = "$nValorRetencao";
                                     $oDaoEmpageMovSlips->k107_sequencial = $oMovimentoSlip->k107_sequencial;
@@ -987,7 +987,7 @@ class retencaoNota {
                                     if ($oDaoEmpageMovSlips->erro_status == 0) {
 
                                         $sErroMsg  = "Erro [10] - Não Foi possível recolher a retenção ({$oRetencao->e23_sequencial})";
-                                        throw new \Exception($sErroMsg);
+                                        throw new Exception($sErroMsg);
 
                                     }
                                 }
@@ -1013,7 +1013,7 @@ class retencaoNota {
                 if ($oRetencao->e21_retencaotipocalc != 5 || $oInstit->prefeitura == "f") {
 
 
-                    $oReciboAvulso = new \recibo(1, $this->getNumCgm());
+                    $oReciboAvulso = new recibo(1, $this->getNumCgm());
                     $oReciboAvulso->setConta($this->getConta());
                     $oReciboAvulso->adicionarRecurso($oDotacao->getRecurso());
                     $oReciboAvulso->setDataRecibo($this->getDataBase());
@@ -1076,7 +1076,7 @@ class retencaoNota {
                     //Incluimos uma nova planilha de retencao
 
                     $oPlanilha     = new planilhaRetencao(null, $oCgm->numcgm);
-                    $oNotaPlanilha = new \stdClass();
+                    $oNotaPlanilha = new stdClass();
 
                     $oNotaPlanilha->sCnpj               = $oNotaLiquidacao->oDadosOrdem->z01_cgccpf;
                     $oNotaPlanilha->dtNota              = $oNotaLiquidacao->oDadosOrdem->e69_dtnota;
@@ -1669,7 +1669,7 @@ class retencaoNota {
             $oDaoEmpAgePag->excluir($iCodigoMovimento);
 
             $oApropriacao = new Apropriacao($oEmpenhoFinanceiro, db_getsession('DB_anousu'));
-            $sDataEvento  = new \DateTime(date('Y-m-d', db_getsession('DB_datausu')));
+            $sDataEvento  = new DateTime(date('Y-m-d', db_getsession('DB_datausu')));
             $oApropriacao->setDataEvento($sDataEvento);
             $oApropriacao->apropriar($this->iCodNota, $this->iNotaLiquidacao, null, $iCodigoNovoMovimento);
         }
@@ -1843,7 +1843,7 @@ class retencaoNota {
         $sqlContaContabil = $daoTabrec->sql_query_conta_contabil($ano, $instituicao, "c61_reduz", $where);
         $rsReceitaCOntabil = db_query($sqlContaContabil);
         if (!$rsReceitaCOntabil) {
-            throw new \Exception("Erro ao pesquisar dados da conta Contabil da Receita da tesouraria {$receita}");
+            throw new Exception("Erro ao pesquisar dados da conta Contabil da Receita da tesouraria {$receita}");
         }
         if (pg_num_rows($rsReceitaCOntabil) == 0) {
             return null;

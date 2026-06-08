@@ -464,8 +464,8 @@ class DBAttDinamicoAtributo
 
             case \DBAttDinamicoAtributo::TIPO_DATE:
 
-                $data = new \DBDate($valor);
-                $valor = $data->getDate(\DBDate::DATA_PTBR);
+                $data = new DBDate($valor);
+                $valor = $data->getDate(DBDate::DATA_PTBR);
                 break;
 
             case \DBAttDinamicoAtributo::TIPO_BOOLEAN:
@@ -485,7 +485,7 @@ class DBAttDinamicoAtributo
     public function  getNomeFormula()
     {
 
-        $oDaoFormula = new \cl_db_formulas();
+        $oDaoFormula = new cl_db_formulas();
 
         $sSql = $oDaoFormula->sql_query($this->getFormula());
 

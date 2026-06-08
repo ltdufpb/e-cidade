@@ -2,6 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
 use stdClass;
 
 /**
@@ -42,7 +43,7 @@ class EmpregadorFormatter extends Formatter
      * @param array $dados
      * @return array|stdClass[]
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         // Pega os dados preenchidos em formulários
@@ -101,7 +102,7 @@ class EmpregadorFormatter extends Formatter
 
             unset($dadoEmpregador->infoOrgInternacional);
 
-            $dadoEmpregador->idePeriodo = new \stdClass();
+            $dadoEmpregador->idePeriodo = new stdClass();
             $dadoEmpregador->idePeriodo->iniValid = !empty($dadoEmpregador->infoCadastro->iniValid1000)
                 ? $dadoEmpregador->infoCadastro->iniValid1000 : null;
             $dadoEmpregador->idePeriodo->fimValid = !empty($dadoEmpregador->infoCadastro->fimValid1000)

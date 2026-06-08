@@ -1014,7 +1014,7 @@ abstract class CgmBase {
   }
 
   public function salvaCgmEnderecoSecundario() {
-    $oDaoCgmEndereco = new \cl_cgmendereco();
+    $oDaoCgmEndereco = new cl_cgmendereco();
 
     $sWhereCgmEnderSecundario = " z07_numcgm = ".$this->getCodigo()." and z07_tipo='S' ";
     $sSqlConsultaCgmEnderSecundario = $oDaoCgmEndereco->sql_query_file(null,'z07_sequencial',null,$sWhereCgmEnderSecundario);
@@ -1040,7 +1040,7 @@ abstract class CgmBase {
   }
 
   public function salvaCgmEndereco() {
-    $oDaoCgmEndereco = new \cl_cgmendereco();
+    $oDaoCgmEndereco = new cl_cgmendereco();
 
     $sWhereCgmEnderPrimario = " z07_numcgm = ".$this->getCodigo()." and z07_tipo='P' ";
     $sSqlConsultaCgmEnderPrimario = $oDaoCgmEndereco->sql_query_file(null,'z07_sequencial',null,$sWhereCgmEnderPrimario);
@@ -1069,7 +1069,7 @@ abstract class CgmBase {
     /**
      *  Consulta o código do município
      */
-    $oDaoDBConfig  = new \cl_db_config();
+    $oDaoDBConfig  = new cl_db_config();
 
     $sSqlConfig = $oDaoDBConfig->sql_query_file(db_getsession('DB_instit'), "munic");
     $rsConfig   = $oDaoDBConfig->sql_record($sSqlConfig);
@@ -1080,11 +1080,11 @@ abstract class CgmBase {
       throw new Exception("Falha ao salvar CGM, {$oDaoDBConfig->erro_msg}");
     }
 
-    $oDaoCgm = new \cl_cgm();
-    $oDaoCgmBairro = new \cl_db_cgmbairro();
-    $oDaoCgmRuas = new \cl_db_cgmruas();
-    $oDaoRuas = new \cl_ruas();
-    $oDaoBairro = new \cl_bairro();
+    $oDaoCgm = new cl_cgm();
+    $oDaoCgmBairro = new cl_db_cgmbairro();
+    $oDaoCgmRuas = new cl_db_cgmruas();
+    $oDaoRuas = new cl_ruas();
+    $oDaoBairro = new cl_bairro();
 
     if ( trim((string) $sMunicipio) == trim($this->getMunicipio())) {
       $rsEnderCGM = $oDaoCgm->sql_record($oDaoCgm->sql_query_ender($this->getCodigo()));

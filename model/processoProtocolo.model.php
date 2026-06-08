@@ -722,7 +722,7 @@ class processoProtocolo
      *
      * Retorna o código de andamento do processo
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     public function getPosicaoAtualAndamentoPadrao()
     {
@@ -748,7 +748,7 @@ class processoProtocolo
      *
      * Retorna o próximo departamento de andamento padrão de um processo
      * @return mixed - pode retornar um boolean em caso de erro ou integer em caso de sucesso
-     * @throws \Exception
+     * @throws Exception
      */
     public function getProximoDeptoAndamentoPadrao()
     {
@@ -953,7 +953,7 @@ class processoProtocolo
     /**
      * @param                 $despacho
      * @param                 $iIdUsuario
-     * @param \DBDepartamento $departamentos
+     * @param DBDepartamento $departamentos
      */
     public function adicionarDespachoDepartamento($despacho, $iIdUsuario, DBDepartamento $departamentos)
     {

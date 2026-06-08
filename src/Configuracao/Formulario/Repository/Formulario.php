@@ -27,6 +27,9 @@
 
 namespace ECidade\Configuracao\Formulario\Repository;
 
+use cl_avaliacao;
+use BusinessException;
+use db_utils;
 use ECidade\Configuracao\Formulario\Model\Formulario as FormularioModel;
 use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
 
@@ -61,7 +64,7 @@ class Formulario
      * Retorna a instancia do formulário por ID
      * @param $codigo
      * @return FormularioModel
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public static function getById($codigo)
     {
@@ -69,36 +72,36 @@ class Formulario
             return self::getInstance()->formularios[$codigo];
         }
 
-        $oDaoAvaliacao = new \cl_avaliacao();
+        $oDaoAvaliacao = new cl_avaliacao();
         $sSqlAvaliacao = $oDaoAvaliacao->sql_query_file((int)$codigo);
         $rsAvaliacao   = db_query($sSqlAvaliacao);
         if (!$rsAvaliacao) {
-            throw new \BusinessException("Erro ao pesquisar avaliações por Tipo");
+            throw new BusinessException("Erro ao pesquisar avaliações por Tipo");
         }
         if (pg_num_rows($rsAvaliacao) == 0) {
-            throw new \BusinessException("Formulário de código {$codigo} não existe no cadastro do e-cidade.");
+            throw new BusinessException("Formulário de código {$codigo} não existe no cadastro do e-cidade.");
         }
 
-        self::getInstance()->formularios[$codigo] = self::getInstance()->make(\db_utils::fieldsMemory($rsAvaliacao, 0));
+        self::getInstance()->formularios[$codigo] = self::getInstance()->make(db_utils::fieldsMemory($rsAvaliacao, 0));
         return self::getInstance()->formularios[$codigo];
     }
 
     /**
      * @param $iTipo
-     * @throws \BusinessException
+     * @throws BusinessException
      * @return FormularioModel[]
      */
     public static function getByTipo($iTipo)
     {
-        $oDaoAvaliacao = new \cl_avaliacao();
+        $oDaoAvaliacao = new cl_avaliacao();
         $sWhere        = "db101_avaliacaotipo = ".(int)$iTipo;
         $sSqlAvaliacao = $oDaoAvaliacao->sql_query_file(null, "*", null, $sWhere);
         $rsAvaliacao   = db_query($sSqlAvaliacao);
         if (!$rsAvaliacao) {
-            throw new \BusinessException("Erro ao pesquisar avaliações por Tipo");
+            throw new BusinessException("Erro ao pesquisar avaliações por Tipo");
         }
         $instancia    = self::getInstance();
-        $aFormularios = \db_utils::makeCollectionFromRecord($rsAvaliacao, function ($dados) use ($instancia) {
+        $aFormularios = db_utils::makeCollectionFromRecord($rsAvaliacao, function ($dados) use ($instancia) {
 
             $instancia->formularios[$dados->db101_sequencial] = $instancia->make($dados);
             return $instancia->formularios[$dados->db101_sequencial];

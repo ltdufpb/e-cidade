@@ -1,4 +1,6 @@
 <?php
+use ECidade\Financeiro\Empenho\Retencao\Apropriacao\Apropriacao;
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -392,7 +394,7 @@ class ordemPagamento
     $sObservacao .= "{$this->iCodOrdem}:";
 
     $cgm = $oInstituicao->getCgm()->getCodigo();
-    $oSlip = new \slip();
+    $oSlip = new slip();
 
     $oSlip->setContaCredito($iContaCredito);
     $oSlip->setContaDebito($iContaDebito);
@@ -785,7 +787,7 @@ class ordemPagamento
       if ($this->getValorPago() > 0) {
         $lAtualizaObjetoRetorno = false;
       }
-      $oRetencaoNota        = new \retencaoNota($oDadosOrdem->e69_codnota);
+      $oRetencaoNota        = new retencaoNota($oDadosOrdem->e69_codnota);
       $nValorTotalRetencoes = $oRetencaoNota->getValorRetencaoMovimento($this->getMovimentoAgenda(),false,
                                                                         $this->dtDataUsu );
       $nValorPagoTotalOrdem += $nValorTotalRetencoes;
@@ -1194,12 +1196,12 @@ class ordemPagamento
   }
 
   /**
-   * @param string $iCaracteristicaPeculiar
-   *
-   * @return bool
-   * @throws \BusinessException
-   * @throws \exception
-   */
+     * @param string $iCaracteristicaPeculiar
+     *
+     * @return bool
+     * @throws BusinessException
+     * @throws exception
+     */
     public function estornarOrdem($iCaracteristicaPeculiar = null )
     {
 
@@ -2597,8 +2599,8 @@ class ordemPagamento
               return;
           }
 
-          $apropriacao = new \ECidade\Financeiro\Empenho\Retencao\Apropriacao\Apropriacao($empenhoFinanceiro, $this->iAnoUsu);
-          $apropriacao->setDataEvento(new \DateTime($this->dtDataUsu));
+          $apropriacao = new Apropriacao($empenhoFinanceiro, $this->iAnoUsu);
+          $apropriacao->setDataEvento(new DateTime($this->dtDataUsu));
           $apropriacao->apropriar($this->oDadosOrdem->e69_codnota, $this->oDadosOrdem->e50_codord, $this->getCodigoGrupoCorrente(), $this->getMovimentoAgenda());
       }
 
@@ -2613,8 +2615,8 @@ class ordemPagamento
             return;
         }
 
-        $apropriacao = new \ECidade\Financeiro\Empenho\Retencao\Apropriacao\Apropriacao($empenhoFinanceiro, $this->iAnoUsu);
-        $apropriacao->setDataEvento(new \DateTime($this->dtDataUsu));
+        $apropriacao = new Apropriacao($empenhoFinanceiro, $this->iAnoUsu);
+        $apropriacao->setDataEvento(new DateTime($this->dtDataUsu));
         $this->sRetornoAutentica  = $apropriacao->estornar($this->oDadosOrdem->e69_codnota, $this->oDadosOrdem->e50_codord,
             $this->aRetencoes,
             $this->getCodigoGrupoCorrente(),

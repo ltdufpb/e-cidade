@@ -707,7 +707,7 @@ class licitacao
      * @param integer $iCodigoDotacao
      * @param integer $iOrcTipoRec
      * @param integer $cgmFornecedor Filtra somente os valores associados ao fornecedor informado
-     * @return \stdClass $oDadoValorParcial
+     * @return stdClass $oDadoValorParcial
      * @throws \Exception
      */
     public function getValoresParciais($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null, $cgmFornecedor = null)
@@ -1086,7 +1086,7 @@ class licitacao
                  * verificamos se exite reserva de saldo para a solicitacao;
                  * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e a solictacao
                  */
-                $aReservas = (new itemSolicitacao())->getReservasSaldoDotacao($oItem->pcdotac);
+                $aReservas = new itemSolicitacao()->getReservasSaldoDotacao($oItem->pcdotac);
                 $nNovoValorReserva = (float)str_replace(',', '.', $oItem->valortotal);
 
 

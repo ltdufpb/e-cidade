@@ -85,7 +85,7 @@ class AssentamentoSubstituicao extends Assentamento {
    * Persiste na base de dados um assentamento de substituição, 
    * salvando nas tabelas de assentamento e de assentamentosubstituição
    */
-  #[\Override]
+  #[Override]
   public function persist() {
 
     $oDaoAssentamentoSubstituicao = new cl_assentamentosubstituicao();
@@ -144,13 +144,13 @@ class AssentamentoSubstituicao extends Assentamento {
    * toJSON
    *
    */
-  #[\Override]
+  #[Override]
   public function toJSON() {
     
     $oDados = json_decode(parent::toJSON(), false);
     
     if (empty($oDados)) {
-      $oDados = new \stdClass();
+      $oDados = new stdClass();
     }
     $oDados->natureza                       = "substituicao";
     $oDados->matricula_servidor_substituido = ($this->getSubstituido() instanceof Servidor ? $this->getSubstituido()->getMatricula() : '');

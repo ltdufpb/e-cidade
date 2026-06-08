@@ -27,10 +27,13 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
+use Override;
+use DBDate;
+use Servidor;
+use LocalTrabalho;
+use DBException;
 use ECidade\RecursosHumanos\Pessoal\Model\AgenteNocivo;
 use ECidade\RecursosHumanos\Pessoal\Model\EquipamentoProtecao;
-use ECidade\RecursosHumanos\Pessoal\Model\EquipamentoProtecaoEpi;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorMovimentacao;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
 use ECidade\RecursosHumanos\Pessoal\Servidor\Model\Cargo;
@@ -40,12 +43,12 @@ use stdClass;
 class ExposicaoRiscoFormatter extends Formatter
 {
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $dadoAtual;
 
     /**
-     * @var \LocalTrabalho
+     * @var LocalTrabalho
      */
     private $localAtual;
 
@@ -90,13 +93,13 @@ class ExposicaoRiscoFormatter extends Formatter
     ];
     /**
      * @param array $dados
-     * @return array|\Servidor[]
-     * @throws \DBException
+     * @return array|Servidor[]
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
-        $dataInicioDefault = new \DBDate("2022-01-10");
+        $dataInicioDefault = new DBDate("2022-01-10");
         $this->ano = $dados->ano;
         $this->mes = $dados->mes;
         $this->inscricaoEmpregador = $dados->inscricao_empregador;

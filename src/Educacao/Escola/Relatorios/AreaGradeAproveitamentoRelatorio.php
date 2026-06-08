@@ -41,11 +41,6 @@ class AreaGradeAproveitamentoRelatorio
     // Colunas que compõe o Resultado Final
     protected $colunaAprov = 0;
     protected $colunaRF = 0;
-
-    /**
-     * @var FPDF
-     */
-    private $pdf;
     /**
      * @var GradeAproveitamentoAreaPorAreaService
      */
@@ -66,9 +61,8 @@ class AreaGradeAproveitamentoRelatorio
      * @param integer $tamanhoLinha
      * @throws Exception
      */
-    public function __construct(FPDF $pdf, private readonly Matricula $matricula, private $tamanhoLinha)
+    public function __construct(private readonly FPDF $pdf, private readonly Matricula $matricula, private $tamanhoLinha)
     {
-        $this->pdf = $pdf;
         $this->pdf->SetFillColor(230);
 
         db_inicio_transacao();

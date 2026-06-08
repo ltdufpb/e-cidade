@@ -2,8 +2,9 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao;
 
+use Exception;
+use stdClass;
 use ECidade\RecursosHumanos\ESocial\ESocialContextException;
-use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use \ECidade\V3\Extension\Registry;
 use \ECidade\Core\Config;
 use DBHttpRequest;
@@ -23,7 +24,7 @@ class ESocial
     /**
      * Dados a ser enviados
      *
-     * @var array|\stdClass
+     * @var array|stdClass
      */
     private $dados;
 
@@ -61,7 +62,7 @@ class ESocial
     /**
      * Seta os dados a ser enviados
      *
-     * @param \stdClass[] $dados
+     * @param stdClass[] $dados
      */
     public function setDados($dados)
     {
@@ -73,7 +74,7 @@ class ESocial
      *
      * @param string $method
      * @throws ESocialContextExceptionException
-     * @return null|\stdClass
+     * @return null|stdClass
      */
     public function request($method = "POST")
     {
@@ -134,7 +135,7 @@ class ESocial
             $this->httpRequest->send('/auth/login', 'POST', [
                 'body' => \json_encode((object) $dadosAPI['esocial'])
             ]);
-        } catch (\Exception) {
+        } catch (Exception) {
             throw new ESocialContextException("Erro ao conectar na API do eSocial.");
         }
 

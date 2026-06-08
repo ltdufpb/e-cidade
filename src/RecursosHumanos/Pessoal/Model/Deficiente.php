@@ -26,8 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
-use ECidade\Configuracao\Instituicao\Model\Instituicao;
-use ECidade\RecursosHumanos\Pessoal\Model\EquipamentoProtecao;
+use DBException;
+use db_utils;
 
 class Deficiente
 {
@@ -96,11 +96,11 @@ class Deficiente
             $rs = \db_query($sql);
 
             if (!$rs) {
-                throw new \DBException("Houve um erro ao buscar o deficiênte código {$codigo}.");
+                throw new DBException("Houve um erro ao buscar o deficiênte código {$codigo}.");
             }
 
             if (pg_num_rows($rs) > 0) {
-                $deficiencia = \db_utils::fieldsMemory($rs, 0);
+                $deficiencia = db_utils::fieldsMemory($rs, 0);
 
                 $this->setCodigo($deficiencia->rh253_matricula);
                 $this->setFisica($deficiencia->rh253_fisica);

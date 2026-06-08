@@ -400,7 +400,7 @@ class LancamentoRRA {
   /**
    * Responsável por calcular o valor de previdência para a parcela do RRA
    * @return float
-   * @throws \BusinessException
+   * @throws BusinessException
    */
   private function calcularPrevidencia () {
 
@@ -585,8 +585,8 @@ class LancamentoRRA {
 
   /**
    * Retorna os valores dos pensionistas do RRA
-   * @return \PensionistaRRA[]
-   * @throws \DBException
+   * @return PensionistaRRA[]
+   * @throws DBException
    */
   public function getPensionistas() {
 
@@ -612,9 +612,9 @@ class LancamentoRRA {
 
   /**
    * Adiciona um pensionista ao lançamento
-   * @param \CgmFisico $cgmFisico
+   * @param CgmFisico $cgmFisico
    * @param            $valor
-   * @return \PensionistaRRA
+   * @return PensionistaRRA
    */
   public function adicionarPensionista(CgmFisico $cgmFisico, $valor) {
 

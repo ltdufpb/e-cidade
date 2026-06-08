@@ -2,6 +2,25 @@
 
 namespace ECidade\Tributario\Issqn\Acao\Transicao\Entity;
 
+use BusinessException;
+use cl_issbase;
+use cl_issquant;
+use cl_isszona;
+use cl_escrito;
+use cl_issruas;
+use cl_issbairro;
+use cl_issmatric;
+use cl_iptuconstr;
+use cl_issprocesso;
+use cl_issbaseporte;
+use cl_cgmtipoempresa;
+use db_utils;
+use cl_tabativ;
+use cl_ativprinc;
+use cl_socios;
+use cl_issalvara;
+use Alvara;
+use AlvaraMovimentacaoLiberacao;
 use cl_isscadsimples;
 use DateTime;
 use ECidade\Configuracao\Workflow\Interfaces\Acao as AcaoInterface;
@@ -70,9 +89,9 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
         $this->buscarCgmsByDados();
 
         if (empty($this->dados)) {
-            throw new \BusinessException("Não há dados vinculados ao processo!");
+            throw new BusinessException("Não há dados vinculados ao processo!");
         } elseif (empty($this->cgms)) {
-            throw new \BusinessException("Cgms não criados!");
+            throw new BusinessException("Cgms não criados!");
         }
     }
 
@@ -130,17 +149,17 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
 
         $data             = date("Y-m-d", \db_getsession('DB_datausu'));
         $ano              = date("Y", \db_getsession('DB_datausu'));
-        $clissbase        = new \cl_issbase;
-        $clissquant       = new \cl_issquant;
-        $clisszona        = new \cl_isszona;
-        $clescrito        = new \cl_escrito;
-        $clissruas        = new \cl_issruas;
-        $clissbairro      = new \cl_issbairro;
-        $clissmatric      = new \cl_issmatric;
-        $cliptuconstr     = new \cl_iptuconstr;
-        $clissprocesso    = new \cl_issprocesso;
-        $clissbaseporte   = new \cl_issbaseporte;
-        $clcgmtipoempresa = new \cl_cgmtipoempresa;
+        $clissbase        = new cl_issbase;
+        $clissquant       = new cl_issquant;
+        $clisszona        = new cl_isszona;
+        $clescrito        = new cl_escrito;
+        $clissruas        = new cl_issruas;
+        $clissbairro      = new cl_issbairro;
+        $clissmatric      = new cl_issmatric;
+        $cliptuconstr     = new cl_iptuconstr;
+        $clissprocesso    = new cl_issprocesso;
+        $clissbaseporte   = new cl_issbaseporte;
+        $clcgmtipoempresa = new cl_cgmtipoempresa;
         $tipoEmpresa      = null;
 
         $sDataInicio = $data;
@@ -256,7 +275,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
                 $clisszona->incluir($clissbase->q02_inscr);
 
                 if ($clisszona->erro_status == 0) {
-                    throw new \Exception($clisszona->erro_msg);
+                    throw new Exception($clisszona->erro_msg);
                 }
             }
         }
@@ -356,10 +375,10 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
                 );
 
                 if (pg_num_rows($rs) > 0) {
-                    $idconst = \db_utils::fieldsMemory($rs, 0)->j39_idcons;
+                    $idconst = db_utils::fieldsMemory($rs, 0)->j39_idcons;
 
                     if (empty($matricula)) {
-                        throw new \Exception("Matricula não informada");
+                        throw new Exception("Matricula não informada");
                     }
 
                     $clissmatric->q05_inscr  = $clissbase->q02_inscr;
@@ -465,14 +484,14 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
     {
         $dataInicio = !empty($dataInicio) ? new DBDate($dataInicio)->getDate() : $dataInicio;
 
-        $cltabativ = new \cl_tabativ;
+        $cltabativ = new cl_tabativ;
 
         $result = $cltabativ->sql_record($cltabativ->sql_query_file(
             $this->clissbase->q02_inscr,
             '',
             'max(q07_seq)+1 as seq'
         ));
-        $oSeq = \db_utils::fieldsMemory($result, 0);
+        $oSeq = db_utils::fieldsMemory($result, 0);
 
         $cltabativ->q07_inscr  = $this->clissbase->q02_inscr;
         $cltabativ->q07_seq    = (is_null($oSeq) || $oSeq->seq == '') ? 1 : $oSeq->seq;
@@ -499,7 +518,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
 
     private function incluirAtividadePrincipal($q07_seq)
     {
-        $clativprinc = new \cl_ativprinc;
+        $clativprinc = new cl_ativprinc;
         $clativprinc->sql_record($clativprinc->sql_query_file($this->clissbase->q02_inscr));
         if ($clativprinc->numrows > 0) {
             $clativprinc->q88_inscr = $this->clissbase->q02_inscr;
@@ -521,7 +540,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
 
     private function atualizaDataIniEmpresa()
     {
-        $cltabativ = new \cl_tabativ;
+        $cltabativ = new cl_tabativ;
         $result = $cltabativ->sql_record($cltabativ->sql_query_file(
             '',
             '',
@@ -531,7 +550,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
         ));
 
         if ($cltabativ->numrows > 0) {
-            $datainicial = \db_utils::fieldsMemory($result, 0)->datainicial;
+            $datainicial = db_utils::fieldsMemory($result, 0)->datainicial;
             $this->clissbase->q02_dtinic = $datainicial;
             $this->clissbase->q02_dtbaix = null;
 
@@ -592,7 +611,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
         $tipo,
         $qualificacao
     ) {
-        $clsocios = new \cl_socios();
+        $clsocios = new cl_socios();
 
         $clsocios->q95_cgmpri = $cgmEmpresa;
         $clsocios->q95_numcgm = $cgmSocio;
@@ -613,7 +632,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
 
     private function incluirAlvara()
     {
-        $clissalvara      = new \cl_issalvara;
+        $clissalvara      = new cl_issalvara;
 
         $classificacaoGrauRisco = ProcessoEletronicoHelper::getClassificacaoGrauRisco($this->grauRisco);
 
@@ -633,7 +652,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
             throw new Exception($clissalvara->erro_msg);
         }
 
-        $this->alvara = new \Alvara($clissalvara->q123_sequencial);
+        $this->alvara = new Alvara($clissalvara->q123_sequencial);
     }
 
     private function inserirDocumentos()
@@ -644,7 +663,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
 
         $idAtividades = [];
 
-        $oLiberarAlvara  = new \AlvaraMovimentacaoLiberacao($this->alvara->getCodigo());
+        $oLiberarAlvara  = new AlvaraMovimentacaoLiberacao($this->alvara->getCodigo());
         foreach ($this->dados->documentos as $documento) {
             if ($documento->tipo == 'atividades') {
                 $oLiberarAlvara->addDocumento($documento->codigo_vinculo);
@@ -725,7 +744,7 @@ final class GerarInscricao extends AcaoBase implements AcaoInterface, InscricaoI
 
     private function verificaSeJaExisteSocio($cgmEmpresa, $cgmSocio)
     {
-        $clsocios = new \cl_socios();
+        $clsocios = new cl_socios();
         $sql = $clsocios->sql_query_file($cgmEmpresa, $cgmSocio);
         $rs = db_query($sql);
         if (pg_num_rows($rs) > 0) {

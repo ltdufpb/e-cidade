@@ -27,6 +27,12 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use cl_afastamentosesocial;
+use DBException;
+use DBDate;
+use ECidade\RecursosHumanos\ESocial\Configuracao\S2230;
+use ParameterException;
+use BusinessException;
 use ECidade\RecursosHumanos\ESocial\Service\AfastamentoTemporarioService;
 
 /**
@@ -43,11 +49,11 @@ class Assentamento
      * Verifica se o assentamento do E-Cidade esta vinculado com um afastamento do eSocial
      * @param \Assentamento $assentamentoEcidade
      * @return bool
-     * @throws \DBException
+     * @throws DBException
      */
     public static function possuiVinculoComESocial(\Assentamento $assentamentoEcidade)
     {
-        $daoAssentamento = new \cl_afastamentosesocial();
+        $daoAssentamento = new cl_afastamentosesocial();
         $buscaVinculo = $daoAssentamento->sql_query_file(
             null,
             "*",
@@ -58,23 +64,23 @@ class Assentamento
         if (!$buscaVinculo) {
             $mensagem = "Não foi possível consultar a existência do vínculo entre o Assentamento do E-Cidade com"
                 . " o ESocial.";
-            throw new \DBException($mensagem);
+            throw new DBException($mensagem);
         }
         return pg_num_rows($buscaVinculo) > 0;
     }
 
     /**
      * @param \Assentamento $assentamento
-     * @param \DBDate $dataAtual
-     * @throws \DBException
-     * @throws \ParameterException
+     * @param DBDate $dataAtual
+     * @throws DBException
+     * @throws ParameterException
      * @return boolean
      */
-    public static function salvarFormulario(\Assentamento $assentamento, \DBDate $dataAtual)
+    public static function salvarFormulario(\Assentamento $assentamento, DBDate $dataAtual)
     {
 
-        $dataImplantacaoEsocial = new \ECidade\RecursosHumanos\ESocial\Configuracao\S2230();
-        $dataEnvio = new \DBDate($dataImplantacaoEsocial->getPropriedade('data_envio'));
+        $dataImplantacaoEsocial = new S2230();
+        $dataEnvio = new DBDate($dataImplantacaoEsocial->getPropriedade('data_envio'));
         if ($dataAtual->getTimeStamp() >= $dataEnvio->getTimeStamp() && self::possuiVinculoComESocial($assentamento)) {
             $afastamento = new AfastamentoTemporarioService(
                 $assentamento->getServidor()->getMatricula(),
@@ -89,9 +95,9 @@ class Assentamento
     /**
      * Exclui os vinculos do assentamento com o formulário
      * @param $assentamento
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      */
     public static function excluirFormulario($assentamento)
     {

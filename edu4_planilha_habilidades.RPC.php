@@ -1,5 +1,6 @@
 <?php
 
+use ECidade\File\Csv\Dumper\Dumper;
 use ECidade\Educacao\Secretaria\BNCC\Factory\ImportaPlanilhaHabilidadeFactory;
 
 require_once(modification("libs/db_stdlib.php"));
@@ -27,7 +28,7 @@ try {
                 throw new Exception('Formato do arquivo deve ser um csv.');
             }
 
-            $dumpCsv = new \ECidade\File\Csv\Dumper\Dumper();
+            $dumpCsv = new Dumper();
             $dumpCsv->setCsvControl(";", '"');
             $linhas = $dumpCsv->ler($parametros->planilha->tmp_name);
 

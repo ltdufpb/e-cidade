@@ -132,8 +132,8 @@ class Configuracao
     /**
      * Retorna todos formulários da versão atual
      *
-     * @return \stdClass[]
-     * @throws \Exception
+     * @return stdClass[]
+     * @throws Exception
      */
     public static function getFormulariosVersaoAtual()
     {

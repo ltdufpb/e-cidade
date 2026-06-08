@@ -2,6 +2,7 @@
 
 namespace ECidade\Educacao\Escola\Censo\Validacao;
 
+use Override;
 use DadosCensoAluno2016;
 use DBString;
 use ECidade\Educacao\Escola\Censo\Exportacao\ExportacaoCenso2018;
@@ -19,7 +20,7 @@ class DadosAluno2018 extends DadosCensoAluno2016
      * @param IExportacaoCenso $exportacao
      * @return bool
      */
-    #[\Override]
+    #[Override]
     public static function validarDados(IExportacaoCenso $exportacao)
     {
         $validou = true;
@@ -94,7 +95,7 @@ class DadosAluno2018 extends DadosCensoAluno2016
      * @return bool
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     protected static function validarRegistro60Coluna10Regra4($aluno, $registro60, $exportacao)
     {
         if (!empty($registro60->filiacao_1) && !DBString::isNomeValido($registro60->filiacao_1, DBString::NOME_REGRA_3)) {
@@ -116,7 +117,7 @@ class DadosAluno2018 extends DadosCensoAluno2016
      * @return bool
      * @throws Exception
      */
-    #[\Override]
+    #[Override]
     protected static function validarRegistro60Coluna11Regra4($aluno, $registro60, $exportacao)
     {
         if (!empty($registro60->filiacao_2) && !DBString::isNomeValido($registro60->filiacao_2, DBString::NOME_REGRA_3)) {
@@ -131,7 +132,7 @@ class DadosAluno2018 extends DadosCensoAluno2016
         return true;
     }
 
-    #[\Override]
+    #[Override]
     public static function validaRegistro80($exportacaoCenso, $dadosAluno)
     {
         $validou = parent::validaRegistro80($exportacaoCenso, $dadosAluno);

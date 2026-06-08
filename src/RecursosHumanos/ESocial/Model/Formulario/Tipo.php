@@ -27,7 +27,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Model\Formulario;
 
-use Exception as ExceptionAlias;
+use Deprecated;
 
 /**
  * Tipos de Formulários do eSocial
@@ -676,7 +676,7 @@ class Tipo
      * @return     array|mixed
      * @see        Tipo::getDescricoes()
      */
-    #[\Deprecated]
+    #[Deprecated]
     public static function getTitulos($tipo = null)
     {
         $s1295 = "S1295 - Solicitação de Totalização para Pagamento em Contingência";

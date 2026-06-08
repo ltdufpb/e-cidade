@@ -114,7 +114,7 @@ class DiarioClasse
      * @throws BusinessException
      * @throws DBException
      */
-    #[\Deprecated(message: <<<'TXT'
+    #[Deprecated(message: <<<'TXT'
     a partir da versão 2.3.32 os periodos de avaliação devem ser vistos de acordo com o
                  procedimento de avaliação de cada regência
     TXT)]

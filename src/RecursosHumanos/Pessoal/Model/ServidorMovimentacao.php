@@ -2,6 +2,8 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use db_utils;
+use cl_rhpessoalmov;
 use DateTime;
 use ECidade\RecursosHumanos\Pessoal\Servidor\Model\Cargo;
 use Exception;
@@ -710,7 +712,7 @@ class ServidorMovimentacao
         $daoCargo = new cl_rhpescargo;
         $sSql = $daoCargo->sql_query_file($this->sequencial, 'rh20_cargo');
         $rsCargo = db_query($sSql);
-        $cargo = \db_utils::fieldsMemory($rsCargo, 0)->rh20_cargo;
+        $cargo = db_utils::fieldsMemory($rsCargo, 0)->rh20_cargo;
 
         return $cargo;
     }
@@ -1006,7 +1008,7 @@ class ServidorMovimentacao
         $tabPrev = $this->getTabelaCalculoPrevidencia();
 
         for ($row = 0; $row < $totalRegistros; $row++) {
-            $current = \db_utils::fieldsMemory($result, $row);
+            $current = db_utils::fieldsMemory($result, $row);
             if ($tabPrev == $current->r33_codtab) {
                 return $current->r33_codtab_real;
             }
@@ -1033,7 +1035,7 @@ class ServidorMovimentacao
         where b.rh02_regist = {$this->matricula} and a.r33_tiposegregacao is not null limit 1;";
 
         $result = \db_query($sql);
-        $tiposegregacao = \db_utils::fieldsMemory($result, 0);
+        $tiposegregacao = db_utils::fieldsMemory($result, 0);
 
         return ($tiposegregacao->r33_tiposegregacao);
     }
@@ -1080,7 +1082,7 @@ class ServidorMovimentacao
      */
     public static function find($sequencial)
     {
-        $rhpessoal = new  \cl_rhpessoalmov();
+        $rhpessoal = new  cl_rhpessoalmov();
         $sql = $rhpessoal->sql_query($sequencial);
         $rs = $rhpessoal->sql_record($sql);
         $movimentacao = pg_fetch_assoc($rs, 0);

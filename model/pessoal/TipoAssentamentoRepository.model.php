@@ -270,7 +270,7 @@ class TipoAssentamentoRepository
     public static function getInstanciasAfastamento()
     {
 
-        if (!\DBRegistry::has('instanciasAssentamentoAfastamento')) {
+        if (!DBRegistry::has('instanciasAssentamentoAfastamento')) {
 
             $oRepository = self::getInstance();
             $oDaoTipoasse = new cl_tipoasse();
@@ -287,12 +287,12 @@ class TipoAssentamentoRepository
 
             $colecaoRetornada = db_utils::getCollectionByRecord($rsTipoasse);
 
-            \DBRegistry::add('instanciasAssentamentoAfastamento', $colecaoRetornada);
+            DBRegistry::add('instanciasAssentamentoAfastamento', $colecaoRetornada);
         }
 
-        if (\DBRegistry::has('instanciasAssentamentoAfastamento')) {
+        if (DBRegistry::has('instanciasAssentamentoAfastamento')) {
 
-            $colecaoRetornada = \DBRegistry::get('instanciasAssentamentoAfastamento');
+            $colecaoRetornada = DBRegistry::get('instanciasAssentamentoAfastamento');
 
             foreach ($colecaoRetornada as $oRetorno) {
                 if (!isset(self::$aColecao[$oRetorno->h12_codigo])) {

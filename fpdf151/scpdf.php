@@ -28,6 +28,7 @@ class scpdf extends fpdf {
 //|00|//scpdf
 //|10|//Esta classe é uma extensão da classe |fpdf|, não possui cabeçalho ou rodapé, é classe utilizada
 //|10|//na geração de formularios tais como: carnês de parcelamento, recibos, alvarás, etc
+  #[Override]
   function _Arc($x1, $y1, $x2, $y2, $x3, $y3) {
 
     $h = $this->h;
@@ -35,6 +36,7 @@ class scpdf extends fpdf {
     $x2*$this->k, ($h-$y2)*$this->k, $x3*$this->k, ($h-$y3)*$this->k));
   }
 
+   #[Override]
    function VCell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false) {
      //Output a cell
      $k=$this->k;
@@ -48,7 +50,7 @@ class scpdf extends fpdf {
          $this->ws=0;
          $this->_out('0 Tw');
        }
-       $this->AddPage($this->CurOrientation,$this->CurPageFormat);
+       $this->AddPage($this->CurOrientation);
        $this->x=$x;
        if($ws>0)
        {
@@ -160,6 +162,7 @@ class scpdf extends fpdf {
        $this->x+=$w;
    }
 
+   #[Override]
    function TextWithRotation($x,$y,$txt,$txt_angle,$font_angle=0)
     {
         $txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));

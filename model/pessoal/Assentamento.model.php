@@ -24,7 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Model\Evento;
+use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\AdicionalNoturno;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\Repository\EspelhoPontoCache;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\EspelhoPonto;
@@ -189,7 +190,7 @@ class Assentamento
      * Construtor da classe
      *
      * @param Integer $iCodigo
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function __construct($iCodigo = null)
     {
@@ -304,7 +305,7 @@ class Assentamento
     }
 
     /**
-     * @return \TipoAssentamento
+     * @return TipoAssentamento
      */
     public function getInstanciaTipoAssentamento()
     {
@@ -797,7 +798,7 @@ class Assentamento
     /**
      * Retorna os atributos dinâmicos do assentamento
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
     public function getAtributosDinamicos()
     {
@@ -857,7 +858,7 @@ class Assentamento
      * Define o valor do atributo dinamico pelo seu nome
      * @param $sNomeAtributo
      * @param $sValor
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function setValorAtributo($sNomeAtributo, $sValor)
     {
@@ -917,7 +918,7 @@ class Assentamento
     {
 
         /* inicializa um array com todas horas permitidas */
-        $horasPermitidas = \ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Model\Evento::$horasExtrasPermitidas;
+        $horasPermitidas = Evento::$horasExtrasPermitidas;
         $horasRetorno = [];
         foreach ($horasPermitidas as $codigoHora) {
             $horasRetorno[$codigoHora] = '00:00';
@@ -1011,13 +1012,12 @@ class Assentamento
     /**
      * @param $iTipoAssentamento
      * @param $iSelecao
-     * @return \stdClass
+     * @return stdClass
      */
-
     public function buscaAgendaAssetamento($iTipoAssentamento, $iSelecao)
     {
 
-        $oDaoAgendaAssentamento = new \cl_agendaassentamento();
+        $oDaoAgendaAssentamento = new cl_agendaassentamento();
 
         $fields = [
           'formulainicio.db148_nome as db148_nome_inicio',
@@ -1038,7 +1038,7 @@ class Assentamento
           );
 
         $rsAgendaAssentamento = db_query($sSqlAgendaAssentamento);
-        $stdAgendaAssentamento = \db_utils::fieldsMemory($rsAgendaAssentamento, 0);
+        $stdAgendaAssentamento = db_utils::fieldsMemory($rsAgendaAssentamento, 0);
 
         return $stdAgendaAssentamento;
     }
@@ -1065,9 +1065,9 @@ class Assentamento
             ||
             strtoupper($tipoAssentamento->getTipo()) == 'A'
         ) {
-            $dataInicial = $this->getDataConcessao() instanceof DBDate ? $this->getDataConcessao() : new \DBDate($this->getDataConcessao());
+            $dataInicial = $this->getDataConcessao() instanceof DBDate ? $this->getDataConcessao() : new DBDate($this->getDataConcessao());
             $dataFinal = $this->getDataTermino();
-            $dataFinal = empty($dataFinal) ? clone $dataInicial : (($dataFinal instanceof DBDate) ? $dataFinal : new \DBDate($dataFinal));
+            $dataFinal = empty($dataFinal) ? clone $dataInicial : (($dataFinal instanceof DBDate) ? $dataFinal : new DBDate($dataFinal));
 
             EspelhoPontoCache::init()->invalidarCacheNoPeriodo($this->getMatricula(), $dataInicial, $dataFinal);
         }
@@ -1113,7 +1113,7 @@ class Assentamento
     public function calcularHorasDiurnasNoturnasNoDia(DiaTrabalho $diaTrabalho)
     {
         if (strtoupper($this->getInstanciaTipoAssentamento()->getTipo()) == 'A') {
-            $baseHora = new \ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\AdicionalNoturno($diaTrabalho);
+            $baseHora = new AdicionalNoturno($diaTrabalho);
             $jornada = $diaTrabalho->getJornada();
 
             $horasJornada = $jornada->getHoras();
@@ -1139,7 +1139,7 @@ class Assentamento
     }
 
     /**
-     * @param \stdClass[] $horasTotais
+     * @param stdClass[] $horasTotais
      * @return String
      */
     protected function totalizarHorasDiurnasENoturnas($horasTotais = [])

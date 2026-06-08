@@ -89,7 +89,7 @@ class InicialNumpreRepository
      */
     public function get()
     {
-        $dao = new \cl_inicialnumpre();
+        $dao = new cl_inicialnumpre();
 
         $where = array_map(fn(array $filter) => "{$filter[0]} {$filter[1]} {$filter[2]}", $this->where);
         $where = implode(' AND ', $where);
@@ -130,12 +130,12 @@ class InicialNumpreRepository
 
     public function delete($where)
     {
-        $dao = new \cl_inicialnumpre();
+        $dao = new cl_inicialnumpre();
 
         $dao->excluir(null, $where);
 
         if ($dao->erro_status == 0) {
-            throw new \Exception("Erro ao excluir registro da tabela iniicialnumpre: " . $dao->erro_msg);
+            throw new Exception("Erro ao excluir registro da tabela iniicialnumpre: " . $dao->erro_msg);
         }
     }
 }

@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Arrecadacao;
 
+use Exception;
+use db_utils;
 use regraEmissao;
 
 class Convenio
@@ -149,7 +151,7 @@ class Convenio
     {
 
         if (empty($iCodConvenio)) {
-            throw new \Exception("Código do convênio não informado.");
+            throw new Exception("Código do convênio não informado.");
         }
         define("TIPO_CONVENIO_COBRANCA_REGISTRADA", regraEmissao::getConveioCustaBoleto());
 
@@ -197,10 +199,10 @@ class Convenio
         $rsConvenio = \db_query($sSqlConvenio);
 
         if (!$rsConvenio || pg_num_rows($rsConvenio) == 0) {
-            throw new \Exception("Erro ao buscar os dados do convênio.");
+            throw new Exception("Erro ao buscar os dados do convênio.");
         }
 
-        $oConvenio = \db_utils::fieldsMemory($rsConvenio, 0);
+        $oConvenio = db_utils::fieldsMemory($rsConvenio, 0);
 
         $this->iModalidadeConvenio  = $oConvenio->ar12_cadconveniomodalidade;
         $this->iCodConvenio           = $oConvenio->ar11_sequencial;
@@ -236,7 +238,7 @@ class Convenio
            */
             $sSqlDigCedente  = " select 11 - fc_modulo11('{$oConvenio->ar13_cedente}',2,9) as digito ";
             $rsDigCedente    = \db_query($sSqlDigCedente);
-            $iDigitoCendente = \db_utils::fieldsMemory($rsDigCedente, 0)->digito;
+            $iDigitoCendente = db_utils::fieldsMemory($rsDigCedente, 0)->digito;
 
             if ($iDigitoCendente > 9) {
                 $iDigitoCendente = 0;

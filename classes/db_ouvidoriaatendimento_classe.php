@@ -1144,7 +1144,7 @@ class cl_ouvidoriaatendimento {
       $rResult = db_query($sSQL);
 
       if ($rResult) {
-          return \db_utils::fieldsMemory($rResult, 0);
+          return db_utils::fieldsMemory($rResult, 0);
       }
 
       return null;

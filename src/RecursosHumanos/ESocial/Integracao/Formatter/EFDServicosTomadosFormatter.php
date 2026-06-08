@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use stdClass;
+
 /**
  * Class EFDServicosTomadosFormatter
  * @package ECidade\RecursosHumanos\ESocial\Integracao\Formatter
@@ -39,7 +42,7 @@ class EFDServicosTomadosFormatter extends Formatter
      * @param array $dados
      * @return array
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -49,20 +52,20 @@ class EFDServicosTomadosFormatter extends Formatter
     private function posProcessamento($dadosFormatado)
     {
         $this->unsetEmpty($dadosFormatado);
-        $novosDados = new \stdClass();
+        $novosDados = new stdClass();
         $novosDados->infoProcRetPr = [];
         $novosDados->infoProcRetAd = [];
         foreach ($dadosFormatado as &$stdLinha) {
             foreach($stdLinha['infoProcRet'] as $infoProcRet) {
                 if($infoProcRet['tipo'] == 1) {
-                    $infoProcRetPr = new \stdClass();
+                    $infoProcRetPr = new stdClass();
                     $infoProcRetPr->tpProcRetPrinc = $infoProcRet['tpProcRet'];
                     $infoProcRetPr->nrProcRetPrinc = $infoProcRet['nrProcRet'];
                     $infoProcRetPr->valorPrinc = $infoProcRet['valor'];
                     $infoProcRetPr->codSuspPrinc = !empty($infoProcRet['codSusp']) ? $infoProcRet['codSusp'] : null;
                     $novosDados->infoProcRetPr[] = $infoProcRetPr;
                 } else {
-                    $infoProcRetAd = new \stdClass();
+                    $infoProcRetAd = new stdClass();
                     $infoProcRetAd->tpProcRetAdic = $infoProcRet['tpProcRet'];
                     $infoProcRetAd->nrProcRetAdic = $infoProcRet['nrProcRet'];
                     $infoProcRetAd->valorAdic = $infoProcRet['valor'];

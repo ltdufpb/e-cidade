@@ -28,7 +28,6 @@
 use ECidade\Financeiro\Orcamento\Repository\RecursoRepository as RecursoRepository;
 use ECidade\Patrimonial\Acordo\AlteracaoContratado\Model\AlteracaoContratado;
 use ECidade\Patrimonial\Acordo\AlteracaoContratado\Repository\AlteracaoContratadoRepository;
-use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Services\AutorizacaoService;
 
 /**
  * controle de acordos/contratos
@@ -1710,7 +1709,7 @@ class Acordo
                         if (isset($oStdItemAutorizacao->iCodigoItemLicitacao)) {
                             $oItemLicitacao = new ItemLicitacao($oStdItemAutorizacao->iCodigoItemLicitacao);
                             $pccoddot = new itemSolicitacao($oItemLicitacao->getItemSolicitacao()->getCodigoItemSolicitacao());
-                            $aReservas = (new itemSolicitacao())->getReservasSaldoDotacao($pccoddot->getDotacoes()[0]->iCodigoDotacaoItem);
+                            $aReservas = new itemSolicitacao()->getReservasSaldoDotacao($pccoddot->getDotacoes()[0]->iCodigoDotacaoItem);
                         } else {
                             $sql = "select * from orcreservasol
                                         inner join pcprocitem on pc81_solicitem = o82_solicitem
@@ -2917,10 +2916,10 @@ class Acordo
      * função para reativar um contrato apos um periodo de paralisação
      *
      * @param array $aPeriodos periodos a serem recriados
-     * @param \DBDate|object $oDataAtivacao data da reativacao
+     * @param DBDate|object $oDataAtivacao data da reativacao
      * @param string $sObservacao observacao do movimento de reativacao
      * @return bool
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function reativar($dataTermino, $sObservacao)
     {
@@ -3166,7 +3165,7 @@ class Acordo
     /**
      * Retorna o valor liquidado do contrato
      * @return float
-     * @throws \DBException
+     * @throws DBException
      */
     public function getValorLiquidado()
     {

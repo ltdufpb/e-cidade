@@ -1,5 +1,7 @@
 <?php
 
+use Michelf\MarkdownExtra;
+
 abstract class DBReleaseNote {
 
   const SORT_ASC = 0;
@@ -222,7 +224,7 @@ abstract class DBReleaseNote {
 
     require_once(modification("ext/php/Michelf/MarkdownExtra.inc.php"));
 
-    $sContent = \Michelf\MarkdownExtra::defaultTransform($sConteudoArquivoMD);
+    $sContent = MarkdownExtra::defaultTransform($sConteudoArquivoMD);
 
     return $sContent;
   }    

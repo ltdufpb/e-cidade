@@ -27,15 +27,19 @@
 
 namespace ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Repository;
 
+use cl_empautoriza;
+use cl_db_depusu;
+use cl_empauthist;
+use cl_empautpresta;
+use cl_empautorizaprocesso;
+use cl_empautidot;
+use cl_empautitem;
+use Dotacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 use ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Model\ProcessoAdministrativo;
 use ECidade\Patrimonial\Compras\HistoricoEmpenho\Model\Historico;
-use ECidade\Patrimonial\Compras\HistoricoEmpenho\Repository\HistoricoRepository;
 use ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Model\TipoPrestacao;
-use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\Licitacao;
 use Exception;
-use PhpOffice\PhpWord\Tests\Element\ObjectTest;
-use UsuarioSistema;
 
 /**
  * Class AutorizacaoEmpenhoRepository
@@ -64,7 +68,7 @@ class AutorizacaoRepository
      */
     public function buscaUsuarioPorAutorizacao($codigoAutorizacao)
     {
-        $dao = new \cl_empautoriza();
+        $dao = new cl_empautoriza();
         $sql = $dao->sql_query_file($codigoAutorizacao, 'e54_login, e54_depto');
 
         return pg_fetch_array(db_query($sql));
@@ -75,7 +79,7 @@ class AutorizacaoRepository
         $codigoUsuario,
         $codigoDepartamento
     ) {
-        $dao = new \cl_db_depusu;
+        $dao = new cl_db_depusu;
         $sql = $dao->sql_query_file($codigoUsuario, $codigoDepartamento, 'coddepto as cod02');
 
         return pg_fetch_row(db_query($sql));
@@ -192,7 +196,7 @@ class AutorizacaoRepository
         if ($autorizacao->getHistorico() !== null) {
             $this->associaHistorico(
                 $autorizacao,
-                new \cl_empauthist(),
+                new cl_empauthist(),
                 $autorizacao->getHistorico()
             );
         }
@@ -200,14 +204,14 @@ class AutorizacaoRepository
         if ($autorizacao->getTipoPrestacao() !== null) {
             $this->associaPrestacao(
                 $autorizacao,
-                new \cl_empautpresta(),
+                new cl_empautpresta(),
                 $autorizacao->getTipoPrestacao()
             );
         }
 
         $processoAdministrativo = $this->associaProcessoAdministrativo(
             $autorizacao,
-            new \cl_empautorizaprocesso(),
+            new cl_empautorizaprocesso(),
             $numeroProcesso
         );
 
@@ -216,13 +220,13 @@ class AutorizacaoRepository
         if ($autorizacao->getDotacao() !== null) {
             $this->associaDotacao(
                 $autorizacao,
-                new \cl_empautidot(),
+                new cl_empautidot(),
                 $autorizacao->getDotacao()
             );
         }
 
         if ($autorizacao->getItens()) {
-            $daoAutorizacaoItem = new \cl_empautitem();
+            $daoAutorizacaoItem = new cl_empautitem();
             $sqlBuscaItensVinculados = $daoAutorizacaoItem->sql_query_file($codigoAutorizacaoImportada);
             $result = db_query($sqlBuscaItensVinculados);
             $this->associaItens($autorizacao, pg_fetch_all($result), $daoAutorizacaoItem);
@@ -234,14 +238,14 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empautidot $daoDotacaoAutorizacao
-     * @param \Dotacao $dotacao
+     * @param cl_empautidot $daoDotacaoAutorizacao
+     * @param Dotacao $dotacao
      * @throws Exception
      */
     public function associaDotacao(
         Autorizacao $autorizacao,
-        \cl_empautidot $daoDotacaoAutorizacao,
-        \Dotacao $dotacao
+        cl_empautidot $daoDotacaoAutorizacao,
+        Dotacao $dotacao
     ) {
         try {
             $daoDotacaoAutorizacao->e56_coddot = $dotacao->getCodigo();
@@ -259,7 +263,7 @@ class AutorizacaoRepository
     public function associaItens(
         Autorizacao $autorizacao,
         array $autorizacaoItens,
-        \cl_empautitem $daoAutorizacaoItens
+        cl_empautitem $daoAutorizacaoItens
     ) {
         try {
             foreach ($autorizacaoItens as $autItem) {
@@ -284,13 +288,13 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empauthist $daoHistorico
+     * @param cl_empauthist $daoHistorico
      * @param Historico $historico
      * @throws Exception
      */
     public function associaHistorico(
         Autorizacao $autorizacao,
-        \cl_empauthist $daoHistorico,
+        cl_empauthist $daoHistorico,
         Historico $historico
     ) {
         try {
@@ -307,13 +311,13 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empautpresta $daoAutorizacaoPrestacao
+     * @param cl_empautpresta $daoAutorizacaoPrestacao
      * @param TipoPrestacao $tipoPrestacao
      * @throws Exception
      */
     public function associaPrestacao(
         Autorizacao $autorizacao,
-        \cl_empautpresta $daoAutorizacaoPrestacao,
+        cl_empautpresta $daoAutorizacaoPrestacao,
         TipoPrestacao $tipoPrestacao
     ) {
         try {
@@ -332,14 +336,14 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empautorizaprocesso $daoProcessoAdministrativo
+     * @param cl_empautorizaprocesso $daoProcessoAdministrativo
      * @param $numeroProcesso
      * @return ProcessoAdministrativo
      * @throws Exception
      */
     public function associaProcessoAdministrativo(
         Autorizacao $autorizacao,
-        \cl_empautorizaprocesso $daoProcessoAdministrativo,
+        cl_empautorizaprocesso $daoProcessoAdministrativo,
         $numeroProcesso
     ) {
         try {

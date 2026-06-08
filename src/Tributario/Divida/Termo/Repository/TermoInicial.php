@@ -28,6 +28,10 @@
 namespace ECidade\Tributario\Divida\Termo\Repository;
 
 ///var/www/e-cidade/src/Tributario/Divida/Termo/Termo.php
+use BaseClassRepository;
+use cl_termoini;
+use Exception;
+use stdClass;
 use ECidade\Tributario\Divida\Termo\Termo as OrigemTermo;
 use ECidade\Tributario\Divida\Termo\TermoInicial as Entity;
 use ECidade\Tributario\Juridico\Inicial\Repository\Inicial as InicialRepository;
@@ -39,7 +43,7 @@ use ECidade\Tributario\Juridico\Inicial\Repository\Inicial as InicialRepository;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class TermoInicial extends \BaseClassRepository
+class TermoInicial extends BaseClassRepository
 {
     /** @var bool */
     private $returnFullItem;
@@ -55,11 +59,11 @@ class TermoInicial extends \BaseClassRepository
      *
      * @return Entity
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function persist(Entity $entity, $codigoTermo)
     {
-        $dao = new \cl_termoini();
+        $dao = new cl_termoini();
 
         $dao->inicial = $entity->getInicial()->getCodigo();
         $dao->parcel = $codigoTermo;
@@ -81,7 +85,7 @@ class TermoInicial extends \BaseClassRepository
         }
 
         if ($dao->erro_status == 0) {
-            throw new \Exception($dao->erro_msg);
+            throw new Exception($dao->erro_msg);
         }
 
         if ($this->isPersistPropagation() && $entity->getInicial()) {
@@ -95,11 +99,11 @@ class TermoInicial extends \BaseClassRepository
     }
 
     /**
-     * @param \stdClass $data
+     * @param stdClass $data
      *
      * @return Entity
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function make($data)
     {
@@ -124,7 +128,7 @@ class TermoInicial extends \BaseClassRepository
             $inicial = $inicialRepository->getByCode($data->inicial);
 
             if (empty($inicial)) {
-                throw new \Exception('Não foi possível consultar a inicial ' . $data->inicial);
+                throw new Exception('Não foi possível consultar a inicial ' . $data->inicial);
             }
 
             $entity->setInicial($inicial);
@@ -139,17 +143,17 @@ class TermoInicial extends \BaseClassRepository
      *
      * @return Entity|null
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByCode($inicial, $termo)
     {
-        $dao = new \cl_termoini();
+        $dao = new cl_termoini();
         $sql = $dao->sql_query($termo, $inicial);
 
         $result = \db_query($sql);
 
         if (!$result) {
-            throw new \Exception('Não foi possível consultar o termo');
+            throw new Exception('Não foi possível consultar o termo');
         }
 
         if (!pg_num_rows($result)) {
@@ -166,18 +170,17 @@ class TermoInicial extends \BaseClassRepository
      *
      * @return Entity[]|null
      *
-     * @throws \Exception
+     * @throws Exception
      */
-
     public function getByTermo($termo)
     {
-        $dao = new \cl_termoini();
+        $dao = new cl_termoini();
         $termoOrigem = OrigemTermo::getOrigemTermo($termo);
         $sql = $dao->sql_query($termoOrigem);
         $result = db_query($sql);
 
         if (!$result) {
-            throw new \Exception('Não foi possível consultar as iniciais do termo');
+            throw new Exception('Não foi possível consultar as iniciais do termo');
         }
 
         if (!pg_num_rows($result)) {
@@ -194,7 +197,7 @@ class TermoInicial extends \BaseClassRepository
 
     public function inicialPossuiAnulacaoParcelamento($inicial)
     {
-        $dao = new \cl_termoini();
+        $dao = new cl_termoini();
 
         $result = \db_query($dao->termoAnuladoPorInicial($inicial));
 
@@ -239,12 +242,12 @@ class TermoInicial extends \BaseClassRepository
 
     public function delete($where)
     {
-        $dao = new \cl_termoini();
+        $dao = new cl_termoini();
 
         $dao->excluir(null, null, $where);
 
         if ($dao->erro_status == 0) {
-            throw new \Exception("Erro ao excluir registro da tabela termoini: " . $dao->erro_msg);
+            throw new Exception("Erro ao excluir registro da tabela termoini: " . $dao->erro_msg);
         }
     }
 }

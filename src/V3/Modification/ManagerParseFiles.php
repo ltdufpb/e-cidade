@@ -2,6 +2,8 @@
 
 namespace ECidade\V3\Modification;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use ArrayObject, Exception;
 use \ECidade\V3\Extension\Container;
 use \ECidade\V3\Modification\Manager;
@@ -714,8 +716,8 @@ class ManagerParseFiles
         $logger = $this->container->get('logger');
         $logger->debug(' - removendo diretorio temporario: ' . str_replace(ECIDADE_PATH, null, $this->persistPath));
 
-        $directoryIterator = new \RecursiveDirectoryIterator($this->persistPath, \RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new \RecursiveIteratorIterator($directoryIterator, \RecursiveIteratorIterator::CHILD_FIRST);
+        $directoryIterator = new RecursiveDirectoryIterator($this->persistPath, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($directoryIterator, RecursiveIteratorIterator::CHILD_FIRST);
 
         foreach ($files as $fileinfo) {
             $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');

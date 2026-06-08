@@ -1,4 +1,8 @@
 <?php
+
+use ECidade\Educacao\Escola\Repository\AreaHistoricoRedeRepository;
+use ECidade\Educacao\Escola\Model\AreaHistoricoRede;
+
 /**
  * Classe para encerramento das avaliacoes dos alunos/Turmas
  * Realiza os encerramentos das avaliacoes dos alunos de progressao parcial, e de alunos de turmas Regulares / Eja
@@ -1364,7 +1368,7 @@ class EncerramentoAvaliacao {
           $areaConhecimento = $oDiarioDisciplina->getRegencia()->getAreaConhecimento();
 
         if (!is_null($areaConhecimento)) {
-            $areaHistoricoRedeRepository = new \ECidade\Educacao\Escola\Repository\AreaHistoricoRedeRepository();
+            $areaHistoricoRedeRepository = new AreaHistoricoRedeRepository();
             $areaHistorico = $areaHistoricoRedeRepository
                 ->scopeHistoricoEtapaRede($oEtapaHistorico)
                 ->scopeAreaConhecimento($areaConhecimento)
@@ -1384,7 +1388,7 @@ class EncerramentoAvaliacao {
                     }
                 }
 
-                $areaHistorico = new \ECidade\Educacao\Escola\Model\AreaHistoricoRede();
+                $areaHistorico = new AreaHistoricoRede();
                 $areaHistorico->setHistoricoEtapaRede($oEtapaHistorico);
 
                 $areaHistorico->setAreaConhecimento($areaConhecimento);

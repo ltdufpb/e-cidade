@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\Tributario\Issqn\Repository;
 
+use ParameterException;
+use ECidade\Tributario\Caixa\Entity\Collection\DebitoCollection;
 use ECidade\Tributario\Arrecadacao\CadTipo;
 use ECidade\Tributario\Caixa\Cast\ArrecadCollectionCast;
 use ECidade\Tributario\Caixa\Entity\Repository\DebitoRepository;
@@ -30,13 +32,13 @@ class InscricaoDebitoRepository extends DebitoRepository
     /**
      * @param Issbase $issbase
      * @param $cadtipo
-     * @return \ECidade\Tributario\Caixa\Entity\Collection\DebitoCollection
-     * @throws \ParameterException
+     * @return DebitoCollection
+     * @throws ParameterException
      */
     public function findByIssbaseAndCadtipo(Issbase $issbase, $cadtipo)
     {
         if (!CadTipo::check($cadtipo)) {
-            throw new \ParameterException("Tipo de débito inválido.");
+            throw new ParameterException("Tipo de débito inválido.");
         }
 
         $arreinscrList = $this->arreinscrRepository->findByIdentificador($issbase->getInscr());

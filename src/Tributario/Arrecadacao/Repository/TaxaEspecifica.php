@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Repository;
 
+use BaseClassRepository;
 use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 
 use cl_tabdesc;
@@ -14,7 +15,7 @@ use stdClass;
  * Class TaxaEspecifica
  * @package ECidade\Tributario\Arrecadacao\Repository
  */
-class TaxaEspecifica extends \BaseClassRepository
+class TaxaEspecifica extends BaseClassRepository
 {
     /**
      * @var cl_tabdesc

@@ -112,7 +112,7 @@ class DocumentoEventoAcordo {
   }
 
   /**
-   * @return \AcordoDocumento
+   * @return AcordoDocumento
    */
   public function getAcordoDocumento() {
     if (empty($this->oAcordoDocumento) && !empty($this->iCodigoDocumento)) {

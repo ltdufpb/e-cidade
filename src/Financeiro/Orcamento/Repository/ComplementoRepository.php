@@ -2,6 +2,7 @@
 
 namespace ECidade\Financeiro\Orcamento\Repository;
 
+use cl_complementofonterecurso;
 use ECidade\Educacao\Escola\Repository\Repository;
 use ECidade\Financeiro\Orcamento\Model\Complemento;
 use Exception;
@@ -19,7 +20,7 @@ class ComplementoRepository extends Repository
      */
     public function get()
     {
-        $dao = new \cl_complementofonterecurso();
+        $dao = new cl_complementofonterecurso();
         $sql = $dao->sql_query_file(null, '*', null, implode(' and ', $this->scopes));
         $rs = db_query($sql);
 
@@ -52,7 +53,7 @@ class ComplementoRepository extends Repository
      */
     public static function find($id)
     {
-        $dao = new \cl_complementofonterecurso();
+        $dao = new cl_complementofonterecurso();
         $sql = $dao->sql_query_file(null, '*', null, "o200_sequencial = {$id}");
         $rs = db_query($sql);
         if (!$rs) {

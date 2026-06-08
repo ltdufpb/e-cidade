@@ -2,6 +2,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao;
 
+use Exception;
+
 /**
  * Class ESocialEnvio
  * @package ECidade\RecursosHumanos\ESocial\Integracao
@@ -24,7 +26,7 @@ final class ESocialEnvioStatus
      *
      * @param $codigoStatus
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getStatusDescricao($codigoStatus)
     {
@@ -42,7 +44,7 @@ final class ESocialEnvioStatus
         ];
 
         if (empty($data[$codigoStatus])) {
-            throw new \Exception('Status não encontrado.');
+            throw new Exception('Status não encontrado.');
         }
 
         return $data[$codigoStatus];

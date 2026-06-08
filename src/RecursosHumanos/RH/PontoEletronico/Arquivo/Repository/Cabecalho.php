@@ -26,6 +26,12 @@
  */
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Repository;
 
+use cl_pontoeletronicoarquivo;
+use DBDate;
+use DBLargeObject;
+use DBException;
+use BusinessException;
+use db_utils;
 use \ECidade\RecursosHumanos\RH\Efetividade\Model\Periodo;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Registro\Cabecalho as CabecalhoRegistro;
 
@@ -39,7 +45,7 @@ use \ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Registro\Cabecalho as Ca
 class Cabecalho {
 
   /**
-   * @var \cl_pontoeletronicoarquivo
+   * @var cl_pontoeletronicoarquivo
    */
   private $oDao;
 
@@ -53,7 +59,7 @@ class Cabecalho {
    */
   public function __construct() {
 
-    $this->oDao         = new \cl_pontoeletronicoarquivo();
+    $this->oDao         = new cl_pontoeletronicoarquivo();
     $this->iInstituicao = db_getsession("DB_instit");
   }
 
@@ -62,28 +68,28 @@ class Cabecalho {
    * @param CabecalhoRegistro $oCabecalho
    * @param Periodo $oPeriodo
    * @return CabecalhoRegistro
-   * @throws \BusinessException
-   * @throws \DBException
+   * @throws BusinessException
+   * @throws DBException
    */
   public function add(CabecalhoRegistro $oCabecalho, Periodo $oPeriodo) {
 
     $oLinha       = $oCabecalho->getLayoutLinha();
-    $sDataInicial = str_replace('/', '', $oPeriodo->getDataInicio()->getDate(\DBDate::DATA_PTBR));
+    $sDataInicial = str_replace('/', '', $oPeriodo->getDataInicio()->getDate(DBDate::DATA_PTBR));
     $iOid         = null;
 
     if(!empty($oLinha)) {
 
-      $iOid              = \DBLargeObject::criaOID(true);
-      $lSalvaArquivo     = \DBLargeObject::escrita($oCabecalho->getArquivo(), $iOid);
+      $iOid              = DBLargeObject::criaOID(true);
+      $lSalvaArquivo     = DBLargeObject::escrita($oCabecalho->getArquivo(), $iOid);
 
       if(!$lSalvaArquivo) {
-        throw new \DBException("Erro ao salvar o arquivo.");
+        throw new DBException("Erro ao salvar o arquivo.");
       }
 
-      $oDataInicialArquivo = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_INICIAL));
-      $oDataFinalArquivo   = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_FINAL));
+      $oDataInicialArquivo = new DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_INICIAL));
+      $oDataFinalArquivo   = new DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_FINAL));
 
-      if(!\DBDate::overlaps($oDataInicialArquivo, $oDataFinalArquivo, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())) {
+      if(!DBDate::overlaps($oDataInicialArquivo, $oDataFinalArquivo, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())) {
         return null;
       }
 
@@ -104,7 +110,7 @@ class Cabecalho {
     $this->oDao->{$sQuery}($iSequencial);
 
     if($this->oDao->erro_status == "0") {
-      throw new \BusinessException($this->oDao->erro_msg);
+      throw new BusinessException($this->oDao->erro_msg);
     }
 
     $oCabecalho->setCodigo($this->oDao->rh196_sequencial);
@@ -116,7 +122,7 @@ class Cabecalho {
    * Verifica se já houve anteriormente uma importação para o mesmo exercício/competência
    * @param Periodo $oPeriodo
    * @return null|integer
-   * @throws \DBException
+   * @throws DBException
    */
   private function getRegistroPontoEfetividade(Periodo $oPeriodo) {
 
@@ -133,13 +139,13 @@ class Cabecalho {
     $rsPontoEfetividade = db_query($sSqlPontoEfetividade);
 
     if(!$rsPontoEfetividade) {
-      throw new \DBException("Erro ao buscar registro de arquivo importado para efetividade.");
+      throw new DBException("Erro ao buscar registro de arquivo importado para efetividade.");
     }
 
     if(pg_num_rows($rsPontoEfetividade) == 0) {
       return null;
     }
 
-    return \db_utils::fieldsMemory($rsPontoEfetividade, 0)->rh196_sequencial;
+    return db_utils::fieldsMemory($rsPontoEfetividade, 0)->rh196_sequencial;
   }
 }

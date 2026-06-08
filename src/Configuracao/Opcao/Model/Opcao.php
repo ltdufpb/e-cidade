@@ -1,9 +1,9 @@
 <?php
 namespace ECidade\Configuracao\Opcao\Model;
 
-use test\Mockery\ProxyMockingTest;
+use Stringable;
 
-class Opcao implements \Stringable
+class Opcao implements Stringable
 {
 
 

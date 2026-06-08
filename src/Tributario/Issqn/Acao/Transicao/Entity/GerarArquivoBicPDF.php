@@ -1,6 +1,11 @@
 <?php
 namespace ECidade\Tributario\Issqn\Acao\Transicao\Entity;
 
+use cl_escrito;
+use cl_issquant;
+use rotulocampo;
+use Exception;
+use PDF;
 use Illuminate\Support\Facades\Log;
 
 class GerarArquivoBicPDF
@@ -16,9 +21,9 @@ class GerarArquivoBicPDF
     public function __construct(private $inscricao)
     {
         require_once(modification("fpdf151/pdf.php"));
-        $this->daoEscrito = new \cl_escrito();
-        $this->daoIssQuant = new \cl_issquant();
-        $this->rotulo = new \rotulocampo();
+        $this->daoEscrito = new cl_escrito();
+        $this->daoIssQuant = new cl_issquant();
+        $this->rotulo = new rotulocampo();
         $data = date('dmYHis');
         $this->caminho = "tmp/bic_inscricao_{$this->inscricao}_data_{$data}.pdf";
     }
@@ -44,7 +49,7 @@ class GerarArquivoBicPDF
     {
         $dadosCadastrais = $this->getDadosCadastrais();
         if (empty($dadosCadastrais)) {
-            throw new \Exception(
+            throw new Exception(
                 "Dados cadastrais não encotradados para inscrição {$this->inscricao}"
             );
         }
@@ -122,7 +127,7 @@ class GerarArquivoBicPDF
         $head4 = "BIC Alvará";
         $head5 = "Inscrição: {$this->inscricao}";
         $head6 = "CGM: {$dadosCadastrais[0]['z01_numcgm']}";
-        $this->pdf = new \PDF();
+        $this->pdf = new PDF();
         $this->pdf->Open();
         $this->pdf->AliasNbPages();
     }

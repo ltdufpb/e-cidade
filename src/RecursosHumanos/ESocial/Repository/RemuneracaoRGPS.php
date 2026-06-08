@@ -27,8 +27,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use BaseClassRepository;
+use cl_cfpess;
+use stdClass;
 use cl_cgm;
-use cl_rhpessoalmov;
 
 use BusinessException;
 use DBException;
@@ -42,13 +44,13 @@ use InstituicaoRepository;
  * Class RemuneracaoRGPS
  * @package ECidade\RecursosHumanos\ESocial\Repository
  */
-class RemuneracaoRGPS extends \BaseClassRepository
+class RemuneracaoRGPS extends BaseClassRepository
 {
     protected static $oInstance;
 
     /**
      * @param DBCompetencia $dbCompetencia
-     * @return \stdClass[]
+     * @return stdClass[]
      * @throws DBException
      */
     public static function buscarTodosCGMCompetencia(DBCompetencia $dbCompetencia, $servidores = null)
@@ -194,7 +196,7 @@ SQL;
         $rubricaDiferenca = null;
         $instituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
 
-        $daoRubricaDiferenca = new \cl_cfpess();
+        $daoRubricaDiferenca = new cl_cfpess();
         $sqlRubricaDiferenca = $daoRubricaDiferenca->sql_query_file(
             $dbCompetencia->getAno(),
             $dbCompetencia->getMes(),

@@ -2,7 +2,7 @@
 
 class DBReleaseNotePlugin extends DBReleaseNote {
 
-  public function __construct($idUsuario, $sNomeArquivo = null, $sNomeArquivoAtual = null, $sVersao = null, private ?\Plugin $oPlugin = null) {
+  public function __construct($idUsuario, $sNomeArquivo = null, $sNomeArquivoAtual = null, $sVersao = null, private ?Plugin $oPlugin = null) {
     
     parent::__construct($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao);
 

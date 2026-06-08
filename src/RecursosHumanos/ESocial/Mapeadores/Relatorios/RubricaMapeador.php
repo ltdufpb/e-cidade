@@ -27,6 +27,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Mapeadores\Relatorios;
 
+use InstituicaoRepository;
+use DBPessoal;
+use db_utils;
+
 class RubricaMapeador implements FormularioMapeador
 {
     private $dadosEcidade = [];
@@ -138,10 +142,10 @@ class RubricaMapeador implements FormularioMapeador
 
     public function getSqlDePara()
     {
-        $instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $instituicao = InstituicaoRepository::getInstituicaoSessao();
         $campos = array_merge($this->getCamposSistema(), $this->getCamposAuxiliares());
         $campos = implode(',', $campos);
-        $oCompetenciaAtual = \DBPessoal::getCompetenciaFolha();
+        $oCompetenciaAtual = DBPessoal::getCompetenciaFolha();
         $sql = "
             select
                    {$campos}
@@ -192,7 +196,7 @@ class RubricaMapeador implements FormularioMapeador
             throw new DBException("Erro ao buscar as informações do sistema.");
         }
 
-        $this->dadosEcidade =\db_utils::makeCollectionFromRecord($rs, fn($dadoEcidade) => get_object_vars($dadoEcidade));
+        $this->dadosEcidade =db_utils::makeCollectionFromRecord($rs, fn($dadoEcidade) => get_object_vars($dadoEcidade));
     }
 
     public function getColunas()

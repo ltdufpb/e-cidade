@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Juridico\ProcessoEletronico\Repository;
 
+use BusinessException;
 use ECidade\Tributario\Juridico\ProcessoEletronico\Domain\Certidao;
 
 /**
@@ -17,7 +18,7 @@ class CertidaoRepository
      * @param $anoCalc
      * @param $certidoes
      * @return array
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function getCertidoes($dataCalcProcess, $anoCalc , $certidoes) 
     {
@@ -58,7 +59,7 @@ class CertidaoRepository
         $rsDadosCertidao = db_query($sqlCertidao);
 
         if (!$rsDadosCertidao) {
-            throw new \BusinessException("Não foi possível calcular valores da Certidão");
+            throw new BusinessException("Não foi possível calcular valores da Certidão");
         }
 
         $aCertidao    = pg_fetch_all($rsDadosCertidao);

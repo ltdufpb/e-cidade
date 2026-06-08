@@ -144,7 +144,7 @@ class Escola implements IEscola {
    * Identifica que a escola oferece atendimento especial exclusivo
    * @var integer
    */
-  #[\Deprecated]
+  #[Deprecated]
   CONST OFERECE_EXCLUSIVAMENTE_ATENDIMENTO_ESPECIAL = 1;
 
   /**
@@ -163,7 +163,7 @@ class Escola implements IEscola {
    * Identifica que a escola oferece atividade complementar exclusiva
    * @var integer
    */
-  #[\Deprecated]
+  #[Deprecated]
   CONST OFERECE_EXCLUSIVAMENTE_ATIVIDADE_COMPLEMENTAR = 1;
 
   /**

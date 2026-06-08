@@ -2,6 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Formatter;
 
+use stdClass;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\DadosPreenchimento as ModelDadosPreenchimento;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
@@ -57,7 +58,7 @@ class DadosPreenchimento
                 $this->criaPergunta($resposta, $respostasFormatadas);
             }
 
-            $dado = new \stdClass();
+            $dado = new stdClass();
             $dado->idPergunta = $resposta->idPergunta;
             $dado->resposta = $resposta->resposta;
             if (in_array($resposta->tipoPergunta, [1,3])) {
@@ -79,7 +80,7 @@ class DadosPreenchimento
      */
     private function criaGrupo($resposta, &$respostasFormatadas)
     {
-        $grupo = new \stdClass();
+        $grupo = new stdClass();
         $grupo->nome = $resposta->grupo;
         $grupo->perguntas = [];
         $respostasFormatadas[$resposta->grupo] = $grupo;
@@ -93,7 +94,7 @@ class DadosPreenchimento
      */
     private function criaPergunta($resposta, &$respostasFormatadas)
     {
-        $pergunta = new \stdClass();
+        $pergunta = new stdClass();
         $pergunta->nome = $resposta->pergunta;
         $respostasFormatadas[$resposta->grupo]->perguntas[$resposta->pergunta] = $pergunta;
     }

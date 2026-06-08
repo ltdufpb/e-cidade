@@ -27,6 +27,9 @@
 
 namespace ECidade\Financeiro\Contabilidade\LancamentoContabil;
 
+use cl_conhistdoc;
+use db_utils;
+
 /**
  * Class Documento
  * @package ECidade\Financeiro\Contabilidade\LancamentoContabil
@@ -193,13 +196,13 @@ class Documento
      */
     public static function getTipoDoDocumento($documento)
     {
-        $daoConhistDoc = new \cl_conhistdoc();
+        $daoConhistDoc = new cl_conhistdoc();
         $sqlTipoDocumento = $daoConhistDoc->sql_query_file($documento, "c53_tipo");
         $rsTipoDocumento = db_query($sqlTipoDocumento);
         if (!$rsTipoDocumento || pg_num_rows($rsTipoDocumento) == 0) {
             return null;
         }
-        return \db_utils::fieldsMemory($rsTipoDocumento, 0)->c53_tipo;
+        return db_utils::fieldsMemory($rsTipoDocumento, 0)->c53_tipo;
     }
 
 

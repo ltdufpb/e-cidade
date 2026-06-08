@@ -2,8 +2,7 @@
 
 namespace ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Parser\Entity;
 
-use \ParameterException;
-use \BusinessException;
+use stdClass;
 use \JSON;
 
 class AlvaraMei extends SolicitacaoAlvara
@@ -90,7 +89,7 @@ class AlvaraMei extends SolicitacaoAlvara
     public function objetoMEIResponsavel($objetoSolicitacaoAlvara)
     {
         $responsaveis = [];
-        $responsavelSolicitacao = new \stdClass();
+        $responsavelSolicitacao = new stdClass();
 
         $responsaveisInformados  = $this->getInformacaoJSON(
             $objetoSolicitacaoAlvara,

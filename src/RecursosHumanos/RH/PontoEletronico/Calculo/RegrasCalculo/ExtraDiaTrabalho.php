@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\RegrasCalculo;
 
+use DateTime;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
@@ -75,7 +76,7 @@ class ExtraDiaTrabalho extends RegraCalculo {
         $data = $diaTrabalho->getData()->getDate();
         
         if( !is_null($this->configuracoesLotacao->getHoraExtra50()) ) {
-            $this->limitesExtras[BaseHora::HORAS_EXTRA50]       = BaseHora::converterDateTimeEmMinutos(new \DateTime($data .' '. $this->configuracoesLotacao->getHoraExtra50()));
+            $this->limitesExtras[BaseHora::HORAS_EXTRA50]       = BaseHora::converterDateTimeEmMinutos(new DateTime($data .' '. $this->configuracoesLotacao->getHoraExtra50()));
             $this->horasExtras[BaseHora::HORAS_EXTRA50]         = 0;
             $this->horasExtras[BaseHora::HORAS_EXTRA50_NOTURNA] = 0;
             $this->horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA50_NAO_AUTORIZADAS]         = 0;
@@ -83,7 +84,7 @@ class ExtraDiaTrabalho extends RegraCalculo {
         }
 
         if( !is_null($this->configuracoesLotacao->getHoraExtra75()) ) {
-            $this->limitesExtras[BaseHora::HORAS_EXTRA75]       = BaseHora::converterDateTimeEmMinutos(new \DateTime($data .' '. $this->configuracoesLotacao->getHoraExtra75()));
+            $this->limitesExtras[BaseHora::HORAS_EXTRA75]       = BaseHora::converterDateTimeEmMinutos(new DateTime($data .' '. $this->configuracoesLotacao->getHoraExtra75()));
             $this->horasExtras[BaseHora::HORAS_EXTRA75]         = 0;
             $this->horasExtras[BaseHora::HORAS_EXTRA75_NOTURNA] = 0;
             $this->horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA75_NAO_AUTORIZADAS]         = 0;
@@ -91,7 +92,7 @@ class ExtraDiaTrabalho extends RegraCalculo {
         }
 
         if( !is_null($this->configuracoesLotacao->getHoraExtra100()) ) {
-            $this->limitesExtras[BaseHora::HORAS_EXTRA100]       = BaseHora::converterDateTimeEmMinutos(new \DateTime($data .' '. $this->configuracoesLotacao->getHoraExtra100()));
+            $this->limitesExtras[BaseHora::HORAS_EXTRA100]       = BaseHora::converterDateTimeEmMinutos(new DateTime($data .' '. $this->configuracoesLotacao->getHoraExtra100()));
             $this->horasExtras[BaseHora::HORAS_EXTRA100]         = 0;
             $this->horasExtras[BaseHora::HORAS_EXTRA100_NOTURNA] = 0;
             $this->horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA100_NAO_AUTORIZADAS]         = 0;
@@ -102,7 +103,7 @@ class ExtraDiaTrabalho extends RegraCalculo {
     /**
      * Método que processa a regra para cálculo de extras em dias de trabalho
      */
-    public function processar(\DateTime $momentoAtual) 
+    public function processar(DateTime $momentoAtual) 
     {
         $entrada1 = $this->diaTrabalho->getMarcacoesSemAlteracao()->getMarcacaoEntrada1()->getMarcacao();
         $entrada2 = $this->diaTrabalho->getMarcacoesSemAlteracao()->getMarcacaoEntrada2()->getMarcacao();
@@ -116,7 +117,7 @@ class ExtraDiaTrabalho extends RegraCalculo {
         }
         
         $horaExtraAutorizada = null;
-        if( $this->getDiaTrabalho()->getHorasExtrasAutorizadas() instanceof \DateTime ) {
+        if( $this->getDiaTrabalho()->getHorasExtrasAutorizadas() instanceof DateTime ) {
             $horaExtraAutorizada = BaseHora::converterDateTimeEmMinutos($this->getDiaTrabalho()->getHorasExtrasAutorizadas());
         }
 
@@ -126,9 +127,9 @@ class ExtraDiaTrabalho extends RegraCalculo {
         ) {
 
             if( (!$this->diaTrabalho->getMarcacoesSemAlteracao()->estaNoIntervalo($momentoAtual))
-                 || ($entrada1 instanceof \DateTime && $momentoAtual->getTimestamp() == $entrada1->getTimestamp()) 
-                 || ($entrada2 instanceof \DateTime && $momentoAtual->getTimestamp() == $entrada2->getTimestamp())
-                 || ($entrada3 instanceof \DateTime && $momentoAtual->getTimestamp() == $entrada3->getTimestamp())
+                 || ($entrada1 instanceof DateTime && $momentoAtual->getTimestamp() == $entrada1->getTimestamp()) 
+                 || ($entrada2 instanceof DateTime && $momentoAtual->getTimestamp() == $entrada2->getTimestamp())
+                 || ($entrada3 instanceof DateTime && $momentoAtual->getTimestamp() == $entrada3->getTimestamp())
             ) {
 
                 foreach ($this->limitesExtras as $tipo => $limite) {

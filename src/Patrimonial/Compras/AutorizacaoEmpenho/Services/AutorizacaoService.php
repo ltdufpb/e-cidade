@@ -27,12 +27,7 @@
 
 namespace ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Services;
 
-use App\Domain\Patrimonial\Licitacoes\Models\LicitacaoTramita;
-use cl_cflicita;
-use cl_liclicita;
-use cl_pctipocompra;
 use DateTime;
-use db_utils;
 use Dotacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Repository\AutorizacaoRepository;
@@ -44,7 +39,6 @@ use fornecedor;
 use Instituicao;
 use DBDepartamento;
 use JSON;
-use InstituicaoRepository;
 
 /**
  * Class ServidorOperadoraSaudeDependenteService

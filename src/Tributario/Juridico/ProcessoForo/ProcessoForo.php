@@ -27,13 +27,13 @@
 
 namespace ECidade\Tributario\Juridico\ProcessoForo;
 
-use ECidade\Tributario\Arrecadacao\Custas\Interfaces;
-
+use ECidade\Tributario\Arrecadacao\Custas\Interfaces\ParcelamentoHonorario;
+use Stringable;
 use DateTime;
 use ECidade\Tributario\Juridico\Inicial\Inicial as InicialEntity;
 use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilha as ProcessoForoPartilhaEntity;
 
-class ProcessoForo implements Interfaces\ParcelamentoHonorario, \Stringable
+class ProcessoForo implements ParcelamentoHonorario, Stringable
 {
     /**
      * @var int

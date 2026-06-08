@@ -2,6 +2,9 @@
 
 namespace ECidade\Tributario\Divida\Model;
 
+use InstituicaoRepository;
+use CgmBase;
+use Exception;
 use CgmFactory;
 use DateTime;
 use Instituicao;
@@ -13,7 +16,7 @@ class Diversos
      */
     private $codigo;
     /**
-     * @var \CgmBase
+     * @var CgmBase
      */
     private $cgm;
     /**
@@ -86,7 +89,7 @@ class Diversos
     }
 
     /**
-     * @return \CgmBase
+     * @return CgmBase
      */
     public function getCgm()
     {
@@ -94,7 +97,7 @@ class Diversos
     }
 
     /**
-     * @param \CgmBase $cgm
+     * @param CgmBase $cgm
      */
     public function setCgm($cgm)
     {
@@ -312,7 +315,7 @@ class Diversos
     /**
      * @param  $state
      * @return Diversos
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState($state)
     {
@@ -365,7 +368,7 @@ class Diversos
             $self->setObservacao($state['dv05_obs']);
         }
         if (array_key_exists('dv05_instit', $state)) {
-            $instituicao = \InstituicaoRepository::getInstituicaoByCodigo($state['dv05_instit']);
+            $instituicao = InstituicaoRepository::getInstituicaoByCodigo($state['dv05_instit']);
             $self->setInstituicao($instituicao);
         }
 

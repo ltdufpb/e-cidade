@@ -4,7 +4,6 @@
 namespace ECidade\Tributario\Divida\Repository;
 
 use cl_inicial;
-use DateTime;
 use ECidade\Tributario\Divida\Model\Inicial;
 use Exception;
 

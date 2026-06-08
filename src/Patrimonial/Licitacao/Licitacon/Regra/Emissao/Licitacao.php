@@ -27,10 +27,11 @@
 
 namespace ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao;
 
+use LicitacaoAtributosDinamicos;
+use cl_pcorcamitemproc;
 use cl_liclicita;
 use cl_pcorcamjulg;
 use db_utils;
-use DBDate;
 use DBException;
 use ECidade\Patrimonial\Licitacao\Licitacon\Julgamento;
 use ECidade\Patrimonial\Licitacao\Licitacon\Resultado;
@@ -370,16 +371,16 @@ class Licitacao extends BaseAbstract
 
     private function getPercentualTaxa($campoTaxa)
     {
-        $atributosLicitacao = new \LicitacaoAtributosDinamicos($this->oLicitacao->getCodigo());
+        $atributosLicitacao = new LicitacaoAtributosDinamicos($this->oLicitacao->getCodigo());
         $siglaTipoLicitacao = $atributosLicitacao->getAtributo('tipolicitacao');
 
-        if ((int)$this->oLicitacao->getTipoJulgamento() === \licitacao::TIPO_JULGAMENTO_GLOBAL
+        if ((int)$this->oLicitacao->getTipoJulgamento() === oLicitacao::TIPO_JULGAMENTO_GLOBAL
             && $siglaTipoLicitacao === "MTX"
         ) {
             $itensLicitacao = $this->oLicitacao->getItens();
             $primeiroItem = $itensLicitacao[0];
 
-            $daoOrcamentoItemProcesso = new \cl_pcorcamitemproc();
+            $daoOrcamentoItemProcesso = new cl_pcorcamitemproc();
             $buscaTaxa = $daoOrcamentoItemProcesso->sql_query_orcamento_item(
                 "coalesce({$campoTaxa}, 0) as taxa",
                 "pc31_pcprocitem = {$primeiroItem->getItemProcessoCompras()} order by pc31_orcamitem limit 1"

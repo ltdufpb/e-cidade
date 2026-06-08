@@ -27,6 +27,11 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use CgmFisico;
+use DBException;
+use BusinessException;
+use ParameterException;
 use ECidade\RecursosHumanos\ESocial\Service\PagamentosRendimentosTrabalhoService;
 use ECidade\RecursosHumanos\ESocial\Repository\PagamentosRendimentosTrabalho as PagamentosRendTrabalhoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
@@ -34,7 +39,6 @@ use ECidade\RecursosHumanos\Pessoal\Service\DataPagamentoFolhaService;
 use InstituicaoRepository;
 use stdClass;
 use DBCompetencia;
-use DBDate;
 
 class PagamentosRendimentosTrabalhoFormatter extends Formatter
 {
@@ -96,9 +100,9 @@ class PagamentosRendimentosTrabalhoFormatter extends Formatter
     /**
      * @param array $dados
      * @return array|stdClass[]
-     * @throws \DBException
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dados = (object)$dados;
@@ -118,7 +122,7 @@ class PagamentosRendimentosTrabalhoFormatter extends Formatter
 
         $dadosFormatados = [];
         foreach ($dados->cgms as $indice => $cgm) {
-            if ($cgm->cgm instanceof \CgmFisico) {
+            if ($cgm->cgm instanceof CgmFisico) {
                 $dadoFormatado = $this->dadosECidade($cgm);
                 if (!empty($dadoFormatado)) {
                     $dadosFormatados[] = $dadoFormatado;
@@ -136,9 +140,9 @@ class PagamentosRendimentosTrabalhoFormatter extends Formatter
      * Busca os dados de pagamentos do CGM e retornamos formatados.
      * @param $cgm
      * @return stdClass|null
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      */
     private function dadosECidade($dado)
     {

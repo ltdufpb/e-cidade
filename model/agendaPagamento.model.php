@@ -191,8 +191,8 @@ class agendaPagamento {
      * @param integer $iCodigoOrdem código da ordem
      * @param bool $lRetornaContasVinculadas
      *
-     * @return array|\stdClass[]
-     * @throws \Exception
+     * @return array|stdClass[]
+     * @throws Exception
      */
     public function getContasRecurso($iCodigoOrdem, $lRetornaContasVinculadas = true) {
 
@@ -2742,7 +2742,7 @@ class agendaPagamento {
             throw new Exception($sMessage);
         }
 
-        $oNovoMovimento = new \stdClass();
+        $oNovoMovimento = new stdClass();
         $oNovoMovimento->iCodTipo = null;
         $oNovoMovimento->iNumEmp  = $iNumeroEmpenho;
         $oNovoMovimento->nValor   = $nValorNovoMovimento;
@@ -2780,10 +2780,10 @@ class agendaPagamento {
 
         $rsDadosRecurso = db_query($sqlDados);
         if (! $rsDadosRecurso || pg_num_rows($rsDadosRecurso) == 0) {
-            throw new \Exception("Ocorreu algo inesperado ao buscar recurso do movimento selecionado.");
+            throw new Exception("Ocorreu algo inesperado ao buscar recurso do movimento selecionado.");
         }
 
-        return \RecursoRepository::getRecursoPorCodigo(db_utils::fieldsMemory($rsDadosRecurso,0)->recurso);
+        return RecursoRepository::getRecursoPorCodigo(db_utils::fieldsMemory($rsDadosRecurso,0)->recurso);
     }
 
 

@@ -386,7 +386,7 @@ try {
         throw new Exception( _M( $sCaminhoMensagens . "informe_turma") );
       }
 
-      $oTurma      = new \Turma($oParam->iTurma);
+      $oTurma      = new Turma($oParam->iTurma);
       $oCalendario = $oTurma->getCalendario();
 
       $oRetorno->dataInicio = $oCalendario->getDataInicio()->convertTo(DBDate::DATA_PTBR);

@@ -27,6 +27,8 @@
 
 namespace ECidade\Patrimonial\Licitacao\Licitacon;
 
+use licitacao;
+
 /**
  * Class Julgamento
  * Classe para controle do tipo de julgamento do LicitaCon.
@@ -56,9 +58,9 @@ class Julgamento {
 	public function getSigla() {
 
 		return match ($this->iCodigo) {
-            \licitacao::TIPO_JULGAMENTO_GLOBAL => self::TIPO_JULGAMENTO_SIGLA_GLOBAL,
-            \licitacao::TIPO_JULGAMENTO_POR_LOTE => self::TIPO_JULGAMENTO_SIGLA_POR_LOTE,
-            \licitacao::TIPO_JULGAMENTO_POR_ITEM => self::TIPO_JULGAMENTO_SIGLA_POR_ITEM,
+            licitacao::TIPO_JULGAMENTO_GLOBAL => self::TIPO_JULGAMENTO_SIGLA_GLOBAL,
+            licitacao::TIPO_JULGAMENTO_POR_LOTE => self::TIPO_JULGAMENTO_SIGLA_POR_LOTE,
+            licitacao::TIPO_JULGAMENTO_POR_ITEM => self::TIPO_JULGAMENTO_SIGLA_POR_ITEM,
             default => null,
         };
 	}

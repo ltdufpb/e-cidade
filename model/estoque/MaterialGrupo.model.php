@@ -123,7 +123,7 @@ class MaterialGrupo extends DBEstruturaValor  {
    *
    * @return MaterialGrupo
    */
-  #[\Override]
+  #[Override]
   public function salvar() {
 
     parent::salvar();
@@ -241,7 +241,7 @@ class MaterialGrupo extends DBEstruturaValor  {
    *
    * @return integer
    */
-  #[\Override]
+  #[Override]
   public function getCodigo() {
     return $this->iCodigoGrupo;
   }

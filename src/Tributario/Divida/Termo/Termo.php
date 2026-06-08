@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Divida\Termo;
 
+use cl_termoreparc;
+use db_utils;
 use DateTime;
 use ECidade\Tributario\Caixa\Model\Arrepaga;
 use ECidade\Tributario\Divida\Model\Disbanco;
@@ -861,12 +863,12 @@ class Termo
     public static function getOrigemTermo($iTermo)
     {
 
-        $dao  = new \cl_termoreparc();
+        $dao  = new cl_termoreparc();
         $sSql = $dao->sql_query_file(null, "v08_parcelorigem", null, "v08_parcel =  $iTermo ");
 
         $rs   = $dao->sql_record($sSql);
         if ($dao->numrows > 0) {
-            $iTermo = \db_utils::fieldsMemory($rs, 0)->v08_parcelorigem;
+            $iTermo = db_utils::fieldsMemory($rs, 0)->v08_parcelorigem;
             return static::getOrigemTermo($iTermo);
         }
         return $iTermo;
@@ -881,7 +883,7 @@ class Termo
     public static function getOrigemMultiplaTermo($iTermo)
     {
 
-        $dao  = new \cl_termoreparc();
+        $dao  = new cl_termoreparc();
         $sSql = $dao->sql_query_file(null, "v08_parcelorigem", null, "v08_parcel =  $iTermo ");
 
         $aTermo = [];
@@ -889,7 +891,7 @@ class Termo
         $rs   = $dao->sql_record($sSql);
         if ($dao->numrows > 0) {
             for ($i = 0; $i < $dao->numrows; $i++) {
-                $iTermo = \db_utils::fieldsMemory($rs, $i)->v08_parcelorigem;
+                $iTermo = db_utils::fieldsMemory($rs, $i)->v08_parcelorigem;
 
                 $aTermo = array_merge($aTermo, static::getOrigemMultiplaTermo($iTermo));
             }

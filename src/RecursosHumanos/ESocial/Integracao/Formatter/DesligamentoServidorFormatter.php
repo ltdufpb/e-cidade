@@ -2,6 +2,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use DBException;
+use db_utils;
+use BusinessException;
 use CalculoFolha;
 use CgmJuridico;
 use DBCompetencia;
@@ -45,10 +49,10 @@ class DesligamentoServidorFormatter extends Formatter
     /**
      * @param  array $dados
      * @return mixed|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($servidores)
     {
         $dadosServidor = [];
@@ -66,8 +70,8 @@ class DesligamentoServidorFormatter extends Formatter
     /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -103,12 +107,12 @@ class DesligamentoServidorFormatter extends Formatter
         if (!$rs) {
             $msg = "Ocorreu um erro ao buscar informações da competência de pagamento de rescisão da "
                 . "matrícula: {$this->servidorAtual->getMatricula()}.";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
 
         if (pg_num_rows($rs) > 0) {
-            $ano = \db_utils::fieldsMemory($rs, 0)->ano;
-            $mes = \db_utils::fieldsMemory($rs, 0)->mes;
+            $ano = db_utils::fieldsMemory($rs, 0)->ano;
+            $mes = db_utils::fieldsMemory($rs, 0)->mes;
 
             if ($this->servidorAtual->getAnoCompetencia() != $ano
                 || $this->servidorAtual->getMesCompetencia() != $mes) {
@@ -252,7 +256,7 @@ class DesligamentoServidorFormatter extends Formatter
      * @param int $ano
      * @param int $mes
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
     private function inicializaRubricaPensaoAlimenticia()
     {
@@ -272,7 +276,7 @@ class DesligamentoServidorFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
-    #[\Override]
+    #[Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -285,7 +289,7 @@ class DesligamentoServidorFormatter extends Formatter
      *
      * @return  self
      */
-    #[\Override]
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

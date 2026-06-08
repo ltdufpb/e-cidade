@@ -27,9 +27,7 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Repository;
 
-use cl_controlehorasextras;
 use cl_controlehorasextrasmatriculas;
-use ECidade\RecursosHumanos\Pessoal\Model\ControleRubricasParametros;
 use ECidade\RecursosHumanos\Pessoal\Model\ControleRubricasMatriculas;
 use Exception;
 use Instituicao;

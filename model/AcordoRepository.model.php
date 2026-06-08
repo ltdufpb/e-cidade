@@ -97,11 +97,11 @@
   }
 
    /**
-    * Retorna os acordos atraves de um filtro where
-    * @param $where
-    * @return \Acordo[]
-    * @throws \DBException
-    */
+   * Retorna os acordos atraves de um filtro where
+   * @param $where
+   * @return Acordo[]
+   * @throws DBException
+   */
   public static function getAcordosPorFiltro($where) {
     
     $oDaoAcordo = new cl_acordo();

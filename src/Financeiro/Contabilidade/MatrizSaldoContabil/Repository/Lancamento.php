@@ -276,7 +276,7 @@ class Lancamento extends BaseClassRepository
 
         if (!empty($infoComplementares)) {
             foreach ($infoComplementares as $infoComplementar) {
-                $oInfoComplementar = new Model\InformacaoComplementar();
+                $oInfoComplementar = new InformacaoComplementar();
                 $oInfoComplementar->setSigla($infoComplementar->sigla);
                 $oInfoComplementar->setDescricao($infoComplementar->descricao);
                 $oInfoComplementar->setConta($infoComplementar->conta);
@@ -715,7 +715,7 @@ class Lancamento extends BaseClassRepository
 
         $lancamento = $this->lancamentos[$dado->sequencial];
         $valor = $dado->valor;
-        if ($dado->sigla == Model\InformacaoComplementar::INFO_COMP_TIPO_FR && !empty($deParaFR[$valor])
+        if ($dado->sigla == InformacaoComplementar::INFO_COMP_TIPO_FR && !empty($deParaFR[$valor])
             && $this->tipoSaldo == self::TIPO_SALDO_MSC) {
             $valor = $deParaFR[$valor];
 
@@ -724,18 +724,18 @@ class Lancamento extends BaseClassRepository
             }
         }
 
-        if ($dado->sigla == Model\InformacaoComplementar::INFO_COMP_TIPO_FR
+        if ($dado->sigla == InformacaoComplementar::INFO_COMP_TIPO_FR
             && !empty($this->deParaFonteRecursos[$valor])
             && $this->tipoSaldo == self::TIPO_SALDO_ECIDADE) {
             $valor = $this->deParaFonteRecursos[$valor];
         }
 
-        $tipos = [Model\InformacaoComplementar::INFO_COMP_TIPO_ND, Model\InformacaoComplementar::INFO_COMP_TIPO_NR];
+        $tipos = [InformacaoComplementar::INFO_COMP_TIPO_ND, InformacaoComplementar::INFO_COMP_TIPO_NR];
         if (in_array($dado->sigla, $tipos) && $this->tipoSaldo == self::TIPO_SALDO_MSC) {
             /**
              * Quando a receita for de dedução, devemos inverter o valor para deduzir do grupo.
              */
-            if ($dado->sigla == Model\InformacaoComplementar::INFO_COMP_TIPO_NR && $valor[1] == 9) {
+            if ($dado->sigla == InformacaoComplementar::INFO_COMP_TIPO_NR && $valor[1] == 9) {
                 $lancamento->valor = $lancamento->valor * -1;
             }
             // removido substr pois deve ser realizado o mapeamento com o plano do governo
@@ -744,9 +744,9 @@ class Lancamento extends BaseClassRepository
 
         /* os atributos abaixo não são enviados para MSC caso o valor encontrado esteja vazio */
         $atributosParaIgnorar = [
-            Model\InformacaoComplementar::INFO_COMP_TIPO_ES,
-            Model\InformacaoComplementar::INFO_COMP_TIPO_CF,
-            Model\InformacaoComplementar::INFO_COMP_TIPO_CO,
+            InformacaoComplementar::INFO_COMP_TIPO_ES,
+            InformacaoComplementar::INFO_COMP_TIPO_CF,
+            InformacaoComplementar::INFO_COMP_TIPO_CO,
         ];
         if (in_array($dado->sigla, $atributosParaIgnorar) && $this->tipoSaldo == self::TIPO_SALDO_MSC
             && (empty($valor) or $valor == '0000')) {
@@ -755,11 +755,11 @@ class Lancamento extends BaseClassRepository
 
         // quando o atributo DC for 0 (zero) não deve ser enviado na matriz
         if ($this->tipoSaldo == self::TIPO_SALDO_MSC
-            && $dado->sigla === Model\InformacaoComplementar::INFO_COMP_TIPO_DC
+            && $dado->sigla === InformacaoComplementar::INFO_COMP_TIPO_DC
             && $valor === '0') {
             return;
         }
-        if ((string)$dado->sigla === Model\InformacaoComplementar::INFO_COMP_TIPO_PO
+        if ((string)$dado->sigla === InformacaoComplementar::INFO_COMP_TIPO_PO
             && $this->tipoSaldo == self::TIPO_SALDO_MSC) {
             if (!empty($deParaPO[$valor])) {
                 $valor = $deParaPO[$valor];
@@ -1099,7 +1099,7 @@ class Lancamento extends BaseClassRepository
                 unset($partesAtributos[0]);
                 foreach ($partesAtributos as $atributo) {
                     [$valor, $atributo] = explode('#', (string) $atributo);
-                    if ($atributo == Model\InformacaoComplementar::INFO_COMP_TIPO_FR) {
+                    if ($atributo == InformacaoComplementar::INFO_COMP_TIPO_FR) {
                         $siconfi = $this->buscaSiconfi2022($valor);
                         if (is_null($siconfi)) {
                             throw new Exception(
@@ -1553,14 +1553,14 @@ class Lancamento extends BaseClassRepository
     public function transformarAtributosSiconfi($atributo, $valor)
     {
         switch ($atributo) {
-            case Model\InformacaoComplementar::INFO_COMP_TIPO_PO:
+            case InformacaoComplementar::INFO_COMP_TIPO_PO:
                 if (!empty($this->deParaPo[$valor])) {
                     $valor = $this->deParaPo[$valor];
                 }
                 return $valor;
                 break;
 
-            case Model\InformacaoComplementar::INFO_COMP_TIPO_FR:
+            case InformacaoComplementar::INFO_COMP_TIPO_FR:
                 if (!empty($this->deParaRecursos[$valor])) {
                     $valor = $this->deParaRecursos[$valor];
                 }
@@ -1760,7 +1760,7 @@ class Lancamento extends BaseClassRepository
         foreach ($partesAtributos as $atributo) {
             [$valor, $atributo] = explode('#', (string) $atributo);
 
-            if ($atributo === Model\InformacaoComplementar::INFO_COMP_TIPO_PO
+            if ($atributo === InformacaoComplementar::INFO_COMP_TIPO_PO
                 && array_key_exists((string) $valor, $this->deParaPo)) {
                 return true;
             }

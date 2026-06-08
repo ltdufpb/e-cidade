@@ -439,7 +439,7 @@ class Certidao {
                                          true,
                                          null);
 
-    } catch (Exception $oErro) {
+    } catch (Exception) {
       throw new BusinessException( _M( self::MENSAGENS . "erro_regra_emissao" ) );
     }
 

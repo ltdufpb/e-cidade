@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Custas\Relatorio;
 
+use cl_db_bancos;
 use ECidade\Tributario\Arrecadacao\ModeloImpressao\Repository\CobrancaRegistrada;
 use Exception;
 use Instituicao;
@@ -269,11 +270,11 @@ class RelatorioRecibo
 
         // verifica se é ficha e busca o codigo do banco
         if ($oRegraEmissao->isCobranca()) {
-            $cldb_bancos = new \cl_db_bancos;
+            $cldb_bancos = new cl_db_bancos;
             $rsConsultaBanco = $cldb_bancos->sql_record(
                 $cldb_bancos->sql_query_file($oRecibo->getConvenio()->getCodBanco())
             );
-            $oBanco = \db_utils::fieldsMemory($rsConsultaBanco, 0);
+            $oBanco = db_utils::fieldsMemory($rsConsultaBanco, 0);
             $pdfEmissao->numbanco = $oBanco->db90_codban . "-" . $oBanco->db90_digban;
             $pdfEmissao->banco = $oBanco->db90_abrev;
 
@@ -420,7 +421,7 @@ class RelatorioRecibo
         $rs   = db_query($sql);
 
         if (pg_num_rows($rs) > 0) {
-            $dados =  \db_utils::fieldsMemory($rs, 0);
+            $dados =  db_utils::fieldsMemory($rs, 0);
             $pdf->nomepri = $dados->z01_ender;
             $pdf->prenomepri = $dados->j43_ender;
             $pdf->nrpri = $dados->j39_numero;

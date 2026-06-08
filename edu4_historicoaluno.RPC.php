@@ -345,7 +345,7 @@ switch ($oParam->exec) {
                 throw new ParameterException("Departamento atual não é uma Escola.");
             }
 
-            $oRetorno->iStatusAlteracaoHistorico = (new HistoricoEscolar())->permiteManutencaoHistorico($oAluno, $oEscola);
+            $oRetorno->iStatusAlteracaoHistorico = new HistoricoEscolar()->permiteManutencaoHistorico($oAluno, $oEscola);
 
             $aSequenciaEtapas = [];
             $oUltimaMatricula = MatriculaRepository::getUltimaMatriculaAluno($oAluno);

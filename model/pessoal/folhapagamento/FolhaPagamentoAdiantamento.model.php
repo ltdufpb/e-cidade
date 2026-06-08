@@ -77,7 +77,7 @@ class FolhaPagamentoAdiantamento extends FolhaPagamento {
    * @example FolhaPagamentoAdiantamento::hasFolhaAberta()
    * @return  boolean
    */
-  #[\Override]
+  #[Override]
   public static function hasFolhaAberta(?DBCompetencia $oCompetencia = null) {
     return FolhaPagamento::hasFolhaAberta(FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO, $oCompetencia);
   }
@@ -107,7 +107,7 @@ class FolhaPagamentoAdiantamento extends FolhaPagamento {
    * @example  FolhaPagamento:getProximoNumero(FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO)
    * @return   Integer  Próximo número da folha adiantamento
    */
-  #[\Override]
+  #[Override]
   public static function getProximoNumero($iTipoFolha) {
     return FolhaPagamento::getProximoNumero(FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO);
   }
@@ -139,7 +139,7 @@ class FolhaPagamentoAdiantamento extends FolhaPagamento {
    * - A folha informada não pode estar empenhada
    * @return boolean
    */
-  #[\Override]
+  #[Override]
   public function cancelarFechamento() {
     return parent::cancelarFechamento();
   }
@@ -150,7 +150,7 @@ class FolhaPagamentoAdiantamento extends FolhaPagamento {
    * @param  DBCompetencia $oCompetencia Competencia da Folha
    * @return array folhas de pagamentos de adiantamentos 
    */
-  #[\Override]
+  #[Override]
   public static function getFolhasFechadasCompetencia( DBCompetencia $oCompetencia, $iTipoFolha = \null ) {
     return FolhaPagamento::getFolhasFechadasCompetencia($oCompetencia, FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO);
   }

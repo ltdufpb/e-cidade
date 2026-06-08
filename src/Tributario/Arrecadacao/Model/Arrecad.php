@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Model;
 
+use Exception;
 use DateTime;
 
 /**
@@ -316,7 +317,7 @@ class Arrecad
     /**
      * @param  $state
      * @return Arrecad
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState($state)
     {

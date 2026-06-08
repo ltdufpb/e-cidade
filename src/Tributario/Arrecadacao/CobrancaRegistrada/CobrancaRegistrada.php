@@ -27,6 +27,15 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada;
 
+use cl_cadconvenio;
+use cl_reciboregistra;
+use stdClass;
+use Instituicao;
+use ContaBancaria;
+use cl_remessacobrancaregistrada;
+use cl_parametroscobrancaregistrada;
+use cl_recibocobrancawebservice;
+use cl_bancoagencia;
 use BusinessException;
 use convenio;
 use DateTime;
@@ -60,7 +69,7 @@ class CobrancaRegistrada
      */
     public static function validaConvenioCobranca($iCodigoConvenio)
     {
-        $oDaoConvenio = new \cl_cadconvenio();
+        $oDaoConvenio = new cl_cadconvenio();
         $sSqConvenio  = $oDaoConvenio->sql_query_convenio_cobranca(
             $iCodigoConvenio,
             "ar12_sequencial, ar12_cadconveniomodalidade, ar13_carteira"
@@ -137,7 +146,7 @@ class CobrancaRegistrada
             throw new Exception("Recibo inválido.");
         }
 
-        $oDaoReciboRegistra = new \cl_reciboregistra();
+        $oDaoReciboRegistra = new cl_reciboregistra();
         $oDaoReciboRegistra->k146_numpre = $oRecibo->getNumpreRecibo();
         $oDaoReciboRegistra->k146_convenio = $iCodigoConvenio;
         $oDaoReciboRegistra->incluir();
@@ -163,7 +172,7 @@ class CobrancaRegistrada
             return false;
         }
 
-        $oDaoRecibos = new \cl_reciboregistra();
+        $oDaoRecibos = new cl_reciboregistra();
 
         /**
          * Remove os recibos da fila
@@ -190,8 +199,8 @@ class CobrancaRegistrada
             throw new Exception("Código do convênio não informado.");
         }
 
-        $oDaoReciboRegistra = new \cl_reciboregistra();
-        $oDaoConveio        = new \cl_cadconvenio();
+        $oDaoReciboRegistra = new cl_reciboregistra();
+        $oDaoConveio        = new cl_cadconvenio();
 
         /**
          * Buscamos os dados do convênnio através do código recebido nos parâmetros
@@ -214,7 +223,7 @@ class CobrancaRegistrada
 
         $oConvenio = db_utils::fieldsMemory($rsConveio, 0);
 
-        $oDadosConvenio = new \stdClass();
+        $oDadosConvenio = new stdClass();
         $oDadosConvenio->instituicao              = $oConvenio->ar11_instit;
         $oDadosConvenio->nome                     = $oConvenio->ar11_nome;
         $oDadosConvenio->tipo_convenio            = $oConvenio->ar11_cadtipoconvenio;
@@ -224,14 +233,14 @@ class CobrancaRegistrada
         $oDadosConvenio->variacao                 = $oConvenio->ar13_variacao;
         $oDadosConvenio->responsavel_nosso_numero = $oConvenio->ar13_responsavelnossonumero;
 
-        $oInstituicao   = new \Instituicao($oConvenio->ar11_instit);
-        $oContaBancaria = new \ContaBancaria($oConvenio->ar13_contabancaria);
+        $oInstituicao   = new Instituicao($oConvenio->ar11_instit);
+        $oContaBancaria = new ContaBancaria($oConvenio->ar13_contabancaria);
 
         /**
          * Buscamos o novo seguencial da remessa
          */
         $sCampo      = "coalesce(max(k147_sequencialremessa), 0) + 1 as sequencial_remessa";
-        $oDaoRemessa = new \cl_remessacobrancaregistrada();
+        $oDaoRemessa = new cl_remessacobrancaregistrada();
         $sSqlRemessa = $oDaoRemessa->sql_query_file(null, $sCampo);
         $rsRemessa   = db_query($sSqlRemessa);
 
@@ -275,7 +284,7 @@ class CobrancaRegistrada
             return false;
         }
 
-        $oDaoParametrosCobrancaRegistrada = new \cl_parametroscobrancaregistrada();
+        $oDaoParametrosCobrancaRegistrada = new cl_parametroscobrancaregistrada();
         $sSqlParametrosCobrancaRegistrada = $oDaoParametrosCobrancaRegistrada->sql_query_file(
             null,
             'ar28_usuario',
@@ -348,7 +357,7 @@ class CobrancaRegistrada
             default => throw new DBException("Erro ao selecionar banco para processar."),
         };
 
-        $cl_recibocobrancawebservice = new \cl_recibocobrancawebservice();
+        $cl_recibocobrancawebservice = new cl_recibocobrancawebservice();
         $cl_recibocobrancawebservice->k199_sequencial = null;
         $cl_recibocobrancawebservice->k199_numnov = $iNumpreRecibo;
         $cl_recibocobrancawebservice->k199_convenio = $iConvenio;
@@ -430,7 +439,7 @@ class CobrancaRegistrada
     {
         $oConvenioCobranca = self::getConvenio($iConvenio);
 
-        $oDaoBancoAgencia = new \cl_bancoagencia();
+        $oDaoBancoAgencia = new cl_bancoagencia();
         $sSqlBancoAgencia = $oDaoBancoAgencia->sql_query_file($oConvenioCobranca->ar13_bancoagencia, "db89_db_bancos");
         $rsBancoAgencia   = $oDaoBancoAgencia->sql_record($sSqlBancoAgencia);
 
@@ -443,7 +452,7 @@ class CobrancaRegistrada
 
     public static function getConvenio($iConvenio)
     {
-        $oDaoCadConvenio = new \cl_cadconvenio();
+        $oDaoCadConvenio = new cl_cadconvenio();
         $sSqlCadConvenio = $oDaoCadConvenio->sql_queryConvenioCobranca($iConvenio);
         $rsCadConvenio   = db_query($sSqlCadConvenio);
 

@@ -551,22 +551,22 @@ class Registro20Builder
     {
 
         $sString = preg_replace("/[ÁÀÂÃ]/", "A", (string) $sString);
-        $sString = preg_replace("/[áàâã]/", "a", $sString);
+        $sString = preg_replace("/[áàâã]/", "a", (string) $sString);
 
-        $sString = preg_replace("/[ÉÈÊ]/", "E", $sString);
-        $sString = preg_replace("/[éèê]/", "e", $sString);
+        $sString = preg_replace("/[ÉÈÊ]/", "E", (string) $sString);
+        $sString = preg_replace("/[éèê]/", "e", (string) $sString);
 
-        $sString = preg_replace("/[ÓÒÔÕÖ]/", "O", $sString);
-        $sString = preg_replace("/[óòôõö]/", "o", $sString);
+        $sString = preg_replace("/[ÓÒÔÕÖ]/", "O", (string) $sString);
+        $sString = preg_replace("/[óòôõö]/", "o", (string) $sString);
 
-        $sString = preg_replace("/[ÚÙÛÜ]/", "U", $sString);
-        $sString = preg_replace("/[úùûü]/", "u", $sString);
+        $sString = preg_replace("/[ÚÙÛÜ]/", "U", (string) $sString);
+        $sString = preg_replace("/[úùûü]/", "u", (string) $sString);
 
-        $sString = preg_replace("/[ÍÌÎ]/", "I", $sString);
-        $sString = preg_replace("/[íìî]/", "i", $sString);
+        $sString = preg_replace("/[ÍÌÎ]/", "I", (string) $sString);
+        $sString = preg_replace("/[íìî]/", "i", (string) $sString);
 
-        $sString = preg_replace("/Ç/", "C", $sString);
-        $sString = preg_replace("/ç/", "c", $sString);
+        $sString = preg_replace("/Ç/", "C", (string) $sString);
+        $sString = preg_replace("/ç/", "c", (string) $sString);
 
         return $sString;
     }

@@ -24,7 +24,6 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
 /**
  * Factory para o gerenciar os Assentamentos do sistema, será
  * responsavém por tratar os assentamentos e retornar uma instância
@@ -33,7 +32,9 @@
  * @author Renan Melo <renan@dbseller.com.br>
  * @package Pessoal
  */
-
+use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoJustificativa;
+use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual;
+use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta;
 use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoControleMedico;
 
 class AssentamentoFactory
@@ -99,9 +100,9 @@ class AssentamentoFactory
         $oAssentamentoRetorno = match ($oStdTipoAssentamento->h12_natureza) {
             Assentamento::NATUREZA_SUBSTITUICAO => new AssentamentoSubstituicao($iCodigoAssentamento),
             Assentamento::NATUREZA_RRA => new AssentamentoRRA($iCodigoAssentamento),
-            Assentamento::NATUREZA_JUSTIFICATIVA => new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoJustificativa($iCodigoAssentamento),
-            Assentamento::NATUREZA_HE_MANUAL => new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual($iCodigoAssentamento),
-            Assentamento::NATUREZA_ABONO_FALTA => new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta($iCodigoAssentamento),
+            Assentamento::NATUREZA_JUSTIFICATIVA => new AssentamentoJustificativa($iCodigoAssentamento),
+            Assentamento::NATUREZA_HE_MANUAL => new AssentamentoHoraExtraManual($iCodigoAssentamento),
+            Assentamento::NATUREZA_ABONO_FALTA => new AssentamentoAbonoFalta($iCodigoAssentamento),
             Assentamento::NATUREZA_CONTROLE_MEDICO => new AssentamentoControleMedico($iCodigoAssentamento),
             default => new Assentamento($iCodigoAssentamento),
         };
@@ -126,9 +127,9 @@ class AssentamentoFactory
         return match ($oStdTipoAssentamento->h12_natureza) {
             Assentamento::NATUREZA_SUBSTITUICAO => new AssentamentoSubstituicao(),
             Assentamento::NATUREZA_RRA => new AssentamentoRRA(),
-            Assentamento::NATUREZA_JUSTIFICATIVA => new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoJustificativa(),
-            Assentamento::NATUREZA_HE_MANUAL => new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual(),
-            Assentamento::NATUREZA_ABONO_FALTA => new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta(),
+            Assentamento::NATUREZA_JUSTIFICATIVA => new AssentamentoJustificativa(),
+            Assentamento::NATUREZA_HE_MANUAL => new AssentamentoHoraExtraManual(),
+            Assentamento::NATUREZA_ABONO_FALTA => new AssentamentoAbonoFalta(),
             default => new Assentamento(),
         };
     }

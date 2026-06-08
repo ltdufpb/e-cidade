@@ -108,7 +108,7 @@ class PontoComplementar extends Ponto {
    * @param RegistroPonto $oRegistro
    * @return bool
    */
-  #[\Override]
+  #[Override]
   public function adicionarRegistro( RegistroPonto $oRegistroPonto, $lSubstituir = true) {
     
     /**
@@ -184,7 +184,7 @@ class PontoComplementar extends Ponto {
    * @param Registro $oRegistro
    * @return bool
    */
-  #[\Override]
+  #[Override]
   public function removerRegistro( Rubrica $oRubrica) {
   
     parent::removerRegistro($oRubrica);    

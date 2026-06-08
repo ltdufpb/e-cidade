@@ -26,12 +26,15 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
+use CgmJuridico;
+use BusinessException;
+use DBDate;
+use db_utils;
+use cl_rhreajustesalarialesocial;
+use DBException;
+use Exception;
 use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRPPS;
 use ECidade\RecursosHumanos\Pessoal\Service\ServidorOutrosVinculosService;
-use ECidade\RecursosHumanos\Pessoal\Service\ServidorOperadoraSaudeService;
-use ECidade\RecursosHumanos\Pessoal\Service\ServidorProcessosJudiciaisFolhaService;
-use ECidade\RecursosHumanos\ESocial\Service\TrabalhoIntermitenteService;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorOperadoraSaudeRepository;
 use ServidorRepository;
 use Servidor;
 use stdClass;
@@ -95,8 +98,8 @@ class RemuneracaoRPPSService
     /**
      * @param CgmBase $cgm
      * @return remuneracaoRPPS
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function buscarPorCGM(CgmBase $cgm)
     {
@@ -138,12 +141,12 @@ class RemuneracaoRPPSService
     /**
      * @param CgmBase $cgm
      * @return boolean
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function validaRPPSPorCGM(CgmBase $cgm)
     {
-        if ($cgm instanceof \CgmJuridico) {
+        if ($cgm instanceof CgmJuridico) {
             return false;
         }
         $servidores = ServidorRepository::getServidoresByCgm(
@@ -164,7 +167,7 @@ class RemuneracaoRPPSService
 
     /**
      * @param $matricula
-     * @throws \Exception
+     * @throws Exception
      */
     private function buscarOutrosVinculos($matricula)
     {
@@ -182,8 +185,8 @@ class RemuneracaoRPPSService
 
     /**
      * @param Servidor $servidor
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarPagamento(Servidor $servidor)
     {
@@ -245,12 +248,12 @@ class RemuneracaoRPPSService
             $pagamentos[self::TIPODECIMO][] = $rubrica;
         }
 
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(3);
+        $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(3);
         // Se nao tiver configurada a data de obrigatoriedade, desconsideramos os dados
         if (empty($dataObrigatoriedade)) {
-            throw new \BusinessException("Data da fase 3 não configurada.");
+            throw new BusinessException("Data da fase 3 não configurada.");
         }
-        $dataFase3 = new \DBDate("2022-08-22");
+        $dataFase3 = new DBDate("2022-08-22");
         // Verificamos de a data da fase 3 do grupo 4 é inferior a data de obrigatoriedade, se for inferior
         //  a instituicao pertence ao grupo 2
         // Caso seja grupo 2, não devemos enviar as verbas rescisorias nesse evento, caso contrario, sera enviada
@@ -365,7 +368,7 @@ class RemuneracaoRPPSService
                         registro_cgm ) ";
             $resultado = db_query($sql);
             if (pg_num_rows($resultado) == 1) {
-                return (int) \db_utils::fieldsMemory($resultado, 0)->qtdservidores;
+                return (int) db_utils::fieldsMemory($resultado, 0)->qtdservidores;
             }
         }
         return 1;
@@ -378,7 +381,7 @@ class RemuneracaoRPPSService
         $reajuste->tpAcConv = "";
         $reajuste->dsc = "";
 
-        $reajusteSalarial  = new \cl_rhreajustesalarialesocial();
+        $reajusteSalarial  = new cl_rhreajustesalarialesocial();
         $camposReajusteSalarial = "eso39_dataefeito, eso39_tipo, eso39_descricao";
         $whereReajuste = "eso39_matricula =  {$matricula} ";
         $whereReajuste .= "and extract(year from eso39_dataefeito) <= {$this->anoCompetencia}";
@@ -393,7 +396,7 @@ class RemuneracaoRPPSService
         $rsReajusteSalarial = db_query($sqlReajusteSalarial);
 
         if (pg_num_rows($rsReajusteSalarial) > 0) {
-            $dadosReajuste = \db_utils::fieldsMemory($rsReajusteSalarial, 0);
+            $dadosReajuste = db_utils::fieldsMemory($rsReajusteSalarial, 0);
             $reajuste->dtAcConv = $dadosReajuste->eso39_dataefeito;
             $reajuste->tpAcConv = $dadosReajuste->eso39_tipo;
             $reajuste->dsc = $dadosReajuste->eso39_descricao;
@@ -406,7 +409,7 @@ class RemuneracaoRPPSService
         $grupoIdePeriodo = new stdClass();
         $grupoIdePeriodo->perRef = '';
 
-        $reajusteSalarial  = new \cl_rhreajustesalarialesocial();
+        $reajusteSalarial  = new cl_rhreajustesalarialesocial();
         $camposReajusteSalarial = "eso39_dataefeito, eso39_tipo, eso39_descricao";
         $whereReajuste = "eso39_matricula =  {$matricula} ";
         $whereReajuste .= "and extract(year from eso39_dataefeito) <= {$this->anoCompetencia}";
@@ -422,7 +425,7 @@ class RemuneracaoRPPSService
         $rsReajusteSalarial = db_query($sqlReajusteSalarial);
 
         if (pg_num_rows($rsReajusteSalarial) > 0) {
-            $dadoCompetenciaPeriodo = \db_utils::fieldsMemory($rsReajusteSalarial, 0);
+            $dadoCompetenciaPeriodo = db_utils::fieldsMemory($rsReajusteSalarial, 0);
             $competenciaPeriodo = explode('-', (string) $dadoCompetenciaPeriodo->eso39_dataefeito);
             if (!empty($competenciaPeriodo[1])) {
                 $grupoIdePeriodo->perRef  = $competenciaPeriodo[0] . '-' . $competenciaPeriodo[1];

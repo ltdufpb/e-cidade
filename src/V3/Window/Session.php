@@ -46,7 +46,7 @@ class Session extends \ECidade\V3\Extension\Session {
 
   /**
    * @todo - guardar id das sessoes criadas para usar no metodo destroyAll
-   * @return \ECidade\V3\Window\Session
+   * @return Session
    */
   public function create() {
 

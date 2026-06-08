@@ -27,8 +27,21 @@
 
 namespace ECidade\Financeiro\Contabilidade\PlanoDeContas\Orcamento\Atualizacao\Ementario;
 
+use DBDate;
+use File;
+use cl_importacaoplanoconta;
+use DBException;
+use db_utils;
+use BusinessException;
+use cl_conplanoorcamento;
+use ContaOrcamentoRepository;
+use ParameterException;
+use cl_planocontadetalhe;
+use cl_planocontadetalheconplanoorcamento;
+use cl_orcfontes;
+use cl_orcamentoreceita;
+use cl_taborc;
 use ECidade\Financeiro\Contabilidade\PlanoDeContas\Atualizacao\Importacao;
-use ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao\Modelo;
 use PhpOffice\PhpWord\Exception\Exception;
 
 /**
@@ -69,7 +82,7 @@ class Receita
     private $arquivo;
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     private $dataImportacao;
 
@@ -100,9 +113,9 @@ class Receita
     }
 
     /**
-     * @param \DBDate $dataImportacao
+     * @param DBDate $dataImportacao
      */
-    public function setDataImportacao(\DBDate $dataImportacao)
+    public function setDataImportacao(DBDate $dataImportacao)
     {
         $this->dataImportacao = $dataImportacao;
     }
@@ -110,7 +123,7 @@ class Receita
     /**
      * @param \File $arquivo
      */
-    public function setArquivo(\File $arquivo)
+    public function setArquivo(File $arquivo)
     {
         $this->arquivo = $arquivo;
     }
@@ -118,22 +131,22 @@ class Receita
     /**
      * Verifica se existe uma importação de receita realizada.
      * @return integer|bool
-     * @throws \DBException
+     * @throws DBException
      */
     public function possuiImportacaoRealizada()
     {
-        $daoImportacao = new \cl_importacaoplanoconta();
+        $daoImportacao = new cl_importacaoplanoconta();
         $buscaImportacao = $daoImportacao->sql_query(null, "importacaoplanoconta.*", null, "c94_exercicio = ". self::$iAnoImplantacao);
         $resBuscaImportacao = db_query($buscaImportacao);
         if (!$resBuscaImportacao) {
-            throw new \DBException("Ocorreu um erro ao consultar a ultima importação realizada.");
+            throw new DBException("Ocorreu um erro ao consultar a ultima importação realizada.");
         }
-        return pg_num_rows($resBuscaImportacao) > 0 ? \db_utils::fieldsMemory($resBuscaImportacao, 0)->c96_sequencial : false;
+        return pg_num_rows($resBuscaImportacao) > 0 ? db_utils::fieldsMemory($resBuscaImportacao, 0)->c96_sequencial : false;
     }
 
     /**
      * @return bool|Importacao
-     * @throws \DBException
+     * @throws DBException
      */
     public function getImportacao()
     {
@@ -148,8 +161,8 @@ class Receita
     }
 
     /**
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      * @throws \Exception
      */
     public function processarArquivo()
@@ -180,23 +193,23 @@ class Receita
             }
 
             if (!array_key_exists($estruturalNovo, $contasDoModelo)) {
-                throw new \BusinessException("Estrutural [{$estruturalNovo}] encontrado no arquivo não está presente no ementário da receita.");
+                throw new BusinessException("Estrutural [{$estruturalNovo}] encontrado no arquivo não está presente no ementário da receita.");
             }
 
-            $daoOrcamento = new \cl_conplanoorcamento();
+            $daoOrcamento = new cl_conplanoorcamento();
             $estruturalSemMascara = str_replace('.', '', $estruturalAntigo);
             $where = " conplanoorcamento.c60_estrut = '{$estruturalSemMascara}' limit 1 ";
             $buscaEstrutural = $daoOrcamento->sql_query_file(null, null, 'c60_codcon', null, $where);
             $resBuscaEstrutural = db_query($buscaEstrutural);
             if (!$resBuscaEstrutural) {
-                throw new \DBException("Ocorreu um erro ao consultar o estrutural {$estruturalAntigo}.");
+                throw new DBException("Ocorreu um erro ao consultar o estrutural {$estruturalAntigo}.");
             }
 
             if (pg_num_rows($resBuscaEstrutural) === 0) {
                 continue;
             }
 
-            $codigoConta = \db_utils::fieldsMemory($resBuscaEstrutural, 0)->c60_codcon;
+            $codigoConta = db_utils::fieldsMemory($resBuscaEstrutural, 0)->c60_codcon;
 
             $codigoContaDetalhe = $contasDoModelo[$estruturalNovo];
             self::salvarVinculo($codigoContaDetalhe, $codigoConta);
@@ -210,7 +223,7 @@ class Receita
                 continue;
             }
 
-            $contaOrcamento = \ContaOrcamentoRepository::getContaPorEstrutural($estrutural, self::$iAnoImplantacao);
+            $contaOrcamento = ContaOrcamentoRepository::getContaPorEstrutural($estrutural, self::$iAnoImplantacao);
             if (empty($contaOrcamento)) {
                 continue;
             }
@@ -229,7 +242,7 @@ class Receita
 
             if (count($dadosLinha) !== 5) {
                 $indiceArquivo++;
-                throw new \ParameterException("A linha {$indiceArquivo} do arquivo importado possui elementos faltando. Verifique.");
+                throw new ParameterException("A linha {$indiceArquivo} do arquivo importado possui elementos faltando. Verifique.");
             }
 
             $estruturalNovo = $dadosLinha[0];
@@ -243,10 +256,10 @@ class Receita
             if (strlen($estruturalNovo) <> 25) {
 
                 $indiceArquivo++;
-                throw new \BusinessException("O esturural {$estruturalNovo} da linha {$indiceArquivo} deve conter exatamente 25 caracteres.");
+                throw new BusinessException("O esturural {$estruturalNovo} da linha {$indiceArquivo} deve conter exatamente 25 caracteres.");
             }
 
-            $daoDetalhe = new \cl_planocontadetalhe();
+            $daoDetalhe = new cl_planocontadetalhe();
             $daoDetalhe->c95_sequencial = null;
             $daoDetalhe->c95_modeloplanoconta   = $this->modelo;
             $daoDetalhe->c95_estrutural         = $estruturalNovo;
@@ -259,7 +272,7 @@ class Receita
             $daoDetalhe->c95_excluir            = false;
             $daoDetalhe->incluir(null);
             if ($daoDetalhe->erro_status === '0') {
-                throw new \DBException("Ocorreu um erro ao salvar os dados detalhados da conta. {$daoDetalhe->erro_msg}");
+                throw new DBException("Ocorreu um erro ao salvar os dados detalhados da conta. {$daoDetalhe->erro_msg}");
             }
         }
     }
@@ -276,7 +289,7 @@ class Receita
     {
         self::removerVinculo($codigoPlanoContaDetalhe, $codigoContaOrcamento);
 
-        $daoVinculo = new \cl_planocontadetalheconplanoorcamento();
+        $daoVinculo = new cl_planocontadetalheconplanoorcamento();
         $daoVinculo->c97_sequencial = null;
         $daoVinculo->c97_planocontadetalhe = $codigoPlanoContaDetalhe;
         $daoVinculo->c97_conplanoorcamento = $codigoContaOrcamento;
@@ -311,33 +324,33 @@ class Receita
             $where[] = 'c97_conplanoorcamento = ' . $codigoContaOrcamento;
         }
 
-        $daoVinculo = new \cl_planocontadetalheconplanoorcamento();
+        $daoVinculo = new cl_planocontadetalheconplanoorcamento();
         $sqlBuscaVinculo = $daoVinculo->sql_query_file(null, "*", null, "c97_planocontadetalhe = {$codigoPlanoContaDetalhe}");
         $resBuscaVinculo = db_query($sqlBuscaVinculo);
         if (!$resBuscaVinculo) {
-            throw new \DBException("Ocorreu um erro ao consultar o vínculo existente.");
+            throw new DBException("Ocorreu um erro ao consultar o vínculo existente.");
         }
         if (pg_num_rows($resBuscaVinculo) > 0) {
 
-            $codigoConta = \db_utils::fieldsMemory($resBuscaVinculo, 0)->c97_conplanoorcamento;
-            $daoOrcamento = new \cl_conplanoorcamento();
+            $codigoConta = db_utils::fieldsMemory($resBuscaVinculo, 0)->c97_conplanoorcamento;
+            $daoOrcamento = new cl_conplanoorcamento();
             $whereContaOrcamento = " c60_codcon = {$codigoConta} and c60_anousu <= ". self::ANO_ANTERIOR_IMPLANTACAO;
             $sqlBuscaOrcamentoAnterior = $daoOrcamento->sql_query_file(null, null, "c60_codcon", null, $whereContaOrcamento);
             $resBuscaOrcamentoAnterior = db_query($sqlBuscaOrcamentoAnterior);
             if (!$resBuscaOrcamentoAnterior) {
-                throw new \DBException("Ocorreu um erro ao consultar a conta {$codigoConta} para o ano de ". self::ANO_ANTERIOR_IMPLANTACAO .".");
+                throw new DBException("Ocorreu um erro ao consultar a conta {$codigoConta} para o ano de ". self::ANO_ANTERIOR_IMPLANTACAO .".");
             }
             if (pg_num_rows($resBuscaOrcamentoAnterior) === 0) {
 
-                $daoFonteReceita = new \cl_orcfontes();
+                $daoFonteReceita = new cl_orcfontes();
                 $daoFonteReceita->excluir(null, null, "o57_codfon = {$codigoConta}");
                 if ($daoFonteReceita->erro_status === '0') {
-                    throw new \DBException("Ocorreu um erro ao excluir a fonte de receita da conta {$codigoConta}.");
+                    throw new DBException("Ocorreu um erro ao excluir a fonte de receita da conta {$codigoConta}.");
                 }
                 $daoOrcamento->excluir(null, null, "c60_codcon = {$codigoConta}");
 
                 if ($daoOrcamento->erro_status === '0') {
-                    throw new \DBException("Ocorreu um erro ao excluir a conta de receita {$codigoConta}.");
+                    throw new DBException("Ocorreu um erro ao excluir a conta de receita {$codigoConta}.");
                 }
             }
             self::retornarInformacoesAnteriores($codigoConta);
@@ -354,7 +367,7 @@ class Receita
     /**
      * Atualiza as informações do vinculo que a conta possuia anteriormente para as informações originais de 2017
      * @param $codigoConta
-     * @throws \DBException
+     * @throws DBException
      */
     public static function retornarInformacoesAnteriores($codigoConta)
     {
@@ -372,7 +385,7 @@ class Receita
         ";
         $updateOrcamento = db_query($sqlRetornaInformacoes);
         if (!$updateOrcamento) {
-            throw new \DBException("Ocorreu um erro ao retornar os dados do orçamento.");
+            throw new DBException("Ocorreu um erro ao retornar os dados do orçamento.");
         }
 
         $updateOrcamentoReceita = db_query("
@@ -387,7 +400,7 @@ class Receita
                    and co.c60_codcon = {$codigoConta};
             ");
         if (!$updateOrcamentoReceita) {
-            throw new \DBException("Ocorreu um erro ao retornar os dados do orçamento de receita.");
+            throw new DBException("Ocorreu um erro ao retornar os dados do orçamento de receita.");
         }
 
         $updateOrcamentoTesouraria = db_query("
@@ -401,7 +414,7 @@ class Receita
                and orcreceita.o70_codfon = {$codigoConta};
         ");
         if (!$updateOrcamentoTesouraria) {
-            throw new \DBException("Ocorreu um erro ao alterar os dados da receita na tesouraria.");
+            throw new DBException("Ocorreu um erro ao alterar os dados da receita na tesouraria.");
         }
 
     }
@@ -417,7 +430,7 @@ class Receita
         $totalRegistros = pg_num_rows($buscaEmentario);
         for ($row = 0; $row < $totalRegistros; $row++) {
 
-            $stdEmentario = \db_utils::fieldsMemory($buscaEmentario, $row);
+            $stdEmentario = db_utils::fieldsMemory($buscaEmentario, $row);
             $retorno[$stdEmentario->c95_estrutural] = $stdEmentario->c95_sequencial;
         }
         return $retorno;
@@ -425,7 +438,7 @@ class Receita
 
     /**
      * Retorna os registros da orcamentoreceita para a conplano e remove os vinculos criados na importação anterior
-     * @throws \DBException
+     * @throws DBException
      */
     private function removerTodosVinculos()
     {
@@ -444,7 +457,7 @@ class Receita
         $resUpdateOrcamento = db_query($updateDesfazerImportacao);
 
         if (!$resUpdateOrcamento) {
-            throw new \DBException("Ocorreu um erro ao retornar os registros para o orçamento.");
+            throw new DBException("Ocorreu um erro ao retornar os registros para o orçamento.");
         }
 
         $updateDesfazerImportacaoReceita = "
@@ -461,7 +474,7 @@ class Receita
         $resImportacaoReceita = db_query($updateDesfazerImportacaoReceita);
 
         if (!$resImportacaoReceita) {
-            throw new \DBException("Ocorreu um erro ao retornar os registros do orçamento de receita.");
+            throw new DBException("Ocorreu um erro ao retornar os registros do orçamento de receita.");
         }
 
         $updateOrcamentoTesouraria = "
@@ -476,27 +489,27 @@ class Receita
 
         $resOrcamentoTesouraria = db_query($updateOrcamentoTesouraria);
         if (!$resOrcamentoTesouraria) {
-            throw new \DBException("Ocorreu um erro ao retornar os registros do orçamento de receita da tesouraria.");
+            throw new DBException("Ocorreu um erro ao retornar os registros do orçamento de receita da tesouraria.");
         }
 
         $resDeleteVinculos = db_query('delete from planocontadetalheconplanoorcamento;');
         if (!$resDeleteVinculos) {
-            throw new \DBException("Ocorreu um erro ao remover os vinculos criados na importação anterior.");
+            throw new DBException("Ocorreu um erro ao remover os vinculos criados na importação anterior.");
         }
 
-        $daoImportacao = new \cl_importacaoplanoconta();
+        $daoImportacao = new cl_importacaoplanoconta();
         $buscaImportacao = $daoImportacao->sql_query(null, "importacaoplanoconta.*", null, "c94_exercicio = ". self::$iAnoImplantacao);
         $resBuscaImportacao = db_query($buscaImportacao);
         if (!$resBuscaImportacao) {
-            throw new \DBException("Ocorreu um erro ao consultar a importação já realizada.");
+            throw new DBException("Ocorreu um erro ao consultar a importação já realizada.");
         }
         if (pg_num_rows($resBuscaImportacao) > 0) {
 
-            $stdDadosImportacao = \db_utils::fieldsMemory($resBuscaImportacao, 0);
+            $stdDadosImportacao = db_utils::fieldsMemory($resBuscaImportacao, 0);
             $daoImportacao->excluir($stdDadosImportacao->c96_sequencial);
             $deletarDetalhes = db_query('delete from planocontadetalhe where c95_modeloplanoconta = '.$stdDadosImportacao->c96_modeloplanoconta);
             if (!$deletarDetalhes) {
-                throw new \DBException("Ocorreu um erro ao excluir os detalhamentos de contas.");
+                throw new DBException("Ocorreu um erro ao excluir os detalhamentos de contas.");
             }
         }
 
@@ -506,8 +519,8 @@ class Receita
     /**
      * @param $codigoPlanoContaDetalhe
      * @param $codigoContaOrcamento
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public static function atualizarOrcamento($codigoPlanoContaDetalhe, $codigoContaOrcamento)
     {
@@ -517,19 +530,19 @@ class Receita
                 "substr(c60_estrut ,1,1)::integer in (4,9)",
                 "c60_codcon = {$codigoContaOrcamento}",
             ]) . " order by c60_anousu";
-        $daoOrcamento  = new \cl_conplanoorcamento();
+        $daoOrcamento  = new cl_conplanoorcamento();
         $sqlBuscaConta = $daoOrcamento->sql_query_orcamento_receita("*", $where);
         $resBuscaConta = db_query($sqlBuscaConta);
         if (!$resBuscaConta) {
-            throw new \DBException("Ocorreu um erro ao consultar a conta {$codigoContaOrcamento}.");
+            throw new DBException("Ocorreu um erro ao consultar a conta {$codigoContaOrcamento}.");
         }
 
         $totalRegistro = pg_num_rows($resBuscaConta);
         for ($rowConta = 0; $rowConta < $totalRegistro; $rowConta++) {
 
-            $stdOrcamento = \db_utils::fieldsMemory($resBuscaConta, $rowConta);
+            $stdOrcamento = db_utils::fieldsMemory($resBuscaConta, $rowConta);
 
-            $daoOrcamentoReceita = new \cl_orcamentoreceita();
+            $daoOrcamentoReceita = new cl_orcamentoreceita();
             $sqlBuscaContaOrcamento = $daoOrcamentoReceita->sql_query_file(null, "*", null, "c98_codcon = {$codigoContaOrcamento} and c98_anousu = {$stdOrcamento->c60_anousu}");
             $resBuscaContaOrcamento = db_query($sqlBuscaContaOrcamento);
             if (pg_num_rows($resBuscaContaOrcamento) === 0) {
@@ -555,26 +568,26 @@ class Receita
                 $daoOrcamentoReceita->c98_datacriacao             = $stdOrcamento->o70_datacriacao;
                 $daoOrcamentoReceita->incluir(null);
                 if ($daoOrcamentoReceita->erro_status === '0') {
-                    throw new \DBException("Ocorreu um erro ao salvar os dados do plano orcamentário ". $daoOrcamentoReceita->erro_msg);
+                    throw new DBException("Ocorreu um erro ao salvar os dados do plano orcamentário ". $daoOrcamentoReceita->erro_msg);
                 }
             }
 
-            $daoDetalhe = new \cl_planocontadetalhe();
+            $daoDetalhe = new cl_planocontadetalhe();
             $sqlDetalhe = $daoDetalhe->sql_query_file($codigoPlanoContaDetalhe);
             $resDetalhe = db_query($sqlDetalhe);
             if (!$resDetalhe || pg_num_rows($resDetalhe) === 0) {
-                throw new \DBException("Ocorreu um erro ao consultar o detalhamento da conta a ser vinculada.");
+                throw new DBException("Ocorreu um erro ao consultar o detalhamento da conta a ser vinculada.");
             }
 
-            $stdDetalhe = \db_utils::fieldsMemory($resDetalhe, 0);
+            $stdDetalhe = db_utils::fieldsMemory($resDetalhe, 0);
             $stdDetalhe->c95_estrutural = str_replace('.', '', $stdDetalhe->c95_estrutural);
 
-            $contaOrcamento = \ContaOrcamentoRepository::getContaPorEstrutural($stdDetalhe->c95_estrutural, $stdOrcamento->c60_anousu);
+            $contaOrcamento = ContaOrcamentoRepository::getContaPorEstrutural($stdDetalhe->c95_estrutural, $stdOrcamento->c60_anousu);
             if (!empty($contaOrcamento) && ($stdDetalhe->c95_estrutural !== $stdOrcamento->c60_estrut) ) {
 
                 $mensagem  = "O estrutural {$stdDetalhe->c95_estrutural} ja encontra-se em uso para o ano de {$stdOrcamento->c60_anousu}. ";
                 $mensagem .= "É necessário vincular esta conta do plano orçamentário em outra conta do ementário da receita.";
-                throw new \BusinessException($mensagem);
+                throw new BusinessException($mensagem);
             }
 
             $daoOrcamento->c60_codcon = $stdOrcamento->c60_codcon;
@@ -585,10 +598,10 @@ class Receita
             $daoOrcamento->c60_funcao = strtoupper((string) $stdDetalhe->c95_funcao);
             $daoOrcamento->alterar($daoOrcamento->c60_codcon, $daoOrcamento->c60_anousu);
             if ($daoOrcamento->erro_status === '0') {
-                throw new \BusinessException("Ocorreu um erro ao alterar os dados da conta com estrutura: {$stdOrcamento->c60_estrut}.");
+                throw new BusinessException("Ocorreu um erro ao alterar os dados da conta com estrutura: {$stdOrcamento->c60_estrut}.");
             }
 
-            $daoFonteReceita = new \cl_orcfontes();
+            $daoFonteReceita = new cl_orcfontes();
             $daoFonteReceita->o57_codfon = $stdOrcamento->c60_codcon;
             $daoFonteReceita->o57_anousu = $stdOrcamento->c60_anousu;
             $daoFonteReceita->o57_fonte  = $daoOrcamento->c60_estrut;
@@ -596,7 +609,7 @@ class Receita
             $daoFonteReceita->o57_finali = $daoOrcamento->c60_finali;
             $daoFonteReceita->alterar($daoFonteReceita->o57_codfon, $daoFonteReceita->o57_anousu);
             if ($daoFonteReceita->erro_status === '0') {
-                throw new \BusinessException("Ocorreu um erro ao alterar os dados da fonte de receita para o estrutural: {$stdOrcamento->c60_estrut}.");
+                throw new BusinessException("Ocorreu um erro ao alterar os dados da fonte de receita para o estrutural: {$stdOrcamento->c60_estrut}.");
             }
 
             $whereTesouraria = implode(' and ', [
@@ -604,18 +617,18 @@ class Receita
                 "taborc.k02_anousu = ". self::$iAnoImplantacao
             ]);
 
-            $daoTesouraria = new \cl_taborc();
+            $daoTesouraria = new cl_taborc();
             $resTesouraria = db_query($daoTesouraria->sql_query_receita("taborc.*", $whereTesouraria));
             if (pg_num_rows($resTesouraria) > 0) {
 
-                $stdReceita = \db_utils::fieldsMemory($resTesouraria, 0);
+                $stdReceita = db_utils::fieldsMemory($resTesouraria, 0);
                 $daoTesouraria->k02_codigo = $stdReceita->k02_codigo;
                 $daoTesouraria->k02_anousu = $stdReceita->k02_anousu;
                 $daoTesouraria->k02_codrec = $stdReceita->k02_codrec;
                 $daoTesouraria->k02_estorc = $daoOrcamento->c60_estrut;
                 $daoTesouraria->alterar($daoTesouraria->k02_anousu, $daoTesouraria->k02_codigo);
                 if ($daoTesouraria->erro_status === '0') {
-                    throw new \DBException("Ocorreu um erro ao alterar os registros da receita da tesouraria.");
+                    throw new DBException("Ocorreu um erro ao alterar os registros da receita da tesouraria.");
                 }
             }
         }
@@ -623,33 +636,33 @@ class Receita
 
     /**
      * @param $codigoEmentario
-     * @throws \DBException
+     * @throws DBException
      * @throws \Exception
-     * @throws \ParameterException
+     * @throws ParameterException
      */
     public static function importarContaParaOrcamento($codigoEmentario)
     {
 
         if (empty($codigoEmentario)) {
-            throw new \ParameterException("Informe uma conta do ementário da receita.");
+            throw new ParameterException("Informe uma conta do ementário da receita.");
         }
 
-        $daoEmentario = new \cl_planocontadetalhe();
+        $daoEmentario = new cl_planocontadetalhe();
         $sqlContaEmentario = $daoEmentario->sql_query_file($codigoEmentario);
         $resContaEmentario = db_query($sqlContaEmentario);
         if (!$resContaEmentario) {
-            throw new \DBException("Ocorreu um erro ao consultar a conta do ementário de receita.");
+            throw new DBException("Ocorreu um erro ao consultar a conta do ementário de receita.");
         }
-        $stdEmentario = \db_utils::fieldsMemory($resContaEmentario, 0);
+        $stdEmentario = db_utils::fieldsMemory($resContaEmentario, 0);
 
-        $daoOrcamento = new \cl_conplanoorcamento();
+        $daoOrcamento = new cl_conplanoorcamento();
         $buscaUltimoaAno = $daoOrcamento->sql_query_file(null, null, 'max(c60_anousu) as c60_anousu');
         $resBuscaUltimoAno = db_query($buscaUltimoaAno);
         if (!$resBuscaUltimoAno) {
-            throw new \DBException("Não foi possível verificar o último ano disponível.");
+            throw new DBException("Não foi possível verificar o último ano disponível.");
         }
 
-        $ultimoAno = \db_utils::fieldsMemory($resBuscaUltimoAno, 0)->c60_anousu;
+        $ultimoAno = db_utils::fieldsMemory($resBuscaUltimoAno, 0)->c60_anousu;
         $codigoContaOrcamento = null;
         for ($ano = self::$iAnoImplantacao; $ano <= $ultimoAno; $ano++) {
 
@@ -668,10 +681,10 @@ class Receita
             $daoOrcamento->incluir($daoOrcamento->c60_codcon, $daoOrcamento->c60_anousu);
             $codigoContaOrcamento = $daoOrcamento->c60_codcon;
             if ($daoOrcamento->erro_status === "0") {
-                throw new \DBException("Ocorreu um erro para cadastrar a conta com estrutural: {$stdEmentario->c95_estrutural}.");
+                throw new DBException("Ocorreu um erro para cadastrar a conta com estrutural: {$stdEmentario->c95_estrutural}.");
             }
 
-            $daoFontesReceita = new \cl_orcfontes();
+            $daoFontesReceita = new cl_orcfontes();
             $daoFontesReceita->o57_codfon = $codigoContaOrcamento;
             $daoFontesReceita->o57_anousu = $daoOrcamento->c60_anousu;
             $daoFontesReceita->o57_fonte  = $estrutural;
@@ -679,7 +692,7 @@ class Receita
             $daoFontesReceita->o57_finali = mb_strtoupper((string) $stdEmentario->c95_titulo);
             $daoFontesReceita->incluir($daoFontesReceita->o57_codfon, $daoFontesReceita->o57_anousu);
             if ($daoFontesReceita->erro_status === "0") {
-                throw new \DBException("Ocorreu um erro ao incluir o estrutural {$stdEmentario->c95_estrutural} como fonte de receita.");
+                throw new DBException("Ocorreu um erro ao incluir o estrutural {$stdEmentario->c95_estrutural} como fonte de receita.");
             }
         }
         self::salvarVinculo($codigoEmentario, $codigoContaOrcamento);

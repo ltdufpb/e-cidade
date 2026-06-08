@@ -34,7 +34,7 @@ class importacaoCenso2010 extends importacaoCenso {
    * e le as linhas do layout de cada registro cadastrado
    * @override 
    */
-  #[\Override]
+  #[Override]
   function getLinhasArquivo() {
 
     $oDBLayoutReader = new DBLayoutReader($this->iCodigoLayout, $this->sCaminhoArquivo, false);   
@@ -48,7 +48,7 @@ class importacaoCenso2010 extends importacaoCenso {
    * onde o usuario esta logado, e verifica também o ano atual
    * @override
    */
-  #[\Override]
+  #[Override]
   function validaArquivo() {
 
     $sMsgErro      = "Importação de Arquivo Censo abortada!\n";

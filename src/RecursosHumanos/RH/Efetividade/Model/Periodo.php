@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Model;
 
+use DBDate;
+use Instituicao;
+
 /**
  * Class Periodo
  * @package ECidade\RecursosHumanos\RH\Efetividade\Model
@@ -46,12 +49,12 @@ class Periodo
     private $iCompetencia;
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     private $oDataInicio;
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     private $oDataFim;
 
@@ -61,7 +64,7 @@ class Periodo
     private $iCodigoArquivo;
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $oInstituicao;
 
@@ -87,7 +90,7 @@ class Periodo
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getDataInicio()
     {
@@ -95,7 +98,7 @@ class Periodo
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getDataFim()
     {
@@ -113,7 +116,7 @@ class Periodo
     }
 
     /**
-     * @return \Instituicao
+     * @return Instituicao
      */
     public function getInstituicao()
     {
@@ -137,17 +140,17 @@ class Periodo
     }
 
     /**
-     * @param \DBDate $oDataInicio
+     * @param DBDate $oDataInicio
      */
-    public function setDataInicio(\DBDate $oDataInicio)
+    public function setDataInicio(DBDate $oDataInicio)
     {
         $this->oDataInicio = $oDataInicio;
     }
 
     /**
-     * @param \DBDate $oDataFim
+     * @param DBDate $oDataFim
      */
-    public function setDataFim(\DBDate $oDataFim)
+    public function setDataFim(DBDate $oDataFim)
     {
         $this->oDataFim = $oDataFim;
     }
@@ -163,9 +166,9 @@ class Periodo
     }
 
     /**
-     * @param \Instituicao $oInstituicao
+     * @param Instituicao $oInstituicao
      */
-    public function setInstituicao(\Instituicao $oInstituicao)
+    public function setInstituicao(Instituicao $oInstituicao)
     {
         $this->oInstituicao = $oInstituicao;
     }

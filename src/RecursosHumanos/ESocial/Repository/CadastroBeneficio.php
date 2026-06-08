@@ -27,6 +27,12 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use BaseClassRepository;
+use cl_rhpessoalmov;
+use cl_selecao;
+use ServidorRepository;
+use cl_rhregime;
+use stdClass;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
 use DBException;
 use db_utils;
@@ -39,13 +45,13 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
  * Class CadastroBeneficio
  * @package ECidade\RecursosHumanos\ESocial\Repository
  */
-class CadastroBeneficio extends \BaseClassRepository
+class CadastroBeneficio extends BaseClassRepository
 {
     protected static $oInstance;
 
     /**
      * @param DBCompetencia $dbCompetencia
-     * @return \stdClass[]
+     * @return stdClass[]
      * @throws DBException
      */
     public static function buscarBeneficios(
@@ -60,7 +66,7 @@ class CadastroBeneficio extends \BaseClassRepository
         $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
 
         if (empty($servidores)) {
-            $clRhPessoalmov = new \cl_rhpessoalmov();
+            $clRhPessoalmov = new cl_rhpessoalmov();
             /*
             * Buscamos todas as matriculas que possuem a situacao do vinculo do regime aposentado/inativo ou pensionista
             * e que nao possuem rescisao
@@ -72,7 +78,7 @@ class CadastroBeneficio extends \BaseClassRepository
             $where .= " AND not exists (select 1 from rhpesrescisao where rh05_seqpes = rh02_seqpes) ";
 
             if (!empty($selecao)) {
-                $clselecao = new \cl_selecao();
+                $clselecao = new cl_selecao();
                 $condicaoSelecao = $clselecao->getCondicaoSelecao($selecao, $codigoInstituicao);
                 $where .= " and {$condicaoSelecao} ";
             }
@@ -95,7 +101,7 @@ class CadastroBeneficio extends \BaseClassRepository
             for ($contador = 0; $contador < $qtdServidores; $contador++) {
                 $matriculaServidor = db_utils::fieldsMemory($rsServidores, $contador)->rh01_regist;
 
-                $servidor = \ServidorRepository::getInstanciaByCodigo($matriculaServidor);
+                $servidor = ServidorRepository::getInstanciaByCodigo($matriculaServidor);
                 $servidor->movimentacao = $servidorMovimentacaoRepository->scopeSeqPes(
                     $servidor->getCodigoMovimentacao()
                 )->first();
@@ -110,9 +116,9 @@ class CadastroBeneficio extends \BaseClassRepository
                         true
                     );
                     if ($servidorAlteracao) {
-                        $dataInicio = new \DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-01");
+                        $dataInicio = new DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-01");
                         $qtdDias = DBDate::getQuantidadeDiasMes($dbCompetencia->getMes(), $dbCompetencia->getAno());
-                        $dataFim = new \DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-{$qtdDias}");
+                        $dataFim = new DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-{$qtdDias}");
                         if (($servidorAlteracao->getDataS2416()->getTimeStamp() >= $dataInicio->getTimeStamp())
                             && ($servidorAlteracao->getDataS2416()->getTimeStamp() <= $dataFim->getTimeStamp())
                         ) {
@@ -131,7 +137,7 @@ class CadastroBeneficio extends \BaseClassRepository
                /*
                 * Verificamos se a matricula informada e aposentado ou pensionista e não possui rescisao
                 */
-                $clRegime = new \cl_rhregime();
+                $clRegime = new cl_rhregime();
 
                 //validacao regime
                 $where = "
@@ -166,9 +172,9 @@ class CadastroBeneficio extends \BaseClassRepository
                         true
                     );
                     if ($servidorAlteracao) {
-                        $dataInicio = new \DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-01");
+                        $dataInicio = new DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-01");
                         $qtdDias = DBDate::getQuantidadeDiasMes($dbCompetencia->getMes(), $dbCompetencia->getAno());
-                        $dataFim = new \DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-{$qtdDias}");
+                        $dataFim = new DBDate("{$dbCompetencia->getAno()}-{$dbCompetencia->getMes()}-{$qtdDias}");
                         if (($servidorAlteracao->getDataS2416()->getTimeStamp() >= $dataInicio->getTimeStamp())
                             && ($servidorAlteracao->getDataS2416()->getTimeStamp() <= $dataFim->getTimeStamp())
                         ) {

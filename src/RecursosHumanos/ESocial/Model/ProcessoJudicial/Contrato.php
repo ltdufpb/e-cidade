@@ -44,7 +44,7 @@ class Contrato
     private $indicativoContrato;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataAdmissaoOrigem;
 
@@ -104,7 +104,7 @@ class Contrato
     private $codigoCatergoria;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataInicioTSVE;
 
@@ -124,12 +124,12 @@ class Contrato
     private $nomeServidor;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataSentenca;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataAcordo;
 
@@ -298,7 +298,7 @@ class Contrato
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataAdmissaoOrigem()
     {
@@ -308,7 +308,7 @@ class Contrato
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataAdmissaoOrigem  | null
+     * @param DBDate $dataAdmissaoOrigem | null
      */
     public function setDataAdmissaoOrigem($dataAdmissaoOrigem)
     {
@@ -518,7 +518,7 @@ class Contrato
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataInicioTSVE()
     {
@@ -528,7 +528,7 @@ class Contrato
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataInicioTSVE  | null
+     * @param DBDate $dataInicioTSVE | null
      */
     public function setDataInicioTSVE($dataInicioTSVE)
     {
@@ -610,7 +610,7 @@ class Contrato
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataSentenca()
     {
@@ -620,7 +620,7 @@ class Contrato
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataSentenca  | null
+     * @param DBDate $dataSentenca | null
      */
     public function setDataSentenca($dataSentenca)
     {
@@ -630,7 +630,7 @@ class Contrato
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataAcordo()
     {
@@ -640,7 +640,7 @@ class Contrato
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataAcordo  | null
+     * @param DBDate $dataAcordo | null
      */
     public function setDataAcordo($dataAcordo)
     {

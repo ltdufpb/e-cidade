@@ -55,7 +55,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      *
      * @param DBLayoutLinha $oLinha
      */
-    #[\Override]
+    #[Override]
     public function atualizaDadosEscola(DBLayoutLinha $oLinha)
     {
         $oDadosEscola = new DadosCensoEscola2015($this->iEscola, null, null);
@@ -67,7 +67,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @param DBLayoutLinha $oLinha
      * @return bool|null
      */
-    #[\Override]
+    #[Override]
     public function atualizaDadosAluno(DBLayoutLinha $oLinha)
     {
         if (!$this->lImportarAluno) {
@@ -124,7 +124,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @param DBLayoutLinha $oLinha linha com os dados do registro 60 do censo escolar
      * @return stdClass
      */
-    #[\Override]
+    #[Override]
     public function getDadosAluno(DBLayoutLinha $oLinha, $lPesquisaInep = false, $lValidaCodigo = true)
     {
 
@@ -425,7 +425,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @throws Exception
      * @return boolean
      */
-    #[\Override]
+    #[Override]
     protected function validaAnoArquivo($aLinha)
     {
 

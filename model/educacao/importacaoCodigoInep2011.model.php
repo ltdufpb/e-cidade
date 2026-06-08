@@ -269,7 +269,7 @@ class importacaoCodigoInep2011 extends importacaoCenso {
    * (non-PHPdoc)
    * @see importacaoCenso::importarArquivo()
    */
-  #[\Override]
+  #[Override]
   function importarArquivo() {
 
     $sMsgErro = "Importação de Arquivo Censo abortada!\n";    

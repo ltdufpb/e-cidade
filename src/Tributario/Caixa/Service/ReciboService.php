@@ -8,13 +8,11 @@ use ECidade\Tributario\Caixa\Model\Recibopagaboleto;
 use ECidade\Tributario\Caixa\Entity\Recibo;
 use ECidade\Tributario\Caixa\Repository\Sequence\NumpreSequenceRepository;
 use ECidade\Tributario\Caixa\Repository\DbrecibowebRepository;
-use ECidade\Tributario\Caixa\Repository\RecibopagaRepository;
 use ECidade\Tributario\Caixa\Repository\RecibopagaboletoRepository;
 use ECidade\Tributario\Caixa\Service\Procedure\ReciboProcedure;
 use ECidade\Tributario\Caixa\Service\ConvenioService;
 use ECidade\Tributario\Caixa\Service\RegraEmissaoService;
 use ECidade\Tributario\Caixa\Service\ReciboFillService;
-use ECidade\Tributario\Library\DataBase;
 use ECidade\Tributario\Library\Service;
 use ECidade\Tributario\Library\Session;
 

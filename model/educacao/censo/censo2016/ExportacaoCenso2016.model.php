@@ -57,7 +57,7 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
     $this->iCodigoLayout = 255;
   }
 
-  #[\Override]
+  #[Override]
   public function escreverArquivo() {
 
     $sNomeArquivo = "censo_esc_{$this->iCodigoEscola}_{$this->iAnoCenso}.txt";
@@ -131,7 +131,7 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
   /**
    * Método que busca os docentes da escola
    */
-  #[\Override]
+  #[Override]
   protected function getDadosCensoDocente() {
 
     $oDaoDocentes     = new cl_rechumano();
@@ -172,7 +172,7 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
   /**
    * Busca os alunos matrículados no ano de 2016 separando as informações dos registros 60, 70 e 80
    */
-  #[\Override]
+  #[Override]
   protected function getDadosAluno() {
 
     $rsMatricula  = $this->buscaAlunos();

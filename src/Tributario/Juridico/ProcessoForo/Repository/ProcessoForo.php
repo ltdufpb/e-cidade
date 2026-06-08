@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Juridico\ProcessoForo\Repository;
 
+use BaseClassRepository;
+use stdClass;
 use cl_processoforo;
 use DateTime;
 use DBException;
@@ -39,7 +41,7 @@ use ECidade\Tributario\Juridico\Repository\HonorariosParcelamento as HonorariosP
  *
  * @method static ProcessoForo getInstance()
  */
-class ProcessoForo extends \BaseClassRepository
+class ProcessoForo extends BaseClassRepository
 {
     /** @var bool */
     private $returnFullItem;
@@ -94,7 +96,7 @@ class ProcessoForo extends \BaseClassRepository
     }
 
     /**
-     * @param \stdClass $oDados
+     * @param stdClass $oDados
      * @return ProcessoForoEntity
      */
     protected function make($oDados)
@@ -305,7 +307,7 @@ class ProcessoForo extends \BaseClassRepository
                               WHERE pf.v70_sequencial = {$codigoProcessoForo}
                                 AND ta.v09_parcel is null )";
 
-        $dao = new \cl_processoforo();
+        $dao = new cl_processoforo();
         $sql = $dao->sql_query(null, '*', null, $condicao);
         $rs  = db_query($sql);
 

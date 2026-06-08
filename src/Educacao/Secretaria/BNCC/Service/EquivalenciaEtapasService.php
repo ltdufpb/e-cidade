@@ -2,6 +2,7 @@
 
 namespace ECidade\Educacao\Secretaria\BNCC\Service;
 
+use cl_seriebnccetapas;
 use ECidade\Educacao\Secretaria\BNCC\Model\Etapa as EtapaBNCC;
 use ECidade\Educacao\Secretaria\BNCC\Model\EtapasEquivalente;
 use ECidade\Educacao\Secretaria\BNCC\Repository\EtapaRepository;
@@ -36,7 +37,7 @@ class EquivalenciaEtapasService
     {
         $tipoEnsino = $ensinoEnum->getTipoEnsino();
 
-        $dao = new \cl_seriebnccetapas();
+        $dao = new cl_seriebnccetapas();
         $sql = $dao->sqlEquivalencia($tipoEnsino, $etapaBNCC);
         $rs = db_query($sql);
 

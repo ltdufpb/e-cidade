@@ -743,7 +743,7 @@ abstract class DBString {
     return $sResultado;
   }
 
-  public static function formatStringRecursive($entrada, \Closure $callback) {
+  public static function formatStringRecursive($entrada, Closure $callback) {
 
     switch(getType($entrada)) {
 

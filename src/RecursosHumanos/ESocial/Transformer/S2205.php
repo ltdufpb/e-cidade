@@ -2,14 +2,14 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Transformer;
 
-use ECidade\RecursosHumanos\ESocial\Model\Configuracao;
-use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
+use stdClass;
+use InstituicaoRepository;
+use DBPessoal;
+use db_utils;
+use cl_avaliacaogruporespostarhpessoalalteracao;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
-use ECidade\RecursosHumanos\ESocial\Integracao\ESocialEnvio;
-use ECidade\RecursosHumanos\ESocial\Integracao\ESocialEnvioStatus;
 use ECidade\RecursosHumanos\ESocial\Integracao\Recurso;
 use ECidade\V3\Extension\Registry;
-use ECidade\RecursosHumanos\ESocial\Mapeadores\Tabelas\CategoriaCNH;
 
 /**
  * Class S2205
@@ -65,7 +65,7 @@ class S2205
         $oESocial    = new ESocial(Registry::get('app.config'), Recurso::CONSULTA_RECIBO);
         $oEmpregador = $this->getEmpregador();
 
-        $params = new \stdClass();
+        $params = new stdClass();
 
         $params->idEvento            = $this->getIdEvento();
         $params->idReferencia        = $this->matricula;
@@ -92,10 +92,10 @@ class S2205
     private function getEmpregador()
     {
 
-        $codigoInstituicao = \InstituicaoRepository::getInstituicaoSessao()->getCodigo();
+        $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
 
-        $anoFolha = \DBPessoal::getAnoFolha();
-        $mesFolha = \DBPessoal::getMesFolha();
+        $anoFolha = DBPessoal::getAnoFolha();
+        $mesFolha = DBPessoal::getMesFolha();
 
         $sqlCgm = "
             SELECT DISTINCT
@@ -120,7 +120,7 @@ class S2205
             throw new DBException("Não há empregadores cadastrados para essa matrícula {$this->matricula}.");
         }
 
-        $aEmpregador = \db_utils::getCollectionByRecord($resultadoSqlCgm);
+        $aEmpregador = db_utils::getCollectionByRecord($resultadoSqlCgm);
 
         return $aEmpregador[0];
     }
@@ -132,7 +132,7 @@ class S2205
      */
     protected function possuiPreenchimento()
     {
-        $dao = new \cl_avaliacaogruporespostarhpessoalalteracao();
+        $dao = new cl_avaliacaogruporespostarhpessoalalteracao();
         $rs  = db_query($dao->sql_query_file(null, 1, null, "eso17_rhpessoal = {$this->matricula}"));
 
         if (!$rs) {
@@ -145,7 +145,7 @@ class S2205
     /**
      * Realiza o parser dos dados da api
      *
-     * @return \stdClass|void
+     * @return stdClass|void
      */
     public function parse()
     {
@@ -158,7 +158,7 @@ class S2205
             return;
         }
 
-        $oReturn = new  \stdClass();
+        $oReturn = new  stdClass();
         $oEvento = json_decode((string) $this->dados->evento);
 
         if (empty($oEvento)) {

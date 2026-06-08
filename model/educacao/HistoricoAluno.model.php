@@ -338,7 +338,7 @@ class HistoricoAluno
      * @return HistoricoEtapa
      *
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function getEtapaDeCodigo($iCodigoEtapa, $iTipoEtapa)
     {
         $aEtapas = $this->getEtapas();

@@ -413,7 +413,7 @@ class cl_turmacensoturma {
    /**
     * @see sql_query2
     */
-   #[\Deprecated]
+   #[Deprecated]
    public function sql_query ($ed343_sequencia = null,$campos = "*", $ordem = null, $dbwhere = "") {
 
      $sql  = "select {$campos}";

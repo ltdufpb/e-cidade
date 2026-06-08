@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessounicidade;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Unicidade as UnicidadeProcessual;
 use Exception;
-use DBDate;
 
 class UnicidadeRepository
 {

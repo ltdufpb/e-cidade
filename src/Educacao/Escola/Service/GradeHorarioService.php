@@ -27,6 +27,8 @@
 
 namespace ECidade\Educacao\Escola\Service;
 
+use DBException;
+use ParameterException;
 use cl_regenteconselho;
 use Etapa;
 use Exception;
@@ -43,8 +45,8 @@ class GradeHorarioService
      * @param Etapa $etapa
      * @param $codigoRegenciaHorario
      * @param $rechumano
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
     public static function removerRegentePermanente(Turma $turma, Etapa $etapa, $codigoRegenciaHorario, $rechumano)
     {

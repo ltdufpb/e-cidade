@@ -2,6 +2,7 @@
 
 namespace ECidade\Configuracao\RelatorioLegal\Repositorio;
 
+use cl_orcparamseqorcparamseqcolunavalor;
 use cl_orcparamseqorcparamseqcoluna;
 use ECidade\Configuracao\RelatorioLegal\Modelo\Coluna;
 use ECidade\Configuracao\RelatorioLegal\Modelo\Linha;
@@ -299,7 +300,7 @@ class LinhaColunaRepositorio extends Repositorio
     {
         $id = $linhaColuna instanceof LinhaColuna ? $linhaColuna->getSequencial() : null;
 
-        $daoValor = new \cl_orcparamseqorcparamseqcolunavalor();
+        $daoValor = new cl_orcparamseqorcparamseqcolunavalor();
         $daoValor->excluir(null, "o117_orcparamseqorcparamseqcoluna = {$id}");
         if ($daoValor->erro_status === "0") {
             throw new Exception("N?o foi poss?vel excluir os valores manuais lan?ados para a linha.");

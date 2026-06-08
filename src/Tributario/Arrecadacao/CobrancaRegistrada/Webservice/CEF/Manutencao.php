@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF;
 
+use stdClass;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo\RequisicaoInterface;
 use SoapClient;
 use ECidade\V3\Extension\Logger;
@@ -81,7 +82,7 @@ class Manutencao extends ConexaoSoap
   /**
    * Processamos a requisição conforme informações disponibilizadas
    *
-   * @return \stdClass
+   * @return stdClass
    */
   public function processarRequisicao()
   {

@@ -27,23 +27,27 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use BusinessException;
+use Override;
+use DBPessoal;
+use stdClass;
+use DBException;
+use Servidor;
+use DBDate;
+use Assentamento;
 use CgmFisico;
 use CgmJuridico;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
-use ECidade\RecursosHumanos\Pessoal\Model\ServidorMovimentacao;
-use Exception;
 use ServidorRepository;
 
 class CadastroBeneficioFormatter extends Formatter
 {
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidorAtual;
 
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidorOrigem;
 
@@ -57,19 +61,19 @@ class CadastroBeneficioFormatter extends Formatter
     private $empregador;
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     private $dataObrigatoriedade;
 
     /**
      * @param array $dados
-     * @return array|\Assentamento[]
-     * @throws \DBException
+     * @return array|Assentamento[]
+     * @throws DBException
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
-        $this->dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
+        $this->dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
         $dadosServidor = [];
         foreach ($dados->beneficios as $servidor) {
             $this->servidorAtual = $servidor;
@@ -89,7 +93,7 @@ class CadastroBeneficioFormatter extends Formatter
 
     private function processar()
     {
-        $dadosServidor = new \stdClass();
+        $dadosServidor = new stdClass();
         $cgmServidor = $this->servidorAtual->getCgm();
 
         if (!($cgmServidor instanceof CgmFisico)) {
@@ -97,7 +101,7 @@ class CadastroBeneficioFormatter extends Formatter
         }
 
         $dadosServidor->inscricao_empregador = $this->empregador->getCnpj();
-        $dadosServidor->ideEmpregador = new \stdClass();
+        $dadosServidor->ideEmpregador = new stdClass();
         $dadosServidor->ideEmpregador->tpInsc = 1;
         $dadosServidor->ideEmpregador->nrInsc = $this->empregador->getCnpj();
         $dadosServidor->referencia = $this->servidorAtual->getMatricula();
@@ -109,13 +113,13 @@ class CadastroBeneficioFormatter extends Formatter
 
     private function formatarDados(&$dadosServidor)
     {
-        $dadosServidor->beneficiario = new \stdClass();
+        $dadosServidor->beneficiario = new stdClass();
         $dadosServidor->beneficiario->cpfBenef = $this->servidorAtual->getCgm()->getCpf();
         $dadosServidor->beneficiario->matricula = $this->servidorAtual->getMatricula();
         $dadosServidor->beneficiario->cnpjOrigem = $this->empregador->getCnpj();
         $matriculaOrigem = $this->servidorAtual->getOrigem();
         if ($matriculaOrigem) {
-            $this->servidorOrigem = \ServidorRepository::getInstanciaByCodigo(
+            $this->servidorOrigem = ServidorRepository::getInstanciaByCodigo(
                 $matriculaOrigem,
                 null,
                 null,
@@ -129,7 +133,7 @@ class CadastroBeneficioFormatter extends Formatter
 
     private function dadosInicioBeneficio(&$dadosServidor)
     {
-        $infoBenInicio = new \stdClass();
+        $infoBenInicio = new stdClass();
         if ($this->dataObrigatoriedade->getDate() > $this->servidorAtual->getDataAdmissao()->getDate()) {
             $infoBenInicio->cadIni = 'S';
         } else {
@@ -156,7 +160,7 @@ class CadastroBeneficioFormatter extends Formatter
 
     private function dadosBeneficio(&$dadosServidor)
     {
-        $dadosBeneficio = new \stdClass();
+        $dadosBeneficio = new stdClass();
         /**
          * Regra de dePara informada pela Analista Lorenna, juntamente com o Sandro
          */
@@ -211,7 +215,7 @@ class CadastroBeneficioFormatter extends Formatter
              *   pada enviar os dados de pensao por morte é levada em consideracao a data inicial dos envios da fase 2
              *   do eSocial
              */
-            $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
+            $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
             // Se nao tiver configurada a data de obrigatoriedade, desconsideramos os dados
             if (empty($dataObrigatoriedade)) {
                 return false;
@@ -220,7 +224,7 @@ class CadastroBeneficioFormatter extends Formatter
             if ($this->servidorAtual->getDataAdmissao() < $dataObrigatoriedade) {
                 return false;
             }
-            $infoPenMorte = new \stdClass();
+            $infoPenMorte = new stdClass();
             //Pensao com validade - temporaria
             if (!empty($this->movimentacaoAtual->getValidadePensao())) {
                 $infoPenMorte->tpPenMorte = 2;
@@ -235,20 +239,20 @@ class CadastroBeneficioFormatter extends Formatter
 
     private function instPenMorte($matricula)
     {
-        $instPenMorte = new \stdClass();
+        $instPenMorte = new stdClass();
         $sql = "SELECT rh01_regist FROM rhpessoal  WHERE  rh01_regist = {$matricula}";
         $rs = db_query($sql);
         if (!$rs) {
             $msg1 = "Erro ao buscar matricula ,<b>{$matricula}</b>";
             $msg1 .= ", necessário realizar correção no sistema";
-            throw new \DBException($msg1);
+            throw new DBException($msg1);
         }
 
         $instPenMorte->dtInst = '';
         $instPenMorte->cpfInst = '';
 
         if (pg_num_rows($rs) > 0) {
-            $servidorPensao = \ServidorRepository::getInstanciaByCodigo($matricula, null, null, null, false);
+            $servidorPensao = ServidorRepository::getInstanciaByCodigo($matricula, null, null, null, false);
             $instPenMorte->cpfInst = $servidorPensao->getCgm()->getCpf();
             /**
              * alterada regra a pedido do analista Sandro no dia 16/08/2022
@@ -263,7 +267,7 @@ class CadastroBeneficioFormatter extends Formatter
     /**
      * @param  CgmJuridico  $empregador
      */
-    #[\Override]
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

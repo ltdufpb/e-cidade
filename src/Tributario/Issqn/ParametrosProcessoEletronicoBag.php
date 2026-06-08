@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Issqn;
 
+use Exception;
 use App\Domain\Tributario\ISSQN\Services\Redesim\InclusaoEmpresa\AtendimentoInclusaoInscricaoJsonService;
 use ECidade\V3\Extension\ParameterBag;
 use ECidade\Tributario\Issqn\Model\ParametroProcessoEletronico;
@@ -66,7 +67,7 @@ final class ParametrosProcessoEletronicoBag extends ParameterBag
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getAcaoByTipoProcesso($tipoProcesso)
     {
@@ -74,7 +75,7 @@ final class ParametrosProcessoEletronicoBag extends ParameterBag
             $this->getAlvaraAutonomo(), $this->getAlvaraAutonomoProcessoEletronico() => ProcessoEletronicoHelper::ACAO_ALVARA_AUTONOMO,
             $this->getAlvaraEmpresa(), $this->getAlvaraEmpresaProcessoEletronico(), AtendimentoInclusaoInscricaoJsonService::getTipoProcesso() => ProcessoEletronicoHelper::ACAO_ALVARA_EMPRESA,
             $this->getAlvaraMei(), $this->getAlvaraMeiProcessoEletronico() => ProcessoEletronicoHelper::ACAO_ALVARA_MEI,
-            default => throw new \Exception('Tipo de processo inválido'),
+            default => throw new Exception('Tipo de processo inválido'),
         };
 
         return $acao;

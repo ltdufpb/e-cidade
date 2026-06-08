@@ -26,6 +26,15 @@
  */
 namespace ECidade\Configuracao\Formulario\Resposta\Repository;
 
+use cl_avaliacaogrupoperguntaresposta;
+use BusinessException;
+use db_utils;
+use cl_avaliacaogruporesposta;
+use Exception;
+use cl_avaliacaoresposta;
+use DBDate;
+use DBException;
+use ParameterException;
 use ECidade\Configuracao\Formulario\Model\Formulario;
 use ECidade\Configuracao\Formulario\Model\Opcao;
 use ECidade\Configuracao\Formulario\Repository\Pergunta;
@@ -88,15 +97,15 @@ class Resposta
             "db104_avaliacaopergunta in({$sCodigos})",
         ];
 
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
         $sCampos = 'distinct db107_sequencial, db107_usuario, db107_datalancamento, db107_hora';
         $sSqlRespostas = $oDaoAvaliacaoResposta->sql_query_avaliacao(null, $sCampos, null, implode(' and ', $aWhere));
         $rsRespostas = db_query($sSqlRespostas);
         if (!$rsRespostas) {
-            throw new \BusinessException("Erro ao pesquisar as respostas do formulário {$oFormulario->getNome()}.");
+            throw new BusinessException("Erro ao pesquisar as respostas do formulário {$oFormulario->getNome()}.");
         }
 
-        $aRespostas = \db_utils::makeCollectionFromRecord($rsRespostas, fn($oDados) => Resposta::make($oDados, $oFormulario));
+        $aRespostas = db_utils::makeCollectionFromRecord($rsRespostas, fn($oDados) => Resposta::make($oDados, $oFormulario));
 
         return $aRespostas;
     }
@@ -110,7 +119,7 @@ class Resposta
      */
     private static function getPreenchimentos(Formulario $formulario)
     {
-        $dao = new \cl_avaliacaogruporesposta();
+        $dao = new cl_avaliacaogruporesposta();
         $sql = $dao->sql_avaliacao_preenchida(
             null,
             'distinct avaliacaogruporesposta.*',
@@ -120,10 +129,10 @@ class Resposta
 
         $rs = db_query($sql);
         if (!$rs) {
-            throw new \Exception("Erro ao buscar preenchimentos.");
+            throw new Exception("Erro ao buscar preenchimentos.");
         }
 
-        return \db_utils::getCollectionByRecord($rs);
+        return db_utils::getCollectionByRecord($rs);
     }
 
     /**
@@ -205,10 +214,10 @@ class Resposta
 
         $rs = db_query($sql);
         if (!$rs) {
-            throw new \Exception("Erro ao buscar preenchimentos.");
+            throw new Exception("Erro ao buscar preenchimentos.");
         }
 
-        return \db_utils::getCollectionByRecord($rs);
+        return db_utils::getCollectionByRecord($rs);
     }
 
     /**
@@ -225,7 +234,7 @@ class Resposta
         $campos .= 'db106_avaliacaoperguntaopcao as opcao_respondida, ';
         $campos .= 'db106_resposta as resposta_texto ';
 
-        $dao = new \cl_avaliacaogruporesposta();
+        $dao = new cl_avaliacaogruporesposta();
         $sql = $dao->sql_avaliacao_preenchida(
             null,
             $campos,
@@ -235,10 +244,10 @@ class Resposta
 
         $rs = db_query($sql);
         if (!$rs) {
-            throw new \Exception("Erro ao buscar respostas dos preenchimentos.");
+            throw new Exception("Erro ao buscar respostas dos preenchimentos.");
         }
 
-        return \db_utils::getCollectionByRecord($rs);
+        return db_utils::getCollectionByRecord($rs);
     }
 
 
@@ -247,15 +256,15 @@ class Resposta
      * Se informado mais de uma pergunta, só retorna os Preenchimentos que responderam todas as perguntas
      * Se não retorna um array vazio
      *
-     * @param \ECidade\Configuracao\Formulario\Model\Formulario $formulario
+     * @param Formulario $formulario
      * @param array                                             $perguntas
-     * @throws \BusinessException
+     * @throws BusinessException
      *
      * @return Resposta[]|array
      */
     public static function getPorFormularioECampos(Formulario $formulario, array $perguntas)
     {
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
 
         $idPerguntas = [];
         $respostasCarga = [];
@@ -314,13 +323,13 @@ class Resposta
      * Persiste os dados da Resposta
      * @param \ECidade\Configuracao\Formulario\Resposta\Model\Resposta $resposta
      * @param bool $excluiRespostaVazia
-     * @throws \Exception
+     * @throws Exception
      */
     public static function persist(RespostaModel $resposta, $excluiRespostaVazia = false)
     {
 
         if ($resposta->getCodigo() == '') {
-            $oDaoAvaliacaoGrupoResposta = new \cl_avaliacaogruporesposta;
+            $oDaoAvaliacaoGrupoResposta = new cl_avaliacaogruporesposta;
             $oDaoAvaliacaoGrupoResposta->db107_datalancamento = $resposta->getData()->getDate();
             $oDaoAvaliacaoGrupoResposta->db107_hora = db_hora();
             $oDaoAvaliacaoGrupoResposta->db107_usuario = db_getsession("DB_id_usuario"); //todo retirar o usuario fixo.;
@@ -329,14 +338,14 @@ class Resposta
             if ($oDaoAvaliacaoGrupoResposta->erro_status == 0) {
                 $msg  = "Erro ao salvar os dados da Resposta para o formulário ";
                 $msg .= $resposta->getFormulario()->getNome();
-                throw new \Exception($msg);
+                throw new Exception($msg);
             }
             $resposta->setCodigo($oDaoAvaliacaoGrupoResposta->db107_sequencial);
         }
 
         foreach ($resposta->getRespostas() as $valorResposta) {
             $iCodigoResposta = $valorResposta->getCodigo();
-            $oDaoAvaliacaoResposta = new \cl_avaliacaoresposta();
+            $oDaoAvaliacaoResposta = new cl_avaliacaoresposta();
             $oDaoAvaliacaoResposta->db106_avaliacaoperguntaopcao = $valorResposta->getOpcao()->getCodigo();
             $oDaoAvaliacaoResposta->db106_resposta               = $valorResposta->getValor();
 
@@ -346,11 +355,11 @@ class Resposta
                     if ($oDaoAvaliacaoResposta->erro_status == 0) {
                         $msg  = "Erro ao salvar os dados da Resposta para a pergunta ";
                         $msg .= $valorResposta->getPergunta()->getDescricao();
-                        throw new \Exception($msg);
+                        throw new Exception($msg);
                     }
 
                     $valorResposta->setCodigo($oDaoAvaliacaoResposta->db106_sequencial);
-                    $oDaoAvaliacaoGrupoPerguntaResposta = new \cl_avaliacaogrupoperguntaresposta();
+                    $oDaoAvaliacaoGrupoPerguntaResposta = new cl_avaliacaogrupoperguntaresposta();
                     $oDaoAvaliacaoGrupoPerguntaResposta->db108_avaliacaogruporesposta = $resposta->getCodigo();
                     $db106_sequencial = $oDaoAvaliacaoResposta->db106_sequencial;
                     $oDaoAvaliacaoGrupoPerguntaResposta->db108_avaliacaoresposta = $db106_sequencial;
@@ -359,12 +368,12 @@ class Resposta
                     if ($oDaoAvaliacaoGrupoPerguntaResposta->erro_status == 0) {
                         $msg  = "Erro ao salvar os dados da Resposta para a pergunta ";
                         $msg .= $valorResposta->getPergunta()->getDescricao();
-                        throw new \Exception($msg);
+                        throw new Exception($msg);
                     }
                 }
             } else {
                 if ($excluiRespostaVazia && $valorResposta->getValor() === "null") {
-                    $oDaoAvaliacaoGrupoPerguntaResposta = new \cl_avaliacaogrupoperguntaresposta();
+                    $oDaoAvaliacaoGrupoPerguntaResposta = new cl_avaliacaogrupoperguntaresposta();
                     $oDaoAvaliacaoGrupoPerguntaResposta->db108_avaliacaogruporesposta = $resposta->getCodigo();
                     $oDaoAvaliacaoGrupoPerguntaResposta->db108_avaliacaoresposta = $iCodigoResposta;
                     $oDaoAvaliacaoGrupoPerguntaResposta->excluir(
@@ -377,7 +386,7 @@ class Resposta
                         $msg  = "Não foi possível excluir a resposta para a pergunta ";
                         $msg .= $valorResposta->getPergunta()->getDescricao();
                         $msg .= "\nContate o suporte.";
-                        throw new \Exception($msg);
+                        throw new Exception($msg);
                     }
                 } else {
                     $oDaoAvaliacaoResposta->db106_sequencial = $valorResposta->getCodigo();
@@ -385,7 +394,7 @@ class Resposta
                     if ($oDaoAvaliacaoResposta->erro_status == 0) {
                         $msg  = "Erro ao salvar os dados da Resposta para a pergunta ";
                         $msg .= $valorResposta->getPergunta()->getDescricao();
-                        throw new \Exception($msg);
+                        throw new Exception($msg);
                     }
                 }
             }
@@ -395,7 +404,7 @@ class Resposta
     /**
      * Constroi a instancia da resposta
      * @param                                                   $dados
-     * @param \ECidade\Configuracao\Formulario\Model\Formulario $formulario
+     * @param Formulario $formulario
      * @return \ECidade\Configuracao\Formulario\Resposta\Model\Resposta
      */
     public static function make($dados, Formulario $formulario)
@@ -403,7 +412,7 @@ class Resposta
 
         $resposta = new RespostaModel();
         $resposta->setCodigo($dados->db107_sequencial);
-        $resposta->setData(new \DBDate($dados->db107_datalancamento));
+        $resposta->setData(new DBDate($dados->db107_datalancamento));
         $resposta->setFormulario($formulario);
         return $resposta;
     }
@@ -411,8 +420,8 @@ class Resposta
     /**
      * Retorna todas as valores respondidos da resposta
      * @param \ECidade\Configuracao\Formulario\Resposta\Model\Resposta $resposta
-     * @return \ECidade\Configuracao\Formulario\Resposta\Model\Valor[]
-     * @throws \BusinessException
+     * @return Valor[]
+     * @throws BusinessException
      */
     public static function getRespostasDaResposta(RespostaModel $resposta)
     {
@@ -420,7 +429,7 @@ class Resposta
         if ($resposta->getCodigo() == '') {
             return [];
         }
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
         $where                 = "db107_sequencial = {$resposta->getCodigo()}";
 
         $sSqlRespostas = $oDaoAvaliacaoResposta->sql_query_avaliacao(
@@ -431,9 +440,9 @@ class Resposta
         );
         $rsRespostas   = db_query($sSqlRespostas);
         if (!$rsRespostas) {
-            throw new \BusinessException("Erro ao pesquisar valor das respostas.");
+            throw new BusinessException("Erro ao pesquisar valor das respostas.");
         }
-        $respostas = \db_utils::makeCollectionFromRecord($rsRespostas, function ($dados) {
+        $respostas = db_utils::makeCollectionFromRecord($rsRespostas, function ($dados) {
 
             $valorResposta = new Valor();
             $valorResposta->setCodigo($dados->db106_sequencial);
@@ -456,56 +465,56 @@ class Resposta
         if (empty($codigoResposta)) {
             return [];
         }
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogruporesposta();
+        $oDaoAvaliacaoResposta = new cl_avaliacaogruporesposta();
         $where                 = "db107_sequencial = {$codigoResposta}";
 
         $sSqlRespostas = $oDaoAvaliacaoResposta->sql_query_file(null, "*", "", $where);
         $rsRespostas   = db_query($sSqlRespostas);
         if (!$rsRespostas) {
-            throw new \BusinessException("Erro ao pesquisar respostas de avaliacao.");
+            throw new BusinessException("Erro ao pesquisar respostas de avaliacao.");
         }
         if (pg_num_rows($rsRespostas) == 0) {
-            throw new \BusinessException("Não foi encontrado resposta para o código ($codigoResposta).");
+            throw new BusinessException("Não foi encontrado resposta para o código ($codigoResposta).");
         }
-        return self::make(\db_utils::fieldsMemory($rsRespostas, 0), $formulario);
+        return self::make(db_utils::fieldsMemory($rsRespostas, 0), $formulario);
     }
 
     /**
      * @param \ECidade\Configuracao\Formulario\Resposta\Model\Resposta $resposta
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      */
-    public static function remover(\ECidade\Configuracao\Formulario\Resposta\Model\Resposta $resposta)
+    public static function remover(RespostaModel $resposta)
     {
 
-        if (!\db_utils::inTransaction()) {
-            throw new \DBException('Sem transação com o banco de dados.');
+        if (!db_utils::inTransaction()) {
+            throw new DBException('Sem transação com o banco de dados.');
         }
         if (empty($resposta)) {
-            throw new \ParameterException("Resposta não informada.");
+            throw new ParameterException("Resposta não informada.");
         }
-        $oDaoAvaliacaoResposta              = new \cl_avaliacaoresposta();
-        $oDaoAvaliacaoGrupoPerguntaResposta = new \cl_avaliacaogrupoperguntaresposta();
-        $oDaoAvaliacaoGrupoResposta         = new \cl_avaliacaogruporesposta();
+        $oDaoAvaliacaoResposta              = new cl_avaliacaoresposta();
+        $oDaoAvaliacaoGrupoPerguntaResposta = new cl_avaliacaogrupoperguntaresposta();
+        $oDaoAvaliacaoGrupoResposta         = new cl_avaliacaogruporesposta();
         foreach ($resposta->getRespostas() as $valorResposta) {
             $oDaoAvaliacaoGrupoPerguntaResposta->excluir(
                 null,
                 "db108_avaliacaoresposta = {$valorResposta->getCodigo()}"
             );
             if ($oDaoAvaliacaoGrupoPerguntaResposta->erro_status == 0) {
-                throw new \BusinessException("Erro ao excluir vinculo das respostas com o formulário.");
+                throw new BusinessException("Erro ao excluir vinculo das respostas com o formulário.");
             }
 
             $oDaoAvaliacaoResposta->excluir($valorResposta->getCodigo());
             if ($oDaoAvaliacaoResposta->erro_status == 0) {
-                throw new \BusinessException("Erro ao excluir respostas do formulário.");
+                throw new BusinessException("Erro ao excluir respostas do formulário.");
             }
         }
         $oDaoAvaliacaoGrupoResposta->excluir($resposta->getCodigo());
         if ($oDaoAvaliacaoGrupoResposta->erro_status == 0) {
             $msg = "Erro ao excluir respostas do formulário. Alguns valores de resposta não foram excluídos.";
-            throw new \BusinessException($msg);
+            throw new BusinessException($msg);
         }
     }
 }

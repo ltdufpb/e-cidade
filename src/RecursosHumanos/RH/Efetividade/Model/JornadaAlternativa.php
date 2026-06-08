@@ -8,17 +8,19 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Model;
 
+use Servidor;
+use DateTime;
 
 class JornadaAlternativa
 {
 
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     protected $servidor;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $data;
 
@@ -29,7 +31,7 @@ class JornadaAlternativa
     Protected $jornada;
 
     /**
-     * @return \Servidor
+     * @return Servidor
      */
     public function getServidor()
     {
@@ -37,7 +39,7 @@ class JornadaAlternativa
     }
 
     /**
-     * @param \Servidor $servidor
+     * @param Servidor $servidor
      */
     public function setServidor($servidor)
     {
@@ -45,7 +47,7 @@ class JornadaAlternativa
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getData()
     {
@@ -53,7 +55,7 @@ class JornadaAlternativa
     }
 
     /**
-     * @param \DateTime $data
+     * @param DateTime $data
      */
     public function setData($data)
     {

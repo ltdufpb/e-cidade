@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\V3\Extension\Registry;
 use ECidade\Configuracao\Formulario\Identifier;
 
 class AvaliacaoPergunta
@@ -551,7 +551,7 @@ class AvaliacaoPergunta
      * @param integer $iAvaliacao
      * @see self::setPreenchimento
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function setAvaliacao($iAvaliacao)
     {
         $this->setPreenchimento($iAvaliacao);
@@ -792,7 +792,7 @@ class AvaliacaoPergunta
     }
 
     /**
-     * @throws \DBException
+     * @throws DBException
      * @return string|null
      */
     public function getFormulaVinculada()
@@ -829,7 +829,7 @@ class AvaliacaoPergunta
             $this->sIdentificador = $identifier->slugify($this->sDescricao);
         } else {
             if (!$identifier->validate($this->sIdentificador)) {
-                throw new \DBException("Identificador da pergunta já cadastrado: '$this->sIdentificador'");
+                throw new DBException("Identificador da pergunta já cadastrado: '$this->sIdentificador'");
             }
         }
 
@@ -854,7 +854,7 @@ class AvaliacaoPergunta
             $oDao->incluir(null);
 
             if ($this->iTipo == 2 && empty($this->aOpcoes)) {
-                $option = new \AvaliacaoPerguntaOpcao();
+                $option = new AvaliacaoPerguntaOpcao();
                 $option->setAceitaTexto(true);
                 $option->setIdentificadorCampo($this->sIdentificadorCampo);
                 $this->addOpcao($option);
@@ -864,7 +864,7 @@ class AvaliacaoPergunta
         }
 
         if ($oDao->erro_status == 0) {
-            $logger = \ECidade\V3\Extension\Registry::get('app.container')->get('app.logger');
+            $logger = Registry::get('app.container')->get('app.logger');
             $logger->debug("Pergunta: " . $this->sDescricao);
             $logger->debug($oDao->erro_msg);
             throw new DBException("Erro ao salvar perguntas.");
@@ -898,7 +898,7 @@ class AvaliacaoPergunta
      */
     private function removerFormula()
     {
-        $oDao = new \cl_avaliacaoperguntadb_formulas;
+        $oDao = new cl_avaliacaoperguntadb_formulas;
         $oDao->excluir(null, "eso01_avaliacaopergunta = $this->iPergunta");
 
         if ($oDao->erro_status == 0) {
@@ -915,13 +915,13 @@ class AvaliacaoPergunta
      */
     private function salvarFormula($iFormula)
     {
-        $oDao = new \cl_avaliacaoperguntadb_formulas;
+        $oDao = new cl_avaliacaoperguntadb_formulas;
         $oDao->eso01_db_formulas = $iFormula;
         $oDao->eso01_avaliacaopergunta = $this->iPergunta;
         $oDao->incluir(null);
 
         if ($oDao->erro_status == 0) {
-            $logger = \ECidade\V3\Extension\Registry::get('app.container')->get('app.logger');
+            $logger = Registry::get('app.container')->get('app.logger');
             $logger->debug("Pergunta: " . $this->sDescricao);
             $logger->debug($oDao->erro_msg);
             throw new DBException("Erro ao vincular fórmula.");

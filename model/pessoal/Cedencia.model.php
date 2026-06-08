@@ -59,16 +59,14 @@ class Cedencia
     private $ressarcimento;
 
     /**
-     * @var \DateTime
-     * 
+     * @var DateTime *
      * Data da movimentação do Servidor
      * referente a cedência.
      */
     private $dataMovimentacao;
 
     /**
-     * @var \DateTime
-     * 
+     * @var DateTime *
      * Data da devolução do Servidor
      * referente a cedência.
      */
@@ -129,7 +127,7 @@ class Cedencia
     private $codCategoriaOrigem;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dataAdmissaoOrigem;
 
@@ -401,7 +399,7 @@ class Cedencia
         $sequenciais = [];
 
         for ($row = 0; $row < $totalRegistros; $row++) {
-            $current = \db_utils::fieldsMemory($result, $row);
+            $current = db_utils::fieldsMemory($result, $row);
             $sequenciais[] = $current->rh261_sequencial;
         }
 

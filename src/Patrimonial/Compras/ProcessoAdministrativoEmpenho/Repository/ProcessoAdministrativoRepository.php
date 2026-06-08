@@ -27,6 +27,7 @@
 
 namespace ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Repository;
 
+use Exception;
 use ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Model\ProcessoAdministrativo;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 
@@ -54,7 +55,7 @@ class ProcessoAdministrativoRepository
      * @param $id
      * @param array $columns
      * @return bool|ProcessoAdministrativo
-     * @throws \Exception
+     * @throws Exception
      */
     public function find($id, $columns = ['*'])
     {

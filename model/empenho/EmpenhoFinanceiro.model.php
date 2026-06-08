@@ -1,4 +1,7 @@
 <?php
+
+use ECidade\Financeiro\Orcamento\Service\LancarComlementoService;
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -24,7 +27,6 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
 /**
  * Model para controle do Empenho
  * @author  Matheus Felini <matheus.felini@dbseller.com.br>
@@ -591,7 +593,7 @@ class EmpenhoFinanceiro {
    * Retorna o ano
    * @see getAno()
    */
-  #[\Deprecated]
+  #[Deprecated]
   public function getAnoUso() {
     return $this->iAnoUso;
   }
@@ -608,7 +610,7 @@ class EmpenhoFinanceiro {
    * @param integer $iAnoUso
    * @see setAno
    */
-  #[\Deprecated]
+  #[Deprecated]
   public function setAnoUso($iAnoUso) {
     $this->iAnoUso = $iAnoUso;
   }
@@ -1114,7 +1116,7 @@ class EmpenhoFinanceiro {
    * @param integer $iAno ano da verificacao do resto a pagar
    * @return boolean
    */
-  #[\Deprecated(message: 'quando quer saber se o empenho é um RP, mesmo que já tenha sido finalizado')]
+  #[Deprecated(message: 'quando quer saber se o empenho é um RP, mesmo que já tenha sido finalizado')]
   public function isRestoAPagar($iAno) {
 
     $oDaoEmpPresta        = new cl_empresto;
@@ -1485,7 +1487,7 @@ class EmpenhoFinanceiro {
           $sqlEmpenho = $daoRHempenhofolha->sql_query_file(null, "rh76_numemp", null, $where);
           $rsEmpenho = db_query($sqlEmpenho);
           if (!$rsEmpenho) {
-              throw new \DBException("Erro ao verificar informacoes do vínculo do empenho {$this->getNumero()} com a folha de pagamento.");
+              throw new DBException("Erro ao verificar informacoes do vínculo do empenho {$this->getNumero()} com a folha de pagamento.");
           }
           $this->folhaPagamento = pg_num_rows($rsEmpenho) > 0;
       }
@@ -1500,7 +1502,7 @@ class EmpenhoFinanceiro {
     private function lancarComlementoRecurso()
     {
 
-        $lancar = new \ECidade\Financeiro\Orcamento\Service\LancarComlementoService();
+        $lancar = new LancarComlementoService();
         $lancar->complementoEmpenho($this->getDotacao(), $this->getNumero(), $this->complemento);
     }
 }

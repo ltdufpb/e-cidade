@@ -47,7 +47,7 @@ class TipoCompra {
 
   /**
    * @param $iCodigo
-   * @throws \Exception
+   * @throws Exception
    */
   public function __construct($iCodigo) {
 

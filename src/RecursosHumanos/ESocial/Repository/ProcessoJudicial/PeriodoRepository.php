@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessoperiodo;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Periodo as PeriodoProcessual;
 use Exception;
-use DBDate;
 
 class PeriodoRepository
 {

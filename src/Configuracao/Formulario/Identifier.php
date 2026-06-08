@@ -26,6 +26,9 @@
  */
 namespace ECidade\Configuracao\Formulario;
 
+use Exception;
+use DBString;
+
 /**
  * @author Andrio Costa     <andrio.costa@gmail.com>
  * @author Jeferson Belmiro <jeferson.belmiro@gmail.com>
@@ -84,7 +87,7 @@ class Identifier
         $rs  = db_query($sql);
 
         if (!$rs) {
-            throw new \Exception("Erro ao buscar identificador.");
+            throw new Exception("Erro ao buscar identificador.");
         }
 
         if (pg_num_rows($rs) == 0) {
@@ -101,7 +104,7 @@ class Identifier
     public function slugify($string)
     {
       // gera slugify limitando tamanho
-        $slug = mb_strimwidth(\DBString::slugify($string), 0, 50);
+        $slug = mb_strimwidth(DBString::slugify($string), 0, 50);
 
       // string valida, nao existe no banco
         if ($this->validate($slug)) {

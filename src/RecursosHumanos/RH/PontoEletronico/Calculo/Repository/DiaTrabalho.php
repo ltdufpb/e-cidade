@@ -27,23 +27,33 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Repository;
 
+use Servidor;
+use DBDate;
+use BusinessException;
+use AssentamentoRepository;
+use Assentamento;
+use DBException;
+use db_utils;
+use cl_pontoeletronicoarquivodata;
+use stdClass;
+use DateTime;
+use DateInterval;
+use cl_pontoeletronicoarquivodataregistro;
+use cl_pontoeletronicoarquivoimportacaoregistro;
 use ECidade\Configuracao\Cadastro\Model\Feriado;
 use ECidade\Configuracao\Cadastro\Repository\Feriado as FeriadoRepository;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaServidor;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada as JornadaModel;
 use ECidade\RecursosHumanos\RH\Efetividade\Repository\Jornada;
 use ECidade\RecursosHumanos\RH\Efetividade\Repository\JornadaAlternativa;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Factory\TipoHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho as DiaTrabalhoModel;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\Falta;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosGerais;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacoesPontoCollection;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosRepository;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\Repository\MarcacaoPonto;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Repository\Justificativa as JustificativaRepository;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Repository\Evento as EventoRepository;
-use ECidade\RecursosHumanos\RH\Efetividade\Repository\EscalaServidor as EscalaServidorRepository;
 
 /**
  * Classe responsável pelas ações na base de dados
@@ -92,25 +102,25 @@ class DiaTrabalho
     }
 
     /**
-     * @param \Servidor $oServidor
-     * @param \DBDate $oDataPonto
+     * @param Servidor $oServidor
+     * @param DBDate $oDataPonto
      * @return DiaTrabalhoModel
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    public function getDiaTrabalhoServidor(\Servidor $oServidor, \DBDate $oDataPonto)
+    public function getDiaTrabalhoServidor(Servidor $oServidor, DBDate $oDataPonto)
     {
         return $this->getDiaTrabalho($oServidor, $oDataPonto);
     }
 
     /**
-     * @param \Servidor $oServidor
-     * @param \DBDate $oDataPonto
+     * @param Servidor $oServidor
+     * @param DBDate $oDataPonto
      * @return DiaTrabalhoModel
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    private function getDiaTrabalho(\Servidor $oServidor, \DBDate $oDataPonto, $lHorasProcessadas = false)
+    private function getDiaTrabalho(Servidor $oServidor, DBDate $oDataPonto, $lHorasProcessadas = false)
     {
         $oCollectionMarcacoes = new MarcacoesPontoCollection;
 
@@ -118,7 +128,7 @@ class DiaTrabalho
             $mensagem = "Não há escalas para o servidor: {$oServidor->getMatricula()}";
             $mensagem .= "\n\nConfigura uma escala em RH > Cadastros > Efetividade > Escala de Trabalho";
 
-            throw new \BusinessException($mensagem, 1);
+            throw new BusinessException($mensagem, 1);
         }
 
         $oServidor->setEscala($this->oEscalaServidor);
@@ -127,11 +137,11 @@ class DiaTrabalho
         $oDiaTrabalho->setServidor($oServidor);
         $oDiaTrabalho->setData($oDataPonto);
 
-        $assentamentosServidor = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+        $assentamentosServidor = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
             $oServidor,
             'S',
             $oDataPonto,
-            \Assentamento::NATUREZA_JUSTIFICATIVA
+            Assentamento::NATUREZA_JUSTIFICATIVA
         );
 
         if ($assentamentosServidor) {
@@ -180,22 +190,22 @@ class DiaTrabalho
             $oDiaTrabalho->setEvento($evento);
         }
 
-        $aAssentamentosHoraExtraManual = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+        $aAssentamentosHoraExtraManual = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
             $oServidor,
             'S',
             $oDataPonto,
-            \Assentamento::NATUREZA_HE_MANUAL
+            Assentamento::NATUREZA_HE_MANUAL
         );
         if (!empty($aAssentamentosHoraExtraManual)) {
             $oDiaTrabalho->setAssentamentosHoraExtraManual($aAssentamentosHoraExtraManual);
         }
 
         if (!$lHorasProcessadas) {
-            $aAssentamentosAbonofalta = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+            $aAssentamentosAbonofalta = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
                 $oServidor,
                 'S',
                 $oDataPonto,
-                \Assentamento::NATUREZA_ABONO_FALTA
+                Assentamento::NATUREZA_ABONO_FALTA
             );
 
             if ($aAssentamentosAbonofalta) {
@@ -210,8 +220,8 @@ class DiaTrabalho
      * @param DiaTrabalhoModel $oDiaTrabalho
      * @param EscalaServidor $oEscalaServidor
      * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function getJornada(DiaTrabalhoModel $oDiaTrabalho, EscalaServidor $oEscalaServidor)
     {
@@ -231,17 +241,17 @@ class DiaTrabalho
         $rsOrdem = db_query($sSqlOrdem);
 
         if (!$rsOrdem) {
-            throw new \DBException("Erro ao buscar a ordem da jornada.");
+            throw new DBException("Erro ao buscar a ordem da jornada.");
         }
 
         if (pg_num_rows($rsOrdem) == 0) {
-            throw new \BusinessException("Ordem da grade de horário não encontrada.");
+            throw new BusinessException("Ordem da grade de horário não encontrada.");
         }
 
-        $iOrdem = \db_utils::fieldsMemory($rsOrdem, 0)->ordem;
+        $iOrdem = db_utils::fieldsMemory($rsOrdem, 0)->ordem;
 
         if ($iOrdem == 0) {
-            throw new \BusinessException("Verifique a data base da escala de trabalho.");
+            throw new BusinessException("Verifique a data base da escala de trabalho.");
         }
 
         $jornadasAlternativas = JornadaAlternativa::getMaiorqueDataPorServidor(
@@ -263,14 +273,14 @@ class DiaTrabalho
     /**
      * @param DiaTrabalhoModel $oDiaTrabalho
      * @return DiaTrabalhoModel
-     * @throws \DBException
+     * @throws DBException
      */
     private function getHorasProcessadas(
         DiaTrabalhoModel $oDiaTrabalho,
         $lApenasHorasCalculadasPorServidorNaData = false
     ) {
 
-        $oDaoArquidoData = new \cl_pontoeletronicoarquivodata();
+        $oDaoArquidoData = new cl_pontoeletronicoarquivodata();
 
         $aCamposHorasConsolidadas = [];
         $aCamposHorasConsolidadas[] = 'rh197_horas_trabalhadas';
@@ -312,11 +322,11 @@ class DiaTrabalho
         if (!$rsHorasConsolidadas) {
             $mensagem = "Ocorreu um erro ao buscar os totais consolidados das horas.\nContate o suporte.\n\n";
 
-            throw new \DBException($mensagem . pg_last_error());
+            throw new DBException($mensagem . pg_last_error());
         }
 
         if (pg_num_rows($rsHorasConsolidadas) > 0) {
-            \db_utils::makeFromRecord($rsHorasConsolidadas, function ($oRetorno) use ($oDiaTrabalho) {
+            db_utils::makeFromRecord($rsHorasConsolidadas, function ($oRetorno) use ($oDiaTrabalho) {
 
                 $oDiaTrabalho->setHorasTrabalho($oRetorno->rh197_horas_trabalhadas);
                 $oDiaTrabalho->setHorasFalta($oRetorno->rh197_horas_falta);
@@ -345,11 +355,11 @@ class DiaTrabalho
     }
 
     /**
-     * @param \Servidor $oServidor
+     * @param Servidor $oServidor
      * @return mixed|null
-     * @throws \BusinessException
+     * @throws BusinessException
      */
-    private function getConfiguracoes(\Servidor $oServidor)
+    private function getConfiguracoes(Servidor $oServidor)
     {
         $iCodigoLotacaoServidor = $oServidor->getCodigoLotacao();
 
@@ -357,7 +367,7 @@ class DiaTrabalho
             $mensagemLotacao = "Não há lotação configurada para o servidor: {$oServidor->getMatricula()}";
             $mensagemLotacao .= " - {$oServidor->getCgm()->getNome()}.";
             $mensagemLotacao .= " Para configurar acesse:\nPessoal > Cadastro > Servidores > aba Movimentações.";
-            throw new \BusinessException($mensagemLotacao, 2);
+            throw new BusinessException($mensagemLotacao, 2);
         }
 
         $oConfiguracoesLotacao = ParametrosRepository::create()->getConfiguracoesLotacao($iCodigoLotacaoServidor);
@@ -368,7 +378,7 @@ class DiaTrabalho
             $mensagemLotacao .= "Para configurar acesse:";
             $mensagemLotacao .= "\nRH > Procedimentos > Ponto Eletrônico > Configurações > Lotação";
 
-            throw new \BusinessException($mensagemLotacao, 3);
+            throw new BusinessException($mensagemLotacao, 3);
         }
 
         return $oConfiguracoesLotacao;
@@ -378,15 +388,15 @@ class DiaTrabalho
      * Retorna o sequencial da data
      * @param DiaTrabalhoModel $oDiaTrabalho
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function getCodigoData(DiaTrabalhoModel $oDiaTrabalho)
     {
         $where = "      rh197_data = '{$oDiaTrabalho->getData()->getDate()}'";
         $where .= " AND rh197_matricula = {$oDiaTrabalho->getServidor()->getMatricula()}";
 
-        $oDaoPontoEletronicoArquivoData = new \cl_pontoeletronicoarquivodata();
+        $oDaoPontoEletronicoArquivoData = new cl_pontoeletronicoarquivodata();
         $sSqlPontoEletronicoArquivoData = $oDaoPontoEletronicoArquivoData->sql_query_file(
             null,
             'rh197_sequencial',
@@ -397,28 +407,28 @@ class DiaTrabalho
         $rsPontoEletronicoArquivoData = db_query($sSqlPontoEletronicoArquivoData);
 
         if (!$rsPontoEletronicoArquivoData) {
-            throw new \DBException('Erro ao buscar o código referente a data.');
+            throw new DBException('Erro ao buscar o código referente a data.');
         }
 
         if (pg_num_rows($rsPontoEletronicoArquivoData) == 0) {
             return null;
         }
 
-        return \db_utils::fieldsMemory($rsPontoEletronicoArquivoData, 0)->rh197_sequencial;
+        return db_utils::fieldsMemory($rsPontoEletronicoArquivoData, 0)->rh197_sequencial;
     }
 
     /**
      * Retorna a instancia do afastamento
      * @param \ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho $diaTrabalho
      * @return \Afastamento|null
-     * @throws \DBException
+     * @throws DBException
      */
     public function getAfastamentoNaData(DiaTrabalhoModel $diaTrabalho)
     {
         if ($diaTrabalho->getCodigo() == '') {
             return null;
         }
-        $oDaoPontoEletronicoArquivoData = new \cl_pontoeletronicoarquivodata();
+        $oDaoPontoEletronicoArquivoData = new cl_pontoeletronicoarquivodata();
         $sSqlPontoEletronicoArquivoData = $oDaoPontoEletronicoArquivoData->sql_query_file(
             null,
             '*',
@@ -428,27 +438,27 @@ class DiaTrabalho
         $rsPontoEletronicoArquivoData = db_query($sSqlPontoEletronicoArquivoData);
 
         if (!$rsPontoEletronicoArquivoData) {
-            throw new \DBException('Erro ao buscar dados do assentamento referente a data.');
+            throw new DBException('Erro ao buscar dados do assentamento referente a data.');
         }
 
         if (pg_num_rows($rsPontoEletronicoArquivoData) == 0) {
             return null;
         }
 
-        $codigoAfastamento = \db_utils::fieldsMemory($rsPontoEletronicoArquivoData, 0)->rh197_afastamento;
+        $codigoAfastamento = db_utils::fieldsMemory($rsPontoEletronicoArquivoData, 0)->rh197_afastamento;
 
-        return \AssentamentoRepository::getInstanceByCodigo($codigoAfastamento);
+        return AssentamentoRepository::getInstanceByCodigo($codigoAfastamento);
     }
 
     /**
      * Persiste na base de dados um dia de trabalho com usas horas calculadas
      * @param DiaTrabalhoModel $oDiaTrabalho
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function persist(DiaTrabalhoModel $oDiaTrabalho)
     {
-        $oDaoPontoEletronicoData = new \cl_pontoeletronicoarquivodata();
+        $oDaoPontoEletronicoData = new cl_pontoeletronicoarquivodata();
         $sWherePontoEletronicoData = "     rh197_data      = '{$oDiaTrabalho->getData()->getDate()}'";
         $sWherePontoEletronicoData .= " AND rh197_matricula = {$oDiaTrabalho->getServidor()->getMatricula()}";
         $sSqlPontoEletronicoData = $oDaoPontoEletronicoData->sql_query_file(
@@ -461,10 +471,10 @@ class DiaTrabalho
         $rsPontoEletronicoData = db_query($sSqlPontoEletronicoData);
 
         if (!$rsPontoEletronicoData) {
-            throw new \DBException('Erro ao buscar as informações do ponto no dia.');
+            throw new DBException('Erro ao buscar as informações do ponto no dia.');
         }
 
-        $oDadosRetorno = new \stdClass();
+        $oDadosRetorno = new stdClass();
         $oDadosRetorno->rh197_pontoeletronicoarquivo = $oDiaTrabalho->getCodigoArquivo();
         $oDadosRetorno->rh197_data = $oDiaTrabalho->getData()->getDate();
         $oDadosRetorno->rh197_matricula = $oDiaTrabalho->getServidor()->getMatricula();
@@ -472,7 +482,7 @@ class DiaTrabalho
         $oDadosRetorno->rh197_sequencial = null;
 
         if (pg_num_rows($rsPontoEletronicoData) > 0) {
-            $oDadosRetorno = \db_utils::fieldsMemory($rsPontoEletronicoData, 0);
+            $oDadosRetorno = db_utils::fieldsMemory($rsPontoEletronicoData, 0);
         }
 
         $sAcao = empty($oDadosRetorno->rh197_sequencial) ? 'incluir' : 'alterar';
@@ -500,18 +510,18 @@ class DiaTrabalho
         $oDaoPontoEletronicoData->{$sAcao}($oDadosRetorno->rh197_sequencial);
 
         if ($oDaoPontoEletronicoData->erro_status == '0') {
-            throw new \DBException($oDaoPontoEletronicoData->erro_msg);
+            throw new DBException($oDaoPontoEletronicoData->erro_msg);
         }
     }
 
     /**
-     * @param \Servidor $oServidor
-     * @param \DBDate $oDataPonto
+     * @param Servidor $oServidor
+     * @param DBDate $oDataPonto
      * @return DiaTrabalhoModel
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    public function getDiaTrabalhoProcessadoServidor(\Servidor $oServidor, \DBDate $oDataPonto)
+    public function getDiaTrabalhoProcessadoServidor(Servidor $oServidor, DBDate $oDataPonto)
     {
         return $this->getDiaTrabalho($oServidor, $oDataPonto, true);
     }
@@ -537,18 +547,18 @@ class DiaTrabalho
         if ($oParametrosPontoEletronico instanceof ParametrosGerais) {
             $oDiaTrabalhoModel->setParametrosPontoEletronico($oParametrosPontoEletronico);
 
-            $aAssentamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+            $aAssentamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
                 $oDiaTrabalhoModel->getServidor(),
                 'S',
                 $oDiaTrabalhoModel->getData(),
-                \Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA
+                Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA
             );
 
             if ($oParametrosPontoEletronico->horaExtraSomenteComAutorizacao() && count($aAssentamentos) > 0) {
-                $oAssentamentoHora = new \DateTime($aAssentamentos[0]->getHora());
-                $oHorasExtrasAutorizadas = new \DateTime("{$oDiaTrabalhoModel->getData()->getDate()} 00:00");
+                $oAssentamentoHora = new DateTime($aAssentamentos[0]->getHora());
+                $oHorasExtrasAutorizadas = new DateTime("{$oDiaTrabalhoModel->getData()->getDate()} 00:00");
                 $oHorasExtrasAutorizadas->add(
-                    new \DateInterval("PT{$oAssentamentoHora->format('H')}H{$oAssentamentoHora->format('i')}M")
+                    new DateInterval("PT{$oAssentamentoHora->format('H')}H{$oAssentamentoHora->format('i')}M")
                 );
 
                 $oDiaTrabalhoModel->setCalculaHoraExtra(true);
@@ -566,13 +576,13 @@ class DiaTrabalho
     /**
      * Retorna as horas
      *
-     * @param \Servidor $oServidor
-     * @param \DBDate $oDataPonto
+     * @param Servidor $oServidor
+     * @param DBDate $oDataPonto
      * @return DiaTrabalhoModel
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
-    public function getApenasHorasCalculadasPorServidorNaData(\Servidor $oServidor, \DBDate $oDataPonto)
+    public function getApenasHorasCalculadasPorServidorNaData(Servidor $oServidor, DBDate $oDataPonto)
     {
         $oDiaTrabalho = new DiaTrabalhoModel();
         $oDiaTrabalho->setServidor($oServidor);
@@ -592,25 +602,25 @@ class DiaTrabalho
 
     /**
      * @param $iCodigoData
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function excluirMarcacoes($iCodigoData)
     {
         if (empty($iCodigoData)) {
             $mensagem = 'Necessário informar o código sequencial da data a ser excluída as marcações.';
 
-            throw new \BusinessException($mensagem);
+            throw new BusinessException($mensagem);
         }
 
-        $oDaoPontoEletronicoDataRegistro = new \cl_pontoeletronicoarquivodataregistro();
+        $oDaoPontoEletronicoDataRegistro = new cl_pontoeletronicoarquivodataregistro();
 
         if (!$oDaoPontoEletronicoDataRegistro->excluir(null, "rh198_pontoeletronicoarquivodata={$iCodigoData}")) {
-            throw new \DBException($oDaoPontoEletronicoDataRegistro->erro_msg);
+            throw new DBException($oDaoPontoEletronicoDataRegistro->erro_msg);
         }
     }
 
-    public function getMarcacoesReaisPorServidorNaData(\Servidor $servidor, \DBDate $data, JornadaModel $jornada)
+    public function getMarcacoesReaisPorServidorNaData(Servidor $servidor, DBDate $data, JornadaModel $jornada)
     {
         $aMarcacoesReais = [];
         $dataPosterior = '';
@@ -620,11 +630,11 @@ class DiaTrabalho
         $horaInicioJornadaComTolerancia->modify('-' . BaseHora::TOLERANCIA_BUSCA_MARCACOES_ANTES . ' hours');
         $horaFimJornadaComTolerancia->modify('+' . BaseHora::TOLERANCIA_BUSCA_MARCACOES_DEPOIS . ' hours');
 
-        $pontoeletronicoarquivoimportacaoregistroDAO = new \cl_pontoeletronicoarquivoimportacaoregistro();
+        $pontoeletronicoarquivoimportacaoregistroDAO = new cl_pontoeletronicoarquivoimportacaoregistro();
         $where = "     rh229_matricula = {$servidor->getMatricula()}";
         $where .= " AND rh229_data IN ('{$data->getDate()}'";
         if ($jornada->ultrapassaDia()) {
-            $dataPosterior = new \DateTime($data->getDate());
+            $dataPosterior = new DateTime($data->getDate());
             $dataPosterior->modify('+1 day');
             $where .= ",'{$dataPosterior->format('Y-m-d')}'";
         }
@@ -681,19 +691,19 @@ class DiaTrabalho
             $mensagem = "Ocorreu um erro ao consultar as marcações do relógio do servidor ";
             $mensagem .= "({$servidor->getMatricula()}).";
 
-            throw new \DBException($mensagem);
+            throw new DBException($mensagem);
         }
 
         $sHora = '';
         $sData = $data->getDate();
 
         if (pg_num_rows($rs) > 0) {
-            $horariosConsultados = \db_utils::makeCollectionFromRecord(
+            $horariosConsultados = db_utils::makeCollectionFromRecord(
                 $rs,
                 function ($retornoConsulta) use ($horaInicioJornadaComTolerancia, $horaFimJornadaComTolerancia) {
 
                     if (!empty($retornoConsulta->hora)) {
-                        $horaEncontrada = new \DateTime($retornoConsulta->data . ' ' . $retornoConsulta->hora);
+                        $horaEncontrada = new DateTime($retornoConsulta->data . ' ' . $retornoConsulta->hora);
 
                         if ($horaEncontrada->getTimeStamp() >= $horaInicioJornadaComTolerancia->getTimeStamp()) {
                             if ($horaEncontrada->getTimeStamp() <= $horaFimJornadaComTolerancia->getTimeStamp()) {

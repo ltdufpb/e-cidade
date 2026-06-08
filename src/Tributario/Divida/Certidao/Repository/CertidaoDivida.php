@@ -27,6 +27,11 @@
 
 namespace ECidade\Tributario\Divida\Certidao\Repository;
 
+use BaseClassRepository;
+use Exception;
+use cl_certdiv;
+use cl_certter;
+use stdClass;
 use ECidade\Tributario\Divida\Certidao\CertidaoDivida as Entity;
 use ECidade\Tributario\Divida\Repository\Divida as DividaRepository;
 
@@ -37,7 +42,7 @@ use ECidade\Tributario\Divida\Repository\Divida as DividaRepository;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class CertidaoDivida extends \BaseClassRepository
+class CertidaoDivida extends BaseClassRepository
 {
     /** @var bool */
     private $returnFullItem;
@@ -55,16 +60,16 @@ class CertidaoDivida extends \BaseClassRepository
      *
      * @return Entity[]
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByCode($certidao = null, $divida = null)
     {
         if (empty($certidao) && empty($divida)) {
-            throw new \Exception('Deve ser informado uma certidao ou uma divida');
+            throw new Exception('Deve ser informado uma certidao ou uma divida');
         }
 
-        $dao = new \cl_certdiv;
-        $oDaoCertter = new \cl_certter;
+        $dao = new cl_certdiv;
+        $oDaoCertter = new cl_certter;
 
         $sql = $dao->sql_query($certidao, $divida);
 
@@ -144,7 +149,7 @@ class CertidaoDivida extends \BaseClassRepository
      *
      * @return Entity[]
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByDividas($dividas)
     {
@@ -152,13 +157,13 @@ class CertidaoDivida extends \BaseClassRepository
             $dividas = implode(',', $dividas);
         }
 
-        $dao = new \cl_certdiv();
+        $dao = new cl_certdiv();
         $sql = $dao->sql_query(null, null, 'DISTINCT v14_certid, certdiv.*', null, "v14_coddiv IN({$dividas})");
 
         $result = \db_query($sql);
 
         if (!pg_num_rows($result)) {
-            throw new \Exception('Nenhuma certidão encontrada para as dívidas: ' . $dividas);
+            throw new Exception('Nenhuma certidão encontrada para as dívidas: ' . $dividas);
         }
 
         return $this->makeCollection($result);
@@ -171,11 +176,11 @@ class CertidaoDivida extends \BaseClassRepository
      *
      * @return Entity
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function persist(Entity $certidaoDivida)
     {
-        $dao = new \cl_certdiv;
+        $dao = new cl_certdiv;
 
         $dao->v14_certid = $certidaoDivida->getCodigoCertidao();
         $dao->v14_coddiv = $certidaoDivida->getDivida()->getCodigoDivida();
@@ -196,14 +201,14 @@ class CertidaoDivida extends \BaseClassRepository
         }
 
         if ($dao->erro_status == 0) {
-            throw new \Exception($dao->erro_msg);
+            throw new Exception($dao->erro_msg);
         }
 
         return $certidaoDivida;
     }
 
     /**
-     * @param \stdClass $certidaoDivida
+     * @param stdClass $certidaoDivida
      *
      * @return Entity
      */
@@ -280,7 +285,7 @@ class CertidaoDivida extends \BaseClassRepository
 
     public function findAll($where = "")
     {
-        $dao = new \cl_certdiv();
+        $dao = new cl_certdiv();
 
         $sql = $dao->sql_query_file(null, null, "*", null, $where);
 
@@ -295,12 +300,12 @@ class CertidaoDivida extends \BaseClassRepository
 
     public function delete($where)
     {
-        $dao = new \cl_certdiv();
+        $dao = new cl_certdiv();
 
         $dao->excluir(null, null, $where);
 
         if ($dao->erro_status == 0) {
-            throw new \Exception("Erro ao excluir registro da tabela certdiv: " . $dao->erro_msg);
+            throw new Exception("Erro ao excluir registro da tabela certdiv: " . $dao->erro_msg);
         }
     }
 }

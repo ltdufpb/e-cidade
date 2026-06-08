@@ -33,7 +33,7 @@ class DadosCensoDocente2016 extends DadosCensoDocente2015 {
    * @throws Exception
    * @return stdClass
    */
-  #[\Override]
+  #[Override]
   protected function getDados() {
 
     $oDaoRecursoHumano     = new cl_rechumano();

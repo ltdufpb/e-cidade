@@ -2,7 +2,7 @@
 
 class DBHelpInlineModificacao extends DBHelpInline {
 
-  #[\Override]
+  #[Override]
   public function load() {
 
     parent::load();

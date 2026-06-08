@@ -139,7 +139,7 @@ class InstituicaoRepository
 
     /**
      * Busca a instituição do tipo prefeitura
-     * @return bool|\Instituicao
+     * @return bool|Instituicao
      */
     public static function getInstituicaoPrefeitura()
     {
@@ -217,11 +217,11 @@ class InstituicaoRepository
 
         $rsTipoInstituicao = db_query($sSqlTipoInstituicao = $oDaoTipoInstituicao->sql_query_file(null, "*", null, $sWhereTipoInstituicao));
         if (!$rsTipoInstituicao) {
-            throw new \DBException("Ocorreu um erro ao consultar os tipos de Instituicao.\nContate o suporte.");
+            throw new DBException("Ocorreu um erro ao consultar os tipos de Instituicao.\nContate o suporte.");
         }
 
         $aTiposInstituicoes = [];
-        $aTiposInstituicoes = \db_utils::makeCollectionFromRecord($rsTipoInstituicao, fn($oRetorno) => $oRetorno);
+        $aTiposInstituicoes = db_utils::makeCollectionFromRecord($rsTipoInstituicao, fn($oRetorno) => $oRetorno);
 
         return $aTiposInstituicoes;
     }

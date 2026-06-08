@@ -183,7 +183,7 @@ class CgmJuridico  extends CgmBase {
    * Salva os dados informados do CGM, caso o CGM já exista então
    * é alterado o registro apartir do código (numcgm) informado
    */
-  #[\Override]
+  #[Override]
   public function save() {
     $sMsgErro = 'Falha ao salvar CGM Jurídico';
 
@@ -279,7 +279,7 @@ class CgmJuridico  extends CgmBase {
     /**
     * inseri registro na cgmendereco {Secundário}
     */
-    $oDaoCgmEndereco = new \cl_cgmendereco();
+    $oDaoCgmEndereco = new cl_cgmendereco();
 
     if ($this->getEnderecoSecundario() != "" && $this->getEnderecoSecundario() != null) {
       $this->salvaCgmEnderecoSecundario();
@@ -336,7 +336,7 @@ class CgmJuridico  extends CgmBase {
     /**
      * @return array
      */
-    #[\Override]
+    #[Override]
     public function toArray()
     {
         return array_merge(parent::toArray(), [

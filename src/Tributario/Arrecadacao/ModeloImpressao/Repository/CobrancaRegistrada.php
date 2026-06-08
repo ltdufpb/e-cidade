@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Arrecadacao\ModeloImpressao\Repository;
 
+use db_utils;
+
 class CobrancaRegistrada
 {
     public static function getDebitosRecibo($iNumnov, $iInstit)
@@ -202,6 +204,6 @@ class CobrancaRegistrada
 
         $rsSql = db_query($sSql);
 
-        return \db_utils::getCollectionByRecord($rsSql);
+        return db_utils::getCollectionByRecord($rsSql);
     }
 }

@@ -8,12 +8,13 @@
 
 namespace ECidade\Financeiro\Orcamento\Repository;
 
+use DateTime;
+use cl_orctiporec;
 use db_utils;
 use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\SaldoRecurso;
 use ECidade\Financeiro\Orcamento\Recurso\Recurso;
 use Exception;
 use Instituicao;
-use setasign\Fpdi\PdfParser\Filter\Lzw;
 use stdClass;
 
 /**
@@ -122,9 +123,9 @@ class RecursoRepository
 
         $codigoInstituicoes = implode(', ', $codigoInstituicoes);
 
-        $dataInicioAno = new \DateTime("{$ano}-01-01");
+        $dataInicioAno = new DateTime("{$ano}-01-01");
         $dataInicioCompetencia = $dataInicioAno;
-        $dataFinal = new \DateTime("{$ano}-{$mes}-" . cal_days_in_month(CAL_GREGORIAN, $mes, $ano));
+        $dataFinal = new DateTime("{$ano}-{$mes}-" . cal_days_in_month(CAL_GREGORIAN, $mes, $ano));
         $saldo = new SaldoRecurso();
         $recursos = $saldo->getRecursos(
             $instituicoes,
@@ -137,7 +138,7 @@ class RecursoRepository
         $rescursosParaRetorno = [];
         foreach ($recursos as $recurso) {
             $total = $recurso->natureza_saldo_final == 'D' ? $recurso->saldo_final * -1 : $recurso->saldo_final;
-            $recursoStd = new \stdClass();
+            $recursoStd = new stdClass();
             $recursoStd->codigo = $recurso->recurso;
             $recursoStd->descricao = $recurso->descricao;
             $recursoStd->total = $total;
@@ -191,7 +192,7 @@ class RecursoRepository
             $where .= " and {$outrosFiltros} ";
         }
 
-        $dao = new \cl_orctiporec();
+        $dao = new cl_orctiporec();
         $sql = $dao->sql_query_file(null, '*', 'o15_codigo', $where);
         $rs = db_query($sql);
 

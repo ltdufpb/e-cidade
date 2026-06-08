@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Escola\Repository;
 
+use Etapa;
 use cl_basemps;
 use ECidade\Educacao\Escola\Model\AreaConhecimento;
 use ECidade\Educacao\Escola\Model\BaseCurricular;
@@ -68,10 +69,10 @@ class BaseCurricularDisciplinaRepository extends Repository
     }
 
     /**
-     * @param \Etapa $etapa
+     * @param Etapa $etapa
      * @return BaseCurricularDisciplinaRepository
      */
-    public function scopeEtapa(\Etapa $etapa)
+    public function scopeEtapa(Etapa $etapa)
     {
         $this->scopes['etapa'] = "ed34_i_serie = {$etapa->getCodigo()}";
         return $this;

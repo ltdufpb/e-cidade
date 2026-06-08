@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use BusinessException;
 use cl_rhprocessoirrfcomp;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\TributoIRRFComplementar;
-use DBDate;
 
 class TributoIRRFComplementarRepository
 {

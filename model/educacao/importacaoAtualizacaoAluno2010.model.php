@@ -34,7 +34,7 @@ class importacaoAtualizacaoAluno2010 extends importacaoCenso {
    * onde o usuario esta logado, e verifica também o ano atual
    * @override
    */
-  #[\Override]
+  #[Override]
   function validaArquivo() {
 
     $sMsgErro      = "Importação de Arquivo Censo abortada!\n";
@@ -108,7 +108,7 @@ class importacaoAtualizacaoAluno2010 extends importacaoCenso {
    * Funcao que seleciona o codigo  do pais para utilizarmos na inclusao do aluno e do docente(RecHumano)
    * @param integer $iCodPaisCenso
    */
-  #[\Override]
+  #[Override]
   function getPais($iCodPaisCenso) {
 
     $oDaoPais = db_utils::getdao('pais');
@@ -139,7 +139,7 @@ class importacaoAtualizacaoAluno2010 extends importacaoCenso {
    * Funcao que seleciona o codigo  do cartorio para utilizarmos na inclusao do aluno e do docente(RecHumano)
    * @param varchar $sNomeCartorio
    */
-  #[\Override]
+  #[Override]
   function getCartorio($sNomeCartorio) {
 
     $oDaoCensoCartorio = db_utils::getdao('censocartorio');

@@ -28,6 +28,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use DBException;
+use db_utils;
+use DBDate;
 use CalculoFolha;
 use CgmJuridico;
 use DBCompetencia;
@@ -36,7 +40,6 @@ use ECidade\RecursosHumanos\ESocial\Repository\PagamentosRendimentosTrabalho as 
 use Servidor;
 use ServidorRepository;
 use stdClass;
-use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
 
 use DBPessoal;
 
@@ -72,13 +75,13 @@ class TSVETerminoFormatter extends Formatter
     private $rubricasRepository;
     private $rubricasValidas;
 
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
         foreach ($dados as $servidor) {
             if (!$servidor->temVinculoEmpregaticio() && $servidor->isRescindido()) {
-                if (\DBPessoal::getDataFaseEsocial(2)->getDate() <= $servidor->getDadosRescisao()->rh05_recis) {
+                if (DBPessoal::getDataFaseEsocial(2)->getDate() <= $servidor->getDadosRescisao()->rh05_recis) {
                     $dadosServidor[] = $this->processamento($servidor);
                 }
             }
@@ -157,12 +160,12 @@ class TSVETerminoFormatter extends Formatter
         if (!$rs) {
             $msg = "Ocorreu um erro ao buscar informações da competência de pagamento de rescisão da "
                 . "matrícula: {$this->servidorAtual->getMatricula()}.";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
 
         if (pg_num_rows($rs) > 0) {
-            $ano = \db_utils::fieldsMemory($rs, 0)->ano;
-            $mes = \db_utils::fieldsMemory($rs, 0)->mes;
+            $ano = db_utils::fieldsMemory($rs, 0)->ano;
+            $mes = db_utils::fieldsMemory($rs, 0)->mes;
 
             if ($this->servidorAtual->getAnoCompetencia() != $ano
                 || $this->servidorAtual->getMesCompetencia() != $mes) {
@@ -219,12 +222,12 @@ class TSVETerminoFormatter extends Formatter
     private function verbasRescisao()
     {
         $retorno = false;
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(3);
+        $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(3);
         // Se nao tiver configurada a data de obrigatoriedade, desconsideramos os dados
         if (empty($dataObrigatoriedade)) {
             return $retorno;
         }
-        $dataFase3 = new \DBDate("2022-08-22");
+        $dataFase3 = new DBDate("2022-08-22");
         // Verificamos de a data da fase 3 do grupo 4 é inferior a data de obrigatoriedade, se for inferior
         //  a instituicao pertence ao grupo 2
         // Caso seja grupo 2, devemos enviar as verbas rescisorias nesse evento, caso contrario, sera validada pelo
@@ -294,9 +297,8 @@ class TSVETerminoFormatter extends Formatter
      * @param int $ano
      * @param int $mes
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
-
     private function inicializaRubricaPensaoAlimenticia()
     {
         $competencia = new DBCompetencia(
@@ -367,7 +369,7 @@ class TSVETerminoFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
-    #[\Override]
+    #[Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -380,7 +382,7 @@ class TSVETerminoFormatter extends Formatter
      *
      * @return  self
      */
-    #[\Override]
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

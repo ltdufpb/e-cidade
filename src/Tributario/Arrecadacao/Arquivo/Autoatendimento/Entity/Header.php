@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Arquivo\Autoatendimento\Entity;
 
+use DateTime;
 use ECidade\Tributario\Arrecadacao\Convenio;
 use \ECidade\Tributario\Library\Entity;
 
@@ -40,7 +41,7 @@ class Header extends Entity
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataGeracao()
     {
@@ -48,9 +49,9 @@ class Header extends Entity
     }
 
     /**
-     * @param \DateTime $dataGeracao
+     * @param DateTime $dataGeracao
      */
-    public function setDataGeracao(\DateTime $dataGeracao)
+    public function setDataGeracao(DateTime $dataGeracao)
     {
         $this->dataGeracao = $dataGeracao;
     }

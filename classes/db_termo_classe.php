@@ -1535,10 +1535,10 @@ class cl_termo {
         $rs = db_query($sql);
 
         if (!$rs || pg_num_rows($rs) == 0) {
-            throw new \DBException("Erro ao criar consulta da origem do parcelamento.");
+            throw new DBException("Erro ao criar consulta da origem do parcelamento.");
         }
 
-        $sql = \db_utils::fieldsMemory($rs, 0)->sql_origem;
+        $sql = db_utils::fieldsMemory($rs, 0)->sql_origem;
 
         return $sql;
     }
@@ -1555,14 +1555,14 @@ class cl_termo {
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new \DBException("Erro ao buscar tipo de origem do parcelamento");
+            throw new DBException("Erro ao buscar tipo de origem do parcelamento");
         }
 
         if (pg_num_rows($rs) == 0) {
-            throw new \DBException("Tipo de parcelamento não encontrado.");
+            throw new DBException("Tipo de parcelamento não encontrado.");
         }
 
-        $tabelaParcelamento = \db_utils::fieldsMemory($rs, 0);
+        $tabelaParcelamento = db_utils::fieldsMemory($rs, 0);
 
         $tiposParcelamento = TermoOrigemRepositoryFactory::getTipoPorTabela();
         $tipo = $tiposParcelamento[$tabelaParcelamento->tabela];

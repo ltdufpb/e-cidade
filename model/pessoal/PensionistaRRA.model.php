@@ -37,7 +37,7 @@ class PensionistaRRA {
   private $nValor;
 
   /**
-   * @return \CgmFisico|\CgmJuridico
+   * @return CgmFisico|CgmJuridico
    */
   public function getPensionista() {
 
@@ -45,7 +45,7 @@ class PensionistaRRA {
   }
 
   /**
-   * @param \CgmFisico|\CgmJuridico $oPensionista
+   * @param CgmFisico|CgmJuridico $oPensionista
    */
   public function setPensionista($oPensionista) {
 

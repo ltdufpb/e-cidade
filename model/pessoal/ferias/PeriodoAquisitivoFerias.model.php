@@ -605,7 +605,7 @@ require_once(modification('std/db_stdClass.php'));
 
     /**
      * @param $iCodigo
-     * @return \PeriodoGozoFerias
+     * @return PeriodoGozoFerias
      */
     public function getPeriodoDeFeriasPorCodigo($iCodigo)
     {

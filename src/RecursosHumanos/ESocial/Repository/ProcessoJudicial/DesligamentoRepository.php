@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessodesligamento;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Desligamento;
 use Exception;
-use DBDate;
 
 class DesligamentoRepository
 {

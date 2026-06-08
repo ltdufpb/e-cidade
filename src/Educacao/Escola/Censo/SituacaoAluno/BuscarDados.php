@@ -2,6 +2,11 @@
 
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno;
 
+use BusinessException;
+use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\BuscaDadosAlunosAntes2016;
+use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\DadosAlunoAntes2016;
+use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\BuscaDadosAlunosApos2016;
+use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\DadosAlunosApos2016;
 use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\DadosInterface;
 use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\BuscaDadosEscola2016;
@@ -44,7 +49,7 @@ class BuscarDados
                 break;
 
             default:
-                throw new \BusinessException("Não foi possível buscar os dados da Escola.");
+                throw new BusinessException("Não foi possível buscar os dados da Escola.");
                 break;
         }
     }
@@ -62,25 +67,25 @@ class BuscarDados
             case 2019:
             case 2020:
             case 2021:
-                $oDados = new Dados\BuscaDadosAlunosAntes2016($this->oCenso, $this->oEscola);
+                $oDados = new BuscaDadosAlunosAntes2016($this->oCenso, $this->oEscola);
                 $aDados = $oDados->getDados();
 
                 $aDadosAlunosAntes = [];
                 foreach ($aDados as $oDadosAluno) {
-                    $oValidacaoAluno = new Dados\DadosAlunoAntes2016();
+                    $oValidacaoAluno = new DadosAlunoAntes2016();
                     $oValidacaoAluno->popular($oDadosAluno);
                     $aDadosAlunosAntes[] = $oValidacaoAluno;
                 }
 
                 if (empty($aDadosAlunosAntes)) {
-                    throw new \BusinessException("Nenhum aluno encontrado para a escola informada.");
+                    throw new BusinessException("Nenhum aluno encontrado para a escola informada.");
                 }
                 $this->aCodigoAlunoAntes = $oDados->getCodigoAlunos();
                 return $aDadosAlunosAntes;
                 break;
 
             default:
-                throw new \BusinessException("Não foi possível buscar os dados do aluno.");
+                throw new BusinessException("Não foi possível buscar os dados do aluno.");
                 break;
         }
     }
@@ -98,12 +103,12 @@ class BuscarDados
             case 2019:
             case 2020:
             case 2021:
-                $oDados = new Dados\BuscaDadosAlunosApos2016($this->oCenso, $this->oEscola, $this->aCodigoAlunoAntes);
+                $oDados = new BuscaDadosAlunosApos2016($this->oCenso, $this->oEscola, $this->aCodigoAlunoAntes);
                 $aDados = $oDados->getDados();
 
                 $aDadosAluno = [];
                 foreach ($aDados as $oDadosAluno) {
-                    $oValidacaoAluno = new Dados\DadosAlunosApos2016();
+                    $oValidacaoAluno = new DadosAlunosApos2016();
                     $oValidacaoAluno->popular($oDadosAluno);
                     $aDadosAluno[] = $oValidacaoAluno;
                 }
@@ -112,7 +117,7 @@ class BuscarDados
                 break;
 
             default:
-                throw new \BusinessException("Não foi possível buscar os dados da Escola.");
+                throw new BusinessException("Não foi possível buscar os dados da Escola.");
                 break;
         }
     }

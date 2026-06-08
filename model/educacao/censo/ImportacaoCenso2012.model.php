@@ -46,7 +46,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      *
      * @param DB $oLinha
      */
-    #[\Override]
+    #[Override]
     function atualizaDadosDocente($oLinha)
     {
 
@@ -98,7 +98,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
      * @return object com os dados do rechumano caso tiver registro, caso contrario retorna null
      */
-    #[\Override]
+    #[Override]
     function getMatriculasRechumano($oLinha)
     {
 
@@ -177,7 +177,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      * Atualiza os dados de endereco do docente
      */
-    #[\Override]
+    #[Override]
     public function atualizaEnderecoDocente($oLinha)
     {
 
@@ -198,7 +198,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      * Atualiza os dados da escolaridade do docente.
      */
-    #[\Override]
+    #[Override]
     public function atualizaEscolaridadeDocente($oLinha)
     {
 
@@ -259,7 +259,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      *
      * @param DBLayoutLinha $oLinha
      */
-    #[\Override]
+    #[Override]
     public function atualizaDadosEscola(DBLayoutLinha $oLinha)
     {
 
@@ -277,7 +277,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      * @param DBLayoutLinha $oLinha
      * @return unknown
      */
-    #[\Override]
+    #[Override]
     function getDadosEscola(DBLayoutLinha $oLinha)
     {
 
@@ -299,7 +299,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      *
      * @param DBLayoutLinha $oLinha
      */
-    #[\Override]
+    #[Override]
     public function atualizaDadosEscolaEstrutura(DBLayoutLinha $oLinha)
     {
 
@@ -326,7 +326,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      * Atualiza os dos alunos com posição no arquivo de Retorno do censo
      */
-    #[\Override]
+    #[Override]
     public function atualizaDadosAluno(DBLayoutLinha $oLinha)
     {
 
@@ -375,7 +375,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      * @param DBLayoutLinha $oLinha linha com os dados do registro 60 do censo escolar
      * @return stdClass
      */
-    #[\Override]
+    #[Override]
     public function getDadosAluno(DBLayoutLinha $oLinha, $lPesquisaInep = false, $lValidaCodigo = true)
     {
 
@@ -427,7 +427,7 @@ class ImportacaoCenso2012 extends importacaoCenso
         }
     }
 
-    #[\Override]
+    #[Override]
     public function atualizaEnderecoDocumentosAluno($oLinha)
     {
 
@@ -445,7 +445,7 @@ class ImportacaoCenso2012 extends importacaoCenso
         }
     }
 
-    #[\Override]
+    #[Override]
     public function atualizaDadosEscolarizacaoAluno($oLinha)
     {
 
@@ -468,7 +468,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      * e atualiza os se forem diferentes dos encontrados no banco de dados
      * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
      */
-    #[\Override]
+    #[Override]
     function atualizaDadosTurma($oLinha, $iAnoCenso = null)
     {
 

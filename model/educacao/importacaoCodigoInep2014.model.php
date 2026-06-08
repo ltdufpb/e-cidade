@@ -236,7 +236,7 @@ class importacaoCodigoInep2014 extends importacaoCenso {
    * (non-PHPdoc)
    * @see importacaoCenso::importarArquivo()
    */
-  #[\Override]
+  #[Override]
   function importarArquivo() {
 
     $sMsgErro = "Importação de Arquivo Censo abortada!\n";    
@@ -307,7 +307,7 @@ class importacaoCodigoInep2014 extends importacaoCenso {
    * @param boolean $lbuscaNome = true busca pelo nome 
    *                              false busca pelo codigo inep do aluno
    */
-  #[\Override]
+  #[Override]
   function getDadosAluno($oLinha, $lPesquisaInep = false) {
 
     $oDaoAluno    = db_utils::getdao('aluno');        
@@ -363,7 +363,7 @@ class importacaoCodigoInep2014 extends importacaoCenso {
    * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
    * @return object com os dados do rechumano caso tiver registro, caso contrario retorna null
    */
-  #[\Override]
+  #[Override]
   function getMatriculasRechumano($oLinha) {
 
     $iCodDocenteEsc  = trim((string) $oLinha->codigo_docente_entidade_escola);

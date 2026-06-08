@@ -70,7 +70,7 @@ SQL;
         }
 
         $instituicaoCodigo = db_getsession("DB_instit");
-        $cgmInstituicao = \InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
+        $cgmInstituicao = InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
         $where[] = " eso37_empregador = {$cgmInstituicao} ";
 
         if (!empty($where)) {
@@ -100,7 +100,7 @@ SQL;
                 join cgm on eso37_empregador = z01_numcgm
 SQL;
         $instituicaoCodigo = db_getsession("DB_instit");
-        $cgmInstituicao = \InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
+        $cgmInstituicao = InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
         $where[] = " eso37_empregador = {$cgmInstituicao} ";
 
         if (!empty($where)) {

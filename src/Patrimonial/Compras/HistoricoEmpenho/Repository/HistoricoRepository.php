@@ -27,6 +27,7 @@
 
 namespace ECidade\Patrimonial\Compras\HistoricoEmpenho\Repository;
 
+use cl_empauthist;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 use ECidade\Patrimonial\Compras\HistoricoEmpenho\Model\Historico;
 use mysql_xdevapi\Exception;
@@ -87,7 +88,7 @@ class HistoricoRepository
     }
 
     /**
-     * @param \cl_empauthist $daoHistoricoAutorizacao
+     * @param cl_empauthist $daoHistoricoAutorizacao
      * @param Autorizacao $autorizacao
      * @return Historico
      * @throws \Exception

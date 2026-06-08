@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\Evento;
 
+use BusinessException;
+use ParameterException;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\RegrasCalculo\RegraCalculo;
 
@@ -39,8 +41,8 @@ class HoraTrabalhada extends ExtraEvento
     /**
      * HoraTrabalhada constructor.
      * @param DiaTrabalho $oDiaTrabalho
-     * @throws \BusinessException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws ParameterException
      */
     public function __construct(DiaTrabalho $oDiaTrabalho)
     {

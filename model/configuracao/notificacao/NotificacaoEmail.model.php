@@ -77,7 +77,7 @@ final class NotificacaoEmail extends Notificacao implements INotificacao {
    * 
    * @see INotificacao::getMensagemErro()
    */
-  #[\Override]
+  #[Override]
   public function getMensagemErro() {
     return '';
   }

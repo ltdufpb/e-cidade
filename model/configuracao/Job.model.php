@@ -301,11 +301,11 @@ class Job {
     $oXMLWriter = new XMLWriter;
 
     if (!is_writable(dirname((string) $this->getCaminhoTarefa()))) {
-        throw new \Exception(sprintf("Sem permissão de escrita no diretório %s",$this->getCaminhoTarefa()));
+        throw new Exception(sprintf("Sem permissão de escrita no diretório %s",$this->getCaminhoTarefa()));
     }
 
     if (!@$oXMLWriter->openURI($this->getCaminhoTarefa())) {
-        throw new \Exception(sprintf("Erro ao abrir arquivo %s",$this->getCaminhoTarefa()));
+        throw new Exception(sprintf("Erro ao abrir arquivo %s",$this->getCaminhoTarefa()));
     }
 
     $oXMLWriter->setindent(true);

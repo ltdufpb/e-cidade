@@ -25,8 +25,6 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Educacao\Escola\Model\DiarioAluno;
-use ECidade\Educacao\Escola\Model\DiarioArea;
 use ECidade\Educacao\Escola\Service\AreaProcedimentoService;
 use ECidade\Educacao\Escola\Service\GradeAproveitamentoAreaPorAreaService;
 
@@ -331,12 +329,12 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
     $disciplinasporArea = 0;
     $iPagina = 1;
     foreach ($areasConhecimentoCabecalho as $areaConhecimento) {
-    
+
         if (!array_key_exists($iPagina, $areaConhecimentoPorPagina)) {
             $areaConhecimentoPorPagina[$iPagina] = [];
         }
         $disciplinasporArea = count($areaConhecimento->disciplinas) + 1;
-        
+
         if ($disciplinasporArea > 8) {
             $oFiltroRelatorio->iTamanhoColunaAbrevDisciplina = 12;
             $iDisciplinasPagina = 9;
@@ -350,14 +348,14 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
 
             continue;
         }
-  
+
         if ($colunasAdicionadas > $iDisciplinasPagina) {
             $iPagina++;
             $colunasAdicionadas = 0;
         }
         $areaConhecimentoPorPagina[$iPagina][] = $areaConhecimento;
     }
-    
+
 
     /**
      * Parametro de calculo da frequencia
@@ -375,7 +373,7 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
     /**
      * Tamanho de cada coluna da abreviatura da disciplina
      */
-   
+
 
     $oFiltroRelatorio->iAuxiliarTransferido = 7;
 

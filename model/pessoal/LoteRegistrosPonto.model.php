@@ -365,7 +365,7 @@ class LoteRegistrosPonto {
    * Responsável por confirmar o lote e lançar os registros no ponto de salário
    *
    * @return bool
-   * @throws \BusinessException
+   * @throws BusinessException
    */
   public function confirmarLote () {
 
@@ -438,7 +438,7 @@ class LoteRegistrosPonto {
   /**
    * Retorna a folha de pagamento ao qual o lote está vinculado ou false se nenhuma folha
    * @return bool|FolhaPagamento
-   * @throws \DBException
+   * @throws DBException
    */
   public function getFolhaPagamento() {
 

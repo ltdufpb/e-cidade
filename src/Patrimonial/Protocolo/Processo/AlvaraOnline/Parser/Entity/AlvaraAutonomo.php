@@ -2,8 +2,6 @@
 
 namespace ECidade\Patrimonial\Protocolo\Processo\AlvaraOnline\Parser\Entity;
 
-use \ParameterException;
-use \BusinessException;
 use \JSON;
 
 class AlvaraAutonomo extends SolicitacaoAlvara

@@ -26,6 +26,7 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Agendamento\Processamento;
 
+use DBPessoal;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Repository\CadastroBeneficiario as CadastroBeneficiarioRepository;
@@ -97,7 +98,7 @@ class CadastroBeneficiario extends ProcessamentoAbstract implements Processament
         $oInstituicao = new Instituicao(db_getsession('DB_instit'));
 
         if (empty($this->ano) && empty($this->mes)) {
-            $competencia = \DBPessoal::getCompetenciaFolha();
+            $competencia = DBPessoal::getCompetenciaFolha();
             $this->ano = $competencia->getAno();
             $this->mes = $competencia->getMes();
         }

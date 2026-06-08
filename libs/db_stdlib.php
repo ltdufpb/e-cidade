@@ -16,12 +16,12 @@ $GLOBALS["HTTP_SESSION_VARS"] = $_SESSION ?? [];
 $GLOBALS["HTTP_ENV_VARS"]     = $_ENV     ?? [];
 // Tambem cria as variaveis locais no escopo global, ja que o legado
 // faz uso direto em alguns lugares (por exemplo: db_postmemory($HTTP_POST_VARS)).
-$HTTP_SERVER_VARS  = &$GLOBALS["HTTP_SERVER_VARS"];
-$HTTP_POST_VARS    = &$GLOBALS["HTTP_POST_VARS"];
-$HTTP_GET_VARS     = &$GLOBALS["HTTP_GET_VARS"];
-$HTTP_COOKIE_VARS  = &$GLOBALS["HTTP_COOKIE_VARS"];
-$HTTP_SESSION_VARS = &$GLOBALS["HTTP_SESSION_VARS"];
-$HTTP_ENV_VARS     = &$GLOBALS["HTTP_ENV_VARS"];
+$_SERVER  = &$GLOBALS["HTTP_SERVER_VARS"];
+$_POST    = &$GLOBALS["HTTP_POST_VARS"];
+$_GET     = &$GLOBALS["HTTP_GET_VARS"];
+$_COOKIE  = &$GLOBALS["HTTP_COOKIE_VARS"];
+$_SESSION = &$GLOBALS["HTTP_SESSION_VARS"];
+$_ENV     = &$GLOBALS["HTTP_ENV_VARS"];
 
 /*
  *     E-cidade Software Publico para Gestao Municipal
@@ -745,7 +745,7 @@ if ( !empty($_SERVER)) {
             strrpos((string) $_SERVER['PHP_SELF'], "/") + 1);
     //Variavel com a URL absoluta da pagina que abriu a atual, menos o arquivo
     if (isset ($_SERVER["HTTP_REFERER"]))
-        $DB_URL_REF = substr($_SERVER["HTTP_REFERER"], 0, strrpos($_SERVER["HTTP_REFERER"], "/") + 1);
+        $DB_URL_REF = substr((string) $_SERVER["HTTP_REFERER"], 0, strrpos((string) $_SERVER["HTTP_REFERER"], "/") + 1);
 
 }
 
@@ -3891,15 +3891,15 @@ function db_removeAcentuacao($sRemover)
     $var = $sRemover;
 
     $var = preg_replace("#[����]#m", "A", $var);
-    $var = preg_replace("#[����]#m", "a", $var);
-    $var = preg_replace("#[���]#m", "E", $var);
-    $var = preg_replace("#[���]#m", "e", $var);
-    $var = preg_replace("#[��]#m", "i", $var);
-    $var = preg_replace("#[��]#m", "I", $var);
-    $var = preg_replace("#[����]#m", "O", $var);
-    $var = preg_replace("#[�����]#m", "o", $var);
-    $var = preg_replace("#[���]#m", "U", $var);
-  $var = preg_replace("#[���]#m","u",$var);
+    $var = preg_replace("#[����]#m", "a", (string) $var);
+    $var = preg_replace("#[���]#m", "E", (string) $var);
+    $var = preg_replace("#[���]#m", "e", (string) $var);
+    $var = preg_replace("#[��]#m", "i", (string) $var);
+    $var = preg_replace("#[��]#m", "I", (string) $var);
+    $var = preg_replace("#[����]#m", "O", (string) $var);
+    $var = preg_replace("#[�����]#m", "o", (string) $var);
+    $var = preg_replace("#[���]#m", "U", (string) $var);
+  $var = preg_replace("#[���]#m","u",(string) $var);
   $var = str_replace("'","",$var);
   $var = str_replace("�","C",$var);
   $var = str_replace("�","c",$var);

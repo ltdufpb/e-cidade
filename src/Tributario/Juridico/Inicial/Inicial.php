@@ -27,8 +27,9 @@
 
 namespace ECidade\Tributario\Juridico\Inicial;
 
-use ECidade\Tributario\Arrecadacao\Custas\Interfaces;
-
+use ECidade\Tributario\Arrecadacao\Custas\Interfaces\ParcelamentoHonorario;
+use db_utils;
+use cl_inicial;
 use ECidade\Tributario\Divida\Certidao\Certidao;
 use ECidade\Tributario\Juridico\InicialPartilha\InicialPartilha;
 use DateTime;
@@ -41,7 +42,7 @@ use ECidade\Tributario\Caixa\Enum\ArretipoEnum;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class Inicial implements Interfaces\ParcelamentoHonorario
+class Inicial implements ParcelamentoHonorario
 {
     /** @var integer inicial */
     private $codigo;
@@ -155,7 +156,7 @@ class Inicial implements Interfaces\ParcelamentoHonorario
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getData()
     {
@@ -163,7 +164,7 @@ class Inicial implements Interfaces\ParcelamentoHonorario
     }
 
     /**
-     * @param \DateTime $data
+     * @param DateTime $data
      * @return Inicial
      */
     public function setData($data)
@@ -388,22 +389,22 @@ class Inicial implements Interfaces\ParcelamentoHonorario
 
     /**
      * Calcula o valor da inicial até a data informada
-     * @param \DateTime $data data da atualização
+     * @param DateTime $data data da atualização
      * @return int
      */
-    public function getValorAtualizadoAte(\DateTime $data)
+    public function getValorAtualizadoAte(DateTime $data)
     {
 
         $sqlNumpres = "select v59_numpre from inicialnumpre where v59_inicial = {$this->getCodigo()}";
         $rsNumpres = db_query($sqlNumpres);
         $valorAtualizado = 0;
-        \db_utils::makeCollectionFromRecord($rsNumpres, function ($dado) use (&$valorAtualizado, $data) {
+        db_utils::makeCollectionFromRecord($rsNumpres, function ($dado) use (&$valorAtualizado, $data) {
 
             $rsDebitos = debitos_numpre($dado->v59_numpre, 0, 0, $data->getTimestamp(), $data->format('Y'));
             $totalRegistros = pg_num_rows($rsDebitos);
 
             for ($iIndDebito = 0; $iIndDebito < $totalRegistros; $iIndDebito++) {
-                $valorAtualizado += \db_utils::fieldsMemory($rsDebitos, $iIndDebito)->total;
+                $valorAtualizado += db_utils::fieldsMemory($rsDebitos, $iIndDebito)->total;
             }
         });
         return $valorAtualizado;
@@ -445,7 +446,7 @@ class Inicial implements Interfaces\ParcelamentoHonorario
      */
     public static function getExerciciosInicial($inicial)
     {
-        $daoInicial = new \cl_inicial;
+        $daoInicial = new cl_inicial;
         $sql = $daoInicial->sql_query_exercicio_by_inicial($inicial);
         $rs = \db_query($sql);
 
@@ -457,7 +458,7 @@ class Inicial implements Interfaces\ParcelamentoHonorario
             return [0];
         }
 
-        $exercicios = \db_utils::makeCollectionFromRecord(
+        $exercicios = db_utils::makeCollectionFromRecord(
             $rs,
             fn($oItem) => (int) $oItem->exercicio
         );

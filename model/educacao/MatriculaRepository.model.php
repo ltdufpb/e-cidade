@@ -75,7 +75,7 @@ class MatriculaRepository {
    * @return bool|Matricula
    * @throws DBException
    */
-  #[\Deprecated]
+  #[Deprecated]
   public static function getAlunoByMatricula($iMatricula) {
 
     $oDaoMatricula = db_utils::getDao('matricula');

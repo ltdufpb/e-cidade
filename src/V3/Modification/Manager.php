@@ -2,6 +2,9 @@
 
 namespace ECidade\V3\Modification;
 
+use ECidade\V3\Modification\Data\Group;
+use Exception;
+use InvalidArgumentException;
 use ArrayObject;
 use ECidade\V3\Extension\AbstractManager;
 use ECidade\V3\Extension\Container;
@@ -25,7 +28,7 @@ class Manager extends AbstractManager
         parent::__construct($container);
 
         if (!$this->container->has('group')) {
-            $this->container->register('group', fn($container) => Data\Group::restore());
+            $this->container->register('group', fn($container) => Group::restore());
         }
 
         // cache de \ECidade\V3\Modification\Data\Modification
@@ -79,7 +82,7 @@ class Manager extends AbstractManager
         $dataModification = ModificationData::restore($parseModification->getId());
 
         if ($force === false && $dataModification->exists()) {
-            throw new \Exception("Modificação já descompactada: " . $parseModification->getId());
+            throw new Exception("Modificação já descompactada: " . $parseModification->getId());
         }
 
         $dataModification->setId($parseModification->getId());
@@ -323,17 +326,17 @@ class Manager extends AbstractManager
         }
 
         if (empty($modifications)) {
-            throw new \Exception("Nenhum ID informado.");
+            throw new Exception("Nenhum ID informado.");
         }
 
         if (!in_array($type, ['install', 'uninstall', 'apply'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf("Tipo inválido: %s", $type)
             );
         }
 
         if (!in_array($mode, ['add', 'remove'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf("Modo inválido: %s", $mode)
             );
         }
@@ -359,18 +362,18 @@ class Manager extends AbstractManager
             $modificationUserType = $dataModification->getType() === ModificationData::TYPE_USER;
 
             if (!$dataModification->exists()) {
-                throw new \Exception("Modificação sem cache: $id");
+                throw new Exception("Modificação sem cache: $id");
             }
 
             if ($modificationUserType && empty($user)) {
-                throw new \Exception("Usuário não definido para modificação: $id");
+                throw new Exception("Usuário não definido para modificação: $id");
             }
 
             if ($type == 'uninstall' && !$dataModification->isEnabled($user)) {
-                throw new \Exception("Modificação não instalada: $id");
+                throw new Exception("Modificação não instalada: $id");
             }
             else if ($type == 'install' && $dataModification->isEnabled($user)) {
-                throw new \Exception("Modificação já instalada: $id");
+                throw new Exception("Modificação já instalada: $id");
             }
 
             if ($mode == 'add') {
@@ -402,7 +405,7 @@ class Manager extends AbstractManager
     public function updateFile($path, $user = null)
     {
         if (!file_exists($path)) {
-            throw new \Exception('Arquivo não existe: ' . $path);
+            throw new Exception('Arquivo não existe: ' . $path);
         }
 
         // clear absolute path
@@ -417,7 +420,7 @@ class Manager extends AbstractManager
         }
 
         if (!isset($fileTypeModification[$path])) {
-            throw new \Exception('Arquivo sem modificacao: ' . $path);
+            throw new Exception('Arquivo sem modificacao: ' . $path);
         }
 
         $filesReparse = new ArrayObject([$path => $fileTypeModification[$path]]);
@@ -631,7 +634,7 @@ class Manager extends AbstractManager
     public function parse($path)
     {
         if (!file_exists($path)) {
-            throw new \Exception("Arquivo não existe: $path");
+            throw new Exception("Arquivo não existe: $path");
         }
 
         // parse no xml
@@ -643,7 +646,7 @@ class Manager extends AbstractManager
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     public function setup()
@@ -658,7 +661,7 @@ class Manager extends AbstractManager
 
         foreach ($directories as $path) {
             if (!is_dir($path) && !mkdir($path, $mode, true)) {
-                throw new \Exception(sprintf("Nao foi possivel criar diretorio: %s", $path));
+                throw new Exception(sprintf("Nao foi possivel criar diretorio: %s", $path));
             }
         }
 

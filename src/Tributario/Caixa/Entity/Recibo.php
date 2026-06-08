@@ -2,8 +2,7 @@
 
 namespace ECidade\Tributario\Caixa\Entity;
 
-use recibo as ReciboLegacy;
-use Exception;
+use Deprecated;
 use DateTime;
 use ECidade\Tributario\Caixa\Entity\Debito;
 use ECidade\Tributario\Caixa\Enum\ArretipoEnum;
@@ -264,7 +263,7 @@ final class Recibo extends Entity
      * @return integer $regraDesconto - Inteiro indicando a regra de desconto que deve ser aplicada ao débito e parcela
      *                                            declarada.
      */
-    #[\Deprecated(message: 'Compatibilidade com código legado')]
+    #[Deprecated(message: 'Compatibilidade com código legado')]
     public function reciboDesconto(
         $numpre,
         $numpar,

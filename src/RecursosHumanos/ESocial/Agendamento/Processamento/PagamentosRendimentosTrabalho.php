@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Agendamento\Processamento;
 
+use DBDate;
+use DBCompetencia;
+use Exception;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
@@ -78,7 +81,7 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
 
     /**
      * @return bool|mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function processar()
     {
@@ -110,7 +113,7 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
                 $body->competencia = $cgmFiltro[0] . '%' . $body->competencia;
                 if ($this->servidores[0]->isRescindido()) {
                     $dadosRescisao = $this->servidores[0]->getDadosRescisao();
-                    $dataRescisao = new \DBDate($dadosRescisao->rh05_recis);
+                    $dataRescisao = new DBDate($dadosRescisao->rh05_recis);
 
                     if ($this->anoCompetencia == $dataRescisao->getAno() &&
                         $this->mesCompetencia == $dataRescisao->getMes()) {
@@ -138,13 +141,13 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
         $dados->cgms = [];
         if (isset($dados->eventos)) {
             foreach ($dados->eventos as $dado) {
-                $dadoCgm = new \stdClass();
+                $dadoCgm = new stdClass();
                 $dadoCgm->evento = $dado->tipo_evento_id;
                 switch ($dado->tipo_evento_id) {
                     case TIPO::S2299_API:
                     case TIPO::S2399_API:
                         $dado->referencia = substr((string) $dado->referencia, 0, $quantidadeCompetencia);
-                        if (!\ServidorRepository::isMatriculaValida($dado->referencia)) {
+                        if (!ServidorRepository::isMatriculaValida($dado->referencia)) {
                             break;
                         }
                         $servidor = ServidorRepository::getInstanciaByCodigo(
@@ -190,7 +193,7 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
         $dados->inscricao_empregador = $body->inscricaoEmpregador;
         $dados->anoCompetencia = $this->ano;
         $dados->mesCompetencia = $this->mes;
-        $competencia = new \DBCompetencia($this->ano, $this->mes);
+        $competencia = new DBCompetencia($this->ano, $this->mes);
         $parametros = ParametrosPessoalRepository::getParametros($competencia);
         $formatter = FormatterFactory::get(Tipo::S1210);
 

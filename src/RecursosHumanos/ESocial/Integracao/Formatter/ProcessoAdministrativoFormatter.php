@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+
 /**
  * Formata os dados do Processo Administrativo
  *
@@ -18,7 +20,7 @@ class ProcessoAdministrativoFormatter extends Formatter
      * @param array $dados
      * @return array
      */
-    #[\Override]
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

@@ -28,6 +28,8 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB;
 
+use Override;
+use stdClass;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo\RequisicaoInterface;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\ConexaoCurl;
 
@@ -88,9 +90,9 @@ class Manutencao extends ConexaoCurl
     /**
      * Processamos a requisição conforme informações disponibilizadas
      *
-     * @return \stdClass
+     * @return stdClass
      */
-    #[\Override]
+    #[Override]
     public function processarRequisicao()
     {
         parent::processarRequisicao();

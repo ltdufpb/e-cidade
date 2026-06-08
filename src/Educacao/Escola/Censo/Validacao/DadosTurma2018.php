@@ -2,13 +2,14 @@
 
 namespace ECidade\Educacao\Escola\Censo\Validacao;
 
+use Override;
 use DadosCensoTurma2015;
 use ExportacaoCensoBase;
 use IExportacaoCenso;
 
 class DadosTurma2018 extends DadosCensoTurma2015
 {
-    #[\Override]
+    #[Override]
     protected static function validarRegistro20Coluna20a25Regra1($mensagem, $dadosEscola, $dadosTurma, IExportacaoCenso $exportacao)
     {
         if ($dadosEscola->registro10->atividade_complementar == 0 && $dadosTurma->tipo_atendimento == 4) {

@@ -27,6 +27,7 @@
 
 namespace ECidade\Educacao\Escola\Model;
 
+use Aluno;
 use AlunoRepository;
 use ECidade\Educacao\Escola\Registry\DiarioAlunoRegistry;
 use Etapa;
@@ -45,7 +46,7 @@ class DiarioAluno
      */
     private $codigo;
     /**
-     * @var \Aluno
+     * @var Aluno
      */
     private $aluno;
     /**
@@ -90,7 +91,7 @@ class DiarioAluno
     }
 
     /**
-     * @return \Aluno
+     * @return Aluno
      */
     public function getAluno()
     {
@@ -98,10 +99,10 @@ class DiarioAluno
     }
 
     /**
-     * @param \Aluno $aluno
+     * @param Aluno $aluno
      * @return DiarioAluno
      */
-    public function setAluno(\Aluno $aluno)
+    public function setAluno(Aluno $aluno)
     {
         $this->aluno = $aluno;
         return $this;

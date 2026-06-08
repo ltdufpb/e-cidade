@@ -1206,7 +1206,7 @@ class solicitacaoCompra
                  * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e a solictacao
                  */
 
-                $aReservas = (new itemSolicitacao())->getReservasSaldoDotacao($oItem->pcdotac);
+                $aReservas = new itemSolicitacao()->getReservasSaldoDotacao($oItem->pcdotac);
 
                 $iUnidade = db_getsession("DB_coddepto");
                 $numrows = pg_num_rows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
@@ -1617,7 +1617,7 @@ class solicitacaoCompra
     public function salvar()
     {
 
-        $oDaoSolicitacao = new \cl_solicita();
+        $oDaoSolicitacao = new cl_solicita();
 
         $oDaoSolicitacao->pc10_numero = null;
         $oDaoSolicitacao->pc10_instit = $this->getCodigoInstituicao();
@@ -1654,12 +1654,12 @@ class solicitacaoCompra
     public function remover()
     {
 
-        $oDaoSolicitacao = new \cl_solicita();
+        $oDaoSolicitacao = new cl_solicita();
         $oDaoSolicitacao->excluir($this->iSolicitacao);
 
         if ($oDaoSolicitacao->erro_status == 0) {
 
-            $oMsg = new \stdClass();
+            $oMsg = new stdClass();
             $oMsg->sErro = $oDaoSolicitacao->erro_msg;
             throw new DBException(_M(self::FONTE_MSG . "nao_foi_possivel_remover_licitacao", $oMsg));
         }
@@ -1675,7 +1675,7 @@ class solicitacaoCompra
     public function hasItem()
     {
 
-        $oDaoSolicitem = new \cl_solicitem;
+        $oDaoSolicitem = new cl_solicitem;
         $sWhereItens = "pc11_numero = {$this->getCodigo()} ";
 
         $sSqlSolicitem = $oDaoSolicitem->sql_query_rel(null, "1", null, $sWhereItens);

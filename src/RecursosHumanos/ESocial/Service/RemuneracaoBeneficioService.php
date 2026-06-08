@@ -26,13 +26,12 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
+use BusinessException;
+use DBException;
+use Exception;
 use ECidade\RecursosHumanos\ESocial\Entity\Remuneracao;
-use ECidade\RecursosHumanos\Pessoal\Model\ServidorOutrosVinculos;
 use ECidade\RecursosHumanos\Pessoal\Service\ServidorOutrosVinculosService;
-use ECidade\RecursosHumanos\Pessoal\Service\ServidorOperadoraSaudeService;
 use ECidade\RecursosHumanos\Pessoal\Service\ServidorProcessosJudiciaisFolhaService;
-use ECidade\RecursosHumanos\ESocial\Service\TrabalhoIntermitenteService;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorOperadoraSaudeRepository;
 use ServidorRepository;
 use Servidor;
 use stdClass;
@@ -92,8 +91,8 @@ class RemuneracaoBeneficioService
     /**
      * @param CgmBase $cgm
      * @return Remuneracao
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function buscarPorCGM(CgmBase $cgm)
     {
@@ -136,7 +135,7 @@ class RemuneracaoBeneficioService
 
     /**
      * @param $matricula
-     * @throws \Exception
+     * @throws Exception
      */
     private function buscarOutrosVinculos($matricula)
     {
@@ -153,8 +152,8 @@ class RemuneracaoBeneficioService
 
     /**
      * @param Servidor $servidor
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarPagamento(Servidor $servidor)
     {
@@ -268,7 +267,7 @@ class RemuneracaoBeneficioService
 
     /**
      * @param int $matricula
-     * @throws \Exception
+     * @throws Exception
      */
     private function buscarProcessosJudiciais($matricula)
     {

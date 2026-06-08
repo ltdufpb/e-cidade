@@ -2,7 +2,7 @@
 
 namespace ECidade\Patrimonial\Compras\HistoricoEmpenho\Model;
 
-use db_utils;
+use cl_emphist;
 
 class Historico
 {
@@ -21,7 +21,7 @@ class Historico
     public function __construct($codigoHistorico = null)
     {
         if (!is_null($codigoHistorico)) {
-            $dao = new \cl_emphist();
+            $dao = new cl_emphist();
             $sql = $dao->sql_query_file($codigoHistorico);
 
             $rs = $dao->sql_record($sql);

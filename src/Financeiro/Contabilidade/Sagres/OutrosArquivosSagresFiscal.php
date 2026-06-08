@@ -27,6 +27,7 @@
 
 namespace ECidade\Financeiro\Contabilidade\Sagres;
 
+use DOMDocument;
 use Instituicao;
 
 /**
@@ -70,7 +71,7 @@ abstract class OutrosArquivosSagresFiscal
 
     public function emitirXML()
     {
-        $xml = new \DOMDocument("1.0", "UTF-8");
+        $xml = new DOMDocument("1.0", "UTF-8");
         $principalNode = $xml->createElement(static::TAG);
         foreach ($this->linhas as $linha) {
             $elementoLinha = $xml->createElement('Elem' . static::TAG);

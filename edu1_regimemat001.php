@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-use ECidade\Enum\Educacao\Escola\FormaOrganizacaoTurmaEum;
+
 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_stdlibwebseller.php"));

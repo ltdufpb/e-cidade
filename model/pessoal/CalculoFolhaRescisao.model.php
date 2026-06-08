@@ -261,7 +261,7 @@ class CalculoFolhaRescisao extends CalculoFolha {
    * @param  Array $aMatriculasSelecionadas
    * @return Boolean
    */
-  #[\Override]
+  #[Override]
   public static function posCalcular ($aMatriculasSelecionadas, $parametro1 = null, $parametro2 = null) {
 
     if ( !DBPessoal::verificarUtilizacaoEstruturaSuplementar() ){

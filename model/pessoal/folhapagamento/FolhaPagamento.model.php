@@ -324,7 +324,7 @@ abstract class FolhaPagamento {
    * @param null           $lAberta
    * @param \DBCompetencia $oCompetencia
    * @return int Sequencial da folha aberta
-   * @throws \DBException
+   * @throws DBException
    * @example FolhaPagamento::getFolhaAberta(FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR)
    * @access public
    */

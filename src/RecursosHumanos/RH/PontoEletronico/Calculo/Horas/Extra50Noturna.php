@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use DateInterval;
 use ECidade\Configuracao\Cadastro\Model\Feriado;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 
@@ -52,7 +54,7 @@ class Extra50Noturna extends Extra50 implements Horas {
 
   /**
    * Calcula o número de horas extra 50% noturna em determinado dia
-   * @return \DateTime
+   * @return DateTime
    */
   public function calcular() {
 
@@ -96,9 +98,9 @@ class Extra50Noturna extends Extra50 implements Horas {
 
     $oHoraInicioPeriodoNoturno        = clone $this->getInicioHoraExtraNoturna();
     $oHoraFinalPeriodoNoturno         = clone $this->getFinalHoraExtraNoturna();
-    $oHoraFinalPeriodoNoturnoAnterior = new \DateTime($this->getDiaTrabalho()->getData()->getDate() . ' 05:00');
+    $oHoraFinalPeriodoNoturnoAnterior = new DateTime($this->getDiaTrabalho()->getData()->getDate() . ' 05:00');
 
-    $oMaximoExtra50 = new \DateTime($this->getDiaTrabalho()->getData()->getDate() . $this->getConfiguracoesLotacao()->getHoraExtra50());
+    $oMaximoExtra50 = new DateTime($this->getDiaTrabalho()->getData()->getDate() . $this->getConfiguracoesLotacao()->getHoraExtra50());
 
     /**
      * Se as extras iniciais forem iguais as extras iniciais noturnas
@@ -153,7 +155,7 @@ class Extra50Noturna extends Extra50 implements Horas {
       if($oHoraExtraInicial->diff($oMaximoExtra50)->invert) {
 
         $novaMarcacaoEntrada1 = clone $marcacaoEntrada1;
-        $novaMarcacaoEntrada1->add(new \DateInterval("PT". $oMaximoExtra50->format('H') .'H'. $oMaximoExtra50->format('i') .'M'));
+        $novaMarcacaoEntrada1->add(new DateInterval("PT". $oMaximoExtra50->format('H') .'H'. $oMaximoExtra50->format('i') .'M'));
 
         if($marcacaoEntrada1->diff($oHoraInicioPeriodoNoturno)->invert || $oHoraFinalPeriodoNoturnoAnterior->diff($marcacaoEntrada1)->invert) {
 
@@ -216,7 +218,7 @@ class Extra50Noturna extends Extra50 implements Horas {
      */
     $oHoraExtra = $this->totalHorasExtraIgualTotal($oHoraExtraNoturna, $oHoraExtraTotal);
 
-    if($oHoraExtra instanceof \DateTime) {
+    if($oHoraExtra instanceof DateTime) {
       return $oHoraExtra;
     }
 
@@ -236,7 +238,7 @@ class Extra50Noturna extends Extra50 implements Horas {
        */
       if($oHoraExtraInicial->format('H:i') == $oHoraExtraInicialNoturna->format('H:i')) {
 
-        $oHoraExtra->add(new \DateInterval("PT{$oHoraExtraIntervaloNoturno->format('H')}H{$oHoraExtraIntervaloNoturno->format('i')}M"));
+        $oHoraExtra->add(new DateInterval("PT{$oHoraExtraIntervaloNoturno->format('H')}H{$oHoraExtraIntervaloNoturno->format('i')}M"));
 
         /**
          * Se o total de extras não excedeu o máximo
@@ -247,13 +249,13 @@ class Extra50Noturna extends Extra50 implements Horas {
           /**
            * Se a jornada termina no período de extra noturna
            */
-          if($oHoraFinalJornada instanceof \DateTime) {
+          if($oHoraFinalJornada instanceof DateTime) {
 
             if($this->horaEstaNoIntervalo($oHoraFinalJornada, $oHoraInicioPeriodoNoturno, $oHoraFinalPeriodoNoturno)) {
 
               // Se as extras finais noturnas são maiores que as extras diurnas
               if($oHoraExtraFinalNoturna->diff($oHoraExtraFinalDiurna)->invert) {
-                $oHoraExtra->add(new \DateInterval("PT{$oHoraExtraFinalNoturna->format('H')}H{$oHoraExtraFinalNoturna->format('i')}M"));
+                $oHoraExtra->add(new DateInterval("PT{$oHoraExtraFinalNoturna->format('H')}H{$oHoraExtraFinalNoturna->format('i')}M"));
               }
             }
           }
@@ -282,14 +284,14 @@ class Extra50Noturna extends Extra50 implements Horas {
             $this->getMaximoHorasExtras50()->diff($oHoraExtraInicialDiurna)->format('%I')
           );
 
-          $oHoraExtra->add(new \DateInterval("PT{$oHoraExtraIntervaloNoturno->format('H')}H{$oHoraExtraIntervaloNoturno->format('i')}M"));
+          $oHoraExtra->add(new DateInterval("PT{$oHoraExtraIntervaloNoturno->format('H')}H{$oHoraExtraIntervaloNoturno->format('i')}M"));
 
           /**
            * Se houver mais extras noturnas (finais) então adiciona a diferença até o máximo
            */
           if((int)$oHoraExtraFinalNoturna->format('H') != 0 || (int)$oHoraExtraFinalNoturna->format('i') != 0) {
 
-            $oDiferencaLimiteExtraInicial = new \DateTime($this->getDiaTrabalho()->getData()->getDate() .' 00:00');
+            $oDiferencaLimiteExtraInicial = new DateTime($this->getDiaTrabalho()->getData()->getDate() .' 00:00');
             $oDiferencaLimiteExtraInicial->setTime(
               $this->getMaximoHorasExtras50()->diff($oHoraExtraInicial)->format('%H'),
               $this->getMaximoHorasExtras50()->diff($oHoraExtraInicial)->format('%I')
@@ -302,12 +304,12 @@ class Extra50Noturna extends Extra50 implements Horas {
 
               // Se as horas extras noturnas finais forem  maiores que a diferença até o limite então adiciona a diferença
               if($oHoraExtraFinalNoturna->diff($oDiferencaLimiteExtraInicial)->invert) {
-                $oHoraExtra->add(new \DateInterval("PT{$oDiferencaLimiteExtraInicial->format('H')}H{$oDiferencaLimiteExtraInicial->format('i')}M"));
+                $oHoraExtra->add(new DateInterval("PT{$oDiferencaLimiteExtraInicial->format('H')}H{$oDiferencaLimiteExtraInicial->format('i')}M"));
               }
 
               // Se as horas extras noturnas finais forem menores que a diferença até o limite então adiciona as extras finais
               if(!$oHoraExtraFinalNoturna->diff($oDiferencaLimiteExtraInicial)->invert) {
-                $oHoraExtra->add(new \DateInterval("PT{$oHoraExtraFinalNoturna->format('H')}H{$oHoraExtraFinalNoturna->format('i')}M"));
+                $oHoraExtra->add(new DateInterval("PT{$oHoraExtraFinalNoturna->format('H')}H{$oHoraExtraFinalNoturna->format('i')}M"));
               }
             }
           }
@@ -326,7 +328,7 @@ class Extra50Noturna extends Extra50 implements Horas {
     if(!$this->getMaximoHorasExtras50()->diff($oHoraExtraInicial)->invert) {
 
       $oMarcacaoEntrada              = $this->getDiaTrabalho()->getMarcacoes()->getMarcacaoEntrada1();
-      $oHoraFinalPeriodoNoturnoNoDia = new \DateTime($this->getDiaTrabalho()->getData()->getDate() .' 05:00');
+      $oHoraFinalPeriodoNoturnoNoDia = new DateTime($this->getDiaTrabalho()->getData()->getDate() .' 05:00');
 
       if(!empty($oMarcacaoEntrada)) {
 

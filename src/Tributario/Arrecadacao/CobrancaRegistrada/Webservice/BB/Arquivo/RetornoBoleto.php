@@ -28,6 +28,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo;
 
+use DOMDocument;
 use BaseClassRepository;
 
 class RetornoBoleto extends BaseClassRepository
@@ -72,7 +73,7 @@ class RetornoBoleto extends BaseClassRepository
 
     public function getTreatReturn($sResponse)
     {
-        $oDom = new \DOMDocument('1.0', 'UTF-8');
+        $oDom = new DOMDocument('1.0', 'UTF-8');
 
         $sResponse = str_replace("\r\n", "", $sResponse);
 

@@ -38,7 +38,7 @@ class AreaHistoricoRedeRepository extends Repository
         while ($state = pg_fetch_array($rs)) {
             $areaHistoricoRede = AreaHistoricoRede::fromState($state);
 
-            $daoDisciplina = new \cl_areahistmpsdisc();
+            $daoDisciplina = new cl_areahistmpsdisc();
             $sqlDisciplina = $daoDisciplina->sql_query(
                 null,
                 "*",

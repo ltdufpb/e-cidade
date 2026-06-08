@@ -27,6 +27,14 @@
 
 namespace ECidade\Tributario\Divida\Certidao\Repository;
 
+use BaseClassRepository;
+use cl_certid;
+use cl_certdiv;
+use Exception;
+use cda;
+use db_utils;
+use DateTime;
+use stdClass;
 use ECidade\Tributario\Divida\Certidao\Certidao as Entity;
 use ECidade\Tributario\Divida\Certidao\Repository\CertidaoDivida as CertidaoDividaRepository;
 use ECidade\Tributario\Divida\Repository\Divida as DividaRepository;
@@ -39,7 +47,7 @@ use ECidade\V3\Extension\Registry;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class Certidao extends \BaseClassRepository
+class Certidao extends BaseClassRepository
 {
     /** @var bool */
     private $returnFullItem;
@@ -54,11 +62,11 @@ class Certidao extends \BaseClassRepository
      *
      * @return Entity
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByCode($code)
     {
-        $dao = new \cl_certid;
+        $dao = new cl_certid;
         $sql = $dao->sql_query($code);
 
         $result = \db_query($sql);
@@ -83,17 +91,17 @@ class Certidao extends \BaseClassRepository
      *
      * @return Entity|null
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByDivida($divida)
     {
-        $dao = new \cl_certdiv();
+        $dao = new cl_certdiv();
         $sql = $dao->sql_query(null, $divida);
 
         $result = \db_query($sql);
 
         if (!pg_num_rows($result)) {
-            throw new \Exception('Nenhuma certidao encontrada.');
+            throw new Exception('Nenhuma certidao encontrada.');
         }
 
         $certidao = null;
@@ -112,7 +120,7 @@ class Certidao extends \BaseClassRepository
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByInicial($inicial)
     {
@@ -143,11 +151,11 @@ class Certidao extends \BaseClassRepository
      *
      * @return Entity
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function persist(Entity $certidao)
     {
-        $dao = new \cl_certid();
+        $dao = new cl_certid();
 
         $codigo = $certidao->getCodigo();
 
@@ -164,12 +172,12 @@ class Certidao extends \BaseClassRepository
             $dao->v13_certid = $codigo;
             $dao->alterar($dao->v13_certid);
         } else {
-            $cdaModel = new \cda(null);
+            $cdaModel = new cda(null);
             $dao->v13_certid = $cdaModel->getNovoCodCertidao();
             $dao->incluir($dao->v13_certid);
             $certidao->setCodigo($dao->v13_certid);
 
-            $oDaoPardivUltCodCert = \db_utils::getDao('pardivultcodcert');
+            $oDaoPardivUltCodCert = db_utils::getDao('pardivultcodcert');
             $oDaoPardivUltCodCert->v05_codultcert = $dao->v13_certid;
             $oDaoPardivUltCodCert->alterar(null);
             if ($oDaoPardivUltCodCert->erro_status == '0') {
@@ -178,7 +186,7 @@ class Certidao extends \BaseClassRepository
         }
 
         if ($dao->erro_status == 0) {
-            throw new \Exception($dao->erro_msg);
+            throw new Exception($dao->erro_msg);
         }
 
         if ($this->isPersistPropagation() && $certidao->getCertidaoDividas()) {
@@ -198,7 +206,7 @@ class Certidao extends \BaseClassRepository
     }
 
     /**
-     * @param \stdClass $certidao
+     * @param stdClass $certidao
      *
      * @return Entity
      */
@@ -207,7 +215,7 @@ class Certidao extends \BaseClassRepository
         $data = new Entity;
 
         $data->setCodigo($certidao->v13_certid)
-             ->setDataEmissao(new \DateTime($certidao->v13_dtemis))
+             ->setDataEmissao(new DateTime($certidao->v13_dtemis))
              ->setInstituicao($certidao->v13_instit)
              ->setLogin($certidao->v13_login);
 
@@ -281,7 +289,7 @@ class Certidao extends \BaseClassRepository
 
     public function findAll($where = "")
     {
-        $dao = new \cl_certid();
+        $dao = new cl_certid();
 
         $sql = $dao->sql_query_file(null, "*", null, $where);
 
@@ -297,12 +305,12 @@ class Certidao extends \BaseClassRepository
 
     public function delete($where)
     {
-        $dao = new \cl_certid();
+        $dao = new cl_certid();
 
         $dao->excluir(null, $where);
 
         if ($dao->erro_status == 0) {
-            throw new \Exception("Erro ao excluir registro da tabela certid: " . $dao->erro_msg);
+            throw new Exception("Erro ao excluir registro da tabela certid: " . $dao->erro_msg);
         }
     }
 }

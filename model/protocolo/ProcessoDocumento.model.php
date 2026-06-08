@@ -128,7 +128,7 @@ class ProcessoDocumento
 
     /**
      * Data do arquivo
-     * @var \DBDate
+     * @var DBDate
      */
     private $data;
 
@@ -324,7 +324,7 @@ class ProcessoDocumento
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getData()
     {
@@ -333,7 +333,7 @@ class ProcessoDocumento
     }
 
     /**
-     * @param \DBDate $data
+     * @param DBDate $data
      */
     public function setData($data)
     {
@@ -347,7 +347,7 @@ class ProcessoDocumento
      * @access public
      */
 
-    public function setUsuario(\UsuarioSistema $oUsuario)
+    public function setUsuario(UsuarioSistema $oUsuario)
     {
         $this->oUsuario = $oUsuario;
     }
@@ -609,7 +609,7 @@ class ProcessoDocumento
         if ($this->isStorage()) {
             try {
                 return StorageHelper::downloadArquivo($this->getOID());
-            } catch (\Exception) {
+            } catch (Exception) {
             }
         }
 

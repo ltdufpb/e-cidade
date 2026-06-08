@@ -27,6 +27,7 @@
 
 namespace ECidade\Configuracao\Cadastro\Collection;
 
+use DBDate;
 use \ECidade\Configuracao\Cadastro\Model\Feriado as FeriadoModel;
 
 /**
@@ -57,7 +58,7 @@ class Feriado
             $oFeriadoModel = new FeriadoModel();
             $oFeriadoModel->setCodigo($oDadosFeriado->rh53_calend);
             $oFeriadoModel->setDescricao($oDadosFeriado->rh53_descr);
-            $oFeriadoModel->setData(new \DBDate($oDadosFeriado->r62_data));
+            $oFeriadoModel->setData(new DBDate($oDadosFeriado->r62_data));
 
             $oCollectionFeriado->add($oFeriadoModel);
         }
@@ -82,14 +83,14 @@ class Feriado
     }
 
   /**
-   * @param \DBDate $oData
-   * @return FeriadoModel
-   */
-    public function getFeriadoNaData(\DBDate $oData)
+     * @param DBDate $oData
+     * @return FeriadoModel
+     */
+    public function getFeriadoNaData(DBDate $oData)
     {
 
         foreach ($this->aFeriados as $oFeriado) {
-            if (\DBDate::getIntervaloEntreDatas($oFeriado->getData(), $oData)->days == 0) {
+            if (DBDate::getIntervaloEntreDatas($oFeriado->getData(), $oData)->days == 0) {
                 return $oFeriado;
             }
         }

@@ -2,6 +2,9 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Avaliacao;
+use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
+use DBString;
 use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
@@ -156,8 +159,8 @@ class Error
 
         $esocialConfig = ConfiguracaoFactory::getInstanceByTipo($tipoEvento);
         $idAvalicacao = $esocialConfig->getFormulario($tipoEvento);
-        $avaliacao = new \Avaliacao($idAvalicacao);
-        $template = \ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory::get($eventName)->getDePara();
+        $avaliacao = new Avaliacao($idAvalicacao);
+        $template = FormatterFactory::get($eventName)->getDePara();
 
         $extractPropertiesHandler = function (array $properties) {
             $data = [];
@@ -323,7 +326,7 @@ class Error
         return sprintf(
             "%s: %s%s",
             $this->formatLabels($data),
-            \DBString::utf8_decode_all($error->mensagem),
+            DBString::utf8_decode_all($error->mensagem),
             $this->html ? "<br />" : "\n"
         );
     }

@@ -26,6 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Registro;
 
+use DBLayoutLinha;
+
 /**
  * Classe referente a regra de negócio do cabeçalho do arquivo do ponto eletrônico
  *
@@ -46,7 +48,7 @@ class Cabecalho {
   private $sArquivo;
 
   /**
-   * @var \DBLayoutLinha
+   * @var DBLayoutLinha
    */
   private $oLayoutLinha;
 
@@ -58,7 +60,7 @@ class Cabecalho {
   }
 
   /**
-   * @return \DBLayoutLinha
+   * @return DBLayoutLinha
    */
   public function getLayoutLinha() {
     return $this->oLayoutLinha;
@@ -79,9 +81,9 @@ class Cabecalho {
   }
 
   /**
-   * @param \DBLayoutLinha $oLayoutLinha]
+   * @param DBLayoutLinha $oLayoutLinha ]
    */
-  public function setLayoutLinha(\DBLayoutLinha $oLayoutLinha) {
+  public function setLayoutLinha(DBLayoutLinha $oLayoutLinha) {
     $this->oLayoutLinha = $oLayoutLinha;
   }
 

@@ -27,6 +27,13 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model;
 
+use Servidor;
+use DBDate;
+use DateTime;
+use Assentamento;
+use DateInterval;
+use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao;
+use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa;
 use ECidade\Configuracao\Cadastro\Model\Feriado;
 use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada as JornadaModel;
@@ -55,9 +62,9 @@ class DiaTrabalho
     private $iCodigo;
 
   /**
-   * Instância do servidor
-   * @var \Servidor
-   */
+     * Instância do servidor
+     * @var Servidor
+     */
     private $oServidor;
 
   /**
@@ -67,9 +74,9 @@ class DiaTrabalho
     private $oJornada;
 
   /**
-   * Data do dia de trabalho
-   * @var \DBDate
-   */
+     * Data do dia de trabalho
+     * @var DBDate
+     */
     private $oData;
 
   /**
@@ -138,9 +145,9 @@ class DiaTrabalho
     private $oFeriado = null;
 
   /**
-   * Configurações da lotação do servidor
-   * @var \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao
-   */
+     * Configurações da lotação do servidor
+     * @var ParametrosLotacao
+     */
     private $oConfiguracoesLotacao;
 
   /**
@@ -174,9 +181,9 @@ class DiaTrabalho
     private $lAfastado = false;
 
   /**
-   * A justificativa para o afastamento no dia de trabalho à processar
-   * @var \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa
-   */
+     * A justificativa para o afastamento no dia de trabalho à processar
+     * @var Justificativa
+     */
     private $oJustificativaAfastamento;
 
   /**
@@ -196,8 +203,8 @@ class DiaTrabalho
     private $lCalculaHoraExtra = false;
 
   /**
-   * @var null|\DateTime
-   */
+     * @var null|DateTime
+     */
     private $oHorasExtrasAutorizadas = null;
 
   /**
@@ -274,15 +281,15 @@ class DiaTrabalho
      */
     private $sHorasExtraNaoAutorizadasNoturna;
 
-    /** @var \Assentamento[] */
+    /** @var Assentamento[] */
     private $assentamentosJustificativaServidor = [];
 
     /**
-   * Construtor da classe
-   *
-   * @param \DBDate   $oData
-   * @param \Servidor $oServidor
-   */
+     * Construtor da classe
+     *
+     * @param DBDate $oData
+     * @param Servidor $oServidor
+     */
     public function __construct($oData = null, $oServidor = null)
     {
 
@@ -321,10 +328,10 @@ class DiaTrabalho
     }
 
   /**
-   * Retorna o Servidor
-   *
-   * @return \Servidor
-   */
+     * Retorna o Servidor
+     *
+     * @return Servidor
+     */
     public function getServidor()
     {
         return $this->oServidor;
@@ -341,10 +348,10 @@ class DiaTrabalho
     }
 
   /**
-   * Retorna a Data
-   *
-   * @return \DBDate
-   */
+     * Retorna a Data
+     *
+     * @return DBDate
+     */
     public function getData()
     {
         return $this->oData;
@@ -467,10 +474,10 @@ class DiaTrabalho
     }
 
   /**
-   * Retorna as configurações da lotação do servidor
-   *
-   * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao
-   */
+     * Retorna as configurações da lotação do servidor
+     *
+     * @return ParametrosLotacao
+     */
     public function getConfiguracoesLotacao()
     {
         return $this->oConfiguracoesLotacao;
@@ -496,9 +503,9 @@ class DiaTrabalho
     }
 
   /**
-   * Retorna a justificativa do afastamento
-   * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa
-   */
+     * Retorna a justificativa do afastamento
+     * @return Justificativa
+     */
     public function getJustificativaAfastamento()
     {
         return $this->oJustificativaAfastamento;
@@ -513,11 +520,11 @@ class DiaTrabalho
     }
 
   /**
-   * Define o Servidor
-   *
-   * @param \Servidor $oServidor
-   */
-    public function setServidor(\Servidor $oServidor)
+     * Define o Servidor
+     *
+     * @param Servidor $oServidor
+     */
+    public function setServidor(Servidor $oServidor)
     {
         $this->oServidor = $oServidor;
     }
@@ -533,11 +540,11 @@ class DiaTrabalho
     }
 
   /**
-   * Define a Data
-   *
-   * @param \DBDate $oData
-   */
-    public function setData(\DBDate $oData)
+     * Define a Data
+     *
+     * @param DBDate $oData
+     */
+    public function setData(DBDate $oData)
     {
         $this->oData = $oData;
     }
@@ -660,10 +667,10 @@ class DiaTrabalho
     }
 
   /**
-   * Define as configurações da lotação do servidor
-   *
-   * @param \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao $oConfiguracoesLotacao
-   */
+     * Define as configurações da lotação do servidor
+     *
+     * @param ParametrosLotacao $oConfiguracoesLotacao
+     */
     public function setConfiguracoesLotacao($oConfiguracoesLotacao)
     {
         $this->oConfiguracoesLotacao = $oConfiguracoesLotacao;
@@ -691,10 +698,10 @@ class DiaTrabalho
     }
 
   /**
-   * Define a justificativa do afastamento
-   * @param \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa $oJustificativaAfastamento
-   * @return $this
-   */
+     * Define a justificativa do afastamento
+     * @param Justificativa $oJustificativaAfastamento
+     * @return $this
+     */
     public function setJustificativaAfastamento($oJustificativaAfastamento)
     {
         $this->oJustificativaAfastamento = $oJustificativaAfastamento;
@@ -734,16 +741,16 @@ class DiaTrabalho
     }
 
   /**
-   * @return \DateTime|null
-   */
+     * @return DateTime|null
+     */
     public function getHorasExtrasAutorizadas()
     {
         return $this->oHorasExtrasAutorizadas;
     }
 
   /**
-   * @param \DateTime|null $oHorasExtrasAutorizadas
-   */
+     * @param DateTime|null $oHorasExtrasAutorizadas
+     */
     public function setHorasExtrasAutorizadas($oHorasExtrasAutorizadas)
     {
         $this->oHorasExtrasAutorizadas = $oHorasExtrasAutorizadas;
@@ -777,7 +784,7 @@ class DiaTrabalho
         $this->logger->debug("-- INICIO DO CALCULO DE HORAS --");
         $this->logger->debug("--------------------------------");
         $this->logger->debug("-- MATRICULA...............: ". $this->getServidor()->getMatricula());
-        $this->logger->debug("-- DATA....................: ". $this->getData()->getDate(\DBDate::DATA_PTBR));
+        $this->logger->debug("-- DATA....................: ". $this->getData()->getDate(DBDate::DATA_PTBR));
 
         $this->setTolerancia($this->getConfiguracoesLotacao()->getTolerancia());
 
@@ -956,10 +963,10 @@ class DiaTrabalho
                 }
 
                 $periodoEvento = '';
-                if ($this->evento->getDataInicial() instanceof \DBDate) {
+                if ($this->evento->getDataInicial() instanceof DBDate) {
                     $periodoEvento  = $this->evento->getDataInicial();
 
-                    if ($this->evento->getDataFinal() instanceof \DBDate) {
+                    if ($this->evento->getDataFinal() instanceof DBDate) {
                         $periodoEvento .= ' a ';
                         $periodoEvento .= $this->evento->getDataFinal();
                     }
@@ -1056,7 +1063,7 @@ class DiaTrabalho
 
     private function calcularHorasDiaComEvento()
     {
-        $oHora = \DateTime::createFromFormat('H:i', '0:00');
+        $oHora = DateTime::createFromFormat('H:i', '0:00');
         $oHora->setDate(
             $this->getData()->getAno(),
             $this->getData()->getMes(),
@@ -1144,9 +1151,9 @@ class DiaTrabalho
     }
 
   /**
-   * @param \Assentamento|null $assentamento
-   */
-    public function setAfastamento(?\Assentamento $assentamento = null)
+     * @param Assentamento|null $assentamento
+     */
+    public function setAfastamento(?Assentamento $assentamento = null)
     {
 
         $this->afastamento = $assentamento;
@@ -1158,8 +1165,8 @@ class DiaTrabalho
     }
 
   /**
-   * @return \Assentamento
-   */
+     * @return Assentamento
+     */
     public function getAfastamento()
     {
         return $this->afastamento;
@@ -1257,11 +1264,11 @@ class DiaTrabalho
         $horasNoturnasSemPropoporcao = explode(":", (string) $horasNoturnas->getHorasCalculadasSemProporcao());
 
         $intervaloHorasNoturnasComProporcao = new
-            \DateInterval("PT{$horasNoturnasComPropoporcao[0]}H{$horasNoturnasComPropoporcao[1]}M");
+            DateInterval("PT{$horasNoturnasComPropoporcao[0]}H{$horasNoturnasComPropoporcao[1]}M");
         $intervaloHorasNoturnasSemProporcao = new
-            \DateInterval("PT{$horasNoturnasSemPropoporcao[0]}H{$horasNoturnasSemPropoporcao[1]}M");
+            DateInterval("PT{$horasNoturnasSemPropoporcao[0]}H{$horasNoturnasSemPropoporcao[1]}M");
 
-        $horasTrabalhadas =  \DateTime::CreateFromFormat('H:i', "{$horasTrabalho[0]}:{$horasTrabalho[1]}");
+        $horasTrabalhadas =  DateTime::CreateFromFormat('H:i', "{$horasTrabalho[0]}:{$horasTrabalho[1]}");
         $horasTrabalhadas->sub($intervaloHorasNoturnasSemProporcao);
         $horasTrabalhadas->add($intervaloHorasNoturnasComProporcao);
 
@@ -1549,7 +1556,7 @@ class DiaTrabalho
     }
 
     /**
-     * @param \Assentamento[] $assentamentosJustificativaServidor
+     * @param Assentamento[] $assentamentosJustificativaServidor
      * @return $this
      */
     public function setAssentamentosJustificativaServidor($assentamentosJustificativaServidor)
@@ -1559,7 +1566,7 @@ class DiaTrabalho
     }
 
     /**
-     * @return \Assentamento[]
+     * @return Assentamento[]
      */
     public function getAssentamentosJustificativaServidor()
     {

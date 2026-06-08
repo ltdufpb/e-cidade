@@ -1,6 +1,10 @@
 <?php
 namespace ECidade\Patrimonial\Acordo\RegimeCompetencia\Model;
 
+use ContaPlanoPCASP;
+use DBCompetencia;
+use Acordo;
+
 /**
  * Class RegimeCompetencia
  * @package ECidade\Patrimonial\Acordo\RegimeCompetencia\Model
@@ -15,7 +19,7 @@ class RegimeCompetencia {
   
   /**
    * Acordo do regime
-   * @var \Acordo
+   * @var Acordo
    */
   private $acordo;
 
@@ -26,7 +30,7 @@ class RegimeCompetencia {
   private $despesaAntecipada = false;
 
   /**
-   * @var \ContaPlanoPCASP
+   * @var ContaPlanoPCASP
    */
   private $Conplano;
 
@@ -53,14 +57,14 @@ class RegimeCompetencia {
   }
   
     /**
-   * @return \Acordo
+   * @return Acordo
    */
   public function getAcordo() {
     return $this->acordo;
   }
 
   /**
-   * @param \Acordo $acordo
+   * @param Acordo $acordo
    */
   public function setAcordo($acordo) {
 
@@ -83,7 +87,7 @@ class RegimeCompetencia {
   }
 
   /**
-   * @return \ContaPlanoPCASP
+   * @return ContaPlanoPCASP
    */
   public function getConta() {
 
@@ -91,16 +95,16 @@ class RegimeCompetencia {
   }
 
   /**
-   * @param \ContaPlanoPCASP $Conplano
+   * @param ContaPlanoPCASP $Conplano
    */
-  public function setConta(\ContaPlanoPCASP $Conplano) {
+  public function setConta(ContaPlanoPCASP $Conplano) {
 
     $this->Conplano = $Conplano;
   }
 
   /**
    * Retorna todas as parcelas do regime
-   * @return \ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Parcela[]
+   * @return Parcela[]
    */
   public function getParcelas() {
     
@@ -114,12 +118,12 @@ class RegimeCompetencia {
   }
 
   /**
-   * Realiza o calculo dos valores das parcelas   
+   * Realiza o calculo dos valores das parcelas  
    * @param $numeroParcelas
    * @param $mesInicial
    * @param $ano
    * @param $valor
-   * @return \ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Parcela[]
+   * @return Parcela[]
    * @internal param $item
    */
   public function processarParcelas ($numeroParcelas, $mesInicial, $ano, $valor) {    
@@ -132,7 +136,7 @@ class RegimeCompetencia {
       
       $oParcela = new Parcela();
       $oParcela->setValor($nValorPorParcela);
-      $oParcela->setCompetencia(new \DBCompetencia($ano, $mesAtual));
+      $oParcela->setCompetencia(new DBCompetencia($ano, $mesAtual));
       $oParcela->setNumero($parcela);      
       $nValorTotalProcessado += $nValorPorParcela;
       

@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use DBException;
+use db_utils;
+
 class ContratoEmergencial
 {
     /**
@@ -79,10 +82,10 @@ class ContratoEmergencial
             $rs = \db_query($sql);
 
             if (!$rs) {
-                throw new \DBException("Houve um erro ao buscar o código {$codigo} do contrato emergencial.");
+                throw new DBException("Houve um erro ao buscar o código {$codigo} do contrato emergencial.");
             }
 
-            $contrato = \db_utils::fieldsMemory($rs, 0);
+            $contrato = db_utils::fieldsMemory($rs, 0);
 
             $this->setCodigo($contrato->rh163_matricula);
             $this->setContratoEmergencial($contrato->rh164_contratoemergencial);

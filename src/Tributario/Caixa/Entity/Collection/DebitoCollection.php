@@ -2,11 +2,12 @@
 
 namespace ECidade\Tributario\Caixa\Entity\Collection;
 
+use Override;
 use ECidade\Tributario\Library\ArrayCollection;
 
 final class DebitoCollection extends ArrayCollection
 {
-    #[\Override]
+    #[Override]
     public function add($debito)
     {
         parent::add($debito);

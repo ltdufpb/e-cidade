@@ -2257,7 +2257,7 @@ class PluginService
     /**
      * @param array $aModificacoes
      * @param string $sNomePlugin
-     * @param \ECidade\V3\Extension\Logger $logger
+     * @param Logger $logger
      * @return array
      */
     public function instalarModificacoes(Array $aModificacoes, $sNomePlugin, ?Logger $logger = null)
@@ -2341,7 +2341,7 @@ class PluginService
     /**
      * @param string $aModificacoes
      * @param string $sNomePlugin
-     * @param \ECidade\V3\Extension\Logger $logger
+     * @param Logger $logger
      * @return array
      */
     public function desinstalarModificacoes(Array $aModificacoes, $sNomePlugin, ?Logger $logger = null)
@@ -2674,7 +2674,7 @@ class PluginService
     /**
      * Cria container e registra arquivo de log em "tmp/$sNomePlugin"
      * @param String $sNomePlugin
-     * @return \ECidade\V3\Extension\Container
+     * @return Container
      */
     public function createContainer($sNomePlugin)
     {
@@ -2688,7 +2688,7 @@ class PluginService
     }
 
     /**
-     * @return \ECidade\V3\Extension\Container
+     * @return Container
      */
     public function getContainer()
     {

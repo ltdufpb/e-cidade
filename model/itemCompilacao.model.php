@@ -211,7 +211,7 @@ final class itemCompilacao extends itemSolicitacao
      * @param float $nQuantidade Quantidade do item
      * @return ItemEstimativa
      */
-    #[\Override]
+    #[Override]
     public function setQuantidade($nQuantidade)
     {
         $nPercentual = ParametroRegistroPreco::getPercentualExecedente();
@@ -220,7 +220,7 @@ final class itemCompilacao extends itemSolicitacao
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function save($iSolicitacao = '')
     {
         if ($this->getQuantidadeMinima() <= 0) {
@@ -353,7 +353,7 @@ final class itemCompilacao extends itemSolicitacao
 
     }
 
-    #[\Override]
+    #[Override]
     public function remover()
     {
         /**
@@ -410,7 +410,7 @@ final class itemCompilacao extends itemSolicitacao
             return 0;
         }
 
-        $oItem = \db_utils::fieldsMemory($rsSql, 0);
+        $oItem = db_utils::fieldsMemory($rsSql, 0);
         return $oItem->quant;
     }
 

@@ -31,7 +31,6 @@ use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilhaCusta;
 use ECidade\Tributario\Juridico\Interfaces\Partilha;
 use ECidade\Tributario\Juridico\Interfaces\PartilhaCusta;
 use DateTime;
-use \Exception;
 
 class ProcessoForoPartilha implements Partilha
 {

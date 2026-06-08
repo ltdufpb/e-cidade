@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessomudanca;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Mudanca as MudancaProcessual;
 use Exception;
-use DBDate;
 
 class MudancaRepository
 {

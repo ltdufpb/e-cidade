@@ -56,7 +56,7 @@ class ProcessoJudicial
     private $observacaoProcesso;
 
     /**
-     * @var  \DBDate  $dataSentenca  | null
+     * @var DBDate $dataSentenca | null
      */
     private $dataSentenca;
 
@@ -79,7 +79,7 @@ class ProcessoJudicial
     private $identificacaoVara;
 
     /**
-     * @var  \DBDate  $dataSentenca  | null
+     * @var DBDate $dataSentenca | null
      */
     private $dataCelebracaoAcordo;
 
@@ -114,7 +114,7 @@ class ProcessoJudicial
     private $nomeServidor;
 
     /**
-     * @var  \DBDate  $dataNascimento  | null
+     * @var DBDate $dataNascimento | null
      */
     private $dataNascimento;
 
@@ -270,7 +270,7 @@ class ProcessoJudicial
     /**
      * Get $dataSentenca | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataSentenca()
     {
@@ -280,7 +280,7 @@ class ProcessoJudicial
     /**
      * Set $dataSentenca | null
      *
-     * @param  \DBDate  $dataSentenca | null
+     * @param DBDate $dataSentenca | null
      */
     public function setDataSentenca($dataSentenca)
     {
@@ -350,7 +350,7 @@ class ProcessoJudicial
     /**
      * Get $dataSentenca | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataCelebracaoAcordo()
     {
@@ -360,7 +360,7 @@ class ProcessoJudicial
     /**
      * Set $dataSentenca | null
      *
-     * @param  \DBDate  $dataCelebracaoAcordo  $dataSentenca | null
+     * @param DBDate $dataCelebracaoAcordo $dataSentenca | null
      */
     public function setDataCelebracaoAcordo($dataCelebracaoAcordo)
     {
@@ -490,7 +490,7 @@ class ProcessoJudicial
     /**
      * Get $dataNascimento | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataNascimento()
     {
@@ -500,7 +500,7 @@ class ProcessoJudicial
     /**
      * Set $dataNascimento | null
      *
-     * @param  \DBDate  $dataNascimento  $dataNascimento | null
+     * @param DBDate $dataNascimento $dataNascimento | null
      */
     public function setDataNascimento($dataNascimento)
     {

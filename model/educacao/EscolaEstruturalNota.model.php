@@ -45,7 +45,7 @@ class EscolaEstruturalNota extends EstruturalNota {
     $sCampos  = " ed315_sequencial, ed315_escola, ed315_db_estrutura, ed315_ativo, ed315_arredondamedia,";
     $sCampos .= "ed315_observacao, ed315_ano, ed318_regraarredondamento, ed316_descricao";
 
-    $oDao = new \cl_avaliacaoestruturanota();
+    $oDao = new cl_avaliacaoestruturanota();
     $sSql = $oDao->sql_query_configuracao_escola($iCodigo, $sCampos);
     $rs   = db_query($sSql);
 

@@ -27,6 +27,10 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model;
 
+use DateTime;
+use DBDate;
+use DateInterval;
+use Exception;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\HoraExtra;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Factory\TipoHora;
@@ -78,12 +82,12 @@ class HoraExtraCalculo extends HoraExtra
     private $oHorasExtraNaoAutorizada;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oInicioHorarioNoturno;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oFinalHorarioNoturno;
 
@@ -136,8 +140,8 @@ class HoraExtraCalculo extends HoraExtra
         $this->setDiaTrabalho($oDiaTrabalho);
         parent::__construct();
 
-        $this->oInicioHorarioNoturno = new \DateTime($this->getDiaTrabalho()->getData()->getDate() . " 22:00");
-        $this->oFinalHorarioNoturno = new \DateTime($this->getDiaTrabalho()->getData()->getDate() . " 05:00");
+        $this->oInicioHorarioNoturno = new DateTime($this->getDiaTrabalho()->getData()->getDate() . " 22:00");
+        $this->oFinalHorarioNoturno = new DateTime($this->getDiaTrabalho()->getData()->getDate() . " 05:00");
         $this->oFinalHorarioNoturno->modify("+1 day");
 
         $this->converteConfiguracaoHorasExtrasEmMinutos();
@@ -155,7 +159,7 @@ class HoraExtraCalculo extends HoraExtra
 
         $this->verificaFeriadoDSR();
 
-        if ($this->getDiaTrabalho()->getData()->getDiaSemana() == \DBDate::DOMINGO && $this->getDiaTrabalho()->getJornada()->isDiaTrabalhado()) {
+        if ($this->getDiaTrabalho()->getData()->getDiaSemana() == DBDate::DOMINGO && $this->getDiaTrabalho()->getJornada()->isDiaTrabalhado()) {
             $this->setMaximoHorasExtras50(0);
         }
 
@@ -172,7 +176,7 @@ class HoraExtraCalculo extends HoraExtra
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getInicioHorarioNoturno()
     {
@@ -180,7 +184,7 @@ class HoraExtraCalculo extends HoraExtra
     }
 
     /**
-     * @param \DateTime $oInicioHorarioNoturno
+     * @param DateTime $oInicioHorarioNoturno
      */
     public function setInicioHorarioNoturno($oInicioHorarioNoturno)
     {
@@ -188,7 +192,7 @@ class HoraExtraCalculo extends HoraExtra
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getFinalHorarioNoturno()
     {
@@ -196,7 +200,7 @@ class HoraExtraCalculo extends HoraExtra
     }
 
     /**
-     * @param \DateTime $oFinalHorarioNoturno
+     * @param DateTime $oFinalHorarioNoturno
      */
     public function setFinalHorarioNoturno($oFinalHorarioNoturno)
     {
@@ -450,9 +454,9 @@ class HoraExtraCalculo extends HoraExtra
                 $oHoraExtraIntervalo = $this->getHoraExtraIntervalo();
                 $oHoraExtraFinal = $this->getHoraExtraFinal();
 
-                $this->logger->debug("-- Hora Extra Inicial.................: " . ($oHoraExtraInicial instanceof \DateTime ? $oHoraExtraInicial->format('H:i') : ''));
-                $this->logger->debug("-- Hora Extra Intervalo...............: " . ($oHoraExtraIntervalo instanceof \DateTime ? $oHoraExtraIntervalo->format('H:i') : ''));
-                $this->logger->debug("-- Hora Extra Final...................: " . ($oHoraExtraFinal instanceof \DateTime ? $oHoraExtraFinal->format('H:i') : ''));
+                $this->logger->debug("-- Hora Extra Inicial.................: " . ($oHoraExtraInicial instanceof DateTime ? $oHoraExtraInicial->format('H:i') : ''));
+                $this->logger->debug("-- Hora Extra Intervalo...............: " . ($oHoraExtraIntervalo instanceof DateTime ? $oHoraExtraIntervalo->format('H:i') : ''));
+                $this->logger->debug("-- Hora Extra Final...................: " . ($oHoraExtraFinal instanceof DateTime ? $oHoraExtraFinal->format('H:i') : ''));
 
                 if (!empty($oHoraExtraInicial) && !$this->isZero($oHoraExtraInicial)) {
                     $oInicioExtraInicial = $this->getDiaTrabalho()->getMarcacoesSemAlteracao()->getMarcacaoEntrada1()->getMarcacao();
@@ -569,17 +573,17 @@ class HoraExtraCalculo extends HoraExtra
     private function converteConfiguracaoHorasExtrasEmMinutos()
     {
         $dataTrabalho = $this->getHoraZerada()->format("Y-m-d") . " ";
-        $oExtra50Maximo = $this->converteDateTimeParaInterval(new \DateTime($dataTrabalho . $this->getDiaTrabalho()->getConfiguracoesLotacao()->getHoraExtra50()));
+        $oExtra50Maximo = $this->converteDateTimeParaInterval(new DateTime($dataTrabalho . $this->getDiaTrabalho()->getConfiguracoesLotacao()->getHoraExtra50()));
         $this->setMaximoHorasExtras50(BaseHora::converterIntervaloEmMinutos($oExtra50Maximo));
 
-        $oExtra75Maximo = $this->converteDateTimeParaInterval(new \DateTime($dataTrabalho . $this->getDiaTrabalho()->getConfiguracoesLotacao()->getHoraExtra75()));
+        $oExtra75Maximo = $this->converteDateTimeParaInterval(new DateTime($dataTrabalho . $this->getDiaTrabalho()->getConfiguracoesLotacao()->getHoraExtra75()));
         $this->setMaximoHorasExtras75(BaseHora::converterIntervaloEmMinutos($oExtra75Maximo));
 
-        $oExtra100Maximo = $this->converteDateTimeParaInterval(new \DateTime($dataTrabalho . $this->getDiaTrabalho()->getConfiguracoesLotacao()->getHoraExtra100()));
+        $oExtra100Maximo = $this->converteDateTimeParaInterval(new DateTime($dataTrabalho . $this->getDiaTrabalho()->getConfiguracoesLotacao()->getHoraExtra100()));
         $this->setMaximoHorasExtras100(BaseHora::converterIntervaloEmMinutos($oExtra100Maximo));
     }
 
-    public function converteDateTimeParaInterval(\DateTime $dateTime)
+    public function converteDateTimeParaInterval(DateTime $dateTime)
     {
         return $this->getDiferencaHoras($dateTime, $this->getHoraZerada());
     }
@@ -707,13 +711,13 @@ class HoraExtraCalculo extends HoraExtra
 
     /**
      * Realiza o ajuste das Horas extras na folga
-     * @throws \Exception
+     * @throws Exception
      */
     private function verificaFeriadoDSR()
     {
         if ($this->getDiaTrabalho()->getJornada()->isDSR() || ($this->getDiaTrabalho()->getFeriado())) {
             $aHoraSeparada = explode(":", $this->getDiaTrabalho()->getHorasTotaisDeTrabalho());
-            $iMinutosTrabalhados = BaseHora::converterIntervaloEmMinutos(new \DateInterval("PT{$aHoraSeparada[0]}H{$aHoraSeparada[1]}M"));
+            $iMinutosTrabalhados = BaseHora::converterIntervaloEmMinutos(new DateInterval("PT{$aHoraSeparada[0]}H{$aHoraSeparada[1]}M"));
             $iSomaTotaisExtras = +$this->iMaximoHorasExtras50 + $this->iMaximoHorasExtras75 + $this->iMaximoHorasExtras100;
 
             $this->setMaximoHorasExtras100($iMinutosTrabalhados);
@@ -738,8 +742,8 @@ class HoraExtraCalculo extends HoraExtra
         $aHorasNoturnas = explode(":", $this->getDiaTrabalho()->getHorasAdicionalNoturno());
 
         $iMinutos2Horas = 120;
-        $iMinutosTrabalhados = BaseHora::converterIntervaloEmMinutos(new \DateInterval("PT{$aHorasTrabalhadas[0]}H{$aHorasTrabalhadas[1]}M"));
-        $iMinutosNoturnos = BaseHora::converterIntervaloEmMinutos(new \DateInterval("PT{$aHorasNoturnas[0]}H{$aHorasNoturnas[1]}M"));
+        $iMinutosTrabalhados = BaseHora::converterIntervaloEmMinutos(new DateInterval("PT{$aHorasTrabalhadas[0]}H{$aHorasTrabalhadas[1]}M"));
+        $iMinutosNoturnos = BaseHora::converterIntervaloEmMinutos(new DateInterval("PT{$aHorasNoturnas[0]}H{$aHorasNoturnas[1]}M"));
         $iMinutosDiurnos = $iMinutosTrabalhados - $iMinutosNoturnos;
 
         /**
@@ -780,15 +784,15 @@ class HoraExtraCalculo extends HoraExtra
         $diaTrabalho = $this->getDiaTrabalho();
         $oCalculoExtraFeriado = TipoHora::getHora($this->getDiaTrabalho(), BaseHora::HORAS_CALCULO_EXTRA_LINEAR);
 
-        $horaExtra = \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00');
+        $horaExtra = DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00');
         $oCalculoExtraFeriado->calcular(
             $horaExtra,
-            \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
-            \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
-            \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
-            \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
-            \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
-            \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00')
+            DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
+            DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
+            DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
+            DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
+            DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00'),
+            DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00')
         );
 
         $this->logger->debug("-- Horas Extras 50.................: " . ($diaTrabalho->getHorasExtra50() ?: ''));

@@ -3,13 +3,11 @@
 
 namespace ECidade\Educacao\Escola\Relatorios\GuiaTransferencia;
 
+use Matricula;
+use RelatorioGradeAproveitamento;
 use Exception;
 use FpdfMultiCellBorder;
-use stdClass;
-use DBDate;
-use db_utils;
 use ECidade\Educacao\Escola\Service\NotificacaoTransferenciaService;
-use Escola;
 
 class GuiaTransferencia
 {
@@ -146,7 +144,7 @@ class GuiaTransferencia
                         $this->pdf->addPage();
                     }
                 }
-                $matricula = new \Matricula($aluno->codigomatricula);
+                $matricula = new Matricula($aluno->codigomatricula);
                 $espaco = "_______________________________________";
                 $titulo = "Guia de Transferência";
                 $this->pdf->setfont('arial', 'b', $this->tamanhoFonte);
@@ -155,7 +153,7 @@ class GuiaTransferencia
                 $this->pdf->MultiCell($this->larguraLinha, 5, $aluno->atestado, 'LR', 'J', 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha * 2, "", "LRB", 1, "C", 0, 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha, $aluno->descricaoEnsino, "LRB", 1, "C", 1, 0);
-                $grade = new \RelatorioGradeAproveitamento($this->pdf, $matricula, $this->larguraLinha);
+                $grade = new RelatorioGradeAproveitamento($this->pdf, $matricula, $this->larguraLinha);
                 $grade->montarGrade();
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha, "", "LRB", 1, "C", 1, 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha * 2, "", "LR", 1, "C", 0, 0);

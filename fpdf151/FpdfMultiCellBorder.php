@@ -52,6 +52,7 @@ class FpdfMultiCellBorder extends scpdf
      * @param integer $indent tamanhodo Recuo de 1 linha
      * @see FPDF::MultiCell()
      */
+    #[Override]
     function MultiCell($w, $h, $txt, $border = 0, $align = 'J', $fill = 0, $indent = 0)
     {
         $sTopBorder = '';
@@ -343,6 +344,7 @@ class FpdfMultiCellBorder extends scpdf
     /**
      *
      */
+    #[Override]
     public function footer()
     {
         if (!$this->lEnableFooter) {
@@ -385,7 +387,7 @@ class FpdfMultiCellBorder extends scpdf
             $sStringMenu .= '  Exerc: ' . db_getsession("DB_anousu");
             $sStringMenu .= 'Data: ' . date("d-m-Y", db_getsession("DB_datausu")) . " - " . date("H:i:s");
             //die($sStringMenu);
-            $this->text(($this->lMargin) + 15, $this->h - 6, $sStringMenu, 0, 1, 'R');
+            $this->text(($this->lMargin) + 15, $this->h - 6, $sStringMenu);
         }
 
         $this->showPageNumber();
@@ -395,7 +397,7 @@ class FpdfMultiCellBorder extends scpdf
     {
         if ($this->lShowPageNumber) {
             $sString = 'Pág ' . $this->PageNo() . '/{nb}';
-            $this->text(($this->w - $this->rMargin) - $this->GetStringWidth($sString) + 1, $this->h - 6, $sString, 0, 1, 'R');
+            $this->text(($this->w - $this->rMargin) - $this->GetStringWidth($sString) + 1, $this->h - 6, $sString);
         }
     }
 
@@ -446,6 +448,7 @@ class FpdfMultiCellBorder extends scpdf
         $this->lExibeBrasao = $lExibeBrasao;
     }
 
+    #[Override]
     function Header()
     {
         if (!$this->lExibeHeader) {

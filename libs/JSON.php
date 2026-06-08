@@ -519,7 +519,7 @@ class Services_JSON
             ], '', (string) $str);
 
         // eliminate extraneous space
-        return trim($str);
+        return trim((string) $str);
     }
 
    /**

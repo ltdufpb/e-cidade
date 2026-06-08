@@ -1,5 +1,9 @@
 <?php
-/*
+use ECidade\Lib\Session\DefaultSession;
+    use ECidade\V3\Datasource\Database;
+    use Illuminate\Database\Capsule\Manager;
+
+    /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2014  DBSeller Servicos de Informatica
  *                            www.dbseller.com.br
@@ -34,7 +38,7 @@ if (!isset($_SESSION)) {
 }
 
 
-if (isset($_SESSION[\ECidade\Lib\Session\DefaultSession::DB_REQUEST_FROM_API])) {
+if (isset($_SESSION[DefaultSession::DB_REQUEST_FROM_API])) {
     return;
 }
 
@@ -78,9 +82,9 @@ if (!($conn = @pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user
     exit;
 }
 
-$database = \ECidade\V3\Datasource\Database::getInstance(false, $conn);
+$database = Database::getInstance(false, $conn);
 
-$capsuleManager = new Illuminate\Database\Capsule\Manager;
+$capsuleManager = new Manager;
 $capsuleManager->addConnection([
     'driver'    => 'pgsql',
     'host'      => $database->getServidor(),

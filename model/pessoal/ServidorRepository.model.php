@@ -399,14 +399,14 @@ abstract class ServidorRepository
     }
 
   /**
-   * Retorna servidor
-   * @param integer $iAnoFolha
-   * @param integer $iMesFolha
-   * @param integer $iCodigoSelecao
-   * @param null    $iInstituicao
-   * @return \Servidor[]
-   * @throws \DBException
-   */
+     * Retorna servidor
+     * @param integer $iAnoFolha
+     * @param integer $iMesFolha
+     * @param integer $iCodigoSelecao
+     * @param null    $iInstituicao
+     * @return Servidor[]
+     * @throws DBException
+     */
     public static function getServidoresBySelecao($iAnoFolha, $iMesFolha, $iCodigoSelecao, $iInstituicao = null)
     {
 
@@ -442,16 +442,16 @@ abstract class ServidorRepository
     }
 
     /**
-   * Retorna array de matriculas
-   * @param integer $iAnoFolha
-   * @param integer $iMesFolha
-   * @param integer $iCodigoSelecao
-   * @param DBDate  $dataFinal
-   * @param null    $iInstituicao
-   * @return [int]
-   * @throws \DBException
-   */
-    public static function getMatriculasBySelecao($iAnoFolha, $iMesFolha, $iCodigoSelecao, \DBDate $dataFinal, $iInstituicao = null)
+     * Retorna array de matriculas
+     * @param integer $iAnoFolha
+     * @param integer $iMesFolha
+     * @param integer $iCodigoSelecao
+     * @param DBDate  $dataFinal
+     * @param null    $iInstituicao
+     * @return [int]
+     * @throws DBException
+     */
+    public static function getMatriculasBySelecao($iAnoFolha, $iMesFolha, $iCodigoSelecao, DBDate $dataFinal, $iInstituicao = null)
     {
 
         if (empty($iInstituicao)) {
@@ -487,7 +487,7 @@ abstract class ServidorRepository
 
     public static function getServidoresBySelecaoAndCedencia($iAnoFolha, $iMesFolha, $iCodigoSelecao, $iInstituicao = null)
     {
-        $clRhPessoalmov = new \cl_rhpessoalmov();
+        $clRhPessoalmov = new cl_rhpessoalmov();
 
         if (empty($iInstituicao)) {
             $iInstituicao = db_getsession('DB_instit');
@@ -498,7 +498,7 @@ abstract class ServidorRepository
 
 
         if (!empty($iCodigoSelecao)) {
-            $clselecao = new \cl_selecao();
+            $clselecao = new cl_selecao();
             $condicaoSelecao = $clselecao->getCondicaoSelecao($iCodigoSelecao, $iInstituicao);
             $where .= " and {$condicaoSelecao} ";
         }
@@ -551,13 +551,13 @@ abstract class ServidorRepository
     }
 
     /**
-   * Retorna uma coleção de objetos Servidor, selecionando por tipo de vinculo
-   * @param integer $iAnoFolha
-   * @param integer $iMesFolha
-   * @param integer $iVinculoServidor
-   * @param null    $sInstituicao
-   * @return \Servidor[]
-   */
+     * Retorna uma coleção de objetos Servidor, selecionando por tipo de vinculo
+     * @param integer $iAnoFolha
+     * @param integer $iMesFolha
+     * @param integer $iVinculoServidor
+     * @param null    $sInstituicao
+     * @return Servidor[]
+     */
     public static function getServidoresPorVinculo($iAnoFolha, $iMesFolha, $iVinculoServidor, $sInstituicao = null)
     {
 

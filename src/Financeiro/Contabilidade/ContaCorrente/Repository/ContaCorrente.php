@@ -27,13 +27,16 @@
 namespace ECidade\Financeiro\Contabilidade\ContaCorrente\Repository;
 
 
+use BaseClassRepository;
+use cl_conplanosistema;
+use DBException;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Model\ContaCorrente as ContaCorrenteModel;
 
 /**
  * Class ContaCorrente
  * @package ECidade\Financeiro\Contabilidade\ContaCorrente\Repository
  */
-class ContaCorrente  extends \BaseClassRepository
+class ContaCorrente  extends BaseClassRepository
 {
 
 
@@ -46,7 +49,7 @@ class ContaCorrente  extends \BaseClassRepository
     /**
      * @param $codigo
      * @return bool|ContaCorrenteModel
-     * @throws \DBException
+     * @throws DBException
      */
     public static function getByCodigo($codigo)
     {
@@ -55,7 +58,7 @@ class ContaCorrente  extends \BaseClassRepository
             return self::getInstance()->aColecao[$codigo];
         }
 
-        $daoContaCorrente = new \cl_conplanosistema();
+        $daoContaCorrente = new cl_conplanosistema();
         $dados = $daoContaCorrente->findBydId($codigo);
         if (empty($dados)) {
             return false;

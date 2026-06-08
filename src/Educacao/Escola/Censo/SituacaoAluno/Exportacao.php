@@ -1,6 +1,7 @@
 <?php
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno;
 
+use BusinessException;
 use db_layouttxt;
 use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\DadosInterface;
@@ -36,7 +37,7 @@ class Exportacao
      */
     private $aDadosAlunoDepois = [];
 
-    public function __construct(private readonly Censo $oCenso, private readonly \Escola $oEscola)
+    public function __construct(private readonly Censo $oCenso, private readonly Escola $oEscola)
     {
     }
 
@@ -49,7 +50,7 @@ class Exportacao
     {
         $this->oLayout = match ($this->oCenso->getAno()) {
             2016, 2017, 2018, 2019, 2020, 2021 => new Layout2016(),
-            default => throw new \BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}."),
+            default => throw new BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}."),
         };
 
         return $this->oLayout;

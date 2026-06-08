@@ -27,6 +27,11 @@
 
 namespace ECidade\Tributario\Juridico\Inicial\Repository;
 
+use BaseClassRepository;
+use cl_inicial;
+use cl_inicialcert;
+use DateTime;
+use stdClass;
 use ECidade\Tributario\Divida\Certidao\Repository\Certidao as CertidaoRepository;
 use ECidade\Tributario\Juridico\Inicial\Inicial as Entity;
 use ECidade\Tributario\Juridico\Inicial\Repository\InicialNome as InicialNomeRepository;
@@ -34,7 +39,6 @@ use ECidade\Tributario\Juridico\Repository\HonorariosParcelamento as HonorariosP
 use ECidade\Tributario\Divida\Termo\Termo;
 use ECidade\Tributario\Divida\Repository\Divida as DividaRepository;
 use ECidade\Tributario\Divida\Repository\DiversosRepository;
-use BusinessException;
 
 /**
  * Class Inicial
@@ -43,7 +47,7 @@ use BusinessException;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class Inicial extends \BaseClassRepository
+class Inicial extends BaseClassRepository
 {
     /** @var bool */
     private $returnFullItem;
@@ -74,7 +78,7 @@ class Inicial extends \BaseClassRepository
      */
     public function getByCode($code)
     {
-        $dao = new \cl_inicial;
+        $dao = new cl_inicial;
         $sql = $dao->sql_query($code);
 
         $result = \db_query($sql);
@@ -101,7 +105,7 @@ class Inicial extends \BaseClassRepository
      */
     public function getByCertidao($certidao)
     {
-        $dao = new \cl_inicial;
+        $dao = new cl_inicial;
         $sql = $dao->sql_query_certidao($certidao);
 
         $result = \db_query($sql);
@@ -126,7 +130,7 @@ class Inicial extends \BaseClassRepository
      */
     public function getByProcessoForo($codigoProcesso)
     {
-        $dao = new \cl_inicial;
+        $dao = new cl_inicial;
         $sql = $dao->sql_query_by_processo($codigoProcesso);
 
         $result = \db_query($sql);
@@ -156,7 +160,7 @@ class Inicial extends \BaseClassRepository
      */
     public function getIniciaisAtivasPorProcesso($codigoProcesso)
     {
-        $dao = new \cl_inicial;
+        $dao = new cl_inicial;
         $sql = $dao->sql_query_by_processo($codigoProcesso, false);
 
         $result = \db_query($sql);
@@ -242,7 +246,7 @@ class Inicial extends \BaseClassRepository
      */
     public function persist(Entity $inicial)
     {
-        $dao = new \cl_inicial;
+        $dao = new cl_inicial;
 
         $dao->v50_advog = $inicial->getAdvogado();
         $dao->v50_data = $inicial->getData()->format('Y-m-d H:i:s');
@@ -270,7 +274,7 @@ class Inicial extends \BaseClassRepository
             $certidaoRepository = CertidaoRepository::getInstance();
             $certidaoRepository->setPersistPropagation(true);
 
-            $dao = new \cl_inicialcert();
+            $dao = new cl_inicialcert();
             foreach ($inicial->getCertidoes() as $certidao) {
                 $codigoCertidao = $certidao->getCodigo();
 
@@ -294,7 +298,7 @@ class Inicial extends \BaseClassRepository
     }
 
     /**
-     * @param \stdClass $inicial
+     * @param stdClass $inicial
      *
      * @return Entity
      */
@@ -304,7 +308,7 @@ class Inicial extends \BaseClassRepository
         $entity
             ->setCodigo($inicial->v50_inicial)
             ->setAdvogado($inicial->v50_advog)
-            ->setData(new \DateTime($inicial->v50_data))
+            ->setData(new DateTime($inicial->v50_data))
             ->setLogin($inicial->v50_id_login)
             ->setCodigoForo($inicial->v50_codlocal)
             ->setCodigoMovimento($inicial->v50_codmov)
@@ -338,7 +342,7 @@ class Inicial extends \BaseClassRepository
      */
     public function get()
     {
-        $dao = new \cl_inicial();
+        $dao = new cl_inicial();
 
         $sql = $dao->query(
             '*',

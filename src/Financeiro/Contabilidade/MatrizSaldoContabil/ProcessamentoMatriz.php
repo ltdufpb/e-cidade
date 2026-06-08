@@ -27,6 +27,8 @@
 
 namespace ECidade\Financeiro\Contabilidade\MatrizSaldoContabil;
 
+use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\ArquivoExterno\Importacao;
+use cl_conplanoatributosaldo;
 use BusinessException;
 use db_utils;
 use DBException;
@@ -295,7 +297,7 @@ class ProcessamentoMatriz
         if ($mes == 12 && $this->encerramento) {
             $mes = 13;
         }
-        $arquivos = MatrizSaldoContabil\ArquivoExterno\Importacao::getArquivosPorCompetencia($this->ano, $mes);
+        $arquivos = Importacao::getArquivosPorCompetencia($this->ano, $mes);
         foreach ($arquivos as $linha) {
             $conteudo_arquivo = $linha->conteudo_arquivo;
             if (!empty($conteudo_arquivo)) {
@@ -691,7 +693,7 @@ class ProcessamentoMatriz
      */
     private function temSaldoImportado($ano)
     {
-        $daoConplanosaldo = new \cl_conplanoatributosaldo();
+        $daoConplanosaldo = new cl_conplanoatributosaldo();
         $where = ['c125_conplanosistema = 1',
             "c125_anousu = {$ano}",
             "c125_mesusu = 0",
@@ -700,7 +702,7 @@ class ProcessamentoMatriz
         ];
          $sql = $daoConplanosaldo->sql_query_file(null, 'count(*) as total', null, implode(" and ", $where));
          $rsTotalRegitros = db_query($sql);
-         $linha = \db_utils::fieldsMemory($rsTotalRegitros, 0)->total;
+         $linha = db_utils::fieldsMemory($rsTotalRegitros, 0)->total;
          return $linha > 0;
     }
 }

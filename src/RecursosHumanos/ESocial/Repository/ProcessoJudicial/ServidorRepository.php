@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 
+use db_utils;
 use cl_rhpessoalprocessoservidor;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Servidor as ServidorProcesso;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ContratoRepository;
@@ -48,7 +49,6 @@ use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\EstatutarioRepos
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
 use ECidade\RecursosHumanos\Pessoal\Repository\DataPagamentoFolhaRepository;
 use Exception;
-use DBDate;
 use cl_cgm;
 use cl_rhpessoal;
 use stdClass;
@@ -355,7 +355,7 @@ class ServidorRepository
 
         $resultado = [];
         for ($row = 0; $row < pg_num_rows($rs); $row++) {
-            $resultado[] = \db_utils::fieldsMemory($rs, $row);
+            $resultado[] = db_utils::fieldsMemory($rs, $row);
         }
 
         return $resultado;
@@ -634,7 +634,7 @@ class ServidorRepository
             throw new Exception("CPF {$cpf} não encontrado.");
         }
 
-        $cgm = \db_utils::fieldsMemory($rsCgm, 0)->cgm;
+        $cgm = db_utils::fieldsMemory($rsCgm, 0)->cgm;
         
         $daoPessoal = new cl_rhpessoal();
         $whereMatricula = "rh01_numcgm = {$cgm}";
@@ -642,7 +642,7 @@ class ServidorRepository
         $rsMatricula = db_query($sqlMatricula);
 
         for ($row = 0; $row < pg_num_rows($rsMatricula); $row++) {
-            $matricula[] = \db_utils::fieldsMemory($rsMatricula, $row)->matricula;
+            $matricula[] = db_utils::fieldsMemory($rsMatricula, $row)->matricula;
         }
 
         $daoProcesso = new cl_rhpessoalprocessoservidor;

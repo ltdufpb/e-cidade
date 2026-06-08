@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use BusinessException;
 use cl_rhpessoalprocessoremuneracao;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Remuneracao;
-use DBDate;
 
 class RemuneracaoRepository
 {

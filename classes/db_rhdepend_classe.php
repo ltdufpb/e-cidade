@@ -514,7 +514,7 @@ class cl_rhdepend
       if($result) {
         $totalRegistros = pg_num_rows($result);
         for ($row = 0; $row < $totalRegistros; $row++) {
-            $current = \db_utils::fieldsMemory($result, $row);
+            $current = db_utils::fieldsMemory($result, $row);
             $this->excluir($current->rh31_codigo);
         }
         if ($totalRegistros == 0) {

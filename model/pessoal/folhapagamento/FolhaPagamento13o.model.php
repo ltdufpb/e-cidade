@@ -66,7 +66,7 @@ class FolhaPagamento13o extends FolhaPagamento {
    * @example FolhaPagamento13o::hasFolhaAberta()
    * @return  boolean
    */
-  #[\Override]
+  #[Override]
   public static function hasFolhaAberta( ?DBCompetencia $oCompetencia = null) {
     return FolhaPagamento::hasFolhaAberta(FolhaPagamento::TIPO_FOLHA_13o_SALARIO, $oCompetencia);
   }
@@ -122,7 +122,7 @@ class FolhaPagamento13o extends FolhaPagamento {
       $sSql   = "UPDATE rhfolhapagamento SET rh141_aberto = false  " . $where;
       try { 
           db_query($sSql);
-      } catch (\Exception) {
+      } catch (Exception) {
 
       }
   }
@@ -141,7 +141,7 @@ class FolhaPagamento13o extends FolhaPagamento {
       $sSql   = "UPDATE rhfolhapagamento SET rh141_aberto = true  " . $where;
       try {
           db_query($sSql);
-      } catch (\Exception) {
+      } catch (Exception) {
 
       }
   }
@@ -161,7 +161,7 @@ class FolhaPagamento13o extends FolhaPagamento {
   * @return boolean
   * @throws DBException
   */
-  #[\Override]
+  #[Override]
   public function cancelarFechamento() {
     parent::cancelarFechamento();
   }

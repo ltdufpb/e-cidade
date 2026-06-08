@@ -57,7 +57,7 @@ class PeriodoAquisitivoFeriasRepository {
 
   /**
    * @param $oDados
-   * @return \PeriodoAquisitivoFerias
+   * @return PeriodoAquisitivoFerias
    */
   public static function make($oDados) {
 
@@ -82,7 +82,7 @@ class PeriodoAquisitivoFeriasRepository {
    * @param Servidor $oServidor
    * @param bool $lSomenteComDireitoFerias
    * @throws BusinessException
-   * @return  \PeriodoAquisitivoFerias[]
+   * @return PeriodoAquisitivoFerias[]
    */
   public static function getPeriodosDisponiveisDoServidor( Servidor $oServidor, $lSomenteComDireitoFerias = false ) {
 
@@ -128,7 +128,7 @@ class PeriodoAquisitivoFeriasRepository {
 
   /**
    * @param $iCodigo
-   * @return \PeriodoAquisitivoFerias
+   * @return PeriodoAquisitivoFerias
    */
   public static function getPeriodosPorCodigo($iCodigo) {
 

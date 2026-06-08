@@ -32,14 +32,7 @@ use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\TributoBase;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ServidorRepository as ServidorRepositoryProcesso;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\TributoContribuicaoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\TributoIRRFRepository;
-use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ProcessoJudicialRepository;
-use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
-use ECidade\RecursosHumanos\ESocial\Integracao\Recurso;
-use ECidade\V3\Extension\Registry;
 use Exception;
-use DBDate;
-use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\DeducaoSuspensa;
-use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\ValorRetencao;
 use stdClass;
 
 class TributoBaseRepository

@@ -33,7 +33,7 @@ class importacaoCodigoInep2010 extends importacaoCenso {
    * (non-PHPdoc)
    * @see importacaoCenso::getDadosAluno()
    */
-  #[\Override]
+  #[Override]
   function getDadosAluno($oLinha, $lPesquisaInep = \false) {
   	
   	$sNomeAluno  = $oLinha->nomealuno;
@@ -291,7 +291,7 @@ class importacaoCodigoInep2010 extends importacaoCenso {
    * (non-PHPdoc)
    * @see importacaoCenso::importarArquivo()
    */
-  #[\Override]
+  #[Override]
   function importarArquivo() {
     
     $sMsgErro = "Importação de Arquivo Censo abortada!\n";    

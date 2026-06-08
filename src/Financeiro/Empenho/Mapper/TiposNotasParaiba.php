@@ -2,6 +2,7 @@
 
 namespace ECidade\Financeiro\Empenho\Mapper;
 
+use EmpenhoFinanceiro;
 use CgmJuridico;
 
 class TiposNotasParaiba
@@ -151,7 +152,7 @@ class TiposNotasParaiba
         return false;
     }
 
-    public function getTiposNotasCompativelComEmenho(\EmpenhoFinanceiro $empenho)
+    public function getTiposNotasCompativelComEmenho(EmpenhoFinanceiro $empenho)
     {
         $cgm = $empenho->getCgm();
 

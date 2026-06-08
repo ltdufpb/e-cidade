@@ -351,7 +351,7 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
     /**
      * Retorna a observação do histórico da operação
      */
-    #[\Override]
+    #[Override]
     public function getObservacaoHistorico()
     {
         return $this->sObservacaoHistorico;
@@ -361,7 +361,7 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
      * Seta a observação do histórico da operação
      * @param string $sObservacaoHistorico
      */
-    #[\Override]
+    #[Override]
     public function setObservacaoHistorico($sObservacaoHistorico)
     {
         $this->sObservacaoHistorico = $sObservacaoHistorico;
@@ -426,7 +426,7 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
      * Retorna o $iEmpenho
      * @return integer $iEmpenho
      */
-    #[\Override]
+    #[Override]
     public function getEmpenho()
     {
         return $this->iEmpenho;

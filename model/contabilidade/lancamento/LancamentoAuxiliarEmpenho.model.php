@@ -223,7 +223,7 @@ class LancamentoAuxiliarEmpenho extends LancamentoAuxiliarBase implements ILanca
   /**
    * Retorna a observação do histórico da operação
    */
-  #[\Override]
+  #[Override]
   public function getObservacaoHistorico() {
     return $this->sObservacaoHistorico;
   }
@@ -232,7 +232,7 @@ class LancamentoAuxiliarEmpenho extends LancamentoAuxiliarBase implements ILanca
    * Seta a observação do histórico da operação
    * @param string $sObservacaoHistorico
    */
-  #[\Override]
+  #[Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
     $this->sObservacaoHistorico = $sObservacaoHistorico;
   }
@@ -290,7 +290,7 @@ class LancamentoAuxiliarEmpenho extends LancamentoAuxiliarBase implements ILanca
    * Retorna o $iEmpenho
    * @return integer $iEmpenho
    */
-  #[\Override]
+  #[Override]
   public function getEmpenho() {
     return $this->iEmpenho;
   }

@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessovinculo;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Vinculo;
 use Exception;
-use DBDate;
 
 class VinculoRepository
 {

@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use DBDate;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacoesPontoCollection;
@@ -42,13 +44,13 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
 
     /**
      *
-     * @var \DateTime
+     * @var DateTime
      */
     private $marcacaoInicioAjustado = null;
 
     /**
      *
-     * @var \DateTime
+     * @var DateTime
      */
     private $marcacaoFinalAjustado = null;
 
@@ -122,7 +124,7 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
         }
     }
 
-    public function calcular(\DateTime $oHorasExtra50, \DateTime $oHorasExtra50Noturna, \DateTime $oHorasExtra75, \DateTime $oHorasExtra75Noturna, \DateTime $oHorasExtra100, \DateTime $oHorasExtra100Noturna, \DateTime $oHorasAdicionalNoturno) {
+    public function calcular(DateTime $oHorasExtra50, DateTime $oHorasExtra50Noturna, DateTime $oHorasExtra75, DateTime $oHorasExtra75Noturna, DateTime $oHorasExtra100, DateTime $oHorasExtra100Noturna, DateTime $oHorasAdicionalNoturno) {
 
         $horasdaJornada      = $this->getDiaTrabalho()->getJornada()->getHoras();
         $horaInicioJornada   = $horasdaJornada[0]->oHora;
@@ -133,8 +135,8 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
 
         if(empty($horaInicio) || empty($horaFim)) {
 
-            $this->logger->debug("-- Hora Inicio.............: ". (empty($horaInicio) ? ' Vazio' : ($horaInicio instanceof \DateTime                  ? $horaInicio->format('H:i')                : '')));
-            $this->logger->debug("-- Hora Fim................: ". (empty($horaFim)    ? ' Vazio' : ($horaFim->getMarcacao() instanceof \DateTime      ? $horaFim->getMarcacao()->format('H:i')    : '')));
+            $this->logger->debug("-- Hora Inicio.............: ". (empty($horaInicio) ? ' Vazio' : ($horaInicio instanceof DateTime                  ? $horaInicio->format('H:i')                : '')));
+            $this->logger->debug("-- Hora Fim................: ". (empty($horaFim)    ? ' Vazio' : ($horaFim->getMarcacao() instanceof DateTime      ? $horaFim->getMarcacao()->format('H:i')    : '')));
             return;
         }
 
@@ -159,10 +161,10 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
             $marcacoes = $oDiaTrabalho->getMarcacoes();
         }
 
-        $this->logger->debug("-- Hora Inicio Jornada.....: ". ($horaInicioJornada instanceof \DateTime           ? $horaInicioJornada->format('H:i')                             : ''));
-        $this->logger->debug("-- Hora Fim Jornada........: ". ($horaFimJornada instanceof \DateTime              ? $horaFimJornada->format('H:i')                                : ''));
-        $this->logger->debug("-- Hora Inicio.............: ". ($horaInicio instanceof \DateTime                  ? $horaInicio->format('H:i')                                    : ''));
-        $this->logger->debug("-- Hora Fim................: ". ($horaFim->getMarcacao() instanceof \DateTime      ? $horaFim->getMarcacao()->format('H:i')                        : ''));
+        $this->logger->debug("-- Hora Inicio Jornada.....: ". ($horaInicioJornada instanceof DateTime           ? $horaInicioJornada->format('H:i')                             : ''));
+        $this->logger->debug("-- Hora Fim Jornada........: ". ($horaFimJornada instanceof DateTime              ? $horaFimJornada->format('H:i')                                : ''));
+        $this->logger->debug("-- Hora Inicio.............: ". ($horaInicio instanceof DateTime                  ? $horaInicio->format('H:i')                                    : ''));
+        $this->logger->debug("-- Hora Fim................: ". ($horaFim->getMarcacao() instanceof DateTime      ? $horaFim->getMarcacao()->format('H:i')                        : ''));
         $this->logger->debug("-- Hora Fim Tipo...........: ". ($horaFim instanceof MarcacaoPonto                 ? MarcacaoPonto::getDescricaoTipoMarcacao($horaFim->getTipo())  : ''));
 
         if($horaFim->isMarcacaoSaida() || $horaFim->getTipo() != MarcacaoPonto::ENTRADA_1) {
@@ -291,7 +293,7 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
                 }
             }
 
-            if($oDiaTrabalho->getJornada()->isDSR() || $oDiaTrabalho->getFeriado() || $oDiaTrabalho->getData()->getDiaSemana() == \DBDate::DOMINGO) {
+            if($oDiaTrabalho->getJornada()->isDSR() || $oDiaTrabalho->getFeriado() || $oDiaTrabalho->getData()->getDiaSemana() == DBDate::DOMINGO) {
                 $lExtra = BaseHora::HORAS_EXTRA100;
             } else {
 
@@ -328,8 +330,8 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
         }
 
         $this->logger->debug("-- Minutos Calculados......: ". ($minutosCalculados));
-        $this->logger->debug("-- Horas Extras Diurnas....: ". ($this->getHorasDiurnas() instanceof \DateTime  ? $this->getHorasDiurnas()->format('H:i')  : '' ));
-        $this->logger->debug("-- Horas Extras Noturnas...: ". ($this->getHorasNoturnas() instanceof \DateTime ? $this->getHorasNoturnas()->format('H:i') : '' ));
+        $this->logger->debug("-- Horas Extras Diurnas....: ". ($this->getHorasDiurnas() instanceof DateTime  ? $this->getHorasDiurnas()->format('H:i')  : '' ));
+        $this->logger->debug("-- Horas Extras Noturnas...: ". ($this->getHorasNoturnas() instanceof DateTime ? $this->getHorasNoturnas()->format('H:i') : '' ));
 
         if($this->logger->getVerbosity() == Logger::DEBUG_5) {
 

@@ -39,7 +39,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
    * @param IExportacaoCenso $oExportacaoCenso da Importacao do censo
    * @return boolean
    */
-    #[\Override]
+    #[Override]
     public static function validarDados(IExportacaoCenso $oExportacaoCenso)
     {
 
@@ -1133,8 +1133,8 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     /**
      * Valida se a escola fornece Atividade Complementar e se há turmas informadas com este tipo de atividade
      * @param string $sMsgTurma
-     * @param \stdClass $oDadosEscola
-     * @param \stdClass $oDadosTurma
+     * @param stdClass $oDadosEscola
+     * @param stdClass $oDadosTurma
      * @param IExportacaoCenso $oExportacaoCenso
      * @return bool
      */

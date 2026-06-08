@@ -168,7 +168,7 @@ class ParametrosPessoal {
     /**
      * Rubrica utilizada para pensão alimenticia
      *
-     * @var \Rubrica
+     * @var Rubrica
      */
     private $rubricaAbonoPecunia;
 
@@ -577,7 +577,7 @@ class ParametrosPessoal {
     /**
      * @param Rubrica $rubricaAbonoPecunia
      */
-    public function setRubricaAbonoPecunia(\Rubrica $rubricaAbonoPecunia)
+    public function setRubricaAbonoPecunia(Rubrica $rubricaAbonoPecunia)
     {
         $this->rubricaAbonoPecunia = $rubricaAbonoPecunia;
     }

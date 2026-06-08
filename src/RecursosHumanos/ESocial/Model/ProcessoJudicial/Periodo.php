@@ -27,7 +27,6 @@
 namespace ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial;
 
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ContratoRepository;
-use DBDate;
 use JSON;
 
 class Periodo

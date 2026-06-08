@@ -26,6 +26,12 @@
  */
 namespace ECidade\Patrimonial\Acordo\RegimeCompetencia\Repository;
 
+use Instituicao;
+use cl_programacaofinanceira;
+use DBException;
+use db_utils;
+use AcordoRepository;
+use cl_acordoprogramacaofinanceira;
 use Acordo;
 use DBCompetencia;
 use ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Reconhecimento as ReconhecimentoModel;
@@ -38,13 +44,13 @@ class Reconhecimento {
 
   /**
    * Retorna uma coleção de Reconhecimentos para o reconhecimento da competencia
-   * @param \Instituicao   $instituicao
+   * @param Instituicao $instituicao
    * @param \DBCompetencia $competencia
-   * @param \Acordo|null   $acordo
+   * @param Acordo|null $acordo
    * @return ReconhecimentoModel[]
-   * @throws \DBException
+   * @throws DBException
    */
-  public function getAcordosParaReconhecimento(\Instituicao $instituicao, ?DBCompetencia $competencia = null, ?Acordo $acordo = null) {
+  public function getAcordosParaReconhecimento(Instituicao $instituicao, ?DBCompetencia $competencia = null, ?Acordo $acordo = null) {
 
     $aWhere = ["ac16_instit = {$instituicao->getCodigo()}"];
     if (!empty($acordo)) {
@@ -60,14 +66,14 @@ class Reconhecimento {
   }
 
   /**
-   * @param \Instituicao   $instituicao
+   * @param Instituicao $instituicao
    * @param \DBCompetencia $competencia
-   * @param \Acordo|null   $acordo
+   * @param Acordo|null $acordo
    *
    * @return ReconhecimentoModel[]
-   * @throws \DBException
+   * @throws DBException
    */
-  public static function getReconhecimentosAbertosAteCompetencia(\Instituicao $instituicao, DBCompetencia $competencia, ?Acordo $acordo = null) {
+  public static function getReconhecimentosAbertosAteCompetencia(Instituicao $instituicao, DBCompetencia $competencia, ?Acordo $acordo = null) {
 
     $aWhere = ["ac16_instit = {$instituicao->getCodigo()}"];
 
@@ -86,23 +92,23 @@ class Reconhecimento {
    * @param                     $iCredor
    * @param                     $iContrato
    * @return ReconhecimentoModel[]
-   * @throws \DBException
+   * @throws DBException
    */
   public static function getReconhecimentosFechados(?DBCompetencia $oCompetencia = null, $iCredor = null, $iContrato = null) {
 
-    $oProgramacaoFinanceira    = new \cl_programacaofinanceira();
+    $oProgramacaoFinanceira    = new cl_programacaofinanceira();
     $lBuscaAnosAnteriores = true;
     $sSqlProgramacaoFinanceira = $oProgramacaoFinanceira->sql_query_liquidacao($oCompetencia, $iCredor, $iContrato, $lBuscaAnosAnteriores);
     $rsProgramacaoFinanceira   = db_query($sSqlProgramacaoFinanceira);
     if (!$rsProgramacaoFinanceira) {
-      throw new \DBException("Não foi possível pesquisar acordos para reconhecimento da competência.");
+      throw new DBException("Não foi possível pesquisar acordos para reconhecimento da competência.");
     }
 
     $iParcela          = 0;
     $icontratoCorrente = null;
-    $aContratos = \db_utils::makeCollectionFromRecord($rsProgramacaoFinanceira, function($dados) use(&$iParcela, &$icontratoCorrente) {
+    $aContratos = db_utils::makeCollectionFromRecord($rsProgramacaoFinanceira, function($dados) use(&$iParcela, &$icontratoCorrente) {
 
-      $oAcordo                      = \AcordoRepository::getByCodigo($dados->acordo);
+      $oAcordo                      = AcordoRepository::getByCodigo($dados->acordo);
 
       $oReconhecimento = new ReconhecimentoModel();
 
@@ -124,24 +130,24 @@ class Reconhecimento {
   /**
    * @param $sWhere
    * @return \ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Reconhecimento[]
-   * @throws \DBException
+   * @throws DBException
    */
   private static function getReconhecimentos ($sWhere) {
 
-    $oDaoprogramacaoItem = new \cl_acordoprogramacaofinanceira();
+    $oDaoprogramacaoItem = new cl_acordoprogramacaofinanceira();
     $campos      = 'ac16_sequencial as acordo, ac16_numero as numero, ac16_anousu as ano, k118_sequencial, k118_ano, k117_despesaantecipada, k118_mes, sum(k118_valor) as valor';
     $sGroup      = 'ac16_sequencial, ac16_numero, ac16_anousu, k118_sequencial, k118_ano, k117_despesaantecipada, k118_mes';
     $sWhere     .= " group by {$sGroup}";
     $sSqlAcordos = $oDaoprogramacaoItem->sql_query_parcelas(null, $campos, 'ac16_numero', $sWhere);
     $rsAcordos   = db_query($sSqlAcordos);
     if (!$rsAcordos) {
-      throw new \DBException("Não foi possível pesquisar acordos para reconhecimento da competência");
+      throw new DBException("Não foi possível pesquisar acordos para reconhecimento da competência");
     }
-    $reconhecimemtos = \db_utils::makeCollectionFromRecord($rsAcordos, function($dados){
+    $reconhecimemtos = db_utils::makeCollectionFromRecord($rsAcordos, function($dados){
 
        $oReconhecimento = new ReconhecimentoModel();
        $oReconhecimento->setCodigo($dados->k118_sequencial);
-       $oReconhecimento->setAcordo(\AcordoRepository::getByCodigo($dados->acordo));
+       $oReconhecimento->setAcordo(AcordoRepository::getByCodigo($dados->acordo));
        $oReconhecimento->setCompetencia(new DBCompetencia($dados->k118_ano, $dados->k118_mes));
        $oReconhecimento->setValor($dados->valor);
        $oReconhecimento->setDispesaAntecipada($dados->k117_despesaantecipada == 't' ? true : false);

@@ -2,6 +2,8 @@
 
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados;
 
+use DadosCenso;
+use DBString;
 use stdClass;
 
 /**
@@ -34,7 +36,7 @@ class DadosEscola2016 implements DadosInterface
      */
     public function transformarStdClass()
     {
-        $oValidacao = new \DadosCenso();
+        $oValidacao = new DadosCenso();
         $oDados = new stdClass();
 
         $oDados->tipo_registro = 89;
@@ -78,7 +80,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 2 - regra 3
-        if (!\DBString::isSomenteNumero($this->iInep)) {
+        if (!DBString::isSomenteNumero($this->iInep)) {
             $this->aErros[] = 'O campo "Código de escola - INEP" foi preenchido com valor inválido.';
         }
     }
@@ -99,7 +101,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 3 - regra 3
-        if (!\DBString::isSomenteNumero($this->sCpf)) {
+        if (!DBString::isSomenteNumero($this->sCpf)) {
             $this->aErros[] = 'O campo "Número do CPF do Gestor Escolar" foi preenchido com valor inválido.';
         }
 
@@ -120,7 +122,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         //campo 4 - regra 2
-        if (!\DBString::validarTamanhoMaximo($this->sNome, 100)) {
+        if (!DBString::validarTamanhoMaximo($this->sNome, 100)) {
             $this->aErros[] = 'O campo "Nome do Gestor Escolar" está maior que o especificado.';
         }
     }
@@ -152,12 +154,12 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 6 - regra 2
-        if (!\DBString::validarTamanhoMaximo($this->sEmail, 50)) {
+        if (!DBString::validarTamanhoMaximo($this->sEmail, 50)) {
             $this->aErros[] = 'O campo "Endereço eletrônico (e-mail) do Gestor Escolar" está maior que o especificado.';
         }
 
         // campo 6 - regra 3
-        if (!\DBString::isEmail($this->sEmail)) {
+        if (!DBString::isEmail($this->sEmail)) {
             $this->aErros[] = 'O campo "Endereço eletrônico (e-mail) do Gestor Escolar" está maior que o especificado.';
         }
     }

@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Contrato\Model;
 
+use cl_rhservidorcontratojornada;
+use db_utils;
 use BusinessException;
 use DBException;
 use Exception;
@@ -120,7 +122,7 @@ class ContratoJornada
     public function __construct($matricula = null, $codigoInstituicao = null)
     {
         if ($matricula && $codigoInstituicao) {
-            $dao =new \cl_rhservidorcontratojornada();
+            $dao =new cl_rhservidorcontratojornada();
             $campos = ["rh254_sequencial",
                        "rh254_instit",
                        "rh254_matricula",
@@ -137,7 +139,7 @@ class ContratoJornada
                 throw new DBException("Erro ao buscar informações.");
             }
             if (pg_num_rows($rs)>0) {
-                $dao = \db_utils::fieldsMemory($rs, 0);
+                $dao = db_utils::fieldsMemory($rs, 0);
                 $this->setCodigo((int)$dao->rh254_sequencial);
                 $this->setCodigoInstituicao((int)$dao->rh254_instit);
                 $this->setMatricula((int)$dao->rh254_matricula);
@@ -152,7 +154,7 @@ class ContratoJornada
     public function salvar()
     {
         $this->validar();
-        $dao = new \cl_rhservidorcontratojornada();
+        $dao = new cl_rhservidorcontratojornada();
         $dao->rh254_sequencial = $this->getCodigo();
         $dao->rh254_matricula = $this->getMatricula();
         $dao->rh254_instit = $this->getCodigoInstituicao();

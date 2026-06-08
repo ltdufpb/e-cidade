@@ -27,7 +27,6 @@
 
 use ECidade\Educacao\Escola\Model\AreaConhecimento;
 use ECidade\Educacao\Escola\Registry\AreaConhecimentoRegistry;
-use ECidade\Enum\Educacao\Escola\TipoBaseEnum;
 
 define("MSG_REGENCIA", "educacao.escola.Regencia.");
 
@@ -567,7 +566,7 @@ class Regencia
      * Retorna se disciplina é lançada no histórico
      * @return bool
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function isLancadaNoHistorico()
     {
         return $this->lLancadaHistorico;
@@ -586,7 +585,7 @@ class Regencia
      * Retorna se disciplina é lançada na documentação
      * @return bool
      */
-    #[\Deprecated]
+    #[Deprecated]
     public function isLancadaDocumentacao()
     {
         return $this->lLancadaHistorico;
@@ -888,7 +887,7 @@ class Regencia
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new \DBException("Erro ao verificar se existe alunos de progressão parcial vículados a disciplina.");
+            throw new DBException("Erro ao verificar se existe alunos de progressão parcial vículados a disciplina.");
         }
 
         if (pg_num_rows($rs) > 0) {
@@ -912,7 +911,7 @@ class Regencia
             $msg .= "Acesse \"Procedimentos > Matrículas > Progressão Parcial > Vínculo Aluno / Turma\" para remover o(s) ";
             $msg .= "alunos.";
 
-            throw new \Exception($msg);
+            throw new Exception($msg);
         }
         $this->excluirVinculoDiario();
         $oMsgErro = new stdClass();
