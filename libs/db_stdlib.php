@@ -21,12 +21,16 @@ $GLOBALS["HTTP_ENV_VARS"]     = $_ENV     ?? [];
 // o mecanismo interno do PHP que repopula $_SESSION em session_start() e
 // causa "Sessao invalida" em todo login. Bug introduzido por engano no
 // hotfix5 e corrigido em 2026-06-08.
-$_SERVER  = &$GLOBALS["HTTP_SERVER_VARS"];
-$_POST    = &$GLOBALS["HTTP_POST_VARS"];
-$_GET     = &$GLOBALS["HTTP_GET_VARS"];
-$_COOKIE  = &$GLOBALS["HTTP_COOKIE_VARS"];
-$_SESSION = &$GLOBALS["HTTP_SESSION_VARS"];
-$_ENV     = &$GLOBALS["HTTP_ENV_VARS"];
+// NOTA RECTOR: estas linhas usam os nomes ANTIGOS no lado esquerdo de
+// proposito. A regra ReplaceHttpServerVarsByServerRector reescreve
+// $HTTP_*_VARS para $_* e ja reintroduziu o bug uma vez (PHP8-14) —
+// este arquivo esta no withSkip da regra no rector.php.
+$HTTP_SERVER_VARS  = &$GLOBALS["HTTP_SERVER_VARS"];
+$HTTP_POST_VARS    = &$GLOBALS["HTTP_POST_VARS"];
+$HTTP_GET_VARS     = &$GLOBALS["HTTP_GET_VARS"];
+$HTTP_COOKIE_VARS  = &$GLOBALS["HTTP_COOKIE_VARS"];
+$HTTP_SESSION_VARS = &$GLOBALS["HTTP_SESSION_VARS"];
+$HTTP_ENV_VARS     = &$GLOBALS["HTTP_ENV_VARS"];
 
 /*
  *     E-cidade Software Publico para Gestao Municipal
