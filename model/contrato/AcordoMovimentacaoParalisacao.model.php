@@ -37,6 +37,7 @@ class AcordoMovimentacaoParalisacao extends AcordoMovimentacao {
    * @throws Exception
    * @return AcordoMovimentacaoParalisacao
    */
+  #[\Override]
   public function save() {
 
     parent::save();
@@ -75,6 +76,7 @@ class AcordoMovimentacaoParalisacao extends AcordoMovimentacao {
    *
    * @param integer $iTipo
    */
+  #[\Override]
   public function setTipo($iTipo) {
     $this->iTipo = 16;
   }
@@ -84,6 +86,7 @@ class AcordoMovimentacaoParalisacao extends AcordoMovimentacao {
    *
    * @return AcordoMovimentacaoParalisacao
    */
+  #[\Override]
   public function cancelar() {
     parent::cancelar();
     return $this;

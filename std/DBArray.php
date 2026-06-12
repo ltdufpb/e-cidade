@@ -53,7 +53,7 @@ abstract class DBArray {
       return false;
     }
 
-    $aRetorno = array();
+    $aRetorno = [];
 
     foreach ($aChavesArray as $sChave) {
       $aRetorno[$sChave] = $aArray[$sChave];

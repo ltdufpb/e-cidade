@@ -153,32 +153,17 @@ class DBCompetencia
         $sCompetenciaAtual = $oCompetenciaAtual->getAno() . $oCompetenciaAtual->getMes();
         $sCompetenciaComparar = $oCompetenciaComparar->getAno() . $oCompetenciaComparar->getMes();
 
-        switch ($sTipoComparacao) {
-
-            case DBCompetencia::COMPARACAO_DIFERENTE:
-                $lComparacao = ($oCompetenciaAtual->getMes() <> $oCompetenciaComparar->getMes()) ||
-                    ($oCompetenciaAtual->getAno() <> $oCompetenciaComparar->getAno());
-                break;
-            case DBCompetencia::COMPARACAO_IGUAL:
-                $lComparacao = ($oCompetenciaAtual->getMes() == $oCompetenciaComparar->getMes()) &&
-                    ($oCompetenciaAtual->getAno() == $oCompetenciaComparar->getAno());
-                break;
-            case DBCompetencia::COMPARACAO_MAIOR:
-                $lComparacao = $sCompetenciaAtual > $sCompetenciaComparar;
-                break;
-            case DBCompetencia::COMPARACAO_MENOR:
-                $lComparacao = $sCompetenciaAtual < $sCompetenciaComparar;
-                break;
-            case DBCompetencia::COMPARACAO_MAIOR_IGUAL:
-                $lComparacao = $sCompetenciaAtual >= $sCompetenciaComparar;
-                break;
-            case DBCompetencia::COMPARACAO_MENOR_IGUAL:
-                $lComparacao = $sCompetenciaAtual <= $sCompetenciaComparar;
-                break;
-            default:
-                throw new ParameterException("Tipo de Comparação Inválida.");
-                break;
-        }
+        $lComparacao = match ($sTipoComparacao) {
+            DBCompetencia::COMPARACAO_DIFERENTE => ($oCompetenciaAtual->getMes() <> $oCompetenciaComparar->getMes()) ||
+                ($oCompetenciaAtual->getAno() <> $oCompetenciaComparar->getAno()),
+            DBCompetencia::COMPARACAO_IGUAL => ($oCompetenciaAtual->getMes() == $oCompetenciaComparar->getMes()) &&
+                ($oCompetenciaAtual->getAno() == $oCompetenciaComparar->getAno()),
+            DBCompetencia::COMPARACAO_MAIOR => $sCompetenciaAtual > $sCompetenciaComparar,
+            DBCompetencia::COMPARACAO_MENOR => $sCompetenciaAtual < $sCompetenciaComparar,
+            DBCompetencia::COMPARACAO_MAIOR_IGUAL => $sCompetenciaAtual >= $sCompetenciaComparar,
+            DBCompetencia::COMPARACAO_MENOR_IGUAL => $sCompetenciaAtual <= $sCompetenciaComparar,
+            default => throw new ParameterException("Tipo de Comparação Inválida."),
+        };
 
         return $lComparacao;
     }
@@ -300,10 +285,10 @@ class DBCompetencia
      */
     public static function createFromString($competencia)
     {
-        if (strlen($competencia) != 7) {
+        if (strlen((string) $competencia) != 7) {
             throw new BusinessException("Competência {$competencia} com formato inválido.");
         }
-        $aPartes = explode("/", $competencia);
+        $aPartes = explode("/", (string) $competencia);
         if (strlen($aPartes[0]) == 2) {
             return new DBCompetencia($aPartes[1], $aPartes[0]);
         }
@@ -317,9 +302,9 @@ class DBCompetencia
      */
     public function toArray()
     {
-        return array(
+        return [
             'mes' => $this->getMes(),
             'ano' => $this->getAno()
-        );
+        ];
     }
 }

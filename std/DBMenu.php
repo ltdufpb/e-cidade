@@ -31,30 +31,6 @@
 class DBMenu {
 
   /**
-   * Módulo atual a ser gerado o menu
-   * @var integer
-   */
-  private $iModulo;
-
-  /**
-   * Id do usuário para gerar as permissões
-   * @var integer
-   */
-  private $iIdUsuario;
-
-  /**
-   * Ano atual da geração
-   * @var integer
-   */
-  private $iAnoUsu;
-
-  /**
-   * Instituição a ser gerado o menu
-   * @var integer
-   */
-  private $iInstituicao;
-
-  /**
    * Ano DataUsu
    * @var String
    */
@@ -123,14 +99,27 @@ class DBMenu {
    * Mantém o cache para busca dos menus
    * @var array
    */
-  private $aCacheMenus = array();
+  private $aCacheMenus = [];
 
-  function __construct($iModulo, $iIdUsuario, $iAnoUsu, $iInstituicao) {
-
-    $this->iModulo      = $iModulo;
-    $this->iIdUsuario   = $iIdUsuario;
-    $this->iAnoUsu      = $iAnoUsu;
-    $this->iInstituicao = $iInstituicao;
+  /**
+   * @param int $iModulo
+   * @param int $iIdUsuario
+   * @param int $iAnoUsu
+   * @param int $iInstituicao
+   */
+  function __construct(/**
+   * Módulo atual a ser gerado o menu
+   */
+  private $iModulo, /**
+   * Id do usuário para gerar as permissões
+   */
+  private $iIdUsuario, /**
+   * Ano atual da geração
+   */
+  private $iAnoUsu, /**
+   * Instituição a ser gerado o menu
+   */
+  private $iInstituicao) {
 
     $this->iDataUsu = date("Y");
     $this->oDaoMenu = db_utils::getDao("db_menu", true);
@@ -219,18 +208,18 @@ class DBMenu {
     $aMenus = DBCache::read("menus/{$this->iAnoUsu}_{$this->iModulo}_{$this->iInstituicao}_{$this->iIdUsuario}_pesquisa");
 
     if ($aMenus === false) {
-      return array();
+      return [];
     }
 
-    $aRetorno = array();
+    $aRetorno = [];
 
     foreach ($aMenus as $oMenu) {
 
-      if (stripos($oMenu->caminho, $sConteudo) !== false) {
+      if (stripos((string) $oMenu->caminho, $sConteudo) !== false) {
 
         $oItem = new stdClass();
-        $oItem->label = utf8_encode($oMenu->caminho);
-        $oItem->cod   = utf8_encode($oMenu->funcao);
+        $oItem->label = mb_convert_encoding($oMenu->caminho, 'UTF-8', 'ISO-8859-1');
+        $oItem->cod   = mb_convert_encoding($oMenu->funcao, 'UTF-8', 'ISO-8859-1');
         $aRetorno[]   = $oItem;
       }
     }
@@ -253,11 +242,11 @@ class DBMenu {
     if ( $oPreferenciaUsuario->getHabilitaCacheMenu()
          && ($sHtmlCache = DBCache::read("menus/{$this->iAnoUsu}_{$this->iModulo}_{$this->iInstituicao}_{$this->iIdUsuario}_estrutura")) ) {
 
-      return base64_decode($sHtmlCache);
+      return base64_decode((string) $sHtmlCache);
     }
 
     $this->sHtmlMenu   = "";
-    $this->aCacheMenus = array();
+    $this->aCacheMenus = [];
 
     $rsMenusPrincipais = $this->getMenuItens($this->iModulo);
 
@@ -374,7 +363,7 @@ class DBMenu {
     /**
      * Monta o menu dos módulos
      */
-    if (pg_numrows($rsModulos) == 0) {
+    if (pg_num_rows($rsModulos) == 0) {
       return;
     }
 
@@ -387,7 +376,7 @@ class DBMenu {
     $iTotalModulosArea = 0;
     $iMaxModulos       = 22;
 
-    for ($iModulo = 0; $iModulo < pg_numrows($rsModulos); $iModulo++) {
+    for ($iModulo = 0; $iModulo < pg_num_rows($rsModulos); $iModulo++) {
       $oModulo = db_utils::fieldsMemory($rsModulos, $iModulo);
 
       if ($oModulo->at25_descr != $sModuloAtual) {
@@ -611,21 +600,13 @@ class DBMenu {
    */
   public static function getCampoOrdenacao() {
 
-    $oPreferencias = unserialize(base64_decode(db_getsession('DB_preferencias_usuario')));
+    $oPreferencias = unserialize(base64_decode((string) db_getsession('DB_preferencias_usuario')));
 
-    switch ($oPreferencias->getOrdenacao()) {
-
-      case 'sequencial':
-        $sOrdenacao = 'menusequencia';
-        break;
-
-      case 'alfabetico':
-        $sOrdenacao = 'descricao';
-        break;
-
-      default:
-        $sOrdenacao = 'menusequencia';
-    }
+    $sOrdenacao = match ($oPreferencias->getOrdenacao()) {
+        'sequencial' => 'menusequencia',
+        'alfabetico' => 'descricao',
+        default => 'menusequencia',
+    };
 
     return $sOrdenacao;
   }
@@ -641,7 +622,7 @@ class DBMenu {
       return \db_stdClass::getCaminhoMenu((int) $id);
     }
 
-    $aCaminho = array();
+    $aCaminho = [];
     $oDaoMenu = new cl_db_itensmenu();
     $iLimiteIteracoes = 100;
 

@@ -124,7 +124,7 @@ abstract class DBTime {
     $H = date("H",$iData);
     $i = date("i",$iData);
     
-    $sSql    = cl_calend::sql_query(null, "*", "", "k13_data = '{$Y}-{$m}-{$d}'");
+    $sSql    = (new cl_calend())->sql_query(null, "*", "", "k13_data = '{$Y}-{$m}-{$d}'");
     $rsDia   = db_query($sSql);
     
     if (pg_num_rows($rsDia) > 0) {

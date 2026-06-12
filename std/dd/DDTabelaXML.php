@@ -3,8 +3,8 @@
 class DDTabelaXML
 {
 
-    public $aCampos = Array();
-    public $aFks = Array();
+    public $aCampos = [];
+    public $aFks = [];
     private $sXml = "";
     private $sArqName = "";
     private $sTableName = "";
@@ -23,7 +23,7 @@ class DDTabelaXML
             throw (new Exception("Arquivo dd/tabelas/{$sTableName}.dd.xml não encontrado."));
         }
 
-        preg_match("/^(?:(?P<schema>.*)\.)?(?P<table>.*)$/", $sTableName, $aTableName);
+        preg_match("/^(?:(?P<schema>.*)\.)?(?P<table>.*)$/", (string) $sTableName, $aTableName);
 
         $this->sTableSchema = $aTableName["schema"];
         $this->sTableName = $aTableName["table"];
@@ -67,7 +67,7 @@ class DDTabelaXML
     public function getFieldsPk()
     {
 
-        $aFieldsPk = array();
+        $aFieldsPk = [];
         foreach ($this->aCampos as $oCampo) {
             if ($oCampo->isPk()) {
                 $aFieldsPk[] = $oCampo;

@@ -4,6 +4,7 @@ require(modification('fpdf151/fpdf.php'));
 
 class scpdf extends fpdf {
 
+#[\Override]
 function RoundedRect($x, $y, $w, $h, $r, $style = '', $angle = '1234')
  {
    $k = $this->k;
@@ -20,28 +21,28 @@ function RoundedRect($x, $y, $w, $h, $r, $style = '', $angle = '1234')
    $xc = $x+$w-$r;
    $yc = $y+$r;
    $this->_out(sprintf('%.2f %.2f l', $xc*$k,($hp-$y)*$k ));
-   if (strpos($angle, '2')===false)
+   if (!str_contains((string) $angle, '2'))
        $this->_out(sprintf('%.2f %.2f l', ($x+$w)*$k,($hp-$y)*$k ));
    else
        $this->_Arc($xc + $r*$MyArc, $yc - $r, $xc + $r, $yc - $r*$MyArc, $xc + $r, $yc);
    $xc = $x+$w-$r;
    $yc = $y+$h-$r;
    $this->_out(sprintf('%.2f %.2f l',($x+$w)*$k,($hp-$yc)*$k));
-   if (strpos($angle, '3')===false)
+   if (!str_contains((string) $angle, '3'))
       $this->_out(sprintf('%.2f %.2f l',($x+$w)*$k,($hp-($y+$h))*$k));
    else
       $this->_Arc($xc + $r, $yc + $r*$MyArc, $xc + $r*$MyArc, $yc + $r, $xc, $yc + $r);
    $xc = $x+$r;
    $yc = $y+$h-$r;
    $this->_out(sprintf('%.2f %.2f l',$xc*$k,($hp-($y+$h))*$k));
-   if (strpos($angle, '4')===false)
+   if (!str_contains((string) $angle, '4'))
        $this->_out(sprintf('%.2f %.2f l',($x)*$k,($hp-($y+$h))*$k));
    else
        $this->_Arc($xc - $r*$MyArc, $yc + $r, $xc - $r, $yc + $r*$MyArc, $xc - $r, $yc);
    $xc = $x+$r ;
    $yc = $y+$r;
    $this->_out(sprintf('%.2f %.2f l',($x)*$k,($hp-$yc)*$k ));
-   if (strpos($angle, '1')===false)
+   if (!str_contains((string) $angle, '1'))
    {
       $this->_out(sprintf('%.2f %.2f l',($x)*$k,($hp-$y)*$k ));
       $this->_out(sprintf('%.2f %.2f l',($x+$w)*$k,($hp-$y)*$k ));
@@ -49,6 +50,7 @@ function RoundedRect($x, $y, $w, $h, $r, $style = '', $angle = '1234')
       $this->_Arc($xc - $r, $yc - $r*$MyArc, $xc - $r*$MyArc, $yc - $r, $xc, $yc - $r);
       $this->_out($op);
    }
+#[\Override]
 function _Arc($x1, $y1, $x2, $y2, $x3, $y3)
    {
    $h = $this->h;

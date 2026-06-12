@@ -2,10 +2,8 @@
 
 class DDFieldFkXML {
   
-  private $oFieldFkXml = null;
-
-  public function __construct(DOMNode $oDomNode){
-    $this->oFieldFkXml = $oDomNode;
+  public function __construct(private readonly DOMNode $oFieldFkXml)
+  {
   }
 
   public function __get($sName){

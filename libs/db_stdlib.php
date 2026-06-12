@@ -21,12 +21,12 @@ $GLOBALS["HTTP_ENV_VARS"]     = $_ENV     ?? [];
 // o mecanismo interno do PHP que repopula $_SESSION em session_start() e
 // causa "Sessao invalida" em todo login. Bug introduzido por engano no
 // hotfix5 e corrigido em 2026-06-08.
-$HTTP_SERVER_VARS  = &$GLOBALS["HTTP_SERVER_VARS"];
-$HTTP_POST_VARS    = &$GLOBALS["HTTP_POST_VARS"];
-$HTTP_GET_VARS     = &$GLOBALS["HTTP_GET_VARS"];
-$HTTP_COOKIE_VARS  = &$GLOBALS["HTTP_COOKIE_VARS"];
-$HTTP_SESSION_VARS = &$GLOBALS["HTTP_SESSION_VARS"];
-$HTTP_ENV_VARS     = &$GLOBALS["HTTP_ENV_VARS"];
+$_SERVER  = &$GLOBALS["HTTP_SERVER_VARS"];
+$_POST    = &$GLOBALS["HTTP_POST_VARS"];
+$_GET     = &$GLOBALS["HTTP_GET_VARS"];
+$_COOKIE  = &$GLOBALS["HTTP_COOKIE_VARS"];
+$_SESSION = &$GLOBALS["HTTP_SESSION_VARS"];
+$_ENV     = &$GLOBALS["HTTP_ENV_VARS"];
 
 /*
  *     E-cidade Software Publico para Gestao Municipal
@@ -2878,7 +2878,7 @@ function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null
     $DBMenu->setFuncao(strtolower(basename((string) $_SERVER["PHP_SELF"])));
     $DBMenu->setOrdenacao($sOrdenacao);
 
-    $sMenu = $DBMenu->montaMenu($modulo);
+    $sMenu = $DBMenu->montaMenu();
 
     echo $sMenu;
     echo $sHtmlAvisos;

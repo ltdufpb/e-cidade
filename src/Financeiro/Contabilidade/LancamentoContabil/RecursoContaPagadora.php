@@ -36,7 +36,7 @@ use ILancamentoAuxiliar;
  */
 class RecursoContaPagadora extends RecursoAbstract
 {
-    public function processar($codigoLancamnento, ILancamentoAuxiliar $lancamentoAuxiliar = null)
+    public function processar($codigoLancamnento, ?ILancamentoAuxiliar $lancamentoAuxiliar = null)
     {
         $daoConlancam = new \cl_conlancam();
         $sqlRecurso = $daoConlancam->sql_consulta_recursos_lancamentos($codigoLancamnento);

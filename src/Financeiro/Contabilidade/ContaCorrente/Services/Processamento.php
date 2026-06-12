@@ -53,11 +53,6 @@ use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\Repository\Lancamento a
 class Processamento
 {
 
-    /**
-     * @var \DBCompetencia
-     */
-    private $competencia;
-
     private $atributosContaCorrente = [];
 
     /**
@@ -66,9 +61,8 @@ class Processamento
      * @param \DBCompetencia $competencia
      * @throws DBException
      */
-    public function __construct(private Instituicao $instituicao, DBCompetencia $competencia)
+    public function __construct(private Instituicao $instituicao, private DBCompetencia $competencia)
     {
-        $this->competencia = $competencia;
         if (!DBRegistry::has('conta_corrente_atributos')) {
             $daoConplanoSistema = new cl_conplanosistema();
             $sqlContaCorrentes = $daoConplanoSistema->sql_query_file(null, "c122_sequencial", null, " c122_tipo = 2");

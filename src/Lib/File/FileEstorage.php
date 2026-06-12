@@ -52,7 +52,7 @@ class FileEstorage
         $this->path .= '.';
         // file_put_contents('tmp/debug', print_r($infoRequest, true));
 
-        $infoRequest['content_type'] = trim($infoRequest['content_type']);
+        $infoRequest['content_type'] = trim((string) $infoRequest['content_type']);
         switch ($infoRequest['content_type']) {
             case 'application/x-abiword':
                 $extension = 'abw';

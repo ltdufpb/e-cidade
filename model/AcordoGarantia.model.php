@@ -66,7 +66,7 @@ class AcordoGarantia  {
    */
   private $dtDataLimite = '';
   
-  private $aTiposContratos = array();
+  private $aTiposContratos = [];
   /**
    * 
    * 
@@ -238,7 +238,7 @@ class AcordoGarantia  {
         }
       }
     } else {
-      $this->aTiposContratos = array();
+      $this->aTiposContratos = [];
     }
     return $this;
   }

@@ -11,11 +11,6 @@ use Servidor;
 class ControleRubricasCalculoParametros
 {
     /**
-     * @var DBCompetencia
-     */
-    private $competencia;
-
-    /**
      * ControleHorasExtrasCalculoParametros constructor.
      * @param Instituicao $instituicao
      * @param DBCompetencia $competencia
@@ -25,16 +20,8 @@ class ControleRubricasCalculoParametros
      * @param bool $isAlteracao
      * @param string $tabela
      */
-    public function __construct(
-        private Instituicao $instituicao,
-        DBCompetencia $competencia,
-        private Servidor $servidor,
-        private Rubrica $rubrica,
-        private $quantidadeAdicionada,
-        private $isAlteracao,
-        private $tabela
-    ) {
-        $this->competencia = $competencia;
+    public function __construct(private Instituicao $instituicao, private DBCompetencia $competencia, private Servidor $servidor, private Rubrica $rubrica, private $quantidadeAdicionada, private $isAlteracao, private $tabela)
+    {
     }
 
     /**

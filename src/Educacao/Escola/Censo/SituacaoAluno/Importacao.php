@@ -26,19 +26,12 @@ class Importacao
    */
   private $oLayout = null;
 
-  /**
-   * @var Escola
-   */
-  private $oEscola = null;
-
   private $aLinhas = [];
 
   private $lPossuiInconsistencia = false;
 
-  public function __construct(private readonly CensoEscolar $oCenso, Escola $oEscola)
+  public function __construct(private readonly CensoEscolar $oCenso, private readonly Escola $oEscola)
   {
-
-    $this->oEscola = $oEscola;
   }
 
   /**

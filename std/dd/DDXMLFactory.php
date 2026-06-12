@@ -1,7 +1,7 @@
 <?php
 class DDXMLFactory {
   
-  private static $aInstancias = Array ();
+  private static $aInstancias =  [];
   //echo   
   private function __construct() {}
   

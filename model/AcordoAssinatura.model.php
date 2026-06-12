@@ -70,6 +70,7 @@ class AcordoAssinatura extends AcordoMovimentacao {
    * 
    * @param integer $iTipo
    */
+  #[\Override]
   public function setTipo($iTipo) {
   	
   	$this->iTipo = 2;
@@ -92,6 +93,7 @@ class AcordoAssinatura extends AcordoMovimentacao {
    *
    * @return AcordoAssinatura
    */
+  #[\Override]
   public function save() {
     
     parent::save();
@@ -113,6 +115,7 @@ class AcordoAssinatura extends AcordoMovimentacao {
    *
    * @return AcordoAssinatura
    */
+  #[\Override]
   public function cancelar() {
   	
     parent::cancelar();

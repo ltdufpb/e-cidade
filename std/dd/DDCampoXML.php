@@ -1,14 +1,13 @@
 <?php
 class DDCampoXML {
 
-  private $oCampoXml    = null;
   public  $oSequenceXml = null;
 
   /**
    * DE/Para dos tipos de dado
    * @var array
    */
-  private static $aDataType = array(
+  private static $aDataType = [
     'char'    => 'varchar',
     'varchar' => 'varchar',
     'text'    => 'varchar',
@@ -17,11 +16,10 @@ class DDCampoXML {
     'int8'    => 'integer',
     'float4'  => 'numeric',
     'float8'  => 'numeric'
-  );
+  ];
 
-  public function __construct(DOMNode $oDomNode){
+  public function __construct(private readonly DOMNode $oCampoXml){
 
-    $this->oCampoXml = $oDomNode;
     $aSequenceXML    = $this->oCampoXml->getElementsByTagName("sequence");
 
     foreach ( $aSequenceXML as $oSequence ) {
