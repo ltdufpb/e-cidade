@@ -28,7 +28,7 @@
 class programa {
     var $arq = null;
 
-  function programa($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/PROGRAMA.TXT",'w+');
      fputs($this->arq,$header);

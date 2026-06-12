@@ -33,7 +33,7 @@ class _db_fields {
 class db_utils {
   
   
-  function db_utils()
+  function __construct()
   {
     
   }

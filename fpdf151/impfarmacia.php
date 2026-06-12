@@ -136,7 +136,7 @@ class db_impcarne extends cl_assinatura {
 
 //************************************************************//
     
-  function db_impcarne($objpdf,$impmodelo){
+  function __construct($objpdf,$impmodelo){
     $this->objpdf = $objpdf;
     $this->impmodelo = $impmodelo; 
   }

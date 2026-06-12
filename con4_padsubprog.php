@@ -27,7 +27,7 @@
 
 class subprog {
   var $arq = null;
-  function subprog($header){
+  function __construct($header){
     //
      umask(74);
      $this->arq = fopen("tmp/SUBPROG.TXT",'w+');

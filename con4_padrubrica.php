@@ -32,7 +32,7 @@ class rubrica {
 
   var $arq=null;
 
-  function rubrica($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/RUBRICA.TXT",'w+');
      fputs($this->arq,$header);

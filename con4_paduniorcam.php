@@ -31,7 +31,7 @@
 class uniorcam {
     var $arq=null;
 
-  function uniorcam($header){
+  function __construct($header){
 
      umask(74);
      $this->arq = fopen("tmp/UNIORCAM.TXT",'w+');

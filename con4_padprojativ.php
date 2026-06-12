@@ -28,7 +28,7 @@
 class projativ {
      var $arq=null;
      
-  function projativ($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/PROJATIV.TXT",'w+');
      fputs($this->arq,$header);

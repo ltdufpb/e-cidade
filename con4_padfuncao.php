@@ -31,7 +31,7 @@
 class funcao {
     var $arq= null;
 
-  function funcao($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/FUNCAO.TXT",'w+');
      fputs($this->arq,$header);

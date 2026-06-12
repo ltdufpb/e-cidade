@@ -48,7 +48,7 @@ class db_calendario {
   var $trocalinha   = false;
   var $monta_menu   = false;
 
-  function db_calendario (){
+  function __construct (){
   	
   	$this->pagina_original = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]); 
   	

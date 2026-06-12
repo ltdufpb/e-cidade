@@ -27,7 +27,7 @@
 class subfunc {
    var $arq = null;
 
-  function subfunc($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/SUBFUNC.TXT",'w+');
      fputs($this->arq,$header);

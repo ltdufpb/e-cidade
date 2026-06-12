@@ -31,7 +31,7 @@
 class orgao {
   var $arq = null;
   
-  function orgao($header){     
+  function __construct($header){     
      umask(74);
      $this->arq = fopen("tmp/ORGAO.TXT",'w+');
      fputs($this->arq,$header);

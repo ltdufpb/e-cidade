@@ -28,7 +28,7 @@
 class credor {
 
   var $arq=null;
-  function credor($header){
+  function __construct($header){
     //
      umask(74);
      $this->arq = fopen("tmp/CREDOR.TXT",'w+');
