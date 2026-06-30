@@ -182,6 +182,10 @@ class db_utils
      */
     static function getCollectionByRecord($rsRecordset, $lFormata = false, $lMostra = false, $lEncode = false)
     {
+        if ($rsRecordset === false || $rsRecordset === null) {
+            return [];
+        }
+
         $iINumRows = @pg_num_rows($rsRecordset);
         $aDButils = [];
 
