@@ -30,7 +30,8 @@ require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_exemplar_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $lista = db_getsession('sListaImpressao');
 

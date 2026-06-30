@@ -34,7 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
 $oDadoEtapa = new cl_censoetapa;
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( $_SERVER["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 ?>
 <html>
 <head>
