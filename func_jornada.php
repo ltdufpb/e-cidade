@@ -31,7 +31,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_jornada_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $instituicao = db_getsession('DB_instit');
 $cljornada = new \cl_jornada;

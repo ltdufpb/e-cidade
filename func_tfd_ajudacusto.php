@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaotfd_ajudacusto = db_utils::getdao('tfd_ajudacusto');
 $oDaotfd_ajudacusto->rotulo->label('tf12_i_codigo');

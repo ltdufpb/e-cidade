@@ -54,7 +54,8 @@ require_once(modification('classes/db_empresto_classe.php'));
 require_once(modification("dbforms/verticalTab.widget.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clempempenho = new cl_empempenho;
 $clempempenhonl = new cl_empempenhonl;

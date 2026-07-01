@@ -32,7 +32,8 @@ include(modification("libs/db_utils.php"));
 include(modification("classes/db_undmedhorario_ext_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str( $_SERVER['QUERY_STRING'] ); // ta com o globals desativado no php -- Crestani
+parse_str( $_SERVER['QUERY_STRING'], $_parseStr );
+extract($_parseStr, EXTR_SKIP); // ta com o globals desativado no php -- Crestani
 
 class calendario{
 

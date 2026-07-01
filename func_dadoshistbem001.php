@@ -43,7 +43,8 @@ $clcfpatriplaca = new cl_cfpatriplaca;
 
 $clbensplaca->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 // echo $t52_bem;
 ?>

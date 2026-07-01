@@ -35,7 +35,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $HTTP_SERVER_VARS["QUERY_STRING"] );
+parse_str( $HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoSerie = new cl_serie;
 $oDaoSerie->rotulo->label( "ed11_i_codigo" );

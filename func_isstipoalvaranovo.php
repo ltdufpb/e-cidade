@@ -37,7 +37,8 @@ include(modification("classes/db_isstipoalvara_classe.php"));
 $oPost = db_utils::postmemory($_POST);
 $oGET = db_utils::postmemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clisstipoalvara = new cl_isstipoalvara;
 $clisstipoalvara->rotulo->label("q98_sequencial");
 $clisstipoalvara->rotulo->label("q98_descricao");

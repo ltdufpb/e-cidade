@@ -36,7 +36,8 @@ require_once(modification("classes/db_solicitaregistropreco_classe.php"));
 
 $oGet  = db_utils::postMemory($_GET,0);
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsolicitaregistropreco = new cl_solicitaregistropreco;
 $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
 $clsolicitaregistropreco->rotulo->label("pc54_sequencial");

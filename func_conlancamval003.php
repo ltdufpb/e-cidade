@@ -34,7 +34,8 @@ include(modification("classes/db_conlancamval_classe.php"));
 include(modification("libs/db_libcontabilidade.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 
 $clconlancamval = new cl_conlancamval;

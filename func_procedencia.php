@@ -32,7 +32,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_proced_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oRotulos    = new rotulocampo;
 $oRotulos->label("v03_codigo");

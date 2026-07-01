@@ -36,7 +36,8 @@ require_once(modification("classes/db_rhpessoal_classe.php"));
 require_once(modification("classes/db_rhpesrescisao_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhpessoal = new cl_rhpessoal;
 $clrhpesrescisao = new cl_rhpesrescisao;

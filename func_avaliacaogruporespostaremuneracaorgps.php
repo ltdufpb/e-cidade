@@ -8,7 +8,8 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_avaliacaogruporespostaremuneracaorgps_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clavaliacaogruporespostaremuneracaorgps = new cl_avaliacaogruporespostaremuneracaorgps();
 $clavaliacaogruporespostaremuneracaorgps->rotulo->label('eso28_sequencial');
 $clavaliacaogruporespostaremuneracaorgps->rotulo->label('eso28_sequencial');

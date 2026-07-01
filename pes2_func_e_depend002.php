@@ -30,7 +30,8 @@ include(modification("libs/db_sql.php"));
 
 $clrotulo = new rotulocampo;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head3 = "CADASTRO DE FUNCIONÁRIOS E DEPENDENTES";

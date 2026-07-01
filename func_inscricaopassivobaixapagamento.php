@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_inscricaopassivo_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clinscricaopassivo = new cl_inscricaopassivo;
 $clinscricaopassivo->rotulo->label("c36_sequencial");

@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_vac_aplica_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoVacAplica = new cl_vac_aplica;
 $oDaoVacAplica->rotulo->label("vc16_i_codigo");

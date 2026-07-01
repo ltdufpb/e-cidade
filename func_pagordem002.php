@@ -37,7 +37,8 @@ include(modification("classes/db_pagordemele_classe.php"));
 include(modification("classes/db_pagordem_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clempelemento = new cl_empelemento;
 $clempempenho = new cl_empempenho;

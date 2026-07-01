@@ -36,7 +36,8 @@ require_once(modification("std/DBDate.php"));
 
 $oGet = db_utils::postMemory($_GET);
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhferias = new cl_rhferias();
 $clrhferias->rotulo->label("rh109_sequencial");

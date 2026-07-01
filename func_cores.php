@@ -27,7 +27,8 @@
 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 ?>
 <html>
 <title></title>

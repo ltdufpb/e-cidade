@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_zonafator_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clzonafator = new cl_zonafator;
 $clzonafator->rotulo->label("j110_sequencial");

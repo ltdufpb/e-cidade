@@ -35,7 +35,8 @@ db_postmemory($_POST);
 
 $oGet = db_utils::postMemory($_GET);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcronogramaperspectiva = new cl_cronogramaperspectiva;
 $clcronogramaperspectiva->rotulo->label("o124_sequencial");
 $clcronogramaperspectiva->rotulo->label("o124_descricao");

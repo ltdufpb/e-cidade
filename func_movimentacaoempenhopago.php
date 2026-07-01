@@ -47,7 +47,8 @@ $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 
 if(!isset($pesquisar)) {
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+  extract($_parseStr, EXTR_SKIP);
 }
 
 $clcgm		= new cl_cgm;

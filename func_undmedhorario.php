@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoundmedhorario = db_utils::getdao('undmedhorario_ext');
 $oDaoundmedhorario->rotulo->label("sd30_i_codigo");

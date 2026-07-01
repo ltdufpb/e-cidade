@@ -35,7 +35,8 @@ require(modification("libs/db_app.utils.php"));
 db_app::import("veiculos.*");
 db_postmemory($HTTP_POST_VARS);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clveiculos      = new cl_veiculos;
 

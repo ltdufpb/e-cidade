@@ -32,8 +32,10 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgm_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-if(!isset($pesquisar))
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+if (!isset($pesquisar)) {
+    parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
+}
 $clcgm = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clcgm->rotulo->label("z01_numcgm");

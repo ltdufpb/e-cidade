@@ -38,7 +38,8 @@ $clferiado = new cl_feriadomerenda_ext;
 //@ DBSeller Informática LTDA
 //@
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']); // ta com o globals desativado no php -- Crestani
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP); // ta com o globals desativado no php -- Crestani
 
 function checa_eventos($dia,$mes,$ano){
   /*

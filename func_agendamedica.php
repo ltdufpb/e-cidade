@@ -33,7 +33,8 @@ require_once(modification("classes/db_undmedhorario_ext_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']); // ta com o globals desativado no php -- Crestani
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP); // ta com o globals desativado no php -- Crestani
 
 
 class calendario{

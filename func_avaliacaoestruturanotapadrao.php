@@ -7,7 +7,8 @@ require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_avaliacaoestruturanotapadrao_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clavaliacaoestruturanotapadrao = new cl_avaliacaoestruturanotapadrao;
 $clavaliacaoestruturanotapadrao->rotulo->label("ed139_sequencial");
 ?>

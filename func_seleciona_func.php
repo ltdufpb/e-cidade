@@ -36,7 +36,8 @@ include(modification("classes/db_orcparamelemento_classe.php"));
 include(modification("classes/db_orcparamfunc_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clorcparamseq      = new cl_orcparamseq;
 $clorcparamelemento = new cl_orcparamelemento;

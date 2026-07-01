@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gestorindicadorregistro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clgestorindicadorregistro = new cl_gestorindicadorregistro;
 $clgestorindicadorregistro->rotulo->label("g05_sequencial");
 

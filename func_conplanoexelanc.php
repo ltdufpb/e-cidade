@@ -34,7 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conplanoexe_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 
 $clconplanoexe = new cl_conplanoexe;

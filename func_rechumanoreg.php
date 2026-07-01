@@ -36,7 +36,8 @@ require_once(modification("classes/db_rechumano_classe.php"));
 require_once(modification("classes/db_regencia_classe.php"));
 
 db_postmemory($_POST);
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( $_SERVER["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 
 $clrechumano = new cl_rechumano;
 $clregencia  = new cl_regencia;

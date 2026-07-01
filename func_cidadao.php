@@ -34,7 +34,8 @@ include(modification("classes/db_cidadao_classe.php"));
 require_once(modification("libs/db_utils.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcidadao = new cl_cidadao;
 $clcidadao->rotulo->label("ov02_sequencial");
 $clcidadao->rotulo->label("ov02_seq");

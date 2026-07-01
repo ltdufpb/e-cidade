@@ -38,7 +38,8 @@ require_once(modification("classes/db_numpref_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clnumpref  = new cl_numpref();
 $resnumpref = $clnumpref->sql_record( $clnumpref->sql_query_file( db_getsession("DB_anousu"), db_getsession('DB_instit'), "k03_certissvar") );

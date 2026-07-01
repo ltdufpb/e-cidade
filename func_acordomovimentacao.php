@@ -37,7 +37,8 @@ $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clacordomovimentacao = new cl_acordomovimentacao;
 $clacordomovimentacao->rotulo->label("ac10_acordo");

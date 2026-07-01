@@ -51,7 +51,8 @@ $cldb_depart->rotulo->label("descrdepto");
 
 $where_depart = "";
 $where_g      = "";
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $result = $clcfpatri->sql_record($clcfpatri->sql_query_file());
 db_fieldsmemory($result,0);

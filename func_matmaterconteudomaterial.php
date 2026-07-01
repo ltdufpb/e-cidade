@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matmaterconteudomaterial_classe.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $oDaoConteudoMaterial = new cl_matmaterconteudomaterial;
 $oDaoConteudoMaterial->rotulo->label("m08_codigo");
 

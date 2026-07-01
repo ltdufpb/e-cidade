@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefa_classe.php"));
 include(modification("classes/db_tarefaparam_classe.php"));
 db_postmemory($HTTP_POST_VARS,2);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 if($pesquisa_chave!=null && $pesquisa_chave!=""){
 	$erro = testa_horarios($pesquisa_chave,$at40_sequencial);
 	if($erro == false) {

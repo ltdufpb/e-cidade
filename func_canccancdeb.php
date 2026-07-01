@@ -34,7 +34,8 @@ include(modification("classes/db_cancdebitos_classe.php"));
 
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clcancdebitos = new cl_cancdebitos;
 

@@ -40,7 +40,8 @@ if(!isset($pesquisar))
 	// quando vinha um valor por get não mudava quando alterava o valor do nome
 	
 if(isset($alterar_cgs)){
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+	parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
 	?>
 	<script>
 		location.href ="sau1_cgs_und002.php?chavepesquisa=<?=$chave_z01_i_cgsund?>";

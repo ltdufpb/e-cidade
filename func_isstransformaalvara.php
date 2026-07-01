@@ -35,7 +35,8 @@ include(modification("classes/db_issmovalvara_classe.php"));
 
 $oPost = db_utils::postmemory($_POST);
 $oGet  = db_utils::postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clIssMovAlvara = new cl_issmovalvara();
 $clIssMovAlvara->rotulo->label("q120_sequencial");
 

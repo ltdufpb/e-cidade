@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sec_parametros_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsec_parametros = new cl_sec_parametros;
 $clsec_parametros->rotulo->label("ed290_sequencial");
 ?>

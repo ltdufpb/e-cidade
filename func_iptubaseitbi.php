@@ -46,7 +46,8 @@ if(!isset($lote)) {
 	$lote = '';
 }
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptubase = new cl_iptubase;
 $clitbi  = new cl_itbi;
 $cliptubase->rotulo->label("j01_matric");

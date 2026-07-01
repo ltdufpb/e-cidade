@@ -35,7 +35,8 @@ include(modification("classes/db_setorloc_classe.php"));
 include(modification("libs/db_app.utils.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label("j01_matric");

@@ -35,7 +35,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhpessoal_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhpessoal = new cl_rhpessoal;
 $clgersubsql = new cl_gera_sql_folha;

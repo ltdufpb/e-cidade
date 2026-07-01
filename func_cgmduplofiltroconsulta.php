@@ -35,7 +35,8 @@ require_once(modification('libs/db_utils.php'));
 $oGet = db_utils::postMemory($_GET);
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcgmduplo = new rotulocampo();
 $clcgmduplo->label("z10_codigo");
 $clcgmduplo->label("z10_numcgm");

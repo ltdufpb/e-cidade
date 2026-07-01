@@ -34,7 +34,8 @@ require_once(modification("classes/db_tipoproc_classe.php"));
 require_once(modification("classes/db_tipoprocdepto_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clProttipodocumentoprocesso = new cl_prottipodocumentoprocesso;
 $clProttipodocumentoprocesso->rotulo->label("p91_sequencial");
