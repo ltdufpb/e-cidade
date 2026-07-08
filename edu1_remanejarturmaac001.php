@@ -139,9 +139,9 @@ if (isset($processar)) {
                                                                            )
                                         );       
  $row        = $clcalendario->numrows;
- $num        = pg_num_rows($sql_result);
+ $num        = ($sql_result === false || $sql_result === null) ? 0 : pg_num_rows($sql_result);
  $conta      = "";
- while ($row = pg_fetch_array($sql_result)) {
+ while ($sql_result !== false && $sql_result !== null && ($row = pg_fetch_array($sql_result))) {
    $conta     = $conta+1;
    $cod_curso = $row["ed52_i_codigo"];
    echo "new Array(\n";   

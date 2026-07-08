@@ -67,6 +67,9 @@ class db_utils
     static function fieldsMemory($rs, $idx, $formata = false, $mostra = false, $lEncode = false)
     {
         $oFields = new stdClass();
+        if ($rs === false || $rs === null) {
+            return $oFields;
+        }
         $numFields = pg_num_fields($rs);
         $iTotalLinhas = pg_num_rows($rs);
         for ($i = 0; $i < $numFields; $i++) {

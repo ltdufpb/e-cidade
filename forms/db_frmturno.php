@@ -132,7 +132,7 @@ if (isset($atualizar)) {
               </td>
               <td>
                 <input type="checkbox" name="turnos[]" id="turnos"
-                       value="1" <?=@pg_num_rows($result1)>0?"checked":""?>
+                       value="1" <?=($result1 && @pg_num_rows($result1)>0)?"checked":""?>
                        <?=$db_opcao==3?"disabled style='background-color:#DEB887;'":""?>> MANHÃ
 
                 <input type="checkbox" name="turnos[]" id="turnos"
