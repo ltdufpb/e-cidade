@@ -136,11 +136,11 @@ if (isset($atualizar)) {
                        <?=$db_opcao==3?"disabled style='background-color:#DEB887;'":""?>> MANHÃ
 
                 <input type="checkbox" name="turnos[]" id="turnos"
-                       value="2" <?=@pg_num_rows($result2)>0?"checked":""?>
+                       value="2" <?=($result2 && @pg_num_rows($result2)>0)?"checked":""?>
                        <?=$db_opcao==3?"disabled style='background-color:#DEB887;'":""?>> TARDE
 
                 <input type="checkbox" name="turnos[]" id="turnos"
-                       value="3" <?=@pg_num_rows($result3)>0?"checked":""?>
+                       value="3" <?=($result3 && @pg_num_rows($result3)>0)?"checked":""?>
                        <?=$db_opcao==3?"disabled style='background-color:#DEB887;'":""?>> NOITE
               </td>
             </tr>

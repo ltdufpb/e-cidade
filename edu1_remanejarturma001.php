@@ -254,7 +254,7 @@ if ( isset( $processar ) ) {
                                         );
  $row        = $clcalendario->numrows;
  $num        = ($sql_result === false || $sql_result === null) ? 0 : pg_num_rows($sql_result);
- $conta      = "";
+ $conta      = 0;
  while ($sql_result !== false && $sql_result !== null && ($row = pg_fetch_array($sql_result))) {
    $conta     = $conta+1;
    $cod_curso = $row["ed52_i_codigo"];
@@ -270,14 +270,14 @@ if ( isset( $processar ) ) {
    if ($num_sub >= 1) {
      # Se achar alguma base para o curso, marca a palavra Todas
      echo "new Array(\"\", ''),\n";
-     $conta_sub = "";
+     $conta_sub = 0;
      while ($rowx = pg_fetch_array($sub_sql)) {
        $codigo_base = $rowx["ed52_i_codigo"];
        $base_nome   = $rowx["ed52_c_descr"];
        $conta_sub   = $conta_sub+1;
        if ($conta_sub == $num_sub) {
          echo "new Array(\"$base_nome \", $codigo_base)\n";
-         $conta_sub = "";
+         $conta_sub = 0;
        } else {
          echo "new Array(\"$base_nome \", $codigo_base),\n";
        }
