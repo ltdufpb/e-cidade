@@ -7,7 +7,7 @@ use DBLog;
 use \DBLogJSON;
 
 /**
- * Classe responsï¿½vel para registrar os logs de erro
+ * Classe responsável para registrar os logs de erro
  * @author Andrio Costa <andrio.costa@dbseller.com.br>
  * @version $Revision: 1.2 $
  */
@@ -42,7 +42,7 @@ class LogErro {
   }
 
   /**
-   * Registro os logs de erro na importacao da situaï¿½ï¿½o do aluno
+   * Registro os logs de erro na importacao da situação do aluno
    * @param  string $MensagemLog
    */
   public static function logSituacao($MensagemLog, $iTipo = DBLog::LOG_ERROR) {

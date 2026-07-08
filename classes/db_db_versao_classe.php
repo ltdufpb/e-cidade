@@ -52,11 +52,11 @@ class cl_db_versao {
    var $db30_obs = null; 
    // cria propriedade com as variaveis do arquivo 
    var $campos = "
-                 db30_codver = int4 = Cï¿½digo da Versï¿½o 
-                 db30_codversao = int4 = Nï¿½mero da Release 
-                 db30_codrelease = int4 = Nï¿½mero da Sub-Release 
-                 db30_data = date = Data da Versï¿½o/Release 
-                 db30_obs = text = Observaï¿½ï¿½o da Versï¿½o/Release 
+                 db30_codver = int4 = Código da Versão 
+                 db30_codversao = int4 = Número da Release 
+                 db30_codrelease = int4 = Número da Sub-Release 
+                 db30_data = date = Data da Versão/Release 
+                 db30_obs = text = Observação da Versão/Release 
                  ";
    //funcao construtor da classe 
    function __construct() { 
@@ -96,37 +96,37 @@ class cl_db_versao {
    function incluir ($db30_codver){ 
       $this->atualizacampos();
      if($this->db30_codversao == null ){ 
-       $this->erro_sql = " Campo Nï¿½mero da Release nao Informado.";
+       $this->erro_sql = " Campo Número da Release nao Informado.";
        $this->erro_campo = "db30_codversao";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      if($this->db30_codrelease == null ){ 
-       $this->erro_sql = " Campo Nï¿½mero da Sub-Release nao Informado.";
+       $this->erro_sql = " Campo Número da Sub-Release nao Informado.";
        $this->erro_campo = "db30_codrelease";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      if($this->db30_data == null ){ 
-       $this->erro_sql = " Campo Data da Versï¿½o/Release nao Informado.";
+       $this->erro_sql = " Campo Data da Versão/Release nao Informado.";
        $this->erro_campo = "db30_data_dia";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
      }
      if($this->db30_obs == null ){ 
-       $this->erro_sql = " Campo Observaï¿½ï¿½o da Versï¿½o/Release nao Informado.";
+       $this->erro_sql = " Campo Observação da Versão/Release nao Informado.";
        $this->erro_campo = "db30_obs";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -136,7 +136,7 @@ class cl_db_versao {
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
          $this->erro_sql   = "Verifique o cadastro da sequencia: db_versao_db30_codver_seq do campo: db30_codver"; 
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false; 
@@ -145,9 +145,9 @@ class cl_db_versao {
      }else{
        $result = db_query("select last_value from db_versao_db30_codver_seq");
        if(($result != false) && (pg_result($result,0,0) < $db30_codver)){
-         $this->erro_sql = " Campo db30_codver maior que ï¿½ltimo nï¿½mero da sequencia.";
-         $this->erro_banco = "Sequencia menor que este nï¿½mero.";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql = " Campo db30_codver maior que último número da sequencia.";
+         $this->erro_banco = "Sequencia menor que este número.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -158,7 +158,7 @@ class cl_db_versao {
      if(($this->db30_codver == null) || ($this->db30_codver == "") ){ 
        $this->erro_sql = " Campo db30_codver nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -181,13 +181,13 @@ class cl_db_versao {
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = "Versï¿½o Atual ($this->db30_codver) nao Incluï¿½do. Inclusao Abortada.";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = "Versï¿½o Atual jï¿½ Cadastrado";
+         $this->erro_sql   = "Versão Atual ($this->db30_codver) nao Incluído. Inclusao Abortada.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_banco = "Versão Atual já Cadastrado";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }else{
-         $this->erro_sql   = "Versï¿½o Atual ($this->db30_codver) nao Incluï¿½do. Inclusao Abortada.";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql   = "Versão Atual ($this->db30_codver) nao Incluído. Inclusao Abortada.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }
        $this->erro_status = "0";
@@ -197,7 +197,7 @@ class cl_db_versao {
      $this->erro_banco = "";
      $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->db30_codver;
-     $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+     $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
@@ -224,10 +224,10 @@ class cl_db_versao {
        $sql  .= $virgula." db30_codver = $this->db30_codver ";
        $virgula = ",";
        if(trim($this->db30_codver) == null ){ 
-         $this->erro_sql = " Campo Cï¿½digo da Versï¿½o nao Informado.";
+         $this->erro_sql = " Campo Código da Versão nao Informado.";
          $this->erro_campo = "db30_codver";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -237,10 +237,10 @@ class cl_db_versao {
        $sql  .= $virgula." db30_codversao = $this->db30_codversao ";
        $virgula = ",";
        if(trim($this->db30_codversao) == null ){ 
-         $this->erro_sql = " Campo Nï¿½mero da Release nao Informado.";
+         $this->erro_sql = " Campo Número da Release nao Informado.";
          $this->erro_campo = "db30_codversao";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -250,10 +250,10 @@ class cl_db_versao {
        $sql  .= $virgula." db30_codrelease = $this->db30_codrelease ";
        $virgula = ",";
        if(trim($this->db30_codrelease) == null ){ 
-         $this->erro_sql = " Campo Nï¿½mero da Sub-Release nao Informado.";
+         $this->erro_sql = " Campo Número da Sub-Release nao Informado.";
          $this->erro_campo = "db30_codrelease";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -263,10 +263,10 @@ class cl_db_versao {
        $sql  .= $virgula." db30_data = '$this->db30_data' ";
        $virgula = ",";
        if(trim($this->db30_data) == null ){ 
-         $this->erro_sql = " Campo Data da Versï¿½o/Release nao Informado.";
+         $this->erro_sql = " Campo Data da Versão/Release nao Informado.";
          $this->erro_campo = "db30_data_dia";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -276,10 +276,10 @@ class cl_db_versao {
          $sql  .= $virgula." db30_data = null ";
          $virgula = ",";
          if(trim($this->db30_data) == null ){ 
-           $this->erro_sql = " Campo Data da Versï¿½o/Release nao Informado.";
+           $this->erro_sql = " Campo Data da Versão/Release nao Informado.";
            $this->erro_campo = "db30_data_dia";
            $this->erro_banco = "";
-           $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+           $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
            $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
            $this->erro_status = "0";
            return false;
@@ -290,10 +290,10 @@ class cl_db_versao {
        $sql  .= $virgula." db30_obs = '$this->db30_obs' ";
        $virgula = ",";
        if(trim($this->db30_obs) == null ){ 
-         $this->erro_sql = " Campo Observaï¿½ï¿½o da Versï¿½o/Release nao Informado.";
+         $this->erro_sql = " Campo Observação da Versão/Release nao Informado.";
          $this->erro_campo = "db30_obs";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -325,9 +325,9 @@ class cl_db_versao {
      $result = db_query($sql);
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Versï¿½o Atual nao Alterado. Alteracao Abortada.\\n";
+       $this->erro_sql   = "Versão Atual nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->db30_codver;
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_alterar = 0;
@@ -335,18 +335,18 @@ class cl_db_versao {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "Versï¿½o Atual nao foi Alterado. Alteracao Executada.\\n";
+         $this->erro_sql = "Versão Atual nao foi Alterado. Alteracao Executada.\\n";
          $this->erro_sql .= "Valores : ".$this->db30_codver;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Alteraï¿½ï¿½o efetuada com Sucesso\\n";
+         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->db30_codver;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
@@ -390,9 +390,9 @@ class cl_db_versao {
      $result = db_query($sql.$sql2);
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "Versï¿½o Atual nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
+       $this->erro_sql   = "Versão Atual nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$db30_codver;
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_excluir = 0;
@@ -400,18 +400,18 @@ class cl_db_versao {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "Versï¿½o Atual nao Encontrado. Exclusï¿½o nï¿½o Efetuada.\\n";
+         $this->erro_sql = "Versão Atual nao Encontrado. Exclusão não Efetuada.\\n";
          $this->erro_sql .= "Valores : ".$db30_codver;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Exclusï¿½o efetuada com Sucesso\\n";
+         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$db30_codver;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
@@ -426,7 +426,7 @@ class cl_db_versao {
        $this->numrows    = 0;
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Erro ao selecionar os registros.";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -435,7 +435,7 @@ class cl_db_versao {
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_versao";
-        $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
         $this->erro_status = "0";
         return false;

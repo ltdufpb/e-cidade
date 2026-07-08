@@ -27,7 +27,7 @@
 
 /**
  * Classe para vinculo de uma progressao parcial com uma regencia
- * Define as disciplinas que o o aluno estï¿½ cursando
+ * Define as disciplinas que o o aluno está cursando
  * @author Iuri Guntchnigg iuri@dbseller.com
  * @package educacao
  * @subpackage progressaoparcial
@@ -36,13 +36,13 @@
 final class ProgressaoParcialVinculoDisciplina {
 
   /**
-   * Regencia em que  aluno estï¿½ vinculado
+   * Regencia em que  aluno está vinculado
    * @var Regencia
    */
   private $oRegencia;
 
   /**
-   * Cï¿½digo do vinculo
+   * Código do vinculo
    * @var integer
    */
   private $iCodigoVinculo;
@@ -87,7 +87,7 @@ final class ProgressaoParcialVinculoDisciplina {
   /**
    * Metodo construtor da classe
    * Preenche os dados da classe
-   * @param integer $iCodigoVinculo cï¿½digo do vinculo
+   * @param integer $iCodigoVinculo código do vinculo
    */
   public function __construct($iCodigoVinculo = null) {
 
@@ -119,7 +119,7 @@ final class ProgressaoParcialVinculoDisciplina {
   }
 
   /**
-   * Retorna a regencia em que a progressao estï¿½ vinculada
+   * Retorna a regencia em que a progressao está vinculada
    * @return Regencia
    */
   public function getRegencia() {
@@ -166,11 +166,11 @@ final class ProgressaoParcialVinculoDisciplina {
   public function salvar(ProgressaoParcialAluno $oProgressaoParcial) {
 
     if ($this->oRegencia == null) {
-      throw new BusinessException("Regï¿½ncia nï¿½o informada para a realizacao do vinculo.");
+      throw new BusinessException("Regência não informada para a realizacao do vinculo.");
     }
 
     if ($this->dtVinculo == null) {
-      throw new BusinessException("Data de vinculo nï¿½o informado para a realizacao do vinculo.");
+      throw new BusinessException("Data de vinculo não informado para a realizacao do vinculo.");
     }
     /**
      * vinculamos a turma ao registro do ano
@@ -184,7 +184,7 @@ final class ProgressaoParcialVinculoDisciplina {
       $oDaoProgressaoMatricula->incluir(null);
       if ($oDaoProgressaoMatricula->erro_status == 0) {
 
-        $sMsgErro = "Erro ao realizar vinculo da regï¿½ncia.\nErro Tï¿½cnico:\n{$oDaoProgressaoMatricula->erro_msg}";
+        $sMsgErro = "Erro ao realizar vinculo da regência.\nErro Técnico:\n{$oDaoProgressaoMatricula->erro_msg}";
         throw new BusinessException($sMsgErro);
       }
       $this->iCodigoMatricula = $oDaoProgressaoMatricula->ed150_sequencial;
@@ -210,20 +210,20 @@ final class ProgressaoParcialVinculoDisciplina {
       $oDaoProgressaoMatricula->alterar($this->iCodigoMatricula);
       if ($oDaoProgressaoMatricula->erro_status == 0) {
 
-        $sMsgErro = "Erro ao salvar dados do vinculo da regï¿½ncia.\nErro Tï¿½cnico:\n{$oDaoProgressaoMatricula->erro_msg}";
+        $sMsgErro = "Erro ao salvar dados do vinculo da regência.\nErro Técnico:\n{$oDaoProgressaoMatricula->erro_msg}";
         throw new BusinessException($sMsgErro);
       }
     }
 
     if ($oDaoProgressaoVinculo->erro_status == 0) {
-      throw new BusinessException("Erro ao realizar vinculo da regï¿½ncia.\nErro Tï¿½cnico:\n{$oDaoProgressaoVinculo->erro_msg}");
+      throw new BusinessException("Erro ao realizar vinculo da regência.\nErro Técnico:\n{$oDaoProgressaoVinculo->erro_msg}");
     }
   }
 
   /**
    * Remove o vinculo.
    * Realiza e a exclusao do vinculo da dependencia com a progressao, permitindo realizar
-   * novos vï¿½nculos para dependencia, e remove tambem a matricula vinculada a dependencia
+   * novos vínculos para dependencia, e remove tambem a matricula vinculada a dependencia
    */
   public function remover() {
 
@@ -234,7 +234,7 @@ final class ProgressaoParcialVinculoDisciplina {
       $oDaoVinculo->excluir($this->iCodigoVinculo);
       if ($oDaoVinculo->erro_status == 0) {
 
-        $sMsgErro = "Erro ao salvar dados do vinculo da regï¿½ncia.\nErro Tï¿½cnico:\n{$oDaoVinculo->erro_msg}";
+        $sMsgErro = "Erro ao salvar dados do vinculo da regência.\nErro Técnico:\n{$oDaoVinculo->erro_msg}";
         throw new BusinessException($sMsgErro);
       }
 
@@ -242,7 +242,7 @@ final class ProgressaoParcialVinculoDisciplina {
       $oDaoProgressaoMatricula->excluir($this->iCodigoMatricula);
       if ($oDaoProgressaoMatricula->erro_status == 0) {
 
-        $sMsgErro = "Erro ao salvar dados do vinculo da regï¿½ncia.\nErro Tï¿½cnico:\n{$oDaoProgressaoMatricula->erro_msg}";
+        $sMsgErro = "Erro ao salvar dados do vinculo da regência.\nErro Técnico:\n{$oDaoProgressaoMatricula->erro_msg}";
         throw new BusinessException($sMsgErro);
       }
     }

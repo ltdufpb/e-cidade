@@ -46,7 +46,7 @@ class cl_mer_nutricionista_ext {
    var $me02_i_rechumano = 0; 
    // cria propriedade com as variaveis do arquivo 
    var $campos = "
-                 me02_i_codigo = int4 = Cï¿½digo 
+                 me02_i_codigo = int4 = Código 
                  me02_i_rechumano = int4 = Rechumano 
                  ";
    //funcao construtor da classe 
@@ -80,7 +80,7 @@ class cl_mer_nutricionista_ext {
        $this->erro_sql = " Campo Rechumano nao Informado.";
        $this->erro_campo = "me02_i_rechumano";
        $this->erro_banco = "";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -90,7 +90,7 @@ class cl_mer_nutricionista_ext {
        if($result==false){
          $this->erro_banco = str_replace("\n","",@pg_last_error());
          $this->erro_sql   = "Verifique o cadastro da sequencia: mernutricionista_me02_codigo_seq do campo: me02_i_codigo"; 
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false; 
@@ -99,9 +99,9 @@ class cl_mer_nutricionista_ext {
      }else{
        $result = db_query("select last_value from mernutricionista_me02_codigo_seq");
        if(($result != false) && (pg_result($result,0,0) < $me02_i_codigo)){
-         $this->erro_sql = " Campo me02_i_codigo maior que ï¿½ltimo nï¿½mero da sequencia.";
-         $this->erro_banco = "Sequencia menor que este nï¿½mero.";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql = " Campo me02_i_codigo maior que último número da sequencia.";
+         $this->erro_banco = "Sequencia menor que este número.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -112,7 +112,7 @@ class cl_mer_nutricionista_ext {
      if(($this->me02_i_codigo == null) || ($this->me02_i_codigo == "") ){ 
        $this->erro_sql = " Campo me02_i_codigo nao declarado.";
        $this->erro_banco = "Chave Primaria zerada.";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -131,13 +131,13 @@ class cl_mer_nutricionista_ext {
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
-         $this->erro_sql   = "mer_nutricionista ($this->me02_i_codigo) nao Incluï¿½do. Inclusao Abortada.";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
-         $this->erro_banco = "mer_nutricionista jï¿½ Cadastrado";
+         $this->erro_sql   = "mer_nutricionista ($this->me02_i_codigo) nao Incluído. Inclusao Abortada.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_banco = "mer_nutricionista já Cadastrado";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }else{
-         $this->erro_sql   = "mer_nutricionista ($this->me02_i_codigo) nao Incluï¿½do. Inclusao Abortada.";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_sql   = "mer_nutricionista ($this->me02_i_codigo) nao Incluído. Inclusao Abortada.";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        }
        $this->erro_status = "0";
@@ -147,7 +147,7 @@ class cl_mer_nutricionista_ext {
      $this->erro_banco = "";
      $this->erro_sql = "Inclusao efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->me02_i_codigo;
-     $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+     $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
      $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
      $this->erro_status = "1";
      $this->numrows_incluir= pg_affected_rows($result);
@@ -172,10 +172,10 @@ class cl_mer_nutricionista_ext {
        $sql  .= $virgula." me02_i_codigo = $this->me02_i_codigo ";
        $virgula = ",";
        if(trim($this->me02_i_codigo) == null ){ 
-         $this->erro_sql = " Campo Cï¿½digo nao Informado.";
+         $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "me02_i_codigo";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -188,7 +188,7 @@ class cl_mer_nutricionista_ext {
          $this->erro_sql = " Campo Rechumano nao Informado.";
          $this->erro_campo = "me02_i_rechumano";
          $this->erro_banco = "";
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "0";
          return false;
@@ -218,7 +218,7 @@ class cl_mer_nutricionista_ext {
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "mer_nutricionista nao Alterado. Alteracao Abortada.\\n";
          $this->erro_sql .= "Valores : ".$this->me02_i_codigo;
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_alterar = 0;
@@ -228,16 +228,16 @@ class cl_mer_nutricionista_ext {
          $this->erro_banco = "";
          $this->erro_sql = "mer_nutricionista nao foi Alterado. Alteracao Executada.\\n";
          $this->erro_sql .= "Valores : ".$this->me02_i_codigo;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Alteraï¿½ï¿½o efetuada com Sucesso\\n";
+         $this->erro_sql = "Alteração efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$this->me02_i_codigo;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_alterar = pg_affected_rows($result);
@@ -279,9 +279,9 @@ class cl_mer_nutricionista_ext {
      $result = db_query($sql.$sql2);
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       $this->erro_sql   = "mer_nutricionista nao Excluï¿½do. Exclusï¿½o Abortada.\\n";
+       $this->erro_sql   = "mer_nutricionista nao Excluído. Exclusão Abortada.\\n";
        $this->erro_sql .= "Valores : ".$me02_i_codigo;
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        $this->numrows_excluir = 0;
@@ -289,18 +289,18 @@ class cl_mer_nutricionista_ext {
      }else{
        if(pg_affected_rows($result)==0){
          $this->erro_banco = "";
-         $this->erro_sql = "mer_nutricionista nao Encontrado. Exclusï¿½o nï¿½o Efetuada.\\n";
+         $this->erro_sql = "mer_nutricionista nao Encontrado. Exclusão não Efetuada.\\n";
          $this->erro_sql .= "Valores : ".$me02_i_codigo;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = 0;
          return true;
        }else{
          $this->erro_banco = "";
-         $this->erro_sql = "Exclusï¿½o efetuada com Sucesso\\n";
+         $this->erro_sql = "Exclusão efetuada com Sucesso\\n";
          $this->erro_sql .= "Valores : ".$me02_i_codigo;
-         $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
          $this->erro_status = "1";
          $this->numrows_excluir = pg_affected_rows($result);
@@ -315,7 +315,7 @@ class cl_mer_nutricionista_ext {
        $this->numrows    = 0;
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Erro ao selecionar os registros.";
-       $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+       $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
        $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
        $this->erro_status = "0";
        return false;
@@ -324,7 +324,7 @@ class cl_mer_nutricionista_ext {
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:mer_nutricionista";
-        $this->erro_msg   = "Usuï¿½rio: \\n\\n ".$this->erro_sql." \\n\\n";
+        $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_msg   .=  str_replace('"',"",str_replace("'","",  "Administrador: \\n\\n ".$this->erro_banco." \\n"));
         $this->erro_status = "0";
         return false;
