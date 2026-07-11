@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcriaabas = new cl_criaabas;
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
   	
 	
-   <?php 
+   <?
    $clcriaabas->identifica = array("a1"=>"Retirada Medicamentos","a2"=>"Últimas retiradas","a3"=>"Consulta Itens Retirados",);
    $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"30","a3"=>"30");
    $clcriaabas->src        = array("a1"=>"far1_far_retirada001.php?tmp_table=$tmp_table","a2"=>"far3_consultaretirada001.php","a3"=>"");
@@ -70,6 +70,6 @@ $clcriaabas = new cl_criaabas;
  </tr>
 </table>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

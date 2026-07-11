@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllinha->rotulo->label("ed217_c_origem");
               <?=$Led217_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed217_i_codigo",10,$Ied217_i_codigo,true,"text",4,"","chave_ed217_i_codigo");
                        ?>
             </td>
@@ -65,7 +65,7 @@ $cllinha->rotulo->label("ed217_c_origem");
               <?=$Led217_c_origem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed217_c_origem",10,$Ied217_c_origem,true,"text",4,"","chave_ed217_c_origem");
                        ?>
             </td>
@@ -83,7 +83,7 @@ $cllinha->rotulo->label("ed217_c_origem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_linha.php")==true){
@@ -123,12 +123,12 @@ $cllinha->rotulo->label("ed217_c_origem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

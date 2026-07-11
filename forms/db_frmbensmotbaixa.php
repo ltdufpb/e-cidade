@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
           <?=@$Lt51_motivo?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t51_motivo',8,$It51_motivo,true,'text',3)
           ?>
         </td>
@@ -56,7 +56,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
             <?=@$Lt51_descr?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t51_descr',40,$It51_descr,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -72,7 +72,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
       </tr>
     </table>
   </fieldset>
-<?php 
+<?
   /*
    * T.44208
    * Controle para o botao alterar,excluir,incluir
@@ -89,24 +89,24 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
   
           <input onclick="alert(_M('patrimonial.patrimonio.db_frmbensmotbaixa.bens_vinculados'));" name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="button" id="db_opcao" 
              value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >                   
-<?php     }else {?> 
+<?    }else {?> 
 
           <input onclick="return confirm(_M('patrimonial.patrimonio.db_frmbensmotbaixa.baixa_vinculada_bens'));" name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" 
              value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >             
-<?php     }
+<?    }
   }else if ($db_opcao == 1) {?>
   
     <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" 
       value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >     
-<?php }else if ($clMotbaixa->numrows != 0 && $db_opcao == 3 || $db_opcao == 33 ) { ?> 
+<?}else if ($clMotbaixa->numrows != 0 && $db_opcao == 3 || $db_opcao == 33 ) { ?> 
    
    <input onclick="alert(_M('patrimonial.patrimonio.db_frmbensmotbaixa.bens_vinculados'));" name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="button" id="db_opcao" 
      value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >      
-<?php }else {?>
+<?}else {?>
 
     <input  name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" 
       value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?php }?> 
+<?}?> 
 
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
@@ -116,7 +116,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bensmotbaixa.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

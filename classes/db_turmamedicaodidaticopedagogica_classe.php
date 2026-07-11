@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: escola
 //CLASSE DA ENTIDADE turmamedicaodidaticopedagogica
 class cl_turmamedicaodidaticopedagogica { 

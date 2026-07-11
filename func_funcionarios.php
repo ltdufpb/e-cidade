@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clfuncionarios->rotulo->label("ed19_c_cargo");
               <?=$Led19_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed19_i_codigo",5,$Ied19_i_codigo,true,"text",4,"","chave_ed19_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $clfuncionarios->rotulo->label("ed19_c_cargo");
               <?=$Led19_c_cargo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed19_c_cargo",50,$Ied19_c_cargo,true,"text",4,"","chave_ed19_c_cargo");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $clfuncionarios->rotulo->label("ed19_c_cargo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_funcionarios.php")==true){
@@ -121,12 +121,12 @@ $clfuncionarios->rotulo->label("ed19_c_cargo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

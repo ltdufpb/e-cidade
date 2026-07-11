@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -114,7 +114,7 @@ $oParametro = db_stdClass::getParametro("empparametro",array(db_getsession("DB_a
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -169,7 +169,7 @@ function js_calcula(){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-<?php 
+<?
 
           $sql_disabled = $clslip->sql_query_tipo(null,"s.k17_codigo,k17_valor","",$dbwhere." and k17_autent>0");
           $sql = $clslip->sql_query_tipo(null,"s.k17_codigo,k17_situacao,k17_valor,k17_credito,k17_debito,k17_data,c50_descr,c60_descr,z01_nome,k17_instit",'s.k17_codigo',$dbwhere);
@@ -207,7 +207,7 @@ function js_calcula(){
     </center>
     </td>
   </tr>
-  <?php 
+  <?
     if ($oParametro[0]->e30_agendaautomatico == "t") {
   ?>
   <tr>
@@ -216,7 +216,7 @@ function js_calcula(){
             onclick='parent.document.form1.atualizar.click();'>
     </td>
   </tr>
-  <?php 
+  <?
    }
   ?>
 </table>
@@ -226,7 +226,7 @@ function js_calcula(){
    parent.document.form1.tot.value = js_formatar('<?=$tot?>', 'f');
    parent.document.form1.registros.value = '<?=$registros?>';
    parent.document.form1.tipo.value = 'slip';
-   <?php 
+   <?
     if ($oParametro[0]->e30_agendaautomatico == "f") {
      echo "  parent.document.form1.atualizar.disabled = false;\n";
     }

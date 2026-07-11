@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_documento->rotulo->label("db03_descr");
               <?=$Ldb03_docum?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db03_docum",8,$Idb03_docum,true,"text",4,"","chave_db03_docum");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_documento->rotulo->label("db03_descr");
               <?=$Ldb03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db03_descr",40,$Idb03_descr,true,"text",4,"","chave_db03_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_documento->rotulo->label("db03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_documento.php")==true){
@@ -120,12 +120,12 @@ $cldb_documento->rotulo->label("db03_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

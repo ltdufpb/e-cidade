@@ -1,4 +1,4 @@
-<?php PHP
+<?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -308,7 +308,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
 
 
 <center>
-    <?php PHP
+    <?PHP
     if (USE_PCASP) {
         require_once(modification("forms/db_frmconlancamval.php"));
     } else {
@@ -316,13 +316,13 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alte
     }
     ?>
 </center>
-<?php PHP
+<?PHP
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
     db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php PHP
+<?PHP
 if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
 //  if($clconlancamval->erro_status=="0"){
 //    $clconlancamval->erro(true,false);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clfiscalvistorias->rotulo->label("y21_codvist");
               <?=$Ly21_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y21_codnoti",20,$Iy21_codnoti,true,"text",4,"","chave_y21_codnoti");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clfiscalvistorias->rotulo->label("y21_codvist");
               <?=$Ly21_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y21_codvist",10,$Iy21_codvist,true,"text",4,"","chave_y21_codvist");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clfiscalvistorias->rotulo->label("y21_codvist");
               <?=$Ly21_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y21_codvist",10,$Iy21_codvist,true,"text",4,"","chave_y21_codvist");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clfiscalvistorias->rotulo->label("y21_codvist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscalvistorias.php")==true){
@@ -130,12 +130,12 @@ $clfiscalvistorias->rotulo->label("y21_codvist");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

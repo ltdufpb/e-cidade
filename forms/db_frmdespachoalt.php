@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -82,7 +82,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_codproc;?>
        </td>
        <td>
-          <?php db_input("p58_codproc",15,$Ip58_codproc,true,"text",3);?>
+          <?db_input("p58_codproc",15,$Ip58_codproc,true,"text",3);?>
        </td>
      </tr>  
      <tr>
@@ -90,14 +90,14 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_numero;?>
        </td>
        <td>
-          <?php db_input("p58_numero",15,$Ip58_numero,true,"text",3);?>
+          <?db_input("p58_numero",15,$Ip58_numero,true,"text",3);?>
        </td>  
        <td title="<?=$Tp58_codigo?>" align='left'>
            <?=$Lp58_codigo;?>
 	   </td>
 	 <td nowrap >
-          <?php db_input("p58_codigo",8,$Ip58_codigo,true,"text",3)?>
-	   <?php   db_input("p51_descr",32,$Ip51_descr,true,"text",3)?>
+          <?db_input("p58_codigo",8,$Ip58_codigo,true,"text",3)?>
+	   <?  db_input("p51_descr",32,$Ip51_descr,true,"text",3)?>
        </td>
     </tr>
     <tr>
@@ -105,13 +105,13 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_dtproc;?>
 	   </td>
 	   <td>
-          <?php db_input("dtproc",10,$Ip58_dtproc,true,"text",3);?>
+          <?db_input("dtproc",10,$Ip58_dtproc,true,"text",3);?>
        </td>
        <td title="<?=$Tp58_hora?>">
             <b>    Hora:</b>
        </td>
        <td>
-          <?php db_input("p58_hora",10,$Ip58_hora,true,"text",3);?>
+          <?db_input("p58_hora",10,$Ip58_hora,true,"text",3);?>
        
        </td>
     </tr>
@@ -120,7 +120,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Llogin;?>
        </td>
        <td>
-          <?php db_input("login",40,$Ilogin,true,"text",3);?>
+          <?db_input("login",40,$Ilogin,true,"text",3);?>
        
        </td>
        <td></td>
@@ -131,14 +131,14 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_numcgm?>
        </td>
        <td nowrap title="<?=$Tz01_nome?>">
-          <?php db_input("p58_numcgm",6,$Ip58_numcgm,true,"text",3);?>
-          <?php db_input("z01_nome",32,$Iz01_nome,true,"text",3);?>
+          <?db_input("p58_numcgm",6,$Ip58_numcgm,true,"text",3);?>
+          <?db_input("z01_nome",32,$Iz01_nome,true,"text",3);?>
        </td>
        <td title="<?=$p58_requer?>"align='left'>
            <?=$Lp58_requer?>
        </td>
        <td>
-          <?php db_input("p58_requer",40,$Ip58_requer,true,"text",3);?>
+          <?db_input("p58_requer",40,$Ip58_requer,true,"text",3);?>
        
        </td>
     </tr> 
@@ -147,14 +147,14 @@ if ($oDaoTipoDespacho->numrows > 1) {
            <?=$Lp58_coddepto?>
        </td>
        <td nowrap title="<?=$Tdescrdepto?>">
-          <?php db_input("p58_coddepto",6,$Ip58_coddepto,true,"text",3);?>
-          <?php db_input("descrdepto",32,$descrdepto,true,"text",3);?>
+          <?db_input("p58_coddepto",6,$Ip58_coddepto,true,"text",3);?>
+          <?db_input("descrdepto",32,$descrdepto,true,"text",3);?>
        </td>
        <td title="<?=$Tp58_codandam?>" align='left' >
            <?=$Lp58_codandam?>
        </td>
        <td>
-               <?php db_input("p58_codandam",15,'',true,"text",3);?>
+               <?db_input("p58_codandam",15,'',true,"text",3);?>
        </td>
     </tr>
     <tr>
@@ -162,11 +162,11 @@ if ($oDaoTipoDespacho->numrows > 1) {
              <?=$Lp58_obs?>
        </td>
        <td colspan=3 >
-               <?php db_textarea("p58_obs",1,90,$Ip58_obs,true,"text",3);?>
+               <?db_textarea("p58_obs",1,90,$Ip58_obs,true,"text",3);?>
        </td>
 	     
     </tr>
-  <?php 
+  <?
        $result_despacho=$clprocandamint->sql_record($clprocandamint->sql_query_sim(null,"*","p78_sequencial desc limit 1","p78_codandam=$p58_codandam"));
        $numrows=$clprocandamint->numrows;
        if($numrows>0){ 
@@ -181,7 +181,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
        <?=@$Lp78_publico?>
     </td>
     <td>
-         <?php 
+         <?
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('p78_publico',$x,true,1,"");
          
@@ -242,7 +242,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
      <input name="imprimir" type="button" id="imprimir" value="Imprimir Despacho" onclick='js_imprime();' >
   </td>
   </tr>
-  <?php 
+  <?
 	 }else{
 	   ?>
 	   
@@ -256,7 +256,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
 </tr>
 	   
 	   
-	   <?php 
+	   <?
 	 }
        }else{  
 	 ?>
@@ -272,7 +272,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
 
 
 	 
-	 <?php 
+	 <?
        }
   ?>
   </table>

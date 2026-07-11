@@ -1,4 +1,4 @@
-<?php 
+<?
 include("vihelp.conf");
 
 $fd = fopen("/tmp/dbportal_help.html","w");

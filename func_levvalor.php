@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllevvalor->rotulo->label("y63_codlev");
               <?=$Ly63_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y63_sequencia",10,$Iy63_sequencia,true,"text",4,"","chave_y63_sequencia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllevvalor->rotulo->label("y63_codlev");
               <?=$Ly63_codlev?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y63_codlev",10,$Iy63_codlev,true,"text",4,"","chave_y63_codlev");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllevvalor->rotulo->label("y63_codlev");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_levvalor.php")==true){
@@ -119,12 +119,12 @@ $cllevvalor->rotulo->label("y63_codlev");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

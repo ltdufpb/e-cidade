@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_projetosativid->rotulo->label("at62_descr");
               <?=$Lat62_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at62_codigo",10,$Iat62_codigo,true,"text",4,"","chave_at62_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_projetosativid->rotulo->label("at62_descr");
               <?=$Lat62_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at62_descr",40,$Iat62_descr,true,"text",4,"","chave_at62_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_projetosativid->rotulo->label("at62_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_projetosativid.php")==true){
@@ -123,12 +123,12 @@ $cldb_projetosativid->rotulo->label("at62_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

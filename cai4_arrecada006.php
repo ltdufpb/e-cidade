@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,7 +56,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
       <th width="198" align="left" nowrap style="font-size:12px">Descri&ccedil;&atilde;o</th>
       <th width="143" align="right" nowrap bgcolor="#BDC6BD" style="font-size:12px">Valor Corrigido</th>
     </tr>
-    <?php 
+    <?
 	if(isset($codcla)){
 	  $result = db_query("select *
 	                     from disrec
@@ -73,7 +73,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
             <td width="198" nowrap style="font-size:12px"><?=$k02_drecei?></td>
             <td width="143" align="right" nowrap bgcolor="#BDC6BD" style="font-size:12px"><?=db_formatar($vlrrec,'f')?></td>
           </tr>
-		  <?php 
+		  <?
 		}
  	    ?>
         <tr bgcolor="#BDC6BD">
@@ -81,7 +81,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
           <td width="198" nowrap style="font-size:12px"><b>Total :</b></td>
           <td width="143" align="right" nowrap bgcolor="#BDC6BD" style="font-size:12px"><b><?=db_formatar($totalvlr,'f')?></b></td>
         </tr>
-		<?php 
+		<?
 	  }
 	}
 	?>

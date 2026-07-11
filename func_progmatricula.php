@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("z01_nome");
       <?=$Led20_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed20_i_codigo",10,$Ied20_i_codigo,true,"text",4,"","chave_ed20_i_codigo");?>
+      <?db_input("ed20_i_codigo",10,$Ied20_i_codigo,true,"text",4,"","chave_ed20_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $clrotulo->label("z01_nome");
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $clrotulo->label("z01_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_progmatricula.php")==true){

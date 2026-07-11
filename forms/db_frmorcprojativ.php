@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_anousu?>
     </td>
     <td> 
-	<?php 
+	<?
 	  $o55_anousu = db_getsession('DB_anousu');
 	  db_input('o55_anousu',4,$Io55_anousu,true,'text',3,"")
 	?>
@@ -55,7 +55,7 @@ $clrotulo->label("nomeinst");
        <b>Classificação:</b>
     </td>
     <td> 
-	<?php 
+	<?
 	if($db_opcao==1){
 	    $db_opcao02 = 1;
 	}else{
@@ -80,7 +80,7 @@ $clrotulo->label("nomeinst");
     <!--
     <input name="digito" type="text" size="1" readonly="true" value="<?=$o55_tipo?>" style="background-color:#DEB887;">&nbsp; 
 	-->
-	<?php 
+	<?
 
 	 if ( isset($o55_tipo) && $o55_tipo == 1  ) {
 	   $aInicioCod = array( 1000=>"1",
@@ -128,12 +128,12 @@ $clrotulo->label("nomeinst");
       onKeyUp="js_ValidaCampos(this,0,'Projetos / Atividades','f','f',event);"
       onKeyDown="return js_controla_tecla_enter(this,event);"
       autocomplete='off'>
-	<?php 
+	<?
 	} else {
 	?>
-	<input title="Projetos / Atividades do orçamento Campo:o55_projativ" name="o55_projativ_rd"  type="text" id="o55_projativ_rd" value="<?php  echo substr($o55_projativ,1,3); ?>" size="3" 
+	<input title="Projetos / Atividades do orçamento Campo:o55_projativ" name="o55_projativ_rd"  type="text" id="o55_projativ_rd" value="<? echo substr($o55_projativ,1,3); ?>" size="3" 
     maxlength="3" readonly style="background-color:#DEB887;" autocomplete='off'>
-	<?php 
+	<?
 	  db_input('o55_projativ',3,$Io55_projativ,true,'hidden',$db_opcao02,"");
 	}
 	?>
@@ -144,7 +144,7 @@ $clrotulo->label("nomeinst");
        <b>Título:</b>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_input('o55_descr',55,$Io55_descr,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -154,19 +154,19 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_finali?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_textarea('o55_finali',0,52,$Io55_finali,true,'text',$db_opcao,"")
 	?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To55_orcproduto?>">
-       <?php 
+       <?
          db_ancora($Lo55_orcproduto,"js_pesquisaProduto(true)",$db_opcao);
        ?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_input('o55_orcproduto',10,$Io55_orcproduto,true,'text',$db_opcao,"onChange='js_pesquisaProduto(false);'");
 	  db_input('o22_descrprod',40,"",true,'text',3);
 	?>
@@ -174,12 +174,12 @@ $clrotulo->label("nomeinst");
   </tr>  
   <tr>
     <td>
-       <?php 
+       <?
          db_ancora($Lo13_unidaderesp,"js_pesquisaUnidadeResp(true)",$db_opcao);
        ?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_input('o13_sequencial' ,10,"",true,'hidden',3);
 	  db_input('o13_unidaderesp',10,$Io13_unidaderesp,true,'text',$db_opcao,"onChange='js_pesquisaUnidadeResp(false);'");
 	  db_input('o20_descricao'  ,40,"",true,'text',3);
@@ -191,7 +191,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_descrunidade?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_textarea('o55_descrunidade',0,52,$Io55_descrunidade,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -201,7 +201,7 @@ $clrotulo->label("nomeinst");
        <?=$Lo55_valorunidade?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_input('o55_valorunidade',10,$Io55_valorunidade,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -211,7 +211,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_especproduto?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_textarea('o55_especproduto',0,52,$Io55_especproduto,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -221,7 +221,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_tipoacao?>
     </td>
     <td> 
-	<?php 
+	<?
 	  $aTipoAcao = array('1'=>'Orçamentária',
 			     		 '2'=>'Não-Orçamentária');
 	
@@ -234,7 +234,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_formaimplementacao?>
     </td>
     <td> 
-	<?php 
+	<?
 	  $aFormaImplementacao = array('1'=>'Direta',
 			     		 		   '2'=>'Descentralizada',
 								   '3'=>'Transferência Obrigatória',
@@ -250,7 +250,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_detalhamentoimp?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_textarea('o55_detalhamentoimp',0,52,$Io55_detalhamentoimp,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -260,7 +260,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_origemacao?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_textarea('o55_origemacao',0,52,$Io55_origemacao,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -270,7 +270,7 @@ $clrotulo->label("nomeinst");
        <?=@$Lo55_baselegal?>
     </td>
     <td> 
-	<?php 
+	<?
 	  db_textarea('o55_baselegal',0,52,$Io55_baselegal,true,'text',$db_opcao,"")
 	?>
     </td>
@@ -279,7 +279,7 @@ $clrotulo->label("nomeinst");
     <td nowrap >
     </td>
     <td> 
-	<?php 
+	<?
 	global $o55_instit;
 	$o55_instit = db_getsession('DB_instit');
 	db_input('o55_instit',2,$Io55_instit,true,'hidden',3," onchange='js_pesquisao55_instit(false);'")
@@ -290,11 +290,11 @@ $clrotulo->label("nomeinst");
   </fieldset>
   </center>
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?php if(empty($novo)){?>
+<?if(empty($novo)){?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?php }else{?>
+<?}else{?>
   <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_orcprojativ.hide();">
-<?php }?>
+<?}?>
 </form>
 <script>
 
@@ -379,14 +379,14 @@ function js_preenchepesquisa(chave,chave1){
 //alert(chave1);
 
   db_iframe_orcprojativ.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }
 </script>
-<?php 
+<?
 if(isset($msg_erro)){
   db_msgbox($msg_erro);
 }

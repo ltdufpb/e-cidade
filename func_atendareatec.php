@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clatendareatec->rotulo->label("at27_sequencial");
               <?=$Lat27_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at27_sequencial",10,$Iat27_sequencial,true,"text",4,"","chave_at27_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clatendareatec->rotulo->label("at27_sequencial");
               <?=$Lat27_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at27_sequencial",10,$Iat27_sequencial,true,"text",4,"","chave_at27_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clatendareatec->rotulo->label("at27_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendareatec.php")==true){
@@ -123,12 +123,12 @@ $clatendareatec->rotulo->label("at27_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

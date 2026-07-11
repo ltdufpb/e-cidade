@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsetor->rotulo->label("j30_descr");
               <?=$Lj30_codi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j30_codi",4,$Ij30_codi,true,"text",4,"","chave_j30_codi");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsetor->rotulo->label("j30_descr");
               <?=$Lj30_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j30_descr",40,$Ij30_descr,true,"text",4,"","chave_j30_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clsetor->rotulo->label("j30_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_setor.php")==true){
@@ -119,14 +119,14 @@ $clsetor->rotulo->label("j30_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j30_codi.focus();
 document.form2.chave_j30_codi.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

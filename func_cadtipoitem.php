@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcadtipoitem->rotulo->label("k09_cadtipoitemgrupo");
               <?=$Lk09_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k09_sequencial",10,$Ik09_sequencial,true,"text",4,"","chave_k09_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcadtipoitem->rotulo->label("k09_cadtipoitemgrupo");
               <?=$Lk09_cadtipoitemgrupo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k09_cadtipoitemgrupo",10,$Ik09_cadtipoitemgrupo,true,"text",4,"","chave_k09_cadtipoitemgrupo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcadtipoitem->rotulo->label("k09_cadtipoitemgrupo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadtipoitem.php")==true){
@@ -123,12 +123,12 @@ $clcadtipoitem->rotulo->label("k09_cadtipoitemgrupo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,18 +62,18 @@ $clrotulo->label("sd29_i_procedimento");
        <b> Período:</b>
      </td>
      <td>
-       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
         A
-       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
      </tr>
      <tr>
       <td nowrap align="right" >
-       <?php db_ancora("<b>Procedimento:</b>","js_pesquisa_procedimento(true);",1)?>
+       <?db_ancora("<b>Procedimento:</b>","js_pesquisa_procedimento(true);",1)?>
       </td>
       <td>
-       <?php db_input('sd63_c_procedimento',11,"",true,'text',1," onchange='js_pesquisa_procedimento(false);'")?>
-       <?php db_input('sd63_c_nome',70,"",true,'text',3,'')?>
+       <?db_input('sd63_c_procedimento',11,"",true,'text',1," onchange='js_pesquisa_procedimento(false);'")?>
+       <?db_input('sd63_c_nome',70,"",true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -90,7 +90,7 @@ $clrotulo->label("sd29_i_procedimento");
      <tr>
      <td colspan="2">
      <table border="1" cellpadding="0" cellspacing="0" width="100%">
-     <?php 
+     <?
       $result = $clunidades->sql_record($clunidades->sql_query());
       if($clunidades->numrows > 0){
      ?>
@@ -98,7 +98,7 @@ $clrotulo->label("sd29_i_procedimento");
         <td bgcolor="#D0D0D0" width="30"><input type="button" value="M" name="marca" title="Marcar/Desmarcar" onclick="marcar(<?=$clunidades->numrows?>, this)"></td>
         <td colspan="5"><b>Selecione as Unidades</b></td>
        </tr>
-      <?php $bg = "#E8E8E8";
+      <?$bg = "#E8E8E8";
         echo "<tr bgcolor='#b0b0b0'>";
         for($u=0; $u< $clunidades->numrows; $u++){
          db_fieldsmemory($result,$u);
@@ -133,7 +133,7 @@ $clrotulo->label("sd29_i_procedimento");
   </td>
  </tr>
 </table>
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ if(!isset($ed52_i_ano)){
 </head>
 <script>
  team = new Array(
- <?php 
+ <?
  $sql = "SELECT DISTINCT ed10_i_codigo,ed10_c_descr,ed10_c_abrev
          FROM ensino
           inner join serie on ed11_i_ensino  = ed10_i_codigo
@@ -143,7 +143,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Listagem de Alunos para o Censo Escolar</b></legend>
 <table width="80%" border="0" align="left">
@@ -155,9 +155,9 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <b>Data do Censo:</b>
      </td>
      <td>
-      <?php db_inputdata('data_censo',@$data_censo_dia,@$data_censo_mes,@$data_censo_ano,true,'text',1," onchange=\"js_ano();\"","","","parent.js_ano();")?>
+      <?db_inputdata('data_censo',@$data_censo_dia,@$data_censo_mes,@$data_censo_ano,true,'text',1," onchange=\"js_ano();\"","","","parent.js_ano();")?>
       <b>Ano:</b>
-      <?php db_input('ano_censo',4,@$ano_censo,true,'text',3,"")?>
+      <?db_input('ano_censo',4,@$ano_censo,true,'text',3,"")?>
      </td>
      <td></td>
      <td></td>
@@ -174,7 +174,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
      <td>
       <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:200px;height:18px;">
       <option></option>
-       <?php 
+       <?
        #Seleciona todos os grupos para setar os valores no combo
        $sql = "SELECT DISTINCT ed10_i_codigo,ed10_c_descr,ed10_c_abrev
                FROM ensino
@@ -190,7 +190,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
         $desc_curso=$row["ed10_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" ><?=$desc_curso;?></option>
-        <?php 
+        <?
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -511,7 +511,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
 </fieldset>
 </center>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

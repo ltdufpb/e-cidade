@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clfandamusu->rotulo->label("y40_obs");
               <?=$Ly40_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y40_codandam",20,$Iy40_codandam,true,"text",4,"","chave_y40_codandam");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clfandamusu->rotulo->label("y40_obs");
               <?=$Ly40_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y40_id_usuario",5,$Iy40_id_usuario,true,"text",4,"","chave_y40_id_usuario");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clfandamusu->rotulo->label("y40_obs");
               <?=$Ly40_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y40_obs",100,$Iy40_obs,true,"text",4,"","chave_y40_obs");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clfandamusu->rotulo->label("y40_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fandamusu.php")==true){
@@ -130,12 +130,12 @@ $clfandamusu->rotulo->label("y40_obs");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

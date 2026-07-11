@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
               <?=$Ly100_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		          db_input("y100_sequencial",10,$Iy100_sequencial,true,"text",4,"","chave_y100_sequencial");
 		          ?>
             </td>
@@ -65,7 +65,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
           <tr>
           	<td align="right" nowrap ><b>Trazer apenas registros ligados a origem:</b></td>
 					  <td>
-					  	<?php 
+					  	<?
 					  	  $arr_origem = array("S"=>"Sim","N"=>"Não");
 	              db_select("origem",$arr_origem,true,2); 
 							?>
@@ -74,7 +74,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
 					 <tr>
 					 	<td align="right" ><b>Considerar:</b></td>
 					  <td>
-					  	<?php 
+					  	<?
 					  	  $arr_cons = array("A"=>"Aberto","E"=>"Encerrado","T"=>"Todos");
 	              db_select("considerar",$arr_cons,true,2); 
 							?>
@@ -93,7 +93,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 			$where=" where 1=1 ";
       if(!isset($pesquisa_chave)){
         if((isset($origem) and $origem=="S") or (!isset($origem) and (isset($tipo)) )){
@@ -222,12 +222,12 @@ select y100_sequencial,y100_dtinicial, y101_numcgm,z01_nome ,y103_inscr,y102_mat
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

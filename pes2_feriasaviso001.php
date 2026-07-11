@@ -80,8 +80,8 @@ $mes = DBPessoal::getMesFolha();
                 </td>
             </tr>
             <tr>
-                <td> <?php  db_ancora("<b>Responsável:</b>", "js_pesquisarh01_regist(true);",0); ?></td>
-                <td> <?php  db_input('rh01_regist',7,0,true,'text',0, "onchange='js_pesquisarh01_regist(false);'");?> <?php  db_input('nome',25,0,true,'text',3);?></td>
+                <td> <? db_ancora("<b>Responsável:</b>", "js_pesquisarh01_regist(true);",0); ?></td>
+                <td> <? db_input('rh01_regist',7,0,true,'text',0, "onchange='js_pesquisarh01_regist(false);'");?> <? db_input('nome',25,0,true,'text',3);?></td>
             </tr>
             <tr>
                 <td>
@@ -90,7 +90,7 @@ $mes = DBPessoal::getMesFolha();
                     </label>
                 </td>
                 <td align="left">
-                    <?php 
+                    <?
                     $tipo_ordem = array("numerica"=>"Numérica",
                         "alfabetica"=>"Alfabética");
                     db_select('ordem',$tipo_ordem ,true,1);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claguahidrodiametro->rotulo->label("x15_diametro");
               <?=$Lx15_coddiametro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x15_coddiametro",4,$Ix15_coddiametro,true,"text",4,"","chave_x15_coddiametro");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claguahidrodiametro->rotulo->label("x15_diametro");
               <?=$Lx15_diametro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x15_diametro",10,$Ix15_diametro,true,"text",4,"","chave_x15_diametro");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $claguahidrodiametro->rotulo->label("x15_diametro");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguahidrodiametro.php")==true){
@@ -119,12 +119,12 @@ $claguahidrodiametro->rotulo->label("x15_diametro");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -64,7 +64,7 @@ if($numrows_sql==0){
 }
 ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -93,12 +93,12 @@ if($numrows_sql==0){
 	     <?=@$Lpc22_codorc?>
 	  </td>
 	  <td> 
-      <?php 
+      <?
       db_input('pc22_codorc',6,$Ipc22_codorc,true,'text',3);
       ?>
 	  </td>
 	  <td>
-      <?php      
+      <?     
         if($db_altexc == false){
           echo '<input name="incluir" type="submit" id="incluir" value="Incluir" onclick="return js_verif();" '.($db_botao==false?"disabled":"").' >';
 	}else{
@@ -112,7 +112,7 @@ if($numrows_sql==0){
   </tr>
   <tr>
     <td align='center' colspan="3">
-    <?php     
+    <?    
     if($numrows_sql!=0){
       $cliframe_seleciona->textocabec ="black";
       $cliframe_seleciona->textocorpo ="black";
@@ -143,7 +143,7 @@ if($numrows_sql==0){
   </tr>
 </table>
 </center>
-<?php 
+<?
 db_input('valores',6,0,true,'hidden',3);
 db_input('pc10_numero',6,0,true,'hidden',3);
 ?>
@@ -167,7 +167,7 @@ function js_gerarel(){
   jan.moveTo(0,0);
 }
 </script>
-<?php 
+<?
 if(isset($impok)){
   echo "<script>
           alert('Usuário:\\n\\nItens desta solicitação estão em processo de compras!\\n\\nAdministrador:');";

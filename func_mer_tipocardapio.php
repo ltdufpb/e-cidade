@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $codescola = db_getsession("DB_coddepto");
       <?=$Lme27_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me27_i_codigo",4,$Ime27_i_codigo,true,"text",4,"","chave_me27_i_codigo");?>
+      <?db_input("me27_i_codigo",4,$Ime27_i_codigo,true,"text",4,"","chave_me27_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $codescola = db_getsession("DB_coddepto");
       <?=$Lme27_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me27_c_nome",30,$Ime27_c_nome,true,"text",4,"","chave_me27_c_nome");?>
+      <?db_input("me27_c_nome",30,$Ime27_c_nome,true,"text",4,"","chave_me27_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $codescola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if (isset($campos)==false) {
          
      if (file_exists("funcoes/db_func_mer_tipocardapio.php")==true) {

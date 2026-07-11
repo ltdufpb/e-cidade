@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $oRotulo->label('nomearq');
               <?=$Ldb136_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db136_sequencial",10,$Idb136_sequencial,true,"text",4,"","chave_db136_sequencial");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $oRotulo->label('nomearq');
               <?=$Lnomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("nomearq",10,$Inomearq,true,"text",4,"","chave_nomearq");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $oRotulo->label('nomearq');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $sWhere = "db136_tabela <> 1010051";
       
       if (isset($lTabelaAlunos)) {
@@ -144,12 +144,12 @@ $oRotulo->label('nomearq');
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

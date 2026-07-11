@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcancdebitosprocreg->rotulo->label("k24_sequencia");
               <?=$Lk24_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k24_sequencia",15,$Ik24_sequencia,true,"text",4,"","chave_k24_sequencia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcancdebitosprocreg->rotulo->label("k24_sequencia");
               <?=$Lk24_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k24_sequencia",15,$Ik24_sequencia,true,"text",4,"","chave_k24_sequencia");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcancdebitosprocreg->rotulo->label("k24_sequencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cancdebitosprocreg.php")==true){
@@ -119,12 +119,12 @@ $clcancdebitosprocreg->rotulo->label("k24_sequencia");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

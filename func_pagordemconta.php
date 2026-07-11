@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpagordemconta->rotulo->label("e49_codord");
               <?=$Le49_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e49_codord",6,$Ie49_codord,true,"text",4,"","chave_e49_codord");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpagordemconta->rotulo->label("e49_codord");
               <?=$Le49_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e49_codord",6,$Ie49_codord,true,"text",4,"","chave_e49_codord");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpagordemconta->rotulo->label("e49_codord");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pagordemconta.php")==true){
@@ -119,12 +119,12 @@ $clpagordemconta->rotulo->label("e49_codord");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

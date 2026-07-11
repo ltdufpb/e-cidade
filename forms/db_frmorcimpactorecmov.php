@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -82,7 +82,7 @@ function js_verificar(){
 <center>
 
 
-<?php 
+<?
 
 $result = $clorcimpactoperiodo->sql_record($clorcimpactoperiodo->sql_query_file($o69_codperiodo,"o96_anoini,o96_anofim"));
 db_fieldsmemory($result,0);
@@ -92,7 +92,7 @@ db_fieldsmemory($result,0);
     <td nowrap title="<?=@$To69_codperiodo?>" colspan='2' align='left'>
        <?=@$Lo69_codperiodo?>
 
-<?php 
+<?
 db_input('o69_codperiodo',8,0,true,'text',3);
 $testado ='ok';//variavel criada para testar no programa de entrada...
 db_input("testado",8,0,true,'hidden',1);
@@ -103,7 +103,7 @@ db_input('o63_codimpger',4,0,true,'text',3);
 ?>
     </td>
   </tr>
-<?php 
+<?
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x  = "o69_sequen_$i";
@@ -162,7 +162,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 ?>
 <tr>
   <td>
-<?php 
+<?
 db_input("o69_sequen_$i",8,$Io69_sequen,true,'hidden',1);
 ?>
   
@@ -173,7 +173,7 @@ db_input("o69_sequen_$i",8,$Io69_sequen,true,'hidden',1);
        <?=@$Lo69_exercicio?>
     </td>
     <td> 
-<?php 
+<?
 $x = "o69_exercicio_$i";
 if(empty($$x)){
   $$x = $i;
@@ -186,7 +186,7 @@ db_input("o69_exercicio_$i",4,$Io69_exercicio,true,'text',3);
        <?=@$Lo69_valor?>
     </td>
     <td> 
-<?php 
+<?
 db_input("o69_valor_$i",8,$Io69_valor,true,'text',$db_opcao,($i == $o96_anoini?"onchange='js_valor();'":""));
 ?>
     </td>
@@ -194,36 +194,36 @@ db_input("o69_valor_$i",8,$Io69_valor,true,'text',$db_opcao,($i == $o96_anoini?"
        <?=@$Lo69_perc?>
     </td>
     <td> 
-<?php 
+<?
 db_input("o69_perc_$i",8,$Io69_perc,true,'text',$db_opcao,($i == $o96_anoini?"onchange='js_perc();'":"onchange='js_calcula_perc();'"));
 ?>
     </td>
     <td nowrap title="<?=@$To57_fonte?>">
-       <?php 
+       <?
        db_ancora(@$Lo57_fonte,"js_fonte_$i(true);",$db_opcao);
        ?>
     </td>
     <td align='left' width='38%'> 
-    <?php 
+    <?
        $x = "o57_fonte_$i";
     ?>
     <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o57_fonte_<?=$i?>" size="19" maxlength='15'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_fonte_<?=$i?>(false);'>
     
     </td>
     <td nowrap title="<?=@$To69_codigo?>">
-       <?php 
+       <?
        db_ancora(@$Lo69_codigo,"js_codigo_$i(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 $x = "o69_codigo_$i";
 if(empty($$x)){
   $$x = 1;
 }  
 db_input("o69_codigo_$i",4,$Io69_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>
-       <?php 
+       <?
 //db_input('o56_descr',30,$Io56_descr,true,'text',3,'');
        ?>
     </td>
@@ -233,7 +233,7 @@ db_input("o69_codigo_$i",4,$Io69_codigo,true,'text',$db_opcao," onchange='js_cod
 	   <?=$Lo69_obs?>
     </td>
     <td colspan="9" align='left'>
-       <?php 
+       <?
          $x = "o69_obs_$i";
 	 db_textarea($x,1,90,$Io69_obs,true,'text',$db_opcao);
        ?>
@@ -244,7 +244,7 @@ db_input("o69_codigo_$i",4,$Io69_codigo,true,'text',$db_opcao," onchange='js_cod
   </fieldset>
   </td>
 </tr> 
-<?php 
+<?
 }
 ?>
 
@@ -263,16 +263,16 @@ function js_cancelar(){
 }
 function js_calcula_perc(){
   
-  <?php for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){?>
+  <?for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){?>
         valano = new Number("<?=($c-1)?>" );
         valor = new Number(eval("document.form1.o69_valor_"+valano+".value;"));
         perc  = new Number(eval("document.form1.o69_perc_<?=$c?>.value;"));
         valperc = ((valor*perc)/100)+valor;
         eval("document.form1.o69_valor_<?=$c?>.value="+valperc.toFixed(2)+";");
-  <?php }?>  
+  <?}?>  
 }  
 
-<?php 
+<?
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
   //rotina  para repetir os valores digitado na primeira linha para os campos abaixo
   
@@ -322,7 +322,7 @@ function js_mostrafonte_<?=$i?>(chave,erro){
     document.form1.o57_fonte_<?=$i?>.value = ''; 
     return false;
   }
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o57_fonte_$c.value = document.form1.o57_fonte_$i.value;";
@@ -335,7 +335,7 @@ function js_mostrafonte_<?=$i?>(chave,erro){
 
 function js_mostrafonte1_<?=$i?>(chave1,chave2){
 document.form1.o57_fonte_<?=$i?>.value = chave1;
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o57_fonte_$c.value = chave1;";
@@ -362,7 +362,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
     document.form1.o69_codigo_<?=$i?>.value = ''; 
     return false;
   }
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o69_codigo_$c.value = document.form1.o69_codigo_$i.value ;";
@@ -373,7 +373,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
 function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
   document.form1.o69_codigo_<?=$i?>.value = chave1;
 //  document.form1.o15_descr.value = chave2;
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o69_codigo_$c.value = document.form1.o69_codigo_$i.value ;";
@@ -383,7 +383,7 @@ function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
   db_iframe_orctiporec.hide();
 }
 
-<?php }?>
+<?}?>
 
 
 

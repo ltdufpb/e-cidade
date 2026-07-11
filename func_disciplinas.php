@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
               <?=$Led27_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed27_i_codigo",5,$Ied27_i_codigo,true,"text",4,"","chave_ed27_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
               <?=$Led27_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed27_c_nome",50,$Ied27_c_nome,true,"text",4,"","chave_ed27_c_nome");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_disciplinas.php")==true){
@@ -121,12 +121,12 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

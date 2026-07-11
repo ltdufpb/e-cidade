@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,7 +62,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_mesusu",2,$Irh40_mesusu,true,"text",4,"","chave_rh40_mesusu");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_orgao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_orgao",2,$Irh40_orgao,true,"text",4,"","chave_rh40_orgao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_unidade?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_unidade",2,$Irh40_unidade,true,"text",4,"","chave_rh40_unidade");
 		       ?>
             </td>
@@ -92,7 +92,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_projativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_projativ",4,$Irh40_projativ,true,"text",4,"","chave_rh40_projativ");
 		       ?>
             </td>
@@ -102,7 +102,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_recurso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_recurso",4,$Irh40_recurso,true,"text",4,"","chave_rh40_recurso");
 		       ?>
             </td>
@@ -112,7 +112,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_codele",6,$Irh40_codele,true,"text",4,"","chave_rh40_codele");
 		       ?>
             </td>
@@ -122,7 +122,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_rubric",4,$Irh40_rubric,true,"text",4,"","chave_rh40_rubric");
 		       ?>
             </td>
@@ -132,7 +132,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
               <?=$Lrh40_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh40_rubric",4,$Irh40_rubric,true,"text",4,"","chave_rh40_rubric");
 		       ?>
             </td>
@@ -150,7 +150,7 @@ $clrhempfolha->rotulo->label("rh40_rubric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhempfolha.php")==true){
@@ -186,12 +186,12 @@ $clrhempfolha->rotulo->label("rh40_rubric");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

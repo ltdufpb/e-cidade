@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -146,15 +146,15 @@ background-color:#ccddcc;
 <td ></td>
 <td ></td>
 </tr>
-  <?php 
+  <?
   if ((isset($processar))&&(!isset($atualizar))){
     $db_opcao=3;
   }else $db_opcao=1;
   ?>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tq12_classe?>"><?php db_ancora(@$Lq12_classe,"js_pesquisaq12_classe(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tq12_classe?>"><?db_ancora(@$Lq12_classe,"js_pesquisaq12_classe(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  db_input("q12_classe",6,$Iq12_classe,true,"text",$db_opcao,"onchange='js_pesquisaq12_classe(false);'");
+      <? db_input("q12_classe",6,$Iq12_classe,true,"text",$db_opcao,"onchange='js_pesquisaq12_classe(false);'");
          db_input("q12_descr",40,"$Iq12_descr",true,"text",3);  
         ?></td>
   </tr>
@@ -168,7 +168,7 @@ background-color:#ccddcc;
   </td>
   </tr>
 
-  <?php 
+  <?
     if (isset($q12_classe) && $q12_classe!=""){
        $result01=$clativid->sql_record($clativid->sql_query_file(null,"*","q03_ativ"));
        $numrows01=$clativid->numrows;
@@ -222,7 +222,7 @@ background-color:#ccddcc;
     <input name="limpa" type="button" onclick='js_limpa();'  value="Voltar">
   </td>
   </tr>
-  <?php 
+  <?
   }
   ?>
  
@@ -231,7 +231,7 @@ background-color:#ccddcc;
  
 
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisaq12_classe(mostra){
@@ -259,7 +259,7 @@ function js_mostraclasse1(chave1,chave2){
 }
 //----------------------------------------------------------------------
 </script>
-<?php 
+<?
 if (isset($atualizar)){
     db_msgbox($erro_msg);
     if($clclasativ->erro_campo!=""){

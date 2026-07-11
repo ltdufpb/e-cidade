@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $iCodEscola = db_getsession("DB_coddepto");
               <?=$Led328_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed328_sequencial",10,$Ied328_sequencial,true,"text",4,"","chave_ed328_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $iCodEscola = db_getsession("DB_coddepto");
               <?=$Led328_db_estrutura?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed328_db_estrutura",10,$Ied328_db_estrutura,true,"text",4,"","chave_ed328_db_estrutura");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $iCodEscola = db_getsession("DB_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $sWhere = " ed328_escola = {$iCodEscola}";
       if (!isset($pesquisa_chave)) {
 
@@ -133,12 +133,12 @@ $iCodEscola = db_getsession("DB_coddepto");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

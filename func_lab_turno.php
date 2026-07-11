@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllab_turno->rotulo->label("la01_c_descr");
               <?=$Lla01_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la01_i_codigo",10,$Ila01_i_codigo,true,"text",4,"","chave_la01_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllab_turno->rotulo->label("la01_c_descr");
               <?=$Lla01_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la01_c_descr",50,$Ila01_c_descr,true,"text",4,"","chave_la01_c_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllab_turno->rotulo->label("la01_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_turno.php")==true){
@@ -123,12 +123,12 @@ $cllab_turno->rotulo->label("la01_c_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

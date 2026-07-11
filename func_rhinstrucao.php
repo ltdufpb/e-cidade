@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhinstrucao->rotulo->label("rh21_descr");
               <?=$Lrh21_instru?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh21_instru",6,$Irh21_instru,true,"text",4,"","chave_rh21_instru");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhinstrucao->rotulo->label("rh21_descr");
               <?=$Lrh21_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh21_descr",40,$Irh21_descr,true,"text",4,"","chave_rh21_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhinstrucao->rotulo->label("rh21_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhinstrucao.php")==true){
@@ -119,12 +119,12 @@ $clrhinstrucao->rotulo->label("rh21_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

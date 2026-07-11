@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcfpess->rotulo->label("r11_ultger");
               <?=$Lr11_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r11_mesusu",2,$Ir11_mesusu,true,"text",4,"","chave_r11_mesusu");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clcfpess->rotulo->label("r11_ultger");
               <?=$Lr11_ultger?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r11_ultger",8,$Ir11_ultger,true,"text",4,"","chave_r11_ultger");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clcfpess->rotulo->label("r11_ultger");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cfpess.php")==true){
@@ -124,12 +124,12 @@ $clcfpess->rotulo->label("r11_ultger");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

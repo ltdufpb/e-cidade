@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,12 +56,12 @@ $clsau_fechamento->rotulo->label("sd97_i_compano");
               <b>Competência: </b>
             </td>
             <td width="5%" nowrap> 
-              <?php  db_input("sd97_i_compmes",5,$Isd97_i_compmes,true,"text",4,"","chave_sd97_i_compmes");?>			   
+              <? db_input("sd97_i_compmes",5,$Isd97_i_compmes,true,"text",4,"","chave_sd97_i_compmes");?>			   
             </td>
 			<td width="0%" nowrap>/</td>
 			</td>
             <td width="0%" nowrap> 
-             <?php  db_input("sd97_i_compano",5,$Isd97_i_compano,true,"text",4,"","chave_sd97_i_compano");?> 
+             <? db_input("sd97_i_compano",5,$Isd97_i_compano,true,"text",4,"","chave_sd97_i_compano");?> 
             </td>
           <tr> 
             <td colspan="4" align="center"> 
@@ -76,7 +76,7 @@ $clsau_fechamento->rotulo->label("sd97_i_compano");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_fechamento.php")==true){
@@ -114,12 +114,12 @@ $clsau_fechamento->rotulo->label("sd97_i_compano");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

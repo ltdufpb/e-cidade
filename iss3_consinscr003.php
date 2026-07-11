@@ -333,7 +333,7 @@ if(!empty($iCodigoInscricao)) {
             </tr>
         </thead>
         <tbody>
-            <?php  foreach ($aInscricoes as $key => $oInscriao) : ?>
+            <? foreach ($aInscricoes as $key => $oInscriao) : ?>
                 <tr style="background-color: <?= (($key % 2) == 0 ? "#FFFFFF" : "") ?>" onclick="js_selecionaInscricao(<?= $oInscriao->q02_inscr ?>)">
                     <td><?= $oInscriao->q02_inscr ?></td>
                     <td><?= $oInscriao->z01_nome ?></td>
@@ -353,7 +353,7 @@ if(!empty($iCodigoInscricao)) {
     endif;
 ?>
 
-<?php 
+<?
 /**
  * valida se a inscrição passada é valida
  */
@@ -377,7 +377,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
       <td width="356" align="left" nowrap bgcolor="#FFFFFF">
         <font color="#666666">
           <strong>&nbsp;<?=$iCodigoInscricao . " - CGM: " . $oDadosInscricao->q02_numcgm?>&nbsp;</strong>
-          <?php $sqlparalisada = "select 
+          <?$sqlparalisada = "select 
                                 q140_datainicio, 
                                 q141_descricao 
                               from 
@@ -597,12 +597,12 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
             <td width="12%">
 
               <table width="80%" border="0" cellspacing="2" cellpadding="0">
-                  <?php if ($q02_dtbaix!=""){?>
+                  <?if ($q02_dtbaix!=""){?>
                     <tr>
                       <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand" >
                         <a href="iss3_consinscr003_detalhes.php?solicitacao=Baixa&inscricao=<?=$iCodigoInscricao?>" target="iframeDetalhes">&nbsp;Dados da Baixa&nbsp;</a></td>
                     </tr>
-                  <?php }?>
+                  <?}?>
                 <tr>
                   <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand" >
                     <a href="iss3_consinscr003_detalhes.php?solicitacao=Atividades&inscricao=<?=$iCodigoInscricao?>" target="iframeDetalhes">&nbsp;Atividades&nbsp;</a></td>
@@ -611,12 +611,12 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                   <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand">
                     <a href="iss3_consinscr003_detalhes.php?inscricao=<?=$iCodigoInscricao?>&solicitacao=Socios" target="iframeDetalhes">&nbsp;S&oacute;cios&nbsp;</a></td>
                 </tr>
-                  <?php if (1==2){?>
+                  <?if (1==2){?>
                     <tr>
                       <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand">
                         <a href="iss3_consinscr003_detalhes.php?inscricao=<?=$iCodigoInscricao?>&solicitacao=Calculo" target="iframeDetalhes">&nbsp;C&aacute;lculo&nbsp;</a></td>
                     </tr>
-                  <?php }?>
+                  <?}?>
                 <tr>
                   <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand">
                     <a href="iss3_consinscr003_detalhes.php?inscricao=<?=$iCodigoInscricao?>&solicitacao=TiposDeCalculo" target="iframeDetalhes">&nbsp;Tipos
@@ -663,7 +663,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                   <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="iss3_consinscr003_detalhes.php?inscricao=<?=$iCodigoInscricao?>&solicitacao=OptanteSimples" target="iframeDetalhes">&nbsp;Optante Simples&nbsp;</a></td>
                 </tr>
 
-                  <?php 
+                  <?
                   $clissnotaavulsa = new cl_issnotaavulsa();
                   $clissnotaavulsa->sql_record($clissnotaavulsa->sql_query(null,"*","q51_numnota","q51_inscr = $iCodigoInscricao"));
                   if ($clissnotaavulsa->numrows > 0){
@@ -671,7 +671,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                     <tr>
                       <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="iss3_issnotaavulsa002.php?inscr=<?=$iCodigoInscricao?>" target="iframeDetalhes">&nbsp;Notas Avulsas&nbsp;</a></td>
                     </tr>
-                      <?php 
+                      <?
                   }
                   ?>
                 <tr>
@@ -681,7 +681,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                   <td title="Imprime BIC" align="center" title="Imprime BIC" nowrap bgcolor="#CCCCCC" style="cursor:hand">
                     <a href="iss3_consinscr003_movimentacao.php?inscricao=<?=$iCodigoInscricao?>" target="iframeDetalhes">Movimentações</a></td>
                 </tr>
-                  <?php 
+                  <?
                   if ($q02_dtbaix!=""){
                       ?>
                     <tr>
@@ -702,7 +702,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                   }
                   ?>
 
-                  <?php 
+                  <?
                   $sql="select * from varfix inner join varfixval on q33_codigo=q34_codigo and q33_inscr=$iCodigoInscricao";
                   $varfix=db_query($sql);
                   $numrows=pg_numrows($varfix);
@@ -712,7 +712,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                     <tr>
                       <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><input name='imprime' type='button' onClick="js_Imprimetermo()" value='Imprime Termo'></td>
                     </tr>
-                  <?php }?>
+                  <?}?>
                 <!-- <tr>
                         <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand" onClick="js_impressao()"><strong>&nbsp;Imprimir</strong></td>
                       </tr>-->
@@ -724,7 +724,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
     </tr>
   </table>
 
-    <?php 
+    <?
 } else {  // caso nao tenha retornado nenhum registro é mostrado uma tabela informando que a matricula nao foi localizada
     ?>
   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -739,7 +739,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
         <?php endif?>
     </tr>
   </table>
-    <?php 
+    <?
 } // fim da verificacao
 ?>
 

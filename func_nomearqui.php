@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ function js_enviar(){
       <b>Nome do arquivo: (.php)</b>
     </td>
     <td> 
-			<?php 
+			<?
 			if(!isset($arquivo) || (isset($arquivo) && trim($arquivo) == "")){
 				$arquivo = "relatorio_configuravel.php";
 			}

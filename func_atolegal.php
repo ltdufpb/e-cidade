@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clatolegal->rotulo->label("ed05_c_numero");
       <?=$Led05_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed05_i_codigo",10,$Ied05_i_codigo,true,"text",4,"","chave_ed05_i_codigo");?>
+      <?db_input("ed05_i_codigo",10,$Ied05_i_codigo,true,"text",4,"","chave_ed05_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $clatolegal->rotulo->label("ed05_c_numero");
       <?=$Led05_c_numero?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed05_i_codigo",10,$Ied05_c_numero,true,"text",4,"","chave_ed05_c_numero");?>
+      <?db_input("ed05_i_codigo",10,$Ied05_c_numero,true,"text",4,"","chave_ed05_c_numero");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $clatolegal->rotulo->label("ed05_c_numero");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $escola = db_getsession("DB_coddepto");
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){

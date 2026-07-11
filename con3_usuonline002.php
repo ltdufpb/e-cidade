@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ td {
       <th>Aonde</th>
 	  <th>Módulo</th>
     </tr>
-    <?php 
+    <?
 	db_query("delete from db_usuariosonline where uol_inativo < ".(time() - 300)." or uol_inativo is null") or die("erro(46) excluindo tabela db_usuariosonline");
 	$result = db_query("select * from db_usuariosonline order by uol_login");
 	$numrows = pg_numrows($result);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $cliptucalh->rotulo->label("j17_descr");
               <?=$Lj17_codhis?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j17_codhis",10,$Ij17_codhis,true,"text",4,"","chave_j17_codhis");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cliptucalh->rotulo->label("j17_descr");
               <?=$Lj17_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j17_descr",40,$Ij17_descr,true,"text",4,"","chave_j17_descr");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cliptucalh->rotulo->label("j17_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 
       $chave_j17_descr = addslashes($chave_j17_descr);
 
@@ -145,7 +145,7 @@ $cliptucalh->rotulo->label("j17_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -162,7 +162,7 @@ if(!isset($pesquisa_chave)){
       
     })();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

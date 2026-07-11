@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -83,7 +83,7 @@ if(isset($oPost->incluir)){
   <tr> 
     <td> 
     <center>
-			<?php 
+			<?
 			include(modification("forms/db_frmpactovalor.php"));
 			?>
     </center>
@@ -92,7 +92,7 @@ if(isset($oPost->incluir)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($oPost->incluir)){
 	
   if ($lSqlErro) {

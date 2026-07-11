@@ -76,25 +76,25 @@ $db_opcao_inf = 1;
                         <table>
                             <tr>
                                 <td nowrap><?= db_ancora($Le60_codemp, "js_JanelaAutomatica('empempenho',\$F('e60_numemp'))", $db_opcao_inf) ?></td>
-                                <td nowrap><?php  db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3) ?> </td>
+                                <td nowrap><? db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3) ?> </td>
                                 <td nowrap><?= db_ancora($Le60_numemp, "js_JanelaAutomatica('empempenho',\$F('e60_numemp'))", $db_opcao_inf) ?></td>
-                                <td><?php  db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3) ?> </td>
+                                <td><? db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3) ?> </td>
                             </tr>
                             <tr>
                                 <td><?= db_ancora($Le60_numcgm, "js_JanelaAutomatica('cgm',\$F('e60_numcgm'))", $db_opcao_inf) ?></td>
-                                <td><?php  db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
-                                <td colspan=2><?php  db_input('z01_nome', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
+                                <td><? db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
+                                <td colspan=2><? db_input('z01_nome', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
                             </tr>
                             <tr style='display:<?= $sCredor ?>'>
                                 <td><?= db_ancora('<b>Credor:</b>', "js_pesquisae49_numcgm(true)", 1) ?></td>
-                                <td><?php  db_input('e49_numcgm', 13, $Ie60_numcgm, true, 'text', 1, "onchange='js_pesquisae49_numcgm(false)'"); ?> </td>
-                                <td colspan=2><?php  db_input('z01_credor', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
+                                <td><? db_input('e49_numcgm', 13, $Ie60_numcgm, true, 'text', 1, "onchange='js_pesquisae49_numcgm(false)'"); ?> </td>
+                                <td colspan=2><? db_input('z01_credor', 50, $Iz01_nome, true, 'text', 3, ''); ?></td>
                             </tr>
                             <tr>
                                 <td><?= db_ancora($Le60_coddot, "js_JanelaAutomatica('orcdotacao',\$F('e60_coddot'),'" . @$e60_anousu . "')", $db_opcao_inf) ?></td>
-                                <td><?php  db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
+                                <td><? db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
                                 <td width="20"><?= db_ancora($Lo15_codigo, "", 3) ?></td>
-                                <td><?php  db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3);
+                                <td><? db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3);
                                     db_input('o15_descr', 29, $Io15_descr, true, 'text', 3) ?></td>
                             </tr>
 
@@ -114,7 +114,7 @@ $db_opcao_inf = 1;
                             </tr>
 
                             <!--[Extensao OrdenadorDespesa] inclusao_ordenador-->
-                            <?php 
+                            <?
                             echo " <tr> ";
                             echo "    <td>&nbsp;</td> ";
                             echo "    <td colspan='3'> ";
@@ -143,19 +143,19 @@ $db_opcao_inf = 1;
                         <table>
                             <tr>
                                 <td nowrap><?= @$Le60_vlremp ?></td>
-                                <td align=right><?php  db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><? db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td nowrap><?= @$Le60_vlranu ?></td>
-                                <td align=right><?php  db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><? db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td nowrap><?= @$Le60_vlrliq ?></td>
-                                <td align=right><?php  db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><? db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td nowrap><?= @$Le60_vlrpag ?></td>
-                                <td align=right><?php  db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
+                                <td align=right><? db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '', '', '', 'text-align:right') ?></td>
                             </tr>
                             <tr>
                                 <td colspan=2 align=center class=table_header><?= $labelVal ?></td>
@@ -164,7 +164,7 @@ $db_opcao_inf = 1;
                             <tr>
                                 <td><b> SALDO </b></td>
                                 <td align=right>
-                                    <?php 
+                                    <?
                                     if ($db_opcao == 3) {
                                         @$saldo_disp = db_formatar(($e53_valor - $e53_vlranu - $e53_vlrpag), 'p');
                                     } else {

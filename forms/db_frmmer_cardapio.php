@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,7 +43,7 @@ $escolanome = pg_result(db_query($sql),0,0);
    <?=@$Lme01_i_codigo?>
   </td>
   <td>
-   <?php db_input('me01_i_codigo',10,$Ime01_i_codigo,true,'text',3,"")?>
+   <?db_input('me01_i_codigo',10,$Ime01_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -51,21 +51,21 @@ $escolanome = pg_result(db_query($sql),0,0);
    <?=@$Lme01_c_nome?>
   </td>
   <td>
-   <?php db_input('me01_c_nome',50,$Ime01_c_nome,true,'text',$db_opcao,"")?>
+   <?db_input('me01_c_nome',50,$Ime01_c_nome,true,'text',$db_opcao,"")?>
    <?=@$Lme01_f_versao?>
-   <?php db_input('me01_f_versao',5,$Ime01_f_versao,true,'text',3,"")?>
+   <?db_input('me01_f_versao',5,$Ime01_f_versao,true,'text',3,"")?>
   </td>
  </tr>
   <tr>
   <td nowrap title="<?=@$Tme01_i_tipocardapio?>">
-   <?php db_ancora(@$Lme01_i_tipocardapio,"js_pesquisame01_i_tipocardapio(true);",($db_opcao!=1?3:1));?>
+   <?db_ancora(@$Lme01_i_tipocardapio,"js_pesquisame01_i_tipocardapio(true);",($db_opcao!=1?3:1));?>
   </td>
   <td>
-   <?php db_input('me01_i_tipocardapio',10,$Ime01_i_tipocardapio,true,'text',($db_opcao!=1?3:1),
+   <?db_input('me01_i_tipocardapio',10,$Ime01_i_tipocardapio,true,'text',($db_opcao!=1?3:1),
                "onchange='js_pesquisame01_i_tipocardapio(false);'"
              )
    ?>
-   <?php db_input('me27_c_nome',40,@$Ime27_c_nome,true,'text',3,'')?>
+   <?db_input('me27_c_nome',40,@$Ime27_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -73,7 +73,7 @@ $escolanome = pg_result(db_query($sql),0,0);
    <b>Total de Alunos:</b>
   </td>
   <td>
-   <?php db_input('me01_i_total',10,@$Ime01_i_total,true,'text',3,"")?>
+   <?db_input('me01_i_total',10,@$Ime01_i_total,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -81,7 +81,7 @@ $escolanome = pg_result(db_query($sql),0,0);
    <?=@$Lme01_i_percapita?>
   </td>
   <td>
-   <?php db_input('me01_i_percapita',10,$Ime01_i_percapita,true,'text',$db_opcao,"onChange=\"js_alunoatend(this.value)\"")?>
+   <?db_input('me01_i_percapita',10,$Ime01_i_percapita,true,'text',$db_opcao,"onChange=\"js_alunoatend(this.value)\"")?>
   </td>
  </tr>
  <tr>
@@ -90,7 +90,7 @@ $escolanome = pg_result(db_query($sql),0,0);
     <table border="0">
      <tr>
       <td rowspan="2">
-       <?php 
+       <?
        if (!isset($chavepesquisa)) {
          $chavepesquisa = 0;
        }
@@ -108,18 +108,18 @@ $escolanome = pg_result(db_query($sql),0,0);
        <select name="tipos" id="tipos" value="" size="10" 
                style="font-size:12px;width:330px;height:120px;<?=$db_opcao==3||$db_opcao==33?"background:#DEB887":""?>" 
                multiple>
-        <?php for ($x = 0; $x < $clmer_tprefeicao->numrows; $x++) {
+        <?for ($x = 0; $x < $clmer_tprefeicao->numrows; $x++) {
         	
             db_fieldsmemory($result1,$x);?>
             <option value="<?=$me03_i_codigo;?>"><?=$me03_c_tipo?></option>
             
-        <?php }?>
+        <?}?>
        </select>
       </td>
       <td><input name="vai" type="button" value=">" onclick="js_incluir();" 
                  <?=$db_opcao == 3 || $db_opcao == 33?"disabled":""?>><td>
       <td rowspan="2">
-       <?php 
+       <?
        $campos  = " me03_i_codigo as cod_tp,me03_c_tipo as tiponome ";
        $result2 = $clmer_cardapiotipo->sql_record($clmer_cardapiotipo->sql_query("",
                                                                                  $campos,
@@ -131,12 +131,12 @@ $escolanome = pg_result(db_query($sql),0,0);
        <select name="tpselec" id="tpselect" value="" size="10" 
                style="font-size:12px;width:330px;height:120px;<?=$db_opcao==3||$db_opcao==33?"background:#DEB887":""?>" 
                multiple>
-        <?php for ($y = 0; $y < $clmer_cardapiotipo->numrows; $y++) {
+        <?for ($y = 0; $y < $clmer_cardapiotipo->numrows; $y++) {
         	
             db_fieldsmemory($result2,$y);?>
             <option value="<?=$cod_tp;?>"><?=$tiponome?></option>
             
-        <?php }?>
+        <?}?>
        </select>
       </td>
      </tr>
@@ -155,10 +155,10 @@ $escolanome = pg_result(db_query($sql),0,0);
        <?=($db_botao == false?"disabled":"")?> onclick="return listartp();">
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <input name="novo" id="novo" value="Novo" type="button" onclick="js_novo();">
-<?php if ($naopode == true && $db_opcao != 3 && $db_opcao != 33) {?>
+<?if ($naopode == true && $db_opcao != 3 && $db_opcao != 33) {?>
     <input name="newversao" id="newversao" value="Nova Versão" type="button" 
            onclick="js_NovaVersao(<?=$me01_i_codigo?>);">
-<?php }?>
+<?}?>
 </table>
 </center>
 <iframe name="iframe_newversao" src="" frameborder="0" width="0" heigth="0" style="visibility:hidden;"></iframe>
@@ -226,7 +226,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_cardapio.hide();
-  <?php 
+  <?
    if ($db_opcao!=1) {
    	
      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";

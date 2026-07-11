@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -110,7 +110,7 @@ function js_marcaob(obj){
     </tr>
   </table>
   <table style="border: 2px inset white;" cellspacing="0" cellpadding="0" width="550">
-    <?php 
+    <?
       $sSqlCertificado = $clpctipodoccertif->sql_query(null, "*", "pc72_pcdoccertif", "pc72_pctipocertif=$pc74_pctipocertif");
       $result01        = $clpctipodoccertif->sql_record($sSqlCertificado);
       $numrows01       = $clpctipodoccertif->numrows;

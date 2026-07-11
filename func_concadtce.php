@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconcadtce->rotulo->label("c10_nome");
               <?=$Lc10_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c10_sequencial",10,$Ic10_sequencial,true,"text",4,"","chave_c10_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconcadtce->rotulo->label("c10_nome");
               <?=$Lc10_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c10_nome",60,$Ic10_nome,true,"text",4,"","chave_c10_nome");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconcadtce->rotulo->label("c10_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_concadtce.php")==true){
@@ -123,12 +123,12 @@ $clconcadtce->rotulo->label("c10_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clatendocupadolog->rotulo->label("at73_id_usuario");
               <?=$Lat73_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at73_id",8,$Iat73_id,true,"text",4,"","chave_at73_id");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clatendocupadolog->rotulo->label("at73_id_usuario");
               <?=$Lat73_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at73_id_usuario",8,$Iat73_id_usuario,true,"text",4,"","chave_at73_id_usuario");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clatendocupadolog->rotulo->label("at73_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendocupadolog.php")==true){
@@ -123,12 +123,12 @@ $clatendocupadolog->rotulo->label("at73_id_usuario");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -315,7 +315,7 @@ function js_pesquisa() {
 
 function js_preenchepesquisa(chave) {
   db_iframe_edu_relatmodel.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

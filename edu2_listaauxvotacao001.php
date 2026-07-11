@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
  </tr>
 </table>
 <form name="form1" method="post">
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td valign="top">
@@ -63,7 +63,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
       <b>Selecione o Calendário:</b><br>
       <select name="grupo"  style="font-size:9px;width:250px;height:18px;">
        <option></option>
-       <?php 
+       <?
        #Seleciona todos os grupos para setar os valores no combo
        $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
        $sql       .= "       FROM calendario ";
@@ -78,7 +78,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
          $desc_curso = $row["ed52_c_descr"];
          ?>
          <option value="<?=$calendario;?>" <?=$calendario==@$curso?"selected":""?>><?=$desc_curso;?></option>
-         <?php 
+         <?
          
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
@@ -91,7 +91,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
      <tr>
      <td>
       <b>Data da Votação:</b>
-      <?php db_inputdata('datavotacao',@$data_votacao_dia,@$data_votacao_mes,@$data_votacao_ano,true,'text',1,"")?>      
+      <?db_inputdata('datavotacao',@$data_votacao_dia,@$data_votacao_mes,@$data_votacao_ano,true,'text',1,"")?>      
      </td>
     </tr>  
      <tr>
@@ -104,7 +104,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
  </tr>
 </table>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),
+<?db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

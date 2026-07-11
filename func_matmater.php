@@ -93,7 +93,7 @@ if ($clmatparam->numrows) {
                 <?= $Lm60_codmater ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("m60_codmater", 10, $Im60_codmater, true, "text", 4, "", "chave_m60_codmater");
                 ?>
               </td>
@@ -104,7 +104,7 @@ if ($clmatparam->numrows) {
                 <?= $Lm60_descr ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("m60_descr", 40, $Im60_descr, true, "text", 4, "", "chave_m60_descr");
                 ?>
               </td>
@@ -115,7 +115,7 @@ if ($clmatparam->numrows) {
                 <b> Mostrar apenas itens da instituição: </b>
               </td>
               <td>
-                <?php 
+                <?
                 $x = array('1' => 'Não', '2' => 'Sim');
                 db_select('m38_visualizacaoitens', $x, true, 2, "");
                 ?>
@@ -133,7 +133,7 @@ if ($clmatparam->numrows) {
                 ?>
               </td>
               <td>
-                <?php 
+                <?
                 $x = array('f' => 'Não', 't' => 'Sim');
                 db_select('m38_visualizacaomatestoque', $x, true, 1);
                 ?>
@@ -287,12 +287,12 @@ if ($clmatparam->numrows) {
 </body>
 
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 ?>
   <script>
   </script>
-<?php 
+<?
 }
 ?>
 <script type="text/javascript">

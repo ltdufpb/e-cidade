@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -73,7 +73,7 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
 
   ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -99,19 +99,19 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
       <table border="0">
         <tr>
           <td nowrap align="right" title="<?=@$Te60_numcgm?>"><?=@$Le60_numcgm?></td>
-          <td><?php db_input('e60_numcgm',20,$Ie60_numcgm,true,'text',3)?></td>
+          <td><?db_input('e60_numcgm',20,$Ie60_numcgm,true,'text',3)?></td>
           <td nowrap align="right" title="<?=@$z01_nome?>"><?=@$Lz01_nome?></td>
-          <td><?php db_input('z01_nome',45,$Iz01_nome,true,'text',3)?></td>
+          <td><?db_input('z01_nome',45,$Iz01_nome,true,'text',3)?></td>
 	</tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tz01_cgccpf?>"><?=@$Lz01_cgccpf?></td>
-          <td><?php db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',3)?></td>
+          <td><?db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',3)?></td>
             <td nowrap align="right" title="<?=@$z01_email?>"><?=@$Lz01_email?></td>
-          <td nowrap><?php db_input('z01_email',45,$Iz01_email,true,'text',3)?>
+          <td nowrap><?db_input('z01_email',45,$Iz01_email,true,'text',3)?>
           <input name="Alterar CGM" type="button" id="alterarcgm" value="Alterar CGM" onclick="js_AlteraCGM(document.form1.e60_numcgm.value);" >
           </td>                    
         </tr>
-				<?php 
+				<?
          $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit")));
          if ($clpcparam->numrows > 0) {
 	           db_fieldsmemory($result_pcparam, 0);
@@ -133,7 +133,7 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
                  <td align="right"><input id='manda_email' name="manda_mail" type="checkbox" value="X"></td>
                  <td nowrap><label for='manda_email'><b>Mandar e-mail para o fornecedor.</b></label></td>         
               </tr>
-           <?php //end if parametro
+           <?//end if parametro
 								}
 							}
 					 }
@@ -146,32 +146,32 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
         </tr>-->
         <tr>
           <td nowrap align="right" title="<?=@$z01_ender?>"><?=@$Lz01_ender?></td>
-          <td><?php db_input('z01_ender',30,"$Iz01_ender",true,'text',3);if (@$z01_numero!=0){db_input('z01_numero',4,@$Iz01_numero,true,'text',3);}?></td>
+          <td><?db_input('z01_ender',30,"$Iz01_ender",true,'text',3);if (@$z01_numero!=0){db_input('z01_numero',4,@$Iz01_numero,true,'text',3);}?></td>
           <td nowrap align="right"   title="<?=@$Tz01_compl?>"><?=@$Lz01_compl?></td>
-          <td><?php db_input('z01_compl',20,$Iz01_compl,true,'text',3)?></td>
+          <td><?db_input('z01_compl',20,$Iz01_compl,true,'text',3)?></td>
         </tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tz01_munic?>"><?=@$Lz01_munic?></td>
-          <td><?php db_input('z01_munic',30,$Iz01_munic,true,'text',3)?></td>
+          <td><?db_input('z01_munic',30,$Iz01_munic,true,'text',3)?></td>
           <td nowrap align="right"   title="<?=@$Tz01_cep?>"><?=@$Lz01_cep?></td>
-          <td><?php db_input('z01_cep',20,$Iz01_cep,true,'text',3)?></td>
+          <td><?db_input('z01_cep',20,$Iz01_cep,true,'text',3)?></td>
         </tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tz01_telef?>"><?=@$Lz01_telef?></td>
-          <td><?php db_input('z01_telef',20,$Iz01_telef,true,'text',3)?></td>
+          <td><?db_input('z01_telef',20,$Iz01_telef,true,'text',3)?></td>
           <td nowrap align="right" title="<?=@$Tm51_prazoent?>"><?=@$Lm51_prazoent?></td>
-          <td><?php db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
+          <td><?db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
         </tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tm51_data?>"><b>Data:</b></td>
-          <td><?php if(empty($m51_data_dia)){
+          <td><?if(empty($m51_data_dia)){
 	        $m51_data_dia =  date("d",db_getsession("DB_datausu"));
                 $m51_data_mes =  date("m",db_getsession("DB_datausu"));
                 $m51_data_ano =  date("Y",db_getsession("DB_datausu"));
               }
               db_inputdata('m51_data',@$m51_data_dia,@$m51_data_mes,@$m51_data_ano,true,'text',3);?>
           </td>
-          <?php 
+          <?
           $result_matparam=$clmatparam->sql_record($clmatparam->sql_query_file());
           if ($clmatparam->numrows>0){
           	db_fieldsmemory($result_matparam,0);
@@ -189,24 +189,24 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
           		
           	}else{
           		?>
-          		<td nowrap align="right" title="<?=@$descrdepto?>"><?php db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
-          <td><?php db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
+          		<td nowrap align="right" title="<?=@$descrdepto?>"><?db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
+          <td><?db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
                 db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');?>
           </td>
-          		<?php 
+          		<?
           	}
           }else{
           ?>
-          <td nowrap align="right" title="<?=@$descrdepto?>"><?php db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
-          <td><?php db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
+          <td nowrap align="right" title="<?=@$descrdepto?>"><?db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
+          <td><?db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
                 db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');?>
           </td>
-          <?php }?>
+          <?}?>
         </tr>
         <tr> 
 	<td align='right'><b>Obs:</b></td>
           <td colspan='3' align='left'>
-	 <?php  
+	 <? 
 	 db_textarea("m51_obs","","110",$Im51_obs,true,'text',1);
 	 
 	 ?>
@@ -218,18 +218,18 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
         </tr>  
         <tr>
           <td colspan='4' align='center'>
-	  <?php if ($e60_numcgm!=""){
+	  <?if ($e60_numcgm!=""){
 	      $result=db_query("select * from empempenho inner join empempitem on e62_numemp = e60_numemp inner join pcmater on pc01_codmater = e62_item where e60_numcgm=$e60_numcgm");
 	      if (pg_numrows($result)>0){?>
               <input name="incluir" type="submit"  value="Incluir">
 	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" >
-	  <?php }else{?>
+	  <?}else{?>
               <input name="incluir" type="submit" disabled  value="Incluir">
 	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" >
-	  <?php }
+	  <?}
 	    }else{?>
               <input name="incluir" type="submit" disabled  value="Incluir">
-	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" ><?php }?>
+	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" ><?}?>
 	  </td>
         </tr>
       </table>
@@ -237,7 +237,7 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
     </tr>
     <tr>
      <td align='center' valign='top' colspan='1'>
-     <?php 
+     <?
      if(isset($e60_numcgm) && $pesqemp!='true'){
      ?>  
       <table>
@@ -247,14 +247,14 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
          </td>
         </tr>
       </table>
-     <?php 
+     <?
      }
      ?>  
     </td>
   </tr>
     <tr>
      <td align='center' valign='top' colspan='1'>
-     <?php 
+     <?
      if($pesqemp=='true'){
      ?>  
       <table>
@@ -264,14 +264,14 @@ if((isset($e60_numcgm) && $e60_numcgm!='')||(isset($e60_numemp) && $e60_numemp!=
          </td>
         </tr>
       </table>
-     <?php 
+     <?
      }
      ?>  
     </td>
   </tr>
  </table>
 </center>
-<?php 
+<?
 db_input("valores",100,0,true,"hidden",3);
 db_input("val",100,0,true,"hidden",3);
 ?>

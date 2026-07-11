@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,13 +110,13 @@ background-color:#ccddcc;
   <table border="0" width="100%" cellspacing="0" cellpadding="0" nowrap >
   <tr>
     <td align="center" valign="top">
-<?php     
+<?    
      db_input('q80_ativ',8,'',true,'hidden',3);
      db_input('atualizar',8,'',true,'hidden',3);
 
 ?>     
       <table border='1' width="100%" nowrap>
-<?php     
+<?    
      if(isset($q80_ativ)){
        $result01=$cltipcalc->sql_record($cltipcalc->sql_query("","q81_codigo,q81_descr,q85_descr","q81_cadcalc,q81_descr"));
        $numrows01=$cltipcalc->numrows;
@@ -156,7 +156,7 @@ background-color:#ccddcc;
   </table>
 </html>  
 </html>
-<?php 
+<?
 echo"
 <script>
 	parent.document.form1.atualizar.disabled=false;

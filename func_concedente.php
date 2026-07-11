@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconcedente->rotulo->label("o108_numcgm");
               <?=$Lo108_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o108_sequencial",10,$Io108_sequencial,true,"text",4,"","chave_o108_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconcedente->rotulo->label("o108_numcgm");
               <?=$Lo108_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o108_numcgm",10,$Io108_numcgm,true,"text",4,"","chave_o108_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconcedente->rotulo->label("o108_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_concedente.php")==true){
@@ -123,12 +123,12 @@ $clconcedente->rotulo->label("o108_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

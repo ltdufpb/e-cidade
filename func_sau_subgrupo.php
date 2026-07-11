@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $oDaoSauSubGrupo->rotulo->label("sd61_c_subgrupo");
               <?=$Lsd61_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd61_i_codigo",5,$Isd61_i_codigo,true,"text",4,"","chave_sd61_i_codigo");
                  ?>
             </td>
@@ -68,7 +68,7 @@ $oDaoSauSubGrupo->rotulo->label("sd61_c_subgrupo");
               <?=$Lsd61_c_subgrupo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
               db_input("sd61_c_subgrupo", 2, $Isd61_c_subgrupo, true, "text", 4, "", "chave_sd61_c_subgrupo");
               ?>
             </td>
@@ -78,7 +78,7 @@ $oDaoSauSubGrupo->rotulo->label("sd61_c_subgrupo");
               <b>Nome:</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd61_c_nome",50,$Isd61_c_nome,true,"text",4,"","chave_sd61_c_nome");
                  ?>
             </td>
@@ -96,7 +96,7 @@ $oDaoSauSubGrupo->rotulo->label("sd61_c_subgrupo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
            if (file_exists("funcoes/db_func_sau_subgrupo.php")==true) {
@@ -189,12 +189,12 @@ $oDaoSauSubGrupo->rotulo->label("sd61_c_subgrupo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

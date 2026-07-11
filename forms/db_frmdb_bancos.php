@@ -62,7 +62,7 @@ $cldb_bancos->rotulo->label();
                             <?= @$Ldb90_codban ?>
                         </td>
                         <td>
-                            <?php 
+                            <?
                             db_input('db90_codban', 10, $Idb90_codban, true, 'text', $db_opcao, "")
                             ?>
                         </td>
@@ -72,7 +72,7 @@ $cldb_bancos->rotulo->label();
                             <?= @$Ldb90_descr ?>
                         </td>
                         <td>
-                            <?php 
+                            <?
                             db_input('db90_descr', 40, $Idb90_descr, true, 'text', $db_opcao, "")
                             ?>
                         </td>
@@ -82,7 +82,7 @@ $cldb_bancos->rotulo->label();
                             <?= @$Ldb90_digban ?>
                         </td>
                         <td>
-                            <?php 
+                            <?
                             db_input('db90_digban', 2, $Idb90_digban, true, 'text', $db_opcao, "")
                             ?>
                         </td>
@@ -92,7 +92,7 @@ $cldb_bancos->rotulo->label();
                             <?= @$Ldb90_abrev ?>
                         </td>
                         <td>
-                            <?php 
+                            <?
                             db_input('db90_abrev', 20, $Idb90_abrev, true, 'text', $db_opcao, "")
                             ?>
                         </td>
@@ -107,7 +107,7 @@ $cldb_bancos->rotulo->label();
                     </tr>
                 </table>
 
-                <?php 
+                <?
                 if (isset($db90_logo) and $db90_logo != "") {
                 ?>
                     <table style="margin-top: 15px">
@@ -120,7 +120,7 @@ $cldb_bancos->rotulo->label();
                             </td>
                         </tr>
                     </table>
-                <?php 
+                <?
                 } else {
                     echo "N�o possui imagem gravada no banco";
                 }

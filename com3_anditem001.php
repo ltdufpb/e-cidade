@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $clrotulo->label("");
 <script>
 </script>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -59,7 +59,7 @@ $clrotulo->label("");
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -74,7 +74,7 @@ $clrotulo->label("");
       <form name='form1'>
       <center>
          
-<?php  
+<? 
 if (isset($codigo) && $codigo!= "") {
 	$rec="";
 	$despacho="";	
@@ -98,7 +98,7 @@ if (isset($codigo) && $codigo!= "") {
       <br>
 	 <br>
       <table border='1' cellspacing="0" cellpadding="0">
-	    <?php   echo "
+	    <?  echo "
 	      <tr class='bordas'>
 	        <td class='bordas' align='center'><b><small>Cod. Transferência</small></b></td>
 			<td class='bordas' align='center'><b><small>Data</small></b></td>

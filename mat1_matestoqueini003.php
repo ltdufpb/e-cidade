@@ -155,7 +155,7 @@ if (isset($excluir)) {
   </tr>
 </table>
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmmatestoqueini.php"));
 	?>
     </center>

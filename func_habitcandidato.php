@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clhabitcandidato->rotulo->label("ht10_numcgm");
               <?=$Lht10_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ht10_sequencial",10,$Iht10_sequencial,true,"text",4,"","chave_ht10_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clhabitcandidato->rotulo->label("ht10_numcgm");
               <?=$Lht10_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ht10_numcgm",10,$Iht10_numcgm,true,"text",4,"","chave_ht10_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clhabitcandidato->rotulo->label("ht10_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       $aWhere = array();
       $sWhere = "1=1";
@@ -174,12 +174,12 @@ $clhabitcandidato->rotulo->label("ht10_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

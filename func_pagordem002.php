@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ $RLc70_valor = "Valor";
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <style>
-        <?php $cor="#999999"?>
+        <?$cor="#999999"?>
         .bordas02 {
             border: 2px solid #cccccc;
             border-top-color: <?=$cor?>;
@@ -94,7 +94,7 @@ $RLc70_valor = "Valor";
             </center>
             <form name='form1'>
                 <center>
-                    <?php 
+                    <?
 
 
                     if (isset ($e60_numemp) && $e60_numemp != "") {

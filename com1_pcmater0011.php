@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ if ($clorcparametro->numrows >0){
 <html>
 <head>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?php 
+<?
  db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, dbmessageBoard.widget.js, estilos.css, grid.style.css");
 ?>
 </head>
@@ -67,7 +67,7 @@ if ($clorcparametro->numrows >0){
 
 <Center>
 <form name="form1" method="post" action="" >
-<?php 
+<?
   db_input("codsubgrupo",10,"",true,'hidden',3);
   db_input("db_opcao",10,"",true,'hidden',3);
   db_input("codigomater",10,"",true,'hidden',3);
@@ -246,7 +246,7 @@ if ($clorcparametro->numrows >0){
 </body>
 </html>
 
-<?php 
+<?
 if(isset($db_opcao) && trim($db_opcao)!="" && $db_opcao!="1"){
   echo "
   <script>

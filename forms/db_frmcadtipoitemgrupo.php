@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clcadtipoitemgrupo->rotulo->label();
        <?=@$Lk37_sequencial?>
     </td>
     <td> 
-<?php 
+<?
 db_input('k37_sequencial',10,$Ik37_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('k37_sequencial',10,$Ik37_sequencial,true,'text',3,"")
        <?=@$Lk37_descr?>
     </td>
     <td> 
-<?php 
+<?
 db_input('k37_descr',40,$Ik37_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadtipoitemgrupo.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

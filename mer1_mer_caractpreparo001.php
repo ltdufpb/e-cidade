@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Característica do Preparo</b></legend>
-    <?php include(modification("forms/db_frmmer_caractpreparo.php"));?>
+    <?include(modification("forms/db_frmmer_caractpreparo.php"));?>
    </fieldset>
    </center>
   </td>
@@ -91,7 +91,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me06_c_tempopreparo",true,1,"me06_c_tempopreparo",true);
 </script>
-<?php 
+<?
 if (isset($incluir) || isset($alterar)) {
 	
   if ($clmer_caractpreparo->erro_status=="0") {

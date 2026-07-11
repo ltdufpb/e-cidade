@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,13 +63,13 @@ $clrotulo->label("sd03_i_codigo");
        <b> Período:</b>
      </td>
      <td>
-       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
         A
-       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
      </tr>
       <table border="1" cellpadding="0" cellspacing="0" width="750">
-     <?php 
+     <?
       $result = $clunidades->sql_record($clunidades->sql_query());
       if($clunidades->numrows > 0){
      ?>
@@ -77,7 +77,7 @@ $clrotulo->label("sd03_i_codigo");
         <td bgcolor="#D0D0D0" width="30"><input type="button" value="M" name="marca" title="Marcar/Desmarcar" onclick="marcar(<?=$clunidades->numrows?>, this)"></td>
         <td colspan="5"><b>Selecione as Unidades</b></td>
        </tr>
-      <?php $bg = "#E8E8E8";
+      <?$bg = "#E8E8E8";
         echo "<tr bgcolor='#b0b0b0'>";
         for($u=0; $u< $clunidades->numrows; $u++){
          db_fieldsmemory($result,$u);
@@ -109,7 +109,7 @@ $clrotulo->label("sd03_i_codigo");
   </td>
  </tr>
 </table>
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

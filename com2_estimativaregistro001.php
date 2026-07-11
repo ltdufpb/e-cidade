@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -80,11 +80,11 @@ function js_abre(){
 	   <strong>Solicitações de </strong>
 	</td>
 	<td> 
-	   <?php  db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao," onchange='js_copiacampo();'","pc10_numero_ini")  ?>
+	   <? db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao," onchange='js_copiacampo();'","pc10_numero_ini")  ?>
 	</td>
 	<td> <strong> à </strong></td> 
 	<td> 
-	   <?php  db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao,"","pc10_numero_fim")  ?>
+	   <? db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao,"","pc10_numero_fim")  ?>
 	</td>
       </tr>
      <tr>
@@ -101,7 +101,7 @@ function js_abre(){
 </td>
 </tr>
 </table>
-    <?php  
+    <? 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

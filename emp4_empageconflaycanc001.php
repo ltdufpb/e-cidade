@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -176,7 +176,7 @@ function js_pesquisar(){
  	    <?=$Le87_codgera?>
 	  </td>
 	  <td>
-         <?php 
+         <?
 	   $result    = $clempageconfgera->sql_record($clempageconfgera->sql_query(null,null,"distinct e87_codgera,e87_descgera",'e87_descgera',"e80_codage=$e80_codage"));
 	   $numrows02 = $clempageconfgera->numrows;
 	   if($clempageconfgera->numrows > 0 ){  
@@ -193,7 +193,7 @@ function js_pesquisar(){
 		<input name="pesquisar" type="submit" id="pesquisar" value="Pesquisar" >
 		<input name="fechar" type="button" id="pesquisar" value="Fechar" onclick='parent.db_iframe_anula.hide();'>
 	    <b>Total: </b>
-<?php 
+<?
      if(isset($pesquisar)){
        $sql = $clempageconfgera->sql_query_inf(null,null,"sum(e81_valor) as total",'',"e80_codage=$e80_codage");
        $result05 = $clempageconfgera->sql_record($sql); 
@@ -206,11 +206,11 @@ function js_pesquisar(){
 	</tr>     
       </table>	
       <table>	
-	<?php if(isset($pesquisar)){?>
+	<?if(isset($pesquisar)){?>
 
 	<tr>
 	  <td>
-<?php 	  
+<?	  
       $sql = $clempageconfgera->sql_query_inf(null,null,"e81_codmov,e60_codemp,e82_codord,z01_nome,e81_valor",'e87_descgera',"e87_codgera=$e87_codgera");
       $clempageconfgera->sql_record($sql); 
       $numrows = $clempageconfgera->numrows;
@@ -239,7 +239,7 @@ function js_pesquisar(){
 	  
 	  </td>
 	</tr>
-	<?php }?>
+	<?}?>
       </table>
     </center>
     </td>
@@ -248,7 +248,7 @@ function js_pesquisar(){
 </form
 </body>
 </html>
-<?php 
+<?
 if($numrows02 == 0){
   echo "<script>";
   echo "document.form1.atualizar.disabled = true;";

@@ -1588,7 +1588,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
                                     <tr>
                                         <td height="21" colspan="2" nowrap class="tabcols">
-                                            <?php 
+                                            <?
                                             if (isset($HTTP_POST_VARS ["j01_matric"]) && !empty($HTTP_POST_VARS ["j01_matric"])) {
                                                 echo "<input type=\"hidden\" name=\"j01_matric\"  value=\"" . $HTTP_POST_VARS ["j01_matric"] . "\">";
                                                 $innerJoinOutros = " arrematric on arrematric.k00_numpre = arreinstit.k00_numpre ";
@@ -1632,7 +1632,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                     title="Avança" onclick="debitos.history.forward()">
 
 
-                                            <?php 
+                                            <?
 
                                             //este select é pra ver se o cgm esta no ruas e tb tem CPF/CNPJ para deixar preenchido o responsavel pelo parcelamento
                                             $re_cgm = db_query("select * from cgm c left join db_cgmruas r on r.z01_numcgm = c.z01_numcgm where c.z01_numcgm = $z01_numcgm and trim(c.z01_cgccpf) <> ''");
@@ -1652,7 +1652,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                             </table>
                         </td>
                         <td width="47%" valign="top">
-                            <?php 
+                            <?
 
                             $_iInstit = db_getsession('DB_instit');
                             $_dData = date('Y-m-d', db_getsession('DB_datausu'));
@@ -2528,7 +2528,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td>
-                            <?php 
+                            <?
                             db_input("tipo_filtro", 20, '', true, "hidden", 3);
                             db_input("cod_filtro", 40, '', true, "hidden", 3);
                             ?>
@@ -2634,7 +2634,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
         </tr>
         <tr>
             <td nowrap align="left">
-                <?php 
+                <?
                 /*************************************************************************************************************************************/
                 echo "<b> Parcelas de outros exercicios : </b>";
                 $x = array(
@@ -2763,7 +2763,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
         <span id="impvalores" style="display: none;">
           <strong>Imprimir com Valores : </strong>
-          <?php 
+          <?
           $aFormEmissao = array("1" => "Com valores originais",
               "2" => "Com valores atualizados");
           db_select('formemissao', $aFormEmissao, true, 2, " onchange='js_mudaFormEmissao();' ");
@@ -2777,7 +2777,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                 <input type='checkbox' name='forcarvencimento' value='forcarvencimento'
                        id='forcarvencimento'> &nbsp;&nbsp;
                 <strong>Data Pagamento:</strong>
-                <?php 
+                <?
                 //
                 $k00_dtoper = date('Y-m-d', db_getsession("DB_datausu"));
                 $k00_dtoper_dia = date('d', db_getsession("DB_datausu"));
@@ -2810,7 +2810,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
         </form>
         </tr>
     </table>
-    <?php 
+    <?
 
     }
 else {
@@ -3036,21 +3036,21 @@ else {
         db_iframe.hide();
     }
 
-    <?php 
+    <?
     if ($db21_usasisagua == true) {
     ?>
     document.form1.j01_matric.focus();
-    <?php 
+    <?
     } else {
     ?>
     if (document.form1.z01_numcgm) {
         document.form1.z01_numcgm.focus();
     }
-    <?php 
+    <?
     }
     ?>
 
-    <?php 
+    <?
     if ($mensagem_semdebitos == true) {
         echo "alert(' 2- Sem débitos a Pagar')";
     }

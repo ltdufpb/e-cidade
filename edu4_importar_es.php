@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $db_botao = true;
     <table border="0">
      <tr>
       <td>
-       <?php db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
+       <?db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
        <input type="button" value="Importar" name="processar" onclick="js_processar();">
       </td>
      </tr>
@@ -83,7 +83,7 @@ $db_botao = true;
     </table>
     <br><br>
     </form>
-    <?php 
+    <?
     if(isset($GLOBALS["_FILES"]["arquivo"]) && $GLOBALS["_FILES"]["arquivo"]!=""){
      set_time_limit(0);
      db_postmemory($GLOBALS["_FILES"]["arquivo"]);
@@ -150,7 +150,7 @@ $db_botao = true;
        </tr>
      </table>
      <br><br>
-     <?php 
+     <?
      echo "Arquivo tmp/".$name." copiado com sucesso!<br>";
      system("bunzip2 tmp/".$name);
      system("tar -xvf tmp/".$arquivo_tar);
@@ -193,7 +193,7 @@ $db_botao = true;
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

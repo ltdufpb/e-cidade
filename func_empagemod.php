@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempagemod->rotulo->label("e84_descr");
               <?=$Le84_codmod?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e84_codmod",10,$Ie84_codmod,true,"text",4,"","chave_e84_codmod");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempagemod->rotulo->label("e84_descr");
               <?=$Le84_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e84_descr",10,$Ie84_descr,true,"text",4,"","chave_e84_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempagemod->rotulo->label("e84_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empagemod.php")==true){
@@ -119,12 +119,12 @@ $clempagemod->rotulo->label("e84_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

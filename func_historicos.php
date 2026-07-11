@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clhistoricos->rotulo->label("ed14_t_descr");
               <?=$Led14_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed14_i_codigo",10,$Ied14_i_codigo,true,"text",4,"","chave_ed14_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $clhistoricos->rotulo->label("ed14_t_descr");
               <?=$Led14_t_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed14_t_descr",1,$Ied14_t_descr,true,"text",4,"","chave_ed14_t_descr");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $clhistoricos->rotulo->label("ed14_t_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_historicos.php")==true){
@@ -121,12 +121,12 @@ $clhistoricos->rotulo->label("ed14_t_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

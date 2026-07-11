@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clregimemat->rotulo->label("ed218_c_nome");
       <?=$Led218_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed218_i_codigo",20,$Ied218_i_codigo,true,"text",4,"","chave_ed218_i_codigo");?>
+      <?db_input("ed218_i_codigo",20,$Ied218_i_codigo,true,"text",4,"","chave_ed218_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ $clregimemat->rotulo->label("ed218_c_nome");
       <?=$Led218_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed218_c_nome",30,$Ied218_c_nome,true,"text",4,"","chave_ed218_c_nome");?>
+      <?db_input("ed218_c_nome",30,$Ied218_c_nome,true,"text",4,"","chave_ed218_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -79,7 +79,7 @@ $clregimemat->rotulo->label("ed218_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_regimemat.php")==true){

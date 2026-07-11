@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -150,7 +150,7 @@ background-color:#ccddcc;
   
   <tr>
     <td colspan=2 align='center' >
-  <?php db_input('incluir','100','',true,'hidden',3);
+  <?db_input('incluir','100','',true,'hidden',3);
       db_input('descrmater','100','',true,'hidden',3);
      $campos = "pcmater.pc01_codmater,pcmater.pc01_descrmater,pcmater.pc01_complmater,pcmater.pc01_codsubgrupo,pcmater.pc01_servico";
      $result = $clpcmater->sql_record($clpcmater->sql_query("",$campos,"pc01_descrmater"," pc01_descrmater like '$descrmater%'  and pc01_ativo is false"));

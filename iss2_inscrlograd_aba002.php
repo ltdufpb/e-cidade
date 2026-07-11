@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ $sql = "select j14_codigo, j14_nome from ruas";
 </head>
 <body>
 <form name="form1" action="#" method="post">
-<?php 
+<?
 $cliframe_seleciona->sql 								= $sql;
 $cliframe_seleciona->campos 						= "j14_codigo, j14_nome";
 $cliframe_seleciona->mostra_totalizador		= "N";

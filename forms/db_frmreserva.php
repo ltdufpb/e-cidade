@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,25 +57,25 @@ if (@$bi14_situacao == "R") {
    <?=@$Lbi14_codigo?>
   </td>
   <td>
-   <?php db_input('bi14_codigo', 10, $Ibi14_codigo, true, 'text', 3, "")?>
+   <?db_input('bi14_codigo', 10, $Ibi14_codigo, true, 'text', 3, "")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tbi14_carteira?>">
-   <?php db_ancora(@$Lbi14_carteira, "js_pesquisabi14_carteira(true);", $db_opcao1);?>
+   <?db_ancora(@$Lbi14_carteira, "js_pesquisabi14_carteira(true);", $db_opcao1);?>
   </td>
   <td>
-   <?php db_input('bi14_carteira', 10, $Ibi14_carteira, true, 'text', $db_opcao1, " onchange='js_pesquisabi14_carteira(false);'")?>
-   <?php db_input('ov02_nome', 50, @$Iov02_nome, true, 'text', 3, '')?>
+   <?db_input('bi14_carteira', 10, $Ibi14_carteira, true, 'text', $db_opcao1, " onchange='js_pesquisabi14_carteira(false);'")?>
+   <?db_input('ov02_nome', 50, @$Iov02_nome, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tbi14_acervo?>">
-   <?php db_ancora(@$Lbi14_acervo, "js_pesquisabi14_acervo(true);", $db_opcao);?>
+   <?db_ancora(@$Lbi14_acervo, "js_pesquisabi14_acervo(true);", $db_opcao);?>
   </td>
   <td>
-   <?php db_input('bi14_acervo', 10, $Ibi14_acervo, true, 'text', $db_opcao, " onchange='js_pesquisabi14_acervo(false);'")?>
-   <?php db_input('bi06_titulo', 40, @$Ibi06_titulo, true, 'text', 3, '')?>
+   <?db_input('bi14_acervo', 10, $Ibi14_acervo, true, 'text', $db_opcao, " onchange='js_pesquisabi14_acervo(false);'")?>
+   <?db_input('bi06_titulo', 40, @$Ibi06_titulo, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
@@ -83,7 +83,7 @@ if (@$bi14_situacao == "R") {
    <b>Disponível apartir de:</b>
   </td>
   <td>
-   <?php db_input('dataescolhida', 10, @$dataescolhida, true, 'text', 3, "")?>
+   <?db_input('dataescolhida', 10, @$dataescolhida, true, 'text', 3, "")?>
   </td>
  </tr>
  <tr>
@@ -91,7 +91,7 @@ if (@$bi14_situacao == "R") {
    <?=@$Lbi14_datareserva?>
   </td>
   <td>
-   <?php db_inputdata('bi14_datareserva',
+   <?db_inputdata('bi14_datareserva',
                   @$bi14_datareserva_dia,
                   @$bi14_datareserva_mes,
                   @$bi14_datareserva_ano,
@@ -100,7 +100,7 @@ if (@$bi14_situacao == "R") {
                   $db_opcao,
                   " onchange=\"js_conferedata();\"","","","parent.js_conferedata();")?>
    <?=@$Lbi14_hora?>
-   <?php db_input('bi14_hora', 5, @$bi14_hora, true, 'text', $db_opcao, "OnKeyUp=\"mascara_hora(this.value,11)\"")?>
+   <?db_input('bi14_hora', 5, @$bi14_hora, true, 'text', $db_opcao, "OnKeyUp=\"mascara_hora(this.value,11)\"")?>
   </td>
  </tr>
  <tr>
@@ -108,12 +108,12 @@ if (@$bi14_situacao == "R") {
    <b>Situação:</b>
   </td>
   <td>
-   <?php db_input('situacao', 30, @$Isituacao, true, 'text', 3, "")?>
+   <?db_input('situacao', 30, @$Isituacao, true, 'text', 3, "")?>
   </td>
  </tr>
  <tr>
-   <?php db_input('bi14_situacao', 10, @$bi14_situacao, true, 'hidden', $db_opcao, "")?>
-   <?php db_input('bi07_tempo', 10, @$Ibi07_tempo, true, 'hidden', $db_opcao, "")?>
+   <?db_input('bi14_situacao', 10, @$bi14_situacao, true, 'hidden', $db_opcao, "")?>
+   <?db_input('bi07_tempo', 10, @$Ibi07_tempo, true, 'hidden', $db_opcao, "")?>
    <input type="hidden" size="2" name="bi18_devolucao_dia" id="bi18_devolucao_dia" value="">
    <input type="hidden" size="2" name="bi18_devolucao_mes" id="bi18_devolucao_mes" value="">
    <input type="hidden" size="4" name="bi18_devolucao_ano" id="bi18_devolucao_ano" value="">
@@ -131,30 +131,30 @@ if (@$bi14_situacao == "R") {
        value="Nova Reserva" 
        onclick="location.href='bib1_reserva001.php'" <?=($db_opcao==1?"disabled":"")?>>
 <input name="emprestimo" type="submit" value="Empréstimo" <?=($db_opcao==1||@$bi14_situacao!="A"?"disabled":"")?>>
-<?php if (@$bi14_situacao != "C") {?>
+<?if (@$bi14_situacao != "C") {?>
     <input name="cancelar" 
            type="submit" 
            value="Cancelar Reserva" 
            onclick="return confirm('Confirmar cancelamento da reserva?')" 
            <?=(($db_opcao==1||@$bi14_situacao!="A")?"disabled":"")?>>
-<?php } else {?>
+<?} else {?>
     <input name="reativar" 
            type="submit" 
            value="Reativar Reserva" 
            onclick="return confirm('Confirmar reativação da reserva?')" 
            <?=($db_opcao==1?"disabled":"")?>>
-<?php }?>
+<?}?>
 </form>
 </center>
 <script>
-<?php if ($db_opcao != 1) {?>
+<?if ($db_opcao != 1) {?>
     js_OpenJanelaIframe('CurrentWindow.corpo',
                         'db_iframe_acervo',
                         'func_exemplarreserva.php?pesquisa_chave='+document.form1.bi14_acervo.value
                                                +'&funcao_js=parent.js_mostraacervo',
                         'Pesquisa',
                         false);
-<?php }?>
+<?}?>
     
 function js_pesquisabi14_carteira(mostra) {
   
@@ -225,9 +225,9 @@ function js_mostraacervo(chave, chave1, erro) {
   if (chave1 != "" && chave1 != "//") {
     
     data = chave1.split("-");
-    <?php if ($db_opcao == 1) {?>
+    <?if ($db_opcao == 1) {?>
         document.form1.bi14_datareserva.value = data[2]+"/"+data[1]+"/"+data[0];
-    <?php }?>
+    <?}?>
     document.form1.dataescolhida.value = data[2]+"/"+data[1]+"/"+data[0];
 
     $('bi14_datareserva_dia').value = data[2];
@@ -316,7 +316,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
   
   db_iframe_reserva.hide();
-  <?php 
+  <?
   echo " location.href = 'bib1_reserva002.php?chavepesquisa='+chave";
   ?>
 }

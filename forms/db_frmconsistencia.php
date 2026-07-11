@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -29,7 +29,7 @@
 <center>
 <br>
 <strong>Arquivos do:</strong>
-<?php  
+<? 
 
 $periodo = array("1"=> " 1 - Janeiro          ",
 "2"=> " 2 - Fevereiro (1 Bim)",

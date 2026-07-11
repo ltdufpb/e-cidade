@@ -1,4 +1,4 @@
-<?php 
+<?
 set_time_limit(0);
 require_once ("libs/db_stdlib.php");
 require_once ("libs/db_conecta.php");
@@ -56,10 +56,10 @@ db_app::load("strings.js");
       <table class="form-container">
         <tr>
           <td align="right" nowrap title="<?=@$Tk60_codigo?>" >
-            <?php db_ancora(@$Lk60_codigo, "js_pesquisalista(true);", 4);?>
+            <?db_ancora(@$Lk60_codigo, "js_pesquisalista(true);", 4);?>
           </td>
           <td align="left">
-            <?php 
+            <?
               db_input("k60_codigo",  4, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisalista(false);'");
               db_input("k60_descr",  40, $Ik60_descr,  true, "text", 3, "");
             ?>
@@ -70,7 +70,7 @@ db_app::load("strings.js");
 	    <?=$Lk31_situacao?>
           </td>
           <td align="left">
-            <?php 
+            <?
               db_input("k31_situacao",  40, $Ik31_situacao,  true, "text", 3, "");
             ?>
 	    <input type="button" id="detalhes"  value="Exibir Detalhes da Lista" onclick="js_pesquisadetalhes();">
@@ -80,7 +80,7 @@ db_app::load("strings.js");
     </fieldset> 
     <input type="button" id="processar"  value="Processar" onclick="js_processar();">
   </form>
-<?php  
+<? 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

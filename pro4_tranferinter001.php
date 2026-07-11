@@ -163,7 +163,7 @@ if (isset($incluir)) {
                             <tr>
                                 <td nowrap title="<?= @$Tp88_despacho ?>" align='left' colspan=2>
                                     <?= @$Lp88_despacho ?>
-                                    <?php 
+                                    <?
                                     db_textarea('p88_despacho', 0, 80, $Ip88_despacho, true, 'text', 1, "")
                                     ?>
                                 </td>
@@ -173,7 +173,7 @@ if (isset($incluir)) {
                                     <?= @$Lp89_usuario; ?>
                                 </td>
                                 <td>
-                                    <?php 
+                                    <?
                                     $sqlusu = "SELECT 
                      U.id_usuario,nome
 	      FROM db_usuarios U 
@@ -197,7 +197,7 @@ if (isset($incluir)) {
                                     <?= @$Lp88_publico ?>
                                 </td>
                                 <td>
-                                    <?php 
+                                    <?
                                     $x = array("t" => "Sim", "f" => "Não");
                                     db_select('p88_publico', $x, true, 1, "");
 
@@ -225,7 +225,7 @@ if (isset($incluir)) {
                         <td class='cabec' align='center'>Hora</td>
                         <td class='cabec' align='center'>Nome/Razão Social</td>
                     </tr>
-                    <?php 
+                    <?
                     $sql  = "SELECT * ";
                     $sql .= "  FROM ( ";
                     $sql .= "        SELECT p58_codproc, ";
@@ -425,7 +425,7 @@ if (isset($incluir)) {
                 </table>
     </form>
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
+<? db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
     db_getsession("DB_instit")); ?>
 <script>
     function js_pesquisa_usuario(mostra) {

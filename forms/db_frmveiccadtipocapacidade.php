@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clveiccadtipocapacidade->rotulo->label();
        <?=@$Lve24_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('ve24_codigo',10,$Ive24_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('ve24_codigo',10,$Ive24_codigo,true,'text',3,"")
        <?=@$Lve24_descr?>
     </td>
     <td> 
-<?php 
+<?
 db_input('ve24_descr',40,$Ive24_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_veiccadtipocapacidade.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $cldb_caritbi->rotulo->label();
        <?=@$Lcodcaritbi?>
     </td>
     <td> 
-<?php 
+<?
 db_input('codcaritbi',4,$Icodcaritbi,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -46,7 +46,7 @@ db_input('codcaritbi',4,$Icodcaritbi,true,'text',$db_opcao,"")
        <?=@$Ldescricao?>
     </td>
     <td> 
-<?php 
+<?
 db_input('descricao',40,$Idescricao,true,'text',$db_opcao,"")
 ?>
     <td>
@@ -68,7 +68,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

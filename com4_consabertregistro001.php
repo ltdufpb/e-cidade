@@ -45,7 +45,7 @@ $clrotulo->label("pc67_motivo");
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?php 
+<?
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -77,36 +77,36 @@ db_app::load("widgets/windowAux.widget.js");
             <table>
             <tr>
               <td nowrap title="" width="130">
-                 <?php 
+                 <?
                   db_ancora("<b>Abertura do Registro:</b>","js_pesquisar();",1);
                  ?>
               </td>
               <td colspan="2">
-                <?php 
+                <?
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="" width="130">
-                 <?php 
+                 <?
                   db_ancora("<b>Estimativa do Registro:</b>","js_pesquisarEstimativas();",1);
                  ?>
               </td>
               <td colspan="2">
-                <?php 
+                <?
                 db_input('pc54_estimativa',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="" >
-                 <?php 
+                 <?
                   db_ancora("<b>Compilação do Registro:</b>","js_pesquisarCompilacao();",1);
                  ?>
               </td>
               <td colspan="2">
-                <?php 
+                <?
                 db_input('pc54_compilacao',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -114,7 +114,7 @@ db_app::load("widgets/windowAux.widget.js");
             <tr>
               <td><b>Data:</b></td>
               <td>
-                <?php 
+                <?
                   $dtini     = "";
                   $dtini_dia = "";
                   $dtini_mes = "";
@@ -124,7 +124,7 @@ db_app::load("widgets/windowAux.widget.js");
               </td>
               <td>
                 <b>Até:</b>
-                <?php 
+                <?
                   $dtfim     = "";
                   $dtfim_dia = "";
                   $dtfim_mes = "";
@@ -135,17 +135,17 @@ db_app::load("widgets/windowAux.widget.js");
             </tr>
             <tr>
               <td>
-                <?php 
+                <?
                   db_ancora("<b>Departamento:</b>", "js_departamento(true);", 1);
                 ?>
               </td>
               <td>
-                <?php 
+                <?
                  db_input('pc10_depto', 14, $Ipc10_depto, true, 'text', 1, "onchange='js_departamento(false);'");
                 ?>
               </td>
               <td align="left">
-                <?php 
+                <?
                  db_input('descrdepto', 40, $Idescrdepto, true, 'text', 3);
                 ?>
               </td>
@@ -164,7 +164,7 @@ db_app::load("widgets/windowAux.widget.js");
   </center>
 </body>
 </html>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

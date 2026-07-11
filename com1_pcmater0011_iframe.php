@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,7 +62,7 @@ if ($clorcparametro->numrows >0){
 <body>
 <Center>
 <form name="form1" method="post" action="">
-<?php 
+<?
   $clrotulo = new rotulocampo;
   $clrotulo->label("o56_codele");
   $clrotulo->label("o56_elemento");
@@ -198,7 +198,7 @@ if ($clorcparametro->numrows >0){
 </center>
 </body>
 </html>
-<?php 
+<?
 if(isset($db_opcao) && trim($db_opcao)!="" && $db_opcao!="1"){
   echo "
   <script>

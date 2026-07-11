@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmer_alimento->rotulo->label("me35_c_nomealimento");
               <?=$Lme35_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me35_i_codigo",10,$Ime35_i_codigo,true,"text",4,"","chave_me35_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmer_alimento->rotulo->label("me35_c_nomealimento");
               <?=$Lme35_c_nomealimento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me35_c_nomealimento",40,$Ime35_c_nomealimento,true,"text",4,"","chave_me35_c_nomealimento");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clmer_alimento->rotulo->label("me35_c_nomealimento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $condicao2 = " 1=1 ";        
       if (isset($refeicao) && $refeicao !="") {
       	$condicao2 .= " AND exists(select * from mer_cardapioitem
@@ -143,12 +143,12 @@ $clmer_alimento->rotulo->label("me35_c_nomealimento");
 </table>
 </body>
 </html>
-<?php  if (!isset($pesquisa_chave)) { ?>
+<? if (!isset($pesquisa_chave)) { ?>
 
   <script>
   </script>
 
-<?php }?>
+<?}?>
 
 <script>
   js_tabulacaoforms("form2", "chave_me35_i_codigo", true, 1, "chave_me35_i_codigo", true);

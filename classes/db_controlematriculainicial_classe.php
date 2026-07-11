@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE controlematriculainicial
 class cl_controlematriculainicial { 

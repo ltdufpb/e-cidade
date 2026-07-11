@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,12 +53,12 @@ $clconlancamdot->rotulo->label("c73_coddot");
 	  <!---  
           <tr> 
               <td width="4%" align="right" nowrap title="<?=$Tc73_codlan?>"><?=$Lc73_codlan?></td>
-              <td width="96%" align="left" nowrap><?php  db_input("c73_codlan",8,$Ic73_codlan,true,"text",4,"","chave_c73_codlan"); ?></td>
+              <td width="96%" align="left" nowrap><? db_input("c73_codlan",8,$Ic73_codlan,true,"text",4,"","chave_c73_codlan"); ?></td>
           </tr>
 	  --->
           <tr> 
              <td width="4%" align="right" nowrap title="<?=$Tc73_coddot?>"><?=$Lc73_coddot?></td>
-             <td width="96%" align="left" nowrap><?php db_input("c73_coddot",6,$Ic73_coddot,true,"text",4,"","chave_c73_coddot");?></td>
+             <td width="96%" align="left" nowrap><?db_input("c73_coddot",6,$Ic73_coddot,true,"text",4,"","chave_c73_coddot");?></td>
           </tr>
           <tr> 
             <td colspan="2" align="center"> 
@@ -73,7 +73,7 @@ $clconlancamdot->rotulo->label("c73_coddot");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $anousu=db_getsession("DB_anousu");
       $campos="distinct(c73_coddot),o40_descr,o41_descr,o56_descr,o58_valor ";
       if(!isset($pesquisa_chave)){
@@ -111,12 +111,12 @@ $clconlancamdot->rotulo->label("c73_coddot");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

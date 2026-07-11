@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -53,7 +53,7 @@ if (!empty($caracteristicas)) {
    <table border="0">
      <tr>
        <td>
-		 <?php 
+		 <?
 		    $sWhere = "1 = 1";
 		    if ( $oGet->tipo == "imovel" ) {
 		      $sCampo = "f.j32_grupo";

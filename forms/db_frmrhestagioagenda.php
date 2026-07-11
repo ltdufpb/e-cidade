@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,37 +53,37 @@ $btnOkOnclick = null;
        <?=@$Lh57_sequencial?>
     </td>
     <td> 
-<?php 
+<?
 db_input('h57_sequencial',10,$Ih57_sequencial,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th57_rhestagio?>">
-       <?php 
+       <?
        db_ancora(@$Lh57_rhestagio,"js_pesquisah57_rhestagio(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('h57_rhestagio',10,$Ih57_rhestagio,true,'text',$db_opcao," onchange='js_pesquisah57_rhestagio(false);'")
 ?>
-       <?php 
+       <?
 db_input('h50_descr',40,$Ih50_sequencial,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Th57_regist?>">
-       <?php 
+       <?
        db_ancora(@$Lh57_regist,"js_pesquisah57_regist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('h57_regist',10,$Ih57_regist,true,'text',$db_opcao," onchange='js_pesquisah57_regist(false);'")
 ?>
-       <?php 
+       <?
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -93,7 +93,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lrh01_admiss?>
     </td>
     <td> 
-<?php 
+<?
 db_inputData('rh01_admiss',@$rh01_admiss_dia,@$rh01_admiss_mes,@$rh01_admiss_ano,$Irh01_admiss,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -165,7 +165,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhestagioagenda.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

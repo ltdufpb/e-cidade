@@ -140,7 +140,7 @@ $where = " 1 = 1 ";
  <table>
   <tr>
     <td valign="top" align="center">
-    <?php 
+    <?
      $rsTipodm = $clinflan->sql_record($clinflan->sql_query_file($i02_codigo," i01_dm "));
 	 if ($clinflan->numrows > 0){
 	     db_fieldsmemory($rsTipodm,0);

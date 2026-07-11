@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -25,11 +25,11 @@ $clintegracaohorus->rotulo->label("fa59_codigo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lfa59_codigo?></label></td>
-          <td><?php  db_input("fa59_codigo",10,$Ifa59_codigo,true,"text",4,"","chave_fa59_codigo"); ?></td>
+          <td><? db_input("fa59_codigo",10,$Ifa59_codigo,true,"text",4,"","chave_fa59_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lfa59_codigo?></label></td>
-          <td><?php  db_input("fa59_codigo",10,$Ifa59_codigo,true,"text",4,"","chave_fa59_codigo");?></td>
+          <td><? db_input("fa59_codigo",10,$Ifa59_codigo,true,"text",4,"","chave_fa59_codigo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $clintegracaohorus->rotulo->label("fa59_codigo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_integracaohorus.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_integracaohorus.php")==true){
@@ -79,12 +79,12 @@ $clintegracaohorus->rotulo->label("fa59_codigo");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

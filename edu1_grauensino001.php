@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,20 +57,20 @@ $db_botao = true;
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Cadastro de Grau de Ensino</b></legend>
-    <?php include(modification("forms/db_frmgrauensino.php"));?>
+    <?include(modification("forms/db_frmgrauensino.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
  db_inicio_transacao();
  $clgrauensino->incluir($ed84_i_codigo);

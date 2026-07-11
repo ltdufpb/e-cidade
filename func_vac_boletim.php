@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clvac_boletim->rotulo->label("vc13_c_descr");
               <?=$Lvc13_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php db_input("vc13_i_codigo",10,$Ivc13_i_codigo,true,"text",4,"","chave_vc13_i_codigo");?>
+              <?db_input("vc13_i_codigo",10,$Ivc13_i_codigo,true,"text",4,"","chave_vc13_i_codigo");?>
             </td>
           </tr>
           <tr> 
@@ -63,7 +63,7 @@ $clvac_boletim->rotulo->label("vc13_c_descr");
               <?=$Lvc13_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?php db_input("vc13_c_descr",10,$Ivc13_c_descr,true,"text",4,"","chave_vc13_c_descr");?>
+            <?db_input("vc13_c_descr",10,$Ivc13_c_descr,true,"text",4,"","chave_vc13_c_descr");?>
             </td>
           </tr>
           <tr> 
@@ -79,7 +79,7 @@ $clvac_boletim->rotulo->label("vc13_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos)==false) {
@@ -127,13 +127,13 @@ $clvac_boletim->rotulo->label("vc13_c_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 
   ?>
   <script>
   </script>
-  <?php 
+  <?
 
 }
 ?>

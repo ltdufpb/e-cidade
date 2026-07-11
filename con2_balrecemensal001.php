@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -80,7 +80,7 @@ function js_emite() {
         <table  align="center" border=0>
           <tr>
              <td align="center" colspan="2">
-             <?php 
+             <?
                db_selinstit('', 300, 100);
              ?>
              </td>
@@ -90,7 +90,7 @@ function js_emite() {
               <strong>Período:</strong>
             </td>
             <td>
-              <?php                  
+              <?                 
                 $aListaPeriodos = array();
                 $aListaPeriodos[0] = "Selecione";
                 $aListaPeriodos[1] = "Anual";
@@ -106,7 +106,7 @@ function js_emite() {
               <strong>Posição até:</strong>
             </td>
             <td>
-              <?php                  
+              <?                 
                 db_inputdata('dtLimit',"","","",true,'text',1,"");
               ?>
             </td>
@@ -119,7 +119,7 @@ function js_emite() {
     <input type="submit" value="Imprimir" onClick="js_emite();">
   </div>
 </center>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

@@ -56,7 +56,7 @@ $clissalvara->rotulo->label("q123_sequencial");
               <?=$Lq123_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
                db_input("q123_sequencial",10,$Iq123_sequencial,true,"text",4,"","chave_q123_sequencial");
                ?>
             </td>
@@ -66,7 +66,7 @@ $clissalvara->rotulo->label("q123_sequencial");
               <strong>Nome:</strong>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
                db_input("z01_nome",30,"",true,"text",4,"","chave_z01_nome");
                ?>
             </td>
@@ -83,7 +83,7 @@ $clissalvara->rotulo->label("q123_sequencial");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       $iDepto   = db_getsession('DB_coddepto');
       $campos   = "q123_sequencial, q123_inscr, z01_nome";
       $sOrder   = " order by q120_sequencial desc ";
@@ -138,12 +138,12 @@ $clissalvara->rotulo->label("q123_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

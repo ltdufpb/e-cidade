@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmer_grupoalimento->rotulo->label("me30_c_descricao");
               <?=$Lme30_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me30_i_codigo",10,$Ime30_i_codigo,true,"text",4,"","chave_me30_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmer_grupoalimento->rotulo->label("me30_c_descricao");
               <?=$Lme30_c_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me30_c_descricao",20,$Ime30_c_descricao,true,"text",4,"","chave_me30_c_descricao");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clmer_grupoalimento->rotulo->label("me30_c_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -130,13 +130,13 @@ $clmer_grupoalimento->rotulo->label("me30_c_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?php 
+  <?
   
 }
 ?>

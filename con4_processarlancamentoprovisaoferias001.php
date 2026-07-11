@@ -159,7 +159,7 @@ $iAnoSessao = db_getsession("DB_anousu");
       <input type="button" name="btnProcessar" id="btnProcessar" value="Processar" disabled="disabled"/>
     </form>
   </center>
-  <?php 
+  <?
 	  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ function js_emite(){
         <strong>Ordem :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <?php  
+	  <? 
 	    $tipo_ordem = array("a"=>"Alfabética","b"=>"Numérica");
 	    db_select("ordem",$tipo_ordem,true,2); 
 	  ?>
@@ -83,16 +83,16 @@ function js_emite(){
       <tr>
         <td><strong>Grupo :&nbsp;&nbsp;</strong></td>
         <td>
-	  <?php 
+	  <?
 	    $tipo_grupo = array("geral"=>"Geral","sub_grupo"=>"Sub-grupo","elemento"=>"Elemento");
 	    db_select("grupo",$tipo_grupo,true,2,"OnChange='js_grupo();'");
 	  ?>
 	</td>
       </tr>
       <tr>
-        <td id="td1" style="visibility:hidden" nowrap align="right" title="<?=@$o56_descr?>"><?php db_ancora(@$Lo56_elemento,"js_elemento(true);",1);?></td>
+        <td id="td1" style="visibility:hidden" nowrap align="right" title="<?=@$o56_descr?>"><?db_ancora(@$Lo56_elemento,"js_elemento(true);",1);?></td>
         <td id="td2" style="visibility:hidden" nowrap>
-        <?php 
+        <?
            db_input('o56_elemento',13,$Io56_elemento,true,'text',1," onchange='js_elemento(false);'");
            db_input('o56_descr',60,$Io56_descr,true,'text',3,'');
         ?>
@@ -110,7 +110,7 @@ function js_emite(){
 
   </form>
     </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -178,7 +178,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?php 
+<?
 if(isset($ordem)){
   echo "<script>
        js_emite();

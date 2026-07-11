@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhtipoparticipacaocurso->rotulo->label("h67_sequencial");
               <?=$Lh67_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h67_descricao",150,$Ih67_descricao,true,"text",4,"","chave_h67_descricao");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhtipoparticipacaocurso->rotulo->label("h67_sequencial");
               <?=$Lh67_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h67_sequencial",10,$Ih67_sequencial,true,"text",4,"","chave_h67_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhtipoparticipacaocurso->rotulo->label("h67_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhtipoparticipacaocurso.php")==true){
@@ -123,12 +123,12 @@ $clrhtipoparticipacaocurso->rotulo->label("h67_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

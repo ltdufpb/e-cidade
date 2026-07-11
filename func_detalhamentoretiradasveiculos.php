@@ -64,7 +64,7 @@ $sSqlBuscaRetiradas = $clveicretirada->sql_query_info(null, $sCampos, "ve60_data
   <body>
     <center>
       <fieldset>
-        <?php db_lovrot($sSqlBuscaRetiradas, 15, "()", "%", $funcao_js);?>
+        <?db_lovrot($sSqlBuscaRetiradas, 15, "()", "%", $funcao_js);?>
       </fieldset>
     </center>
   </body>

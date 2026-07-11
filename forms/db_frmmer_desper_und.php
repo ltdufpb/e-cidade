@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clrotulo->label("me03_c_tipo");
    <?=@$Lme23_i_codigo?>
   </td>
   <td>
-   <?php db_input('me23_i_codigo',10,$Ime23_i_codigo,true,'text',3,"")?>
+   <?db_input('me23_i_codigo',10,$Ime23_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -53,12 +53,12 @@ $clrotulo->label("me03_c_tipo");
    <?=@$Lme22_i_cardapiodiaescola?>
   </td>
   <td>
-   <?php db_input('me01_c_nome',40,$Ime01_c_nome,true,'text',3,"")?>
+   <?db_input('me01_c_nome',40,$Ime01_c_nome,true,'text',3,"")?>
    <?=@$Lme12_d_data?>
-   <?php db_inputdata('me12_d_data',@$me12_d_data_dia,@$me12_d_data_mes,@$me12_d_data_ano,true,'text',3,"")?>
+   <?db_inputdata('me12_d_data',@$me12_d_data_dia,@$me12_d_data_mes,@$me12_d_data_ano,true,'text',3,"")?>
    <?=@$Lme03_c_tipo?>
-   <?php db_input('me03_c_tipo',20,$Ime03_c_tipo,true,'text',3,"")?>
-   <?php db_input('me23_i_desperdicio',10,$Ime23_i_desperdicio,true,'hidden',3,"")?>
+   <?db_input('me03_c_tipo',20,$Ime03_c_tipo,true,'text',3,"")?>
+   <?db_input('me23_i_desperdicio',10,$Ime23_i_desperdicio,true,'hidden',3,"")?>
   </td>
  </tr>
  <tr>
@@ -66,19 +66,19 @@ $clrotulo->label("me03_c_tipo");
    <?=@$Lme23_f_quant?>
   </td>
   <td>
-   <?php db_input('me23_f_quant',10,$Ime23_f_quant,true,'text',$db_opcao,"")?>
+   <?db_input('me23_f_quant',10,$Ime23_f_quant,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme23_i_unidade?>">
-   <?php db_ancora(@$Lme23_i_unidade,"js_pesquisame23_i_unidade(true);",$db_opcao);?>
+   <?db_ancora(@$Lme23_i_unidade,"js_pesquisame23_i_unidade(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('me23_i_unidade',10,$Ime23_i_unidade,true,'text',$db_opcao,
+   <?db_input('me23_i_unidade',10,$Ime23_i_unidade,true,'text',$db_opcao,
               " onchange='js_pesquisame23_i_unidade(false);'"
              )
    ?>
-   <?php db_input('m61_descr',40,$Im61_descr,true,'text',3,'')?>
+   <?db_input('m61_descr',40,$Im61_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -86,7 +86,7 @@ $clrotulo->label("me03_c_tipo");
    <?=@$Lme23_t_obs?>
   </td>
   <td>
-   <?php db_textarea('me23_t_obs',5,50,$Ime23_t_obs,true,'text',$db_opcao,"")?>
+   <?db_textarea('me23_t_obs',5,50,$Ime23_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -96,7 +96,7 @@ $clrotulo->label("me03_c_tipo");
        value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" >
 <input name="cancelar" type="button" id="cancelar" value="Cancelar" onclick="js_cancela();">
 <br><br>
-<?php 
+<?
  $chavepri= array("me23_i_codigo"=>@$me23_i_codigo);
  $cliframe_alterar_excluir->chavepri=$chavepri;
  if (isset($me23_i_desperdicio)&&@$me23_i_desperdicio!="") {

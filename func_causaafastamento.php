@@ -65,7 +65,7 @@ if ( !empty($oGet->sSigla) ) {
               <?=$Lrh115_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh115_sequencial",10,$Irh115_sequencial,true,"text",4,"","chave_rh115_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ if ( !empty($oGet->sSigla) ) {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_causaafastamento.php")==true){
@@ -146,12 +146,12 @@ if ( !empty($oGet->sSigla) ) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcadcalc->rotulo->label("q85_descr");
               <?=$Lq85_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q85_codigo",4,$Iq85_codigo,true,"text",4,"","chave_q85_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcadcalc->rotulo->label("q85_descr");
               <?=$Lq85_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q85_descr",40,$Iq85_descr,true,"text",4,"","chave_q85_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcadcalc->rotulo->label("q85_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadcalc.php")==true){
@@ -119,12 +119,12 @@ $clcadcalc->rotulo->label("q85_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -93,7 +93,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Nutrientes com Restrição</b></legend>
-    <?php include(modification("forms/db_frmmer_restrinutri.php"));?>
+    <?include(modification("forms/db_frmmer_restrinutri.php"));?>
    </fieldset>
    </center>
   </td>
@@ -104,7 +104,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me26_i_nutriente",true,1,"me26_i_nutriente",true);
 </script>
-<?php 
+<?
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 	
   if ($clmer_restrinutri->erro_status=="0") {

@@ -146,7 +146,7 @@ if (isset($e54_autori) and $e54_autori !=""){
      <?php
 	       db_input("e61_numemp",10,"",true,"text",3);      ?></td>
        <td colspan="2" nowrap>
-	   <?php   db_ancora($Le60_codemp,"pesquisa_emp();",1);
+	   <?  db_ancora($Le60_codemp,"pesquisa_emp();",1);
 	       db_input("e60_codemp",12,"",true,"text",3);      ?></td>
     </tr>
     <tr>

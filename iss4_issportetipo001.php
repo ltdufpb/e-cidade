@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -154,27 +154,27 @@ background-color:#ccddcc;
 <td ></td>
 <td ></td>
 </tr>
-  <?php 
+  <?
   if ((isset($processar))&&(!isset($atualizar))){
     $db_opcao=3;
   }else $db_opcao=1;
   ?>
 
   <tr> 
-    <td  align="left" nowrap title="<?=$Tq12_classe?>"><?php db_ancora(@$Lq12_classe,"js_pesquisaq12_classe(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tq12_classe?>"><?db_ancora(@$Lq12_classe,"js_pesquisaq12_classe(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  db_input("q41_codclasse",6,$Iq12_classe,true,"text",$db_opcao,"onchange='js_pesquisaq12_classe(false);'");
+      <? db_input("q41_codclasse",6,$Iq12_classe,true,"text",$db_opcao,"onchange='js_pesquisaq12_classe(false);'");
          db_input("q12_descr",40,"$Iq12_descr",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tq40_codporte?>"><?php db_ancora(@$Lq40_codporte,"js_pesquisaq40_codporte(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tq40_codporte?>"><?db_ancora(@$Lq40_codporte,"js_pesquisaq40_codporte(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  db_input("q41_codporte",6,$Iq40_codporte,true,"text",$db_opcao,"onchange='js_pesquisaq40_codporte(false);'");
+      <? db_input("q41_codporte",6,$Iq40_codporte,true,"text",$db_opcao,"onchange='js_pesquisaq40_codporte(false);'");
          db_input("q40_descr",40,"$Iq40_descr",true,"text",3);  
         ?></td>
   </tr>
-  <?php 
+  <?
     if ((isset($q41_codporte) && $q41_codporte!="") && (isset($q41_codclasse) && $q41_codclasse!="")&&(!isset($atualizar))){
        $result01=$cltipcalc->sql_record($cltipcalc->sql_query("","q81_codigo,q81_descr,q85_descr","q81_cadcalc,q81_descr","q81_tipo in (3,4,5)" ));
        $numrows01=$cltipcalc->numrows;
@@ -221,14 +221,14 @@ background-color:#ccddcc;
   <td colspan="2" align="center">
     <input name="atualizar" type="submit"   value="Atualizar">
     <input name="limpa" type="button" onclick='js_limpa();'  value="Voltar">
-  <?php 
+  <?
   }else{
   ?>
   <tr>
   <td colspan="2" align="center">
     <input name="processar" type="button"   value="Processar" onclick='js_emite();'>
     <input name="limpa" type="button" onclick='js_limpa();'  value="Limpar">
-  <?php 
+  <?
   }  
   ?>
   </td>
@@ -238,7 +238,7 @@ background-color:#ccddcc;
  
 
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisaq40_codporte(mostra){
@@ -314,7 +314,7 @@ function js_mostraportetipo1(chave1,chave2){
 }
 //----------------------------------------------------------------------
 </script>
-<?php 
+<?
 if (isset($atualizar)){
     db_msgbox($erro_msg);
     if($clissportetipo->erro_campo!=""){

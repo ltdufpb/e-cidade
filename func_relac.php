@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrelac->rotulo->label("r55_descr");
               <?=$Lr55_codeve?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r55_codeve",4,$Ir55_codeve,true,"text",4,"","chave_r55_codeve");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrelac->rotulo->label("r55_descr");
               <?=$Lr55_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r55_descr",40,$Ir55_descr,true,"text",4,"","chave_r55_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrelac->rotulo->label("r55_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(isset($campos)==false){
          if(file_exists("funcoes/db_func_relac.php")==true){
            include(modification("funcoes/db_func_relac.php"));
@@ -119,12 +119,12 @@ $clrelac->rotulo->label("r55_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

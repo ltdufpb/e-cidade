@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -621,13 +621,13 @@ if (isset($excluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-        <?php 
+        <?
           if (isset($lBuscaCgs)) {
             echo "<br><br>";
           }
         ?>
         <fieldset style='width: 100%;'> <legend><b><?=$sTituloFieldset?></b></legend>
-          <?php 
+          <?
           require_once(modification("forms/db_frmfar_cadacomppachiperdia.php"));
           ?>
       </center>
@@ -636,7 +636,7 @@ if (isset($excluir)) {
   </tr>
 </table>
 </center>
-<?php 
+<?
 if ($iModulo == 2) {
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
@@ -651,7 +651,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
 <script>
 js_tabulacaoforms("form1", "fa50_i_triagem", true, 1, "fa50_i_triagem", true);
 </script>
-<?php 
+<?
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 
   if ($oDaoFarCadAcompPacHiperdia->erro_status=="0") {

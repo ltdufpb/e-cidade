@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -106,7 +106,7 @@ if(isset($valores) && trim($valores)!=""){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
       <br><br>
       <center>
-      <?php 
+      <?
       if($sair==true){      	 
         echo "<input type='text' name='focado1' onBlur='parent.db_iframe_mostratotal.hide();' size='1'>";
 	echo "<strong> Registros não encontrados.</strong>";

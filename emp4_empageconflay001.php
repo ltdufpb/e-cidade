@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -395,7 +395,7 @@ if(isset($data)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-   <?php 
+   <?
    
    $clrotulo = new rotulocampo;
    $clrotulo->label("e80_data");
@@ -421,7 +421,7 @@ if(isset($data)){
         <?=$Le80_data?>
         </td> 
         <td>  
-         <?php 
+         <?
      db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',1);
          ?>
           <input name="pesquisar" type="submit"    value="Pesquisar">
@@ -429,10 +429,10 @@ if(isset($data)){
      </tr>
            <tr>
        <td class='bordas' align='right'>
-                 <?php  db_ancora("Agendas","js_empage();",1);  ?>
+                 <? db_ancora("Agendas","js_empage();",1);  ?>
      :
        </td>
-<?php 
+<?
           if($numrows01!=0){
        for($i=0; $i<$numrows01; $i++){
          db_fieldsmemory($result01,$i);
@@ -441,7 +441,7 @@ if(isset($data)){
     }  
 ?>
              <td class='bordas'><small>
-<?php 
+<?
           //variavel setada apenas quando o usuario pesquisar na func 
           if(isset($pri_codage)){
       $e80_codage = $pri_codage;
@@ -456,7 +456,7 @@ if(isset($data)){
          
        </small>
        <?=$Le84_codmod?>  
-<?php        
+<?       
      
           $sql01    = $clempagemod->sql_query_mod(null,"distinct e84_codmod,e84_descr","","e84_codmod <> 1");
     $result01 = $clempagemod->sql_record($sql01);
@@ -491,13 +491,13 @@ if(isset($data)){
      </tr>  
    </table>  
     </center>
-<?php     
+<?    
    }  
 ?>
     </td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -529,7 +529,7 @@ function js_mostra(codage,data){
   
 }
 </script>
-<?php 
+<?
 if(isset($atualizar) || isset($adicionar)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

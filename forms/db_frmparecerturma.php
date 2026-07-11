@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clrotulo->label("ed92_i_codigo");
   <td align="center" width="5%" class='cabec1'>Sequencial</td>
   <td class='cabec1'>Parecer</td>
  </tr>
- <?php 
+ <?
  $escola = db_getsession("DB_coddepto");
  $result = $clparecer->sql_record($clparecer->sql_query("","*","ed92_i_sequencial"," ed92_i_escola = $escola"));
  $cor1 = "#f3f3f3";
@@ -76,7 +76,7 @@ $clrotulo->label("ed92_i_codigo");
     <td align="center" class='<?=$classe?>'><?=$ed92_i_sequencial==""?"&nbsp;":$ed92_i_sequencial?></td>
     <td class='<?=$classe?>'><?=$checked!=""?" -> ":""?><?=$ed92_c_descr?></td>
    </tr>
-   <?php 
+   <?
   }
   ?>
   <tr>
@@ -84,7 +84,7 @@ $clrotulo->label("ed92_i_codigo");
     <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Salvar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
    </td>
   </tr>
-  <?php 
+  <?
  }else{
   ?>
   <tr>
@@ -92,7 +92,7 @@ $clrotulo->label("ed92_i_codigo");
     Nenhum parecer cadastrado.
    </td>
   </tr>
-  <?php 
+  <?
  }
  ?>
 </table>

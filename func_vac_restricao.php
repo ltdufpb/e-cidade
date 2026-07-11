@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clvac_restricao->rotulo->label("vc02_c_nome");
               <?=$Lvc02_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?php db_input("vc02_i_codigo",10,$Ivc02_i_codigo,true,"text",4,"","chave_vc02_i_codigo");?>
+            <?db_input("vc02_i_codigo",10,$Ivc02_i_codigo,true,"text",4,"","chave_vc02_i_codigo");?>
             </td>
           </tr>
           <tr> 
@@ -63,7 +63,7 @@ $clvac_restricao->rotulo->label("vc02_c_nome");
               <?=$Lvc02_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?php db_input("vc02_c_nome",10,$Ivc02_c_nome,true,"text",4,"","chave_vc02_c_nome");?>
+            <?db_input("vc02_c_nome",10,$Ivc02_c_nome,true,"text",4,"","chave_vc02_c_nome");?>
             </td>
           </tr>
           <tr> 
@@ -79,7 +79,7 @@ $clvac_restricao->rotulo->label("vc02_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos)==false) {
@@ -128,13 +128,13 @@ $clvac_restricao->rotulo->label("vc02_c_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 
   ?>
   <script>
   </script>
-  <?php 
+  <?
 
 }
 ?>

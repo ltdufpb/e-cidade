@@ -129,7 +129,7 @@ $rotulo->label("p58_codproc");
     </tr>
     </form>
     </table>
-     <?php 
+     <?
       $where  = " p67_coddepto = ".db_getsession("DB_coddepto");
       $where .= " and p69_codarquiv is null";
 //      $where .= " and not exists (select 1 
@@ -159,7 +159,7 @@ $rotulo->label("p58_codproc");
    
   ?>
  </center>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

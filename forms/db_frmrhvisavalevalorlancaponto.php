@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,7 +43,7 @@ $clrotulo->label("rh27_descr");
       <b>Ano / Mês:</b>
     </td>
     <td> 
-      <?php 
+      <?
       if(!isset($rh49_anousu)){
         $rh49_anousu = db_anofolha();
       }
@@ -53,22 +53,22 @@ $clrotulo->label("rh27_descr");
       db_input('rh49_anousu',4,$Irh49_anousu,true,'text',3,"")
       ?>
       &nbsp;/&nbsp;
-      <?php 
+      <?
       db_input('rh49_mesusu',2,$Irh49_mesusu,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh47_rubric?>" align="right">
-      <?php 
+      <?
       db_ancora(@$Lrh47_rubric,"js_pesquisarh47_rubric(true);",3);
       ?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('rh47_rubric',4,$Irh47_rubric,true,'text',3," onchange='js_pesquisarh47_rubric(false);'")
       ?>
-      <?php 
+      <?
       db_input('rh27_descr',50,$Irh27_descr,true,'text',3,'')
       ?>
     </td>

@@ -136,7 +136,7 @@ if (isset($alterar)) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?php 
+    <?
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,
                    datagrid.widget.js");
@@ -165,7 +165,7 @@ if (isset($alterar)) {
                      <b>Taxa</b>
                    </td>
                    <td>
-                     <?php 
+                     <?
                      db_input("ar36_sequencial", 10, '', true, "text", 3, ""); 
                      db_input("ar36_descricao", 40, '', true, "text", 3, "");
                      ?>
@@ -173,10 +173,10 @@ if (isset($alterar)) {
                  </tr>
                  <tr>
                    <td>
-                     <b><?php db_ancora("Favorecido", "js_pesquisacgm(true)", 1)?></b>
+                     <b><?db_ancora("Favorecido", "js_pesquisacgm(true)", 1)?></b>
                    </td>
                    <td>
-                     <?php 
+                     <?
                       db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, "onchange='js_pesquisacgm(false);situacaoCpf();'");
                       db_input("z01_nome", 40, $Iz01_nome, true, "text", 3);
                       db_input("v86_sequencial", 10, '', true, "hidden", 3);

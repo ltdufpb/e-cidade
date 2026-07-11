@@ -66,7 +66,7 @@ if (count($aParametrosRegistro) > 0) {
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?php 
+<?
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -88,12 +88,12 @@ db_app::load("widgets/windowAux.widget.js");
             <table>
               <tr>
                 <td>
-                <?php 
+                <?
                  db_ancora(@$Lpc16_codmater, "js_pesquisapc16_codmater(true);", 1);
                 ?>
                 </td>
                 <td nowrap>
-                   <?php 
+                   <?
                    $pc17_quant = 1;
                    db_input('pc16_codmater', 8, $Ipc16_codmater, true, 'text', 1, " onchange='js_pesquisapc16_codmater(false);'");
                    db_input('pc01_descrmater', 45, $Ipc01_descrmater, true, 'text', 1, '');
@@ -115,7 +115,7 @@ db_app::load("widgets/windowAux.widget.js");
                    <b>Quantidade:</b>
                 </td>
                 <td>
-                 <?php 
+                 <?
                   db_input('quantidade', 8, $Ipc16_codmater, true, 'text', 1);
                  ?>
                 </td>
@@ -164,7 +164,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_prazo?>
                </td>
                <td>
-                 <?php 
+                 <?
                   db_textarea('pc11_prazo',3,30,$Ipc11_prazo,true,'text',$db_opcao)
                  ?>
                </td>
@@ -174,7 +174,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_pgto?>
                </td>
                <td>
-                 <?php 
+                 <?
                   db_textarea('pc11_pgto',3,30,$Ipc11_pgto, true, 'text', $db_opcao);
                  ?>
                </td>
@@ -184,7 +184,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_resum?>
                </td>
                <td>
-                 <?php 
+                 <?
                   db_textarea('pc11_resum',3,30,$Ipc11_resum,true,'text',$db_opcao)
                  ?>
                </td>
@@ -194,7 +194,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <?=@$Lpc11_just?>
                </td>
                <td>
-                 <?php 
+                 <?
                   db_textarea('pc11_just',3,30,$Ipc11_just,true,'text',$db_opcao)
                  ?>
                </td>
@@ -413,7 +413,7 @@ function js_excluirLinha(iSeq) {
 /**
  * Adicionamos as unidades ao combo pc17_unid
  */
- <?php 
+ <?
  
   foreach ($aUnidades as $oUnidade) {
     

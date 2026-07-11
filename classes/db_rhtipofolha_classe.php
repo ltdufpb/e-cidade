@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhtipofolha
 class cl_rhtipofolha { 

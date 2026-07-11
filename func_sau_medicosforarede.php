@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $oDaoSauMedicosForaRede->rotulo->label('s154_c_nome');
             <?=$Ls154_i_medico?>
           </td>
           <td width="96%" align="left" nowrap> 
-            <?php 
+            <?
 		        db_input("s154_i_medico", 10, $Is154_i_medico, true, "text", 4, "", "chave_s154_i_medico");
 		        ?>
           </td>
@@ -67,7 +67,7 @@ $oDaoSauMedicosForaRede->rotulo->label('s154_c_nome');
             <?=$Ls154_c_nome?>
           </td>
           <td width="96%" align="left" nowrap> 
-            <?php 
+            <?
 		        db_input("s154_c_nome", 50, $Is154_c_nome, true, "text", 4, "", "chave_s154_c_nome");
 		        ?>
           </td>
@@ -85,7 +85,7 @@ $oDaoSauMedicosForaRede->rotulo->label('s154_c_nome');
   </tr>
   <tr> 
     <td align="center" valign="top">
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos) == false) {
@@ -146,12 +146,12 @@ $oDaoSauMedicosForaRede->rotulo->label('s154_c_nome');
 </form>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -219,7 +219,7 @@ exit;*/
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php //$cor="#999999"?>
+<?//$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: #999999;
@@ -234,7 +234,7 @@ exit;*/
          background-color: #999999;
 */	 
 }
-<?php //$cor="999999"?>
+<?//$cor="999999"?>
 .bordas_corp{
 /*       border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -257,14 +257,14 @@ exit;*/
   <br><br>
     <td><b>Material: <b></td>
     <td>
-    <?php 
+    <?
     db_input('codmater',6,'',true,'text',3);
     db_input('descrmater',30,'',true,'text',3);
     ?>
     </td>
     <td>
     <b>Quant. Atendida: </b>
-    <?php 
+    <?
     db_input('quantatend',6,'',true,'text',3);
     ?>
     </td>
@@ -274,7 +274,7 @@ exit;*/
     <b>Observação:</b>
     </td>
     <td colspan=2>
-    <?php 
+    <?
      db_textarea('obs',0,50,'',true,'text',3,"")
     ?>
     </td>
@@ -284,7 +284,7 @@ exit;*/
     <br><br>
       <table border='0' >   
       
-        <?php 
+        <?
 	$result=$clmatestoque->sql_record($clmatestoque->sql_query_almox(null,"*",null,"m70_codmatmater=$codmater"));
 //	$result=$clmatestoque->sql_record($clmatestoque->sql_query(null,"*","","m70_codmatmater=$codmater"));
 	$numrows = $clmatestoque->numrows;
@@ -333,7 +333,7 @@ exit;*/
        <input name="voltar" type="button" value="Voltar" onclick="parent.db_iframe_lanca.hide();" >
     </td>
   </tr>
-  <?php 
+  <?
   db_input('quantis',100,'',true,'hidden',3);
   db_input('atendimento_control',10,'',true,'hidden',3);
   db_input('codreqitem',10,'',true,'hidden',3);
@@ -362,7 +362,7 @@ function js_buscavalores(){
 document.form1.atendimento_control.value=parent.document.form1.atendimento.value;
 document.form1.m80_codigo.value=parent.document.form1.m80_codigo.value;
 </script>
-<?php 
+<?
   if ($numrows==1&&$sqlerro==false&&$passou==false){
     echo "<script>document.form1.confirma.click();</script>";
   }
@@ -388,7 +388,7 @@ function js_verifica(max,quan,nome){
 }
 
 </script>
-<?php 
+<?
 if (isset($confirma)){
   if($sqlerro == true){ 
   db_msgbox(@$erro_msg);

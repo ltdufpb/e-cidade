@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,60 +39,60 @@ $clrotulo->label("bi04_forma");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tbi06_tipoitem?>">
-       <?php 
+       <?
        db_ancora(@$Lbi06_tipoitem,"js_pesquisabi06_tipoitem(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?php 
+<?
 db_input('bi06_tipoitem',10,$Ibi06_tipoitem,true,'text',$db_opcao," onchange='js_pesquisabi06_tipoitem(false);' onKeyPress='tab(event,4)'")
 ?>
-       <?php 
+       <?
 db_input('bi05_nome',50,$Ibi05_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbi06_editora?>">
-       <?php 
+       <?
        db_ancora(@$Lbi06_editora,"js_pesquisabi06_editora(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?php 
+<?
 db_input('bi06_editora',10,$Ibi06_editora,true,'text',$db_opcao," onchange='js_pesquisabi06_editora(false);' onKeyPress='tab(event,6)'")
 ?>
-       <?php 
+       <?
 db_input('bi02_nome',50,$Ibi02_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbi06_classiliteraria?>">
-       <?php 
+       <?
        db_ancora(@$Lbi06_classiliteraria,"js_pesquisabi06_classiliteraria(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?php 
+<?
 db_input('bi06_classiliteraria',10,$Ibi06_classiliteraria,true,'text',$db_opcao," onchange='js_pesquisabi06_classiliteraria(false);' onKeyPress='tab(event,8)'")
 ?>
-       <?php 
+       <?
 db_input('bi03_classificacao',50,$Ibi03_classificacao,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tbi06_aquisicao?>">
-       <?php 
+       <?
        db_ancora(@$Lbi06_aquisicao,"js_pesquisabi06_aquisicao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?php 
+<?
 db_input('bi06_aquisicao',10,$Ibi06_aquisicao,true,'text',$db_opcao," onchange='js_pesquisabi06_aquisicao(false);' onKeyPress='tab(event,9)'")
 ?>
-       <?php 
+       <?
 db_input('bi04_forma',50,$Ibi04_forma,true,'text',3,"onKeyPress='tab(event,10)'")
        ?>
     </td>
@@ -101,10 +101,10 @@ db_input('bi04_forma',50,$Ibi04_forma,true,'text',3,"onKeyPress='tab(event,10)'"
   </center>
   <input name="<?=($db_opcao==1?"incluir":($db_opcao==2?"alterar":"excluir"))?>" type="submit" id="<?=($db_opcao==1?"incluir":($db_opcao==2?"alterar":"excluir"))?>" value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
   <input name="excluir" type="submit" id="excluir" value="Excluir" <?=$db_opcao==1?"disabled":""?>>
-  <?php if($db_opcao!=1){?>
+  <?if($db_opcao!=1){?>
   <input name="autores" type="button" id="autores" value="Alterar Autores" <?=$db_opcao==1?"disabled":""?> onclick="js_autores('<?=$bi06_seq?>','<?=$bi06_titulo?>')">
   <input name="assuntos" type="button" id="assuntos" value="Alterar Assuntos" <?=$db_opcao==1?"disabled":""?> onclick="js_assuntos('<?=$bi06_seq?>','<?=$bi06_titulo?>')">
-  <?php }?>
+  <?}?>
 </form>
 <script>
 function js_pesquisabi06_localizacao(mostra){
@@ -250,7 +250,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_acervo.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

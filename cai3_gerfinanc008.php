@@ -66,7 +66,7 @@ if(isset($Parcelamento) && $Parcelamento != ""){
 </head>
 <script>
    function js_imprime() {
-      jandb = window.open('cai3_gerfinanc014.php?<?php 
+      jandb = window.open('cai3_gerfinanc014.php?<?
         if(isset($matric)){
            echo "matric=$matric";
         }else if(isset($inscr)){
@@ -102,7 +102,7 @@ if(isset($Parcelamento) && $Parcelamento != ""){
 
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?php 
+<?
 if(isset($tipo_cert) && !isset($HTTP_POST_VARS["procurar"])) {
 ?>
 <br><br>
@@ -111,21 +111,21 @@ if(isset($tipo_cert) && !isset($HTTP_POST_VARS["procurar"])) {
     <tr>
      <td width="20%" class="tabs" nowrap><strong>Data Inicial:</strong></td>
      <td width="80%" class="tabs">
-      <?php  db_inputdata("datainicial",'','','',true,'text',2); ?>
+      <? db_inputdata("datainicial",'','','',true,'text',2); ?>
      </td>
     </tr>
     <tr>
       <td class="tabs" nowrap><strong>Data Final:</strong></td>
       <td class="tabs">
-       <?php  db_inputdata("datafinal",date('d',db_getsession("DB_datausu")),date('m',db_getsession("DB_datausu")),date('Y',db_getsession("DB_datausu")),true,'text',2); ?>
+       <? db_inputdata("datafinal",date('d',db_getsession("DB_datausu")),date('m',db_getsession("DB_datausu")),date('Y',db_getsession("DB_datausu")),true,'text',2); ?>
       </td>
     </tr>
     <tr>
       <td class="tabs">
-        <?php  db_ancora("<font color=blue><b>Receita:</b></font>", "js_pesquisareceita(true);", 1); ?>
+        <? db_ancora("<font color=blue><b>Receita:</b></font>", "js_pesquisareceita(true);", 1); ?>
       </td>
       <td class="tabs" colspan=2>
-        <?php  db_input('k02_codigo', 10, $Ik02_codigo, true, 'text', 1); ?>
+        <? db_input('k02_codigo', 10, $Ik02_codigo, true, 'text', 1); ?>
       </td>
     </tr>
     <tr>
@@ -134,10 +134,10 @@ if(isset($tipo_cert) && !isset($HTTP_POST_VARS["procurar"])) {
     </tr>
     <tr>
       <td align="left" nowrap title="<?=@$Tv70_codforo?>" >
-        <?php db_ancora(@$Lv70_codforo, "js_pesquisaprocessoforo(true);", 4);?>
+        <?db_ancora(@$Lv70_codforo, "js_pesquisaprocessoforo(true);", 4);?>
       </td>
       <td align="left">
-        <?php 
+        <?
           db_input("v70_sequencial",  10, $Iv70_sequencial, true, "text", 4, "onchange='js_pesquisaprocessoforo(false);'");
           db_input("v70_codforo",    25, $Iv70_codforo,  true, "text", 3, "");
         ?>
@@ -167,7 +167,7 @@ function js_validar() {
 }
 
 </script>
-<?php 
+<?
 } else {
 
   $aWherePagamento    = array();
@@ -461,7 +461,7 @@ function js_validar() {
         <th width="7%"  nowrap>Dtpagto</th>
         <th width="7%"  nowrap>Efetpagto</th>
       </tr>
-    <?php 
+    <?
       $totalpago = 0;
 
       for ($iInd=0; $iInd < $iRowsPagamentos; $iInd++) {
@@ -579,7 +579,7 @@ function js_validar() {
         <td align="center" nowrap ><?=db_formatar($oPagamento->k00_dtpaga,"d")?>    </td>
         <td align="center" nowrap ><?=db_formatar($oPagamento->efetpagto,'d')?>     </td>
       </tr>
-      <?php 
+      <?
 
         $totalpago += $oPagamento->k00_valor;
       }
@@ -604,7 +604,7 @@ function js_validar() {
       <input name="voltar" type="button" id="voltar" value="Voltar" onclick="reciboPagoCodigoArrecadacaoVoltar();"/>
     </div>
   </div>
- <?php 
+ <?
   } else {
     $DB_ERRO = "Não existe pagamentos efetuados para este numpre.";
   }
@@ -613,7 +613,7 @@ function js_validar() {
 </center>
 </body>
 </html>
-<?php 
+<?
 
 if(isset($DB_ERRO)) {
   ?>
@@ -626,14 +626,14 @@ if(isset($DB_ERRO)) {
 
 //-->
 </script>
-  <?php 
+  <?
 }
 ?>
   <script>
       function js_pesquisareceita(lMostra){
 
         var sQuery = '?funcao_js=parent.debitos.js_mostrareceitas|k02_codigo';
-<?php 
+<?
           if(isset($matric)){
              echo "sQuery += '&matric={$matric}';";
           }else if(isset($inscr)){
@@ -668,7 +668,7 @@ if(isset($DB_ERRO)) {
     function js_pesquisaprocessoforo(mostra) {
 
       var sQuery = "";
-      <?php 
+      <?
          if (isset($matric)) {
            echo "sQuery += '&matric={$matric}';";
          }else if(isset($inscr)){

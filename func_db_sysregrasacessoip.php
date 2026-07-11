@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_sysregrasacessoip->rotulo->label("db48_ip");
               <?=$Ldb48_idacesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db48_idacesso",6,$Idb48_idacesso,true,"text",4,"","chave_db48_idacesso");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_sysregrasacessoip->rotulo->label("db48_ip");
               <?=$Ldb48_ip?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db48_ip",40,$Idb48_ip,true,"text",4,"","chave_db48_ip");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_sysregrasacessoip->rotulo->label("db48_ip");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_sysregrasacessoip.php")==true){
@@ -123,12 +123,12 @@ $cldb_sysregrasacessoip->rotulo->label("db48_ip");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

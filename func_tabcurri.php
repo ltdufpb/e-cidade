@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltabcurri->rotulo->label("h01_descr");
               <?=$Lh01_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h01_codigo",5,$Ih01_codigo,true,"text",4,"","chave_h01_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltabcurri->rotulo->label("h01_descr");
               <?=$Lh01_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h01_descr",30,$Ih01_descr,true,"text",4,"","chave_h01_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltabcurri->rotulo->label("h01_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tabcurri.php")==true){
@@ -123,12 +123,12 @@ $cltabcurri->rotulo->label("h01_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

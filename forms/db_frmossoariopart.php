@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,37 +40,37 @@ $clrotulo->label("p58_codproc");
        <?=@$Lcm02_i_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('cm02_i_codigo',10,$Icm02_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm02_i_processo?>">
-       <?php 
+       <?
        db_ancora(@$Lcm02_i_processo,"js_pesquisacm02_i_processo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('cm02_i_processo',7,$Icm02_i_processo,true,'text',$db_opcao," onchange='js_pesquisacm02_i_processo(false);'")
 ?>
-       <?php 
+       <?
 db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm02_i_proprietario?>">
-       <?php 
+       <?
        db_ancora(@$Lcm02_i_proprietario,"js_pesquisacm02_i_proprietario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('cm02_i_proprietario',7,$Icm02_i_proprietario,true,'text',$db_opcao," onchange='js_pesquisacm02_i_proprietario(false);'")
 ?>
-       <?php 
+       <?
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -80,11 +80,11 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lcm02_c_quadra?>
     </td>
     <td> 
-<?php 
+<?
 db_input('cm02_c_quadra',3,$Icm02_c_quadra,true,'text',$db_opcao,"")
 ?>
        <?=@$Lcm02_i_lote?>
-<?php 
+<?
 db_input('cm02_i_lote',10,$Icm02_i_lote,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,8 +94,8 @@ db_input('cm02_i_lote',10,$Icm02_i_lote,true,'text',$db_opcao,"")
      <b>Metragem</b>
     </td>
     <td> 
-     <?php db_input('cm02_f_metragem1',10,$Icm02_f_metragem1,true,'text',$db_opcao,"")?>x
-     <?php db_input('cm02_c_metragem2',10,$Icm02_c_metragem2,true,'text',$db_opcao,"")?>
+     <?db_input('cm02_f_metragem1',10,$Icm02_f_metragem1,true,'text',$db_opcao,"")?>x
+     <?db_input('cm02_c_metragem2',10,$Icm02_c_metragem2,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -103,17 +103,17 @@ db_input('cm02_i_lote',10,$Icm02_i_lote,true,'text',$db_opcao,"")
        <?=@$Lcm02_d_aquisicao?>
     </td>
     <td> 
-<?php 
+<?
 db_inputdata('cm02_d_aquisicao',@$cm02_d_aquisicao_dia,@$cm02_d_aquisicao_mes,@$cm02_d_aquisicao_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   </table>
   </center>
-<?php if(@$antigo==""){?>
+<?if(@$antigo==""){?>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?php }?>
+<?}?>
 </form>
 <script>
 function js_pesquisacm02_i_proprietario(mostra){
@@ -167,7 +167,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ossoariopart.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

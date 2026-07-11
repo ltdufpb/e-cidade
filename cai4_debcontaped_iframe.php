@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ function js_marca(obj){
 }
 </script>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -69,7 +69,7 @@ function js_marca(obj){
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -84,7 +84,7 @@ function js_marca(obj){
     <form name='form1'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?php 
+ <?
 $sql = "select arrecad.k00_numpre,k00_numpar,k00_dtvenc,sum(k00_valor)as k00_valor,arrecad.k00_tipo,k00_descr
 	              from $tab 
 	                inner join arrecad    on arrecad.k00_numpre = $tab.k00_numpre

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clmatricula = new cl_matricula;
 </head>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?php 
+ <?
  # Seleciona todos os calendários
  $sql = "SELECT ed52_i_codigo,ed52_c_descr
          FROM calendario
@@ -143,7 +143,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Gráfico de Frequência de Turmas - Individual por Turma</b></legend>
 <table border="0" align="left">
@@ -155,7 +155,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <b>Calendário:</b><br>
       <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:150px;height:18px;">
        <option></option>
-       <?php 
+       <?
        #Seleciona todos os grupos para setar os valores no combo
        $sql = "SELECT ed52_i_codigo,ed52_c_descr
                FROM calendario
@@ -169,7 +169,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
         $desc_curso=$row["ed52_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-        <?php 
+        <?
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -190,7 +190,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
 <iframe name="iframe_grafico" id="iframe_grafico" src="" width="97%" height="470" frameborder="0"></iframe>
 </center>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -199,8 +199,8 @@ function js_pesquisa(turma){
   iframe_grafico.location.href = "edu2_gfcofreqturma002.php?turma="+turma+"&larg_pagina="+(screen.availWidth-60);
  }
 }
-<?php if(!isset($turma) && pg_num_rows($sql_result)>0){?>
+<?if(!isset($turma) && pg_num_rows($sql_result)>0){?>
  fillSelectFromArray(document.form1.subgrupo,team[0]);
  document.form1.grupo.options[1].selected = true;
-<?php }?>
+<?}?>
 </script>

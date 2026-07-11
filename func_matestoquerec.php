@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmatestoquerec->rotulo->label("m84_matestoqueinitrans");
               <?=$Lm84_matestoqueinitrans?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m84_matestoqueinitrans",10,$Im84_matestoqueinitrans,true,"text",4,"","chave_m84_matestoqueinitrans");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmatestoquerec->rotulo->label("m84_matestoqueinitrans");
               <?=$Lm84_matestoqueinitrans?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m84_matestoqueinitrans",10,$Im84_matestoqueinitrans,true,"text",4,"","chave_m84_matestoqueinitrans");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmatestoquerec->rotulo->label("m84_matestoqueinitrans");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matestoquerec.php")==true){
@@ -119,12 +119,12 @@ $clmatestoquerec->rotulo->label("m84_matestoqueinitrans");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

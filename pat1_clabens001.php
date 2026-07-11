@@ -96,7 +96,7 @@ if(isset($incluir)){
 ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
 
   db_msgbox($erro_msg);

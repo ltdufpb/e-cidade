@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,10 +60,10 @@ $clrotulo->label("ed57_c_descr");
       <?=$Led60_i_aluno?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed60_i_aluno",10,$Ied60_i_aluno,true,"text",4,"","chave_ed60_i_aluno");?>
+      <?db_input("ed60_i_aluno",10,$Ied60_i_aluno,true,"text",4,"","chave_ed60_i_aluno");?>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <b>Nome da Turma:</b>
-      <?php db_input("ed57_c_descr",20,@$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
+      <?db_input("ed57_c_descr",20,@$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@ $clrotulo->label("ed57_c_descr");
       <?=$Led47_v_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed47_v_nome",50,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+      <?db_input("ed47_v_nome",50,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
      </td>
     </tr>
     <tr>
@@ -87,7 +87,7 @@ $clrotulo->label("ed57_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $where = " AND turma.ed57_i_escola = ".db_getsession("DB_coddepto")."
               AND not exists(select * from trocaserie
                              where ed101_i_aluno = ed60_i_aluno

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconciliastatus->rotulo->label("k95_descr");
               <?=$Lk95_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k95_sequencial",10,$Ik95_sequencial,true,"text",4,"","chave_k95_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconciliastatus->rotulo->label("k95_descr");
               <?=$Lk95_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k95_descr",40,$Ik95_descr,true,"text",4,"","chave_k95_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconciliastatus->rotulo->label("k95_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conciliastatus.php")==true){
@@ -123,12 +123,12 @@ $clconciliastatus->rotulo->label("k95_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

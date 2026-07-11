@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,7 +43,7 @@ $clrotulo->label("fa06_i_matersaude");
 <html>
   <head>
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-    <?php 
+    <?
     db_app::load("strings.js");
     db_app::load("/widgets/dbautocomplete.widget.js");
     db_app::load("prototype.js");
@@ -72,12 +72,12 @@ $clrotulo->label("fa06_i_matersaude");
              <tr>
               <td align="left">
                 <b>Data Inicial:</b>
-                <?php 
+                <?
                   db_inputdata('data_inicio', '', '', '', true, 'text', 1, "");
                 ?>
               </td>
               <td>
-                <?php 
+                <?
                  echo' <b>Data Final:</b> ';
                   db_inputdata('data_fim', '', '', '', true, 'text', 1, "");
                  ?>
@@ -86,13 +86,13 @@ $clrotulo->label("fa06_i_matersaude");
             <tr>
               <td align="left">
                 <b>Idade Inicial:</b>
-                <?php 
+                <?
                   db_input('idade_inicio', 3, "", true, 'text', 1, "", "", "", "", 3);
                 ?>
               </td>
               <td>
                  <b>Idade Final:</b>
-                <?php 
+                <?
                   db_input('idade_fim', 3, "", true, 'text', 1, "", "", "", "", 3);
                 ?>
               </td>
@@ -100,7 +100,7 @@ $clrotulo->label("fa06_i_matersaude");
             <tr>
               <td>
                 <b>Tipo Retirada:</b>
-                <?php 
+                <?
                  $aRetirada = array("1"=>"NORMAL", "2"=>"NÃO PADRONIZADA"); 
                  db_select('aRetirada', $aRetirada, true, "");
                 ?>
@@ -121,12 +121,12 @@ $clrotulo->label("fa06_i_matersaude");
           <table width="100%" border="0"  id="tabAlmoxarifado" style="display:none">
             <tr>
               <td>
-                <?php 
+                <?
                   db_ancora("<b>Almoxarifado</b>", "js_pesquisafa04_i_unidades(true);", "");
                 ?>
               
               
-                <?php 
+                <?
                   db_input('fa04_i_unidades',
                            10,
                            @$Ifa04_i_unidadess,
@@ -168,12 +168,12 @@ $clrotulo->label("fa06_i_matersaude");
             <table width="100%" id='tabMedicamentos' style="display:none" >
              <tr>
               <td>             
-                  <?php 
+                  <?
                     db_ancora(@$Lfa06_i_matersaude, "js_pesquisafa01_i_medicamento(true);", "");
                   ?>
               
                
-                  <?php 
+                  <?
                     db_input('fa01_i_codigo',
                              10,
                              @$Ifa01_i_codigo,
@@ -221,7 +221,7 @@ $clrotulo->label("fa06_i_matersaude");
       </table>
     </center>
    
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
       db_getsession("DB_anousu"), db_getsession("DB_instit"));
     ?>

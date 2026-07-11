@@ -141,12 +141,12 @@ $sQuebraLinha = "\r\n";
 </tr>
 <tr>
 <td width="100%"  align="center">
-<?php  db_criatermometro('termometro','Concluido...','blue',1); ?>
+<? db_criatermometro('termometro','Concluido...','blue',1); ?>
 </td>
 </tr>
 </table>
 <form name='form1'>
-<?php 
+<?
 
 echo "<br>Inicio:".date("H:i:s")."<br>";
 
@@ -2060,7 +2060,7 @@ echo "<br>Fim:".date("H:i:s")."<br>";
 </form>
 </body>
 </html>
-<?php 
+<?
 
 function db_contador($apelido, $expressao, $contador, $valor) {
   $sQuebraLinha = "\r\n";

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -67,7 +67,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi23_codigo"><?=$Lbi23_codigo?></label>
         </td>
         <td >
-         <?php db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
+         <?db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
         </td>
       </tr>
 
@@ -76,7 +76,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi06_titulo"><?=$Lbi06_titulo?></label>
         </td>
         <td width="96%" align="left" nowrap>
-         <?php db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+         <?db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
         </td>
       </tr>
 
@@ -85,7 +85,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi06_subtitulo"><?=$Lbi06_subtitulo?></label>
         </td>
         <td >
-          <?php db_input("bi06_subtitulo",50,$Ibi06_subtitulo,true,"text",4,"","chave_bi06_subtitulo");?>
+          <?db_input("bi06_subtitulo",50,$Ibi06_subtitulo,true,"text",4,"","chave_bi06_subtitulo");?>
         </td>
       </tr>
 
@@ -94,7 +94,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi06_titulooriginal"><?=$Lbi06_titulooriginal?></label>
         </td>
         <td >
-          <?php db_input("bi06_titulooriginal",50,$Ibi06_titulooriginal,true,"text",4,"","chave_bi06_titulooriginal");?>
+          <?db_input("bi06_titulooriginal",50,$Ibi06_titulooriginal,true,"text",4,"","chave_bi06_titulooriginal");?>
         </td>
       </tr>
     </table>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,18 +58,18 @@ $db_botao = false;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center><br><Br>
-	<?php 
+	<?
      if(!isset($processa)){
     ?>
       <table>
       <form name="form1">
        <tr>
         <td>
-         <?php db_ancora("<b>Jazigo</b>","js_pesquisa_jazigo(true);",1);?>
+         <?db_ancora("<b>Jazigo</b>","js_pesquisa_jazigo(true);",1);?>
         </td>
         <td>
-         <?php db_input('cm03_i_jazigo',10,$Icm03_i_jazigo,true,'text',1," onchange='js_pesquisa_jazigo(false);'")?>
-         <?php db_input('proprietario',40,$proprietario,true,'text',3,'')?>
+         <?db_input('cm03_i_jazigo',10,$Icm03_i_jazigo,true,'text',1," onchange='js_pesquisa_jazigo(false);'")?>
+         <?db_input('proprietario',40,$proprietario,true,'text',3,'')?>
         </td>
        </tr>
        <tr>
@@ -77,7 +77,7 @@ $db_botao = false;
        </tr>
       </form>
       </table>
-    <?php 
+    <?
      }else{
       $antigo="1";
       $result = $cljazigos->sql_record($cljazigos->sql_query($cm03_i_jazigo,"jazigos.*, cgm.z01_nome"));
@@ -89,7 +89,7 @@ $db_botao = false;
 	</td>
   </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_pesquisa_jazigo(mostra){
   if(mostra==true){

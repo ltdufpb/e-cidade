@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsolicitemunid->rotulo->label("pc17_unid");
               <?=$Lpc17_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc17_codigo",10,$Ipc17_codigo,true,"text",4,"","chave_pc17_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsolicitemunid->rotulo->label("pc17_unid");
               <?=$Lpc17_unid?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc17_unid",10,$Ipc17_unid,true,"text",4,"","chave_pc17_unid");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clsolicitemunid->rotulo->label("pc17_unid");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitemunid.php")==true){
@@ -119,12 +119,12 @@ $clsolicitemunid->rotulo->label("pc17_unid");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

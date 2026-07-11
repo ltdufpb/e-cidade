@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clclientes->rotulo->label("at01_nomecli");
               <?=$Lat01_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at01_codcli",4,$Iat01_codcli,true,"text",4,"","chave_at01_codcli");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clclientes->rotulo->label("at01_nomecli");
               <?=$Lat01_nomecli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at01_nomecli",40,$Iat01_nomecli,true,"text",4,"","chave_at01_nomecli");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clclientes->rotulo->label("at01_nomecli");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_clientes.php")==true){
@@ -127,12 +127,12 @@ $clclientes->rotulo->label("at01_nomecli");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php PHP
+<?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -64,7 +64,7 @@ unset($_SESSION["dadosSelecaoAcordo"]);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
 db_app::load("scripts.js, strings.js, datagrid.widget.js, windowAux.widget.js");
 db_app::load("dbmessageBoard.widget.js, prototype.js, contratos.classe.js");
 db_app::load("estilos.css, grid.style.css");
@@ -75,12 +75,12 @@ db_app::load("estilos.css, grid.style.css");
 <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-	<?php 
+	<?
 	include(modification("forms/db_frmacordo.php"));
 	?>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

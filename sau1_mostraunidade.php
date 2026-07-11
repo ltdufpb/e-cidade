@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,8 +50,8 @@ $db_opcao = 1;
    <b>Unidade:</b>
   </td>
   <td>
-   <?php db_input('unidade',10,@$Iunidade,true,'text',3,"")?>
-   <?php db_input('nomeunidade',40,@$Inomeunidade,true,'text',3,"")?>
+   <?db_input('unidade',10,@$Iunidade,true,'text',3,"")?>
+   <?db_input('nomeunidade',40,@$Inomeunidade,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -59,9 +59,9 @@ $db_opcao = 1;
    <b>SIA/SUS:</b>
   </td>
   <td>
-   <?php db_input('siasus',10,@$Isiasus,true,'text',3,"")?>
+   <?db_input('siasus',10,@$Isiasus,true,'text',3,"")?>
    <b>N° Atendimento:</b>
-   <?php db_input('atendimento',20,@$Iatendimento,true,'text',$db_opcao,"")?>
+   <?db_input('atendimento',20,@$Iatendimento,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>

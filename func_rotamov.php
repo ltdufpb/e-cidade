@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("ed217_c_nome");
               <?=$Led217_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed217_i_codigo",10,$Ied217_i_codigo,true,"text",4,"","chave_ed217_i_codigo");
                        ?>
             </td>
@@ -66,7 +66,7 @@ $clrotulo->label("ed217_c_nome");
               <?=$Led217_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed217_c_nome",10,$Ied217_c_nome,true,"text",4,"","chave_ed217_c_nome");
                        ?>
             </td>
@@ -84,7 +84,7 @@ $clrotulo->label("ed217_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rotamov.php")==true){
@@ -124,12 +124,12 @@ $clrotulo->label("ed217_c_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

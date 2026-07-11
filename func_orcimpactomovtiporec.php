@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
               <?=$Lo67_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o67_codseqimpmov",5,$Io67_codseqimpmov,true,"text",4,"","chave_o67_codseqimpmov");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
               <?=$Lo67_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o67_codseqimpmov",5,$Io67_codseqimpmov,true,"text",4,"","chave_o67_codseqimpmov");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactomovtiporec.php")==true){
@@ -119,12 +119,12 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -117,19 +117,19 @@ function js_iniciar() {
 	</tr> 
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
-			<?php 
+			<?
 				include(modification("forms/db_frmpcmater.php"));
 			?>
 		</td>
   </tr>
 </table>
 </center>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
   if($clpcmater->erro_status=="0"){
     $clpcmater->erro(true,false);
@@ -144,7 +144,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   };
 };
 ?>
-<?php 
+<?
 if($db_opcao=="3"){
   echo "
   if(pcmater0011.document.form1.nexclui.value=='T'){

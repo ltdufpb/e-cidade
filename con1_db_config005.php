@@ -117,7 +117,7 @@ if(isset($alterar)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
   db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
   db_app::load('estilos.css,grid.style.css');
 ?>
@@ -130,7 +130,7 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-		  <?php 
+		  <?
 		   include(modification("forms/db_frmdb_config.php"));
 		  ?>
     </center>
@@ -139,7 +139,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
 
 	db_msgbox($sMsg);

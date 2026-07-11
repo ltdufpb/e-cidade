@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcaiparametro->rotulo->label("k29_instit");
               <?=$Lk29_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k29_instit",2,$Ik29_instit,true,"text",4,"","chave_k29_instit");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcaiparametro->rotulo->label("k29_instit");
               <?=$Lk29_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k29_instit",2,$Ik29_instit,true,"text",4,"","chave_k29_instit");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcaiparametro->rotulo->label("k29_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_caiparametro.php")==true){
@@ -123,12 +123,12 @@ $clcaiparametro->rotulo->label("k29_instit");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

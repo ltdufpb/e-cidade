@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -69,7 +69,7 @@ db_fieldsmemory($result,0);
  parent.document.form1.ed52_d_inicio.value = "<?=db_formatar($ed52_d_inicio,'d')?>";
  parent.document.form1.ed52_d_fim.value = "<?=db_formatar($ed52_d_fim,'d')?>";
  parent.document.form1.caldescr.value = "<?=$ed52_c_descr?>";
- <?php if($ed60_c_concluida=="S"){
+ <?if($ed60_c_concluida=="S"){
   $sql1 = "SELECT ed56_i_base
            FROM alunocurso
            WHERE ed56_i_aluno = $aluno
@@ -79,7 +79,7 @@ db_fieldsmemory($result,0);
   ?>
   parent.document.form1.situacao.value = "CONCLUÍDA";
   parent.document.form1.base.value = <?=$ed56_i_base?>;
- <?php }else{?>
+ <?}else{?>
   parent.document.form1.situacao.value = "<?=$ed60_c_situacao?>";
- <?php }?>
+ <?}?>
 </script>

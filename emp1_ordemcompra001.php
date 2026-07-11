@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ function js_mostracgmtesta(erro,chave){
     document.form1.e60_numcgm.focus(); 
     document.form1.e60_numcgm.value =''; 
   }else{
-    <?php  if (isset($vLiquida) && ($vLiquida==true))
+    <? if (isset($vLiquida) && ($vLiquida==true))
          echo "location.href='emp1_ordemcompra_liquida002.php?vLiquida=true&e60_numcgm='+document.form1.e60_numcgm.value;";
        else 
          echo "location.href='emp1_ordemcompra002.php?e60_numcgm='+document.form1.e60_numcgm.value;";
@@ -77,7 +77,7 @@ function js_mostracgmtesta(erro,chave){
   }
 }
 function js_mostracodemp(chave){
-   <?php  if (isset($vLiquida) && ($vLiquida==true))
+   <? if (isset($vLiquida) && ($vLiquida==true))
         echo "location.href='emp1_ordemcompra_liquida002.php?vLiquida=true&e60_numemp='+chave;";
       else
         echo "location.href='emp1_ordemcompra002.php?e60_numemp='+chave;";
@@ -89,7 +89,7 @@ function js_mostraempempenhotesta(chave,erro){
     document.form1.e60_numemp.value = ''; 
     document.form1.e60_numemp.focus(); 
   }else{
-    <?php  if (isset($vLiquida) && ($vLiquida==true))
+    <? if (isset($vLiquida) && ($vLiquida==true))
          echo "location.href='emp1_ordemcompra_liquida002.php?vLiquida=true&e60_numemp='+document.form1.e60_numemp.value;";   
        else	
          echo "location.href='emp1_ordemcompra002.php?e60_numemp='+document.form1.e60_numemp.value;";   
@@ -98,7 +98,7 @@ function js_mostraempempenhotesta(chave,erro){
 }
 
 function js_limpa(){
-   <?php  if (isset($vLiquida) && ($vLiquida==true))
+   <? if (isset($vLiquida) && ($vLiquida==true))
         echo "location.href='con4_ordemcompra001.php';";
       else
         echo "location.href='emp1_ordemcompra001.php';";
@@ -125,7 +125,7 @@ function js_limpa(){
 <td ></td>
 </tr>
 
- <?php  if (isset($vLiquida) && $vLiquida==true){ ?>
+ <? if (isset($vLiquida) && $vLiquida==true){ ?>
 
   <tr> 
     <td align="left" nowrap colspan=2><b><font size=+1>Ordem de Compra/Liquidação</font></b></td>
@@ -133,30 +133,30 @@ function js_limpa(){
 
 
 
- <?php   }  ?>
+ <?  }  ?>
   <tr> 
-    <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?php db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Te60_numcgm?>"><?db_ancora(@$Le60_numcgm,"js_pesquisae60_numcgm(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
+      <? db_input("e60_numcgm",6,$Ie60_numcgm,true,"text",4,"onchange='js_pesquisae60_numcgm(false);'");
          db_input("z01_nome",40,"$Iz01_nome",true,"text",3);  
         ?></td>
   </tr>
 
   <tr>
 	<td nowrap title="<?=@$Te60_codemp?>">
-	   <?php  db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
+	   <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1); ?>
 	</td>
 	<td> 
-	   <?php  db_input('e60_codemp',15,$Ie60_codemp,true,'text',1,"onchange=js_pesquisae60_codemp(false);")  ?>
+	   <? db_input('e60_codemp',15,$Ie60_codemp,true,'text',1,"onchange=js_pesquisae60_codemp(false);")  ?>
 	</td>
       </tr>
 
       <tr>
 	<td nowrap title="<?=@$Te60_numemp?>">
-	   <?php  db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
+	   <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",1); ?>
 	</td>
 	<td> 
-	   <?php  db_input('e60_numemp',15,$Ie60_numemp,true,'text',1," onchange='js_pesquisae60_numemp(false);'")  ?>
+	   <? db_input('e60_numemp',15,$Ie60_numemp,true,'text',1," onchange='js_pesquisae60_numemp(false);'")  ?>
 	</td>
       </tr>
 
@@ -178,7 +178,7 @@ function js_limpa(){
  
 
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisae60_numcgm(mostra){

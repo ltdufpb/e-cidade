@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,7 +92,7 @@ if(isset($incluir)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
 db_app::load("scripts.js");
 db_app::load("prototype.js");
 db_app::load("datagrid.widget.js");
@@ -112,7 +112,7 @@ db_app::load("/widgets/dbautocomplete.widget.js");
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <fieldset style='width: 75%;'> <legend><b>Exames</b></legend>
-	<?php 
+	<?
 	include(modification("forms/db_frmlab_exame.php"));
 	?>
 	</fieldset>
@@ -126,7 +126,7 @@ db_app::load("/widgets/dbautocomplete.widget.js");
 <script>
 js_tabulacaoforms("form1","la08_c_sigla",true,1,"la08_c_sigla",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
   if($cllab_exame->erro_status=="0"){
     $cllab_exame->erro(true,false);

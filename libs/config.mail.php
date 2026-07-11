@@ -1,4 +1,4 @@
-<?php 
+<?
 $sUser     = '';
 $sPass     = '';
 $sHost     = 'smtp.dbseller';

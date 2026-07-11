@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -47,7 +47,7 @@ include(modification("dbforms/db_funcoes.php"));
       <table width="790" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> <br>
-<?php 
+<?
 $where = "";
 if(isset($e60_numemp) && trim($e60_numemp)!=""){
   $where .= " where empempenho.e60_numemp=".$e60_numemp;
@@ -82,7 +82,7 @@ if(isset($e60_numemp) && trim($e60_numemp)!=""){
 </center>
 </body>
 </html>
-<?php 
+<?
 /*
   echo "<html>";
   echo "<head>";

@@ -93,17 +93,17 @@ if($iDbOpcao == 1) {
       <table width="100%" border="0">
         <tr>
           <td width="70px" nowrap title="<?=$Tk80_codpla?>">
-            <?php  db_ancora(@$Lk80_codpla, "js_pesquisaPlanilha(true);",1);?>
+            <? db_ancora(@$Lk80_codpla, "js_pesquisaPlanilha(true);",1);?>
           </td>
           <td  width="150px" >
-            <?php db_input('k80_codpla', 10, $Ik80_codpla, true, 'text', 1,
+            <?db_input('k80_codpla', 10, $Ik80_codpla, true, 'text', 1,
                        " onchange='js_pesquisaPlanilha(false);'")?>
           </td>
           <td width="100px" nowrap title="<?php echo $Tk80_data;?>">
             <b>Data de Criação:</b>
           </td>
           <td>
-            <?php  db_input('k80_data', 10, $Ik80_data, true, 'text', 3);?>
+            <? db_input('k80_data', 10, $Ik80_data, true, 'text', 3);?>
           </td>
         </tr>
 
@@ -113,7 +113,7 @@ if($iDbOpcao == 1) {
           </td>
 
           <td colspan="3">
-            <?php  db_input('k144_numeroprocesso', 10, null, true, 'text', $iDbOpcao, null,null,null,null,15);?>
+            <? db_input('k144_numeroprocesso', 10, null, true, 'text', $iDbOpcao, null,null,null,null,15);?>
           </td>
         </tr>
 
@@ -132,7 +132,7 @@ if($iDbOpcao == 1) {
     </p>
   </form>
 </center>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -35,7 +35,7 @@ $cltiposanguineo = new cl_tiposanguineo;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tiposanguineo.php")==true){
@@ -66,12 +66,12 @@ $cltiposanguineo = new cl_tiposanguineo;
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 

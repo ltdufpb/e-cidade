@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clface->rotulo->label("j37_quadra");
               <?=$Lj37_face?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j37_face",4,$Ij37_face,true,"text",4,"","chave_j37_face");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clface->rotulo->label("j37_quadra");
               <?=$Lj37_setor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j37_setor",4,$Ij37_setor,true,"text",4,"","chave_j37_setor");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clface->rotulo->label("j37_quadra");
               <?=$Lj37_quadra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j37_quadra",4,$Ij37_quadra,true,"text",4,"","chave_j37_quadra");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clface->rotulo->label("j37_quadra");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $wsetor="";
       $wquadra="";
       $xy="";
@@ -138,14 +138,14 @@ $clface->rotulo->label("j37_quadra");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j37_face.focus();
 document.form2.chave_j37_face.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

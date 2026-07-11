@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -88,7 +88,7 @@ if(isset($incluir)){
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmcfautent.php"));
 	?>
     </center>
@@ -100,7 +100,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","k11_ident1",true,1,"k11_ident1",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
   if($clcfautent->erro_status=="0"){
     $clcfautent->erro(true,false);

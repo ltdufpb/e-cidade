@@ -75,7 +75,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 </body>
 </html>
-<?php 
+<?
 if($clreceita->erro_status=="0"){
   $clreceita->erro(true,false);
   $db_botao=true;

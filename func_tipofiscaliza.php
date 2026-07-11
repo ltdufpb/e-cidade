@@ -57,7 +57,7 @@ $cltipofiscaliza->rotulo->label("y27_descr");
               <?=$Ly27_codtipo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("y27_codtipo",8,$Iy27_codtipo,true,"text",4,"","chave_y27_codtipo");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $cltipofiscaliza->rotulo->label("y27_descr");
               <?=$Ly27_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("y27_descr",20,$Iy27_descr,true,"text",4,"","chave_y27_descr");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $cltipofiscaliza->rotulo->label("y27_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipofiscaliza.php")==true){
@@ -122,12 +122,12 @@ $cltipofiscaliza->rotulo->label("y27_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

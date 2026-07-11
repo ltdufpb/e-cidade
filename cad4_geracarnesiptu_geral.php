@@ -142,12 +142,12 @@ $capa = $oGet->imprimecapa;
     </script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
   </head>
-  <?php 
+  <?
   db_criatermometro('termometro', 'Concluido...', 'blue', 1);
   db_atutermometro(1, 100, 'termometro');
   ?>
   </html>
-<?php 
+<?
 if ($debugar == true) {
     echo "Parametros recebido : <br>
     qtd ..............= $quantidade <br>

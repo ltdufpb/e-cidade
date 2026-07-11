@@ -81,13 +81,13 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	      <table>
 	        <tr>
 	          <td><b>Lote:</b></td>
-	          <td><?php  db_input('cod_lote', 10, '', true, 'text', 3, '') ?></td>
+	          <td><? db_input('cod_lote', 10, '', true, 'text', 3, '') ?></td>
 	          <td><b>Quantidade:</b></td>
-	          <td><?php  db_input('quant_lote', 10, '', true, 'text', 1, "onkeypress=\"return js_mask(event,'0-9');\"") ?></td>
+	          <td><? db_input('quant_lote', 10, '', true, 'text', 1, "onkeypress=\"return js_mask(event,'0-9');\"") ?></td>
 	        </tr>
 	        <tr>
 	          <td><b>Descrição:</b></td>
-	          <td colspan="3"><?php  db_input('descr_lote',
+	          <td colspan="3"><? db_input('descr_lote',
                                          80,
                                         '',
                                         true,
@@ -122,7 +122,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                     <?=$Lt52_bem?>
                   </td>
                   <td>
-                    <?php 
+                    <?
                       db_input('t52_bem',10,$It52_bem,true,"text",3,"");
                     ?>
                   </td>
@@ -132,7 +132,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                     <?=$Lt41_placa?>
                   </td>
                   <td>
-                    <?php 
+                    <?
                       db_input('sPlaca', 10, "text", true, "text", 1, "onblue='js_ValidaMaiusculo(this,'t',event);'",
                               "", "", "text-transform: uppercase;" );
                       db_input('t41_placa', 10, "", true, "text", 1, "onkeypress=\"return js_mask(event, '0-9')\"", "", "", "", 10);
@@ -143,7 +143,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                 <tr >
                   <td title="<?=$Tt52_dtaqu?>"><?=$Lt52_dtaqu?></td>
                   <td colspan="6">
-                    <?php 
+                    <?
                       db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'text',$db_opcao,"");
                     ?>
                   </td>
@@ -152,7 +152,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                 <tr >
                   <td title="<?=$Tt52_dtinclusao?>"><?=$Lt52_dtinclusao?></td>
                   <td colspan="6">
-                    <?php 
+                    <?
                       $data = date('d/m/Y', db_getsession('DB_datausu'));
                       echo "<input type='text' id='t52_dtinclusao' name='t52_dtinclusao' value='{$data}' size='10' style='background-color: #DEB887' readonly />";
                     ?>
@@ -161,7 +161,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
                 <tr>
                   <td title="<?=$Tt52_descr?>"><?=$Lt52_descr?></td>
                   <td colspan="6">
-                    <?php 
+                    <?
                       db_input('t52_descr',81,$It52_descr,true,'text',$db_opcao);
                     ?>
                   </td>
@@ -171,12 +171,12 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
           </tr>
 	        <tr>
 	          <td nowrap="nowrap" title="<?=@$Tt64_class?>">
-	            <?php 
+	            <?
 	              db_ancora(@$Lt64_class,"js_pesquisaClasse(true);",(($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao));
 	            ?>
 	          </td>
 	          <td colspan="6">
-	            <?php 
+	            <?
 	              db_input('t64_codcla',10,"",true,'hidden',$db_opcao);
 	              db_input('t64_class',10,$It64_class,true,'text',(($db_opcao == 2 && $lPossuiIntegracaoPatrimonial) ? 3 : $db_opcao),"onchange='js_pesquisaClasse(false);'");
 	              db_input('t64_descr',85,$It64_descr,true,'text',3,'');
@@ -185,12 +185,12 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        </tr>
 	        <tr>
 	          <td nowrap="nowrap" id='td-fornecedor' title="<?=@$Tt52_numcgm?>">
-	            <?php 
+	            <?
 	              db_ancora(@$Lt52_numcgm,"js_pesquisaFornecedor(true);",$db_opcao);
 	            ?>
 	          </td>
 	          <td colspan="6">
-	            <?php 
+	            <?
 	              db_input('t52_numcgm', 10, $It52_numcgm, true, 'text', $db_opcao, "onchange='js_pesquisaFornecedor(false);'");
 	              db_input('z01_nome', 85, $Iz01_nome, true, 'text', 3, '');
 	             ?>
@@ -198,12 +198,12 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        </tr>
 	        <tr>
 	          <td nowrap="nowrap" title="<?=@$Tt45_sequencial?>">
-	            <?php 
+	            <?
 	              db_ancora(@$Lt45_descricao,"js_pesquisaTipoAquisicao(true);",$db_opcao);
 	            ?>
 	          </td>
 	          <td colspan="6">
-	            <?php 
+	            <?
 	              db_input('t45_sequencial', 10, $It45_sequencial, true, 'text', $db_opcao,
 	                       "onchange='js_pesquisaTipoAquisicao(false);'");
 	              db_input('t45_descricao', 85, $It45_descricao, true, 'text', 3, '');
@@ -213,7 +213,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        <tr id='orgao' style="display: none">
 	          <td><b>Orgão:</b></td>
 	          <td colspan="5">
-	            <?php 
+	            <?
 	              db_input('o40_descr', 85, "", true, 'text', 3);
 	            ?>
 	          </td>
@@ -221,19 +221,19 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        <tr id='unidade' style="display: none">
 	          <td><b>Unidade:</b></td>
 	          <td colspan="5">
-	            <?php 
+	            <?
 	              db_input('o41_descr', 85, "", true, 'text', 3);
 	            ?>
 	          </td>
 	        </tr>
 	        <tr>
 	          <td nowrap="nowrap" title="<?=@$Tt52_depart?>">
-	            <?php 
+	            <?
 	              db_ancora(@$Lt52_depart, "js_pesquisaDepartamento(true);", $db_opcao);
 	            ?>
 	          </td>
 	          <td colspan="3">
-	            <?php 
+	            <?
 	              db_input('t52_depart', 10, $It52_depart, true, 'text', $db_opcao, "onchange='js_pesquisaDepartamento(false);'");
 	              db_input('descrdepto', 85, $Idescrdepto, true, 'text', 3, '');
 	             ?>
@@ -242,7 +242,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	            <b>Divisão</b>
 	          </td>
 	          <td id="c-divisao" style="display: none;">
-	            <?php 
+	            <?
 	              $x = array("0" => "Selecione");
 	              db_select('divisao',$x,true,$db_opcao,"");
 	            ?>
@@ -250,12 +250,12 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        </tr>
 	        <tr>
 	          <td nowrap="nowrap" title="Convênio">
-	            <?php 
+	            <?
 	              db_ancora("<b>Convênio</b>","js_pesquisaConvenio(true);",$db_opcao);
 	            ?>
 	          </td>
 	          <td nowrap="nowrap" colspan="6">
-	            <?php 
+	            <?
 	              db_input('t04_sequencial', 10, $It04_sequencial, true, 'text', $db_opcao, "onchange='js_pesquisaConvenio(false);'");
 	              db_input('z01_nome_convenio', 85, '', true, 'text', 3, '');
 	             ?>
@@ -263,12 +263,12 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        </tr>
 	        <tr>
 	          <td nowrap="nowrap" title="<?=@$Tt56_situac?>">
-	            <?php 
+	            <?
 	              db_ancora(@$Lt56_situac,"js_pesquisaSituacaoBem(true);",1);
 	            ?>
 	          </td>
 	          <td nowrap="nowrap" colspan="6">
-	            <?php 
+	            <?
 	              db_input('t56_situac',10,$It56_situac,true,'text',1," onchange='js_pesquisaSituacaoBem(false);'");
 	              db_input('t70_descr',85,$It70_descr,true,'text',3,'');
 	              db_input("tipo_inclui",40,"0",true,"hidden",3,"");
@@ -283,7 +283,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        <tr>
 	          <td><b>Valor de Aquisição:</b></td>
 	          <td>
-	            <?php 
+	            <?
 	              db_input('vlAquisicao',10,$It64_descr,true,'text',$db_opcao,
 	                       'onchange = "js_calculaValorTotal();"');
 	            ?>
@@ -292,7 +292,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	            <b><?php echo $valor = $db_opcao==2 ? $valor = 'Valor Residual(%):' : 'Valor Residual (%):' ?></b>
 	          </td>
 	          <td style="text-align: left ;">
-	            <?php 
+	            <?
                   db_input('perc_residual', 5, $It64_descr, true,'text',1, '', '', '', "text-align: right");
 	              db_input('vlResidual', 10,
 	                       $It64_descr,
@@ -306,7 +306,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	            <b>Valor Depreciável:</b>
 	          </td>
 	          <td>
-	            <?php 
+	            <?
 	              db_input('vlTotalDepreciavel',10,$It64_descr,true,'text',3,'');
 	            ?>
 	          </td>
@@ -315,20 +315,20 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
             <td><b>Valor Atual:</b>
             </td>
             <td>
-    	        <?php 
+    	        <?
     	          db_input('vlTotal',10,$It64_descr,true,'text',3,'');
     	        ?>
             </td>
           </tr>
 	        <tr>
 	          <td id="tdLookupTipoDepreciacao" nowrap="nowrap" title=" alterar  <?=@$Tt64_class?>">
-	            <b><?php 
+	            <b><?
 	              db_ancora("Tipo Depreciação","js_pesquisaTipoDepreciacao(true);", $db_opcao, "",
                       "linkLookupTipoDepreciacao");
 	            ?></b>
 	          </td>
 	          <td nowrap="nowrap" colspan="3">
-	            <?php 
+	            <?
 	              db_input('cod_depreciacao',10,$It64_class,true,'text',$db_opcao,"onchange='js_pesquisaTipoDepreciacao(false);'");
 	              db_input('descr',40,$It64_descr,true,'text',3,'');
 	             ?>
@@ -337,7 +337,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	            <b>Vida Util:</b>
 	          </td>
 	          <td title = "Vida util do bem em anos.">
-	            <?php 
+	            <?
                 db_input('vidaUtil',10,$It44_vidautil,true,'text',$db_opcao,'');
 	            ?>
 	          </td>
@@ -350,7 +350,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        <tr>
 	          <td><b>Medida:</b></td>
 	          <td colspan="5">
-	            <?php 
+	            <?
 	              $rsBensMedida = $oDaoBensMedida->sql_record($oDaoBensMedida->sql_query());
 	              db_selectrecord('t67_sequencial',$rsBensMedida,'true',$db_opcao);
 	            ?>
@@ -359,7 +359,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        <tr>
 	          <td style="width: "><b>Modelo:</b></td>
 	          <td colspan="5">
-	            <?php 
+	            <?
 	              $rsBensModelo = $oDaoBensModelo->sql_record($oDaoBensModelo->sql_query());
 	              db_selectrecord('t66_sequencial',$rsBensModelo,'true',$db_opcao, "");
 	            ?>
@@ -368,7 +368,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        <tr>
 	          <td><b>Marca:</b></td>
 	          <td colspan="5">
-	          <?php 
+	          <?
 	            $rsBensMarca = $oDaoBensMarca->sql_record($oDaoBensMarca->sql_query());
 	            db_selectrecord('t65_sequencial',$rsBensMarca,'true',$db_opcao);
 	          ?>
@@ -380,14 +380,14 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	      <legend class='bold' onclick="js_mostraToogleDadosImovel();">Dados do imóvel</legend>
 	      <table style="width: 100%;">
 	        <tr>
-	          <td><b><?php  db_ancora(@$Lt54_idbql,"js_pesquisaCodigoLote(true);",$db_opcao); ?></b></td>
-	          <td><?php  db_input('t54_itbql',10,'',true,'text',$db_opcao,"") ?></td>
+	          <td><b><? db_ancora(@$Lt54_idbql,"js_pesquisaCodigoLote(true);",$db_opcao); ?></b></td>
+	          <td><? db_input('t54_itbql',10,'',true,'text',$db_opcao,"") ?></td>
 	        </tr>
 	        <tr>
 	          <td colspan="2">
 	           <fieldset>
 	             <legend><b>Observações:</b></legend>
-	             <?php  db_textarea('observacoesimovel', 5, 85, '', true, 'text', 2) ?>
+	             <? db_textarea('observacoesimovel', 5, 85, '', true, 'text', 2) ?>
 	           </fieldset>
 	          </td>
 	        </tr>
@@ -398,7 +398,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	      <table>
 	        <tr>
 	          <td><b>Nota Fiscal:</b></td>
-	          <td><?php  db_input('cod_notafiscal', 40, $It53_ntfisc, 'text', $db_opcao, '') ?></td>
+	          <td><? db_input('cod_notafiscal', 40, $It53_ntfisc, 'text', $db_opcao, '') ?></td>
 	        </tr>
 	        <tr>
 	          <td><b>Empenho do Sistema</b></td>
@@ -411,31 +411,31 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	        </tr>
 	        <tr>
 	          <td><b>
-	            <span id="procAdm"><?php  db_ancora(@$Le60_numemp,"js_pesquisaEmpenho(true);",$db_opcao) ?></span>
+	            <span id="procAdm"><? db_ancora(@$Le60_numemp,"js_pesquisaEmpenho(true);",$db_opcao) ?></span>
 	            <span id="procAdm1" style="display:none;"><?php echo @$Le60_numemp?>:</span>
 	          </b></td>
 	          <td>
-	            <?php 
+	            <?
                 db_input('t53_empen', 10, $It53_empen, true, 'text', $db_opcao, " onchange='js_pesquisaEmpenho(false);'");
               ?>
               <span id="campoDescricao">
-                <?php db_input('z01_nome_empenho',30,$Iz01_nome,true,'text',3,""); ?>
+                <?db_input('z01_nome_empenho',30,$Iz01_nome,true,'text',3,""); ?>
               </span>
 	          </td>
 	        </tr>
 	        <tr>
 	          <td><b>Ordem de compra:</b></td>
-	          <td><?php  db_input('cod_ordemdecompra', 10, '', true, 'text', $db_opcao, "") ?></td>
+	          <td><? db_input('cod_ordemdecompra', 10, '', true, 'text', $db_opcao, "") ?></td>
 	        </tr>
 	        <tr>
 	          <td><b>Garantia:</b></td>
-	          <td><?php  db_inputdata('garantia', '', '', '', true, 'text', $db_opcao, ""); ?></td>
+	          <td><? db_inputdata('garantia', '', '', '', true, 'text', $db_opcao, ""); ?></td>
 	        </tr>
 	      </table>
 	    </fieldset>
 	    <fieldset id='observacoes'>
         <legend class='bold'>Observações</legend>
-        <?php 
+        <?
           db_textarea('obser', 5, 98, "", true, "text", 2);
         ?>
       </fieldset>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clorcorgao->rotulo->label("o40_descr");
               <?=$Lo40_orgao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php  db_input("o40_orgao",2,$Io40_orgao,true,"text",4,"","chave_o40_orgao"); ?>
+              <? db_input("o40_orgao",2,$Io40_orgao,true,"text",4,"","chave_o40_orgao"); ?>
             </td>
           </tr>
           <tr> 
@@ -64,7 +64,7 @@ $clorcorgao->rotulo->label("o40_descr");
               <?=$Lo40_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php  db_input("o40_descr",50,$Io40_descr,true,"text",4,"","chave_o40_descr"); ?>
+              <? db_input("o40_descr",50,$Io40_descr,true,"text",4,"","chave_o40_descr"); ?>
             </td>
           </tr>
           <tr> 
@@ -80,7 +80,7 @@ $clorcorgao->rotulo->label("o40_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
      $campos = " distinct orcorgao.o40_orgao,orcorgao.o40_codtri,orcorgao.o40_descr,orcorgao.o40_instit,orcorgao.o40_anousu as db_o40_anousu";
 
       if(!isset($pesquisa_chave)){
@@ -120,12 +120,12 @@ $clorcorgao->rotulo->label("o40_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
               <?=$Ld41_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("d41_codigo",10,$Id41_codigo,true,"text",4,"","chave_d41_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
               <?=$Ld41_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("d41_matric",8,$Id41_matric,true,"text",4,"","chave_d41_matric");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
               <?=$Ld41_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("d41_matric",8,$Id41_matric,true,"text",4,"","chave_d41_matric");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_projmelhoriasmatric.php")==true){
@@ -130,12 +130,12 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clrotulo = new rotulocampo;
     <b>Disciplina:</b> <?=$nomedisciplina?>
    </td>
   </tr>
-  <?php 
+  <?
   $sql = "select * from turmas
            inner join escolas    on ed02_i_codigo = ed05_i_escola
            inner join matriculas on ed09_i_escola = ed02_i_codigo
@@ -58,7 +58,7 @@ $clrotulo = new rotulocampo;
     parent.document.formaba.a2.disabled=true;
     parent.mo_camada('a1');
    </script>
-   <?php 
+   <?
    exit;
   }
    $sql = "select * from matriculas
@@ -73,22 +73,22 @@ $clrotulo = new rotulocampo;
   <tr bgcolor="#F9F900">
    <td align="center"><b>Matrícula</b></td>
    <td align="center" width="50%"><b>Aluno</b></td>
-   <?php for($x=1;$x<=15;$x++){?>
+   <?for($x=1;$x<=15;$x++){?>
    <td width="5%" align="center"><?=$x?></td>
-   <?php }?>
+   <?}?>
   </tr>
-  <?php 
+  <?
   for($x=0;$x < $clmatriculas->numrows; $x++){
   db_fieldsmemory($result,$x);
   ?>
   <tr>
    <td align="center"><?=str_pad($ed09_i_codigo,7,0,str_pad_left)?></td>
    <td>&nbsp;<?=$z01_nome?></td>
-   <?php for($x=1;$x<=15;$x++){?>
+   <?for($x=1;$x<=15;$x++){?>
    <td width="5%" align="center"><input type="checkbox" name="presente" value="<?=$ed09_i_codigo?>"></td>
-   <?php }?>
+   <?}?>
   </tr>
-  <?php 
+  <?
   }
   ?>
   </table><br>

@@ -52,7 +52,7 @@ $clcaractercaracter->rotulo->label("j138_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj138_sequencial?></label></td>
-          <td><?php  db_input("j138_sequencial",10,$Ij138_sequencial,true,"text",4,"","chave_j138_sequencial"); ?></td>
+          <td><? db_input("j138_sequencial",10,$Ij138_sequencial,true,"text",4,"","chave_j138_sequencial"); ?></td>
         </tr>
       </table>
     </fieldset>

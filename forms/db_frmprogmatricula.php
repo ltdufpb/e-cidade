@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,34 +43,34 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <?=@$Led112_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed112_i_codigo',10,$Ied112_i_codigo,true,'text',3,"")?>
+   <?db_input('ed112_i_codigo',10,$Ied112_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted112_i_rhpessoal?>">
-   <?php db_ancora(@$Led112_i_rhpessoal,"js_pesquisaed112_i_rhpessoal(true);",$db_opcao1);?>
+   <?db_ancora(@$Led112_i_rhpessoal,"js_pesquisaed112_i_rhpessoal(true);",$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed112_i_rhpessoal',10,$Ied112_i_rhpessoal,true,'text',3," onchange='js_pesquisaed112_i_rhpessoal(false);'")?>
-   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?db_input('ed112_i_rhpessoal',10,$Ied112_i_rhpessoal,true,'text',3," onchange='js_pesquisaed112_i_rhpessoal(false);'")?>
+   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted112_i_progclasse?>">
-   <?php db_ancora(@$Led112_i_progclasse,"js_pesquisaed112_i_progclasse(true);",$db_opcao1);?>
+   <?db_ancora(@$Led112_i_progclasse,"js_pesquisaed112_i_progclasse(true);",$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed112_i_progclasse',10,$Ied112_i_progclasse,true,'text',$db_opcao1," onchange='js_pesquisaed112_i_progclasse(false);'")?>
-   <?php db_input('ed107_c_descr',20,@$Ied107_c_descr,true,'text',3,'')?>
+   <?db_input('ed112_i_progclasse',10,$Ied112_i_progclasse,true,'text',$db_opcao1," onchange='js_pesquisaed112_i_progclasse(false);'")?>
+   <?db_input('ed107_c_descr',20,@$Ied107_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted112_i_nivel?>">
-   <?php db_ancora(@$Led112_i_nivel,"js_pesquisaed112_i_nivel(true);",$db_opcao);?>
+   <?db_ancora(@$Led112_i_nivel,"js_pesquisaed112_i_nivel(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed112_i_nivel',10,$Ied112_i_nivel,true,'text',$db_opcao," onchange='js_pesquisaed112_i_nivel(false);'")?>
-   <?php db_input('ed124_c_descr',20,@$Ied124_c_descr,true,'text',3,'')?>
+   <?db_input('ed112_i_nivel',10,$Ied112_i_nivel,true,'text',$db_opcao," onchange='js_pesquisaed112_i_nivel(false);'")?>
+   <?db_input('ed124_c_descr',20,@$Ied124_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -78,7 +78,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <?=@$Led112_c_classeesp?>
   </td>
   <td>
-   <?php 
+   <?
    $x = [''=>'','N'=>'NÃO','S'=>'SIM'];
    db_select('ed112_c_classeesp',$x,true,$db_opcao," style='width:80px;height:15px;font-size:10px;padding:0px;'");
    ?>
@@ -89,7 +89,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <?=@$Led112_c_dedicacao?>
   </td>
   <td>
-   <?php 
+   <?
    $x = [''=>'','N'=>'NÃO','S'=>'SIM'];
    db_select('ed112_c_dedicacao',$x,true,$db_opcao," style='width:80px;height:15px;font-size:10px;padding:0px;'");
    ?>
@@ -100,7 +100,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <b>Difícil Acesso:</b>
   </td>
   <td>
-   <?php 
+   <?
    if($db_opcao!=1 && isset($ed112_i_rhpessoal)){
     $sql1 = "SELECT ed18_i_codigo,ed18_c_nome,ed125_c_descr
              FROM rechumanoescola
@@ -133,7 +133,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <?=@$Led112_d_database?>
   </td>
   <td>
-   <?php db_inputdata('ed112_d_database',@$ed112_d_database_dia,@$ed112_d_database_mes,@$ed112_d_database_ano,true,'text',3,"")?>
+   <?db_inputdata('ed112_d_database',@$ed112_d_database_dia,@$ed112_d_database_mes,@$ed112_d_database_ano,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -141,7 +141,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <?=@$Led112_d_datainicio?>
   </td>
   <td>
-   <?php db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',$db_opcao,"")?>
+   <?db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -149,7 +149,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <?=@$Led112_d_datafinal?>
   </td>
   <td>
-   <?php db_inputdata('ed112_d_datafinal',@$ed112_d_datafinal_dia,@$ed112_d_datafinal_mes,@$ed112_d_datafinal_ano,true,'text',3,"")?>
+   <?db_inputdata('ed112_d_datafinal',@$ed112_d_datafinal_dia,@$ed112_d_datafinal_mes,@$ed112_d_datafinal_ano,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -157,13 +157,13 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <?=$Led112_c_situacao?>
   </td>
   <td nowrap>
-   <?php 
+   <?
    $x = [''=>'','A'=>'ABERTA','E'=>'ENCERRADA','I'=>'INTERROMPIDA'];
    db_select('ed112_c_situacao',$x,true,3,"");
    ?>
   </td>
  </tr>
- <?php 
+ <?
  if(isset($ed112_c_situacao) && $ed112_c_situacao=="I" && $db_opcao!=1){
   $result = $clproginterrompe->sql_record($clproginterrompe->sql_query("","*",""," ed123_i_progmatricula = $chavepesquisa"));
   db_fieldsmemory($result,0);
@@ -176,7 +176,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    <td><b>Motivo:</b></td>
    <td><?=nl2br((string) $ed123_t_motivo)?></td>
   </tr>
-  <?php 
+  <?
  }elseif(isset($ed112_c_situacao) && $ed112_c_situacao=="A" && $db_opcao!=1){
   $total_dias_prog = $ed110_i_intervalo*365;
   $ed112_d_dataprevisao = strftime("%Y-%m-%d",mktime(0,0,0,$ed112_d_datainicio_mes,$ed112_d_datainicio_dia+$total_dias_prog,$ed112_d_datainicio_ano));
@@ -208,7 +208,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
   <tr>
    <td><b>Pontos na Classe <?=$ed107_c_descr?>:</b></td>
    <td>
-    <?php 
+    <?
     $total_antiguidade = 0;
     $total_convocacao = 0;
     $total_avaladmin = 0;
@@ -295,17 +295,17 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
    </td>
   </tr>
   <tr>
-   <?php $cor = str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0?"green":"red";?>
+   <?$cor = str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0?"green":"red";?>
    <td><b>Próxima Progressão:</b></td>
    <td><font color="<?=$cor?>"><b><?=db_formatar($ed112_d_dataprevisao,'d')?></b></font></td>
   </tr>
   <tr>
    <td colspan="2">
-    <?php if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral  && $ed112_c_situacao=="A"){?>
+    <?if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral  && $ed112_c_situacao=="A"){?>
     <form name="form1" method="post" action="">
     <fieldset style="width:80%;">
      <table align="center" border="0" cellspacing="0" cellpadding="2">
-        <?php 
+        <?
         $result = $clprogclasse->sql_record($clprogclasse->sql_query("","max(ed107_i_sequencia) as ultimaclasse","",""));
         db_fieldsmemory($result,0);
         if($ultimaclasse==$ed107_i_sequencia){
@@ -320,7 +320,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
            <input type="button" name="confirmar" value="Encerrar Progressão" onclick="js_encerrar(<?=$ed112_i_codigo?>)">
           </td>
          </tr>
-         <?php 
+         <?
         }else{
          $result = $clprogclasse->sql_record($clprogclasse->sql_query("","ed107_i_codigo as prxcod, ed107_c_descr as prxclasse",""," ed107_i_sequencia = ".($ed107_i_sequencia+1).""));
          db_fieldsmemory($result,0);
@@ -335,25 +335,25 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
            <input type="button" name="confirmar" value="Confirmar Progressão" onclick="js_progredir(<?=$ed112_i_codigo?>)">
           </td>
          </tr>
-         <?php 
+         <?
         }
         ?>
      </table>
     </fieldset>
     </form>
     </center>
-   <?php }?>
+   <?}?>
   </td>
  </tr>
- <?php 
+ <?
  }
  ?>
  <tr>
   <td colspan="2">
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-   <?php if(isset($ed112_i_codigo) && $ed112_i_codigo!="" && $db_opcao!=1){?>
+   <?if(isset($ed112_i_codigo) && $ed112_i_codigo!="" && $db_opcao!=1){?>
     <input type="button" name="confirmar" value="Planilha" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>'">
-   <?php }?>
+   <?}?>
    <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
   </td>
  </tr>
@@ -444,7 +444,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_progmatricula.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

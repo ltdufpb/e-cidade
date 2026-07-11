@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrubteste->rotulo->label("descrrub");
               <?=$Lrubant?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rubant",3,$Irubant,true,"text",4,"","chave_rubant");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clrubteste->rotulo->label("descrrub");
               <?=$Ldescrrub?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("descrrub",40,$Idescrrub,true,"text",4,"","chave_descrrub");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clrubteste->rotulo->label("descrrub");
               <?=$Ldescrrub?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("descrrub",40,$Idescrrub,true,"text",4,"","chave_descrrub");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clrubteste->rotulo->label("descrrub");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rubteste.php")==true){
@@ -130,12 +130,12 @@ $clrubteste->rotulo->label("descrrub");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

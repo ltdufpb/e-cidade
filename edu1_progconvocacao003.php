@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,23 +71,23 @@ if(isset($excluir)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Exclusão de Participações em Convocações</b></legend>
-    <?php include(modification("forms/db_frmprogconvocacao2.php"));?>
+    <?include(modification("forms/db_frmprogconvocacao2.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed115_i_progmatricula",true,1,"ed115_i_progmatricula",true);
 </script>
-<?php 
+<?
 if(isset($excluir)){
  if($clprogconvocacao->erro_status=="0"){
   $clprogconvocacao->erro(true,false);

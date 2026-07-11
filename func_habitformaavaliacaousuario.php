@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clhabitformaavaliacaousuario->rotulo->label("ht08_habitformaavaliacao");
               <?=$Lht08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ht08_sequencial",10,$Iht08_sequencial,true,"text",4,"","chave_ht08_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clhabitformaavaliacaousuario->rotulo->label("ht08_habitformaavaliacao");
               <?=$Lht08_habitformaavaliacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ht08_habitformaavaliacao",10,$Iht08_habitformaavaliacao,true,"text",4,"","chave_ht08_habitformaavaliacao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clhabitformaavaliacaousuario->rotulo->label("ht08_habitformaavaliacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habitformaavaliacaousuario.php")==true){
@@ -123,12 +123,12 @@ $clhabitformaavaliacaousuario->rotulo->label("ht08_habitformaavaliacao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clrotulo->label("o56_elemento");
               <?=$Lpc07_codmater?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php  db_input("pc07_codmater",6,$Ipc07_codmater,true,"text",4,"","chave_pc07_codmater"); ?>
+              <? db_input("pc07_codmater",6,$Ipc07_codmater,true,"text",4,"","chave_pc07_codmater"); ?>
             </td>
           </tr>
           <tr> 
@@ -67,7 +67,7 @@ $clrotulo->label("o56_elemento");
               <?=$Lo56_elemento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php   db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");	 ?>
+              <?  db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");	 ?>
             </td>
           </tr>
           <tr> 
@@ -75,13 +75,13 @@ $clrotulo->label("o56_elemento");
               <?=$Lpc01_descrmater?>
             </td>
             <td width="96%" align="left" nowrap> 
-             <?php  db_input("pc01_descrmater",40,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater");  ?>
+             <? db_input("pc01_descrmater",40,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater");  ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="Selecionar todos, ativos ou inativos"><b>Seleção por:</b></td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
               if(!isset($opcao)){
 	            $opcao = "f";
               }
@@ -106,7 +106,7 @@ $clrotulo->label("o56_elemento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where_ativo = "";
       if(isset($chave_pc07_codele)){
         $where_ativo .= " and pc07_codele=$chave_pc07_codele ";
@@ -167,10 +167,10 @@ $clrotulo->label("o56_elemento");
   <script>
       document.form2.chave_pc01_descrmater.focus();
   </script>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

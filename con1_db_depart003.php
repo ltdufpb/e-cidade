@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -93,7 +93,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmdb_depart.php"));
 	?>
     </center>
@@ -102,7 +102,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </table>
 </body>
 </html>
-<?php 
+<?
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
   if($cldb_depart->erro_status=="0"){
     $cldb_depart->erro(true,false);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -86,7 +86,7 @@ if(pg_numrows($result)==0){
     <td width="10%" align="center"><?=$Lo60_perc?></td>
     <td width="20%"><strong>Valor</strong></td>
   </tr>
-  <?php 
+  <?
   global $vlrperc;
   $vlrtot = $valor;
   $vlrsoma = 0;

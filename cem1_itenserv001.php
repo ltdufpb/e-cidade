@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -120,7 +120,7 @@ if ( isset($incluir) ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -139,21 +139,21 @@ if ( isset($incluir) ) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-     <?php 
+     <?
        include(modification("forms/db_frmitenserv.php"));
      ?>
     </center>
      </td>
   </tr>
 </table>
-<?php 
+<?
 if(!isset($tp)){
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }
 ?>
 </body>
 </html>
-<?php 
+<?
 if ( isset($incluir) ) {
 
   if ( $clitenserv->erro_status == "0" ) {

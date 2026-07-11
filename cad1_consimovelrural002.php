@@ -140,7 +140,7 @@ if ($lUtilizaLoc) {
 <fieldset style="height:230px; width:49.3%; float:left;">
   <legend>
     <b>Dados Cadastrais do Imóvel (<?= @$oDadosMatricula->j01_tipoimp ?>) </b>
-      <?php 
+      <?
       if (!empty($oDadosMatricula->j01_baixa)) {
           echo "<span class='aviso'>
                 <font color='red'><b>Matrícula Baixada</b></font>
@@ -163,13 +163,13 @@ if ($lUtilizaLoc) {
       </td>
     </tr>
     <tr>
-      <td title="<?= $Tz01_nome ?>"><?php  db_ancora($Lz01_nome,
+      <td title="<?= $Tz01_nome ?>"><? db_ancora($Lz01_nome,
             "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_cgmpri')", 2); ?>
       </td>
       <td title="<?= $Tz01_nome ?>" nowrap class='valores'><?= $oDadosMatricula->z01_nome ?>
       </td>
       <td></td>
-      <td title="Proprietário"><b><?php  db_ancora('Proprietário',
+      <td title="Proprietário"><b><? db_ancora('Proprietário',
                 "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_numcgm')", 2); ?>
         </b>
       </td>
@@ -188,7 +188,7 @@ if ($lUtilizaLoc) {
     <tr>
       <td title="">
         <strong>
-            <?php 
+            <?
             if ($lImobiliaria) {
                 db_ancora("Imobiliária:", "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_numimob')", 2);
             } else {
@@ -197,7 +197,7 @@ if ($lUtilizaLoc) {
             ?>
         </strong>
       </td>
-      <td title="" nowrap class='valores'><?php 
+      <td title="" nowrap class='valores'><?
           if ($lImobiliaria) {
               echo $imobiliaria;
           } else {
@@ -215,7 +215,7 @@ if ($lUtilizaLoc) {
       <td title="<?= $Tj34_setor ?>"><b>Setor/Quadra/Lote:</b>
       </td>
       <td nowrap class='valores'>
-          <?php 
+          <?
           echo $oDadosMatricula->j34_setor . ' - ' . $oDadosMatricula->j30_descr . '/' . $oDadosMatricula->j34_quadra . '/' . $oDadosMatricula->j34_lote;
           ?>
       </td>
@@ -336,7 +336,7 @@ if ($lUtilizaLoc) {
     </table>
     <input type="hidden" id="exec" name="exec">
     <input type="hidden" id="j01_matric" name="j01_matric" value="<?=$oDadosMatricula->j01_matric?>">
-    <?php  db_input('db59_sequencial',10,0,false,'hidden',3,""); ?>
+    <? db_input('db59_sequencial',10,0,false,'hidden',3,""); ?>
   </form>
 </fieldset>
 

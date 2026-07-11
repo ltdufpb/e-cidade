@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: escola
 //CLASSE DA ENTIDADE criterioavaliacaoturma
 class cl_criterioavaliacaoturma { 

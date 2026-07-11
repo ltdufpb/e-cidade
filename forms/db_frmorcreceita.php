@@ -106,7 +106,7 @@ if ((isset($atualizar) || isset($o50_estrutreceita)) && empty($incluir) && empty
         text-align: center;
     }
 </style>
-<?php 
+<?
 if($db_opcao==1){
     $pg="orc1_orcreceita001.php";
 }else if($db_opcao==2 || $db_opcao==22){
@@ -288,7 +288,7 @@ if($db_opcao==1){
             if ($anousu > 2007){
                 ?>
                 <tr>
-                    <td nowrap title="<?=@$To70_concarpeculiar?>"><?php 
+                    <td nowrap title="<?=@$To70_concarpeculiar?>"><?
                         db_ancora(@$Lo70_concarpeculiar,"js_pesquisao70_concarpeculiar(true);",$db_opcao);
                         ?></td>
                     <td colspan="2">
@@ -521,7 +521,7 @@ if($db_opcao==1){
     }
     function js_preenchepesquisa(chave,chave1){
       db_iframe_orcreceita.hide();
-        <?php 
+        <?
         if($db_opcao!=1){
             echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
         }

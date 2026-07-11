@@ -62,7 +62,7 @@ $db_botao           = true;
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Inclusão de Procedimento de Avaliação</b></legend>
-        <?php include(modification("forms/db_frmprocedimento.php"));?>
+        <?include(modification("forms/db_frmprocedimento.php"));?>
       </fieldset>
      </center>
     </td>

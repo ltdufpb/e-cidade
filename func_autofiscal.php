@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clautofiscal->rotulo->label("y51_codnoti");
               <?=$Ly51_codauto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y51_codauto",10,$Iy51_codauto,true,"text",4,"","chave_y51_codauto");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clautofiscal->rotulo->label("y51_codnoti");
               <?=$Ly51_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y51_codnoti",20,$Iy51_codnoti,true,"text",4,"","chave_y51_codnoti");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clautofiscal->rotulo->label("y51_codnoti");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autofiscal.php")==true){
@@ -119,12 +119,12 @@ $clautofiscal->rotulo->label("y51_codnoti");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

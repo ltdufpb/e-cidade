@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ if(isset($chavepesquisa)) {
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_periodocalendario001.php?ed53_i_calendario=<?=$ed52_i_codigo?>&ed52_c_descr=<?=$ed52_c_descr?>';
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='edu1_feriado001.php?ed54_i_calendario=<?=$ed52_i_codigo?>&ed52_c_descr=<?=$ed52_c_descr?>';
   </script>
-  <?php 
+  <?
   if($clregencia->numrows>0) {
   
    db_msgbox("Calendário não pode ser mais alterado,\\npois já existem turmas encerradas vinculadas a este calendário!");
@@ -105,12 +105,12 @@ if(isset($chavepesquisa)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 
 if($db_opcao==22){
  echo "<script>document.form1.pesquisar.click();</script>";
 }
 if(@$ed52_i_duracaocal!=1){
- ?><script>document.getElementById("periodos").style.visibility = "visible";</script><?php 
+ ?><script>document.getElementById("periodos").style.visibility = "visible";</script><?
 }
 ?>

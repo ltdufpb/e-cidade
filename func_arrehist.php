@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clarrehist->rotulo->label("k00_numpre");
               <?=$Lk00_idhist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k00_idhist",6,$Ik00_idhist,true,"text",4,"","chave_k00_idhist");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clarrehist->rotulo->label("k00_numpre");
               <?=$Lk00_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k00_numpre",8,$Ik00_numpre,true,"text",4,"","chave_k00_numpre");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clarrehist->rotulo->label("k00_numpre");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_arrehist.php")==true){
@@ -119,12 +119,12 @@ $clarrehist->rotulo->label("k00_numpre");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

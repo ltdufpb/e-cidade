@@ -53,7 +53,7 @@ $linhasdepart = pg_num_rows($resultdepart);
 <center>
 <br>
 
-<?php 
+<?
 if($linhasdepart > 0){
   ?>
   <table width='70%' border ="1" class="tab_cinza">
@@ -62,7 +62,7 @@ if($linhasdepart > 0){
     <th width='50%' align= 'center'>Departamento</th>
     <th width='10%' align= 'center' >Instituição </th>
   </tr>
-  <?php 
+  <?
   for($i=0;$i<$linhasdepart;$i++){
     db_fieldsmemory($resultdepart,$i);  
     echo "

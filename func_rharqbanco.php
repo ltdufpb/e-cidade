@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -70,7 +70,7 @@ if( !empty($ativas) ) {
             <?php echo $Lrh34_codarq; ?>
           </td>
           <td> 
-          <?php 
+          <?
           db_input("rh34_codarq",6,$Irh34_codarq,true,"text",4,"","chave_rh34_codarq");
           ?>
           </td>
@@ -80,7 +80,7 @@ if( !empty($ativas) ) {
             Descrição:
           </td>
           <td> 
-          <?php 
+          <?
           db_input("rh34_descr",40,$Irh34_descr,true,"text",4,"","chave_rh34_descr");
           ?>
           </td>
@@ -158,7 +158,7 @@ if( !empty($ativas) ) {
     </div>
   </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
 ?>
 <script>
@@ -178,7 +178,7 @@ if(!isset($pesquisa_chave)){
 
    })();
 </script>
-<?php 
+<?
 }
 ?>
 

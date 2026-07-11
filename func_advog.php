@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cladvog->rotulo->label("v57_oab");
               <?=$Lv57_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v57_numcgm",6,$Iv57_numcgm,true,"text",4,"","chave_v57_numcgm");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cladvog->rotulo->label("v57_oab");
               <?=$Lv57_oab?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v57_oab",20,$Iv57_oab,true,"text",4,"","chave_v57_oab");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cladvog->rotulo->label("v57_oab");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "advog.*,z01_nome";
@@ -115,14 +115,14 @@ $cladvog->rotulo->label("v57_oab");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v57_numcgm.focus();
 document.form2.chave_v57_numcgm.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

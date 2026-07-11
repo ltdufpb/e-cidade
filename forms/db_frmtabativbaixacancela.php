@@ -58,12 +58,12 @@ if (!isset($veiculo)) {
     <table border="0">
       <tr>
         <td title="<?=$Tq07_inscr?>" >
-        <?php 
+        <?
          db_ancora($Lq07_inscr,' js_inscr(true); ',1);
         ?>
         </td>
         <td title="<?=$Tq07_inscr?>" colspan="4">
-        <?php 
+        <?
           db_input('q07_inscr',5,$Iq07_inscr,true,'text',1,"onchange='js_inscr(false)'");
           isset($q07_inscr)?$inscricao=$q07_inscr:"";
           db_input('inscricao',5,$Iq07_inscr,true,'hidden',1);

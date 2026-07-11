@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -78,7 +78,7 @@ function js_verificar(){
 <form name="form1" method="post" action="">
 <center>
 
-<?php 
+<?
 
 $result = $clorcppalei->sql_record($clorcppalei->sql_query_file($o27_codleippa,"o21_anoini,o21_anofim"));
 db_fieldsmemory($result,0);
@@ -88,7 +88,7 @@ db_fieldsmemory($result,0);
     <td nowrap title="<?=@$To27_codleippa?>" colspan='2' align='left'>
        <?=@$Lo27_codleippa?>
 
-<?php 
+<?
 db_input('o27_codleippa',8,0,true,'text',3);
 db_input("o27_proces",8,0,true,'hidden',1);
 $testado ='ok';//variavel criada para testar no programa de entrada...
@@ -96,7 +96,7 @@ db_input("testado",8,0,true,'hidden',1);
 ?>
     </td>
   </tr>
-<?php 
+<?
 for($i=$o21_anoini; $i<= $o21_anofim; $i++){
     
      $x  = "o27_sequen_$i";
@@ -155,7 +155,7 @@ for($i=$o21_anoini; $i<= $o21_anofim; $i++){
 ?>
 <tr>
   <td>
-<?php 
+<?
 db_input("o27_sequen_$i",8,$Io27_sequen,true,'hidden',1);
 ?>
   
@@ -166,7 +166,7 @@ db_input("o27_sequen_$i",8,$Io27_sequen,true,'hidden',1);
        <?=@$Lo27_exercicio?>
     </td>
     <td> 
-<?php 
+<?
 $x = "o27_exercicio_$i";
 if(empty($$x)){
   $$x = $i;
@@ -178,7 +178,7 @@ db_input("o27_exercicio_$i",4,$Io27_exercicio,true,'text',3)
        <?=@$Lo27_valor?>
     </td>
     <td> 
-<?php 
+<?
 db_input("o27_valor_$i",8,$Io27_valor,true,'text',$db_opcao,($i == $o21_anoini?"onchange='js_valor();'":""));
 ?>
     </td>
@@ -186,31 +186,31 @@ db_input("o27_valor_$i",8,$Io27_valor,true,'text',$db_opcao,($i == $o21_anoini?"
        <?=@$Lo27_perc?>
     </td>
     <td> 
-<?php 
+<?
 db_input("o27_perc_$i",8,$Io27_perc,true,'text',$db_opcao,($i == $o21_anoini?"onchange='js_perc();'":"onchange='js_calcula_perc();'"));
 ?>
     </td>
     <td nowrap title="<?=@$To57_fonte?>">
-       <?php 
+       <?
        db_ancora(@$Lo57_fonte,"js_fonte_$i(true);",$db_opcao);
        ?>
     </td>
     <td align='left' width='38%'> 
-    <?php 
+    <?
        $x = "o57_fonte_$i";
     ?>
     <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o57_fonte_<?=$i?>" size="19" maxlength='15'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_fonte_<?=$i?>(false);'>
     
     </td>
   </tr>
-<?php 
+<?
   $xx = "o27_exercicio_$i";
   if (empty($$xx)){
     $$xx = $i;
   }
 ?>
   <tr>
-    <td nowrap title="<?=@$To27_concarpeculiar?>"><?php 
+    <td nowrap title="<?=@$To27_concarpeculiar?>"><?
        $x = "o27_concarpeculiar_".$i;
        $y = "c58_descr_".$i;
 
@@ -223,7 +223,7 @@ db_input("o27_perc_$i",8,$Io27_perc,true,'text',$db_opcao,($i == $o21_anoini?"on
        db_ancora(@$Lo27_concarpeculiar,"js_pesquisao27_concarpeculiar_$i(true,$i);",$tranca);
     ?></td>
     <td nowrap colspan="7">
-    <?php 
+    <?
       db_input($x,10,$Io27_concarpeculiar,true,"text",$tranca,"onChange='js_pesquisao27_concarpeculiar_$i(false,$i);'");
       db_input($y,50,0,true,"text",3);
     ?>
@@ -234,7 +234,7 @@ db_input("o27_perc_$i",8,$Io27_perc,true,'text',$db_opcao,($i == $o21_anoini?"on
 	   <?=$Lo27_obs?>
     </td>
     <td colspan="7" align='left'>
-       <?php 
+       <?
          $x = "o27_obs_$i";
 	 db_textarea($x,1,80,$Io27_obs,true,'text',$db_opcao);
        ?>
@@ -245,7 +245,7 @@ db_input("o27_perc_$i",8,$Io27_perc,true,'text',$db_opcao,($i == $o21_anoini?"on
   </fieldset>
   </td>
 </tr> 
-<?php 
+<?
 }
 ?>
 
@@ -265,16 +265,16 @@ function js_cancelar(){
 }
 function js_calcula_perc(){
   
-  <?php for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){?>
+  <?for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){?>
         valano = new Number("<?=($c-1)?>" );
         valor = new Number(eval("document.form1.o27_valor_"+valano+".value;"));
         perc  = new Number(eval("document.form1.o27_perc_<?=$c?>.value;"));
         valperc = ((valor*perc)/100)+valor;
         eval("document.form1.o27_valor_<?=$c?>.value="+valperc.toFixed(2)+";");
-  <?php }?>  
+  <?}?>  
 }  
 
-<?php 
+<?
 for($i=$o21_anoini; $i<= $o21_anofim; $i++){
   //rotina  para repetir os valores digitado na primeira linha para os campos abaixo
   
@@ -324,7 +324,7 @@ function js_mostrafonte_<?=$i?>(chave,erro){
     document.form1.o57_fonte_<?=$i?>.value = ''; 
     return false;
   }
-  <?php 
+  <?
   if($i == $o21_anoini){
      for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){
         echo "document.form1.o57_fonte_$c.value = document.form1.o57_fonte_$i.value;";
@@ -337,7 +337,7 @@ function js_mostrafonte_<?=$i?>(chave,erro){
 
 function js_mostrafonte1_<?=$i?>(chave1,chave2){
 document.form1.o57_fonte_<?=$i?>.value = chave1;
-  <?php 
+  <?
   if($i == $o21_anoini){
      for($c=$o21_anoini+1; $c<= $o21_anofim; $c++){
         echo "document.form1.o57_fonte_$c.value = chave1;";
@@ -372,7 +372,7 @@ function js_mostraconcarpeculiar1_<?=$i?>(chave1,chave2){
   document.form1.c58_descr_<?=$i?>.value          = chave2;
   db_iframe_concarpeculiar.hide();
 }
-<?php }?>
+<?}?>
 function js_pesquisa(){
   js_OpenJanelaIframe('CurrentWindow.corpo.iframe_orcpparec','db_iframe_orcppalei','func_orcppalei.php?funcao_js=parent.js_preenchepesquisa|o21_codleippa','Pesquisa',true,0);
 }

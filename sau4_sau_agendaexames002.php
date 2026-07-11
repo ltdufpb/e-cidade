@@ -84,7 +84,7 @@ a:active {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
 
-<?php 
+<?
 
 
 db_postmemory($_POST);
@@ -363,7 +363,7 @@ echo "</script>";
 
       </tr>
 
-    <?php 
+    <?
     for ($h = 1; $h <= $iTotalFichas; $h++) {
 
       $id_ficha  = 0;
@@ -440,7 +440,7 @@ echo "</script>";
           <a title='Comprovante de Agendamento' href='#' onclick='js_comprovante(<?=$codigo?>);return false;'>&nbsp;C&nbsp;</a>
         </td>
       </tr>
-      <?php 
+      <?
         if( $intervalo != 0){
         $hora_ini    = cl_agendamentos_ext::somahora($hora_ini,($intervalo+$mi_interva2));
         $mi_interva1 = -1;

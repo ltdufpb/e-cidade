@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $sWhere = "1=1";
               <?=$Lv86_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v86_sequencial",10,$Iv86_sequencial,true,"text",4,"","chave_v86_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $sWhere = "1=1";
               <?=$Lv86_contabancaria?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v86_contabancaria",10,$Iv86_contabancaria,true,"text",4,"","chave_v86_contabancaria");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $sWhere = "1=1";
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_favorecido.php")==true){
@@ -133,12 +133,12 @@ $sWhere = "1=1";
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009 DBSeller Servicos de Informatica
@@ -59,15 +59,15 @@ if ($db_opcao == 1) {
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc60_numcgm?>">
-       <?php 
+       <?
        db_ancora(@$Lpc60_numcgm,"js_pesquisapc60_numcgm(true);",($db_opcao==1?$db_opcao:3));
        ?>
     </td>
     <td>
-      <?php 
+      <?
         db_input('pc60_numcgm',8,$Ipc60_numcgm,true,'text',($db_opcao==1?$db_opcao:3)," onchange='js_pesquisapc60_numcgm(false);'")
       ?>
-       <?php 
+       <?
         db_input('z01_nome', 50, $Iz01_nome, true, 'text', $iOpcaoInputNume, '')
        ?>
     </td>
@@ -77,7 +77,7 @@ if ($db_opcao == 1) {
        <?=@$Lpc60_dtlanc?>
     </td>
     <td>
-      <?php 
+      <?
         db_inputdata('pc60_dtlanc',date("d",db_getsession("DB_datausu")),date("m",db_getsession("DB_datausu")),date("Y",db_getsession("DB_datausu")),true,'text',3,"")
       ?>
     </td>
@@ -87,7 +87,7 @@ if ($db_opcao == 1) {
        <?=@$Lpc60_obs?>
     </td>
     <td>
-<?php 
+<?
 db_textarea('pc60_obs',2,80,$Ipc60_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_textarea('pc60_obs',2,80,$Ipc60_obs,true,'text',$db_opcao,"")
        <?=@$Lpc60_bloqueado?>
     </td>
     <td>
-<?php 
+<?
 $x = array("f"=>"Não","t"=>"Sim");
 db_select('pc60_bloqueado',$x,true,$db_opcao,"");
 ?>
@@ -121,11 +121,11 @@ db_select('pc60_bloqueado',$x,true,$db_opcao,"");
       <strong>Tipo de Empresa:</strong>
     </td>
     <td colspan="3" nowrap="nowrap">
-        <?php  db_selectrecord('z03_tipoempresa', $rsTipoEmpresa, true, $db_opcao, '', '', '', '', '', 1); ?>
+        <? db_selectrecord('z03_tipoempresa', $rsTipoEmpresa, true, $db_opcao, '', '', '', '', '', 1); ?>
         <input name="z03_sequencial" type="hidden" value="<?= $z03_sequencial ?>">
     </td>
   </tr>
-  <?php  endif; ?>
+  <? endif; ?>
 
 </table>
 </fieldset>
@@ -163,7 +163,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcforne.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

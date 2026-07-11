@@ -126,13 +126,13 @@ if ($op == "alterar") {
   function js_mostrapcproc1(chave1,chave2){
     document.form1.pc80_codproc.value = chave1;
     db_iframe_pcproc.hide();
-    <?php 
+    <?
     if($clickaut == true){
       echo "document.form1.enviar.click();";
     }
     ?>
   }
-  <?php 
+  <?
   if($clickaut == true){
     echo "js_pesquisapc80_codproc(false);";
   }else{

@@ -59,27 +59,27 @@ $clrotulo->label('k15_codage');
       <table>
         <tr>
           <td align="rigth" ><strong>Data Inicial :</strong>
-          <?php db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4,'onchange="js_dataini(this);"')?>
+          <?db_inputdata('datai','01','01',db_getsession("DB_anousu"),true,'text',4,'onchange="js_dataini(this);"')?>
           </td>
           <td align="left" ><strong>Data Final :</strong>
-          <?php 
+          <?
            $datausu = date("Y/m/d",db_getsession("DB_datausu"));
            $dataf_ano = substr($datausu,0,4);
            $dataf_mes = substr($datausu,5,2);
            $dataf_dia = substr($datausu,8,2);
 
           ?>
-          <?php db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4,'onchange="js_datafim(this);"')?>
+          <?db_inputdata('dataf',$dataf_dia,$dataf_mes,$dataf_ano,true,'text',4,'onchange="js_datafim(this);"')?>
           </td>
         </tr>
         <tr>   
           <td>
-            <?php  
+            <? 
               db_ancora($Ld63_banco,' js_bancos(true); ',$db_opcao); 
             ?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('d63_banco',5,$Id63_banco,true,'text',1,"onchange='js_bancos(false)'");
               db_input('nome_banco',40,"",true,'text',3);
             ?>
@@ -90,7 +90,7 @@ $clrotulo->label('k15_codage');
           <?=@$Lk15_codage?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('k15_codage',10,$Ik15_codage,true,'text',$db_opcao,"")
             ?>
           </td>

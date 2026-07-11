@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clendereco->rotulo->label("db76_cadenderlocal");
               <?=$Ldb76_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db76_sequencial",10,$Idb76_sequencial,true,"text",4,"","chave_db76_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clendereco->rotulo->label("db76_cadenderlocal");
               <?=$Ldb76_cadenderlocal?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db76_cadenderlocal",10,$Idb76_cadenderlocal,true,"text",4,"","chave_db76_cadenderlocal");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clendereco->rotulo->label("db76_cadenderlocal");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_endereco.php")==true){
@@ -123,12 +123,12 @@ $clendereco->rotulo->label("db76_cadenderlocal");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

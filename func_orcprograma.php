@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -87,7 +87,7 @@ if (isset($programasGestao)) {
                             <?= $Lo54_programa ?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?php 
+                            <?
                             db_input("o54_programa", 4, $Io54_programa, true, "text", 4, "", "chave_o54_programa");
                             ?>
                         </td>
@@ -97,7 +97,7 @@ if (isset($programasGestao)) {
                             <?= $Lo54_descr ?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?php 
+                            <?
                             db_input("o54_descr", 40, $Io54_descr, true, "text", 4, "", "chave_o54_descr");
                             ?>
                         </td>
@@ -187,7 +187,7 @@ when o54_tipoprograma in (0) then 'Revise a tipologia do programa'
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -204,7 +204,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?php 
+    <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -329,7 +329,7 @@ if (isset($incluir) && $incluir != "") {
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -337,7 +337,7 @@ if (isset($incluir) && $incluir != "") {
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -352,7 +352,7 @@ if (isset($incluir) && $incluir != "") {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <form name='form1'>
-    <?php 
+    <?
 db_input("codnovo", 10, "", true, "hidden", 3);
 db_input("importado", 10, "", true, "hidden", 3);
 
@@ -384,7 +384,7 @@ if ($iNumrows > 0) {
         <td class='bordas' align='center'><b><small><?=@$RLo56_elemento?></small></b></td>
 	      <td class='bordas' align='center'><b><small>Nova Dotação</small></b></td>
 	    </tr>
-    <?php 
+    <?
 	    for ($x = 0; $x < $iNumrows; $x ++) {
 		    db_fieldsmemory($rsResult, $x);
     ?>
@@ -396,11 +396,11 @@ if ($iNumrows > 0) {
 			  <td	 class='bordas_corp' align='right'><small><?=@$o56_elemento?></small></td>
 			  <td	 class='bordas_corp' align='right'><small><?=db_ancora(@$Lpc13_coddot,"js_pesquisapc13_coddot(true,$o56_elemento,$pc16_codmater,$pc13_coddot);",1);db_input("pc13_coddot_$pc16_codmater"."_".$pc13_coddot,8,$Ipc13_coddot,true,'text',3);?> &nbsp;</small></td>
 		  </tr>
-		<?php 
+		<?
 	    }
     ?>
     </table>
-<?php 
+<?
 }
 ?>	
   <input name="incluir" type="submit" id="db_opcao" value="Incluir" >
@@ -431,7 +431,7 @@ function js_mostraorcdotacao1(chave1,chave2){
   db_iframe_orcdotacao.hide();
 }
 </script>
-<?php 
+<?
 if (isset ($incluir) && $incluir != "") {
 	if($sqlerro == true){
 	 db_msgbox($erro_msg);

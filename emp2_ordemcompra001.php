@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,13 +65,13 @@ function js_emite(){
   <table  align="center">
     <tr>
   	<td nowrap><b>
-  	<?php db_ancora('Ordem de ',"js_pesquisa_matordem(true);",1);?>
+  	<?db_ancora('Ordem de ',"js_pesquisa_matordem(true);",1);?>
   	</b>
   	</td>
   	<td>
-      <?php  db_input('m51_codordem',8,$Im51_codordem,true,'text',4,"onchange='js_pesquisa_matordem(false);'","m51_codordem_ini")  ?>
+      <? db_input('m51_codordem',8,$Im51_codordem,true,'text',4,"onchange='js_pesquisa_matordem(false);'","m51_codordem_ini")  ?>
       <strong> à </strong>
-      <?php  db_input('m51_codordem',8,$Im51_codordem,true,'text',4,"","m51_codordem_fim")  ?>
+      <? db_input('m51_codordem',8,$Im51_codordem,true,'text',4,"","m51_codordem_fim")  ?>
       </td>
     </tr>
   </table>
@@ -79,7 +79,7 @@ function js_emite(){
 </fieldset>
 <p><input  name="emite2" id="emite2" type="button" value="Processar" onclick="js_emite();" ></p>
 </center>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

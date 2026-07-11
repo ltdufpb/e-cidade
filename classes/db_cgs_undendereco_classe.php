@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE cgs_undendereco
 class cl_cgs_undendereco { 

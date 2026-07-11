@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,28 +45,28 @@ $clrotulo->label("descrdepto");
       <b>Unidade:</b>
     </td>
     <td nowrap="nowrap">
-      <?php  db_input('vc01_i_unidade',5,$Ivc01_i_unidade,true,'text',3);?>
-      <?php  db_input('descrdepto',30,$Idescrdepto,true,'text',3);?>
+      <? db_input('vc01_i_unidade',5,$Ivc01_i_unidade,true,'text',3);?>
+      <? db_input('descrdepto',30,$Idescrdepto,true,'text',3);?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc06_i_vacina?>">
-     <?php  db_ancora("<b>Vacina:</b>","js_pesquisavc06_i_codigo(true);",$db_opcao);?>
+     <? db_ancora("<b>Vacina:</b>","js_pesquisavc06_i_codigo(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('vc06_i_codigo',5,$Ivc06_i_codigo,true,'text',$db_opcao,
+     <?db_input('vc06_i_codigo',5,$Ivc06_i_codigo,true,'text',$db_opcao,
                 " onchange='js_pesquisavc06_i_codigo(false);'")?>
-     <?php db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
+     <?db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm77_sequencial?>">
-     <?php  db_ancora("<b>Lote:</b>","js_pesquisam77_sequencial(true);",$db_opcao);?>
+     <? db_ancora("<b>Lote:</b>","js_pesquisam77_sequencial(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('m77_sequencial',5,$Im77_sequencial,true,'text',$db_opcao,
+     <?db_input('m77_sequencial',5,$Im77_sequencial,true,'text',$db_opcao,
                 " onchange='js_pesquisam77_sequencial(false);'")?>
-     <?php db_input('m77_lote',20,$Im77_lote,true,'text',3,'')?>
+     <?db_input('m77_lote',20,$Im77_lote,true,'text',3,'')?>
     </td>
   </tr>
 </table>

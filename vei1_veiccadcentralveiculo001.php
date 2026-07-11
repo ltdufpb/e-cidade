@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -147,7 +147,7 @@ if (isset($excluir)){
     <center>
 
 
-	<?php 
+	<?
 	include(modification("forms/db_frmveiccadcentralveiculo.php"));
 	?>
 
@@ -156,7 +156,7 @@ if (isset($excluir)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)||isset($excluir)){
   if($sqlerro == true){
     $db_botao=true;

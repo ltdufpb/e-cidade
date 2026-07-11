@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cldb_depusuemp->rotulo->label("db22_coddepto");
               <?=$Ldb22_codperm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db22_codperm",6,$Idb22_codperm,true,"text",4,"","chave_db22_codperm");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cldb_depusuemp->rotulo->label("db22_coddepto");
               <?=$Ldb22_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db22_coddepto",5,$Idb22_coddepto,true,"text",4,"","chave_db22_coddepto");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cldb_depusuemp->rotulo->label("db22_coddepto");
               <?=$Ldb22_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db22_coddepto",5,$Idb22_coddepto,true,"text",4,"","chave_db22_coddepto");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cldb_depusuemp->rotulo->label("db22_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_depusuemp.php")==true){
@@ -130,12 +130,12 @@ $cldb_depusuemp->rotulo->label("db22_coddepto");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

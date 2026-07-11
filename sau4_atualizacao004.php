@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -85,10 +85,10 @@ db_app::load ( "estilos.css" );
 		<table border="0" align="left">
 			<tr>
 				<td nowrap title="<?=@$Ts100_i_mescom?>"><b>
-				    <?php  db_ancora ( "Competencia", "js_pesquisas100_i_mescomp(true);", 1 )?>
+				    <? db_ancora ( "Competencia", "js_pesquisas100_i_mescomp(true);", 1 )?>
 				</td>
 				<td>
-				   <?php 
+				   <?
 					db_input ( 's100_i_codigo', 10, @$Is100_i_codigo, true, 'hidden', 3 );
 					db_input ( 's100_i_mescomp', 2, @$Is100_i_mescomp, true, 'text', 3 );
 					db_input ( 's100_i_anocomp', 4, @$Is100_i_anocomp, true, 'text', 3 );
@@ -100,7 +100,7 @@ db_app::load ( "estilos.css" );
 					<?=$Ls100_i_login ?>
 				</td>
 				<td>
-					<?php db_input ( 's100_i_login', 10, @$Is100_i_login, true, 'text', 3 )?>
+					<?db_input ( 's100_i_login', 10, @$Is100_i_login, true, 'text', 3 )?>
 		         </td>
 			</tr>
 			<tr>
@@ -108,7 +108,7 @@ db_app::load ( "estilos.css" );
 					<?=$Ls100_d_data ?>
 				</td>
 				<td>
-					<?php  db_inputdata ( 's100_d_data', @$s100_d_data_dia, @$s100_d_data_mes, @$s100_d_data_ano, true, 'text',3 ) ?>
+					<? db_inputdata ( 's100_d_data', @$s100_d_data_dia, @$s100_d_data_mes, @$s100_d_data_ano, true, 'text',3 ) ?>
 		         </td>
 			</tr>
 			<tr>
@@ -116,7 +116,7 @@ db_app::load ( "estilos.css" );
 					<?=$Ls100_c_hora ?>
 				</td>
 				<td>
-					<?php db_input ( 's100_c_hora', 5, @$Is100_c_hora, true, 'text', 3 )?>
+					<?db_input ( 's100_c_hora', 5, @$Is100_c_hora, true, 'text', 3 )?>
 		         </td>
 			</tr>
 
@@ -145,7 +145,7 @@ db_app::load ( "estilos.css" );
 	</tr>
 </table>
 </center>
-     <?php 
+     <?
 					db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 					?>
   </body>

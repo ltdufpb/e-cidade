@@ -50,7 +50,7 @@ if ($db_opcao == 1) {
 		      <?php echo "$Lfm06_codigo";?>
 		    </td>
 		    <td>
-					<?php 
+					<?
 					  db_input('fm06_codigo',10,$Ifm06_codigo,true,'text',3,"");
 					?>
 		    </td>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -123,7 +123,7 @@ function js_atualizar(){
     <table >
     <tr>
     <td>
-    <?php  
+    <? 
            db_input("j67_naogeracarne",10,"",true,"hidden",3);
            db_input("atualizar",10,"",true,"hidden",3);
 //           db_input("chaves",10,"",true,"hidden",3);
@@ -143,11 +143,11 @@ function js_atualizar(){
   </tr>
 </table>
 </form>
-<?php 
+<?
 ?>
 </body>
 </html>
-<?php 
+<?
 if (isset ($atualizar)&&$atualizar!="") {
 	if ($sqlerro == false) {
 		echo "<script>parent.js_conclui();</script>";

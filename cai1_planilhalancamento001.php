@@ -183,10 +183,10 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Receita -->
                     <tr>
-                        <td class='tamanho-primeira-col' nowrap><?php  db_ancora($Lk81_receita, "js_pesquisaReceita(true)",
+                        <td class='tamanho-primeira-col' nowrap><? db_ancora($Lk81_receita, "js_pesquisaReceita(true)",
                                 $db_opcao); ?></td>
                         <td colspan='3'>
-                            <?php 
+                            <?
                             db_input('codigo_receitaplanilha', 10, null, true, 'text', 2, " style='display:none;'");
                             db_input('k81_receita', 10, $Ik81_receita, true, 'text', 2,
                                 " onchange='js_pesquisaReceita(false)'");
@@ -218,12 +218,12 @@ if($conparametro->c90_confirmadata == 't'){
                     <!-- Código Conta -->
                     <tr>
                         <td class='tamanho-primeira-col' nowrap title="<?= @$Tk81_conta ?>">
-                            <?php 
+                            <?
                             db_ancora($Lk81_conta, "js_pesquisaConta(true);", $db_opcao);
                             ?>
                         </td>
                         <td colspan='3'>
-                            <?php 
+                            <?
                             db_input('k81_conta', 10, $Ik81_conta, true, 'text', 2,
                                 "onchange='js_pesquisaConta(false);'");
                             db_input('c61_codigo', 5, $Ic61_codigo, true, 'text', 3);
@@ -243,7 +243,7 @@ if($conparametro->c90_confirmadata == 't'){
                     <tr>
                         <td class='tamanho-primeira-col' nowrap title="<?= @$Tk81_origem ?>"><?= $Lk81_origem ?></td>
                         <td colspan='3'>
-                            <?php 
+                            <?
                             db_select("k81_origem", getValoresPadroesCampo("k81_origem"), true, 1,
                                 "class='input-menor' onChange='toogleOrigem()'");
                             ?>
@@ -253,10 +253,10 @@ if($conparametro->c90_confirmadata == 't'){
                     <!-- CGM -->
                     <tr id='inputCgm' style=''>
                         <td nowrap title="<?= @$Tk81_conta ?>">
-                            <?php  db_ancora(@$Lk81_numcgm, "js_pesquisaCgm(true);", $db_opcao); ?>
+                            <? db_ancora(@$Lk81_numcgm, "js_pesquisaCgm(true);", $db_opcao); ?>
                         </td>
                         <td colspan='3'>
-                            <?php 
+                            <?
                             db_input('k81_numcgm', 10, $Ik81_numcgm, true, 'text', 2,
                                 "onchange='js_pesquisaCgm(false);'");
                             db_input('z01_nome', 63, $Iz01_nome, true, 'text', 3);
@@ -266,10 +266,10 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Inscricao -->
                     <tr id='inputInscr' style='display:none'>
-                        <td nowrap title="<?= @$Tq02_inscr ?>"><?php  db_ancora(@$Lq02_inscr, "js_pesquisaInscricao(true);",
+                        <td nowrap title="<?= @$Tq02_inscr ?>"><? db_ancora(@$Lq02_inscr, "js_pesquisaInscricao(true);",
                                 $db_opcao); ?></td>
                         <td colspan='3'>
-                            <?php 
+                            <?
                             db_input('q02_inscr', 10, $Iq02_inscr, true, 'text', 2,
                                 " onchange='js_pesquisaInscricao(false);'");
                             db_input('nomeinscr', 65, $Iz01_nome, true, 'text', 3, "class='input-maior'");
@@ -279,10 +279,10 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Matricula -->
                     <tr id='inputMatric' style='display:none'>
-                        <td class='tamanho-primeira-col' nowrap title="<?= @$Tj01_matric ?>"><?php  db_ancora(@$Lj01_matric,
+                        <td class='tamanho-primeira-col' nowrap title="<?= @$Tj01_matric ?>"><? db_ancora(@$Lj01_matric,
                                 "{$sFuncaoBusca}(true);", $db_opcao); ?></td>
                         <td colspan='3'>
-                            <?php 
+                            <?
                             db_input('j01_matric', 10, $Ij01_matric, true, 'text', 2,
                                 " onchange='{$sFuncaoBusca}(false);'");
                             db_input('nomematric', 63, $Iz01_nome, true, 'text', 3);
@@ -292,10 +292,10 @@ if($conparametro->c90_confirmadata == 't'){
 
                     <!-- Característica Peculiar -->
                     <tr style=''>
-                        <td><b><?php  db_ancora("C.Peculiar / C.Aplicação :", "js_pesquisaPeculiar(true);",
+                        <td><b><? db_ancora("C.Peculiar / C.Aplicação :", "js_pesquisaPeculiar(true);",
                                     $db_opcao); ?></b></td>
                         <td colspan='3'>
-                            <?php 
+                            <?
                             db_input('c58_sequencial', 10, '', true, 'text', 2,
                                 "onchange='js_pesquisaPeculiar(false);'");
                             db_input('c58_descr', 63, '', true, 'text', 3);
@@ -304,8 +304,8 @@ if($conparametro->c90_confirmadata == 't'){
                     </tr>
 
                     <tr>
-                        <td nowrap title="<?= @$Tk81_datareceb ?>"><?php  echo $Lk81_datareceb ?></td>
-                        <td><?php 
+                        <td nowrap title="<?= @$Tk81_datareceb ?>"><? echo $Lk81_datareceb ?></td>
+                        <td><?
                             if ($db_opcao == 1) {
 
                                 $k81_datareceb_dia = date("d", db_getsession("DB_datausu"));
@@ -317,13 +317,13 @@ if($conparametro->c90_confirmadata == 't'){
                             ?>
                         </td>
                         <td nowrap title="<?= @$Tk81_operbanco ?>" width="100px"><?= @$Lk81_operbanco ?></td>
-                        <td><?php  db_input('k81_operbanco', 10, $Ik81_operbanco, true, 'text', $db_opcao); ?></td>
+                        <td><? db_input('k81_operbanco', 10, $Ik81_operbanco, true, 'text', $db_opcao); ?></td>
                     </tr>
 
                     <tr>
 
                         <td nowrap title="<?= @$Tk81_valor ?>"><?= @$Lk81_valor ?></td>
-                        <td><?php  db_input('k81_valor', 10, $Ik81_valor, true, 'text', $db_opcao) ?></td>
+                        <td><? db_input('k81_valor', 10, $Ik81_valor, true, 'text', $db_opcao) ?></td>
 
                     </tr>
 
@@ -332,7 +332,7 @@ if($conparametro->c90_confirmadata == 't'){
                         <td colspan='4'>
                             <fieldset>
                                 <legend><strong>Observação</strong></legend>
-                                <?php  db_textarea("k81_obs", 1, 40, $Ik81_obs, "true", "text", $db_opcao); ?>
+                                <? db_textarea("k81_obs", 1, 40, $Ik81_obs, "true", "text", $db_opcao); ?>
                             </fieldset>
                         </td>
                     </tr>

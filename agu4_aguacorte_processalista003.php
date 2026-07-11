@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -67,7 +67,7 @@ db_postmemory($HTTP_SERVER_VARS);
 <br>
 <br>
 
-<?php 
+<?
 
 db_criatermometro('termometro', 'Concluido...', 'blue', 1);
 flush();
@@ -198,7 +198,7 @@ if(empty($x40_codcorte)) {
 ?>
 </body>
 </html>
-<?php 
+<?
 if($claguacortematmov->erro_status == '0') {
   db_msgbox($claguacortematmov->erro_msg);
   db_fim_transacao(true);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $oDaoRotulo->label("ed05_i_codigo");
             <?=@$Led292_arquivo?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('ed05_i_codigo',50,'',true,'hidden','');
               db_input('ed292_sequencial',50,'',true,'hidden','');
 
@@ -63,14 +63,14 @@ $oDaoRotulo->label("ed05_i_codigo");
             <?=@$Led292_obs?>
           </td>
           <td> 
-            <?php 
+            <?
               db_textarea('ed292_obs',3,100,$Ied292_obs,true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>
         <tr>
           <td> 
-            <?php 
+            <?
               db_input('ed292_ordem',10,$Ied292_ordem,true,'hidden','')
             ?>
           </td>
@@ -308,7 +308,7 @@ function js_retornoDownloadFile(oRetorno) {
 
 </script>
 
-<?php 
+<?
   if (isset($chavepesquisa)) {
     echo("<script>\n js_buscaArquivos(); \n</script>");
   }

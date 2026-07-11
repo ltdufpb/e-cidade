@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,33 +51,33 @@ if(isset($opcao) && $opcao=="alterar"){
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?php db_input('ed85_i_codigo',15,$Ied85_i_codigo,true,'hidden',3,"")?>
+<?db_input('ed85_i_codigo',15,$Ied85_i_codigo,true,'hidden',3,"")?>
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted85_i_escola?>">
-   <?php db_ancora(@$Led85_i_escola,"",3);?>
+   <?db_ancora(@$Led85_i_escola,"",3);?>
   </td>
   <td>
-   <?php db_input('ed85_i_escola',15,$Ied85_i_escola,true,'text',3,"")?>
-   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?db_input('ed85_i_escola',15,$Ied85_i_escola,true,'text',3,"")?>
+   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted85_i_curso?>">
-   <?php db_ancora(@$Led85_i_curso,"",3);?>
+   <?db_ancora(@$Led85_i_curso,"",3);?>
   </td>
   <td>
-   <?php db_input('ed85_i_curso',15,$Ied85_i_curso,true,'text',3,"")?>
-   <?php db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
+   <?db_input('ed85_i_curso',15,$Ied85_i_curso,true,'text',3,"")?>
+   <?db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted85_i_turno?>">
-   <?php db_ancora(@$Led85_i_turno,"js_pesquisaed85_i_turno(true);",$db_opcao);?>
+   <?db_ancora(@$Led85_i_turno,"js_pesquisaed85_i_turno(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed85_i_turno',15,$Ied85_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed85_i_turno(false);'")?>
-   <?php db_input('ed15_c_nome',40,@$Ied15_c_nome,true,'text',3,'')?>
+   <?db_input('ed85_i_turno',15,$Ied85_i_turno,true,'text',$db_opcao," onchange='js_pesquisaed85_i_turno(false);'")?>
+   <?db_input('ed15_c_nome',40,@$Ied15_c_nome,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -86,7 +86,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?php 
+  <?
    $chavepri= ["ed85_i_codigo"=>@$ed85_i_codigo,"ed85_i_escola"=>@$ed85_i_escola,"ed85_i_turno"=>@$ed85_i_turno,"ed15_c_nome"=>@$ed15_c_nome,"ed85_i_curso"=>@$ed85_i_curso,"ed29_c_descr"=>@$ed29_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clcursoturno->sql_query("","*","ed15_i_sequencia"," ed85_i_escola = $ed85_i_escola AND ed85_i_curso = $ed85_i_curso");

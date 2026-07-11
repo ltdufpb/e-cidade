@@ -55,7 +55,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk02_codjm?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k02_codjm",10,$Ik02_codjm,true,"text",4,"","chave_k02_codjm");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tabrecjm.php")==true){
@@ -111,12 +111,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

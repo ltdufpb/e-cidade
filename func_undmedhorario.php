@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
               <?=$Lsd30_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
               db_input("sd30_i_codigo",10,$Isd30_i_codigo,true,"text",4,"","chave_sd30_i_codigo");
               ?>
             </td>
@@ -74,7 +74,7 @@ $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $sSepEspecmed = '';
       $sEspecmed    = '';
       $sSepDatas    = '';
@@ -218,12 +218,12 @@ $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clatendordemcli->rotulo->label("at85_respcli");
               <?=$Lat85_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at85_seq",10,$Iat85_seq,true,"text",4,"","chave_at85_seq");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clatendordemcli->rotulo->label("at85_respcli");
               <?=$Lat85_respcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at85_respcli",6,$Iat85_respcli,true,"text",4,"","chave_at85_respcli");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clatendordemcli->rotulo->label("at85_respcli");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendordemcli.php")==true){
@@ -123,12 +123,12 @@ $clatendordemcli->rotulo->label("at85_respcli");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

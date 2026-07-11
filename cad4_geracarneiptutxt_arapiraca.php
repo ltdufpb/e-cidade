@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -143,14 +143,14 @@ if (isset($unica) && $unica != "") {
 </tr>
 <tr>
 <td width="100%"  align="center">
-<?php  db_criatermometro('termometro','Concluido...','blue',1); ?>
+<? db_criatermometro('termometro','Concluido...','blue',1); ?>
 </td>
 </tr>
 </table>
 <form name='form1'>
 </body>
 </html>
-<?php 
+<?
 $rsPref = db_query("select munic from db_config where prefeitura is true ");
 db_fieldsMemory($rsPref,0);
 if ($munic == 'ALEGRETE'){

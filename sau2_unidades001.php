@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clrotulo->label("sd02_c_nome");
     <form name='form1'>
     <table>
       <table border="1" cellpadding="0" cellspacing="0" width="90%">
-     <?php 
+     <?
       $result = $clunidades->sql_record($clunidades->sql_query());
       if($clunidades->numrows > 0){
      ?>
@@ -67,7 +67,7 @@ $clrotulo->label("sd02_c_nome");
         <td bgcolor="#D0D0D0" width="30"><input type="button" value="M" name="marca" title="Marcar/Desmarcar" onclick="marcar(<?=$clunidades->numrows?>, this)"></td>
         <td colspan="5"><b>Selecione as Unidades</b></td>
        </tr>
-      <?php $bg = "#E8E8E8";
+      <?$bg = "#E8E8E8";
         echo "<tr bgcolor='#b0b0b0'>";
         for($u=0; $u< $clunidades->numrows; $u++){
          db_fieldsmemory($result,$u);
@@ -99,7 +99,7 @@ $clrotulo->label("sd02_c_nome");
   </td>
  </tr>
 </table>
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

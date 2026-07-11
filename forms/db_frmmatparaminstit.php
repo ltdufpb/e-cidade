@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ $clmatparaminstit->rotulo->label();
              <?=@$Lm10_controlapit?>
           </td>
           <td> 
-            <?php 
+            <?
             $x = array('1'=>'Ativado','2'=>'Desativado');
             db_select('m10_controlapit',$x,true,$db_opcao,"");
             ?>
@@ -63,7 +63,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matparaminstit.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,11 +54,11 @@ include(modification("dbforms/db_funcoes.php"));
      <td align="center" nowrap>
        <tr>
          <td>
-           <b><?php db_ancora("Proprietário","js_pesquisama01_i_cgm(true);",1);?>:</b>
+           <b><?db_ancora("Proprietário","js_pesquisama01_i_cgm(true);",1);?>:</b>
          </td>
          <td>
-           <?php db_input('z01_numcgm',10,'',true,'text',1," onchange='js_pesquisama01_i_cgm(false);'")?>
-           <?php db_input('z01_nome',40,'',true,'text',3,'')?>
+           <?db_input('z01_numcgm',10,'',true,'text',1," onchange='js_pesquisama01_i_cgm(false);'")?>
+           <?db_input('z01_nome',40,'',true,'text',3,'')?>
          </td>
        </tr>
        <tr>
@@ -66,7 +66,7 @@ include(modification("dbforms/db_funcoes.php"));
             <b>Letras/Nº:</b>
          </td>
          <td>
-           <?php db_input('str_letras',4,'',true,'text',1,"onChange='javascript:this.value=this.value.toUpperCase();'")?>
+           <?db_input('str_letras',4,'',true,'text',1,"onChange='javascript:this.value=this.value.toUpperCase();'")?>
          </td>
        </tr>
        <tr>
@@ -74,7 +74,7 @@ include(modification("dbforms/db_funcoes.php"));
             <b>Figuras:</b>
          </td>
          <td>
-           <?php db_input('str_figuras',4,'',true,'text',1,"onChange='javascript:this.value=this.value.toUpperCase();'")?>
+           <?db_input('str_figuras',4,'',true,'text',1,"onChange='javascript:this.value=this.value.toUpperCase();'")?>
          </td>
        </tr>
        <tr>
@@ -82,7 +82,7 @@ include(modification("dbforms/db_funcoes.php"));
             <b>Objetos:</b>
          </td>
          <td>
-           <?php db_input('str_objetos',4,'',true,'text',1,"onChange='javascript:this.value=this.value.toUpperCase();'")?>
+           <?db_input('str_objetos',4,'',true,'text',1,"onChange='javascript:this.value=this.value.toUpperCase();'")?>
          </td>
        </tr>
          <tr>
@@ -90,7 +90,7 @@ include(modification("dbforms/db_funcoes.php"));
              <b>Opção:</b>
            </td>
            <td>
-            <?php 
+            <?
             $tipo_ordem = array("0"=>"Todas","1"=>"Ativas","2"=>"Canceladas");
             db_select("opcao",$tipo_ordem,true,2);
             ?>
@@ -154,7 +154,7 @@ function js_pesquisa(){
  }
 }
 </script>
-<?php 
+<?
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

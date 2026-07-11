@@ -441,7 +441,7 @@ if( $in == true ) {
           ?>
         </td>
       </tr>
-      <tr class='cabec' <?php  if (isset($lUnificado) && $xHora != 0) { echo 'style="display: none;"'; } ?> >
+      <tr class='cabec' <? if (isset($lUnificado) && $xHora != 0) { echo 'style="display: none;"'; } ?> >
         <?php
         //verifica se vem da transferencia lado de
         if( isset($sTransf) && $sTransf == "true" && $sLado == "de") {

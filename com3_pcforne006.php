@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ $clrotulo->label("pc74_pctipocertif");
   <fieldset style="width: 600px;">
   <legend style="font-weight: bold;">&nbsp;Certificados&nbsp;</legend>
     <br />
-    <?php 
+    <?
       $sSqlCertificado  = "select * from (select pc74_pctipocertif, max(pc74_codigo) as codigo 
                            from pcfornecertif  where pc74_pcforne = $pc60_numcgm group by pc74_pctipocertif) as x 
                            inner join pcfornecertif on pcfornecertif.pc74_codigo = x.codigo 
@@ -112,7 +112,7 @@ $clrotulo->label("pc74_pctipocertif");
                     height      = "200"
                     width       = "600">
             </iframe> 
-        <?php }?>
+        <?}?>
   </fieldset>
   </center>
 </body>

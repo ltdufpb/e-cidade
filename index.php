@@ -690,7 +690,7 @@ if ($lErroConf == true) {
         <td id=lista_pendente_td>Configurações OK.</td>
       </tr>
     </table>
-    <?php } ?>
+    <?} ?>
   </div>
     </td>
   </tr>

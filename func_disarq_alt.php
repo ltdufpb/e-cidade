@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldisarq->rotulo->label("k15_codage");
               <?=$Lk15_codbco?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		            db_input("k15_codbco",3,$Ik15_codbco,true,"text",4,"","chave_k15_codbco");
 		          ?>
             </td>
@@ -66,7 +66,7 @@ $cldisarq->rotulo->label("k15_codage");
               <?=$Lk15_codage?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		            db_input("k15_codage",5,$Ik15_codage,true,"text",4,"","chave_k15_codage");
 		          ?>
             </td>
@@ -85,7 +85,7 @@ $cldisarq->rotulo->label("k15_codage");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_disarq.php")==true){
@@ -143,12 +143,12 @@ $cldisarq->rotulo->label("k15_codage");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

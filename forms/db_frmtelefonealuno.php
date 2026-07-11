@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,25 +56,25 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed50_i_codigo',10,$Ied50_i_codigo,true,'text',3,"")?>
+   <?db_input('ed50_i_codigo',10,$Ied50_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted50_i_aluno?>">
-   <?php db_ancora(@$Led50_i_aluno,"",3);?>
+   <?db_ancora(@$Led50_i_aluno,"",3);?>
   </td>
   <td>
-   <?php db_input('ed50_i_aluno',10,$Ied50_i_aluno,true,'text',3,"")?>
-   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?db_input('ed50_i_aluno',10,$Ied50_i_aluno,true,'text',3,"")?>
+   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted50_i_tipotelefone?>">
-   <?php db_ancora(@$Led50_i_tipotelefone,"js_pesquisaed50_i_tipotelefone(true);",$db_opcao);?>
+   <?db_ancora(@$Led50_i_tipotelefone,"js_pesquisaed50_i_tipotelefone(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed50_i_tipotelefone',10,$Ied50_i_tipotelefone,true,'text',$db_opcao," onchange='js_pesquisaed50_i_tipotelefone(false);'")?>
-   <?php db_input('ed13_c_descr',40,@$Ied13_c_descr,true,'text',3,'')?>
+   <?db_input('ed50_i_tipotelefone',10,$Ied50_i_tipotelefone,true,'text',$db_opcao," onchange='js_pesquisaed50_i_tipotelefone(false);'")?>
+   <?db_input('ed13_c_descr',40,@$Ied13_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -82,7 +82,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_i_numero?>
   </td>
   <td>
-   <?php db_input('ed50_i_numero',15,$Ied50_i_numero,true,'text',$db_opcao,"")?>
+   <?db_input('ed50_i_numero',15,$Ied50_i_numero,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -90,7 +90,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_i_ramal?>
   </td>
   <td>
-   <?php db_input('ed50_i_ramal',10,$Ied50_i_ramal,true,'text',$db_opcao,"")?>
+   <?db_input('ed50_i_ramal',10,$Ied50_i_ramal,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -98,7 +98,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led50_t_obs?>
   </td>
   <td>
-   <?php db_textarea('ed50_t_obs',2,50,$Ied50_t_obs,true,'text',$db_opcao,"")?>
+   <?db_textarea('ed50_t_obs',2,50,$Ied50_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -108,7 +108,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top"><br>
-  <?php 
+  <?
    $chavepri= ["ed50_i_codigo"=>@$ed50_i_codigo,"ed50_i_aluno"=>@$ed50_i_aluno,"z01_nome"=>@$z01_nome,"ed50_i_tipotelefone"=>@$ed50_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed50_i_numero"=>@$ed50_i_numero,"ed50_i_ramal"=>@$ed50_i_ramal,"ed50_t_obs"=>@$ed50_t_obs];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltelefonealuno->sql_query("","*","","ed50_i_aluno = $ed50_i_aluno");

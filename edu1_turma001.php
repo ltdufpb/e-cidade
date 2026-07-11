@@ -265,7 +265,7 @@ if( isset( $incluir ) ) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Turma</b></legend>
-    <?php include(modification("forms/db_frmturma.php"));?>
+    <?include(modification("forms/db_frmturma.php"));?>
    </fieldset>
    </center>
   </td>

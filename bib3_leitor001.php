@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ if ($linhas != 0) {
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <br>
 <fieldset style="width:95%"><legend><b>Consulta de Leitor</b></legend>
 <table width="80%" border="0" align="center">
@@ -83,11 +83,11 @@ if ($linhas != 0) {
    <table border="0">
     <tr>
      <td nowrap title="<?=@$Tbi18_carteira?>">
-      <?php db_ancora(@$Lbi18_carteira,"js_pesquisabi18_carteira(true);",$opcao);?>
+      <?db_ancora(@$Lbi18_carteira,"js_pesquisabi18_carteira(true);",$opcao);?>
      </td>
      <td>
-      <?php db_input('bi18_carteira', 10, $Ibi18_carteira, true, 'text', $opcao, " onchange='js_pesquisabi18_carteira(false);'")?>
-      <?php db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
+      <?db_input('bi18_carteira', 10, $Ibi18_carteira, true, 'text', $opcao, " onchange='js_pesquisabi18_carteira(false);'")?>
+      <?db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
       <input name="proximo" type="submit" id="proximo" value="Próximo" style="visibility:hidden;">
      </td>
     </tr>
@@ -98,7 +98,7 @@ if ($linhas != 0) {
  </tr>
 </table>
 <br>
-<?php if (!empty($bi18_carteira)) {
+<?if (!empty($bi18_carteira)) {
   
   $result = $cldevolucaoacervo->sql_record("select * 
                                               from emprestimoacervo
@@ -124,7 +124,7 @@ if ($linhas != 0) {
         <br>Nenhum empréstimo para o Leitor selecionado (<?=@$ov02_nome?>).<br><br>
       </fieldset>
     </center>
-    <?php 
+    <?
   } else {
     ?>
     <table border="0" width="95%" align="center">
@@ -140,7 +140,7 @@ if ($linhas != 0) {
                   <td><b>Devolver até</b></td>
                   <td><b>Situação</b></td>
                 </tr>
-                <?php 
+                <?
                 $cor1 = "#f3f3f3";
                 $cor2 = "#ababab";
                 $cor  = "";
@@ -171,7 +171,7 @@ if ($linhas != 0) {
                     <td><?=db_formatar($bi18_devolucao, 'd')?></td>
                     <td align="center" style="color:#FFFFFF;" bgcolor="<?=@$situacao?>"><?=@$texto?></td>
                   </tr>
-                  <?php 
+                  <?
                 }
                 ?>
                 <tr height="30">
@@ -187,10 +187,10 @@ if ($linhas != 0) {
         </td>
       </tr>
     </table>
- <?php }?>
-<?php }?>
+ <?}?>
+<?}?>
 </fieldset>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

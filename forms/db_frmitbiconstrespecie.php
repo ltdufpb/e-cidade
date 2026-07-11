@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clitbiconstrespecie->rotulo->label();
        <?=@$Lit09_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('it09_codigo',10,$Iit09_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('it09_codigo',10,$Iit09_codigo,true,'text',$db_opcao,"")
        <?=@$Lit09_caract?>
     </td>
     <td> 
-<?php 
+<?
 db_input('it09_caract',4,$Iit09_caract,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbiconstrespecie.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

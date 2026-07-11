@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cllevusu->rotulo->label("y61_obs");
               <?=$Ly61_codlev?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y61_codlev",10,$Iy61_codlev,true,"text",4,"","chave_y61_codlev");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cllevusu->rotulo->label("y61_obs");
               <?=$Ly61_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y61_id_usuario",5,$Iy61_id_usuario,true,"text",4,"","chave_y61_id_usuario");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cllevusu->rotulo->label("y61_obs");
               <?=$Ly61_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y61_obs",100,$Iy61_obs,true,"text",4,"","chave_y61_obs");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cllevusu->rotulo->label("y61_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_levusu.php")==true){
@@ -130,12 +130,12 @@ $cllevusu->rotulo->label("y61_obs");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

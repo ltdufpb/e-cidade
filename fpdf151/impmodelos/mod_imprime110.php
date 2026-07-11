@@ -1,4 +1,4 @@
-<?php 
+<?
 
 use App\Domain\Tributario\Arrecadacao\Repositories\RecibobarpixRepository;
 $pixRepository = new RecibobarpixRepository();

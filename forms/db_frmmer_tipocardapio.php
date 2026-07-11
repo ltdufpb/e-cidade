@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clmer_tipocardapio->rotulo->label();
       <?=@$Lme27_i_codigo?>
     </td>
     <td>
-      <?php db_input('me27_i_codigo',4,$Ime27_i_codigo,true,'text',3,"")?>
+      <?db_input('me27_i_codigo',4,$Ime27_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -45,9 +45,9 @@ $clmer_tipocardapio->rotulo->label();
       <?=@$Lme27_c_nome?>
     </td>
     <td>
-      <?php db_input('me27_c_nome',40,$Ime27_c_nome,true,'text',$db_opcao,"")?>
+      <?db_input('me27_c_nome',40,$Ime27_c_nome,true,'text',$db_opcao,"")?>
       <?=@$Lme27_f_versao?>
-      <?php db_input('me27_f_versao',5,$Ime27_f_versao,true,'text',3,"")?>
+      <?db_input('me27_f_versao',5,$Ime27_f_versao,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -55,7 +55,7 @@ $clmer_tipocardapio->rotulo->label();
       <b>Data de Validade :</b>
     </td>
     <td>
-      <?php 
+      <?
       if (!isset($me27_d_inicio)) {
    	
         $me27_d_inicio=date("d/m/Y",db_getsession("DB_datausu"));
@@ -68,7 +68,7 @@ $clmer_tipocardapio->rotulo->label();
                    "onchange=\"js_validadata();\"","",""," parent.js_validadata();");
       ?>
       <b>á</b>
-      <?php 
+      <?
       db_inputdata('me27_d_fim',@$me27_d_fim_dia,@$me27_d_fim_mes,@$me27_d_fim_ano,true,'text',$db_opcao,
                    "onchange=\"js_validadata();\"","",""," parent.js_validadata();");
       ?>   
@@ -92,10 +92,10 @@ $clmer_tipocardapio->rotulo->label();
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 <input name="novo" type="button" id="novo" value="Novo" 
        onclick="parent.location.href='mer1_mer_tipocardapio_aba001.php';" >
-<?php if ($naopode == true && $db_opcao != 3 && $db_opcao != 33) {?>
+<?if ($naopode == true && $db_opcao != 3 && $db_opcao != 33) {?>
     <input name="newversao" id="newversao" value="Nova Versão" type="button" 
            onclick="js_NovaVersao(<?=$me27_i_codigo?>);">
-<?php }?>
+<?}?>
 <br>
 <iframe name="iframe_newversao" src="" frameborder="0" width="0" heigth="0" style="visibility:hidden;"></iframe>
 </form>
@@ -114,7 +114,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_tipocardapio.hide();
-  <?php 
+  <?
    if ($db_opcao!=1) {
      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }
@@ -198,7 +198,7 @@ function js_NovaVersao(cod_cardapio) {
 	  
 }
 
-<?php if(isset($chavepesquisa)){?>
+<?if(isset($chavepesquisa)){?>
   document.form1.me27_i_ano.value = <?=$me27_i_ano?>;
-<?php }?>
+<?}?>
 </script>

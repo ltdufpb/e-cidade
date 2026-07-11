@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ function js_atualiza(codigo,nome){
               <?=$Lat10_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at10_codigo",10,$Iat10_codigo,true,"text",4,"","chave_at10_codigo");
 		       ?>
             </td>
@@ -79,7 +79,7 @@ function js_atualiza(codigo,nome){
               <?=$Lat10_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at10_codcli",4,$Iat10_codcli,true,"text",4,"","chave_at10_codcli");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ function js_atualiza(codigo,nome){
           <tr>
             <td><b>Top de Atendimento:</b></td>
           	<td>
-          	<?php  
+          	<? 
           	   $rs_atend_top = $clatendimento_top->sql_record($clatendimento_top->sql_query(null,"at14_usuario,at10_nome||'-'||trim(to_char(at14_qtd,'99999'))","at14_qtd desc limit 30","at14_codcli = $cliente"));
           	   db_selectrecord("atend_top",$rs_atend_top,true,1,"","chave_atend_top");
           	?>
@@ -107,7 +107,7 @@ function js_atualiza(codigo,nome){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where = " 1=1 ";
       if (isset($cliente)&&$cliente!=""){
       	$where = " at10_codcli = $cliente ";
@@ -172,12 +172,12 @@ function js_atualiza(codigo,nome){
 </body>
 </html>
 
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -187,7 +187,7 @@ function js_submit(){
           <td align="center" colspan="4">
           <br>
         <br>        
-   <?php  
+   <? 
 $incluir = false;
 if (isset ($tipo_info) && $tipo_info != "") {
 	$tipo = $tipo_info;

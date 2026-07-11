@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $db_botao1          = false;
  border:1px solid #CCCCCC;
 }
 </style>
-<?php 
+<?
 
 function montasemana($dData, $iSemana = null, $iAno = null) {
 
@@ -288,14 +288,14 @@ function somardata($data, $dias= 0, $meses = 0, $ano = 0) {
 ?>
 <body>
 <form name="form1" method="post">
-<?php 
+<?
 if (isset($semana)) {?>
 
   <center>
    Refeição
    <select name="refeicao" id="refeicao" value="0">
     <option value="0">::Selecione>></option>
-    <?php $result=$clmer_cardapio->sql_record($clmer_cardapio->sql_query_lista());
+    <?$result=$clmer_cardapio->sql_record($clmer_cardapio->sql_query_lista());
      for ($x=0;$x<$clmer_cardapio->numrows;$x++) {
      	
        db_fieldsmemory($result,$x);
@@ -308,7 +308,7 @@ if (isset($semana)) {?>
     <table cellspacing="0" cellpading="0" border="1" bordercolor="#000000">
      <tr class='cabec'>
       <td><center>Refeição<br>Horario<center></td>
-     <?php 
+     <?
      if ($diasemana=='8') {
      	
        $resultdias = $cldiasemana->sql_record(
@@ -338,7 +338,7 @@ if (isset($semana)) {?>
      }
      ?>
      </tr>
-     <?php 
+     <?
      $campos = " me03_i_codigo,me03_c_tipo,me03_c_inicio,me03_c_fim ";
      $result_tiporefeicao=$clmer_tprefeicao->sql_record(
                                                         $clmer_tprefeicao->sql_query("",
@@ -354,7 +354,7 @@ if (isset($semana)) {?>
      <tr>
 	  <td width="80" height="15" class='cabec'><center><?=$me03_c_tipo?><br>
 	                                                   <?=$me03_c_inicio?> - <?=$me03_c_fim?></center></td>
-	   <?php 
+	   <?
        $d1=$semana[$calibra];
        for ($dia=$calibra;$dia<$calibra2;$dia++) {
        	
@@ -438,19 +438,19 @@ if (isset($semana)) {?>
                   value="<?=$nome?>" <?=$blokeado?> 
                   onclick="js_botaohora(this.name);">
 	     </td>
-         <?php 
+         <?
          $d1=somardata($d1,1);
        }
        ?>
    </tr>
-   <?php }?>
+   <?}?>
  </table>
 </center>
 <center>
  <br>
  <br><br>
 </center>
-<?php 
+<?
 } else {
   //Grade mensal
 }?>

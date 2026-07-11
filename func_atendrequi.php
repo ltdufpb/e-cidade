@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -60,7 +60,7 @@ $clrotulo->label("m40_codigo");
               <?=$Lm42_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("m42_codigo",10,$Im42_codigo,true,"text",4,"","chave_m42_codigo");
 		       ?>
             </td>
@@ -70,7 +70,7 @@ $clrotulo->label("m40_codigo");
               <?=$Lm40_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("m40_codigo",10,$Im40_codigo,true,"text",4,"","chave_m40_codigo");
 		       ?>
             </td>
@@ -88,7 +88,7 @@ $clrotulo->label("m40_codigo");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendrequi.php")==true){
@@ -145,12 +145,12 @@ $clrotulo->label("m40_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

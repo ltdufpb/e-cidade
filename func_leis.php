@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clleis->rotulo->label("h08_tipo");
               <?=$Lh08_codlei?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h08_codlei",6,$Ih08_codlei,true,"text",4,"","chave_h08_codlei");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clleis->rotulo->label("h08_tipo");
               <?=$Lh08_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h08_numero",6,$Ih08_numero,true,"text",4,"","chave_h08_numero");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clleis->rotulo->label("h08_tipo");
               <?=@$Lh08_tipo?>
             </td>
             <td> 
-              <?php 
+              <?
 	      $db_opcao = 1;
 	      if(isset($chave_tipo)){
 		$chave_h08_tipo = $chave_tipo;
@@ -100,7 +100,7 @@ $clleis->rotulo->label("h08_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $dbwhere = "";
       if(isset($chave_h08_tipo) && trim($chave_h08_tipo) != "T"){
 	$dbwhere = " and h08_tipo = '$chave_tipo'";
@@ -153,12 +153,12 @@ $clleis->rotulo->label("h08_tipo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,13 +67,13 @@ extract($_parseStr, EXTR_SKIP);
                                  <?=$Lt52_bem?>
                 </td>
                 <td align="left" nowrap>
-                                 <?php 
+                                 <?
                     db_input("t52_bem",10,$It52_bem,true,"text",4,"","chave_t52_bem");
 	                         ?>
                 </td>
               </tr>
               <tr>
-                                 <?php 
+                                 <?
                     $cldb_estrut->autocompletar = true;
                     $cldb_estrut->funcao_onchange = 'js_troca(this.value)';
                     $cldb_estrut->nomeform = 'form1';
@@ -91,7 +91,7 @@ extract($_parseStr, EXTR_SKIP);
                                  <?=$Lt52_descr?>
                 </td>
                 <td align="left" nowrap>
-                <?php 
+                <?
                     db_input("t52_descr",40,$It52_descr,true,"text",4,"","chave_t52_descr");
                 ?>
                 </td>
@@ -111,7 +111,7 @@ extract($_parseStr, EXTR_SKIP);
 	  <td>
             <table border="0" >
 	      <tr>
-                                <?php 
+                                <?
 		$campos = " distinct t52_bem,t64_class,t52_descr,t52_depart,descrdepto ";
                 if(isset($t52_depart)){
 		  if(isset($t64_class) && trim($t64_class) != ""){

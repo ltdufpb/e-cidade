@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ $clrotulo->label('e53_valor');
       <b>Valor da Nota</b>
     </td>
     <td align=right width=10%>
-      <?php db_input('valor_nota', 15, '', true, 'text',3, '','','','text-align:right')?>
+      <?db_input('valor_nota', 15, '', true, 'text',3, '','','','text-align:right')?>
     </td> 
   </tr>
   <tr bgcolor="#BDC6BD">
@@ -64,7 +64,7 @@ $clrotulo->label('e53_valor');
       <b>VALOR</b>
     </td>
   </tr>
-  <?php 
+  <?
   $retencoes = array ();
   $res = $clpagordemtiporec->sql_record($clpagordemtiporec->sql_query_retencao(null, "e65_seq, k02_drecei, e59_codrec, e59_aliquota,
                                                                                       case when e65_receita is null then e59_codrec else e65_receita end as e65_receita,
@@ -93,7 +93,7 @@ $clrotulo->label('e53_valor');
           <input id="chk_<?=$cont?>" type=checkbox name=regra <?=($op==1?"":"disabled")?>  <?=($marca==true?"checked":""); ?> onChange="js_calculaRetencao(this,false);">
         </td>
         <td>
-          <?php  
+          <? 
           $v  = 'receita_chk_'.$cont;
           $$v = $e59_codrec;
           global $$v;                  
@@ -102,7 +102,7 @@ $clrotulo->label('e53_valor');
         </td>
         <td><?=$k02_drecei?></td>
         <td align=right>
-          <?php 
+          <?
           $v = 'aliquota_chk_'.$cont;
           $$v   = $e59_aliquota;
           global $$v;
@@ -110,12 +110,12 @@ $clrotulo->label('e53_valor');
           ?>
         </td>
         <td align=right>
-          <?php 
+          <?
           db_input('valor_chk_'.$cont, 15, $Ie53_valor, true, 'text',$op, ' onchange=js_testaRetencao();','','','text-align:right')
           ?>
         </td>
       </tr>
-      <?php 
+      <?
       $cont ++;
     }
   }
@@ -131,7 +131,7 @@ $clrotulo->label('e53_valor');
       <input type="button" name="nova_linha" value="Nova receita" onclick="return js_adiciona_linha();">
     </td>
   </tr>
-  <?php 
+  <?
   }
   ?>
 </table>
@@ -254,7 +254,7 @@ function js_testaRetencao(){
   return true;
 }
 function js_mostrardiv(TorF){
-  <?php 
+  <?
   if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
   ?>
   if(TorF == true){
@@ -265,6 +265,6 @@ function js_mostrardiv(TorF){
     document.getElementById('processando').style.visibility = 'hidden';
     document.getElementById('texto').innerHTML = '';
   }
-  <?php }?>
+  <?}?>
 }
 </script>

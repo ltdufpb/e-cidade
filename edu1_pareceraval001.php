@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -252,7 +252,7 @@ if (isset($alterar2)) {
     <tr>
      <td colspan="2">
       <center>
-      <?php include(modification("forms/db_frmpareceraval001.php"));?>
+      <?include(modification("forms/db_frmpareceraval001.php"));?>
       </center>
      </td>
     </tr>
@@ -262,7 +262,7 @@ if (isset($alterar2)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar2) && $ed72_t_parecer !="") {
   ?>
   <script>
@@ -271,7 +271,7 @@ if (isset($alterar2) && $ed72_t_parecer !="") {
 
     parent.document.form1.<?=$campo?>.value = "<?=str_replace("\r", "", str_replace("\n", "", addslashes((string) $ed72_t_parecer)))?>";
   </script>
- <?php 
+ <?
 
 }
 ?>

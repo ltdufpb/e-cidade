@@ -102,7 +102,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","e21_retencaotipocalc",true,1,"e21_retencaotipocalc",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
   if($clretencaotiporec->erro_status=="0"){
     $clretencaotiporec->erro(true,false);

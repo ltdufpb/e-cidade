@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,14 +41,14 @@ $clrotulo->label("ed18_i_codigo");
 <table border="0" align="center">
   <tr> 
      <td>  
-       <?php 
+       <?
        $sqlturn="select me03_c_tipo,me03_i_orden,me03_i_codigo,ed15_c_nome from mer_tprefeicao inner join turno on ed15_i_codigo=me03_i_turno order by me03_i_orden";
        $resultturn=db_query($sqlturn);
        $linhasturn=pg_num_rows($resultturn);
        ?>  
             <table cellspacing="0" cellpading="0" border="1" bordercolor="#000000">
                <tr><td colspan="6"></td></tr>  
-       <?php 
+       <?
        for($x=0;$x<$linhasturn;$x++){
   	        db_fieldsmemory($resultturn,$x);
             $resultdias = $cldiasemana->sql_record($cldiasemana->sql_query_rh("","*","ed32_i_codigo"," ed04_c_letivo = 'S' AND ed04_i_escola = $escola"));
@@ -58,7 +58,7 @@ $clrotulo->label("ed18_i_codigo");
 			   </tr>			   
 			   <tr bgcolor="#444444">
                   <td align="center" width="30" style="font-weight: bold; color: #DEB887;"><?=$ed15_c_nome?></td>
-            <?php 
+            <?
             if($cldiasemana->numrows==0){
              ?>			
 			   <tr>
@@ -66,7 +66,7 @@ $clrotulo->label("ed18_i_codigo");
 				  os dias lelivos desta escola</b></a></td>
 			   </tr>
 			   <tr> 
-			<?php }
+			<?}
 			for($y=0;$y<$cldiasemana->numrows;$y++){
               db_fieldsmemory($resultdias,$y);?> 
                  <td>
@@ -78,12 +78,12 @@ $clrotulo->label("ed18_i_codigo");
 				       </tr>
 			        </table>
 			     </td>
-            <?php }?>
+            <?}?>
                </tr>
 			   <tr>
 			       <td align="center" width="120" style="font-weight: bold; background-color: #f3f3f3;">
                    <?=$me03_c_tipo?>
-                   </td><?php 
+                   </td><?
                    for($y=0;$y<$cldiasemana->numrows;$y++){
                    $quadro = "Q".$x.$y;       
                    db_fieldsmemory($resultdias,$y);
@@ -151,9 +151,9 @@ $clrotulo->label("ed18_i_codigo");
 				       </tr>
 			        </table>
 			     </td>
-	  <?php }?>	
+	  <?}?>	
 		    <tr>
-      <?php }?>
+      <?}?>
             </tr>
 	       </table>
 		 </td>		 
@@ -162,7 +162,7 @@ $clrotulo->label("ed18_i_codigo");
 </fieldset>
 </center>
 <br><br>
-<?php 
+<?
 
 $sql="select me07_i_codigo,me07_f_quantidade,me07_i_codmater,me07_i_cardapio from mer_cardapioitem
         inner join mer_cardapio on me07_i_cardapio=me01_i_codigo
@@ -210,11 +210,11 @@ $result=db_query($sql);
 $linhas=pg_num_rows($result);
 ?>
 <center>
-<?php db_lovrot($sql,"5","","")?>
+<?db_lovrot($sql,"5","","")?>
 <br>
-<?php if($linhas>0){?>
+<?if($linhas>0){?>
 <input type="button" name="Incluir" value="Baixar Estoque" onclick="js_incluir('<?=$listacod?>','<?=$listaitem?>','<?=$listaquant?>')">
-<?php }?>
+<?}?>
 </center>
 
 </form>

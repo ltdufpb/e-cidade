@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,7 +95,7 @@ th {
 <center>
  <form name="form1" method="post">
    <table border="0" width="100%" cellspacing="2" cellpadding="4">
-   <?php 
+   <?
    if (trim($sigla) != '') {
    ?>
       <tr bgcolor="#D3D3D3">
@@ -106,7 +106,7 @@ th {
         <th nowrap>Quantidade</th>
         <th nowrap>Valor</th>
       </tr>
-       <?php 
+       <?
    
    
    	$sCor = "#DDDDDD";
@@ -129,7 +129,7 @@ th {
        ?>
        <tr onmouseover="bgcolor: '#000000';" onmouseout="bgcolor: '#FFFFFF'";>
          <td align="center" style="font-size:12px" nowrap bgcolor="<?=$sCor?>">
-           <?php db_ancora($oDados->r01_regist,"js_consultaregistro('$oDados->r01_regist','$oGet->rubrica');","1");?>
+           <?db_ancora($oDados->r01_regist,"js_consultaregistro('$oDados->r01_regist','$oGet->rubrica');","1");?>
          </td>
          <td align="left" bgcolor="<?=$sCor?>">
            <?=$oDados->z01_nome?>
@@ -147,7 +147,7 @@ th {
            <?=db_formatar($oDados->valor,'f')?>
          </td>
        </tr>
-   <?php 
+   <?
    	}
    ?>
    	<tr bgcolor="#D3D3D3">
@@ -164,7 +164,7 @@ th {
        <strong><?=db_formatar($totalvalor,'f')?></strong>
      </td>
    	</tr>
-  <?php 
+  <?
    }
   ?>
    </table>

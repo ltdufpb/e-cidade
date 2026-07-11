@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,15 +50,15 @@ if(isset($db_opcaoal)){
 	<br>
 	<br>
     <td nowrap title="<?=@$Tj44_numcgm?>">
-       <?php 
+       <?
        db_ancora(@$Lj44_numcgm,"js_pesquisaj44_numcgm(true);",3);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('j44_numcgm',10,$Ij44_numcgm,true,'text',3," onchange='js_pesquisaj44_numcgm(false);'")
 ?>
-       <?php 
+       <?
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -66,36 +66,36 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   
   <tr>
     <td nowrap title="<?=@$Tj44_matric?>">
-       <?php 
+       <?
        db_ancora(@$Lj44_matric,"js_pesquisaj44_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('j44_matric',10,$Ij44_matric,true,'text',$db_opcao," onchange='js_pesquisaj44_matric(false);'");
 db_input('j44_matric_ant',10,$Ij44_matric,true,'hidden',3,"");
 ?>
-       <?php 
+       <?
 db_input('dono',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center">
-    <?php 
+    <?
     if ($db_opcao!=22){
     
     ?>
  <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
  <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
-<?php }?>
+<?}?>
     </td>
   </tr>
   </table>
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
 	 $chavepri= array("j44_matric"=>@$j44_matric);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $climobil->sql_query(null,"j44_matric,a.z01_nome","j44_matric","j44_numcgm=".@$j44_numcgm);	 
@@ -171,7 +171,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadimobil.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

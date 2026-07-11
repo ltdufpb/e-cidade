@@ -413,7 +413,7 @@ if (empty($bi06_dataregistro_dia)) {
 
   function js_preenchepesquisa(chave) {
     db_iframe_acervo.hide();
-      <?php 
+      <?
       if ($db_opcao != 1) {
           echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }

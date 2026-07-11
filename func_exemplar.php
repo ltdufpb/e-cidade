@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,19 +65,19 @@ if ($clbiblioteca->numrows != 0) {
    <tr>
     <td width="4%" align="right" nowrap="nowrap" ><?=$Lbi06_titulo?></td>
     <td width="96%" align="left" nowrap="nowrap" title="<?=$Tbi23_codigo?>">
-      <?php db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
+      <?db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
     </td>
     <td width="96%" align="left" nowrap="nowrap" title="<?=$Tbi06_titulo?>">
-      <?php db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+      <?db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
     </td>
    </tr>
    <tr>
     <td width="4%" class='bold' align="right" nowrap="nowrap" >Coleção:</td>
     <td width="96%" align="left" nowrap="nowrap" title="<?=$Tbi06_colecaoacervo?>">
-      <?php db_input("bi06_colecaoacervo", 10, $Ibi06_colecaoacervo, true, "text", 4, "","chave_bi06_colecaoacervo");?>
+      <?db_input("bi06_colecaoacervo", 10, $Ibi06_colecaoacervo, true, "text", 4, "","chave_bi06_colecaoacervo");?>
     </td>
     <td width="96%" align="left" nowrap="nowrap"  title="<?=$Tbi29_nome?>">
-      <?php db_input("bi29_nome",40,$Ibi29_nome, true, "text",4,"","chave_bi29_nome");?>
+      <?db_input("bi29_nome",40,$Ibi29_nome, true, "text",4,"","chave_bi29_nome");?>
     </td>
    </tr>
    <tr>
@@ -93,7 +93,7 @@ if ($clbiblioteca->numrows != 0) {
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(isset($campos)==false){
     if(file_exists("funcoes/db_func_exemplar.php")==true){
      include(modification("funcoes/db_func_exemplar.php"));

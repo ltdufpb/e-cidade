@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clprocfiscalfases->rotulo->label("y108_procfiscal");
               <?=$Ly108_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y108_sequencial",10,$Iy108_sequencial,true,"text",4,"","chave_y108_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clprocfiscalfases->rotulo->label("y108_procfiscal");
               <?=$Ly108_procfiscal?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y108_procfiscal",10,$Iy108_procfiscal,true,"text",4,"","chave_y108_procfiscal");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clprocfiscalfases->rotulo->label("y108_procfiscal");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 			$where = "";			
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -145,12 +145,12 @@ $clprocfiscalfases->rotulo->label("y108_procfiscal");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

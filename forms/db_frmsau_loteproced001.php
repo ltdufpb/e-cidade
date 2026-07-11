@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -83,20 +83,20 @@ $clrotulo->label ( "sd70_c_nome" );
 				<?=@$Lsd58_i_codigo?>
 				</td>
 				<td>
-				<?php 
+				<?
 				db_input ( 'sd58_i_codigo', 10, $Isd58_i_codigo, true, 'text', 3, "" );
 				db_input ( 'sd59_i_codigo', 10, $Isd59_i_codigo, true, 'hidden', 3, "" );
 				?>
 				</td>
 				<td colspan="2" align="right" title="<?=@$Tsd58_i_login?>">
 				<?=@$Lsd58_i_login?>
-				<?php db_input ( 'sd58_i_login', 10, $Isd58_i_login, true, 'hidden', $db_opcao, "" );?>
-				<?php db_input ( 'sd24_i_unidade', 10, $Isd24_i_unidade, true, 'hidden', $db_opcao, "" );?>
-				<?php db_input ( 'login', 10, $Ilogin, true, 'text', 3, '' );?>
+				<?db_input ( 'sd58_i_login', 10, $Isd58_i_login, true, 'hidden', $db_opcao, "" );?>
+				<?db_input ( 'sd24_i_unidade', 10, $Isd24_i_unidade, true, 'hidden', $db_opcao, "" );?>
+				<?db_input ( 'login', 10, $Ilogin, true, 'text', 3, '' );?>
 				</td>
 			</tr>
 				<!-- Segunda parte do formulário -->
-				<?php 
+				<?
 					unset($intQuant);
 					include modification("forms/db_frmsau_loteproced002.php");
 				?>
@@ -144,7 +144,7 @@ $clrotulo->label ( "sd70_c_nome" );
 			onclick="js_voltar()"
 			<?=($db_botao1 == true ? "disabled" : "")?>
 		>
-		<?php 
+		<?
 		if ($idarq == 1) {
 			?>
 			<input name="novolote"
@@ -155,7 +155,7 @@ $clrotulo->label ( "sd70_c_nome" );
 				value="F2-Novo Lote"
 			>
 				<!-- onclick="js_novolote()" -->
-			<?php 
+			<?
 		}
 		?>
 		<input name="faalote"
@@ -998,7 +998,7 @@ js_OpenJanelaIframe('','db_iframe_prontproced','func_prontproced.php?funcao_js=p
 }
 function js_preenchepesquisa(chave){
 db_iframe_prontproced.hide();
-<?php 
+<?
 if ($db_opcao != 1) {
 	echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave+'&idarq=" . $idarq . "'";
 }

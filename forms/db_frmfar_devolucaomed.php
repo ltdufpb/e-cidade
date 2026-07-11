@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,13 +37,13 @@ $oRotulo->label('m60_descr');
 <table border="0">
   <tr>
     <td>
-      <?php 
+      <?
     
       db_ancora(@$Lfa22_i_cgsund, "js_pesquisafa22_i_cgsund(true);", $db_opcao);
       ?>
     </td>
     <td>
-      <?php 
+      <?
       db_input('fa22_i_cgsund', 10, @$Ifa22_i_cgsund, true, 'text', $db_opcao, 
                " onchange='js_pesquisafa22_i_cgsund(false);'"
               );
@@ -58,12 +58,12 @@ $oRotulo->label('m60_descr');
         <table>
           <tr>
             <td>
-              <?php  
+              <? 
               db_ancora('<b>Medicamento:</b>', "js_pesquisafa23_i_matersaude(true);", $db_opcao);
               ?>
             </td>
             <td>
-              <?php  
+              <? 
               db_input('fa23_i_matersaude', 10, @$Ifa23_i_matersaude, true, 'text', $db_opcao,
                        " onchange='js_pesquisafa23_i_matersaude(false);'"
                       );
@@ -76,7 +76,7 @@ $oRotulo->label('m60_descr');
             <td colspan="3">
               <br>
               <fieldset style="width:75%"><legend><b>Medicamentos</b></legend>
-                <iframe name="iframe_itens" id="iframe_itens" src="<?php //far1_far_devovlistamed001.php?>"
+                <iframe name="iframe_itens" id="iframe_itens" src="<?//far1_far_devovlistamed001.php?>"
                   width="600" height="150" marginwidth="0" marginheight="0" frameborder="0">
                 </iframe>
               </fieldset> 
@@ -94,7 +94,7 @@ $oRotulo->label('m60_descr');
   </tr>
 </table>
 </center>
-<?php 
+<?
 db_input('valores', 100, '', true, 'hidden', 3);
 db_input('motivos', 100, '', true, 'hidden', 3);                    
 ?>
@@ -115,7 +115,7 @@ db_input('motivos', 100, '', true, 'hidden', 3);
    document.getElementById('iframe_itens').src = page;  
 
  }
-<?php if (isset($confirmar)) {
+<?if (isset($confirmar)) {
 
  echo "js_lancar();";	
  echo "document.form1.comprovante.disabled = false;";

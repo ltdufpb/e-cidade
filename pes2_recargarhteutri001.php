@@ -1,4 +1,4 @@
-<?php 
+<?
 /**
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -143,7 +143,7 @@ if (isset($gera)){
                 <table class="form-container">
                   <tr>
                     <td align="right" nowrap title="<?=$Trh67_rhtipovale?>">
-                      <?php 
+                      <?
                       if(isset($rh67_rhtipovale)){
                         $rh67_rhtipovale = '';
                         $rh68_descr = '';
@@ -152,15 +152,15 @@ if (isset($gera)){
                       ?>
                     </td>
                     <td> 
-                      <?php 
+                      <?
                         db_input('rh67_rhtipovale',4,$Irh67_rhtipovale,true,'text',2," onchange='js_pesquisarh67_rhtipovale(false);'")
                       ?>
-                      <?php 
+                      <?
                         db_input('rh68_descr',40,$Irh68_descr,true,'text',3,'')
                       ?>
                     </td>
                   </tr>
-                  <?php 
+                  <?
                   if($rh67_rhtipovale == '2'){
                   echo "<tr id='camposdiversos' style='display'>";
                     }else{
@@ -168,13 +168,13 @@ if (isset($gera)){
                       }
                       ?>
                       <td align="right" nowrap title="Digite o diverso que corresponde ao valor unitário da passagem."><b>
-                          <?php 
+                          <?
                           db_ancora('Diverso:',"js_pesquisapesdiver(true);",2);
                           ?>
                         </b>
                       </td>
                       <td> 
-                        <?php 
+                        <?
                         db_input('r07_codigo',4,$r07_codigo,true,'text',2," onchange='js_pesquisapesdiver(false);'");
                         db_input('r07_descr',40,$Ir07_descr,true,'text',3,'');
                         ?>
@@ -185,7 +185,7 @@ if (isset($gera)){
                         <strong>Tipo :&nbsp;</strong>
                       </td>
                       <td>
-                        <?php 
+                        <?
                         $xy = array("a"=>"Ativos","t"=>"Todos","i"=>"Inativos");
                         db_select('tipo',$xy,true,1,"");
                         ?>
@@ -196,7 +196,7 @@ if (isset($gera)){
                         <strong>Tipo de emissão:&nbsp;</strong>
                       </td>
                       <td>
-                        <?php 
+                        <?
                         $aTipoEmissao = array("dias"=>"Quantidade de dias", "valor"=>"Valor Recarga");
                         db_select('tipo_emissao',$aTipoEmissao, true, 1, "");
                         ?>
@@ -208,13 +208,13 @@ if (isset($gera)){
                         <strong>Ordem :&nbsp;&nbsp;</strong>
                       </td>
                       <td>
-                        <?php 
+                        <?
                         $x = array("n"=>"Numérica","a"=>"Alfabética");
                         db_select('ordem',$x,true,1,"");
                         ?>
                       </td>
                     </tr>
-                        <?php 
+                        <?
                         $res = $clrhteutri->sql_record($clrhteutri->sql_query(null,"distinct rh67_grupo",'',''));
                         if($clrhteutri->numrows > 0){
                         echo "
@@ -238,13 +238,13 @@ if (isset($gera)){
 
       <input  name="gera" id="gera" type="submit" value="Processar"  >
       </form>
-      <?php 
+      <?
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
     </body>
   </html>
   <script>
-  <?php 
+  <?
   if(isset($gera)){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }

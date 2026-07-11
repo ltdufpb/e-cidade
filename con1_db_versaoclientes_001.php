@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -152,7 +152,7 @@ function js_mostratarefa(codigo){
 <td>Data Atualização</td>
 <td>Observação</td>
 </tr>
-   <?php 
+   <?
 
 $sql = " select clientes.*,db30_codver , '2.'||db30_codversao ||'.'|| db30_codrelease as versao 
                from clientes 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $cldb_layouttxtgrupotipo->rotulo->label();
        <?=@$Ldb57_sequencial?>
     </td>
     <td> 
-<?php 
+<?
 db_input('db57_sequencial',4,$Idb57_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('db57_sequencial',4,$Idb57_sequencial,true,'text',$db_opcao,"")
        <?=@$Ldb57_descr?>
     </td>
     <td> 
-<?php 
+<?
 db_input('db57_descr',40,$Idb57_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_layouttxtgrupotipo.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

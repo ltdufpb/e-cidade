@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,7 +95,7 @@ if (isset($solicitacoes) && trim($solicitacoes) != ""){
 <table align="center">
   <tr>
     <td>
-    <?php 
+    <?
 $numrows_confirma = 0;
 $mostra           = false;
 if ((isset($DBtxt23)&&trim(@$DBtxt23)!="") &&
@@ -149,7 +149,7 @@ if (trim($erro_msg) != ""){
   </tr>
   <tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

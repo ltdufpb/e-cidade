@@ -795,7 +795,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                     ?>
                                                 </td>
                                             </tr>
-                                            <tr id="row_rh02_tipodeficiencia" <?php  echo ($GLOBALS['rh02_deficientefisico'] == 't') ? '' : 'style="display: none;"' ?> >
+                                            <tr id="row_rh02_tipodeficiencia" <? echo ($GLOBALS['rh02_deficientefisico'] == 't') ? '' : 'style="display: none;"' ?> >
                                                 <td nowrap title="<?= @$Trh02_tipodeficiencia ?>" align="left">
                                                     <?= @$Lrh02_tipodeficiencia ?>
                                                 </td>

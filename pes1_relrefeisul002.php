@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -68,7 +68,7 @@ if ( trim($sMunicipio) == trim($sBaseSessao) ) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc">
 <br><br>
 
- <?php 
+ <?
     db_inicio_transacao();
     
     if ( $lSqlErro == false ) {

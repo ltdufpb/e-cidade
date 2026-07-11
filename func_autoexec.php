@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clautoexec->rotulo->label("y15_numero");
               <?=$Ly15_codauto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y15_codauto",10,$Iy15_codauto,true,"text",4,"","chave_y15_codauto");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clautoexec->rotulo->label("y15_numero");
               <?=$Ly15_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y15_numero",10,$Iy15_numero,true,"text",4,"","chave_y15_numero");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clautoexec->rotulo->label("y15_numero");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autoexec.php")==true){
@@ -119,12 +119,12 @@ $clautoexec->rotulo->label("y15_numero");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

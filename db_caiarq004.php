@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,19 +37,19 @@
             <td>Agencia:</td>
             <td><input name="k15_codage" type="text" id="k15_codage" size="6" maxlength="5"></td>
           </tr>
-          <?php  
+          <? 
             if ($db_opcao != 5){
           ?>
           <tr> 
             <td>Data:</td>
             <td> 
-              <?php 
+              <?
 			include ("dbforms/db_funcoes.php") ;
 		    db_data("datapes");
 			?>
             </td>
           </tr>
-          <?php 
+          <?
             }
           ?>
           <tr align="center"> 

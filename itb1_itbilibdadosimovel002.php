@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -355,7 +355,7 @@ if (isset($oGet->alteraguialib)) {
 <link href="estilos/grid.style.css" rel="stylesheet" type="text/css">
 </head>
 
-<?php 
+<?
   $sLogradouro             = @$it18_nomelograd;
   $sFuncaoFrenteLogradouro = '';
   if ($sLogradouro == " " || $sLogradouro == null ) {
@@ -371,7 +371,7 @@ if (isset($oGet->alteraguialib)) {
     </tr>
     <tr>
       <td>
-      <?php 
+      <?
         include(modification("forms/db_frmitbilibdadosimovel.php"));
       ?>
     </td>
@@ -380,7 +380,7 @@ if (isset($oGet->alteraguialib)) {
 </form>
 </body>
 </html>
-<?php 
+<?
 if(isset($oPost->alterar)){
 
   if( !$lSqlErro ){

@@ -61,9 +61,9 @@ $clrotulo->label("ar44_procedencia");
                             <strong>Periodo:</strong>
                         </td>
                         <td>
-                            <?php  db_inputdata('dataInicio',"","","",true,'text',1) ?> 
+                            <? db_inputdata('dataInicio',"","","",true,'text',1) ?> 
                             <b>até</b> 
-                            <?php  db_inputdata('dataFim',"","","",true,'text',1) ?> 
+                            <? db_inputdata('dataFim',"","","",true,'text',1) ?> 
                         </td>
                     </tr>
                     <tr>
@@ -139,7 +139,7 @@ $clrotulo->label("ar44_procedencia");
                                             ?>
                                         </td>
                                         <td>
-                                            <?php 
+                                            <?
                                             db_input("ar44_sequencial", 5, @$Iar44_sequencial, true, "text", 1, "onchange='js_pesquisaTaxa(false);'", "", "white");
                                             db_input("ar44_descricao", 40, false, true, "text", 5, "", "", "", "width: 260px;");
                                             ?>
@@ -159,7 +159,7 @@ $clrotulo->label("ar44_procedencia");
             <input name="salvar" id="salvar" type="button" onclick="js_geraRelatorio();" value="Processar">
         </form>
     </div>
-    <?php  db_menu(); ?>
+    <? db_menu(); ?>
 </body>
 
 </html>

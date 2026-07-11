@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -464,7 +464,7 @@ function js_saida(oAjax) {
 		  <input type="hidden" id="parcel"          value="<?=$parcel?>">
 		  <input type="hidden" id="iTipoAnulacao"   value="">
 		  
-		  <?php 
+		  <?
         $disabled    = "disabled";
         $mostrabotao = db_permissaomenu(db_getsession("DB_anousu"),81,2537);
         if ($mostrabotao == "true") {

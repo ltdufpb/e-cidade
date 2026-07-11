@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,10 +47,10 @@ $clrotulo->label("nome");
     <tr>
     <td nowrap title="<?=@$Tm40_codigo?>">
       <b>Código: </b> 
-      <?php //=@$Lm40_codigo?>
+      <?//=@$Lm40_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('m40_codigo',10,$Im40_codigo,true,'text',3,"")
 ?>
     </td>
@@ -60,37 +60,37 @@ db_input('m40_codigo',10,$Im40_codigo,true,'text',3,"")
        <?=@$Lm40_data?>
     </td>
     <td> 
-<?php 
+<?
 db_inputdata('m40_data',@$m40_data_dia,@$m40_data_mes,@$m40_data_ano,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm40_depto?>">
-       <?php 
+       <?
        db_ancora(@$Lm40_depto,"js_pesquisam40_depto(true);",3);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('m40_depto',6,$Im40_depto,true,'text',3," onchange='js_pesquisam40_depto(false);'")
 ?>
-       <?php 
+       <?
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tm40_login?>">
-       <?php 
+       <?
        db_ancora(@$Lm40_login,"js_pesquisam40_login(true);",3);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('m40_login',10,$Im40_login,true,'text',3," onchange='js_pesquisam40_login(false);'")
 ?>
-       <?php 
+       <?
 db_input('nome',40,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -100,7 +100,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
        <?=@$Lm40_hora?>
     </td>
     <td> 
-<?php 
+<?
 db_input('m40_hora',5,$Im40_hora,true,'text',3,"")
 ?>
     </td>
@@ -115,7 +115,7 @@ db_input('m40_hora',5,$Im40_hora,true,'text',3,"")
     </td>
     <td> 
 
-<?php 
+<?
 	$result_depusu = $cldb_depusu->sql_record($cldb_depusu->sql_query_almoxusu(null,
 	                                                                           null,
 	                                                                           " distinct 
@@ -144,7 +144,7 @@ db_input('m40_hora',5,$Im40_hora,true,'text',3,"")
        <?=@$Lm40_obs?>
     </td>
     <td> 
-<?php 
+<?
 db_textarea('m40_obs',10,50,$Im40_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -152,7 +152,7 @@ db_textarea('m40_obs',10,50,$Im40_obs,true,'text',$db_opcao,"")
   </table>
   </fieldset>
   </center>
-  <?php 
+  <?
   if (isset($opcao)){
     $db_opcao=@$opcao;
   }
@@ -213,7 +213,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_matrequi.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;\n";
     if($db_opcao==3||$db_opcao==33){

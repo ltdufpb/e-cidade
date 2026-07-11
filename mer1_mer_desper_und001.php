@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -100,7 +100,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Unidades de Desperdício</b></legend>
-    <?php include(modification("forms/db_frmmer_desper_und.php"));?>
+    <?include(modification("forms/db_frmmer_desper_und.php"));?>
    </fieldset>
    </center>
   </td>
@@ -111,7 +111,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me23_f_quant",true,1,"me23_f_quant",true);
 </script>
-<?php 
+<?
 if (isset($incluir)||isset($alterar)||isset($excluir)){
 	
   if ($clmer_desper_und->erro_status=="0"){

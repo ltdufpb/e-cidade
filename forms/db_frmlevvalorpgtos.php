@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -102,7 +102,7 @@ function js_fechar(){
        <?=@$Ly68_valor?>
     </td>
     <td> 
-<?php 
+<?
 db_input('y68_valor',10,$Iy68_valor,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ db_input('y68_valor',10,$Iy68_valor,true,'text',$db_opcao,"")
        <?=@$Ly68_pgto?>
     </td>
     <td> 
-<?php 
+<?
 db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -132,7 +132,7 @@ db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text'
 </tr>  
 <tr>
   <td valign="top">  
-   <?php 
+   <?
 	   $cliframe_alterar_excluir_html->colunas =array("y68_valor"=>$Ly68_valor,"y68_pgto"=>$Ly68_pgto);
 	   $cliframe_alterar_excluir_html->iframe_width ="350";
 	   $cliframe_alterar_excluir_html->iframe_nome ="criatabela";
@@ -152,7 +152,7 @@ db_inputdata('y68_pgto',@$y68_pgto_dia,@$y68_pgto_mes,@$y68_pgto_ano,true,'text'
 </table>  
 <script>
 function js_monta(){
-<?php 
+<?
 if(isset($valores)){
   $matriz01=split('HHH',$valores);
   for($i=0; $i<count($matriz01); $i++){

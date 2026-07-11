@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,7 +52,7 @@ $clcriaabas = new cl_criaabas;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td>
-     <?php 
+     <?
        $clcriaabas->identifica = array("g1"=>"Despesa");
        $clcriaabas->title = array("g1"=>"Selecionar despesas");
        $clcriaabas->src = array("g1"=>"con2_razaodespesa_pv0011.php");
@@ -63,7 +63,7 @@ $clcriaabas = new cl_criaabas;
 <tr>
 </tr>
 </table>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 <script>
   document.formaba.g1.size = 25; 

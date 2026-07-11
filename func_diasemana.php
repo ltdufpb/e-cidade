@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cldiasemana->rotulo->label("ed32_i_codigo");
               <?=$Led32_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed32_i_codigo",10,$Ied32_i_codigo,true,"text",4,"","chave_ed32_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $cldiasemana->rotulo->label("ed32_i_codigo");
               <?=$Led32_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed32_i_codigo",10,$Ied32_i_codigo,true,"text",4,"","chave_ed32_i_codigo");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $cldiasemana->rotulo->label("ed32_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_diasemana.php")==true){
@@ -125,12 +125,12 @@ $cldiasemana->rotulo->label("ed32_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

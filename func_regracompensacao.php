@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clregracompensacao->rotulo->label("k155_descricao");
               <?=$Lk155_sequencial?>
         </td>
         <td nowrap> 
-        <?php 
+        <?
           db_input("k155_sequencial",10,$Ik155_sequencial,true,"text",4,"","chave_k155_sequencial");
         ?>
         </td>
@@ -67,7 +67,7 @@ $clregracompensacao->rotulo->label("k155_descricao");
           <?=$Lk155_descricao?>
         </td>
         <td nowrap> 
-        <?php 
+        <?
           db_input("k155_descricao",40,$Ik155_descricao,true,"text",4,"","chave_k155_descricao");
         ?>
         </td>
@@ -86,7 +86,7 @@ $clregracompensacao->rotulo->label("k155_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
             
       if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
@@ -166,12 +166,12 @@ $clregracompensacao->rotulo->label("k155_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 ?>
   <script>
   </script>
-<?php 
+<?
 }
 ?>
 <script>

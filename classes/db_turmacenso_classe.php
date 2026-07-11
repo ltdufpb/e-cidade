@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: escola
 //CLASSE DA ENTIDADE turmacenso
 class cl_turmacenso

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,13 +110,13 @@ function js_changenome(x){
 				<td>
 				<table>
 					<tr>
-						<td align="left" nowrap title="<?=$Tz01_v_nome?>"><?php 
+						<td align="left" nowrap title="<?=$Tz01_v_nome?>"><?
 						db_ancora ( @$Lz01_v_nome, "", 3 );
 						?></td>
 					</tr>
 					<tr>
 						<td>
-	  <?php 
+	  <?
 			db_input ( 'z01_v_nome', 40, $Iz01_v_nome, true, 'text', 1, "" )?>
 	</td>
 				
@@ -126,28 +126,28 @@ function js_changenome(x){
 			<tr>
 				<td align="left" nowrap title="Filtrar por endereços "><input
 					type="checkbox" name="z01_v_ender" value="z01_v_ender"></td>
-				<td align="left" nowrap title="<?=$Tz01_v_ender?>"><?php 
+				<td align="left" nowrap title="<?=$Tz01_v_ender?>"><?
 				db_ancora ( @$Lz01_v_ender, "", 3 );
 				?></td>
 			</tr>
 			<tr>
 				<td align="left" nowrap title="Filtrar por números "><input
 					type="checkbox" name="z01_i_numero" value="z01_i_numero"></td>
-				<td align="left" nowrap title="<?=$Tz01_i_numero?>"><?php 
+				<td align="left" nowrap title="<?=$Tz01_i_numero?>"><?
 				db_ancora ( @$Lz01_i_numero, "", 3 );
 				?></td>
 			</tr>
 			<tr>
 				<td align="left" nowrap title="Filtrar por complementos "><input
 					type="checkbox" name="z01_v_compl" value="z01_v_compl"></td>
-				<td align="left" nowrap title="<?=$Tz01_v_compl?>"><?php 
+				<td align="left" nowrap title="<?=$Tz01_v_compl?>"><?
 				db_ancora ( @$Lz01_v_compl, "", 3 );
 				?></td>
 			</tr>
 			<tr>
 				<td align="left" nowrap title="Filtrar por bairros "><input
 					type="checkbox" name="z01_v_bairro" value="z01_v_bairro"></td>
-				<td nowrap title="<?=@$Tz01_v_bairro?>"><?php 
+				<td nowrap title="<?=@$Tz01_v_bairro?>"><?
 				db_ancora ( @$Lz01_v_bairro, "", 3 );
 				?>
     </td>
@@ -155,7 +155,7 @@ function js_changenome(x){
 			<tr>
 				<td align="left" nowrap title="Filtrar por municípios "><input
 					type="checkbox" name="z01_v_munic" value="z01_v_munic"></td>
-				<td nowrap title="<?=@$Tz01_v_munic?>"><?php 
+				<td nowrap title="<?=@$Tz01_v_munic?>"><?
 				db_ancora ( @$Lz01_v_munic, "", 3 );
 				?>
     </td>
@@ -163,7 +163,7 @@ function js_changenome(x){
 			<tr>
 				<td align="left" nowrap title="Filtrar por CPF/CNPJ "><input
 					type="checkbox" name="z01_v_cgccpf" value="z01_v_cgccpf"></td>
-				<td nowrap title="<?=@$Tz01_v_cgccpf?>"><?php 
+				<td nowrap title="<?=@$Tz01_v_cgccpf?>"><?
 				db_ancora ( @$Lz01_v_cgccpf, "", 3 );
 				?>
     </td>
@@ -180,7 +180,7 @@ function js_changenome(x){
 					preenchidos totalmente com zero ou em branco:&nbsp;&nbsp;</strong>
 					</td>
 					<td>
-	  <?php 
+	  <?
 			$tipo_zerados = array ("n" => "Não", "s" => "Sim", "m" => "Somente os zerados/branco" );
 			db_select ( "zerados", $tipo_zerados, true, 2 );
 			?>
@@ -210,7 +210,7 @@ function js_changenome(x){
 </table>
 </form>
 </center>
-<?php 
+<?
 db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_getsession ( "DB_anousu" ), db_getsession ( "DB_instit" ) );
 ?>
 </body>

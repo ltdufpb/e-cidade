@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cltarefaproced->rotulo->label("at41_proced");
               <?=$Lat41_tarefa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at41_tarefa",10,$Iat41_tarefa,true,"text",4,"","chave_at41_tarefa");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cltarefaproced->rotulo->label("at41_proced");
               <?=$Lat41_proced?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at41_proced",10,$Iat41_proced,true,"text",4,"","chave_at41_proced");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cltarefaproced->rotulo->label("at41_proced");
               <?=$Lat41_proced?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at41_proced",10,$Iat41_proced,true,"text",4,"","chave_at41_proced");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cltarefaproced->rotulo->label("at41_proced");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefaproced.php")==true){
@@ -130,12 +130,12 @@ $cltarefaproced->rotulo->label("at41_proced");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

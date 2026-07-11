@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -134,7 +134,7 @@ if(isset($processar)){
     <center>
     <table>
     <tr>
-    <?php 
+    <?
     if(!isset($processar)){
       echo "<td colspan='4'><br><br><strong>Importar Contas do exercício anterior: (".(db_getsession("DB_anousu")-1).")</strong></td></tr>";
       echo "<tr><td colspan='4'></td></tr>";
@@ -175,11 +175,11 @@ if(isset($processar)){
   </tr>
 </table>
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 if( $erro_msg != "")
   db_msgbox($erro_msg);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed05_i_codigo',15,$Ied05_i_codigo,true,'text',3,"")?>
+   <?db_input('ed05_i_codigo',15,$Ied05_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -44,7 +44,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_c_numero?>
   </td>
   <td>
-   <?php db_input('ed05_c_numero',10,$Ied05_c_numero,true,'text',$db_opcao,"")?>
+   <?db_input('ed05_c_numero',10,$Ied05_c_numero,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -52,19 +52,19 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_c_finalidade?>
   </td>
   <td>
-   <?php db_input('ed05_c_finalidade',50,$Ied05_c_finalidade,true,'text',$db_opcao,"")?>
+   <?db_input('ed05_c_finalidade',50,$Ied05_c_finalidade,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted05_i_tipoato?>">
-   <?php db_ancora(@$Led05_i_tipoato," js_pesquisaed05_i_tipoato(true); ",$db_opcao);?>
+   <?db_ancora(@$Led05_i_tipoato," js_pesquisaed05_i_tipoato(true); ",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed05_i_tipoato',15,@$Ied07_i_ato,true,'text',
+   <?db_input('ed05_i_tipoato',15,@$Ied07_i_ato,true,'text',
               $db_opcao," onchange='js_pesquisaed05_i_tipoato(false)'; "
              )
    ?>
-   <?php db_input('ed83_c_descr',30,@$Ied83_c_descr,true,'text',3,'')?>
+   <?db_input('ed83_c_descr',30,@$Ied83_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -72,7 +72,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_c_competencia?>
   </td>
   <td>
-   <?php 
+   <?
    $x = ['M'=>'Municipal','E'=>'Estadual','F'=>'Federal'];
    db_select('ed05_c_competencia',$x,true,$db_opcao,"");
    ?>
@@ -83,7 +83,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_i_ano?>
   </td>
   <td>
-   <?php db_input('ed05_i_ano',4,$Ied05_i_ano,true,'text',$db_opcao,"")?>
+   <?db_input('ed05_i_ano',4,$Ied05_i_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -91,7 +91,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_c_orgao?>
   </td>
   <td>
-   <?php db_input('ed05_c_orgao',50,$Ied05_c_orgao,true,'text',$db_opcao,"")?>
+   <?db_input('ed05_c_orgao',50,$Ied05_c_orgao,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -99,7 +99,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_d_vigora?>
   </td>
   <td>
-   <?php db_inputdata('ed05_d_vigora',@$ed05_d_vigora_dia,@$ed05_d_vigora_mes,
+   <?db_inputdata('ed05_d_vigora',@$ed05_d_vigora_dia,@$ed05_d_vigora_mes,
                   @$ed05_d_vigora_ano,true,'text',$db_opcao,""
                  )
    ?>
@@ -110,7 +110,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_d_aprovado?>
   </td>
   <td>
-   <?php db_inputdata('ed05_d_aprovado',@$ed05_d_aprovado_dia,@$ed05_d_aprovado_mes,
+   <?db_inputdata('ed05_d_aprovado',@$ed05_d_aprovado_dia,@$ed05_d_aprovado_mes,
                   @$ed05_d_aprovado_ano,true,'text',$db_opcao,""
                  )
    ?>
@@ -121,7 +121,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_d_publicado?>
   </td>
   <td>
-   <?php db_inputdata('ed05_d_publicado',@$ed05_d_publicado_dia,@$ed05_d_publicado_mes,
+   <?db_inputdata('ed05_d_publicado',@$ed05_d_publicado_dia,@$ed05_d_publicado_mes,
                   @$ed05_d_publicado_ano,true,'text',$db_opcao,""
                  )
    ?>
@@ -133,7 +133,7 @@ $oDaoAtoLegal->rotulo->label();
   </td>
   <td>
 
-    <?php 
+    <?
     $aX = ['2'=>'NÃO', '1'=>'SIM'];
     db_select('ed05_i_aparecehistorico', $aX, true, $db_opcao);
     ?>
@@ -144,7 +144,7 @@ $oDaoAtoLegal->rotulo->label();
    <?=@$Led05_t_texto?>
   </td>
   <td>
-   <?php db_textarea('ed05_t_texto',4,50,$Ied05_t_texto,true,'text',$db_opcao,"")?>
+   <?db_textarea('ed05_t_texto',4,50,$Ied05_t_texto,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -211,7 +211,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_atolegal.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

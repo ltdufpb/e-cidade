@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllocalatendimentofamilia->rotulo->label("as23_cidadaofamilia");
               <?=$Las23_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as23_sequencial",10,$Ias23_sequencial,true,"text",4,"","chave_as23_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllocalatendimentofamilia->rotulo->label("as23_cidadaofamilia");
               <?=$Las23_cidadaofamilia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as23_cidadaofamilia",10,$Ias23_cidadaofamilia,true,"text",4,"","chave_as23_cidadaofamilia");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllocalatendimentofamilia->rotulo->label("as23_cidadaofamilia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_localatendimentofamilia.php")==true){
@@ -123,12 +123,12 @@ $cllocalatendimentofamilia->rotulo->label("as23_cidadaofamilia");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

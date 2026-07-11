@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -79,7 +79,7 @@ function js_emite() {
              Bloqueados :
            </b>
            </td>
-           <td nowrap>  <?php 
+           <td nowrap>  <?
            $tipo_blo = array("t"=>"Todos","s"=>"Sim","b"=>"Não");
 	       db_select("bloqueado",$tipo_blo,true,2); ?>
             </td>
@@ -91,7 +91,7 @@ function js_emite() {
              Ordem :
            </b>
            </td>
-           <td nowrap>  <?php 
+           <td nowrap>  <?
            $tipo_ordem = array("a"=>"Alfabética","n"=>"Numerica");
 	       db_select("ordem",$tipo_ordem,true,2); ?>
             </td>
@@ -103,7 +103,7 @@ function js_emite() {
              Fornecedores:
            </b>
            </td>
-           <td nowrap>  <?php 
+           <td nowrap>  <?
            $tipo = array("t"=>"Todos","c"=>"Com conta","s"=>"Sem conta");
 	       db_select("forne",$tipo,true,2); ?>
             </td>
@@ -118,7 +118,7 @@ function js_emite() {
   
         
        
-       <?php 
+       <?
   
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
        ?>

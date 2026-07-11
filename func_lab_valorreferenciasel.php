@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllab_valorreferenciasel->rotulo->label("la28_c_descr");
               <?=$Lla28_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la28_i_codigo",10,$Ila28_i_codigo,true,"text",4,"","chave_la28_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllab_valorreferenciasel->rotulo->label("la28_c_descr");
               <?=$Lla28_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la28_c_descr",40,$Ila28_c_descr,true,"text",4,"","chave_la28_c_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllab_valorreferenciasel->rotulo->label("la28_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_valorreferenciasel.php")==true){
@@ -123,12 +123,12 @@ $cllab_valorreferenciasel->rotulo->label("la28_c_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

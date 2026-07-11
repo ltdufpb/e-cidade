@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $cllab_laboratorio->rotulo->label();
            <?=@$Lla02_i_codigo?>
        </td>
        <td colspan="3"> 
-           <?php db_input('la02_i_codigo',10,$Ila02_i_codigo,true,'text',3,"")?>
+           <?db_input('la02_i_codigo',10,$Ila02_i_codigo,true,'text',3,"")?>
        </td>
   </tr>
   <tr>
@@ -44,26 +44,26 @@ $cllab_laboratorio->rotulo->label();
            <?=@$Lla02_i_tipo?>
        </td>
        <td Colspan="3"> 
-           <?php $y = array("0"=>"Selecione:::","1"=>"Interno","2"=>"Externo");
+           <?$y = array("0"=>"Selecione:::","1"=>"Interno","2"=>"Externo");
            db_select('la02_i_tipo',$y,true,($db_opcao==2)?@$iBloqueioTipo:$db_opcao," onchange='js_tipo(this.value);'");?>
        </td>
   </tr>
   <tr style="display:<?=(@$la02_i_tipo == 1) ? "" : "none"?>" id="linha_departamento">
         <td>
-            <?php db_ancora("<b>Departamento:</b>","js_pesquisala03_i_departamento(true);",$db_opcao);?>
+            <?db_ancora("<b>Departamento:</b>","js_pesquisala03_i_departamento(true);",$db_opcao);?>
         </td>
         <td colspan="3">         
-            <?php db_input('la03_i_departamento',10,"",true,'text',$db_opcao," onchange='js_pesquisala03_i_departamento(false);'")?>
-            <?php db_input('descrdepto',35,"",true,'text',3,'')?>         
+            <?db_input('la03_i_departamento',10,"",true,'text',$db_opcao," onchange='js_pesquisala03_i_departamento(false);'")?>
+            <?db_input('descrdepto',35,"",true,'text',3,'')?>         
         </td>
   </tr>
   <tr style="display:<?=(@$la02_i_tipo == 2)? "" : "none"?>" id="linha_cgm">
       <td>
-           <?php db_ancora("<b>CGM:</b>","js_pesquisaCgm(true);",$db_opcao);?>
+           <?db_ancora("<b>CGM:</b>","js_pesquisaCgm(true);",$db_opcao);?>
       </td>    
       <td colspan="3">
-         <?php db_input('la04_i_cgm',10,"",true,'text',$db_opcao," onchange='js_pesquisaCgm(false);'")?>
-         <?php db_input('z01_nome',40,"",true,'text',3,'')?>
+         <?db_input('la04_i_cgm',10,"",true,'text',$db_opcao," onchange='js_pesquisaCgm(false);'")?>
+         <?db_input('z01_nome',40,"",true,'text',3,'')?>
       </td>
   </tr>
   <tr>
@@ -71,7 +71,7 @@ $cllab_laboratorio->rotulo->label();
            <?=@$Lla02_c_descr?>
        </td>
        <td colspan="3"> 
-           <?php db_input('la02_c_descr',45,$Ila02_c_descr,true,'text',$db_opcao,"")?>
+           <?db_input('la02_c_descr',45,$Ila02_c_descr,true,'text',$db_opcao,"")?>
        </td>
   </tr>
   <tr>
@@ -79,7 +79,7 @@ $cllab_laboratorio->rotulo->label();
        <?=@$Lla02_i_alvara?>
     </td>
     <td> 
-<?php 
+<?
 db_input('la02_i_alvara',10,$Ila02_i_alvara,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -87,7 +87,7 @@ db_input('la02_i_alvara',10,$Ila02_i_alvara,true,'text',$db_opcao,"")
        <?=@$Lla02_i_cnes?>
     </td>
     <td> 
-<?php 
+<?
 db_input('la02_i_cnes',10,$Ila02_i_cnes,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('la02_i_cnes',10,$Ila02_i_cnes,true,'text',$db_opcao,"")
        <?=@$Lla02_c_endereco?>
     </td>
     <td> 
-<?php 
+<?
 db_input('la02_c_endereco',45,$Ila02_c_endereco,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -105,7 +105,7 @@ db_input('la02_c_endereco',45,$Ila02_c_endereco,true,'text',$db_opcao,"")
        <?=@$Lla02_c_numero?>
     </td>
     <td> 
-<?php 
+<?
 db_input('la02_c_numero',10,$Ila02_c_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -116,7 +116,7 @@ db_input('la02_c_numero',10,$Ila02_c_numero,true,'text',$db_opcao,"")
        <?=@$Lla02_i_telefone?>
     </td>
     <td colspan="3"> 
-<?php 
+<?
 db_input('la02_i_telefone',11,$Ila02_i_telefone,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -124,11 +124,11 @@ db_input('la02_i_telefone',11,$Ila02_i_telefone,true,'text',$db_opcao,"")
 
   <tr>
      <td nowrap title="<?=@$Tla02_i_turnoatend?>">
-         <?php db_ancora(@$Lla02_i_turnoatend,"js_pesquisala02_i_turnoatend(true);",$db_opcao);?>
+         <?db_ancora(@$Lla02_i_turnoatend,"js_pesquisala02_i_turnoatend(true);",$db_opcao);?>
      </td>
      <td>
-         <?php db_input('la02_i_turnoatend',10,$Ila02_i_turnoatend,true,'text',$db_opcao,"onchange='js_pesquisala02_i_turnoatend(false);'")?>
-         <?php db_input('sd43_v_descricao',40,@$Isd43_v_descricao,true,'text',3,"")?>
+         <?db_input('la02_i_turnoatend',10,$Ila02_i_turnoatend,true,'text',$db_opcao,"onchange='js_pesquisala02_i_turnoatend(false);'")?>
+         <?db_input('sd43_v_descricao',40,@$Isd43_v_descricao,true,'text',3,"")?>
      </td>
    </tr>
 
@@ -146,7 +146,7 @@ db_input('la02_i_telefone',11,$Ila02_i_telefone,true,'text',$db_opcao,"")
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 </form>
 <script>
-<?php if(@$la02_i_tipo!=""){
+<?if(@$la02_i_tipo!=""){
     echo"js_tipo($la02_i_tipo);";
   }
 ?>
@@ -156,7 +156,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_laboratorio.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

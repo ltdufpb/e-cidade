@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cleditaldoc->rotulo->label("d13_db_documento");
               <?=$Ld13_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("d13_sequencial",10,$Id13_sequencial,true,"text",4,"","chave_d13_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cleditaldoc->rotulo->label("d13_db_documento");
               <?=$Ld13_db_documento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("d13_db_documento",8,$Id13_db_documento,true,"text",4,"","chave_d13_db_documento");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cleditaldoc->rotulo->label("d13_db_documento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_editaldoc.php")==true){
@@ -123,12 +123,12 @@ $cleditaldoc->rotulo->label("d13_db_documento");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

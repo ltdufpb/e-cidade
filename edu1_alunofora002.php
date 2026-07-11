@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ if(isset($alterar)){
     <br>
   <fieldset style="width:95%"><legend><b>Alteração de Aluno Fora da rede municipal</b></legend>
    <center>
-     <?php  include(modification("forms/db_frmalunofora.php"));?>
+     <? include(modification("forms/db_frmalunofora.php"));?>
     </fieldset>
    </center>
    </td>
@@ -80,7 +80,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
   if($clalunofora->erro_status=="0"){
     $clalunofora->erro(true,false);
@@ -101,4 +101,4 @@ if($db_opcao==22){
 <script>
 js_tabulacaoforms("form1","ed216_d_datacad",true,1,"ed216_d_datacad",true);
 </script>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>

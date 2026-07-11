@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claguacortematmov->rotulo->label("x42_codmov");
               <?=$Lx42_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x42_codmov",5,$Ix42_codmov,true,"text",4,"","chave_x42_codmov");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claguacortematmov->rotulo->label("x42_codmov");
               <?=$Lx42_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x42_codmov",5,$Ix42_codmov,true,"text",4,"","chave_x42_codmov");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $claguacortematmov->rotulo->label("x42_codmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacortematmov.php")==true){
@@ -119,12 +119,12 @@ $claguacortematmov->rotulo->label("x42_codmov");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,14 +52,14 @@ $clcensodisciplina = new cl_censodisciplina;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <table width="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
    <br>
    <fieldset style="width:95%"><legend><b>Disciplina</b></legend>
    <br>
-   <?php 
+   <?
    $campos = "ed265_i_codigo,
               ed265_c_descr
              ";
@@ -74,6 +74,6 @@ $clcensodisciplina = new cl_censodisciplina;
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

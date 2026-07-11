@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clpcfornecert->rotulo->label("pc61_vencim");
               <?=$Lpc61_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc61_numcgm",8,$Ipc61_numcgm,true,"text",4,"","chave_pc61_numcgm");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clpcfornecert->rotulo->label("pc61_vencim");
               <?=$Lpc61_certif?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc61_certif",6,$Ipc61_certif,true,"text",4,"","chave_pc61_certif");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clpcfornecert->rotulo->label("pc61_vencim");
               <?=$Lpc61_vencim?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc61_vencim",10,$Ipc61_vencim,true,"text",4,"","chave_pc61_vencim");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clpcfornecert->rotulo->label("pc61_vencim");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcfornecert.php")==true){
@@ -130,12 +130,12 @@ $clpcfornecert->rotulo->label("pc61_vencim");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

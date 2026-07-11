@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -29,7 +29,7 @@ $clpagordemprocesso->rotulo->label("e03_sequencial");
               <?=$Le03_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e03_sequencial",10,$Ie03_sequencial,true,"text",4,"","chave_e03_sequencial");
 		       ?>
             </td>
@@ -39,7 +39,7 @@ $clpagordemprocesso->rotulo->label("e03_sequencial");
               <?=$Le03_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e03_sequencial",10,$Ie03_sequencial,true,"text",4,"","chave_e03_sequencial");
 		       ?>
             </td>
@@ -57,7 +57,7 @@ $clpagordemprocesso->rotulo->label("e03_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pagordemprocesso.php")==true){
@@ -97,12 +97,12 @@ $clpagordemprocesso->rotulo->label("e03_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

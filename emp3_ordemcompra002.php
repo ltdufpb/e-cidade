@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -113,7 +113,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -140,13 +140,13 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr>
           <td nowrap align="right" title="<?=@$Te60_numcgm?>"><?=@$Le60_numcgm?></td>
           <td> 
-            <?php 
+            <?
               db_input('m51_numcgm',20,$Im51_numcgm,true,'text',3)
             ?>
           </td>
           <td nowrap align="right" title="<?=@$z01_nome?>"><?=@$Lz01_nome?></td>
           <td>
-            <?php 
+            <?
               db_input('z01_nome',48,$Iz01_nome,true,'text',3)
             ?>
           </td>
@@ -154,13 +154,13 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr>
           <td nowrap align="right" title="<?=@$Tm51_codordem?>"><b>Ordem de Compra:</b></td>
           <td>
-	    <?php 
+	    <?
               db_input('m51_codordem',20,$Im51_codordem,true,'text',3)
 	    ?>
 	  </td>
           <td nowrap align="right" title="<?=@$Tm53_data?>"><b>Data da anula&ccedil;&atilde;o:</b></td>
           <td> 
-	    <?php 		
+	    <?		
        $ano=substr(@$m53_data,0,4);
 	     $mes=substr(@$m53_data,5,2);
 	     $dia=substr(@$m53_data,8,2);
@@ -172,7 +172,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr>
           <td nowrap align="right" title="<?=@$Tm51_data?>"><b>Data da emiss&atilde;o:</b></td>
           <td> 
-	    <?php 
+	    <?
              $ano=substr($m51_data,0,4);
 	     $mes=substr($m51_data,5,2);
 	     $dia=substr($m51_data,8,2);
@@ -182,7 +182,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
           <td nowrap align="right" title="<?=@$descrdepto?>">
              <?=@$Lcoddepto?>
           <td> 
-             <?php 
+             <?
              db_input('m51_depto',6,$Im51_depto,true,'text',3);
              db_input('descrdepto',40,$Idescrdepto,true,'text',3);
              ?>
@@ -195,7 +195,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         </td>
         
         <td colspan="3">
-          <?php 
+          <?
             db_input('pc50_descr',87,'',true,'text',3);
           ?>
         </td>
@@ -204,7 +204,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
   <tr> 
 	<td align='right'><b>Obs:</b></td>
    <td colspan='3' align='left'>
-	 <?php  
+	 <? 
 	 db_textarea("m51_obs","","85",$Im51_obs,true,'text',3);
 	 
 	 ?>
@@ -220,7 +220,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
     </tr>
     <tr>
    <td align='center' valign='top' colspan='1' align='center'>
-  <?php if(isset($m51_codordem)){?>  
+  <?if(isset($m51_codordem)){?>  
      <table>
        <tr>
          <td>
@@ -229,7 +229,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
        </tr>
        <tr>
          <td align='right'>
-	 <?php $lanca=0;
+	 <?$lanca=0;
 	   $lancado=0;
 	   $result_lancado=$clmatestoqueitemoc->sql_record($clmatestoqueitemoc->sql_query(null,null,"sum(m71_valor) as soma",
 	      null,"m52_codordem=$m51_codordem and m73_cancelado is false"));
@@ -243,17 +243,17 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 	   }
 	 ?>
 	 <b>
-	 <?php 
+	 <?
 	  $alancar=$m51_valortotal-$lanca;
 	  $alancar=db_formatar($alancar,'f');
           $valortotal=db_formatar($m51_valortotal,'f');
 	 ?>
-	 Total da Ordem:<?php db_input('valortotal',15,'',true,'text',3)?>Valor Lançado:<?php db_input('lancado',15,'',true,'text',3)?>A Lançar:<?php db_input('alancar',15,'',true,'text',3)?>
+	 Total da Ordem:<?db_input('valortotal',15,'',true,'text',3)?>Valor Lançado:<?db_input('lancado',15,'',true,'text',3)?>A Lançar:<?db_input('alancar',15,'',true,'text',3)?>
 	 </b>
 	 </td>
        </tr>
      </table>
-  <?php }?>  
+  <?}?>  
    </td>
   </tr>
 </table>

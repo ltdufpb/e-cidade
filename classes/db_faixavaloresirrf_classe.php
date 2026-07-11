@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE faixavaloresirrf
 class cl_faixavaloresirrf { 

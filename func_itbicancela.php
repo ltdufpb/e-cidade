@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbicancela->rotulo->label("it16_data");
               <?=$Lit16_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it16_guia",10,$Iit16_guia,true,"text",4,"","chave_it16_guia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbicancela->rotulo->label("it16_data");
               <?=$Lit16_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it16_data",10,$Iit16_data,true,"text",4,"","chave_it16_data");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clitbicancela->rotulo->label("it16_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbicancela.php")==true){
@@ -119,12 +119,12 @@ $clitbicancela->rotulo->label("it16_data");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

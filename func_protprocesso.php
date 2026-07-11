@@ -75,7 +75,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_codproc?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("p58_codproc",10,$Ip58_codproc,true,"text",4,"","chave_p58_codproc");
                 ?>
             </td>
@@ -85,7 +85,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_numero?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("p58_numero",10,$Ip58_numero,true,"text",4,"","chave_p58_numero");
                 ?>
             </td>
@@ -95,7 +95,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_requer?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("p58_requer",50,$Ip58_requer,true,"text",4,"","chave_p58_requer");
                 ?>
             </td>
@@ -113,7 +113,7 @@ if (isset($chave_p58_requer)) {
   </tr>
   <tr>
     <td align="center" valign="top">
-        <?php 
+        <?
 
 
         /**

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clselecao->rotulo->label("r44_descr");
               <?=$Lr44_selec?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r44_selec",3,$Ir44_selec,true,"text",4,"","chave_r44_selec");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $clselecao->rotulo->label("r44_descr");
               <?=$Lr44_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r44_descr",70,$Ir44_descr,true,"text",4,"","chave_r44_descr");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clselecao->rotulo->label("r44_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       $chave_r44_descr = addslashes($chave_r44_descr);
       
@@ -155,7 +155,7 @@ $clselecao->rotulo->label("r44_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -172,7 +172,7 @@ if(!isset($pesquisa_chave)){
 		  
 	  })();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

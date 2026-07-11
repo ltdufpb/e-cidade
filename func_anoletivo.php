@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clanoletivo->rotulo->label("ed28_i_ano");
               <?=$Led28_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed28_i_codigo",1,$Ied28_i_codigo,true,"text",4,"","chave_ed28_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $clanoletivo->rotulo->label("ed28_i_ano");
               <?=$Led28_i_ano?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed28_i_ano",4,$Ied28_i_ano,true,"text",4,"","chave_ed28_i_ano");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $clanoletivo->rotulo->label("ed28_i_ano");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_anoletivo.php")==true){
@@ -121,12 +121,12 @@ $clanoletivo->rotulo->label("ed28_i_ano");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

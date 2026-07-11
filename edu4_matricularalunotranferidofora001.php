@@ -90,13 +90,13 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
           <tr>
             <td colspan="2">
               <label >Ano do Calendário da matrícula:</label>
-              <?php db_input( 'iAnoMatricula', 4, $iAnoMatricula, true, 'text', 1, "onchange='js_atualizaAnoSelecionado()';" );?>
+              <?db_input( 'iAnoMatricula', 4, $iAnoMatricula, true, 'text', 1, "onchange='js_atualizaAnoSelecionado()';" );?>
             </td>
           </tr>
 
           <tr>
             <td class="field-size3">
-              <?php db_ancora( $Led56_i_aluno, "js_pesquisaTransferencia();", $db_opcao );?>
+              <?db_ancora( $Led56_i_aluno, "js_pesquisaTransferencia();", $db_opcao );?>
             </td>
             <td>
               <?php
@@ -195,7 +195,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
           </tr>
           <tr>
             <td class="field-size3" nowrap="nowrap" >
-              <?php db_ancora( "Turma:", "js_pesquisaTurma();", 1 );?>
+              <?db_ancora( "Turma:", "js_pesquisaTurma();", 1 );?>
             </td>
             <td>
               <?php
@@ -221,7 +221,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
               <label>Base Curricular:</label>
             </td>
             <td>
-              <?php 
+              <?
                 db_input( 'ed57_i_base',  10, '',  true, 'text', 3, '' );
                 db_input( 'ed31_c_descr', 65, '', true, 'text', 3, '' );
               ?>
@@ -257,7 +257,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
               <label>Etapa:</label>
             </td>
             <td>
-              <?php 
+              <?
                 db_input( 'ed11_i_codigo',  10, '',  true, 'text', 3);
                 db_input( 'ed11_c_descr',   65, '', true, 'text', 3);
               ?>
@@ -331,7 +331,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
 </div>
 
 </body>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </html>
 <script type="text/javascript">
 

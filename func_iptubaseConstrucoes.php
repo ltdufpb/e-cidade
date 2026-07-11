@@ -458,7 +458,7 @@ if (!isset($pesquisa_chave)) {
     document.form1.chave_j01_matric.focus();
     document.form1.chave_j01_matric.select();
   </script>
-    <?php 
+    <?
 }
 
 $db_iframe = new janela('db_iframe', '');

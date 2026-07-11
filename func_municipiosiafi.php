@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmunicipiosiafi->rotulo->label("q110_codigo");
               <?=$Lq110_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q110_sequencial",10,$Iq110_sequencial,true,"text",4,"","chave_q110_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmunicipiosiafi->rotulo->label("q110_codigo");
               <?=$Lq110_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q110_codigo",4,$Iq110_codigo,true,"text",4,"","chave_q110_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmunicipiosiafi->rotulo->label("q110_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_municipiosiafi.php")==true){
@@ -123,12 +123,12 @@ $clmunicipiosiafi->rotulo->label("q110_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -137,7 +137,7 @@
                           location=0 ');
         jan.moveTo(0,0);
       </script>
-      <?php 
+      <?
       return false;
 
     }else{
@@ -146,7 +146,7 @@
         listagem = '<?=$sArquivo?>#Download arquivo TXT (BPA)|';
         js_montarlista(listagem,'form1');
       </script>
-      <?php 
+      <?
       return true;
     }
     function arr_search( $array, $valor ){

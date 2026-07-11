@@ -92,7 +92,7 @@ class StorageHelper
      */
     public static function downloadArquivo($idStorage)
     {
-        return new FileEstorage()->getPath($idStorage);
+        return (new FileEstorage())->getPath($idStorage);
     }
 
     /**
@@ -127,6 +127,6 @@ class StorageHelper
      */
     public static function getContentsBase64($idStorage)
     {
-        return new FileEstorage()->getBase64($idStorage);
+        return (new FileEstorage())->getBase64($idStorage);
     }
 }

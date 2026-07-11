@@ -205,7 +205,7 @@ if (isset($chavepesquisa)) {
             </select>
           </fieldset>
           <fieldset style="width:95%"><legend><b>Documentação do Aluno</b></legend>
-            <?php include(modification("forms/db_frmaluno.php"));?>
+            <?include(modification("forms/db_frmaluno.php"));?>
           </fieldset>
         </center>
       </td>

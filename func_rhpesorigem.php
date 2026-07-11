@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhpesorigem->rotulo->label("rh21_regpri");
               <?=$Lrh21_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh21_regist",6,$Irh21_regist,true,"text",4,"","chave_rh21_regist");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhpesorigem->rotulo->label("rh21_regpri");
               <?=$Lrh21_regpri?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh21_regpri",6,$Irh21_regpri,true,"text",4,"","chave_rh21_regpri");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhpesorigem->rotulo->label("rh21_regpri");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpesorigem.php")==true){
@@ -123,12 +123,12 @@ $clrhpesorigem->rotulo->label("rh21_regpri");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

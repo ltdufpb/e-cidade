@@ -88,14 +88,14 @@ if (isset($pesquisa_chave) === false) {
 ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
     ?>
   <script>
     document.form2.chave_p56_coddoc.focus();
     document.form2.chave_p56_coddoc.select();
   </script>
-    <?php 
+    <?
 }
 ?>
 <script type="text/javascript">

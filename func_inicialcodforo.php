@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clinicialcodforo->rotulo->label("v55_codforo");
               <?=$Lv55_inicial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v55_inicial",8,$Iv55_inicial,true,"text",4,"","chave_v55_inicial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clinicialcodforo->rotulo->label("v55_codforo");
               <?=$Lv55_codforo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v55_codforo",30,$Iv55_codforo,true,"text",4,"","chave_v55_codforo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clinicialcodforo->rotulo->label("v55_codforo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_inicialcodforo.php")==true){
@@ -120,12 +120,12 @@ $clinicialcodforo->rotulo->label("v55_codforo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Escolas de Procedência de Alunos</b></legend>
-    <?php include(modification("forms/db_frmescolaprocnova.php"));?>
+    <?include(modification("forms/db_frmescolaprocnova.php"));?>
    </fieldset>
    </center>
   </td>
@@ -110,7 +110,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed82_c_nome",true,1,"ed82_c_nome",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
  if($clescolaproc->erro_status=="0"){
   $clescolaproc->erro(true,false);

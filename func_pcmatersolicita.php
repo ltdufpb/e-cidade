@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -74,33 +74,33 @@ if(isset($o56_codele) and trim($o56_codele) != ''){
                 <form name="form1" method="post" action="" >
                     <tr>
                         <td width="4%" align="left" nowrap title="<?=$Tpc01_codmater?>"><?=$Lpc01_codmater?></td>
-                        <td width="46%" align="left" nowrap><?php   db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"","chave_pc01_codmater"); ?> </td>
+                        <td width="46%" align="left" nowrap><?  db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"","chave_pc01_codmater"); ?> </td>
                         <td width="4%" align="left" nowrap title="<?=$Tpc01_descrmater?>"> <?=$Lpc01_descrmater?></td>
-                        <td width="46%" align="left" nowrap><?php  db_input("pc01_descrmater",50,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater"); ?></td>
+                        <td width="46%" align="left" nowrap><? db_input("pc01_descrmater",50,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater"); ?></td>
                     </tr>
                     <tr>
                         <td width="4%" align="left" nowrap title="<?=$Tpc07_codele?>"><b>Código do Elemento:</b></td>
-                        <td width="46%" align="left" nowrap><?php   db_input("pc07_codele",6,$Ipc07_codele,true,"text",4,"","chave_pc07_codele"); ?> </td>
+                        <td width="46%" align="left" nowrap><?  db_input("pc07_codele",6,$Ipc07_codele,true,"text",4,"","chave_pc07_codele"); ?> </td>
                         <td width="4%" align="left" nowrap title="<?=$To56_descr?>"> <b>Descrição do Elemento:</b></td>
-                        <td width="46%" align="left" nowrap><?php  db_input("o56_descr",50,$Io56_descr,true,"text",4,"","chave_o56_descr"); ?></td>
+                        <td width="46%" align="left" nowrap><? db_input("o56_descr",50,$Io56_descr,true,"text",4,"","chave_o56_descr"); ?></td>
                     </tr>
                     <tr>
                         <td width="4%" align="left" nowrap title="<?=$To56_elemento?>"> <?=$Lo56_elemento?></td>
-                        <td width="46%" align="left" nowrap ><?php  db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento"); ?></td>
+                        <td width="46%" align="left" nowrap ><? db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento"); ?></td>
                         <td width="4%" align="left" nowrap title="<?=$To58_coddot?>"> <?=$Lo58_coddot?></td>
-                        <td width="46%" align="left" nowrap ><?php  db_input("o58_coddot",15,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?></td>
+                        <td width="46%" align="left" nowrap ><? db_input("o58_coddot",15,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?></td>
                     </tr>
                     <tr>
                         <td width="4%" align="left" nowrap title="<?=$Tpc03_codgrupo?>"><b>Grupo:</b></td>
                         <td width="46%" align="left" nowrap>
-                            <?php 
+                            <?
                             $res_pcgrupo = $clpcgrupo->sql_record($clpcgrupo->sql_query_file(null,"pc03_codgrupo,pc03_descrgrupo","pc03_descrgrupo","pc03_ativo='t'"));
                             db_selectrecord("pc03_codgrupo",$res_pcgrupo,true,4,"","chave_pc03_codgrupo","","0-Todos","js_reload()");
                             ?>
                         </td>
                         <td width="4%" align="left" nowrap title="<?=$Tpc04_codsubgrupo?>"><b>Subgrupo:</b></td>
                         <td width="46%" align="left" nowrap>
-                            <?php 
+                            <?
 
                             $sWhereSubGrupo  = "pc04_ativo='t' ";
                             if (isset($chave_pc03_codgrupo) && !empty($chave_pc03_codgrupo)) {
@@ -130,7 +130,7 @@ if(isset($o56_codele) and trim($o56_codele) != ''){
     </tr>
     <tr>
         <td align="center" valign="top">
-            <?php 
+            <?
 
             $where_ativo = " pc07_codele is not null ";
             $where_ativo .= " and pc01_ativo='f' ";
@@ -212,7 +212,7 @@ if(isset($o56_codele) and trim($o56_codele) != ''){
 </body>
 </html>
 <script>
-    <?php 
+    <?
     // CADASTRO DE PCMATER
     // Quando o usuário for incluir um item, aparecerá a func_pcmater.php para caso ele queira pegar dados de um item
     // já criado... EX.:o usuário ja tem um cadastro de caneta preta com Elemens,grupo e sub-grupo... Para o cadastro

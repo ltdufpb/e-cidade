@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,13 +98,13 @@ function erro($sDescricao) {
     <tr>
       <td align='center'>
         <font color='#FF0000' face='arial'>
-          <b><?php echo $sDescricao;?><br>
+          <b><?echo $sDescricao;?><br>
           <input type='button' value='Fechar' onclick='window.close()'></b>
         </font>
       </td>
     </tr>
  </table>
- <?php 
+ <?
  
 }
 $sWhereDepositos = "";

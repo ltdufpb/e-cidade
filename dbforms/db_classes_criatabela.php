@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -59,7 +59,7 @@ td{
 <form name="form1" method="post" action="">		   
   <table  border="1" cellpadding="3" cellspacing="0" id="tab">
     <tr bgcolor="#BDC6BD"> 
-    <?php 
+    <?
       $colunas= split("#",$quais_colunas);
       for($i=0; $i<sizeof($colunas); $i++){
         $coluna="x_".$colunas[$i];
@@ -69,7 +69,7 @@ td{
       
     ?>
     </tr>
-    <?php 
+    <?
      if(isset($sql) && $sql!=""){ 
        $coluna="";
        $virgula="";

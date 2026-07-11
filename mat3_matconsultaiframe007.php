@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ $clrotulo->label("");
   }
   </script>
   <style>
-  <?php //$cor="#999999"?>
+  <?//$cor="#999999"?>
   .bordas{
       border: 2px solid #cccccc;
       border-top-color: #999999;
@@ -84,7 +84,7 @@ $clrotulo->label("");
       <br>
       </td>
     </tr>
-  <?php 
+  <?
   if (!isset($filtroquery)){
   if (isset($codmater)&&$codmater!="") {
     $sql= "select distinct m71_codmatestoque,

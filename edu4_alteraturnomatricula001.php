@@ -75,7 +75,7 @@ if (isset($oGet->pesquisaTurma)) {
           <table class="form-container">
             <tr>
               <td nowrap="nowrap" class="field-size3" title="<?=$Ted57_i_codigo?>">
-                <?php db_ancora( "Turma:", "js_pesquisaTurma();", 1);?>
+                <?db_ancora( "Turma:", "js_pesquisaTurma();", 1);?>
               </td>
               <td nowrap="nowrap">
               <?php
@@ -89,7 +89,7 @@ if (isset($oGet->pesquisaTurma)) {
                 <?=$Led57_i_calendario?>
               </td>
               <td nowrap="nowrap">
-                <?php 
+                <?
                   db_input( 'ed52_c_descr',  60, '', true, 'text', 3 );
                   db_input( 'ed52_d_inicio', 60, '', true, 'hidden', 3 );
                   db_input( 'ed52_d_fim',    60, '', true, 'hidden', 3 );
@@ -101,7 +101,7 @@ if (isset($oGet->pesquisaTurma)) {
                 <?=$Led31_i_curso?>
               </td>
               <td nowrap="nowrap">
-                <?php db_input( 'ed29_c_descr', 60, '', true, 'text', 3 );?>
+                <?db_input( 'ed29_c_descr', 60, '', true, 'text', 3 );?>
               </td>
             </tr>
             <tr id='linhaEtapa'>
@@ -109,9 +109,9 @@ if (isset($oGet->pesquisaTurma)) {
                 <?=$Led223_i_serie?>
               </td>
               <td nowrap="nowrap">
-                <?php db_input( 'nometapa', 30, '', true, 'text', 3 );?>
+                <?db_input( 'nometapa', 30, '', true, 'text', 3 );?>
                 <?=$Led57_i_turno?>
-                <?php db_input( 'ed15_c_nome', 20, '', true, 'text', 3 );?>
+                <?db_input( 'ed15_c_nome', 20, '', true, 'text', 3 );?>
               </td>
             </tr>
           </table>  
@@ -124,7 +124,7 @@ if (isset($oGet->pesquisaTurma)) {
           <table class="form-container">
             <tr>
               <td nowrap="nowrap" class="field-size3" title="<?=$Ted60_i_aluno?>">
-                <?php db_ancora( "Aluno:", "js_pesquisaAluno(true);", 1 );?>
+                <?db_ancora( "Aluno:", "js_pesquisaAluno(true);", 1 );?>
               </td>
               <td nowrap="nowrap" colspan="3">
                 <?php
@@ -149,13 +149,13 @@ if (isset($oGet->pesquisaTurma)) {
                   <?=$Led60_matricula?>
                 </td>
                 <td nowrap="nowrap">
-                  <?php db_input( 'ed60_matricula', 10, $Ied60_matricula, true, 'text', 3 );?>
+                  <?db_input( 'ed60_matricula', 10, $Ied60_matricula, true, 'text', 3 );?>
                 </td>
                 <td nowrap="nowrap" title="<?=$Ted60_c_situacao?>">
                   <b>Situação:</b>
                 </td>
                 <td  nowrap="nowrap">
-                  <?php db_input( 'ed60_c_situacao', 35, '', true, 'text', 3 );?>
+                  <?db_input( 'ed60_c_situacao', 35, '', true, 'text', 3 );?>
                 </td>
               </tr >
 
@@ -166,7 +166,7 @@ if (isset($oGet->pesquisaTurma)) {
               <tr>
                 <td>Data de modificação:</td>
                 <td colspan="3">
-                  <?php db_inputdata( 'dataModificacao', '', '', '', true, 'text', 1 );?>
+                  <?db_inputdata( 'dataModificacao', '', '', '', true, 'text', 1 );?>
                 </td>
               </tr>
             </table>

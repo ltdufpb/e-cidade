@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -67,7 +67,7 @@ if(isset($chavepesquisa)){
   </td>
  </tr>
 </table>
-<?php 
+<?
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -78,12 +78,12 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_acervo.hide();
-  <?php 
+  <?
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 </script>
-<?php 
+<?
 if(!isset($chavepesquisa)){
   echo "<script>js_pesquisa();</script>";
 }

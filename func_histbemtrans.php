@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clhistbemtrans->rotulo->label("t97_codtran");
               <?=$Lt97_histbem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t97_histbem",10,$It97_histbem,true,"text",4,"","chave_t97_histbem");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clhistbemtrans->rotulo->label("t97_codtran");
               <?=$Lt97_codtran?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t97_codtran",10,$It97_codtran,true,"text",4,"","chave_t97_codtran");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clhistbemtrans->rotulo->label("t97_codtran");
               <?=$Lt97_codtran?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t97_codtran",10,$It97_codtran,true,"text",4,"","chave_t97_codtran");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clhistbemtrans->rotulo->label("t97_codtran");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_histbemtrans.php")==true){
@@ -130,12 +130,12 @@ $clhistbemtrans->rotulo->label("t97_codtran");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

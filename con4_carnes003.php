@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -152,7 +152,7 @@ function removeElem(cod) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-		<?php 
+		<?
 
 		if(isset($codigo)) {//var vem do parse_str
           $result = db_query("select nomemodelo,imgmodelo from db_carnesimg where codmodelo = $codigo");

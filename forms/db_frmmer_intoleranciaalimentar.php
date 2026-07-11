@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
        <?=@$Lme33_i_codigo?>
     </td>
     <td> 
-    <?php db_input('me33_i_codigo',10,$Ime33_i_codigo,true,'text',3,"")?>
+    <?db_input('me33_i_codigo',10,$Ime33_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -46,7 +46,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
        <?=@$Lme33_c_descr?>
     </td>
     <td> 
-     <?php db_input('me33_c_descr',50,$Ime33_c_descr,true,'text',$db_opcao,"")?>    
+     <?db_input('me33_c_descr',50,$Ime33_c_descr,true,'text',$db_opcao,"")?>    
     </td>
   </tr>
   </table>
@@ -58,7 +58,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 <input name="cancelar" type="button" id="cancela" value="Cancelar" 
        onclick="js_cancela();"  <?=($db_botao==false?"disabled":"")?> >
 <br><br>
-<?php 
+<?
 $chavepri                                = array("me33_i_codigo"=>@$me33_i_codigo);
 $cliframe_alterar_excluir->chavepri      = $chavepri;
 $cliframe_alterar_excluir->sql           = $clmer_intoleranciaalimentar->sql_query(null,'*',null,"");

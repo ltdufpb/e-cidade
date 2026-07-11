@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsliprecurso->rotulo->label("k29_slip");
               <?=$Lk29_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k29_sequencial",8,$Ik29_sequencial,true,"text",4,"","chave_k29_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsliprecurso->rotulo->label("k29_slip");
               <?=$Lk29_slip?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k29_slip",5,$Ik29_slip,true,"text",4,"","chave_k29_slip");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clsliprecurso->rotulo->label("k29_slip");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sliprecurso.php")==true){
@@ -123,12 +123,12 @@ $clsliprecurso->rotulo->label("k29_slip");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

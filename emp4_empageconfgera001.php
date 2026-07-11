@@ -1404,13 +1404,13 @@ if (isset($data)) {
     <table width="100%" height="95%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-                <?php 
+                <?
                 include(modification("forms/db_frmempageconfgera.php"));
                 ?>
             </td>
         </tr>
     </table>
-    <?php 
+    <?
     db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -1450,7 +1450,7 @@ if (isset($data)) {
 
       }
     </script>
-<?php 
+<?
 if (isset($atualizar)) {
     if ($sqlerro == true) {
         db_msgbox($erro_msg);

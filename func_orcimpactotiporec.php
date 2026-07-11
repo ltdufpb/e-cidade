@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clorcimpactotiporec->rotulo->label("o93_codseqimp");
               <?=$Lo93_codseqimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o93_codseqimp",5,$Io93_codseqimp,true,"text",4,"","chave_o93_codseqimp");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clorcimpactotiporec->rotulo->label("o93_codseqimp");
               <?=$Lo93_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o93_codigo",5,$Io93_codigo,true,"text",4,"","chave_o93_codigo");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clorcimpactotiporec->rotulo->label("o93_codseqimp");
               <?=$Lo93_codseqimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o93_codseqimp",5,$Io93_codseqimp,true,"text",4,"","chave_o93_codseqimp");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clorcimpactotiporec->rotulo->label("o93_codseqimp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactotiporec.php")==true){
@@ -130,12 +130,12 @@ $clorcimpactotiporec->rotulo->label("o93_codseqimp");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

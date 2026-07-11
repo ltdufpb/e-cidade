@@ -70,13 +70,13 @@ $clrotulo->label ( "sd70_c_nome" );
 				       <?=@$Lsd24_i_codigo?>
 				    </td>
 				<td>
-						<?php 
+						<?
 						db_input ( 'sd24_i_codigo', 10, $Isd24_i_codigo, true, 'text', 3, "" );
 						?>
 				    </td>
 				<td colspan="2" align="right" title="<?=@$Tsd24_i_login?>">
 				        <?=@$Lsd24_i_login?>
-						<?php 
+						<?
 						db_input ( 'sd24_i_login', 10, $Isd24_i_login, true, 'hidden', $db_opcao, "" );
 						db_input ( 'sd24_i_unidade', 10, $Isd24_i_unidade, true, 'hidden', $db_opcao, "" );
 						db_input ( 'login', 10, $Ilogin, true, 'text', 3, '' );
@@ -84,7 +84,7 @@ $clrotulo->label ( "sd70_c_nome" );
 				    </td>
 			</tr>
 			<!-- Segunda parte do formulário -->
-				<?php 
+				<?
 				$intQuant = 1;
 				include modification("forms/db_frmsau_loteproced002.php");
 				?>

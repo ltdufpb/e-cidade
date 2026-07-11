@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clorcsuplemval->rotulo->label("o47_coddoc");
               <?=$Lo47_codsup?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o47_codsup",4,$Io47_codsup,true,"text",4,"","chave_o47_codsup");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clorcsuplemval->rotulo->label("o47_coddoc");
               <?=$Lo47_coddot?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o47_coddot",6,$Io47_coddot,true,"text",4,"","chave_o47_coddot");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clorcsuplemval->rotulo->label("o47_coddoc");
               <?=$Lo47_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o47_coddoc",4,$Io47_coddoc,true,"text",4,"","chave_o47_coddoc");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clorcsuplemval->rotulo->label("o47_coddoc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcsuplemval.php")==true){
@@ -131,12 +131,12 @@ $clorcsuplemval->rotulo->label("o47_coddoc");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

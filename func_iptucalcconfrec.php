@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 //dbhack
 require(modification("libs/db_cone" . "cta.php"));
@@ -26,11 +26,11 @@ $cliptucalcconfrec->rotulo->label("j23_matric");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj23_sequencial?></label></td>
-          <td><?php  db_input("j23_sequencial",10,$Ij23_sequencial,true,"text",4,"","chave_j23_sequencial"); ?></td>
+          <td><? db_input("j23_sequencial",10,$Ij23_sequencial,true,"text",4,"","chave_j23_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lj23_matric?></label></td>
-          <td><?php  db_input("j23_matric",10,$Ij23_matric,true,"text",4,"","chave_j23_matric");?></td>
+          <td><? db_input("j23_matric",10,$Ij23_matric,true,"text",4,"","chave_j23_matric");?></td>
         </tr>
       </table>
     </fieldset>
@@ -38,7 +38,7 @@ $cliptucalcconfrec->rotulo->label("j23_matric");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_iptucalcconfrec.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptucalcconfrec.php")==true){
@@ -80,12 +80,12 @@ $cliptucalcconfrec->rotulo->label("j23_matric");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

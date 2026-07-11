@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clgerfsal->rotulo->label("r14_regist");
               <?=$Lr14_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r14_mesusu",2,$Ir14_mesusu,true,"text",4,"","chave_r14_mesusu");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clgerfsal->rotulo->label("r14_regist");
               <?=$Lr14_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r14_regist",6,$Ir14_regist,true,"text",4,"","chave_r14_regist");
 		       ?>
             </td>
@@ -78,7 +78,7 @@ $clgerfsal->rotulo->label("r14_regist");
               <?=$Lr14_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r14_rubric",4,$Ir14_rubric,true,"text",4,"","chave_r14_rubric");
 		       ?>
             </td>
@@ -88,7 +88,7 @@ $clgerfsal->rotulo->label("r14_regist");
               <?=$Lr14_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r14_regist",6,$Ir14_regist,true,"text",4,"","chave_r14_regist");
 		       ?>
             </td>
@@ -106,7 +106,7 @@ $clgerfsal->rotulo->label("r14_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_gerfsal.php")==true){
@@ -146,12 +146,12 @@ $clgerfsal->rotulo->label("r14_regist");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

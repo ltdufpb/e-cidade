@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -25,11 +25,11 @@ $cljornadaservidor->rotulo->label("rh212_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lrh212_sequencial?></label></td>
-          <td><?php  db_input("rh212_sequencial",19,$Irh212_sequencial,true,"text",4,"","chave_rh212_sequencial"); ?></td>
+          <td><? db_input("rh212_sequencial",19,$Irh212_sequencial,true,"text",4,"","chave_rh212_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lrh212_sequencial?></label></td>
-          <td><?php  db_input("rh212_sequencial",19,$Irh212_sequencial,true,"text",4,"","chave_rh212_sequencial");?></td>
+          <td><? db_input("rh212_sequencial",19,$Irh212_sequencial,true,"text",4,"","chave_rh212_sequencial");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $cljornadaservidor->rotulo->label("rh212_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_jornadaservidor.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_jornadaservidor.php")==true){
@@ -79,12 +79,12 @@ $cljornadaservidor->rotulo->label("rh212_sequencial");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

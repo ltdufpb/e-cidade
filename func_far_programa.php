@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clfar_programa->rotulo->label("fa12_c_descricao");
               <?=$Lfa12_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("fa12_i_codigo",5,$Ifa12_i_codigo,true,"text",4,"","chave_fa12_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clfar_programa->rotulo->label("fa12_c_descricao");
               <?=$Lfa12_c_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("fa12_c_descricao",15,$Ifa12_c_descricao,true,"text",4,"","chave_fa12_c_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clfar_programa->rotulo->label("fa12_c_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_programa.php")==true){
@@ -123,12 +123,12 @@ $clfar_programa->rotulo->label("fa12_c_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

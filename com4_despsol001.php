@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -73,10 +73,10 @@ function js_processa(){
 	</tr>
 	<tr>
 	  <td title="<?=$Tpc10_numero?>">
-	     <?php  db_ancora(@$Lpc10_numero,"js_pesquisa(true);",1); ?>
+	     <? db_ancora(@$Lpc10_numero,"js_pesquisa(true);",1); ?>
 	  </td>
 	  <td>
-	     <?php db_input("pc10_numero",15,$Ipc10_numero,true,"text",2,"onchange='js_pesquisa(false);'");?>
+	     <?db_input("pc10_numero",15,$Ipc10_numero,true,"text",2,"onchange='js_pesquisa(false);'");?>
 	  </td>
 	   <td>	     
 	   </td>
@@ -89,7 +89,7 @@ function js_processa(){
     </td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>

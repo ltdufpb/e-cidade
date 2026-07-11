@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -210,7 +210,7 @@ function js_emite(){
   jan.moveTo(0,0);
 }
 </script>
-<?php 
+<?
 if(isset($ordem)){
   if(isset($campos)){
     $xcampo = '';
@@ -229,7 +229,7 @@ function js_emite1(){
   jan.moveTo(0,0);
 }
 </script>
-<?php 
+<?
 }
 ?>
 <link href="estilos.css" rel="stylesheet" type="text/css">
@@ -251,7 +251,7 @@ function js_emite1(){
     <form name="form1" method="post" action="" onsubmit="return js_verifica();">
       <tr>
         <td title="Data da Geração do Cálculo">Data do Cálculo:&nbsp;&nbsp;
-				  <?php 
+				  <?
 					  $sql = "select k115_data as data
 				              from datadebitos
 				              where k115_instit = $instit
@@ -272,19 +272,19 @@ function js_emite1(){
 				  ?>
         </td>
         <td title="Quantidade de contribuintes a ser listado, ou zero para todos">Quantidade a Listar:&nbsp;&nbsp;
-          <?php 
+          <?
             db_input('numerolista2',12,'',true,'text',$db_opcao);
           ?>
         </td>
       </tr>
       <tr>
         <td title="Intervalo de valores a serem listados">Valores de:&nbsp;&nbsp;
-          <?php 
+          <?
 	          db_input('DBtxt10',15,$IDBtxt10,true,'text',$db_opcao);
 	        ?>
         &nbsp;&nbsp;
         Até
-          <?php 
+          <?
 	          db_input('DBtxt11',15,$IDBtxt11,true,'text',$db_opcao);
 	        ?>
         </td>
@@ -305,7 +305,7 @@ function js_emite1(){
        <table border="0">
          <tr>
            <td nowrap title="<?=@$Tk00_tipo?>" colspan="2">
-            <?php 
+            <?
               db_ancora(@$Lk00_tipo,"js_pesquisadb02_idparag(true);",$db_opcao);
               db_input('k00_tipo',8,$Ik00_tipo,true,'text',$db_opcao," onchange='js_pesquisadb02_idparag(false);'");
               db_input('k00_descr',25,$Ik00_descr,true,'text',3,'');
@@ -317,7 +317,7 @@ function js_emite1(){
 	   <td align="right" colspan="" width="80%">
 
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?php 
+              <?
 	              if(isset($chavepesquisa)){
 
 									 $resulta = $clarretipo->sql_record($clarretipo->sql_query($chavepesquisa,"","k00_tipo,k00_descr",""));
@@ -355,7 +355,7 @@ function js_emite1(){
 </tr>
       <tr>
         <td title="Sim - agrupa por tipo de débito dentro da opção escolhida (matrícula,inscrição ou numcgm) <?="\n"?>Não - totaliza pela opção escolhida (matrícula,inscrição ou numcgm)">Quebrar por Tipo:&nbsp;&nbsp;
-          <?php 
+          <?
 		        $aQuebrar = array("f" => "Não",
 		                          "t" => "Sim");
 		        db_select("quebrar", $aQuebrar, true, $db_opcao, " onchange='js_valor();'");
@@ -393,7 +393,7 @@ function js_emite1(){
       </tr>
   </form>
     </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -439,7 +439,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

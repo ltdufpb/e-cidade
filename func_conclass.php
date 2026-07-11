@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconclass->rotulo->label("c51_descr");
               <?=$Lc51_codcla?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c51_codcla",2,$Ic51_codcla,true,"text",4,"","chave_c51_codcla");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconclass->rotulo->label("c51_descr");
               <?=$Lc51_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c51_descr",50,$Ic51_descr,true,"text",4,"","chave_c51_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconclass->rotulo->label("c51_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conclass.php")==true){
@@ -119,12 +119,12 @@ $clconclass->rotulo->label("c51_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

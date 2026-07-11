@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_departender->rotulo->label("codlograd");
               <?=$Lcoddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_departender->rotulo->label("codlograd");
               <?=$Lcodlograd?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("codlograd",7,$Icodlograd,true,"text",4,"","chave_codlograd");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_departender->rotulo->label("codlograd");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_departender.php")==true){
@@ -119,12 +119,12 @@ $cldb_departender->rotulo->label("codlograd");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

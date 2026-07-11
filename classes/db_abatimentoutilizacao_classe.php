@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE abatimentoutilizacao
 class cl_abatimentoutilizacao { 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clparametroprogressaoparcial->rotulo->label("ed112_sequencial");
               <?=$Led112_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed112_sequencial",4,$Ied112_sequencial,true,"text",4,"","chave_ed112_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clparametroprogressaoparcial->rotulo->label("ed112_sequencial");
               <?=$Led112_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed112_sequencial",4,$Ied112_sequencial,true,"text",4,"","chave_ed112_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clparametroprogressaoparcial->rotulo->label("ed112_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parametroprogressaoparcial.php")==true){
@@ -123,12 +123,12 @@ $clparametroprogressaoparcial->rotulo->label("ed112_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

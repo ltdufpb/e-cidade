@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: empenho
 //CLASSE DA ENTIDADE classificacaocredorestipocompra
 class cl_classificacaocredorestipocompra { 

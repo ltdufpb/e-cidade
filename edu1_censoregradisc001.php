@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,14 +52,14 @@ $clcensoregradisc = new cl_censoregradisc;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <table width="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
    <br>
    <fieldset style="width:95%"><legend><b>Regras de Disciplinas</b></legend>
    <br>
-   <?php 
+   <?
    $campos = "ed266_i_codigo,
               ed266_c_descr as dl_etapa,
               ed265_c_descr as dl_disciplina
@@ -75,6 +75,6 @@ $clcensoregradisc = new cl_censoregradisc;
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

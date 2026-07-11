@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -263,12 +263,12 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Ty83_codsani?>">
-          <?php 
+          <?
             db_ancora(@$Ly83_codsani,"js_pesquisay83_codsani(true);",1);
           ?>
         </td>
         <td>
-          <?php 
+          <?
             db_input('y83_codsani',10,$Iy83_codsani,true,'text',1," onchange='js_pesquisay83_codsani(false);'");
             echo "&nbsp;";
             db_input('z01_nome',35,$Iz01_nome,true,'text',3,'');
@@ -280,7 +280,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
           <?=@$Ly83_dtfim;?>        
         </td>
         <td>
-          <?php 
+          <?
             if ( empty($q07_datafim_dia) ) {
               $y83_dtfim_dia = date("d",db_getsession("DB_datausu"));
               $y83_dtfim_mes = date("m",db_getsession("DB_datausu"));
@@ -292,12 +292,12 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
       </tr>
       <tr>
         <td nowrap title="<?=@$Tp58_codproc?>">
-          <?php 
+          <?
             db_ancora(@$Lp58_codproc,"js_pesquisap58_codproc(true);",1);
           ?>
         </td>
         <td>
-          <?php 
+          <?
             db_input('p58_codproc',10,$Ip58_codproc,true,'text',1," onchange='js_pesquisap58_codproc(false);'");
             echo "&nbsp;";
             db_input('p58_requer',40,$Ip58_requer,true,'text',3,'');
@@ -309,7 +309,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
           <?=@$Ly81_oficio?>        
         </td>
         <td valign="top">
-          <?php 
+          <?
             $xe = array("f"=>"NORMAL","t"=>"OFÌCIO");
             db_select('y81_oficio',$xe,true,1);
           ?>
@@ -320,7 +320,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
           <?=@$Ly81_obs;?>
         </td>
         <td> 
-          <?php 
+          <?
             db_textarea('y81_obs',0,70,@$Iy81_obs,true,'text',1);
           ?>
         </td>
@@ -332,7 +332,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
       </tr>
       <tr>
         <td align="top" colspan="2">
-          <?php 
+          <?
             if ( isset($y83_codsani) && $y83_codsani != "" ) {
               $cliframe_seleciona->campos  = "y83_seq,y83_dtini,y83_dtfim,y83_area,y83_codsani,q03_descr";
               $cliframe_seleciona->legenda="ATIVIDADES EM FUNCIONAMENTO";
@@ -409,12 +409,12 @@ function js_mostraprotprocesso1(chave1,chave2){
 		</td>
 	</tr>
 </table>
-				<?php 
+				<?
 				db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 				?>
 </body>
 </html>
-				<?php 
+				<?
 				if(isset($erro)){
 				  echo "<script>alert('selecione uma atividade antes de dar baixa');</script>";
 				  echo "<script>location.href='fis4_baixasaniatividade001.php?y83_codsani=$erro';</script>";

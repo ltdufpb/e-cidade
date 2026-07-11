@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -85,7 +85,7 @@ $clissmotivoparalisacao->rotulo->label("q141_descricao");
 
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issmotivoparalisacao.php")==true){
@@ -131,7 +131,7 @@ $clissmotivoparalisacao->rotulo->label("q141_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -142,7 +142,7 @@ if(!isset($pesquisa_chave)){
 
 	}
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

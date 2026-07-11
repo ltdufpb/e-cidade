@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconsistema->rotulo->label("c52_descr");
               <?=$Lc52_codsis?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c52_codsis",1,$Ic52_codsis,true,"text",4,"","chave_c52_codsis");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconsistema->rotulo->label("c52_descr");
               <?=$Lc52_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c52_descr",50,$Ic52_descr,true,"text",4,"","chave_c52_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconsistema->rotulo->label("c52_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_consistema.php")==true){
@@ -119,12 +119,12 @@ $clconsistema->rotulo->label("c52_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

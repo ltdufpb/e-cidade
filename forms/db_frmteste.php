@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clteste->rotulo->label();
        <?=@$Lsd01_i_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd01_i_codigo',10,$Isd01_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('sd01_i_codigo',10,$Isd01_i_codigo,true,'text',$db_opcao,"")
        <?=@$Lsd01_c_nome?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd01_c_nome',40,$Isd01_c_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_teste.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

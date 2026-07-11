@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -81,7 +81,7 @@ table.tab1 th {
 }
 </style>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc">
-<?php 
+<?
 if(isset($it01_guia) && trim($it01_guia) != "" ){
   $campos = " * ";
   $sql  = " select $campos from itbi ";

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -351,15 +351,15 @@ if ( $lSqlErro ) {
 <script>parent.document.getElementById('processando').style.visibility = 'hidden';</script>
 <script>
 function js_emite(){
-  <?php 
+  <?
   if($k03_tipo == 5){
     ?>
     window.open('div2_certidaodivida002.php?tipo=2&certid=<?=$iCertidInicial?>&certid1=<?=$iCertidFinal?>&reemissao=t&valormaximo=99999999999&valorminimo=0&datacertidao=&ordenarpor=v14_certid&totexe=t&endaimp=<?=$ordemend?>','','width=790,height=530,scrollbars=1,location=0');
-    <?php 
+    <?
   }elseif($k03_tipo == 6){
     ?>
     window.open('div2_certidaodivida002.php?tipo=1&certid=<?=$iCertidInicial?>&certid1=<?=$iCertidFinal?>&reemissao=t','','width=790,height=530,scrollbars=1,location=0');
-    <?php 
+    <?
   } 
   ?>
   parent.document.getElementById('pesquisar').click()

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,8 +44,8 @@ $clrotulo->label("me14_i_aluno");
    <?=@$Lme25_i_codigo?>
   </td>
   <td>
-   <?php db_input('me25_i_codigo',10,$Ime25_i_codigo,true,'text',3,"");?>
-   <?php db_input('me25_i_restricao',10,$Ime25_i_restricao,true,'hidden',3,'');?>
+   <?db_input('me25_i_codigo',10,$Ime25_i_codigo,true,'text',3,"");?>
+   <?db_input('me25_i_restricao',10,$Ime25_i_restricao,true,'hidden',3,'');?>
   </td>
  </tr>
  <tr>
@@ -53,35 +53,35 @@ $clrotulo->label("me14_i_aluno");
    <?=@$Lme14_i_aluno?>
   </td>
   <td>
-   <?php 
+   <?
    $ed47_i_codigo=@$me24_i_aluno;
    db_input('ed47_i_codigo',10,@$Ied47_i_codigo,true,'text',3,"")
    ?>
-   <?php db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
+   <?db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme25_i_alimento?>">
-   <?php db_ancora(@$Lme25_i_alimento,"js_pesquisame25_i_alimento(true);",$db_opcao);?>
+   <?db_ancora(@$Lme25_i_alimento,"js_pesquisame25_i_alimento(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('me25_i_alimento',10,$Ime25_i_alimento,true,'text',$db_opcao,
+   <?db_input('me25_i_alimento',10,$Ime25_i_alimento,true,'text',$db_opcao,
               " onchange='js_pesquisame25_i_alimento(false);'"
              )
    ?>
-   <?php db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'')?>
+   <?db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme25_i_alimentosub?>">
-   <?php db_ancora(@$Lme25_i_alimentosub,"js_pesquisame25_i_alimentosub(true);",$db_opcao);?>
+   <?db_ancora(@$Lme25_i_alimentosub,"js_pesquisame25_i_alimentosub(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('me25_i_alimentosub',10,@$Ime25_i_alimentosub,true,'text',$db_opcao,
+   <?db_input('me25_i_alimentosub',10,@$Ime25_i_alimentosub,true,'text',$db_opcao,
                "onchange='js_pesquisame25_i_alimentosub(false);'"
              )
    ?>
-   <?php db_input('me35_c_nomealimento2',40,@$Ime35_c_nomealimento2,true,'text',3,'')?>
+   <?db_input('me35_c_nomealimento2',40,@$Ime35_c_nomealimento2,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -92,7 +92,7 @@ $clrotulo->label("me14_i_aluno");
 <input name="cancelar" type="button" id="cancela" value="Cancelar" 
        onclick="js_cancela();"  <?=($db_botao==false?"disabled":"")?> >
 <br><br>
-<?php 
+<?
 $chavepri                           = array("me25_i_codigo"=>@$me25_i_codigo);
 $cliframe_alterar_excluir->chavepri = $chavepri;
 if (isset($me25_i_restricao) && @$me25_i_restricao != "") {

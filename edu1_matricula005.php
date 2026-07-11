@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -145,7 +145,7 @@ db_fieldsmemory($result,0);
    <tr>
     <td colspan="2">
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?php 
+      <?
       $array_mov = [];
       $sCamposResult  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,ed57_c_descr,";
       $sCamposResult .= " ed60_matricula,ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome";
@@ -231,7 +231,7 @@ db_fieldsmemory($result,0);
          <td>Procedimento</td>
         </tr>
         
-        <?php 
+        <?
         for ($f = 0; $f < count($array_mov); $f++) {
         	
           $array_mov1 = explode("|",$array_mov[$f]);
@@ -240,7 +240,7 @@ db_fieldsmemory($result,0);
           if ($f > 0) {
             ?>
 	        <tr><td height="1" bgcolor="black" colspan="7"></td></tr>
-            <?php 
+            <?
           }
           ?>
           <tr bgcolor="#dbdbdb">
@@ -267,7 +267,7 @@ db_fieldsmemory($result,0);
              </table>
             </td>
            </tr>
-        <?php 
+        <?
         }
       } else {
       	
@@ -278,7 +278,7 @@ db_fieldsmemory($result,0);
          </td>
         </tr>
         
-        <?php 
+        <?
       }
       ?>
         </table>

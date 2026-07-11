@@ -75,7 +75,7 @@ $db_opcao       = 2;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
   db_app::load("scripts.js, prototype.js, strings.js, DBToogle.widget.js, dbmessageBoard.widget.js");
   db_app::load("estilos.css");
 ?>
@@ -137,7 +137,7 @@ div#fieldsetInclusaoBensGlobal  table tr td + td + td + td {
   <tr> 
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
         <center>
-          <?php 
+          <?
             include(modification("forms/db_frm_bensglobalnovo.php"));
           ?>
         </center>
@@ -147,11 +147,11 @@ div#fieldsetInclusaoBensGlobal  table tr td + td + td + td {
 </body>
 </html>
 
-<?php  
+<? 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
   
-<?php 
+<?
   if (isset($alterar) && $erro_msg!="") {
     
     db_msgbox($erro_msg);

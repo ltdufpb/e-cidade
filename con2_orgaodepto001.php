@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -75,7 +75,7 @@ $aux = new cl_arquivo_auxiliar;
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?php 
+        <td colspan=2 ><?
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Orgãos</strong>";
                  $aux->codigo = "o40_orgao"; //chave de retorno da func
@@ -117,7 +117,7 @@ $aux = new cl_arquivo_auxiliar;
 
   </form>
     </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

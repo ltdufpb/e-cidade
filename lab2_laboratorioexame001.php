@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ require_once(modification('libs/db_utils.php'));
                       <b>Situação Exames:</b>
                     </td>
                     <td align="left">
-                      <?php $aX = array(0=>'TODOS', 1=>'ATIVOS', 2=>'DESATIVADOS');
+                      <?$aX = array(0=>'TODOS', 1=>'ATIVOS', 2=>'DESATIVADOS');
                       db_select('situacao',$aX,true,1,"");?>
                     </td>
                   </tr>
@@ -80,7 +80,7 @@ require_once(modification('libs/db_utils.php'));
         </td>
       </tr>
     </table>
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpccontrcompra->rotulo->label("p72_codcom");
               <?=$Lp72_codcontr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p72_codcontr",10,$Ip72_codcontr,true,"text",4,"","chave_p72_codcontr");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpccontrcompra->rotulo->label("p72_codcom");
               <?=$Lp72_codcom?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p72_codcom",4,$Ip72_codcom,true,"text",4,"","chave_p72_codcom");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpccontrcompra->rotulo->label("p72_codcom");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pccontrcompra.php")==true){
@@ -119,12 +119,12 @@ $clpccontrcompra->rotulo->label("p72_codcom");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -138,7 +138,7 @@ if( isset( $excluir ) ) {
    <br>
    <center>
    <fieldset align="left" style="width:95%"><legend><b>Exclusão de Recurso Humano</b></legend>
-    <?php include(modification("forms/db_frmrechumano.php"));?>
+    <?include(modification("forms/db_frmrechumano.php"));?>
    </fieldset>
    </center>
   </td>
@@ -146,7 +146,7 @@ if( isset( $excluir ) ) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if( isset( $excluir ) ) {
 
   if( !$lErroExclusao ) {

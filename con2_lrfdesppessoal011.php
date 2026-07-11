@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -86,7 +86,7 @@ $iAnoUsu    = db_getsession("DB_anousu");
                   <b>Período:&nbsp;</b>
                 </td>
                 <td>
-									<?php 
+									<?
                     $aListaPeriodos    = array();
                     $aListaPeriodos[0] = "Selecione";
 									  if ($iAnoUsu <= 2007) {
@@ -124,7 +124,7 @@ $iAnoUsu    = db_getsession("DB_anousu");
 				          <b>Emissão:&nbsp;</b>
 				        </td>
 				        <td>
-				          <?php 
+				          <?
 				            $aListaEmissao = array("1" => "Publicação Oficial",
 				                                   "2" => "Detalhamento Mensal");
 				            db_select("emissao", $aListaEmissao, true, 1);

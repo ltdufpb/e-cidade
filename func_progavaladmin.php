@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,11 +57,11 @@ $clrotulo->label("ed116_c_tipo");
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
       <?=$Led116_i_ano?>
-      <?php db_input("ed116_i_ano",4,$Ied116_i_ano,true,"text",4,"","chave_ed116_i_ano");?>
+      <?db_input("ed116_i_ano",4,$Ied116_i_ano,true,"text",4,"","chave_ed116_i_ano");?>
       <?=@$Led116_c_tipo?>
-      <?php 
+      <?
       $x = array(''=>'','A'=>'AVALIAÇÃO','U'=>'AUTO-AVALIAÇÃO');
       db_select('ed116_c_tipo',$x,true,@$db_opcao,"");
       ?>
@@ -80,7 +80,7 @@ $clrotulo->label("ed116_c_tipo");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_progavaladmin.php")==true){

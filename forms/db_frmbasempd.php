@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,20 +53,20 @@ if(isset($opcao) && $opcao=="alterar"){
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted35_i_base?>">
-   <?php db_ancora(@$Led35_i_base,"",3);?>
+   <?db_ancora(@$Led35_i_base,"",3);?>
   </td>
   <td>
-   <?php db_input('ed35_i_base',10,$Ied35_i_base,true,'text',3,"")?>
-   <?php db_input('ed31_c_descr',40,@$Ied31_c_descr,true,'text',3,'')?>
+   <?db_input('ed35_i_base',10,$Ied35_i_base,true,'text',3,"")?>
+   <?db_input('ed31_c_descr',40,@$Ied31_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted35_i_disciplina?>">
-   <?php db_ancora(@$Led35_i_disciplina,"js_pesquisaed35_i_disciplina(true);",$db_opcao);?>
+   <?db_ancora(@$Led35_i_disciplina,"js_pesquisaed35_i_disciplina(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed35_i_disciplina',10,$Ied35_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed35_i_disciplina(false);'")?>
-   <?php db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
+   <?db_input('ed35_i_disciplina',10,$Ied35_i_disciplina,true,'text',$db_opcao," onchange='js_pesquisaed35_i_disciplina(false);'")?>
+   <?db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -74,9 +74,9 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led35_i_qtdperiodo?>
   </td>
   <td>
-   <?php db_input('ed35_i_qtdperiodo',10,$Ied35_i_qtdperiodo,true,'text',$db_opcao,"")?>
-   <?php //=@$Led35_i_chtotal?>
-   <?php //db_input('ed35_i_chtotal',10,$Ied35_i_chtotal,true,'text',$db_opcao,"")?>
+   <?db_input('ed35_i_qtdperiodo',10,$Ied35_i_qtdperiodo,true,'text',$db_opcao,"")?>
+   <?//=@$Led35_i_chtotal?>
+   <?//db_input('ed35_i_chtotal',10,$Ied35_i_chtotal,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -84,7 +84,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led35_c_condicao?>
   </td>
   <td>
-   <?php 
+   <?
    $x = ['OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL'];
    db_select('ed35_c_condicao',$x,true,$db_opcao,"");
    ?>
@@ -98,7 +98,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top"><br>
-  <?php 
+  <?
    $campos = "ed35_i_codigo,ed35_i_base,ed31_c_descr,ed35_i_disciplina,ed232_c_descr,ed35_i_qtdperiodo,ed35_i_chtotal, case when ed35_c_condicao='OB' then 'OBRIGATÒRIA' else 'OPCIONAL' end as ed35_c_condicao";
    $chavepri= ["ed35_i_codigo"=>@$ed35_i_codigo,"ed31_c_descr"=>@$ed31_c_descr,"ed35_i_disciplina"=>@$ed35_i_disciplina,"ed232_c_descr"=>@$ed232_c_descr,"ed35_i_qtdperiodo"=>@$ed35_i_qtdperiodo,"ed35_i_chtotal"=>@$ed35_i_chtotal,"ed35_c_condicao"=>@$ed35_c_condicao];
    $cliframe_alterar_excluir->chavepri=$chavepri;

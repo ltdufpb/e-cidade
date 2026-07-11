@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
               <?=$Lo103_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o103_sequencial",10,$Io103_sequencial,true,"text",4,"","chave_o103_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
               <?=$Lo103_pactovalor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o103_pactovalor",10,$Io103_pactovalor,true,"text",4,"","chave_o103_pactovalor");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $sWhere = "";
       if (isset($iTipo)) {
         $sWhere .= " o103_pactovalorsaldotipo in({$iTipo})";
@@ -132,12 +132,12 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

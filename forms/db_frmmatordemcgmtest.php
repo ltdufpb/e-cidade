@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,7 +49,7 @@ $m51_prazoent = 3;
 
 ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -72,13 +72,13 @@ $m51_prazoent = 3;
 <table border='0'>
   <tr>
     <td>
-     <?php 
+     <?
        db_select("cod",10,'',true,'hidden',3);
      ?>
       <table border="0">
         <tr>
 	  <td colspan=4>
-	  <?php   
+	  <?  
 	      $arr=array();
 	      $result=$clempempenho->sql_record($clempempenho->sql_query_file(null,"*",null,""));
 	      for ($y=0;$y<$clempempenho->numrows;$y++){
@@ -100,7 +100,7 @@ $m51_prazoent = 3;
 	      }
 	      db_select("e60_numemp",$arr,true,1,"onchange='js_pesquisanumemp(this.value);'");
           ?>
-	  <?php 
+	  <?
 	      if (isset($e60_numcgm) && $e60_numcgm!=''){
 		$where= "e60_numcgm = $e60_numcgm ";
 	      }
@@ -126,52 +126,52 @@ $m51_prazoent = 3;
 	</tr>
         <tr>
           <td nowrap align="right" title="<?=@$Te60_numcgm?>"><?=@$Le60_numcgm?></td>
-          <td><?php db_input('e60_numcgm',20,$Ie60_numcgm,true,'text',3)?></td>
+          <td><?db_input('e60_numcgm',20,$Ie60_numcgm,true,'text',3)?></td>
           <td nowrap align="right" title="<?=@$z01_nome?>"><?=@$Lz01_nome?></td>
-          <td><?php db_input('z01_nome',45,$Iz01_nome,true,'text',3)?></td>
+          <td><?db_input('z01_nome',45,$Iz01_nome,true,'text',3)?></td>
 	</tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tz01_cgccpf?>"><?=@$Lz01_cgccpf?></td>
-          <td><?php db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',3)?></td>
+          <td><?db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',3)?></td>
           <td></td>
           <td></td>
         </tr>
         <tr>
           <td nowrap align="right" title="<?=@$z01_ender?>"><?=@$Lz01_ender?></td>
-          <td><?php db_input('z01_ender',30,"$Iz01_ender",true,'text',3);if (@$z01_numero!=0){db_input('z01_numero',4,@$Iz01_numero,true,'text',3);}?></td>
+          <td><?db_input('z01_ender',30,"$Iz01_ender",true,'text',3);if (@$z01_numero!=0){db_input('z01_numero',4,@$Iz01_numero,true,'text',3);}?></td>
           <td nowrap align="right"   title="<?=@$Tz01_compl?>"><?=@$Lz01_compl?></td>
-          <td><?php db_input('z01_compl',20,$Iz01_compl,true,'text',3)?></td>
+          <td><?db_input('z01_compl',20,$Iz01_compl,true,'text',3)?></td>
         </tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tz01_munic?>"><?=@$Lz01_munic?></td>
-          <td><?php db_input('z01_munic',30,$Iz01_munic,true,'text',3)?></td>
+          <td><?db_input('z01_munic',30,$Iz01_munic,true,'text',3)?></td>
           <td nowrap align="right"   title="<?=@$Tz01_cep?>"><?=@$Lz01_cep?></td>
-          <td><?php db_input('z01_cep',20,$Iz01_cep,true,'text',3)?></td>
+          <td><?db_input('z01_cep',20,$Iz01_cep,true,'text',3)?></td>
         </tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tz01_telef?>"><?=@$Lz01_telef?></td>
-          <td><?php db_input('z01_telef',20,$Iz01_telef,true,'text',3)?></td>
+          <td><?db_input('z01_telef',20,$Iz01_telef,true,'text',3)?></td>
           <td nowrap align="right" title="<?=@$Tm51_prazoent?>"><?=@$Lm51_prazoent?></td>
-          <td><?php db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
+          <td><?db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
         </tr>
         <tr>
           <td nowrap align="right" title="<?=@$Tm51_data?>"><b>Data:</b></td>
-          <td><?php if(empty($m51_data_dia)){
+          <td><?if(empty($m51_data_dia)){
 	        $m51_data_dia =  date("d",db_getsession("DB_datausu"));
                 $m51_data_mes =  date("m",db_getsession("DB_datausu"));
                 $m51_data_ano =  date("Y",db_getsession("DB_datausu"));
               }
               db_inputdata('m51_data',@$m51_data_dia,@$m51_data_mes,@$m51_data_ano,true,'text',3);?>
           </td>
-          <td nowrap align="right" title="<?=@$descrdepto?>"><?php db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
-          <td><?php db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
+          <td nowrap align="right" title="<?=@$descrdepto?>"><?db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
+          <td><?db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
                 db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');?>
           </td>
         </tr>
         <tr> 
 	<td align='right'><b>Obs:</b></td>
           <td colspan='3' align='left'>
-	 <?php  
+	 <? 
 	 db_textarea("m51_obs","","110",$Im51_obs,true,'text',1);
 	 
 	 ?>
@@ -183,18 +183,18 @@ $m51_prazoent = 3;
         </tr>  
         <tr>
           <td colspan='4' align='center'>
-	  <?php if ($e60_numcgm!=""){
+	  <?if ($e60_numcgm!=""){
 	      $result=db_query("select * from empempenho inner join empempitem on e62_numemp = e60_numemp inner join pcmater on pc01_codmater = e62_item where e60_numcgm=$e60_numcgm");
 	      if (pg_numrows($result)>0){?>
               <input name="incluir" type="submit"  value="Incluir">
 	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" >
-	  <?php }else{?>
+	  <?}else{?>
               <input name="incluir" type="submit" disabled  value="Incluir">
 	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" >
-	  <?php }
+	  <?}
 	    }else{?>
               <input name="incluir" type="submit" disabled  value="Incluir">
-	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" ><?php }?>
+	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" ><?}?>
 	  </td>
         </tr>
       </table>
@@ -202,7 +202,7 @@ $m51_prazoent = 3;
     </tr>
     <tr>
      <td align='center' valign='top' colspan='1'>
-     <?php 
+     <?
      if(isset($e60_numcgm) && $pesqemp!='true'){
      ?>  
       <table>
@@ -212,14 +212,14 @@ $m51_prazoent = 3;
          </td>
         </tr>
       </table>
-     <?php 
+     <?
      }
      ?>  
     </td>
   </tr>
     <tr>
      <td align='center' valign='top' colspan='1'>
-     <?php 
+     <?
      if($pesqemp=='true'){
      ?>  
       <table>
@@ -229,14 +229,14 @@ $m51_prazoent = 3;
          </td>
         </tr>
       </table>
-     <?php 
+     <?
      }
      ?>  
     </td>
   </tr>
  </table>
 </center>
-<?php 
+<?
 db_input("valores",100,0,true,"hidden",3);
 db_input("val",100,0,true,"hidden",3);
 ?>

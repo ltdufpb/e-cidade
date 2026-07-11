@@ -107,7 +107,7 @@ $periodo = array("1"  => " 1 - Janeiro          ",
             <tr>
               <td><span style="font-weight: bold; width: 75px;">Arquivos do :</span></td>
               <td>
-                <?php 
+                <?
                   $periodopad = date("m",db_getsession("DB_datausu"))-1;
                   if(db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))){
                     $periodopad = 12;
@@ -443,5 +443,5 @@ $periodo = array("1"  => " 1 - Janeiro          ",
   </script>
   </body>
 </html>
-<?php  db_menu(db_getsession("DB_id_usuario"),
+<? db_menu(db_getsession("DB_id_usuario"),
            db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>

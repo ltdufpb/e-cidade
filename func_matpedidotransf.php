@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,17 +55,17 @@ $clmatpedidotransf->rotulo->label("m100_matestoqueini");
               <?=$Lm100_matestoqueini?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m100_matestoqueini",10,$Im100_matestoqueini,true,"text",4,"","chave_m100_matestoqueini");
 		       ?>
             </td>
           </tr>
           <!-- <tr> 
-            <td width="4%" align="right" nowrap title="<?php //=//$Tm100_sequencial?>">
-              <?php //=//$Lm100_sequencial?>
+            <td width="4%" align="right" nowrap title="<?//=//$Tm100_sequencial?>">
+              <?//=//$Lm100_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       //db_input("m100_sequencial",10,$Im100_sequencial,true,"text",4,"","chave_m100_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmatpedidotransf->rotulo->label("m100_matestoqueini");
   </tr>
    <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where_parametro = " and b.m80_codigo is null ";
       if(isset($chave_m70_codmatmater) && trim($chave_m70_codmatmater)!=""){
         $where_parametro .= " and m70_codmatmater=$chave_m70_codmatmater ";
@@ -131,12 +131,12 @@ $clmatpedidotransf->rotulo->label("m100_matestoqueini");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

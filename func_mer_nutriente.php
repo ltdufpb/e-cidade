@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
               <?=$Lme09_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me09_i_codigo",10,$Ime09_i_codigo,true,"text",4,"","chave_me09_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
               <?=$Lme09_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me09_c_descr",20,$Ime09_c_descr,true,"text",4,"","chave_me09_c_descr");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -130,13 +130,13 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?php 
+  <?
   
 }
 ?>

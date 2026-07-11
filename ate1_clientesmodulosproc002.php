@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -90,7 +90,7 @@ if(isset($atualizar)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmclientesmodulosproc.php"));
 	?>
     </center>

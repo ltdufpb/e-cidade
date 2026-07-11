@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltelefonetipo->rotulo->label("ov23_descricao");
               <?=$Lov23_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov23_sequencial",10,$Iov23_sequencial,true,"text",4,"","chave_ov23_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltelefonetipo->rotulo->label("ov23_descricao");
               <?=$Lov23_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov23_descricao",100,$Iov23_descricao,true,"text",4,"","chave_ov23_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltelefonetipo->rotulo->label("ov23_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_telefonetipo.php")==true){
@@ -123,12 +123,12 @@ $cltelefonetipo->rotulo->label("ov23_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

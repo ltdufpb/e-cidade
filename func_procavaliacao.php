@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -48,7 +48,7 @@ $clprocavaliacao = new cl_procavaliacao;
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     $sql = "SELECT ed41_i_codigo,
                    ed09_c_descr,

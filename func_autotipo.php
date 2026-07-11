@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clautotipo->rotulo->label("y59_codigo");
               <?=$Ly59_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y59_codigo",8,$Iy59_codigo,true,"text",4,"","chave_y59_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clautotipo->rotulo->label("y59_codigo");
               <?=$Ly59_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y59_codigo",8,$Iy59_codigo,true,"text",4,"","chave_y59_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clautotipo->rotulo->label("y59_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autotipo.php")==true){
@@ -119,12 +119,12 @@ $clautotipo->rotulo->label("y59_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

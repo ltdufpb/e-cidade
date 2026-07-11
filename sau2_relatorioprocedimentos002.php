@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -175,7 +175,7 @@ if ($iLinhas == 0) {
       </td>
     </tr>
   </table>
-  <?php 
+  <?
   exit;
   
 }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk50_notifica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k50_notifica",8,$Ik50_notifica,true,"text",4,"","chave_k50_notifica");
 		       ?>
             </td>
@@ -70,7 +70,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk55_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k55_matric",8,$Ik55_matric,true,"text",4,"","chave_k55_matric");
 		       ?>
             </td>
@@ -80,7 +80,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk56_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k56_inscr",8,$Ik56_inscr,true,"text",4,"","chave_k56_inscr");
 		       ?>
             </td>
@@ -90,7 +90,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk57_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k57_numcgm",8,$Ik57_numcgm,true,"text",4,"","chave_k57_numcgm");
 		       ?>
             </td>
@@ -100,7 +100,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -118,7 +118,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "*";
@@ -156,12 +156,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

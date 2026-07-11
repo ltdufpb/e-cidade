@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllab_exameproced->rotulo->label("la53_i_codigo");
               <?=$Lla53_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la53_i_codigo",10,$Ila53_i_codigo,true,"text",4,"","chave_la53_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllab_exameproced->rotulo->label("la53_i_codigo");
               <?=$Lla53_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la53_i_codigo",10,$Ila53_i_codigo,true,"text",4,"","chave_la53_i_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllab_exameproced->rotulo->label("la53_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_exameproced.php")==true){
@@ -123,12 +123,12 @@ $cllab_exameproced->rotulo->label("la53_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

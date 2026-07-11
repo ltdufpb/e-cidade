@@ -140,7 +140,7 @@ $db_opcao = 1;
                 </tr>
 
                 <tr>
-                    <td align="left"><?php  db_ancora(@$Lk17_hist, "js_pesquisac50_codhist(true);", $db_opcao); ?></td>
+                    <td align="left"><? db_ancora(@$Lk17_hist, "js_pesquisac50_codhist(true);", $db_opcao); ?></td>
                     <td colspan="4">
                         <?php
                         db_input('k17_hist', 10, $Ik17_hist, true, 'text', $db_opcao, " onchange='js_pesquisac50_codhist(false);'");
@@ -192,7 +192,7 @@ $db_opcao = 1;
             <table align="center">
                 <tr>
                     <td colspan="2">
-                        <?php 
+                        <?
                         $aux = new cl_arquivo_auxiliar;
                         $aux->cabecalho = "<strong>CGM</strong>";
                         $aux->codigo = "z01_numcgm";
@@ -220,7 +220,7 @@ $db_opcao = 1;
                 <tr>
                     <td align="right"><strong>Opção de Seleção :<strong></td>
                     <td align="left" colspan='4'>
-                        <?php 
+                        <?
                         $xxx = array("S" => "Somente Selecionados", "N" => "Menos os Selecionados");
                         db_select('parametro', $xxx, true, 2);
                         ?>

@@ -89,7 +89,7 @@ $oRotulo->label("ac50_descricao");
                 <td colspan="4">
                   <table>
                     <tr>
-                      <td nowrap="nowrap"><?php db_ancora('<b>Departamento:</b>', 'js_pesquisaDepartamento(true);', 1)?></td>
+                      <td nowrap="nowrap"><?db_ancora('<b>Departamento:</b>', 'js_pesquisaDepartamento(true);', 1)?></td>
                       <td nowrap="nowrap">
                         <?php
                           db_input('iCodigoDepartamento', 17, @$Icoddepto, true, 'text', 1, " onchange='js_pesquisaDepartamento(false);' ");

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -143,7 +143,7 @@ fieldset table td:first-child {
 		        <td colspan="2">
 		          <fieldset  class="fieldsetinterno">
 		            <legend>Mensagem</legend>
-		              <?php 
+		              <?
 		                db_textarea('am14_mensagem',5,75,$Iam14_mensagem,true,'text',1,"");
 		              ?>
 		          </fieldset>
@@ -179,7 +179,7 @@ fieldset table td:first-child {
         <input id="salvar" name="salvar" type="button" value="Salvar" onclick="js_salvar();">
       </div>
 
-<?php PHP db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?PHP db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 
 </body>
 

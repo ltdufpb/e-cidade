@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -26,11 +26,11 @@
  */
 ?>
 <script>
-<?php if(isset($j42_matric)){?>
+<?if(isset($j42_matric)){?>
 function js_trocaid(valor){
   location.href="cad1_proprialt.php?j42_matric=<?=$j42_matric?>&j42_numcgm="+valor+"&j01_tipoimovel=<?=$j01_tipoimovel?>";
 }
-<?php }?>
+<?}?>
 function js_opcoes(){
  var valor= document.form1.j42_numcgm.value;
  var num=document.form1.lista.options.length;
@@ -61,7 +61,7 @@ function js_opcoes(){
         <?=@$Lj42_matric?>
       </td>
       <td> 
-<?php 
+<?
   db_input('j42_matric',10,$Ij42_matric,true,'text',3," onchange='js_pesquisaj42_matric(false);'");
   db_input('z01_nome',86,$Ij01_numcgm,true,'text',3,'','z01_nomematri');
 ?>
@@ -69,12 +69,12 @@ function js_opcoes(){
     </tr>
     <tr> 
       <td nowrap title="<?=@$Tj42_numcgm?>">
-<?php 
+<?
   db_ancora($Lj42_numcgm,' js_cgm(true); ',(isset($j42_numalt)?3:1));
 ?>
       </td>
       <td> 
-<?php 
+<?
   db_input('j42_numcgm',10,$Ij42_numcgm,true,'text',(isset($j42_numalt)?3:1),"onchange='js_cgm(false)'");
   db_input('z01_nome',86,$Iz01_nome,true,'text',3,"");
 ?>
@@ -100,7 +100,7 @@ function js_opcoes(){
     <tr>
       <td colspan="2">
       <center>
-<?php 
+<?
 
   if($outros==true){  
     $result = $clpropri->sql_record($clpropri->sql_query($j42_matric,"","propri.*#cgm.z01_nome"));

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmodcarnepadraocadmodcarne->rotulo->label("m01_cadmodcarne");
               <?=$Lm01_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m01_sequencial",10,$Im01_sequencial,true,"text",4,"","chave_m01_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmodcarnepadraocadmodcarne->rotulo->label("m01_cadmodcarne");
               <?=$Lm01_cadmodcarne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m01_cadmodcarne",10,$Im01_cadmodcarne,true,"text",4,"","chave_m01_cadmodcarne");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmodcarnepadraocadmodcarne->rotulo->label("m01_cadmodcarne");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_modcarnepadraocadmodcarne.php")==true){
@@ -123,12 +123,12 @@ $clmodcarnepadraocadmodcarne->rotulo->label("m01_cadmodcarne");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

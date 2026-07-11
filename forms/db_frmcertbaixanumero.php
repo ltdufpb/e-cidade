@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clcertbaixanumero->rotulo->label();
        <?=@$Lq79_anousu?>
     </td>
     <td> 
-<?php 
+<?
 $q79_anousu = db_getsession('DB_anousu');
 db_input('q79_anousu',10,$Iq79_anousu,true,'text',3,"")
 ?>
@@ -47,7 +47,7 @@ db_input('q79_anousu',10,$Iq79_anousu,true,'text',3,"")
        <?=@$Lq79_ultcodcertbaixa?>
     </td>
     <td> 
-<?php 
+<?
 db_input('q79_ultcodcertbaixa',10,$Iq79_ultcodcertbaixa,true,'text',$db_opcao,"")
 ?>
     </td>

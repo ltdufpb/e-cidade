@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Ted20_i_codigo?>">
-          <?php db_ancora( @$Led20_i_codigo, "", 3 );?>
+          <?db_ancora( @$Led20_i_codigo, "", 3 );?>
         </td>
         <td>
           <?php
@@ -128,7 +128,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        </td>
       </tr>
      </table>
-    </td><?php 
+    </td><?
     $result = $cldiasemana->sql_record($cldiasemana->sql_query_rh("","ed32_i_codigo,ed32_c_abrev","ed32_i_codigo",$where));
     //db_criatabela($result);
     for($x=0;$x<$cldiasemana->numrows;$x++){
@@ -154,11 +154,11 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        </tr>
       </table>
      </td>
-    <?php }?>
+    <?}?>
     </tr>
-   <?php }
+   <?}
    $turno = $ed15_c_nome?>
-   <td align="center" width="30" style="font-weight: bold; background-color: #f3f3f3;"> <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?></td><?php 
+   <td align="center" width="30" style="font-weight: bold; background-color: #f3f3f3;"> <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?></td><?
    for($x=0;$x<$cldiasemana->numrows;$x++){
     $quadro = "Q".$z.$x;
     db_fieldsmemory($result,$x);
@@ -185,18 +185,18 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        <td>
         <table class="texto" bgcolor="#cccccc" id="<?=$quadro?>" cellspacing="0" cellpading="0" style="border: 2px outset #f3f3f3; border-bottom-color:#999999; border-right-color:#999999;">
          <tr>
-          <?php if($marcar==""){?>
+          <?if($marcar==""){?>
            <td onclick="GravarHorario(<?=$ed32_i_codigo?>,<?=$ed17_i_codigo?>,<?=$ed17_i_periodoaula?>,<?=$ed17_i_turno?>)" width="50" height="15" onmouseover="InSet('<?=$quadro?>',false)" onmouseout="OutSet('<?=$quadro?>',false)">
-          <?php }elseif($marcar=="OK" && $habilitar==true){?>
+          <?}elseif($marcar=="OK" && $habilitar==true){?>
            <td onclick="ExcluirHorario(<?=$ed33_i_codigo?>)" width="50" height="15" onmouseover="InSet('<?=$quadro?>',true)" onmouseout="OutSet('<?=$quadro?>',true)">
-          <?php }elseif($marcar=="OK" && $habilitar==false){?>
+          <?}elseif($marcar=="OK" && $habilitar==false){?>
            <td width="50" height="15" onmouseover="InSet('<?=$quadro?>',true)" onmouseout="OutSet('<?=$quadro?>',true)">
-          <?php }?>
+          <?}?>
            <div align="center"><b><?=$escolacod?></b></div>
           </td>
          </tr>
         </table>
-        <?php 
+        <?
         if($marcar=="OK"){
          ?>
          <table id="escola<?=$quadro?>" style="position:absolute;visibility:hidden;" border="1" bgcolor="#f3f3f3">
@@ -206,18 +206,18 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
            </td>
           </tr>
          </table>
-         <?php 
+         <?
         }
         ?>
        </td>
       </tr>
      </table>
     </td>
-   <?php 
+   <?
    $marcar = "";
    }?>
    <tr>
-  <?php }?>
+  <?}?>
   </tr>
   </table>
 </center>

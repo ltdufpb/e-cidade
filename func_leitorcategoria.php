@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clleitorcategoria->rotulo->label("bi07_nome");
       <?=$Lbi07_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("bi07_codigo",10,$Ibi07_codigo,true,"text",4,"","chave_bi07_codigo");?>
+      <?db_input("bi07_codigo",10,$Ibi07_codigo,true,"text",4,"","chave_bi07_codigo");?>
      </td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ $clleitorcategoria->rotulo->label("bi07_nome");
       <?=$Lbi07_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("bi07_nome",50,$Ibi07_nome,true,"text",4,"","chave_bi07_nome");?>
+      <?db_input("bi07_nome",50,$Ibi07_nome,true,"text",4,"","chave_bi07_nome");?>
      </td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ $clleitorcategoria->rotulo->label("bi07_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $depto = db_getsession("DB_coddepto");
    $result = $clbiblioteca->sql_record($clbiblioteca->sql_query("","bi17_codigo,bi17_nome",""," bi17_coddepto = $depto"));
    if($clbiblioteca->numrows!=0){

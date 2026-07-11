@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -29,7 +29,7 @@ $clplacaixaprocesso->rotulo->label("k144_sequencial");
               <?=$Lk144_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k144_sequencial",10,$Ik144_sequencial,true,"text",4,"","chave_k144_sequencial");
 		       ?>
             </td>
@@ -39,7 +39,7 @@ $clplacaixaprocesso->rotulo->label("k144_sequencial");
               <?=$Lk144_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k144_sequencial",10,$Ik144_sequencial,true,"text",4,"","chave_k144_sequencial");
 		       ?>
             </td>
@@ -57,7 +57,7 @@ $clplacaixaprocesso->rotulo->label("k144_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_placaixaprocesso.php")==true){
@@ -97,12 +97,12 @@ $clplacaixaprocesso->rotulo->label("k144_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

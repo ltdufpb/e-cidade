@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clitbimatric->rotulo->label("it06_matric");
               <?=$Lit06_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it06_guia",10,$Iit06_guia,true,"text",4,"","chave_it06_guia");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clitbimatric->rotulo->label("it06_matric");
               <?=$Lit06_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it06_matric",8,$Iit06_matric,true,"text",4,"","chave_it06_matric");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clitbimatric->rotulo->label("it06_matric");
               <?=$Lit06_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it06_matric",8,$Iit06_matric,true,"text",4,"","chave_it06_matric");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clitbimatric->rotulo->label("it06_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbimatric.php")==true){
@@ -130,12 +130,12 @@ $clitbimatric->rotulo->label("it06_matric");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -42,20 +42,20 @@ $db_opcao_inf=1;
             <table >
               <tr>
                 <td nowrap><?=db_ancora($Le60_codemp,"js_JanelaAutomatica('empempenho',\$F('e60_numemp'))",$db_opcao_inf)?></td>
-                <td><?php  db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3)?> </td>
+                <td><? db_input('e60_codemp', 13, $Ie60_codemp, true, 'text', 3)?> </td>
                 <td nowrap><?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho',\$F('e60_numemp'))",$db_opcao_inf)?></td>
-                <td><?php  db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3,"")?> </td>
+                <td><? db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3,"")?> </td>
               </tr>
               <tr>
                 <td nowrap><?=db_ancora($Le60_numcgm,"js_JanelaAutomatica('cgm',\$F('e60_numcgm'))",$db_opcao_inf)?></td>
-                <td><?php  db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
-                <td colspan=3><?php  db_input('z01_nome', 54, $Iz01_nome, true, 'text', 3, "");?></td>
+                <td><? db_input('e60_numcgm', 13, $Ie60_numcgm, true, 'text', 3); ?> </td>
+                <td colspan=3><? db_input('z01_nome', 54, $Iz01_nome, true, 'text', 3, "");?></td>
               </tr>
               <tr>
                 <td><?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao',\$F('e60_coddot'),'".@$e60_anousu."')",$db_opcao_inf)?></td>
-                <td nowrap ><?php  db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
+                <td nowrap ><? db_input('e60_coddot', 13, $Ie60_coddot, true, 'text', 3); ?></td>
                 <td><?=db_ancora($Lo15_codigo,"",3)?></td>
-                <td nowrap><?php  db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3); db_input('o15_descr', 33, $Io15_descr, true, 'text', 3)?></td>
+                <td nowrap><? db_input('o15_codigo', 5, $Io15_codigo, true, 'text', 3); db_input('o15_descr', 33, $Io15_descr, true, 'text', 3)?></td>
               </tr>
               <tr>
                 <td colspan="4">
@@ -80,12 +80,12 @@ $db_opcao_inf=1;
               <td>
                 <fieldset><legend><b>Saldos</b></legend>
                   <table style="width:200px" >
-                    <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><?php  db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                    <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><?php  db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                    <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><?php  db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '','','','text-align:right')?></td></tr>
-                    <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><?php  db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                    <tr><td nowrap><?=@$Le60_vlremp?></td><td align=right><? db_input('e60_vlremp', 12, $Ie60_vlremp, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                    <tr><td nowrap><?=@$Le60_vlranu?></td><td align=right><? db_input('e60_vlranu', 12, $Ie60_vlranu, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                    <tr><td nowrap><?=@$Le60_vlrliq?></td><td align=right><? db_input('e60_vlrliq', 12, $Ie60_vlrliq, true, 'text', 3, '','','','text-align:right')?></td></tr>
+                    <tr><td nowrap><?=@$Le60_vlrpag?></td><td align=right><? db_input('e60_vlrpag', 12, $Ie60_vlrpag, true, 'text', 3, '','','','text-align:right')?></td></tr>
                     <tr><td colspan='2' class='table_header'>Saldo</td></tr>
-                    <tr><td nowrap><b>Saldo:</></td><td align=right><?php  db_input('saldo_dis', 12,'', true, 'text', 3, '','','','text-align:right')?></td></tr>
+                    <tr><td nowrap><b>Saldo:</></td><td align=right><? db_input('saldo_dis', 12,'', true, 'text', 3, '','','','text-align:right')?></td></tr>
                     <tr>
                   </table>
                 </fieldset>

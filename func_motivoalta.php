@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -25,11 +25,11 @@ $clmotivoalta->rotulo->label("sd01_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lsd01_codigo?></label></td>
-          <td><?php  db_input("sd01_codigo",10,$Isd01_codigo,true,"text",4,"","chave_sd01_codigo"); ?></td>
+          <td><? db_input("sd01_codigo",10,$Isd01_codigo,true,"text",4,"","chave_sd01_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lsd01_descricao?></label></td>
-          <td><?php  db_input("sd01_descricao",10,$Isd01_descricao,true,"text",4,"","chave_sd01_descricao");?></td>
+          <td><? db_input("sd01_descricao",10,$Isd01_descricao,true,"text",4,"","chave_sd01_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $clmotivoalta->rotulo->label("sd01_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_motivoalta.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_motivoalta.php")==true){
@@ -79,12 +79,12 @@ $clmotivoalta->rotulo->label("sd01_descricao");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

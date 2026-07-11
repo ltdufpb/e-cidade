@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -61,7 +61,7 @@ if(isset($alterar)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Vigilância Sanitária</b></legend>
-    <?php include(modification("forms/db_frmunidadesalvara.php"));?>
+    <?include(modification("forms/db_frmunidadesalvara.php"));?>
    </fieldset>
    </center>
   </td>
@@ -72,7 +72,7 @@ if(isset($alterar)){
 <script>
 js_tabulacaoforms("form1","sd02_v_num_alvara",true,1,"sd02_v_num_alvara",true);
 </script>
-<?php 
+<?
 if(isset($alterar)){
  if($clunidades->erro_status=="0"){
   $clunidades->erro(true,false);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -82,7 +82,7 @@ $clfar_retirada->rotulo->label();
        <b>Consulta:</b>
     </td>
     <td> 
-       <?php 
+       <?
            $sex = array("R"=>"RECEITA","D"=>"DEVOLUÇÃO");
           db_select('',$sex,true,"");
                   
@@ -96,18 +96,18 @@ $clfar_retirada->rotulo->label();
        <b> Período:</b>
      </td>
      <td>
-       <?php  db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"");?>
-       <?php  db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");?>
+       <? db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"");?>
+       <? db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");?>
      </td>
      </tr>
   <tr>
     <td nowrap title="<?=@$Tfa04_i_cgsund?>">
-       <?php 
+       <?
        db_ancora(@$Lfa04_i_cgsund,"js_pesquisafa04_i_cgsund(true);","");
        ?>
     </td>
     <td colspan="3"> 
-    <?php 
+    <?
        db_input('fa04_i_cgsund',10,@$Ifa04_i_cgsund,true,'text',""," onchange='js_pesquisafa04_i_cgsund(false);'");
        db_input('z01_v_nome',63,@$Iz01_v_nome,true,'text',3,'');
     ?>
@@ -131,22 +131,22 @@ $clfar_retirada->rotulo->label();
 <table width="100%">
  <tr>
   <td align="center" valign="top">
-  	<?php  if(isset($consultar) &&  $fa04_i_cgsund==""){
+  	<? if(isset($consultar) &&  $fa04_i_cgsund==""){
 		echo "<script>alert('Pesquise um CGS');</script>";	
 	  }else if(!isset($fa04_i_cgsund) && @$fa04_i_cgsund==""){
 	   echo "";
 	  }else if(($data1!="") && $data2!=""){?>
 	  <iframe frameborder="0" name="consulta" id="consulta" src="far3_consultapaciente002.php?consultar&fa04_i_cgsund=<?=$fa04_i_cgsund?>&z01_v_nome=<?=$z01_v_nome?>&data1=<?=$data1?>&data2=<?=$data2?>" width="740" height="500" scrolling="no"></iframe>				   
-	<?php }else{?>
+	<?}else{?>
 		<iframe frameborder="0" name="consulta" id="consulta" src="far3_consultapaciente002.php?consultar&fa04_i_cgsund=<?=$fa04_i_cgsund?>&z01_v_nome=<?=$z01_v_nome?>" width="740" height="500" scrolling="no"></iframe>	
-	<?php }?>
+	<?}?>
    </td>
   </tr>
 </table>
 </center>
 </body>
 </html>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script rel="script" type="text/javascript" src="scripts/classes/saude/ValidaCgs.js"></script>
 <script>
 

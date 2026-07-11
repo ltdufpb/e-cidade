@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempautoriza->rotulo->label("e54_anousu");
               <?=$Le54_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e54_autori",6,$Ie54_autori,true,"text",4,"","chave_e54_autori");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempautoriza->rotulo->label("e54_anousu");
               <?=$Le54_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e54_anousu",4,$Ie54_anousu,true,"text",4,"","chave_e54_anousu");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempautoriza->rotulo->label("e54_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empautoriza.php")==true){
@@ -120,12 +120,12 @@ $clempautoriza->rotulo->label("e54_anousu");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -74,23 +74,23 @@ if(isset($excluir)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+   <?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Cadastro de Tipo de Item</b></legend>
-    <?php include(modification("forms/db_frmtipoitem.php"));?>
+    <?include(modification("forms/db_frmtipoitem.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 js_tabulacaoforms("form1","bi05_nome",true,1,"bi05_nome",true);
 </script>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
   if($cltipoitem->erro_status=="0"){
     $cltipoitem->erro(true,false);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ if(isset($j34_setor) && $j34_setor != ""){
       <table border="0">
         <tr>
           <td align="top" colspan="2">
-      <?php 
+      <?
 	if(isset($j37_quadra)&& $j37_quadra!=""){
 	  $cliframe_seleciona->campos  = "j14_codigo,j14_nome";
 	  $cliframe_seleciona->legenda="RUAS";
@@ -96,7 +96,7 @@ if(isset($j34_setor) && $j34_setor != ""){
 	<script>
 	  tempo = setInterval('ruas.js_marca();clearInterval(tempo)',1500);
 	</script>
-      <?php 
+      <?
 	}else{
 	  echo "<br><strong>SELECIONE UMA QUADRA PARA ESCOLHER A(S) RUA(S)</strong>";
 	}

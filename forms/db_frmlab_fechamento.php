@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,14 +37,14 @@ $clrotulo = new rotulocampo;
    <tr>
     <td nowrap title="<?=@$Tla54_i_compmes?>">
        <b>Competência Mês/Ano:</b>
-       <?php  db_input('la54_i_codigo', 15, $Ila54_i_codigo, true, 'hidden', $db_opcao2, "");?>
+       <? db_input('la54_i_codigo', 15, $Ila54_i_codigo, true, 'hidden', $db_opcao2, "");?>
     </td> 
     <td> 
-     <?php  db_input('la54_i_compmes', 15, $Ila54_i_compmes, true, 'text', $db_opcao, " onchange=\"js_descr();\" ");?>
+     <? db_input('la54_i_compmes', 15, $Ila54_i_compmes, true, 'text', $db_opcao, " onchange=\"js_descr();\" ");?>
 	 </td>
 	 <td>/</td>
 	 <td>
-	  <?php  db_input('la54_i_compano', 15, $Ila54_i_compano, true, 'text', $db_opcao, " onchange=\"js_descr();\" ");?>
+	  <? db_input('la54_i_compano', 15, $Ila54_i_compano, true, 'text', $db_opcao, " onchange=\"js_descr();\" ");?>
     </td>
   </tr>
   <tr>
@@ -52,12 +52,12 @@ $clrotulo = new rotulocampo;
        <b>Período de Fechamento :</b>
     </td>
     <td> 
-     <?php  db_inputdata('la54_d_ini', @$la54_d_ini_dia, @$la54_d_ini_mes, @$la54_d_ini_ano, true, 'text', $db_opcao, 
+     <? db_inputdata('la54_d_ini', @$la54_d_ini_dia, @$la54_d_ini_mes, @$la54_d_ini_ano, true, 'text', $db_opcao, 
                      "onchange=\"js_validadata();\"" ,"", "", "parent.js_validadata();");?>
 	 </td>
 	 <td>A</td>
 	 <td>
-	  <?php  db_inputdata('la54_d_fim', @$la54_d_fim_dia, @$la54_d_fim_mes, @$la54_d_fim_ano, true, 'text', $db_opcao,
+	  <? db_inputdata('la54_d_fim', @$la54_d_fim_dia, @$la54_d_fim_mes, @$la54_d_fim_ano, true, 'text', $db_opcao,
 	                  "onchange=\"js_validadata();\"", "", "", "parent.js_validadata();");?>
     </td>
   </tr>
@@ -66,13 +66,13 @@ $clrotulo = new rotulocampo;
        <?=@$Lla54_d_data?>
     </td>
     <td colspan="3"> 
-      <?php  db_inputdata('la54_d_data',@$la54_d_data_dia,@$la54_d_data_mes,@$la54_d_data_ano,true,'text',3,"");?>
+      <? db_inputdata('la54_d_data',@$la54_d_data_dia,@$la54_d_data_mes,@$la54_d_data_ano,true,'text',3,"");?>
     </td>
   </tr>
   <tr>
     <td><b>Tipo Financiamnto:</b></td>
     <td colspan="3">
-      <?php $x = array();
+      <?$x = array();
         $sWhere = "sd65_i_anocomp=(select max(sd65_i_anocomp) from sau_financiamento) and sd65_i_mescomp=( 
                    select max(sd65_i_mescomp) from sau_financiamento where sd65_i_anocomp=(
                    select max(sd65_i_anocomp) from sau_financiamento))";
@@ -96,7 +96,7 @@ $clrotulo = new rotulocampo;
        <?=@$Lla54_c_descr?>
     </td>
     <td colspan="3"> 
-      <?php  db_input('la54_c_descr',35,$Ila54_c_descr,true,'text',$db_opcao,"");?>
+      <? db_input('la54_c_descr',35,$Ila54_c_descr,true,'text',$db_opcao,"");?>
     </td>
   </tr>
 </table>
@@ -119,7 +119,7 @@ $clrotulo = new rotulocampo;
 <table>
  <tr>
   <td valign="top">
-  <?php 
+  <?
         $chavepri= array("la54_i_codigo"=>@$la54_i_codigo);
         $sCampos = "la54_i_codigo,la54_i_compmes||'/'||la54_i_compano as la54_i_compmes,la54_d_ini,".
         $sCampos = "la54_d_fim,la54_i_financiamento,sd65_c_nome,la54_c_descr,la54_d_data,la54_c_hora,nome as la54_i_login "; 
@@ -150,15 +150,15 @@ $clrotulo = new rotulocampo;
 </form>
 <script>
 F=document.form1;
-<?php if(!isset($la54_c_descr)){?>
+<?if(!isset($la54_c_descr)){?>
     js_descr();
-<?php }?>
+<?}?>
 function js_pesquisa(){
   js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_sau_fechamento','func_sau_fechamento.php?funcao_js=parent.js_preenchepesquisa|sd97_i_codigo','Pesquisa',true);
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_fechamento.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2014  DBSeller Servicos de Informatica
@@ -599,11 +599,11 @@ if (isset($incluir) && $sqlerro == false ) {
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Tk86_contabancaria?>">
-            <?php  echo $Lk86_contabancaria; // db_ancora(@$Lk86_contabancaria,"js_pesquisak86_contabancaria(true);",1); ?>
+            <? echo $Lk86_contabancaria; // db_ancora(@$Lk86_contabancaria,"js_pesquisak86_contabancaria(true);",1); ?>
           </td>
           <td nowrap>
-            <?php  db_input('conta',10,$Ik86_contabancaria,true,'text',3," onchange='js_pesquisak86_contabancaria(false);'") ?>
-            <?php  db_input('db83_descricao',50,$Idb83_descricao,true,'hidden',3,'') ?>
+            <? db_input('conta',10,$Ik86_contabancaria,true,'text',3," onchange='js_pesquisak86_contabancaria(false);'") ?>
+            <? db_input('db83_descricao',50,$Idb83_descricao,true,'hidden',3,'') ?>
           </td>
         </tr>
         <tr>
@@ -625,7 +625,7 @@ if (isset($incluir) && $sqlerro == false ) {
             <strong>Saldo Bancário na Data: </strong>
           </td>
           <td>
-            <?php 
+            <?
 	    db_input('iSaldo',10,4,true,'text',1);
 
             $x = array("C"=>"C","D"=>"D");
@@ -645,7 +645,7 @@ if (isset($incluir) && $sqlerro == false ) {
 
 
      <fieldset>
-     <?php 
+     <?
       include(modification("cai2_digitasaldoextratomanuallinha.php"));
      ?>
      </fieldset>
@@ -657,7 +657,7 @@ if (isset($incluir) && $sqlerro == false ) {
 
 </html>
 
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -688,7 +688,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
     db_iframe_contabancaria.hide();
   }
 
-<?php 
+<?
 
 if(isset($alterar) || isset($excluir) || isset($incluir) || isset($processar)){
 

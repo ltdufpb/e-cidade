@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -582,7 +582,7 @@ $ip_imprime = db_getsession("DB_ip");
 <table width="760" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="375" align="left" valign="top" bgcolor="#CCCCCC">
-      <?php 
+      <?
       $clrotulo = new rotulocampo;
       $clrotulo->label("e80_data");
 
@@ -605,7 +605,7 @@ $ip_imprime = db_getsession("DB_ip");
 	                <?=$Le80_data?>
 	              </td>	
 	              <td nowrap>	
-	                <?php 
+	                <?
                     db_inputdata('e80_data', @ $e80_data_dia, @ $e80_data_mes, @ $e80_data_ano, true, 'text', 1);
                     ?>
 	                <input name="pesquisar" type="submit"    value="Pesquisar">
@@ -613,9 +613,9 @@ $ip_imprime = db_getsession("DB_ip");
 	            </tr>
                 <tr>
 	              <td class='bordas' align='right'>
-                    <?php  db_ancora("Agendas","js_empage();",$db_opcao);  ?>
+                    <? db_ancora("Agendas","js_empage();",$db_opcao);  ?>
 	              </td>
-                    <?php 
+                    <?
                     if($numrows01 != 0){
                       for($i=0; $i<$numrows01; $i++){
                         db_fieldsmemory($result01, $i);
@@ -625,7 +625,7 @@ $ip_imprime = db_getsession("DB_ip");
                     ?>
                   <td class='bordas'>
                     <small>
-                    <?php 
+                    <?
                     // Variável setada apenas quando o usuario pesquisar na func 
                     if(isset($pri_codage)){
                       $e80_codage = $pri_codage;
@@ -652,7 +652,7 @@ $ip_imprime = db_getsession("DB_ip");
           </td>
         </tr>  
       </table>  
-      <?php 
+      <?
       }
       ?>
     </td>
@@ -670,7 +670,7 @@ function js_cria(campo,valor){
 }	   
 function js_verso(ver){
   retorna = false;
-  <?php 
+  <?
   if(isset($imprimirverso)){
     echo "retorna = confirm('Emitir o verso do cheque?');\n";
   }
@@ -688,7 +688,7 @@ function js_verso(ver){
   }
 }	 
 </script>
-<?php 
+<?
 // Rotina que alerta caso tenha ocorrido algum problema nas transações
 if(isset($atualizar) && $sqlerro == true){
   db_msgbox($erro_msg);

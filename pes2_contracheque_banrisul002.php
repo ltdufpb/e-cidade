@@ -1,4 +1,4 @@
-<?php 
+<?
 require("libs/db_stdlib.php");
 require("libs/db_stdlibwebseller.php");
 require("libs/db_conecta.php");
@@ -572,12 +572,12 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?php 
+          <?
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?php 
+          <?
            $DBtxt25 = db_mesfolha();
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
@@ -586,7 +586,7 @@ function js_emite(){
   <tr>
     <td><b>Data do Depósito:</b></td>
     <td>
-      <?php 
+      <?
       if((!isset($datadeposit_dia) || (isset($datadeposit_dia) && trim($datadeposit_dia) == "")) && (!isset($datadeposit_mes) || (isset($datadeposit_mes) && trim($datadeposit_mes) == "")) && (!isset($datadeposit_ano) || (isset($datadeposit_ano) && trim($datadeposit_ano) == ""))){
         $datadeposit_dia = "";
         $datadeposit_mes = "";
@@ -598,25 +598,25 @@ function js_emite(){
   </tr>
   <tr> 
     <td align="left" nowrap title="<?=@$Trh34_codarq?>">
-      <?php db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
+      <?db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
     </td>
     <td align="left" nowrap colspan="3">
-      <?php db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
-      <?php db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
-      <?php db_input("rodape",40,0,true,"hidden",3);?>
+      <?db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
+      <?db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
+      <?db_input("rodape",40,0,true,"hidden",3);?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_codban?>">
-      <?php 
+      <?
       db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",1);
       ?>
     </td>
     <td colspan="3"> 
-      <?php 
+      <?
       db_input('rh34_codban',6,$Irh34_codban,true,'text',1," onchange='js_pesquisarh34_codban(false);'")
       ?>
-      <?php 
+      <?
       db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
       ?>
     </td>
@@ -626,7 +626,7 @@ function js_emite(){
       <?=@$Lrh34_agencia?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('rh34_agencia',5,$Irh34_agencia,true,'text',1,"")
       ?>
     </td>
@@ -634,7 +634,7 @@ function js_emite(){
       <?=@$Lrh34_dvagencia?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('rh34_dvagencia',2,$Irh34_dvagencia,true,'text',1,"")
       ?>
     </td>
@@ -644,7 +644,7 @@ function js_emite(){
     <B>Código da Empresa
     </td>
     <td> 
-      <?php 
+      <?
       db_input('rh34_conta',15,$Irh34_conta,true,'text',1,"")
       ?>
     </td>
@@ -654,7 +654,7 @@ function js_emite(){
       <?=@$Lrh34_convenio?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('rh34_convenio',15,$Irh34_convenio,true,'text',1,"")
       ?>
     </td>
@@ -664,7 +664,7 @@ function js_emite(){
       <?=@$Lrh34_sequencial?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',1,"")
       ?>
     </td>
@@ -672,13 +672,13 @@ function js_emite(){
   <tr>
     <td><b>Arquivo:</b</td>
     <td>
-     <?php 
+     <?
        $x = array("r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento");
        db_select('arquivo',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>
      </tr>
-     <?php 
+     <?
      if(isset($arquivo) && $arquivo == "r48"){
          $clgerfcom = new \cl_gerfcom();
          $sqlresource = $clgerfcom->sql_query_file($DBtxt23,$DBtxt25,null,null,"distinct r48_semest as rh40_sequencia");
@@ -718,13 +718,13 @@ function js_emite(){
 
   </form>
     </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
-  <?php 
+  <?
   if(isset($emite)){
   	echo "js_montarlista('".$arq."#Arquivo gerado em: ".$arq."','form1');";
   }
@@ -781,7 +781,7 @@ function js_mostradb_bancos1(chave1,chave2){
   db_iframe_db_bancos.hide();
 }
 </script>
-<?php 
+<?
 if(isset($emite2)){
   if($clrharqbanco->erro_status=="0"){
     $clrharqbanco->erro(true,false);

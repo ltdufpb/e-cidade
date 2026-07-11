@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcgmcomposicaofamiliar->rotulo->label("z15_sequencial");
               <?=$Lz15_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z15_numcgm",10,$Iz15_numcgm,true,"text",4,"","chave_z15_numcgm");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcgmcomposicaofamiliar->rotulo->label("z15_sequencial");
               <?=$Lz15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z15_sequencial",10,$Iz15_sequencial,true,"text",4,"","chave_z15_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcgmcomposicaofamiliar->rotulo->label("z15_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cgmcomposicaofamiliar.php")==true){
@@ -123,12 +123,12 @@ $clcgmcomposicaofamiliar->rotulo->label("z15_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

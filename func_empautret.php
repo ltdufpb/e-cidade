@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clempautret->rotulo->label("e66_seqretencao");
               <?=$Le66_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e66_autori",6,$Ie66_autori,true,"text",4,"","chave_e66_autori");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clempautret->rotulo->label("e66_seqretencao");
               <?=$Le66_seqretencao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e66_seqretencao",6,$Ie66_seqretencao,true,"text",4,"","chave_e66_seqretencao");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clempautret->rotulo->label("e66_seqretencao");
               <?=$Le66_seqretencao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e66_seqretencao",6,$Ie66_seqretencao,true,"text",4,"","chave_e66_seqretencao");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clempautret->rotulo->label("e66_seqretencao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empautret.php")==true){
@@ -134,12 +134,12 @@ $clempautret->rotulo->label("e66_seqretencao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

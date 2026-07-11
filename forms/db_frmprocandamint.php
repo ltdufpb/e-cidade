@@ -130,7 +130,7 @@ function js_submit(){
            <?=$Lp58_codproc;?>
           </td>
           <td>
-          <?php db_input("p58_codproc",25,$Ip58_codproc,true,"text",3);?>
+          <?db_input("p58_codproc",25,$Ip58_codproc,true,"text",3);?>
           </td>
         </tr>
         <tr>
@@ -138,13 +138,13 @@ function js_submit(){
            <?=$Lp58_numero;?>
           </td>
           <td>
-          <?php db_input("p58_numero",25,$Ip58_numero,true,"text",3);?>
+          <?db_input("p58_numero",25,$Ip58_numero,true,"text",3);?>
           </td>
           <td title="<?=$Tp58_codigo?>" align='left'>
           <?=$Lp58_codigo?>
 	        </td>
 	        <td nowrap >
-          <?php db_input("p58_codigo",8,$Ip58_codigo,true,"text",3);
+          <?db_input("p58_codigo",8,$Ip58_codigo,true,"text",3);
 	          db_input("p51_descr",32,$Ip51_descr,true,"text",3)
 	        ?>
           </td>
@@ -154,13 +154,13 @@ function js_submit(){
            <?=$Lp58_dtproc;?>
 	        </td>
 	        <td>
-          <?php db_input("dtproc",10,$Ip58_dtproc,true,"text",3);?>
+          <?db_input("dtproc",10,$Ip58_dtproc,true,"text",3);?>
           </td>
           <td title="<?=$Tp58_hora?>">
             <b>Hora:</b>
           </td>
           <td>
-          <?php db_input("p58_hora",10,$Ip58_hora,true,"text",3);?>
+          <?db_input("p58_hora",10,$Ip58_hora,true,"text",3);?>
           </td>
         </tr>
         <tr>
@@ -168,7 +168,7 @@ function js_submit(){
            <?=$Llogin;?>
           </td>
           <td>
-          <?php db_input("login",40,$Ilogin,true,"text",3);?>
+          <?db_input("login",40,$Ilogin,true,"text",3);?>
           </td>
         </tr>
         <tr>
@@ -176,7 +176,7 @@ function js_submit(){
             <?=$Lp58_numcgm?>
           </td>
           <td nowrap title="<?=$Tz01_nome?>">
-            <?php db_input("p58_numcgm",6,$Ip58_numcgm,true,"text",3);
+            <?db_input("p58_numcgm",6,$Ip58_numcgm,true,"text",3);
               db_input("z01_nome",32,$Iz01_nome,true,"text",3);
              ?>
           </td>
@@ -184,7 +184,7 @@ function js_submit(){
            <?=$Lp58_requer?>
           </td>
           <td>
-            <?php  
+            <? 
              db_input("p58_requer",40,$Ip58_requer,true,"text",3);
             ?>
           </td>
@@ -194,14 +194,14 @@ function js_submit(){
             <?=$Lp58_coddepto?>
           </td>
           <td nowrap title="<?=$Tdescrdepto?>">
-          <?php db_input("p58_coddepto",6,$Ip58_coddepto,true,"text",3);
+          <?db_input("p58_coddepto",6,$Ip58_coddepto,true,"text",3);
             db_input("descrdepto",32,$descrdepto,true,"text",3);?>
           </td>
           <td title="<?=$Tp58_codandam?>" align='left' >
            <?=$Lp58_codandam?>
           </td>
           <td>
-             <?php db_input("p58_codandam",15,$Ip58_codandam,true,"text",3);?>
+             <?db_input("p58_codandam",15,$Ip58_codandam,true,"text",3);?>
           </td>
         </tr>
         <tr>
@@ -209,7 +209,7 @@ function js_submit(){
              <?=$Lp58_obs?>
           </td>
           <td colspan=3 >
-            <?php db_textarea("p58_obs",1,90,$Ip58_obs,true,"text",3);?>
+            <?db_textarea("p58_obs",1,90,$Ip58_obs,true,"text",3);?>
           </td>
         </tr>
 
@@ -264,7 +264,7 @@ function js_submit(){
   </tr>
   <tr>
     <td colspan=4 align='center' >
-      <?php 
+      <?
       $sSqlTransferido = $clproctransfer->sql_query_trans(null,
                                                           "p62_codtran as codtran ", 
                                                           "p62_codtran desc",
@@ -292,15 +292,15 @@ function js_submit(){
       ?>
       <input name="incluir" type="submit" id="db_opcao" value="Incluir" <?=($db_botao==false?"disabled":"") ?> onclick='return js_submit();' >
       <input name="voltar" type="button" id="voltar" value="Voltar" onclick='(window.CurrentWindow || parent.CurrentWindow).corpo.location.href="pro4_procandamint001.php"' >
-      <?php 
+      <?
       if (isset($incluir) && $sqlerro == false){
         ?>
         <input name="imprimir" type="button" id="imprimir" value="Imprimir Despacho" onclick='js_imprime();' >
-        <?php 
+        <?
         }else{
         ?>
         <input name="imprimir" type="button" id="imprimir" value="Imprimir Despacho" disabled  onclick='js_imprime();' >
-        <?php 
+        <?
         }
       ?>
     </td>

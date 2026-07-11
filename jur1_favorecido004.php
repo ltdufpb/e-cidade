@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ if ( isset($oGet->chavepesquisa) ) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
   db_app::load("scripts.js");
   db_app::load("prototype.js"); 
   db_app::load("strings.js");
@@ -90,10 +90,10 @@ if ( isset($oGet->chavepesquisa) ) {
     <table class="form-container">
        <tr>
           <td>
-            <?php  db_ancora ( $Lz01_nome, "js_pesquisacgm(true)", 1 )?>
+            <? db_ancora ( $Lz01_nome, "js_pesquisacgm(true)", 1 )?>
           </td>
           <td>
-            <?php  
+            <? 
               db_input ( "z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, " onchange='js_pesquisacgm(false);' " );
               db_input ( "z01_nome", 41, $Iz01_nome, true, "text", 3 );
             ?>
@@ -114,7 +114,7 @@ if ( isset($oGet->chavepesquisa) ) {
         Conta Interna Contábil:                     
       </td>
       <td>
-        <?php  db_input('v86_containterna',55,$Iv86_containterna,true,'text',$db_opcao,''); ?>
+        <? db_input('v86_containterna',55,$Iv86_containterna,true,'text',$db_opcao,''); ?>
       </td>    
     </tr>
     </table>

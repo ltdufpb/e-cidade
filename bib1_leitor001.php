@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -279,7 +279,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Leitor</b></legend>
-     <?php 
+     <?
        require_once(modification("forms/db_frmleitor.php"));
      ?>
    </fieldset>
@@ -289,7 +289,7 @@ if (isset($incluir)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if (isset($incluir)) {
   
   if ($clleitor->erro_status == "0") {
@@ -310,7 +310,7 @@ if (isset($incluir)) {
      <script>
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo1.location.href='bib1_leitor002.php?chavepesquisa=<?=$iCodigoLeitor?>';
      </script>
-    <?php 
+    <?
   };
 };
 ?>

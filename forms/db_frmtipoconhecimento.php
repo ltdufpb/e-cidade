@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ if($ed110_i_ptconhecimento==0 || $ed110_i_ptgeral==0){
    <?=@$Led109_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed109_i_codigo',10,$Ied109_i_codigo,true,'text',3,"")?>
+   <?db_input('ed109_i_codigo',10,$Ied109_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -68,7 +68,7 @@ if($ed110_i_ptconhecimento==0 || $ed110_i_ptgeral==0){
    <?=@$Led109_c_descr?>
   </td>
   <td>
-   <?php db_input('ed109_c_descr',50,$Ied109_c_descr,true,'text',$db_opcao,"")?>
+   <?db_input('ed109_c_descr',50,$Ied109_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -77,7 +77,7 @@ if($ed110_i_ptconhecimento==0 || $ed110_i_ptgeral==0){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?php 
+  <?
    $chavepri= ["ed109_i_codigo"=>@$ed109_i_codigo,"ed109_c_descr"=>@$ed109_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoconhecimento->sql_query($ed109_i_codigo,"*","ed109_c_descr");

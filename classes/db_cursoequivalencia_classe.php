@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE cursoequivalencia
 class cl_cursoequivalencia {

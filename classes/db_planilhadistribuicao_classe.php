@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: material
 //CLASSE DA ENTIDADE planilhadistribuicao
 class cl_planilhadistribuicao { 

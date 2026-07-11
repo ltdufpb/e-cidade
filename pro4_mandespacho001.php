@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,13 +73,13 @@ $rotulo->label("p58_codproc");
            <?=$Lp58_codproc;?>
        </td>
        <td>
-          <?php db_input("p58_codproc",5,$Ip58_codproc,true,"text",2);?>
+          <?db_input("p58_codproc",5,$Ip58_codproc,true,"text",2);?>
        </td>
        <td> <input type="button" value="Pesquisar" onclick="document.form2.submit()">
     </tr>
     </table>
     </form>
-    <?php 
+    <?
     $sql = "select * from (
             select      p58_codproc,
                         p58_requer,
@@ -106,7 +106,7 @@ exit;*/
 
   ?>
  </center>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

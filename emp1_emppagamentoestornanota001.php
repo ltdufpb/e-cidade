@@ -93,7 +93,7 @@ $apenas_retencoes = !empty($_GET["retencoes"])? 1 : 0;
           <table>
       	    <tr>
         		  <td nowrap title="<?=@$Te50_codord?>" align='right'>
-		            <?php  db_ancora("<b>Ordem de Pagamento:</b>","js_pesquisae50_codord(true);",$db_opcao);  ?>
+		            <? db_ancora("<b>Ordem de Pagamento:</b>","js_pesquisae50_codord(true);",$db_opcao);  ?>
       	 	   </td>
 		         <td>
 		           <?php
@@ -119,7 +119,7 @@ $apenas_retencoes = !empty($_GET["retencoes"])? 1 : 0;
 </center>
 
 
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -252,7 +252,7 @@ function js_mostraempempenho1(chave1){
 
 
 </script>
-<?php 
+<?
 if(isset($erro_msg)){
   db_msgbox($erro_msg);
   if(isset($erro) && $erro != ''){

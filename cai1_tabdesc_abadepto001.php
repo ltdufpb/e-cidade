@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,17 +112,17 @@ if(isset($incluir) or isset($alterar)){
        <?=@$Lcodsubrec?>
     </td>
     <td> 
-			<?php 
+			<?
 			db_input('codsubrec',10,$Icodsubrec,true,'text',3,"")
 			?>
-			<?php 
+			<?
       db_input('k07_descr',50,$Ik07_descr,true,'text',3,"")
       ?>
     </td>
   </tr>
 	<tr>
 		<td colspan="2" align="center">
-		   <?php 
+		   <?
 			
 			$sql = "select coddepto,descrdepto from db_depart where instit = ".db_getsession("DB_instit")." order by descrdepto";
 			$sqlmarca = "select coddepto,descrdepto 
@@ -148,7 +148,7 @@ if(isset($incluir) or isset($alterar)){
 	
 	<tr>
 		<td colspan="2" align="center"> 
-		<?php  if($db_opcao==3){ $db_botao = false; }?>
+		<? if($db_opcao==3){ $db_botao = false; }?>
  			<input name="<?=($db_opcao==1?"incluir":($db_opcao==2?"alterar":"excluir"))?>" type="submit" value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> onclick='js_gera_chaves();' >
 		</td>
 	</tr>
@@ -157,7 +157,7 @@ if(isset($incluir) or isset($alterar)){
 </center>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir) or isset($alterar) or isset($excluir)){
   if($erro==true){
 	  db_msgbox($msgerro);

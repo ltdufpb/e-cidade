@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -114,17 +114,17 @@ if(isset($incluir) or isset($alterar)){
        Tipo de Alvará
     </td>
     <td> 
-			<?php 
+			<?
 			db_input('q98_sequencial',5,'',true,'text',3,"")
 			?>
-			<?php 
+			<?
       db_input('q98_descricao',70,'',true,'text',3,"")
       ?>
     </td>
   </tr>
 	<tr>
 		<td colspan="2" align="center">
-		   <?php 
+		   <?
 			
 			$sql = "select coddepto,descrdepto from db_depart where instit = ".db_getsession("DB_instit")." order by descrdepto";
 			$sqlmarca = "select coddepto,descrdepto 
@@ -157,7 +157,7 @@ if(isset($incluir) or isset($alterar)){
 </center>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir) or isset($alterar) or isset($excluir)){
   if($erro==true){
 	  db_msgbox($msgerro);

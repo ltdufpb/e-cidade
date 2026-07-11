@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,33 +39,33 @@ $clrotulo->label("me21_i_codigo");
        <?=@$Lme38_i_codigo?>
     </td>
     <td> 
-     <?php db_input('me38_i_codigo',10,$Ime38_i_codigo,true,'text',3,"")?>
+     <?db_input('me38_i_codigo',10,$Ime38_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme38_i_cardapioescola?>">
-     <?php db_ancora(@$Lme38_i_cardapioescola,"js_pesquisame38_i_cardapioescola(true);",$db_opcao);?>
+     <?db_ancora(@$Lme38_i_cardapioescola,"js_pesquisame38_i_cardapioescola(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('me38_i_cardapioescola',10,$Ime38_i_cardapioescola,true,'text',$db_opcao,
+     <?db_input('me38_i_cardapioescola',10,$Ime38_i_cardapioescola,true,'text',$db_opcao,
                 " onchange='js_pesquisame38_i_cardapioescola(false);'"
                )
      ?>
-     <?php db_input('me32_i_codigo',10,$Ime32_i_codigo,true,'text',3,'')?>
+     <?db_input('me32_i_codigo',10,$Ime32_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme38_i_cardapiotipo?>">
-       <?php 
+       <?
        db_ancora(@$Lme38_i_cardapiotipo,"js_pesquisame38_i_cardapiotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-     <?php db_input('me38_i_cardapiotipo',10,$Ime38_i_cardapiotipo,true,'text',$db_opcao,
+     <?db_input('me38_i_cardapiotipo',10,$Ime38_i_cardapiotipo,true,'text',$db_opcao,
                 " onchange='js_pesquisame38_i_cardapiotipo(false);'"
                )
      ?>
-     <?php db_input('me21_i_codigo',4,$Ime21_i_codigo,true,'text',3,'')?>
+     <?db_input('me21_i_codigo',4,$Ime21_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -73,7 +73,7 @@ $clrotulo->label("me21_i_codigo");
        <?=@$Lme38_i_ordem?>
     </td>
     <td> 
-     <?php db_input('me38_i_ordem',10,$Ime38_i_ordem,true,'text',$db_opcao,"")?>
+     <?db_input('me38_i_ordem',10,$Ime38_i_ordem,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -183,7 +183,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_mer_consumoescola.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";

@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE tabdesccadban
 class cl_tabdesccadban { 

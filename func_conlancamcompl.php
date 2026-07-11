@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,12 +52,12 @@ $clconlancamcompl->rotulo->label("c72_complem");
 	     <form name="form2" method="post" action="" >
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tc72_codlan?>"><?=$Lc72_codlan?></td>
-            <td width="96%" align="left" nowrap><?php  db_input("c72_codlan",8,$Ic72_codlan,true,"text",4,"","chave_c72_codlan"); ?></td>
+            <td width="96%" align="left" nowrap><? db_input("c72_codlan",8,$Ic72_codlan,true,"text",4,"","chave_c72_codlan"); ?></td>
          </tr>
  
          <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tc72_complem?>"><?=$Lc72_complem?></td>
-            <td width="96%" align="left" nowrap><?php db_input("c72_complem",40,$Ic72_complem,true,"text",4,"","chave_c72_complem"); ?></td>
+            <td width="96%" align="left" nowrap><?db_input("c72_complem",40,$Ic72_complem,true,"text",4,"","chave_c72_complem"); ?></td>
           </tr>
           <tr> 
             <td colspan="2" align="center"> 
@@ -72,7 +72,7 @@ $clconlancamcompl->rotulo->label("c72_complem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancamcompl.php")==true){
@@ -108,12 +108,12 @@ $clconlancamcompl->rotulo->label("c72_complem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

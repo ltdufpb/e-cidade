@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordoparalisacaoacordomovimentacao
 class cl_acordoparalisacaoacordomovimentacao { 

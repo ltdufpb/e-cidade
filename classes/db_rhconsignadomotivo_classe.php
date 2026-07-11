@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomotivo
 class cl_rhconsignadomotivo { 

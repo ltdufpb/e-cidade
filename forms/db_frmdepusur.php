@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,7 +39,7 @@
     </tr>
     <tr> 
       <td align="center" nowrap> <select name="usuarios" onClick="document.form1.action='con1_depusur001.php?selecionar=1';document.form1.submit()" id="usuarios" size="10">
-          <?php   // carrega lista de usuarios
+          <?  // carrega lista de usuarios
             $result = db_query("select id_usuario, nome, login from db_usuarios order by nome");
             $numrows = pg_numrows($result);
 			for ($i=0;$i<$numrows;$i++) {
@@ -52,7 +52,7 @@
             <tr> 
               <td width="54%" rowspan="8"> <div align="right"> 
                   <select name="depto[]" id="select" size="10" multiple>
-                    <?php   // carrega lista de departamentos
+                    <?  // carrega lista de departamentos
 			  if(isset($HTTP_POST_VARS["usuarios"])) {
 			    $depusu = db_query("select coddepto from db_depusu where id_usuario = ".$HTTP_POST_VARS["usuarios"]);
 				$depusu_coddepto[0] = "";

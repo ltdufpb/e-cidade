@@ -179,7 +179,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
             <tr>
                <td>&nbsp;</td>
                <td >
-                 <?php  db_selinstit('',300,100); ?>
+                 <? db_selinstit('',300,100); ?>
               </td>
             </tr>
           </table>

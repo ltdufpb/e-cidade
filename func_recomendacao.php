@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrecomendacao->rotulo->label("ed46_c_descr");
       <?=$Led46_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed46_i_codigo",10,$Ied46_i_codigo,true,"text",4,"","chave_ed46_i_codigo");?>
+      <?db_input("ed46_i_codigo",10,$Ied46_i_codigo,true,"text",4,"","chave_ed46_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $clrecomendacao->rotulo->label("ed46_c_descr");
       <?=$Led46_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed46_c_descr",60,$Ied46_c_descr,true,"text",4,"","chave_ed46_c_descr");?>
+      <?db_input("ed46_c_descr",60,$Ied46_c_descr,true,"text",4,"","chave_ed46_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $clrecomendacao->rotulo->label("ed46_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_recomendacao.php")==true){

@@ -98,7 +98,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

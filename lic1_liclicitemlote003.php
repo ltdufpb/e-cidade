@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ if (isset($excluir)&&trim($excluir)!=""){
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <center>
-<?php 
+<?
 if (isset($licitacao)&&trim($licitacao)!=""){
    $sql_marca     = "";
    $campos        = "l04_descricao";
@@ -99,7 +99,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 <form name="form2" method="post" action="lic1_liclicitemlote003.php">
 <table border="0" cellspacing="2" cellpadding="0" align="center">
 <tr><td colspan="2">&nbsp;</td></tr>
-<?php 
+<?
    db_input("licitacao", 10,"",true,"hidden",3);
    db_input("l04_descricao",500,"",true,"hidden",3);
 ?>
@@ -151,7 +151,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 </form>
 </body>
 </html>
-<?php 
+<?
 }
 
 if ($numrows == 0&&trim(@$excluir)==""){

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,7 +78,7 @@ $fa26_i_login = DB_getsession("DB_id_usuario");
                       <?=@$Lfa26_i_codigo?>
                     </td>
                     <td> 
-                      <?php db_input('fa26_i_codigo', 10, @$Ifa26_i_codigo, true, 'text', 3, "")?>
+                      <?db_input('fa26_i_codigo', 10, @$Ifa26_i_codigo, true, 'text', 3, "")?>
                     </td>
                   </tr>
                   <tr>
@@ -86,7 +86,7 @@ $fa26_i_login = DB_getsession("DB_id_usuario");
                       <b>Período:</b>
                     </td>
                     <td>
-                      <?php 
+                      <?
                       db_inputdata('fa26_d_dataini', @$fa26_d_dataini_dia, @$fa26_d_dataini_mes, @$fa26_d_dataini_ano,
                                    true, 'text', "", ""
                                   );
@@ -94,7 +94,7 @@ $fa26_i_login = DB_getsession("DB_id_usuario");
                       &nbsp;&nbsp;
                       <b>Até</b>
                       &nbsp;&nbsp; 
-                      <?php 
+                      <?
                       db_inputdata('fa26_d_datafim', @$fa26_d_datafim_dia, @$fa26_d_datafim_mes, @$fa26_d_datafim_ano,
                                    true, 'text', "", ""
                                   );
@@ -106,7 +106,7 @@ $fa26_i_login = DB_getsession("DB_id_usuario");
                       <b>Livro:</b>
                     </td>
                     <td> 
-                      <?php              
+                      <?             
                       $sSql      = $oDaoModeloLivro->sql_query("", "fa16_i_codigo, fa16_c_livro", "fa16_c_livro");
                       $rsModelos = $oDaoModeloLivro->sql_record($sSql);
                       db_selectrecord("fa16_i_codigo", $rsModelos, "", "", "", "", "", "  ", "", 1);
@@ -118,7 +118,7 @@ $fa26_i_login = DB_getsession("DB_id_usuario");
                       <b>Ordem:</b>
                     </td>
                     <td>
-                      <?php db_select('ordem', array('R' => 'REMÉDIO', 'D' => 'DATA'), true, 2, "");?>
+                      <?db_select('ordem', array('R' => 'REMÉDIO', 'D' => 'DATA'), true, 2, "");?>
                     </td>
                   </tr>
                 </table>
@@ -139,7 +139,7 @@ $fa26_i_login = DB_getsession("DB_id_usuario");
     </center>
   </body>
 </html>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 /**
  * Função que abre a janela de pesquisa para que o usuário escolha o livro que reseja reemitir.

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconhist->rotulo->label("c50_descr");
               <?=$Lc50_codhist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c50_codhist",4,$Ic50_codhist,true,"text",4,"","chave_c50_codhist");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconhist->rotulo->label("c50_descr");
               <?=$Lc50_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c50_descr",40,$Ic50_descr,true,"text",4,"","chave_c50_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconhist->rotulo->label("c50_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conhist.php")==true){
@@ -119,12 +119,12 @@ $clconhist->rotulo->label("c50_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

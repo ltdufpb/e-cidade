@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -123,29 +123,29 @@ function js_abre () {
     <legend>Baixa de Bens</legend>
     <table class="form-container">
       <tr> 
-        <td nowrap title="Bens baixados no intervalo de data"> <?php  db_ancora(@$Lt55_baixa,"",3);?>  </td>
+        <td nowrap title="Bens baixados no intervalo de data"> <? db_ancora(@$Lt55_baixa,"",3);?>  </td>
         <td nowrap>
-          <?php 
+          <?
             db_inputdata('t55_dataINI',@$t55_dataINI_dia,@$t55_dataINI_mes,@$t55_dataINI_ano,true,'text',1,"");
           ?>
         </td>
         <td nowrap>a</td>
         <td nowrap>
-          <?php 
+          <?
             db_inputdata('t55_dataFIM',@$t55_dataFIM_dia,@$t55_dataFIM_mes,@$t55_dataFIM_ano,true,'text',1,"");
           ?>
         </td>
       </tr>
       <tr>
-        <td><?php  db_ancora("Placas de: ", "js_pesquisaPlacaInicial(true);",1); ?></td>
+        <td><? db_ancora("Placas de: ", "js_pesquisaPlacaInicial(true);",1); ?></td>
         <td>
-          <?php 
+          <?
             db_input('placaini',10, true, 1, 'text', 1, "onchange='js_pesquisaPlacaInicial(false)'");
           ?>
         </td>
-        <td> <b><?php  db_ancora('até', "js_pesquisaPlacaFinal(true);",1); ?></b></td>
+        <td> <b><? db_ancora('até', "js_pesquisaPlacaFinal(true);",1); ?></b></td>
         <td>
-          <?php 
+          <?
             db_input('placafim', 10, true, 1, 'text', 1, "onchange='js_pesquisaPlacaFinal(false)'");
           ?>
         </td>
@@ -174,7 +174,7 @@ function js_abre () {
   </fieldset>
   <input name="relatorio" type="button" onclick='js_abre ();' value="Gerar Relatório">
 </form>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $cldb_confip->rotulo->label();
        <?=@$Lw02_ip?>
     </td>
     <td> 
-<?php 
+<?
 db_input('w02_ip',100,$Iw02_ip,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -47,7 +47,7 @@ db_input('w02_ip',100,$Iw02_ip,true,'text',$db_opcao,"")
        <?=@$Lw02_ativo?>
     </td>
     <td> 
-<?php 
+<?
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('w02_ativo',$x,true,$db_opcao,"");
 ?>
@@ -70,7 +70,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

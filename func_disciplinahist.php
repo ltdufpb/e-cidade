@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clbase = new cl_base;
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $escola = db_getsession("DB_coddepto");
    $result  = $clhistoricomps->sql_record($clhistoricomps->sql_query("","ed29_i_ensino",""," ed62_i_codigo = $serie AND ed61_i_codigo = $curso"));
    db_fieldsmemory($result,0);

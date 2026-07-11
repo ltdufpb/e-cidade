@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcindica->rotulo->label("o10_descr");
               <?=$Lo10_indica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o10_indica",4,$Io10_indica,true,"text",4,"","chave_o10_indica");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcindica->rotulo->label("o10_descr");
               <?=$Lo10_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o10_descr",40,$Io10_descr,true,"text",4,"","chave_o10_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcindica->rotulo->label("o10_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcindica.php")==true){
@@ -119,12 +119,12 @@ $clorcindica->rotulo->label("o10_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

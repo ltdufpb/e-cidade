@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -129,7 +129,7 @@ function js_limpa(){
 
           <tr> 
             <td  align="left" nowrap title="<?=$Te60_numemp?>">
-                 <?php  db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
+                 <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",1);  ?>
             </td>
 	    
             <td  nowrap> 
@@ -138,40 +138,40 @@ function js_limpa(){
             </td>
           </tr> 
   <tr> 
-    <td  align="left" nowrap title="<?=$Te60_numemp?>"> <?php  db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Te60_numemp?>"> <? db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?php 
+      <?
          db_input("e60_numemp",13,$Ie60_numemp,true,"text",4); 
          //  db_input("z01_nome1",40,"",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$To58_coddot?>"><?php db_ancora(@$Lo58_coddot,"js_pesquisa_dotacao(true);",1);?> </td>
+    <td  align="left" nowrap title="<?=$To58_coddot?>"><?db_ancora(@$Lo58_coddot,"js_pesquisa_dotacao(true);",1);?> </td>
     <td align="left" nowrap>
-      <?php  db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"onchange='js_pesquisa_dotacao(false);'"); 
+      <? db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"onchange='js_pesquisa_dotacao(false);'"); 
          db_input("o40_descr",40,"",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tpc01_codmater ?>"><?php db_ancora(@$Lpc01_codmater,"js_pesquisa_pcmater(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tpc01_codmater ?>"><?db_ancora(@$Lpc01_codmater,"js_pesquisa_pcmater(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"onchange='js_pesquisa_pcmater(false);'"); 
+      <? db_input("pc01_codmater",6,$Ipc01_codmater,true,"text",4,"onchange='js_pesquisa_pcmater(false);'"); 
          db_input("pc01_descrmater",40,"",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora(@$Lz01_numcgm,"js_pesquisa_cgm(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora(@$Lz01_numcgm,"js_pesquisa_cgm(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  
+      <? 
 	      db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"onchange='js_pesquisa_cgm(false);'");
 	      db_input("z01_nome2",40,"",true,"text",3);  
       ?>
     </td>
   </tr>
   <tr> 
-    <td align="left" nowrap title="<?=$Te60_emiss?>"><?php db_ancora(@$Le60_emiss,"",3);?></td>
+    <td align="left" nowrap title="<?=$Te60_emiss?>"><?db_ancora(@$Le60_emiss,"",3);?></td>
     <td align="left" nowrap>
-      <?php  
+      <? 
          db_inputdata('e60_emiss1',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");   		          
          echo " a ";
          db_inputdata('e60_emiss2',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");
@@ -179,9 +179,9 @@ function js_limpa(){
     </td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Te53_codord?>"><?php db_ancora(@$Le53_codord,"js_buscae53_codord(true)",1);?></td>
+    <td  align="left" nowrap title="<?=$Te53_codord?>"><?db_ancora(@$Le53_codord,"js_buscae53_codord(true)",1);?></td>
     <td align="left" nowrap>
-        <?php 
+        <?
 		   db_input("e53_codord",13,$Ie53_codord,true,"text",4,"onchange='js_buscae53_codord(false);'"); 
         ?>
     </td>
@@ -199,7 +199,7 @@ function js_limpa(){
   </table>
   </form>
 </center>
-<?php  
+<? 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

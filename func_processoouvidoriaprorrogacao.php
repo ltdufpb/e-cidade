@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clprocessoouvidoriaprorrogacao->rotulo->label("ov15_protprocesso");
               <?=$Lov15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov15_sequencial",10,$Iov15_sequencial,true,"text",4,"","chave_ov15_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clprocessoouvidoriaprorrogacao->rotulo->label("ov15_protprocesso");
               <?=$Lov15_protprocesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov15_protprocesso",10,$Iov15_protprocesso,true,"text",4,"","chave_ov15_protprocesso");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clprocessoouvidoriaprorrogacao->rotulo->label("ov15_protprocesso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_processoouvidoriaprorrogacao.php")==true){
@@ -123,12 +123,12 @@ $clprocessoouvidoriaprorrogacao->rotulo->label("ov15_protprocesso");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

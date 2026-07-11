@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,8 +43,8 @@ $clrotulo->label("me14_i_aluno");
    <?=@$Lme26_i_codigo?>
   </td>
   <td>
-   <?php db_input('me26_i_codigo',10,$Ime26_i_codigo,true,'text',3,"");?>
-   <?php db_input('me26_i_restricao',10,$Ime26_i_restricao,true,'hidden',3,'');?>
+   <?db_input('me26_i_codigo',10,$Ime26_i_codigo,true,'text',3,"");?>
+   <?db_input('me26_i_restricao',10,$Ime26_i_restricao,true,'hidden',3,'');?>
   </td>
  </tr>
  <tr>
@@ -52,23 +52,23 @@ $clrotulo->label("me14_i_aluno");
    <?=@$Lme14_i_aluno?>
   </td>
   <td>
-   <?php 
+   <?
    $ed47_i_codigo=@$me24_i_aluno;
    db_input('ed47_i_codigo',10,@$Ied47_i_codigo,true,'text',3," onchange='js_pesquisame25_i_restricao(false);'")
    ?>
-   <?php db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
+   <?db_input('ed47_v_nome',40,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme26_i_nutriente?>">
-   <?php db_ancora(@$Lme26_i_nutriente,"js_pesquisame26_i_nutriente(true);",$db_opcao);?>
+   <?db_ancora(@$Lme26_i_nutriente,"js_pesquisame26_i_nutriente(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('me26_i_nutriente',10,$Ime26_i_nutriente,true,'text',$db_opcao," 
+   <?db_input('me26_i_nutriente',10,$Ime26_i_nutriente,true,'text',$db_opcao," 
                onchange='js_pesquisame26_i_nutriente(false);'"
              )
    ?>
-   <?php db_input('me09_c_descr',40,$Ime09_c_descr,true,'text',3,'')?>
+   <?db_input('me09_c_descr',40,$Ime09_c_descr,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -79,7 +79,7 @@ $clrotulo->label("me14_i_aluno");
 <input name="cancelar" type="button" id="cancela" value="Cancelar" 
        onclick="js_cancela();"  <?=($db_botao==false?"disabled":"")?> >
 <br><br>
-<?php 
+<?
 $chavepri= array("me26_i_codigo"=>@$me26_i_codigo);
 $cliframe_alterar_excluir->chavepri=$chavepri;
 if (isset($me26_i_restricao)&&@$me26_i_restricao!="") {

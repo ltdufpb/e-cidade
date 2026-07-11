@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -103,7 +103,7 @@ background-color:#ccddcc;
 <td ></td>
 <td ></td>
 </tr>
-<?php 
+<?
 $result=$clissbase->sql_record($clissbase->sql_query($q02_inscr,"q02_numcgm as numcgm,z01_nome as nome"));
 if ($clissbase->numrows!=0){
    db_fieldsmemory($result,0);
@@ -115,14 +115,14 @@ if ($clissbase->numrows!=0){
   <tr> 
     <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><b>Numcgm atual:</b></td>
     <td align="left" nowrap>
-      <?php db_input("numcgm",6,$Iz01_numcgm,true,"text",3,"");
+      <?db_input("numcgm",6,$Iz01_numcgm,true,"text",3,"");
          db_input("nome",40,"$Iz01_nome",true,"text",3);  
         ?></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora(@$Lz01_numcgm,"js_pesquisa(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora(@$Lz01_numcgm,"js_pesquisa(true);",1);?></td>
     <td align="left" nowrap>
-      <?php db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",2,"onchange='js_pesquisa(false);'");
+      <?db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",2,"onchange='js_pesquisa(false);'");
          db_input("nome_novo",40,"$Iz01_nome",true,"text",3);  
         ?></td>
   </tr>
@@ -141,7 +141,7 @@ if ($clissbase->numrows!=0){
  
 
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisa(mostra){
@@ -169,7 +169,7 @@ function js_mostracgm1(chave1,chave2){
 }
 //----------------------------------------------------------------------
 </script>
-<?php 
+<?
 if ((isset($z01_numcgm) && $z01_numcgm!="") && (isset($alterar))){
     db_msgbox($erro_msg);
     if($clissbase->erro_campo!=""){

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clempagepag->rotulo->label("e85_codmov");
               <?=$Le85_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e85_codmov",6,$Ie85_codmov,true,"text",4,"","chave_e85_codmov");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clempagepag->rotulo->label("e85_codmov");
               <?=$Le85_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e85_codtipo",6,$Ie85_codtipo,true,"text",4,"","chave_e85_codtipo");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clempagepag->rotulo->label("e85_codmov");
               <?=$Le85_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e85_codmov",6,$Ie85_codmov,true,"text",4,"","chave_e85_codmov");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clempagepag->rotulo->label("e85_codmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empagepag.php")==true){
@@ -137,12 +137,12 @@ $clempagepag->rotulo->label("e85_codmov");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

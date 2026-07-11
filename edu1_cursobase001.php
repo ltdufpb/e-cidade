@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -106,7 +106,7 @@ a:active {
       <tr>
        <td>
         <table border='0' width="100%" bgcolor="#cccccc" cellspacing="0px">
-              <?php 
+              <?
               $escola = db_getsession("DB_coddepto");
               $result = $clcurso->sql_record($clcurso->sql_query_cursoescola("","*","ed29_c_descr"," ed71_i_escola = $escola"));
               if($clcurso->numrows>0){
@@ -137,7 +137,7 @@ a:active {
                  <td>Nenhum curso cadastrado.</td>
                 </tr>
                </table>
-               <?php 
+               <?
               }
               ?>
         </table>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -275,7 +275,7 @@ function js_ret_produto(cod,descr){
 <form name="form1" method="post" action="orc1_orcimpactomov004.php"  >
 <center>
 <table border="0" cellspacing='0' >
-<?php 
+<?
 db_input('o63_codimpger',4,0,true,'hidden',1);
 ?>
 
@@ -284,7 +284,7 @@ db_input('o63_codimpger',4,0,true,'hidden',1);
        <?=$Lo63_codimpmov?>
     </td>
     <td> 
-       <?php 
+       <?
 db_input('o63_codimpmov',4,$Io63_codimpmov,true,'text',3);
         
 	if(isset($o86_codimpmovpai) && $o86_codimpmovpai != ''  && empty($chave_nova)){
@@ -303,7 +303,7 @@ db_input('o63_codimpmov',4,$Io63_codimpmov,true,'text',3);
        <?=$Lo96_codperiodo?>
     </td>
     <td> 
-<?php 
+<?
   db_input('o63_codperiodo',2,$Io63_codperiodo,true,'text',3);
   $result=$clorcimpactoperiodo->sql_record($clorcimpactoperiodo->sql_query_file($o63_codperiodo,"substr(o96_descr,1,30)||' '||o96_anoini||'-'||o96_anofim as o96_descr"));
   db_fieldsmemory($result,0);
@@ -316,7 +316,7 @@ db_input('o96_descr',62,$Io96_descr,true,'text',3);
       <b> Estrutural</b>     
     </td>
     <td> 
-<?php 
+<?
 db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
 ?>
     </td>
@@ -325,12 +325,12 @@ db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
   <tr>
     <td><?=$Lo63_orgao?></td>
     <td>
-  <?php 
+  <?
   $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit")));
   db_selectrecord("o63_orgao",$result,true,$db_opcao,"","","","0"," js_reload();");
   ?>
        
-       <?php 
+       <?
        db_ancora("Novo","js_nov_orgao();",$db_opcao);
        ?>
     </td>
@@ -338,7 +338,7 @@ db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
   <tr>
     <td><?=$Lo63_unidade?></td>
     <td>
-  <?php 
+  <?
   if(isset($o63_orgao)){
     $result = $clorcunidade->sql_record($clorcunidade->sql_query(null,null,null,"o41_unidade,o41_descr||' -'||o41_anousu as o41_descr","o41_unidade","o41_anousu=".db_getsession("DB_anousu")."  and o41_orgao=$o63_orgao " ));
     db_selectrecord("o63_unidade",$result,true,$db_opcao,"","","",($clorcunidade->numrows>1?"0":""));
@@ -347,61 +347,61 @@ db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
   }
   ?>
        
-       <?php 
+       <?
        db_ancora("Novo","js_nov_unidade();",$db_opcao);
        ?>
     </td>
   	</tr>
   <tr>
     <td nowrap title="<?=@$To63_funcao?>">
-       <?php 
+       <?
        db_ancora(@$Lo63_funcao,"js_pesquisao63_funcao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('o63_funcao',2,$Io63_funcao,true,'text',$db_opcao," onchange='js_pesquisao63_funcao(false);'")
 ?>
-       <?php 
+       <?
 db_input('o52_descr',62,$Io52_descr,true,'text',3,'')
        ?>
 
-       <?php db_ancora("Novo","js_nov_funcao();",$db_opcao); ?>
+       <?db_ancora("Novo","js_nov_funcao();",$db_opcao); ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To63_subfuncao?>">
-       <?php 
+       <?
        db_ancora(@$Lo63_subfuncao,"js_pesquisao63_subfuncao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('o63_subfuncao',3,$Io63_subfuncao,true,'text',$db_opcao," onchange='js_pesquisao63_subfuncao(false);'")
 ?>
-       <?php 
+       <?
 db_input('o53_descr',61,$Io53_descr,true,'text',3,'')
        ?>
        
-       <?php 
+       <?
        db_ancora("Novo","js_nov_subfuncao();",$db_opcao);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To63_programa?>">
-       <?php 
+       <?
        db_ancora(@$Lo63_programa,"js_pesquisao63_programa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('o63_programa',4,$Io63_programa,true,'text',$db_opcao," onchange='js_pesquisao63_programa(false);'")
 ?>
-       <?php 
+       <?
 db_input('o54_descr',60,$Io54_anousu,true,'text',3,'');
        ?>
-       <?php db_ancora("Novo","js_nov_programa();",$db_opcao); ?>
+       <?db_ancora("Novo","js_nov_programa();",$db_opcao); ?>
     </td>
   </tr>
   <tr>
@@ -409,26 +409,26 @@ db_input('o54_descr',60,$Io54_anousu,true,'text',3,'');
        <?=$Lo63_programatxt?>
     </td>
     <td> 
-       <?php 
+       <?
 	 db_textarea('o63_programatxt',3,95,$Io63_programatxt,true,'text',$db_opcao);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To63_acao?>">
-       <?php 
+       <?
        db_ancora(@$Lo63_acao,"js_pesquisao63_projativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('o63_acao',4,$Io63_acao,true,'text',$db_opcao," onchange='js_pesquisao63_projativ(false);'")
 ?>
-       <?php 
+       <?
 db_input('o55_descr',60,$Io55_descr,true,'text',3,'')
        ?>
        
-       <?php db_ancora("Novo","js_nov_acao();",$db_opcao); ?>
+       <?db_ancora("Novo","js_nov_acao();",$db_opcao); ?>
     </td>
   </tr>
   <tr>
@@ -436,41 +436,41 @@ db_input('o55_descr',60,$Io55_descr,true,'text',3,'')
        <?=$Lo63_acaotxt?>
     </td>
     <td> 
-       <?php 
+       <?
 	 db_textarea('o63_acaotxt',3,95,$Io63_acaotxt,true,'text',$db_opcao);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To22_codproduto?>">
-       <?php 
+       <?
        db_ancora(@$Lo22_codproduto,"js_produto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('o63_produto',6,$Io22_codproduto,true,'text',$db_opcao," onchange='js_produto(false);'")
 ?>
-       <?php 
+       <?
 db_input('o22_descrprod',58,$Io22_descrprod,true,'text',3,'')
        ?>
-       <?php db_ancora("Novo","js_nov_produto();",$db_opcao); ?>
+       <?db_ancora("Novo","js_nov_produto();",$db_opcao); ?>
     </td>
   </tr>
-       <?php 
+       <?
 db_input('o63_unimed',4,$Io63_unimed,true,'hidden',3);
        ?>
   <tr>
     <td colspan='2' align='center'>
-<?php if(  isset($chavepesquisa)  || ( isset($atualizar) && $sqlerro ==  true  )  ){?>
+<?if(  isset($chavepesquisa)  || ( isset($atualizar) && $sqlerro ==  true  )  ){?>
 
       <input name="atualizar" type="submit" id="db_opcao" value="Atualizar" <?=($db_botao==false?"disabled":"")?>   >
-<?php }else{?>
+<?}else{?>
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  onclick=" return js_verificar();"  >
-<?php }?>
+<?}?>
       <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
       <input name="consultar" type="button" id="consutar" value="Consultar" onclick="js_consultar();" >
-<?php       
+<?      
   if((isset($o63_codimpmov) && $o63_codimpmov != '') || (isset($o90_codimp) && $o90_codimp != '')){
      echo " <input name=\"novo\" type=\"button\" id=\"novo\" value=\"Novo\" onclick=\"js_novo();\">";
   }      
@@ -484,7 +484,7 @@ db_input('o63_unimed',4,$Io63_unimed,true,'hidden',3);
 
 function js_novo(){
          parent.document.formaba.orcimpactovalmov.disabled=true;
-  <?php 
+  <?
   if(isset($o63_codimpmov)){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo=".@$tipo."&chave_nova=$o63_codimpmov';";
   }else{
@@ -670,7 +670,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,tipo){
     db_iframe_orcimpactomov.hide();
-    <?php 
+    <?
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo='+tipo+'&chavepesquisa='+chave";
     ?>
 }

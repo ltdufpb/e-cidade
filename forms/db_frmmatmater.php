@@ -61,7 +61,7 @@ $clrotulo->label("m63_codpcmater");
        <?=@$Lm60_codmater?>
     </td>
     <td>
-      <?php 
+      <?
         db_input('m60_codmater',10,$Im60_codmater,true,'text',3,"")
       ?>
     </td>
@@ -71,7 +71,7 @@ $clrotulo->label("m63_codpcmater");
        <?=@$Lm60_descr?>
     </td>
     <td>
-      <?php 
+      <?
         db_input('m60_descr',60,$Im60_descr,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -96,7 +96,7 @@ $clrotulo->label("m63_codpcmater");
         }
         db_input('m60_codmatunid',10,$Im60_codmatunid,true,'text',$db_opcao," onchange='js_pesquisam60_codmatunid(false);'")
       ?>
-       <?php 
+       <?
          db_input('m61_descr',40,$Im61_descr,true,'text',3,'')
        ?>
     </td>
@@ -147,7 +147,7 @@ $clrotulo->label("m63_codpcmater");
       </b>
     </td>
     <td>
-      <?php 
+      <?
         db_input('m65_sequencial',10,'',true,'text',$iLiberaGrupo," onchange='js_pesquisaGrupo(false);'");
         db_input('db121_descricao',40,'text',$iLiberaGrupo,'');
       ?>
@@ -215,7 +215,7 @@ $clrotulo->label("m63_codpcmater");
        <?=@$Lm60_controlavalidade?>
     </td>
     <td>
-    <?php 
+    <?
      if (!isset($m60_controlavalidade)) {
        $m60_controlavalidade = 3;
      }
@@ -371,17 +371,17 @@ function js_mostramatunid3(chave1,chave2) {
 }
 //-------------------------------------------------=
 function js_pesquisa() {
-  <?php if($db_opcao!=1){?>
+  <?if($db_opcao!=1){?>
      js_OpenJanelaIframe('','db_iframe_matmater','func_matmateralt.php?funcao_js=parent.js_preenchepesquisa|m60_codmater','Pesquisa',true,0);
-  <?php }else{?>
+  <?}else{?>
      js_OpenJanelaIframe('','db_iframe_matmater','func_matmater.php?funcao_js=parent.js_preenchepesquisa|m60_codmater','Pesquisa',true,0);
-  <?php }?>
+  <?}?>
 }
 
 function js_preenchepesquisa(chave) {
 
   db_iframe_matmater.hide();
-  <?php 
+  <?
   if($db_opcao!=1) {
     echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

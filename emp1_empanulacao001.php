@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -710,7 +710,7 @@ if (isset ($e60_numemp)) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?php 
+	<?
 
 
 include(modification("forms/db_frmempanulacao.php"));
@@ -719,14 +719,14 @@ include(modification("forms/db_frmempanulacao.php"));
 	</td>
   </tr>
 </table>
-<?php 
+<?
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 
 
 if ($db_opcao == 22) {

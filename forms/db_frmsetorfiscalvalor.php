@@ -55,20 +55,20 @@ if(isset($db_opcaoal)){
     <legend class="bold">Valores</legend>
     <center>
       <table border="0">
-        <?php 
+        <?
         db_input('j82_codigo',10,$Ij82_codigo,true,'hidden',3,"")
         ?>
         <tr>
           <td nowrap title="<?=@$Tj82_setorfiscal?>">
-            <?php 
+            <?
             db_ancora(@$Lj82_setorfiscal,"js_pesquisaj82_setorfiscal(true);",3);
             ?>
           </td>
           <td>
-            <?php 
+            <?
             db_input('j82_setorfiscal',10,$Ij82_setorfiscal,true,'text',3," onchange='js_pesquisaj82_setorfiscal(false);'")
             ?>
-            <?php 
+            <?
             db_input('j90_descr',40,$Ij90_descr,true,'text',3,'')
             ?>
           </td>
@@ -78,7 +78,7 @@ if(isset($db_opcaoal)){
             <?=@$Lj82_anousu?>
           </td>
           <td>
-            <?php 
+            <?
             $j82_anousu = db_getsession('DB_anousu');
             db_input('j82_anousu',4,$Ij82_anousu,true,'text',$db_opcao,"")
             ?>
@@ -89,7 +89,7 @@ if(isset($db_opcaoal)){
             <?=@$Lj82_valorterreno?>
           </td>
           <td>
-            <?php 
+            <?
             db_input('j82_valorterreno',15,$Ij82_valorterreno,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -103,7 +103,7 @@ if(isset($db_opcaoal)){
   <table>
     <tr>
       <td valign="top"  align="center">
-        <?php 
+        <?
         $chavepri= array("j82_codigo"=>@$j82_codigo);
         $cliframe_alterar_excluir->chavepri=$chavepri;
         $cliframe_alterar_excluir->sql     = $clsetorfiscalvalor->sql_query_file(null,"*",null,"j82_setorfiscal=$j82_setorfiscal");

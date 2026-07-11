@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clproctransfer = new cl_proctransfer;
               <?=$Lp58_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p58_codproc",10,$Ip58_codproc,true,"text",4,"","chave_p58_codproc");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clproctransfer = new cl_proctransfer;
               <?=$Lp58_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
            db_input("p58_numero" ,10, $Ip58_numero,true,"text",4,"","chave_p58_numero");
            ?>
             </td>
@@ -84,7 +84,7 @@ $clproctransfer = new cl_proctransfer;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       $sSqlTransferido = $clproctransfer->sql_query_trans(null,
         "1", 
@@ -168,14 +168,14 @@ $clproctransfer = new cl_proctransfer;
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p58_codproc.focus();
 document.form2.chave_p58_codproc.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,7 +62,7 @@ if ($clorcparametro->numrows > 0 ){
               <?=$Lo56_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 	      db_input("o56_codele",6,$Io56_codele,true,"text",4,"","chave_o56_codele");
 	      ?>
             </td>
@@ -72,7 +72,7 @@ if ($clorcparametro->numrows > 0 ){
               <?=$Lo56_elemento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
               db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");
 	      ?>
             </td>
@@ -82,7 +82,7 @@ if ($clorcparametro->numrows > 0 ){
               <?=$Lo56_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
               db_input("o56_descr",15,$Io56_descr,true,"text",4,"","chave_o56_descr");
 	      ?>
             </td>
@@ -101,7 +101,7 @@ if ($clorcparametro->numrows > 0 ){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
        $dbwhere="   substr(o56_elemento,8,6)='000000' ";
       if(!isset($pesquisa_chave)){
         $campos = "orcelemento.o56_codele, substr(o56_elemento,1,7) as  o56_elemento,orcelemento.o56_descr,orcelemento.o56_finali";
@@ -139,12 +139,12 @@ if ($clorcparametro->numrows > 0 ){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

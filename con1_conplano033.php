@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -362,7 +362,7 @@ if (isset ($excluir)) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <br>
-	<?php 
+	<?
 
 	if (USE_PCASP && db_getsession("DB_anousu") >= 2013) {
 
@@ -385,7 +385,7 @@ echo "<script>
 </table>
 </body>
 </html>
-<?php 
+<?
 
 
 

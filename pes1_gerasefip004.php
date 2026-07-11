@@ -1408,7 +1408,7 @@ if (isset($oGet->iTipoProcessamento) && $oGet->iTipoProcessamento == 2) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
 db_app::load("scripts.js, strings.js,arrays.js, prototype.js,datagrid.widget.js");
 db_app::load("widgets/windowAux.widget.js, widgets/dbmessageBoard.widget.js");
 db_app::load("estilos.css, grid.style.css");
@@ -1416,7 +1416,7 @@ db_app::load("estilos.css, grid.style.css");
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="js_alteraCnae();">
   <form name="form1" method="post" action="pes1_gerasefip004.php">
-    <?php 
+    <?
     db_input('matriculasselecionadas', 10, 1, true, 'hidden', 3);
     ?>
     <table align="center" style="padding-top: 25px;">
@@ -1430,17 +1430,17 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Código do recolhimento"><b>Código:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $aCodrec = array("115" => "115", "150" => "150");
                 db_select('codrec',$aCodrec,true,1);
                 ?>
                 </td>
                 <td nowrap align="right" title="Ano / Mês de competência"><b>Ano / Mês:</b>
                 </td>
-                <td nowrap><?php 
+                <td nowrap><?
                 $anousu = $iAnoUsu;
                 db_input('r66_anousu',4,$Ir66_anousu,true,'text',3,"onchange='js_controla_anomes(\"a\");'","anousu");
-                ?> <b>/</b> <?php 
+                ?> <b>/</b> <?
                 $mesusu = $iMesUsu;
                 db_input('r66_mesusu',2,$Ir66_mesusu,true,'text',3,"onchange='js_controla_anomes(\"m\");'","mesusu");
                 ?>
@@ -1449,7 +1449,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Índice recolhimento FGTS"><b>Índice FGTS:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $indrecfgts  = 1;
                 $aIndRecFGTS = array("0"=>"Nenhum",
                     "1"=>"GFIP no prazo",
@@ -1460,7 +1460,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td nowrap align="right" title="Data recolhimento FGTS"><b>Data FGTS:</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_inputdata("dtrecfgts", @$dtrecfgts_dia, @$dtrecfgts_mes, @$dtrecfgts_ano, true, 'text',1);
                 ?>
                 </td>
@@ -1468,7 +1468,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Índice recolhimento INSS"><b>Índice INSS:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $indrecinss  = 1;
                 $aIndRecINSS = array("0"=>"Não gera GPS",
                     "1"=>"GPS no prazo",
@@ -1479,7 +1479,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td nowrap align="right" title="Data recolhimento INSS"><b>Data INSS:</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_inputdata("dtrecinss", @$dtrecinss_dia, @$dtrecinss_mes, @$dtrecinss_ano, true, 'text',1);
                 ?>
                 </td>
@@ -1487,7 +1487,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Índice recolhimento atraso INSS"><b>Atraso INSS:</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_input('indatrasoinss',10,1,true,'text',1,"","")
                 ?>
                 </td>
@@ -1506,13 +1506,13 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Nome do contato"><b>Nome:</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_input('z01_nome',40,$Iz01_nome,true,'text',1,"","contato")
                 ?>
                 </td>
                 <td nowrap align="right" title="Fone"><b>Fone:</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_input('fone',10,1,true,'text',1,"","")
                 ?>
                 </td>
@@ -1531,7 +1531,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Alteração de endereço"><b>Alteração de endereço:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $alteraender = "N";
                 $arr_alteraender = array("S"=>"Sim","N"=>"Não");
                 db_select('alteraender',$arr_alteraender,true,1,"");
@@ -1539,7 +1539,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td nowrap align="right" title="Alteração de CNAE"><b>Alteração de CNAE:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $alteracnae = "P";
                 $arr_alteracnae = array("S"=>"Sim","N"=>"Não","A"=>"Alt. Preponderante","P"=>"Não Alt. Preponderante");
                 db_select('alteracnae',$arr_alteracnae,true,1,"");
@@ -1549,14 +1549,14 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Código de terceiros"><b>Código de terceiros:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $codterceiro = "0000";
                 db_input('codterceiro',10,1,true,'text',1,"","")
                 ?>
                 </td>
                 <td nowrap align="right" title="Código CNAE fiscal"><b>Código CNAE fiscal:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $cnae = "8411600";
                 db_input('cnae',10,1,true,'text',1,"","")
                 ?>
@@ -1565,13 +1565,13 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="Aliquota SAT"><b>Aliquota SAT:</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_input('aliqsat',2,1,true,'text',1,"","")
                 ?>
                 </td>
                 <td nowrap align="right" title="Código GPS"><b>Código GPS:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $codgps = "2402";
                 db_input('codgps',10,1,true,'text',1,"","")
                 ?>
@@ -1581,7 +1581,7 @@ db_app::load("estilos.css, grid.style.css");
                 <td nowrap align="right" title="FPAS"><b>FPAS:</b>
                 </td>
                 <td>
-                <?php 
+                <?
                 $sSqlCfPessPrev = $clcfpess->sql_query_file($anousu,$mesusu,db_getsession("DB_instit"), "r11_cdfpas" );
                 $rsCfPessPrev   = $clcfpess->sql_record($sSqlCfPessPrev);
                 $fpas = db_utils::fieldsMemory($rsCfPessPrev, 0)->r11_cdfpas;
@@ -1602,7 +1602,7 @@ db_app::load("estilos.css, grid.style.css");
               <b>TABELAS DE PREVIDÊNCIA</b>
             </legend>
             <table width="100%">
-              <?php 
+              <?
               db_sel_cfpess(db_anofolha(), db_mesfolha(), "r11_tbprev , r11_mes13 ");
 
               $iMesAnt = $iMesUsu;
@@ -1653,14 +1653,14 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td><b>Gerar Compensação:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $gerarcompensacao = 2;
                 db_select("gerarcompensacao", array(1 => "Sim", 2 => "Não"), true, 1, "onchange='js_liberarCompensacao()'");
                 ?>
                 </td>
                 <td><b>Valor da Compensação:</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_input('valorcompensacao',4,4,true,'text',1,"","")
                 ?>
                 </td>
@@ -1668,17 +1668,17 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td><b>Competência Inicial ( Mês / Ano ) :</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_input('mescompeinicial',2,1,true,'text',1,"","");
-                ?> / <?php 
+                ?> / <?
                 db_input('anocompeinicial',4,1,true,'text',1,"","");
                 ?>
                 </td>
                 <td><b>Competência Final ( Mês / Ano ) :</b>
                 </td>
-                <td><?php 
+                <td><?
                 db_input('mescompefinal',2,1,true,'text',1,"","");
-                ?> / <?php 
+                ?> / <?
                 db_input('anocompefinal',4,1,true,'text',1,"","");
                 ?>
                 </td>
@@ -1697,7 +1697,7 @@ db_app::load("estilos.css, grid.style.css");
               <tr>
                 <td nowrap align="right" title="CNPJ"><b>CNPJ:</b>
                 </td>
-                <td><?php 
+                <td><?
                 $sql = "select distinct z01_numcgm,
                 z01_cgccpf||'-'||z01_nome as z01_nome
                 from rhlota
@@ -1723,7 +1723,7 @@ db_app::load("estilos.css, grid.style.css");
     </table>
   </form>
 </body>
-<?php 
+<?
 if( isset($oPost->gerar) ){
 
   if ($lErro) {
@@ -1902,7 +1902,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

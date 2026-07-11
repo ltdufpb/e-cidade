@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_projetosgrupos->rotulo->label("at63_projeto");
               <?=$Lat63_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at63_sequencial",10,$Iat63_sequencial,true,"text",4,"","chave_at63_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_projetosgrupos->rotulo->label("at63_projeto");
               <?=$Lat63_projeto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("chave_at63_projeto",40,"",true,"text",4);
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_projetosgrupos->rotulo->label("at63_projeto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_projetosgrupos.php")==true){
@@ -119,12 +119,12 @@ $cldb_projetosgrupos->rotulo->label("at63_projeto");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clformareclamacao->rotulo->label("p42_sequencial");
               <?=$Lp42_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p42_sequencial",10,$Ip42_sequencial,true,"text",4,"","chave_p42_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clformareclamacao->rotulo->label("p42_sequencial");
               <?=$Lp42_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p42_sequencial",10,$Ip42_sequencial,true,"text",4,"","chave_p42_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clformareclamacao->rotulo->label("p42_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_formareclamacao.php")==true){
@@ -123,12 +123,12 @@ $clformareclamacao->rotulo->label("p42_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -140,14 +140,14 @@ background-color:#ccddcc;
   <table border="0" width="100%" cellspacing="0" cellpadding="0" nowrap >
   <tr>
     <td align="center" valign="top">
-<?php  
+<? 
 
 
 db_input('pc72_pctipocertif', 8, '', true, 'hidden', 3);
 db_input('atualizar', 8, '', true, 'hidden', 3);
 ?>     
       <table border='1' width="100%" nowrap>
-<?php  
+<? 
 
 
 if (isset ($pc72_pctipocertif)&&$pc72_pctipocertif!="") {
@@ -195,7 +195,7 @@ if (isset ($pc72_pctipocertif)&&$pc72_pctipocertif!="") {
   </table>
 <body>
 </html>
-<?php 
+<?
 
 
 

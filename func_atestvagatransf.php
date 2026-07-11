@@ -58,7 +58,7 @@ $escola = db_getsession("DB_coddepto");
       <?=$Led102_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed102_i_codigo",10,$Ied102_i_codigo,true,"text",4,"","chave_ed102_i_codigo");?>
+      <?db_input("ed102_i_codigo",10,$Ied102_i_codigo,true,"text",4,"","chave_ed102_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ $escola = db_getsession("DB_coddepto");
       <?=$Led47_v_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+      <?db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
      </td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ $escola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
     $iEscola   = db_getsession("DB_coddepto");
     $sCampos   = " distinct ";
     $sCampos  .= "           atestvaga.ed102_i_codigo, ";

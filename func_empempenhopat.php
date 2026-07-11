@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,13 +72,13 @@ $rotulo->label("z01_nome");
         <tr> 
           <td width="4%" align="right" nowrap title="<?=$Te60_numemp?>"><?=$Le60_numemp?></td>
           <td width="96%" align="left" nowrap> 
-          <?php  db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp");?>
+          <? db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp");?>
           </td>
         </tr>
         <tr> 
           <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
           <td width="96%" align="left" nowrap> 
-            <?php  db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+            <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
           </td>
         </tr> 
         <tr> 
@@ -94,7 +94,7 @@ $rotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $campos="e60_numemp,e60_codemp,z01_nome";
       $dbwhere=" e60_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave) ){

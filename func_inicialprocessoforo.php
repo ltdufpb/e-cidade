@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ $sAnd   = '';
               <?=$Lv50_inicial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		            db_input("v50_inicial",10,$Iv50_inicial,true,"text",4,"","chave_v50_inicial");
 		          ?>
             </td>
@@ -74,7 +74,7 @@ $sAnd   = '';
               <?=$Lv50_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                 db_inputdata('v50_data', @$v50_data_dia, @$v50_data_mes, @$v50_data_ano, true, 'text', 4, "", "chave_v50_data");
 		          ?>
             </td>
@@ -92,7 +92,7 @@ $sAnd   = '';
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -174,12 +174,12 @@ $sAnd   = '';
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

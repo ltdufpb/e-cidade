@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@
   </tr>
   <tr colspan=2 >
     <td align="center">
-    <?php /*
+    <?/*
     if (isset($licitacao)&&$licitacao!=""){
       $result_cods=$clliclicitem->sql_record($clliclicitem->sql_query_file(null,"*",null,"l21_codliclicita=$licitacao"));
       if ($clliclicitem->numrows>0){
@@ -57,12 +57,12 @@
     </td>
   </tr>
   <td align='center' colspan=2>
-    <b>Despacho:</b><?php db_textarea("despacho",0,90,'',true,"text",1) ?>
+    <b>Despacho:</b><?db_textarea("despacho",0,90,'',true,"text",1) ?>
   <td/>
   <tr>
   </tr>
   <tr>
-   <?php 
+   <?
     db_input('cods',10,'',true,'hidden',3);    
     ?>
     <td align='center' colspan=2><input name='incluir' type='button' value='Incluir' onclick='js_inclui();'></td>

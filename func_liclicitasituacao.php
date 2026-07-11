@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clliclicitasituacao->rotulo->label("l11_sequencial");
               <?=$Ll11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("l11_sequencial",5,$Il11_sequencial,true,"text",4,"","chave_l11_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clliclicitasituacao->rotulo->label("l11_sequencial");
               <?=$Ll11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("l11_sequencial",5,$Il11_sequencial,true,"text",4,"","chave_l11_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clliclicitasituacao->rotulo->label("l11_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       $sWhereTipo = " and l11_licsituacao in (3, 4)";
       
@@ -133,12 +133,12 @@ $clliclicitasituacao->rotulo->label("l11_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

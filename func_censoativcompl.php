@@ -79,7 +79,7 @@ $clcensoativcompl->rotulo->label("ed133_i_tipo");
       <?=$Led133_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed133_i_codigo",10,$Ied133_i_codigo,true,"text",4,"","chave_ed133_i_codigo");?>
+      <?db_input("ed133_i_codigo",10,$Ied133_i_codigo,true,"text",4,"","chave_ed133_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -87,14 +87,14 @@ $clcensoativcompl->rotulo->label("ed133_i_tipo");
       <?=$Led133_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed133_c_descr",50,$Ied133_c_descr,true,"text",4,"","chave_ed133_c_descr");?>
+      <?db_input("ed133_c_descr",50,$Ied133_c_descr,true,"text",4,"","chave_ed133_c_descr");?>
      </td>
     </tr>
      <td width="4%" align="right" nowrap title="<?=$Ted133_i_tipo?>">
       <?=$Led133_i_tipo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php 
+      <?
       $x = array(  ''  => ''
                  ,'31' => 'ACOMPANHAMENTO PEDAGÓGICO (REFORÇO ESCOLAR)'
                  ,'14' => 'ARTES CÊNICAS'

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -82,14 +82,14 @@ if(isset($alterar)){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
     <center>
-    	<?php 
+    	<?
     	  require_once(modification("forms/db_frmtipcalc.php"));
     	?>
     </center>
     
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

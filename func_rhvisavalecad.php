@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("z01_nome");
               <?=$Lrh49_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh49_codigo",10,$Irh49_codigo,true,"text",4,"","chave_rh49_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clrotulo->label("z01_nome");
               <?=$Lrh49_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh49_regist",10,$Irh49_regist,true,"text",4,"","chave_rh49_regist");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clrotulo->label("z01_nome");
               <?=$Lrh49_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh49_numcgm",10,$Irh49_numcgm,true,"text",4,"","chave_rh49_numcgm");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $clrotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -104,7 +104,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $dbwhere = " and rh49_anousu = ".db_anofolha()." and rh49_mesusu = ".db_mesfolha();
       if(isset($instit)){
         $dbwhere.= " and rh49_instit = ".$instit;
@@ -149,12 +149,12 @@ $clrotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

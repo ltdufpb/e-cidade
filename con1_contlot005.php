@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -273,7 +273,7 @@ function js_marca(obj){
 <input name="confirma" type="hidden">
 <table border="0">
 <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
-<?php 
+<?
 if(isset($face)){
   echo "<script>;
   parent.document.form1.confirma.style.visibility='visible';
@@ -381,7 +381,7 @@ if(isset($face)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($confirma) && $confirma=="ok"){
   if($clcontlot->erro_status=="0"||$clcontlotv->erro_status=="0"){
     $clcontlot->erro(true,false);

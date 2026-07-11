@@ -204,7 +204,7 @@ if (isset($atualizar)) {
                                 <?php echo $Lo58_anousu;?>
                             </td>
                             <td>
-                                <?php 
+                                <?
                                 //$o58_instit = db_getsession('DB_instit');
                                 //db_input('o58_instit',4,$Io58_instit,true,'hidden',3,"")
                                 ?>

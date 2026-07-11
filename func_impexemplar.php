@@ -68,7 +68,7 @@ if($linhas!=0){
       <?=$Lbi23_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
+      <?db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
      </td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@ if($linhas!=0){
       <?=$Lbi06_titulo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+      <?db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
      </td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@ if($linhas!=0){
       <?=$Lbi24_modelo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php 
+      <?
       $x = array(''=>'','M1'=>'MODELO 1','M2'=>'MODELO 2','M3'=>'MODELO 3', 'M4'=>'MODELO 4');
       db_select('bi24_modelo',$x,true,1,"");
       ?>
@@ -95,7 +95,7 @@ if($linhas!=0){
       <?=$Lbi24_data?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_inputdata('bi24_data',@$bi24_data_dia,@$bi24_data_mes,@$bi24_data_ano,true,'text',1,"")?>
+      <?db_inputdata('bi24_data',@$bi24_data_dia,@$bi24_data_mes,@$bi24_data_ano,true,'text',1,"")?>
      </td>
     </tr>
     <tr>
@@ -111,7 +111,7 @@ if($linhas!=0){
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_impexemplar.php")==true){
@@ -156,12 +156,12 @@ if($linhas!=0){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

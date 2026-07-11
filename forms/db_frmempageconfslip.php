@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -168,9 +168,9 @@ function js_anular(){
 	      <?=$Le80_codage?>
 	      </td>	
 	      <td>	
-		 <?php  db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
+		 <? db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
 	      <?=$Le80_data?>
-	       <?php 
+	       <?
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',3);
 	       ?>
 	      </td>
@@ -178,15 +178,15 @@ function js_anular(){
 	    
 	  <tr>
 	    <td nowrap title="<?=@$Tz01_numcgm?>" align='right'>
-	    <?php 
+	    <?
 	       db_ancora("<b>Nome</b>","js_pesquisaz01_numcgm(true);",$db_opcao);
 	     ?>        
 	    </td>
 	    <td> 
-	<?php 
+	<?
 	db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")
 	?>
-	       <?php 
+	       <?
 	db_input('z01_nome',30,$Iz01_nome,true,'text',3,'')
 	       ?>
 	    </td>
@@ -199,10 +199,10 @@ function js_anular(){
 	  <tr>
 	    <td><b>Data :</b></td>
 	    <td>
-              <?php db_inputdata('dtin',$dtin_dia,$dtin_mes,$dtin_ano,true,'text',1);?>
+              <?db_inputdata('dtin',$dtin_dia,$dtin_mes,$dtin_ano,true,'text',1);?>
 	    </td>  
 	  </tr>  
-                <?php 
+                <?
                   for($i=0; $i<$numrows05; $i++){
                     db_fieldsmemory($result05,$i);
                     if($i==0){
@@ -275,7 +275,7 @@ function js_anular(){
           <tr>
 	    <td><?=$Le83_codtipo?></td>
             <td class='bordas' align='left'><small>
-	    <?php 
+	    <?
 	    if($numrows05>0){
 	      db_select("e83_codtipo",$arr,true,1,"onchange='js_troca(this);'");
 	      if(empty($atualizar) && empty($prever)){
@@ -329,7 +329,7 @@ function js_anular(){
 	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	    <b>Imprimir verso</b>
-	    <?php 
+	    <?
         $check = "";
 	    if(isset($imprimirverso)){
 	      $check = " checked ";
@@ -340,7 +340,7 @@ function js_anular(){
 	  </tr>
 	  <tr>
 	    <td  align='center' colspan='2'>
-  <?php 
+  <?
   if(isset($emiteverso)){
     $verso='';
   }
@@ -359,7 +359,7 @@ function js_anular(){
 	     <?=db_input('total',10,'',true,'text',3)?>
             <span style='display:none'>
             <b>Cheques: </b>
-             <?php 
+             <?
 	          $arr_c = array("1"=>"1","2"=>"2","3"=>"3","4"=>"4","5"=>"5","6"=>"6");
 	          db_select("cheques",$arr_c,true,1,"");
 	     ?>
@@ -368,7 +368,7 @@ function js_anular(){
     </tr>
    <tr>
      <td colspan='2' >
-    <?php 
+    <?
       $sr = '';
       if(isset($prever)){
         $sr = "src='emp4_empageconf002_slip.php?e80_codage=$e80_codage&movs=$movs&e83_codtipo=$e83_codtipo'";
@@ -499,11 +499,11 @@ function js_mostracgm1(chave1,chave2){
 
 
 //quando o usuario procurar os tipo eh clicado automaticamente em pesquisar
-<?php if(isset($procura)){?>
+<?if(isset($procura)){?>
    js_pesquisar(document.form1);
-<?php }?>
+<?}?>
 
-<?php if( empty($atualizar) ){?>
+<?if( empty($atualizar) ){?>
 //rotina que irá retornar a data para emitir o cheque com a do ultimo acesso
 function js_verif(){
   if(parent.document.form1.dtp_dia.value != ''){
@@ -515,6 +515,6 @@ function js_verif(){
 }
 js_verif();
 //--------------------------------
-<?php }?>
+<?}?>
 
 </script>

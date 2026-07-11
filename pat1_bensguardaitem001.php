@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -148,12 +148,12 @@ if (isset($incluir)) {
   ?>
 </head>
 <body bgcolor=#CCCCCC>
-    	<?php 
+    	<?
       include(modification("forms/db_frmbensguardaitem.php"));
       ?>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar) || isset($excluir) || isset($incluir)) {
   db_msgbox($erro_msg);
   if ($clbensguardaitem->erro_campo != "") {

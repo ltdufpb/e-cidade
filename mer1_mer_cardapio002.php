@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -142,7 +142,7 @@ if (isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a7.location.href   = 'mer1_mer_cardapionutri001.php?me04_i_cardapio=<?=$me01_i_codigo?>'+
                                          '&me01_c_nome=<?=$me01_c_nome?>';
   </script>
-  <?php 
+  <?
 }
 ?>
 <html>
@@ -160,7 +160,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Refeição </b></legend>
-    <?php include(modification("forms/db_frmmer_cardapio.php"));?>
+    <?include(modification("forms/db_frmmer_cardapio.php"));?>
    </fieldset>
    </center>
   </td>
@@ -170,7 +170,7 @@ if (isset($alterar)) {
 </html>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar)) {
 	
   if ($clmer_cardapio->erro_status=="0") {
@@ -234,7 +234,7 @@ function js_removeMsg(idObj) {
   
 }
 
-<?php if ($naopode == true) {?>
+<?if ($naopode == true) {?>
     js_msg_nao_altera("<?=$msg_error?>","MsgBox");
-<?php }?>
+<?}?>
 </script>

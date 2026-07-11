@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $oDaoVacAplica->rotulo->label("vc16_i_codigo");
               <?=$Lvc16_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		          db_input("vc16_i_codigo",10,$Ivc16_i_codigo,true,"text",4,"","chave_vc16_i_codigo");
 		          ?>
             </td>
@@ -75,7 +75,7 @@ $oDaoVacAplica->rotulo->label("vc16_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
 
         if (isset($sCampos) == false) {
@@ -169,12 +169,12 @@ $oDaoVacAplica->rotulo->label("vc16_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clossoariopart->rotulo->label("cm02_i_proprietario");
               <?=$Lcm02_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("cm02_i_codigo",10,$Icm02_i_codigo,true,"text",4,"","chave_cm02_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clossoariopart->rotulo->label("cm02_i_proprietario");
               <?=$Lcm02_i_proprietario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("cm02_i_proprietario",10,$Icm02_i_proprietario,true,"text",4,"","chave_cm02_i_proprietario");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clossoariopart->rotulo->label("cm02_i_proprietario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ossoariopart.php")==true){
@@ -119,12 +119,12 @@ $clossoariopart->rotulo->label("cm02_i_proprietario");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

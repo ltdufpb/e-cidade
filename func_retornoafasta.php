@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ $clmovcasadassefip->rotulo->label("r67_reto");
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?php 
+<?
 $str_valores = "";
 $str_virgula = "";
 if(isset($pesquisa_chave)){
@@ -68,19 +68,19 @@ if(isset($pesquisa_chave)){
 ?>
 </body>
 </html>
-<?php 
+<?
 if(trim($str_valores) != ""){
   ?>
   <script>
     parent.js_listarretorno("<?=$str_valores?>");
   </script>
-  <?php 
+  <?
 }else{
   ?>
   <script>
     parent.db_iframe_listaretorno.hide();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

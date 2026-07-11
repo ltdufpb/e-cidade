@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcaddisciplina->rotulo->label("ed232_i_codigo");
               <?=$Led232_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed232_i_codigo",20,$Ied232_i_codigo,true,"text",4,"","chave_ed232_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcaddisciplina->rotulo->label("ed232_i_codigo");
               <?=$Led232_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed232_i_codigo",20,$Ied232_i_codigo,true,"text",4,"","chave_ed232_i_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcaddisciplina->rotulo->label("ed232_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_caddisciplina.php")==true){
@@ -123,12 +123,12 @@ $clcaddisciplina->rotulo->label("ed232_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

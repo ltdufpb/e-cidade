@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,7 @@ $clrotulocampo->label("c58_descr");
        <?=@$Lc70_data?>
     </td>
     <td> 
-<?php 
+<?
 
 if (!isset($c70_data_dia)) {
 	
@@ -68,12 +68,12 @@ db_inputdata('c70_data', @$c70_data_dia, @$c70_data_mes, @$c70_data_ano, true, '
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk13_conta?>">
-       <?php 
+       <?
        db_ancora(@$Lk13_conta,"js_pesquisaconta(true);",2);
        ?>
     </td>
     <td nowrap >
-    <?php 
+    <?
     db_input('k13_conta',10,@$Ik13_conta,true,'text',$db_opcao,"onchange='js_pesquisaconta(false);'");
     db_input('k13_descr',40,@$Ik13_descr,true,'text',3);
     ?>
@@ -81,12 +81,12 @@ db_inputdata('c70_data', @$c70_data_dia, @$c70_data_mes, @$c70_data_ano, true, '
   </tr> 
   <tr>
     <td nowrap title="<?=@$To70_codrec?>">
-       <?php 
+       <?
        db_ancora(@$Lo70_codrec,"js_pesquisacodrec(true);",2);
        ?>
     </td>
     <td nowrap >
-    <?php 
+    <?
     db_input('o70_codrec',10,@$Io70_codrec,true,'text',$db_opcao,"onchange='js_pesquisacodrec();'");
     db_input('o57_descr',40,@$Io57_descr,true,'text',3);
     db_input('cadastrar',1,1,true,'hidden',1);
@@ -95,12 +95,12 @@ db_inputdata('c70_data', @$c70_data_dia, @$c70_data_mes, @$c70_data_ano, true, '
   </tr>
   <tr>
     <td nowrap="nowrap">
-      <?php 
+      <?
         db_ancora(@$Lc08_concarpeculiar, "js_pesquisac08_concarpeculiar(true);", $db_opcao);
       ?>
     </td>
     <td nowrap="nowrap">
-      <?php 
+      <?
         db_input('c08_concarpeculiar', 10, $Ic08_concarpeculiar, true, 'text', $db_opcao, "onchange='js_pesquisac08_concarpeculiar(false);'");       
         db_input('c58_descr', 40, $Ic58_descr, true, 'text', 3);
       ?>  
@@ -108,12 +108,12 @@ db_inputdata('c70_data', @$c70_data_dia, @$c70_data_mes, @$c70_data_ano, true, '
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc70_valor?>">
-       <?php 
+       <?
        echo $Lc70_valor;
        ?>
     </td>
     <td nowrap >
-    <?php 
+    <?
     if(isset($o70_codrec) && ($o70_codrec+0) != 0){
       $vlronly = 1;
     }else{
@@ -132,7 +132,7 @@ db_inputdata('c70_data', @$c70_data_dia, @$c70_data_mes, @$c70_data_ano, true, '
         <table border="0" width="100%">
 				  <tr>
 				    <td nowrap='nowrap'>
-					    <?php 
+					    <?
 						    if (isset($o70_codrec) && ($o70_codrec+0) != 0) {
 						      $vlronly = 1;
 						    } else {
@@ -149,7 +149,7 @@ db_inputdata('c70_data', @$c70_data_dia, @$c70_data_mes, @$c70_data_ano, true, '
   </tr>
   <tr>
    <td align="center" colspan="3">
-       <?php 
+       <?
        if(isset($o70_codrec) && (($o70_codrec+0)!=0 && ($c70_valor+0)!=0 && ($k13_conta+0)!=0)){
          echo '<input name="lancar" type="submit" value="Arrecada Receita">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; 
          echo '<input name="estornar" type="submit" value="Estorna Arrecadação Receita">'; 
@@ -164,7 +164,7 @@ db_inputdata('c70_data', @$c70_data_dia, @$c70_data_mes, @$c70_data_ano, true, '
   </tr>
   </table>
 <table border="0" width="100%" class='box-table-detalhamento'>
-  <?php 
+  <?
 
 if( isset($o70_codrec) && isset($cadastrar)){
   

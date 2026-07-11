@@ -39,7 +39,7 @@ include(modification("classes/db_acordonatureza_classe.php"));
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -57,7 +57,7 @@ include(modification("classes/db_acordonatureza_classe.php"));
             <table>
               <tr>
                 <td>
-                   <?php 
+                   <?
                      $aux = new cl_arquivo_auxiliar;
                      $aux->cabecalho = "<strong>Vinculos Selecionados</strong>";
                      $aux->codigo = "ac01_sequencial";

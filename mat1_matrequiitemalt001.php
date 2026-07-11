@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -202,7 +202,7 @@ if ( !empty($m41_codigo) ) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($sqlerro==true){
 //    $clmatrequiitem->erro(true,false);

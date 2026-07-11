@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2012  DBselller Servicos de Informatica             
@@ -130,14 +130,14 @@ if(isset($opcao)){
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-  <?php 
+  <?
   include("forms/db_frmrhdepend.php");
   ?>
     </center>
   </td>
   </tr>
 </table>
-<?php 
+<?
 /*
 if (!$_GET["vmenu"]){
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
@@ -147,7 +147,7 @@ if (!$_GET["vmenu"]){
 ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

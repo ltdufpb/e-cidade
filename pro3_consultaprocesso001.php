@@ -78,7 +78,7 @@ $rotulo->label("numeroProcesso");
     
 		  <tr>
 		    <td nowrap title="<?=@$Tp58_numero?>">
-		       <?php 
+		       <?
 		         db_ancora(@$Lp58_numero,"js_pesquisap58_codproc(true);",$db_opcao);
 		       ?>
 		    </td>
@@ -94,12 +94,12 @@ $rotulo->label("numeroProcesso");
 			<?php if ($grupo == 1) : ?>
         <tr>
           <td title="<?=$Tp58_numcgm;?>">
-            <?php 
+            <?
               db_ancora(@$Lp58_numcgm,"js_pesquisap58_numcgm(true);",1);
             ?>
           </td>
           <td>
-            <?php 
+            <?
               db_input("p58_numcgm",10,"",true,"text", $db_opcao, "onchange='js_pesquisap58_numcgm(false);'");
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
             ?>

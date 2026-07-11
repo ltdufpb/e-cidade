@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -114,7 +114,7 @@ if(isset($ano_opcao)){
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <form name="form1" method="post" action="" enctype="multipart/form-data">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
@@ -122,7 +122,7 @@ if(isset($ano_opcao)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Importação de informações do CENSO ESCOLAR <?=$titulofieldset?></b></legend>
-    <?php 
+    <?
     $result = db_query("SELECT ed18_c_codigoinep FROM escola WHERE ed18_i_codigo = $escola");
     $codigoinep_banco = pg_fetch_result($result,0,0);
     ?>
@@ -159,8 +159,8 @@ if(isset($ano_opcao)){
      <tr>
       <td>
        <b>Arquivo de importação do Censo:</b>
-       <?php db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
-       <?php db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
+       <?db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
+       <?db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
       </td>
      </tr>
      <tr>
@@ -168,7 +168,7 @@ if(isset($ano_opcao)){
        <table id="table_termo" style="visibility:hidden;">
         <tr>
          <td align="center">
-          <?php if(isset($processar)){?>
+          <?if(isset($processar)){?>
           <script>
            var sHors  = "00";
            var sMins  = "00";
@@ -198,7 +198,7 @@ if(isset($ano_opcao)){
            Tempo de execução:<br>
            <span id="clock1">00:00:00</span><script>varTempo = setTimeout('getSecs()',1000);</script>
           </b>
-          <?php }?>
+          <?}?>
          </td>
          <td>
           <?=db_criatermometro_edu('termometro', 'Concluido...', 'blue', 1);?>
@@ -214,7 +214,7 @@ if(isset($ano_opcao)){
  </tr>
  <tr>
   <td align="center">
-   <?php 
+   <?
    if(trim($codigoinep_banco)==""){
     echo "<font color=red><b>* Código INEP desta escola não informado no sistema. Operação Não Permitida.</b></font>
           &nbsp;&nbsp;<a href='edu1_escolaabas002.php'>Informar Código INEP</a>
@@ -227,7 +227,7 @@ if(isset($ano_opcao)){
  </tr>
 </table>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_valida(){
  if(document.form1.tipo_opcao.value=="0"){
@@ -278,7 +278,7 @@ function js_anoopcao(valor){
  }
 }
 </script>
-<?php 
+<?
 if(isset($processar)){
   $tmp_name = $_FILES["arquivo_censo"]["tmp_name"];
   $name     = $_FILES["arquivo_censo"]["name"];
@@ -332,21 +332,21 @@ if(isset($processar)){
   fclose($ponteiro3);
   if($valida_arquivo2==true){
    db_msgbox("[2] Arquivo informado não pertence a esta escola !");
-   ?><script>document.form1.processar.disabled = false;</script><?php    
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php    
+   ?><script>document.form1.processar.disabled = false;</script><?   
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
   }elseif($valida_arquivo3==true){
    db_msgbox("[3] Arquivo informado não pertence ao ano de $ano_opcao!");
-   ?><script>document.form1.processar.disabled = false;</script><?php    
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php    
+   ?><script>document.form1.processar.disabled = false;</script><?   
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
   }elseif($valida_arquivo1==true){  	
    db_msgbox("[1] Arquivo informado não é um arquivo de exportação geral gerado pelo Educacenso!");
-   ?><script>document.form1.processar.disabled = false;</script><?php    
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php    
+   ?><script>document.form1.processar.disabled = false;</script><?   
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
   }else{
    ?>
    <script>document.getElementById("termo").style.visibility = "visible";</script>
    <script>document.getElementById("table_termo").style.visibility = "visible";</script>
-   <?php 
+   <?
    set_time_limit(0);
    $arquivo_logerro = "tmp/censo_impGeral_".$escola."_".db_getsession("DB_id_usuario")."_".date("dmY")."_".date("His")."_log.txt";
    $ponteiro_log = fopen($arquivo_logerro,"w");
@@ -612,14 +612,14 @@ if(isset($processar)){
      jan = window.open('edu4_importarcodigoinep_2009_002.php?arquivo_erro=<?=$arquivo_logerro?>','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
      jan.moveTo(0,0);
     </script>
-    <?php 
+    <?
    }
    db_atutermometro_edu(99, 100, 'termometro',1,'...Processo Concluído');
    ?>
    <script>
     clearTimeout(varTempo);
     document.form1.recomecar.style.visibility = "visible";
-   </script><?php 
+   </script><?
    db_query("commit");
    unlink($caminho_arquivo);
    db_msgbox("Importação realizada com sucesso!");

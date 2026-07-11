@@ -73,7 +73,7 @@ $rotulo->label("e60_numemp");
                         </td>
                         <td nowrap title="<?= $Te50_numemp ?>"><?= $Le60_numemp ?></td>
                         <td nowrap>
-                            <?php 
+                            <?
                             db_input("e50_numemp", 10, $Ie50_numemp, true, "text", 4, "", "chave_e50_numemp");
                             ?>
                         </td>
@@ -88,7 +88,7 @@ $rotulo->label("e60_numemp");
                             <b>Nota de Liquidação: </b>
                         </td>
                         <td width="96%" align="left" nowrap colspan="3">
-                            <?php 
+                            <?
                             db_input("e50_codord", 10, $Ie50_codord, true, "text", 4, "", "chave_e50_codord");
                             ?>
                         </td>
@@ -260,12 +260,12 @@ $rotulo->label("e60_numemp");
 
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
     </script>
-    <?php 
+    <?
 }
 ?>
 <script type="text/javascript">

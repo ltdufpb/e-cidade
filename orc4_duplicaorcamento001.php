@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -363,7 +363,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
   </table>    
 </td>
 <td height=100% width=50% valign=top align=center >
-<?php 
+<?
   $size_iframe=400;
   if (isset ($processa_orgao) && $processa_orgao == "Selecionar") {   
 	   $sql = "select o40_orgao,o40_descr
@@ -389,7 +389,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
     ?><table border=0 width=100%>
       <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('orgao');"></td></tr>
       </table>               
-    <?php         
+    <?        
   }
   if (isset ($processa_unidade) && $processa_unidade == "Selecionar") {   
        	   $sql = "select o41_orgao,o41_unidade,o41_descr
@@ -415,7 +415,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('unidade');"></td></tr>
           </table>               
-       <?php         
+       <?        
   }
   if (isset ($processa_programa) && $processa_programa == "Selecionar") {   
        	   $sql = "select o54_programa,o54_descr
@@ -441,7 +441,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('programa');"></td></tr>
           </table>               
-       <?php         
+       <?        
   }
   if (isset ($processa_projativ) && $processa_projativ == "Selecionar") {   
        	   $sql = "select o55_projativ,o55_descr
@@ -467,7 +467,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('projativ');"></td></tr>
           </table>               
-       <?php         
+       <?        
   }
   if (isset ($processa_elemento) && $processa_elemento == "Selecionar") {   
        	   $sql = "select o56_codele,o56_elemento,o56_descr
@@ -493,7 +493,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('elemento');"></td></tr>
           </table>               
-       <?php         
+       <?        
   }
   if (isset ($processa_dotacao) && $processa_dotacao == "Selecionar") {   
        ?><table border=0 width=100%>
@@ -504,15 +504,15 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 	   </tr>
 	   <tr><td><input type=radio name=dotacao value=zerada  ><b>Zerado </b>   </td></tr>
 	   <tr><td><input type=radio name=dotacao value=inicial ><b>Dotação inicial   </td></tr>
-           <tr><td><input type=radio name=dotacao value=atualizada><b>Dotação Atualizada ate  <?php  $dataf_dia = '31';$dataf_mes = '12';	$dataf_ano = $anousu_ant; db_inputdata("dataf",@$dataf_dia,@$dataf_mes,@$dataf_ano,true,'text',1) ?> </td></tr>
+           <tr><td><input type=radio name=dotacao value=atualizada><b>Dotação Atualizada ate  <? $dataf_dia = '31';$dataf_mes = '12';	$dataf_ano = $anousu_ant; db_inputdata("dataf",@$dataf_dia,@$dataf_mes,@$dataf_ano,true,'text',1) ?> </td></tr>
            <tr><td><input type=checkbox name=percent><b> Percentual adicional de <input type=text name=percentual value='0' size=3 maxlength=3>% </b></td></tr>
 	   <tr><td height=50px> &nbsp; </td></tr> 
 	 </table>
-       <?php 
+       <?
        ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=submit name=processa_dotacao value=Processar ></td></tr>
          </table>               
-       <?php         
+       <?        
   }
 
 
@@ -524,7 +524,7 @@ if (isset ($processa_dotacao) && ($processa_dotacao == 'Processar')) {
 
 
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 <script>

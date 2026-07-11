@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: caixa
 //CLASSE DA ENTIDADE infracaotransito
 class cl_infracaotransito { 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmatestoqueinill->rotulo->label("m87_matestoqueinil");
               <?=$Lm87_matestoqueinil?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m87_matestoqueinil",10,$Im87_matestoqueinil,true,"text",4,"","chave_m87_matestoqueinil");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmatestoqueinill->rotulo->label("m87_matestoqueinil");
               <?=$Lm87_matestoqueinil?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m87_matestoqueinil",10,$Im87_matestoqueinil,true,"text",4,"","chave_m87_matestoqueinil");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmatestoqueinill->rotulo->label("m87_matestoqueinil");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matestoqueinill.php")==true){
@@ -119,12 +119,12 @@ $clmatestoqueinill->rotulo->label("m87_matestoqueinil");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

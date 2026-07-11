@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -247,7 +247,7 @@
 <table width="790" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-	<?php 
+	<?
     include(modification("forms/db_frmcgm.php"));
 	?>
 	</td>
@@ -255,7 +255,7 @@
 </table>
 </body>
 </html>
-<?php 
+<?
 if($clcgm->erro_status=="0"){
   $db_botao=true;
   echo "<script> document.form1.db_opcao.disabled=false;</script>  ";

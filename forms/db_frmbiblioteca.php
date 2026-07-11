@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,7 +42,7 @@ $descrdepto = db_getsession("DB_nomedepto");
    <?=@$Lbi17_codigo?>
   </td>
   <td>
-   <?php db_input('bi17_codigo',10,$Ibi17_codigo,true,'text',3,"")?>
+   <?db_input('bi17_codigo',10,$Ibi17_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -50,16 +50,16 @@ $descrdepto = db_getsession("DB_nomedepto");
    <?=@$Lbi17_nome?>
   </td>
   <td>
-   <?php db_input('bi17_nome',100,$Ibi17_nome,true,'text',$db_opcao,"")?>
+   <?db_input('bi17_nome',100,$Ibi17_nome,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tbi17_coddepto?>">
-   <?php db_ancora(@$Lbi17_coddepto,"",3);?>
+   <?db_ancora(@$Lbi17_coddepto,"",3);?>
   </td>
   <td>
-   <?php db_input('bi17_coddepto',10,$Ibi17_coddepto,true,'text',3,"")?>
-   <?php db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')?>
+   <?db_input('bi17_coddepto',10,$Ibi17_coddepto,true,'text',3,"")?>
+   <?db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')?>
   </td>
  </tr>
 </table>

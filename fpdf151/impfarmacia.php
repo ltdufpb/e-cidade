@@ -1,4 +1,4 @@
-<?php 
+<?
 //include(modification("cabec_rodape.php"));
 include(modification("fpdf151/assinatura.php"));
 

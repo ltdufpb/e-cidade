@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clvalorpassagem->rotulo->label("ed230_f_valor");
               <?=$Led230_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed230_i_codigo",20,$Ied230_i_codigo,true,"text",4,"","chave_ed230_i_codigo");
                        ?>
             </td>
@@ -65,7 +65,7 @@ $clvalorpassagem->rotulo->label("ed230_f_valor");
               <?=$Led230_f_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed230_f_valor",20,$Ied230_f_valor,true,"text",4,"","chave_ed230_f_valor");
                        ?>
             </td>
@@ -83,7 +83,7 @@ $clvalorpassagem->rotulo->label("ed230_f_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_valorpassagem.php")==true){
@@ -123,12 +123,12 @@ $clvalorpassagem->rotulo->label("ed230_f_valor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

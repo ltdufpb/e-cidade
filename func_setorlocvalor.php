@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -25,11 +25,11 @@ $clsetorlocvalor->rotulo->label("j05_setorloc");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj05_sequencial?></label></td>
-          <td><?php  db_input("j05_sequencial",11,$Ij05_sequencial,true,"text",4,"","chave_j05_sequencial"); ?></td>
+          <td><? db_input("j05_sequencial",11,$Ij05_sequencial,true,"text",4,"","chave_j05_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lj05_setorloc?></label></td>
-          <td><?php  db_input("j05_setorloc",11,$Ij05_setorloc,true,"text",4,"","chave_j05_setorloc");?></td>
+          <td><? db_input("j05_setorloc",11,$Ij05_setorloc,true,"text",4,"","chave_j05_setorloc");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $clsetorlocvalor->rotulo->label("j05_setorloc");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_setorlocvalor.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_setorlocvalor.php")==true){
@@ -79,12 +79,12 @@ $clsetorlocvalor->rotulo->label("j05_setorloc");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

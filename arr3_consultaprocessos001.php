@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,7 +47,7 @@ $clprocjur = new cl_procjur();
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?php     
+      <?    
      
         $sCampos  = " distinct		 										  ";
         $sCampos .= " v62_sequencial,										  ";

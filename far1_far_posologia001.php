@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $fa06_t_posologia=$posologiat;
 			       <?=@$Ls115_c_cartaosus?>
 			    </td>
 			    <td>
-			      <?php 
+			      <?
 			       db_textarea('fa06_t_posologia',1,70,@$Ifa06_t_posologia,true,'text',$db_opcao,"")
 			      ?>
 			    </td>
@@ -73,11 +73,11 @@ function js_fechar(){
 	parent.db_iframe_posologia.hide();
 }
 function js_envia(){
-  <?php if(!isset($iGrid)){?>
+  <?if(!isset($iGrid)){?>
     parent.document.form1.posologia_edit.value=document.form2.fa06_t_posologia.value;
-  <?php }else{?>
+  <?}else{?>
     parent.js_atualizaPosologia(<?=$iGrid?>,document.form2.fa06_t_posologia.value);
-  <?php }?>
+  <?}?>
   js_fechar();
 }
 

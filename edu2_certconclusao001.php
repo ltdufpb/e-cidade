@@ -95,7 +95,7 @@ if ( $rsEduParametros && pg_num_rows( $rsEduParametros ) > 0 ) {
  </head>
  <body class="body-default" >
 
-   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 
 <div class="container">
 
@@ -105,7 +105,7 @@ if ( $rsEduParametros && pg_num_rows( $rsEduParametros ) > 0 ) {
         <tr colspan='3' >
            <td>
              <table id='filtros'  ><!--Inicio tabela selects escola filtro-->
-                 <?php 
+                 <?
                   if ($iModulo == 7159) {
 
                     echo '<td align="left" colspan= "3" class="field-size3">';
@@ -352,7 +352,7 @@ if ( $rsEduParametros && pg_num_rows( $rsEduParametros ) > 0 ) {
 </div>
 
   <div id='mostraMenu'></div>
-    <?php 
+    <?
     if ( empty($oGet->ed47_i_codigo) ) {
 
       db_menu(db_getsession("DB_id_usuario"),
@@ -365,7 +365,7 @@ if ( $rsEduParametros && pg_num_rows( $rsEduParametros ) > 0 ) {
  </body>
 </html>
 <script>
-<?php 
+<?
 if ($iModulo != 7159) {
   echo "js_alunoshist($iEscola, 1)";
 }

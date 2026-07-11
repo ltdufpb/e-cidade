@@ -264,7 +264,7 @@ if (!empty($la25_preenchimentoobrigatorio) && $la25_preenchimentoobrigatorio == 
   function js_preenchepesquisa(chave){
 
     db_iframe_lab_atributo.hide();
-    <?php 
+    <?
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

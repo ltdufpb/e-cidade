@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempanulado->rotulo->label("e94_numemp");
               <?=$Le94_codanu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e94_codanu",8,$Ie94_codanu,true,"text",4,"","chave_e94_codanu");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempanulado->rotulo->label("e94_numemp");
               <?=$Le94_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e94_numemp",10,$Ie94_numemp,true,"text",4,"","chave_e94_numemp");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempanulado->rotulo->label("e94_numemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empanulado.php")==true){
@@ -121,12 +121,12 @@ $clempanulado->rotulo->label("e94_numemp");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

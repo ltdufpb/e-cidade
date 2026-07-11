@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clrotulo->label("sd70_c_nome");
        <?=@$Lvc10_i_codigo?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('vc10_i_codigo',10,$Ivc10_i_codigo,true,'text',3,"")
       ?>
     </td>
@@ -50,16 +50,16 @@ $clrotulo->label("sd70_c_nome");
        <?=$Lvc10_i_vacina?>
     </td>
     <td> 
-     <?php db_input('vc10_i_vacina',10,$Ivc10_i_vacina,true,'text',3,"")?>
-     <?php db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
+     <?db_input('vc10_i_vacina',10,$Ivc10_i_vacina,true,'text',3,"")?>
+     <?db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc10_i_cid?>">
-     <?php db_ancora(@$Lvc10_i_cid,"js_pesquisavc10_i_cid(true);",$db_opcao);?>
+     <?db_ancora(@$Lvc10_i_cid,"js_pesquisavc10_i_cid(true);",$db_opcao);?>
     </td>
     <td> 
-    <?php 
+    <?
       db_input('vc10_i_cid',10,$Ivc10_i_cid,true,'text',$db_opcao,
                 " onchange='js_pesquisavc10_i_cid(false);'");
       db_input('sd70_c_nome',40,$Isd70_c_nome,true,'text',3,'');
@@ -83,7 +83,7 @@ $clrotulo->label("sd70_c_nome");
 </form>
 <br>
 
-<?php 
+<?
   $chavepri                                = array("vc10_i_codigo"=>@$vc10_i_codigo);
   $cliframe_alterar_excluir->chavepri      = $chavepri;
   if (isset($vc10_i_vacina) && $vc10_i_vacina != "") {
@@ -169,7 +169,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_vacinadoenca.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,7 +50,7 @@ $db_opcao = 1;
    Unidade:
   </td>
   <td>
-   <?php db_input('unidade',10,@$Iunidade,true,'text',$db_opcao,"")?>
+   <?db_input('unidade',10,@$Iunidade,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -58,7 +58,7 @@ $db_opcao = 1;
    Nome:
   </td>
   <td>
-   <?php db_input('nomeunidade',40,@$Inomeunidade,true,'text',$db_opcao,"")?>
+   <?db_input('nomeunidade',40,@$Inomeunidade,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>

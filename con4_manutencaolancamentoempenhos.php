@@ -63,7 +63,7 @@ if (db_getsession("DB_id_usuario") != 1) {
         <table>
           <tr>
             <td  align="left" nowrap title="<?=$Te60_numemp?>">
-              <?php  db_ancora(@$Le60_codemp,"js_pesquisa_empenho(true);",1);  ?>
+              <? db_ancora(@$Le60_codemp,"js_pesquisa_empenho(true);",1);  ?>
             </td>
             <td  nowrap>
               <input name="e60_codemp" id='e60_codemp' title='<?=$Te60_codemp?>' size="12" type='text' readonly class="readonly" />
@@ -519,7 +519,7 @@ if (db_getsession("DB_id_usuario") != 1) {
     $('btnVisualizarLancamento').observe("click", function (){js_visualizarEmpenhos($F('e60_numemp'))});
 
   </script>
-<?php 
+<?
 }
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

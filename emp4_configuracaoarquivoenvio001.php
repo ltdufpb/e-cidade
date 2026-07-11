@@ -156,7 +156,7 @@ $clrotulo->label("k17_slip");
                 <tr>
                     <td nowrap title="<?=@$Te82_codord?>">
                         <label for="e82_codord">
-                            <?php db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",1);  ?>
+                            <?db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",1);  ?>
                         </label>
                     </td>
                     <td nowrap>

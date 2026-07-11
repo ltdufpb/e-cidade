@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,7 +41,7 @@ $clrotulo->label("z01_numcgm");
 				       <b>Data inicial : </b>
 				    </td>
 				    <td> 
-							<?php 
+							<?
 							db_inputdata('dtini',null,null,null,true,'text',1,"")
 							?>
 				    </td>    
@@ -51,19 +51,19 @@ $clrotulo->label("z01_numcgm");
                <b>Data final : </b>
             </td>
             <td> 
-              <?php 
+              <?
               db_inputdata('dtfim',null,null,null,true,'text',1,"")
               ?>
             </td>    
           </tr>
           <tr>   
 			      <td>
-			        <?php 
+			        <?
 			         db_ancora($Lz01_nome,' js_cgm(true); ',1);
 			        ?>
 		        </td>
 			      <td> 
-				      <?php 
+				      <?
 				       db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
 				       db_input('z01_nome',40,0,true,'text',3,"");
 				      ?>
@@ -74,7 +74,7 @@ $clrotulo->label("z01_numcgm");
 			        <b>Código do municipio : </b>
 			      </td>
 			      <td> 
-			        <?php 
+			        <?
 			        db_input('codigomunicipio',10,null,true,'text','');
 			        ?>
 			      </td>    
@@ -84,7 +84,7 @@ $clrotulo->label("z01_numcgm");
               <b>Código da finalidade : </b>
             </td>
             <td> 
-              <?php 
+              <?
               $aFinalidades = array("61" => "Solicitação de Auditor-Fiscal da Secretaria da Receita Previdenciária através de MPF",
                                     "62" => "Entrega na Secretaria da Receita Previdenciária - Movimento anual de órgão publico, conforme intimação",
                                     "90" => "Dados Internos UF");
@@ -98,7 +98,7 @@ $clrotulo->label("z01_numcgm");
               <b>Nome do Arquivo : </b>
             </td>
             <td> 
-              <?php 
+              <?
               db_input('nomearq',54,null,true,'text','');
               ?>
             </td>    
@@ -108,7 +108,7 @@ $clrotulo->label("z01_numcgm");
 					      <fieldset>
 					        <legend><b>TABELAS DE PREVIDÊNCIA</b></legend>
 					        <table width="100%">
-					          <?php 
+					          <?
 					          $anousu = db_anofolha();
 					          $mesusu = db_mesfolha();
 					          $result_tbprev = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession('DB_instit')," distinct cast(r33_codtab as integer)-2 as r33_codtab,r33_nome","r33_codtab","r33_codtab between 3 and 6 and r33_mesusu=$mesusu and r33_anousu=$anousu "));

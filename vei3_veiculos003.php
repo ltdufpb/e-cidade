@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label("");
 <script>
 </script>
 <style>
-<?php //$cor="#999999"?>
+<?//$cor="#999999"?>
 .bordas{
     border: 2px solid #cccccc;
     border-top-color: #999999;
@@ -83,7 +83,7 @@ $clrotulo->label("");
 <td  align="center" valign="top" > 
 <form name='form1'>
 <table border='0'>  
-<?php 
+<?
 if (isset($veiculo)&&$veiculo!="") {
   $result=$clveiculos->sql_record($clveiculos->sql_query($veiculo));
   db_fieldsmemory($result,0);

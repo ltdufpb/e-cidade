@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -53,7 +53,7 @@ $clconcilia->rotulo->label("k68_contabancaria");
               <?= $Lk68_sequencial ?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
               db_input("k68_sequencial", 10, $Ik68_sequencial, true, "text", 4, "", "chave_k68_sequencial");
               ?>
             </td>
@@ -157,12 +157,12 @@ $clconcilia->rotulo->label("k68_contabancaria");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhpesprogres->rotulo->label("rh07_data");
               <?=$Lrh07_seqpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh07_seqpes",6,$Irh07_seqpes,true,"text",4,"","chave_rh07_seqpes");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhpesprogres->rotulo->label("rh07_data");
               <?=$Lrh07_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh07_data",10,$Irh07_data,true,"text",4,"","chave_rh07_data");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhpesprogres->rotulo->label("rh07_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpesprogres.php")==true){
@@ -119,12 +119,12 @@ $clrhpesprogres->rotulo->label("rh07_data");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

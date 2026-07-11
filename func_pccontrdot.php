@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clpccontrdot->rotulo->label("p73_valor");
               <?=$Lp73_codcontr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p73_codcontr",10,$Ip73_codcontr,true,"text",4,"","chave_p73_codcontr");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clpccontrdot->rotulo->label("p73_valor");
               <?=$Lp73_coddot?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p73_coddot",6,$Ip73_coddot,true,"text",4,"","chave_p73_coddot");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clpccontrdot->rotulo->label("p73_valor");
               <?=$Lp73_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p73_valor",20,$Ip73_valor,true,"text",4,"","chave_p73_valor");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clpccontrdot->rotulo->label("p73_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pccontrdot.php")==true){
@@ -130,12 +130,12 @@ $clpccontrdot->rotulo->label("p73_valor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

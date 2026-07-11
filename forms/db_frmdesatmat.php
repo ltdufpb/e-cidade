@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,11 +41,11 @@ if (isset($pc01_descrmater)&&$pc01_descrmater!=""){
   
   <td align='center' colspan=2>
     <strong>Descrição de Material :</strong>
-   <?php   db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',$opcao,"") ?> 
+   <?  db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',$opcao,"") ?> 
    
   </td>
   </tr>
-  <?php if (isset($pc01_descrmater)&&$pc01_descrmater!=""){?>
+  <?if (isset($pc01_descrmater)&&$pc01_descrmater!=""){?>
   <tr>
     <td align="center" colspan=2>
       <iframe name="itens" id="itens" src="com1_desatmat002.php?descrmater=<?=@$pc01_descrmater?>" width="1000" height="400" marginwidth="0" marginheight="0" frameborder="0">
@@ -55,11 +55,11 @@ if (isset($pc01_descrmater)&&$pc01_descrmater!=""){
   <tr>
   <td align='center' colspan=2><input name='incluir' type='button' value='Desativar Marcados' onclick='js_inclui();'></td>
   </tr>
-  <?php }else{?>
+  <?}else{?>
   	<tr>
   <td align='center' colspan=2><input name='Enviar' type='submit' value='Enviar'></td>
   </tr>
-  <?php }?>
+  <?}?>
   
 </table>
 </center>

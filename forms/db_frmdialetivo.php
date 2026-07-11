@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,17 +36,17 @@ $clrotulo->label("ed32_i_codigo");
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted04_i_escola?>">
-   <?php db_ancora(@$Led04_i_escola,"",3);?>
-   <?php db_input('ed04_i_escola',10,$Ied04_i_escola,true,'text',3,"")?>
+   <?db_ancora(@$Led04_i_escola,"",3);?>
+   <?db_input('ed04_i_escola',10,$Ied04_i_escola,true,'text',3,"")?>
   </td>
   <td>
-   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td width="30%"></td>
   <td>
-   <?php 
+   <?
    $escola = db_getsession("DB_coddepto");
    $result = $cldiasemana->sql_record($cldiasemana->sql_query_letivo("","*","ed32_i_codigo"," ed04_i_escola = $ed04_i_escola"));
    if($cldiasemana->numrows==0){
@@ -61,7 +61,7 @@ $clrotulo->label("ed32_i_codigo");
     }
     ?>
     <input type="checkbox" name="<?=$ed32_i_codigo?>" value="ativo" <?=$check?>> <?=$ed32_c_descr?><br>
-    <?php 
+    <?
    }
    ?>
   </td>
@@ -123,7 +123,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_dialetivo.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

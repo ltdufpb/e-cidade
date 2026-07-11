@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -61,7 +61,7 @@ $clrotulo->label("e62_descr");
 <script language="JavaScript" type="text/javascript" src="../scripts/scripts.js"></script>
 <link href="../estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -69,7 +69,7 @@ $clrotulo->label("e62_descr");
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -84,7 +84,7 @@ $clrotulo->label("e62_descr");
     <form name='form1'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?php 
+ <?
    if (isset($m51_codordem) && $m51_codordem!= "") {
      $result=$clmatordemitem->sql_record($clmatordemitem->sql_query_servico(null,"*","","m52_codordem=$m51_codordem"));
      $numrows = $clmatordemitem->numrows;

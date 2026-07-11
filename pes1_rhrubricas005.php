@@ -361,10 +361,10 @@ if(isset($alterar) || isset($novasrubricas)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <?php  include(modification("forms/db_frmrhrubricas.php")); ?>
+  <? include(modification("forms/db_frmrhrubricas.php")); ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar) || isset($novasrubricas)){
   if($calc1 == "" && $calc2 == "" && $calc3 == ""){
     if($sqlerro==true){

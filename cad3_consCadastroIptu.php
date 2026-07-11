@@ -158,7 +158,7 @@ if($lUtilizaLoc) {
 			<tr>
 				<td title="">
 				  <strong>
-    				<?php 
+    				<?
     				if($lImobiliaria) {
     					db_ancora("Imobiliária:", "js_JanelaAutomatica('cgm','$oDadosMatricula->z01_numimob')", 2);
     				} else {

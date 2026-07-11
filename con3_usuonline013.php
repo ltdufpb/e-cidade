@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ font {
 </head>
 
 <body bgcolor=#CCCCCC onLoad="js_iniciar()">
-<?php 
+<?
 parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 /*
 set_time_limit(0);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -75,7 +75,7 @@ if (isset($alterar)) {
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <br><br>
     <fieldset style="width:95%"><legend><b>Alteração do Modo Preparo</b></legend>
-	<?php  include(modification("forms/db_frmmer_modpreparo.php"));?>
+	<? include(modification("forms/db_frmmer_modpreparo.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -83,7 +83,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar)) {
 	
   if ($clmer_modpreparo->erro_status=="0") {
@@ -104,7 +104,7 @@ if (isset($alterar)) {
     ?><script>
        (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href = 'mer1_mer_modpreparo002.php?me05_i_cardapio=<?=$aux?>'+
                                            '&me01_c_nome=<?=$me01_c_nome?>';
-    </script><?php 
+    </script><?
         
   }
 }
@@ -115,7 +115,7 @@ if ($db_opcao==22) {
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href = 'mer1_mer_modpreparo001.php?me05_i_cardapio=<?=$aux?>'+
                                         '&me01_c_nome=<?=$me01_c_nome?>';
   </script>
-  <?php 
+  <?
   
 }
 ?>

@@ -56,9 +56,9 @@
                         <strong>Periodo:</strong>
                     </td>
                     <td>
-                        <?php  db_inputdata('dataInicio',"","","",true,'text',1) ?>
+                        <? db_inputdata('dataInicio',"","","",true,'text',1) ?>
                         <b>até</b>
-                        <?php  db_inputdata('dataFim',"","","",true,'text',1) ?>
+                        <? db_inputdata('dataFim',"","","",true,'text',1) ?>
                     </td>
                 </tr>
                 <tr>
@@ -68,7 +68,7 @@
                         ?>
                     </td>
                     <td>
-                        <?php 
+                        <?
                             db_input("terminal", 5, false, true, "text", 1, "onchange='js_pesquisaTerminal(false);'", "", "white");
                             db_input("descricaoTerminal", 30, false, true, "text", 5, "", "", "", "width: 191px;");
                         ?>
@@ -79,7 +79,7 @@
         <input name="processar" id="processar" type="button" onclick="js_geraRelatorio();" value="Processar">
     </form>
 </div>
-<?php  db_menu(); ?>
+<? db_menu(); ?>
 </body>
 
 </html>

@@ -146,7 +146,7 @@ function js_confir() {
 			<tr>
 				<td width="208"><?=$Lj39_matric?>
 				</td>
-				<td><?php 
+				<td><?
 				db_input('j39_matric',10,0,true,'text',3,"onchange='js_matri(false)'");
 				db_input('z01_nome',35,0,true,'text',3,"");
 				?>
@@ -163,10 +163,10 @@ function js_confir() {
 		<table border="0" width=100%>
 
 			<td width="200px"><?=$Lj39_idcons?>*</td>
-			<td><?php  db_input('j39_idcons',10,$Ij39_idcons,true,'text',$db_opcaoid,""); ?>
+			<td><? db_input('j39_idcons',10,$Ij39_idcons,true,'text',$db_opcaoid,""); ?>
 			</td>
 
-			<td rowspan="13" valign="top" align="center" width=150><?php 
+			<td rowspan="13" valign="top" align="center" width=150><?
 			if (isset($j39_matric)) {
 
         $num = 0;
@@ -258,31 +258,31 @@ function js_confir() {
 			<tr>
 				<td><?=$Lj39_dtlan?>
 				</td>
-				<td><?php  db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text', 1) ?>
+				<td><? db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text', 1) ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_ano?>
 				</td>
-				<td><?php  db_input('j39_ano',10,$Ij39_ano,true,'text',1,""); ?>
+				<td><? db_input('j39_ano',10,$Ij39_ano,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_area?>
 				</td>
-				<td><?php  db_input('j39_area',10,4,true,'text',1,$sOnChangeArea); ?>
+				<td><? db_input('j39_area',10,4,true,'text',1,$sOnChangeArea); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_areap?>
 				</td>
-				<td><?php  db_input('j39_areap',10,4,true,'text',1,""); ?>
+				<td><? db_input('j39_areap',10,4,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_pavim?>
 				</td>
-				<td><?php  if ($db_opcao==1 && empty($j39_pavim)) {
+				<td><? if ($db_opcao==1 && empty($j39_pavim)) {
 				  $j39_pavim=1;
 				}
 				db_input('j39_pavim',10,$Ij39_pavim,true,'text',1,"");
@@ -290,9 +290,9 @@ function js_confir() {
 				</td>
 			</tr>
 			<tr>
-				<td nowrap title="<?=@$Tj39_codigo?>"><?php  db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao); ?>
+				<td nowrap title="<?=@$Tj39_codigo?>"><? db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao); ?>
 				</td>
-				<td><?php 
+				<td><?
 				db_input('j39_codigo',10,$Ij39_codigo,true,'text',$db_opcao," onchange='js_pesquisaj39_codigo(false);'");
 				db_input('j14_nome',34,$Ij14_nome,true,'text',3,'');
 				?>
@@ -301,20 +301,20 @@ function js_confir() {
 			<tr>
 				<td><?=$Lj39_numero?>
 				</td>
-				<td><?php  db_input('j39_numero',10,$Ij39_numero,true,'text',1,""); ?>
+				<td><? db_input('j39_numero',10,$Ij39_numero,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
 				<td><?=$Lj39_compl?>
 				</td>
-				<td><?php  db_input('j39_compl',48,$Ij39_compl,true,'text',1,""); ?>
+				<td><? db_input('j39_compl',48,$Ij39_compl,true,'text',1,""); ?>
 				</td>
 			</tr>
 			<tr>
-				<td><b><?php  db_ancora("Características","js_mostracaracteristica();",1); ?>
+				<td><b><? db_ancora("Características","js_mostracaracteristica();",1); ?>
 				</b>
 				</td>
-				<td><?php  db_input('caracteristica',15,1,true,'hidden',1,"") ?>
+				<td><? db_input('caracteristica',15,1,true,'hidden',1,"") ?>
 
 				<td>
 
@@ -322,13 +322,13 @@ function js_confir() {
 			<tr>
 				<td nowrap title="<?=@$Tj39_idaument?>"><?=@$Lj39_idaument?>
 				</td>
-				<td><?php  db_input('j39_idaument',10,$Ij39_idaument,true,'text',$db_opcao,"") ?>
+				<td><? db_input('j39_idaument',10,$Ij39_idaument,true,'text',$db_opcao,"") ?>
 				</td>
 			</tr>
 			<tr>
 				<td nowrap title="<?=@$Tj39_idprinc?>"><?=@$Lj39_idprinc?>
 				</td>
-				<td><?php  if (isset($j39_matric) && $num > 0) {
+				<td><? if (isset($j39_matric) && $num > 0) {
 				  $x = array("f"=>"Construção Secundária","t"=>"Construção Principal");
 				} else {
 				  $x = array("t"=>"Construção Principal","f"=>"Construção Secundária");
@@ -337,7 +337,7 @@ function js_confir() {
 				?> <input type="hidden" name="testaprinc" value="<?=@$j39_idprinc?>">
 				</td>
 			</tr>
-			<?php 
+			<?
 			$result_util = $oDaoCfIPTU->sql_record($oDaoCfIPTU->sql_query(db_getsession("DB_anousu")));
 			if ($oDaoCfIPTU->numrows>0) {
 			  db_fieldsmemory($result_util,0);
@@ -360,7 +360,7 @@ function js_confir() {
 						<legend>
 							<?=$Lj39_obs?>
 						</legend>
-						<?php  db_textarea('j39_obs', 5, 101, $Ij39_obs, true, 'text', $db_opcao); ?>
+						<? db_textarea('j39_obs', 5, 101, $Ij39_obs, true, 'text', $db_opcao); ?>
 					</fieldset>
 				</td>
 			</tr>
@@ -376,13 +376,13 @@ function js_confir() {
 							<tr>
 								<td width="210px" title="<?=@$Tj39_dtdemo?>"><?=@$Lj39_dtdemo?>
 								</td>
-								<td width="620px"><?php  db_inputdata('j39_dtdemo',@$j39_dtdemo_dia,@$j39_dtdemo_mes,@$j39_dtdemo_ano,true,'text',$db_opcao,"") ?>
+								<td width="620px"><? db_inputdata('j39_dtdemo',@$j39_dtdemo_dia,@$j39_dtdemo_mes,@$j39_dtdemo_ano,true,'text',$db_opcao,"") ?>
 								</td>
 							</tr>
 							<tr>
 								<td title="Origem do Processo"><b>Processo do Sistema:</b>
 								</td>
-								<td><?php 
+								<td><?
 								$x = array("S"=>"Sim", "N"=>"Não");
 								db_select("lProcesso", $x, true, $db_opcao, "onChange=js_montaCampoProcesso()");
 								?>
@@ -392,7 +392,7 @@ function js_confir() {
 								<td id="Processo" name="Processo">
 
 									<div id="ProcessoId1" style='display: none;'>
-										<?php  db_ancora("<b>Processo :</b>","js_pesquisaProcesso(true)",$db_opcao); ?>
+										<? db_ancora("<b>Processo :</b>","js_pesquisaProcesso(true)",$db_opcao); ?>
 									</div>
 									<div id="ProcessoId2" style='display: none;'>
 										<strong>Processo :</strong>
@@ -430,7 +430,7 @@ function js_confir() {
 	<br> <input id="nomebo" name="<?=($db_botao==1?"incluir":"alterar")?>"
 		type="submit" value="<?=($db_botao==1?"Incluir":"Alterar")?>"
 		<?=($testasel==true?"onclick=\"return js_verificaid(document.form1.j39_idcons.value)\"":"")?>>
-	<?php   if ($db_botao!=1) {
+	<?  if ($db_botao!=1) {
 	  echo "<input  name='excluir' type=\"submit\" value='Excluir' onclick='return js_confir();'>";
 	}
 	?>

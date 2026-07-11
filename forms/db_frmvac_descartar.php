@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,15 +43,15 @@ $oRotulo->label("m77_dtvalidade");
        <?=@$Lvc19_i_codigo?>
     </td>
     <td> 
-     <?php db_input('vc19_i_codigo',10,$Ivc19_i_codigo,true,'text',3,"")?>
+     <?db_input('vc19_i_codigo',10,$Ivc19_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc19_i_sala?>">
-      <?php  db_ancora(@$Lvc19_i_sala,"js_pesquisavc19_i_sala(true);",$db_opcao);?>
+      <? db_ancora(@$Lvc19_i_sala,"js_pesquisavc19_i_sala(true);",$db_opcao);?>
     </td>
     <td> 
-      <?php  db_input('vc19_i_sala',10,$Ivc19_i_sala,true,'text',$db_opcao,
+      <? db_input('vc19_i_sala',10,$Ivc19_i_sala,true,'text',$db_opcao,
                   " onchange='js_pesquisavc19_i_sala(false);'");
          db_input('vc01_c_nome',40,$Ivc01_c_nome,true,'text',3,'');
       ?>
@@ -59,10 +59,10 @@ $oRotulo->label("m77_dtvalidade");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc19_i_vacina?>">
-      <?php  db_ancora(@$Lvc19_i_vacina,"js_pesquisavc19_i_vacina(true);",$db_opcao);?>
+      <? db_ancora(@$Lvc19_i_vacina,"js_pesquisavc19_i_vacina(true);",$db_opcao);?>
     </td>
     <td> 
-    <?php 
+    <?
       db_input('vc19_i_vacina',10,$Ivc19_i_vacina,true,'text',$db_opcao,
                 " onchange='js_pesquisavc19_i_vacina(false);'");
       db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'');
@@ -72,11 +72,11 @@ $oRotulo->label("m77_dtvalidade");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc19_i_matetoqueitemlote?>">
-     <?php db_ancora(@$Lvc19_i_matetoqueitemlote,"js_pesquisavc19_i_vacinalote(true);",$db_opcao);?>
+     <?db_ancora(@$Lvc19_i_matetoqueitemlote,"js_pesquisavc19_i_vacinalote(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('vc19_i_matetoqueitemlote',10,$Ivc19_i_matetoqueitemlote,true,'text', 3, ' style="display: none;"')?>
-     <?php db_input('m77_lote', 10,$Im77_lote,true,'text', $db_opcao, 'onchange="js_pesquisavc19_i_vacinalote(false);"')?>
+     <?db_input('vc19_i_matetoqueitemlote',10,$Ivc19_i_matetoqueitemlote,true,'text', 3, ' style="display: none;"')?>
+     <?db_input('m77_lote', 10,$Im77_lote,true,'text', $db_opcao, 'onchange="js_pesquisavc19_i_vacinalote(false);"')?>
     </td>
   </tr>
   <tr>
@@ -84,28 +84,28 @@ $oRotulo->label("m77_dtvalidade");
       <b>Validade:</b>
     </td>
     <td nowrap> 
-     <?php db_input('m77_dtvalidade', 10, $Im77_dtvalidade, true, 'text', 3, '')?>
+     <?db_input('m77_dtvalidade', 10, $Im77_dtvalidade, true, 'text', 3, '')?>
       <b>Unidade de Saída:</b>
-     <?php db_input('m61_descr', 20, '', true, 'text',3,'')?>
+     <?db_input('m61_descr', 20, '', true, 'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap colspan="2">
       <fieldset> <legend><b>Quantidade de Doses Disponível</b></legend>
         <b>Quantidade: </b>
-        <?php 
+        <?
         db_input('iQuantidade', 4, '', true, 'text', 3, '');
         ?>
         <b> - Aplicadas: </b>
-        <?php 
+        <?
         db_input('iAplicadas', 4, '', true, 'text', 3, '');
         ?>
         <b> - Descartadas: </b>
-        <?php 
+        <?
         db_input('iDescartadas', 4, '', true, 'text', 3, '');
         ?>
         <b> = Total: </b>
-        <?php 
+        <?
         db_input('iTotal', 4, '', true, 'text', 3, '');
         ?>
       </fieldset>
@@ -116,7 +116,7 @@ $oRotulo->label("m77_dtvalidade");
        <?=@$Lvc19_n_quant?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('vc19_n_quant',10,$Ivc19_n_quant,true,'text',$db_opcao,'');
       ?>
     </td>
@@ -126,7 +126,7 @@ $oRotulo->label("m77_dtvalidade");
        <?=$Lvc19_t_obs?>
     </td>
     <td> 
-      <?php 
+      <?
       db_textarea('vc19_t_obs', 2, 50,$Ivc19_t_obs, true, 'text', $db_opcao, '');
       ?>
     </td>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clemprestimoacervo->rotulo->label("bi19_codigo");
               <?=$Lbi19_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("bi19_codigo",10,$Ibi19_codigo,true,"text",4,"","chave_bi19_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clemprestimoacervo->rotulo->label("bi19_codigo");
               <?=$Lbi19_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("bi19_codigo",10,$Ibi19_codigo,true,"text",4,"","chave_bi19_codigo");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clemprestimoacervo->rotulo->label("bi19_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_emprestimoacervo.php")==true){
@@ -120,12 +120,12 @@ $clemprestimoacervo->rotulo->label("bi19_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

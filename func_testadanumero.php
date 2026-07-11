@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltestadanumero->rotulo->label("j15_idbql");
               <?=$Lj15_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j15_codigo",10,$Ij15_codigo,true,"text",4,"","chave_j15_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltestadanumero->rotulo->label("j15_idbql");
               <?=$Lj15_idbql?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j15_idbql",6,$Ij15_idbql,true,"text",4,"","chave_j15_idbql");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltestadanumero->rotulo->label("j15_idbql");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_testadanumero.php")==true){
@@ -119,12 +119,12 @@ $cltestadanumero->rotulo->label("j15_idbql");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -757,7 +757,7 @@ if ($issetorc == false) {
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?php 
+    <?
 
 
 db_input('valores', 8, 0, true, 'hidden', 3);
@@ -776,7 +776,7 @@ if ($ninclui == true) {
 	db_input('e54_contat',20,$Ie54_contat,true,'hidden',3,"");
 	db_input('e54_telef',20,$Ie54_telef,true,'hidden',3,"");
 	db_input('pc10_numero', 8, $Ipc10_numero, true, 'hidden', 3);
-    ?><textarea name="pc10_resumo" style="visibility: hidden"><?=addslashes(stripslashes(chop($pc10_resumo)))?></textarea><?php 
+    ?><textarea name="pc10_resumo" style="visibility: hidden"><?=addslashes(stripslashes(chop($pc10_resumo)))?></textarea><?
 	db_input('pc20_codorc', 8, $Ipc20_codorc, true, 'hidden', 3);
 	db_input('e54_codcom', 8, $Ie54_codcom, true, 'hidden', 3);
 	db_input('e54_codtipo', 8, $Ie54_codtipo, true, 'hidden', 3);
@@ -999,7 +999,7 @@ function js_relatorio(){
 </script>
 </body>
 </html>
-<?php 
+<?
 
 
 if (isset ($incluir)) {

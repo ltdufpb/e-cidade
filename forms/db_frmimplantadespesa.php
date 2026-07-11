@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,10 +56,10 @@ if (!isset($semestre))
 <tr>
 
      <td><b>Data da Contabilidade </b></td>
-     <td><b><?php  db_inputdata('dtcont',$dtcont_dia,$dtcont_mes,$dtcont_ano,false,'text',3) ?></b></td>          
+     <td><b><? db_inputdata('dtcont',$dtcont_dia,$dtcont_mes,$dtcont_ano,false,'text',3) ?></b></td>          
      
      <td><b>Periodo</b></td>
-     <td><?php 
+     <td><?
             $matriz = array('1'=>"Primeiro Semestre",2=>"Segundo Semestre");
             db_select ("semestre",$matriz,false,1);  
 	    
@@ -79,7 +79,7 @@ if (!isset($semestre))
     <tr>
       <th style="border-bottom:1px solid;">ESTRUTURAL</th>
       <th style="border-bottom:1px solid;">DESCRIÇÃO</th>      
-      <?php  if ($semestre==1) { ?>
+      <? if ($semestre==1) { ?>
             <th style="border-bottom:1px solid;">PREVISÃO</th>
       		<th style="border-bottom:1px solid;">JANEIRO</th>
       		<th style="border-bottom:1px solid;">FEVEREIRO</th>
@@ -87,14 +87,14 @@ if (!isset($semestre))
       		<th style="border-bottom:1px solid;">ABRIL</th>
       		<th style="border-bottom:1px solid;">MAIO</th>
       		<th style="border-bottom:1px solid;">JUNHO</th>
-      <?php   }else {?>
+      <?  }else {?>
       		<th style="border-bottom:1px solid;">JULHO</th>
       		<th style="border-bottom:1px solid;">AGOSTO</th>
       		<th style="border-bottom:1px solid;">SETEMBRO</th>
       		<th style="border-bottom:1px solid;">OUTUBRO</th>
       		<th style="border-bottom:1px solid;">NOVEMBRO</th>
       		<th style="border-bottom:1px solid;">DEZEMBRO</th>      	
-      <?php   }?>
+      <?  }?>
       <td nowrap width=45px>&nbsp;</td>
     </tr>
   </thead>
@@ -103,7 +103,7 @@ if (!isset($semestre))
     <tr>
        <th style="border-bottom:1px solid;">ESTRUTURAL</th>
        <th style="border-bottom:1px solid;">DESCRIÇÃO</th>             
-       <?php  if ($semestre==1) { ?>
+       <? if ($semestre==1) { ?>
        	    <th style="border-bottom:1px solid;">PREVISÃO</th>
       		<th style="border-bottom:1px solid;">JANEIRO</th>
       		<th style="border-bottom:1px solid;">FEVEREIRO</th>
@@ -111,14 +111,14 @@ if (!isset($semestre))
       		<th style="border-bottom:1px solid;">ABRIL</th>
       		<th style="border-bottom:1px solid;">MAIO</th>
       		<th style="border-bottom:1px solid;">JUNHO</th>
-      <?php   }else {?>
+      <?  }else {?>
       		<th style="border-bottom:1px solid;">JULHO</th>
       		<th style="border-bottom:1px solid;">AGOSTO</th>
       		<th style="border-bottom:1px solid;">SETEMBRO</th>
       		<th style="border-bottom:1px solid;">OUTUBRO</th>
       		<th style="border-bottom:1px solid;">NOVEMBRO</th>
       		<th style="border-bottom:1px solid;">DEZEMBRO</th>      	
-      <?php   }?>
+      <?  }?>
       <td nowrap width=45px>&nbsp;</td>
        
            
@@ -126,7 +126,7 @@ if (!isset($semestre))
   </tfoot>
   
   <tbody style="max-height:600px;overflow:scroll;">
-  <?php    
+  <?   
 
    if (db_getsession("DB_anousu") >= $dtcont_ano ){
      
@@ -144,25 +144,25 @@ if (!isset($semestre))
             <!-- <td><?=$o70_codrec ?></td>-->
             <td><?=$o57_fonte ?></td>
             <td nowrap><?=substr($o57_descr,0,70) ?></td>
-            <?php  if ($semestre==1) { ?>
-                      <td><?php  db_input("o70_valor",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,0,this.value);","","","text-align:right")    ?></td>
-                      <td><?php  db_input("jan",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,1,this.value);","","","text-align:right") ?></td>            
-                      <td><?php  db_input("fev",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,2,this.value);","","","text-align:right")    ?></td>
-                      <td><?php  db_input("mar",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,3,this.value);","","","text-align:right")    ?></td>
-                      <td><?php  db_input("abr",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,4,this.value);","","","text-align:right")    ?></td>
-                      <td><?php  db_input("mai",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,5,this.value);","","","text-align:right")    ?></td>
-                      <td><?php  db_input("jun",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,6,this.value);","","","text-align:right")    ?></td>
-            <?php   } else { ?>
-                      <td><?php  db_input("jul",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,7,this.value);","","","text-align:right")    ?></td>
-                      <td><?php  db_input("ago",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,8,this.value);","","","text-align:right")    ?></td>
-                      <td><?php  db_input("set",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,9,this.value);","","","text-align:right")    ?></td>
-	              <td><?php  db_input("out",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,10,this.value);","","","text-align:right")    ?></td>
-         	      <td><?php  db_input("nov",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,11,this.value);","","","text-align:right")    ?></td>
-               	      <td><?php  db_input("dez",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,12,this.value);","","","text-align:right")    ?></td>
-            <?php  } ?>
+            <? if ($semestre==1) { ?>
+                      <td><? db_input("o70_valor",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,0,this.value);","","","text-align:right")    ?></td>
+                      <td><? db_input("jan",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,1,this.value);","","","text-align:right") ?></td>            
+                      <td><? db_input("fev",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,2,this.value);","","","text-align:right")    ?></td>
+                      <td><? db_input("mar",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,3,this.value);","","","text-align:right")    ?></td>
+                      <td><? db_input("abr",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,4,this.value);","","","text-align:right")    ?></td>
+                      <td><? db_input("mai",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,5,this.value);","","","text-align:right")    ?></td>
+                      <td><? db_input("jun",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,6,this.value);","","","text-align:right")    ?></td>
+            <?  } else { ?>
+                      <td><? db_input("jul",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,7,this.value);","","","text-align:right")    ?></td>
+                      <td><? db_input("ago",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,8,this.value);","","","text-align:right")    ?></td>
+                      <td><? db_input("set",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,9,this.value);","","","text-align:right")    ?></td>
+	              <td><? db_input("out",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,10,this.value);","","","text-align:right")    ?></td>
+         	      <td><? db_input("nov",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,11,this.value);","","","text-align:right")    ?></td>
+               	      <td><? db_input("dez",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,12,this.value);","","","text-align:right")    ?></td>
+            <? } ?>
             <td nowrap width=45px>&nbsp;&nbsp;</td>
           </tr>   	  	  
-   	  <?php 
+   	  <?
    	  }	   	
       }
      }
@@ -202,7 +202,7 @@ function js_codrec(chave1,chave2){
  //   document.form1.o71_codrec.value = chave1;
  //   document.form1.o57_descr.value = chave2;
     db_iframe_orcreceita.hide();
-    <?php  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o71_codrec='+chave1+'&o57_descr='+chave2"; ?>
+    <? echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o71_codrec='+chave1+'&o57_descr='+chave2"; ?>
 }
 function js_pesquisa(){
  js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_orcreceita','func_orcreceita.php?funcao_js=parent.js_preenchepesquisa|o70_codrec|o57_descr','Pesquisa',true);
@@ -211,7 +211,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
     db_iframe_conplanoexe.hide();
-    <?php 
+    <?
     if($db_opcao!=1){
         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

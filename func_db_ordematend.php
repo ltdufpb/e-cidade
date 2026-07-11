@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_codordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("or10_codordem",10,$Ior10_codordem,true,"text",4,"","chave_or10_codordem");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_codatend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("or10_codatend",6,$Ior10_codatend,true,"text",4,"","chave_or10_codatend");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("or10_seq",4,$Ior10_seq,true,"text",4,"","chave_or10_seq");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("or10_seq",4,$Ior10_seq,true,"text",4,"","chave_or10_seq");
 		       ?>
             </td>
@@ -105,7 +105,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_ordematend.php")==true){
@@ -141,12 +141,12 @@ $cldb_ordematend->rotulo->label("or10_seq");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -212,7 +212,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
   </tr>
   <tr>
     <td colspan="2" align='center'>
-    <?php 
+    <?
     if($iae != "e"){ 
     ?>
       <fieldset>
@@ -237,7 +237,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('r90_valor',15, $Ir90_valor, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'valoratu');
 			                ?>
 								    </td>
@@ -248,7 +248,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('r90_valor',15, $Ir90_valor, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'valornov');
 			                ?>
 								    </td>
@@ -259,12 +259,12 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('porcentv', 3, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'");
 			                ?>
 								    </td>
 								    <td>
-								      <?php 
+								      <?
 				              db_select("sosuv",$arr_opcao,true,1,"");
                       ?>
 								    </td>
@@ -275,14 +275,14 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 		      </table>
         </center>
       </fieldset>
-      <?php 
+      <?
        }
        ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align='center'>
-    <?php 
+    <?
     if($iae != "e"){ 
     ?>
       <fieldset>
@@ -307,7 +307,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('r90_quant',15, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'quantatu');
 			                ?>
 								    </td>
@@ -318,7 +318,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('r90_quant',15, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'", 'quantnov');
 			                ?>
 								    </td>
@@ -329,12 +329,12 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('porcentq', 3, $Ir90_quant, true, 'text', 1, "onchange='js_desabcampos(this.name);'");
 			                ?>
 								    </td>
 								    <td>
-								      <?php 
+								      <?
 				              db_select("sosuq",$arr_opcao,true,1,"");
                       ?>
 								    </td>
@@ -345,14 +345,14 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 		      </table>
         </center>
       </fieldset>
-      <?php 
+      <?
       }
       ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align='center'>
-    <?php 
+    <?
     if($iae != "e"){ 
     ?>
       <fieldset>
@@ -374,7 +374,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('r90_datlim',15, $Ir90_datlim, true, 'text', 1, "onKeyUp='js_mascaradata(this.value, this.name, false);' onchange='js_desabcampos(this.name);'", "datlimatu");
 			                ?>
 								    </td>
@@ -385,7 +385,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 					      <table>
 								  <tr>
 								    <td>
-								      <?php 
+								      <?
 			                db_input('r90_datlim',15, $Ir90_datlim, true, 'text', 1, "onKeyUp='js_mascaradata(this.value, this.name, true);' onchange='js_desabcampos(this.name);'", "datlimnov");
 			                ?>
 								    </td>
@@ -396,7 +396,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
 		      </table>
         </center>
       </fieldset>
-      <?php     
+      <?    
       }
       ?>
     </td>
@@ -409,7 +409,7 @@ $arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
     </td>
   </tr>
 </table>
-<?php 
+<?
 db_input('rh27_rubric',15,"",true,'hidden',3);
 db_input('valores_campos_rel',15, "", true, 'hidden', 3);
 db_input('r44_selec',15, "", true, 'hidden', 3);

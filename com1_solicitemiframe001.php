@@ -821,7 +821,7 @@ if (isset($aParametrosOrcamento[0]->o50_utilizapacto) && $aParametrosOrcamento[0
 <table width="100%">
   <tr>
     <td width="100%">
-      <?php 
+      <?
       include(modification("forms/db_frmsolicitemiframe.php"));
       ?>
     </td>
@@ -830,7 +830,7 @@ if (isset($aParametrosOrcamento[0]->o50_utilizapacto) && $aParametrosOrcamento[0
 </center>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar) || isset($excluir) || isset($incluir)) {
 
   if ($sqlerro == true) {

@@ -62,7 +62,7 @@ $disc_cad = isset($disc_cad) && !empty($disc_cad) ? $disc_cad : "";
       <?=$Led12_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
+      <?db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -70,7 +70,7 @@ $disc_cad = isset($disc_cad) && !empty($disc_cad) ? $disc_cad : "";
        <?=$Led232_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed232_c_descr",30,$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
+      <?db_input("ed232_c_descr",30,$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
      </td>
     </tr>
     <tr>

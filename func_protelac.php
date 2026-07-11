@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clprotelac->rotulo->label("h19_assent");
               <?=$Lh19_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h19_codigo",6,$Ih19_codigo,true,"text",4,"","chave_h19_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clprotelac->rotulo->label("h19_assent");
               <?=$Lh19_assent?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h19_assent",6,$Ih19_assent,true,"text",4,"","chave_h19_assent");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clprotelac->rotulo->label("h19_assent");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_protelac.php")==true){
@@ -123,12 +123,12 @@ $clprotelac->rotulo->label("h19_assent");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

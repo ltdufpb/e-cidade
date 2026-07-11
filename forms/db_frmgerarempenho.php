@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt25');
 ?>
 
 <form name="form1" method="post" action="">
-  <input type="hidden" value="<?php echo DBPessoal::verificarUtilizacaoEstruturaSuplementar() ? '1' : '0'; ?>" id="db_complementar" name = 'db_complementar' >
+  <input type="hidden" value="<?echo DBPessoal::verificarUtilizacaoEstruturaSuplementar() ? '1' : '0'; ?>" id="db_complementar" name = 'db_complementar' >
 
 	<fieldset style="width: 350px; margin: 20px auto 5px auto">
 		<legend align="center">
@@ -67,7 +67,7 @@ $clrotulo->label('DBtxt25');
 				<strong>Tipo:</strong>
 			</td>
 			<td>
-				<?php 
+				<?
 					$aTipos = array(
 												  "1" => "Salário        ",
                           "2" => "Previdência    ",
@@ -83,7 +83,7 @@ $clrotulo->label('DBtxt25');
     		<strong>Ponto:</strong>
     	</td>
     	<td>
-    		<?php 
+    		<?
 
     			$aSigla = array();
 
@@ -106,7 +106,7 @@ $clrotulo->label('DBtxt25');
 			<td align="center" colspan="2" >
 				<input type="hidden" id="empenhosAnoFolha" value="<?php echo $anofolha; ?>" />
 				<input type="hidden" id="empenhosMesFolha" value="<?php echo $mesfolha; ?>" />
-				<?php 
+				<?
 		      $sql  = "select distinct r33_codtab,              ";
 		      $sql .= "                r33_nome                 ";
 		      $sql .= "           from inssirf                  ";

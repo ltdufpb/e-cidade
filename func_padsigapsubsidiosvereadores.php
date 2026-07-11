@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpadsigapsubsidiosvereadores->rotulo->label("c16_numcgm");
               <?=$Lc16_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c16_sequencial",10,$Ic16_sequencial,true,"text",4,"","chave_c16_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpadsigapsubsidiosvereadores->rotulo->label("c16_numcgm");
               <?=$Lc16_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c16_numcgm",10,$Ic16_numcgm,true,"text",4,"","chave_c16_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpadsigapsubsidiosvereadores->rotulo->label("c16_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_padsigapsubsidiosvereadores.php")==true){
@@ -123,12 +123,12 @@ $clpadsigapsubsidiosvereadores->rotulo->label("c16_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

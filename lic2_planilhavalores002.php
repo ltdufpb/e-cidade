@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2014  DBselller Servicos de Informatica
@@ -190,7 +190,7 @@ if(isset($argv[1])){
 ?>
 
 
-<?php 
+<?
 function sql_query_julgamento_licitacao ( $l20_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
 
   $sql = "select ";

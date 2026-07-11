@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $cliptutabelas->rotulo->label("j121_sequencial");
               <?=$Lj121_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		            db_input("j121_sequencial",10,$Ij121_sequencial,true,"text",4,"","chave_j121_sequencial");
 		          ?>
             </td>
@@ -78,7 +78,7 @@ $cliptutabelas->rotulo->label("j121_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 	      if (!isset($pesquisa_chave)) {
 	      	
 	        if (isset($campos) == false) {
@@ -128,12 +128,12 @@ $cliptutabelas->rotulo->label("j121_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

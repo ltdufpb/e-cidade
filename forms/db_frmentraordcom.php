@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -100,7 +100,7 @@ if (isset ($m51_codordem) && $m51_codordem != '') {
 $opcao = 1;
 ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
   border: 2px solid #cccccc;
   border-top-color: <?=$cor?>;
@@ -127,7 +127,7 @@ $opcao = 1;
 <tr>
 <td nowrap title="<?=@$Tm51_codordem?>">
 <b>
-<?php 
+<?
 
 if (isset ($e7_valor) && $e7_valor != "") {
   //$e70_valor=str_replace('.','',$e70_valor);
@@ -144,7 +144,7 @@ db_ancora("Ordem :", "js_consultaordem($m51_codordem);", 1);
 </b>
 </td>
 <td nowrap > 
-<?php 
+<?
 
 
 db_input('m51_codordem', 5, $Im51_codordem, true, 'text', 3);
@@ -155,7 +155,7 @@ db_input('z01_nome', 30, $Iz01_nome, true, 'text', 3, '');
 <?=@$Le69_numero?>
 </td>
 <td  > 
-<?php 
+<?
 
 
 db_input('e69_numero', 20, $Ie69_numero, true, 'text', $opcao, "")
@@ -164,18 +164,18 @@ db_input('e69_numero', 20, $Ie69_numero, true, 'text', $opcao, "")
 </tr>
 <tr>
 <td nowrap title="<?=@$Te69_id_usuario?>">
-<?php  
+<? 
 $e69_id_usuario = db_getsession("DB_id_usuario");
 db_ancora(@ $Le69_id_usuario, "js_pesquisae69_id_usuario(true);", $opcao);
 ?>
 </td>
 <td>
-<?php 
+<?
 
 
 db_input('e69_id_usuario', 5, $Ie69_id_usuario, true, 'text', $opcao, " onchange='js_pesquisae69_id_usuario(false);'")
 ?>
-<?php $result=$clusuarios->sql_record($clusuarios->sql_query_file("","nome","","id_usuario=$e69_id_usuario"));
+<?$result=$clusuarios->sql_record($clusuarios->sql_query_file("","nome","","id_usuario=$e69_id_usuario"));
 db_fieldsmemory($result,0);
 db_input('nome',30,$Inome,true,'text',3,'');
 ?>
@@ -184,7 +184,7 @@ db_input('nome',30,$Inome,true,'text',3,'');
 <?=@$Le69_dtrecebe?>
 </td>
 <td>
-<?php 
+<?
 
 if (empty ($e69_dtrecebe_dia)) {
   $e69_dtrecebe_dia = date("d", db_getsession("DB_datausu"));
@@ -201,7 +201,7 @@ db_inputdata('e69_dtrecebe', @ $e69_dtrecebe_dia, @ $e69_dtrecebe_mes, @ $e69_dt
 <b>Departamento: </b>
 </td>
 <td  > 
-<?php 
+<?
 
 
 db_input('departamento', 5, $Icoddepto, true, 'text', 3);
@@ -212,7 +212,7 @@ db_input('descrdepto', 30, $Idescrdepto, true, 'text', 3, '');
 <?=@$Le69_dtnota?>
 </td>
 <td> 
-<?php 
+<?
 
 
 
@@ -231,7 +231,7 @@ db_inputdata('e69_dtnota', @ $e69_dtnota_dia, @ $e69_dtnota_mes, @ $e69_dtnota_a
 <b> Valor da Ordem: </b>
 </td>
 <td>
-<?php 
+<?
 
 
 $vlrtot = db_formatar($vlrtot, 'p');
@@ -242,7 +242,7 @@ db_input('vlrtot', 20, $Im51_valortotal, true, 'text', 3, "");
 <b> Valor da Nota: </b>
 </td>
 <td>
-<?php 
+<?
 
 $lancado = 0;
 $result_lancado = $clmatestoqueitemoc->sql_record($clmatestoqueitemoc->sql_query(null, null, "sum(m71_valor) as soma", null, "m52_codordem=$m51_codordem"));
@@ -265,7 +265,7 @@ db_input('e70_valor', 20, $Ie70_valor, true, 'hidden', 3, "");
 ?>
 </td>
 </tr>
-<?php 
+<?
    if (isset ($atualiza) || isset ($e70_valor) && $e70_valor != "") {
         $db_opcao = 3;
    } else {
@@ -282,17 +282,17 @@ db_input('e70_valor', 20, $Ie70_valor, true, 'hidden', 3, "");
 <tr>
     <td nowrap title="<?=@$Tm90_liqentoc?>"><b>Gerar nota de liquidação:</b></td>
     <td> 
-<?php 
+<?
 $x = array('true'=>'Sim','false'=>'Não');
 db_select('gravanota',$x,true,$db_opcao,"");
 ?>
     </td>
 </tr>
-<?php 
+<?
    }
 ?>
 </table>
-<?php 
+<?
 
 
 $m51_depto = $m51_depto;
@@ -316,19 +316,19 @@ if (isset ($atualiza) || isset ($e70_valor) && $e70_valor != "") {
   <tr>
   <td align='right'>
   <b>
-  <?php 
+  <?
   
   $lancado = db_formatar("$lancado", 'p');
   $valortotal = db_formatar(@ $m51_valortotal, 'p');
 	
   ?>
-  Total da Ordem:<?php db_input('valortotal',15,'',true,'text',3)?>Valor Lançado:<?php db_input('lancado',15,'',true,'text',3)?>A Lançar:<?php db_input('alancar',15,'',true,'text',3)?>
+  Total da Ordem:<?db_input('valortotal',15,'',true,'text',3)?>Valor Lançado:<?db_input('lancado',15,'',true,'text',3)?>A Lançar:<?db_input('alancar',15,'',true,'text',3)?>
   </b>
   </td>
   </tr>
   </table>
   </center>
-  <?php 
+  <?
   
   
 }
@@ -337,7 +337,7 @@ if (isset ($atualiza) || isset ($e70_valor) && $e70_valor != "") {
 </tr>
 <tr>
 <td align="center">
-<?php 
+<?
 
 
 if (isset ($atualiza) || isset ($e70_valor) && $e70_valor != "") {
@@ -349,36 +349,36 @@ if (isset ($atualiza) || isset ($e70_valor) && $e70_valor != "") {
 ?>
 </td>
 </tr>
-<?php if (isset($atualiza)||isset($e70_valor)&&$e70_valor!=""){?>
+<?if (isset($atualiza)||isset($e70_valor)&&$e70_valor!=""){?>
   <tr align = "center">
   <td>
   <input name="confirma" type="submit"  value="Confirma">
   <input name="voltar" type="button" value="Voltar" onclick="location.href='mat1_entraordcom001.php';" >
-  <?php  
+  <? 
   
   $m51_codordem = $m51_codordem;
   db_input("m51_codordem", 5, "", true, "hidden", 3);
   ?>
   </td>
   </tr>
-<?php }else{
+<?}else{
 ?>
   <tr align = "center">
   <td>
   <input name="atualiza" type="submit"  value="Confirma" onclick="return js_testaval('<?=$m51_valortotal?>');">
   <input name="voltar" type="button" value="Voltar" onclick="location.href='mat1_entraordcom001.php';" >
-  <?php  
+  <? 
   
   $m51_codordem = $m51_codordem;
   db_input("m51_codordem", 5, "", true, "hidden", 3);
   ?>
   </td>
   </tr>
-<?php }?>
+<?}?>
 
 </table>
 </center>
-<?php 
+<?
 
 
 db_input("valores", 100, 0, true, "hidden", 3);
@@ -443,7 +443,7 @@ function js_mostradb_usuarios1(chave1,chave2){
   db_iframe_db_usuarios.hide();
 }
 //-------------------------------------------------------------
-<?php if (isset($atualiza)||isset($e70_valor)&&$e70_valor!=""){
+<?if (isset($atualiza)||isset($e70_valor)&&$e70_valor!=""){
 
   ?>
   function js_buscavalores(){
@@ -562,7 +562,7 @@ function js_mostradb_usuarios1(chave1,chave2){
       itens.location.href='mat1_entraordcomitemiframe.php?m51_codordem='+codordem+'&zera=true';
     }
   }
-<?php }?>
+<?}?>
 //----------------------------------------------------------
 function js_calcalancar(){
   obj= itens.document.form1;

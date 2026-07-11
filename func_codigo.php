@@ -82,11 +82,11 @@ function js_codigo(seq){
 	</td>
 </tr>
 <tr>
-	<td><b> Fonte original :</b><br> <?=highlight_string("<?php \n$fonteorig\n?>");?>
+	<td><b> Fonte original :</b><br> <?=highlight_string("<?\n$fonteorig\n?>");?>
 	</td>
 </tr>
 <tr>
-	<td><b> Fonte Novo : </b><br><?=highlight_string("<?php \n$fontenovo\n?>");?>
+	<td><b> Fonte Novo : </b><br><?=highlight_string("<?\n$fontenovo\n?>");?>
 	</td>
 </tr>
 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,11 +95,11 @@ if(isset($incluir)){
     <table border="0">
      <tr>
       <td nowrap title="<?=@$Tbi16_leitor?>">
-      <?php db_ancora(@$Lbi16_leitor,"",$opcao);?>
+      <?db_ancora(@$Lbi16_leitor,"",$opcao);?>
       </td>
       <td>
-       <?php db_input('bi16_leitor',10,$Ibi16_leitor,true,'text',$opcao,"")?>
-       <?php db_input('z01_nome',50,@$z01_nome,true,'text',3," ")?>
+       <?db_input('bi16_leitor',10,$Ibi16_leitor,true,'text',$opcao,"")?>
+       <?db_input('z01_nome',50,@$z01_nome,true,'text',3," ")?>
       </td>
      </tr>
     </table>
@@ -111,13 +111,13 @@ if(isset($incluir)){
  <tr>
   <td colspan="2">
    <fieldset width="100%"><legend><b>Nova Carteira:</b></legend>
-    <?php include(modification("forms/db_frmcarteira.php"));?>
+    <?include(modification("forms/db_frmcarteira.php"));?>
    </fieldset>
   </td>
  </tr>
 </table>
 </form>
-<?php if($linhas>0){?>
+<?if($linhas>0){?>
  <table border="0" width="95%" align="center">
   <tr>
    <td colspan="2">
@@ -131,7 +131,7 @@ if(isset($incluir)){
        <td><b>Válido até</b></td>
        <td><b>Situação</b></td>
       </tr>
-      <?php 
+      <?
       $cor1 = "#f3f3f3";
       $cor2 = "#ababab";
       $cor  = "";
@@ -167,7 +167,7 @@ if(isset($incluir)){
          <td><?=db_formatar($bi16_validade,'d')?></td>
          <td align="center" style="color:#FFFFFF;" bgcolor="<?=@$situacao?>"><?=@$texto?></td>
         </tr>
-        <?php 
+        <?
       }
       ?>
       <tr>
@@ -180,10 +180,10 @@ if(isset($incluir)){
    </td>
   </tr>
  </table>
-<?php }?>
+<?}?>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
  if($clcarteira->erro_status=="0"){
   $clcarteira->erro(true,false);

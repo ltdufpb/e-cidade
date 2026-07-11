@@ -334,7 +334,7 @@ db_app::load("widgets/DBViewConfiguracaoEnvioTransmissao.js");
 
 ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -376,7 +376,7 @@ db_app::load("widgets/DBViewConfiguracaoEnvioTransmissao.js");
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="450" align="left" valign="top" bgcolor="#CCCCCC">
-    <?php 
+    <?
     $oDaoEmpParametro = new cl_empparametro;
     $rsParam  = $oDaoEmpParametro->sql_record($oDaoEmpParametro->sql_query_file(db_getsession("DB_anousu")));
     $oParam   = db_utils::fieldsMemory($rsParam, 0);
@@ -390,7 +390,7 @@ db_app::load("widgets/DBViewConfiguracaoEnvioTransmissao.js");
   </tr>
 </table>
 </body>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script type="text/javascript" src='extension/package/Desktop/assets/vendors/alertify/alertify.js'></script>
@@ -403,7 +403,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
     }
 </script>
 </html>
-<?php 
+<?
 if(isset($atualizar) && $sqlerro==true){
   db_msgbox($erro_msg);
 }

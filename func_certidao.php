@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcertidao->rotulo->label("p50_tipo");
               <?=$Lp50_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p50_sequencial",10,$Ip50_sequencial,true,"text",4,"","chave_p50_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcertidao->rotulo->label("p50_tipo");
               <?=$Lp50_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p50_tipo",1,$Ip50_tipo,true,"text",4,"","chave_p50_tipo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcertidao->rotulo->label("p50_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where = "p50_instit = ".DB_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -120,12 +120,12 @@ $clcertidao->rotulo->label("p50_tipo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

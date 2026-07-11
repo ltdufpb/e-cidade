@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ $aux = new cl_arquivo_auxiliar;
 	<table align="center" border="0">
 		<tr>
 			<td colspan=2 >
-				<?php 
+				<?
 				// $aux = new cl_arquivo_auxiliar;
 				$aux->Labelancora = "UPS:";
 				$aux->cabecalho = "UPS";

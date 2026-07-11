@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led13_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed13_i_codigo',10,$Ied13_i_codigo,true,'text',3,"")?>
+   <?db_input('ed13_i_codigo',10,$Ied13_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led13_c_descr?>
   </td>
   <td>
-   <?php db_input('ed13_c_descr',20,$Ied13_c_descr,true,'text',$db_opcao,"")?>
+   <?db_input('ed13_c_descr',20,$Ied13_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?php 
+  <?
    $chavepri= ["ed13_i_codigo"=>@$ed13_i_codigo,"ed13_c_descr"=>@$ed13_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipotelefone->sql_query($ed13_i_codigo,"*","ed13_c_descr");

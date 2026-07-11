@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clorcdotacaoval->rotulo->label("o59_valor");
               <?=$Lo59_coddot?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o59_coddot",6,$Io59_coddot,true,"text",4,"","chave_o59_coddot");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clorcdotacaoval->rotulo->label("o59_valor");
               <?=$Lo59_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o59_mes",2,$Io59_mes,true,"text",4,"","chave_o59_mes");
 		       ?>
             </td>
@@ -78,7 +78,7 @@ $clorcdotacaoval->rotulo->label("o59_valor");
               <?=$Lo59_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o59_coddoc",4,$Io59_coddoc,true,"text",4,"","chave_o59_coddoc");
 		       ?>
             </td>
@@ -88,7 +88,7 @@ $clorcdotacaoval->rotulo->label("o59_valor");
               <?=$Lo59_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o59_valor",15,$Io59_valor,true,"text",4,"","chave_o59_valor");
 		       ?>
             </td>
@@ -106,7 +106,7 @@ $clorcdotacaoval->rotulo->label("o59_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcdotacaoval.php")==true){
@@ -142,12 +142,12 @@ $clorcdotacaoval->rotulo->label("o59_valor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

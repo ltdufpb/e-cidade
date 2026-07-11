@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -100,7 +100,7 @@ if(isset($carregar) && $arquivo != ""){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmdb_sysfuncoes.php"));
 	?>
     </center>
@@ -109,7 +109,7 @@ if(isset($carregar) && $arquivo != ""){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

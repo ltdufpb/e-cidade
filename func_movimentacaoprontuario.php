@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -25,11 +25,11 @@ $clmovimentacaoprontuario->rotulo->label("sd102_codigo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lsd102_codigo?></label></td>
-          <td><?php  db_input("sd102_codigo",10,$Isd102_codigo,true,"text",4,"","chave_sd102_codigo"); ?></td>
+          <td><? db_input("sd102_codigo",10,$Isd102_codigo,true,"text",4,"","chave_sd102_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lsd102_codigo?></label></td>
-          <td><?php  db_input("sd102_codigo",10,$Isd102_codigo,true,"text",4,"","chave_sd102_codigo");?></td>
+          <td><? db_input("sd102_codigo",10,$Isd102_codigo,true,"text",4,"","chave_sd102_codigo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $clmovimentacaoprontuario->rotulo->label("sd102_codigo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_movimentacaoprontuario.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_movimentacaoprontuario.php")==true){
@@ -79,12 +79,12 @@ $clmovimentacaoprontuario->rotulo->label("sd102_codigo");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

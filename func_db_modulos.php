@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_modulos->rotulo->label("nome_modulo");
               <?=$Lid_item?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("id_item",5,$Iid_item,true,"text",4,"","chave_id_item");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_modulos->rotulo->label("nome_modulo");
               <?=$Lnome_modulo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("nome_modulo",20,$Inome_modulo,true,"text",4,"","chave_nome_modulo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_modulos->rotulo->label("nome_modulo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_modulos.php")==true){
@@ -119,12 +119,12 @@ $cldb_modulos->rotulo->label("nome_modulo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

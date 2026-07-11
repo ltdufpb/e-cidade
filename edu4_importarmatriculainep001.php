@@ -310,7 +310,7 @@ $iCodigoInepBanco = db_utils::fieldsMemory($rsEscola, 0)->ed18_c_codigoinep;
         return true;
     }
 </script>
-<?php 
+<?
 if (isset($oPost->importar)) {
 
     if ($lErro) {

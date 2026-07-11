@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $db_opcao = 1;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <br>
 <center>
 <fieldset align="center" style="width:95%"><legend><b>Relatório de Ítens Emprestados</b></legend>
@@ -73,9 +73,9 @@ $db_opcao = 1;
      <strong>Período:&nbsp;&nbsp;</strong>
      </td>
      <td>
-      <?php db_inputdata('data1', @$dia1, @$mes1, @$ano1, true, 'text', 1, "")?>
+      <?db_inputdata('data1', @$dia1, @$mes1, @$ano1, true, 'text', 1, "")?>
       até
-      <?php db_inputdata('data2', @$dia2, @$mes2, @$ano2, true, 'text', 1, "")?>
+      <?db_inputdata('data2', @$dia2, @$mes2, @$ano2, true, 'text', 1, "")?>
      </td>
     </tr>
     <tr>
@@ -98,20 +98,20 @@ $db_opcao = 1;
     </tr>
     <tr>
      <td nowrap title="<?=@$Tbi18_carteira?>">
-      <?php db_ancora(@$Lbi18_carteira,"js_pesquisabi18_carteira(true);",$db_opcao);?>
+      <?db_ancora(@$Lbi18_carteira,"js_pesquisabi18_carteira(true);",$db_opcao);?>
      </td>
      <td>
-      <?php db_input('bi18_carteira', 10, $Ibi18_carteira, true, 'text', $db_opcao, " onchange='js_pesquisabi18_carteira(false);' onKeyPress='tab(event,12)'")?>
-      <?php db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
+      <?db_input('bi18_carteira', 10, $Ibi18_carteira, true, 'text', $db_opcao, " onchange='js_pesquisabi18_carteira(false);' onKeyPress='tab(event,12)'")?>
+      <?db_input('ov02_nome', 50, @$ov02_nome, true, 'text', 3, "")?>
      </td>
     </tr>
     <tr>
      <td nowrap title="<?=@$Tbi06_seq?>">
-      <?php db_ancora(@$Lbi06_seq, "js_pesquisabi06_seq(true);", $db_opcao);?>
+      <?db_ancora(@$Lbi06_seq, "js_pesquisabi06_seq(true);", $db_opcao);?>
      </td>
      <td>
-      <?php db_input('bi06_seq', 10, @$Ibi06_seq, true, 'text', $db_opcao, " onchange='js_pesquisabi06_seq(false);'")?>
-      <?php db_input('bi06_titulo', 50, @$bi06_titulo, true, 'text', 3, "")?>
+      <?db_input('bi06_seq', 10, @$Ibi06_seq, true, 'text', $db_opcao, " onchange='js_pesquisabi06_seq(false);'")?>
+      <?db_input('bi06_titulo', 50, @$bi06_titulo, true, 'text', 3, "")?>
      </td>
     </tr>
     <tr>
@@ -130,7 +130,7 @@ $db_opcao = 1;
 </table>
 </fieldset>
 </center>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

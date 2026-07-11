@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,7 +50,7 @@ db_postmemory($HTTP_POST_VARS);
     <table bgcolor="#cccccc">
      <tr>
         <td>
-        <?php  
+        <? 
 
 if (isset ($codtran)) {
 	$sqlproc = "select pc11_numero,pc11_codigo,pc01_descrmater,p63_codproc,
@@ -81,7 +81,7 @@ if (isset ($codtran)) {
              <td bgcolor="#999999" align=center width=125><b>Data</b></td>
              <td bgcolor="#999999" align=center width="125"><b>Observação</b></td>
           </tr>
-         <?php 
+         <?
 
 
 	// db_lovrot($sqlandam,10,"","","");

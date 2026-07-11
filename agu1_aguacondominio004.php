@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -80,7 +80,7 @@
         <tr>
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
-              <?php 
+              <?
                 include(modification("forms/db_frmaguacondominio.php"));
               ?>
             </center>
@@ -91,7 +91,7 @@
   </body>
 </html>
 
-<?php 
+<?
   if (isset($incluir)) {
     
     if ($sqlerro == true) {

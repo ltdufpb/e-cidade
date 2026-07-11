@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -141,7 +141,7 @@ if(isset($alterar2)){
     <tr>
      <td colspan="2">
       <center>
-      <?php include(modification("forms/db_frmparecerresult001.php"));?>
+      <?include(modification("forms/db_frmparecerresult001.php"));?>
       </center>
      </td>
     </tr>
@@ -151,7 +151,7 @@ if(isset($alterar2)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar2)){
  ?>
  <script>
@@ -160,7 +160,7 @@ if(isset($alterar2)){
   parent.parent.iframe_R<?=$ed43_i_codigo?>.location.href = "edu1_diarioresultado001.php?regencia=<?=$regencia?>&ed43_i_codigo=<?=$ed43_i_codigo?>";
   parent.document.form1.<?=$campo?>.value = "<?=$ed73_t_parecer?>";
  </script>
- <?php 
+ <?
 }
 ?>
 <script>

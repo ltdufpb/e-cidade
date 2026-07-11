@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -105,7 +105,7 @@ if (isset($excluir)) {
   <tr> 
     <td valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?php 
+      <?
         include(modification("forms/db_frmacordogrupo.php"));
       ?>
     </center>
@@ -116,7 +116,7 @@ if (isset($excluir)) {
 <script>
   $('ac02_acordotipo_select_descr').style.width = '100%';
 </script>
-<?php 
+<?
 if (isset($excluir)) {
 	
   if ($sqlerro == true) {

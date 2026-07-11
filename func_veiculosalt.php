@@ -62,7 +62,7 @@ $oDaoVeicCadCentralDepart->rotulo->label("ve37_veiccadcentral");
                   <?=$Lve01_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?php 
+                  <?
 		                db_input("ve01_codigo", 10, $Ive01_codigo, true, "text", 4, "", "chave_ve01_codigo");
 		              ?>
                 </td>
@@ -81,7 +81,7 @@ $oDaoVeicCadCentralDepart->rotulo->label("ve37_veiccadcentral");
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?php 
+          <?
             $sWhere = "";
 
             if (isset($baixa) && $baixa != "") {

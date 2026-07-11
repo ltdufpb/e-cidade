@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignacaobancolayout
 class cl_rhconsignacaobancolayout { 

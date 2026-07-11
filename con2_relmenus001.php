@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -74,7 +74,7 @@ echo " sel = $ssel4[2] <br> "; */
 	</tr>
 	<tr>
 		<td align="center">
-		<?php 
+		<?
 		//Módulo
 		$sqlmodulo = "select m.id_item as codmod,nome_modulo as nomemod 
                               from db_modulos m
@@ -94,7 +94,7 @@ echo " sel = $ssel4[2] <br> "; */
 		<td align="center"><input name="processa" type="button"	value="Processa" onclick="js_mandadados()"></td>
 	</tr>	
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </form>

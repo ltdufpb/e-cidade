@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clconplano->rotulo->label("c60_estrut");
             <?=$Lc61_codcon?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?php  db_input("c61_codcon",6,$Ic61_codcon,true,"text",4,"","chave_c61_codcon"); ?>
+            <? db_input("c61_codcon",6,$Ic61_codcon,true,"text",4,"","chave_c61_codcon"); ?>
             </td>
           </tr>
           <tr> 
@@ -66,7 +66,7 @@ $clconplano->rotulo->label("c60_estrut");
             <?=$Lc61_reduz?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?php db_input("c61_reduz",6,$Ic61_reduz,true,"text",4,"","chave_c61_reduz");?>
+            <?db_input("c61_reduz",6,$Ic61_reduz,true,"text",4,"","chave_c61_reduz");?>
             </td>
           </tr>
           <tr> 
@@ -74,7 +74,7 @@ $clconplano->rotulo->label("c60_estrut");
               <?=$Lc60_estrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut");
 		       ?>
             </td>
@@ -92,7 +92,7 @@ $clconplano->rotulo->label("c60_estrut");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave) && !isset($pesquisa_chave_reduz)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplanoreduz.php")==true){
@@ -153,12 +153,12 @@ $clconplano->rotulo->label("c60_estrut");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

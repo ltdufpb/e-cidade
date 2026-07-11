@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,25 +53,25 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led07_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed07_i_codigo',10,$Ied07_i_codigo,true,'text',3,"")?>
+   <?db_input('ed07_i_codigo',10,$Ied07_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted07_i_justificativa?>">
-   <?php db_ancora(@$Led07_i_justificativa,'',3);?>
+   <?db_ancora(@$Led07_i_justificativa,'',3);?>
   </td>
   <td>
-   <?php db_input('ed07_i_justificativa',10,@$Ied07_i_justificativa,true,'text',3,'')?>
-   <?php db_input('ed06_c_descr',60,@$ed06_c_descr,true,'text',3,'')?>
+   <?db_input('ed07_i_justificativa',10,@$Ied07_i_justificativa,true,'text',3,'')?>
+   <?db_input('ed06_c_descr',60,@$ed06_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted07_i_ato?>">
-   <?php db_ancora(@$Led07_i_ato," js_pesquisaed07_i_ato(true); ",$db_opcao);?>
+   <?db_ancora(@$Led07_i_ato," js_pesquisaed07_i_ato(true); ",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed07_i_ato',10,@$Ied07_i_ato,true,'text',$db_opcao," onchange='js_pesquisaed07_i_ato(false)'; ")?>
-   <?php db_input('ed05_c_finalidade',50,@$Ied05_c_finalidade,true,'text',3,'')?>
+   <?db_input('ed07_i_ato',10,@$Ied07_i_ato,true,'text',$db_opcao," onchange='js_pesquisaed07_i_ato(false)'; ")?>
+   <?db_input('ed05_c_finalidade',50,@$Ied05_c_finalidade,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -81,7 +81,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top"><br>
-  <?php 
+  <?
    $chavepri= ["ed07_i_codigo"=>@$ed07_i_codigo,"ed07_i_justificativa"=>@$ed07_i_justificativa,"ed07_i_ato"=>@$ed07_i_ato,"ed05_c_finalidade"=>@$ed05_c_finalidade];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clatojustificativa->sql_query("","*","","ed07_i_justificativa = $ed07_i_justificativa");

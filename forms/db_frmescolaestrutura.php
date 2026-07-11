@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,7 @@ $clrotulo = new rotulocampo;
 <table width="100%">
  <tr>
   <td valign="top">
-   <?php 
+   <?
    if(!isset($ed255_c_dependencias)){
     $ed255_c_dependencias = "000000000000000000";
    }
@@ -61,7 +61,7 @@ $clrotulo = new rotulocampo;
    </fieldset>
   </td>
   <td valign="top" rowspan='8'>
-   <?php 
+   <?
    if(!isset($ed255_c_localizacao)){
     $ed255_c_localizacao = "00000000";
    }
@@ -77,7 +77,7 @@ $clrotulo = new rotulocampo;
     <input <?=substr(@$ed255_c_localizacao,7,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_localizacao" name="ed255_c_localizacao[]" type="checkbox" value="8"> Outros<br>
    </fieldset>
    <br>
-   <?php 
+   <?
    if(!isset($ed255_i_formaocupacao)){
     $ed255_i_formaocupacao = "0";
    }
@@ -88,7 +88,7 @@ $clrotulo = new rotulocampo;
     <input type="radio" id="ed255_i_formaocupacao" name="ed255_i_formaocupacao" value="3" <?=@$ed255_i_formaocupacao=="3"?"checked":""?>> Cedido<br> 
    </fieldset>
    <br>
-   <?php 
+   <?
    if(!isset($ed255_c_esgotosanitario)){
     $ed255_c_esgotosanitario = "000";
    }
@@ -100,7 +100,7 @@ $clrotulo = new rotulocampo;
     <input <?=substr(@$ed255_c_esgotosanitario,2,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_esgotosanitario" name="ed255_c_esgotosanitario[]" type="checkbox" value="3" onclick="js_esgoto();"> Inexistente<br>
    </fieldset>
    <br>
-   <?php 
+   <?
    if(!isset($ed255_c_materdidatico)){
     $ed255_c_materdidatico = "000";
    }
@@ -112,7 +112,7 @@ $clrotulo = new rotulocampo;
    </fieldset>
   </td>
   <td valign="top">
-   <?php 
+   <?
    if(!isset($ed255_c_equipamentos)){
     $ed255_c_equipamentos = "0000000";
    }
@@ -127,7 +127,7 @@ $clrotulo = new rotulocampo;
     <input <?=substr(@$ed255_c_equipamentos,6,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_equipamentos" name="ed255_c_equipamentos[]" type="checkbox" value="7"> Impressora<br>
    </fieldset>
    <br>
-   <?php 
+   <?
    if(!isset($ed255_c_destinolixo)){
     $ed255_c_destinolixo = "000000";
    }
@@ -142,7 +142,7 @@ $clrotulo = new rotulocampo;
    </fieldset>
   </td>
   <td valign="top">
-   <?php 
+   <?
    if(!isset($ed255_c_abastagua)){
     $ed255_c_abastagua = "00000";
    }
@@ -155,7 +155,7 @@ $clrotulo = new rotulocampo;
     <input <?=substr(@$ed255_c_abastagua,4,1)=="1"?"checked":""?> style="height:13px;" id="ed255_c_abastagua" name="ed255_c_abastagua[]" type="checkbox" value="5" onclick="js_agua();"> Inexistente<br>
    </fieldset>
    <br>
-   <?php 
+   <?
    if(!isset($ed255_c_abastenergia)){
     $ed255_c_abastenergia = "0000";
    }
@@ -168,7 +168,7 @@ $clrotulo = new rotulocampo;
    </fieldset>
    <br>
    <fieldset style="height:85px;"><legend><?=$Led255_i_compartilhado?></legend>
-   <?php 
+   <?
    $x = ['0'=>'NÃO','1'=>'SIM'];
    db_select('ed255_i_compartilhado',$x,true,$db_opcao," onchange='js_outraescola(this.value);' style='height:15px;font-size:10px;'");
    if(isset($ed255_i_compartilhado) && $ed255_i_compartilhado==1){
@@ -180,7 +180,7 @@ $clrotulo = new rotulocampo;
    <br><br>
    <span id="outraescola" style="visibility:<?=$visible?>;">
     <?=$Led255_i_escolacompartilhada?><br>
-    <?php db_input('ed255_i_escolacompartilhada',8,@$Ied255_i_escolacompartilhada,true,'text',$db_opcao,"")?>
+    <?db_input('ed255_i_escolacompartilhada',8,@$Ied255_i_escolacompartilhada,true,'text',$db_opcao,"")?>
    </span>
    </fieldset>
   </td>
@@ -192,7 +192,7 @@ $clrotulo = new rotulocampo;
      <tr>
       <td>
        <?=$Led255_i_computadores?>
-       <?php 
+       <?
        $x = ['0'=>'NÃO POSSUI','1'=>'POSSUI'];
        db_select('ed255_i_computadores',$x,true,$db_opcao," onchange='js_computadores(this.value);' style='height:15px;font-size:10px;'");
        if(isset($ed255_i_computadores) && $ed255_i_computadores==1){
@@ -205,19 +205,19 @@ $clrotulo = new rotulocampo;
        <span id="computadores" style="visibility:<?=$visible1?>;">
         <?=$Led255_i_qtdcomp?>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <?php db_input('ed255_i_qtdcomp',4,@$Ied255_i_qtdcomp,true,'text',$db_opcao,"")?>
+        <?db_input('ed255_i_qtdcomp',4,@$Ied255_i_qtdcomp,true,'text',$db_opcao,"")?>
         <br>
         <?=$Led255_i_qtdcompadm?>
-        <?php db_input('ed255_i_qtdcompadm',4,@$Ied255_i_qtdcompadm,true,'text',$db_opcao," onchange='js_qtdcomp(this.value,this,document.form1.ed255_i_qtdcompalu.value);'")?>
+        <?db_input('ed255_i_qtdcompadm',4,@$Ied255_i_qtdcompadm,true,'text',$db_opcao," onchange='js_qtdcomp(this.value,this,document.form1.ed255_i_qtdcompalu.value);'")?>
         <br>
         <?=$Led255_i_qtdcompalu?>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <?php db_input('ed255_i_qtdcompalu',4,@$Ied255_i_qtdcompalu,true,'text',$db_opcao," onchange='js_qtdcomp(this.value,this,document.form1.ed255_i_qtdcompadm.value);'")?>
+        <?db_input('ed255_i_qtdcompalu',4,@$Ied255_i_qtdcompalu,true,'text',$db_opcao," onchange='js_qtdcomp(this.value,this,document.form1.ed255_i_qtdcompadm.value);'")?>
         <br>
         <?=$Led255_i_internet?>
         <input type="radio" name="ed255_i_internet" value="0" onclick='js_internet(this.value);' <?=@$ed255_i_internet=="0"?"checked":""?>> Não
         <input type="radio" name="ed255_i_internet" value="1" onclick='js_internet(this.value);' <?=@$ed255_i_internet=="1"?"checked":""?>> Sim
-        <?php 
+        <?
         if(isset($ed255_i_internet) && $ed255_i_internet==1){
          $visible2 = "visible";
         }else{
@@ -242,7 +242,7 @@ $clrotulo = new rotulocampo;
      <tr>
       <td><?=$Led255_i_aguafiltrada?></td>
       <td>
-       <?php 
+       <?
        $x = ['1'=>'NÃO FILTRADA','2'=>'FILTRADA'];
        db_select('ed255_i_aguafiltrada',$x,true,$db_opcao," style='height:15px;font-size:10px;'");
        ?>
@@ -251,7 +251,7 @@ $clrotulo = new rotulocampo;
      <tr>
       <td><?=$Led255_i_alimentacao?></td>
       <td>
-       <?php 
+       <?
        $x = ['1'=>'OFERECE','0'=>'NÃO OFERECE'];
        db_select('ed255_i_alimentacao',$x,true,$db_opcao," style='height:15px;font-size:10px;'");
        ?>
@@ -260,19 +260,19 @@ $clrotulo = new rotulocampo;
      <tr>
       <td><?=$Led255_i_salaexistente?></td>
       <td>
-       <?php db_input('ed255_i_salaexistente',4,@$Ied255_i_salaexistente,true,'text',$db_opcao," onchange='js_sala();'")?>
+       <?db_input('ed255_i_salaexistente',4,@$Ied255_i_salaexistente,true,'text',$db_opcao," onchange='js_sala();'")?>
       </td>
      </tr>
      <tr>
       <td><?=$Led255_i_salautilizada?></td>
       <td>
-       <?php db_input('ed255_i_salautilizada',4,@$Ied255_i_salautilizada,true,'text',$db_opcao,"")?>
+       <?db_input('ed255_i_salautilizada',4,@$Ied255_i_salautilizada,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
       <td><?=$Led255_i_ativcomplementar?></td>
       <td>
-       <?php 
+       <?
        $x = ['0'=>'NÃO OFERECE','1'=>'NÃO EXCLUSIVAMENTE','2'=>'EXCLUSIVAMENTE'];
        db_select('ed255_i_ativcomplementar',$x,true,$db_opcao," onchange='js_ativcomp(this.value)'; style='height:15px;font-size:10px;'");
        ?>
@@ -281,7 +281,7 @@ $clrotulo = new rotulocampo;
      <tr>
       <td><?=$Led255_i_aee?></td>
       <td>
-       <?php 
+       <?
        $x = ['0'=>'NÃO OFERECE','1'=>'NÃO EXCLUSIVAMENTE','2'=>'EXCLUSIVAMENTE'];
        db_select('ed255_i_aee',$x,true,$db_opcao," onchange='js_aee(this.value)'; style='height:15px;font-size:10px;'");
        ?>
@@ -290,7 +290,7 @@ $clrotulo = new rotulocampo;
      <tr>
       <td><?=$Led255_i_efciclos?></td>
       <td>
-       <?php 
+       <?
        $x = ['0'=>'NÃO','1'=>'SIM'];
        db_select('ed255_i_efciclos',$x,true,$db_opcao," style='height:15px;font-size:10px;'");
        ?>

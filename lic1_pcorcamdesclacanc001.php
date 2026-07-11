@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -67,7 +67,7 @@ if (isset($coditens) && trim($coditens) != ""){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -75,7 +75,7 @@ if (isset($coditens) && trim($coditens) != ""){
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -90,7 +90,7 @@ if (isset($coditens) && trim($coditens) != ""){
   <table border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td nowrap align="center" valign="top">
-  <fieldset><Legend align="center"><b>&nbsp;&nbsp;Itens da Licitacao N<?php  echo chr(176)." ".$l20_codigo; ?>&nbsp;&nbsp;</b></Legend>
+  <fieldset><Legend align="center"><b>&nbsp;&nbsp;Itens da Licitacao N<? echo chr(176)." ".$l20_codigo; ?>&nbsp;&nbsp;</b></Legend>
     <table  border="0" width="700">
          <tr class="bordas" nowrap>
            <td class="bordas" nowrap align="center"><a href="#" onClick="js_marcar_lote(0,'TODOS');">M</a></td>
@@ -98,7 +98,7 @@ if (isset($coditens) && trim($coditens) != ""){
            <td class="bordas" nowrap><b>Descricao do Material</b></td>
            <td class="bordas" nowrap><b>Lote</b></td>
          </tr>
-<?php 
+<?
    $campos         = "distinct pc32_orcamitem,pc01_descrmater,l04_descricao";
    $sql            = $clpcorcamdescla->sql_query_descla_lote(null,null,$campos,"l04_descricao,pc32_orcamitem","orc.pc20_codorc = $pc20_codorc");
    $res_descla     = $clpcorcamdescla->sql_record($sql);
@@ -109,13 +109,13 @@ if (isset($coditens) && trim($coditens) != ""){
 ?>
          <tr class="bordas_corp" nowrap>
            <td class="bordas_corp" nowrap align="center">
-              <input name="chk_<?=$i?>" type="checkbox" value="<?php  echo $pc32_orcamitem."_".str_replace("_","",$l04_descricao); ?>" onClick="js_marcar_lote(<?php  echo $pc32_orcamitem.",'".str_replace("_","",$l04_descricao)."'"; ?>);">
+              <input name="chk_<?=$i?>" type="checkbox" value="<? echo $pc32_orcamitem."_".str_replace("_","",$l04_descricao); ?>" onClick="js_marcar_lote(<? echo $pc32_orcamitem.",'".str_replace("_","",$l04_descricao)."'"; ?>);">
            </td>
            <td class="bordas_corp" nowrap align="center"><?=$pc32_orcamitem?></td>
            <td class="bordas_corp" nowrap><?=$pc01_descrmater?></td>
            <td class="bordas_corp" nowrap><?=$l04_descricao?></td>
          </tr>
-<?php 
+<?
    }
 
    if ($numrows_descla == 0){
@@ -133,7 +133,7 @@ if (isset($coditens) && trim($coditens) != ""){
         </tr>
        </table>
       </form>
-<?php 
+<?
    if (trim(@$erro_msg) != ""){
         db_msgbox($erro_msg);
    }

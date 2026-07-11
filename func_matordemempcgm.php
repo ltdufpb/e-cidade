@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -71,7 +71,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm51_codordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m51_codordem",10,$Im51_codordem,true,"text",4,"");
 		       ?>
             </td>
@@ -81,7 +81,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm51_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
               db_inputdata('m51_data',@$m51_data_dia,@$m51_data_mes,@$m51_data_ano,true,'text',"");
 		       ?>
             </td>
@@ -91,7 +91,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm51_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m51_numcgm",10,$Im51_numcgm,true,"text",4,"");
 		       ?>
             </td>
@@ -101,7 +101,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"");
 		       ?>
             </td>
@@ -111,7 +111,7 @@ $clrotulo->label("m52_numemp");
               <strong>Empenho:</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php               
+              <?              
 		       db_input("e60_codemp",14,$e60_codemp,true,"text",4,"onKeyPress='return js_mascara(event);'","chave_e60_codemp");
 		       ?>
             </td>
@@ -120,7 +120,7 @@ $clrotulo->label("m52_numemp");
               <?=$Lm52_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m52_numemp",10,$Im52_numemp,true,"text",4,"");
 		       ?>
             </td>
@@ -139,7 +139,7 @@ $clrotulo->label("m52_numemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
       	
         if(isset($campos)==false){
@@ -198,12 +198,12 @@ $clrotulo->label("m52_numemp");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

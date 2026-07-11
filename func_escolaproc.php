@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -55,7 +55,7 @@ $clescolaproc->rotulo->label("ed82_c_nome");
       <?=$Led82_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed82_i_codigo",10,$Ied82_i_codigo,true,"text",4,"","chave_ed82_i_codigo");?>
+      <?db_input("ed82_i_codigo",10,$Ied82_i_codigo,true,"text",4,"","chave_ed82_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ $clescolaproc->rotulo->label("ed82_c_nome");
       <?=$Led82_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed82_c_nome",30,$Ied82_c_nome,true,"text",4,"","chave_ed82_c_nome");?>
+      <?db_input("ed82_c_nome",30,$Ied82_c_nome,true,"text",4,"","chave_ed82_c_nome");?>
      </td>
     </tr>
     <tr>

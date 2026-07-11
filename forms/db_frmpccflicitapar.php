@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,23 +63,23 @@ fieldset table td:first-child {
 <legend><b>Numeração</b></legend>
 <table border="0" align="left">
   <tr>
-    <td nowrap title="<?php //=@$Tl25_codigo?>">
-       <?php //=@$Ll25_codigo?>
+    <td nowrap title="<?//=@$Tl25_codigo?>">
+       <?//=@$Ll25_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('l25_codigo',6,$Il25_codigo,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?php //=@$Tl25_codcflicita?>">
-       <?php 
+    <td nowrap title="<?//=@$Tl25_codcflicita?>">
+       <?
        //db_ancora(@$Ll25_codcflicita,"js_pesquisal25_codcflicita(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('l25_codcflicita',6,$Il25_codcflicita,true,'hidden',3," onchange='js_pesquisal25_codcflicita(false);'")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('l25_codcflicita',6,$Il25_codcflicita,true,'hidden',3," onchange='js_pe
        <?=@$Ll25_anousu?>
     </td>
     <td> 
-<?php 
+<?
 
 db_input('l25_anousu',8,$Il25_anousu,true,'text',$db_opcao,"");
 ?>
@@ -100,7 +100,7 @@ db_input('l25_anousu',8,$Il25_anousu,true,'text',$db_opcao,"");
        <?=@$Ll25_numero?>
     </td>
     <td> 
-<?php 
+<?
 db_input('l25_numero',8,$Il25_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -128,7 +128,7 @@ db_input('l25_numero',8,$Il25_numero,true,'text',$db_opcao,"")
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
 	 $chavepri= array("l25_codigo"=>@$l25_codigo);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clpccflicitapar->sql_query_file(@$l25_codigo,"*",null,"l25_codcflicita=$l25_codcflicita");

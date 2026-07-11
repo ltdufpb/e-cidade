@@ -59,10 +59,12 @@ RUN a2enmod rewrite ssl proxy_fcgi setenvif && \
 RUN touch /var/log/php_errors.log && \
   chown www-data. /var/log/php_errors.log && \
   chmod 777 /var/log/php_errors.log && \
+  sed -i "s/^short_open_tag.*/short_open_tag = On/g" /etc/php/8.4/apache2/php.ini && \
   sed -i "s/^;date.timezone.*/date.timezone = \"America\/Sao_Paulo\"/g" /etc/php/8.4/apache2/php.ini && \
   sed -i "s/^session.gc_maxlifetime.*/session.gc_maxlifetime = 7200/g" /etc/php/8.4/apache2/php.ini && \
   sed -i "s/^;error_log.*/error_log = \/var\/log\/php_errors.log/" /etc/php/8.4/apache2/php.ini && \
   sed -i "s/^display_errors.*/display_errors = On/g" /etc/php/8.4/apache2/php.ini && \
+  sed -i "s/^short_open_tag.*/short_open_tag = On/g" /etc/php/8.4/cli/php.ini && \
   sed -i "s/^;date.timezone.*/date.timezone = \"America\/Sao_Paulo\"/g" /etc/php/8.4/cli/php.ini && \
   sed -i "s/^session.gc_maxlifetime.*/session.gc_maxlifetime = 7200/g" /etc/php/8.4/cli/php.ini && \
   sed -i "s/^;error_log.*/error_log = \/var\/log\/php_errors.log/" /etc/php/8.4/cli/php.ini

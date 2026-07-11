@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrotulo->label("me12_d_data");
       <?=$Lme01_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
+      <?db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $clrotulo->label("me12_d_data");
       <?=$Lme12_d_data?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_inputdata('me12_d_data',@$me12_d_data_dia,@$me12_d_data_mes,@$me12_d_data_ano,true,'text',4,"")?>
+      <?db_inputdata('me12_d_data',@$me12_d_data_dia,@$me12_d_data_mes,@$me12_d_data_ano,true,'text',4,"")?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $clrotulo->label("me12_d_data");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $escola     = db_getsession("DB_coddepto");
    $dataatual  = date("Y-m-d",db_getsession("DB_datausu"));
    $horaatual  = date("H:i");

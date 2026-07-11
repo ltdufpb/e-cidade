@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsau_requisitos->rotulo->label("s107_c_requisito");
               <?=$Ls107_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("s107_i_codigo",10,$Is107_i_codigo,true,"text",4,"","chave_s107_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsau_requisitos->rotulo->label("s107_c_requisito");
               <?=$Ls107_c_requisito?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("s107_c_requisito",25,$Is107_c_requisito,true,"text",4,"","chave_s107_c_requisito");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clsau_requisitos->rotulo->label("s107_c_requisito");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_requisitos.php")==true){
@@ -123,12 +123,12 @@ $clsau_requisitos->rotulo->label("s107_c_requisito");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

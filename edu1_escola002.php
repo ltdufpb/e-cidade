@@ -250,7 +250,7 @@ if( isset( $incluir ) ) {
   <meta http-equiv="Expires" CONTENT="0">
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <script language="JavaScript" type="text/javascript" src="scripts/numbers.js"></script>
-<?php 
+<?
   db_app::load('prototype.js');
 ?>
 <link href="estilos.css" rel="stylesheet" type="text/css">
@@ -306,7 +306,7 @@ if( isset( $incluir ) ) {
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href = 'edu1_escoladiretor001.php?ed254_i_escola=<?=$ed18_i_codigo?>&ed18_c_nome=<?=$ed18_c_nome?>';
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href = 'edu1_horariosescola001.php?ed17_i_escola=<?=$ed18_i_codigo?>&descrdepto=<?=$ed18_c_nome?>';
     </script>
-    <?php 
+    <?
     $clescola->erro( true, true );
   }
 }

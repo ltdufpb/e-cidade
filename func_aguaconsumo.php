@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claguaconsumo->rotulo->label("x19_descr");
               <?=$Lx19_codconsumo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x19_codconsumo",5,$Ix19_codconsumo,true,"text",4,"","chave_x19_codconsumo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claguaconsumo->rotulo->label("x19_descr");
               <?=$Lx19_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x19_descr",40,$Ix19_descr,true,"text",4,"","chave_x19_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $claguaconsumo->rotulo->label("x19_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguaconsumo.php")==true){
@@ -119,12 +119,12 @@ $claguaconsumo->rotulo->label("x19_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

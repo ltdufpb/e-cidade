@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clrotulo->label('v15_observacao');
 ?>
 <html>
 <head>
-  <?php  
+  <? 
     db_app::load('scripts.js, estilos.css');
   ?>
   <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
@@ -53,13 +53,13 @@ $clrotulo->label('v15_observacao');
     <table class="form-container">
       <tr>
         <td title="<?=$Tv13_certid?>">        
-          <?php 
+          <?
             db_ancora("Certidão:","js_pesquisa_certid_ini(true);",1); 
           ?>        
         </td>
         <td>
           <strong>
-          <?php 
+          <?
             db_input("v13_certidini",6,$Iv13_certid,true,"text",4,"onchange='js_pesquisa_certid_ini(false);'");
 
             db_ancora("até","js_pesquisa_certid_fim(true);",1);

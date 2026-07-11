@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -223,13 +223,13 @@ if(isset($chavepesquisa) || isset($e50_codord)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-  <?php if(isset($agendado)){?>
+  <?if(isset($agendado)){?>
      <tr><td>&nbsp;</td></tr>
-  <?php }?>  
+  <?}?>  
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmpagordem.php"));
 	?>
     </center>
@@ -238,7 +238,7 @@ if(isset($chavepesquisa) || isset($e50_codord)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($anular)){
     db_msgbox($erro_msg);
     if($clpagordem->erro_campo!=""){

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,7 +49,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 
 ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -75,7 +75,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
       <table border="0">
 	  <tr>
 	    <td nowrap align="right" title="<?=@$Tm51_data?>"><b>Data:</b></td>
-	    <td><?php if(empty($m51_data_dia)){
+	    <td><?if(empty($m51_data_dia)){
 		  $m51_data_dia =  date("d",db_getsession("DB_datausu"));
 		  $m51_data_mes =  date("m",db_getsession("DB_datausu"));
 		  $m51_data_ano =  date("Y",db_getsession("DB_datausu"));
@@ -83,13 +83,13 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 		db_inputdata('m51_data',@$m51_data_dia,@$m51_data_mes,@$m51_data_ano,true,'text',3);?>
 	    </td>
 	    <td nowrap align="right" title="<?=@$Tm51_prazoent?>"><?=@$Lm51_prazoent?></td>
-	    <td><?php db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
+	    <td><?db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
 	  <tr>
-	    <td nowrap align="right" title="<?=@$descrdepto?>"><?php db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
-	    <td><?php db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
+	    <td nowrap align="right" title="<?=@$descrdepto?>"><?db_ancora(@$Lcoddepto,"js_coddepto(true);",1);?></td>
+	    <td><?db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
 		  db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');?>
 	    </td>
-				<?php 
+				<?
          $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit")));
          if ($clpcparam->numrows > 0) {
 	           db_fieldsmemory($result_pcparam, 0);
@@ -106,7 +106,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 
               <td align="right"><input id='manda_email' name="manda_mail" type="checkbox" value="X"></td>
               <td nowrap><label for='manda_email'><b>Mandar e-mail para o fornecedor.</b></label></td>         
-           <?php //end if parametro
+           <?//end if parametro
 								}
 							}
 				?>		 
@@ -114,7 +114,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 	  <tr> 
 	  <td align='right'><b>Obs:</b></td>
 	    <td colspan='3' align='left'>
-	   <?php  
+	   <? 
 	   db_textarea("m51_obs","","110",$Im51_obs,true,'text',1);	 
 	   ?>
 	    </td>
@@ -147,7 +147,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
     </tr>
       <tr>
        <td align='center' valign='top' colspan='1'>
-       <?php      
+       <?     
        //if($pesqemp=='true'){     	
        ?>  
 	<table>
@@ -157,14 +157,14 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
          </td>
         </tr>
       </table>
-     <?php 
+     <?
      //}
      ?>  
     </td>
   </tr>
  </table>
 </center>
-<?php 
+<?
 db_input("valores",100,0,true,"hidden",3);
 db_input("val",100,0,true,"hidden",3);
 db_input("emitir",10,0,true,"hidden",3);

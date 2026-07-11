@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcfautentconta->rotulo->label("k16_conta");
               <?=$Lk16_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k16_id",5,$Ik16_id,true,"text",4,"","chave_k16_id");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcfautentconta->rotulo->label("k16_conta");
               <?=$Lk16_conta?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k16_conta",5,$Ik16_conta,true,"text",4,"","chave_k16_conta");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcfautentconta->rotulo->label("k16_conta");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cfautentconta.php")==true){
@@ -123,12 +123,12 @@ $clcfautentconta->rotulo->label("k16_conta");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clbenscadlote->rotulo->label("t42_codigo");
               <?=$Lt42_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t42_codigo",6,$It42_codigo,true,"text",4,"","chave_t42_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clbenscadlote->rotulo->label("t42_codigo");
               <?=$Lt42_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t42_codigo",6,$It42_codigo,true,"text",4,"","chave_t42_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clbenscadlote->rotulo->label("t42_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benscadlote.php")==true){
@@ -123,12 +123,12 @@ $clbenscadlote->rotulo->label("t42_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

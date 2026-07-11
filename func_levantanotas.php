@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllevantanotas->rotulo->label("y79_documento");
               <?=$Ly79_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y79_codigo",10,$Iy79_codigo,true,"text",4,"","chave_y79_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllevantanotas->rotulo->label("y79_documento");
               <?=$Ly79_documento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y79_documento",20,$Iy79_documento,true,"text",4,"","chave_y79_documento");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllevantanotas->rotulo->label("y79_documento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_levantanotas.php")==true){
@@ -119,12 +119,12 @@ $cllevantanotas->rotulo->label("y79_documento");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

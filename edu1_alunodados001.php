@@ -452,7 +452,7 @@ if( isset( $incluir ) ) {
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Aluno</b></legend>
-    <?php include(modification("forms/db_frmalunodados.php"));?>
+    <?include(modification("forms/db_frmalunodados.php"));?>
    </fieldset>
    </center>
   </td>

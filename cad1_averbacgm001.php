@@ -168,7 +168,7 @@ if(isset($incluir)){
 
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
     if($claverbacgm->erro_campo!=""){

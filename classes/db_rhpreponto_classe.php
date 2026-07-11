@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhpreponto
 class cl_rhpreponto { 

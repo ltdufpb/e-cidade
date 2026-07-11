@@ -56,7 +56,7 @@ $clrotulo->label("ed18_i_escola");
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 <div class="container">
-  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 
   <form >
     <fieldset>

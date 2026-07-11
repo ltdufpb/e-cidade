@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clpactoatividade->rotulo->label();
        <?=@$Lo104_sequencial?>
     </td>
     <td> 
-<?php 
+<?
 db_input('o104_sequencial',10,$Io104_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o104_sequencial',10,$Io104_sequencial,true,'text',3,"")
        <?=@$Lo104_descricao?>
     </td>
     <td> 
-<?php 
+<?
 db_input('o104_descricao',50,$Io104_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pactoatividade.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

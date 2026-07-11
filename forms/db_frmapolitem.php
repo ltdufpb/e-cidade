@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,22 +57,22 @@ if(isset($db_opcaoal)){
        <?=@$Lt82_codapo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('t82_codapo',8,$It82_codapo,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt82_codbem?>">
-       <?php 
+       <?
        db_ancora(@$Lt82_codbem,"js_pesquisat82_codbem(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('t82_codbem',8,$It82_codbem,true,'text',$db_opcao," onchange='js_pesquisat82_codbem(false);'")
 ?>
-<?php 
+<?
 db_input('t52_descr',40,$It52_descr,true,'text',3);
 ?>
     </td>
@@ -87,7 +87,7 @@ db_input('t52_descr',40,$It52_descr,true,'text',3);
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
 	 $chavepri= array("t82_codapo"=>@$t82_codapo,"t82_codbem"=>@$t82_codbem);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clapolitem->sql_query_file($t82_codapo);

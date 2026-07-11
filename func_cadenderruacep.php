@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcadenderruacep->rotulo->label("db86_cep");
               <?=$Ldb86_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db86_sequencial",10,$Idb86_sequencial,true,"text",4,"","chave_db86_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcadenderruacep->rotulo->label("db86_cep");
               <?=$Ldb86_cep?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db86_cep",10,$Idb86_cep,true,"text",4,"","chave_db86_cep");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcadenderruacep->rotulo->label("db86_cep");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadenderruacep.php")==true){
@@ -123,12 +123,12 @@ $clcadenderruacep->rotulo->label("db86_cep");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

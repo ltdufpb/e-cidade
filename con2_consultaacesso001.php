@@ -115,7 +115,7 @@ $sDBHintMetadata  = "db-action='hint' db-hint-text='O filtro de período deve est
 
           <TR>
             <td>
-             <?php  db_ancora ( $Lnome, "js_pesquisaUsuarios(true)", 1 )?>
+             <? db_ancora ( $Lnome, "js_pesquisaUsuarios(true)", 1 )?>
             </td>
             <td colspan="2">
             <?php
@@ -135,7 +135,7 @@ $sDBHintMetadata  = "db-action='hint' db-hint-text='O filtro de período deve est
 
           <TR>
             <td>
-             <?php  db_ancora ("<b>Item de Menu:</b>", "js_pesquisaMenus(true)", 1 )?>
+             <? db_ancora ("<b>Item de Menu:</b>", "js_pesquisaMenus(true)", 1 )?>
             </td>
             <td colspan="2">
             <?php

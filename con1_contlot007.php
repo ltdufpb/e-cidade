@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -202,7 +202,7 @@ db_inicio_transacao();
   <meta http-equiv="Expires" CONTENT="0">
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <script>
-<?php 
+<?
    echo "parent.document.form1.conface.style.visibility='hidden';\n";
   if($desabilita=="true"){
      echo" parent.document.form1.confirma.disabled=true;
@@ -290,13 +290,13 @@ db_inicio_transacao();
   <input name="contri" type="hidden" value="<?=(isset($contri)?$contri:$numcontri)?>">
   <input name="confirma" type="hidden">
   <table border="0">
-<?php 
+<?
            if($GLOBALS["desabilita"]=="true"){
 			echo "  <b>*<small> As matrículas dos lotes já foram processadas, portanto não será possível alteração.</small></b>";
 	     }
 ?>	     
     <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
-  <?php 
+  <?
   if(isset($contri)){
    $result07=$cleditalrua->sql_record($cleditalrua->sql_query_file($contri,"d02_codedi as codiedi"));    
    db_fieldsmemory($result07,0); 
@@ -324,7 +324,7 @@ db_inicio_transacao();
   </table>
   </body>
 </html>
-<?php 
+<?
 if(isset($confirma) && $confirma=="ok"){
   if($clcontlot->erro_status=="0"||$clcontlotv->erro_status=="0"){
      $clcontlot->erro(true,false);

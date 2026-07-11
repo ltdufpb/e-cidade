@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -63,7 +63,7 @@ $sAnd   = "";
               <?=$Lac10_acordo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		            db_input("ac10_acordo",10,$Iac10_acordo,true,"text",4,"","chave_ac10_acordo");
 		          ?>
             </td>
@@ -81,7 +81,7 @@ $sAnd   = "";
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       /**
        * Parametros para os tipos de movimentos homologados
        *
@@ -214,12 +214,12 @@ $sAnd   = "";
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -95,7 +95,7 @@ if (!isset($ed52_i_ano)) {
     </style>
 </head>
 <body bgcolor="#CCCCCC" style="margin-top: 25px">
-<?php  MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
+<? MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
 <form name="form1" method="post" action="" class="container">
 
     <fieldset>

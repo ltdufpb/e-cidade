@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $oDaoTfdTipoTratamentoProced->rotulo->label("tf05_i_codigo");
               <?=$Ltf05_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		          db_input("tf05_i_codigo",10,$Itf05_i_codigo,true,"text",4,'',"chave_tf05_i_codigo");
 		          ?>
             </td>
@@ -69,7 +69,7 @@ $oDaoTfdTipoTratamentoProced->rotulo->label("tf05_i_codigo");
               <?=$Lsd63_c_procedimento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		          db_input("sd63_c_procedimento",10,$Isd63_c_procedimento,true,"text",4,'',"chave_sd63_c_procedimento");
 		          ?>
             </td>
@@ -80,7 +80,7 @@ $oDaoTfdTipoTratamentoProced->rotulo->label("tf05_i_codigo");
               <?=$Lsd63_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		          db_input("sd63_c_nome",50,$Isd63_c_nome,true,"text",4,'',"chave_sd63_c_nome");
 		          ?>
             </td>
@@ -97,7 +97,7 @@ $oDaoTfdTipoTratamentoProced->rotulo->label("tf05_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $sWhere     = '';
       $sSep       = '';
       $sTipoQuery = 'sql_query2';
@@ -203,12 +203,12 @@ $oDaoTfdTipoTratamentoProced->rotulo->label("tf05_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

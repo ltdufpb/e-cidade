@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ if ($clbiblioteca->numrows != 0) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?php 
+<?
 if (isset($valor)) {
   
   if ($data_ini != "--" && $data_fim != "--") {
@@ -88,11 +88,11 @@ if (isset($valor)) {
           <b>Consulta de Empréstimos por Leitor <?=$titulo?></b>
         </td>
         <td colspan="3" align="right">
-         <?php if ($todos == "false" && $linhas != 0) {?>
+         <?if ($todos == "false" && $linhas != 0) {?>
              <input type="checkbox" name="todos" value="true" onclick="js_vertodos()">Ver todos empréstimos
-         <?php } else if ($todos == "true" && $linhas != 0) {?>
+         <?} else if ($todos == "true" && $linhas != 0) {?>
              <input type="checkbox" name="todos" value="false" checked onclick="js_vertodos()">Ocultar empréstimos
-         <?php }?>
+         <?}?>
         </td>
       </tr>
       <tr bgcolor="#999999">
@@ -102,7 +102,7 @@ if (isset($valor)) {
         <td align="center"><b>Categoria</b></td>
         <td align="center"><b>Empréstimos</b></td>
       </tr>
-      <?php 
+      <?
         $cor1 = "#ababab";
         $cor2 = "#f3f3f3";
         $cor  = $cor1;
@@ -125,7 +125,7 @@ if (isset($valor)) {
               <td align="center"><?=$bi07_nome?></td>
               <td align="center"><?=$count?></td>
             </tr>
-            <?php if ($todos == "true") {
+            <?if ($todos == "true") {
               
                 if ($data_ini != "--" && $data_fim != "--") {
                   $where2 = " and bi18_retirada between '$data_ini' and '$data_fim' ";
@@ -156,7 +156,7 @@ if (isset($valor)) {
                     <td align="center"><b>Devolvido em:</b></td>
                   </tr>
                   <tr><td colspan="5" height="1" bgcolor="#CCCCCC"></td></tr>
-                  <?php 
+                  <?
                   $cor3  = "#DEB887";
                   $cor4  = "#FFE0C1";
                   $cor_e = $cor3;
@@ -177,33 +177,33 @@ if (isset($valor)) {
                       <td align="center"><?=db_formatar($bi18_devolucao,'d')?></td>
                       <td align="center">
                         <b>
-                        <?php if ($bi21_entrega == "") {?>
+                        <?if ($bi21_entrega == "") {?>
                             <!-- No Location a variavel bi18_leitor foi trocada por bi18_carteira por que o codigo utilizado na rotina de devolucao é o codigo da carteira guilherme 19/06-->
                             <a title="Devolver Empréstimo" 
                                href="javascript:parent.location.href='bib1_devolucao001.php?bi18_carteira=<?=$bi16_codigo?>
                                                                                            &z01_nome=<?=$z01_nome?>'">
                               <font color='red'>Não devolvido</font>
                             </a>
-                        <?php } else {?>
+                        <?} else {?>
                             <font color='green'><?=db_formatar($bi21_entrega,'d')?></font>
-                        <?php }?>
+                        <?}?>
                         </b>
                       </td>
                     </tr>
-                  <?php }?>
+                  <?}?>
                 </table>
               </td>
             </tr>
-        <?php }?>
-      <?php }?>
+        <?}?>
+      <?}?>
     <table>
   </form>
-  <?php } else {?>
+  <?} else {?>
     <tr>
       <td colspan="6" align="center">Nenhum empréstimo para este período ou para este leitor.</td>
     </tr>
     </table>
-   <?php }
+   <?}
   } else {
     echo "<div align='center'><br>Digite o período, escolha o leitor e clique em pesquisar</div>";
   }
@@ -212,7 +212,7 @@ if (isset($valor)) {
 <script>
 function js_vertodos() {
   
-  <?php $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor."&data_ini=".@$data_ini."&data_fim=".@$data_fim;?>
+  <?$pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor."&data_ini=".@$data_ini."&data_fim=".@$data_fim;?>
   location.href = "<?=$pagina?>&todos="+document.form2.todos.value;
 }
 </script>

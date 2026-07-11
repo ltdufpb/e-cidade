@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clfamilia->rotulo->label("sd33_v_descricao");
               <?=$Lsd33_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd33_i_codigo",10,$Isd33_i_codigo,true,"text",4,"","chave_sd33_i_codigo");
                  ?>
             </td>
@@ -66,7 +66,7 @@ $clfamilia->rotulo->label("sd33_v_descricao");
               <?=$Lsd33_v_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd33_v_descricao",60,$Isd33_v_descricao,true,"text",4,"","chave_sd33_v_descricao");
                  ?>
             </td>
@@ -84,7 +84,7 @@ $clfamilia->rotulo->label("sd33_v_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_familia.php")==true){
@@ -124,12 +124,12 @@ $clfamilia->rotulo->label("sd33_v_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

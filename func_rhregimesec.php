@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhregime->rotulo->label("rh30_descr");
             <?=$Lrh30_codreg?>
           </td>
           <td width="96%" align="left" nowrap> 
-            <?php db_input("rh30_codreg",2,$Irh30_codreg,true,"text",4,"","chave_rh30_codreg");?>
+            <?db_input("rh30_codreg",2,$Irh30_codreg,true,"text",4,"","chave_rh30_codreg");?>
           </td>
         </tr>
         <tr> 
@@ -63,7 +63,7 @@ $clrhregime->rotulo->label("rh30_descr");
             <?=$Lrh30_descr?>
           </td>
           <td width="96%" align="left" nowrap> 
-            <?php db_input("rh30_descr",40,$Irh30_descr,true,"text",4,"","chave_rh30_descr");?>
+            <?db_input("rh30_descr",40,$Irh30_descr,true,"text",4,"","chave_rh30_descr");?>
           </td>
         </tr>
         <tr> 
@@ -79,7 +79,7 @@ $clrhregime->rotulo->label("rh30_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $db_where = " rh30_utilizacao in (3) AND rh30_instit = ".db_getsession("DB_instit");
       if (!isset($pesquisa_chave)) {
 

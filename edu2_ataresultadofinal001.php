@@ -185,7 +185,7 @@ $oRotulo->label("z01_nome");
                             ?>
                             <select name="diretor" id="diretor" style="width:330px;">
                                 <option value="">Selecione o Diretor(a)</option>
-                                <?php 
+                                <?
                                 for ($iCont = 0; $iCont < $iLinhasDiretor; $iCont++) {
 
                                     $oDadosDiretor = db_utils::fieldsmemory($rsDiretor, $iCont);
@@ -203,7 +203,7 @@ $oRotulo->label("z01_nome");
                     <tr>
                         <td style="width: 150px;"><label for="secretario">Secretário:</label></td>
                         <td>
-                            <?php 
+                            <?
                             $oDaoRechumanoAtiv = db_utils::getdao('rechumanoativ');
 
                             $sCamposSec = " DISTINCT ed01_c_descr as funcao, ";
@@ -219,7 +219,7 @@ $oRotulo->label("z01_nome");
                             ?>
                             <select name="secretario" id="secretario" style="width:330px;">
                                 <option value="">Selecione o Secretário(a)</option>
-                                <?php 
+                                <?
                                 for ($iCont = 0; $iCont < $iLinhasSecretario; $iCont++) {
 
                                     $oDadosSec = db_utils::fieldsmemory($rsSecretario, $iCont);
@@ -362,7 +362,7 @@ $oRotulo->label("z01_nome");
     </form>
 </div>
 
-<?php  db_menu(db_getsession("DB_id_usuario"),
+<? db_menu(db_getsession("DB_id_usuario"),
     db_getsession("DB_modulo"),
     db_getsession("DB_anousu"),
     db_getsession("DB_instit")

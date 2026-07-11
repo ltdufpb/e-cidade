@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clsalas->rotulo->label("ed08_f_nota");
               <?=$Led08_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed08_i_codigo",5,$Ied08_i_codigo,true,"text",4,"","chave_ed08_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $clsalas->rotulo->label("ed08_f_nota");
               <?=$Led08_f_nota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed08_f_nota",3,$Ied08_f_nota,true,"text",4,"","chave_ed08_f_nota");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $clsalas->rotulo->label("ed08_f_nota");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_salas.php")==true){
@@ -121,12 +121,12 @@ $clsalas->rotulo->label("ed08_f_nota");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $codescola = db_getsession("DB_coddepto");
       <?=$Lme03_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me03_i_codigo",5,$Ime03_i_codigo,true,"text",4,"","chave_me03_i_codigo");?>
+      <?db_input("me03_i_codigo",5,$Ime03_i_codigo,true,"text",4,"","chave_me03_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $codescola = db_getsession("DB_coddepto");
       <?=$Lme03_c_tipo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me03_c_tipo",20,@$Ime03_c_tipo,true,"text",4,"","chave_me03_c_tipo");?>
+      <?db_input("me03_c_tipo",20,@$Ime03_c_tipo,true,"text",4,"","chave_me03_c_tipo");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $codescola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if (!isset($pesquisa_chave)) {
    	
     if (isset($campos)==false) {

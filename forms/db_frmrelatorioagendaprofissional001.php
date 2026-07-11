@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -65,37 +65,37 @@ $clrotulo->label("s165_formatocomprovanteagend");
                     <!-- PROFISSIONAL -->
                     <tr>
                       <td nowrap title="<?=@$Tsd03_i_codigo?>" >
-                        <?php  db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao); ?>
+                        <? db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao); ?>
                       </td>
                       <td>
-                        <?php  db_input('sd02_i_codigo',10,$Isd02_i_codigo,true,'hidden',$db_opcao,"");
+                        <? db_input('sd02_i_codigo',10,$Isd02_i_codigo,true,'hidden',$db_opcao,"");
                            db_input('s165_formatocomprovanteagend',10,$Is165_formatocomprovanteagend,true,'hidden',$db_opcao,"");
                            db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false);' onFocus=\"nextfield='rh70_estrutural'\"");?>
                       </td>
                       <td colspan="2">
-                        <?php  db_input('z01_nome',49,$Iz01_nome,true,'text',3,''); ?>
+                        <? db_input('z01_nome',49,$Iz01_nome,true,'text',3,''); ?>
                       </td>
                     </tr>
                     <!-- CBO -->
                     <tr>
                       <td nowrap title="<?=@$Tsd04_i_cbo?>">
-                        <?php  db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao); ?>
+                        <? db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao); ?>
                       </td>
                       <td>
-                        <?php 
+                        <?
                           db_input('sd27_i_codigo',10,$Isd27_i_codigo,true,'hidden',$db_opcao,"");
                           db_input('rh70_sequencial',10,$Irh70_sequencial,true,'hidden',$db_opcao,"");
                           db_input('rh70_estrutural',10,$Irh70_estrutural,true,'text',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);' onFocus=\"nextfield='sd23_d_consulta'\"");
                         ?>
                       </td>
                       <td colspan="2">
-                        <?php  db_input('rh70_descr',49,$Irh70_descr,true,'text',3,''); ?>
+                        <? db_input('rh70_descr',49,$Irh70_descr,true,'text',3,''); ?>
                       </td>
                     </tr>
                     <tr>
                       <td nowrap title="<?=@$Tsd23_d_consulta?>"><?=@$Lsd23_d_consulta?></td>
                       <td>
-                        <?php  db_inputdatasaude( 'document.form1.sd27_i_codigo.value',
+                        <? db_inputdatasaude( 'document.form1.sd27_i_codigo.value',
                                               'sd23_d_consulta',
                                               @$sd23_d_consulta_dia,
                                               @$sd23_d_consulta_mes,
@@ -115,7 +115,7 @@ $clrotulo->label("s165_formatocomprovanteagend");
                                               ); ?>
                       </td>
                       <td colspan="2">
-                        <?php 
+                        <?
                           db_input('diasemana',49,@$diasemana,true,'text',3,'');
                           db_input('dia',10,@$dia,true,'hidden',3,'');
                         ?>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clfiscarquivos->rotulo->label("y26_idparag");
               <?=$Ly26_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y26_codnoti",20,$Iy26_codnoti,true,"text",4,"","chave_y26_codnoti");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clfiscarquivos->rotulo->label("y26_idparag");
               <?=$Ly26_idparag?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y26_idparag",8,$Iy26_idparag,true,"text",4,"","chave_y26_idparag");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clfiscarquivos->rotulo->label("y26_idparag");
               <?=$Ly26_idparag?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y26_idparag",8,$Iy26_idparag,true,"text",4,"","chave_y26_idparag");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clfiscarquivos->rotulo->label("y26_idparag");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscarquivos.php")==true){
@@ -130,12 +130,12 @@ $clfiscarquivos->rotulo->label("y26_idparag");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

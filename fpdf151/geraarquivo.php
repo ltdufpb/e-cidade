@@ -1,4 +1,4 @@
-<?php 
+<?
 
 $pdf->Output();
 

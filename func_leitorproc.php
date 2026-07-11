@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $clcidadao->rotulo->label("ov02_nome");
       <b>Carteira:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
+      <?db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
      </td>
     </tr>
     <tr>
@@ -70,7 +70,7 @@ $clcidadao->rotulo->label("ov02_nome");
       <?=$Lov02_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ov02_nome", 40, $Iov02_nome, true, "text", 4, "", "chave_ov02_nome");?>
+      <?db_input("ov02_nome", 40, $Iov02_nome, true, "text", 4, "", "chave_ov02_nome");?>
      </td>
     </tr>
     <tr>
@@ -86,7 +86,7 @@ $clcidadao->rotulo->label("ov02_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $depto = db_getsession("DB_coddepto");
 
    $sSqlWhere = " AND bi16_valida = 'S' ";

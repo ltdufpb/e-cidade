@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clceplogradouros->rotulo->label("cp06_codlogradouro");
               <?=$Lcp06_codlogradouro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("cp06_codlogradouro",10,$Icp06_codlogradouro,true,"text",4,"","chave_cp06_codlogradouro");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $clceplogradouros->rotulo->label("cp06_codlogradouro");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ceplogradouros.php")==true){
@@ -111,12 +111,12 @@ $clceplogradouros->rotulo->label("cp06_codlogradouro");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

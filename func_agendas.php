@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clagendas->rotulo->label("ed17_c_status");
               <?=$Led17_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed17_i_codigo",10,$Ied17_i_codigo,true,"text",4,"","chave_ed17_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $clagendas->rotulo->label("ed17_c_status");
               <?=$Led17_c_status?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed17_c_status",20,$Ied17_c_status,true,"text",4,"","chave_ed17_c_status");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $clagendas->rotulo->label("ed17_c_status");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_agendas.php")==true){
@@ -121,12 +121,12 @@ $clagendas->rotulo->label("ed17_c_status");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

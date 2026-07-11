@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clempagemovret->rotulo->label("e77_dataret");
               <?=$Le77_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e77_codmov",6,$Ie77_codmov,true,"text",4,"","chave_e77_codmov");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clempagemovret->rotulo->label("e77_dataret");
               <?=$Le77_codgera?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e77_codgera",6,$Ie77_codgera,true,"text",4,"","chave_e77_codgera");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clempagemovret->rotulo->label("e77_dataret");
               <?=$Le77_dataret?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e77_dataret",10,$Ie77_dataret,true,"text",4,"","chave_e77_dataret");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clempagemovret->rotulo->label("e77_dataret");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empagemovret.php")==true){
@@ -130,12 +130,12 @@ $clempagemovret->rotulo->label("e77_dataret");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -80,12 +80,12 @@ $clacordoclassificacao = new cl_acordoclassificacao;
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 

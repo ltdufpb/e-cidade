@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcidadaocomposicaofamiliar->rotulo->label("as03_cidadao");
               <?=$Las03_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as03_sequencial",10,$Ias03_sequencial,true,"text",4,"","chave_as03_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcidadaocomposicaofamiliar->rotulo->label("as03_cidadao");
               <?=$Las03_cidadao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as03_cidadao",10,$Ias03_cidadao,true,"text",4,"","chave_as03_cidadao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcidadaocomposicaofamiliar->rotulo->label("as03_cidadao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cidadaocomposicaofamiliar.php")==true){
@@ -123,12 +123,12 @@ $clcidadaocomposicaofamiliar->rotulo->label("as03_cidadao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

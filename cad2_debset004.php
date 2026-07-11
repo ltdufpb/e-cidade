@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -111,7 +111,7 @@ function js_liberaaba(){
       <table border="0">
         <tr>
           <td align="top" colspan="2">
-      <?php 
+      <?
 	if(isset($j34_setor)&& $j34_setor!=""){
 	  $cliframe_seleciona->campos  = "j37_setor,j37_quadra";
 	  $cliframe_seleciona->legenda="QUADRAS";

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,22 +41,22 @@ $clrotulo->label("db53_descr");
       <?=@$Ldb52_codigo?>
     </td>
     <td colspan="3"> 
-<?php 
+<?
 db_input('db52_codigo',8,$Idb52_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb52_layoutlinha?>">
-       <?php 
+       <?
        db_ancora(@$Ldb52_layoutlinha,"js_pesquisadb52_layoutlinha(true);",3);
        ?>
     </td>
     <td colspan="3" nowrap> 
-<?php 
+<?
 db_input('db52_layoutlinha',8,$Idb52_layoutlinha,true,'text',3," onchange='js_pesquisadb52_layoutlinha(false);'")
 ?>
-       <?php 
+       <?
 db_input('db51_descr',40,$Idb51_descr,true,'text',3,'')
        ?>
     </td>
@@ -66,7 +66,7 @@ db_input('db51_descr',40,$Idb51_descr,true,'text',3,'')
       <?=@$Ldb52_nome?>
     </td>
     <td colspan="3"> 
-<?php 
+<?
 db_input('db52_nome',51,$Idb52_nome,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -76,22 +76,22 @@ db_input('db52_nome',51,$Idb52_nome,true,'text',$db_opcao,"")
       <?=@$Ldb52_descr?>
     </td>
     <td colspan="3"> 
-<?php 
+<?
 db_input('db52_descr',51,$Idb52_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb52_layoutformat?>">
-       <?php 
+       <?
        db_ancora(@$Ldb52_layoutformat,"js_pesquisadb52_layoutformat(true);",$db_opcao);
        ?>
     </td>
     <td colspan="3" nowrap> 
-<?php 
+<?
 db_input('db52_layoutformat',8,$Idb52_layoutformat,true,'text',$db_opcao," onchange='js_pesquisadb52_layoutformat(false);'")
 ?>
-       <?php 
+       <?
 db_input('db53_descr',40,$Idb53_descr,true,'text',3,'')
        ?>
     </td>
@@ -101,7 +101,7 @@ db_input('db53_descr',40,$Idb53_descr,true,'text',3,'')
       <?=@$Ldb52_posicao?>
     </td>
     <td> 
-<?php 
+<?
 $sqlTamanho  = "select db52_posicao,db52_nome ";
 $sqlTamanho .= "  from db_layoutcampos ";      
 $sqlTamanho .= " where db52_layoutlinha = {$db52_layoutlinha}";
@@ -134,7 +134,7 @@ if ($cldb_layoutcampos->numrows > 0){
        <?=@$Ldb52_tamanho?>
     </td>
     <td> 
-<?php 
+<?
 db_input('db52_tamanho',6,$Idb52_tamanho,true,'text',$db_opcao,"");
 db_input('db52_tamanho_old',6,null,true,'hidden',$db_opcao,"");
 ?>
@@ -145,7 +145,7 @@ db_input('db52_tamanho_old',6,null,true,'hidden',$db_opcao,"");
       <?=@$Ldb52_ident?>
     </td>
     <td> 
-<?php 
+<?
 $x = array('f'=>'Não','t'=>'Sim');
 db_select('db52_ident',$x,true,$db_opcao,"");
 ?>
@@ -154,7 +154,7 @@ db_select('db52_ident',$x,true,$db_opcao,"");
       <?=@$Ldb52_imprimir?>
     </td>
     <td> 
-<?php 
+<?
 $x = array('t'=>'Sim','f'=>'Não');
 db_select('db52_imprimir',$x,true,$db_opcao,"");
 ?>
@@ -165,7 +165,7 @@ db_select('db52_imprimir',$x,true,$db_opcao,"");
       <?=@$Ldb52_default?>
     </td>
     <td colspan="3" nowrap> 
-<?php 
+<?
 db_textarea('db52_default',2,48,$Idb52_default,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -175,7 +175,7 @@ db_textarea('db52_default',2,48,$Idb52_default,true,'text',$db_opcao,"")
        <?=@$Ldb52_obs?>
     </td>
     <td colspan="3" nowrap> 
-<?php 
+<?
 db_textarea('db52_obs',2,48,$Idb52_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -185,7 +185,7 @@ db_textarea('db52_obs',2,48,$Idb52_obs,true,'text',$db_opcao,"")
        <?=@$Ldb52_alinha?>
     </td>
     <td> 
-<?php 
+<?
 $x = array('d'=>'Esquerda','e'=>'Direita');
 db_select('db52_alinha',$x,true,$db_opcao,"");
 ?>
@@ -194,7 +194,7 @@ db_select('db52_alinha',$x,true,$db_opcao,"");
        <?=@$Ldb52_quebraapos?>
     </td>
     <td> 
-<?php 
+<?
 db_input('db52_quebraapos',2,$Idb52_quebraapos,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -202,18 +202,18 @@ db_input('db52_quebraapos',2,$Idb52_quebraapos,true,'text',$db_opcao,"")
   <tr>
     <td colspan="4" align="center">
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
-      <?php if($db_opcao==1||isset($db_opcaoal)){?>
+      <?if($db_opcao==1||isset($db_opcaoal)){?>
       <input name="importar" type="button" id="importar" value="Importar campo" onclick="js_importarcampo();" >
-      <?php }else{?>
+      <?}else{?>
       <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();">
-      <?php }?>
+      <?}?>
     </td>
   </tr>
 </table>
 <table width="90%">
   <tr>
     <td valign="top"  align="center">  
-      <?php 
+      <?
       $dbwhere = " db52_layoutlinha = ".@$db52_layoutlinha;
       if(isset($db52_codigo) && trim($db52_codigo) != ""){
 	$dbwhere .= " and db52_codigo <> ".$db52_codigo;

@@ -191,12 +191,12 @@ $k125_datalanc_ano = date('Y');
               <table align="center">
                 <tr>
                   <td title="<?=@$Tp58_codproc?>">
-                    <?php 
+                    <?
                     db_ancora($Lp58_codproc, 'js_pesquisaProcesso(true)', 1)
                     ?>
                   </td>
                   <td>
-                    <?php 
+                    <?
 
                     db_input('p58_codproc', 10, $Ip58_codproc, true, 'text', 1, "onchange='js_pesquisaProcesso(false)'");
                     db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, "", 'z01_nomeprocesso');
@@ -228,7 +228,7 @@ $k125_datalanc_ano = date('Y');
                     ?>
                   </td>
                   <td>
-                    <?php 
+                    <?
                     db_input('k160_numeroprocesso', 40, $Ik160_numeroprocesso, true, 'text', 1);
                     ?>
                   </td>
@@ -241,7 +241,7 @@ $k125_datalanc_ano = date('Y');
                     ?>
                   </td>
                   <td>
-                    <?php 
+                    <?
                     db_input('k160_nometitular', 40, $Ik160_nometitular, true, 'text', 1);
                     ?>
                   </td>

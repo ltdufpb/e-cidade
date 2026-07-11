@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led46_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed46_i_codigo',10,$Ied46_i_codigo,true,'text',3,"")?>
+   <?db_input('ed46_i_codigo',10,$Ied46_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led46_c_descr?>
   </td>
   <td>
-   <?php db_input('ed46_c_descr',60,$Ied46_c_descr,true,'text',$db_opcao,"")?>
+   <?db_input('ed46_c_descr',60,$Ied46_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -69,7 +69,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led46_c_abrev?>
   </td>
   <td>
-   <?php db_input('ed46_c_abrev',2,$Ied46_c_abrev,true,'text',$db_opcao,"")?>
+   <?db_input('ed46_c_abrev',2,$Ied46_c_abrev,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -78,7 +78,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?php 
+  <?
    $chavepri= ["ed46_i_codigo"=>@$ed46_i_codigo,"ed46_c_abrev"=>@$ed46_c_abrev,"ed46_c_descr"=>@$ed46_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clrecomendacao->sql_query($ed46_i_codigo,"*","ed46_c_descr");

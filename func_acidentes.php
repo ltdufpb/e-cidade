@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clacidentes->rotulo->label("tr07_id");
               <?=$Ltr07_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("tr07_id",5,$Itr07_id,true,"text",4,"","chave_tr07_id");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clacidentes->rotulo->label("tr07_id");
               <?=$Ltr07_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("tr07_id",5,$Itr07_id,true,"text",4,"","chave_tr07_id");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clacidentes->rotulo->label("tr07_id");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "tr07_id ,tr02_descr,tr03_descr,
@@ -125,12 +125,12 @@ $clacidentes->rotulo->label("tr07_id");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

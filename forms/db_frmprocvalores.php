@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,28 +57,28 @@ if(isset($start))
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tsd10_i_procedimento?>">
-       <?php 
+       <?
        db_ancora(@$Lsd10_i_procedimento,"js_pesquisasd10_i_procedimento(true);",$db_opcao1);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_i_procedimento',10,$Isd10_i_procedimento,true,'text',$db_opcao1," onchange='js_pesquisasd10_i_procedimento(false);'")
 ?>
-       <?php 
+       <?
 db_input('sd09_c_descr',50,$Isd09_c_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
-  <?php if(!isset($start)){?>
+  <?if(!isset($start)){?>
   <tr>
    <td>
     <input type="submit" value="Processar" name="start">
    </td>
   </tr>
- <?php }?>
+ <?}?>
 </table>
-<?php 
+<?
  if(isset($start))
  {
 ?>
@@ -88,7 +88,7 @@ db_input('sd09_c_descr',50,$Isd09_c_descr,true,'text',3,'')
        <?=@$Lsd10_c_sala?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_c_sala',10,$Isd10_c_sala,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_input('sd10_c_sala',10,$Isd10_c_sala,true,'text',$db_opcao,"onBlur=\"FormataV
        <?=@$Lsd10_f_valor?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_valor',10,$Isd10_f_valor,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -108,7 +108,7 @@ db_input('sd10_f_valor',10,$Isd10_f_valor,true,'text',$db_opcao,"onBlur=\"Format
        <?=@$Lsd10_f_servico?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_servico',10,$Isd10_f_servico,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -118,7 +118,7 @@ db_input('sd10_f_servico',10,$Isd10_f_servico,true,'text',$db_opcao,"onBlur=\"Fo
        <?=@$Lsd10_f_anestesia?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_anestesia',10,$Isd10_f_anestesia,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -128,7 +128,7 @@ db_input('sd10_f_anestesia',10,$Isd10_f_anestesia,true,'text',$db_opcao,"onBlur=
        <?=@$Lsd10_f_material?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_material',10,$Isd10_f_material,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -138,7 +138,7 @@ db_input('sd10_f_material',10,$Isd10_f_material,true,'text',$db_opcao,"onBlur=\"
        <?=@$Lsd10_f_contraste?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_contraste',10,$Isd10_f_contraste,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -148,7 +148,7 @@ db_input('sd10_f_contraste',10,$Isd10_f_contraste,true,'text',$db_opcao,"onBlur=
        <?=@$Lsd10_f_filme?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_filme',10,$Isd10_f_filme,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -158,7 +158,7 @@ db_input('sd10_f_filme',10,$Isd10_f_filme,true,'text',$db_opcao,"onBlur=\"Format
        <?=@$Lsd10_f_gesso?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_gesso',10,$Isd10_f_gesso,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -168,7 +168,7 @@ db_input('sd10_f_gesso',10,$Isd10_f_gesso,true,'text',$db_opcao,"onBlur=\"Format
        <?=@$Lsd10_f_quimio?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_quimio',10,$Isd10_f_quimio,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -178,7 +178,7 @@ db_input('sd10_f_quimio',10,$Isd10_f_quimio,true,'text',$db_opcao,"onBlur=\"Form
        <?=@$Lsd10_f_dialise?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_dialise',10,$Isd10_f_dialise,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -188,7 +188,7 @@ db_input('sd10_f_dialise',10,$Isd10_f_dialise,true,'text',$db_opcao,"onBlur=\"Fo
        <?=@$Lsd10_f_sadtrat?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_sadtrat',10,$Isd10_f_sadtrat,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -198,7 +198,7 @@ db_input('sd10_f_sadtrat',10,$Isd10_f_sadtrat,true,'text',$db_opcao,"onBlur=\"Fo
        <?=@$Lsd10_f_sadtpc?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_sadtpc',10,$Isd10_f_sadtpc,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -208,7 +208,7 @@ db_input('sd10_f_sadtpc',10,$Isd10_f_sadtpc,true,'text',$db_opcao,"onBlur=\"Form
        <?=@$Lsd10_f_sadtout?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_sadtout',10,$Isd10_f_sadtout,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -218,7 +218,7 @@ db_input('sd10_f_sadtout',10,$Isd10_f_sadtout,true,'text',$db_opcao,"onBlur=\"Fo
        <?=@$Lsd10_f_outro?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_outro',10,$Isd10_f_outro,true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -228,7 +228,7 @@ db_input('sd10_f_outro',10,$Isd10_f_outro,true,'text',$db_opcao,"onBlur=\"Format
        <?=@$Lsd10_f_filme2?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_filme2',10,number_format($Isd10_f_filme2,2,'.',''),true,'text',$db_opcao,"onBlur=\"FormataValor(this)\"")
 ?>
     </td>
@@ -238,7 +238,7 @@ db_input('sd10_f_filme2',10,number_format($Isd10_f_filme2,2,'.',''),true,'text',
        <?=@$Lsd10_f_total?>
     </td>
     <td> 
-<?php 
+<?
 db_input('sd10_f_total',10,number_format($Isd10_f_total,2,'.',''),true,'text',3)
 ?>
     </td>
@@ -246,7 +246,7 @@ db_input('sd10_f_total',10,number_format($Isd10_f_total,2,'.',''),true,'text',3)
   </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":"alterar")?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":"Alterar")?>" <?=($db_botao==false?"disabled":"")?> >
-<?php 
+<?
  if($db_opcao == 2)
   {
    echo "<input type=\"submit\" name=\"excluir\" value=\"Excluir\"> ";
@@ -255,7 +255,7 @@ db_input('sd10_f_total',10,number_format($Isd10_f_total,2,'.',''),true,'text',3)
 <input type="reset" value="Refazer">
 <input type="button" value="Voltar" onclick="history.back()">
 </form>
-<?php 
+<?
   }
 ?>
 <script>
@@ -327,7 +327,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_procvalores.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

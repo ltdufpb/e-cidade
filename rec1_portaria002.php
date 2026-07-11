@@ -298,7 +298,7 @@ if(isset($alterar)){
 
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
   if ($clportaria->erro_status == "0") {
     $clportaria->erro(true, false);

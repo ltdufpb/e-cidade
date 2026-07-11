@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -167,7 +167,7 @@ if(isset($alterar)){
  <tr>
   <td valign="top" bgcolor="#CCCCCC">
    <center>
-    <?php include(modification("forms/db_frmdiarioavaliacaoobs.php"));?>
+    <?include(modification("forms/db_frmdiarioavaliacaoobs.php"));?>
    </center>
   </td>
  </tr>
@@ -177,7 +177,7 @@ if(isset($alterar)){
 <script>
  js_tabulacaoforms("form1","ed72_t_obs",true,1,"ed72_t_obs",true);
 </script>
-<?php 
+<?
 if(isset($alterar)){
  ?>
  <script>
@@ -185,6 +185,6 @@ if(isset($alterar)){
   parent.db_iframe_obs.hide();
   alert("Alteração efetuada com Sucesso");
  </script>
- <?php 
+ <?
 }
 ?>

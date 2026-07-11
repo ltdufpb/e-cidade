@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrhlotavincativ->rotulo->label("rh39_projativ");
               <?=$Lrh39_codlotavinc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh39_codlotavinc",6,$Irh39_codlotavinc,true,"text",4,"","chave_rh39_codlotavinc");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clrhlotavincativ->rotulo->label("rh39_projativ");
               <?=$Lrh39_codelenov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh39_codelenov",6,$Irh39_codelenov,true,"text",4,"","chave_rh39_codelenov");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clrhlotavincativ->rotulo->label("rh39_projativ");
               <?=$Lrh39_projativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh39_projativ",4,$Irh39_projativ,true,"text",4,"","chave_rh39_projativ");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clrhlotavincativ->rotulo->label("rh39_projativ");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlotavincativ.php")==true){
@@ -130,12 +130,12 @@ $clrhlotavincativ->rotulo->label("rh39_projativ");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

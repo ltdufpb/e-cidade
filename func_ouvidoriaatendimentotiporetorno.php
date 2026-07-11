@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clouvidoriaatendimentotiporetorno->rotulo->label("ov17_tiporetorno");
               <?=$Lov17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov17_sequencial",10,$Iov17_sequencial,true,"text",4,"","chave_ov17_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clouvidoriaatendimentotiporetorno->rotulo->label("ov17_tiporetorno");
               <?=$Lov17_tiporetorno?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov17_tiporetorno",10,$Iov17_tiporetorno,true,"text",4,"","chave_ov17_tiporetorno");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clouvidoriaatendimentotiporetorno->rotulo->label("ov17_tiporetorno");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ouvidoriaatendimentotiporetorno.php")==true){
@@ -123,12 +123,12 @@ $clouvidoriaatendimentotiporetorno->rotulo->label("ov17_tiporetorno");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

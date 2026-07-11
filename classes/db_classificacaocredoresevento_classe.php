@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: empenho
 //CLASSE DA ENTIDADE classificacaocredoresevento
 class cl_classificacaocredoresevento { 

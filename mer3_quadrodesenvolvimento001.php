@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ $clperiodocalendario = new cl_periodocalendario;
 </head>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?php 
+ <?
  # Seleciona todos os calendários
   $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
   $sql       .= "       FROM calendario ";
@@ -146,7 +146,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     document.form1.subgrupo.disabled = false;
   }
   document.form1.procurar.disabled = true;
- <?php if (isset($turma)) {?>
+ <?if (isset($turma)) {?>
      qtd = document.form1.alunosdiario.length;
      for (i = 0; i < qtd; i++) {
        document.form1.alunosdiario.options[0] = null;
@@ -155,7 +155,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
      for (i = 0; i < qtd; i++) {
        document.form1.alunos.options[0] = null;
      }
- <?php }?>
+ <?}?>
 }
 function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem) {
   var i, j;
@@ -179,19 +179,19 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       if (itemArray[i][1] != null) {
         selectCtrl.options[j].value = itemArray[i][1];
       }
-    <?php if (isset($turma)) {?>
+    <?if (isset($turma)) {?>
         if (<?=trim($turma)?> == itemArray[i][1]) {
           indice = i;
         }
-    <?php }?>
+    <?}?>
       j++;
   }
-  <?php if (isset($turma)) {?>
+  <?if (isset($turma)) {?>
       selectCtrl.options[indice].selected = true;
       document.form1.procurar.disabled    = false;
-  <?php } else {?>
+  <?} else {?>
       selectCtrl.options[0].selected = true;
-  <?php }?>
+  <?}?>
     document.form1.subgrupo.disabled = false;
   }
 }
@@ -205,7 +205,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Quadro de Desenvolvimento</b></legend>
 <table border="0" align="left">
@@ -219,7 +219,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
               onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" 
               style="font-size:9px;width:200px;height:18px;">
        <option></option>
-       <?php 
+       <?
        #Seleciona todos os grupos para setar os valores no combo
        $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
        $sql       .= "       FROM calendario ";
@@ -233,7 +233,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
          $desc_curso = $row["ed52_c_descr"];
          ?>
           <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-         <?php 
+         <?
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -255,7 +255,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
      </td>
      <td>
       <span id="div_tipocompetencia">
-      <?php if(isset($tipomes)){?>
+      <?if(isset($tipomes)){?>
        <b>Mês</b><br>
        <select name="tipomes" style="font-size:9px;height:18px;">
         <option value="1" <?=@$tipomes=="1"?"selected":""?>>Janeiro</option>
@@ -271,8 +271,8 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         <option value="11" <?=@$tipomes=="11"?"selected":""?>>Novembro</option>
         <option value="12" <?=@$tipomes=="12"?"selected":""?>>Dezembro</option>
        </select>
-      <?php }?>
-      <?php if(isset($tipoperiodo)){
+      <?}?>
+      <?if(isset($tipoperiodo)){
         $result1 = $clperiodocalendario->sql_record(
                     $clperiodocalendario->sql_query("",
                                                "ed09_i_codigo,ed09_c_descr",
@@ -283,16 +283,16 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        ?>
        <b>Período:<br></b>
        <select name="tipoperiodo" style="font-size:9px;height:18px;">
-        <?php 
+        <?
         for($tt=0;$tt<$clperiodocalendario->numrows;$tt++){
          db_fieldsmemory($result1,$tt);
          ?>
          <option value="<?=$ed09_i_codigo?>" <?=@$tipoperiodo==$ed09_i_codigo?"selected":""?>><?=$ed09_c_descr?></option>
-         <?php  
+         <? 
         }
         ?>
        </select>
-       <?php 
+       <?
        }
       ?>
       </span>
@@ -304,11 +304,11 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    </table>
   </td>
  </tr>
- <?php if(isset($turma)){?>
+ <?if(isset($turma)){?>
   <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
   <tr>
   <td valign="top">
-   <?php 
+   <?
    $sql    = " SELECT distinct ed47_i_codigo,ed47_v_nome,ed60_i_codigo,ed60_i_numaluno ";
    $sql   .= "       FROM matricula ";
    $sql   .= "        inner join aluno on ed47_i_codigo = ed60_i_aluno ";
@@ -330,7 +330,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    <b>Selecione o Aluno:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" 
            style="font-size:9px;width:330px;height:120px" multiple>
-    <?php 
+    <?
     for ($i = 0; $i < $linhas; $i++) {
         
       db_fieldsmemory($result,$i);
@@ -391,11 +391,11 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    <br><br>
   </td>
  </tr>
- <?php }?>
- <?php if(isset($alunos)){?>
+ <?}?>
+ <?if(isset($alunos)){?>
  <tr>
   <td align="center" colspan="3">
-   <?php 
+   <?
   $condicao2 = "";
 if($tipocompetencia!=""){
     
@@ -425,7 +425,7 @@ $linhas2 = pg_num_rows($result2);
 if($linhas2==0){
  ?>
  <font size="4">Nenhum registro encontrado</font>
- <?php 
+ <?
 }else{
  echo "<table width='100%'>";
    echo "<tr bgcolor='#444444' style='color:#DEB887'>";
@@ -461,12 +461,12 @@ if($linhas2==0){
 ?>  
    </td>
  </tr>
- <?php }?>
+ <?}?>
 </table>
 </fieldset>
 </center>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -569,7 +569,7 @@ function js_botao(valor){
  }else{
   document.form1.procurar.disabled = true;
  }
- <?php if(isset($turma)){?>
+ <?if(isset($turma)){?>
   qtd = document.form1.alunosdiario.length;
   for (i = 0; i < qtd; i++) {
    document.form1.alunosdiario.options[0] = null;
@@ -578,7 +578,7 @@ function js_botao(valor){
   for (i = 0; i < qtd; i++) {
    document.form1.alunos.options[0] = null;
   }
- <?php }?>
+ <?}?>
 }
 function js_procurar(calendario,turma){
  str = "";
@@ -607,10 +607,10 @@ function js_pesquisa(turma){
  }
  location.href = "mer3_quadrodesenvolvimento001.php?calendario="+document.form1.grupo.value+"&turma="+document.form1.subgrupo.value+"&tipocompetencia="+document.form1.tipocompetencia.value+str+"&alunos="+alunos; 
 }
-<?php if(!isset($turma) && pg_num_rows($sql_result)>0){?>
+<?if(!isset($turma) && pg_num_rows($sql_result)>0){?>
  fillSelectFromArray2(document.form1.subgrupo,team[0]);
  document.form1.grupo.options[1].selected = true;
-<?php }?>
+<?}?>
 function js_competencia(valor){
  document.getElementById('div_tipocompetencia').innerHTML = "";
  if(valor=="M"){

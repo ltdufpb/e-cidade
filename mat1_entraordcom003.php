@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -109,18 +109,18 @@ function js_limpa(){
 </tr>
 
   <tr> 
-    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?php db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
+      <? db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
          ?></td>
   </tr>
 
 
 
   <tr height="20px">
-    <td  align="left" nowrap title="<?=$Te69_codnota?>"><?php db_ancora(@$Le69_codnota,"js_pesquisa_empnota(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Te69_codnota?>"><?db_ancora(@$Le69_codnota,"js_pesquisa_empnota(true);",1);?></td>
     <td align="left" nowrap>
-      <?php  db_input("e69_codnota",6,$Ie69_codnota,true,"text",4,"onchange='js_pesquisa_empnota(false);'");
+      <? db_input("e69_codnota",6,$Ie69_codnota,true,"text",4,"onchange='js_pesquisa_empnota(false);'");
          ?></td>
   </tr>
   <tr>
@@ -130,14 +130,14 @@ function js_limpa(){
   </td>
   </tr>
   </table>
-    <?php 
+    <?
        db_input("m51_depto",100,0,true,"hidden",3);
     ?>
   </form>
  
 
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisa_matordem(mostra){

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $aux = new cl_arquivo_auxiliar;
 		<table  align="center">
 			<tr>
 				<td colspan="2" align="center">
-				<?php 
+				<?
 				$aux->cabecalho      = "<strong>Lotes de FAA</strong>";
 				$aux->codigo         = "sd58_i_codigo"; //chave de retorno da func
 				$aux->concatenar_codigo = "login";
@@ -97,7 +97,7 @@ $aux = new cl_arquivo_auxiliar;
 	<script>
 		js_tabulacaoforms("form1","bi18_carteira",true,1,"bi18_carteira",true);
 	</script>
-	<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+	<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 

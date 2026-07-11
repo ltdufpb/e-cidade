@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ $oFonte        = db_utils::fieldsMemory($rsFonte,0);
              <tr>
                <td rowspan='5' valign="top" style='padding:2px; border-left:2px groove white;height:150px;overflow:scroll'>
                <table cellspacing="0" cellpadding="0" width='100%' >
-               <?php 
+               <?
 
                 $oDaoCenarioConplano = db_utils::getDao("orccenarioeconomicoconplano");
                 $nValorparametro     = 0;

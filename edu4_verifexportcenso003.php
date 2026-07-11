@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -234,7 +234,7 @@ $array_registro = ["null"=>"","00"=>"Registro 00 - Identificação","10"=>"Registr
      <td valign="top" bgcolor="#CCCCCC">
       <br>
       <b><?=$array_registro[$registro]?></b><br><br>
-      <?php 
+      <?
       if ($registro == "00") {
       	
         $array_situacao       = ["1"=>"EM FUNCIONAMENTO","2"=>"PARALISADA","3"=>"EXTINTA"];

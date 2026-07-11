@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcsuplem->rotulo->label("o46_codlei");
               <?=$Lo46_codlei?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php   db_input("o46_codlei",10,$Io46_codlei,true,"text",10,"","chave_o46_codlei");  ?>
+              <?  db_input("o46_codlei",10,$Io46_codlei,true,"text",10,"","chave_o46_codlei");  ?>
             </td>
           </tr>  
           <tr> 
@@ -63,7 +63,7 @@ $clorcsuplem->rotulo->label("o46_codlei");
               <?=$Lo46_codsup?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php   db_input("o46_codsup",10,$Io46_codsup,true,"text",10,"","chave_o46_codsup");    ?>
+              <?  db_input("o46_codsup",10,$Io46_codsup,true,"text",10,"","chave_o46_codsup");    ?>
             </td>
           </tr>
          <tr> 
@@ -79,7 +79,7 @@ $clorcsuplem->rotulo->label("o46_codlei");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcsuplem.php")==true){
@@ -115,12 +115,12 @@ $clorcsuplem->rotulo->label("o46_codlei");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

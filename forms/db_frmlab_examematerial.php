@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -75,7 +75,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
             <?=@$Lla19_i_codigo?>
          </td>
          <td>
-          <?php           
+          <?          
           db_input('la19_i_codigo',10,$Ila19_i_codigo,true,'text',3,"");
           ?>
          </td>
@@ -88,7 +88,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                       <tr>
                         <td nowrap align="right" title="<?=@$Tla19_d_inicio?>">
                            <?=@$Lla19_d_inicio?>
-                         <?php 
+                         <?
                           if (! isset ( $la19_d_inicio )) {
                            $vet = explode ( "-", @$la19_d_inicio );
                            @$la19_d_inicio = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
@@ -103,7 +103,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                       <tr>
                       <td nowrap align="right" title="<?=@$Tla19_d_fim?>">
                        <?=@$Lla19_d_fim?>
-                       <?php 
+                       <?
                         if (! isset ( $la19_d_fim )) {
                          $vet = explode ( "-", @$la19_d_fim );
                          @$la19_d_fim = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
@@ -124,29 +124,29 @@ if (isset ( $opcao ) && $opcao == "alterar") {
        </tr>
         <tr>
     <td nowrap title="<?=@$Tla19_i_exame?>">
-       <?php db_ancora ( @$Lla19_i_exame, "js_pesquisala19_i_exame(true);", 3 );?>
+       <?db_ancora ( @$Lla19_i_exame, "js_pesquisala19_i_exame(true);", 3 );?>
     </td>
     <td>
-     <?php db_input ( 'la19_i_exame', 10, $Ila19_i_exame, true, 'text', 3, "" )?>
-     <?php db_input ( 'la08_c_descr', 50, @$Ila08_c_descr, true, 'text', 3, '' )?>
+     <?db_input ( 'la19_i_exame', 10, $Ila19_i_exame, true, 'text', 3, "" )?>
+     <?db_input ( 'la08_c_descr', 50, @$Ila08_c_descr, true, 'text', 3, '' )?>
     </td>
   </tr>
      <tr>
        <td nowrap title="<?=@$Tla19_i_materialcoleta?>">
-       <?php db_ancora ( @$Lla19_i_materialcoleta, "js_pesquisala19_i_materialcoleta(true);", $db_opcao );?>
+       <?db_ancora ( @$Lla19_i_materialcoleta, "js_pesquisala19_i_materialcoleta(true);", $db_opcao );?>
     </td>
     <td>
-      <?php db_input ( 'la19_i_materialcoleta', 10, $Ila19_i_materialcoleta, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_materialcoleta(false);'" )?>
-      <?php db_input ( 'la15_c_descr', 50, @$Ila15_c_descr, true, 'text', 3, '' )?>
+      <?db_input ( 'la19_i_materialcoleta', 10, $Ila19_i_materialcoleta, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_materialcoleta(false);'" )?>
+      <?db_input ( 'la15_c_descr', 50, @$Ila15_c_descr, true, 'text', 3, '' )?>
     </td>
   </tr>
        <tr>
     <td nowrap title="<?=@$Tla19_i_metodo?>">
-       <?php db_ancora ( @$Lla19_i_metodo, "js_pesquisala19_i_metodo(true);", $db_opcao );?>
+       <?db_ancora ( @$Lla19_i_metodo, "js_pesquisala19_i_metodo(true);", $db_opcao );?>
     </td>
     <td>
-      <?php db_input ( 'la19_i_metodo', 10, $Ila19_i_metodo, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_metodo(false);'"  )?>
-       <?php db_input ( 'la11_c_descr', 50, @$Ila11_c_descr, true, 'text', 3, '' )?>
+      <?db_input ( 'la19_i_metodo', 10, $Ila19_i_metodo, true, 'text', $db_opcao, " onchange='js_pesquisala19_i_metodo(false);'"  )?>
+       <?db_input ( 'la11_c_descr', 50, @$Ila11_c_descr, true, 'text', 3, '' )?>
     </td>
   </tr>
 <tr>
@@ -154,7 +154,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
        <?=@$Lla19_c_amb?>
     </td>
     <td> 
-       <?php db_input ( 'la19_c_amb', 20, $Ila19_c_amb, true, 'text', $db_opcao, "" )?>
+       <?db_input ( 'la19_c_amb', 20, $Ila19_c_amb, true, 'text', $db_opcao, "" )?>
     </td>
   </tr>
 </table>
@@ -170,7 +170,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
 <table width="100%">
 	<tr>
 		<td valign="top"><br>
-  <?php 
+  <?
 		$chavepri = array ("la19_i_codigo" => @$la19_i_codigo, "la19_i_materialcoleta" => @$la19_i_materialcoleta, "la19_i_metodo" => @$la19_i_metodo, "la15_c_descr" => @$la15_c_descr, "la11_c_descr" => @$la11_c_descr, "la19_i_exame" => @$la19_i_exame, "la08_c_descr" => @$la08_c_descr, "la19_c_amb" => @$la19_c_amb, "la19_d_inicio" => @$la19_d_inicio, "la19_d_fim" => @$la19_d_fim );
 		$cliframe_alterar_excluir->chavepri = $chavepri;
 		@$cliframe_alterar_excluir->sql = $cllab_examematerial->sql_query ("", "*", "la08_c_descr","la19_i_exame= $la19_i_exame" );		
@@ -281,7 +281,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_examematerial.hide();
-  <?php 
+  <?
 		if ($db_opcao != 1) {
 			echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
 		}

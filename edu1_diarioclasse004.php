@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,7 +88,7 @@ $result_proc = $clregencia->sql_record($clregencia->sql_query("",$campos_proc,"e
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<?php 
+<?
     db_app::load("scripts.js, prototype.js, DBFormCache.js, DBFormSelectCache.js");
 ?>
 <link href="estilos.css" rel="stylesheet" type="text/css">
@@ -122,7 +122,7 @@ function js_avaliacoes(regencia,turma,disciplina,calendario){
 }
 </script>
 <body bgcolor="#cccccc" leftmargin="15" marginheight="0" marginwidth="3" topmargin="5">
-<?php 
+<?
 if($clregencia->numrows==0){
  echo "<br><br><center><b>Nenhuma disciplina cadastrada nesta turma.<br>(Cadastros/Turmas/Aba Disciplinas)</b></center>";
  exit;
@@ -131,7 +131,7 @@ if($clregencia->numrows==0){
 <table width="100%" align="left" valign="top" marginwidth="0" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left">
-   <?php 
+   <?
    $descserie = pg_fetch_result($result_proc,0,'descrserie');
    $descrturma = pg_fetch_result($result_proc,0,'descrturma');
    $descrcal = pg_fetch_result($result_proc,0,'descrcal');
@@ -151,7 +151,7 @@ if($clregencia->numrows==0){
      <td class='cabec' align="center">Data Atualiz.</td>
      <td class='cabec' align="center">Matrícula</td>
     </tr>
-    <?php 
+    <?
     $cor1 = "#f3f3f3";
     $cor2 = "#DBDBDB";
     $cor = "";
@@ -323,16 +323,16 @@ if($clregencia->numrows==0){
      <td class='aluno' align="left"><?=$ed232_c_abrev?></td>
      <td class='aluno' align="left"><?=$ed232_c_descr?></td>
      <td class='aluno' align="center"><?=$ed59_c_ultatualiz==""?"&nbsp;":$ed59_c_ultatualiz?></td>
-      <?php if($cldiario->numrows==0){?>
+      <?if($cldiario->numrows==0){?>
        <td class='aluno' align="center">SIM</td>
-      <?php }else{?>
+      <?}else{?>
        <td class='aluno' align="center">NÃO</td>
-      <?php }?>
+      <?}?>
       </td>
      <td class='aluno' align="center"><?=$dataatualizacao?></td>
      <td class='aluno' align="center"><?=$ed59_c_condicao?></td>
     </tr>
-   <?php }?>
+   <?}?>
    </table>
   </td>
  </tr>

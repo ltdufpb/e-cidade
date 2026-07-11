@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -101,9 +101,9 @@ if (isset($chavepesquisa)){
 	<center>
 	<table border="0">
 	  <tr>
-	     <td  align="left" nowrap title="<?=$Tj14_codigo?>"><?php db_ancora("<b>Logradouro do Municipio: ","js_pesquisa_ruas(true);",3);?>
+	     <td  align="left" nowrap title="<?=$Tj14_codigo?>"><?db_ancora("<b>Logradouro do Municipio: ","js_pesquisa_ruas(true);",3);?>
 	     <td align="left" nowrap>
-	        <?php 
+	        <?
 		  db_input("j14_codigo",6,$Ij14_codigo,true,"text",3,"onchange='js_pesquisa_ruas(false);'");
 	          db_input("j14_nome",40,$Ij14_nome,true,"text",3);
 		?>
@@ -112,7 +112,7 @@ if (isset($chavepesquisa)){
 	  
           <tr>
              <td nowrap>
-               <?php 
+               <?
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Ruas Correios</strong>";
                  $aux->codigo = "cp06_codlogradouro"; //chave de retorno da func
@@ -141,7 +141,7 @@ if (isset($chavepesquisa)){
 	  </tr>
 	</table>
 	</center>
-	<?php 
+	<?
 	   db_input("logs",50,"",true,"hidden",3);
 	?>
 	</form>
@@ -150,7 +150,7 @@ if (isset($chavepesquisa)){
 	</td>
   </tr>
 </table>
-<?php 
+<?
 if (isset($j14_codigo)&&$j14_codigo!=""){
   $res = $cllogradcep->sql_record($cllogradcep->sql_query_info($j14_codigo));
   if ($cllogradcep->numrows > 0){

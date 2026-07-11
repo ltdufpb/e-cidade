@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -72,7 +72,7 @@ switch (db_getsession("DB_modulo")) {
               <?=$Lac08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("ac08_sequencial",10,$Iac08_sequencial,true,"text",4,"","chave_ac08_sequencial");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ switch (db_getsession("DB_modulo")) {
               <?=$Lac08_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("ac08_descricao",100,$Iac08_descricao,true,"text",4,"","chave_ac08_descricao");
 		       ?>
             </td>
@@ -100,7 +100,7 @@ switch (db_getsession("DB_modulo")) {
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       $sWhereTipoComissao = " and ac08_acordocomissaotipo = {$iCodigoComissaoTipo} ";
 
       $campos = " acordocomissao.ac08_sequencial,
@@ -159,12 +159,12 @@ switch (db_getsession("DB_modulo")) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

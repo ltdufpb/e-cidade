@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,13 +45,13 @@ $clrhfopag = new cl_rhfopag;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br><br>
 <center>
-<?php  
+<? 
 db_criatermometro('calculo_folha','Concluido...','blue',1,'Efetuando Importação');
 ?>
 
 </center>
 </body>
-<?php 
+<?
 $db_erro = false;
 
 $erro_msg = ImportaArquivo($AArquivo,$exclui);

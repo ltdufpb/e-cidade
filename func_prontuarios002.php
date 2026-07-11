@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,7 +83,7 @@ db_fieldsmemory($query1,0);
               <?=$Lsd24_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
+              <?db_input("sd24_i_codigo",11,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
             </td>
           </tr>
           <tr>
@@ -91,32 +91,32 @@ db_fieldsmemory($query1,0);
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap colspan="2">
-              <?php db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
+              <?db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
             </td>
           </tr>
          <tr>
            <td nowrap title="<?=@$Tsd03_i_codigo?>" align="right" >
-            <?php db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao);?>
+            <?db_ancora(@$Lsd03_i_codigo,"js_pesquisasd03_i_codigo(true);",$db_opcao);?>
            </td>
           <td align="left">
-           <?php db_input('sd03_i_codigo',10,@$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false);'")?>
+           <?db_input('sd03_i_codigo',10,@$Isd03_i_codigo,true,'text',$db_opcao," onchange='js_pesquisasd03_i_codigo(false);'")?>
           </td>
            <td>
-           <?php db_input('profissional',60,@$profissional,true,'text',3,'')?>
+           <?db_input('profissional',60,@$profissional,true,'text',3,'')?>
           </td>
          </tr>
         <tr>
          <td nowrap title="<?=@$Tsd04_i_cbo?>" align="right">         
-           <?php db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao);?>
+           <?db_ancora(@$Lsd04_i_cbo,"js_pesquisasd04_i_cbo(true);",$db_opcao);?>
          </td>
          <td align="left">
-           <?php db_input('sd24_i_profissional',10,@$Isd24_i_profissional,true,'hidden',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
+           <?db_input('sd24_i_profissional',10,@$Isd24_i_profissional,true,'hidden',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
            db_input('rh70_sequencial',10,@$Irh70_sequencial,true,'hidden',$db_opcao,"");
            db_input('rh70_estrutural',10,@$Irh70_estrutural,true,'text',$db_opcao," onchange='js_pesquisasd04_i_cbo(false);'");
            ?>
          </td>
          <td>
-          <?php 
+          <?
           db_input('rh70_descr',60,@$Irh70_descr,true,'text',3,'');
           ?>
          </td>
@@ -136,7 +136,7 @@ db_fieldsmemory($query1,0);
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-    <?php 
+    <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_prontuarios.php")==true){

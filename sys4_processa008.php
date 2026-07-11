@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,7 +50,7 @@ $cldb_sysarqmod = new cl_db_sysarqmod ( );
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0"
 	marginheight="0" onLoad="a=1">
-<?php 
+<?
 
 parse_str ( $HTTP_SERVER_VARS ["QUERY_STRING"] );
 // Tabelas
@@ -91,7 +91,7 @@ for($u = 0; $u < count ( $arr_arqaba ); $u ++) {
 	//rotina  que gera as abas de manutenção	
 	$arq = $root . "/" . $siglamod . "1_" . $nometab . $arr_arqaba [$u];
 	$fd1 = fopen ( strtolower ( $arq ), "w" );
-	fputs ( $fd1, "<?php \n" );
+	fputs ( $fd1, "<?\n" );
 	fputs ( $fd1, 'require(modification("libs/db_stdlib.php"));' . "\n" );
 	fputs ( $fd1, 'require(modification("libs/db_conecta.php"));' . "\n" );
 	fputs ( $fd1, 'include(modification("libs/db_sessoes.php"));' . "\n" );
@@ -121,7 +121,7 @@ for($u = 0; $u < count ( $arr_arqaba ); $u ++) {
 	fputs ( $fd1, '<table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">' . "\n" );
 	fputs ( $fd1, '  <tr> ' . "\n" );
 	fputs ( $fd1, '    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> ' . "\n" );
-	fputs ( $fd1, '     <?php ' . "\n" );
+	fputs ( $fd1, '     <?' . "\n" );
 	fputs ( $fd1, '	     $clcriaabas->identifica = array("' . $nometab . '"=>"' . $nometab . '"' );
 	//for para colocar todas as tabelhas filhas 
 	for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
@@ -145,7 +145,7 @@ for($u = 0; $u < count ( $arr_arqaba ); $u ++) {
 	fputs ( $fd1, '</table>' . "\n" );
 	fputs ( $fd1, '<form name="form1">' . "\n" );
 	fputs ( $fd1, '</form>' . "\n" );
-	fputs ( $fd1, '<?php  ' . "\n" );
+	fputs ( $fd1, '<? ' . "\n" );
 	fputs ( $fd1, '	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));' . "\n" );
 	fputs ( $fd1, '?>' . "\n" );
 	fputs ( $fd1, '</body>' . "\n" );
@@ -159,7 +159,7 @@ for($u = 0; $u < count ( $arr_arqaba ); $u ++) {
 	umask ( 74 );
 	$arq002 = $root . "/" . $siglamod . "1_" . $nometab . $arr_arqpro [$u];
 	$fd1 = fopen ( strtolower ( $arq002 ), "w" );
-	fputs ( $fd1, "<?php \n" );
+	fputs ( $fd1, "<?\n" );
 	//$resultpkfilho   = $cldb_sysprikey->sql_record($cldb_sysprikey->sql_query(null,$codarqfilho,null,"db_syscampo.nomecam as nomecamfilho","db_sysprikey.sequen"));  
 	//$numrowspkfilho =  $cldb_sysprikey->numrows;
 	
@@ -317,7 +317,7 @@ for($u = 0; $u < count ( $arr_arqaba ); $u ++) {
 		fputs ( $fd1, '  <tr> ' . "\n" );
 		fputs ( $fd1, '    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> ' . "\n" );
 		fputs ( $fd1, '    <center>' . "\n" );
-		fputs ( $fd1, '	<?php ' . "\n" );
+		fputs ( $fd1, '	<?' . "\n" );
 		fputs ( $fd1, '	include(modification("forms/db_frm' . $nometab . '.php"));' . "\n" );
 		fputs ( $fd1, '	?>' . "\n" );
 		fputs ( $fd1, '    </center>' . "\n" );
@@ -326,7 +326,7 @@ for($u = 0; $u < count ( $arr_arqaba ); $u ++) {
 		fputs ( $fd1, '</table>' . "\n" );
 		fputs ( $fd1, '</body>' . "\n" );
 		fputs ( $fd1, '</html>' . "\n" );
-		fputs ( $fd1, '<?php ' . "\n" );
+		fputs ( $fd1, '<?' . "\n" );
 		
 		fputs ( $fd1, 'if(isset($' . $arr_arqnom [$u] . ')){' . "\n" );
 		fputs ( $fd1, '  if($sqlerro==true){' . "\n" );
@@ -448,12 +448,12 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 </table>
 </body>
 </html>
-<?php 
+<?
 		exit ();
 	}
 	umask ( 74 );
 	$fd2 = fopen ( strtolower ( $arq003 ), "w" );
-	fputs ( $fd2, "<?php \n" );
+	fputs ( $fd2, "<?\n" );
 	
 	$resultpk = $cldb_sysprikey->sql_record ( $cldb_sysprikey->sql_query ( null, $codarqfilho, null, "db_sysarquivo.nomearq,db_syscampo.nomecam,db_sysprikey.sequen", "db_sysprikey.sequen" ) );
 	$numrowspk = $cldb_sysprikey->numrows;
@@ -571,7 +571,7 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 		fputs ( $fd2, '  <tr> ' . "\n" );
 		fputs ( $fd2, '    <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> ' . "\n" );
 		fputs ( $fd2, '    <center>' . "\n" );
-		fputs ( $fd2, '	<?php ' . "\n" );
+		fputs ( $fd2, '	<?' . "\n" );
 		fputs ( $fd2, '	include(modification("forms/db_frm' . $nometabfilho . '.php"));' . "\n" );
 		fputs ( $fd2, '	?>' . "\n" );
 		fputs ( $fd2, '    </center>' . "\n" );
@@ -580,7 +580,7 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 		fputs ( $fd2, '</table>' . "\n" );
 		fputs ( $fd2, '</body>' . "\n" );
 		fputs ( $fd2, '</html>' . "\n" );
-		fputs ( $fd2, '<?php ' . "\n" );
+		fputs ( $fd2, '<?' . "\n" );
 		fputs ( $fd2, 'if(isset($alterar) || isset($excluir) || isset($incluir)){' . "\n" );
 		fputs ( $fd2, '    db_msgbox($erro_msg);' . "\n" );
 		fputs ( $fd2, '    if($cl' . $nometabfilho . '->erro_campo!=""){' . "\n" );
@@ -616,7 +616,7 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 </table>
 </body>
 </html>
-<?php 
+<?
 		exit ();
 	}
 	
@@ -631,13 +631,13 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 </table>
 </body>
 </html>
-<?php 
+<?
 		exit ();
 	}
 	
 	umask ( 74 );
 	$fd = fopen ( strtolower ( $arquivo ), "w" );
-	fputs ( $fd, "<?php \n" );
+	fputs ( $fd, "<?\n" );
 	for($i = 0; $i < $numrows; $i ++) {
 		$varpk = "";
 		$pk = db_query ( "select a.nomearq,c.nomecam,p.sequen
@@ -725,7 +725,7 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 				if (strpos ( $campofk, trim ( pg_result ( $campo, $j, "codcam" ) ) ) > 0) {
 					
 					if (strpos ( $campofktipo, trim ( pg_result ( $campo, $j, "codcam" ) ) ) == 0) {
-						fputs ( $fd, '       <?php ' . "\n" );
+						fputs ( $fd, '       <?' . "\n" );
 						$funcaojava = '"js_pesquisa' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . '(true);"';
 						fputs ( $fd, '       db_ancora(@$L' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ',' . $funcaojava . ',$db_opcao);' . "\n" );
 						fputs ( $fd, '       ?>' . "\n" );
@@ -745,7 +745,7 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 				if (strpos ( $campofktipo, trim ( pg_result ( $campo, $j, "codcam" ) ) ) > 0) {
 					for($fk = 0; $fk < $Nforkey; $fk ++) {
 						if (pg_result ( $campo, $j, "codcam" ) == pg_result ( $forkey, $fk, 'codcam' ) && pg_result ( $forkey, $fk, 'tipoobjrel' ) == 1) {
-							fputs ( $fd, '       <?php ' . "\n" );
+							fputs ( $fd, '       <?' . "\n" );
 							fputs ( $fd, '       include(modification("classes/db_' . trim ( pg_result ( $forkey, $fk, 'nomearq' )) ) . '_classe.php");' . "\n" );
 							fputs ( $fd, '       $cl' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . ' = new cl_' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . ';' . "\n" );
 							fputs ( $fd, '       $result = $cl' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . '->sql_record($cl' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . '->sql_query(' );
@@ -776,21 +776,21 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 							if ((substr ( $xc, 0, 3 ) == "cha") || (substr ( $xc, 0, 3 ) == "var") || (substr ( $xc, 0, 3 ) == "flo")) {
 								if (strpos ( "--" . $varpk, trim ( pg_result ( $campo, $j, "nomecam" ) ) ) != 0) {
 									//chave primaria
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',3," . $funcaojava . ")" . "\n" );
 									fputs ( $fd, "?>" . "\n" );
 								} else {
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',$" . "db_opcao," . $funcaojava . ")" . "\n" );
 									fputs ( $fd, "?>" . "\n" );
 								}
 							} else if (substr ( $xc, 0, 3 ) == "boo") {
-								fputs ( $fd, "<?php " . "\n" );
+								fputs ( $fd, "<?" . "\n" );
 								fputs ( $fd, '$x = array("f"=>"NAO","t"=>"SIM");' . "\n" );
 								fputs ( $fd, "db_select('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'," . '$x' . ",true,$" . "db_opcao," . $funcaojava . ");" . "\n" );
 								fputs ( $fd, "?>" . "\n" );
 							} else if (substr ( $xc, 0, 3 ) == "tex") {
-								fputs ( $fd, "<?php " . "\n" );
+								fputs ( $fd, "<?" . "\n" );
 								fputs ( $fd, "db_textarea('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',0,0,$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',$" . "db_opcao," . $funcaojava . ")" . "\n" );
 								fputs ( $fd, "?>" . "\n" );
 							} else {
@@ -803,14 +803,14 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 									}
 								}
 								if (strpos ( "--" . $varpk, trim ( pg_result ( $campo, $j, "nomecam" ) ) ) != 0) {
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									if (strpos ( pg_result ( $campo, $j, "nomecam" ), "anousu" ) > 0) {
 										fputs ( $fd, "$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . " = db_getsession('DB_anousu');" . "\n" );
 									}
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text'," . $opcao . "," . $funcaojava . ")" . "\n" );
 									fputs ( $fd, "?>" . "\n" );
 								} else {
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									if (strpos ( pg_result ( $campo, $j, "nomecam" ), "anousu" ) > 0) {
 										fputs ( $fd, "$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . " = db_getsession('DB_anousu');" . "\n" );
 										fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',3," . $funcaojava . ")" . "\n" );
@@ -821,13 +821,13 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 								}
 							}
 						} else {
-							fputs ( $fd, "<?php " . "\n" );
+							fputs ( $fd, "<?" . "\n" );
 							fputs ( $fd, "db_inputdata('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "',@$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "_dia,@$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "_mes,@$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "_ano,true,'text',$" . "db_opcao," . $funcaojava . ")" . "\n" );
 							fputs ( $fd, "?>" . "\n" );
 						}
 						if ($funcaojava != '""') {
 							// strpos($campofk,pg_result($campo,$j,"codcam")) > 0 ){
-							fputs ( $fd, '       <?php ' . "\n" );
+							fputs ( $fd, '       <?' . "\n" );
 							for($fk = 0; $fk < $Nforkey; $fk ++) {
 								if (pg_result ( $forkey, $fk, 'codcam' ) == pg_result ( $campo, $j, "codcam" )) {
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $forkey, $fk, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $forkey, $fk, "tamanho" ) ) . ',$I' . trim ( pg_result ( $forkey, $fk, "nomecam" ) ) . ",true,'text',3,'')" . "\n" );
@@ -838,7 +838,7 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 					
 					} else {
 						
-						fputs ( $fd, "<?php " . "\n" );
+						fputs ( $fd, "<?" . "\n" );
 						fputs ( $fd, '$x = array(' );
 						$virgula = "";
 						for($ver = 0; $ver < pg_numrows ( $verres ); $ver ++) {
@@ -869,7 +869,7 @@ for($l = 0; $l < count ( $arr_nometabfilho ); $l ++) {
 			fputs ( $fd, ' <table>' . "\n" );
 			fputs ( $fd, '  <tr>' . "\n" );
 			fputs ( $fd, '    <td valign="top"  align="center">  ' . "\n" );
-			fputs ( $fd, '    <?php ' . "\n" );
+			fputs ( $fd, '    <?' . "\n" );
 			fputs ( $fd, '	 $chavepri= array(' );
 			$vir = '';
 			for($p = 0; $p < $Npk; $p ++) {
@@ -993,7 +993,7 @@ if ($numrows == 0) {
 </table>
 </body>
 </html>
-<?php 
+<?
 		exit ();
 	}
 	
@@ -1008,13 +1008,13 @@ if ($numrows == 0) {
 </table>
 </body>
 </html>
-<?php 
+<?
 		exit ();
 	}
 	
 	umask ( 74 );
 	$fd = fopen ( strtolower ( $arquivo ), "w" );
-	fputs ( $fd, "<?php \n" );
+	fputs ( $fd, "<?\n" );
 	for($i = 0; $i < $numrows; $i ++) {
 		$varpk = "";
 		$pk = db_query ( "select a.nomearq,c.nomecam,p.sequen
@@ -1085,7 +1085,7 @@ if ($numrows == 0) {
 				if (strpos ( $campofk, trim ( pg_result ( $campo, $j, "codcam" ) ) ) > 0) {
 					
 					if (strpos ( $campofktipo, trim ( pg_result ( $campo, $j, "codcam" ) ) ) == 0) {
-						fputs ( $fd, '       <?php ' . "\n" );
+						fputs ( $fd, '       <?' . "\n" );
 						$funcaojava = '"js_pesquisa' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . '(true);"';
 						fputs ( $fd, '       db_ancora(@$L' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ',' . $funcaojava . ',$db_opcao);' . "\n" );
 						fputs ( $fd, '       ?>' . "\n" );
@@ -1105,7 +1105,7 @@ if ($numrows == 0) {
 				if (strpos ( $campofktipo, trim ( pg_result ( $campo, $j, "codcam" ) ) ) > 0) {
 					for($fk = 0; $fk < $Nforkey; $fk ++) {
 						if (pg_result ( $campo, $j, "codcam" ) == pg_result ( $forkey, $fk, 'codcam' ) && pg_result ( $forkey, $fk, 'tipoobjrel' ) == 1) {
-							fputs ( $fd, '       <?php ' . "\n" );
+							fputs ( $fd, '       <?' . "\n" );
 							fputs ( $fd, '       include(modification("classes/db_' . trim ( pg_result ( $forkey, $fk, 'nomearq' )) ) . '_classe.php");' . "\n" );
 							fputs ( $fd, '       $cl' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . ' = new cl_' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . ';' . "\n" );
 							fputs ( $fd, '       $result = $cl' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . '->sql_record($cl' . trim ( pg_result ( $forkey, $fk, 'nomearq' ) ) . '->sql_query(' );
@@ -1136,26 +1136,26 @@ if ($numrows == 0) {
 							if ((substr ( $xc, 0, 3 ) == "cha") || (substr ( $xc, 0, 3 ) == "var") || (substr ( $xc, 0, 3 ) == "flo")) {
 								if (strpos ( "--" . $varpk, trim ( pg_result ( $campo, $j, "nomecam" ) ) ) != 0) {
 									//chave primaria
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',3," . $funcaojava . ")" . "\n" );
 									fputs ( $fd, "?>" . "\n" );
 								} else {
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',$" . "db_opcao," . $funcaojava . ")" . "\n" );
 									fputs ( $fd, "?>" . "\n" );
 								}
 							} else if (substr ( $xc, 0, 3 ) == "boo") {
-								fputs ( $fd, "<?php " . "\n" );
+								fputs ( $fd, "<?" . "\n" );
 								fputs ( $fd, '$x = array("f"=>"NAO","t"=>"SIM");' . "\n" );
 								fputs ( $fd, "db_select('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'," . '$x' . ",true,$" . "db_opcao," . $funcaojava . ");" . "\n" );
 								fputs ( $fd, "?>" . "\n" );
 							} else if (substr ( $xc, 0, 3 ) == "tex") {
-								fputs ( $fd, "<?php " . "\n" );
+								fputs ( $fd, "<?" . "\n" );
 								fputs ( $fd, "db_textarea('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',0,0,$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',$" . "db_opcao," . $funcaojava . ")" . "\n" );
 								fputs ( $fd, "?>" . "\n" );
 							} else {
 								if (strpos ( "--" . $varpk, trim ( pg_result ( $campo, $j, "nomecam" ) ) ) != 0) {
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									if (strpos ( pg_result ( $campo, $j, "nomecam" ), "anousu" ) > 0) {
 										fputs ( $fd, "$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . " = db_getsession('DB_anousu');" . "\n" );
 									}
@@ -1170,7 +1170,7 @@ if ($numrows == 0) {
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text'," . $opcao . "," . $funcaojava . ")" . "\n" );
 									fputs ( $fd, "?>" . "\n" );
 								} else {
-									fputs ( $fd, "<?php " . "\n" );
+									fputs ( $fd, "<?" . "\n" );
 									if (strpos ( pg_result ( $campo, $j, "nomecam" ), "anousu" ) > 0) {
 										fputs ( $fd, "$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . " = db_getsession('DB_anousu');" . "\n" );
 										fputs ( $fd, "db_input('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $campo, $j, "tamanho" ) ) . ',$I' . trim ( pg_result ( $campo, $j, "nomecam" ) ) . ",true,'text',3," . $funcaojava . ")" . "\n" );
@@ -1181,13 +1181,13 @@ if ($numrows == 0) {
 								}
 							}
 						} else {
-							fputs ( $fd, "<?php " . "\n" );
+							fputs ( $fd, "<?" . "\n" );
 							fputs ( $fd, "db_inputdata('" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "',@$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "_dia,@$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "_mes,@$" . trim ( pg_result ( $campo, $j, "nomecam" ) ) . "_ano,true,'text',$" . "db_opcao," . $funcaojava . ")" . "\n" );
 							fputs ( $fd, "?>" . "\n" );
 						}
 						if ($funcaojava != '""') {
 							// strpos($campofk,pg_result($campo,$j,"codcam")) > 0 ){
-							fputs ( $fd, '       <?php ' . "\n" );
+							fputs ( $fd, '       <?' . "\n" );
 							for($fk = 0; $fk < $Nforkey; $fk ++) {
 								if (pg_result ( $forkey, $fk, 'codcam' ) == pg_result ( $campo, $j, "codcam" )) {
 									fputs ( $fd, "db_input('" . trim ( pg_result ( $forkey, $fk, "nomecam" ) ) . "'" . ',' . trim ( pg_result ( $forkey, $fk, "tamanho" ) ) . ',$I' . trim ( pg_result ( $forkey, $fk, "nomecam" ) ) . ",true,'text',3,'')" . "\n" );
@@ -1198,7 +1198,7 @@ if ($numrows == 0) {
 					
 					} else {
 						
-						fputs ( $fd, "<?php " . "\n" );
+						fputs ( $fd, "<?" . "\n" );
 						fputs ( $fd, '$x = array(' );
 						$virgula = "";
 						for($ver = 0; $ver < pg_numrows ( $verres ); $ver ++) {
@@ -1301,7 +1301,7 @@ if ($numrows == 0) {
 			
 			fputs ( $fd, "){" . "\n" );
 			fputs ( $fd, "  db_iframe_" . trim ( pg_result ( $result, $i, 'nomearq' ) ) . ".hide();" . "\n" );
-			fputs ( $fd, '  <?php ' . "\n" );
+			fputs ( $fd, '  <?' . "\n" );
 			fputs ( $fd, '  if($db_opcao!=1){' . "\n" );
 			fputs ( $fd, "    echo \" location.href = '\".basename($" . "GLOBALS[\"HTTP_SERVER_VARS\"][\"PHP_SELF\"]).\"?chavepesquisa='+chave" );
 			if (pg_numrows ( $pk ) > 1) {

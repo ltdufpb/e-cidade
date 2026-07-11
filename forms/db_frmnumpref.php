@@ -292,7 +292,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                         <tr>
                             <td
                             ="" title="<?= @$Tk03_respcargo ?>">
-                            <?php 
+                            <?
                             db_ancora(@$Lk03_respcargo, "js_pesquisak03_respcargo(true)", $db_opcao);
                             ?>
                             </td>
@@ -310,7 +310,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                 ?>
                             </td>
                             <td colspan='3'>
-                                <?php 
+                                <?
                                 db_input('k03_taxagrupo', 15, $Ik03_taxagrupo, true, 'text', $db_opcao, " onchange='js_pesquisak03_taxagrupo(false);'");
                                 db_input('k06_descr', 48, $Ik06_descr, true, 'text', 3, '');
                                 ?>
@@ -641,7 +641,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                                 <?php db_input("k03_".$campos["campo"], 2, $Ik03_.$campos["campo"],true,'text',$db_opcao, "", '', '', '', 3) ?>
                                             </td>
                                             <td nowrap="nowrap" title="<?= @$Tk03_.$campos["campo"] ?>" width="20%">
-                                                <?php 
+                                                <?
                                                 db_ancora("<strong>Documento Template:</strong>","js_pesquisaDocumento(true, '".$campos["campoTemplate"]."');",$db_opcao);
                                                 ?>
                                             </td>

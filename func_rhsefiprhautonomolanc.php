@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhsefiprhautonomolanc->rotulo->label("rh92_rhsefip");
               <?=$Lrh92_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh92_sequencial",10,$Irh92_sequencial,true,"text",4,"","chave_rh92_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhsefiprhautonomolanc->rotulo->label("rh92_rhsefip");
               <?=$Lrh92_rhsefip?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh92_rhsefip",10,$Irh92_rhsefip,true,"text",4,"","chave_rh92_rhsefip");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhsefiprhautonomolanc->rotulo->label("rh92_rhsefip");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhsefiprhautonomolanc.php")==true){
@@ -123,12 +123,12 @@ $clrhsefiprhautonomolanc->rotulo->label("rh92_rhsefip");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

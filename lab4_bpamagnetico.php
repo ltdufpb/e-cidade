@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -92,7 +92,7 @@ $clrotulo->label("la54_i_compano");
         <tr>
           <td><b>Tipo de BPA:</b></td>
           <td>
-            <?php 
+            <?
             if (! isset ( $tipo )) {
               $tipo = "02";
             }
@@ -107,10 +107,10 @@ $clrotulo->label("la54_i_compano");
             <table>
               <tr>
                 <td>
-                  <?php db_ancora ( "<b>Competencia</b>", "js_pesquisasd98_i_fechamento(true);", $db_opcao );?>
+                  <?db_ancora ( "<b>Competencia</b>", "js_pesquisasd98_i_fechamento(true);", $db_opcao );?>
                 </td>
                 <td colspan="3"> 
-                  <?php db_input ( 'linhas', 5, @$Ilinhas, true, 'hidden', $db_opcao, "" );
+                  <?db_input ( 'linhas', 5, @$Ilinhas, true, 'hidden', $db_opcao, "" );
                     db_input ( 'la54_i_compmes', 2, @$Isd97_i_compmes, true, 'text', 3, "" );
                     db_input ( 'la54_i_compano', 4, @$Isd97_i_compano, true, 'text', 3, "");
                   ?>
@@ -121,7 +121,7 @@ $clrotulo->label("la54_i_compano");
                   <b>Período de Fechamento :</b>
                 </td>
                 <td> 
-                <?php  db_inputdata('la54_d_dataini',
+                <? db_inputdata('la54_d_dataini',
                                 @$la54_d_dataini_dia,
                                 @$la54_d_dataini_mes,
                                 @$la54_d_dataini_ano,
@@ -133,7 +133,7 @@ $clrotulo->label("la54_i_compano");
                 A
                 </td>
                 <td> 
-                  <?php  db_inputdata('la54_d_datafim',
+                  <? db_inputdata('la54_d_datafim',
                                   @$la54_d_datafim_dia,
                                   @$la54_d_datafim_mes,
                                   @$la54_d_datafim_ano,
@@ -145,7 +145,7 @@ $clrotulo->label("la54_i_compano");
               <tr>
                 <td><b>Tipo de fianciamento</b></td>
                 <td colspan="3">
-                  <?php 
+                  <?
                     db_input ( 'la54_i_financiamento', 6, @$sd97_i_financiamento, true, 'hidden', 3, "" );
                     db_input ( 'sd65_c_nome', 30, @$sd65_c_nome, true, 'text', 3, "" );
                   ?>
@@ -158,7 +158,7 @@ $clrotulo->label("la54_i_compano");
         <tr>
           <td>
             <fieldset><legend>Laboratorio</legend>
-              <?php 
+              <?
               $sSql           = $cllab_laboratorio->sql_query("","la02_i_codigo,la02_c_descr");
               $rsLaboratorios = $cllab_laboratorio->sql_record($sSql);
               db_multiploselect("la02_i_codigo",
@@ -179,12 +179,12 @@ $clrotulo->label("la54_i_compano");
             <table>
               <tr>
                 <td><b>Nome:</b></td>
-                <td><?php db_input ( 'snomedepart', 30, @$Lsnomedepart, true, 'text', 3, "" ); ?></td>
+                <td><?db_input ( 'snomedepart', 30, @$Lsnomedepart, true, 'text', 3, "" ); ?></td>
               </tr>
               <tr>
                 <td nowrap title="Sigla"><b>Sigla<b/></td>
                 <td colspan=3>
-                  <?php 
+                  <?
                     if (! isset ( $sigla )) {
                       $sigla = "";
                     }
@@ -194,7 +194,7 @@ $clrotulo->label("la54_i_compano");
               </tr>
               <tr>
                 <td><b>CNPJ:</b></td>
-                <td><?php  db_input ( 'cnpj', 30, @$cnpj, true, 'text', 3, "" ); ?></td>
+                <td><? db_input ( 'cnpj', 30, @$cnpj, true, 'text', 3, "" ); ?></td>
               </tr>
             </table>
             </fieldset>
@@ -207,7 +207,7 @@ $clrotulo->label("la54_i_compano");
             <tr>
               <td nowrap title="Sec. de Destino "><B>Sec. de Destino<B /></td>
               <td colspan=3>
-               <?php 
+               <?
                  if (! isset ( $destino )) {
                   $destino = "";
                  }
@@ -235,7 +235,7 @@ $clrotulo->label("la54_i_compano");
                   <td><b>Arquivo:</b></td>
                   <td>
                     PA
-                    <?php db_input('sNomeArquivo', 20, @$sNomeArquivo, true, 'text', $db_opcao, "" );?>
+                    <?db_input('sNomeArquivo', 20, @$sNomeArquivo, true, 'text', $db_opcao, "" );?>
                     .<span id="nomeExtencao" ></span>
                   </td>
                 </tr>
@@ -246,7 +246,7 @@ $clrotulo->label("la54_i_compano");
       </table>
       </fieldset>
       </center>
-      <?php 
+      <?
         $regerar = false;
         if (isset ( $sd97_i_compmes )) {
           $result = $clsau_fechamento->sql_record ( $clsau_fechamento->sql_query ( "", "sd97_i_codigo", "", "sd97_i_compmes=$sd97_i_compmes and sd97_i_compano=$sd97_i_compano" ) );
@@ -281,7 +281,7 @@ $clrotulo->label("la54_i_compano");
     </td>
   </tr>
 </table>
-<?php 
+<?
 db_menu ( db_getsession ( "DB_id_usuario" ), 
           db_getsession ( "DB_modulo" ),
           db_getsession ( "DB_anousu" ),
@@ -290,7 +290,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
   </body>
 </html>
 <script>
-  <?php 
+  <?
 	if(isset($sd97_i_compmes)){
 	  echo "document.getElementById('nomeExtencao').innerHTML = js_nomeMes($sd97_i_compmes,1);";
 	}
@@ -339,7 +339,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
                         'Pesquisa',true);
   }
 </script>
-<?php 
+<?
   if (isset ( $gerararquivo )) {
 
     $oDados->iCompano     = $la54_i_compano;
@@ -400,7 +400,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
 
           }
           </script>
-        <?php 
+        <?
         $cllab_bpamagnetico->erro(true,false);
 
       }

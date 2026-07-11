@@ -51,7 +51,7 @@ $clAbertRegPreco = new aberturaRegistroPreco($oGet->pc10_numero);
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?php 
+<?
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js,
              classes/infoLancamentoContabil.classe.js,dbmessageBoard.widget.js");
 db_app::load("estilos.css, grid.style.css,tab.style.css");
@@ -142,7 +142,7 @@ db_app::load("estilos.css, grid.style.css,tab.style.css");
  </tr>
  </table>
  <fieldset>
-    <?php 
+    <?
     $oTabDetalhes = new verticalTab("detalhesemp",300);
     $oTabDetalhes->add("estimativas", "Estimativas",
                        "com4_consabertregistodetalhes001.php?pc10_numero={$oGet->pc10_numero}&exec=estimativa");

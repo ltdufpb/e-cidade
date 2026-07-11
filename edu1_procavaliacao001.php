@@ -226,7 +226,7 @@ try {
     <legend>
      <b><?=($db_opcao==1?"Inclusão":($db_opcao==2?"Alteração":"Exclusão"))?> da Avaliação Periódica <?=@$ed09_c_descr?></b>
     </legend>
-    <?php include(modification("forms/db_frmprocavaliacao.php"));?>
+    <?include(modification("forms/db_frmprocavaliacao.php"));?>
    </fieldset>
    </center>
   </td>
@@ -239,7 +239,7 @@ js_tabulacaoforms("form1","ed41_i_formaavaliacao",true,1,"ed41_i_formaavaliacao"
 </script>
 <?php
 if( isset( $chavepesquisa ) ) {
-  ?><script>iframe_aval.location.href = "edu1_procedimento004.php?codigo=<?=$ed41_i_formaavaliacao?>";</script><?php 
+  ?><script>iframe_aval.location.href = "edu1_procedimento004.php?codigo=<?=$ed41_i_formaavaliacao?>";</script><?
 }
 
 if( isset( $incluir ) ) {
@@ -306,7 +306,7 @@ if( isset( $excluir ) ) {
       parent.location.href = 'edu1_avaliacoes.php?procedimento=<?=$ed41_i_procedimento?>&ed40_c_descr=<?=$ed40_c_descr?>'+
                              '&forma=<?=$forma?>&possuiTurmasEncerradas=<?=$sPossuiTurmasEncerradas?>';
     </script>
-    <?php 
+    <?
   }
 }
 
@@ -388,5 +388,5 @@ function AvalResultList( $nome, $procedimento, $disabled, $sequencia, $avalvinc,
     }
     ?>
   </select>
-  <?php 
+  <?
 }

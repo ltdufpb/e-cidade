@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,7 @@ $iInstit       = db_getsession('DB_instit');
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php    
+<?   
   db_app::load("scripts.js, strings.js, prototype.js");
   db_app::load("estilos.css, grid.style.css");
 ?>
@@ -156,7 +156,7 @@ function js_emite() {
         <table align="left" border="0">
           <tr>
             <td align="left">
-              <?php 
+              <?
                 $cl_ruas                          = new cl_arquivo_auxiliar;
                 $cl_ruas->nome_botao              = "db_lanca_j14_codigo";
                 $cl_ruas->cabecalho               = "<strong>Logradouros Selecionados</strong>";
@@ -182,7 +182,7 @@ function js_emite() {
           </tr>
           <tr>
             <td align="left">
-              <?php 
+              <?
                 $cl_ativid                          = new cl_arquivo_auxiliar;
                 $cl_ativid->nome_botao              = "db_lanca_q03_ativ";
                 $cl_ativid->cabecalho               = "<strong>Atividades Selecionadas</strong>";
@@ -208,7 +208,7 @@ function js_emite() {
           </tr>
           <tr>
             <td align="left">
-              <?php 
+              <?
                 $cl_arretipo                          = new cl_arquivo_auxiliar;
                 $cl_arretipo->nome_botao              = "db_lanca_k00_tipo";
                 $cl_arretipo->cabecalho               = "<strong>Tipo de Débito Selecionados</strong>";
@@ -238,7 +238,7 @@ function js_emite() {
 			          <tr>
 			            <td align="left"><b>Inscrições:</b></td>
 			            <td align="left">
-			              <?php  
+			              <? 
 			                $aInscricao = array("T"   => "Todas",
 			                                    "BA"  => "Baixadas",
 			                                    "NBA" => "Não Baixadas");
@@ -248,7 +248,7 @@ function js_emite() {
 			            
                   <td align="left"><b>Data:</b></td>
                   <td align="left">
-                    <?php  
+                    <? 
                       $sWhere           = "k115_instit = {$iInstit}";
                       $sCampos          = "distinct k115_data";
                       $sOrderBy         = "k115_data desc";
@@ -268,7 +268,7 @@ function js_emite() {
 			            
 			            <td align="left"><b>Ordenar por:</b></td>
 			            <td align="left">
-			              <?php  
+			              <? 
 			                $aOrdenar = array("A" => "Atividades",
 			                                  "I" => "Inscrição",
 			                                  "L" => "Logradouro",
@@ -297,7 +297,7 @@ function js_emite() {
     </td>
   </tr>
 </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

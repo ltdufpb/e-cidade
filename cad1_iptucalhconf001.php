@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,13 +63,13 @@ if(isset($incluir)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
         <div class="container">
-            <?php  include(modification("forms/db_frmiptucalhconf.php")); ?>
+            <? include(modification("forms/db_frmiptucalhconf.php")); ?>
         </div>
     </center>
 	</td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -77,7 +77,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","j89_codhis",true,1,"j89_codhis",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
   if($cliptucalhconf->erro_status=="0"){
     $cliptucalhconf->erro(true,false);

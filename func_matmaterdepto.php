@@ -55,7 +55,7 @@ $clmatmater->rotulo->label("m60_descr");
               <?=$Lm60_codmater?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");
 		       ?>
             </td>

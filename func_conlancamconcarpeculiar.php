@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconlancamconcarpeculiar->rotulo->label("c08_sequencial");
               <?=$Lc08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c08_sequencial",10,$Ic08_sequencial,true,"text",4,"","chave_c08_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconlancamconcarpeculiar->rotulo->label("c08_sequencial");
               <?=$Lc08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c08_sequencial",10,$Ic08_sequencial,true,"text",4,"","chave_c08_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconlancamconcarpeculiar->rotulo->label("c08_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancamconcarpeculiar.php")==true){
@@ -123,12 +123,12 @@ $clconlancamconcarpeculiar->rotulo->label("c08_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

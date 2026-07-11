@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clbomov->rotulo->label("bo04_codbo");
               <?=$Lbo04_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("bo04_codmov",9,$Ibo04_codmov,true,"text",4,"","chave_bo04_codmov");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clbomov->rotulo->label("bo04_codbo");
               <?=$Lbo04_codbo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("bo04_codbo",6,$Ibo04_codbo,true,"text",4,"","chave_bo04_codbo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clbomov->rotulo->label("bo04_codbo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bomov.php")==true){
@@ -119,12 +119,12 @@ $clbomov->rotulo->label("bo04_codbo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

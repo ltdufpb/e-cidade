@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,7 +47,7 @@ function db_fputs($variavel,$conteudo){
 </head>
 <body bgcolor=#CCCCCC  marginwidth="0" marginheight="0" bgcolor="#cccccc" valign="top" >
 
-<?php 
+<?
 
   //cria o arquivo 
   $arquivo = "/tmp/processa002.sql";
@@ -273,14 +273,14 @@ function db_fputs($variavel,$conteudo){
 ?>
 <center><h3>Erro processamento<br><?=$fd?></h3></center>
 
-<?php 
+<?
 
     }else{
 
 ?>
 <table width="100%"><tr><td align="center"><h3>Concluído...</h3></td></tr></table>
 
-<?php 
+<?
     }
 ?>
 

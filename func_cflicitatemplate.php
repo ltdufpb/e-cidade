@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcflicitatemplate->rotulo->label("l35_db_documentotemplate");
               <?=$Ll35_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("l35_sequencial",10,$Il35_sequencial,true,"text",4,"","chave_l35_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcflicitatemplate->rotulo->label("l35_db_documentotemplate");
               <?=$Ll35_db_documentotemplate?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("l35_db_documentotemplate",10,$Il35_db_documentotemplate,true,"text",4,"","chave_l35_db_documentotemplate");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcflicitatemplate->rotulo->label("l35_db_documentotemplate");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cflicitatemplate.php")==true){
@@ -123,12 +123,12 @@ $clcflicitatemplate->rotulo->label("l35_db_documentotemplate");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_versaoant->rotulo->label("db31_data");
               <?=$Ldb31_codver?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db31_codver",6,$Idb31_codver,true,"text",4,"","chave_db31_codver");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_versaoant->rotulo->label("db31_data");
               <?=$Ldb31_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db31_data",10,$Idb31_data,true,"text",4,"","chave_db31_data");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_versaoant->rotulo->label("db31_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_versaoant.php")==true){
@@ -119,12 +119,12 @@ $cldb_versaoant->rotulo->label("db31_data");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

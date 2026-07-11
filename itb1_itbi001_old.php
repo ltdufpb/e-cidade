@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -279,7 +279,7 @@ if(!isset($pri) && $tipo != "rural"){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmitbi.php"));
 	?>
     </center>
@@ -288,7 +288,7 @@ if(!isset($pri) && $tipo != "rural"){
 </table>
 </body>
 </html>
-<?php 
+<?
 
 if(isset($pri) && $tipo != "rural" && !isset($incluir) && !isset($alterar)){
 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ if(isset($incluir)){
 <center>
 <table width="60%" border="0" cellspacing="0" cellpadding="0">
   <form name="form1" method="post">
-  <?php 
+  <?
   db_input('sselecionados',20,0,true,'hidden',3);
   db_input('nselecionados',20,0,true,'hidden',3);
   ?>
@@ -92,7 +92,7 @@ if(isset($incluir)){
               <Legend align="left">
                 <b>Demais Bases</b>
               </Legend>
-<?php 
+<?
   $result_bases = $clbases->sql_record($clbases->sql_query(null,null,null,null,"r08_codigo,r08_descr","r08_codigo"," r08_instit = ".db_getsession("DB_instit")." and r08_anousu = ".db_anofolha()." and r08_mesusu = ".db_mesfolha()));
   $numrows_bases = $clbases->numrows;
 

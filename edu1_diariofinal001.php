@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -241,7 +241,7 @@ function SomaFaltas($codigo,$diario, $codaluno, $regencia, $reprovafreq, $calcfr
 <form name="form1" method="post" action="">
 <input name="ed43_i_codigo" type="hidden" value="<?=$ed43_i_codigo?>">
 <input name="regencia" type="hidden" value="<?=$regencia?>">
-<?php 
+<?
 if ($n_resultados == 0) {
 
   echo "<br><br><center>Procedimento de avaliação escolhido para esta turma não contém
@@ -318,29 +318,29 @@ if ($n_resultados == 0) {
      <td class="cabec1">Código</td>
      <?php if (trim((string) $ed37_c_tipo) == "PARECER") {?>
          <td colspan="2" class="cabec1">Resultado</td>
-     <?php } else {?>
+     <?} else {?>
 
          <td class="cabec1">Valor</td>
          <td class="cabec1">Resultado</td>
 
-     <?php }?>
+     <?}?>
 
      <td class="cabec1">Aulas</td>
      <td class="cabec1">Faltas</td>
      <td class="cabec1">Abonos</td>
-     <?php if ($pri_calculo == 2) {?>
+     <?if ($pri_calculo == 2) {?>
 
          <td class="cabec1">% DISC.</td>
          <td class="cabec1">% CHT</td>
 
-     <?php } else {?>
+     <?} else {?>
          <td class="cabec1">%</td>
-     <?php }?>
+     <?}?>
      <td class="cabec1">Resultado</td>
      <td class="cabec1">Final</td>
      <td class="cabec1">Observações</td>
     </tr>
-    <?php 
+    <?
     if ($linhas > 0) {
 
       $cor1 = "#f3f3f3";
@@ -386,7 +386,7 @@ if ($n_resultados == 0) {
          <?=$ed60_c_parecer == "S"?"<b>&nbsp;&nbsp;&nbsp;(NEE - Parecer)</b>":""?>
         </td>
         <td align="center" class='aluno'>
-        <?php 
+        <?
         if (trim((string) $ed81_c_todoperiodo) == "S" && $ed60_c_ativa == "S") {
           if ($ed81_i_justificativa != "") {
           	$valor = 'APROVADO';
@@ -400,7 +400,7 @@ if ($n_resultados == 0) {
         ?>
         </td>
         <td align="right" class='aluno'><b><?=$ed47_i_codigo?></b></td>
-        <?php 
+        <?
         if (trim((string) $ed60_c_concluida) == "S") {
 
           if (trim($ed60_c_situacao != "MATRICULADO")) {
@@ -413,11 +413,11 @@ if ($n_resultados == 0) {
             <td align='center' class='aluno'>&nbsp;</td>
             <td align='center' class='aluno'>&nbsp;</td>
             <td align='center' class='aluno'>&nbsp;</td>
-          <?php if ($pri_calculo == 2) {?>
+          <?if ($pri_calculo == 2) {?>
               <td align='center' class='aluno'>&nbsp;</td>
-          <?php }?>
+          <?}?>
             <td align='center' class='aluno'>&nbsp;</td>
-        <?php 
+        <?
 
           } else {
 
@@ -436,10 +436,10 @@ if ($n_resultados == 0) {
                         href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
                         title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
                   </td>
-          <?php 
+          <?
                 } else {?>
                   <td align='center' class='aluno'>&nbsp;</td>
-              <?php }
+              <?}
             } else if (trim((string) $ed59_c_freqglob) != "F") {
 
          ?>
@@ -447,18 +447,18 @@ if ($n_resultados == 0) {
                 <td colspan="2" class='aluno'align="center">
                   <?=$ed74_c_resultadoaprov == "A"?"{$sLabelAprovado}":"$sLabelReprovado"?>
                 </td>
-            <?php } else {?>
+            <?} else {?>
 
               <?php if (trim((string) $ed37_c_tipo) == "NOTA") {?>
                     <td class='aluno' align="right"><?=ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano)?></td>
-              <?php } else {?>
+              <?} else {?>
                   <td class='aluno' align="center"><?=$ed74_c_valoraprov?></td>
-              <?php }?>
+              <?}?>
                 <td class='aluno' align="center"><?=$ed74_c_resultadoaprov == "A"?"{$sLabelAprovado}":"{$sLabelReprovado}"?></td>
-            <?php }?>
+            <?}?>
             <?php if (trim((string) $ed59_c_freqglob) == "A") {?>
                 <td class='aluno' colspan="<?=5+$add_coluna?>" align="center">Disciplina sem frequência</td>
-            <?php } else {
+            <?} else {
                 $perc_freq = SomaFaltas($ed74_i_procresultadofreq,$ed74_i_diario,$ed47_i_codigo,$regencia,$reprovafreq,
                                         $ed74_i_calcfreq,$ed59_i_turma,$ed59_i_serie, $ed52_i_ano
                                        );
@@ -467,8 +467,8 @@ if ($n_resultados == 0) {
                 <td align="center" class='aluno'><?=@$perc_array[3]==""?0:@$perc_array[3]?></td>
                 <td align="center" class='aluno'><?=@$perc_array[1]==""?0:@$perc_array[1]?></td>
                 <td align="center" class='aluno'><?=@$perc_array[2]==""?0:@$perc_array[2]?></td>
-              <?php if ($resultedu == 'S') {?>
-                <?php if ($pri_calculo == 2) {?>
+              <?if ($resultedu == 'S') {?>
+                <?if ($pri_calculo == 2) {?>
                     <td class='aluno' align="right"><?=number_format(@$perc_array[0],2,".",".")?></td>
                     <td class='aluno' align="right">
                        <a style="color:black"
@@ -478,11 +478,11 @@ if ($n_resultados == 0) {
                                                             <?=ArredondamentoFrequencia::arredondar($ed74_i_percfreq, $ed52_i_ano)?>
                        </a>
                     </td>
-                <?php } else {?>
+                <?} else {?>
                     <td class='aluno' align="right"><?=$ed74_i_percfreq?></td>
-                <?php }?>
-              <?php } else {?>
-                <?php if ($pri_calculo == 2) {?>
+                <?}?>
+              <?} else {?>
+                <?if ($pri_calculo == 2) {?>
                     <td class='aluno' align="right"><?=$perc_array[0]?></td>
                     <td class='aluno' align="right">
                       <a style="color:black"
@@ -493,11 +493,11 @@ if ($n_resultados == 0) {
                                                         <?=ArredondamentoFrequencia::arredondar($ed74_i_percfreq, $ed52_i_ano)?>
                       </a>
                     </td>
-                <?php } else {?>
+                <?} else {?>
                     <td class='aluno' align="right"><?=$ed74_i_percfreq?></td>
-                <?php }?>
-              <?php }?>
-           <?php 
+                <?}?>
+              <?}?>
+           <?
                 if ($reprovafreq == "N") {
                   $res_freqq = "Não reprova por frequência";
                 } else {
@@ -505,10 +505,10 @@ if ($n_resultados == 0) {
                 }
            ?>
                 <td class='aluno' align="center"><?=$res_freqq?></td>
-            <?php }?>
+            <?}?>
               <td class='aluno' align="center">
                 <font color="<?=$ed74_c_resultadofinal=='R'?'#FF0000':'#000000'?>">
-                  <?php 
+                  <?
                    echo $ed74_c_resultadofinal == "A"?"{$sLabelAprovado}":"{$sLabelReprovado}";
                    if ($disciplina_com_progressao == 't') {
                      echo " (Progressão Parcial / Dependência)";
@@ -522,10 +522,10 @@ if ($n_resultados == 0) {
                      href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
                      title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O </a></b>
                 </td>
-         <?php 
+         <?
               } else {?>
                 <td align='center' class='aluno'>&nbsp;</td>
-            <?php }
+            <?}
             } else {
               $perc_freq = SomaFaltas($ed43_i_codigo,$ed74_i_diario,$ed47_i_codigo,$regencia,$reprovafreq,
                                       $ed40_i_calcfreq,$ed59_i_turma,$ed59_i_serie, $ed52_i_ano
@@ -536,8 +536,8 @@ if ($n_resultados == 0) {
               <td align="center" class='aluno'><?=@$perc_array[3] == ""?0:@$perc_array[3]?></td>
               <td align="center" class='aluno'><?=@$perc_array[1] == ""?0:@$perc_array[1]?></td>
               <td align="center" class='aluno'><?=@$perc_array[2] == ""?0:@$perc_array[2]?></td>
-            <?php if ($resultedu == 'S') {?>
-              <?php if ($pri_calculo == 2) {?>
+            <?if ($resultedu == 'S') {?>
+              <?if ($pri_calculo == 2) {?>
                   <td class='aluno' align="right"><?=$perc_array[0]?></td>
                   <td class='aluno' align="right">
                   <a style="color:black"
@@ -548,11 +548,11 @@ if ($n_resultados == 0) {
                                                      <?=ArredondamentoFrequencia::arredondar($ed74_i_percfreq, $ed52_i_ano)?>
                   </a>
                  </td>
-              <?php } else {?>
+              <?} else {?>
                   <td class='aluno' align="right"><?=$ed74_i_percfreq?></td>
-              <?php }?>
-            <?php } else {?>
-              <?php if ($pri_calculo == 2) {?>
+              <?}?>
+            <?} else {?>
+              <?if ($pri_calculo == 2) {?>
                   <td class='aluno' align="right"><?=$perc_array[0]?></td>
                   <td class='aluno' align="right">
                   <a style="color:black"
@@ -563,10 +563,10 @@ if ($n_resultados == 0) {
                                                      <?=ArredondamentoFrequencia::arredondar($ed74_i_percfreq, $ed52_i_ano)?>
                   </a>
                  </td>
-              <?php } else {?>
+              <?} else {?>
                   <td class='aluno' align="right"><?=$ed74_i_percfreq?></td>
-              <?php }?>
-            <?php }?>
+              <?}?>
+            <?}?>
                <td class='aluno' align="center"><?=$ed74_c_resultadofreq=="A"?"{$sLabelAprovado}":"{$sLabelReprovado}"?></td>
                <td class='aluno' align="center">
                   <font color="<?=$ed74_c_resultadofinal=='R'?'#FF0000':'#000000'?>">
@@ -579,10 +579,10 @@ if ($n_resultados == 0) {
                        href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
                        title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
                  </td>
-         <?php 
+         <?
                } else {?>
                  <td align='center' class='aluno'>&nbsp;</td>
-             <?php }
+             <?}
             }
           }
         } else {
@@ -606,7 +606,7 @@ if ($n_resultados == 0) {
             <td class='aluno'>&nbsp;</td>
             <td class='aluno' colspan="<?=5+$add_coluna?>">&nbsp;</td>
 
-        <?php 
+        <?
           } else {
             $valor = "";
             if (trim((string) $ed59_c_freqglob) != "F") {
@@ -646,11 +646,11 @@ if ($n_resultados == 0) {
                 <td class='aluno'>&nbsp;</td>
                 <td class='aluno'>&nbsp;</td>
                 <td class='aluno'>&nbsp;</td>
-              <?php if ($pri_calculo == 2) {?>
+              <?if ($pri_calculo == 2) {?>
                   <td class='aluno'>&nbsp;</td>
-              <?php }?>
+              <?}?>
 	            <td class='aluno'>&nbsp;</td>
-            <?php } else if ($cldiarioresultado->numrows == 1) {
+            <?} else if ($cldiarioresultado->numrows == 1) {
 
                 db_fieldsmemory($result3,0);
 
@@ -700,7 +700,7 @@ if ($n_resultados == 0) {
                     }
                     ?>
                    <td align="center" class='aluno' colspan="2">
-                   <?php 
+                   <?
 
                     if ($ed73_c_aprovmin == "S") {
                       $mresultado = "{$sLabelAprovado}";
@@ -723,14 +723,14 @@ if ($n_resultados == 0) {
                     echo $mresultado;
                    ?>
                    </td>
-                <?php } else {
+                <?} else {
                     $resultado = $ed73_c_aprovmin == "N"?"R":"A";
                     ?>
                       <td align="<?=trim((string) $ed37_c_tipo)=='NIVEL'?'center':'right'?>" class='valor'>
                        <?=trim((string) $ed37_c_tipo)=="NIVEL"?$valor:ArredondamentoNota::formatar($valor, $ed52_i_ano)?>
                       </td>
                     <td align="center" class='aluno'>
-                   <?php 
+                   <?
                      if ($ed73_c_aprovmin == "S") {
                        $mresultado = "{$sLabelAprovado}";
                      } else if ($ed73_c_aprovmin == "N") {
@@ -750,7 +750,7 @@ if ($n_resultados == 0) {
                      echo $mresultado;
                     ?>
                     </td>
-                <?php }
+                <?}
                   if (trim($ed59_c_freqglob == "A")) {
                     $perc_freq = "&nbsp;";
                     $res_freq = "Disciplina sem frequência";
@@ -794,13 +794,13 @@ if ($n_resultados == 0) {
                   }
                   if (trim($ed59_c_freqglob == "A")) {?>
                     <td colspan="<?=5+$add_coluna?>" align="center" class='aluno'><?=$res_freq?></td>
-                <?php } else {?>
+                <?} else {?>
                     <td align="center" class='aluno'><?=@$perc_array[3]==""?0:@$perc_array[3]?></td>
                     <td align="center" class='aluno'><?=@$perc_array[1]==""?0:@$perc_array[1]?></td>
                     <td align="center" class='aluno'><?=@$perc_array[2]==""?0:@$perc_array[2]?></td>
-                  <?php if ($resultedu == 'S') {?>
+                  <?if ($resultedu == 'S') {?>
                       <td align="right" class='aluno'><?=$perc_array[0]?></td>
-                    <?php if ($pri_calculo == 2) {?>
+                    <?if ($pri_calculo == 2) {?>
                         <td align="right" class='aluno'>
                          <a style="color:black"
                              href="javascript:js_calculofreq(<?=$codigo?>,<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,
@@ -808,10 +808,10 @@ if ($n_resultados == 0) {
                             <?=@$perc_array[4]==""?0.00:number_format(@$perc_array[4],2,".",".")?>
                          </a>
                         </td>
-                    <?php }?>
-                  <?php } else {?>
+                    <?}?>
+                  <?} else {?>
                       <td align="right" class='aluno'><?=$perc_array[0]?></td>
-                    <?php if ($pri_calculo == 2) {?>
+                    <?if ($pri_calculo == 2) {?>
                         <td align="right" class='aluno'>
                           <a style="color:black"
                              href="javascript:js_calculofreq(<?=$codigo?>,<?=$ed59_i_turma?>,<?=$ed47_i_codigo?>,
@@ -819,11 +819,11 @@ if ($n_resultados == 0) {
                            <?=@$perc_array[4]==""?0:number_format(@$perc_array[4],2,".",".")?>
                           </a>
                          </td>
-                    <?php }?>
-                  <?php }?>
+                    <?}?>
+                  <?}?>
                     <td align="center" class='aluno'><?=$res_freq?></td>
-                <?php }?>
-           <?php 
+                <?}?>
+           <?
                 } else {
                   $codigo        = "";
                   $valor         = "";
@@ -838,11 +838,11 @@ if ($n_resultados == 0) {
                   <td class='aluno'>&nbsp;</td>
                   <td class='aluno'>&nbsp;</td>
                   <td class='aluno'>&nbsp;</td>
-                <?php if ($pri_calculo == 2) {?>
+                <?if ($pri_calculo == 2) {?>
                     <td class='aluno'>&nbsp;</td>
-                <?php }?>
+                <?}?>
                   <td class='aluno'>&nbsp;</td>
-              <?php 
+              <?
                 }
               } else {
                 $codigo        = "";
@@ -858,11 +858,11 @@ if ($n_resultados == 0) {
                 <td class='aluno'>&nbsp;</td>
                 <td class='aluno'>&nbsp;</td>
                 <td class='aluno'>&nbsp;</td>
-              <?php if ($pri_calculo == 2) {?>
+              <?if ($pri_calculo == 2) {?>
                   <td class='aluno'>&nbsp;</td>
-              <?php }?>
+              <?}?>
                 <td class='aluno'>&nbsp;</td>
-            <?php }
+            <?}
               db_inicio_transacao();
 
 
@@ -966,28 +966,28 @@ if ($n_resultados == 0) {
                 <td align='center' class='aluno'>&nbsp;</td>
                 <td align='center' class='aluno'>&nbsp;</td>
                 <td align='center' class='aluno'>&nbsp;</td>
-              <?php if ($pri_calculo == 2) {?>
+              <?if ($pri_calculo == 2) {?>
                   <td align='center' class='aluno'>&nbsp;</td>
-              <?php }?>
+              <?}?>
                 <td align='center' class='aluno'>&nbsp;</td>
-              <?php 
+              <?
               } else {
               ?>
                 <td colspan="2" align='center' class='aluno'>Disciplina sem aproveitamento</td>
-              <?php if (isset($preencha)) {?>
+              <?if (isset($preencha)) {?>
                   <td colspan="<?=5+$add_coluna?>" align='center' class='aluno'><?=$res_freq?></td>
-              <?php } else {?>
+              <?} else {?>
                   <td align='center' class='aluno'><?=$aulas==""?0:$aulas?></td>
                   <td align='center' class='aluno'><?=$faltas==""?0:$faltas?></td>
                   <td align='center' class='aluno'><?=$abonos==""?0:$abonos?></td>
-                <?php if ($resultedu == "S") {
+                <?if ($resultedu == "S") {
                 ?>
                     <td align='right' class='aluno'><?=ArredondamentoFrequencia::arredondar($perc_presenca*100, $ed52_i_ano);?></td>
-                <?php } else {?>
+                <?} else {?>
                     <td align='right' class='aluno'><?=ArredondamentoFrequencia::arredondar($perc_presenca*100, $ed52_i_ano);?></td>
-                <?php }?>
+                <?}?>
                   <td align='center' class='aluno'><?=$res_freq?></td>
-              <?php }
+              <?}
               }
               if ($ed220_c_aprovauto == "S") {
                 $resultadofreq = "A";
@@ -1070,7 +1070,7 @@ if ($n_resultados == 0) {
           }
        ?>
           <td align="center" class='aluno'>
-          <?php if(isset ($valor) && $valor == "" && $ed81_c_todoperiodo != "S" &&
+          <?if(isset ($valor) && $valor == "" && $ed81_c_todoperiodo != "S" &&
                $ed59_c_freqglob <> 'F' && $ed60_c_parecer != "S") {
 
               $resultadofinal = '';
@@ -1109,14 +1109,14 @@ if ($n_resultados == 0) {
                  href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
                  title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b>
             </td>
-        <?php } else {?>
+        <?} else {?>
             <td align='center' class='aluno'><b>
               <a style="color:blue;text-decoration:none;"
                  href="javascript:js_observacoes(<?=$ed47_i_codigo?>,'<?=$ed47_v_nome?>',<?=$ed74_i_codigo?>);"
                  title="Aluno <?=$ed47_v_nome?> possui observações cadastradas neste período.">O</a></b></td>
-        <?php }?>
+        <?}?>
         </tr>
-      <?php 
+      <?
         }
         if ($ed60_c_parecer == "S") {
           $ed37_c_tipo = $ed37_c_tipo_ant;
@@ -1129,7 +1129,7 @@ if ($n_resultados == 0) {
 </table>
 </body>
 </html>
-<?php 
+<?
     if (trim((string) @$ed60_c_concluida) == "N") {
       $sql_r    = " SELECT DISTINCT max(ed09_i_sequencia) ";
       $sql_r   .= "   FROM diarioavaliacao ";
@@ -1225,7 +1225,7 @@ if ($n_resultados == 0) {
 			              );
     }
 </script>
-<?php }?>
+<?}?>
 
 <?php
 

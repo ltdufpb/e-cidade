@@ -453,7 +453,7 @@ if (isset($e60_numemp) and $e60_numemp != "") {
             </tr>
             <tr>
                 <td align="left" nowrap title="<?= $Te61_autori ?>">
-                    <?php  db_ancora($Le61_autori, "pesquisa_autori();", 1); ?></td>
+                    <? db_ancora($Le61_autori, "pesquisa_autori();", 1); ?></td>
                 <td align="left" nowrap class='valores' colspan="3">
                     <?=$e61_autori;?>
                 </td>

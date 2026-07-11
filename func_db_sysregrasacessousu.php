@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_sysregrasacessousu->rotulo->label("db47_id_usuario");
               <?=$Ldb47_idacesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db47_idacesso",6,$Idb47_idacesso,true,"text",4,"","chave_db47_idacesso");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_sysregrasacessousu->rotulo->label("db47_id_usuario");
               <?=$Ldb47_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db47_id_usuario",10,$Idb47_id_usuario,true,"text",4,"","chave_db47_id_usuario");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_sysregrasacessousu->rotulo->label("db47_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_sysregrasacessousu.php")==true){
@@ -123,12 +123,12 @@ $cldb_sysregrasacessousu->rotulo->label("db47_id_usuario");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr>
           <td align="center">
-            <?php    
+            <?   
               $funcao_js = "parent.mostraDadosInscricao|0";
               $sql = " select  issbase.q02_inscr, 
 	                       CASE 

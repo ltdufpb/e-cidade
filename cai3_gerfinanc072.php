@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -467,7 +467,7 @@ $clnotificaarretipodoc->rotulo->label();
   			  <table>
 				<tr>
 	  			  <td>
-				    <?php 
+				    <?
 					    //---- Valores retornados por POST
 				      db_input("sNumpres"    ,10,"",true,"hidden",3,"");
 			  		  db_input("sDescrAcesso",10,"",true,"hidden",3,"");
@@ -478,20 +478,20 @@ $clnotificaarretipodoc->rotulo->label();
 				</tr>
 				<tr>
 				  <td>
-				  	<?php  echo $Lk50_notifica ?>
+				  	<? echo $Lk50_notifica ?>
 				  </td>
 				  <td>
-				  	<?php 
+				  	<?
 					  db_input("k50_notifica",10,$Ik50_notifica,true,"text",3,"");
 				  	?>
 				  </td>
 				</tr>
 				<tr>
 				  <td>
-				  	<?php  echo $Lk50_procede ?>
+				  	<? echo $Lk50_procede ?>
 				  </td>
 				  <td>
-				  	<?php 
+				  	<?
 					  $rsNotiTipo = $clnotitipo->sql_record($clnotitipo->sql_query_file(null,"*","k51_procede",""));
 			
 					  if ( $clnotitipo->numrows > 0 ) {
@@ -505,10 +505,10 @@ $clnotificaarretipodoc->rotulo->label();
 				</tr>
 				<tr>
 				  <td>
-				  	<?php  echo $Lk50_dtemite ?>
+				  	<? echo $Lk50_dtemite ?>
 				  </td>
 				  <td>
-				  	<?php 
+				  	<?
 				  	   $iDia = date("d",db_getsession("DB_datausu"));
 				  	   $iMes = date("m",db_getsession("DB_datausu"));
 				  	   $iAno = date("Y",db_getsession("DB_datausu"));  
@@ -519,12 +519,12 @@ $clnotificaarretipodoc->rotulo->label();
 				</tr>
 				<tr>
 				  <td>
-				  	<?php 
+				  	<?
 				  	   db_ancora("<b>Documento: </b>","js_pesquisaDoc(true);",$db_opcao);
 				  	?>
 				  </td>
 				  <td>
-				  	<?php 
+				  	<?
 				  	   db_input("k100_db_documento",10,"",true,"text",$db_opcao,"onChange='js_pesquisaDoc(false);'");
 				  	   db_input("descrDocumento"   ,40,"",true,"text",3,"");
 				  	?>
@@ -532,10 +532,10 @@ $clnotificaarretipodoc->rotulo->label();
 				</tr>
 				<tr>
 				  <td>
-				  	<?php  echo $Lk50_obs ?>
+				  	<? echo $Lk50_obs ?>
 				  </td>
 				  <td>
-				  	<?php  
+				  	<? 
 				  	  db_textarea("k50_obs"  ,3,51,$Ik50_obs,true,"text",1);
 				  	?>
 				  </td>
@@ -545,7 +545,7 @@ $clnotificaarretipodoc->rotulo->label();
 				  	<b>Usuário :</b>
 				  </td>
 				  <td>
-				  	<?php 
+				  	<?
 				  	   $rsNomeUsu = $cldb_usuarios->sql_record($cldb_usuarios->sql_query(db_getsession('DB_id_usuario'),"nome",null,""));
 				  	   $oNomeUsu  = db_utils::fieldsMemory($rsNomeUsu,0);
 				  	   $nomeUsu   = $oNomeUsu->nome;
@@ -564,7 +564,7 @@ $clnotificaarretipodoc->rotulo->label();
 			  </table>
 			  </fieldset>
 			</td>
-  			  <?php 				  	
+  			  <?				  	
 				echo "<td valign='top'>";
 				echo "	<fieldset>";
 				echo "	<legend><b>Débitos Notificados : </b></legend>";
@@ -717,7 +717,7 @@ $clnotificaarretipodoc->rotulo->label();
   }
 
 </script>
-<?php 
+<?
 	if (isset($incluir) || isset($alterar)) {
 
 		if($lSqlErro){	

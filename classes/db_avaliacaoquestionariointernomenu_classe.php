@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE avaliacaoquestionariointernomenu
 class cl_avaliacaoquestionariointernomenu { 

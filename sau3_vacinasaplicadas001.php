@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,9 +60,9 @@ $cl_vacinasaplicadas = new cl_vacinasaplicadas;
        <b>Período:</b>
      </td>
      <td>
-       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
         A
-       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
      </tr>
      <tr>
@@ -72,7 +72,7 @@ $cl_vacinasaplicadas = new cl_vacinasaplicadas;
      </tr>
     </table>
     </form>
-    <?php 
+    <?
      if(isset($Processar)){
       db_lovrot($cl_vacinasaplicadas->sql_query("","","","*",$ordem,"sd08_d_data BETWEEN '$data1' AND '$data2'"),15,"()");
      }else{
@@ -119,7 +119,7 @@ $cl_vacinasaplicadas = new cl_vacinasaplicadas;
   </td>
  </tr>
 </table>
-<?php 
+<?
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmer_requi->rotulo->label("me16_i_codigo");
               <?=$Lme16_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me16_i_codigo",5,$Ime16_i_codigo,true,"text",4,"","chave_me16_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmer_requi->rotulo->label("me16_i_codigo");
               <?=$Lme16_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me16_i_codigo",5,$Ime16_i_codigo,true,"text",4,"","chave_me16_i_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmer_requi->rotulo->label("me16_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -130,13 +130,13 @@ $clmer_requi->rotulo->label("me16_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?php 
+  <?
   
 }
 ?>

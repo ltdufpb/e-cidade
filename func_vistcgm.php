@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clvistcgm->rotulo->label("y73_numcgm");
               <?=$Ly73_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y73_codvist",10,$Iy73_codvist,true,"text",4,"","chave_y73_codvist");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clvistcgm->rotulo->label("y73_numcgm");
               <?=$Ly73_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y73_numcgm",10,$Iy73_numcgm,true,"text",4,"","chave_y73_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clvistcgm->rotulo->label("y73_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistcgm.php")==true){
@@ -119,12 +119,12 @@ $clvistcgm->rotulo->label("y73_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

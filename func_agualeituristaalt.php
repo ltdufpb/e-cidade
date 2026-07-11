@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("z01_nome");
               <?=$Lx16_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x16_numcgm",10,$Ix16_numcgm,true,"text",4,"","chave_x16_numcgm");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clrotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_agualeiturista.php")==true){
@@ -120,12 +120,12 @@ $clrotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

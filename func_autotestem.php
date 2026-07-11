@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clautotestem->rotulo->label("y24_numcgm");
               <?=$Ly24_codauto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y24_codauto",10,$Iy24_codauto,true,"text",4,"","chave_y24_codauto");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clautotestem->rotulo->label("y24_numcgm");
               <?=$Ly24_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y24_numcgm",8,$Iy24_numcgm,true,"text",4,"","chave_y24_numcgm");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clautotestem->rotulo->label("y24_numcgm");
               <?=$Ly24_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y24_numcgm",8,$Iy24_numcgm,true,"text",4,"","chave_y24_numcgm");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clautotestem->rotulo->label("y24_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autotestem.php")==true){
@@ -130,12 +130,12 @@ $clautotestem->rotulo->label("y24_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

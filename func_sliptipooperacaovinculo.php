@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsliptipooperacaovinculo->rotulo->label("k153_slip");
               <?=$Lk153_slip?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k153_slip",10,$Ik153_slip,true,"text",4,"","chave_k153_slip");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsliptipooperacaovinculo->rotulo->label("k153_slip");
               <?=$Lk153_slip?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k153_slip",10,$Ik153_slip,true,"text",4,"","chave_k153_slip");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clsliptipooperacaovinculo->rotulo->label("k153_slip");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sliptipooperacaovinculo.php")==true){
@@ -123,12 +123,12 @@ $clsliptipooperacaovinculo->rotulo->label("k153_slip");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

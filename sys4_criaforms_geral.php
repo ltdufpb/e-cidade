@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -65,7 +65,7 @@ border: 1px solid #999999;
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
 <tr> 
 <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
-<?php 
+<?
 if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
   <form method="post" name="estrut">                
     <table border="0" cellpadding="0" cellspacing="0">
@@ -86,7 +86,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
     </tr>
     </table>
     </form>
-    <?php 
+    <?
 } else {
   db_postmemory($HTTP_POST_VARS);
   // Tabelas
@@ -123,7 +123,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
     $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
     $arquivo = $root."/forms/"."db_frm".trim($nometab).".php";
     $fd = fopen($arquivo,"w");
-    fputs($fd,"<?php \n");
+    fputs($fd,"<?\n");
     for($i = 0;$i < $numrows;$i++) {
       $varpk = ""; 
       $pk = db_query("select a.nomearq,c.nomecam,p.sequen
@@ -176,7 +176,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
           fputs($fd,'    <td nowrap title="<?=@$T'.trim(pg_result($campo,$j,"nomecam")).'?>">'."\n");
           $funcaojava = '""';
           if( strpos($campofk,trim(pg_result($campo,$j,"codcam"))) > 0 ){
-            fputs($fd,'       <?php '."\n");
+            fputs($fd,'       <?'."\n");
             $funcaojava = '"js_pesquisa'.trim(pg_result($campo,$j,"nomecam")).'(true);"';
             fputs($fd,'       db_ancora(@$L'.trim(pg_result($campo,$j,"nomecam")).','.$funcaojava.',$db_opcao);'."\n");
             fputs($fd,'       ?>'."\n");
@@ -192,7 +192,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
             if( (substr($xc,0,3)=="cha") || ( substr($xc,0,3)=="var") || (substr($xc,0,3)=="flo") ){
               if(strpos($varpk,trim(pg_result($campo,$j,"nomecam")) ) != 0 ){
                 //chave primaria
-                fputs($fd,"<?php "."\n");
+                fputs($fd,"<?"."\n");
 
                 if(pg_result($campo,$j,"sequencia")==0)
                   fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."3,".$funcaojava.")"."\n");
@@ -201,32 +201,32 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
 
                 fputs($fd,"?>"."\n");
               }else{
-                fputs($fd,"<?php "."\n");
+                fputs($fd,"<?"."\n");
                 fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                 fputs($fd,"?>"."\n");
               }
             }else if(substr($xc,0,3)=="boo"){
-              fputs($fd,"<?php "."\n");
+              fputs($fd,"<?"."\n");
               fputs($fd,'$x = array("f"=>"NAO","t"=>"SIM");'."\n");
               fputs($fd,"db_select('".trim(pg_result($campo,$j,"nomecam"))."',".'$x'.",true,$"."db_opcao,".$funcaojava.");"."\n");
               fputs($fd,"?>"."\n");
             }else if(substr($xc,0,3)=="tex"){
-              fputs($fd,"<?php "."\n");
+              fputs($fd,"<?"."\n");
               fputs($fd,"db_textarea('".trim(pg_result($campo,$j,"nomecam"))."'".',0,0,$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n"); 
               fputs($fd,"?>"."\n");
             }else{
-              fputs($fd,"<?php "."\n");
+              fputs($fd,"<?"."\n");
               fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
               fputs($fd,"?>"."\n");
             }
           }else{
-            fputs($fd,"<?php "."\n");
+            fputs($fd,"<?"."\n");
             fputs($fd,"db_inputdata('".trim(pg_result($campo,$j,"nomecam"))."',@$".trim(pg_result($campo,$j,"nomecam"))."_dia,@$".trim(pg_result($campo,$j,"nomecam"))."_mes,@$".trim(pg_result($campo,$j,"nomecam"))."_ano,true,'text',$"."db_opcao,".$funcaojava.")"."\n");
             fputs($fd,"?>"."\n");
           }
           if($funcaojava != '""'){
             // strpos($campofk,pg_result($campo,$j,"codcam")) > 0 ){
-            fputs($fd,'       <?php '."\n");
+            fputs($fd,'       <?'."\n");
             for($fk=0;$fk<$Nforkey;$fk++){
               if( pg_result($forkey,$fk,'codcam') == pg_result($campo,$j,"codcam")){
                 fputs($fd,"db_input('".trim(pg_result($forkey,$fk,"nomecam"))."'".','.trim(pg_result($forkey,$fk,"tamanho")).',$I'.trim(pg_result($forkey,$fk,"nomecam")).",true,'text',3,'')"."\n");
@@ -289,7 +289,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
                     fputs($fd,'    <td nowrap title="<?=@$T'.trim(pg_result($campo,$j,"nomecam")).'?>">'."\n");
                     $funcaojava = '""';
                     if( strpos($campofk,trim(pg_result($campo,$j,"codcam"))) > 0 ){
-                      fputs($fd,'       <?php '."\n");
+                      fputs($fd,'       <?'."\n");
                       $funcaojava = '"js_pesquisa'.trim(pg_result($campo,$j,"nomecam")).'(true);"';
                       fputs($fd,'       db_ancora(@$L'.trim(pg_result($campo,$j,"nomecam")).','.$funcaojava.',$db_opcao);'."\n");
                       fputs($fd,'       ?>'."\n");
@@ -305,7 +305,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
                       if( (substr($xc,0,3)=="cha") || ( substr($xc,0,3)=="var") || (substr($xc,0,3)=="flo") ){
                         if(strpos($varpk,trim(pg_result($campo,$j,"nomecam")) ) != 0 ){
                           //chave primaria
-                          fputs($fd,"<?php "."\n");
+                          fputs($fd,"<?"."\n");
 
                           if(pg_result($campo,$j,"sequencia")==0)
                             fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."3,".$funcaojava.")"."\n");
@@ -314,32 +314,32 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
 
                           fputs($fd,"?>"."\n");
                         }else{
-                          fputs($fd,"<?php "."\n");
+                          fputs($fd,"<?"."\n");
                           fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                           fputs($fd,"?>"."\n");
                         }
                       }else if(substr($xc,0,3)=="boo"){
-                        fputs($fd,"<?php "."\n");
+                        fputs($fd,"<?"."\n");
                         fputs($fd,'$x = array("f"=>"NAO","t"=>"SIM");'."\n");
                         fputs($fd,"db_select('".trim(pg_result($campo,$j,"nomecam"))."',".'$x'.",true,$"."db_opcao,".$funcaojava.");"."\n");
                         fputs($fd,"?>"."\n");
                       }else if(substr($xc,0,3)=="tex"){
-                        fputs($fd,"<?php "."\n");
+                        fputs($fd,"<?"."\n");
                         fputs($fd,"db_textarea('".trim(pg_result($campo,$j,"nomecam"))."'".',0,0,$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n"); 
                         fputs($fd,"?>"."\n");
                       }else{
-                        fputs($fd,"<?php "."\n");
+                        fputs($fd,"<?"."\n");
                         fputs($fd,"db_input('".trim(pg_result($campo,$j,"nomecam"))."'".','.trim(pg_result($campo,$j,"tamanho")).',$I'.trim(pg_result($campo,$j,"nomecam")).",true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                         fputs($fd,"?>"."\n");
                       }
                     }else{
-                      fputs($fd,"<?php "."\n");
+                      fputs($fd,"<?"."\n");
                       fputs($fd,"db_inputdata('".trim(pg_result($campo,$j,"nomecam"))."',@$".trim(pg_result($campo,$j,"nomecam"))."_dia,@$".trim(pg_result($campo,$j,"nomecam"))."_mes,@$".trim(pg_result($campo,$j,"nomecam"))."_ano,true,'text',$"."db_opcao,".$funcaojava.")"."\n");
                       fputs($fd,"?>"."\n");
                     }
                     if($funcaojava != '""'){
                       // strpos($campofk,pg_result($campo,$j,"codcam")) > 0 ){
-                      fputs($fd,'       <?php '."\n");
+                      fputs($fd,'       <?'."\n");
                       for($fk=0;$fk<$Nforkey;$fk++){
                         if( pg_result($forkey,$fk,'codcam') == pg_result($campo,$j,"codcam")){
                           fputs($fd,"db_input('".trim(pg_result($forkey,$fk,"nomecam"))."'".','.trim(pg_result($forkey,$fk,"tamanho")).',$I'.trim(pg_result($forkey,$fk,"nomecam")).",true,'text',3,'')"."\n");
@@ -412,7 +412,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
                   fputs($fd,'  location.href = \'<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>\'+"?chavepesquisa="+chave;'."\n");
                   fputs($fd,"}"."\n");
                   fputs($fd,"</script>"."\n");
-                  fputs($fd,"<?php "."\n");
+                  fputs($fd,"<?"."\n");
                   fputs($fd,"$"."func_iframe = new janela('db_iframe','');"."\n");
                   fputs($fd,"$"."func_iframe->posX=1;"."\n");
                   fputs($fd,"$"."func_iframe->posY=20;"."\n");
@@ -442,7 +442,7 @@ if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
             </td>
             </tr>
             </table>
-            <?php 
+            <?
             db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
           ?>
             </body>

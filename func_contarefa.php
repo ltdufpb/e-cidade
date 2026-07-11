@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -117,7 +117,7 @@ function js_urgente(tarefa) {
 <table border="0" width="100%" align="center" cellspacing="0" bgcolor="#CCCCCC">
 <form name="form1" action="<?=$PHP_SELF?>" method="POST">	
 
-<?php 
+<?
 
 db_input("at40_lido",10,@$at40_lido,true,'hidden',2,"");
 db_input("at40_tarefalido",10,@$at40_tarefalido,true,'hidden',2,"");
@@ -238,7 +238,7 @@ if (isset($at40_tarefalidologtarefa) and $at40_tarefalidologtarefa != 0) {
 
 <tr>
 <td><b>Usuário:</b>&nbsp;&nbsp;
-<?php 
+<?
 
 if (!isset($at40_responsavel)) {
   global $at40_responsavel;
@@ -250,7 +250,7 @@ if (!isset($at40_responsavel)) {
 db_selectrecord('at40_responsavel',($cldb_usuarios->sql_record($cldb_usuarios->sql_query(null,"id_usuario,nome","nome"," usuarioativo = '1'"))),true,1,"", "", "", "0-Todos", "js_enviar()");
 ?>
 <b>Cliente:</b>&nbsp;&nbsp;
-<?php 
+<?
 db_selectrecord('at40_cliente',($clclientes->sql_record($clclientes->sql_query(null,"*","at01_nomecli"," at01_status is true"))),true,1,"", "", "", "Todos", "js_enviar()");
 
 $resultautorizadas = $cldb_proced->sql_record($cldb_proced->sql_query_usu(null,"*",""," db_procedusu.at31_usuario = " . db_getsession("DB_id_usuario") . " and db_procedgrupos.at52_grupo <> 5"));
@@ -261,14 +261,14 @@ if ($cldb_proced->numrows > 0 and !isset($at40_autoriza)) {
 ?>
 
 <select name="at40_autoriza" onchange="js_enviar();">
-<option value="T"<?php  if(isset($at40_autoriza)&&$at40_autoriza=="T") { echo " SELECTED"; } ?>>Todas</option>
-<option value="S"<?php  if(isset($at40_autoriza)&&$at40_autoriza=="S") { echo " SELECTED"; } else { if(!isset($at40_autoriza)) { echo " SELECTED"; } } ?>>Autorizadas</option>
-<option value="N"<?php  if(isset($at40_autoriza)&&$at40_autoriza=="N") { echo " SELECTED"; } ?>>Não autorizadas</option>
+<option value="T"<? if(isset($at40_autoriza)&&$at40_autoriza=="T") { echo " SELECTED"; } ?>>Todas</option>
+<option value="S"<? if(isset($at40_autoriza)&&$at40_autoriza=="S") { echo " SELECTED"; } else { if(!isset($at40_autoriza)) { echo " SELECTED"; } } ?>>Autorizadas</option>
+<option value="N"<? if(isset($at40_autoriza)&&$at40_autoriza=="N") { echo " SELECTED"; } ?>>Não autorizadas</option>
 </select>
 
 
 <b><br>Envolvimento:</b>&nbsp;&nbsp;
-<?php 
+<?
 if (!isset($at40_progressoini)) {
   $at40_progressoini = 100;
 }
@@ -290,7 +290,7 @@ db_select("at40_progressoini", $matriz,true,1,"onchange='js_enviar()'");
 ?>
 
 <b>a</b>&nbsp;&nbsp;
-<?php 
+<?
 db_select("at40_progressofim", $matriz,true,1,"onchange='js_enviar()'");
 
 $primeira=@$ordem;
@@ -309,34 +309,34 @@ if (1 == 2) {
   ?>
   <b>Tarefas:</b>&nbsp;&nbsp;
   <select name="at40_progresso" onchange="js_enviar();">
-<option value="T"<?php  if(isset($at40_progresso)&&$at40_progresso=="T") { echo " SELECTED"; } ?>>Todas</option>
-<option value="A"<?php  if(isset($at40_progresso)&&$at40_progresso=="A") { echo " SELECTED"; } else { if(!isset($at40_progresso)) { echo " SELECTED"; } } ?>>Ativas</option>
-<option value="F"<?php  if(isset($at40_progresso)&&$at40_progresso=="F") { echo " SELECTED"; } ?>>Finalizadas</option>
+<option value="T"<? if(isset($at40_progresso)&&$at40_progresso=="T") { echo " SELECTED"; } ?>>Todas</option>
+<option value="A"<? if(isset($at40_progresso)&&$at40_progresso=="A") { echo " SELECTED"; } else { if(!isset($at40_progresso)) { echo " SELECTED"; } } ?>>Ativas</option>
+<option value="F"<? if(isset($at40_progresso)&&$at40_progresso=="F") { echo " SELECTED"; } ?>>Finalizadas</option>
   </select>
-  <?php 
+  <?
 }
 $at40_progresso = "T";
 ?>
 <b>Ordem:</b>&nbsp;&nbsp;
 <select name="ordem" onchange="js_enviar();">
 
-<option value="1"<?php  if($ordem=="1") { echo " SELECTED"; } ?>>Data, prioridade e dias de pendencia</option>
-<option value="2"<?php  if($ordem=="2") { echo " SELECTED"; } ?>>Prioridade e dias de pendencia</option>
-<option value="3"<?php  if($ordem=="3") { echo " SELECTED"; } ?>>Ordem definida pelo moderador</option>
+<option value="1"<? if($ordem=="1") { echo " SELECTED"; } ?>>Data, prioridade e dias de pendencia</option>
+<option value="2"<? if($ordem=="2") { echo " SELECTED"; } ?>>Prioridade e dias de pendencia</option>
+<option value="3"<? if($ordem=="3") { echo " SELECTED"; } ?>>Ordem definida pelo moderador</option>
 </select>
 
 <select name="leitura" onchange="js_enviar();">
-<option value="T"<?php  if(isset($leitura)&&$leitura=="T") { echo " SELECTED"; } else { if(!isset($leitura)) { echo " SELECTED"; } } ?>>Todas</option>
-<option value="L"<?php  if(isset($leitura)&&$leitura=="L") { echo " SELECTED"; } ?>>Lidas</option>
-<option value="N"<?php  if(isset($leitura)&&$leitura=="N") { echo " SELECTED"; } ?>>Nao lidas</option>
-<option value="N0"<?php  if(isset($leitura)&&$leitura=="N0") { echo " SELECTED"; } ?>>Nao lidas hj</option>
-<option value="N1"<?php  if(isset($leitura)&&$leitura=="N1") { echo " SELECTED"; } ?>>Nao lidas a + de 1d</option>
-<option value="N2"<?php  if(isset($leitura)&&$leitura=="N2") { echo " SELECTED"; } ?>>Nao lidas a + de 2d</option>
-<option value="N3"<?php  if(isset($leitura)&&$leitura=="N3") { echo " SELECTED"; } ?>>Nao lidas a + de 3d</option>
-<option value="N4"<?php  if(isset($leitura)&&$leitura=="N4") { echo " SELECTED"; } ?>>Nao lidas a + de 4d</option>
-<option value="N5"<?php  if(isset($leitura)&&$leitura=="N5") { echo " SELECTED"; } ?>>Nao lidas a + de 5d</option>
+<option value="T"<? if(isset($leitura)&&$leitura=="T") { echo " SELECTED"; } else { if(!isset($leitura)) { echo " SELECTED"; } } ?>>Todas</option>
+<option value="L"<? if(isset($leitura)&&$leitura=="L") { echo " SELECTED"; } ?>>Lidas</option>
+<option value="N"<? if(isset($leitura)&&$leitura=="N") { echo " SELECTED"; } ?>>Nao lidas</option>
+<option value="N0"<? if(isset($leitura)&&$leitura=="N0") { echo " SELECTED"; } ?>>Nao lidas hj</option>
+<option value="N1"<? if(isset($leitura)&&$leitura=="N1") { echo " SELECTED"; } ?>>Nao lidas a + de 1d</option>
+<option value="N2"<? if(isset($leitura)&&$leitura=="N2") { echo " SELECTED"; } ?>>Nao lidas a + de 2d</option>
+<option value="N3"<? if(isset($leitura)&&$leitura=="N3") { echo " SELECTED"; } ?>>Nao lidas a + de 3d</option>
+<option value="N4"<? if(isset($leitura)&&$leitura=="N4") { echo " SELECTED"; } ?>>Nao lidas a + de 4d</option>
+<option value="N5"<? if(isset($leitura)&&$leitura=="N5") { echo " SELECTED"; } ?>>Nao lidas a + de 5d</option>
 </select>
-<?php 
+<?
 //if (isset($item_proc) && trim($item_proc) != ""){
   if (!isset($andamento)){
     $andamento = "T";
@@ -350,11 +350,11 @@ $at40_progresso = "T";
   db_input("funcao_js",50,@$funcao_js,true,'hidden',2,"");
   ?>
   <select name="andamento" OnChange="js_enviar()">
-<option value="T"<?php  if (isset($andamento)&&$andamento=="T"){ echo " SELECTED"; }?>>Todos</option>
-<option value="A"<?php  if (isset($andamento)&&$andamento=="A"){ echo " SELECTED"; }?>>Andamentos abertos</option>
-<option value="F"<?php  if (isset($andamento)&&$andamento=="F"){ echo " SELECTED"; }?>>Andamentos fechados</option>
+<option value="T"<? if (isset($andamento)&&$andamento=="T"){ echo " SELECTED"; }?>>Todos</option>
+<option value="A"<? if (isset($andamento)&&$andamento=="A"){ echo " SELECTED"; }?>>Andamentos abertos</option>
+<option value="F"<? if (isset($andamento)&&$andamento=="F"){ echo " SELECTED"; }?>>Andamentos fechados</option>
   </select>
-  <?php 
+  <?
 //}
 ?>
 </td>
@@ -362,7 +362,7 @@ $at40_progresso = "T";
 
 <tr>
 <td><b>Motivo:</b>&nbsp;&nbsp;
-<?php 
+<?
 global $at40_motivo;
 db_selectrecord('at40_motivo',($cltarefacadmotivo->sql_record($cltarefacadmotivo->sql_query(null,"at54_sequencial, at54_descr","at54_descr"))),true,1,"", "", "", "0-Todos", "js_enviar()");
 ?>
@@ -370,18 +370,18 @@ db_selectrecord('at40_motivo',($cltarefacadmotivo->sql_record($cltarefacadmotivo
 
 
 <b>Grupo:</b>&nbsp;&nbsp;
-<?php 
+<?
 db_selectrecord('at40_grupoproced',($cldb_procedcadgrupos->sql_record($cldb_procedcadgrupos->sql_query(null,"*","at51_descr"))),true,1,"", "", "", "0-Todos", "js_enviar()");
 ?>
 
 <b>Tarefas da Agenda:</b>
 <select name="todasprocedencias" onchange="js_enviar();">
-<option value="N"<?php  if(isset($todasprocedencias)&&$todasprocedencias=="N") { echo " SELECTED"; } else { if(!isset($todasprocedencias)) { echo " SELECTED"; } } ?>>Não</option>
-<option value="S"<?php  if(isset($todasprocedencias)&&$todasprocedencias=="S") { echo " SELECTED"; } ?>>Sim</option>
+<option value="N"<? if(isset($todasprocedencias)&&$todasprocedencias=="N") { echo " SELECTED"; } else { if(!isset($todasprocedencias)) { echo " SELECTED"; } } ?>>Não</option>
+<option value="S"<? if(isset($todasprocedencias)&&$todasprocedencias=="S") { echo " SELECTED"; } ?>>Sim</option>
 </select>
 
 <b>Área:</b>&nbsp;&nbsp;
-<?php 
+<?
 db_selectrecord('at40_area',($cl_atendcadarea->sql_record($cl_atendcadarea->sql_query(null,"*","at25_descr"))),true,1,"", "", "", "0-Todos", "js_enviar()");
 ?>
 
@@ -391,13 +391,13 @@ db_selectrecord('at40_area',($cl_atendcadarea->sql_record($cl_atendcadarea->sql_
 
 <tr>
 <td>
-<?php 
+<?
 db_ancora("$Lat40_sequencial"," js_pesquisa_usuario(true) ",2);
 db_input("at40_sequencial",10,$Iat40_sequencial,true,'text',2," onchange='js_pesquisa_usuario(false)'");
 ?>
 
 <b>Tipo:</b>&nbsp;&nbsp;
-<?php 
+<?
 db_selectrecord('at40_proced',($cldb_proced->sql_record($cldb_proced->sql_query(null,"*","at30_descr",""))),true,1,"", "", "", "0-Todos", "js_enviar()");
 
 $resultsituacao = $cltarefacadsituacao->sql_record($cltarefacadsituacao->sql_query(null,"*","at46_codigo",""));
@@ -434,11 +434,11 @@ for ($situacao=0; $situacao < $cltarefacadsituacao->numrows; $situacao++) {
 <tr>
 <td>
 <b>Data final</b>
-<?php 
+<?
 db_inputdata('at40_diaini',@$at40_diaini_dia,@$at40_diaini_mes,@$at40_diaini_ano,true,'text','1',"");
 ?>
 a
-<?php 
+<?
 //if (!isset($at40_diafim_dia)) {
   //  $at40_diafim_dia = date('d',db_getsession("DB_datausu"));
   //  $at40_diafim_mes = date('m',db_getsession("DB_datausu"));
@@ -447,14 +447,14 @@ a
 db_inputdata('at40_diafim',@$at40_diafim_dia,@$at40_diafim_mes,@$at40_diafim_ano,true,'text','1',"");
 ?>
 <select name="tipodatafinal" onchange="js_enviar();">
-<option value="P"<?php  if(isset($tipodatafinal)&&$tipodatafinal=="P") { echo " SELECTED"; } else { if(!isset($tipodatafinal)) { echo " SELECTED"; } } ?>>Previsao</option>
-<option value="E"<?php  if(isset($tipodatafinal)&&$tipodatafinal=="E") { echo " SELECTED"; } ?>>Execução</option>
-<option value="C"<?php  if(isset($tipodatafinal)&&$tipodatafinal=="C") { echo " SELECTED"; } ?>>Criação</option>
-<option value="A"<?php  if(isset($tipodatafinal)&&$tipodatafinal=="A") { echo " SELECTED"; } ?>>Agenda</option>
-<option value="CUSU"<?php  if(isset($tipodatafinal)&&$tipodatafinal=="CUSU") { echo " SELECTED"; } ?>>Criado pelo usuário</option>
-<option value="CAREA"<?php  if(isset($tipodatafinal)&&$tipodatafinal=="CAREA") { echo " SELECTED"; } ?>>Criado pelo área</option>
+<option value="P"<? if(isset($tipodatafinal)&&$tipodatafinal=="P") { echo " SELECTED"; } else { if(!isset($tipodatafinal)) { echo " SELECTED"; } } ?>>Previsao</option>
+<option value="E"<? if(isset($tipodatafinal)&&$tipodatafinal=="E") { echo " SELECTED"; } ?>>Execução</option>
+<option value="C"<? if(isset($tipodatafinal)&&$tipodatafinal=="C") { echo " SELECTED"; } ?>>Criação</option>
+<option value="A"<? if(isset($tipodatafinal)&&$tipodatafinal=="A") { echo " SELECTED"; } ?>>Agenda</option>
+<option value="CUSU"<? if(isset($tipodatafinal)&&$tipodatafinal=="CUSU") { echo " SELECTED"; } ?>>Criado pelo usuário</option>
+<option value="CAREA"<? if(isset($tipodatafinal)&&$tipodatafinal=="CAREA") { echo " SELECTED"; } ?>>Criado pelo área</option>
 </select>
-<?php 
+<?
 $arr_tipo=array("i"=>"Interno","c"=>"Cliente");
 db_select("tipo_rel",$arr_tipo,true,"text");
 
@@ -470,11 +470,11 @@ db_select("opcao_rel",$arr_opcao_rel,true,"text");
 <td>
 
 <b>Módulo:</b>&nbsp;&nbsp;
-<?php 
+<?
 db_selectrecord('at40_modulo',($cldb_sysmodulo->sql_record($cldb_sysmodulo->sql_query(null,"*","nomemod"))),true,1,"", "", "", "0-Todos", "js_enviar()");
 ?>
 <b>Procedimento:</b>&nbsp;&nbsp;
-<?php 
+<?
 db_selectrecord('at40_syscadproced',($cldb_syscadproced->sql_record($cldb_syscadproced->sql_query(null,"*","descrproced",(@$at40_modulo != ""?"db_syscadproced.codmod = $at40_modulo":"")))),true,1,"", "", "", "0-Todos", "js_enviar()");
 ?>
 
@@ -484,7 +484,7 @@ db_selectrecord('at40_syscadproced',($cldb_syscadproced->sql_record($cldb_syscad
 <input name="semagenda" id="semagenda3" type="radio" value="3" title="Todos"      <?=(isset($semagenda) && $semagenda=="3"?"checked":"")?> >T
 
 <b>Depto.:</b>&nbsp;&nbsp;
-<?php 
+<?
 db_selectrecord('coddepto',($cldb_depart->sql_record($cldb_depart->sql_query(null,"*","descrdepto"))),true,1,"", "", "", "0-Todos");
 ?>
 
@@ -493,7 +493,7 @@ db_selectrecord('coddepto',($cldb_depart->sql_record($cldb_depart->sql_query(nul
 
 <tr>
 <td align="center" valign="top">
-<?php 
+<?
 
 $where = " 1=1 ";
 
@@ -731,15 +731,15 @@ if(!isset($pesquisa_chave)){
   echo "<tr><td>Em <blink><b><font color=green>verde</font></b></blink>, tarefas com mais de 3 dias sem registros...       <b>Total de ";
   ?> 
   <input type="text" size="5" style="border-style: none; background-color: transparent; text-align: right" name="totalderegistros" value="...">
-  <?php 
+  <?
   echo " registros... ";
   ?> 
   <input type="text" size="5" style="border-style: none; background-color: transparent; text-align: right" name="perctotal" value="...">
-  <?php 
+  <?
 	echo "% - tempo: ";
   ?> 
   <input type="text" size="5" style="border-style: none; background-color: transparent; text-align: right" name="tempototal" value="...">
-  <?php 
+  <?
 	echo " segundos...</b></td></tr>";
   
   //echo "<br> $sql <br>";
@@ -772,10 +772,10 @@ if(!isset($pesquisa_chave)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
-  <?php 
+  <?
 }
 global $semagenda;
 
@@ -898,7 +898,7 @@ function db_grid($sql, $leitura, $opcoes, $funcao_js,$todasprocedencias) {
                 '','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
   }
   </script>
-  <?php 		
+  <?		
   echo "<table id=\"TabDbLov\" border=\"1\" cellspacing=\"1\" cellpadding=\"0\">\n";
   
   if($NumRows == 0) {

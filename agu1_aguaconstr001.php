@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -264,7 +264,7 @@
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
           <center>
-	          <?php 
+	          <?
 	            include(modification("forms/db_frmaguaconstr.php"));
 	          ?>
           </center>
@@ -274,7 +274,7 @@
     </center>
   </body>
 </html>
-<?php 
+<?
 if(isset($oPost->alterar) || isset($oPost->excluir) || isset($oPost->incluir)){
   
     if (!$lErro){

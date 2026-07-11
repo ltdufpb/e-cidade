@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,8 +73,8 @@ $clrotulo->label("");
          <td ></td>
       </tr>
        <tr> 
-       <td nowrap align="right" title="<?=@$y30_codnoti?>"><?php db_ancora(@$Ly30_codnoti,"js_codfiscal(true);",1);?></td>
-            <td><?php db_input('y30_codnoti',6,$Iy30_codnoti,true,'text',1," onchange='js_codfiscal(false);'");
+       <td nowrap align="right" title="<?=@$y30_codnoti?>"><?db_ancora(@$Ly30_codnoti,"js_codfiscal(true);",1);?></td>
+            <td><?db_input('y30_codnoti',6,$Iy30_codnoti,true,'text',1," onchange='js_codfiscal(false);'");
                   db_input('y30_nome',35,$Iy30_nome,true,'text',3,'');?>
             </td>
       <tr>
@@ -102,7 +102,7 @@ $clrotulo->label("");
       </tr>
   </form>
     </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

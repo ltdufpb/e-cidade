@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,12 +45,12 @@ $clrotulo->label("p58_requer");
 <table border="0">
   <tr>   
     <td title="<?=@$Ty50_codauto?>" >
-    <?php 
+    <?
      db_ancora(@$Ly50_codauto,' js_inscr(true); ',1);
     ?>
     </td>    
     <td title="<?=@$Ty50_codauto?>" colspan="4">
-    <?php 
+    <?
      db_input('y50_codauto',5,@$Iy50_codauto,true,'text',1,"onchange='js_inscr(false)'");
      db_input('z01_nome',50,0,true,'text',3);
     ?>
@@ -58,21 +58,21 @@ $clrotulo->label("p58_requer");
   </tr>
     <tr>
       <td nowrap title="<?=@$Ty114_processo?>">
-	 <?php 
+	 <?
        db_ancora(@$Ly114_processo,"js_pesquisay114_processo(true);",$db_opcao);
        ?>
       </td>
       <td colspan=3> 
-  <?php 
+  <?
   db_input('y114_processo',10,@$Iy114_processo,true,'text',$db_opcao," onchange='js_pesquisay114_processo(false);'")
   ?>
-  <?php db_input('p58_requer',40,@$Ip58_requer,true,'text',3,'')
+  <?db_input('p58_requer',40,@$Ip58_requer,true,'text',3,'')
   
   ?>
       <td>
     </tr>
     <td nowrap title="<?=@$Tq07_databx?>" align='left'colspan=3 ><?=@$Lq07_databx?>
-<?php 
+<?
 if(empty($q07_databx)){
   $q07_databx_dia=date("d",db_getsession('DB_datausu'));
   $q07_databx_mes=date("m",db_getsession('DB_datausu'));
@@ -82,7 +82,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
 ?>
     </td>
   </tr>
-    <?php 
+    <?
      if (isset($y50_codauto) && $y50_codauto != "") {
     ?>
   <tr>
@@ -98,7 +98,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
 <td>  
   <tr>   
     <td align="center" colspan="2"> 
-      <?php 
+      <?
       
         $sSqlAutoTipo = $clautotipo->sql_query_baixa(null,"*",null,"y59_codauto = {$y50_codauto} and y87_dtbaixa is null");
 	      $cliframe_seleciona->campos        = "y59_codigo,y59_codtipo,y29_descr,y29_descr_obs";
@@ -124,7 +124,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
     </td> 
   </tr>
 </table>
-<?php }?>									      
+<?}?>									      
 </fieldset>
     </td>
   </tr>

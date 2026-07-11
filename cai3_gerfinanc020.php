@@ -78,7 +78,7 @@ function js_OpenRelatorio(xxaondeJanela,xxnomeJanela,xxarquivoJanela,xxtituloJan
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <form name='form1'>
 <center>
-<?php 
+<?
   $where = "";
   $inner = "";
 
@@ -157,7 +157,7 @@ function js_OpenRelatorio(xxaondeJanela,xxnomeJanela,xxarquivoJanela,xxtituloJan
         ?>
         <td width="9%" nowrap align="center">
          <a OnMouseOut="parent.js_label('false','');"  OnMouseOver="parent.js_label('true','<?=db_jsspecialchars($histdesc)?>');" href="javascript:parent.document.getElementById('processando').style.visibility = 'visible';history.back()"><?=$k30_numpre?></a></td>
-        <?php 
+        <?
         echo "   <td width='9%'  nowrap align='right'>  ".db_formatar($k30_dtoper,'d')." </td> ";
         echo "   <td width='4%'  nowrap align='right'>  ".$k30_numpar."                  </td> ";
         echo "   <td width='4%'  nowrap align='right'>  ".$k30_numtot."                  </td> ";

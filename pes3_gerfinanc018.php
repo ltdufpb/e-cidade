@@ -301,7 +301,7 @@ html, body, table {
 
 <table width="100%" id="tabela-calculos" cellspacing="0">
 <tr>
-<?php 
+<?
 if ($opcao != 'previden' && $opcao != 'irf'){
 ?>
      <th clase="borda" width="25" nowrap> Fórmula(*) </th>
@@ -312,12 +312,12 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" width="80" nowrap> Descontos  </th>
      <th class="borda" width="90" nowrap> Prov/Desc  </th>
 
-    <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+    <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
        <th class="borda" nowrap>Tipo</th>
-    <?php }?>
+    <?}?>
    </tr>
 
-<?php 
+<?
   $tam_form = strlen(@$rub_formula);
   $cor      = "";
 
@@ -332,24 +332,24 @@ if ($opcao != 'previden' && $opcao != 'irf'){
            <td align="right"  style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=db_formatar($provento,'f')?></strong></td>
            <td align="right"  style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=db_formatar($desconto,'f')?></strong></td>
            <td align="left"   style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<?=$tipo?></td>
-           <?php }?>
+           <?}?>
            </tr>
 
            <tr>
            <td align="center" colspan="4"   style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong>LÍQUIDO<strong></td>
            <td colspan="2"    align="right" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=db_formatar($provento-$desconto,'f')?></strong></td>
            <td align="left"   style="font-size:12px"               nowrap  bgcolor="#DDDDDD">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap  bgcolor="#DDDDDD">&nbsp;<?=$tipo?></td>
-           <?php }?>
+           <?}?>
          </tr>
-<?php 
+<?
     } else {
 ?>
          <tr>
-<?php 
+<?
       global $subpes;
       $subpes = db_anofolha()."/".db_mesfolha();
       global $basesr;
@@ -397,25 +397,25 @@ if ($opcao != 'previden' && $opcao != 'irf'){
             <?php } else { ?>
                     <td title="" align="center" style="font-size:12px" nowrap >&nbsp</td>
             <?php } ?>
-      <?php 
+      <?
 
       if ($achou) {
         
         if(db_at($bases.$rubrica,$rub_bases) > 0){
       ?>
-          <td align="left"  style="font-size:12px" nowrap>&nbsp;#B<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?php } else {?>
-          <td align="left"  style="font-size:12px" nowrap>&nbsp;&nbsp;&nbsp;#<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?php }
+          <td align="left"  style="font-size:12px" nowrap>&nbsp;#B<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?} else {?>
+          <td align="left"  style="font-size:12px" nowrap>&nbsp;&nbsp;&nbsp;#<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?}
       
       } else {
         
         if(db_at($bases.$rubrica,@$rub_bases) > 0){
       ?>
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;B<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?php } else {?>
-          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
-      <?php }
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;B<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?} else {?>
+          <td align="left"  style="font-size:12px" nowrap >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?db_ancora($rubrica,"js_Pesquisarubrica('$rubrica')",1)?>&nbsp;</td>
+      <?}
       
       }?> 
           <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=strtoupper($rh27_descr)?></td>
@@ -424,11 +424,11 @@ if ($opcao != 'previden' && $opcao != 'irf'){
           <td align="right" style="font-size:12px" nowrap >&nbsp;<?=db_formatar($desconto,'f')?></td>
           <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=$provdesc?></td>
            
-     <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+     <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
           <td align="left"  style="font-size:12px" nowrap >&nbsp;<?=$tipo?></td>
-     <?php }?>
+     <?}?>
         </tr>
-<?php 
+<?
     }
   }
 
@@ -441,7 +441,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?php 
+<?
 
   $cor          = "#EFE029";
   $tot_base_sal = 0;
@@ -481,7 +481,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
       <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r60_novod,'f')?></td>
     </tr>
 
-<?php 
+<?
   }
 ?>
     <tr>
@@ -505,7 +505,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
       <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
       <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
     </tr>
-<?php 
+<?
 } else if ($opcao == 'irf') {
 ?>
      <th class="borda" style="font-size:12px" nowrap>Código</th>
@@ -515,7 +515,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?php 
+<?
 
   $cor          = "#EFE029";
   $tot_base_sal = 0;
@@ -555,7 +555,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
       <td align="right"  style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r61_novod,'f')?></td>
     </tr>
 
-<?php 
+<?
   }
 ?>
     <tr>
@@ -579,7 +579,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
       <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
       <td align="right"  style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
     </tr>
-<?php 
+<?
 
 }
 

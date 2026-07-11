@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ db_app::load("estilos.css");
                       <b>Origem das Tabelas:</b>
                     </td>
                     <td> 
-                      <?php 
+                      <?
                       db_input('origem', 50, @$origem, true, 'file', 1, "onblur=js_upload();");
                       ?>
                       <input name="upload" type="submit" id="upload" value="Enviar Arquivo" disabled>
@@ -97,18 +97,18 @@ db_app::load("estilos.css");
                   <tr>
                     <td nowrap title="<?=@$Tsd97_i_compmes?>">
                       <b>
-                      <?php 
+                      <?
                       db_ancora("Competencia", "js_pesquisasd98_i_fechamento(true);", $db_opcao);
                       ?>
                     </td>
                     <td> 
-                      <?php 
+                      <?
                       db_input('sd97_i_compmes', 10, @$Isd97_i_compmes, true, 'text', $db_opcao, 
                                "onchange=js_atualizapasta()"
                               );
                       ?> 
                       / 
-                      <?php 
+                      <?
                       db_input('sd97_i_compano', 10, @$Isd97_i_compano, true, 'text', $db_opcao, 
                                "onchange=js_atualizapasta()"
                               );
@@ -121,7 +121,7 @@ db_app::load("estilos.css");
                       <b>Pasta de Origem:</b>
                     </td>
                     <td>
-                     <?php 
+                     <?
                      db_input('AArquivo',50,@$AArquivo,true,'text',$db_opcao );
                      ?>
                     </td>
@@ -340,7 +340,7 @@ db_app::load("estilos.css");
         </tr>
       </table>
     </center>
-    <?php 
+    <?
     db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
             db_getsession("DB_anousu"), db_getsession("DB_instit")
            );
@@ -438,7 +438,7 @@ function iniciabarra(linhas) {
 }
 </script>
 
-<?php 
+<?
 
 
 function delTree($dir) {
@@ -939,9 +939,9 @@ if (isset($processar)) {
   </body>
 </html>
 <script>
-<?php if (isset($show)) {?>
+<?if (isset($show)) {?>
     $('listatabelas').style.display='';
-<?php }?>
+<?}?>
 function js_marcaproced() {
    
   if ($('tb_procedimento').checked == false) {

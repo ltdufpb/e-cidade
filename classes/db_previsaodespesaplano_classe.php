@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE previsaodespesaplano
 class cl_previsaodespesaplano { 

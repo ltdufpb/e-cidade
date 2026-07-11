@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -204,7 +204,7 @@ function js_gera(){
 <td><b>Advogado</b></td>
 </tr>
 
-<?php 
+<?
 $result=$clinicial->sql_record($clinicial->sql_query_sitpar("","cgm.z01_nome,v50_inicial,v52_descr,v53_descr,v54_descr","v50_inicial",""));
 $numrows=$clinicial->numrows;
 for($i=0; $i<$numrows; $i++){

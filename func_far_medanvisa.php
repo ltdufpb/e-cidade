@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clfar_medanvisa->rotulo->label("fa14_c_medanvisa");
               <?=$Lfa14_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("fa14_i_codigo",10,$Ifa14_i_codigo,true,"text",4,"","chave_fa14_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clfar_medanvisa->rotulo->label("fa14_c_medanvisa");
               <?=$Lfa14_c_medanvisa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("fa14_c_medanvisa",30,@$Ifa14_c_medanvisa,true,"text",4,"","chave_fa14_c_medanvisa");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clfar_medanvisa->rotulo->label("fa14_c_medanvisa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_medanvisa.php")==true){
@@ -123,12 +123,12 @@ $clfar_medanvisa->rotulo->label("fa14_c_medanvisa");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

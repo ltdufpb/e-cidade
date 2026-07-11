@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@ $cltarefa    = new cl_tarefa;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 	<form name="form2" method="post" action="<?=$PHP_SELF?>"> 
 		<table border="0" cellspacing="1" cellpadding="0" height="20" width="200">
-<?php 
+<?
 	db_input("cols",10,"",true,"hidden",3,"");
 	db_input("id_usuario",10,"",true,"hidden",3,"");
 	db_input("data_inicial",10,"",true,"hidden",3,"");
@@ -110,7 +110,7 @@ $cltarefa    = new cl_tarefa;
 ?>
 		</table>
 		<table border="1" cellspacing="1" cellpadding="0" height="300" width="400">
-<?php 
+<?
 mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor_ocupado,@$vet_periodo_ini,@$vet_periodo_fim);
 
 function mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor_ocupado,$vet_periodo_ini=null,$vet_periodo_fim=null) {

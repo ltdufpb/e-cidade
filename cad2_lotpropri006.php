@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -176,7 +176,7 @@ function js_retornoLotes(oAjax){
       <table border="0">
         <tr>
           <td align="top" colspan="2">
-      <?php 
+      <?
 	if(isset($qua)&& $qua!=""){
 	  $cliframe_seleciona->campos  = "j14_codigo,j14_nome";
 	  $cliframe_seleciona->legenda="RUAS";
@@ -199,7 +199,7 @@ function js_retornoLotes(oAjax){
 	  //setTimeout(clearInterval(tempo),5000);
 	  //tempo = setInterval('quadra.js_nome();clearInterval(tempo)',1500);
 	</script>
-      <?php 
+      <?
 	}else{
 	  echo "<br><strong>SELECIONE UMA QUADRA PARA ESCOLHER A(S) RUA(S)</strong>";
 	}

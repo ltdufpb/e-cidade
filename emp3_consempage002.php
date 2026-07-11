@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -140,7 +140,7 @@ function js_consultar(){
        </tr>
        <tr>
 	 <td align='left'>  
-	 <?php 
+	 <?
         db_lovrot($sql,15,"","",'');
 	 ?>
 	 </td>

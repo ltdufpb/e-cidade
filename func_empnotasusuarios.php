@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempnota->rotulo->label("e69_id_usuario");
               <?=$Le69_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e69_id_ususario",6,$Ie69_id_usuario,true,"text",4,"","chave_e69_id_usuario");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $clempnota->rotulo->label("e69_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($chave_e69_id_usuario) && (trim($chave_e69_id_usuario)!="") ){
 	         $sql = $clempnota->sql_query($chave_e69_id_usuario,"distinc empnota.e69_id_usuario, db_usuarios.nome","e69_id_usuario");
@@ -103,12 +103,12 @@ $clempnota->rotulo->label("e69_id_usuario");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

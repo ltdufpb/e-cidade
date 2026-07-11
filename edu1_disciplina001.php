@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -92,7 +92,7 @@ db_fieldsmemory( $result0, 0 );
           <center>
           <fieldset style="width:95%">
             <legend><b>Disciplinas de <?=$ed10_c_descr?></b></legend>
-            <?php 
+            <?
               include(modification("forms/db_frmdisciplina.php"));
             ?>
           </fieldset>
@@ -102,7 +102,7 @@ db_fieldsmemory( $result0, 0 );
     </table>
   </body>
 </html>
-<?php 
+<?
 if ( isset( $incluir ) ) {
 
   if ( $cldisciplina->erro_status == "0" ) {

@@ -155,7 +155,7 @@ if (isset($alterar)) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <br><br>
           <fieldset align="left" style="width:95%"><legend><b>Alteração de Recurso Humano</b></legend>
-            <?php include(modification("forms/db_frmrechumano.php"));?>
+            <?include(modification("forms/db_frmrechumano.php"));?>
           </fieldset>
         </td>
       </tr>

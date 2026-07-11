@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -111,7 +111,7 @@ jan = window.open('iss4_contativ006.php?Dadosativ=<?=$Dados?>&Dadosclasse=<?=$Da
 	    <th class="borda" align="center" style="font-size:12px" nowrap><?=$Lq40_codporte?></th>
             <th class="borda" align="left" style="font-size:12px" nowrap><?=$Lq40_descr?></th>
           </tr>
-	  <?php 
+	  <?
 	    $cor = '#E4F471';
             for($i = 0;$i < $cl_porte->numrows;$i++) {
               db_fieldsmemory($result,$i);
@@ -129,7 +129,7 @@ jan = window.open('iss4_contativ006.php?Dadosativ=<?=$Dados?>&Dadosclasse=<?=$Da
             <td height="20px" class="borda" style="font-size:11px" align="center" nowrap><?=$q40_codporte?></td>
 	    <td height="20px" class="borda" style="font-size:11px" align="left" nowrap><?=$q40_descr?></td>
           </tr>
-	  <?php 
+	  <?
           }
 	  ?>
         </table>   

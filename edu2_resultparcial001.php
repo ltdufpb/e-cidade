@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $sMsgTitle = "Para selecionar mais de uma turma, mantenha pressionada a tecla CT
 
 <body bgcolor="#CCCCCC">
 <div class='container'>
-  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <form action="" ></form>
   <fieldset>
     <legend>Relatório de Conselho de Classe</legend>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -76,7 +76,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
-<?php  if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
+<? if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
   <form method="post" name="estrut" onSubmit="return js_submeter(this)">                
         <table border="0" cellpadding="0" cellspacing="0">
           <tr> 
@@ -89,7 +89,7 @@ input {
             </td>
           </tr>
           <tr> 
-            <td><input name="nometab" type="text" id="nometab" value="<?php echo @$nometabela?>"></td>
+            <td><input name="nometab" type="text" id="nometab" value="<?echo @$nometabela?>"></td>
           </tr>
           <tr> 
             <td><strong> 
@@ -128,7 +128,7 @@ input {
           </tr>
         </table>
 	</form>
-<?php 
+<?
 } else {
   db_postmemory($HTTP_POST_VARS);
   /*
@@ -456,7 +456,7 @@ echo "<a href=\"sys4_criaestrutura001.php\">Retorna</a>\n";
 	</td>
   </tr>
 </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

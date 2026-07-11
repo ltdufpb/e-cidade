@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clpontofe->rotulo->label("r29_regist");
               <?=$Lr29_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r29_mesusu",2,$Ir29_mesusu,true,"text",4,"","chave_r29_mesusu");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $clpontofe->rotulo->label("r29_regist");
               <?=$Lr29_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r29_regist",6,$Ir29_regist,true,"text",4,"","chave_r29_regist");
 		       ?>
             </td>
@@ -79,7 +79,7 @@ $clpontofe->rotulo->label("r29_regist");
               <?=$Lr29_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r29_rubric",4,$Ir29_rubric,true,"text",4,"","chave_r29_rubric");
 		       ?>
             </td>
@@ -89,7 +89,7 @@ $clpontofe->rotulo->label("r29_regist");
               <?=$Lr29_tpp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r29_tpp",1,$Ir29_tpp,true,"text",4,"","chave_r29_tpp");
 		       ?>
             </td>
@@ -99,7 +99,7 @@ $clpontofe->rotulo->label("r29_regist");
               <?=$Lr29_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r29_regist",6,$Ir29_regist,true,"text",4,"","chave_r29_regist");
 		       ?>
             </td>
@@ -117,7 +117,7 @@ $clpontofe->rotulo->label("r29_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pontofe.php")==true){
@@ -153,12 +153,12 @@ $clpontofe->rotulo->label("r29_regist");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

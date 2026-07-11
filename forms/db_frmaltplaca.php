@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,7 @@ if ($clcfpatriplaca->numrows > 0) {
           <?=@$Lt52_bem?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t52_bem', 8, $It52_bem, true, 'text', 3, "")
           ?>
         </td>
@@ -56,14 +56,14 @@ if ($clcfpatriplaca->numrows > 0) {
           <?=@$Lt52_descr?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t52_descr', 51, $It52_descr, true, 'text', 3, "")
           ?>
         </td>
       </tr>
     <tr>
         <td title="<?=@$Tt52_ident?>">     
-          <?php 
+          <?
             db_input('t52_bem', 8, "", true, 'hidden', 3, "");
             $fj = "";
             if ($t07_confplaca == 1 || $t07_confplaca == 2) {
@@ -71,14 +71,14 @@ if ($clcfpatriplaca->numrows > 0) {
             }
             if ($t07_confplaca == 3) {
           ?>
-    	    <?php db_ancora(@$Lt52_ident,"js_pesquisa_texto(true);",3); ?>
-          <?php $fj="onchange='js_buscplaca(this.value);'";
+    	    <?db_ancora(@$Lt52_ident,"js_pesquisa_texto(true);",3); ?>
+          <?$fj="onchange='js_buscplaca(this.value);'";
             }else{?>	
           <?=@$Lt52_ident?>&nbsp;&nbsp;
-          <?php }?>
+          <?}?>
         </td>
         <td>
-          <?php  
+          <? 
           	db_input('t52_ident', 20, $It52_ident, true, 'text', $opc, $fj);
           	if ($t07_confplaca == 3 || $t07_confplaca == 2) {
           		db_input('t52_ident_seq', 8,$It41_placaseq, true, 'text', 1, "");
@@ -92,7 +92,7 @@ if ($clcfpatriplaca->numrows > 0) {
         <td title="<?=@$Tt41_obs?>" colspan="2">
           <fieldset class="separator">
             <legend><?=@$Lt41_obs?></legend>
-            <?php 
+            <?
               db_textarea('t41_obs',3,48,$It41_obs,true,'text',1)
             ?>
           </fieldset>
@@ -109,7 +109,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bens.hide();
-  <?php 
+  <?
 
 
 	if ($db_opcao != 1) {

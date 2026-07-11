@@ -46,7 +46,7 @@ $db_opcao   = 1;
   <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?php 
+     <?
 	     $clcriaabas->identifica = array("cadescrito"=>"Escritório Contábil","cadescritoresp"=>"Responsável");
 	     $clcriaabas->src = array("cadescrito"=>"iss1_cadescrito006.php");
 	     $clcriaabas->disabled   =  array("cadescritoresp"=>"true");

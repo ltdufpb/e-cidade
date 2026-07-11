@@ -99,13 +99,13 @@ body {
             <?=$Lz01_i_cgsund?>&nbsp;
           </td>
           <td nowrap>
-            <?php db_input('z01_i_cgsund', 5, $Iz01_i_cgsund, true, 'text', 3, '');?>
+            <?db_input('z01_i_cgsund', 5, $Iz01_i_cgsund, true, 'text', 3, '');?>
           </td>
           <td title='<?=$Tz01_v_nome?>' nowrap>
             <?=$Lz01_v_nome?>&nbsp;
           </td>
           <td nowrap>
-            <?php db_input('z01_v_nome', 40, @$Iz01_v_nome, true, 'text', 3, '');?>
+            <?db_input('z01_v_nome', 40, @$Iz01_v_nome, true, 'text', 3, '');?>
           </td>
         </tr>
       </table>

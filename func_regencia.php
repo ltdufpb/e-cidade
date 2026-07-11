@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
  <tr>
   <td align="center" valign="top">
    <br>
-   <?php if(!isset($pesquisa_chave)){?>
+   <?if(!isset($pesquisa_chave)){?>
     <b>Disciplinas da Turma <?=pg_result($result,0,'ed57_c_descr')?> para marcar horários:</b>
     <table border="1" cellspacing="1" cellpading="0">
      <tr>
@@ -75,7 +75,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
       <td>Marcados</td>
       <td>Restantes</td>
      </tr>
-     <?php 
+     <?
      $cor1 = "#97B5E6";
      $cor2 = "#E796A4";
      $cor = "";
@@ -117,7 +117,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
        quantos--;
       }
       </script>
-      <?php 
+      <?
      }
      ?>
      <tr id="nenhum" style="visibility:hidden;">
@@ -133,7 +133,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
       }
      </script>
     </table>
-   <?php }?>
+   <?}?>
   </td>
  </tr>
 </table>

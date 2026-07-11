@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,37 +50,37 @@ $ano=$data[2];
        <?=@$Lq33_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('q33_codigo',7,$Iq33_codigo,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq33_inscr?>">
-       <?php 
+       <?
        db_ancora(@$Lq33_inscr,"js_pesquisaq33_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('q33_inscr',7,$Iq33_inscr,true,'text',$db_opcao," onchange='js_pesquisaq33_inscr(false);'")
 ?>
-       <?php 
+       <?
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq33_tipcalc?>">
-       <?php 
+       <?
        db_ancora(@$Lq33_tipcalc,"js_tipcalc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
   db_input('q33_tipcalc',7,$Iq33_tipcalc,true,'text',$db_opcao,'onchange="js_tipcalc(false);"');
 ?>
-       <?php 
+       <?
 db_input('q81_descr',40,$Iz01_nome,true,'text',3,"","","#E6E4F1");
        ?>
     </td>
@@ -90,7 +90,7 @@ db_input('q81_descr',40,$Iz01_nome,true,'text',3,"","","#E6E4F1");
        <?=@$Lq33_tiporeg?>
     </td>
     <td> 
-<?php 
+<?
 $x = array('e'=>'Estimado','a'=>'Arbitrado');
 db_select('q33_tiporeg',$x,true,$db_opcao,"");
 ?>
@@ -106,7 +106,7 @@ db_select('q33_tiporeg',$x,true,$db_opcao,"");
     </fieldset>
    </td>
   </tr>     
-<?php 
+<?
   if($db_opcao==3 || $db_opcao==2){//so entra quando tiver alterando ou excluindo o varfix  
     $clvarfixval->rotulo->label();
 ?>
@@ -119,7 +119,7 @@ db_select('q33_tiporeg',$x,true,$db_opcao,"");
 	       <?=@$Lq34_mes?>
 	    </td>
 	    <td> 
-<?php 
+<?
 if(empty($q34_mes)){
  $q34_mes=date("m",db_getsession('DB_datausu'));
 } 
@@ -131,7 +131,7 @@ $resultw=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"M
 	       <?=@$Lq34_ano?>
 	    </td>
 	    <td> 
-<?php 
+<?
 $anos=array();
 $anoatual=date("Y",db_getsession("DB_datausu"));
 for($i=$anoatual; $i>($anoatual-10); $i--){
@@ -144,7 +144,7 @@ db_select("q34_ano",$anos,true,$db_opcao02,"","","","","");
 	       <?=@$Lq34_dtval?>
 	    </td>
 	    <td> 
-	<?php 
+	<?
 	if(empty($q34_dtval_dia)){
 	    $q34_dtval_dia=$dia;
 	    $q34_dtval_mes=$mes;
@@ -159,24 +159,24 @@ db_select("q34_ano",$anos,true,$db_opcao02,"","","","","");
 	       <?=@$Lq34_valor?>
 	    </td>
 	    <td> 
-	<?php 
+	<?
 	db_input('q34_valor',10,$Iq34_valor,true,'text',$db_opcao02,"")
 	?>
 	    </td>
 	    <td nowrap title="<?=@$Tq34_inflat?>">
-	       <?php 
+	       <?
                 db_ancora(@$Lq34_inflat,"js_pesquisainflat(true);",$db_opcao02);
 		?>
 	    </td>
 	    <td colspan='3'> 
-	<?php 
+	<?
        db_input('q34_inflat',10,$Iq34_inflat,true,'text',$db_opcao02,"onchange='js_pesquisainflat(false)'")
 	?>
-       <?php 
+       <?
 db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
        ?>
 	    </td>
-       <?php 
+       <?
        ?>
           </tr>
 	  <tr>
@@ -184,11 +184,11 @@ db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
               <input name="<?=($db_opcao02==1?"inc":($db_opcao02==2||$db_opcao02==22?"alt":"exc"))?>" type="submit" id="db_opcao" value="<?=($db_opcao02==1?"Incluir":($db_opcao02==2||$db_opcao02==22?"Alterar":"Excluir"))?>" <?=($db_botao02==false?"disabled":"")?> >
               <input name="todos" type="button" value="Lançar para todos meses" onclick="js_todosmeses();" >
               <input name="todosmeses" type="hidden" value="" onclick="" >
-<?php 
+<?
 if(isset($opcao)){
 ?>
 <input name="novo" type="button" value="Novo" onclick="js_novo();" >
-<?php 
+<?
 }
 ?>
 	    </td>
@@ -199,7 +199,7 @@ if(isset($opcao)){
   </tr>
   <tr>
     <td valign="top" >  
-     <?php 
+     <?
 //                                   die ($clvarfixval->sql_query_file(null,"q34_codigo,q34_mes,q34_ano,q34_valor,q34_inflat,q34_dtval",null," q34_codigo = $q33_codigo"));
       $cliframe_alterar_excluir->sql     = $clvarfixval->sql_query_file(null,"q34_codigo,q34_mes,q34_ano,q34_valor,q34_inflat,q34_dtval","q34_mes"," q34_codigo = $q33_codigo");
       $chavepri= array("q34_codigo"=>$q33_codigo,"q34_mes"=>@$q34_mes,"q34_ano"=>@$q34_ano);
@@ -212,7 +212,7 @@ if(isset($opcao)){
      ?>
      </td>
     </tr>
-<?php 
+<?
     } 
 ?>
   </table>
@@ -298,7 +298,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_varfix.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
               <?=$Led36_i_turma?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed36_i_turma",5,$Ied36_i_turma,true,"text",4,"","chave_ed36_i_turma");
                        ?>
             </td>
@@ -68,7 +68,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
               <?=$Led36_i_matricula?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed36_i_matricula",5,$Ied36_i_matricula,true,"text",4,"","chave_ed36_i_matricula");
                        ?>
             </td>
@@ -78,7 +78,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
               <?=$Led36_i_turma?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed36_i_turma",5,$Ied36_i_turma,true,"text",4,"","chave_ed36_i_turma");
                        ?>
             </td>
@@ -96,7 +96,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_turma_matriculas.php")==true){
@@ -132,12 +132,12 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

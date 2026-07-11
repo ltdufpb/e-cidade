@@ -106,7 +106,7 @@ function js_ret(chave, chave2, validade){
               <?=$Lm60_codmater?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");
 		       db_input("codmater",10,$Im60_codmater,true,"hidden",3);
 		       db_input("descrmater",10,'',true,"hidden",3);
@@ -120,7 +120,7 @@ function js_ret(chave, chave2, validade){
               <?=$Lm60_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("m60_descr",40,$Im60_descr,true,"text",4,"","chave_m60_descr");
 		       ?>
             </td>
@@ -172,12 +172,12 @@ function js_ret(chave, chave2, validade){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 

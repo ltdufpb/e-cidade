@@ -344,7 +344,7 @@ db_input('j94_tabelionato',15,$Ij94_tabelionato,true,'text',$db_opcao,"")
     </td>
 
     <td>
-      <?php 
+      <?
       db_input('j75_responsavel_a',50,'',true,'text',3,"");
       db_input('j75_responsavel',10,$Ij75_responsavel,true,'hidden',$db_opcao,"");
       ?>

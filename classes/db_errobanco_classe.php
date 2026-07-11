@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: empenho
 //CLASSE DA ENTIDADE errobanco
 class cl_errobanco { 

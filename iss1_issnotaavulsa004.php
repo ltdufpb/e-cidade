@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -132,13 +132,13 @@ $q51_dtemiss_ano = date("Y",db_getsession("DB_datausu"));
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmissnotaavulsaalt.php"));
 	?>
     </center>
 </body>
 </html>
-<?php 
+<?
 if(isset($post->incluir)){
   if($lSqlErro==true){
     db_msgbox($erro_msg);

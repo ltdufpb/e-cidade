@@ -116,7 +116,7 @@ if (isset($alterar)) {
 </div>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar)) {
 
   if ($lErro) {

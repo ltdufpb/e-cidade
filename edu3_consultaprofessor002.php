@@ -176,7 +176,7 @@ if( isset( $chavepesquisa ) ) {
                     <?=$Lz01_sexo?> <?=$z01_sexo == "M" ? "Masculino" : "Feminino"?>
                     &nbsp;&nbsp;
                     <?=$Lz01_estciv?>
-                    <?php 
+                    <?
                     if ($z01_estciv == 1) {
                       echo "Solteiro";
                     } else if ($z01_estciv == 2) {

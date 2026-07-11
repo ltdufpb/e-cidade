@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -71,7 +71,7 @@ if($clrechumano->numrows==0){
    </td>
   </tr>
  </table>
- <?php 
+ <?
  exit;
 }
 db_fieldsmemory($result,0);

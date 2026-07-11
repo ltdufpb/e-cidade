@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,15 +84,15 @@ function valida_submit(){
      <td height=25>&nbsp;</td>
   </tr>		
 </table>
-<?php if(!isset($HTTP_POST_VARS["b_estrut"])) {?>
+<?if(!isset($HTTP_POST_VARS["b_estrut"])) {?>
 <table border="0" cellspacing="0" cellpadding="0" bgcolor="#cccccc" style='border:1px solid black'>
-   <form method="post" name="estrut" onsubmit="return valida_submit();" action="<?php echo $PHP_SELF;?>">
+   <form method="post" name="estrut" onsubmit="return valida_submit();" action="<?echo $PHP_SELF;?>">
   <tr> 
      <td colspan=4 align='center' style='border-bottom:1px solid black'><font size='4'><b>Módulos</b></font></td>
   </tr>
   <tr>
   <td colspan=2>
- <?php  
+ <? 
       $rsmod = db_query("select m.codmod,m.nomemod 
      	                from   db_sysmodulo m
 	               	       inner join db_sysarqmod s
@@ -159,7 +159,7 @@ function valida_submit(){
      }
    </script>  
 
- <?php 
+ <?
    // cria as layers com o conteúdo das tabelas
    $j = 0;
    $modulo = "";
@@ -193,7 +193,7 @@ echo "</table>";
 
   ?>      
   </form> 
-  <?php 
+  <?
 } else {
   if (empty($_POST["nome_arq"])){
      db_msgbox('O nome do Arquivo não pode estar vazio');
@@ -547,7 +547,7 @@ $salvando = 1;
 </body>
 </html>
      <script>
-     <?php 
+     <?
      if(!isset($salvando)){
      ?>
       arquivo = '';
@@ -560,7 +560,7 @@ $salvando = 1;
 	}
       }
       document.estrut.nome_arq.value = '';
-      <?php 
+      <?
       }
       ?>
       function js_preenchenome(obj,obj1){

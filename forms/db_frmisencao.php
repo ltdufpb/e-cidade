@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,7 +43,7 @@ if($db_opcao==1){
 <center>
 <table border="0">
 <tr>
-	<?php 
+	<?
 //	db_msgbox("$origem -- $valorigem");
 		if(!isset($origem) || $origem == ''){
 			$sqlBuscaOrigem  = " select case ";
@@ -124,37 +124,37 @@ if($db_opcao==1){
     <td nowrap >
     </td>
     <td> 
-<?php 
+<?
 db_input('v10_sequencial',10,$Iv10_sequencial,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv10_isencaotipo?>">
-       <?php 
+       <?
        db_ancora(@$Lv10_isencaotipo,"js_pesquisav10_isencaotipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'text',$db_opcao," onchange='js_pesquisav10_isencaotipo(false);'")
 ?>
-       <?php 
+       <?
 db_input('v11_descr',40,$Iv11_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tv17_protprocesso?>">
-       <?php 
+       <?
        db_ancora(@$Lv17_protprocesso,"js_pesquisav17_protprocesso(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('v17_protprocesso',10,$Iv17_protprocesso,true,'text',$db_opcao," onchange='js_pesquisav17_protprocesso(false);'")
 ?>
-       <?php 
+       <?
 db_input('p58_codproc',40,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
@@ -165,7 +165,7 @@ db_input('p58_codproc',40,$Ip58_codproc,true,'text',3,'')
        <?=@$Lv10_dtisen?>
     </td>
     <td> 
-<?php 
+<?
 db_inputdata('v10_dtisen',@$v10_dtisen_dia,@$v10_dtisen_mes,@$v10_dtisen_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -251,7 +251,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isencao.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

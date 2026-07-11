@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -35,7 +35,7 @@ $clacordoparalisacaoacordomovimentacao = new cl_acordoparalisacaoacordomovimenta
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_acordoparalisacaoacordomovimentacao.php")==true){
@@ -66,12 +66,12 @@ $clacordoparalisacaoacordomovimentacao = new cl_acordoparalisacaoacordomovimenta
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 

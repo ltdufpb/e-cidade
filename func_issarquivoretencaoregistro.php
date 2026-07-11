@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -25,11 +25,11 @@ $clissarquivoretencaoregistro->rotulo->label("q91_numeronotafiscal");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lq91_sequencial?></label></td>
-          <td><?php  db_input("q91_sequencial",10,$Iq91_sequencial,true,"text",4,"","chave_q91_sequencial"); ?></td>
+          <td><? db_input("q91_sequencial",10,$Iq91_sequencial,true,"text",4,"","chave_q91_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lq91_numeronotafiscal?></label></td>
-          <td><?php  db_input("q91_numeronotafiscal",10,$Iq91_numeronotafiscal,true,"text",4,"","chave_q91_numeronotafiscal");?></td>
+          <td><? db_input("q91_numeronotafiscal",10,$Iq91_numeronotafiscal,true,"text",4,"","chave_q91_numeronotafiscal");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $clissarquivoretencaoregistro->rotulo->label("q91_numeronotafiscal");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_issarquivoretencaoregistro.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issarquivoretencaoregistro.php")==true){
@@ -79,12 +79,12 @@ $clissarquivoretencaoregistro->rotulo->label("q91_numeronotafiscal");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

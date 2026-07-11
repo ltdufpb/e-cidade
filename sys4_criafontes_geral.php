@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
-  <?php 
+  <?
    if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
     <form method="post" name="estrut">                
         <table border="0" cellpadding="0" cellspacing="0">
@@ -86,7 +86,7 @@ input {
           </tr>
         </table>
 	</form>
-<?php 
+<?
 } else {
   db_postmemory($HTTP_POST_VARS);
 // Tabelas
@@ -132,7 +132,7 @@ input {
     $fd2 = fopen($arq002,"w");
     $fd3 = fopen($arq003,"w");
 
-    fputs($fd1,"<?php \n");
+    fputs($fd1,"<?\n");
     for($i = 0;$i < $numrows;$i++) {
 	  $varpk = ""; 
       $pk = db_query("select a.nomearq,c.nomecam,p.sequen
@@ -195,19 +195,19 @@ input {
         fputs($fd1,'  <tr> '."\n");
         fputs($fd1,'    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> '."\n");
         fputs($fd1,'    <center>'."\n");
-        fputs($fd1,'	<?php '."\n");
+        fputs($fd1,'	<?'."\n");
         fputs($fd1,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq"))).'.php");'."\n");
         fputs($fd1,'	?>'."\n");
         fputs($fd1,'    </center>'."\n");
         fputs($fd1,'	</td>'."\n");
         fputs($fd1,'  </tr>'."\n");
         fputs($fd1,'</table>'."\n");
-        fputs($fd1,'<?php '."\n");
+        fputs($fd1,'<?'."\n");
         fputs($fd1,'db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));'."\n");
         fputs($fd1,'?>'."\n");
         fputs($fd1,'</body>'."\n");
         fputs($fd1,'</html>'."\n");
-        fputs($fd1,'<?php '."\n");
+        fputs($fd1,'<?'."\n");
 
 //        fputs($fd1,'if($cl'.trim(pg_result($result,$i,"nomearq")).'->erro_status=="0"){'."\n");
 //        fputs($fd1,'  $db_botao=true;'."\n");
@@ -240,7 +240,7 @@ input {
     }
     fclose($fd1);  
 
-    fputs($fd2,"<?php \n");
+    fputs($fd2,"<?\n");
     for($i = 0;$i < $numrows;$i++) {
 	  if($Ncampos > 0) {
         fputs($fd2,'require(modification("libs/db_stdlib.php"));'."\n");
@@ -297,19 +297,19 @@ input {
         fputs($fd2,'  <tr> '."\n");
         fputs($fd2,'    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> '."\n");
         fputs($fd2,'    <center>'."\n");
-        fputs($fd2,'	<?php '."\n");
+        fputs($fd2,'	<?'."\n");
         fputs($fd2,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq"))).'.php");'."\n");
         fputs($fd2,'	?>'."\n");
         fputs($fd2,'    </center>'."\n");
         fputs($fd2,'	</td>'."\n");
         fputs($fd2,'  </tr>'."\n");
         fputs($fd2,'</table>'."\n");
-        fputs($fd2,'<?php '."\n");
+        fputs($fd2,'<?'."\n");
         fputs($fd2,'db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));'."\n");
         fputs($fd2,'?>'."\n");
         fputs($fd2,'</body>'."\n");
         fputs($fd2,'</html>'."\n");
-        fputs($fd2,'<?php '."\n");
+        fputs($fd2,'<?'."\n");
 		
         fputs($fd2,'if($cl'.trim(pg_result($result,$i,"nomearq")).'->erro_status=="0"){'."\n");
         fputs($fd2,'  $cl'.trim(pg_result($result,$i,"nomearq")).'->erro(true,false);'."\n");
@@ -326,7 +326,7 @@ input {
 	  }
     }
     fclose($fd2);  
-    fputs($fd3,"<?php \n");
+    fputs($fd3,"<?\n");
     for($i = 0;$i < $numrows;$i++) {
 	  if($Ncampos > 0) {
         fputs($fd3,'require(modification("libs/db_stdlib.php"));'."\n");
@@ -383,7 +383,7 @@ input {
         fputs($fd3,'  <tr> '."\n");
         fputs($fd3,'    <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> '."\n");
         fputs($fd3,'    <center>'."\n");
-        fputs($fd3,'	<?php '."\n");
+        fputs($fd3,'	<?'."\n");
         fputs($fd3,'	include(modification("forms/db_frm'.trim(pg_result($result,$i,"nomearq"))).'.php");'."\n");
         fputs($fd3,'	?>'."\n");
 		
@@ -391,12 +391,12 @@ input {
         fputs($fd3,'	</td>'."\n");
         fputs($fd3,'  </tr>'."\n");
         fputs($fd3,'</table>'."\n");
-        fputs($fd3,'<?php '."\n");
+        fputs($fd3,'<?'."\n");
         fputs($fd3,'db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));'."\n");
         fputs($fd3,'?>'."\n");
         fputs($fd3,'</body>'."\n");
         fputs($fd3,'</html>'."\n");
-        fputs($fd3,'<?php '."\n");
+        fputs($fd3,'<?'."\n");
         fputs($fd3,'if($cl'.trim(pg_result($result,$i,"nomearq")).'->erro_status=="0"){'."\n");
         fputs($fd3,'  $cl'.trim(pg_result($result,$i,"nomearq")).'->erro(true,false);'."\n");
         fputs($fd3,'}else{'."\n");
@@ -418,7 +418,7 @@ input {
 	</td>
   </tr>
 </table>
-	<?php 
+	<?
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

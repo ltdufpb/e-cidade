@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cltpcontra->rotulo->label("h13_descr");
               <?=$Lh13_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h13_codigo",2,$Ih13_codigo,true,"text",4,"","chave_h13_codigo");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $cltpcontra->rotulo->label("h13_descr");
               <?=$Lh13_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h13_descr",40,$Ih13_descr,true,"text",4,"","chave_h13_descr");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $cltpcontra->rotulo->label("h13_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $dbwhere = "";
       if(isset($regime) && trim($regime)!=""){
       	$dbwhere = " and h13_regime = $regime ";
@@ -127,12 +127,12 @@ $cltpcontra->rotulo->label("h13_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

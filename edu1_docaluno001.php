@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ if(isset($excluir)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
    <fieldset style="width:95%"><legend><b>Documentação Pendente</b></legend>
-    <?php include(modification("forms/db_frmdocaluno.php"));?>
+    <?include(modification("forms/db_frmdocaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -90,7 +90,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
  if($cldocaluno->erro_status=="0"){
   $cldocaluno->erro(true,false);

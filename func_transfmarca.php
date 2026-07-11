@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clcgm->rotulo->label("z01_nome");
       <?=$Lma02_i_marca?>
      </td>
      <td width="50%" align="left" nowrap>
-      <?php db_input("ma02_i_marca",10,$Ima02_i_marca,true,"text",4,"","chave_ma02_i_marca");?>
+      <?db_input("ma02_i_marca",10,$Ima02_i_marca,true,"text",4,"","chave_ma02_i_marca");?>
      </td>
     </tr>
     <!--
@@ -66,7 +66,7 @@ $clcgm->rotulo->label("z01_nome");
       <b>Proprietário Novo:</b>
      </td>
      <td width="50%" align="left" nowrap>
-      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
      </td>
     </tr>
     -->
@@ -85,7 +85,7 @@ $clcgm->rotulo->label("z01_nome");
 <table width="100%">
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_transfmarca.php")==true){

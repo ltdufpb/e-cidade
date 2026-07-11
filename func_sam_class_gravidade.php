@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $oDaoSamClasseGravidade->rotulo->label("sm02_descr");
               <?=$Lsm02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sm02_sequencial",10,$Ism02_sequencial,true,"text",4,"","chave_sm02_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $oDaoSamClasseGravidade->rotulo->label("sm02_descr");
               <?=$Lsm02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sm02_descr",10,$Ism02_descr,true,"text",4,"","chave_sm02_descr");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $oDaoSamClasseGravidade->rotulo->label("sm02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sam_class_gravidade.php")==true){
@@ -124,12 +124,12 @@ $oDaoSamClasseGravidade->rotulo->label("sm02_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

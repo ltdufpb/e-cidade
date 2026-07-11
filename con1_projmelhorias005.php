@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -248,7 +248,7 @@ function js_confirma(){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
 
-<?php 
+<?
 //MODULO: contrib
 $clprojmelhorias->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -273,7 +273,7 @@ $clrotulo->label("d42_numcgm");
        <?=@$Ld40_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('d40_codigo',10,$Id40_codigo,true,'text',3,"")
 ?>
     </td>
@@ -283,25 +283,25 @@ db_input('d40_codigo',10,$Id40_codigo,true,'text',3,"")
        <?=$Ld40_codlog?>
     </td>
     <td> 
-<?php 
+<?
 db_input('d40_codlog',7,$Id40_codlog,true,'text',3," onchange='js_pesquisad40_codlog(false);'")
 ?>
-       <?php 
+       <?
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Td42_numcgm?>">
-       <?php 
+       <?
        db_ancora(@$Ld42_numcgm,"js_pesquisad42_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('d42_numcgm',7,$Id42_numcgm,true,'text',$db_opcao," onchange='js_pesquisad42_numcgm(false);'")
 ?>
-       <?php 
+       <?
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -311,7 +311,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Ld40_profun?>
     </td>
     <td> 
-<?php 
+<?
 db_input('d40_profun',6,$Id40_profun,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -321,7 +321,7 @@ db_input('d40_profun',6,$Id40_profun,true,'text',$db_opcao,"")
        <?=@$Ld40_trecho?>
     </td>
     <td> 
-<?php 
+<?
 db_input('d40_trecho',60,$Id40_trecho,true,'text',2,"")
 ?>
     </td>
@@ -399,7 +399,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -419,12 +419,12 @@ if($db_opcao==22){
 	</td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($confirma)){
   if($clprojmelhorias->erro_status=="0"){
     $clprojmelhorias->erro(true,false);

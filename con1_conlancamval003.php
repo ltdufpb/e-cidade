@@ -1,4 +1,4 @@
-<?php PHP
+<?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -228,7 +228,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
     <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 
     <center>
-        <?php PHP
+        <?PHP
         if (USE_PCASP) {
             require_once(modification("forms/db_frmconlancamval.php"));
         } else {
@@ -236,10 +236,10 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
         }
         ?>
     </center>
-    <?php PHP db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+    <?PHP db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
     </body>
     </html>
-<?php PHP
+<?PHP
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
     if($erro==true){
         db_msgbox($msg_erro);

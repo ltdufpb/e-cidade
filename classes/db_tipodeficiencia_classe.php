@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE tipodeficiencia
 class cl_tipodeficiencia { 

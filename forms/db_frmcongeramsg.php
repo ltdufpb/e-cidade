@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -29,7 +29,7 @@
 <center>
 <br>
 <strong>Arquivos do :</strong>
-<?php  
+<? 
 // $data1_dia = date("d",db_getsession("DB_datausu"));
 // $data1_mes = date("m",db_getsession("DB_datausu"));
 // $data1_ano = date("Y",db_getsession("DB_datausu"));

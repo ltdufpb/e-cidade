@@ -367,15 +367,15 @@ if(isset($alterar)){
         </style>
     </head>
     <body bgcolor=#CCCCCC>
-    <?php 
+    <?
     include(modification("forms/db_frmemiteinicial.php"));
     ?>
-    <?php 
+    <?
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
     </body>
     </html>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;
@@ -405,7 +405,7 @@ if(isset($alterar)){
         }
         js_AbreJanelaRelatorio();
       </script>
-    <?php 
+    <?
 //     db_redireciona("jur1_emiteinicial002.php");
   }
 }

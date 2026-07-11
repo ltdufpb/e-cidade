@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -68,11 +68,11 @@ if(isset($excluir)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Cadastro de Disciplina</b></legend>
-    <?php include(modification("forms/db_frmdisciplinanova.php"));?>
+    <?include(modification("forms/db_frmdisciplinanova.php"));?>
    </fieldset>
    </center>
   </td>
@@ -80,16 +80,16 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?php if(!isset($ensino)){?>
+<?if(!isset($ensino)){?>
  <script>
  js_tabulacaoforms("form1","ensino",true,1,"ensino",true);
  </script>
-<?php }else{?>
+<?}else{?>
  <script>
  js_tabulacaoforms("form1","ed232_c_descr",true,1,"ed232_c_descr",true);
  </script>
-<?php }?>
-<?php 
+<?}?>
+<?
 if(isset($incluir)){
  if($cldisciplina->erro_status=="0"){
   $cldisciplina->erro(true,false);
@@ -106,7 +106,7 @@ if(isset($incluir)){
    nomealuno = parent.document.hist.ed47_v_nome.value;
    parent.location.href = "edu1_historico000.php?ed61_i_aluno="+aluno+"&ed47_v_nome="+nomealuno;
   </script>
-  <?php 
+  <?
   $cldisciplina->erro(true,true);
  };
 };
@@ -126,7 +126,7 @@ if(isset($alterar)){
    nomealuno = parent.document.hist.ed47_v_nome.value;
    parent.location.href = "edu1_historico000.php?ed61_i_aluno="+aluno+"&ed47_v_nome="+nomealuno;
   </script>
-  <?php 
+  <?
   $cldisciplina->erro(true,true);
  };
 };
@@ -140,7 +140,7 @@ if(isset($excluir)){
    nomealuno = parent.document.hist.ed47_v_nome.value;
    parent.location.href = "edu1_historico000.php?ed61_i_aluno="+aluno+"&ed47_v_nome="+nomealuno;
   </script>
-  <?php 
+  <?
   $cldisciplina->erro(true,true);
  };
 };

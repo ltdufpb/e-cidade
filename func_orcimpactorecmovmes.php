@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clorcimpactorecmovmes->rotulo->label("o97_sequen");
               <?=$Lo97_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o97_sequen",8,$Io97_sequen,true,"text",4,"","chave_o97_sequen");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clorcimpactorecmovmes->rotulo->label("o97_sequen");
               <?=$Lo97_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o97_mes",2,$Io97_mes,true,"text",4,"","chave_o97_mes");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clorcimpactorecmovmes->rotulo->label("o97_sequen");
               <?=$Lo97_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o97_sequen",8,$Io97_sequen,true,"text",4,"","chave_o97_sequen");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clorcimpactorecmovmes->rotulo->label("o97_sequen");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactorecmovmes.php")==true){
@@ -130,12 +130,12 @@ $clorcimpactorecmovmes->rotulo->label("o97_sequen");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

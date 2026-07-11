@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claidofcanc->rotulo->label("y03_codigo");
               <?=$Ly03_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y03_codigo",8,$Iy03_codigo,true,"text",4,"","chave_y03_codigo");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $claidofcanc->rotulo->label("y03_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aidofcanc.php")==true){
@@ -111,12 +111,12 @@ $claidofcanc->rotulo->label("y03_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

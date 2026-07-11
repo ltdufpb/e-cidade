@@ -1,4 +1,4 @@
-<?php 
+<?
 $this->objpdf->AliasNbPages();
 $this->objpdf->AddPage();
 

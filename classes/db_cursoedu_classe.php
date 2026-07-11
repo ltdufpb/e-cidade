@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: escola
 //CLASSE DA ENTIDADE cursoedu
 class cl_curso {

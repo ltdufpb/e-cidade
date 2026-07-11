@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $claguacorte->rotulo->label("x40_dtinc");
               <?=$Lx40_codcorte?>
             </td>
             <td width="90%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x40_codcorte",10,$Ix40_codcorte,true,"text",4,"","chave_x40_codcorte");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $claguacorte->rotulo->label("x40_dtinc");
               <?=$Lx40_dtinc?>
             </td>
             <td width="90%" align="left" nowrap> 
-              <?php 
+              <?
 		       //    db_input("x40_dtinc",10,$Ix40_dtinc,true,"text",4,"","chave_x40_dtinc");
            db_inputdata('x40_dtinc',@$x40_dtinc_dia,@$x40_dtinc_mes,@$x40_dtinc_ano,true,'text',4,"", "chave_x40_dtinc");
 		       ?>
@@ -85,7 +85,7 @@ $claguacorte->rotulo->label("x40_dtinc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacorte.php")==true){
@@ -130,12 +130,12 @@ $claguacorte->rotulo->label("x40_dtinc");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

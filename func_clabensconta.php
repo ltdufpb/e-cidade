@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $oRotulo->label("c60_estrut");
               <?=$Lt64_codcla?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t64_codcla",10,$It64_codcla,true,"text",4,"","chave_t64_codcla");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $oRotulo->label("c60_estrut");
               <?=$Lt64_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		           db_input("t64_descr",50,$It64_descr,true,"text",4,"","chave_t64_descr");
 		         ?>
 		         </td>
@@ -77,7 +77,7 @@ $oRotulo->label("c60_estrut");
               <?=$Lc60_estrut?>
             </td>
             <td>
-		           <?php 
+		           <?
                db_input("c60_estrut",20 ,$Ic60_estrut,true,"text",4,"","chave_c60_estrut");
               ?>
             </td>
@@ -95,7 +95,7 @@ $oRotulo->label("c60_estrut");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(isset($campos)==false){
 				 if(file_exists("funcoes/db_func_clabens.php")==true){
 				   include(modification("funcoes/db_func_clabens.php"));
@@ -156,12 +156,12 @@ $oRotulo->label("c60_estrut");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

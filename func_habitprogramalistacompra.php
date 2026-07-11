@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clhabitprogramalistacompra->rotulo->label("ht17_descricao");
               <?=$Lht17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ht17_sequencial",10,$Iht17_sequencial,true,"text",4,"","chave_ht17_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clhabitprogramalistacompra->rotulo->label("ht17_descricao");
               <?=$Lht17_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ht17_descricao",50,$Iht17_descricao,true,"text",4,"","chave_ht17_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clhabitprogramalistacompra->rotulo->label("ht17_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habitprogramalistacompra.php")==true){
@@ -123,12 +123,12 @@ $clhabitprogramalistacompra->rotulo->label("ht17_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

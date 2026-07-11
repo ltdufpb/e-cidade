@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ function js_enviarvalor(){
 	          <b>Somatório dos campos</b>
 			    </legend>
 			    <table width='100%'>
-   	      <?php 
+   	      <?
    	      $arr = split(",",$sel);
 		      $numrows = $cldb_syscampo->numrows;
 		      for($i=0;$i<$numrows;$i++){

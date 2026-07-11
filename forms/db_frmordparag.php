@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -115,21 +115,21 @@ return true;
 <center>
 <table border="0">
   <tr>
-    <td nowrap title="<?php //=@$Tdb03_docum?>">
-       <?php //=@$Ldb03_docum?>
+    <td nowrap title="<?//=@$Tdb03_docum?>">
+       <?//=@$Ldb03_docum?>
     </td>
     <td>
-<?php 
+<?
 db_input('db03_docum',8,$Idb03_docum,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?php //=@$Tdb03_descr?>">
-       <?php //=@$Ldb03_descr?>
+    <td nowrap title="<?//=@$Tdb03_descr?>">
+       <?//=@$Ldb03_descr?>
     </td>
     <td>
-<?php 
+<?
 db_input('db03_descr',40,$Idb03_descr,true,'hidden',$db_opcao,"")
 ?>
     </td>
@@ -138,16 +138,16 @@ db_input('db03_descr',40,$Idb03_descr,true,'hidden',$db_opcao,"")
 
 
   <tr>
-    <td nowrap title="<?php //=@$Tdb03_tipodoc?>">
-       <?php 
+    <td nowrap title="<?//=@$Tdb03_tipodoc?>">
+       <?
       // db_ancora(@$Ldb03_tipodoc,"js_pesquisadb03_tipodoc(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?php 
+<?
 db_input('db03_tipodoc',10,$Idb03_tipodoc,true,'hidden',$db_opcao," onchange='js_pesquisadb03_tipodoc(false);'")
 ?>
-       <?php 
+       <?
 db_input('db08_descr',40,$Idb08_descr,true,'hidden',3,'')
        ?>
     </td>
@@ -164,11 +164,11 @@ db_input('db08_descr',40,$Idb08_descr,true,'hidden',3,'')
 
 
   <tr>
-    <td nowrap title="<?php //=@$Tdb03_instit?>">
-       <?php //=$Ldb03_instit?>
+    <td nowrap title="<?//=@$Tdb03_instit?>">
+       <?//=$Ldb03_instit?>
     </td>
     <td>
-      <?php /*
+      <?/*
 	$result=$cldb_config->sql_record($cldb_config->sql_query_file(null,"codigo,nomeinst",""," codigo = " . db_getsession("DB_instit")));
 	db_selectrecord("db03_instit",$result,true,$db_opcao,"","","");
 */
@@ -188,14 +188,14 @@ db_input('db08_descr',40,$Idb08_descr,true,'hidden',3,'')
       <fieldset><Legend>Ordena os Páragrafos</legend>
       <table border="0">
          <tr>
-           <td nowrap title="<?php //=@$Tdb02_idparag?>" colspan="2">
-            <?php 
+           <td nowrap title="<?//=@$Tdb02_idparag?>" colspan="2">
+            <?
              // db_ancora(@$Ldb02_idparag,"js_pesquisadb02_idparag(true);",$db_opcao);
             ?>
-            <?php 
+            <?
              // db_input('db02_idparag',8,$Idb02_idparag,true,'text',$db_opcao," onchange='js_pesquisadb02_idparag(false);'")
             ?>
-            <?php 
+            <?
              // db_input('db02_descr',25,$Idb02_descr,true,'text',3,'')
             ?>
 	    <!--<input name="lanca" type="button" value="Lançar"  <?=($db_botao==false?"disabled":"")?> >-->
@@ -205,7 +205,7 @@ db_input('db08_descr',40,$Idb08_descr,true,'hidden',3,'')
 	   <td align="right" colspan="" width="80%">
 
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?php 
+              <?
               if(isset($chavepesquisa)){
 
 	 $resulta = $cldb_docparag->sql_record($cldb_docparag->sql_query($chavepesquisa,"","db_docparag.*,db02_descr","db04_ordem"));
@@ -271,7 +271,7 @@ function js_mostradb_paragrafo1(chave1,chave2){
   document.form1.lanca.onclick = js_insSelect;
 }
 function js_pesquisa(){
-<?php 
+<?
    if($db_opcao !=1){
     echo " db_iframe.jan.location.href = 'func_db_documento.php?funcao_js=parent.js_preenchepesquisa|0';";
    }
@@ -324,7 +324,7 @@ function js_mostradb_tipodoc1(chave1,chave2){
 
 
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

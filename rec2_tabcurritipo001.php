@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ function js_emite(){
         <strong>Ano / Mês :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?php 
+          <?
            if(!isset($anofolha) || (isset($anofolha) && trim($anofolha) == "")){
              $anofolha = db_anofolha();
            }
@@ -99,7 +99,7 @@ function js_emite(){
            db_input('anofolha',4,'',true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
-          <?php 
+          <?
            $DBtxt25 = db_mesfolha();
            db_input('mesfolha',2,'',true,'text',2,'')
           ?>
@@ -117,7 +117,7 @@ function js_emite(){
             <Legend align="left">
               <b>Tipos de Curso</b>
             </Legend>
-            <?php 
+            <?
             db_input("valor", 3, 0, true, 'hidden', 3);
             db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
             db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);
@@ -155,7 +155,7 @@ function js_emite(){
 	     <td align="right"><strong>Tipo de Relatório :</strong>&nbsp;
        </td>
        <td align="left">
-         <?php 
+         <?
            $x = array("a"=>"Analítico","s"=>"Sintético");
            db_select('tiposa',$x,true,4,"");
          ?>
@@ -165,7 +165,7 @@ function js_emite(){
 	     <td align="right"><strong>Ordem :</strong>&nbsp;
        </td>
        <td align="left">
-         <?php 
+         <?
            $xy = array("c"=>"Curso","a"=>"Alfabética");
            db_select('ordem',$xy,true,4,"");
          ?>
@@ -183,7 +183,7 @@ function js_emite(){
 
   </form>
 </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcustoplanocriterio->rotulo->label("cc07_custocriteriorateio");
               <?=$Lcc07_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("cc07_sequencial",10,$Icc07_sequencial,true,"text",4,"","chave_cc07_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcustoplanocriterio->rotulo->label("cc07_custocriteriorateio");
               <?=$Lcc07_custocriteriorateio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("cc07_custocriteriorateio",10,$Icc07_custocriteriorateio,true,"text",4,"","chave_cc07_custocriteriorateio");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcustoplanocriterio->rotulo->label("cc07_custocriteriorateio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_custoplanocriterio.php")==true){
@@ -123,12 +123,12 @@ $clcustoplanocriterio->rotulo->label("cc07_custocriteriorateio");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

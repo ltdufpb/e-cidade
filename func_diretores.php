@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cldiretores->rotulo->label("ed15_c_categoria");
               <?=$Led15_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed15_i_codigo",10,$Ied15_i_codigo,true,"text",4,"","chave_ed15_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $cldiretores->rotulo->label("ed15_c_categoria");
               <?=$Led15_c_categoria?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed15_c_categoria",30,$Ied15_c_categoria,true,"text",4,"","chave_ed15_c_categoria");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $cldiretores->rotulo->label("ed15_c_categoria");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_diretores.php")==true){
@@ -121,12 +121,12 @@ $cldiretores->rotulo->label("ed15_c_categoria");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

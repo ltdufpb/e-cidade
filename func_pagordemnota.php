@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clpagordemnota->rotulo->label("e71_codord");
               <?=$Le71_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e71_codord",6,$Ie71_codord,true,"text",4,"","chave_e71_codord");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clpagordemnota->rotulo->label("e71_codord");
               <?=$Le71_codnota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e71_codnota",6,$Ie71_codnota,true,"text",4,"","chave_e71_codnota");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clpagordemnota->rotulo->label("e71_codord");
               <?=$Le71_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e71_codord",6,$Ie71_codord,true,"text",4,"","chave_e71_codord");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clpagordemnota->rotulo->label("e71_codord");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pagordemnota.php")==true){
@@ -130,12 +130,12 @@ $clpagordemnota->rotulo->label("e71_codord");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

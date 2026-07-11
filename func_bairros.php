@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,12 +58,12 @@ $clbairro->rotulo->label("j13_descr");
         <td align="center">&nbsp;</td>
       </tr>
       <tr>
-        <td align="center"> <?php  if (isset($nomeBairro)) { ?> &nbsp;Nome do bairro:&nbsp;
+        <td align="center"> <? if (isset($nomeBairro)) { ?> &nbsp;Nome do bairro:&nbsp;
           <input name="nomeBairro" type="text" id="nomeBairro" size="41" maxlength="40">
-          <?php  } else if (isset($codbairro)) { ?>
+          <? } else if (isset($codbairro)) { ?>
           &nbsp;C&oacute;digo do bairro:&nbsp;
           <input name="codbairro" type="text" id="codbairro" size="41" maxlength="40">
-          <?php  } ?> <input name="pesquisar" type="submit" id="pesquisar" value="Pesquisar">
+          <? } ?> <input name="pesquisar" type="submit" id="pesquisar" value="Pesquisar">
         </form></td>
       </tr>
       <tr>
@@ -71,7 +71,7 @@ $clbairro->rotulo->label("j13_descr");
       </tr>
       <tr>
         <td align="center">
-          <?php 
+          <?
             if (isset($nomeBairro)) {
 
               $nomeBairro = strtoupper($nomeBairro);

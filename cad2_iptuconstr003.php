@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -64,7 +64,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_iptuconstr004.php'</script>
 <table border="0">
   <tr>
     <td align="top" colspan="3">
-   <?php 
+   <?
       $cliframe_seleciona->campos  = "j31_codigo,j31_descr,j32_descr";
       $cliframe_seleciona->legenda="QUE CONTENHAM ESTAS CARACTERÍSTICAS DE CONSTRUÇÃO";
       $cliframe_seleciona->sql=$clcaracter->sql_query("","*","j32_descr"," j32_tipo = 'C'");
@@ -129,11 +129,11 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_iptuconstr004.php'</script>
     </td>
     <td valign='center'>
        
-<?php 
+<?
 db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text',1,"")
 ?>
 <strong>&nbsp;À&nbsp;</strong>
-<?php 
+<?
 db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text',1,"","j39_dtlanfim")
 ?><br><br>
         <input type="text" name="anoini" size="6">
@@ -153,15 +153,15 @@ db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'t
   </tr>
   <tr>
     <td align="left" nowrap title="<?=@$Tj32_grupo?>">
-       <?php 
+       <?
        db_ancora($Lj32_grupo,"js_pesquisagrupo(true)",1);
        ?>
      </td>
      <td>
-<?php 
+<?
 db_input('j32_grupo',4,$Ij32_grupo,true,'text',1,"onChange='js_pesquisagrupo(false)'")
 ?>
-<?php 
+<?
 db_input('j32_descr',40,$Ij32_descr,true,'text',1,"")
 ?>
  <input type='hidden' name='chaves_caract'>
@@ -285,7 +285,7 @@ function js_mostracargrup1(chave1,chave2){
 </table>
 </body>
 </html>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=1;

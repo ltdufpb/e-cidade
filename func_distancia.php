@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrotulo->label("ed223_i_bairrodestino");
       <?=$Led223_i_bairroorigem?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrorigem");?>
+      <?db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrorigem");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $clrotulo->label("ed223_i_bairrodestino");
       <?=$Led223_i_bairrodestino?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrdestino");?>
+      <?db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrdestino");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $clrotulo->label("ed223_i_bairrodestino");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_distancia.php")==true){

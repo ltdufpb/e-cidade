@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_layoutformat->rotulo->label("db53_descr");
               <?=$Ldb53_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db53_codigo",6,$Idb53_codigo,true,"text",4,"","chave_db53_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_layoutformat->rotulo->label("db53_descr");
               <?=$Ldb53_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db53_descr",40,$Idb53_descr,true,"text",4,"","chave_db53_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_layoutformat->rotulo->label("db53_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_layoutformat.php")==true){
@@ -123,12 +123,12 @@ $cldb_layoutformat->rotulo->label("db53_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,14 +44,14 @@ $clrotulo->label("pc01_descrmater");
          <table width='100%'>
           <tr>
           <td nowrap><?=$Le60_numemp ?></td>
-          <td nowrap><?php  db_input('e60_numemp',15,0,true,'text',3);?> </td>
+          <td nowrap><? db_input('e60_numemp',15,0,true,'text',3);?> </td>
           <td nowrap><?=$Le55_autori ?></td>
-          <td nowrap><?php  db_input('e55_autori',8,0,true,'text',3); ?> </td>
+          <td nowrap><? db_input('e55_autori',8,0,true,'text',3); ?> </td>
           </tr>
           <tr>
           <td><b>Total de itens:</b></td>
           <td>
-          <?php 
+          <?
           if(!empty($e55_autori)){
             $result02 = $clempautitem->sql_record($clempautitem->sql_query_file($e55_autori,null,"count(e55_sequen) as tot_item")); 
             db_fieldsmemory($result02,0);
@@ -91,7 +91,7 @@ $clrotulo->label("pc01_descrmater");
           db_input('tot_item',8,0,true,'text',3); ?>
           </td>
           <td><b>Total dos valores:</b></td>
-          <td><?php   db_input('tot_valor',13,0,true,'text',3,"onchange=\"js_calcula('quant');\"")?></td>
+          <td><?  db_input('tot_valor',13,0,true,'text',3,"onchange=\"js_calcula('quant');\"")?></td>
           </tr>
           </table>
           </fieldset>
@@ -104,7 +104,7 @@ $clrotulo->label("pc01_descrmater");
            <fieldset><legend><b>Itens</b></legend>
            <table>
             <td valign="top"  align='center' colspan="4">  
-          <?php 
+          <?
           if (!empty($e60_numemp)) {
             
             

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ $clrotulo->label("ed47_v_nome");
                     <?=$Led47_i_codigo?>
                   </td>
                   <td nowrap>
-                    <?php db_input( "ed47_i_codigo", 10, $Ied47_i_codigo, true, "text", 4, "", "chave_ed47_i_codigo" );?>
+                    <?db_input( "ed47_i_codigo", 10, $Ied47_i_codigo, true, "text", 4, "", "chave_ed47_i_codigo" );?>
                   </td>
                 </tr>
                 <tr>
@@ -72,7 +72,7 @@ $clrotulo->label("ed47_v_nome");
                     <?=$Led47_v_nome?>
                   </td>
                   <td nowrap>
-                    <?php db_input( "ed47_v_nome", 40, $Ied47_v_nome, true, "text", 4, "", "chave_ed47_v_nome" );?>
+                    <?db_input( "ed47_v_nome", 40, $Ied47_v_nome, true, "text", 4, "", "chave_ed47_v_nome" );?>
                   </td>
                 </tr>
               </table>

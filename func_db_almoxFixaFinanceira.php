@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $cldb_almox->rotulo->label("m91_depto");
               <?=$Lm91_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		        db_input("m91_codigo",6,$Im91_codigo,true,"text",4,"","chave_m91_codigo");
 		      ?>
             </td>
@@ -72,7 +72,7 @@ $cldb_almox->rotulo->label("m91_depto");
               <?=$Lm91_depto?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		        db_input("m91_depto",6,$Im91_depto,true,"text",4,"","m91_depto");
 		      ?>
             </td>
@@ -90,7 +90,7 @@ $cldb_almox->rotulo->label("m91_depto");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
 
       if(!isset($pesquisa_chave)) {
 
@@ -159,12 +159,12 @@ $cldb_almox->rotulo->label("m91_depto");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

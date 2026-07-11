@@ -54,12 +54,12 @@ $clrotulo->label('DBtxt25');
 			      <b>Ano / Mês :</b>
 			    </td>
 			    <td>
-			      <?php 
+			      <?
 			        $anofolha = db_anofolha();
 			        db_input('anofolha',4,$IDBtxt23,true,'text',2,"onChange='js_validaTipoPonto()'");
 			      ?>
 			      &nbsp;/&nbsp;
-			      <?php 
+			      <?
 			        $mesfolha = db_mesfolha();
 			        db_input('mesfolha',2,$IDBtxt25,true,'text',2,"onChange='js_validaTipoPonto()'");
 			      ?>
@@ -70,7 +70,7 @@ $clrotulo->label('DBtxt25');
 			      <b>Ponto:</b>
 			    </td>
 			    <td>
-			     <?php 
+			     <?
 			     
 			       $aSigla = array( "r14"=>"Salário",
 					                    "r48"=>"Complementar",

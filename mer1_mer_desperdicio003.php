@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Desperdício</b></legend>
-    <?php include(modification("forms/db_frmmer_desperdicio.php"));?>
+    <?include(modification("forms/db_frmmer_desperdicio.php"));?>
    </fieldset>
    </center>
   </td>
@@ -78,7 +78,7 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if (isset($excluir)) {
 	
   if ($clmer_desperdicio->erro_status=="0") {

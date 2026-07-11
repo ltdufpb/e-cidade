@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempemphist->rotulo->label("e63_codhist");
               <?=$Le63_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e63_numemp",8,$Ie63_numemp,true,"text",4,"","chave_e63_numemp");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempemphist->rotulo->label("e63_codhist");
               <?=$Le63_codhist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e63_codhist",6,$Ie63_codhist,true,"text",4,"","chave_e63_codhist");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempemphist->rotulo->label("e63_codhist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empemphist.php")==true){
@@ -119,12 +119,12 @@ $clempemphist->rotulo->label("e63_codhist");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

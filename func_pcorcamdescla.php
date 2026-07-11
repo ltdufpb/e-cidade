@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
               <?=$Lpc32_orcamitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc32_orcamitem",10,$Ipc32_orcamitem,true,"text",4,"","chave_pc32_orcamitem");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
               <?=$Lpc32_orcamforne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc32_orcamforne",10,$Ipc32_orcamforne,true,"text",4,"","chave_pc32_orcamforne");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
               <?=$Lpc32_orcamforne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc32_orcamforne",10,$Ipc32_orcamforne,true,"text",4,"","chave_pc32_orcamforne");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamdescla.php")==true){
@@ -130,12 +130,12 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

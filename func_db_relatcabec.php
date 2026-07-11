@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_relatcabec->rotulo->label("db95_compl");
               <?=$Ldb95_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db95_codigo",10,$Idb95_codigo,true,"text",4,"","chave_db95_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_relatcabec->rotulo->label("db95_compl");
               <?=$Ldb95_compl?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db95_compl",40,$Idb95_compl,true,"text",4,"","chave_db95_compl");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_relatcabec->rotulo->label("db95_compl");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_relatcabec.php")==true){
@@ -119,12 +119,12 @@ $cldb_relatcabec->rotulo->label("db95_compl");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,7 +63,7 @@ if($ed110_i_ptconvocacao==0 || $ed110_i_ptgeral==0){
    <?=@$Led111_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed111_i_codigo',10,$Ied111_i_codigo,true,'text',3,"")?>
+   <?db_input('ed111_i_codigo',10,$Ied111_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -71,7 +71,7 @@ if($ed110_i_ptconvocacao==0 || $ed110_i_ptgeral==0){
    <?=@$Led111_c_titulo?>
   </td>
   <td>
-   <?php db_input('ed111_c_titulo',100,$Ied111_c_titulo,true,'text',$db_opcao,"")?>
+   <?db_input('ed111_c_titulo',100,$Ied111_c_titulo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -79,7 +79,7 @@ if($ed110_i_ptconvocacao==0 || $ed110_i_ptgeral==0){
    <?=@$Led111_t_obs?>
   </td>
   <td>
-   <?php db_textarea('ed111_t_obs',3,70,$Ied111_t_obs,true,'text',$db_opcao,"")?>
+   <?db_textarea('ed111_t_obs',3,70,$Ied111_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -87,10 +87,10 @@ if($ed110_i_ptconvocacao==0 || $ed110_i_ptgeral==0){
    <?=@$Led111_d_data?>
   </td>
   <td>
-   <?php db_inputdata('ed111_d_data',@$ed111_d_data_dia,@$ed111_d_data_mes,@$ed111_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
+   <?db_inputdata('ed111_d_data',@$ed111_d_data_dia,@$ed111_d_data_mes,@$ed111_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
    &nbsp;&nbsp;&nbsp;&nbsp;
    <?=@$Led111_i_ano?>
-   <?php db_input('ed111_i_ano',4,$Ied111_i_ano,true,'text',$db_opcao,"")?>
+   <?db_input('ed111_i_ano',4,$Ied111_i_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -99,7 +99,7 @@ if($ed110_i_ptconvocacao==0 || $ed110_i_ptgeral==0){
 <table>
  <tr>
   <td valign="top"><br>
-  <?php 
+  <?
    $chavepri= ["ed111_i_codigo"=>@$ed111_i_codigo,"ed111_c_titulo"=>@$ed111_c_titulo,"ed111_i_ano"=>@$ed111_i_ano,"ed111_d_data"=>@$ed111_d_data,"ed111_t_obs"=>@$ed111_t_obs];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clconvocacao->sql_query($ed111_i_codigo,"*","ed111_d_data desc");

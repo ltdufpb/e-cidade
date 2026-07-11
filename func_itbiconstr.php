@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbiconstr->rotulo->label("it08_guia");
               <?=$Lit08_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it08_codigo",10,$Iit08_codigo,true,"text",4,"","chave_it08_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbiconstr->rotulo->label("it08_guia");
               <?=$Lit08_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it08_guia",10,$Iit08_guia,true,"text",4,"","chave_it08_guia");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clitbiconstr->rotulo->label("it08_guia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbiconstr.php")==true){
@@ -119,12 +119,12 @@ $clitbiconstr->rotulo->label("it08_guia");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

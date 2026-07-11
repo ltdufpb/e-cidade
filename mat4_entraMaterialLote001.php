@@ -81,7 +81,7 @@ $oGet = db_utils::postMemory($_GET);
         </fieldset>
         <input name="processar" type="submit" value="Processar">
         <input name="limpa" type="button" onclick='js_limpa();' value="Limpar">
-        <?php 
+        <?
         db_input("m51_depto", 100, 0, true, "hidden", 3);
         ?>
     </div>

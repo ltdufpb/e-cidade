@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -296,7 +296,7 @@ db_app::load("estilos.css");
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-	<?php 
+	<?
 
 
 if (isset ($confirmar) && $sqlerro == false) {
@@ -321,7 +321,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
     }
 </script>
 </html>
-<?php 
+<?
 
 
 if ($db_opcao == 22) {

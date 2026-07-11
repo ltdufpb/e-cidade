@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,7 +62,7 @@ $clrhpromocao->rotulo->label("h72_sequencial");
               <?=$Lh72_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		          db_input("h72_sequencial",10,$Ih72_sequencial,true,"text",4,"","chave_h72_sequencial");
 		         ?>
             </td>
@@ -73,7 +73,7 @@ $clrhpromocao->rotulo->label("h72_sequencial");
              <strong>Matrícula: </strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",60,"Nome",true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -91,7 +91,7 @@ $clrhpromocao->rotulo->label("h72_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $sWhere =  ' 1 = 1 ';
       
       if (isset($sOrigem) && $sOrigem == "avaliacoes") {
@@ -168,12 +168,12 @@ $clrhpromocao->rotulo->label("h72_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

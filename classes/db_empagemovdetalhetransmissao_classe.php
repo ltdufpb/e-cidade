@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: empenho
 //CLASSE DA ENTIDADE empagemovdetalhetransmissao
 class cl_empagemovdetalhetransmissao { 

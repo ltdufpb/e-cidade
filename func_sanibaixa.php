@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clsanibaixa->rotulo->label("y81_obs");
               <?=$Ly81_codsani?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y81_codsani",10,$Iy81_codsani,true,"text",4,"","chave_y81_codsani");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clsanibaixa->rotulo->label("y81_obs");
               <?=$Ly81_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y81_seq",10,$Iy81_seq,true,"text",4,"","chave_y81_seq");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clsanibaixa->rotulo->label("y81_obs");
               <?=$Ly81_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y81_obs",0,$Iy81_obs,true,"text",4,"","chave_y81_obs");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clsanibaixa->rotulo->label("y81_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sanibaixa.php")==true){
@@ -130,12 +130,12 @@ $clsanibaixa->rotulo->label("y81_obs");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

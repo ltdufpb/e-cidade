@@ -88,7 +88,7 @@ if( isset( $cancelar ) ) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-        <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+        <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
         <br>
         <center>
         <fieldset style="width:95%">
@@ -103,6 +103,6 @@ if( isset( $cancelar ) ) {
       </td>
     </tr>
   </table>
-  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempagedadosret->rotulo->label("e75_codgera");
               <?=$Le75_codret?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e75_codret",10,$Ie75_codret,true,"text",4,"","chave_e75_codret");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempagedadosret->rotulo->label("e75_codgera");
               <?=$Le75_codgera?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e75_codgera",6,$Ie75_codgera,true,"text",4,"","chave_e75_codgera");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempagedadosret->rotulo->label("e75_codgera");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empagedadosret.php")==true){
@@ -119,12 +119,12 @@ $clempagedadosret->rotulo->label("e75_codgera");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -200,7 +200,7 @@ function js_testaRetencao(){
       <tr>
        <td colspan=3>&nbsp;</td>
        <td width=10% nowrap> <b>Valor da Nota</td>
-       <td align=right width=10%><?php db_input('valor_nota', 15, '', true, 'text',3, '','','','text-align:right') ?></td> 
+       <td align=right width=10%><?db_input('valor_nota', 15, '', true, 'text',3, '','','','text-align:right') ?></td> 
       
       </tr>
       <tr bgcolor="#BDC6BD">
@@ -210,7 +210,7 @@ function js_testaRetencao(){
         <td><b> ALÍQUOTA </b></td>
         <td align=center><b> VALOR</b></td>
       </tr>
-      <?php 
+      <?
 
  // cria uma lista com as receitas ja existentes nessa liquidação       
 $retencoes = array ();
@@ -246,7 +246,7 @@ if ($clpagordemtiporec->numrows > 0) {
                 <td>
                 	<input id="chk_<?=$cont?>" type=checkbox name=regra <?=($marca==true?"checked":""); ?> onChange="js_calculaRetencao();"></td>
                 <td>
-                  <?php  
+                  <? 
                      $v = 'receita_chk_'.$cont;
                      $$v   = $e59_codrec;
                      global $$v;                  
@@ -255,7 +255,7 @@ if ($clpagordemtiporec->numrows > 0) {
                   ?></td>
                 <td><?=$k02_drecei ?></td>
                 <td align=right>
-                <?php 
+                <?
                        $v = 'aliquota_chk_'.$cont;
                        $$v   = $e59_aliquota;
                        global $$v;
@@ -263,11 +263,11 @@ if ($clpagordemtiporec->numrows > 0) {
                 ?>
                 </td>
                 <td align=right>
-                <?php  
+                <? 
                       db_input('valor_chk_'.$cont, 15, $Ie53_valor, true, 'text',$op, ' onchange=js_testaRetencao();','','','text-align:right')
                 ?></td>     
 	      </tr>
-	    <?php 
+	    <?
 
 
 		$cont ++;

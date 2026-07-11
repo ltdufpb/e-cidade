@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $aux = new cl_arquivo_auxiliar;
        <tr>
            <td colspan=2 >
            <b>Tipo de Débito:</b>
-           <?php 
+           <?
            $arr=array("d"=>"Todos","f"=>"Tributário","t"=>"Não Tributário");
            db_select('tipodeb',$arr,true,2,"onchange='document.form1.submit();'");
            ?>
@@ -72,7 +72,7 @@ $aux = new cl_arquivo_auxiliar;
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?php $manda="";
+               <?$manda="";
                if (isset($tipodeb)&&($tipodeb!="")){
                  		$manda="$tipodeb";
                

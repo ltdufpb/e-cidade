@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmatpedido->rotulo->label("m97_sequencial");
               <?=$Lm97_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m97_sequencial",10,$Im97_sequencial,true,"text",4,"","chave_m97_sequencial");
 		       ?>
             </td>
@@ -73,7 +73,7 @@ $clmatpedido->rotulo->label("m97_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where =  " (m97_coddepto = ".db_getsession("DB_coddepto")." OR m91_depto = ".db_getsession("DB_coddepto")." )";
       $where .= " AND exists (select * from 
                               matanulitempedido
@@ -120,12 +120,12 @@ $clmatpedido->rotulo->label("m97_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

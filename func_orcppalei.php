@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcppalei->rotulo->label("o21_anoini");
               <?=$Lo21_codleippa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o21_codleippa",10,$Io21_codleippa,true,"text",4,"","chave_o21_codleippa");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcppalei->rotulo->label("o21_anoini");
               <?=$Lo21_anoini?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o21_anoini",4,$Io21_anoini,true,"text",4,"","chave_o21_anoini");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcppalei->rotulo->label("o21_anoini");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcppalei.php")==true){
@@ -119,12 +119,12 @@ $clorcppalei->rotulo->label("o21_anoini");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

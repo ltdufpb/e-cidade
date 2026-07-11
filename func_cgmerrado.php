@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcgmerrado->rotulo->label("z11_codigo");
               <?=$Lz11_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z11_codigo",10,$Iz11_codigo,true,"text",4,"","chave_z11_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clcgmerrado->rotulo->label("z11_codigo");
               <?=$Lz11_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z11_numcgm",8,$Iz11_numcgm,true,"text",4,"","chave_z11_numcgm");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clcgmerrado->rotulo->label("z11_codigo");
               <?=$Lz11_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z11_codigo",10,$Iz11_codigo,true,"text",4,"","chave_z11_codigo");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clcgmerrado->rotulo->label("z11_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cgmerrado.php")==true){
@@ -131,12 +131,12 @@ $clcgmerrado->rotulo->label("z11_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

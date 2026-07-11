@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllocalatendimentosocial->rotulo->label("as16_descricao");
               <?=$Las16_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as16_sequencial",10,$Ias16_sequencial,true,"text",4,"","chave_as16_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllocalatendimentosocial->rotulo->label("as16_descricao");
               <?=$Las16_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as16_descricao",70,$Ias16_descricao,true,"text",4,"","chave_as16_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllocalatendimentosocial->rotulo->label("as16_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_localatendimentosocial.php")==true){
@@ -123,12 +123,12 @@ $cllocalatendimentosocial->rotulo->label("as16_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

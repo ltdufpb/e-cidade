@@ -327,7 +327,7 @@ $oVeiculo         = db_utils::fieldsMemory($rsBuscaVeiculo, false);
     
     <table>
 
-      <?php  if ($oVeiculo->ve04_codigo) { ?>
+      <? if ($oVeiculo->ve04_codigo) { ?>
         <tr>
         
           <td>
@@ -363,13 +363,13 @@ $oVeiculo         = db_utils::fieldsMemory($rsBuscaVeiculo, false);
           </td>
         
         </tr>
-      <?php  } else { ?>
+      <? } else { ?>
         <tr>
           <td>
             <b>VEICULO NÃO BAIXADO</b>
           </td>
         </tr>
-      <?php  } ?>
+      <? } ?>
     </table>
   </fieldset>
   <fieldset>
@@ -377,7 +377,7 @@ $oVeiculo         = db_utils::fieldsMemory($rsBuscaVeiculo, false);
       <strong>Detalhamento do veículo:</strong>
     </legend>
     
-    <?php 
+    <?
       $oTabDetalhes = new verticalTab('detalhesVeiculo', 300);
       
       $sGetUrl = "?veiculo={$oVeiculo->ve01_codigo}";

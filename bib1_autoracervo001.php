@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Autores do Acervo</b></legend>
-    <?php include(modification("forms/db_frmautoracervo.php"));?>
+    <?include(modification("forms/db_frmautoracervo.php"));?>
    </fieldset>
    </center>
   </td>
@@ -82,7 +82,7 @@ js_tabulacaoforms("form1","bi21_autor",true,1,"bi21_autor",true);
 </script>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
   if($clautoracervo->erro_status=="0"){
     $clautoracervo->erro(true,false);

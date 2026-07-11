@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: cadastro
 //CLASSE DA ENTIDADE setorlocvalor
 class cl_setorlocvalor { 

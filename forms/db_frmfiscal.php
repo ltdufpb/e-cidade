@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -55,7 +55,7 @@ $clrotulo->label("z01_nome");
 $get="";
 ?>
 <form name="form1" method="post" action="">
-<?php 
+<?
 $rua="";
 $bairro="";
 $numero="";
@@ -245,7 +245,7 @@ if(isset($j01_matric) && $j01_matric != "" || (isset($identifica)&&$identifica==
        <?=@$Ly30_codnoti?>
     </td>
     <td>
-<?php 
+<?
 db_input('y30_codnoti',20,$Iy30_codnoti,true,'text',3,"");
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>&nbsp;".@$dados."&nbsp;</strong>";
 ?>
@@ -256,11 +256,11 @@ echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n
        <?=@$Ly30_numbloco?>
     </td>
     <td>
-<?php 
+<?
 db_input('y30_numbloco',20,$Iy30_numbloco,true,'text',$db_opcao,"");
 ?><b>
 Prazo p/ Recurso:
- </b><?php 
+ </b><?
 db_inputdata('y30_prazorec',@$y30_prazorec_dia,@$y30_prazorec_mes,@$y30_prazorec_ano,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -270,7 +270,7 @@ db_inputdata('y30_prazorec',@$y30_prazorec_dia,@$y30_prazorec_mes,@$y30_prazorec
        <?=@$Ly30_data?>
     </td>
     <td>
-<?php 
+<?
 if(empty($y30_data_dia)){
   $y30_data_dia = date("d",db_getsession("DB_datausu"));
   $y30_data_mes = date("m",db_getsession("DB_datausu"));
@@ -279,7 +279,7 @@ if(empty($y30_data_dia)){
 db_inputdata('y30_data',@$y30_data_dia,@$y30_data_mes,@$y30_data_ano,true,'text',$db_opcao,"")
 ?>
 &nbsp;&nbsp;       <?=@$Ly30_hora?>
-<?php 
+<?
 db_input('y30_hora',5,$Iy30_hora,true,'text',$db_opcao,"");
 if($db_opcao == 1){
   echo "<script>document.form1.y30_hora.value = '".db_hora()."'</script>";
@@ -292,22 +292,22 @@ if($db_opcao == 1){
        <?=@$Ly30_obs?>
     </td>
     <td>
-<?php 
+<?
 db_textarea('y30_obs',2,50,$Iy30_obs,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty30_setor?>">
-       <?php 
+       <?
        db_ancora(@$Ly30_setor,"js_pesquisay30_setor(true);",3);
        ?>
     </td>
     <td>
-<?php 
+<?
 db_input('y30_setor',5,$Iy30_setor,true,'text',3,"")
 ?>
-       <?php 
+       <?
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
        ?>
     </td>
@@ -317,7 +317,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
        <?=@$Ly30_nome?>
     </td>
     <td>
-<?php 
+<?
 db_input('y30_nome',35,$Iy30_nome,true,'text',$db_opcao,"");
 if(isset($z01_nome)){
   echo "<script>document.form1.y30_nome.value = '$z01_nome'</script>";
@@ -328,15 +328,15 @@ if(isset($z01_nome)){
 
   <tr>
     <td nowrap title="<?=@$Ty100_sequencial?>">
-       <?php 
+       <?
        db_ancora(@$Ly100_sequencial,"js_pesquisaprocfiscal(true);",$db_opcao);
        ?>
     </td>
     <td>
-			<?php 
+			<?
 			db_input('procfiscal',10,$Iy100_sequencial,true,'text',$db_opcao," onchange='js_pesquisaprocfiscal(false);'")
 			?>
-       <?php 
+       <?
 			db_input('nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -348,12 +348,12 @@ if(isset($z01_nome)){
       <table>
   <tr>
     <td nowrap width="100" title="<?=@$Ty12_codigo?>">
-       <?php 
+       <?
        db_ancora(@$Ly12_codigo,"js_ruas1(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?php 
+<?
 db_input('y12_codigo',10,$Iy12_codigo,true,'text',$db_opcao," onChange='js_ruas1(false)'");
 db_input('j14_nome',50,$Ij14_nome,true,'text',3,"");
 ?>
@@ -364,23 +364,23 @@ db_input('j14_nome',50,$Ij14_nome,true,'text',3,"");
        <?=@$Ly12_numero?>
     </td>
     <td>
-<?php 
+<?
 db_input('y12_numero',10,$Iy12_numero,true,'text',$db_opcao,"")
 ?>
        <?=@$Ly12_compl?>
-<?php 
+<?
 db_input('y12_compl',20,$Iy12_compl,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty12_codi?>">
-      <?php 
+      <?
       db_ancora(@$Ly12_codi,"js_bairro1(true);",$db_opcao);
       ?>
     </td>
     <td nowrap>
-      <?php 
+      <?
         db_input('y12_codi',10,$Iy12_codi,true,'text',$db_opcao," onChange='js_bairro1(false)'");
         db_input('j13_descr',50,$Ij13_descr,true,'text',3);
       ?>
@@ -397,12 +397,12 @@ db_input('y12_compl',20,$Iy12_compl,true,'text',$db_opcao,"")
       <table>
   <tr>
     <td nowrap width="100" title="<?=@$Ty13_codigo?>">
-       <?php 
+       <?
        db_ancora(@$Ly13_codigo,"js_ruas(true);",$db_opcao);
        ?>
     </td>
     <td nowrap>
-      <?php 
+      <?
 	db_input('y13_codigo',10,$Iy13_codigo,true,'text',$db_opcao," onChange='js_ruas(false)'");
 	db_input('j14_nome',50,$Ij14_nome,true,'text',3,"","j14_nome_exec");
       ?>
@@ -413,23 +413,23 @@ db_input('y12_compl',20,$Iy12_compl,true,'text',$db_opcao,"")
        <?=@$Ly13_numero?>
     </td>
     <td>
-<?php 
+<?
 db_input('y13_numero',10,$Iy13_numero,true,'text',$db_opcao,"")
 ?>
        <?=@$Ly13_compl?>
-<?php 
+<?
 db_input('y13_compl',20,$Iy13_compl,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty13_codi?>">
-      <?php 
+      <?
       db_ancora(@$Ly13_codi,"js_bairro(true);",$db_opcao);
       ?>
     </td>
     <td nowrap>
-      <?php 
+      <?
         db_input('y13_codi',10,$Iy13_codi,true,'text',$db_opcao," onChange='js_bairro(false)'");
         db_input('j13_descr',50,$Ij13_descr,true,'text',3,"","j13_descr_exec");
       ?>
@@ -444,15 +444,15 @@ db_input('y13_compl',20,$Iy13_compl,true,'text',$db_opcao,"")
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();"  <?=($db_opcao==22||$db_opcao==2||$db_opcao==33||$db_opcao==3)?"":"onblur='js_setatabulacao();'"?>>
 
-<?php 
+<?
 if ($db_opcao==22||$db_opcao==2||$db_opcao==33||$db_opcao==3){
 ?>
 <input name="novo" type="button" id="novo" value="Incluir Novo" onclick="parent.location.href='fis1_fiscal005.php?como=cgm';" onblur="js_setatabulacao();">
-<?php 
+<?
 }
 ?>
 </form>
-<?php 
+<?
 if($db_opcao==1){
 	if ($rua==""||$bairro==""){
   	$op=1;
@@ -632,14 +632,14 @@ function js_mostraprocfiscal1(chave1,chave2,dep_prot,depart,dep_atual){
 function js_abre(pagina){
   js_OpenJanelaIframe('','db_iframe_consulta',pagina,'Pesquisa',true,0);
 }
-<?php if(!isset($pesqandam)){
+<?if(!isset($pesqandam)){
 ?>
 function js_pesquisa(){
   js_OpenJanelaIframe('','db_iframe_fiscal','func_fiscal.php?funcao_js=parent.js_preenchepesquisa|y30_codnoti','Pesquisa',true);
 }
 function js_preenchepesquisa(chave){
   db_iframe_fiscal.hide();
-  <?php 
+  <?
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'fis1_fiscal002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -647,11 +647,11 @@ function js_preenchepesquisa(chave){
     }
   ?>
 }
-<?php 
+<?
 }
 ?>
 </script>
-<?php 
+<?
 if($db_opcao==1){
   echo "<script>document.form1.y30_setor.value='".db_getsession("DB_coddepto")."'</script>";
   echo "<script>js_pesquisay30_setor(false)</script>";

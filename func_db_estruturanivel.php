@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
               <?=$Ldb78_codestrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db78_codestrut",8,$Idb78_codestrut,true,"text",4,"","chave_db78_codestrut");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
               <?=$Ldb78_nivel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db78_nivel",8,$Idb78_nivel,true,"text",4,"","chave_db78_nivel");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
               <?=$Ldb78_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db78_descr",40,$Idb78_descr,true,"text",4,"","chave_db78_descr");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_estruturanivel.php")==true){
@@ -130,12 +130,12 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

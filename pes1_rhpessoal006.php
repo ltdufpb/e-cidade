@@ -299,7 +299,7 @@ if(isset($excluir)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<?php 
+<?
     db_app::load("prototype.js, widgets/Input/DBInput.widget.js, widgets/Input/DBInputDate.widget.js,
                 widgets/windowAux.widget.js, AjaxRequest.js, widgets/Collection.widget.js, widgets/DatagridCollection.widget.js");
 ?>
@@ -316,7 +316,7 @@ if(isset($excluir)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmrhpessoal.php"));
 	?>
     </center>
@@ -325,7 +325,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($excluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

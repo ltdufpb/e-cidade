@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ $clcalendario = new cl_calendario;
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Relatório Censo Escolar</b></legend>
 <table border="0" align="left">
@@ -61,8 +61,8 @@ $clcalendario = new cl_calendario;
    <b>Escola:</b>
   </td>
   <td>
-   <?php db_input('censo_escola',10,@$censo_escola,true,'text',3,"")?>
-   <?php db_input('censo_nomeescola',40,@$censo_nomeescola,true,'text',3,'')?>
+   <?db_input('censo_escola',10,@$censo_escola,true,'text',3,"")?>
+   <?db_input('censo_nomeescola',40,@$censo_nomeescola,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -70,7 +70,7 @@ $clcalendario = new cl_calendario;
    <b>Selecione o Ano:</b><br>
   </td>
   <td>
-   <?php 
+   <?
    $result= $clcalendario->sql_record($clcalendario->sql_query_calturma("","ed52_i_ano,ed52_i_ano","ed52_i_ano DESC"," ed38_i_escola = $censo_escola"));
    if($clcalendario->numrows==0){
     $x = [' '=>'NENHUM REGISTRO'];
@@ -89,42 +89,42 @@ $clcalendario = new cl_calendario;
  </tr>
  <tr>
   <td nowrap>
-   <?php db_ancora("<b>Ensino Infantil Creche</b>","js_pesquisaed29_i_ensino(true,1);",@$db_opcao1);?>
+   <?db_ancora("<b>Ensino Infantil Creche</b>","js_pesquisaed29_i_ensino(true,1);",@$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed29_i_ensino1',10,"",true,'text',@$db_opcao1,"")?>
+   <?db_input('ed29_i_ensino1',10,"",true,'text',@$db_opcao1,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap>
-   <?php db_ancora("<b>Ensino Infantil Pré-Escola</b>","js_pesquisaed29_i_ensino(true,2);",@$db_opcao1);?>
+   <?db_ancora("<b>Ensino Infantil Pré-Escola</b>","js_pesquisaed29_i_ensino(true,2);",@$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed29_i_ensino2',10,"",true,'text',@$db_opcao1,"")?>
+   <?db_input('ed29_i_ensino2',10,"",true,'text',@$db_opcao1,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap>
-   <?php db_ancora("<b>Ensino Fundamental 8 anos</b>","js_pesquisaed29_i_ensino(true,3);",@$db_opcao1);?>
+   <?db_ancora("<b>Ensino Fundamental 8 anos</b>","js_pesquisaed29_i_ensino(true,3);",@$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed29_i_ensino3',10,"",true,'text',@$db_opcao1,"")?>
+   <?db_input('ed29_i_ensino3',10,"",true,'text',@$db_opcao1,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap>
-   <?php db_ancora("<b>Ensino Fundamental 9 anos</b>","js_pesquisaed29_i_ensino(true,4);",@$db_opcao1);?>
+   <?db_ancora("<b>Ensino Fundamental 9 anos</b>","js_pesquisaed29_i_ensino(true,4);",@$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed29_i_ensino4',10,"",true,'text',@$db_opcao1,"")?>
+   <?db_input('ed29_i_ensino4',10,"",true,'text',@$db_opcao1,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap>
-   <?php db_ancora("<b>Ensino Fundamental - EJA</b>","js_pesquisaed29_i_ensino(true,5);",@$db_opcao1);?>
+   <?db_ancora("<b>Ensino Fundamental - EJA</b>","js_pesquisaed29_i_ensino(true,5);",@$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed29_i_ensino5',10,"",true,'text',@$db_opcao1,"")?>
+   <?db_input('ed29_i_ensino5',10,"",true,'text',@$db_opcao1,"")?>
   </td>
  </tr>
  <tr>
@@ -136,7 +136,7 @@ $clcalendario = new cl_calendario;
 </fieldset>
 </center>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

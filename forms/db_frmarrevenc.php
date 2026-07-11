@@ -229,7 +229,7 @@ function carregaDadosSelect(oResposta) {
 	    }
   	}
 		objParcelas.disabled = false;
-		<?php 
+		<?
 
 		if(isset($k00_numpar) && $k00_numpar!=""){
 			echo " document.form1.k00_numpar.value = $k00_numpar; ";

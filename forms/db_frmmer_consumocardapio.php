@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,17 +39,17 @@ $clrotulo->label("me27_c_nome");
   <tr>
     <td nowrap title="<?=@$Tme37_i_codigo?>">
       <?=@$Lme37_i_codigo?>
-      <?php db_input('me37_i_codigo',10,$Ime37_i_codigo,true,'text',3,"")?>
-      <?php db_input('me38_i_codigo',10,@$Ime38_i_codigo,true,'hidden',3,"")?>
+      <?db_input('me37_i_codigo',10,$Ime37_i_codigo,true,'text',3,"")?>
+      <?db_input('me38_i_codigo',10,@$Ime38_i_codigo,true,'hidden',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme37_i_tipocardapio?>">
-      <?php db_ancora(@$Lme37_i_tipocardapio,"js_pesquisame37_i_tipocardapio(true);",$db_opcao);?>
-      <?php db_input('me37_i_tipocardapio',10,$Ime37_i_tipocardapio,true,'text',$db_opcao,
+      <?db_ancora(@$Lme37_i_tipocardapio,"js_pesquisame37_i_tipocardapio(true);",$db_opcao);?>
+      <?db_input('me37_i_tipocardapio',10,$Ime37_i_tipocardapio,true,'text',$db_opcao,
                  " onchange='js_pesquisame37_i_tipocardapio(false);'")?>
-      <?php db_input('me27_c_nome',40,@$Ime27_c_nome,true,'text',3,'')?>
-      <?php db_input('me32_i_codigo',40,@$Ime32_i_codigo,true,'hidden',3,'')?>
+      <?db_input('me27_c_nome',40,@$Ime27_c_nome,true,'text',3,'')?>
+      <?db_input('me32_i_codigo',40,@$Ime32_i_codigo,true,'hidden',3,'')?>
     </td>
   </tr>
   </table>
@@ -234,7 +234,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_mer_consumocardapio.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

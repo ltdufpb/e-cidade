@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -99,7 +99,7 @@ function js_valida() {
 	<?php include(modification("forms/db_frmativid.php")); ?>
 </body>
 </html>
-<?php 
+<?
 if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir") {
   if ($sqlerro==true) {
 

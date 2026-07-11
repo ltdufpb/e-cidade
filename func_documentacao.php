@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cldocumentacao->rotulo->label("ed02_c_descr");
       <?=$Led02_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed02_i_codigo",10,$Ied02_i_codigo,true,"text",4,"","chave_ed02_i_codigo");?>
+      <?db_input("ed02_i_codigo",10,$Ied02_i_codigo,true,"text",4,"","chave_ed02_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $cldocumentacao->rotulo->label("ed02_c_descr");
       <?=$Led02_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed02_c_descr",30,$Ied02_c_descr,true,"text",4,"","chave_ed02_c_descr");?>
+      <?db_input("ed02_c_descr",30,$Ied02_c_descr,true,"text",4,"","chave_ed02_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $cldocumentacao->rotulo->label("ed02_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(isset($documentos)){
     $where = " ed02_i_codigo not in($documentos)";
    }else{

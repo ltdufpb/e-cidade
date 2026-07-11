@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -25,11 +25,11 @@ $clsituacaoafastamento->rotulo->label("rh166_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lrh166_sequencial?></label></td>
-          <td><?php  db_input("rh166_sequencial",19,$Irh166_sequencial,true,"text",4,"","chave_rh166_sequencial"); ?></td>
+          <td><? db_input("rh166_sequencial",19,$Irh166_sequencial,true,"text",4,"","chave_rh166_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lrh166_descricao?></label></td>
-          <td><?php  db_input("rh166_descricao",19,$Irh166_descricao,true,"text",4,"","chave_rh166_descricao");?></td>
+          <td><? db_input("rh166_descricao",19,$Irh166_descricao,true,"text",4,"","chave_rh166_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $clsituacaoafastamento->rotulo->label("rh166_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" onClick="js_limpar_iframe_situacaoafastamento(this)">
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_situacaoafastamento.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_situacaoafastamento.php")==true){
@@ -80,7 +80,7 @@ $clsituacaoafastamento->rotulo->label("rh166_descricao");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -94,7 +94,7 @@ if(!isset($pesquisa_chave)){
       }
     }
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

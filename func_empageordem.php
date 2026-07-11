@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -55,7 +55,7 @@ $clempageordem->rotulo->label("e42_dtpagamento");
               <?=$Le42_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("e42_sequencial",10,$Ie42_sequencial,true,"text",4,"","chave_e42_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempageordem->rotulo->label("e42_dtpagamento");
               <?=$Le42_dtpagamento?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("e42_dtpagamento",10,$Ie42_dtpagamento,true,"text",4,"","chave_e42_dtpagamento");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempageordem->rotulo->label("e42_dtpagamento");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       $sWhere = "";
       if (isset($credor) && trim($credor) != '') {
 
@@ -174,12 +174,12 @@ $clempageordem->rotulo->label("e42_dtpagamento");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

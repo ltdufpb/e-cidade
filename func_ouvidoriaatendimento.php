@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -66,7 +66,7 @@ $campos .= "ov01_solicitacao";
               <?=$Lov01_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov01_sequencial",10,$Iov01_sequencial,true,"text",4,"","chave_ov01_sequencial");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $campos .= "ov01_solicitacao";
               <?=$Lov01_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ov01_numero",10,$Iov01_numero,true,"text",4,"","chave_ov01_numero");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $campos .= "ov01_solicitacao";
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       $sWhere = 'ov01_instit = '.db_getsession('DB_instit');
     
@@ -167,12 +167,12 @@ $campos .= "ov01_solicitacao";
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

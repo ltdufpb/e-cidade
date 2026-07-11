@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ $clleitor->rotulo->label('bi10_codigo');
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br>
-<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <form name="form1" method="post">
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
@@ -61,9 +61,9 @@ $clleitor->rotulo->label('bi10_codigo');
      <td>
       &nbsp;&nbsp;&nbsp;
       De:
-      <?php db_inputdata('data_ini','','','',true,'text',1,"")?>
+      <?db_inputdata('data_ini','','','',true,'text',1,"")?>
       Até:
-      <?php db_inputdata('data_fim','','','',true,'text',1,"")?>
+      <?db_inputdata('data_fim','','','',true,'text',1,"")?>
      </td>
     </tr>
     <tr>
@@ -72,9 +72,9 @@ $clleitor->rotulo->label('bi10_codigo');
     <tr>
      <td>
      &nbsp;&nbsp;&nbsp;
-     <?php db_ancora("<b>Carteira:</b>", "js_pesquisabi10_codigo(true);", 1);?>
-     <?php db_input('bi10_codigo', 10, @$Ibi10_codigo, true, 'text', 1, " onchange='js_pesquisabi10_codigo(false);'")?>
-     <?php db_input('ov02_nome', 40, @$Iov02_nome, true, 'text', 3, '')?>
+     <?db_ancora("<b>Carteira:</b>", "js_pesquisabi10_codigo(true);", 1);?>
+     <?db_input('bi10_codigo', 10, @$Ibi10_codigo, true, 'text', 1, " onchange='js_pesquisabi10_codigo(false);'")?>
+     <?db_input('ov02_nome', 40, @$Iov02_nome, true, 'text', 3, '')?>
      <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">
      <br><br>
      </td>
@@ -157,6 +157,6 @@ function js_mostranumcgm1(chave1,chave2) {
   db_iframe_leitor.hide();
 }
 </script>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

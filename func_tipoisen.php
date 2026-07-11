@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -66,7 +66,7 @@ $cltipoisen->rotulo->label("j45_descr");
               <?=$Lj45_tipo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 	       db_input("j45_tipo",4,$Ij45_tipo,true,"text",4,"","chave_j45_tipo");
 	       ?>
             </td>
@@ -76,7 +76,7 @@ $cltipoisen->rotulo->label("j45_descr");
               <?=$Lj45_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 	       db_input("j45_descr",40,$Ij45_descr,true,"text",4,"","chave_j45_descr");
 	       ?>
             </td>
@@ -94,7 +94,7 @@ $cltipoisen->rotulo->label("j45_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
 
       $chave_j45_descr = addslashes($chave_j45_descr);
 
@@ -149,7 +149,7 @@ $cltipoisen->rotulo->label("j45_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -166,7 +166,7 @@ if(!isset($pesquisa_chave)){
 
     })();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,25 +53,25 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led126_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed126_i_codigo',10,$Ied126_i_codigo,true,'text',3,"")?>
+   <?db_input('ed126_i_codigo',10,$Ied126_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted126_i_escola?>">
-   <?php db_ancora(@$Led126_i_escola,"js_pesquisaed126_i_escola(true);",$db_opcao);?>
+   <?db_ancora(@$Led126_i_escola,"js_pesquisaed126_i_escola(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed126_i_escola',10,$Ied126_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed126_i_escola(false);'")?>
-   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?db_input('ed126_i_escola',10,$Ied126_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed126_i_escola(false);'")?>
+   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted126_i_tipoacesso?>">
-   <?php db_ancora(@$Led126_i_tipoacesso,"js_pesquisaed126_i_tipoacesso(true);",$db_opcao);?>
+   <?db_ancora(@$Led126_i_tipoacesso,"js_pesquisaed126_i_tipoacesso(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed126_i_tipoacesso',10,$Ied126_i_tipoacesso,true,'text',$db_opcao," onchange='js_pesquisaed126_i_tipoacesso(false);'")?>
-   <?php db_input('ed125_c_descr',20,@$Ied125_c_descr,true,'text',3,'')?>
+   <?db_input('ed126_i_tipoacesso',10,$Ied126_i_tipoacesso,true,'text',$db_opcao," onchange='js_pesquisaed126_i_tipoacesso(false);'")?>
+   <?db_input('ed125_c_descr',20,@$Ied125_c_descr,true,'text',3,'')?>
   </td>
 </tr>
 </table>
@@ -80,7 +80,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?php 
+  <?
    $chavepri= ["ed126_i_codigo"=>@$ed126_i_codigo,"ed126_i_escola"=>@$ed126_i_escola,"ed18_c_nome"=>@$ed18_c_nome,"ed126_i_tipoacesso"=>@$ed126_i_tipoacesso,"ed125_c_descr"=>@$ed125_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clescoladifacesso->sql_query($ed126_i_codigo,"*","ed18_c_nome");

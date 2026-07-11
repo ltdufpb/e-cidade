@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllab_labusuario->rotulo->label("z01_v_nome");
               <?=$Lla05_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la05_i_codigo",10,$Ila05_i_codigo,true,"text",4,"","chave_la05_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllab_labusuario->rotulo->label("z01_v_nome");
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_v_nome",50,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllab_labusuario->rotulo->label("z01_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_labusuario.php")==true){
@@ -123,12 +123,12 @@ $cllab_labusuario->rotulo->label("z01_v_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -48,7 +48,7 @@ if (isset($anula)){
 
 ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
   border: 2px solid #cccccc;
   border-top-color: <?=$cor?>;
@@ -74,10 +74,10 @@ if (isset($anula)){
 <table align="center">
 <tr><br><br>
 <td nowrap title="<?=@$Tm51_codordem?>">
-<b> <?php db_ancora("Ordem :","js_consultaordem($m51_codordem);",1);?></b>
+<b> <?db_ancora("Ordem :","js_consultaordem($m51_codordem);",1);?></b>
 </td>
 <td> 
-<?php 
+<?
 db_input('m51_codordem',5,$Im51_codordem,true,'text',3);
 db_input('z01_nome',30,$Iz01_nome,true,'text',3,'');
 
@@ -87,7 +87,7 @@ db_input('z01_nome',30,$Iz01_nome,true,'text',3,'');
 <?=@$Le69_numero?>
 </td>
 <td> 
-<?php 
+<?
 db_input('e69_numero',20,$Ie69_numero,true,'text',3,"")
 ?>
 </td>
@@ -97,7 +97,7 @@ db_input('e69_numero',20,$Ie69_numero,true,'text',3,"")
 <?=@$Le69_id_usuario?>
 </td>
 <td> 
-<?php 
+<?
 db_input('e69_id_usuario',5,$Ie69_id_usuario,true,'text',3);
 
 db_input('nome',30,$Inome,true,'text',3,'');
@@ -107,7 +107,7 @@ db_input('nome',30,$Inome,true,'text',3,'');
 <?=@$Le69_dtnota?>
 </td>
 <td  > 
-<?php 
+<?
 if(empty($e69_dtnota_dia)){
   $e69_dtnota_dia =  date("d",db_getsession("DB_datausu"));
   $e69_dtnota_mes =  date("m",db_getsession("DB_datausu"));
@@ -118,7 +118,7 @@ db_inputdata('e69_dtnota',@$e69_dtnota_dia,@$e69_dtnota_mes,@$e69_dtnota_ano,tru
 ?>
 </td>
 </tr>
-<?php 
+<?
 if (isset($continue)){
   $result_liquidado=$clempnotaele->sql_record($clempnotaele->sql_query_file(null,null,"e70_vlrliq,e70_valor",null,"e70_codnota=$m72_codnota"));
   for ($i=0; $clempnotaele->numrows>$i; $i++ ){
@@ -134,7 +134,7 @@ if (isset($continue)){
 <?=@$Le69_dtrecebe?>
 </td>
 <td> 
-<?php 
+<?
 $ano=substr($e69_dtrecebe,0,4);
 $mes=substr($e69_dtrecebe,5,2);
 $dia=substr($e69_dtrecebe,8,2);
@@ -145,7 +145,7 @@ db_inputdata('e69_dtrecebe',"$dia","$mes","$ano",true,'text',3);
 <?=@$Le70_valor ?>
 </td>
 <td>
-<?php 
+<?
 if (isset($continue)){
   $op=3;
 }else{
@@ -155,7 +155,7 @@ db_input('e70_valor',20,$Ie70_valor,true,'text',$op,"");
 ?>
 </td>
 </tr>
-</table><?php 
+</table><?
 $m51_depto=$m51_depto;
 db_input("m51_depto",5,"",true,"hidden",3);
 ?>
@@ -167,7 +167,7 @@ db_input("m51_depto",5,"",true,"hidden",3);
 </tr>
 <tr align = "center">
 <td>
-<?php 
+<?
 $result_liquidado=$clempnotaele->sql_record($clempnotaele->sql_query_file(null,null,"e70_vlrliq",null,"e70_codnota=$m72_codnota"));
 for ($i=0; $clempnotaele->numrows>$i; $i++ ){
   db_fieldsmemory($result_liquidado,$i);
@@ -180,19 +180,19 @@ if ($valor_liq=="true"){
   ?>
   <input name="anula" type="submit"  value="Alterar" disabled >
   <input name="voltar" type="button" value="Voltar" onclick="location.href='mat1_entraordcom003.php';" >
-  <?php 
+  <?
   echo "<script>alert('Não é possivel anular este lançamento, valor ja liquidado!!');</script>";
 }else{
   if (isset($continue)){
     ?>
     <input name="anula" type="submit"  value="Alterar" >
-    <?php 
+    <?
   }else{
     ?>
     <input name="continue" type="submit"  value="Continuar" >
-  <?php }?>
+  <?}?>
   <input name="voltar" type="button" value="Voltar" onclick="location.href='mat1_entraordcom003.php';" >
-<?php }	 
+<?}	 
 $m51_codordem=$m51_codordem;
 db_input("m51_codordem",5,"",true,"hidden",3);
 db_input("e69_codnota",5,"",true,"hidden",3);
@@ -201,7 +201,7 @@ db_input("e69_codnota",5,"",true,"hidden",3);
 </tr>
 </table>
 <table>
-<?php if (isset($anula)){
+<?if (isset($anula)){
 }else if (isset($continue)){?>
   <tr>
   <td>
@@ -209,10 +209,10 @@ db_input("e69_codnota",5,"",true,"hidden",3);
   </iframe>
   </td>
   </tr>
-<?php }?>
+<?}?>
 </table>
 </center>
-<?php 
+<?
 db_input("valores",100,0,true,"hidden",3);
 db_input("valmul",100,0,true,"hidden",3);
 db_input("codunidade",100,0,true,"hidden",3);
@@ -225,7 +225,7 @@ function js_consultaordem(codordem){
   js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_ordemcompra002','com3_ordemdecompra002.php?m51_codordem='+codordem,'Consulta Ordem de Compra',true);
 }
 function js_buscavalores(){
-  <?php if (isset($continue)){ ?>
+  <?if (isset($continue)){ ?>
     obj= itens.document.form1;
     valor="";
     valormul="";
@@ -267,7 +267,7 @@ function js_buscavalores(){
     document.form1.valmul.value = valormul;
     document.form1.codunidade.value = coduni;
     document.form1.qantigas.value = qantigas;
-  <?php 
+  <?
 	}
 	?>
 }

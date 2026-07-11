@@ -446,7 +446,7 @@ if ($db_opcao == 2 || $db_opcao == 22) {
 
     function js_preenchepesquisa(chave) {
         db_iframe_orctiporecconvenio.hide();
-        <?php 
+        <?
         if ($db_opcao != 1) {
             echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

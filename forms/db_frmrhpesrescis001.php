@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -84,20 +84,20 @@ $dataPagamentoOriginal = $dataPagamento;
               <?=@$Lrh05_recis?>
             </td>
             <td>
-              <?php 
+              <?
               db_inputdata('rh05_recis',@$rh05_recis_dia,@$rh05_recis_mes,@$rh05_recis_ano,true,'text',$db_opcao,"onchange='js_validarecis();'","","","parent.js_validarecis();")
               ?>
             </td>
             <td nowrap title="<?=@$Trh05_causa?>" align="right">
-              <?php 
+              <?
               db_ancora(@$Lrh05_causa,"js_pesquisarh05_causa(true);",$db_opcao);
               ?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('rh05_causa',6,$Irh05_causa,true,'text',3,"")
               ?>
-              <?php 
+              <?
               db_input('r59_descr',40,$Ir59_descr,true,'text',3,"")
               ?>
             </td>
@@ -106,15 +106,15 @@ $dataPagamentoOriginal = $dataPagamento;
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td nowrap title="<?=@$Trh05_caub?>" align="right">
-              <?php 
+              <?
               db_ancora(@$Lrh05_caub,"",3);
               ?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('rh05_caub',6,$Irh05_caub,true,'text',3,"")
               ?>
-              <?php 
+              <?
               db_input('r59_descr1',40,$Ir59_descr1,true,'text',3,"");
               db_input('r59_menos1',4,0,true,'hidden',3);
               db_input('r30_regist', 7, 0, true, 'hidden', 3);
@@ -148,12 +148,12 @@ $dataPagamentoOriginal = $dataPagamento;
           </tr>
           <tr>
             <td nowrap title="<?=@$Trh05_taviso?>" align="right">
-              <?php 
+              <?
               db_ancora(@$Lrh05_taviso,"",3);
               ?>
             </td>
             <td>
-              <?php 
+              <?
               if(!isset($rh05_taviso)){
               	$rh05_taviso = 3;
               }
@@ -166,19 +166,19 @@ $dataPagamentoOriginal = $dataPagamento;
 							
             </td>
             <td>
-              <?php 
+              <?
               db_inputdata('rh05_aviso',@$rh05_aviso_dia,@$rh05_aviso_mes,@$rh05_aviso_ano,true,'text',$db_opcao,"onchange='js_validaaviso(1);'","","","parent.js_validaaviso(1);","js_validaaviso(2);","js_validaaviso(2);")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Trh05_mremun?>" align="right">
-              <?php 
+              <?
               db_ancora(@$Lrh05_mremun,"",3);
               ?>
             </td>
             <td>
-              <?php 
+              <?
                 db_input('rh05_mremun',6,$Irh05_mremun,true,'text',$db_opcao,"", "", "", "width: 111px");
               ?>
             </td>
@@ -209,9 +209,9 @@ $dataPagamentoOriginal = $dataPagamento;
     <td align="center">
      <input name="enviar" type="button" id="db_opcao" value="Processar dados" <?=($db_botao==false?"disabled":"")?> onclick="js_verificadados();">
      <input name="voltar" type="button" id="voltar" value="Nova Seleção" onclick="location.href = 'pes4_rhpesrescislote001.php';">
-     <?php if(isset($campomatriculas) && trim($campomatriculas) != ""){?>
+     <?if(isset($campomatriculas) && trim($campomatriculas) != ""){?>
      <input name="proximo" type="submit" id="proximo" value="Próximo">
-     <?php }?>
+     <?}?>
     </td>
   </tr>
 </table> 

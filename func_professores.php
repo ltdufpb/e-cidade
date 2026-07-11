@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clprofessores->rotulo->label("ed01_i_codigo");
               <?=$Led01_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed01_i_codigo",10,$Ied01_i_codigo,true,"text",4,"","chave_ed01_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $clprofessores->rotulo->label("ed01_i_codigo");
               <?=$Led01_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("z01_nome1",10,$z01_nome1,true,"text",4,"","chave_z01_nome1");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $clprofessores->rotulo->label("ed01_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_professores.php")==true){
@@ -121,12 +121,12 @@ $clprofessores->rotulo->label("ed01_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

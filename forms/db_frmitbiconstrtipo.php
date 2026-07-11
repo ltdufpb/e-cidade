@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clitbiconstrtipo->rotulo->label();
        <?=@$Lit10_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('it10_codigo',10,$Iit10_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('it10_codigo',10,$Iit10_codigo,true,'text',$db_opcao,"")
        <?=@$Lit10_caract?>
     </td>
     <td> 
-<?php 
+<?
 db_input('it10_caract',4,$Iit10_caract,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itbiconstrtipo.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

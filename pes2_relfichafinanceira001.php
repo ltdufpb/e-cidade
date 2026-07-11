@@ -70,7 +70,7 @@ if(!isset($anof)){
   </legend>
 
   <table class="form-container" >
-    <?php 
+    <?
 
       if(isset($tfil) && ($tfil == "n" || $tfil == "i")){
         if($filt=="m"){
@@ -90,11 +90,11 @@ if(!isset($anof)){
         <strong>Ano / Mês início:</strong>
       </td>
       <td>
-        <?php 
+        <?
           db_input('DBtxt23',4,$IDBtxt23,true,'text',2, "class='field-size1'",'anoi');
         ?>
         /
-        <?php 
+        <?
           db_input('DBtxt25',2,$IDBtxt25,true,'text',2, "class='field-size1'",'mesi');
         ?>
       </td>
@@ -105,11 +105,11 @@ if(!isset($anof)){
         <strong>Ano / Mês fim:</strong>
       </td>
       <td>
-        <?php 
+        <?
         db_input('DBtxt23',4,$IDBtxt23,true,'text',2, "class='field-size1'",'anof')
         ?>
         /
-        <?php 
+        <?
         db_input('DBtxt25',2,$IDBtxt25,true,'text',2, "class='field-size1'",'mesf')
         ?>
       </td>
@@ -134,7 +134,7 @@ if(!isset($anof)){
         <strong>Ordem:</strong>
       </td>
       <td>
-        <?php 
+        <?
         if(!isset($orde)){
           $orde = "a";
         }
@@ -151,7 +151,7 @@ if(!isset($anof)){
         <strong>Filtro:</strong>
       </td>
       <td>
-        <?php 
+        <?
         if(!isset($filt)){
           $filt = "m";
         }
@@ -163,7 +163,7 @@ if(!isset($anof)){
       </td>
     </tr>
 
-    <?php 
+    <?
       if(!isset($filt)){
         $filt = "m";
       }
@@ -202,20 +202,20 @@ if(!isset($anof)){
           <strong>Dados Cadastrais:</strong>
         </td>
         <td>
-          <?php 
+          <?
             $xcad = array("a"=>"Atual","p"=>"Período Inicial");
             db_select('mes_dados',$xcad,true,4,"");
           ?>
         </td>
       </tr>
 
-    <?php 
+    <?
     }
     ?>
     </table>
     <table>
     <tr>
-      <?php 
+      <?
         if(isset($filt) && $filt=="r" && isset($tfil) && $tfil=="s"){
 
           echo '<td align="right" colspan = "2">';
@@ -312,7 +312,7 @@ if(!isset($anof)){
 </div>
 
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

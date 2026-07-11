@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,7 +110,7 @@ if (isset($emite)){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
  <table  align="center">
     <form name="form1" method="post" action="">
-    <?php db_input('valor',10,"",true,'hidden',3);?>
+    <?db_input('valor',10,"",true,'hidden',3);?>
       <br>
       <br>
       <br>
@@ -122,12 +122,12 @@ if (isset($emite)){
       </tr>
       <tr>   
         <td align="right">
-      <?php 
+      <?
        db_ancora($Lz01_numcgm,' js_cgm(true); ',1);
       ?>
       </td>
         <td colspan=3 align="left">
-      <?php 
+      <?
        db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'");
        db_input('z01_nome',40,0,true,'text',3);
       ?>
@@ -137,7 +137,7 @@ if (isset($emite)){
         <td align="right" >&nbsp;&nbsp;<strong>Banco:</strong>
         </td>
         <td > 
-        <?php 
+        <?
         $result_banco = $clbancos->sql_record($clbancos->sql_query());
         db_selectrecord("k12_banco",$result_banco,true,"text")
         ?>
@@ -145,24 +145,24 @@ if (isset($emite)){
         <td align="right"><strong>Agência:</strong>
         </td>
         <td >
-        <?php db_input("k12_agencia",7,@$Ik12_agencia,true,"text",1);?>  &nbsp;</td>
+        <?db_input("k12_agencia",7,@$Ik12_agencia,true,"text",1);?>  &nbsp;</td>
       </tr>
       <tr>
         <td align="right"><strong>Nominal:</strong>
         </td>
         <td >
-        <?php 
+        <?
         $xxx=array("f"=>"Não","t"=>"Sim"); 
         db_select ("k12_nominal",$xxx,true,"text",1);
         ?>  &nbsp;&nbsp;</td>
         <td align="right"><strong>N° Cheque:</strong></td>
-        <td ><?php db_input("k12_numero",22,"",true,"text",1);?> &nbsp;</td>
+        <td ><?db_input("k12_numero",22,"",true,"text",1);?> &nbsp;</td>
       </tr>
       <tr>
         <td align="right" >&nbsp;&nbsp;<strong>Data:</strong>
         </td>
         <td > 
-        <?php 
+        <?
          if (!isset($k12_dtcheque_ano)){
             $k12_dtcheque_ano = date('Y',db_getsession("DB_datausu"));
             $k12_dtcheque_mes = date('m',db_getsession("DB_datausu"));
@@ -174,7 +174,7 @@ if (isset($emite)){
         <td align="right"><strong>Valor:</strong>
         </td>
         <td >
-        <?php 
+        <?
         if (!isset($k12_vlrcheque)){
             $k12_vlrcheque = @$valor;            
         }

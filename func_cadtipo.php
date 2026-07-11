@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcadtipo->rotulo->label("k03_tipo");
               <?=$Lk03_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k03_tipo",3,$Ik03_tipo,true,"text",4,"","chave_k03_tipo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcadtipo->rotulo->label("k03_tipo");
               <?=$Lk03_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k03_tipo",3,$Ik03_tipo,true,"text",4,"","chave_k03_tipo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcadtipo->rotulo->label("k03_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadtipo.php")==true){
@@ -123,12 +123,12 @@ $clcadtipo->rotulo->label("k03_tipo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

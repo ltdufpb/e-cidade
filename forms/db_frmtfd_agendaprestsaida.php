@@ -96,7 +96,7 @@ $clrotulo->label("tf01_i_rhcbo");
         </tr>
         <tr>
           <td title="<?php echo $Ttf01_i_rhcbo?>">
-            <?php  db_ancora(@$Ltf01_i_rhcbo, "js_pesquisatf01_i_rhcbo(true);", $db_opcao); ?>
+            <? db_ancora(@$Ltf01_i_rhcbo, "js_pesquisatf01_i_rhcbo(true);", $db_opcao); ?>
           </td>
           <td colspan="5">
             <?php

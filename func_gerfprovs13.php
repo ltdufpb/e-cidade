@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clgerfprovs13->rotulo->label("r94_valor");
               <?=$Lr94_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r94_mesusu",2,$Ir94_mesusu,true,"text",4,"","chave_r94_mesusu");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clgerfprovs13->rotulo->label("r94_valor");
               <?=$Lr94_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r94_regist",9,$Ir94_regist,true,"text",4,"","chave_r94_regist");
 		       ?>
             </td>
@@ -78,7 +78,7 @@ $clgerfprovs13->rotulo->label("r94_valor");
               <?=$Lr94_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r94_rubric",4,$Ir94_rubric,true,"text",4,"","chave_r94_rubric");
 		       ?>
             </td>
@@ -88,7 +88,7 @@ $clgerfprovs13->rotulo->label("r94_valor");
               <?=$Lr94_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r94_valor",15,$Ir94_valor,true,"text",4,"","chave_r94_valor");
 		       ?>
             </td>
@@ -106,7 +106,7 @@ $clgerfprovs13->rotulo->label("r94_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_gerfprovs13.php")==true){
@@ -146,12 +146,12 @@ $clgerfprovs13->rotulo->label("r94_valor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

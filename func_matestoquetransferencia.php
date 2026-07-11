@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmatestoquetransferencia->rotulo->label("m84_matestoqueitem");
               <?=$Lm84_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m84_sequencial",10,$Im84_sequencial,true,"text",4,"","chave_m84_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmatestoquetransferencia->rotulo->label("m84_matestoqueitem");
               <?=$Lm84_matestoqueitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m84_matestoqueitem",10,$Im84_matestoqueitem,true,"text",4,"","chave_m84_matestoqueitem");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmatestoquetransferencia->rotulo->label("m84_matestoqueitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matestoquetransferencia.php")==true){
@@ -123,12 +123,12 @@ $clmatestoquetransferencia->rotulo->label("m84_matestoqueitem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

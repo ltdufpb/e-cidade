@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -227,7 +227,7 @@ for($y=0; $y< $tec; $y++){
 $pdf->Output(); // saída do relatório direto para o browser
 
 /*
-	<?php 
+	<?
 	function difer_horas($hora1,$hora2){
 	$entrada = $hora1;
 	$saida = $hora2;

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,7 @@ $clEduRelatmodel  = new cl_edu_relatmodel();
 </head>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?php 
+ <?
  # Seleciona todos os calendários cadastrados
  $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
  $sql       .= "       FROM calendario ";
@@ -137,14 +137,14 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
   document.form1.subgrupo.disabled = false;
  }
  document.form1.pesquisar.disabled = true;
- <?php if (isset($base)) {?>
+ <?if (isset($base)) {?>
  
      qtd = document.form1.alunosdiario.length;
      for (i = 0; i < qtd; i++) {
        document.form1.alunosdiario.options[0] = null;
      }
      
- <?php }?>
+ <?}?>
 }
 //End -->
 </script>
@@ -155,7 +155,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
  </tr>
 </table>
 <form name="form1" method="post">
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td valign="top">
@@ -169,7 +169,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
               onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" 
               style="font-size:9px;width:200px;height:18px;">
        <option></option>
-       <?php 
+       <?
        #Seleciona todos os grupos para setar os valores no combo
        $sql        = " SELECT ed52_i_codigo,ed52_c_descr ";
        $sql       .= "       FROM calendario ";
@@ -184,7 +184,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
          $desc_curso=$row["ed52_c_descr"];
         ?>
          <option value="<?=$cod_curso;?>" <?=$cod_curso==@$curso?"selected":""?>><?=$desc_curso;?></option>
-        <?php 
+        <?
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -251,7 +251,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     <tr>
      <td nowrap>
      <b>Tipo do Modelo:</b>
-      <?php 
+      <?
       $sSqlDadosEduRelModel = $clEduRelatmodel->sql_query("",
                                                            "ed217_i_codigo,ed217_c_nome",
                                                            "ed217_c_nome",
@@ -263,10 +263,10 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <select name="ed217_i_codigo" id= "ed217_i_codigo" style="font-size:9px;" >
       <option value=''></option>
       <option value='m1'>Modelo Padrão</option>
-       <?php if ($clEduRelatmodel->numrows == 0) {?>
+       <?if ($clEduRelatmodel->numrows == 0) {?>
            <option value=''>Nenhum modelo cadastrado</option>
-       <?php } else {?>
-           <?php  
+       <?} else {?>
+           <? 
            for ($x = 0; $x < $clEduRelatmodel->numrows; $x++) {
             
              $oDadosRelatModel  = db_utils::fieldsMemory($rsDadosEduRelModel,$x);
@@ -275,7 +275,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
              echo "<option value='$iCodigo'>$sNome</option>";               
            }
            ?>
-       <?php }?>
+       <?}?>
       </select>
      </td>
     </tr>
@@ -291,7 +291,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
         <tr>
      <td>
       <b>Diretor:</b>
-      <?php 
+      <?
         
         $oDaoEscolaDiretor = db_utils::getdao('escoladiretor');
         
@@ -309,7 +309,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       ?>
       <select name="diretor" style="font-size:9px;width:330px;">
       <option value="">Selecione o Diretor(a)</option>
-      <?php 
+      <?
       for ($iCont = 0; $iCont < $iLinhasDiretor; $iCont++) {
         
         $oDadosDiretor = db_utils::fieldsmemory($rsDiretor, $iCont);
@@ -327,7 +327,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     <tr>
      <td>
       <b>Secretário:</b>
-      <?php 
+      <?
       
         $oDaoRechumanoAtiv = db_utils::getdao('rechumanoativ');
         
@@ -345,7 +345,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       ?>
       <select name="secretario" style="font-size:9px;width:330px;">
       <option value="">Selecione o Secretário(a)</option>
-      <?php 
+      <?
       for ($iCont = 0; $iCont < $iLinhasSecretario; $iCont++) {
         
         $oDadosSec  = db_utils::fieldsmemory($rsSecretario, $iCont);
@@ -372,7 +372,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
  </tr>
 </table>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),
+<?db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -486,10 +486,10 @@ function js_botao(valor) {
   }
 }
 
-<?php if (!isset($base) && pg_num_rows($sql_result) > 0) {?>
+<?if (!isset($base) && pg_num_rows($sql_result) > 0) {?>
 
     fillSelectFromArray(document.form1.subgrupo,team[0]);
     document.form1.grupo.options[1].selected = true;
     
-<?php }?>
+<?}?>
 </script>

@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: escola
 //CLASSE DA ENTIDADE transferencialote
 class cl_transferencialote {

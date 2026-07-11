@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ $cllocalizacao->rotulo->label("bi09_nome");
       <?=$Lbi09_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("bi09_codigo",10,$Ibi09_codigo,true,"text",4,"","chave_bi09_codigo");?>
+      <?db_input("bi09_codigo",10,$Ibi09_codigo,true,"text",4,"","chave_bi09_codigo");?>
      </td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@ $cllocalizacao->rotulo->label("bi09_nome");
       <?=$Lbi09_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("bi09_nome",30,$Ibi09_nome,true,"text",4,"","chave_bi09_nome");?>
+      <?db_input("bi09_nome",30,$Ibi09_nome,true,"text",4,"","chave_bi09_nome");?>
      </td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ $cllocalizacao->rotulo->label("bi09_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $depto = db_getsession("DB_coddepto");
    $result = $clbiblioteca->sql_record($clbiblioteca->sql_query("","bi17_codigo",""," bi17_coddepto = $depto"));
    if($clbiblioteca->numrows!=0){

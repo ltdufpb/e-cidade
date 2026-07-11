@@ -25,11 +25,11 @@ $cldb_bancos->rotulo->label("db90_descr");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ldb90_codban?></label></td>
-          <td><?php  db_input("db90_codban",10,$Idb90_codban,true,"text",4,"","chave_db90_codban"); ?></td>
+          <td><? db_input("db90_codban",10,$Idb90_codban,true,"text",4,"","chave_db90_codban"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ldb90_descr?></label></td>
-          <td><?php  db_input("db90_descr",10,$Idb90_descr,true,"text",4,"","chave_db90_descr");?></td>
+          <td><? db_input("db90_descr",10,$Idb90_descr,true,"text",4,"","chave_db90_descr");?></td>
         </tr>
       </table>
     </fieldset>
@@ -37,7 +37,7 @@ $cldb_bancos->rotulo->label("db90_descr");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_db_bancos.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_bancos.php")==true){
@@ -79,12 +79,12 @@ $cldb_bancos->rotulo->label("db90_descr");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

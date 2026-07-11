@@ -89,7 +89,7 @@ if($conparametro->c90_confirmadata == 't'){
     db_app::load("classes/financeiro/DBViewComplementoPagamento.js");
     ?>
     <style>
-      <?php $cor="#999999"?>
+      <?$cor="#999999"?>
       .bordas02{
         border: 2px solid #cccccc;
         border-top-color: <?=$cor?>;

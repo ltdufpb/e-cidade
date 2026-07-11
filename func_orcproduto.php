@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcproduto->rotulo->label("o22_descrprod");
               <?=$Lo22_codproduto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o22_codproduto",8,$Io22_codproduto,true,"text",4,"","chave_o22_codproduto");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcproduto->rotulo->label("o22_descrprod");
               <?=$Lo22_descrprod?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o22_descrprod",40,$Io22_descrprod,true,"text",4,"","chave_o22_descrprod");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcproduto->rotulo->label("o22_descrprod");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcproduto.php")==true){
@@ -119,12 +119,12 @@ $clorcproduto->rotulo->label("o22_descrprod");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

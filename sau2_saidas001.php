@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,35 +60,35 @@ $clrotulo->label("sd28_i_cgm");
     <table>
      <tr>
       <td>
-      Período </td><td><?php db_inputdata('data1',@$data1_dia,@$data1_mes,@$data1_ano,true,'text',$db_opcao,"")?> A <?php db_inputdata('data2',@$data2_dia,@$data2_mes,@$data2_ano,true,'text',$db_opcao,"")?>
+      Período </td><td><?db_inputdata('data1',@$data1_dia,@$data1_mes,@$data1_ano,true,'text',$db_opcao,"")?> A <?db_inputdata('data2',@$data2_dia,@$data2_mes,@$data2_ano,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr><td>Buscar por</td><td>
      <select name="tp" onchange="submit()">
       <option value=0 >Selecione</option>
-      <option value=1 <?php if($tp == 1){ echo "selected"; }?> >CGM</option>
-      <option value=2 <?php if($tp == 2){ echo "selected"; }?> >Prontuario</option>
+      <option value=1 <?if($tp == 1){ echo "selected"; }?> >CGM</option>
+      <option value=2 <?if($tp == 2){ echo "selected"; }?> >Prontuario</option>
      </select>
      </td></tr>
-     <?php if($tp == 1){?>
+     <?if($tp == 1){?>
      <tr><td nowrap>
-       <?php db_ancora('Cgm',"js_pesquisa_cgm();",$db_opcao);?>
+       <?db_ancora('Cgm',"js_pesquisa_cgm();",$db_opcao);?>
       </td>
       <td>
-       <?php db_input('sd28_i_cgm',10,$sd28_i_cgm,true,'text',3,"")?>
-       <?php db_input('z01_nome',40,$z01_nome,true,'text',3,'')?>
+       <?db_input('sd28_i_cgm',10,$sd28_i_cgm,true,'text',3,"")?>
+       <?db_input('z01_nome',40,$z01_nome,true,'text',3,'')?>
       </td>
      </tr>
-     <?php }elseif($tp == 2){?>
+     <?}elseif($tp == 2){?>
      <tr><td>
-      <?php db_ancora('Prontuario',"js_pesquisa_prontuario();",$db_opcao);?>
+      <?db_ancora('Prontuario',"js_pesquisa_prontuario();",$db_opcao);?>
      </td>
       <td>
-       <?php db_input('sd27_i_prontuario',10,$sd27_i_prontuario,true,'text',3,"")?>
-       <?php db_input('pront_nome',40,$pront_nome,true,'text',3,'')?>
+       <?db_input('sd27_i_prontuario',10,$sd27_i_prontuario,true,'text',3,"")?>
+       <?db_input('pront_nome',40,$pront_nome,true,'text',3,'')?>
       </td>
      </tr>
-     <?php }?>
+     <?}?>
      <tr>
       <td colspan='6' align='center' >
        <input name='Processar' type='button' value='Processar' onclick="EnviaForm()">
@@ -124,19 +124,19 @@ $clrotulo->label("sd28_i_cgm");
        obj.data1_dia.focus();
        return false;
       }
-      <?php if($tp == 1){?>
+      <?if($tp == 1){?>
       if(obj.sd28_i_cgm.value == ""){
        alert("Preencha o CGM");
        return false;
       }
-      <?php }elseif($tp == 2){?>
+      <?}elseif($tp == 2){?>
       if(obj.sd27_i_prontuario.value == ""){
        alert("Preencha o Prontuario");
        return false;
       }
-      <?php }?>
+      <?}?>
       else{
-       query = <?php if($tp == 1){?>"cgm="+obj.sd28_i_cgm.value+<?php }elseif($tp == 2){?>"pront="+obj.sd27_i_prontuario.value+<?php }?>"&data1="+obj.data1_ano.value+"X"+obj.data1_mes.value+"X"+obj.data1_dia.value+"&data2="+obj.data2_ano.value+"X"+obj.data2_mes.value+"X"+obj.data2_dia.value;
+       query = <?if($tp == 1){?>"cgm="+obj.sd28_i_cgm.value+<?}elseif($tp == 2){?>"pront="+obj.sd27_i_prontuario.value+<?}?>"&data1="+obj.data1_ano.value+"X"+obj.data1_mes.value+"X"+obj.data1_dia.value+"&data2="+obj.data2_ano.value+"X"+obj.data2_mes.value+"X"+obj.data2_dia.value;
        }
        jan = window.open('sau2_saidas002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
        jan.moveTo(0,0);
@@ -149,7 +149,7 @@ $clrotulo->label("sd28_i_cgm");
   </td>
  </tr>
 </table>
-<?php 
+<?
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

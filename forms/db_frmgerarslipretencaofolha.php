@@ -149,7 +149,7 @@ echo "</script>\n";
                     <b>Data Inicial:</b>
                 </td>
                 <td>
-                    <?php 
+                    <?
                     db_inputdata("datainicial", null, null, null, true, "text", 1);
                     ?>
                 </td>
@@ -157,7 +157,7 @@ echo "</script>\n";
                     <b>Data Final:</b>
                 </td>
                 <td>
-                    <?php 
+                    <?
                     db_inputdata("datafinal", null, null, null, true, "text", 1);
                     ?>
                 </td>
@@ -173,12 +173,12 @@ echo "</script>\n";
             </tr>
             <tr>
                 <td nowrap title="<?= @$Tz01_numcgm ?>" class="primeiraColuna">
-                    <?php 
+                    <?
                     db_ancora("<b>Credor:</b>", "js_pesquisaz01_numcgm(true);", $db_opcao);
                     ?>
                 </td>
                 <td colspan='4' nowrap>
-                    <?php 
+                    <?
                     db_input('z01_numcgm', 10, $Iz01_numcgm, true, 'text', $db_opcao, " onchange='js_pesquisaz01_numcgm(false);'");
                     db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '')
                     ?>
@@ -189,7 +189,7 @@ echo "</script>\n";
                     <b>Ordem Pag:</b>
                 </td>
                 <td colspan='4' nowrap>
-                    <?php 
+                    <?
                     $Ie50_codord = empty($Ie50_codord) ? 1 : $Ie50_codord;
                     db_input('e50_codord', 10, $Ie50_codord, true, 'text', "", "");
                     ?>

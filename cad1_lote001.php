@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -329,7 +329,7 @@ if($replote==true){
     </tr>
     <tr>
       <td>
-      <?php 
+      <?
       $ano = db_getsession("DB_anousu");
       $modulo= db_getsession("DB_modulo");
       $mostra =  db_permissaomenu($ano, $modulo, 1721);
@@ -350,12 +350,12 @@ if($replote==true){
 	</td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 /*
 if($replote==true){
  

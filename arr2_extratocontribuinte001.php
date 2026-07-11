@@ -209,12 +209,12 @@ $j18_nomefunc = "func_iptubase.php";
                     <tr>
                         <td>
                             <label for="exercicio_inicial"><strong>Inicial:</strong></label>
-                            <?php db_input('exercicio_inicial', 4, 1, true, 'text', "", "", "", "", "", 4)?>
+                            <?db_input('exercicio_inicial', 4, 1, true, 'text', "", "", "", "", "", 4)?>
                         </td>
                         <td style="width:10%"></td>
                         <td>
                             <label for="exercicio_final"><strong>Final:</strong></label>
-                            <?php db_input('exercicio_final', 4, 1, true, 'text', "", "", "", "", "", 4)?>
+                            <?db_input('exercicio_final', 4, 1, true, 'text', "", "", "", "", "", 4)?>
                         </td>
                     </tr>
                 </table>

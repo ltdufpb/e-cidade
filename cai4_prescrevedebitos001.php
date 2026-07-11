@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ textInLoad.innerHTML="<DIV id='msg_proc' style='border:1px solid #eaeaea;backgro
    </div>
   </div>
 </div>
-<?php 
+<?
 $clprescricao = new cl_prescricao;
 $clarrecad    = new cl_arrecad;
 $clarreprescr = new cl_arreprescr;
@@ -77,7 +77,7 @@ db_fieldsmemory($result,0);
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-<?php 
+<?
 //MODULO: caixa
 $clprescricao->rotulo->label();
 $clarreprescr->rotulo->label();
@@ -98,22 +98,22 @@ $func_nome ->mostrar();
   <tr>
   </tr>
   <tr id="numcgm">
-    <td><?php db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
+    <td><?db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
     <td> 
-        <?php  db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
-        <?php  db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
+        <? db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
+        <? db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
     </td>    
   </tr>
   <tr id="matricula">
-     <td><?php db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
+     <td><?db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
      <td> 
-        <?php  db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
+        <? db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
      </td>    
    </tr>
    <tr id="inscr">
-    <td><?php db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
+    <td><?db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
     <td> 
-        <?php  db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
+        <? db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
     </td>    
   </tr>
   
@@ -122,7 +122,7 @@ $func_nome ->mostrar();
                <b>Prescrever Débitos Notificados: </b>
             </td>
             <td width="" align="left" nowrap title="">
-             <?php 
+             <?
 				$arr_op = array("n"=>"Não","s"=>"Sim");
 				db_select("prescrnoti",$arr_op,true,"text");
 				?>
@@ -293,7 +293,7 @@ function js_preencheinscricao1(chave,erro){
 	</td>
   </tr>
 </table>
-<?php 
+<?
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clfuncao->rotulo->label("r37_descr");
               <?=$Lr37_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r37_mesusu",2,$Ir37_mesusu,true,"text",4,"","chave_r37_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clfuncao->rotulo->label("r37_descr");
               <?=$Lr37_funcao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r37_funcao",5,$Ir37_funcao,true,"text",4,"","chave_r37_funcao");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clfuncao->rotulo->label("r37_descr");
               <?=$Lr37_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r37_descr",30,$Ir37_descr,true,"text",4,"","chave_r37_descr");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clfuncao->rotulo->label("r37_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_funcao.php")==true){
@@ -131,12 +131,12 @@ $clfuncao->rotulo->label("r37_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

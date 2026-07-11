@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -189,7 +189,7 @@ input {
     <tr>
       <td align="left" valign="top" bgcolor="#CCCCCC">
        <center> 
-       <?php 
+       <?
          include(modification("forms/db_frmpromitentealt.php"));
        ?> 
       </center>
@@ -199,7 +199,7 @@ input {
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir) || isset($alterar) ||isset($excluir)){
   if($clpromitente->erro_status=="0"){
     $clpromitente->erro(true,false);

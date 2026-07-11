@@ -308,7 +308,7 @@ if (isset ($incluir)) {
 <meta http-equiv="Expires" CONTENT="0">
 <script>
 arr_dados = new Array();
-<?php 
+<?
 
 
 /*
@@ -328,7 +328,7 @@ for($i=0;$i<$clpcprocitem->numrows;$i++){
   <tr>
     <td height="450" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?php 
+        <?
 
 
 include(modification("forms/db_frmliberasol.php"));
@@ -338,13 +338,13 @@ include(modification("forms/db_frmliberasol.php"));
   </tr>
 </table>
 </body>
-<?php 
+<?
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </html>
-<?php 
+<?
 
 
 if (isset ($incluir)) {

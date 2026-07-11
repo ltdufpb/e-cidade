@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltipo_vitimas->rotulo->label("tr06_descr");
               <?=$Ltr06_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("tr06_id",5,$Itr06_id,true,"text",4,"","chave_tr06_id");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltipo_vitimas->rotulo->label("tr06_descr");
               <?=$Ltr06_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("tr06_descr",35,$Itr06_descr,true,"text",4,"","chave_tr06_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltipo_vitimas->rotulo->label("tr06_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipo_vitimas.php")==true){
@@ -119,12 +119,12 @@ $cltipo_vitimas->rotulo->label("tr06_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

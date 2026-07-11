@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $oRotulo->label('m77_sequencial');
               <?=$Lm77_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		          db_input("m77_sequencial",10,$Im77_sequencial,true,"text",4,"","chave_m77_sequencial");
 		          ?>
             </td>
@@ -71,7 +71,7 @@ $oRotulo->label('m77_sequencial');
               <?=$Lm77_lote?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 	            db_input("m77_lote",10,$Im77_lote,true,"text",4,"","chave_m77_lote");
 		          ?>
             </td>
@@ -89,7 +89,7 @@ $oRotulo->label('m77_sequencial');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
 
         if (isset($sCampos) == false) {
@@ -191,12 +191,12 @@ $oRotulo->label('m77_sequencial');
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

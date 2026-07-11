@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempageconf->rotulo->label("e86_data");
               <?=$Le86_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e86_codmov",6,$Ie86_codmov,true,"text",4,"","chave_e86_codmov");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempageconf->rotulo->label("e86_data");
               <?=$Le86_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e86_data",10,$Ie86_data,true,"text",4,"","chave_e86_data");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempageconf->rotulo->label("e86_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empageconf.php")==true){
@@ -119,12 +119,12 @@ $clempageconf->rotulo->label("e86_data");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

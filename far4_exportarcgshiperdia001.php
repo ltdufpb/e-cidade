@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -108,18 +108,18 @@ $departamento = db_getsession("DB_coddepto");
             <table border="0" align="left">
               <tr>
                 <td>
-                  <?php db_ancora(@$Lfa56_d_dataini,"",3);?>
+                  <?db_ancora(@$Lfa56_d_dataini,"",3);?>
                 </td>
                 <td>
-                  <?php db_inputdata('fa56_d_dataini',@$fa56_d_dataini_dia,@$fa56_d_dataini_mes,@$fa56_d_dataini_ano,true,'text',1,"")?>
+                  <?db_inputdata('fa56_d_dataini',@$fa56_d_dataini_dia,@$fa56_d_dataini_mes,@$fa56_d_dataini_ano,true,'text',1,"")?>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <?php db_ancora(@$Lfa56_d_datafim,"",3);?>
+                  <?db_ancora(@$Lfa56_d_datafim,"",3);?>
                 </td>
                 <td>
-                  <?php db_inputdata('fa56_d_datafim',@$fa56_d_datafim_dia,@$fa56_d_datafim_mes,@$fa56_d_datafim_ano,true,'text',1,"")?>
+                  <?db_inputdata('fa56_d_datafim',@$fa56_d_datafim_dia,@$fa56_d_datafim_mes,@$fa56_d_datafim_ano,true,'text',1,"")?>
                 </td>
               </tr> 
               <tr>
@@ -153,7 +153,7 @@ $departamento = db_getsession("DB_coddepto");
       </td>
     </tr>
   </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"), 
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -185,7 +185,7 @@ db_menu(db_getsession("DB_id_usuario"),
 
   }
 </script>
-<?php 
+<?
 if (isset($gerararquivo)) {
 
   $dDataIni = formataData($fa56_d_dataini);

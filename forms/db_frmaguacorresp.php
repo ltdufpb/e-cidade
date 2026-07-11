@@ -112,7 +112,7 @@
           <?php echo @$Lx02_orientacao; ?>
         </td>
         <td> 
-          <?php 
+          <?
             $oRetornoPesquisa = array("-"=>"---------",
                                       "D"=>"DIREITA",
                                       "E"=>"ESQUERDA",

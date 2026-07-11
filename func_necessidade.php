@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -57,7 +57,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
       <?=$Led48_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed48_i_codigo",10,$Ied48_i_codigo,true,"text",4,"","chave_ed48_i_codigo");?>
+      <?db_input("ed48_i_codigo",10,$Ied48_i_codigo,true,"text",4,"","chave_ed48_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
       <?=$Led48_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed48_c_descr",40,$Ied48_c_descr,true,"text",4,"","chave_ed48_c_descr");?>
+      <?db_input("ed48_c_descr",40,$Ied48_c_descr,true,"text",4,"","chave_ed48_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $sWhere = "ed48_i_codigo <> 108";
 
    if(!isset($pesquisa_chave)){

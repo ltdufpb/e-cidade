@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clorcparamfontes->rotulo->label("o43_codfon");
               <?=$Lo43_codparrel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o43_codparrel",8,$Io43_codparrel,true,"text",4,"","chave_o43_codparrel");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clorcparamfontes->rotulo->label("o43_codfon");
               <?=$Lo43_codfon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o43_codfon",6,$Io43_codfon,true,"text",4,"","chave_o43_codfon");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clorcparamfontes->rotulo->label("o43_codfon");
               <?=$Lo43_codfon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o43_codfon",6,$Io43_codfon,true,"text",4,"","chave_o43_codfon");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clorcparamfontes->rotulo->label("o43_codfon");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcparamfontes.php")==true){
@@ -131,12 +131,12 @@ $clorcparamfontes->rotulo->label("o43_codfon");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

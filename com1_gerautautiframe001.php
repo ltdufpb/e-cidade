@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -1009,7 +1009,7 @@ if (isset ($pc80_codproc) && trim($pc80_codproc) != "") {
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?php 
+    <?
 
 
 
@@ -1466,7 +1466,7 @@ if ($numrows_itens == 0) {
       onClick="js_alterar_obs('<?=$campo?>',<?=$pc01_codmater?>,'<?=$pc01_descrmater?>');"></td>
     <td nowrap colspan="6" class="<?=$bordas?>">&nbsp;</td>
   </tr>
-<?php 
+<?
     }
 	}
 	echo "</table>\n";
@@ -1569,7 +1569,7 @@ function js_marcaautoriza(valor){
 </script>
 </body>
 </html>
-<?php 
+<?
 
 
 

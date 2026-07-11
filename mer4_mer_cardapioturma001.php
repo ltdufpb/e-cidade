@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ $escola              = db_getsession("DB_coddepto");
         <tr>
          <td>
            <b>Cardápio:</b>          
-           <?php 
+           <?
            $hoje = date("Y-m-d",db_getsession("DB_datausu"));
            $result_tipocardapio = $clmer_tipocardapio->sql_record(
                                    $clmer_tipocardapio->sql_query("",
@@ -91,13 +91,13 @@ $escola              = db_getsession("DB_coddepto");
            <select name="cardapio" id="cardapio" onChange="js_cardapio(this.value);"
                   style="height:18px;font-size:10px;">
            <option value="0"></option>
-           <?php for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
+           <?for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
         
               db_fieldsmemory($result_tipocardapio,$t);
               ?>
               <option value="<?=$me27_i_codigo?>"><?=$me27_c_nome?> - Versão: <?=$me27_f_versao?></option>
       
-           <?php }?>
+           <?}?>
           </select>
          </td>
         </tr>
@@ -160,7 +160,7 @@ $escola              = db_getsession("DB_coddepto");
  </tr>
 </table>
 </center>
-<?php db_menu(db_getsession("DB_id_usuario"),
+<?db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

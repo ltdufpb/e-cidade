@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="460" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php 
+   <?
    MsgAviso(db_getsession("DB_coddepto"),"escola");
    $clcriaabas->identifica = ["a1" => "Dados Pessoais",
                                    "a2" => "Documentos",
@@ -102,6 +102,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

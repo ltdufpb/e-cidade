@@ -1,4 +1,4 @@
-<?php 
+<?
 
 $cldb_config = new cl_db_config;
 

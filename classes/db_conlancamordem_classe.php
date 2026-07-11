@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conlancamordem
 class cl_conlancamordem {

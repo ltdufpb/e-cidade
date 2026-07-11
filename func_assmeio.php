@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $classmeio->rotulo->label("h22_regist");
               <?=$Lh22_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h22_codigo",6,$Ih22_codigo,true,"text",4,"","chave_h22_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $classmeio->rotulo->label("h22_regist");
               <?=$Lh22_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h22_regist",6,$Ih22_regist,true,"text",4,"","chave_h22_regist");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $classmeio->rotulo->label("h22_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $dbwhere = "";
       if(isset($bloqueia_assenta)){
         $dbwhere = ((isset($chave_h22_codigo) || isset($chave_h22_regist) || isset($pesquisa_chave)) ? " and "  : "") . "  h22_data is null ";
@@ -127,12 +127,12 @@ $classmeio->rotulo->label("h22_regist");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

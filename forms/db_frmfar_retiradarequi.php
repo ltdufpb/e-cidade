@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,37 +39,37 @@ $clrotulo->label("m40_codigo");
        <?=@$Lfa07_i_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('fa07_i_codigo',5,$Ifa07_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa07_i_retirada?>">
-       <?php 
+       <?
        db_ancora(@$Lfa07_i_retirada,"js_pesquisafa07_i_retirada(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('fa07_i_retirada',5,$Ifa07_i_retirada,true,'text',$db_opcao," onchange='js_pesquisafa07_i_retirada(false);'")
 ?>
-       <?php 
+       <?
 db_input('fa04_i_codigo',5,$Ifa04_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tfa07_i_matrequi?>">
-       <?php 
+       <?
        db_ancora(@$Lfa07_i_matrequi,"js_pesquisafa07_i_matrequi(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('fa07_i_matrequi',5,$Ifa07_i_matrequi,true,'text',$db_opcao," onchange='js_pesquisafa07_i_matrequi(false);'")
 ?>
-       <?php 
+       <?
 db_input('m40_codigo',10,$Im40_codigo,true,'text',3,'')
        ?>
     </td>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_far_retiradarequi.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

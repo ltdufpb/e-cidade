@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clcadvencdesc->rotulo->label("q92_descr");
               <?=$Lq92_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		           db_input("q92_codigo",4,$Iq92_codigo,true,"text",4,"","chave_q92_codigo");
 		          ?>
             </td>
@@ -67,7 +67,7 @@ $clcadvencdesc->rotulo->label("q92_descr");
               <?=$Lq92_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		            db_input("q92_descr",40,$Iq92_descr,true,"text",4,"","chave_q92_descr");
 		          ?>
             </td>
@@ -85,7 +85,7 @@ $clcadvencdesc->rotulo->label("q92_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -134,12 +134,12 @@ $clcadvencdesc->rotulo->label("q92_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 ?>
   <script>
   </script>
-<?php 
+<?
 }
 ?>
 <script>

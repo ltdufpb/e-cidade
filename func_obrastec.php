@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clobrastec->rotulo->label("ob15_crea");
               <?=$Lob15_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ob15_numcgm",10,$Iob15_numcgm,true,"text",4,"","chave_ob15_numcgm");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clobrastec->rotulo->label("ob15_crea");
               <?=$Lob15_crea?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ob15_crea",20,$Iob15_crea,true,"text",4,"","chave_ob15_crea");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clobrastec->rotulo->label("ob15_crea");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         
 				$campos  = " cgm.z01_nome,													     ";
@@ -135,12 +135,12 @@ $clobrastec->rotulo->label("ob15_crea");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

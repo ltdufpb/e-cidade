@@ -101,7 +101,7 @@ use ECidade\V3\Extension\Registry;
         parent.iframe_emissao.hide();
     })
 </script>
-<?php 
+<?
 try {
     db_postmemory($_GET);
 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clmer_tipocardapio->rotulo->label("me27_c_nome");
               <?=$Lme37_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me37_i_codigo",10,$Ime37_i_codigo,true,"text",4,"","chave_me37_i_codigo");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clmer_tipocardapio->rotulo->label("me27_c_nome");
               <?=$Lme27_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me27_c_nome",10,@$Ime27_c_nome,true,"text",4,"","chave_me27_c_nome");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $clmer_tipocardapio->rotulo->label("me27_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos) == false) {
@@ -131,12 +131,12 @@ $clmer_tipocardapio->rotulo->label("me27_c_nome");
 </table>
 </body>
 </html>
-<?php  if (!isset($pesquisa_chave)) { ?>
+<? if (!isset($pesquisa_chave)) { ?>
 
   <script>
   </script>
 
-<?php }?>
+<?}?>
 
 <script>
   js_tabulacaoforms("form2", "chave_me37_i_codigo", true, 1, "chave_me37_i_codigo", true);

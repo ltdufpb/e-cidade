@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -188,7 +188,7 @@ if(isset($incluir) || isset($alterar)){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmitens.php"));
 	?>
     </center>
@@ -197,7 +197,7 @@ if(isset($incluir) || isset($alterar)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar) || isset($excluir) || isset($incluir)){
   if($sqlerro==true){
     if(isset($alterar)){

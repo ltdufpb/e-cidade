@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,7 +77,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_cgccpf?>      
           </td>
           <td>    
-         <?php db_input('z01_v_cgccpf',15,@$Iz01_v_cgccpf,true,'text',3,"onBlur='js_verificaCGCCPF(this);js_testanome(\"\",this.value,\"\")'");?>
+         <?db_input('z01_v_cgccpf',15,@$Iz01_v_cgccpf,true,'text',3,"onBlur='js_verificaCGCCPF(this);js_testanome(\"\",this.value,\"\")'");?>
         </td>
         </tr>
         <tr>
@@ -85,7 +85,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_ident?>          
          </td>
           <td>
-         <?php db_input('z01_v_ident',15,@$Iz01_v_ident,true,'text',3);?>
+         <?db_input('z01_v_ident',15,@$Iz01_v_ident,true,'text',3);?>
         </td>
         </tr>  
        <tr>
@@ -93,7 +93,7 @@ db_fieldsmemory($query,0);
          <?=$Lz01_i_cgsund?>
         </td>
         <td width="73%" nowrap>
-         <?php db_input('z01_i_cgsund',20,$Iz01_i_cgsund,true,'text',3);?>
+         <?db_input('z01_i_cgsund',20,$Iz01_i_cgsund,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -101,7 +101,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_nome?>
         </td>
         <td nowrap title="<?=@$Tz01_v_nome?>" align="left">
-         <?php db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,"");?>
+         <?db_input('z01_v_nome',40,$Iz01_v_nome,true,'text',3,"");?>
         </td>
        </tr>
        <tr>
@@ -109,7 +109,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_pai?>
         </td>
         <td nowrap title="<?=@$Tz01_v_pai?>">
-         <?php db_input('z01_v_pai',40,$Iz01_v_pai,true,'text',3,"");?>
+         <?db_input('z01_v_pai',40,$Iz01_v_pai,true,'text',3,"");?>
         </td>
        </tr>
        <tr>
@@ -117,7 +117,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_mae?>
         </td>
         <td nowrap title="<?=@$Tz01_v_mae?>">
-         <?php db_input('z01_v_mae',40,$Iz01_v_mae,true,'text',3,"");?>
+         <?db_input('z01_v_mae',40,$Iz01_v_mae,true,'text',3,"");?>
         </td>
        </tr>
        <tr>
@@ -125,7 +125,7 @@ db_fieldsmemory($query,0);
          <?=$Lz01_d_nasc?>
         </td>
         <td nowrap title="<?=$Tz01_d_nasc?>">
-         <?php db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',3);?>
+         <?db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -133,12 +133,12 @@ db_fieldsmemory($query,0);
          <?=$Lz01_i_estciv?>
         </td>
          <td nowrap title="<?=$Tz01_i_estciv?>">
-          <?php 
+          <?
           $x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Vi�vo","4"=>"Divorciado");
           db_select('z01_i_estciv',$x,true,3);
           ?>
           <?=$Lz01_v_sexo?>
-          <?php 
+          <?
           $sex = array("M"=>"Masculino","F"=>"Feminino");
           db_select('z01_v_sexo',$sex,true,3);
           ?>
@@ -146,10 +146,10 @@ db_fieldsmemory($query,0);
         </tr>
          <tr>
         <td nowrap title="<?=@$Tz01_v_ender?>">
-         <?php db_ancora(@$Lz01_v_ender,"js_ruas();",3);?>
+         <?db_ancora(@$Lz01_v_ender,"js_ruas();",3);?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_ender',40,$Iz01_v_ender,true,'text',3);?>
+         <?db_input('z01_v_ender',40,$Iz01_v_ender,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -158,10 +158,10 @@ db_fieldsmemory($query,0);
         </td>
         <td width="71%" nowrap>
          <a name="AN3">
-         <?php db_input('z01_i_numero',8,$Iz01_i_numero,true,'text',3);?>
+         <?db_input('z01_i_numero',8,$Iz01_i_numero,true,'text',3);?>
          &nbsp;
          <?=@$Lz01_v_compl?>
-         <?php db_input('z01_v_compl',10,$Iz01_v_compl,true,'text',3);?>
+         <?db_input('z01_v_compl',10,$Iz01_v_compl,true,'text',3);?>
          </a>
         </td>
        </tr>
@@ -170,7 +170,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_munic?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_munic',20,$Iz01_v_munic,true,'text',3);?>
+         <?db_input('z01_v_munic',20,$Iz01_v_munic,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -178,16 +178,16 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_uf?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_uf',2,$Iz01_v_uf,true,'text',3);?>
+         <?db_input('z01_v_uf',2,$Iz01_v_uf,true,'text',3);?>
         </td>
        </tr>
        <tr>
         <td nowrap title="<?=@$Tz01_v_bairro?>">
-         <?php db_ancora(@$Lz01_v_bairro,"js_bairro();",3);?>
+         <?db_ancora(@$Lz01_v_bairro,"js_bairro();",3);?>
         </td>
         <td nowrap>
-         <?php db_input('j13_codi',10,$Ij13_codi,true,'text',3);?>
-         <?php db_input('z01_v_bairro',25,$Iz01_v_bairro,true,'text',3);?>
+         <?db_input('j13_codi',10,$Ij13_codi,true,'text',3);?>
+         <?db_input('z01_v_bairro',25,$Iz01_v_bairro,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -195,7 +195,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_cep?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_cep',9,$Iz01_v_cep,true,'text',3);?>
+         <?db_input('z01_v_cep',9,$Iz01_v_cep,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -203,7 +203,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_telef?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_telef',12,$Iz01_v_telef,true,'text',3);?>
+         <?db_input('z01_v_telef',12,$Iz01_v_telef,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -211,7 +211,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_telcel?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_telcel',12,$Iz01_v_telcel,true,'text',3);?>
+         <?db_input('z01_v_telcel',12,$Iz01_v_telcel,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -219,7 +219,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_email?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_email',30,$Iz01_v_email,true,'text',3);?>
+         <?db_input('z01_v_email',30,$Iz01_v_email,true,'text',3);?>
         </td>
        </tr>
        <tr>
@@ -227,7 +227,7 @@ db_fieldsmemory($query,0);
          <?=@$Lz01_v_cxpostal?>
         </td>
         <td nowrap>
-         <?php db_input('z01_v_cxpostal',10,$Iz01_v_cxpostal,true,'text',3);?>
+         <?db_input('z01_v_cxpostal',10,$Iz01_v_cxpostal,true,'text',3);?>
         </td>
        </tr>
        <tr align="left" valign="middle">
@@ -235,7 +235,7 @@ db_fieldsmemory($query,0);
       <?=@$Lz01_d_cadast?>
       </td>
        <td>
-      <?php db_inputdata('z01_d_cadast',@$z01_d_cadast_dia,@$z01_d_cadast_mes,@$z01_d_cadast_ano,true,'text',3);?>
+      <?db_inputdata('z01_d_cadast',@$z01_d_cadast_dia,@$z01_d_cadast_mes,@$z01_d_cadast_ano,true,'text',3);?>
      </td>
     </tr>
       
@@ -300,7 +300,7 @@ db_fieldsmemory($query,0);
  }
  function js_preenchepesquisa(chave){
   db_iframe_aluno.hide();
-  <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+  <?echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
  }
  function js_novo(){
   parent.location="edu1_alunoabas001.php";

@@ -191,7 +191,7 @@ $oDaoFormaAvaliacao->rotulo->label();
 </center>
 </form>
 </div> <!-- Termina a Div que inicia nos fontes 001, 002, 003 nao remover -->
-<?php if (@$ed37_c_tipo == "NIVEL") {?>
+<?if (@$ed37_c_tipo == "NIVEL") {?>
     <center>
     <table width="100%">
      <tr>
@@ -203,7 +203,7 @@ $oDaoFormaAvaliacao->rotulo->label();
      </tr>
     </table>
     </center>
-<?php }?>
+<?}?>
 </center>
 <script>
 
@@ -264,7 +264,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_formaavaliacao.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

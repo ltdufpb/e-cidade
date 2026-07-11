@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ db_postmemory($HTTP_POST_VARS);
 	<table class="form-container">
 	  <tr>
 	    <td nowrap colspan="2">
-			<?php 
+			<?
 			  if(!isset($tipo)){
 			    $tipo = "l";
 			  }
@@ -121,7 +121,7 @@ db_postmemory($HTTP_POST_VARS);
 	  
 	   <tr>
 	     <td>
-	  		      <?php 
+	  		      <?
 	  		      db_input("valor", 3, 0, true, 'hidden', 3);
 	  		      db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
 	  		      db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);
@@ -167,7 +167,7 @@ db_postmemory($HTTP_POST_VARS);
 	     <td style="width: 173px !important;"><strong>Listar Servidores :</strong>&nbsp;
        </td>
        <td>
-         <?php 
+         <?
            $x = array("f"=>"NÃO","t"=>"SIM");
            db_select('func',$x,true,4,"");
          ?>
@@ -177,7 +177,7 @@ db_postmemory($HTTP_POST_VARS);
 	     <td ><strong>Imprimir Endereço :</strong>&nbsp;
        </td>
        <td>
-         <?php 
+         <?
            $x = array("f"=>"NÃO","t"=>"SIM");
            db_select('endereco',$x,true,4,"");
          ?>
@@ -187,7 +187,7 @@ db_postmemory($HTTP_POST_VARS);
 	     <td ><strong>Imprimir Remuneração :</strong>&nbsp;
        </td>
        <td>
-         <?php 
+         <?
            $x = array("f"=>"NÃO","t"=>"SIM");
            db_select('padrao',$x,true,4,"");
          ?>
@@ -210,7 +210,7 @@ db_postmemory($HTTP_POST_VARS);
         <td nowrap><strong>Quebrar :</strong>&nbsp;
         </td>
         <td>
-          <?php 
+          <?
 			      $xxy = array(
 					            "n"=>"NÃO", 
 				              "s"=>"SIM"
@@ -229,7 +229,7 @@ db_postmemory($HTTP_POST_VARS);
   <input  name="relatorio" id="relatorio" type="button" value="Relatório" onclick="js_emite();" >
   
   </div>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

@@ -220,7 +220,7 @@ function js_ent(obj,evt,campo){
     <b>Dia</b>
     </td>
     <td>
-<?php 
+<?
 /*if(empty($y79_data_dia)){
   $y79_data_dia = date("d",db_getsession("DB_datausu"));
   $y79_data_mes = date("m",db_getsession("DB_datausu"));
@@ -240,7 +240,7 @@ db_input('y79_data_ano',10,0,true,'hidden');
        <b>Doc.</b>
     </td>
     <td>
-<?php 
+<?
 db_input('y79_ordem',10,$Iy79_ordem,true,'hidden');
 //db_input('y79_documento',10,$Iy79_documento,true,'text',$db_opcao,"");
 ?>
@@ -294,7 +294,7 @@ db_input('y79_ordem',10,$Iy79_ordem,true,'hidden');
 </table>
 <script>
 function js_monta(){
-<?php 
+<?
 if(isset($notas)){
   $matriz01=split('HHH',$notas);
   for($i=0; $i<count($matriz01); $i++){

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcimpactorecmov->rotulo->label("o69_sequen");
               <?=$Lo69_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o69_sequen",8,$Io69_sequen,true,"text",4,"","chave_o69_sequen");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcimpactorecmov->rotulo->label("o69_sequen");
               <?=$Lo69_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o69_sequen",8,$Io69_sequen,true,"text",4,"","chave_o69_sequen");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcimpactorecmov->rotulo->label("o69_sequen");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactorecmov.php")==true){
@@ -119,12 +119,12 @@ $clorcimpactorecmov->rotulo->label("o69_sequen");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

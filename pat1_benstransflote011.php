@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -131,12 +131,12 @@ if(isset($oPost->incluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC>
-	   <?php 
+	   <?
 	     include(modification("forms/db_frmbenstransflote.php"));
 	   ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($oPost->incluir)){
 
 	db_msgbox($sMsgErro);

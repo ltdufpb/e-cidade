@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clobrasenvioreghab->rotulo->label("ob18_codhabite");
               <?=$Lob18_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ob18_codigo",10,$Iob18_codigo,true,"text",4,"","chave_ob18_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clobrasenvioreghab->rotulo->label("ob18_codhabite");
               <?=$Lob18_codhabite?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ob18_codhabite",15,$Iob18_codhabite,true,"text",4,"","chave_ob18_codhabite");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clobrasenvioreghab->rotulo->label("ob18_codhabite");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_obrasenvioreghab.php")==true){
@@ -119,12 +119,12 @@ $clobrasenvioreghab->rotulo->label("ob18_codhabite");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

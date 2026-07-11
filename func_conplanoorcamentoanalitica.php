@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconplanoorcamentoanalitica->rotulo->label("c61_reduz");
               <?=$Lc61_reduz?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c61_reduz",6,$Ic61_reduz,true,"text",4,"","chave_c61_reduz");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconplanoorcamentoanalitica->rotulo->label("c61_reduz");
               <?=$Lc61_reduz?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c61_reduz",6,$Ic61_reduz,true,"text",4,"","chave_c61_reduz");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconplanoorcamentoanalitica->rotulo->label("c61_reduz");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplanoorcamentoanalitica.php")==true){
@@ -123,12 +123,12 @@ $clconplanoorcamentoanalitica->rotulo->label("c61_reduz");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

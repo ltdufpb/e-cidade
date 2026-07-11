@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE termotaxaparc
 class cl_termotaxaparc { 

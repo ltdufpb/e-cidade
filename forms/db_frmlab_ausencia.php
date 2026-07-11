@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -48,7 +48,7 @@ $db_botao1 = false;
        <?=@$Lla36_i_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('la36_i_codigo',10,$Ila36_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -59,10 +59,10 @@ db_input('la36_i_codigo',10,$Ila36_i_codigo,true,'text',3,"")
        <b>Laboratorio:</b>
     </td>
     <td>
-<?php 
+<?
 db_input('la02_i_codigo',10,@$Ila09_i_labsetor,true,'text',3,"")
 ?>
-       <?php 
+       <?
 db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
        ?>
     </td>
@@ -70,12 +70,12 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tla36_i_setorexame?>">
-       <?php 
+       <?
        db_ancora('<b>Exame:</b>',"js_pesquisala36_i_setorexame(true);",$db_opcao);
        ?>
     </td>
     <td> 
-       <?php 
+       <?
        db_input('la08_i_codigo',10,$Ila36_i_setorexame,true,'text',$db_opcao," onchange='js_pesquisala36_i_setorexame(false);'");
        db_input('la36_i_setorexame',10,'',true,'hidden',$db_opcao,'');
        db_input('la08_c_descr',40,@$Ila08_c_descr,true,'text',3,'');
@@ -93,7 +93,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                       <tr>
                                           <td nowrap title="<?=@$Tla36_i_tipo?>"><b>Tipo</b></td>
                                           <td>
-                                           <?php 
+                                           <?
 					        $sql = $clmotivo_ausencia->sql_query(null,"s139_i_codigo, s139_c_descr","s139_i_codigo");
 						//echo $sql;
                                                 $resultado = $clmotivo_ausencia->sql_record($sql);
@@ -120,7 +120,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                                          <tr>
                                                             <td nowrap title="<?=@$Tla36_d_ini?>"><?=@$Lla36_d_ini?></td>
                                                             <td>
-                                                               <?php 
+                                                               <?
                                                                if(isset($la36_d_ini)&&($la36_d_ini!="")){
                                                                  $vet=explode("/",$la36_d_ini);
                                                                  $la36_d_ini_dia=$vet[0];
@@ -134,7 +134,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                                          <tr>
                                                             <td nowrap title="<?=@$Tla36_d_fim?>"><?=@$Lla36_d_fim?></td>
                                                             <td>
-                                                               <?php 
+                                                               <?
                                                                if(isset($la36_d_fim)&&($la36_d_fim!="")){
                                                                  $vet=explode("/",$la36_d_fim);
                                                                  $la36_d_fim_dia=$vet[0];
@@ -153,11 +153,11 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
                                                 <table>
                                                      <tr>
                                                          <td nowrap title="<?=@$Tla36_c_horaini?>"><?=@$Lla36_c_horaini?></td>
-                                                         <td><?php db_input('la36_c_horaini',5,@$Ila36_c_horaini,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horaini', event)\"");?></td>
+                                                         <td><?db_input('la36_c_horaini',5,@$Ila36_c_horaini,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horaini', event)\"");?></td>
                                                      </tr>
                                                      <tr>
                                                          <td nowrap title="<?=@$Tla36_c_horafim?>"><?=@$Lla36_c_horafim?></td>
-                                                         <td><?php db_input('la36_c_horafim',5,@$Ila36_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horafim', event)\"");?></td>
+                                                         <td><?db_input('la36_c_horafim',5,@$Ila36_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'la36_c_horafim', event)\"");?></td>
                                                      </tr>
                                                 </table>
                                                 </fieldset>
@@ -184,7 +184,7 @@ db_input('la02_c_descr',50,@$Ila02_c_descr,true,'text',3,'')
 <table width="100%">
 	<tr>
 		<td valign="top"><br>
-  <?php 
+  <?
 		$chavepri = array ("la36_i_codigo" => @$la36_i_codigo, 
                        "la08_c_descr"=>@$la08_c_descr, 
                        "la02_i_codigo"=>@$la02_i_codigo, 
@@ -367,7 +367,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_ausencia.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

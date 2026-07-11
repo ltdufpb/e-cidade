@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: farmacia
 //CLASSE DA ENTIDADE integracaohorusenvio
 class cl_integracaohorusenvio { 

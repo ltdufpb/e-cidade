@@ -27,17 +27,17 @@
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?php if(!isset($sepultamento)||$sepultamento==""){?>
+<?if(!isset($sepultamento)||$sepultamento==""){?>
      <table border="0">
        <tr>
          <td nowrap title="<?=@$sepultamento?>">
-           <?php db_ancora("<strong>Sepultamento</strong>","js_pesquisasepultamento();",$db_opcao);?>
+           <?db_ancora("<strong>Sepultamento</strong>","js_pesquisasepultamento();",$db_opcao);?>
          </td>
          <td>
-          <?php 
+          <?
              db_input('sepultamento',10,@$sepultamento,true,'text',3)
           ?>
-          <?php 
+          <?
              db_input('nome',50,@$nome,true,'text',3,'')
           ?>
          </td>
@@ -46,7 +46,7 @@
         <td colspan="2" align="center"><input type="submit" value="Processar" name="processar"></td>
        </tr>
      </table>
-<?php }else{?>
+<?}else{?>
       <style>
         #proprietario, #nome_cemiterio, #nome_cemit, #nome_sepultamento, #proprietario, #nome_cemiterio {
           width: 290px;
@@ -65,7 +65,7 @@
      <table>
       <tr>
        <td>
-         <?php 
+         <?
           //busca a localidade do sepultamento
           $db_opcao = 3;
           $db_opcao1 = 3;
@@ -158,7 +158,7 @@
              ?>
                  <input name="tipoant" type="hidden" value="<?=$tipoant?>">
                  <input name="codigo" type="hidden" value="<?=$codigo?>">
-             <?php 
+             <?
            include(modification($arquivo));
           }
         ?>
@@ -166,7 +166,7 @@
       </tr>
      </table>
      </fieldset>
-<?php }?>
+<?}?>
 </form>
 </center>
 <script>

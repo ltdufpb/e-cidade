@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -35,7 +35,7 @@ $clpcorcam->rotulo->label();
       <?=@$Lpc20_codorc?>
     </td>
     <td> 
-	  <?php 
+	  <?
   		db_input('pc20_codorc',8,$Ipc20_codorc,true,'text',3);
   		db_input('pc10_numero',8,0,true,'hidden',3);
 	  ?>
@@ -49,7 +49,7 @@ $clpcorcam->rotulo->label();
       <?=@$Lpc20_dtate?>
     </td>
     <td colspan="2"> 
-	  <?php 
+	  <?
 	   if(!isset($pc20_dtate_dia) && !isset($pc20_dtate_mes) && !isset($pc20_dtate_ano) && !isset($pc20_dtate)){
 		 
 	   	 $somadata = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_dias,pc30_horas as pc20_hrate"));
@@ -75,7 +75,7 @@ $clpcorcam->rotulo->label();
       <?=@$Lpc20_hrate?>
     </td>
     <td> 
-	  <?php 
+	  <?
 	   if(!isset($pc20_hrate)){
 	     $pc20_hrate = db_hora();
 	   }
@@ -92,7 +92,7 @@ $clpcorcam->rotulo->label();
     <?=$Lpc20_obs?>
     </td>
     <td colspan="2">
-    <?php 
+    <?
       @$pc20_obs = stripslashes($pc20_obs);
       db_textarea("pc20_obs",10,81,"",true,"text",$db_opcao,"onKeydown='js_validaTamanhoObs(this,event)' onKeyUp='js_incrementaCaracDig(this.value.length)'");
     ?>
@@ -103,7 +103,7 @@ $clpcorcam->rotulo->label();
      <?=@$Lpc20_prazoentrega?>
     </td>
     <td>
-     <?php 
+     <?
        db_input('pc20_prazoentrega',10,$Ipc20_prazoentrega,true,'text',$db_opcao);
       ?>
     </td>
@@ -118,7 +118,7 @@ $clpcorcam->rotulo->label();
      <?=@$Lpc20_validadeorcamento?>
     </td>
     <td colspan="2">
-    <?php 
+    <?
     db_input('pc20_validadeorcamento',10,$Ipc20_validadeorcamento,true,'text',$db_opcao);
     ?>
     </td>
@@ -169,7 +169,7 @@ function js_incrementaCaracDig(iTamanhoCampo){
 
 function js_verifica_hora(valor,campo){
   erro= 0;
-  <?php 
+  <?
   $hora = "00";
   $minu = "00";
   if(isset($pc30_horas)){
@@ -178,8 +178,8 @@ function js_verifica_hora(valor,campo){
     $minu = $arr_horas[1];
   }
   ?>
-  hora= "<?php $hora?>" ;
-  minu= "<?php $minu?>";
+  hora= "<?$hora?>" ;
+  minu= "<?$minu?>";
   
   ms  = "";
   hs  = "";
@@ -246,7 +246,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcorcam.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

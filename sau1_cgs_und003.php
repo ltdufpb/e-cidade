@@ -476,10 +476,10 @@ function validaVinculoVacinaAplicada( $z01_i_cgsund ) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC">
-    <?php include(modification("forms/db_frmcgs_und.php"));?>
+    <?include(modification("forms/db_frmcgs_und.php"));?>
 </body>
 </html>
-<?php 
+<?
 if(isset($excluir)){
  if($clcgs->erro_status=="0"){
    $clcgs->erro(true,false);

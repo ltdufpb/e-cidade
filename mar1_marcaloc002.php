@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ if(isset($incluir)){
   }else{
    $clmarcaloc->erro(true,false);
    $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
-   <script>location.href ="<?=$pagina?>";</script><?php 
+   <script>location.href ="<?=$pagina?>";</script><?
   }
 }
 if(isset($alterar)){
@@ -70,7 +70,7 @@ if(isset($alterar)){
   }else{
    $clmarcaloc->erro(true,false);
    $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
-   <script>location.href ="<?=$pagina?>";</script><?php 
+   <script>location.href ="<?=$pagina?>";</script><?
   }
 }
 if(isset($excluir)){
@@ -83,12 +83,12 @@ if(isset($excluir)){
  }else{
   $clmarcaloc->erro(true,false);
   $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
-  <script>location.href ="<?=$pagina?>";</script><?php 
+  <script>location.href ="<?=$pagina?>";</script><?
  }
 }
 if(isset($cancelar)){
  $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?ma05_i_marca=$ma05_i_marca&z01_nome=$z01_nome";?>
- <script>location.href ="<?=$pagina?>";</script><?php 
+ <script>location.href ="<?=$pagina?>";</script><?
 }
 ?>
 <html>
@@ -104,7 +104,7 @@ if(isset($cancelar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-        <?php 
+        <?
         include(modification("forms/db_frmmarcaloc.php"));
         ?>
     </center>

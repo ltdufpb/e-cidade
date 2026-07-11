@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -125,10 +125,10 @@ if(isset($pesquisa_chave)){
             <table align="center" width="100%" border="0" cellspacing="0" cellpadding="2">
 		           <tr>
 		              <td nowrap="nowrap" width="150">
-		                <b><?php  db_ancora ( "CGM :", "js_pesquisacgm(true)", 1 )?></b>
+		                <b><? db_ancora ( "CGM :", "js_pesquisacgm(true)", 1 )?></b>
 		              </td>
 		              <td>
-		                <?php 
+		                <?
 		                  db_input ( "z01_numcgm", 10, "", true, "text", 1, " onchange='js_pesquisacgm(false);' " );
 		                  db_input ( "z01_nome", 40, "", true, "text", 3 );
 		                ?>
@@ -138,10 +138,10 @@ if(isset($pesquisa_chave)){
 
 			        <tr>
 			          <td>
-									<b><?php  db_ancora("Matricula :",' js_matri(true); ',1); ?></b>
+									<b><? db_ancora("Matricula :",' js_matri(true); ',1); ?></b>
 			          </td>
 			          <td>
-									<?php 
+									<?
 									  db_input('j01_matric', 10, 0, true, 'text', 1, "onchange='js_matri(false)'");
 									  //db_input('z01_nome'  , 40, 0, true, 'text', 3, "");
 									?>
@@ -151,11 +151,11 @@ if(isset($pesquisa_chave)){
 						  <tr>
 						    <td>
 						     <b>
-						       <?php db_ancora("Inscrição :",' js_inscr(true); ',1); ?>
+						       <?db_ancora("Inscrição :",' js_inscr(true); ',1); ?>
 						     </b>
 						    </td>
 						    <td>
-						     <?php 
+						     <?
 						      db_input('q02_inscr',10,"",true,'text',1,"onchange='js_inscr(false)'");
 						      //db_input('z01_nome',40,0,true,'text',3,"");
 						     ?>
@@ -170,7 +170,7 @@ if(isset($pesquisa_chave)){
                  </b>
                 </td>
                 <td>
-                 <?php 
+                 <?
                    $aTipoGera = array ("I" => "Individual",
                                        "G" => "Geral"
                                       );
@@ -186,7 +186,7 @@ if(isset($pesquisa_chave)){
                  </b>
                 </td>
                 <td>
-                 <?php 
+                 <?
                    $sSqlTipos    = $oCadTipo->sql_query_file(null, "*", "k03_tipo", null);
                    $rsTipoDebito = $oCadTipo->sql_record($sSqlTipos);
                    db_selectrecord("tipoDebito", $rsTipoDebito, true, 1);
@@ -199,7 +199,7 @@ if(isset($pesquisa_chave)){
                     <b>Numpre :</b>
                   </td>
                   <td>
-                    <?php 
+                    <?
                       db_input ( "numpre", 10, "", true, "text", 1 );
                     ?>
 
@@ -208,7 +208,7 @@ if(isset($pesquisa_chave)){
 
 		            <tr>
 		              <td ><b>Data da Geração :</b></td>
-		              <td ><?php db_inputdata("dtGeracao", "", "", "", true, "", 1); ?></td>
+		              <td ><?db_inputdata("dtGeracao", "", "", "", true, "", 1); ?></td>
 		            </tr>
 
             </table>
@@ -512,7 +512,7 @@ function js_pesquisacgm(lMostra){
   }
 
 </script>
-<?php } ?>
+<?} ?>
 <script type="text/javascript">
 (function() {
   var query = frameElement.getAttribute('name').replace('IF', ''), input = document.querySelector('input[value="Fechar"]');

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clportariaproced->rotulo->label("h40_descr");
               <?=$Lh40_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h40_sequencial",10,$Ih40_sequencial,true,"text",4,"","chave_h40_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clportariaproced->rotulo->label("h40_descr");
               <?=$Lh40_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h40_descr",20,$Ih40_descr,true,"text",4,"","chave_h40_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clportariaproced->rotulo->label("h40_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_portariaproced.php")==true){
@@ -123,12 +123,12 @@ $clportariaproced->rotulo->label("h40_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

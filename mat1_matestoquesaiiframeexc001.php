@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -225,7 +225,7 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
     <form name="form1" method="post" action="">
     <center>
     <table border='0'>
-      <?php 
+      <?
       if(isset($msgalert) && trim($msgalert)!=""){
 	echo $msgalert;
         $scriptextra = "<script>parent.document.getElementById('db_opcao').disabled=true;</script>";
@@ -285,7 +285,7 @@ if(isset($m70_codmatmater) && trim($m70_codmatmater)!=""){
 </html>
 <script>
 </script>
-<?php 
+<?
 if(isset($incluir)){
   db_msgbox($erro_msg);
 }

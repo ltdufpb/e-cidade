@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhavaliacaotipoavaliacao->rotulo->label("h76_sequencial");
               <?=$Lh76_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h76_sequencial",10,$Ih76_sequencial,true,"text",4,"","chave_h76_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhavaliacaotipoavaliacao->rotulo->label("h76_sequencial");
               <?=$Lh76_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h76_sequencial",10,$Ih76_sequencial,true,"text",4,"","chave_h76_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhavaliacaotipoavaliacao->rotulo->label("h76_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhavaliacaotipoavaliacao.php")==true){
@@ -123,12 +123,12 @@ $clrhavaliacaotipoavaliacao->rotulo->label("h76_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

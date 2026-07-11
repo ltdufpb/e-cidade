@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconparlancamrec->rotulo->label("c92_codcon");
               <?=$Lc92_codfon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c92_codfon",6,$Ic92_codfon,true,"text",4,"","chave_c92_codfon");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconparlancamrec->rotulo->label("c92_codcon");
               <?=$Lc92_codcon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c92_codcon",6,$Ic92_codcon,true,"text",4,"","chave_c92_codcon");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconparlancamrec->rotulo->label("c92_codcon");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conparlancamrec.php")==true){
@@ -119,12 +119,12 @@ $clconparlancamrec->rotulo->label("c92_codcon");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

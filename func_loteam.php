@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clloteam->rotulo->label("j34_descr");
               <?=$Lj34_loteam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j34_loteam",4,$Ij34_loteam,true,"text",4,"","chave_j34_loteam");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clloteam->rotulo->label("j34_descr");
               <?=$Lj34_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j34_descr",40,$Ij34_descr,true,"text",4,"","chave_j34_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clloteam->rotulo->label("j34_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_loteam.php")==true){
@@ -119,14 +119,14 @@ $clloteam->rotulo->label("j34_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j34_loteam.focus();
 document.form2.chave_j34_loteam.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clescrito->rotulo->label("q10_numcgm");
               <?=$Lq10_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q10_inscr",4,$Iq10_inscr,true,"text",4,"","chave_q10_inscr");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clescrito->rotulo->label("q10_numcgm");
               <?=$Lq10_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q10_numcgm",4,$Iq10_numcgm,true,"text",4,"","chave_q10_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clescrito->rotulo->label("q10_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "escrito.*";
@@ -111,14 +111,14 @@ $clescrito->rotulo->label("q10_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_q10_inscr.focus();
 document.form2.chave_q10_inscr.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

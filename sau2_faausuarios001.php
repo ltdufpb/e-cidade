@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,16 +62,16 @@ $clrotulo->label("sd04_i_unidade");
        <b> Período:</b>
      </td>
      <td>
-       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
         A
-       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
      </tr>
      <tr>
-      <td><?php db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(true);",1);?></td>
+      <td><?db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(true);",1);?></td>
       <td>
-       <?php db_input('sd04_i_unidade',10,@$Isd04_i_unidade,true,'text',1," onchange='js_pesquisasd04_i_unidade(false);'")?>
-       <?php db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')?>
+       <?db_input('sd04_i_unidade',10,@$Isd04_i_unidade,true,'text',1," onchange='js_pesquisasd04_i_unidade(false);'")?>
+       <?db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -84,7 +84,7 @@ $clrotulo->label("sd04_i_unidade");
   </td>
  </tr>
 </table>
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

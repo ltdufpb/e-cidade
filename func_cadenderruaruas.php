@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcadenderruaruas->rotulo->label("db88_cadenderrua");
               <?=$Ldb88_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db88_sequencial",10,$Idb88_sequencial,true,"text",4,"","chave_db88_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcadenderruaruas->rotulo->label("db88_cadenderrua");
               <?=$Ldb88_cadenderrua?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db88_cadenderrua",10,$Idb88_cadenderrua,true,"text",4,"","chave_db88_cadenderrua");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcadenderruaruas->rotulo->label("db88_cadenderrua");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadenderruaruas.php")==true){
@@ -123,12 +123,12 @@ $clcadenderruaruas->rotulo->label("db88_cadenderrua");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

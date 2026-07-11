@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clagendtransf->rotulo->label("sd31_d_dataorigem");
               <?=$Lsd31_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd31_i_codigo",10,$Isd31_i_codigo,true,"text",4,"","chave_sd31_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clagendtransf->rotulo->label("sd31_d_dataorigem");
               <?=$Lsd31_d_dataorigem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd31_d_dataorigem",10,$Isd31_d_dataorigem,true,"text",4,"","chave_sd31_d_dataorigem");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clagendtransf->rotulo->label("sd31_d_dataorigem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_agendtransf.php")==true){
@@ -123,12 +123,12 @@ $clagendtransf->rotulo->label("sd31_d_dataorigem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

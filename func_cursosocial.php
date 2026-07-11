@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcursosocial->rotulo->label("as19_nome");
               <?=$Las19_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as19_sequencial",10,$Ias19_sequencial,true,"text",4,"","chave_as19_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcursosocial->rotulo->label("as19_nome");
               <?=$Las19_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("as19_nome",70,$Ias19_nome,true,"text",4,"","chave_as19_nome");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcursosocial->rotulo->label("as19_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $sWhere     = '';
       $sSeparador = '';
       $dtAtual    = date("Y-m-d");
@@ -143,12 +143,12 @@ $clcursosocial->rotulo->label("as19_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

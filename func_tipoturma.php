@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltipoturma->rotulo->label("ed111_descricao");
               <?=$Led111_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed111_sequencial",10,$Ied111_sequencial,true,"text",4,"","chave_ed111_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltipoturma->rotulo->label("ed111_descricao");
               <?=$Led111_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed111_descricao",40,$Ied111_descricao,true,"text",4,"","chave_ed111_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltipoturma->rotulo->label("ed111_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoturma.php")==true){
@@ -123,12 +123,12 @@ $cltipoturma->rotulo->label("ed111_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

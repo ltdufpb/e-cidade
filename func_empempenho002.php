@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clempelemento->rotulo->label();
 <body bgcolor=#CCCCCC>
 <center>
  <table border='0' cellspacing="0" cellpadding="0" width="95%" style='border:2px inset white'>   
- <?php 
+ <?
       $result = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp,null,"*","e64_codele"));
       $numrows = $clempelemento->numrows;
       if($numrows>0){

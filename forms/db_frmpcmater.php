@@ -54,7 +54,7 @@ function js_executaIframe(val) {
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc01_codmater?>"> <?=@$Lpc01_codmater?> </td>
-    <td> <?php  //db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',$db_opcao,"readonly")
+    <td> <? //db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',$db_opcao,"readonly")
            // carlos
            db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',3,"");
            $pc01_id_usuario = db_getsession("DB_id_usuario");
@@ -64,33 +64,33 @@ function js_executaIframe(val) {
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc01_descrmater?>"> <?=@$Lpc01_descrmater?>    </td>
-    <td> <?php  db_input('pc01_descrmater',78,$Ipc01_descrmater,true,'text',$db_opcao,"") ?>
+    <td> <? db_input('pc01_descrmater',78,$Ipc01_descrmater,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc01_complmater?>">       <?=@$Lpc01_complmater?>    </td>
-    <td> <?php  db_textarea('pc01_complmater',0,75,$Ipc01_complmater,true,'text',$db_opcao,"") ?>
+    <td> <? db_textarea('pc01_complmater',0,75,$Ipc01_complmater,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc01_libaut?>">       <?=@$Lpc01_libaut?>    </td>
-    <td nowrap> <?php 
+    <td nowrap> <?
     $arrlibaut_truefalse = array('t'=>'Sim','f'=>'Não');
     db_select("pc01_libaut",$arrlibaut_truefalse,true,$db_opcao);
     ?>
     <?=$Lpc01_ativo?>
-    <?php 
+    <?
     $arr_truefalse = array('f'=>'Não','t'=>'Sim');
     db_select("pc01_ativo",$arr_truefalse,true,$db_opcao);
     ?>
     <?=$Lpc01_servico?>
-    <?php 
+    <?
     $x = array("f"=>"Não","t"=>"Sim");
     $pc01_servico_disabled = $db_opcao != 1 ? "disabled" : "";
     db_select("pc01_servico", $x, true, $db_opcao, $pc01_servico_disabled);
     ?>
     <?=$Lpc01_veiculo?>
-    <?php 
+    <?
     $aVeic = array("f"=>"Não","t"=>"Sim");
     db_select("pc01_veiculo",$aVeic,true,$db_opcao);
     ?>
@@ -98,12 +98,12 @@ function js_executaIframe(val) {
     </td>
     <tr>
       <td>
-        <?php 
+        <?
         echo $Lpc01_fraciona;
         ?>
       </td>
       <td>
-        <?php 
+        <?
         $aFrac = array("f"=>"Não","t"=>"Sim");
         db_select("pc01_fraciona",$aFrac,true,$db_opcao);
         ?>
@@ -112,25 +112,25 @@ function js_executaIframe(val) {
 
     <tr>
       <td nowrap>
-        <?php 
+        <?
         echo $Lpc01_validademinima;
         ?>
       </td>
       <td nowrap>
-       <?php 
+       <?
         $aValMin = array("f"=>"Não","t"=>"Sim");
         db_select("pc01_validademinima",$aValMin,true,$db_opcao);
         ?>
 
 
-        <?php 
+        <?
         echo $Lpc01_obrigatorio;
 
         $aPObrigatorio = array("f"=>"Não","t"=>"Sim");
         db_select("pc01_obrigatorio", $aPObrigatorio ,true,$db_opcao);
         ?>
 
-        <?php 
+        <?
         echo $Lpc01_liberaresumo;
 
         $aLiberarResumo = array("t" => "Sim",
@@ -143,7 +143,7 @@ function js_executaIframe(val) {
   <tr>
     <td><?=$Lpc03_codgrupo?> </td>
     <td align='left'>
-        <?php 
+        <?
 	  //com query_file na classe
 	  /*
 	  if (!isset($pc013_codgrupo)){
@@ -176,11 +176,11 @@ function js_executaIframe(val) {
 
     </td>
   </tr>
-   <?php  if(isset($pc01_codgrupo) || $db_opcao != 1) { ?>
+   <? if(isset($pc01_codgrupo) || $db_opcao != 1) { ?>
      <tr>
        <td> <?=$Lpc04_codsubgrupo?> </td>
        <td align='left'>
-        <?php 
+        <?
            $sWhere = "pc04_codgrupo = ".@$pc01_codgrupo." and pc04_ativo is true and (pc04_tipoutil=1 or pc04_tipoutil=3)";
            if (!isset($pc01_codgrupo)) {
              $sWhere = "pc04_ativo is true and (pc04_tipoutil=1 or pc04_tipoutil=3)";
@@ -219,7 +219,7 @@ function js_executaIframe(val) {
         ?>
       </td>
       </tr>
-   <?php  }    ?>
+   <? }    ?>
 
    <tr>
 		 <td>&nbsp;<td>
@@ -230,19 +230,19 @@ function js_executaIframe(val) {
       <iframe width="630" height="200" name="pcmater0011" src="com1_pcmater0011.php<?=$vaiIframe?>"></iframe>
     </td>
   </tr>
-  <?php 
+  <?
     if($db_opcao!=1){?>
   <tr>
     <td colspan=2 bgcolor="#CCFF99" align="center"><strong>***   Elementos que não podem ser <?=$db_opcao==2?" alterados ":" excluídos "?> por estar na autorização de empenho.</strong></td>
   </tr>
-  <?php }?>
+  <?}?>
   </table>
 </fieldset>
   </center>
 
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" disabled="disabled" <?=($db_opcao==2||$db_opcao==1?"onclick='return js_coloca();'":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-  <?php 
+  <?
 
   if($db_opcao==1){
   	$result_pcmater = $clpcmater->sql_record($clpcmater->sql_query_file());
@@ -300,7 +300,7 @@ function js_preenchepesquisa(chave){
 
   document.form1.pc01_codmater.value = chave;
   db_iframe_pcmater.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -327,7 +327,7 @@ function js_enviacodmater(chave,descr){
 
   js_executaIframe(document.form1.pc01_codsubgrupo.value);
 
-  <?php 
+  <?
   if(isset($vaiIframe) && trim($vaiIframe)!=""){
   	//echo "pcmater0011.location.href = 'com1_pcmater0011.php".$vaiIframe."';";
   	echo "pcmater0011.document.form1.codsubgrupo.value=document.form1.pc01_codsubgrupo.value;

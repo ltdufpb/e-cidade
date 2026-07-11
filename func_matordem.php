@@ -70,7 +70,7 @@ $clrotulo->label('z01_nome');
                             <?= $Lm51_codordem ?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?php 
+                            <?
                             db_input("m51_codordem", 10, $Im51_codordem, true, "text", 4, "", "chave_m51_codordem");
                             ?>
                         </td>
@@ -82,13 +82,13 @@ $clrotulo->label('z01_nome');
                             <input name="chave_e60_codemp" id="chave_e60_codemp" size="12" type='text'
                                    onKeyPress="return js_mascara(event);">
                             <?= $Le60_numemp ?>
-                            <?php  db_input("e60_numemp", 10, $Ie60_numemp, true, "text", 4, "", "chave_e60_numemp"); ?>
+                            <? db_input("e60_numemp", 10, $Ie60_numemp, true, "text", 4, "", "chave_e60_numemp"); ?>
                         </td>
                     </tr>
                     <tr>
                         <td width="4%" align="right" nowrap title="<?= $Tz01_nome ?>"><?= $Lz01_nome ?></td>
                         <td width="96%" align="left" nowrap>
-                            <?php  db_input("z01_nome", 45, "", true, "text", 4, "", "chave_z01_nome"); ?>
+                            <? db_input("z01_nome", 45, "", true, "text", 4, "", "chave_z01_nome"); ?>
                         </td>
                     </tr>
                     <tr>
@@ -96,7 +96,7 @@ $clrotulo->label('z01_nome');
                             <?= $Lm51_data ?>
                         </td>
                         <td width="96%" align="left" nowrap>
-                            <?php 
+                            <?
                             db_inputdata("m51_data", null, null, null, true, "text", 4, "", "chave_m51_data");
                             ?>
                         </td>

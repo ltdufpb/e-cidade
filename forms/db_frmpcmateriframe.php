@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ function js_executaIframe(val) {
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc01_codmater?>"> <?=@$Lpc01_codmater?> </td>
-    <td> <?php  //db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',$db_opcao,"readonly")
+    <td> <? //db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',$db_opcao,"readonly")
            // carlos  
            db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',3,"");
            $pc01_id_usuario = db_getsession("DB_id_usuario");
@@ -61,18 +61,18 @@ function js_executaIframe(val) {
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc01_descrmater?>"> <?=@$Lpc01_descrmater?>    </td>
-    <td> <?php  db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',$db_opcao,"") ?>
+    <td> <? db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tpc01_complmater?>">       <?=@$Lpc01_complmater?>    </td>
-    <td> <?php  db_textarea('pc01_complmater',0,50,$Ipc01_complmater,true,'text',$db_opcao,"") ?>
+    <td> <? db_textarea('pc01_complmater',0,50,$Ipc01_complmater,true,'text',$db_opcao,"") ?>
     </td>
   </tr>
   <tr>
     <td><?=$Lpc03_codgrupo?> </td>
     <td align='left'>
-        <?php 
+        <?
 	  //com query_file na classe
 	  /*
 	  if (!isset($pc013_codgrupo)){ 
@@ -103,17 +103,17 @@ function js_executaIframe(val) {
           @db_selectrecord("pc01_codgrupo",$result,true,$db_opcao,"","","","0","js_troca(this.value);");
         ?>  
     <?=$Lpc01_ativo?> 
-    <?php 
+    <?
     $arr_truefalse = array('f'=>'Não','t'=>'Sim');
     db_select("pc01_ativo",$arr_truefalse,true,$db_opcao);
     ?>
     </td>
   </tr> 
-   <?php  if(isset($pc01_codgrupo) || $db_opcao != 1) { ?>
+   <? if(isset($pc01_codgrupo) || $db_opcao != 1) { ?>
      <tr>
        <td> <?=$Lpc04_codsubgrupo?> </td>
        <td align='left'>
-        <?php 
+        <?
            $result = $clpcsubgrupo->sql_record(
 	             $clpcsubgrupo->sql_query(null,"pc04_codsubgrupo,pc04_descrsubgrupo",
   	 		                           "pc04_descrsubgrupo",
@@ -140,7 +140,7 @@ function js_executaIframe(val) {
         ?>  
       </td>
       </tr> 
-   <?php  }    ?>
+   <? }    ?>
 
    <tr>
     <td colspan="2" align="center">
@@ -148,16 +148,16 @@ function js_executaIframe(val) {
       <iframe width="630" height="200" name="pcmater0011" src="com1_pcmater0011_iframe.php<?=$vaiIframe?>"></iframe>
     </td>
   </tr>
-  <?php if($db_opcao!=1){?>
+  <?if($db_opcao!=1){?>
   <tr>
     <td colspan=2 bgcolor="#CCFF99" align="center"><strong>***   Elementos que não podem ser <?=$db_opcao==2?" alterados ":" excluídos "?> por estar na autorização de empenho.</strong></td>
   </tr>
-  <?php }?>
+  <?}?>
   </table>
   </center>
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> <?=($db_opcao==2||$db_opcao==1?"onclick='return js_coloca();'":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-  <?php 
+  <?
   if($db_opcao==1){
   	$result_pcmater = $clpcmater->sql_record($clpcmater->sql_query_file());
   	if($clpcmater->numrows>0){
@@ -213,7 +213,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcmater.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -238,7 +238,7 @@ function js_enviacodmater(chave,descr){
   }  
 }
   js_executaIframe(document.form1.pc01_codsubgrupo.value);
-  <?php 
+  <?
   if(isset($vaiIframe) && trim($vaiIframe)!=""){
   	echo "pcmater0011.location.href = 'com1_pcmater0011.php".$vaiIframe."'";
   }

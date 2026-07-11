@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -207,7 +207,7 @@ if (isset ($processa_receitas) && ($processa_receitas == 'Processar')) {
    
 </td>
 <td height=100% width=50% valign=top align=center >
-<?php 
+<?
 
 
 $size_iframe = 400;
@@ -234,7 +234,7 @@ if (isset ($processa_fontes) && $processa_fontes == "Selecionar") {
 ?><table border=0 width=100%>
       <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('fontes');"></td></tr>
       </table>               
-    <?php  
+    <? 
 
 }
 if (isset ($processa_fontesdes) && $processa_fontesdes == "Selecionar") {
@@ -262,7 +262,7 @@ if (isset ($processa_fontesdes) && $processa_fontesdes == "Selecionar") {
 ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('fontesdes');"></td></tr>
           </table>               
-       <?php  
+       <? 
 
 }
 if (isset ($processa_receitas) && $processa_receitas == "Selecionar") {
@@ -290,7 +290,7 @@ if (isset ($processa_receitas) && $processa_receitas == "Selecionar") {
 ?><table border=0 width=100%>
           <tr><td width=100% align=center><input type=button value=Processar onClick="js_processa('receitas');"></td></tr>
           </table>               
-       <?php  
+       <? 
 
 }
 ?>
@@ -300,7 +300,7 @@ if (isset ($processa_receitas) && $processa_receitas == "Selecionar") {
 
 
 </form>
-<?php 
+<?
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));

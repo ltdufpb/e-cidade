@@ -55,7 +55,7 @@ $clrotulo->label("y50_codauto");
         <legend>Auto de Infração</legend>
         <table>
          <tr>
-           <td nowrap title="<?=@$y50_codauto?>"><?php db_ancora(@$Ly50_codauto,"js_codauto(true);",1);?></td>
+           <td nowrap title="<?=@$y50_codauto?>"><?db_ancora(@$Ly50_codauto,"js_codauto(true);",1);?></td>
            <td>
             <?php
               db_input('y50_codauto',6,$Iy50_codauto,true,'text',1," onchange='js_codauto(false);'");

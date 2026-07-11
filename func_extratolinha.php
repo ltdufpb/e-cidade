@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clextratolinha->rotulo->label("k86_extrato");
               <?=$Lk86_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k86_sequencial",10,$Ik86_sequencial,true,"text",4,"","chave_k86_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clextratolinha->rotulo->label("k86_extrato");
               <?=$Lk86_extrato?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k86_extrato",10,$Ik86_extrato,true,"text",4,"","chave_k86_extrato");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clextratolinha->rotulo->label("k86_extrato");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_extratolinha.php")==true){
@@ -123,12 +123,12 @@ $clextratolinha->rotulo->label("k86_extrato");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

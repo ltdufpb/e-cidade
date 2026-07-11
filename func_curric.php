@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clrotulo->label("z01_nome");
               <?=$Lh03_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h03_seq",4,$Ih03_seq,true,"text",4,"","chave_h03_seq");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clrotulo->label("z01_nome");
               <?=$Lh03_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h03_numcgm",6,$Ih03_numcgm,true,"text",4,"","chave_h03_numcgm");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clrotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         $campos = "h03_seq, c.z01_nome, h01_descr, h03_data, h02_descr, e.z01_nome as h01_cgmentid, h03_cargahoraria ";
         if(isset($chave_h03_seq) && (trim($chave_h03_seq)!="") ){
@@ -133,12 +133,12 @@ $clrotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

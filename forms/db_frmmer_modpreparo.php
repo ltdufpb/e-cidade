@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,21 +58,21 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lme05_i_codigo?>
   </td>
   <td>
-   <?php db_input('me05_i_codigo',10,$Ime05_i_codigo,true,'text',3,"")?>
+   <?db_input('me05_i_codigo',10,$Ime05_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme05_i_cardapio?>">
-   <?php db_ancora(@$Lme05_i_cardapio,"",3);?>
+   <?db_ancora(@$Lme05_i_cardapio,"",3);?>
   </td>
   <td>
-   <?php db_input('me05_i_cardapio',10,$Ime05_i_cardapio,true,'text',3,"")?>
-   <?php db_input('me01_c_nome',40,@$Ime01_c_nome,true,'text',3,'')?>
+   <?db_input('me05_i_cardapio',10,$Ime05_i_cardapio,true,'text',3,"")?>
+   <?db_input('me01_c_nome',40,@$Ime01_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme05_i_alimento?>">
-   <?php 
+   <?
    if (($db_opcao != 2) && ($db_opcao != 22)) {
      db_ancora(@$Lme05_i_alimento,"js_pesquisame05_i_alimento(true);",$db_opcao);
    } else {
@@ -81,14 +81,14 @@ if(isset($opcao) && $opcao=="alterar"){
    ?>
   </td>
   <td>
-   <?php 
+   <?
    $opcao = $db_opcao;
    if (($db_opcao == 2) || ($db_opcao == 22)) {
    	 $opcao = 3;
    }
    db_input('me05_i_alimento',10,$Ime05_i_alimento,true,'text',$opcao," onchange='js_pesquisame05_i_alimento(false);'")
    ?>
-   <?php db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'')?>
+   <?db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -96,7 +96,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lme05_f_porcao?>
   </td>
   <td>
-   <?php db_input('me05_f_porcao',10,$Ime05_f_porcao,true,'text',$db_opcao,"")?>
+   <?db_input('me05_f_porcao',10,$Ime05_f_porcao,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -104,7 +104,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lme05_c_natureza?>
   </td>
   <td>
-   <?php db_input('me05_c_natureza',52,$Ime05_c_natureza,true,'text',$db_opcao,"")?>
+   <?db_input('me05_c_natureza',52,$Ime05_c_natureza,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -112,7 +112,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lme05_t_obs?>
   </td>
   <td>
-   <?php db_textarea('me05_t_obs',5,50,$Ime05_t_obs,true,'text',$db_opcao,"")?>
+   <?db_textarea('me05_t_obs',5,50,$Ime05_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -124,7 +124,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <input name="cancelar" type="button" id="cancela" value="Cancelar" onclick="js_cancela();"  
        <?=($db_botao1 == false?"disabled":"")?> >
 <br><br>
-<?php 
+<?
  $chavepri= array("me05_i_codigo"=>@$me05_i_codigo);
  $cliframe_alterar_excluir->chavepri = $chavepri;
  if (isset($me05_i_cardapio) && @$me05_i_cardapio != "") {

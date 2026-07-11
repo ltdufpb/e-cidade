@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clbemtipos->rotulo->label("t24_descricao");
               <?=$Lt24_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t24_sequencial",10,$It24_sequencial,true,"text",4,"","chave_t24_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clbemtipos->rotulo->label("t24_descricao");
               <?=$Lt24_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t24_descricao",40,$It24_descricao,true,"text",4,"","chave_t24_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clbemtipos->rotulo->label("t24_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bemtipos.php")==true){
@@ -123,12 +123,12 @@ $clbemtipos->rotulo->label("t24_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

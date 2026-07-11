@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,11 +58,11 @@ if(isset($db_opcaoal)){
 <center>
 <table border="0">
   <tr>
-    <td nowrap title="<?php //=@$Tj67_sequencial?>">
-       <?php //=@$Lj67_sequencial?>
+    <td nowrap title="<?//=@$Tj67_sequencial?>">
+       <?//=@$Lj67_sequencial?>
     </td>
     <td> 
-<?php 
+<?
 db_input('j67_sequencial',10,$Ij67_sequencial,true,'hidden',3,"");
 db_input('j67_naogeracarne',10,$Ij67_naogeracarne,true,'hidden',3,"");
 ?>
@@ -70,12 +70,12 @@ db_input('j67_naogeracarne',10,$Ij67_naogeracarne,true,'hidden',3,"");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tj37_face?>">
-       <?php 
+       <?
        db_ancora(@$Lj37_face,"js_pesquisaj37_face(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('j37_face',4,$Ij37_face,true,'text',$db_opcao," onchange='js_pesquisaj37_face(false);'")
 ?>
     <td>
@@ -85,10 +85,10 @@ db_input('j37_face',4,$Ij37_face,true,'text',$db_opcao," onchange='js_pesquisaj3
        <?=@$Lj67_setor?>
     </td>
     <td> 
-<?php 
+<?
 db_input('j67_setor',4,$Ij67_setor,true,'text',3,"")
 ?>
-       <?php 
+       <?
 db_input('j30_descr',40,$Ij30_descr,true,'text',3,'')
        ?>
     <td>
@@ -98,7 +98,7 @@ db_input('j30_descr',40,$Ij30_descr,true,'text',3,'')
        <?=@$Lj67_quadra?>
     </td>
     <td> 
-<?php 
+<?
 db_input('j67_quadra',4,$Ij67_quadra,true,'text',3,"")
 ?>
     </td>
@@ -107,16 +107,16 @@ db_input('j67_quadra',4,$Ij67_quadra,true,'text',3,"")
     <td colspan="2" align="center">
  <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
  <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" <?=($db_opcao==1||isset($db_opcaoal)?"style='visibility:hidden;'":"")?> >
- <?php if ($db_opcao==1){?>
+ <?if ($db_opcao==1){?>
  <input name="selface" type="button" id="selface" value="Selecionar Faces" onclick="js_selface();">
- <?php }?>
+ <?}?>
     </td>
   </tr>
   </table>
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
 	 $chavepri= array("j67_sequencial"=>@$j67_sequencial);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cliptunaogeracarnesetqua->sql_query(null,"*",null,"j67_naogeracarne=$j67_naogeracarne");

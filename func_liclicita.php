@@ -110,7 +110,7 @@ $sWhereContratos = " and 1 = 1 ";
                 <?php echo $Ll20_codigo ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("l20_codigo", 10, $Il20_codigo, true, "text", 4, "", "chave_l20_codigo");
                 ?>
               </td>
@@ -121,7 +121,7 @@ $sWhereContratos = " and 1 = 1 ";
                 <?php echo $Ll20_edital ?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("l20_edital", 10, $Il20_edital, true, "text", 4, "", "chave_l20_edital");
                 ?>
               </td>

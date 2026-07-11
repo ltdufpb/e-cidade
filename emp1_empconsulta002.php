@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -87,7 +87,7 @@ if(isset($newsql) && $newsql=="true"){
      <tr>
      <td align="center" nowrap wrap="false">
       Período:
-      <?php   db_inputdata('dt1',@$dia,@$mes,@$ano,true,'text',1,"");
+      <?  db_inputdata('dt1',@$dia,@$mes,@$ano,true,'text',1,"");
           echo " a ";
           db_inputdata('dt2',@$dia,@$mes,@$ano,true,'text',1,"");
           ?>
@@ -102,7 +102,7 @@ if(isset($newsql) && $newsql=="true"){
 <!---  end filtro --->
 <tr>
   <td align="center" valign="top">
-    <?php //---
+    <?//---
     $data1=0;
     $data2=0;
     $lCgmAlt = false;
@@ -122,7 +122,7 @@ if(isset($newsql) && $newsql=="true"){
     $campos .= " , round(e60_vlremp-e60_vlranu-e60_vlrpag,2)::float8 as dl_Saldo";
     $sql     = "";
     if (isset($e60_numemp) and $e60_numemp!=""){
-      ?><script> location.href='func_empempenho001.php?e60_numemp='+<?=$e60_numemp ?>; </script> <?php 
+      ?><script> location.href='func_empempenho001.php?e60_numemp='+<?=$e60_numemp ?>; </script> <?
       exit;
     }
     if (isset($e60_codemp) and $e60_codemp != "" ) {
@@ -269,7 +269,7 @@ if(isset($newsql) && $newsql=="true"){
     }
     ?>
     <script> sql= "<?=$sql?>"; </script>
-    <?php 
+    <?
     $totalizacao["e60_vlremp"]  = "e60_vlremp";
     $totalizacao["e60_vlranu"]  = "e60_vlranu";
     $totalizacao["e60_vlrpag"]  = "e60_vlrpag";

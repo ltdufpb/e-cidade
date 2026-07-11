@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -69,7 +69,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
         <table border="0">
           <tr>
             <td nowrap title="<?=@$Tp53_codigo?>">
-              <?php 
+              <?
               if (!isset($aba)) {
                 db_ancora(@$Lp53_codigo,"js_pesquisap53_codigo(true);",$db_opcao);
               } else {
@@ -78,11 +78,11 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
               ?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('p53_codigo',10,$Ip53_codigo,true,'text',$db_opcao," onchange='js_pesquisap53_codigo(false);'");
               db_input('p53_codigo',40,$Ip53_codigo,true,'hidden',$db_opcao,"",'p53_codigo_old');
               ?>
-              <?php 
+              <?
               db_input('p51_descr',60,$Ip51_descr,true,'text',3,'');
               if(!isset($p53_codigo)){
                 $db_opcao = 3;
@@ -93,12 +93,12 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
           </tr>
           <tr>
             <td nowrap title="<?=@$Tp53_coddepto?>">
-              <?php 
+              <?
               db_ancora(@$Lp53_coddepto,"js_pesquisap53_coddepto(true);",$db_opcao);
               ?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('p53_coddepto',10,$Ip53_coddepto,true,'text',$db_opcao," onchange='js_pesquisap53_coddepto(false);'");
               db_input('p53_coddepto',40,$Ip53_coddepto,true,'hidden',$db_opcao,"",'p53_coddepto_old');
               if($db_opcao == 2){
@@ -109,7 +109,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
 	</script>";
               }
               ?>
-              <?php 
+              <?
               db_input('descrdepto',60,$Idescrdepto,true,'text',3,'')
               ?>
             </td>
@@ -119,7 +119,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
               <?=@$Lp53_dias?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('p53_dias',10,$Ip53_dias,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -129,7 +129,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
               <?=@$Lp53_ordem?>
             </td>
             <td>
-              <?php 
+              <?
               if(isset($p53_codigo) && $p53_codigo != "" && $db_opcao == 1){
                 $result = $clandpadrao->sql_record($clandpadrao->sql_query($p53_codigo,"","max(p53_ordem) + 1 as p53_ordem"));
                 if($clandpadrao->numrows > 0){
@@ -152,7 +152,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
         </tr>
         <tr>
           <td align="top" colspan="2">
-            <?php 
+            <?
             $chavepri = array("p53_codigo"=>@$p53_codigo,"p53_ordem"=>@$p53_ordem);
             $cliframe_alterar_excluir->chavepri=$chavepri;
             $cliframe_alterar_excluir->campos="p53_codigo,nomeinst,descrdepto,p53_dias,p53_ordem";
@@ -291,7 +291,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
   ";
 }
 ?>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

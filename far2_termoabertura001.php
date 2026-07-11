@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,10 +56,10 @@ $clrotulo->label("fa13_i_departamento");
     <form name='form1'>
     <table>     
      <tr>
-      <td><?php db_ancora(@$Lfa13_i_departamento,"js_pesquisafa13_i_departamento(true);",1);?></td>
+      <td><?db_ancora(@$Lfa13_i_departamento,"js_pesquisafa13_i_departamento(true);",1);?></td>
       <td>
-       <?php db_input('fa13_i_departamento',10,@$Ifa13_i_departamento,true,'text',1," onchange='js_pesquisafa13_i_departamento(false);'")?>
-       <?php db_input('descrdepto',50,@$Idescrdepto,true,'text',3,'')?>
+       <?db_input('fa13_i_departamento',10,@$Ifa13_i_departamento,true,'text',1," onchange='js_pesquisafa13_i_departamento(false);'")?>
+       <?db_input('descrdepto',50,@$Idescrdepto,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -67,7 +67,7 @@ $clrotulo->label("fa13_i_departamento");
        <b>Livro:</b>
     </td>
     <td> 
-       <?php                
+       <?               
         $result_modlivro = $clfar_modelolivro->sql_record($clfar_modelolivro->sql_query("","fa16_i_codigo,fa16_c_livro","fa16_c_livro"));
         db_selectrecord("livro",$result_modlivro,"","","","","","  ","",1);
           ?>
@@ -85,7 +85,7 @@ $clrotulo->label("fa13_i_departamento");
 	</td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

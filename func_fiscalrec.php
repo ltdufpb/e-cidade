@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clfiscalrec->rotulo->label("y42_descr");
               <?=$Ly42_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y42_codnoti",20,$Iy42_codnoti,true,"text",4,"","chave_y42_codnoti");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clfiscalrec->rotulo->label("y42_descr");
               <?=$Ly42_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y42_receit",4,$Iy42_receit,true,"text",4,"","chave_y42_receit");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clfiscalrec->rotulo->label("y42_descr");
               <?=$Ly42_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y42_descr",50,$Iy42_descr,true,"text",4,"","chave_y42_descr");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clfiscalrec->rotulo->label("y42_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscalrec.php")==true){
@@ -130,12 +130,12 @@ $clfiscalrec->rotulo->label("y42_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcparamseqorcparamseqcoluna->rotulo->label("o116_codseq");
               <?=$Lo116_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o116_sequencial",10,$Io116_sequencial,true,"text",4,"","chave_o116_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcparamseqorcparamseqcoluna->rotulo->label("o116_codseq");
               <?=$Lo116_codseq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o116_codseq",10,$Io116_codseq,true,"text",4,"","chave_o116_codseq");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcparamseqorcparamseqcoluna->rotulo->label("o116_codseq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcparamseqorcparamseqcoluna.php")==true){
@@ -123,12 +123,12 @@ $clorcparamseqorcparamseqcoluna->rotulo->label("o116_codseq");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

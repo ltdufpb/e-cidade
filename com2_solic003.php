@@ -146,7 +146,7 @@ db_postmemory($_POST);
                                                         db_input('pc10_numero', 8, $Ipc10_numero, true, 'text', 1, "onChange=\"js_testa('i',this.value)\"", "pc10_numeroINI", "");
                                                         ?>
                                                         <strong>&nbsp;À&nbsp;</strong>
-                                                        <?php 
+                                                        <?
                                                         db_input('pc10_numero', 8, $Ipc10_numero, true, 'text', 1, "onChange=\"js_testa('f',this.value)\"", "pc10_numeroFIM", "");
                                                         ?>
                                                     </td>
@@ -166,7 +166,7 @@ db_postmemory($_POST);
                                                         db_inputdata('pc10_data', @$pc10_data_dia, @$pc10_data_mes, @$pc10_data_ano, true, 'text', 1, "", "pc10_dataINI")
                                                         ?>
                                                         <strong>&nbsp;À&nbsp;</strong>
-                                                        <?php 
+                                                        <?
                                                         db_inputdata('pc10_data', @$pc10_data_dia, @$pc10_data_mes, @$pc10_data_ano, true, 'text', 1, "", "pc10_dataFIM")
                                                         ?>
                                                     </td>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsau_retentributo->rotulo->label("sd39_v_situacao");
               <?=$Lsd39_i_cod_reten?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("sd39_i_cod_reten",2,$Isd39_i_cod_reten,true,"text",4,"","chave_sd39_i_cod_reten");
                        ?>
             </td>
@@ -65,7 +65,7 @@ $clsau_retentributo->rotulo->label("sd39_v_situacao");
               <?=$Lsd39_v_situacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("sd39_v_situacao",60,$Isd39_v_situacao,true,"text",4,"","chave_sd39_v_situacao");
                        ?>
             </td>
@@ -83,7 +83,7 @@ $clsau_retentributo->rotulo->label("sd39_v_situacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_retentributo.php")==true){
@@ -123,12 +123,12 @@ $clsau_retentributo->rotulo->label("sd39_v_situacao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

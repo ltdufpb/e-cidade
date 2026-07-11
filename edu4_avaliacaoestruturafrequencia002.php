@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -144,16 +144,16 @@
   </head>
   <body bgcolor=#CCCCCC style="margin-top: 25px" >
     <center>
-    	<?php 
+    	<?
         require_once(modification("forms/db_frmavaliacaoestruturafrequencia.php"));
       ?>
     </center>
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>
 </html>
-<?php 
+<?
   if (isset($alterar)) {
 
     if ($oDaoAvaliacaoEstruturaFrequencia->erro_status == "0") {

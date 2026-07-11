@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconlancamele->rotulo->label("c67_codele");
               <?=$Lc67_codlan?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c67_codlan",8,$Ic67_codlan,true,"text",4,"","chave_c67_codlan");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconlancamele->rotulo->label("c67_codele");
               <?=$Lc67_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c67_codele",6,$Ic67_codele,true,"text",4,"","chave_c67_codele");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconlancamele->rotulo->label("c67_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancamele.php")==true){
@@ -119,12 +119,12 @@ $clconlancamele->rotulo->label("c67_codele");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

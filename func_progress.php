@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,7 +62,7 @@ if(!isset($chave_r24_mesusu) || (isset($chave_r24_mesusu) && trim($chave_r24_mes
               <?=$Lr24_regime?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r24_regime",10,$Ir24_regime,true,"text",4,"","chave_r24_regime");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ if(!isset($chave_r24_mesusu) || (isset($chave_r24_mesusu) && trim($chave_r24_mes
               <?=$Lr24_padrao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r24_padrao",10,$Ir24_padrao,true,"text",4,"","chave_r24_padrao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ if(!isset($chave_r24_mesusu) || (isset($chave_r24_mesusu) && trim($chave_r24_mes
               <?=$Lr24_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r24_descr",40,$Ir24_descr,true,"text",4,"","chave_r24_descr");
 		       ?>
             </td>
@@ -100,7 +100,7 @@ if(!isset($chave_r24_mesusu) || (isset($chave_r24_mesusu) && trim($chave_r24_mes
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_progress.php")==true){
@@ -138,12 +138,12 @@ if(!isset($chave_r24_mesusu) || (isset($chave_r24_mesusu) && trim($chave_r24_mes
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

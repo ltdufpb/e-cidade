@@ -97,7 +97,7 @@ $aWhere[]            = $sAlunoMatriculado;
               <?=$Led57_i_codigo?>
             </td>
             <td>
-              <?php db_input("ed57_i_codigo", 10, $Ied57_i_codigo, true, "text", 4, "", "chave_ed57_i_codigo");?>
+              <?db_input("ed57_i_codigo", 10, $Ied57_i_codigo, true, "text", 4, "", "chave_ed57_i_codigo");?>
             </td>
           </tr>
           
@@ -106,7 +106,7 @@ $aWhere[]            = $sAlunoMatriculado;
               <?=$Led57_c_descr?>
             </td>
             <td>
-              <?php db_input("ed57_c_descr", 30, $Ied57_c_descr, true, "text", 4, "", "chave_ed57_c_descr");?>
+              <?db_input("ed57_c_descr", 30, $Ied57_c_descr, true, "text", 4, "", "chave_ed57_c_descr");?>
             </td>
           </tr>
           <tr title="<?=$Ted57_i_calendario?>">
@@ -114,7 +114,7 @@ $aWhere[]            = $sAlunoMatriculado;
               <?=$Led57_i_calendario?>
             </td>
             <td>
-              <?php 
+              <?
                 $sWhere  = "  ed52_c_passivo = 'N' AND ed38_i_escola = $iEscola ";
                 $sCampos = "ed52_i_codigo,ed52_c_descr";
                 

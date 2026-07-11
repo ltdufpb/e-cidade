@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clcongrupo->rotulo->label("c20_descr");
               <?=$Lc20_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c20_sequencial",10,$Ic20_sequencial,true,"text",4,"","chave_c20_sequencial");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clcongrupo->rotulo->label("c20_descr");
               <?=$Lc20_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c20_descr",50,$Ic20_descr,true,"text",4,"","chave_c20_descr");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $clcongrupo->rotulo->label("c20_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_congrupo.php")==true){
@@ -125,12 +125,12 @@ $clcongrupo->rotulo->label("c20_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cllab_fechamento->rotulo->label("la54_c_descr");
               <?=$Lla54_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
               db_input("la54_i_codigo", 10, $Ila54_i_codigo, true, "text", 4, "", "chave_la54_i_codigo");
               ?>
             </td>
@@ -64,7 +64,7 @@ $cllab_fechamento->rotulo->label("la54_c_descr");
               <?=$Lla54_c_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
               db_input("la54_c_descr", 35, $Ila54_c_descr, true, "text", 4, "", "chave_la54_c_descr");
               ?>
             </td>
@@ -82,7 +82,7 @@ $cllab_fechamento->rotulo->label("la54_c_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
 
       $aWhere = array();
       if ( isset($sFechadas) && $sFechadas == 'S') {

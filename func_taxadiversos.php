@@ -1,4 +1,4 @@
-<?php 
+<?
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -26,11 +26,11 @@ $clgrupotaxadiversos->rotulo->label("y118_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label>Grupo:</label></td>
-          <td><?php  db_input("y118_descricao",19,$Iy118_descricao,true,"text",4,"","chave_y118_descricao"); ?></td>
+          <td><? db_input("y118_descricao",19,$Iy118_descricao,true,"text",4,"","chave_y118_descricao"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ly119_natureza?></label></td>
-          <td><?php  db_input("y119_natureza",19,$Iy119_natureza,true,"text", 1,"","chave_y119_natureza");?></td>
+          <td><? db_input("y119_natureza",19,$Iy119_natureza,true,"text", 1,"","chave_y119_natureza");?></td>
         </tr>
       </table>
     </fieldset>
@@ -38,7 +38,7 @@ $clgrupotaxadiversos->rotulo->label("y118_descricao");
     <input name="limpar" type="button" id="limpar" value="Limpar" onclick="location.href=location.href" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_taxadiversos.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_taxadiversos.php")==true){
@@ -84,12 +84,12 @@ $clgrupotaxadiversos->rotulo->label("y118_descricao");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

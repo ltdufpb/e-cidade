@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpccontrlic->rotulo->label("p75_tipo");
               <?=$Lp75_codcontr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p75_codcontr",10,$Ip75_codcontr,true,"text",4,"","chave_p75_codcontr");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpccontrlic->rotulo->label("p75_tipo");
               <?=$Lp75_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p75_tipo",1,$Ip75_tipo,true,"text",4,"","chave_p75_tipo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpccontrlic->rotulo->label("p75_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pccontrlic.php")==true){
@@ -119,12 +119,12 @@ $clpccontrlic->rotulo->label("p75_tipo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

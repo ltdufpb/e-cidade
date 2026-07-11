@@ -309,7 +309,7 @@ $clrotulo->label("r08_descr");
               ?>
             </td>
             <td nowrap> 
-              <?php 
+              <?
               db_input("r11_rubpgintegral",38,$Ir11_rubpgintegral,true,"text",$db_opcao,"");
               ?>
             </td>

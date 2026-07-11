@@ -110,7 +110,7 @@ $sWhereContrato = " and 1 = 1 ";
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
 
       $where_depart = '';
       $sDepartamento = "";
@@ -277,12 +277,12 @@ $sWhereContrato = " and 1 = 1 ";
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

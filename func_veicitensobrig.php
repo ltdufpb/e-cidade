@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clrotulo->label("ve01_placa");
               <?=$Lve09_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ve09_sequencial",10,$Ive09_sequencial,true,"text",4,"","chave_ve09_sequencial");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $clrotulo->label("ve01_placa");
               <?=$Lve01_placa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ve01_placa",7,$Ive01_placa,true,"text",4,"","chave_ve01_placa");
 		       ?>
             </td>
@@ -87,7 +87,7 @@ $clrotulo->label("ve01_placa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veicitensobrig.php")==true){
@@ -128,12 +128,12 @@ $clrotulo->label("ve01_placa");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

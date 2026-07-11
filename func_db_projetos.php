@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_projetos->rotulo->label("at60_descr");
               <?=$Lat60_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at60_codigo",10,$Iat60_codigo,true,"text",4,"","chave_at60_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_projetos->rotulo->label("at60_descr");
               <?=$Lat60_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at60_descr",1,$Iat60_descr,true,"text",4,"","chave_at60_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_projetos->rotulo->label("at60_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_projetos.php")==true){
@@ -119,12 +119,12 @@ $cldb_projetos->rotulo->label("at60_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

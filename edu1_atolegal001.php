@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,11 +63,11 @@ if (isset($incluir)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+     <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Inclusão de Ato Legal</b></legend>
-       <?php include(modification("forms/db_frmatolegal.php"));?>
+       <?include(modification("forms/db_frmatolegal.php"));?>
       </fieldset>
      </center>
     </td>
@@ -75,7 +75,7 @@ if (isset($incluir)) {
   </table>
  </body>
 </html>
-<?php 
+<?
 if (isset($incluir)) {
 	
   if ($oDaoAtoLegal->erro_status == "0") {
@@ -99,7 +99,7 @@ if (isset($incluir)) {
      parent.document.formaba.a2.disabled = false;
      location.href='edu1_atolegal002.php?chavepesquisa=<?=$oDaoAtoLegal->ed05_i_codigo?>';
     </script>
-   <?php 
+   <?
    
   }
   

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -75,18 +75,18 @@ function js_emite(){
   <tr> 
     <td  align="left" nowrap title="<?=$Tl20_codigo?>">
       <b>
-      <?php db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
+      <?db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
       </b> 
     </td>
     
     <td align="left" nowrap>
-      <?php db_input("l20_codigo",6,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");?>
+      <?db_input("l20_codigo",6,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");?>
     </td>
   </tr>
   <tr>
     <td align="left" nowrap><b>Separador Colunas :</b></td>
     <td align="left" nowrap>
-      <?php 
+      <?
         if(!isset($separador)) {
           $separador = ";";
         }
@@ -97,7 +97,7 @@ function js_emite(){
   <tr>
     <td align="left" nowrap><b>Delimitador de Campos :</b></td>
     <td align="left" nowrap>
-      <?php 
+      <?
         $aDelimitador = array("1" => "Aspas Duplas",
                               "2" => "Aspas Simples");
         db_select('delimitador', $aDelimitador, true, 1, "");
@@ -107,7 +107,7 @@ function js_emite(){
   <tr>
     <td align="left" nowrap><b>Layout:</b></td>
     <td align="left" nowrap>
-      <?php 
+      <?
         $aLayout= array("1" => "Layout 1",
                               "2" => "Layout 2 (sem seq item)");
         db_select('layout', $aLayout, true, 1, "");
@@ -127,7 +127,7 @@ function js_emite(){
 
   </form>
 </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

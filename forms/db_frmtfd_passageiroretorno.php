@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,31 +39,31 @@ $oRotulo->label('tf19_i_cgsund');
       <?=@$Ltf31_i_codigo?>
     </td>
     <td> 
-     <?php 
+     <?
      db_input('tf31_i_codigo', 10, $Itf31_i_codigo, true, 'text', 3, '')
      ?>
     </td>
   </tr>
   <tr style="display: none;">
     <td nowrap title="<?=@$Ttf31_i_veiculodestino?>">
-      <?php 
+      <?
       db_ancora(@$Ltf31_i_veiculodestino, "js_pesquisatf31_i_veiculodestino(true);", $db_opcao);
       ?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('tf31_i_veiculodestino', 10, $Itf31_i_veiculodestino, true, 'text', 3, '');
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf31_i_passageiroveiculo?>">
-      <?php 
+      <?
       db_ancora(@$Ltf31_i_passageiroveiculo, "js_pesquisatf31_i_passageiroveiculo(true);", $db_opcao);
       ?>
     </td>
     <td nowrap> 
-      <?php 
+      <?
       db_input('tf19_i_cgsund', 10, $Itf19_i_cgsund, true, 'text', $db_opcao, 
                " onchange='js_pesquisatf31_i_passageiroveiculo(false);'"
               );
@@ -82,7 +82,7 @@ $oRotulo->label('tf19_i_cgsund');
               <b>Total: </b>
             </td>
             <td nowrap>
-              <?php 
+              <?
               if (!isset($total)) {
                 $total = 0;
               }
@@ -92,7 +92,7 @@ $oRotulo->label('tf19_i_cgsund');
               <b> - Reservado: </b>
             </td>
             <td nowrap >
-              <?php 
+              <?
               if (!isset($reservado)) {
                 $reservado = 0;
               }
@@ -103,7 +103,7 @@ $oRotulo->label('tf19_i_cgsund');
               <b> - Retorno: </b>
             </td>
             <td nowrap>
-              <?php 
+              <?
               if (!isset($retorno)) {
                 $retorno = 0;
               }
@@ -114,7 +114,7 @@ $oRotulo->label('tf19_i_cgsund');
               <b> = Livre: </b>
             </td>
             <td nowrap>
-              <?php 
+              <?
               if (!isset($livre)) {
                 $livre = 0;
               }
@@ -140,7 +140,7 @@ $oRotulo->label('tf19_i_cgsund');
 <table width="100%">
   <tr>
 	  <td valign="top"><br>
-      <?php 
+      <?
 			$aChavepri                = array ('tf31_i_codigo' => @$tf31_i_codigo,
                                          'tf31_i_passageiroveiculo' => @$tf31_i_passageiroveiculo, 
                                          'tf31_i_veiculodestino' => @$tf31_i_veiculodestino, 
@@ -179,7 +179,7 @@ $oRotulo->label('tf19_i_cgsund');
 <script>
 
 sUrl = 'tfd4_pedidotfd.RPC.php';
-<?php 
+<?
 if ($oParametros->tf11_i_utilizagradehorario == 1) {
   echo 'js_getLotacaoRetorno();';
 }
@@ -204,7 +204,7 @@ function js_ajax(oParam, jsRetorno) {
 
 function js_cancelar() {
 
-  <?php 
+  <?
   echo " location.href = '".basename($GLOBALS['HTTP_SERVER_VARS']['PHP_SELF']).
        "?tf31_i_veiculodestino=$tf31_i_veiculodestino'";
   ?>
@@ -213,7 +213,7 @@ function js_cancelar() {
 
 function js_validaEnvio() {
 
-  <?php 
+  <?
   /* Se não utiliza grade de horários, não é feita validação de espaço disponível */
   if ($oParametros->tf11_i_utilizagradehorario != 1) {
     echo 'return true;';

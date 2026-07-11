@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $cltipcalc = new cl_tipcalc;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where= "q81_tipo=1";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -92,12 +92,12 @@ $cltipcalc = new cl_tipcalc;
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

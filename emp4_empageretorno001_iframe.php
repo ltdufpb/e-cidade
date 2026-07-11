@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $clrotulo->label("e86_cheque");
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
           border: 2px solid #cccccc;
           border-top-color: <?=$cor?>;
@@ -122,7 +122,7 @@ function js_calcula(campo){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
       <form name="form1" method="post" action="">
       <center>
-<?php 
+<?
   db_input("arquivo",10,'',true,'text',1);
   db_input("remreto",10,'',true,'text',1);
   db_input("movimentos",10,'',true,'text',1);
@@ -194,7 +194,7 @@ function js_calcula(campo){
   }
 ?>
 
-        <?php 
+        <?
 	/*
 	  $vlrmov = 0;
 	  for($i=0; $i<$numrows; $i++){
@@ -224,7 +224,7 @@ function js_calcula(campo){
           <td class='bordas' align='center'><small id="e60_numemp_<?=$e82_codord?>"> <?=$e60_codemp?></small></td>
           <td class='bordas' align='center'><small><?=$e82_codord?></small></td>
           <td class='bordas' align='left'><small label='Numcgm:<?=$z01_numcgm?>'><?=$z01_nome?>  </small></td>
-           <?php 
+           <?
 	     $x= "valor_$e81_codmov";
   	     $$x = $e81_valor;
              db_input("valor_$e81_codmov",10,'',true,'hidden',1);
@@ -238,7 +238,7 @@ function js_calcula(campo){
           <td class='bordas' align='right'><small><?=number_format($arr_retval[$e81_codmov],"2",".","")?></small></td>
           <td class='bordas' align='center'><small><?=$e92_descrerro?></small></td>
 	</tr>
-        <?php 
+        <?
 	  }
 	  */
 	?>
@@ -264,7 +264,7 @@ function js_atualizaiframe(){
     xformi.codtraillL.value = xform.codtraillL.value;
     xformi.codlotsmov.value = xform.codlotsmov.value;
     xformi.lotsdemovs.value = xform.lotsdemovs.value;
-    <?php 
+    <?
     if(!isset($geracampo)){
       echo "obj=document.createElement('input');";
       echo "obj.setAttribute('name','geracampo');";
@@ -276,7 +276,7 @@ function js_atualizaiframe(){
     ?>
   }
 }
-<?php 
+<?
 if(isset($arquivo) && trim($arquivo)!=""){
   echo "
     js_atualizaiframe();

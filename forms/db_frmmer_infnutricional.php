@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,31 +41,31 @@ $clrotulo->label("me08_i_grupoalimento");
    <?=@$Lme08_i_codigo?>
   </td>
   <td>
-   <?php db_input('me08_i_codigo',10,$Ime08_i_codigo,true,'text',3,"")?>
+   <?db_input('me08_i_codigo',10,$Ime08_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme08_i_alimento?>">
-   <?php db_ancora(@$Lme08_i_alimento,"js_pesquisame08_i_alimento(true);",3);?>
+   <?db_ancora(@$Lme08_i_alimento,"js_pesquisame08_i_alimento(true);",3);?>
   </td>
   <td>
-   <?php db_input('me08_i_alimento',10,$Ime08_i_alimento,true,'text',3,
+   <?db_input('me08_i_alimento',10,$Ime08_i_alimento,true,'text',3,
               " onchange='js_pesquisame08_i_alimento(false);'"
              );
    ?>
-   <?php db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'');?>
+   <?db_input('me35_c_nomealimento',40,@$Ime35_c_nomealimento,true,'text',3,'');?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme08_i_nutriente?>">
-   <?php db_ancora(@$Lme08_i_nutriente,"js_pesquisame08_i_nutriente(true);",$db_opcao);?>
+   <?db_ancora(@$Lme08_i_nutriente,"js_pesquisame08_i_nutriente(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('me08_i_nutriente',10,$Ime08_i_nutriente,true,'text',$db_opcao,
+   <?db_input('me08_i_nutriente',10,$Ime08_i_nutriente,true,'text',$db_opcao,
                " onchange='js_pesquisame08_i_nutriente(false);'"
              )
    ?>
-   <?php db_input('me09_c_descr',40,$Ime09_c_descr,true,'text',3,'')?>
+   <?db_input('me09_c_descr',40,$Ime09_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -73,7 +73,7 @@ $clrotulo->label("me08_i_grupoalimento");
        <?=@$Lme08_f_quant?>
     </td>
     <td> 
-      <?php db_input('me08_f_quant',10,$Ime08_f_quant,true,'text',$db_opcao,"")?>    
+      <?db_input('me08_f_quant',10,$Ime08_f_quant,true,'text',$db_opcao,"")?>    
     </td>
   </tr> 
 </table>
@@ -87,7 +87,7 @@ $clrotulo->label("me08_i_grupoalimento");
 <input name="Cancelar" type="button" id="cancelar" value="Cancelar" onclick="js_reload();"  
        <?=($db_botao1 == false?"disabled":"")?>>
 <br><br>
-  <?php 
+  <?
   $chavepri= array("me08_i_codigo"=>@$me08_i_codigo, "me08_f_quant"=>@$me08_f_quant, "me08_i_nutriente"=>@$me08_i_nutriente, "me09_c_descr"=>@$me09_c_descr);
   $cliframe_alterar_excluir->chavepri = $chavepri;
   if (isset($me08_i_alimento) && @$me08_i_alimento != "") {

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clissalvara->rotulo->label("q123_sequencial");
               <?=$Lq123_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q123_sequencial",10,$Iq123_sequencial,true,"text",4,"","chave_q123_sequencial");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clissalvara->rotulo->label("q123_sequencial");
               <b>Descrição</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",30,"",true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -85,7 +85,7 @@ $clissalvara->rotulo->label("q123_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       $iDepart = db_getsession("DB_coddepto");
       $campos = " q123_inscr,z01_nome,z01_numcgm,q123_sequencial";
@@ -154,12 +154,12 @@ $clissalvara->rotulo->label("q123_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

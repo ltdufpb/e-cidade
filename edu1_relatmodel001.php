@@ -69,7 +69,7 @@ if (isset($incluir)) {
 <body class='body-default' >
 
   <div class='container'>
-    <?php include(modification("forms/db_frmedu_relatmodel.php"));?>
+    <?include(modification("forms/db_frmedu_relatmodel.php"));?>
   </div>
 <?php
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit") );
@@ -79,7 +79,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","ed217_i_relatorio",true,1,"ed217_i_relatorio",true);
 </script>
-<?php 
+<?
 if (isset($incluir)) {
 
   if ($cledu_relatmodel->erro_status == "0") {

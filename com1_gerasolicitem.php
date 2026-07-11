@@ -252,7 +252,7 @@ function js_marcar(){
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?php 
+    <?
     if($clsolicitem->numrows == 0){
 
       echo "<strong>Não existem itens para esta solicitação.</strong>\n";

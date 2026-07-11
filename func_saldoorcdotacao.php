@@ -332,7 +332,7 @@ $complementoDescricao = ComplementoRepository::find($complemento)->getDescricao(
                         <tr>
                             <td class="coluna-label">Mês:</td>
                             <td>
-                                <?php 
+                                <?
                                 $x = array("01" => "Janeiro",
                                     "02" => "Fevereiro",
                                     "03" => "Março",

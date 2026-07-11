@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,8 +43,8 @@ $clrotulo->label("z01_nome");
    Médico:
   </td>
   <td>
-   <?php db_input('sd04_i_medico',10,$Isd04_i_medico,true,'text',3," onchange='js_pesquisasd04_i_medico(false);'")?>
-   <?php db_input('z01_nome',80,$Iz01_nome,true,'text',3,'parent.iframe_a1.document.form1.sd02_i_codigo.value')?>
+   <?db_input('sd04_i_medico',10,$Isd04_i_medico,true,'text',3," onchange='js_pesquisasd04_i_medico(false);'")?>
+   <?db_input('z01_nome',80,$Iz01_nome,true,'text',3,'parent.iframe_a1.document.form1.sd02_i_codigo.value')?>
   </td>
  </tr>
 </table>

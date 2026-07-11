@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpcorcam->rotulo->label("pc20_dtate");
               <?=$Lpc20_codorc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc20_codorc",10,$Ipc20_codorc,true,"text",4,"","chave_pc20_codorc");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpcorcam->rotulo->label("pc20_dtate");
               <?=$Lpc20_dtate?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc20_dtate",10,$Ipc20_dtate,true,"text",4,"","chave_pc20_dtate");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpcorcam->rotulo->label("pc20_dtate");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcam.php")==true){
@@ -119,12 +119,12 @@ $clpcorcam->rotulo->label("pc20_dtate");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -538,7 +538,7 @@ if (isset($incluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?php 
+	<?
 	if (isset($importar)&&trim($importar)!=""){
 	     $parametros  = "importar=true&codbem=$codbem&";
 	     $parametros2 = "&importar=true&codbem=$codbem";
@@ -570,7 +570,7 @@ if (isset($incluir)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
 
   if (trim(@$erro_msg)!=""){

@@ -75,7 +75,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 </body>
 </html>
-<?php 
+<?
 if($clpropri->erro_status=="0"){
   $clpropri->erro(true,false);
   $db_botao=true;

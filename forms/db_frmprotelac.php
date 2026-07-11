@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -35,23 +35,23 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-  <?php 
+  <?
   db_input('h19_codigo',6,$Ih19_codigo,true,'hidden',3,"")
   ?>
   <tr>
     <td nowrap title="<?=@$Th19_assent?>">
-      <?php 
+      <?
       db_ancora(@$Lh19_assent,"js_pesquisah19_assent(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('h19_assent',6,$Ih19_assent,true,'hidden',3,"")
       ?>
-      <?php 
+      <?
       db_input('h12_assent',6,$Ih12_assent,true,'text',$db_opcao," onchange='js_pesquisah19_assent(false);'")
       ?>
-      <?php 
+      <?
       db_input('h12_descr',30,$Ih12_descr,true,'text',3,'')
       ?>
     </td>
@@ -61,7 +61,7 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
       <?=@$Lh19_tipo?>
     </td>
     <td> 
-      <?php 
+      <?
       $x = Array("G"=>"Gratificação", "A"=>"Avanço", "F"=>"Férias");
       db_select('h19_tipo',$x,true,$db_opcao,"");
       ?>
@@ -77,7 +77,7 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
                 <b>Até</b>
               </legend>
               <table>
-                <?php 
+                <?
                 for($i=1; $i<11; $i++){
                   $Tcampodia = "Th19_dia".($i < 10 ? "0" . $i : $i);
                   $Lcampodia = "Lh19_dia".($i < 10 ? "0" . $i : $i);
@@ -94,22 +94,22 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
                     <?=@$$Lcampodia?>
                   </td>
                   <td> 
-                    <?php 
+                    <?
                     db_input($Ncampodia,3,$$Icampodia,true,'text',$db_opcao,"")
                     ?>
                   </td>
                   <td> 
-                    <?php 
+                    <?
                     db_select($Ncampoop,$arr_operador,true,$db_opcao,"");
                     ?>
                   </td>
                   <td> 
-                    <?php 
+                    <?
                     db_input($Ncampoper,5,$$Icampoper,true,'text',$db_opcao,"")
                     ?>
                   </td>
                 </tr>
-                <?php 
+                <?
                 }
                 ?>
               </table>
@@ -126,7 +126,7 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
     </td>
     <td> 
     -->
-<?php 
+<?
 db_input('h19_tpcalc',1,$Ih19_tpcalc,true,'hidden',$db_opcao,"")
 ?>
   <!--
@@ -185,7 +185,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_protelac.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE portariaassinatura
 class cl_portariaassinatura { 

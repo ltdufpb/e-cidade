@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltiafprazo->rotulo->label("y96_codigo");
               <?=$Ly96_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y96_codigo",10,$Iy96_codigo,true,"text",4,"","chave_y96_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltiafprazo->rotulo->label("y96_codigo");
               <?=$Ly96_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y96_codigo",10,$Iy96_codigo,true,"text",4,"","chave_y96_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltiafprazo->rotulo->label("y96_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tiafprazo.php")==true){
@@ -119,12 +119,12 @@ $cltiafprazo->rotulo->label("y96_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

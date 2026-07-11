@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -272,7 +272,7 @@ if (isset($cod_cardapio)) {
    alert("Criada nova versão n° <?=$num_novaversao?> para o cardápio <?=$me27_c_nome?>");
    parent.location.href = "mer1_mer_tipocardapio002.php?chavepesquisa=<?=$novaversao?>";
   </script>
-  <?php 
+  <?
   
 }
 ?>

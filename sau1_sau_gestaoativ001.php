@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Nível de Atenção</b></legend>
-    <?php include(modification("forms/db_frmsau_gestaoativ.php"));?>
+    <?include(modification("forms/db_frmsau_gestaoativ.php"));?>
    </fieldset>
    </center>
   </td>
@@ -79,7 +79,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","sd47_i_unidade",true,1,"sd47_i_unidade",true);
 </script>
-<?php 
+<?
 if(isset($incluir) || isset($alterar)){
  if($clsau_gestaoativ->erro_status=="0"){
   $clsau_gestaoativ->erro(true,false);

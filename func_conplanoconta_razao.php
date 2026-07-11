@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $anousu = db_getsession("DB_anousu");
               <?=$Lc62_reduz?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php  db_input("c62_reduz",6,$Ic62_reduz,true,"text",4,"","chave_c62_reduz"); ?>
+              <? db_input("c62_reduz",6,$Ic62_reduz,true,"text",4,"","chave_c62_reduz"); ?>
             </td>
           </tr>
           <tr> 
@@ -69,7 +69,7 @@ $anousu = db_getsession("DB_anousu");
               <?=$Lc60_estrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php  db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut"); ?>
+              <? db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut"); ?>
             </td>
           </tr>
           <tr> 
@@ -77,7 +77,7 @@ $anousu = db_getsession("DB_anousu");
               <?=$Lc60_descr?>&nbsp;
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php   db_input("c60_descr",40,$Ic60_descr,true,"text",4,"","chave_c60_descr");   ?>
+              <?  db_input("c60_descr",40,$Ic60_descr,true,"text",4,"","chave_c60_descr");   ?>
             </td>
           </tr>
           <tr> 
@@ -93,7 +93,7 @@ $anousu = db_getsession("DB_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $campos = "c62_reduz,c60_estrut,c60_descr "; 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -139,12 +139,12 @@ $anousu = db_getsession("DB_anousu");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 global $resparag, $resparagpadrao, $db61_texto, $db02_texto;
 
 $this->objpdf->SetAutoPageBreak('on',0);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clturnos->rotulo->label("ed10_c_nome");
               <?=$Led10_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed10_i_codigo",5,$Ied10_i_codigo,true,"text",4,"","chave_ed10_i_codigo");
                        ?>
             </td>
@@ -67,7 +67,7 @@ $clturnos->rotulo->label("ed10_c_nome");
               <?=$Led10_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                        db_input("ed10_c_nome",20,$Ied10_c_nome,true,"text",4,"","chave_ed10_c_nome");
                        ?>
             </td>
@@ -85,7 +85,7 @@ $clturnos->rotulo->label("ed10_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_turnos.php")==true){
@@ -121,12 +121,12 @@ $clturnos->rotulo->label("ed10_c_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

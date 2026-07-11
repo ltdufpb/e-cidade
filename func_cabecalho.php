@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -198,7 +198,7 @@ function js_enviarvalor(){
 			    <table width='100%'>
             <tr>
 			        <td align='left' nowrap>
-			        <?php 
+			        <?
               db_input("linhas", 47, '', true, 'text', 1);
               db_input("nrolin", 10, '', true, 'hidden', 3);
               ?>
@@ -214,7 +214,7 @@ function js_enviarvalor(){
 			    <table width='100%'>
             <tr>
 			        <td align='center' nowrap>
-							  <?php 
+							  <?
 							  $arr_linhas = Array();
                 db_selectmultiple("cabecalho", $arr_linhas, 7, 1,'','','','','', " style='width:370px;' onDblClick='js_retornalinha();' ");
 							  ?>

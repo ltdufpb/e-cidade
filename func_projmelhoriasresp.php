@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clprojmelhoriasresp->rotulo->label("d42_numcgm");
               <?=$Ld42_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("d42_codigo",10,$Id42_codigo,true,"text",4,"","chave_d42_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clprojmelhoriasresp->rotulo->label("d42_numcgm");
               <?=$Ld42_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("d42_numcgm",6,$Id42_numcgm,true,"text",4,"","chave_d42_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clprojmelhoriasresp->rotulo->label("d42_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_projmelhoriasresp.php")==true){
@@ -119,12 +119,12 @@ $clprojmelhoriasresp->rotulo->label("d42_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

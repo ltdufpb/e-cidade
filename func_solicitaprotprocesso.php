@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsolicitaprotprocesso->rotulo->label("pc90_numeroprocesso");
               <?=$Lpc90_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc90_sequencial",10,$Ipc90_sequencial,true,"text",4,"","chave_pc90_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clsolicitaprotprocesso->rotulo->label("pc90_numeroprocesso");
               <?=$Lpc90_numeroprocesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc90_numeroprocesso",15,$Ipc90_numeroprocesso,true,"text",4,"","chave_pc90_numeroprocesso");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clsolicitaprotprocesso->rotulo->label("pc90_numeroprocesso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitaprotprocesso.php")==true){
@@ -123,12 +123,12 @@ $clsolicitaprotprocesso->rotulo->label("pc90_numeroprocesso");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

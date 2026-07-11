@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ if (isset($alterar)) {
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href      = 'mer1_mer_tpcardapioturma001.php?me32_i_tipocardapio=<?=$chavepesquisa?>'+
                                              '&me27_c_nome=<?=$me27_c_nome?>';  
   </script>
-  <?php 
+  <?
 
 }
 ?>
@@ -121,7 +121,7 @@ if (isset($alterar)) {
       <br>
       <center>
       <fieldset style="width:95%"><legend><b>Alteração de Cardápio</b></legend>
-        <?php include(modification("forms/db_frmmer_tipocardapio.php"));?>
+        <?include(modification("forms/db_frmmer_tipocardapio.php"));?>
       </fieldset>
       </center>
     </td>
@@ -129,7 +129,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar)) {
 	
   if ($clmer_tipocardapio->erro_status=="0") {
@@ -158,7 +158,7 @@ if (isset($alterar)) {
                                                '&me27_c_nome=<?=$me27_c_nome?>';  
       parent.mo_camada('a2');   
     </script>
-    <?php 
+    <?
     db_redireciona("mer1_mer_tipocardapio002.php?chavepesquisa=$me27_i_codigo");
     
   }
@@ -205,7 +205,7 @@ function js_removeMsg(idObj) {
   document.body.removeChild(obj);
   
 }
-<?php if ($naopode == true) {?>
+<?if ($naopode == true) {?>
  js_msg_nao_altera("<?=$msg_error?>","MsgBox");
-<?php }?>
+<?}?>
 </script>

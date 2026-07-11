@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -847,7 +847,7 @@ if((isset($HTTP_POST_VARS["numpre_unica"]) && $HTTP_POST_VARS["numpre_unica"] !=
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
 	onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'; js_desabilitaBotoes(); js_disabilitarFormEmissao();">
-<center><?php 
+<center><?
 //verifica se clicou no link da matricula
 if(isset($inscricao) && !empty($inscricao)) {
   $inscr = $inscricao;
@@ -2018,7 +2018,7 @@ if(isset($tipo)) {
         parent.document.getElementById('enviar').disabled = false;
       }
       </script>
-<?php 
+<?
 }
 echo "<script>
           parent.document.js_parc = parent.js_parc_copia;

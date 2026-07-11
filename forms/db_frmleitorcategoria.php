@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,16 +53,16 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi07_codigo?>
   </td>
   <td>
-   <?php db_input('bi07_codigo',10,$Ibi07_codigo,true,'text',3,"")?>
+   <?db_input('bi07_codigo',10,$Ibi07_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tbi07_biblioteca?>">
-   <?php db_ancora(@$Lbi07_biblioteca,"",3);?>
+   <?db_ancora(@$Lbi07_biblioteca,"",3);?>
   </td>
   <td>
-   <?php db_input('bi07_biblioteca',10,$Ibi07_biblioteca,true,'text',3,"")?>
-   <?php db_input('bi17_nome',80,@$Ibi17_nome,true,'text',3,'')?>
+   <?db_input('bi07_biblioteca',10,$Ibi07_biblioteca,true,'text',3,"")?>
+   <?db_input('bi17_nome',80,@$Ibi17_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi07_nome?>
   </td>
   <td>
-   <?php db_input('bi07_nome',50,$Ibi07_nome,true,'text',$db_opcao,"")?>
+   <?db_input('bi07_nome',50,$Ibi07_nome,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -78,7 +78,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi07_qtdlivros?>
   </td>
   <td>
-   <?php db_input('bi07_qtdlivros',2,$Ibi07_qtdlivros,true,'text',$db_opcao,"")?>
+   <?db_input('bi07_qtdlivros',2,$Ibi07_qtdlivros,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -86,7 +86,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi07_tempo?>
   </td>
   <td>
-   <?php db_input('bi07_tempo',10,$Ibi07_tempo,true,'text',$db_opcao,"")?>
+   <?db_input('bi07_tempo',10,$Ibi07_tempo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -95,7 +95,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-  <?php 
+  <?
    $chavepri= array("bi07_codigo"=>@$bi07_codigo,"bi07_nome"=>@$bi07_nome,"bi07_qtdlivros"=>@$bi07_qtdlivros,"bi07_tempo"=>@$bi07_tempo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clleitorcategoria->sql_query("","*","bi07_nome"," bi07_biblioteca = $bi07_biblioteca");

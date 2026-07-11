@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clpagordemrec->rotulo->label("e52_valor");
               <?=$Le52_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e52_codord",6,$Ie52_codord,true,"text",4,"","chave_e52_codord");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clpagordemrec->rotulo->label("e52_valor");
               <?=$Le52_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e52_receit",4,$Ie52_receit,true,"text",4,"","chave_e52_receit");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clpagordemrec->rotulo->label("e52_valor");
               <?=$Le52_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e52_valor",15,$Ie52_valor,true,"text",4,"","chave_e52_valor");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clpagordemrec->rotulo->label("e52_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pagordemrec.php")==true){
@@ -130,12 +130,12 @@ $clpagordemrec->rotulo->label("e52_valor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

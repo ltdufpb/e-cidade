@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clmatmater->rotulo->label("m60_descr");
       <?=$Lm60_codmater?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");?>
+      <?db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $clmatmater->rotulo->label("m60_descr");
       <?=$Lm60_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("m60_descr",40,$Im60_descr,true,"text",4,"","chave_m60_descr");?>
+      <?db_input("m60_descr",40,$Im60_descr,true,"text",4,"","chave_m60_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $clmatmater->rotulo->label("m60_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $sql_expand = " ";
    if (isset($validar)) {
    	

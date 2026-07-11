@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -65,7 +65,7 @@ a:active {
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
-function js_retorna(qtipo,<?php  $virgula = "";
+function js_retorna(qtipo,<? $virgula = "";
   reset($quais_chaves);
   for($ww=0;$ww<sizeof($quais_chaves);$ww++){
     echo $virgula."par_$ww";
@@ -79,7 +79,7 @@ function js_retorna(qtipo,<?php  $virgula = "";
   opcao.setAttribute("value",qtipo);
   parent.document.form1.appendChild(opcao);
  
-  <?php 
+  <?
   reset($quais_chaves);
   for($ww=0;$ww<sizeof($quais_chaves);$ww++){
     ?>
@@ -88,7 +88,7 @@ function js_retorna(qtipo,<?php  $virgula = "";
     chavepri.setAttribute("name","<?=$quais_chaves[$ww]?>");
     chavepri.setAttribute("value",par_<?=$ww?>);
     parent.document.form1.appendChild(chavepri);
-    <?php 
+    <?
     next($quais_chaves);
   }
   ?>	
@@ -102,7 +102,7 @@ function js_retorna(qtipo,<?php  $virgula = "";
   <tr>
     <td align="center" valign="top">
       <table border='1' width="100%" bgcolor="#cccccc">
-<?php 
+<?
        $result=db_query($sql);
         $numrows=pg_numrows($result);
        $numcols=pg_numfields($result);

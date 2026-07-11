@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,7 +77,7 @@ if (isset($chavepesquisa)) {
 <body onLoad="a=1">
   <div class="container">
     <fieldset style='width: 75%;'> <legend><b>Receita Médica</b></legend>
-      <?php 
+      <?
       require_once(modification('forms/db_frmsau_receitamedica.php'));
       ?>
     </fieldset>

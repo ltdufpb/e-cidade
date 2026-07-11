@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$campos,""," ed60_
   <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
    <tr class='cabec'>
     <td align='center' colspan='8'>
-    <?php if($clmatricula->numrows>0){?>
+    <?if($clmatricula->numrows>0){?>
       Turma: <?=pg_result($result,0,"ed57_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
       Etapa: <?=pg_result($result,0,"ed11_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
       Calendário: <?=pg_result($result,0,"ed52_c_descr")?><br>
@@ -85,10 +85,10 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$campos,""," ed60_
     <td><b>Etapa</b></td>
     <td><b>Restrição</b></td>
    </tr>
-   <?php }else{
+   <?}else{
          echo"<table width='100%' bgcolor='#CCCCCC'><tr><td class='aluno' align='center'><font size=2 ><b>Escolha um aluno!</b></font></td></tr></table>";
       }?>
-   <?php    
+   <?   
    for($c=0;$c<$clmatricula->numrows;$c++){
     db_fieldsmemory($result,$c);
     $inf_ant  = explode("|",RFanterior($ed60_i_codigo));
@@ -115,19 +115,19 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$campos,""," ed60_
      <td class="aluno" align="center"><?=$ed11_c_descr?></td>
      <td colspan="2">
      <table border ="0" width="100%">
-     <?php if($clmer_restriitem->numrows>0){?>
+     <?if($clmer_restriitem->numrows>0){?>
          <tr>         
          <td  class="aluno" align="center"><b>Alimento </b></td>
          <td colspan="2" class='aluno' align='center'><b>Alimento Substituto</b></td> 
          </tr>
-         <?php }else{?>
+         <?}else{?>
          <tr>         
          <td class="aluno" align="center"><b>Sem Restrição</b></td>
          <td class='aluno' align='center'><b></b></td> 
          </tr>
          
-         <?php }?>
-     <?php for($d=0;$d<$clmer_restriitem->numrows;$d++){
+         <?}?>
+     <?for($d=0;$d<$clmer_restriitem->numrows;$d++){
         db_fieldsmemory($result1,$d);     
         ?>
         
@@ -136,7 +136,7 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$campos,""," ed60_
          <td colspan="2" class='aluno' align='right' width= "40%"><?=$itemsub?></td> 
          </tr>
           
-        <?php }
+        <?}
         $result3 = $clmer_restricaointolerancia->sql_record($clmer_restricaointolerancia->sql_query("",
                                                                                             "*",
                                                                                             "",
@@ -147,18 +147,18 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$campos,""," ed60_
         <tr bgcolor="#DBDBDB">         
          <td colspan="2"  align="center" >Intolerância</td>
          </tr>
-      <?php for ($v=0; $v < $clmer_restricaointolerancia->numrows; $v++) {
+      <?for ($v=0; $v < $clmer_restricaointolerancia->numrows; $v++) {
           if ($me34_i_restricao == $me24_i_codigo) { 
             db_fieldsmemory($result3,$v); ?>     
             <tr>         
               <td colspan="2" class="aluno" align="center" width= "100%"><?=$me33_c_descr?></td>
             </tr>
-        <?php }?>         
-      <?php }?>      
+        <?}?>         
+      <?}?>      
      </table>
     </td>
     </tr>
-    <?php 
+    <?
    }
    ?>
   </table>

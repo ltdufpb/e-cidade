@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ if(isset($oGet->k03_tipo)){
               <?=$Lk00_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k00_tipo",4,$Ik00_tipo,true,"text",4,"","chave_k00_tipo");
 		       ?>
             </td>
@@ -74,7 +74,7 @@ if(isset($oGet->k03_tipo)){
               <?=$Lk00_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k00_descr",40,$Ik00_descr,true,"text",4,"","chave_k00_descr");
 		       ?>
             </td>
@@ -92,7 +92,7 @@ if(isset($oGet->k03_tipo)){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_arretipo.php")==true){
@@ -134,12 +134,12 @@ if(isset($oGet->k03_tipo)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

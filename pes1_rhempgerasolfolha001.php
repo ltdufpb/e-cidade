@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -96,7 +96,7 @@ function db_gerarsolicitacao($mostra=false){
 <table align="center">
   <tr>
     <td>
-    <?php 
+    <?
 $numrows_confirma = 0;
 $mostra           = false;
 if ((isset($DBtxt23)&&trim(@$DBtxt23)!="") &&
@@ -211,7 +211,7 @@ include(modification("forms/db_frmrhempgerasolfolha.php"));
   </tr>
   <tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
 $passa = false;

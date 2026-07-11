@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -111,9 +111,9 @@ if(isset($limpar)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:95%"><legend><b>Horários de Regências na Turma <?=@$ed268_c_descr?></b></legend>
-    <?php if(!isset($excluir)){?>
-     <?php include(modification("forms/db_frmturmaachorario.php"));?>
-    <?php }?>
+    <?if(!isset($excluir)){?>
+     <?include(modification("forms/db_frmturmaachorario.php"));?>
+    <?}?>
    </fieldset>
   </td>
  </tr>

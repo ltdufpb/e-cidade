@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ db_fim_transacao($sqlerro);
 <table width="750" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="380" align="left" valign="top" bgcolor="#CCCCCC"> 
-<?php 
+<?
     $result = $cldb_syscampo->sql_record($cldb_syscampo->sql_query_file($principal));
     db_fieldsmemory($result,0); 
    $an_codcam      = $codcam        ;
@@ -120,11 +120,11 @@ db_fim_transacao($sqlerro);
         <tr>
           <td nowrap title="<?=@$Tcodcam?>" colspan='6' align='center'>
            <?=@$Lcodcam?>
-            <?php 
+            <?
                  db_input('an_codcam',7,$Icodcam,true,'text',3)
             ?>
            <?=@$Lnomecam?>
-            <?php 
+            <?
                  db_input('an_nomecam',20,$Inomecam,true,'text',3)
             ?>
           </td>
@@ -132,36 +132,36 @@ db_fim_transacao($sqlerro);
 	
         <tr>
           <td nowrap title="<?=@$Trotulo?>">
-            <?php 
+            <?
                  db_input('ver_rotulo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lrotulo?>
           </td>
           <td> 
-            <?php 
+            <?
                  db_input('an_rotulo',30,$Irotulo,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tconteudo?>">
-            <?php 
+            <?
                  db_input('ver_conteudo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lconteudo?>
           </td>
           <td> 
-            <?php 
+            <?
                $x = array("varchar"=>"Varchar","text"=>"Text","oid"=>"Oid","int4"=>"Int4","int8"=>"Int8","float4"=>"Float4","float8"=>"Float8","bool"=>"Lógico","char"=>"Char","date"=>"Data");
                db_select('an_conteudo',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Tautocompl?>">
-            <?php 
+            <?
                  db_input('ver_autocompl',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lautocompl?>
           </td>
           <td align='left' width='13%'> 
-            <?php 
+            <?
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('an_autocompl',$x,true,$db_opcao);
             ?>
@@ -171,35 +171,35 @@ db_fim_transacao($sqlerro);
 	
         <tr>
           <td nowrap title="<?=@$Trotulorel?>">
-            <?php 
+            <?
                  db_input('ver_rotulorel',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lrotulorel?>
           </td>
           <td> 
-            <?php 
+            <?
                  db_input('an_rotulorel',30,$Irotulorel,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tvalorinicial?>">
-            <?php 
+            <?
                  db_input('ver_valorinicial',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lvalorinicial?>
           </td>
           <td> 
-            <?php 
+            <?
                  db_input('an_valorinicial',7,$Ivalorinicial,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tnulo?>">
-            <?php 
+            <?
                  db_input('ver_nulo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lnulo?>
           </td>
           <td> 
-            <?php 
+            <?
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('an_nulo',$x,true,$db_opcao);
             ?>
@@ -209,36 +209,36 @@ db_fim_transacao($sqlerro);
         
 	<tr>
           <td nowrap title="<?=@$Taceitatipo?>">
-            <?php 
+            <?
                  db_input('ver_aceitatipo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Laceitatipo?>
           </td>
           <td> 
-            <?php 
+            <?
                $x = array("0"=>"Não Valida Campo","1"=>"Somente Números","2"=>"Somente Letras","3"=>"Números e letras","4"=>"Números Casa Dec.","5"=>"Verdadeiro/Falso");
                db_select('an_aceitatipo',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Ttamanho?>">
-            <?php 
+            <?
                  db_input('ver_tamanho',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ltamanho?>
           </td>
           <td> 
-            <?php 
+            <?
                  db_input('an_tamanho',7,$Itamanho,true,'text',$db_opcao,"")
             ?>
           </td>
           <td nowrap title="<?=@$Tmaiusculo?>">
-            <?php 
+            <?
                  db_input('ver_maiusculo',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Lmaiusculo?>
           </td>
           <td> 
-            <?php 
+            <?
                $x = array("t"=>"Sim","f"=>"Não");
                db_select('an_maiusculo',$x,true,$db_opcao);
             ?>
@@ -246,25 +246,25 @@ db_fim_transacao($sqlerro);
         </tr>
         <tr>
           <td nowrap title="<?=@$Ttipoobj?>" valign='top' >
-            <?php 
+            <?
                  db_input('ver_tipoobj',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ltipoobj?>
           </td>
           <td valign='top'> 
-            <?php 
+            <?
                $x = array("text"=>"Input Text","checkbox"=>"Input Checkbox","radiobutton"=>"Input Radio Button","image"=>"Input Imagem","textarea"=>"TextArea","select"=>"Select","multiple"=>"Select Multiple");
                db_select('an_tipoobj',$x,true,$db_opcao);
             ?>
           </td>
           <td nowrap title="<?=@$Tdescricao?>" valign='top'>
-            <?php 
+            <?
                  db_input('ver_descricao',7,$Iautocompl,true,'checkbox',$db_opcao,"")
             ?>
            <?=@$Ldescricao?>
           </td>
           <td colspan='5' valign='top'> 
-            <?php 
+            <?
                  db_textarea('an_descricao',0,40,$Idescricao,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -276,7 +276,7 @@ db_fim_transacao($sqlerro);
 	</tr>
 	<tr>
 	  <td colspan='6'>
-<?php 	  
+<?	  
       $cliframe_seleciona->legenda="CAMPOS";
       $cliframe_seleciona->sql= $cldb_syscampo->sql_query_file(null,"*","codcam","codcam in ($cods)");
       $cliframe_seleciona->campos  = "codcam,nomecam,conteudo,descricao,valorinicial,rotulo,rotulorel,tamanho,nulo,maiusculo,autocompl,aceitatipo,tipoobj";
@@ -333,7 +333,7 @@ db_fim_transacao($sqlerro);
     }  
   }
 </script>
-<?php 
+<?
 if(isset($atualizar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

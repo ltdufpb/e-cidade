@@ -117,9 +117,9 @@ if ($ed37_c_tipo == "NIVEL") {
    iframe_conceitos.location.href = "edu1_conceito001.php?ed39_i_formaavaliacao=<?=$ed37_i_codigo?>"+
                                     "&ed37_c_descr=<?=$ed37_c_descr?>";
   </script>
-  <?php 
+  <?
 } elseif ($ed37_c_tipo == "PARECER") {
-  ?><script>document.getElementById("parecer").style.visibility = "visible";</script><?php 
+  ?><script>document.getElementById("parecer").style.visibility = "visible";</script><?
 } elseif($ed37_c_tipo == "NOTA") {
 
   ?>
@@ -130,7 +130,7 @@ if ($ed37_c_tipo == "NIVEL") {
     document.form1.ed37_i_variacao.value   = "<?=$ed37_i_variacao?>";
     js_formataVariacao();
    </script>
-  <?php 
+  <?
 
 }
 

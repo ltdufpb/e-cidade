@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhrubitem->rotulo->label("rh13_item");
               <?=$Lrh13_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh13_rubric",4,$Irh13_rubric,true,"text",4,"","chave_rh13_rubric");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhrubitem->rotulo->label("rh13_item");
               <?=$Lrh13_item?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh13_item",6,$Irh13_item,true,"text",4,"","chave_rh13_item");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhrubitem->rotulo->label("rh13_item");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhrubitem.php")==true){
@@ -119,12 +119,12 @@ $clrhrubitem->rotulo->label("rh13_item");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

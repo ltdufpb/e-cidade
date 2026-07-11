@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $cllab_setor->rotulo->label();
        <?=@$Lla23_i_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('la23_i_codigo',10,$Ila23_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('la23_i_codigo',10,$Ila23_i_codigo,true,'text',3,"")
        <?=@$Lla23_c_descr?>
     </td>
     <td> 
-<?php 
+<?
 db_input('la23_c_descr',50,$Ila23_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_setor.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clalunoaltconf->rotulo->label("ed277_i_codigo");
               <?=$Led277_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed277_i_codigo",20,$Ied277_i_codigo,true,"text",4,"","chave_ed277_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clalunoaltconf->rotulo->label("ed277_i_codigo");
               <?=$Led277_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ed277_i_codigo",20,$Ied277_i_codigo,true,"text",4,"","chave_ed277_i_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clalunoaltconf->rotulo->label("ed277_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_alunoaltconf.php")==true){
@@ -123,12 +123,12 @@ $clalunoaltconf->rotulo->label("ed277_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

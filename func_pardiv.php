@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpardiv->rotulo->label("ultcoddiv");
               <?=$Lv04_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v04_instit",10,$Iv04_instit,true,"text",4,"","chave_v04_instit");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpardiv->rotulo->label("ultcoddiv");
               <?=$Lultcoddiv?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ultcoddiv",10,$Iultcoddiv,true,"text",4,"","chave_ultcoddiv");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpardiv->rotulo->label("ultcoddiv");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pardiv.php")==true){
@@ -123,12 +123,12 @@ $clpardiv->rotulo->label("ultcoddiv");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

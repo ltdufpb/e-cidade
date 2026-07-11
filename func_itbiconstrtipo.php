@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbiconstrtipo->rotulo->label("it10_caract");
               <?=$Lit10_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it10_codigo",10,$Iit10_codigo,true,"text",4,"","chave_it10_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbiconstrtipo->rotulo->label("it10_caract");
               <?=$Lit10_caract?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it10_caract",4,$Iit10_caract,true,"text",4,"","chave_it10_caract");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clitbiconstrtipo->rotulo->label("it10_caract");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbiconstrtipo.php")==true){
@@ -119,12 +119,12 @@ $clitbiconstrtipo->rotulo->label("it10_caract");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

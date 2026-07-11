@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ if(!isset($me22_i_usuario)){
    <?=@$Lme22_i_codigo?>
   </td>
   <td>
-   <?php db_input('me22_i_codigo',10,$Ime22_i_codigo,true,'text',3,"")?>
+   <?db_input('me22_i_codigo',10,$Ime22_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -53,17 +53,17 @@ if(!isset($me22_i_usuario)){
    <?=@$Lme22_i_usuario?>
   </td>
   <td>
-   <?php db_input('me22_i_usuario',10,$Ime22_i_usuario,true,'text',3,"");?>
-   <?php db_input('nome',30,@$nome,true,'text',3,"");?>
+   <?db_input('me22_i_usuario',10,$Ime22_i_usuario,true,'text',3,"");?>
+   <?db_input('nome',30,@$nome,true,'text',3,"");?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme22_i_cardapiodiaescola?>">
-   <?php db_ancora(@$Lme22_i_cardapiodiaescola,"js_pesquisame22_i_cardapiodiaescola(true);",($db_opcao!=1?3:1));?>
+   <?db_ancora(@$Lme22_i_cardapiodiaescola,"js_pesquisame22_i_cardapiodiaescola(true);",($db_opcao!=1?3:1));?>
   </td>
   <td>
-   <?php db_input('me22_i_cardapiodiaescola',10,$Ime22_i_cardapiodiaescola,true,'text',3,"")?>
-   <?php db_input('me01_c_nome',30,$Ime01_c_nome,true,'text',3,'')?>
+   <?db_input('me22_i_cardapiodiaescola',10,$Ime22_i_cardapiodiaescola,true,'text',3,"")?>
+   <?db_input('me01_c_nome',30,$Ime01_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -71,9 +71,9 @@ if(!isset($me22_i_usuario)){
    <?=@$Lme12_d_data?>
   </td>
   <td>
-   <?php db_inputdata('me12_d_data',@$me12_d_data_dia,@$me12_d_data_mes,@$me12_d_data_ano,true,'text',3,"")?>
+   <?db_inputdata('me12_d_data',@$me12_d_data_dia,@$me12_d_data_mes,@$me12_d_data_ano,true,'text',3,"")?>
    <?=@$Lme03_c_tipo?>
-   <?php db_input('me03_c_tipo',30,@$Ime03_c_tipo,true,'text',3,'')?>
+   <?db_input('me03_c_tipo',30,@$Ime03_c_tipo,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -121,7 +121,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_desperdicio.hide();
-  <?php 
+  <?
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

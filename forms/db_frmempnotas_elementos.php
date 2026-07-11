@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ $clrotulo->label("e64_vlrpag");
 <meta http-equiv="Expires" CONTENT="0">
 <script language="JavaScript" type="text/javascript" src="../scripts/scripts.js"></script>
 <link href="../estilos.css" rel="stylesheet" type="text/css">
-<?php if($db_opcao==1){?>
+<?if($db_opcao==1){?>
 <script>
       function js_coloca(tot){
 	dados='';
@@ -125,9 +125,9 @@ $clrotulo->label("e64_vlrpag");
 	}  
       }
 </script>
-<?php }?>
+<?}?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -135,7 +135,7 @@ $clrotulo->label("e64_vlrpag");
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -151,7 +151,7 @@ $clrotulo->label("e64_vlrpag");
     <input name='verificador' type='hidden' value='ok'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?php 
+ <?
  if(isset($e60_numemp) && $e60_numemp!= ""){
 
       $result = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp,null,"*","e64_codele"));

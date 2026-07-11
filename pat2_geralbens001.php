@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -87,7 +87,7 @@ if($clcfpatric->numrows > 0) {
                                 </legend>
                             </a>
                             <table id="tbOrgaos" style="display: none;">
-                                <?php 
+                                <?
                                 // $aux = new cl_arquivo_auxiliar;
                                 $aux_orgao->cabecalho = "<strong>rgos</strong>";
                                 $aux_orgao->codigo = "o40_orgao"; //chave de retorno da func
@@ -121,7 +121,7 @@ if($clcfpatric->numrows > 0) {
                                 </legend>
                             </a>
                             <table id="tbUnidades" style="display:none;">
-                                <?php 
+                                <?
                                 // $aux = new cl_arquivo_auxiliar;
                                 $aux_unidade->cabecalho = "<strong>Unidades</strong>";
                                 $aux_unidade->codigo = "o41_unidade"; //chave de retorno da func
@@ -155,7 +155,7 @@ if($clcfpatric->numrows > 0) {
                                 </legend>
                             </a>
                             <table id="tbDepartamentos" style="display: none;">
-                                <?php 
+                                <?
                                 // $aux = new cl_arquivo_auxiliar;
                                 $aux->cabecalho = "<strong>Departamentos</strong>";
                                 $aux->codigo = "coddepto"; //chave de retorno da func
@@ -180,19 +180,19 @@ if($clcfpatric->numrows > 0) {
                         </fieldset>
                     </td>
                 </tr>
-            <?php } else {?>
+            <?} else {?>
                 <tr>
-                    <td align="right" nowrap title="<?=$Tcoddepto?>"> <?php  db_ancora(@$Lcoddepto,"js_pesquisa_depart(true);",1);?>  </td>
+                    <td align="right" nowrap title="<?=$Tcoddepto?>"> <? db_ancora(@$Lcoddepto,"js_pesquisa_depart(true);",1);?>  </td>
                     <td align="left" nowrap>
-                        <?php 
+                        <?
                         db_input("coddepto",10,$Icoddepto,true,"text",4,"onchange='js_pesquisa_depart(false);'");
                         db_input("descrdepto",50,$Idescrdepto,true,"text",3);
                         ?>
                     </td>
                 </tr>
-            <?php }?>
+            <?}?>
 
-            <?php 
+            <?
             if (isset($coddepto)&&$coddepto!=""){
                 ?>
                 <tr>
@@ -202,19 +202,19 @@ if($clcfpatric->numrows > 0) {
                     <td>
                         <select name="t33_divisao" id="t33_divisao">
                             <option value='0'>Todas</option>
-                            <?php 
+                            <?
                             $result=$cldepartdiv->sql_record($cldepartdiv->sql_query_file(null,"t30_codigo,t30_descr",null,"t30_depto=$coddepto"));
                             for($y=0;$y<$cldepartdiv->numrows;$y++){
                                 db_fieldsmemory($result,$y);
                                 ?>
                                 <option value=<?=@$t30_codigo?>> <?=@$t30_descr?></option>
-                                <?php 
+                                <?
                             }
                             ?>
                         </select>
                     </td>
                 </tr>
-                <?php 
+                <?
             }else{
                 db_input('t33_divisao',10,"",true,'hidden',3,'');
             }
@@ -223,7 +223,7 @@ if($clcfpatric->numrows > 0) {
             <tr id="datas">
                 <td nowrap align="right"><b>Ordem:</b></td>
                 <td nowrap>
-                    <?php 
+                    <?
                     if($t06_pesqorgao == 't'){
                         $matriz = array("depart"=>"Departamento","placa"=>"Placa","bem"=>"Cd. Bem","classi"=>"Classificao",
                             "dtAqui"=>"Data de aquisio","dtInc" =>"Data da Incluso","orgao"=>"rgo","unidade"=>"Unidade","descricao"=>"Descrio do Bem");
@@ -239,7 +239,7 @@ if($clcfpatric->numrows > 0) {
             <tr id="datas">
                 <td nowrap><b>Imprimir Fornecedor/Observaes:</b></td>
                 <td nowrap>
-                    <?php 
+                    <?
                     $imp_forn = array("N"=>"No","S"=>"Sim");
                     db_select("imp_forn",$imp_forn,true,1);
                     ?>
@@ -248,7 +248,7 @@ if($clcfpatric->numrows > 0) {
             <tr id="datas">
                 <td nowrap align="right"><b>Imprimir Classificao:</b></td>
                 <td nowrap>
-                    <?php 
+                    <?
                     $imp_classi = array("N"=>"No","S"=>"Sim");
                     db_select("imp_classi",$imp_classi,true,1,'onchange=js_display_quebra_por(this.value)');
                     ?>
@@ -257,7 +257,7 @@ if($clcfpatric->numrows > 0) {
             <tr id="quebrapor" style="display:none;">
                 <td nowrap align="right"><b>Quebrar por:</b></td>
                 <td nowrap>
-                    <?php 
+                    <?
                     $quebra_por = array("1"=>"Nenhum","2"=>"Departamento/Diviso","3"=>"Classificao");
                     db_select("quebra_por",$quebra_por,true,1);
                     ?>
@@ -267,7 +267,7 @@ if($clcfpatric->numrows > 0) {
             <tr id="datas">
                 <td nowrap align="right"><b>Quebrar pgina:</b></td>
                 <td nowrap>
-                    <?php 
+                    <?
                     if($t06_pesqorgao == 't'){
                         $q_pagina = array("N"=>"No","orgao"=>"rgo","unidade"=>"Unidade","departamento"=>"Departamento");
                     }else{
@@ -314,7 +314,7 @@ if($clcfpatric->numrows > 0) {
             <tr >
                 <td nowrap align="right"><b>Bens de Convnio:</b></td>
                 <td nowrap>
-                    <?php 
+                    <?
                     $x = array("T"=>"Todos","N"=>"Nenhum Convnio","S"=>"Com Convnio");
                     db_select("bens_convenio",$x,true,1,"onchange='js_selecionaConvenio()'");
                     ?>
@@ -322,15 +322,15 @@ if($clcfpatric->numrows > 0) {
             </tr>
             <tr id="convenio" style="display: none;">
                 <td nowrap title="<?="Convnio"?>" align="right">
-                    <?php 
+                    <?
                     db_ancora("<b>Convnio:</b>","js_pesquisat04_sequencial(true);",1);
                     ?>
                 </td>
                 <td>
-                    <?php 
+                    <?
                     db_input('t04_sequencial',8,$It04_sequencial,true,'text',1," onchange='js_pesquisat04_sequencial(false);'")
                     ?>
-                    <?php 
+                    <?
                     db_input('z01_nome_convenio',20,'',true,'text',3,'')
                     ?>
                 </td>
@@ -339,7 +339,7 @@ if($clcfpatric->numrows > 0) {
     </fieldset>
     <input type="button" value="Emitir relatrio" onClick="js_emite();">
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

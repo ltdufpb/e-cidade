@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE pontoprovf13
 class cl_pontoprovf13 { 

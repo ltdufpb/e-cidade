@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: escola
 //CLASSE DA ENTIDADE funcaoatividade
 class cl_funcaoatividade { 

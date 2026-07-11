@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -573,7 +573,7 @@ $ip_imprime = db_getsession("DB_ip");
 <table width="800" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="375" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php 
+   <?
 
 
 $clrotulo = new rotulocampo;
@@ -599,7 +599,7 @@ function js_cria(campo,valor){
 }	   
        function js_verso(ver){
        	 retorna = false;
-       <?php  
+       <? 
 
 if (isset ($imprimirverso)) {
 	//echo "alert('olha, imprimir verso ta setado');\n";
@@ -619,7 +619,7 @@ if (isset ($imprimirverso)) {
       }	 
 </script>
 
-<?php 
+<?
 // Rotina que alerta caso tenha ocorrido algum problema nas transações
 if(isset($atualizar) && $sqlerro == true){
   db_msgbox($erro_msg);

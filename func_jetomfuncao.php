@@ -99,7 +99,7 @@ $chave_rh37_descr = isset($chave_rh37_descr) ? stripslashes($chave_rh37_descr) :
                 <b>Opções:</b>
               </td>
               <td width="96%" align="left" nowrap>
-              <?php 
+              <?
                 $aOpcao = array("at"=>"Ativos","ds"=>"Desativados" ,"am"=>"Ambos");
                 db_select('sOpcao',$aOpcao,true,4,"");
               ?>

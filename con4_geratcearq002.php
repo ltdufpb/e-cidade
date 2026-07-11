@@ -90,7 +90,7 @@ require_once(modification("model/tceCadastroPensionistas.model.php"));
     <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" bgcolor="#cccccc">
-<?php 
+<?
 
 $oGet = db_utils::postMemory($_GET);
 

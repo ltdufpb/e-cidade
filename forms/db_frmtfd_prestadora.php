@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,16 +39,16 @@ $clrotulo->label("z01_nome");
        <?=@$Ltf25_i_codigo?>
     </td>
     <td> 
-     <?php db_input('tf25_i_codigo',10,$Itf25_i_codigo,true,'text',3,"")?>
+     <?db_input('tf25_i_codigo',10,$Itf25_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf25_i_cgm?>">
-     <?php db_ancora(@$Ltf25_i_cgm,"js_pesquisatf25_i_cgm(true);",$db_opcao);?>
+     <?db_ancora(@$Ltf25_i_cgm,"js_pesquisatf25_i_cgm(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('tf25_i_cgm',10,$Itf25_i_cgm,true,'text',$db_opcao," onchange='js_pesquisatf25_i_cgm(false);'")?>
-     <?php db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
+     <?db_input('tf25_i_cgm',10,$Itf25_i_cgm,true,'text',$db_opcao," onchange='js_pesquisatf25_i_cgm(false);'")?>
+     <?db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -56,16 +56,16 @@ $clrotulo->label("z01_nome");
        <?=@$Ltf25_c_cnes?>
     </td>
     <td> 
-      <?php db_input('tf25_c_cnes',10,$Itf25_c_cnes,true,'text',$db_opcao,"")?>
+      <?db_input('tf25_c_cnes',10,$Itf25_c_cnes,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf25_i_destino?>">
-      <?php db_ancora(@$Ltf25_i_destino,"js_pesquisatf25_i_destino(true);",$db_opcao);?>
+      <?db_ancora(@$Ltf25_i_destino,"js_pesquisatf25_i_destino(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('tf25_i_destino',10,@$Itf25_i_destino,true,'text',$db_opcao," onchange='js_pesquisatf25_i_destino(false);'")?>
-     <?php db_input('tf03_c_descr',40,@$Itf03_c_descr,true,'text',3,'')?>
+     <?db_input('tf25_i_destino',10,@$Itf25_i_destino,true,'text',$db_opcao," onchange='js_pesquisatf25_i_destino(false);'")?>
+     <?db_input('tf03_c_descr',40,@$Itf03_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -140,7 +140,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_prestadora.hide();
-  <?php 
+  <?
   if($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -120,7 +120,7 @@ if (isset($mostramenu)&& $mostramenu == 't') {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
 db_app::load("scripts.js, strings.js, prototype.js, AjaxRequest.js");
 db_app::load("estilos.css, grid.style.css");
 
@@ -475,7 +475,7 @@ function js_removelinha(linha) {
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin=" 0" topmargin=" 0" marginwidth=" 0" marginheight=" 0" onLoad="a=1">
 <form name="form1" action="" method="get">
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
-<?php 
+<?
   if (!isset($mostramenu) || $mostramenu == 'f') {
 ?>
   <tr>
@@ -484,7 +484,7 @@ function js_removelinha(linha) {
     <td width="25">&nbsp;</td>
     <td width="140">&nbsp;</td>
   </tr>
-<?php 
+<?
   }
 ?>
 </table>
@@ -506,12 +506,12 @@ function js_removelinha(linha) {
               <table border="0" width="100%">
                 <tr>
                   <td nowrap="nowrap" width="140px">
-                    <?php 
+                    <?
                       db_ancora($Lz01_numcgm, 'js_mostranomes(true);', $dbopcao);
                     ?>
                   </td>
                   <td nowrap="nowrap" width="60px">
-                    <?php 
+                    <?
                       if ( ( isset($p58_codproc) && $p58_codproc!="" ) && ( isset($incproc) && $incproc==true) ) {
 
                         $result_prot = $clprotprocesso->sql_record($clprotprocesso->sql_query($p58_codproc, "p58_numcgm,z01_nome,p58_obs as historico"));
@@ -527,43 +527,43 @@ function js_removelinha(linha) {
                     ?>
                   </td>
                   <td nowrap="nowrap">
-                    <?php 
+                    <?
                       db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3);
                     ?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap="nowrap">
-                    <?php 
+                    <?
                       db_ancora($Lj01_matric,'js_mostramatriculas(true);',$dbopcao);
                     ?>
                   </td>
                   <td nowrap="nowrap" colspan="2">
-                    <?php 
+                    <?
                       db_input('j01_matric',10,$Ij01_matric,true,'text',$dbopcao,'onchange="js_mostramatriculas(false);"');
                     ?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap="nowrap">
-                    <?php 
+                    <?
                       db_ancora($Lq02_inscr, 'js_mostrainscricao(true)', $dbopcao);
                     ?>
                   </td>
                   <td nowrap="nowrap" colspan="2">
-                    <?php 
+                    <?
                       db_input('q02_inscr', 10, $Iq02_inscr, true, 'text', $dbopcao, 'onchange="js_mostrainscricao(false);"');
                     ?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap="nowrap">
-                    <?php 
+                    <?
                       db_ancora($Lp58_codproc, 'js_mostracodproc(true);', $dbopcao);
                     ?>
                   </td>
                   <td nowrap="nowrap" colspan="2">
-                    <?php 
+                    <?
                       db_input('p58_codproc', 10, $Ip58_codproc, true, 'text', $dbopcao, 'onchange="js_mostracodproc(false);"');
                     ?>
                   </td>
@@ -573,7 +573,7 @@ function js_removelinha(linha) {
                     <b>Data Vencimento:</b>
                   </td>
                   <td nowrap="nowrap" colspan="2">
-                    <?php 
+                    <?
                       if ($db21_codcli == 19985) {
                         $novadata  = mktime (0, 0, 0, date('m',db_getsession("DB_datausu")), date('d',db_getsession("DB_datausu"))+30, date('Y',db_getsession("DB_datausu")) );
                         $k00_dtoper     = date('Y-m-d',$novadata);
@@ -604,7 +604,7 @@ function js_removelinha(linha) {
                     <?=$Lz01_ender?>
                   </td>
                   <td nowrap="nowrap" colspan="3">
-                    <?php 
+                    <?
                       db_input('z01_ender', 40, $Iz01_ender, true, 'text', 3, '', 'DBF_ender');
                     ?>
                   </td>
@@ -614,7 +614,7 @@ function js_removelinha(linha) {
                     <?=$Lz01_munic?>
                   </td>
                   <td nowrap="nowrap" colspan="3">
-                    <?php 
+                    <?
                       db_input('z01_munic', 20, $Iz01_munic, true, 'text', 3, '', 'DBF_munic');
                     ?>
                   </td>
@@ -624,7 +624,7 @@ function js_removelinha(linha) {
                     <?=$Lz01_cep?>
                   </td>
                   <td nowrap="nowrap">
-                    <?php 
+                    <?
                       db_input('z01_cep', 8, $Iz01_cep, true, 'text', 3, '', 'DBF_cep');
                     ?>
                   </td>
@@ -632,7 +632,7 @@ function js_removelinha(linha) {
                     <?=$Lz01_uf?>
                   </td>
                   <td nowrap="nowrap">
-                    <?php 
+                    <?
                       db_input('z01_uf', 2, $Iz01_uf, true, 'text', 3, '', 'DBF_uf');
                     ?>
                   </td>
@@ -646,7 +646,7 @@ function js_removelinha(linha) {
         </table>
       </td>
     </tr>
-    <?php 
+    <?
       /**
        * Só mostra campo ordem de pagamento se for emissão de recibo de retenção.
        */
@@ -657,12 +657,12 @@ function js_removelinha(linha) {
         <table border="0" width="100%">
           <tr>
             <td nowrap="nowrap" width="140px">
-              <?php 
+              <?
                 db_ancora($Lk32_ordpag, 'js_mostraordpag(true);', $dbopcao);
               ?>
             </td>
             <td nowrap="nowrap" width="60px">
-              <?php 
+              <?
                 db_input('k32_ordpag', 10, $Ik32_ordpag, true, 'text', $dbopcao, 'onchange="js_mostraordpag(false);"');
               ?>
             </td>
@@ -670,7 +670,7 @@ function js_removelinha(linha) {
               <b><?php echo @$Le60_codemp;?></b>
             </td>
             <td nowrap="nowrap" width="60px">
-              <?php 
+              <?
                 db_input('codempenho', 10, '', true, 'text', 3);
               ?>
             </td>
@@ -678,7 +678,7 @@ function js_removelinha(linha) {
               <b>CGM:</b>
             </td>
             <td nowrap="nowrap">
-              <?php 
+              <?
                 db_input('e60_numcgm', 10, '', true, 'text', 3);
                 db_input('nomeemp', 40, '', true, 'text', 3);
               ?>
@@ -687,7 +687,7 @@ function js_removelinha(linha) {
         </table>
       </td>
     </tr>
-    <?php 
+    <?
       } else {
         db_input('k32_ordpag', 10, $Ik32_ordpag, true, 'hidden', 3);
       }
@@ -701,17 +701,17 @@ function js_removelinha(linha) {
             <table border="0" width="100%" height="100%">
               <tr>
                 <td nowrap="nowrap" width="130px">
-                  <?php 
+                  <?
                     db_ancora(@$Lk02_codigo, "js_pesquisatabrec(true);", $dbopcao);
                   ?>
                 </td>
                 <td nowrap="nowrap" width="20px">
-                  <?php 
+                  <?
                     db_input('k02_codigo', 10, $Ik02_codigo, true, 'text', $dbopcao, "onchange='js_pesquisatabrec(false);'");
                   ?>
                 </td>
                 <td nowrap="nowrap">
-                  <?php 
+                  <?
                     db_input('codsubrec', 40, $Icodsubrec, true, 'hidden', 3);
                     db_input('k07_descr', 100, $Ik07_descr,true, 'hidden', 3);
                     db_input('k02_drecei', 40, $Ik02_drecei, true, 'text', 3);
@@ -766,17 +766,17 @@ function js_removelinha(linha) {
                 </tr>
                 <tr id="boxConCarPeculiar">
                 <td nowrap="nowrap" width="130px" id="lnkConcarpeculiar">
-                  <?php 
+                  <?
                     db_ancora(@$Lk130_concarpeculiar, "js_pesquisak130_concarpeculiar(true);", $dbopcao);
                   ?>
                 </td>
                 <td nowrap="nowrap" width="20px">
-                  <?php 
+                  <?
                     db_input('k130_concarpeculiar', 10, $Ik130_concarpeculiar, true, 'text', $dbopcao, "onchange='js_pesquisak130_concarpeculiar(false);'");
                   ?>
                 </td>
                 <td nowrap="nowrap">
-                  <?php 
+                  <?
                     db_input('c58_descr', 40, $Ic58_descr, true, 'text', 3);
                   ?>
                 </td>
@@ -837,7 +837,7 @@ function js_removelinha(linha) {
 </table>
 </center>
 </form>
-<?php 
+<?
  if (!isset($mostramenu) || $mostramenu == 'f') {
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
  }
@@ -845,7 +845,7 @@ function js_removelinha(linha) {
 </body>
 </html>
 <script>
-<?php 
+<?
   if ($lEmissaoReciboRetencao) {
     echo " document.getElementById('infContr').style.display = 'none'; ";
   }
@@ -1340,7 +1340,7 @@ function js_ajustaBotaoTef(tipoDebito) {
     }).execute();
 }
 </script>
-<?php 
+<?
 if ((isset($codtipo)&&$codtipo!="")&&(isset($incproc)&&$incproc==true)) {
 
   $result_procrec=$clprocrec->sql_record($clprocrec->sql_query($codtipo));

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $oLab_labdepart = db_utils::getdao('lab_labdepart');
               <?=$Lla02_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la02_i_codigo",10,$Ila02_i_codigo,true,"text",4,"","chave_la02_i_codigo");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $oLab_labdepart = db_utils::getdao('lab_labdepart');
               <?=$Lla02_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("la02_c_descr",50,$Ila02_c_descr,true,"text",4,"","chave_la02_c_descr");
 		       ?>
             </td>
@@ -90,7 +90,7 @@ $oLab_labdepart = db_utils::getdao('lab_labdepart');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_laboratorio.php")==true){
@@ -180,12 +180,12 @@ $oLab_labdepart = db_utils::getdao('lab_labdepart');
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

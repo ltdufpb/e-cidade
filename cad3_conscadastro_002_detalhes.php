@@ -2080,7 +2080,7 @@ order by iptucalc.j23_anousu desc
           <td width="15%" align="center">Pontua&ccedil;&atilde;o</td>
           <td width="34%" align="right">Valor Venal</td>
         </tr>
-        <?php 
+        <?
 	    for ($i=0;$i<pg_numrows($resultSqlIptucale);$i++) {
             db_fieldsmemory($resultSqlIptucale,$i);
             $sqlIptuconstrareahistorico = "";

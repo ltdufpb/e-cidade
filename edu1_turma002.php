@@ -436,7 +436,7 @@ if (isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'edu1_outrosprofissionaisturma001.php?iTurma=<?=$ed57_i_codigo?>' ;
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a7.location.href = 'edu1_turmaatividadecomplementar001.php?iCalendario=<?=$ed57_i_calendario?>&ed57_i_codigo=<?=$ed57_i_codigo?>';
   </script>
- <?php 
+ <?
 }
 ?>
 <html>

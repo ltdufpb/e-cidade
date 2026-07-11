@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,7 +121,7 @@ background-color:#ccddcc;
  <table border="0" width="100%" cellspacing="0" cellpadding="0" nowrap >
   <tr>
     <td align="center" valign="top">
-<?php  
+<? 
 
 
 db_input('me36_i_alimento', 8, '', true, 'hidden', 3);
@@ -129,7 +129,7 @@ db_input('atualizar', 8, '', true, 'hidden', 3);
 db_input('me36_i_matmater', 8, '', true, 'hidden', 3);
 ?>     
 <table border='1' width="100%" nowrap>
-<?php  
+<? 
 
 
 if (isset ($m60_descr)) {
@@ -187,7 +187,7 @@ if (isset ($m60_descr)) {
 </form>
 </body>  
 </html>
-<?php 
+<?
 if (isset ($atualizar) && $atualizar != "") {
     if ($sqlerro == false) {
         echo "<script>parent.js_conclui();</script>";

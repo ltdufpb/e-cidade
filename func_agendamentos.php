@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $clrotulo->label("z01_v_nome");
               <?=$Lsd23_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd23_i_codigo",5,$Isd23_i_codigo,true,"text",4,"","chave_sd23_i_codigo");
 		       ?>
             </td>
@@ -70,17 +70,17 @@ $clrotulo->label("z01_v_nome");
               <?=$Lsd23_d_consulta?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd23_d_consulta",10,$Isd23_d_consulta,true,"text",4,"","chave_sd23_d_consulta");
 		       ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tsd23_i_numcgs?>">
-              <?php db_ancora(@$Lsd23_i_numcgs,"js_pesquisasd04_i_cbo(true,1);",4);?>
+              <?db_ancora(@$Lsd23_i_numcgs,"js_pesquisasd04_i_cbo(true,1);",4);?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 				
+              <?				
 				db_input('sd23_i_numcgs',10,$Isd23_i_numcgs,true,'text',4,"");
 				db_input('z01_v_nome',46,$Iz01_v_nome,true,'text',3,"");
               ?>
@@ -99,7 +99,7 @@ $clrotulo->label("z01_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where = "";
       if( isset($chave_sd23_i_especmed) && (int)$chave_sd23_i_especmed != 0 ){
       	$where .= " sd27_i_codigo = $chave_sd23_i_especmed ";
@@ -146,12 +146,12 @@ $clrotulo->label("z01_v_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -198,7 +198,7 @@ if ($oDaoParJuridico->numrows > 0) {
               </tr>
               <tr>
                 <td align="right">Valor Total Parcelado:</td>
-                <td>&nbsp; <?php  echo db_formatar($v07_valor, 'f'); ?></td>
+                <td>&nbsp; <? echo db_formatar($v07_valor, 'f'); ?></td>
               </tr>
               <tr>
                 <td align="right">Valor Entrada:</td>
@@ -272,7 +272,7 @@ if ($oDaoParJuridico->numrows > 0) {
           </td>
         </tr>
       </table>
-        <?php 
+        <?
     } else {
 
         if ($k03_tipo == 1) {

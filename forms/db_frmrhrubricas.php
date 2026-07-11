@@ -59,7 +59,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_rubric?>
         </td>
         <td width="65%">
-          <?php 
+          <?
           db_input('rh27_rubric',13,$Irh27_rubric,true,'text',($db_opcao==1?1:3),"onblur='js_bloqueiaMedias(this);' onChange='js_validarCodigoRubrica();'");
           db_input('rh27_instit',13,$Irh27_instit,true,'hidden',3,"");
           if(isset($importar) || isset($codigo_importa)){
@@ -77,7 +77,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_descr?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh27_descr',50,$Irh27_descr,true,'text',$db_opcao,"");
           ?>
         </td>
@@ -88,7 +88,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_quant?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh27_quant', 13,$Irh27_quant,true,'text',$db_opcao,"");
           ?>
         </td>
@@ -99,7 +99,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_pd?>
         </td>
         <td>
-          <?php 
+          <?
           $x = array("1"=>"Provento","2"=>"Desconto","3"=>"Base");
           db_select('rh27_pd',$x,true,$db_opcao,"onChange='js_configSelTipo(this.value)'; style='width:101px;'");
           ?>
@@ -111,7 +111,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_tipo?>
         </td>
         <td>
-          <?php 
+          <?
           $info = Array("1"=>"Fixa","2"=>"Variável");
           db_select('rh27_tipo',$info,true,$db_opcao, "style='width:101px;'");
           ?>
@@ -123,7 +123,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_ativo?>
         </td>
         <td>
-          <?php 
+          <?
           $arr_ativo = Array("t"=>"Ativo","f"=>"Inativo");
           db_select('rh27_ativo',$arr_ativo,true,$db_opcao, "style='width:101px;'");
           ?>
@@ -157,7 +157,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_tipobloqueio;?>
         </td>
         <td>
-          <?php 
+          <?
           $tipo_bloqueio = array( 'N' => "Nenhum",
           'A' => "Aviso",
           'B' => "Bloqueio");
@@ -208,7 +208,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_obs?>" colspan=2 align="center">
           <fieldset>
             <legend><?=@$Lrh27_obs?></legend>
-            <?php 
+            <?
               db_textarea('rh27_obs',2,80,$Irh27_obs,true,'text',$db_opcao,"");
             ?>
           </fieldset>
@@ -236,7 +236,7 @@ $rh27_instit = db_getsession("DB_instit");
   <fieldset id="ctnInformacoes">
     <Legend><b>Informações</b></Legend>
     <table class="form-container">
-      <?php 
+      <?
       if ($db_opcao==1 && (!isset($rh27_calc1)||$rh27_calc1=="")&&(!isset($rh27_calc2)||$rh27_calc2=="")){
 
         $result_media = $clrhtipomedia->sql_record($clrhtipomedia->sql_query_file('0'));
@@ -252,7 +252,7 @@ $rh27_instit = db_getsession("DB_instit");
       ?>
       <tr>
         <td title="<?=@$Trh27_calc1?>" width="35%">
-          <?php 
+          <?
           $sFunction = '';
           if ($db_opcao != 1 && @$rh27_rubric < 1999) {
             $sFunction = "js_pesquisarh27_calc1(true);";
@@ -261,7 +261,7 @@ $rh27_instit = db_getsession("DB_instit");
           ?>
         </td>
         <td width="65%">
-          <?php 
+          <?
           db_input('rh27_calc1',10,$Irh27_calc1,true,'text',$db_opcao," onchange='js_pesquisarh27_calc1(false);'");
           db_input('rh29_descr',40,$Irh29_descr,true,'text',3,'');
           ?>
@@ -270,7 +270,7 @@ $rh27_instit = db_getsession("DB_instit");
 
       <tr>
         <td title="<?=@$Trh27_calc2?>">
-          <?php 
+          <?
           $sFunction = '';
           if ($db_opcao != 1 && @$rh27_rubric < 1999) {
             $sFunction = "js_pesquisarh27_calc2(true);";
@@ -279,7 +279,7 @@ $rh27_instit = db_getsession("DB_instit");
           ?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh27_calc2',10,$Irh27_calc2,true,'text',$db_opcao," onchange='js_pesquisarh27_calc2(false);'");
           db_input('rh29_descr',40,$Irh29_descr,true,'text',3,'',"rh29_descr2");
           ?>
@@ -288,12 +288,12 @@ $rh27_instit = db_getsession("DB_instit");
 
       <tr>
         <td>
-          <?php 
+          <?
           db_ancora(@$Lrh27_rhfundamentacaolegal,"js_pesquisaFundamentacaoLegal(true);",$db_opcao);
           ?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh27_rhfundamentacaolegal',10,$Irh27_rhfundamentacaolegal,true,'text',$db_opcao," onchange='js_pesquisaFundamentacaoLegal(false);' ondrop='return false'");
           db_input('rh137_descricao',40,$Irh137_descricao,true,'text',3);
           ?>
@@ -303,7 +303,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td> <b>Tipo:</b> </td>
         <td>
-          <?php 
+          <?
           $aTipo = array(
               'n'=>'Nenhum',
               'e'=>'Empenho',
@@ -319,10 +319,10 @@ $rh27_instit = db_getsession("DB_instit");
 
       <tr id='linhaDesdobramento'>
         <td title="<?=@$Trh23_codele?>">
-          <?php  db_ancora(@$Lrh23_codele,"js_pesquisarh23_codele(true);",$db_opcao); ?>
+          <? db_ancora(@$Lrh23_codele,"js_pesquisarh23_codele(true);",$db_opcao); ?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh23_codele',10,$Irh23_codele,true,'text',$db_opcao," onchange='js_pesquisarh23_codele(false);'");
           db_input('o56_descr',40,$Io56_descr,true,'text',3,'');
           ?>
@@ -331,10 +331,10 @@ $rh27_instit = db_getsession("DB_instit");
 
       <tr id='linhaRetencao'>
         <td title="<?=@$Trh75_retencaotiporec?>">
-          <?php  db_ancora(@$Lrh75_retencaotiporec,"js_pesquisarh75_retencaotiporec(true);",$db_opcao); ?>
+          <? db_ancora(@$Lrh75_retencaotiporec,"js_pesquisarh75_retencaotiporec(true);",$db_opcao); ?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh75_retencaotiporec',10,$Irh75_retencaotiporec,true,'text',$db_opcao," onchange='js_pesquisarh75_retencaotiporec(false);'");
           db_input('e21_descricao',40,'',true,'text',3,'');
           ?>
@@ -344,7 +344,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td title="<?=@$Trh27_limdat?>"> <?=@$Lrh27_limdat?> </td>
         <td>
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('rh27_limdat',$x,true,$db_opcao,"style='width:125px;'");
           ?>
@@ -354,7 +354,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td title="<?=@$Trh27_periodolancamento?>"> <?=@$Lrh27_periodolancamento?> </td>
         <td>
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('rh27_periodolancamento',$x,true,$db_opcao,"style='width:125px;'");
           ?>
@@ -364,7 +364,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td title="<?=@$Trh27_calc3?>"> <?=@$Lrh27_calc3?> </td>
         <td>
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('rh27_calc3',$x,true,$db_opcao,"style='width:125px;'");
           ?>
@@ -374,7 +374,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td title="<?=@$Trh27_presta?>"> <?=@$Lrh27_presta?> </td>
         <td>
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('rh27_presta',$x,true,$db_opcao,"style='width:125px;'");
           ?>
@@ -384,7 +384,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td title="<?=@$Trh27_propi?>"> <?=@$Lrh27_propi?> </td>
         <td>
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('rh27_propi',$x,true,$db_opcao,"style='width:125px;'");
           ?>
@@ -394,7 +394,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td title="<?=@$Trh27_calcp?>"> <?=@$Lrh27_calcp?> </td>
         <td>
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('rh27_calcp',$x,true,$db_opcao,"style='width:125px;'");
           ?>
@@ -404,7 +404,7 @@ $rh27_instit = db_getsession("DB_instit");
       <tr>
         <td title="<?=@$Trh27_propq?>"> <?=@$Lrh27_propq?> </td>
         <td>
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('rh27_propq',$x,true,$db_opcao,"style='width:125px;'");
           ?>
@@ -441,7 +441,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_cond2?>" colspan="2" align="center">
           <fieldset>
             <legend><?=@$Lrh27_cond2?></legend>
-            <?php 
+            <?
             db_textarea('rh27_cond2',1,80,$Irh27_cond2,true,'text',$db_opcao,'');
             ?>
           </fieldset>
@@ -457,7 +457,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_form2?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh27_form2',70,$Irh27_form2,true,'text',$db_opcao,'');
           ?>
         </td>
@@ -483,7 +483,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_form3?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh27_form3',70,$Irh27_form3,true,'text',$db_opcao,'');
           ?>
         </td>
@@ -494,7 +494,7 @@ $rh27_instit = db_getsession("DB_instit");
           <?=@$Lrh27_formq?>
         </td>
         <td>
-          <?php 
+          <?
           db_input('rh27_formq',70,$Irh27_formq,true,'text',$db_opcao,'');
           ?>
         </td>
@@ -503,7 +503,7 @@ $rh27_instit = db_getsession("DB_instit");
 
   </fieldset>
 
-  <?php  if (!isset($tela_pesquisa)){ ?>
+  <? if (!isset($tela_pesquisa)){ ?>
   <input onClick="return js_validarFormulario()"
   name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
   type="submit"
@@ -511,17 +511,17 @@ $rh27_instit = db_getsession("DB_instit");
   value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
   <?=($db_botao==false?"disabled":"")?> >
 
-  <?php     if ($db_opcao == 1){ ?>
+  <?    if ($db_opcao == 1){ ?>
   <input name="importar" type="button" id="importar" value="Importar" onclick="js_pesquisa('1');" >
-  <?php 
+  <?
   }
   ?>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa('');" >
-  <?php 
+  <?
   } else {
   ?>
   <input name="fechar" type="button" id="fechar" value="Fechar" onclick="parent.db_iframe_pesquisarubrica.hide();" >
-  <?php 
+  <?
   }
   ?>
 </form>
@@ -788,7 +788,7 @@ $rh27_instit = db_getsession("DB_instit");
   }
   function js_preenchepesquisa(chave){
     db_iframe_rhrubricas.hide();
-    <?php 
+    <?
       if($db_opcao!=1){
         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }
@@ -873,7 +873,7 @@ $rh27_instit = db_getsession("DB_instit");
 
     }
   }
-  <?php 
+  <?
     if ($db_opcao != 3  && $db_opcao != 33 && $db_opcao != 22 ) {
       echo "js_bloqueiaMedias(document.form1.rh27_rubric);";
     }

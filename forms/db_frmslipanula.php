@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,27 +51,27 @@ $clrotulo->label("z01_numcgm");
 <table border=0>  
   <tr>
     <td align="left">    <strong>Código do Slip:</strong>  </td>
-    <td><?php   db_input("k17_codigo", 10, $Ik17_codigo, true, 'text', 3, "", "numslip");  ?>   </td>
+    <td><?  db_input("k17_codigo", 10, $Ik17_codigo, true, 'text', 3, "", "numslip");  ?>   </td>
   </tr>
   <tr>
     <td align="left"><strong>
-     <?php  db_ancora('Conta a Debitar (Receber): ',"js_pesquisac01_reduz(true);",3);   ?></strong></td>
+     <? db_ancora('Conta a Debitar (Receber): ',"js_pesquisac01_reduz(true);",3);   ?></strong></td>
     <td nowrap>
-     <?php  db_input("debito", 10, true,"text",3); 
+     <? db_input("debito", 10, true,"text",3); 
         db_input("descrdebito", 40, true,"text",3)
      ?></td>
   </tr>
   <tr>
-    <td align="left"><strong><?php  db_ancora('Conta a Creditar (Pagar): ',"js_pesquisac01_reduz1(true);",$db_opcao); ?></strong></td>
+    <td align="left"><strong><? db_ancora('Conta a Creditar (Pagar): ',"js_pesquisac01_reduz1(true);",$db_opcao); ?></strong></td>
     <td nowrap>
-    <?php  db_input("credito", 10, true,"text",3); 
+    <? db_input("credito", 10, true,"text",3); 
         db_input("descrcredito", 40, true,"text",3)
      ?>
     </td>
   </tr>
   <tr>
-    <td align="left"><?php  db_ancora(@$Lk17_hist,"js_pesquisac50_codhist(true);",$db_opcao);  ?></td>
-    <td><?php 
+    <td align="left"><? db_ancora(@$Lk17_hist,"js_pesquisac50_codhist(true);",$db_opcao);  ?></td>
+    <td><?
                   db_input('k17_hist',10,$Ik17_hist,true,'text',$db_opcao," onchange='js_pesquisac50_codhist(false);'");
                   db_input('c50_descr',40,$Ic50_descr,true,'text',3);
             ?>
@@ -79,11 +79,11 @@ $clrotulo->label("z01_numcgm");
   </tr>
   <tr>
     <td align="left">
-      <?php  
+      <? 
         db_ancora("<b>CGM do Favorecido:</b>","js_pesquisaz01_numcgm(true);",3); 
       ?>
     </td>
-    <td><?php 
+    <td><?
                   db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'");
                   db_input('z01_nome',40,$Iz01_nome,true,'text',3);
              ?>
@@ -91,29 +91,29 @@ $clrotulo->label("z01_numcgm");
   </tr>
   <tr>
     <td align="left"><strong>Valor da Transação:</strong></td>
-    <td><?php                
+    <td><?               
                db_input("k17_valor", 10, 4, true,'text',$db_opcao," onBlur=js_atuValor(this.value);");
 	     ?>    
     </td>
   </tr>
-  <?php 
+  <?
    if ($db_opcao == 22 || $db_opcao == 2) {
     ?> 
     <tr>
     <td align="left"><b>Data Anulação:</b></td>
      <td>
      
-     <?php db_inputdata("k17_dtanu",null,null,null,true,"text",1);?>
+     <?db_inputdata("k17_dtanu",null,null,null,true,"text",1);?>
      </td>
      </tr>
-  <?php    
+  <?   
    }
   
   ?>
   <tr>
     <td align="left" valign="top"><strong>Observações:</strong></td>
     <td align="left" valign="top">
-      <?php 
+      <?
             if((!isset($texto) || (isset($texto) && trim($texto) == "")) && isset($k17_texto) && trim($k17_texto) != ""){
                   $texto = $k17_texto;
            }
@@ -124,7 +124,7 @@ $clrotulo->label("z01_numcgm");
   <tr>
     <td align="left" valign=""><strong>Motivo:</strong></td>
     <td align="left" valign="top">
-      <?php 
+      <?
             if((!isset($texto) || (isset($texto) && trim($texto) == "")) && isset($k17_texto) && trim($k17_texto) != ""){
                   $texto = $k17_texto;
            }
@@ -144,7 +144,7 @@ $clrotulo->label("z01_numcgm");
                       <td class="table_header" width=75%> DESCRIÇÃO </td>
                       <td class="table_header" width=10%> VALOR </td>
                  </tr>
-                 <?php 
+                 <?
                  if(isset($k17_codigo) && trim($k17_codigo) != ""){
 	                  $sSqlRecurso  = "select o15_codigo, o15_descr,k29_valor";
 	                  $sSqlRecurso .= "  from sliprecurso ";

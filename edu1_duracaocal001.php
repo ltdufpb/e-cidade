@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,15 +77,15 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Duração do Calendário</b></legend>
-    <?php include(modification("forms/db_frmduracaocal.php"));?>
+    <?include(modification("forms/db_frmduracaocal.php"));?>
    </center>
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
  if($clduracaocal->erro_status=="0"){
   $clduracaocal->erro(true,false);

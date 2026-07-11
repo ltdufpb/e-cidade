@@ -57,12 +57,12 @@ include(modification("dbforms/db_funcoes.php"));
     </tr>
   </table>
   <center>
-  <?php 
+  <?
     require(modification("forms/db_frmgerarslipretencao.php"));
   ?>
   </center>
   </body>
 </html> 
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>

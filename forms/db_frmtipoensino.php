@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led36_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed36_i_codigo',10,$Ied36_i_codigo,true,'text',3,"")?>
+   <?db_input('ed36_i_codigo',10,$Ied36_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -68,7 +68,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led36_c_descr?>
   </td>
   <td>
-   <?php db_input('ed36_c_descr',30,$Ied36_c_descr,true,'text',$db_opcao,"")?>
+   <?db_input('ed36_c_descr',30,$Ied36_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -76,7 +76,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led36_c_abrev?>
   </td>
   <td>
-   <?php db_input('ed36_c_abrev',2,$Ied36_c_abrev,true,'text',$db_opcao,"")?>
+   <?db_input('ed36_c_abrev',2,$Ied36_c_abrev,true,'text',$db_opcao,"")?>
    (Ensino Regular -> ER / Educação Especial -> ES / Educação de Jovens e Adultos -> EJ)
   </td>
  </tr>
@@ -86,7 +86,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?php 
+  <?
    $chavepri= ["ed36_i_codigo"=>@$ed36_i_codigo,"ed36_c_descr"=>@$ed36_c_descr,"ed36_c_abrev"=>@$ed36_c_abrev];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoensino->sql_query($ed36_i_codigo,"*","ed36_i_codigo");

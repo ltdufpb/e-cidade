@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltiaf->rotulo->label("y90_codtiaf");
               <?=$Ly90_codtiaf?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y90_codtiaf",10,$Iy90_codtiaf,true,"text",4,"","chave_y90_codtiaf");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltiaf->rotulo->label("y90_codtiaf");
               <?=$Ly90_codtiaf?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y90_codtiaf",10,$Iy90_codtiaf,true,"text",4,"","chave_y90_codtiaf");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltiaf->rotulo->label("y90_codtiaf");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tiaf.php")==true){
@@ -119,12 +119,12 @@ $cltiaf->rotulo->label("y90_codtiaf");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

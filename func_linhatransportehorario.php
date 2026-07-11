@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cllinhatransportehorario->rotulo->label("tre07_sequencial");
               <?=$Ltre07_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("tre07_sequencial",10,$Itre07_sequencial,true,"text",4,"","chave_tre07_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cllinhatransportehorario->rotulo->label("tre07_sequencial");
               <?=$Ltre07_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("tre07_sequencial",10,$Itre07_sequencial,true,"text",4,"","chave_tre07_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cllinhatransportehorario->rotulo->label("tre07_sequencial");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_linhatransportehorario.php")==true){
@@ -129,12 +129,12 @@ $cllinhatransportehorario->rotulo->label("tre07_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,14 +52,14 @@ $clcensouf = new cl_censouf;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <table width="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
    <br>
    <fieldset style="width:95%"><legend><b>UF</b></legend>
    <br>
-   <?php 
+   <?
    $campos = "ed260_i_codigo,
               ed260_c_sigla,
               ed260_c_nome
@@ -75,6 +75,6 @@ $clcensouf = new cl_censouf;
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

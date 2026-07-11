@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $cltipoensino->rotulo->label("ed36_c_descr");
       <?=$Led36_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed36_i_codigo",10,$Ied36_i_codigo,true,"text",4,"","chave_ed36_i_codigo");?>
+      <?db_input("ed36_i_codigo",10,$Ied36_i_codigo,true,"text",4,"","chave_ed36_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $cltipoensino->rotulo->label("ed36_c_descr");
       <?=$Led36_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-       <?php 
+       <?
        db_input("ed36_c_descr",20,$Ied36_c_descr,true,"text",4,"","chave_ed36_c_descr");
        ?>
      </td>
@@ -83,7 +83,7 @@ $cltipoensino->rotulo->label("ed36_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_tipoensino.php")==true){

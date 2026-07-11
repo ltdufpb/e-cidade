@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -48,7 +48,7 @@ if ($db_opcao==2) {
   <tr>
      <td align="left"><b>Tipo:</b></td>
        <td align="left" >
-         <?php 
+         <?
            $arraymostra = array("" =>"- Selecione -", "S"=> "Sintética ", "A" => "Analítica ");
            db_select("Tipo",$arraymostra,1,1,"onchange='js_mostraVinculo(this.value)'");
          ?>
@@ -59,7 +59,7 @@ if ($db_opcao==2) {
        <?=@$Lq71_sequencial?>
     </td>
     <td>
-<?php 
+<?
 db_input('q71_sequencial',10,$Iq71_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -69,7 +69,7 @@ db_input('q71_sequencial',10,$Iq71_sequencial,true,'text',3,"")
        <?=@$Lq71_estrutural?>
     </td>
     <td>
-<?php 
+<?
 db_input('q71_estrutural',10,$Iq71_estrutural,true,'text',$db_opcao2,"")
 ?>
     </td>
@@ -79,7 +79,7 @@ db_input('q71_estrutural',10,$Iq71_estrutural,true,'text',$db_opcao2,"")
        <?=@$Lq71_descr?>
     </td>
     <td>
-<?php 
+<?
 db_input('q71_descr',80,$Iq71_descr,true,'text',$db_opcao2,"")
 ?>
     </td>
@@ -89,7 +89,7 @@ db_input('q71_descr',80,$Iq71_descr,true,'text',$db_opcao2,"")
        <?=@$Lq71_aliquota?>
     </td>
     <td>
-        <?php 
+        <?
         db_input('q71_aliquota',10,$Iq71_aliquota,true,'text',$db_opcao,"")
         ?>
     </td>
@@ -98,7 +98,7 @@ db_input('q71_descr',80,$Iq71_descr,true,'text',$db_opcao2,"")
     <td colspan="2">
       <fieldset>
         <legend>Vincular Anexo ao CNAE</legend>
-        <?php  db_input('q178_sequencial',10,$Iq178_sequencial,true,'text',3,"", "", "", "display:none;") ?>
+        <? db_input('q178_sequencial',10,$Iq178_sequencial,true,'text',3,"", "", "", "display:none;") ?>
         <table>
           <tr>
             <td nowrap title="<?php echo $Tq157_descricao; ?>">

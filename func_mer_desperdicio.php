@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clmer_cardapio->rotulo->label("me01_c_nome");
       <?=$Lme22_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me22_i_codigo",4,$Ime22_i_codigo,true,"text",4,"","chave_me22_i_codigo");?>
+      <?db_input("me22_i_codigo",4,$Ime22_i_codigo,true,"text",4,"","chave_me22_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@ $clmer_cardapio->rotulo->label("me01_c_nome");
       <?=$Lme01_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me01_c_nome",20,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
+      <?db_input("me01_c_nome",20,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $clmer_cardapio->rotulo->label("me01_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $escola = db_getsession("DB_coddepto");
    if (!isset($pesquisa_chave)) {
    	

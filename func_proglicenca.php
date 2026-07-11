@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clproglicenca->rotulo->label("ed121_c_descr");
       <?=$Led121_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed121_i_codigo",10,$Ied121_i_codigo,true,"text",4,"","chave_ed121_i_codigo");?>
+      <?db_input("ed121_i_codigo",10,$Ied121_i_codigo,true,"text",4,"","chave_ed121_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ $clproglicenca->rotulo->label("ed121_c_descr");
       <?=$Led121_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed121_c_descr",50,$Ied121_c_descr,true,"text",4,"","chave_ed121_c_descr");?>
+      <?db_input("ed121_c_descr",50,$Ied121_c_descr,true,"text",4,"","chave_ed121_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -79,7 +79,7 @@ $clproglicenca->rotulo->label("ed121_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_proglicenca.php")==true){

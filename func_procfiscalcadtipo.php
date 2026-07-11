@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clprocfiscalcadtipo->rotulo->label("y33_descricao");
               <?=$Ly33_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y33_sequencial",10,$Iy33_sequencial,true,"text",4,"","chave_y33_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clprocfiscalcadtipo->rotulo->label("y33_descricao");
               <?=$Ly33_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y33_descricao",10,$Iy33_descricao,true,"text",4,"","chave_y33_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clprocfiscalcadtipo->rotulo->label("y33_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procfiscalcadtipo.php")==true){
@@ -123,12 +123,12 @@ $clprocfiscalcadtipo->rotulo->label("y33_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

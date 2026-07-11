@@ -28,7 +28,7 @@
 <script>
   parent.disciplina.location.href = "edu1_historicodisciplina.php?ed65_i_historicomps=<?=@$ed65_i_historicomps?>";
 </script>
-<?php 
+<?
 
 require_once(modification("libs/db_app.utils.php"));
 db_app::import("educacao.*");

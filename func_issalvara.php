@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label("DBtxt31");
               <b>Inscrição : </b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q123_sequencial",10,$Iq123_sequencial,true,"text",4,"","chave_q123_sequencial");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $clrotulo->label("DBtxt31");
               <b>Nome : </b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",30,"",true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -80,7 +80,7 @@ $clrotulo->label("DBtxt31");
             <label for="cpf"><?=$DBtxt30?>:</label>
 						</td>
 						<td>
-							<?php 
+							<?
 								db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CPF\",\"\",\"\",event);'",'cpf');
 							?>
 						</td>
@@ -90,7 +90,7 @@ $clrotulo->label("DBtxt31");
             <label for="cnpj"><?=$DBtxt31?>:</label>
 						</td>
 						<td>
-							<?php 
+							<?
 								db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CNPJ\",\"\",\"\",event);'",'cnpj');
 							?>
 						</td>
@@ -109,7 +109,7 @@ $clrotulo->label("DBtxt31");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       
     if (!isset($_GET['lLibera'])){
@@ -217,12 +217,12 @@ $clrotulo->label("DBtxt31");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

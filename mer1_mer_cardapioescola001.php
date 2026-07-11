@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ if ($clmer_cardapiodata->numrows>0 || $clmer_cardapiodia->numrows>0) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -118,7 +118,7 @@ td.linhagrid
   <table border="0" cellspacing="0" cellpadding="0" align="center">
     <tr>
      <td>
-      <?php include(modification("forms/db_frmmer_cardapioescola.php"));?>     
+      <?include(modification("forms/db_frmmer_cardapioescola.php"));?>     
      </td>
    </tr>   
   </table>

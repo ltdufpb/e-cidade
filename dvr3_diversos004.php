@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -94,12 +94,12 @@ function js_testacamp(){
     <table class="form-container">
       <tr>   
         <td>
-          <?php 
+          <?
             db_ancora($Lz01_nome,' js_cgm(true); ',1);
           ?>
          </td>
          <td> 
-          <?php 
+          <?
             db_input('z01_numcgm',5,$Iz01_numcgm,true,'text',1,"onchange='js_cgm(false)'","z_numcgm");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomecgm");
           ?>
@@ -107,12 +107,12 @@ function js_testacamp(){
       </tr>
       <tr>   
         <td>
-          <?php 
+          <?
             db_ancora($Lj01_matric,' js_matri(true); ',1);
           ?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('j01_matric',5,$Ij01_matric,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomematri");
           ?>
@@ -120,12 +120,12 @@ function js_testacamp(){
       </tr>
       <tr>   
         <td>
-          <?php 
+          <?
             db_ancora($Lq02_inscr,' js_inscr(true); ',1);
           ?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('q02_inscr',5,$Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'");
             db_input('z01_nome',30,0,true,'text',3,"","z01_nomeinscr");
           ?>
@@ -152,7 +152,7 @@ function js_testacamp(){
   <input type="submit" name="pesquisar" value="Pesquisar" onclick="return js_testacamp();" >
   <input type="button" name="importar" value="Importar Lista" onclick="js_verificaPlanilha();" disabled='true'>
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -425,7 +425,7 @@ function js_mostracgm1(erro,chave){
 }
 
 </script>
-<?php 
+<?
 if(isset($dado) && $dado=="inscr"){
   db_msgbox(_M("tributario.diversos.dvr3_diversos004.inscricao_invalida"));
 }  

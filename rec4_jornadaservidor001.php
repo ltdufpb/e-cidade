@@ -42,7 +42,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     <meta http-equiv="Expires" CONTENT="0">
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <link href="estilos/DBFormularios.css" rel="stylesheet" type="text/css">
-    <?php  db_app::load('scripts.js, datagrid.widget.js, strings.js, prototype.js, estilos.css, AjaxRequest.js, classes/recursoshumanos/Efetividade/DBViewJornadaServidor.js'); ?>
+    <? db_app::load('scripts.js, datagrid.widget.js, strings.js, prototype.js, estilos.css, AjaxRequest.js, classes/recursoshumanos/Efetividade/DBViewJornadaServidor.js'); ?>
     <style type="text/css">
     #aviso {
 
@@ -98,6 +98,6 @@ function pesquisar() {
     );
 }
 </script>
-<?php  db_menu() ?>
+<? db_menu() ?>
 </body>
 </html>

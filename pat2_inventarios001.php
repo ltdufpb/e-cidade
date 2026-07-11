@@ -1,4 +1,4 @@
-<?php PHP
+<?PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -102,7 +102,7 @@ $db_opcao = 3;
            </strong>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('inicial',10,$It75_exercicio,true,'text', 3,"")
           ?>    
         </td>
@@ -116,7 +116,7 @@ $db_opcao = 3;
            </strong>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('final',10,$It75_exercicio,true,'text', 3,"")
           ?>    
         </td>
@@ -139,7 +139,7 @@ $db_opcao = 3;
   <input name="limpar" type="reset" id="limpar" value="Limpar"  >
 </form>
 
-<?php PHP  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?PHP  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>
 <script>

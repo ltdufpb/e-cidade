@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -71,7 +71,7 @@ class cl_criaabasrefresh {
       for(y=0; y < document.forms['formaba'].length; y++){
        tab[x].style.border = '1px outset #cccccc';
        tab[x].style.borderBottomColor = '#000000';
-       <?php 
+       <?
      reset($this->identifica);
      for($w=0; $w<sizeof($this->identifica); $w++){
       $chave=key($this->identifica);
@@ -154,7 +154,7 @@ class cl_criaabasrefresh {
     <td align="left" valign="top" bgcolor="#CCCCCC">
      <table border="0" cellpadding="0" cellspacing="0" marginwidth="0">
       <tr>
-      <?php 
+      <?
      reset($this->identifica);
      for($w=0; $w<sizeof($this->identifica); $w++){
       $chave=key($this->identifica);
@@ -185,7 +185,7 @@ class cl_criaabasrefresh {
    <form name="form_iframes" method="post" id="form_iframes" >
    <tr>
     <td align="center">
-     <?php 
+     <?
      reset($this->identifica);
      for($w=0; $w<sizeof($this->identifica); $w++){
       $chave=key($this->identifica);
@@ -195,7 +195,7 @@ class cl_criaabasrefresh {
        <iframe  id='<?=$chave?>' name="iframe_<?=$chave?>" class="bordasi" <?=$src?> frameborder="0" marginwidth="0" leftmargin="0" topmargin="0" height="<?=$this->iframe_height?>" width="<?=$this->iframe_width?>" scrolling="<?=$this->scrolling?>">
        </iframe>
       </div>
-      <?php 
+      <?
       next($this->identifica);
      }
      ?>
@@ -298,7 +298,7 @@ $pagina["AM"] = "edu1_amparo001.php?regencia=$regencia&iTrocaTurma=$iTrocaTurma"
 <table valign="top" marginwidth="0" width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td valign="top" bgcolor="#CCCCCC">
-   <?php 
+   <?
    $clcriaabas->abas_top      = "30";
    $clcriaabas->identifica    = $ident;
    $clcriaabas->sizecampo     = $tamcampo;

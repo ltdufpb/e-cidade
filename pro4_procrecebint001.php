@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -159,7 +159,7 @@ background-color:#ccddcc;
   </td>
   </tr>
     <td colspan=2 align='center' >
-  <?php    $usuario = db_getsession("DB_id_usuario");
+  <?   $usuario = db_getsession("DB_id_usuario");
        $result=($clproctransferint->sql_query(null,"p88_codigo,p88_data,p88_hora,p88_usuario,atual.id_usuario as usu_atual",null,"p89_usuario = $usuario "));
        $numrows=$clproctransferint->numrows;
        if($numrows>0){ 
@@ -204,7 +204,7 @@ background-color:#ccddcc;
   </table>
   </form>
 </center>
-<?php  
+<? 
 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconvenio->rotulo->label("r56_descr");
               <?=$Lr56_codrel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r56_codrel",4,$Ir56_codrel,true,"text",4,"","chave_r56_codrel");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconvenio->rotulo->label("r56_descr");
               <?=$Lr56_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r56_descr",40,$Ir56_descr,true,"text",4,"","chave_r56_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconvenio->rotulo->label("r56_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_convenio.php")==true){
@@ -123,12 +123,12 @@ $clconvenio->rotulo->label("r56_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -84,23 +84,23 @@ if(isset($excluir)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Opções de Respostas</b></legend>
-    <?php include(modification("forms/db_frmopcaoquestao.php"));?>
+    <?include(modification("forms/db_frmopcaoquestao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed106_c_descr",true,1,"ed106_c_descr",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
  if($clopcaoquestao->erro_status=="0"){
   $clopcaoquestao->erro(true,false);

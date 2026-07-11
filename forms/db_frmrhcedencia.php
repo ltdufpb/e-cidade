@@ -305,7 +305,7 @@ if (!empty($rh261_numcgm)) {
                 }
             </style>
     </center>
-    <?php 
+    <?
     if (isset($opcao)) {
         echo "<input name='novo' type='button' id='novo' value='Novo' onclick='document.location.href=\"pes1_rhcedente001.php?rh261_regist=$rh261_regist&novo=true\"' >";
     }
@@ -377,7 +377,7 @@ if (!empty($rh261_numcgm)) {
 
     function js_preenchepesquisa(chave) {
         db_iframe_rhdepend.hide();
-        <?php 
+        <?
         if ($db_opcao != 1) {
             echo "  location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }

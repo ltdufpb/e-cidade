@@ -65,38 +65,38 @@ if(isset($db_opcaoal)){
     <legend>Cgm</legend>
     <table class="form-container">
       <tr>
-        <td nowrap title="<?php //=@$Tj76_codigo?>">
-           <?php //=@$Lj76_codigo?>
+        <td nowrap title="<?//=@$Tj76_codigo?>">
+           <?//=@$Lj76_codigo?>
         </td>
         <td> 
-    <?php 
+    <?
     db_input('j76_codigo',6,$Ij76_codigo,true,'hidden',3,"")
     ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj76_averbacao?>">
-           <?php 
+           <?
            db_ancora(@$Lj76_averbacao,"js_pesquisaj76_averbacao(true);",3);
            ?>
         </td>
         <td> 
-    <?php 
+    <?
     db_input('j76_averbacao',6,$Ij76_averbacao,true,'text',3," onchange='js_pesquisaj76_averbacao(false);'")
     ?>       
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tj76_numcgm?>">
-           <?php 
+           <?
            db_ancora(@$Lj76_numcgm,"js_pesquisaj76_numcgm(true);",$db_opcao);
            ?>
         </td>
         <td> 
-    <?php 
+    <?
     db_input('j76_numcgm',10,$Ij76_numcgm,true,'text',$db_opcao," onchange='js_pesquisaj76_numcgm(false);'")
     ?>
-           <?php 
+           <?
     db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')
            ?>
         </td>
@@ -107,7 +107,7 @@ if(isset($db_opcaoal)){
            <?=@$Lj76_tipo?>
         </td>
         <td> 
-    <?php 
+    <?
     $x = array('1'=>'Proprietario','2'=>'Promitente');
     db_select('j76_tipo',$x,true,$db_opcao,"");
     ?>
@@ -119,7 +119,7 @@ if(isset($db_opcaoal)){
            <?=@$Lj76_principal?>
         </td>
         <td> 
-    <?php 
+    <?
     
     $result_principal=$claverbacgm->sql_record($claverbacgm->sql_query_file(null,"*",null,"j76_averbacao=$j76_averbacao and j76_principal is true"));
     if ($claverbacgm->numrows>0){
@@ -139,7 +139,7 @@ if(isset($db_opcaoal)){
       <table>
         <tr>
           <td valign="top"  align="center">  
-          <?php 
+          <?
          $chavepri= array("j76_codigo"=>@$j76_codigo);
          $cliframe_alterar_excluir->chavepri=$chavepri;
          $cliframe_alterar_excluir->sql     = $claverbacgm->sql_query(null,"*",null,"j76_averbacao=$j76_averbacao");

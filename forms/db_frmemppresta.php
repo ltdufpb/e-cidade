@@ -68,7 +68,7 @@ if ($db_opcao == 1) {
              <?=@$Le60_codemp?>
           </td>
           <td>
-            <?php 
+            <?
             db_input('e60_codemp',10,$Ie60_codemp,true,'text',3);
             db_input('e45_numemp',10,$Ie45_numemp,true,'hidden',3);
             ?>
@@ -96,7 +96,7 @@ if ($db_opcao == 1) {
              <?=@$Le45_data?>
           </td>
           <td>
-            <?php 
+            <?
             db_inputdata('e45_data',@$e45_data_dia,@$e45_data_mes,@$e45_data_ano,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -132,7 +132,7 @@ if ($db_opcao == 1) {
           <td nowrap title="<?=@$Te45_obs?>" colspan="2">
             <fieldset>
               <legend><b>Observações</b></legend>
-              <?php 
+              <?
               db_textarea('e45_obs',5,70,$Ie45_obs,true,'text',$db_opcao,"")
               ?>
             </fieldset>

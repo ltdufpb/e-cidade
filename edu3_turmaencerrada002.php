@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -87,7 +87,7 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$camp,"ed60_i_numa
     <td><b>Data Saída</b></td>
     <td>&nbsp;</td>
    </tr>
-   <?php 
+   <?
    for($c=0;$c<$clmatricula->numrows;$c++) {
      
      db_fieldsmemory($result,$c);
@@ -107,7 +107,7 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$camp,"ed60_i_numa
       <td class="aluno" align="center"><?=$datasaida==""?"&nbsp;":db_formatar($datasaida,'d')?></td>
       <td class="aluno" align="center" style="color:<?=$color?>;font-weight:bold"><?=$ed60_c_concluida=="N"?"NÃO ENCERRADO":"ENCERRADO"?></td>
      </tr>
-    <?php 
+    <?
    }
    ?>
   </table>

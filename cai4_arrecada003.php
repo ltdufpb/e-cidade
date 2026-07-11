@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -286,7 +286,7 @@ if (!isset($oPost->reautentica) && isset($oPost->codautent)) {
 <body bgcolor=#CCCCCC bgcolor="#AAB7D5">
   <table width="100%">
     <tr>
-      <?php 
+      <?
         if ($system == 'linux') {
           echo "<td align=\"center\">";
           echo "  <font id=\"numeros\" size=\"2\">";
@@ -313,7 +313,7 @@ if (!isset($oPost->reautentica) && isset($oPost->codautent)) {
   </form>
 </body>
 </html>
-<?php 
+<?
 if (!isset($oPost->reautentica) && $clautenticar->erro == false) {
 
   if (isset($oPost->codautent)) {

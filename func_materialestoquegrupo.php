@@ -154,12 +154,12 @@ $iAnousu = db_getsession("DB_anousu");
   </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

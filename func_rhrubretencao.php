@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhrubretencao->rotulo->label("rh75_retencaotiporec");
               <?=$Lrh75_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh75_sequencial",10,$Irh75_sequencial,true,"text",4,"","chave_rh75_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhrubretencao->rotulo->label("rh75_retencaotiporec");
               <?=$Lrh75_retencaotiporec?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh75_retencaotiporec",10,$Irh75_retencaotiporec,true,"text",4,"","chave_rh75_retencaotiporec");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhrubretencao->rotulo->label("rh75_retencaotiporec");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhrubretencao.php")==true){
@@ -123,12 +123,12 @@ $clrhrubretencao->rotulo->label("rh75_retencaotiporec");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

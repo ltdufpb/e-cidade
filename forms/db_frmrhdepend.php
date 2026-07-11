@@ -50,16 +50,16 @@ if (!isset($Ip58_numero)) {
         <table align="center" >
          <tr>
            <td nowrap title="<?=@$Trh16_regist?>">
-              <?php 
+              <?
               db_ancora(@$Lrh31_regist,"",3);
               ?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('rh31_regist',6,$Irh31_regist,true,'text',3,"");
               db_input('rh31_codigo',6,$Irh31_codigo,true,'hidden',3);
               ?>
-              <?php 
+              <?
               db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
               ?>
             </td>
@@ -91,7 +91,7 @@ if (!isset($Ip58_numero)) {
               <?=@$Lrh31_dtnasc?>
             </td>
             <td>
-              <?php 
+              <?
               db_inputdata('rh31_dtnasc',@$rh31_dtnasc_dia,@$rh31_dtnasc_mes,@$rh31_dtnasc_ano,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -99,7 +99,7 @@ if (!isset($Ip58_numero)) {
           <tr>
           <td><b>CPF</b></td>
           <td>
-            <?php 
+            <?
               db_input ( 'dp01_cpf', 15, @$Iz01_cpf, true, 'text', $db_opcao, "onBlur='js_verificaCGCCPF(this);'", '', '', 'text-align:left;', 11 );
             ?>
           </td>
@@ -109,7 +109,7 @@ if (!isset($Ip58_numero)) {
               <b>Sexo:</b>
             </td>
             <td>
-              <?php 
+              <?
                 $sex = array ("M" => "Masculino", "F" => "Feminino" );
                 db_select ( 'dp01_sexo', $sex, true, $db_opcao, 'style="width:125px;"' );
               ?>
@@ -120,7 +120,7 @@ if (!isset($Ip58_numero)) {
               <?=@$Lrh31_gparen?>
             </td>
             <td id="tipo_parentesco">
-              <?php 
+              <?
               $arr_gparen = array(
                                   'C'=>'Cônjuge',
                                   'F'=>'Filho',
@@ -162,7 +162,7 @@ if (!isset($Ip58_numero)) {
               <?=@$Lrh31_depend?>
             </td>
             <td>
-              <?php 
+              <?
               if(!isset($rh31_depend)){
                 $rh31_depend = "N";
               }
@@ -181,7 +181,7 @@ if (!isset($Ip58_numero)) {
               <?=@$Lrh31_irf?>
             </td>
             <td>
-              <?php 
+              <?
 
 
               $arr_irf = array(
@@ -204,7 +204,7 @@ if (!isset($Ip58_numero)) {
               <?=@$Lrh31_especi?>
             </td>
             <td>
-              <?php 
+              <?
               if(!isset($rh31_especi)){
                 $rh31_especi = "N";
               }
@@ -238,7 +238,7 @@ if (!isset($Ip58_numero)) {
 </table>
 </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?php 
+<?
 if(isset($opcao)){
   echo "<input name='novo' type='button' id='novo' value='Novo' onclick='document.location.href=\"pes1_rhdepend001.php?rh31_regist=$rh31_regist&vmenu=true\"' >";
 }
@@ -246,7 +246,7 @@ if(isset($opcao)){
 <table width="90%">
   <tr>
     <td valign="top"  align="center" width="90%" heigth="100%">
-      <?php 
+      <?
       $dbwhere = " rh31_regist = $rh31_regist ";
       if(isset($rh31_codigo) && trim($rh31_codigo)!=""){
         $dbwhere .= " and rh31_codigo <> $rh31_codigo ";
@@ -330,7 +330,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhdepend.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo "  location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

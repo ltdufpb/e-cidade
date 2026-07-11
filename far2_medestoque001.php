@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,13 +74,13 @@ $oRotulo->label("descrdepto");
                   <table> 
                     <tr>
                       <td>
-                        <?php db_ancora("<b>Depósito:</b>", "js_BuscaDados(true);", $db_opcao);?>
+                        <?db_ancora("<b>Depósito:</b>", "js_BuscaDados(true);", $db_opcao);?>
                       </td>  
                       <td>
-                        <?php db_input("coddepto", 6, @$Icoddepto, true, "text", $db_opcao, "onchange='js_BuscaDados(false);'");?>
+                        <?db_input("coddepto", 6, @$Icoddepto, true, "text", $db_opcao, "onchange='js_BuscaDados(false);'");?>
                       </td>                    
                       <td>
-                        <?php db_input("descrdepto", 50, @$Idescrdepto, true, 'text', 3);?>
+                        <?db_input("descrdepto", 50, @$Idescrdepto, true, 'text', 3);?>
                       </td>
                       <td>
                         <input name="Incluir" type="button" value="Incluir" onclick="js_incluirDeposito();">
@@ -112,7 +112,7 @@ $oRotulo->label("descrdepto");
                         <b>Estoque zerado:</b>
                       </td> 
                       <td>
-                        <?php db_select("estoqueZerado", array("S"=>"SIM","N"=>"NÃO"), true, 2, "");?>
+                        <?db_select("estoqueZerado", array("S"=>"SIM","N"=>"NÃO"), true, 2, "");?>
 	                  <td>
 	                </tr>
 	                <tr>   
@@ -120,7 +120,7 @@ $oRotulo->label("descrdepto");
 			            <b>Tipo:</b>
 			          </td>
 				      <td>
-				        <?php db_select("tipo", array("S"=>"SINTÉTICO"), true, 2);?>
+				        <?db_select("tipo", array("S"=>"SINTÉTICO"), true, 2);?>
 	                  </td>
 	                </tr>
 	              </table>
@@ -135,7 +135,7 @@ $oRotulo->label("descrdepto");
                         <b>Quebra:</b>
 	                  </td>
 			          <td>  
-			            <?php db_select("quebra", array("N"=>"NENHUMA","D"=>"DEPÓSITO"), true, 2);?>
+			            <?db_select("quebra", array("N"=>"NENHUMA","D"=>"DEPÓSITO"), true, 2);?>
                       </td>
 	                </tr>
 	                <tr>  
@@ -143,7 +143,7 @@ $oRotulo->label("descrdepto");
                         <b>Ordem:</b>
 	                  </td>
 	                  <td>	
-			            <?php db_select("ordem", array("A"=>"ALFABÉTICA","N"=>"NUMERICA"), true, 2);?>
+			            <?db_select("ordem", array("A"=>"ALFABÉTICA","N"=>"NUMERICA"), true, 2);?>
                       </td>
 			        </tr>
 	              </table>
@@ -159,7 +159,7 @@ $oRotulo->label("descrdepto");
         </form>
       </fieldset>
     </center>
-    <?php db_menu(db_getsession("DB_id_usuario"),
+    <?db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),
               db_getsession("DB_instit")

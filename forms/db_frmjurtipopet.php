@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $cljurtipopet->rotulo->label();
           <?=@$Lv59_codpet?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('v59_codpet',8,$Iv59_codpet,true,'text',3,"")
           ?>
         </td>
@@ -47,7 +47,7 @@ $cljurtipopet->rotulo->label();
           <?=@$Lv59_descr?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('v59_descr',40,$Iv59_descr,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -63,7 +63,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_jurtipopet.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

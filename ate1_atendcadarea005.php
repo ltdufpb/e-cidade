@@ -99,7 +99,7 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?php 
+	<?
 	include(modification("forms/db_frmatendcadarea.php"));
 	?>
     </center>
@@ -108,7 +108,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

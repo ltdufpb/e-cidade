@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -59,7 +59,7 @@ $clturno->rotulo->label("ed15_c_nome");
       <?=$Led15_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed15_i_codigo",10,$Ied15_i_codigo,true,"text",4,"","chave_ed15_i_codigo");?>
+      <?db_input("ed15_i_codigo",10,$Ied15_i_codigo,true,"text",4,"","chave_ed15_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -67,7 +67,7 @@ $clturno->rotulo->label("ed15_c_nome");
       <?=$Led15_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed15_c_nome",20,$Ied15_c_nome,true,"text",4,"","chave_ed15_c_nome");?>
+      <?db_input("ed15_c_nome",20,$Ied15_c_nome,true,"text",4,"","chave_ed15_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -83,7 +83,7 @@ $clturno->rotulo->label("ed15_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $escola = db_getsession("DB_coddepto");
    $where = " and exists(select * from periodoescola
                          where ed17_i_escola = $escola

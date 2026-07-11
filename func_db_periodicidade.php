@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_periodicidade->rotulo->label("db84_sequencial");
               <?=$Ldb84_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db84_sequencial",10,$Idb84_sequencial,true,"text",4,"","chave_db84_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_periodicidade->rotulo->label("db84_sequencial");
               <?=$Ldb84_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db84_sequencial",10,$Idb84_sequencial,true,"text",4,"","chave_db84_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_periodicidade->rotulo->label("db84_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_periodicidade.php")==true){
@@ -123,12 +123,12 @@ $cldb_periodicidade->rotulo->label("db84_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

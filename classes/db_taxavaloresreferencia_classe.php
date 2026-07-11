@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: fiscal
 //CLASSE DA ENTIDADE taxavaloresreferencia
 class cl_taxavaloresreferencia { 

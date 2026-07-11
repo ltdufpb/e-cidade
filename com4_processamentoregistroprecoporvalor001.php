@@ -48,7 +48,7 @@ unset($_SESSION["oSolicita"]);
 <html>
 <head>
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-  <?php 
+  <?
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, grid.style.css");
   ?>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

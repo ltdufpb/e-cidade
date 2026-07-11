@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,55 +43,55 @@ $clrotulo->label("q02_numcgm");
 <table border="0">
    <tr>
     <td nowrap title="<?=@$Tv12_numcgm?>">
-       <?php 
+       <?
        db_ancora(@$Lv12_numcgm,"js_pesquisav12_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('v12_numcgm',10,$Iv12_numcgm,true,'text',$db_opcao," onchange='js_pesquisav12_numcgm(false);'")
 ?>
-       <?php 
+       <?
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
-	<?php  if($origemmenu == '2'){?>
+	<? if($origemmenu == '2'){?>
   <tr>
     <td nowrap title="<?=@$Tv16_inscr?>">
-       <?php 
+       <?
        db_ancora(@$Lv16_inscr,"js_pesquisav16_inscr(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('v16_inscr',10,$Iv16_inscr,true,'text',$db_opcao," onchange='js_pesquisav16_inscr(false);'")
 ?>
-       <?php 
+       <?
 db_input('q02_numcgm',40,$Iq02_numcgm,true,'text',3,'')
        ?>
     </td>
   </tr>
-	<?php }else{
+	<?}else{
 		   db_input('v16_inscr',10,$Iv16_inscr,true,'hidden',3,"");
     }?>
-	<?php  if($origemmenu == '3'){?>
+	<? if($origemmenu == '3'){?>
   <tr>
     <td nowrap title="<?=@$Tv15_matric?>">
-       <?php 
+       <?
        db_ancora(@$Lv15_matric,"js_pesquisav15_matric(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('v15_matric',10,$Iv15_matric,true,'text',$db_opcao," onchange='js_pesquisav15_matric(false);'")
 ?>
-       <?php 
+       <?
 db_input('j01_numcgm',40,$Ij01_numcgm,true,'text',3,'')
        ?>
     </td>
   </tr>
-	<?php }else{
+	<?}else{
 		  db_input('v15_matric',10,$Iv15_matric,true,'hidden',3,"");
 		}?>
 	</fieldset>
@@ -226,7 +226,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_isencaocgm.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

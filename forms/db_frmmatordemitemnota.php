@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -77,7 +77,7 @@ function js_marca(obj){
 </script>
 
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -85,7 +85,7 @@ function js_marca(obj){
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 </style>
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"> 
@@ -96,7 +96,7 @@ function js_marca(obj){
 <center>
       
 <table border='0' cellspacing="0" cellpadding="0" style='border:2px inset white' width='100%' bgcolor="white">   
-<?php 
+<?
  $where="";
  $where1="";
  

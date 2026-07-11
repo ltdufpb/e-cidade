@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -131,17 +131,17 @@ background-color:#ccddcc;
   <tr>
     <td nowrap title="<?=@$Tp78_despacho?>"align='left' colspan=2>
        <?=@$Lp78_despacho?>
-<?php 
+<?
 db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
 ?>
   </tr>
     <tr>
        <td title="<?=$Tp79_usuario?>"align='left'>
-           <?php db_ancora($Lp79_usuario,"js_pesquisa_usuario(true);",1);?>
+           <?db_ancora($Lp79_usuario,"js_pesquisa_usuario(true);",1);?>
        </td>
        <td nowrap title="<?=$Tnome?>">
-          <?php db_input("p79_usuario",6,$Ip79_usuario,true,"text",1,"onchange='js_pesquisa_usuario(false);'");?>
-          <?php db_input("nome_dest",40,$Inome,true,"text",3);?>
+          <?db_input("p79_usuario",6,$Ip79_usuario,true,"text",1,"onchange='js_pesquisa_usuario(false);'");?>
+          <?db_input("nome_dest",40,$Inome,true,"text",3);?>
        </td>
     </tr>
   </tr>
@@ -151,7 +151,7 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
   </td>
   </tr>
     <td colspan=2 align='center' >
-  <?php 
+  <?
 	   $sql = "select * from (
 				   select p58_codproc,
 					  p58_requer,
@@ -206,7 +206,7 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
   </table>
   </form>
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_pesquisa_usuario(mostra){
   if(mostra==true){
@@ -232,7 +232,7 @@ function js_mostradb_usuarios1(chave1,chave2){
   db_iframe_db_usuarios.hide();
 }
 </script>
-<?php 
+<?
 if (isset($incluir)){
     db_msgbox($erro_msg);
     if($sqlerro==true){

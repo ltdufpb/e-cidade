@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -75,13 +75,13 @@ if (isset($incluir)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Inclusão de Participações em Convocações</b></legend>
-       <?php include(modification("forms/db_frmprogconvocacaores.php"));?>
+       <?include(modification("forms/db_frmprogconvocacaores.php"));?>
       </fieldset>
      </center>
     </td>
    </tr>
   </table>
-  <?php db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
+  <?db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
             db_getsession("DB_anousu"), db_getsession("DB_instit")
            );
   ?>
@@ -90,7 +90,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "ed127_i_progmatricula", true, 1, "ed127_i_progmatricula", true);
 </script>
-<?php 
+<?
 if (isset($incluir)) {
 	
   if ($oDaoProgConvocacaoRes->erro_status == "0") {

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,27 +53,27 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led90_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed90_i_codigo',10,$Ied90_i_codigo,true,'text',3,"")?>
+   <?db_input('ed90_i_codigo',10,$Ied90_i_codigo,true,'text',3,"")?>
   </td>
   <td nowrap title="<?=@$Ted90_c_arqdestino?>">
    <?=@$Led90_c_arqdestino?>
   </td>
   <td>
-   <?php db_input('ed90_c_arqdestino',40,$Ied90_c_arqdestino,true,'text',$db_opcao,"")?>
+   <?db_input('ed90_c_arqdestino',40,$Ied90_c_arqdestino,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted90_c_tabela?>">
-   <?php db_ancora(@$Led90_c_tabela,"js_pesquisaed90_c_tabela();",$db_opcao);?>
+   <?db_ancora(@$Led90_c_tabela,"js_pesquisaed90_c_tabela();",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('ed90_c_tabela',30,$Ied90_c_tabela,true,'text',3,"")?>
+   <?db_input('ed90_c_tabela',30,$Ied90_c_tabela,true,'text',3,"")?>
   </td>
   <td nowrap title="<?=@$Ted90_c_descrlink?>">
    <?=@$Led90_c_descrlink?>
   </td>
   <td>
-   <?php db_input('ed90_c_descrlink',40,$Ied90_c_descrlink,true,'text',$db_opcao,"")?>
+   <?db_input('ed90_c_descrlink',40,$Ied90_c_descrlink,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -81,13 +81,13 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led90_c_arquivo?>
   </td>
   <td>
-   <?php db_input('ed90_c_arquivo',40,$Ied90_c_arquivo,true,'text',$db_opcao,"")?>
+   <?db_input('ed90_c_arquivo',40,$Ied90_c_arquivo,true,'text',$db_opcao,"")?>
   </td>
   <td nowrap title="<?=@$Ted90_c_titulolink?>">
    <?=@$Led90_c_titulolink?>
   </td>
   <td>
-   <?php db_input('ed90_c_titulolink',40,$Ied90_c_titulolink,true,'text',$db_opcao,"")?>
+   <?db_input('ed90_c_titulolink',40,$Ied90_c_titulolink,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -95,7 +95,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led90_c_modulo?>
   </td>
   <td>
-   <?php db_input('ed90_c_modulo',40,@$Ied90_c_modulo,true,'text',3,"")?>
+   <?db_input('ed90_c_modulo',40,@$Ied90_c_modulo,true,'text',3,"")?>
   </td>
   <td></td>
   <td></td>
@@ -108,7 +108,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <?=@$Led90_t_msg?>
      </td>
      <td nowrap title="<?=@$Ted90_t_msg?>">
-     <?php db_textarea('ed90_t_msg',2,80,$Ied90_t_msg,true,'text',$db_opcao,"")?>
+     <?db_textarea('ed90_t_msg',2,80,$Ied90_t_msg,true,'text',$db_opcao,"")?>
      </td>
     </tr
    </table>
@@ -120,7 +120,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?php 
+  <?
    $chavepri= ["ed90_i_codigo"=>@$ed90_i_codigo,"ed90_c_arquivo"=>@$ed90_c_arquivo,"ed90_c_tabela"=>@$ed90_c_tabela,"ed90_c_descrlink"=>@$ed90_c_descrlink,"ed90_c_arqdestino"=>@$ed90_c_arqdestino,"ed90_c_titulolink"=>@$ed90_c_titulolink,"ed90_t_msg"=>@$ed90_t_msg,"ed90_c_modulo"=>@$ed90_c_modulo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clmsgaviso->sql_query("","*","ed90_c_tabela"," ed90_c_modulo = 'educacao'");

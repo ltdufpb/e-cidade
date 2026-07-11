@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,8 +50,8 @@ $db_opcao = 1;
    <b>Tipo de Atendimento:</b>
   </td>
   <td>
-   <?php db_input('codigota',10,@$Icodigota,true,'text',$db_opcao,"")?>
-   <?php db_input('tipoa',40,@$Itipoa,true,'text',3,"")?>
+   <?db_input('codigota',10,@$Icodigota,true,'text',$db_opcao,"")?>
+   <?db_input('tipoa',40,@$Itipoa,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -59,8 +59,8 @@ $db_opcao = 1;
    <b>Especialidade:</b>
   </td>
   <td>
-   <?php db_input('codigoes',10,@$Icodigoes,true,'text',$db_opcao,"")?>
-   <?php db_input('especialidade',40,@$Iespecialidade,true,'text',3,"")?>
+   <?db_input('codigoes',10,@$Icodigoes,true,'text',$db_opcao,"")?>
+   <?db_input('especialidade',40,@$Iespecialidade,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -68,8 +68,8 @@ $db_opcao = 1;
    <b>Procedimento:</b>
   </td>
   <td>
-   <?php db_input('codigopr',10,@$Icodigopr,true,'text',$db_opcao,"")?>
-   <?php db_input('procedimento',40,@$Iprocedimento,true,'text',3,"")?>
+   <?db_input('codigopr',10,@$Icodigopr,true,'text',$db_opcao,"")?>
+   <?db_input('procedimento',40,@$Iprocedimento,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -77,8 +77,8 @@ $db_opcao = 1;
    <b>Profissional:</b>
   </td>
   <td>
-   <?php db_input('codigoprofiss',10,@$Icodigoprofiss,true,'text',$db_opcao,"")?>
-   <?php db_input('profissional',40,@$Iprofissional,true,'text',3,"")?>
+   <?db_input('codigoprofiss',10,@$Icodigoprofiss,true,'text',$db_opcao,"")?>
+   <?db_input('profissional',40,@$Iprofissional,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -86,11 +86,11 @@ $db_opcao = 1;
    <b>Data:</b>
   </td>
   <td>
-   <?php db_inputdata('data',@$data,@$data,@$data,true,'text',$db_opcao,"")?>
+   <?db_inputdata('data',@$data,@$data,@$data,true,'text',$db_opcao,"")?>
    <b>Hora:</b>
-   <?php db_input('hora',10,@$Ihora,true,'text',$db_opcao,"")?>
+   <?db_input('hora',10,@$Ihora,true,'text',$db_opcao,"")?>
    <b>FE:</b>
-   <?php db_input('fe',10,@$Ife,true,'text',$db_opcao,"")?>
+   <?db_input('fe',10,@$Ife,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -98,7 +98,7 @@ $db_opcao = 1;
    <b>Tratamento:</b>
   </td>
   <td>
-   <?php db_textarea('tratamento',2,60,@$Itratamento,true,'text',$db_opcao,"")?>
+   <?db_textarea('tratamento',2,60,@$Itratamento,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>

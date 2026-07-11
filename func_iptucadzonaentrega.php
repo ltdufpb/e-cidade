@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cliptucadzonaentrega->rotulo->label("j85_descr");
               <?=$Lj85_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j85_codigo",10,$Ij85_codigo,true,"text",4,"","chave_j85_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cliptucadzonaentrega->rotulo->label("j85_descr");
               <?=$Lj85_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j85_descr",60,$Ij85_descr,true,"text",4,"","chave_j85_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cliptucadzonaentrega->rotulo->label("j85_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptucadzonaentrega.php")==true){
@@ -135,12 +135,12 @@ $cliptucadzonaentrega->rotulo->label("j85_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

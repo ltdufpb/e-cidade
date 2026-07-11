@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: prefeitura
 //CLASSE DA ENTIDADE configdbpref
 class cl_configdbpref { 

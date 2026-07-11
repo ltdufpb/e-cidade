@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,7 +49,7 @@ if( $db_opcao == 3 OR $db_opcao == 33 ) {
           <?=@$Lob28_sequencial?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('ob28_sequencial',10,$Iob28_sequencial,true,'text',3,"")
           ?>
         </td>
@@ -59,7 +59,7 @@ if( $db_opcao == 3 OR $db_opcao == 33 ) {
           <?=@$Lob28_descricao?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('ob28_descricao',40,$Iob28_descricao,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -75,7 +75,7 @@ if( $db_opcao == 3 OR $db_opcao == 33 ) {
   }
 function js_preenchepesquisa(chave){
   db_iframe_obrassituacao.hide();
-<?php 
+<?
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

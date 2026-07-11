@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,7 +39,7 @@ $cldb_versao->rotulo->label();
 <form name="form1" method="post" action="<?=$db_action?>">
 <center>
 <table border="0">
-<?php 
+<?
 db_input('db30_codver',6,$Idb30_codver,true,'hidden',3,"")
 ?>
   <tr>
@@ -47,7 +47,7 @@ db_input('db30_codver',6,$Idb30_codver,true,'hidden',3,"")
        <?=@$Ldb30_codversao?>
     </td>
     <td> 
-<?php 
+<?
 if(isset($versao) && $versao == 'n'){
 //  echo $cldb_versao->sql_query_file('',"max(db30_codversao||'P'||db30_codrelease+1)");
    $result = $cldb_versao->sql_record($cldb_versao->sql_query_file('',"max(db30_codversao::text||'P'::text||(db30_codrelease+1)::text)"));
@@ -70,7 +70,7 @@ db_input('versao',6,0,true,'hidden',3,"")
        <?=@$Ldb30_codrelease?>
     </td>
     <td> 
-<?php 
+<?
 db_input('db30_codrelease',6,$Idb30_codrelease,true,'text',3,"")
 ?>
     </td>
@@ -80,7 +80,7 @@ db_input('db30_codrelease',6,$Idb30_codrelease,true,'text',3,"")
        <?=@$Ldb30_data?>
     </td>
     <td> 
-<?php 
+<?
 if(!isset($db30_data_dia)){
    $db30_data_dia     = date('d',db_getsession("DB_datausu") );
    $db30_data_mes  = date('m',db_getsession("DB_datausu") );
@@ -96,7 +96,7 @@ db_inputdata('db30_data',@$db30_data_dia,@$db30_data_mes,@$db30_data_ano,true,'t
        <?=@$Ldb30_obs?>
     </td>
     <td> 
-<?php 
+<?
 db_textarea('db30_obs',8,70,$Idb30_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_versao.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

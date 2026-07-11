@@ -144,7 +144,7 @@ if( isset( $incluir ) || isset( $alterar ) ) {
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-        <?php 
+        <?
         include(modification("forms/db_frmfichaatenddiag.php"));
         ?>
     </center>

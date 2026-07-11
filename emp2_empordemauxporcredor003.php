@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -88,7 +88,7 @@ $sSql = $clEmpAgeOrdemCgm->sql_query(null,$sCampos,null,$sWhere);
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr>
     <td align="center" valign="top">
-    <?php  
+    <? 
         $funcao_js = $oGet->funcao_js;
         db_lovrot($sSql,15,"()","",$funcao_js);
     ?>

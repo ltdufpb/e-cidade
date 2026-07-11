@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: compras
 //CLASSE DA ENTIDADE processocompraloteitem
 class cl_processocompraloteitem { 

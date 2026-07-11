@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -121,14 +121,14 @@ function termo(qual,total){
       <table height="100%" width="100%"  border="0" cellspacing="5" cellpadding="0">
 	    </td>
 	    <td align="center">
-	      <?php if(isset($procreg) && $procreg!=""){?>
+	      <?if(isset($procreg) && $procreg!=""){?>
 	           <input name="termometro" style='background: transparent' id="termometro" type="text" value="" size=50>
-	      <?php }else{
+	      <?}else{
 //		   echo "<script>document.getElementById('filtro').style.visibility='hidden';</script>";
 		}?>
 	    </td>
       
-<?php 
+<?
 $wherereceita = "";
 if(isset($chave_origem) && trim($chave_origem)!="" && isset($chave_destino) && trim($chave_destino)!="" && $sub == 'f'){
 //  db_msgbox("entrou chave");
@@ -319,7 +319,7 @@ function js_validadata(){
    } 
 }
 </script>
-<?php 
+<?
 
 /*************************************************************************************************************************/
 /*************************   A Q U I   I M P O R T A   O S   R E G I S T R O S   *****************************************/

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $claguahidro->rotulo->label();
        <?=@$Lx03_codmarca?>
     </td>
     <td> 
-<?php 
+<?
 db_input('x03_codmarca',6,$Ix03_codmarca,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('x03_codmarca',6,$Ix03_codmarca,true,'text',3,"")
        <?=@$Lx03_nomemarca?>
     </td>
     <td> 
-<?php 
+<?
 db_input('x03_nomemarca',50,$Ix03_nomemarca,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_aguahidro.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

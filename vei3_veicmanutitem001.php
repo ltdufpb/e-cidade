@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,7 +47,7 @@ $clrotulo->label("");
 <script>
 </script>
 <style>
-<?php //$cor="#999999"?>
+<?//$cor="#999999"?>
 .bordas{
     border: 2px solid #cccccc;
     border-top-color: #999999;
@@ -72,7 +72,7 @@ $clrotulo->label("");
 <td  align="center" valign="top" > 
 <form name='form1'>
 <table border='0'>  
-<?php 
+<?
 if (isset($codigo)&&$codigo!="") {
   
     $result=$clveicmanutitem->sql_record($clveicmanutitem->sql_query_pcmater(null,"*",null,"ve63_veicmanut = $codigo"));

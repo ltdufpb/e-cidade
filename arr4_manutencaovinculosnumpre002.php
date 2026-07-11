@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -365,7 +365,7 @@ function geraArreHist($iNumpre, $sTexto, $sLabel) {
            <tr>
             <td nowrap title="<?=@$Tk00_numpre?>"> <?=$Lk00_numpre?> </td>
             <td>
-              <?php 
+              <?
                 db_input('k00_numpre',10,$Ik00_numpre,true,'text',3);
               ?> 
             </td>
@@ -375,7 +375,7 @@ function geraArreHist($iNumpre, $sTexto, $sLabel) {
              <b><?=$sLabel?>:</b>
             </td>
             <td> 
-             <?php 
+             <?
                db_input($sCampo,10,"",true,'text',$db_opcao2,"");
              ?>
             </td>
@@ -385,7 +385,7 @@ function geraArreHist($iNumpre, $sTexto, $sLabel) {
               <?=$Lk00_perc?>
             </td>
             <td> 
-              <?php 
+              <?
                 db_input('k00_perc',10,$Ik00_perc,true,'text',$db_opcao,"");
               ?>
             </td>
@@ -396,7 +396,7 @@ function geraArreHist($iNumpre, $sTexto, $sLabel) {
            </tr>
            <tr>
              <td><b>Obs.:</b></td>
-             <td><?php db_textarea("obs",2,50,null,true,"text",1)?></td>
+             <td><?db_textarea("obs",2,50,null,true,"text",1)?></td>
            </tr>
           </table>
           </fieldset>
@@ -447,7 +447,7 @@ function geraArreHist($iNumpre, $sTexto, $sLabel) {
           <table>
            <tr>
             <td valign="top"  align="center">  
-            <?php 
+            <?
               $chavepri= array($sCampo=>@$$sCampo);
               $cliframe_alterar_excluir->chavepri      = $chavepri;
 	            $cliframe_alterar_excluir->sql           = $oClasseVinculo->sql_query_file($k00_numpre);
@@ -466,7 +466,7 @@ function geraArreHist($iNumpre, $sTexto, $sLabel) {
 	  </td>
   </tr>
 </table>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -507,7 +507,7 @@ function js_submit(operacao) {
 }
 
 </script>
-<?php 
+<?
 if (isset($operacao) && $operacao != "") {
 	 db_msgbox($sErroMsg);
 }

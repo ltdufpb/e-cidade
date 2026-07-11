@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -86,8 +86,8 @@ function js_emite(){
 	  <center>
 	  <table>
 	    <tr>
-	      <td><b>De:</b><?php db_inputdata("data","","","","true","text",2);?></td>
-              <td><b>Até:</b><?php db_inputdata("data1","","","","true","text",2);?></td>
+	      <td><b>De:</b><?db_inputdata("data","","","","true","text",2);?></td>
+              <td><b>Até:</b><?db_inputdata("data1","","","","true","text",2);?></td>
 	    </tr>
 	    
 	    <tr>
@@ -108,7 +108,7 @@ function js_emite(){
       <tr>
         <td colspan="3" align = "center">
 	  <table>
-	  <?php 
+	  <?
 	  $aux = new cl_arquivo_auxiliar;
 	  $aux->cabecalho = "<strong>CONTAS</strong>";
 	  $aux->codigo = "k13_conta";   //z01_numcgm";
@@ -134,7 +134,7 @@ function js_emite(){
       <tr>
         <td align="right"> <strong>Opção de Seleção :<strong></td>
         <td align="left">&nbsp;&nbsp;&nbsp;
-          <?php 
+          <?
           $xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
           db_select('parametro',$xxx,true,2);
           ?>
@@ -145,7 +145,7 @@ function js_emite(){
       </tr>
     </form>
   </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

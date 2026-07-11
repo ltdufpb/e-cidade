@@ -299,7 +299,7 @@ $db_botao = true;
   ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
   if( $sql_erro ){
   	db_msgbox($sMsgErro);

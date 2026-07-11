@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clorcimpactomovpai->rotulo->label("o86_codimpmovpai");
               <?=$Lo86_codimpmovpai?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o86_codimpmovpai",8,$Io86_codimpmovpai,true,"text",4,"","chave_o86_codimpmovpai");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clorcimpactomovpai->rotulo->label("o86_codimpmovpai");
               <?=$Lo86_codimpmovfilho?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o86_codimpmovfilho",8,$Io86_codimpmovfilho,true,"text",4,"","chave_o86_codimpmovfilho");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clorcimpactomovpai->rotulo->label("o86_codimpmovpai");
               <?=$Lo86_codimpmovpai?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o86_codimpmovpai",8,$Io86_codimpmovpai,true,"text",4,"","chave_o86_codimpmovpai");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clorcimpactomovpai->rotulo->label("o86_codimpmovpai");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactomovpai.php")==true){
@@ -130,12 +130,12 @@ $clorcimpactomovpai->rotulo->label("o86_codimpmovpai");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

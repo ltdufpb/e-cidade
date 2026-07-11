@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -172,7 +172,7 @@ if (!isset($btnalterar)){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?php 
+<?
 if (isset($oGet->alt) && $oGet->alt == 1) {
   if(isset($db_opcao)){
   	$sOnLoad = " onload='js_preenchepesquisa(".$oGet->chavepesquisa.");'";
@@ -189,7 +189,7 @@ if (isset($oGet->alt) && $oGet->alt == 1) {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-      <?php 
+      <?
          include(modification("forms/db_frmprotprocessoalt.php"));
       ?>
     </td>
@@ -199,7 +199,7 @@ if (isset($oGet->alt) && $oGet->alt == 1) {
 </form>
 </body>
 </html>
-<?php 
+<?
 if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
   echo "<script> window.open('pro4_capaprocesso.php?codproc=".$clprotprocesso->p58_codproc."','','location=0'); </script>";
   $result_param = $clprotparam->sql_record($clprotparam->sql_query_file());

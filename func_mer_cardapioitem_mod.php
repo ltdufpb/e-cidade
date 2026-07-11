@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("me35_c_nomealimento");
       <?=$Lme07_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me07_i_codigo",5,$Ime07_i_codigo,true,"text",4,"","chave_me07_i_codigo");?>
+      <?db_input("me07_i_codigo",5,$Ime07_i_codigo,true,"text",4,"","chave_me07_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $clrotulo->label("me35_c_nomealimento");
       <?=$Lme35_c_nomealimento?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("me35_c_nomealimento",50,$Ime35_c_nomealimento,true,"text",4,"","chave_me35_c_nomealimento");?>
+      <?db_input("me35_c_nomealimento",50,$Ime35_c_nomealimento,true,"text",4,"","chave_me35_c_nomealimento");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $clrotulo->label("me35_c_nomealimento");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    $restricao = " AND not exists(select * from mer_modpreparo where me05_i_alimento = me07_i_alimento and me05_i_cardapio = $cardapio)";
    if (!isset($pesquisa_chave)) {
    	

@@ -62,7 +62,7 @@ if ($db_opcao == 2) {
             <table>
               <tr>
                 <td nowrap title="<?=@$Ted60_i_turma?>">
-                  <?php db_ancora( @$Led60_i_turma, "js_pesquisaed60_i_turma();", $db_opcao == 3 ? $db_opcao1 : $db_opcao );?>
+                  <?db_ancora( @$Led60_i_turma, "js_pesquisaed60_i_turma();", $db_opcao == 3 ? $db_opcao1 : $db_opcao );?>
                 </td>
                 <td>
                 <?php
@@ -76,7 +76,7 @@ if ($db_opcao == 2) {
                   <?=@$Led57_i_calendario?>
                 </td>
                 <td>
-                  <?php db_input( 'ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3 );?>
+                  <?db_input( 'ed52_c_descr', 20, @$Ied52_c_descr, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -84,7 +84,7 @@ if ($db_opcao == 2) {
                   <?=@$Led31_i_curso?>
                 </td>
                 <td>
-                  <?php db_input( 'ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3 );?>
+                  <?db_input( 'ed29_c_descr', 40, @$Ied29_c_descr, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr id='linhaEtapa'>
@@ -92,9 +92,9 @@ if ($db_opcao == 2) {
                   <?=@$Led223_i_serie?>
                 </td>
                 <td>
-                  <?php db_input( 'nometapa', 30, @$Inometapa, true, 'text', 3 );?>
+                  <?db_input( 'nometapa', 30, @$Inometapa, true, 'text', 3 );?>
                   <?=@$Led57_i_turno?>
-                  <?php db_input( 'ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3 );?>
+                  <?db_input( 'ed15_c_nome', 20, @$Ied15_c_nome, true, 'text', 3 );?>
                 </td>
               </tr>
 
@@ -102,10 +102,10 @@ if ($db_opcao == 2) {
           </fieldset>
         </td>
       </tr>
-      <?php if ( isset( $chavepesquisa ) && $db_opcao == 1 ) { ?>
+      <?if ( isset( $chavepesquisa ) && $db_opcao == 1 ) { ?>
       <tr>
         <td valign="top">
-          <?php 
+          <?
             $sCampos  = "ed57_i_base as base, ed57_i_codigo, ed57_i_escola as escola, fc_codetapaturma(ed57_i_codigo) as serie,";
             $sCampos .= "ed57_i_turno as turno, ed57_i_calendario as calendario, ed52_i_ano as anoatual, ";
             $sCampos .= " ed29_i_avalparcial as parametroatual";
@@ -194,7 +194,7 @@ if ($db_opcao == 2) {
           <b>Alunos em condição de matrícula:</b><br>
           <select name="alunospossib" id="alunospossib" size="10" onclick="js_desabinc()"
                   style="font-size:9px;width:430px;height:180px" multiple>
-            <?php 
+            <?
                if ($iLinhasAluno > 0) {
 
                  for ($i = 0; $i < $iLinhasAluno; $i++) {
@@ -299,9 +299,9 @@ if ($db_opcao == 2) {
           </table>
         </td>
       </tr>
-      <?php }?>
+      <?}?>
 
-      <?php 
+      <?
         if ($db_opcao == 3) {
           $exclusao = "yes";
       ?>
@@ -315,12 +315,12 @@ if ($db_opcao == 2) {
                   <?=@$Led60_matricula?>
                 </td>
                 <td>
-                  <?php db_input( 'ed60_matricula', 15, $Ied60_matricula, true, 'text', 3 );?>
+                  <?db_input( 'ed60_matricula', 15, $Ied60_matricula, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted60_i_aluno?>">
-                  <?php db_ancora( @$Led60_i_aluno, "js_pesquisaed60_i_alunoexc(true);", $db_opcao1 );?>
+                  <?db_ancora( @$Led60_i_aluno, "js_pesquisaed60_i_alunoexc(true);", $db_opcao1 );?>
                 </td>
                 <td colspan="2">
                   <?php
@@ -335,21 +335,21 @@ if ($db_opcao == 2) {
                  <?=@$Led248_i_motivo?>
                 </td>
                 <td>
-                  <?php 
+                  <?
                     $sql1    = "SELECT * FROM motivoexclusao order by ed249_c_motivo";
                     $result1 = db_query( $sql1 );
                     $linhas1 = pg_num_rows( $result1 );
                   ?>
                   <select name="ed248_i_motivo" style="height:16px;font-size:9px;">
                     <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-                    <?php 
+                    <?
                       for ($f = 0; $f < $linhas1; $f++) {
                         db_fieldsmemory($result1, $f);
                     ?>
                     <option value="<?=$ed249_i_codigo?>" <?=@$ed248_i_motivo == $ed249_i_codigo ? "selected" : ""?>>
                       <?=$ed249_c_motivo?>
                     </option>
-                    <?php 
+                    <?
                       }
                     ?>
                   </select>
@@ -358,7 +358,7 @@ if ($db_opcao == 2) {
               <tr>
                 <td></td>
                 <td>
-                  <?php 
+                  <?
                     if ($linhas1 == 0) {
                       echo " (Cadastros-> Tabelas-> Motivo de Exclusão de Matrículas)";
                     }
@@ -369,7 +369,7 @@ if ($db_opcao == 2) {
                 <td colspan="2">
                   <fieldset class="separator">
                     <legend><?=@$Led248_t_obs?></legend>
-                    <?php db_textarea( 'ed248_t_obs', 3, 65, $Ied248_t_obs, true, 'text', 1 );?>
+                    <?db_textarea( 'ed248_t_obs', 3, 65, $Ied248_t_obs, true, 'text', 1 );?>
                   </fieldset>
                 </td>
               </tr>
@@ -377,9 +377,9 @@ if ($db_opcao == 2) {
           </fieldset>
         </td>
       </tr>
-      <?php }?>
+      <?}?>
 
-      <?php 
+      <?
         if ($db_opcao == 2) {
           $exclusao = "no";
       ?>
@@ -393,7 +393,7 @@ if ($db_opcao == 2) {
                   <?=@$Led60_matricula?>
                 </td>
                 <td>
-                  <?php db_input( 'ed60_matricula', 15, $Ied60_matricula, true, 'text', 3 );?>
+                  <?db_input( 'ed60_matricula', 15, $Ied60_matricula, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -410,7 +410,7 @@ if ($db_opcao == 2) {
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted60_i_aluno?>">
-                  <?php db_ancora( @$Led60_i_aluno, "js_pesquisaed60_i_aluno(true);", $db_opcao );?>
+                  <?db_ancora( @$Led60_i_aluno, "js_pesquisaed60_i_aluno(true);", $db_opcao );?>
                 </td>
                 <td>
                   <?php
@@ -424,7 +424,7 @@ if ($db_opcao == 2) {
                   <b>Situação Atual:</b>
                 </td>
                 <td>
-                  <?php db_input( 'ed60_c_situacaoatual', 20, '', true, 'text', 3 );?>
+                  <?db_input( 'ed60_c_situacaoatual', 20, '', true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -432,7 +432,7 @@ if ($db_opcao == 2) {
                   <?=@$Led60_c_situacao?>
                 </td>
                 <td>
-                  <?php 
+                  <?
                     $x = [];
                     db_select('ed60_c_situacao',
                               $x,
@@ -453,7 +453,7 @@ if ($db_opcao == 2) {
               </tr>
               <tr id='turmaCorreta' style='display: none'>
                 <td>
-                  <?php db_ancora( "<b>Nova Turma:</b>", "js_showTurmaCorreta()", $db_opcao );?>
+                  <?db_ancora( "<b>Nova Turma:</b>", "js_showTurmaCorreta()", $db_opcao );?>
                 </td>
                 <td>
                   <?php
@@ -470,7 +470,7 @@ if ($db_opcao == 2) {
                   <b>Importar Aproveitamento:</b>
                 </td>
                 <td>
-                  <?php 
+                  <?
                     db_select( "cboImportarAproveitamento", [0 =>"selecione", 1 => "Sim", 2 => "Não"], true, 1 );
                   ?>
                 </td>
@@ -479,9 +479,9 @@ if ($db_opcao == 2) {
           </fieldset>
         </td>
       </tr>
-      <?php }?>
+      <?}?>
 
-      <?php if ($db_opcao == 1) {?>
+      <?if ($db_opcao == 1) {?>
       <tr>
         <td nowrap title="<?=@$Ted60_d_datamatricula?>" colspan="2">
           <?php
@@ -498,15 +498,15 @@ if ($db_opcao == 2) {
           ?>
         </td>
       </tr>
-      <?php }?>
+      <?}?>
 
-      <?php if ($db_opcao == 2) { ?>
+      <?if ($db_opcao == 2) { ?>
       <tr>
         <td nowrap title="<?=@$Ted60_d_datamodif?>" style="padding-left: 12px; width: 125px">
           <?=@$Led60_d_datamodif?>
         </td>
         <td>
-          <?php db_inputdata(
+          <?db_inputdata(
                           'ed60_d_datamodif',
                           @$ed60_d_datamodif_dia,
                           @$ed60_d_datamodif_mes,
@@ -518,9 +518,9 @@ if ($db_opcao == 2) {
           ?>
         </td>
       </tr>
-      <?php }?>
+      <?}?>
 
-      <?php 
+      <?
           if (isset($chavepesquisa)) {
 
             $data      = @$ed60_d_datamatricula_ano."-".@$ed60_d_datamatricula_mes."-".@$ed60_d_datamatricula_dia;
@@ -545,7 +545,7 @@ if ($db_opcao == 2) {
         </td>
       </tr>
     </table>
-    <?php 
+    <?
       if (isset($ed60_i_turma)) {
 
         $sSqlTurmaSerieRegimeMat = $clturmaserieregimemat->sql_query( "", "ed220_i_codigo", "", " ed220_i_turma = {$ed60_i_turma}");
@@ -794,7 +794,7 @@ function js_pesquisaed60_i_turma() {
 function js_preenchepesquisaturma(chave) {
 
   db_iframe_turma.hide();
-  <?php 
+  <?
    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
@@ -1161,14 +1161,14 @@ function js_eliminamov(valor) {
   }
 }
 
-<?php 
+<?
   if ($db_opcao == 1 && isset($chavepesquisa)) {?>
 
     if (document.form1.alunospossib.length == 0) {
       document.form1.incluirtodos.disabled = true;
     }
 
-<?php }?>
+<?}?>
 function js_confirmarExclusao() {
 
   var sMensagem  = "A classificação da turma terá sua sequência reiniciada caso a numeração já tenha sido gerada";

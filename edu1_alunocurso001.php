@@ -585,7 +585,7 @@ if (isset($incluirmatricula)) {
 
       <?php } else { ?>
         <legend><b>Cursos do Aluno</b></legend>
-        <?php include(modification("forms/db_frmalunocurso.php"));?>
+        <?include(modification("forms/db_frmalunocurso.php"));?>
       <?php } ?>
     </fieldset>
     </div>

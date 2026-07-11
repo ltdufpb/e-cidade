@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -104,7 +104,7 @@ function js_muda_consulta(execucao){
 <table width="100%" height="100%" border="1">
 <tr>
   <td height="5%" width="40%" valign="top" align='center'>
-  <?php 
+  <?
   if(  isset($registra_atualizacao) ){
     $versao_inicial = $versao_lida;
   }
@@ -211,7 +211,7 @@ function js_muda_consulta(execucao){
 <table>
 <tr>
 <td width="20%" valign="top">
-<?php 
+<?
 
 $sql = "select * from ($sql_modulo) as x ";
 
@@ -395,7 +395,7 @@ if( $numrows > 0 ) {
 </table>
 
 </form>
-<?php 
+<?
 if ( isset($registra_atualizacao) ){
 ?>
 <form name='form2' method='post'>
@@ -410,7 +410,7 @@ function js_confirma_leitura(){
 <input name='confirme' value='Confirme Leitura' type='button' onclick='js_confirma_leitura()'>
 </td></tr></table>
 </form>
-<?php 
+<?
 }
 ?>
 </body>

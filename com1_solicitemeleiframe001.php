@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -136,7 +136,7 @@ if(isset($pc80_codproc)){
 	<tr>  
 	  <td>
 	  <center>
-	  <?php 
+	  <?
 	  db_input("valores",100,0,true,"hidden",3);
           $semitem  = false;
           if($passou==true){
@@ -316,7 +316,7 @@ function js_mostrapcmater1(chave1,chave2){
   db_iframe_pcmater.hide();
 }
 </script>
-<?php 
+<?
 if(isset($incluir) || $semitem==true){
   if($sqlerro==true){
     db_msgbox($erro_msg);

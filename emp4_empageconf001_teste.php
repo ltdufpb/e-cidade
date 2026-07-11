@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -153,7 +153,7 @@ if(isset($entrar) || isset($nova)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-   <?php 
+   <?
    $clrotulo = new rotulocampo;
    $clrotulo->label("e80_data");
    
@@ -170,7 +170,7 @@ if(isset($entrar) || isset($nova)){
                 <?=$Le80_data?>
               </td>	
               <td>	
-              <?php 
+              <?
                 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',1);
               ?>
               </td>
@@ -183,7 +183,7 @@ if(isset($entrar) || isset($nova)){
           </table>
         </form>
 	
-<?php   
+<?  
 //entra nesta opcao para escolher uma das agendas ou então selecionar uma jah existente
    }else if(isset($jatem)){?>
         <form name="form1" method="post" action="">
@@ -196,14 +196,14 @@ if(isset($entrar) || isset($nova)){
 	      <?=$Le80_data?>
 	      </td>	
 	      <td>	
-	       <?php 
+	       <?
 		 db_inputdata('e80_data',@$e80_data_dia,@$e80_data_mes,@$e80_data_ano,true,'text',3);
 	       ?>
 	      </td>
 	   </tr>
            <tr>
 	     <td class='bordas' align='right'><b>Agendas:</b></td>
-<?php 
+<?
 	  for($i=0; $i<$numrows01; $i++){
 	    db_fieldsmemory($result01,$i);
             $arr[$e80_codage] = $e80_codage;
@@ -220,19 +220,19 @@ if(isset($entrar) || isset($nova)){
 
 	 </table>
        </form>	 
-<?php    	
+<?   	
    }  
 ?>
     </center>
     </td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 if($sqlerro == true && isset($atualizar)){
   db_msgbox($erro_msg);
 }

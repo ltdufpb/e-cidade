@@ -43,7 +43,7 @@ $clrotulo->label("pc67_motivo");
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?php 
+<?
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -76,12 +76,12 @@ db_app::load("widgets/windowAux.widget.js");
             <table>
             <tr>
               <td nowrap title="Abertura" width="70">
-                 <?php 
+                 <?
                   db_ancora("<b>Compilação:</b>","js_pesquisar();",1);
                  ?>
               </td>
               <td>
-                <?php 
+                <?
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -90,7 +90,7 @@ db_app::load("widgets/windowAux.widget.js");
               <td colspan="2">
               <fieldset>
                 <legend><b>Motivo</b></legend>
-                <?php 
+                <?
                 $pc67_motivo = "";
                 db_textarea("pc67_motivo",10,50,"",true,"text",1,"","","","");
                 ?>
@@ -110,7 +110,7 @@ db_app::load("widgets/windowAux.widget.js");
   </center>
 </body>
 </html>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

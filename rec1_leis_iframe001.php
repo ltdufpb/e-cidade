@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ if(isset($h08_codlei) && trim($h08_codlei) != ""){
           <td align="center" class="bordas"><b>Perc.</b></td>
           <td align="center" class="bordas"><b>Inf.</b></td>
         </tr>
-	<?php 
+	<?
 	for($i=1; $i<10; $i++){
 	  $Ih08_anos = "Ih08_anos".$i;
 	  $Ih08_perc = "Ih08_perc".$i;
@@ -97,22 +97,22 @@ if(isset($h08_codlei) && trim($h08_codlei) != ""){
 	?>
         <tr>
           <td align="center" class="bordas1"> 
-            <?php 
+            <?
             db_input('h08_anos'.$i,2,$$Ih08_anos,true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
-            <?php 
+            <?
             db_input('h08_perc'.$i,5,$$Ih08_perc,true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
-            <?php 
+            <?
             db_input('h08_car'.$i,3,$$Ih08_car,true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>
-	<?php 
+	<?
 	}
 	?>
       </table>
@@ -124,7 +124,7 @@ if(isset($h08_codlei) && trim($h08_codlei) != ""){
           <td align="center" class="bordas"><b>Perc.</b></td>
           <td align="center" class="bordas"><b>Inf.</b></td>
         </tr>
-	<?php 
+	<?
 	for($i=10; $i<19; $i++){
 	  $Ih08_anos = "Ih08_anos".$i;
 	  $Ih08_perc = "Ih08_perc".$i;
@@ -140,22 +140,22 @@ if(isset($h08_codlei) && trim($h08_codlei) != ""){
 	?>
         <tr>
           <td align="center" class="bordas1"> 
-            <?php 
+            <?
             db_input('h08_anos'.$i,2,$$Ih08_anos,true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
-            <?php 
+            <?
             db_input('h08_perc'.$i,5,$$Ih08_perc,true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
-            <?php 
+            <?
             db_input('h08_car'.$i,3,$$Ih08_car,true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>
-	<?php 
+	<?
 	}
 	?>
       </table>
@@ -164,8 +164,8 @@ if(isset($h08_codlei) && trim($h08_codlei) != ""){
 </table>
 </center>
 </form>
-<?php if(isset($valores) && trim($valores) != ""){?>
+<?if(isset($valores) && trim($valores) != ""){?>
 <script>
 parent.js_atualixaIframe("<?=$valores?>");
 </script>
-<?php }?>
+<?}?>

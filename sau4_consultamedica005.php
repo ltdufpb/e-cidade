@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $result = $clprontuarios->sql_record($clprontuarios->sql_query("","*","sd24_i_co
 ?>
 <form name="form1" method="post" action="">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-<?php 
+<?
 for($i=0;$i<$clprontuarios->numrows;$i++){
 db_fieldsmemory($result,$i);
 ?>
@@ -67,7 +67,7 @@ db_fieldsmemory($result,$i);
      <?=$Lsd24_i_codigo?>
    </td>
    <td nowrap>
-     <?php db_input('sd24_i_codigo',7,$Isd24_i_codigo,true,'text',3);?>
+     <?db_input('sd24_i_codigo',7,$Isd24_i_codigo,true,'text',3);?>
     </td>
    </td>
    </tr>
@@ -77,7 +77,7 @@ db_fieldsmemory($result,$i);
      <?=$Lsd24_v_motivo?>
    </td>
    <td  nowrap colspan="3">
-     <?php db_input('sd24_v_motivo',40,$Isd24_v_motivo,true,'text',3);?>
+     <?db_input('sd24_v_motivo',40,$Isd24_v_motivo,true,'text',3);?>
    </td>
   </td>
  </tr>
@@ -89,9 +89,9 @@ db_fieldsmemory($result,$i);
      <?=$Lsd24_v_pressao?>
    </td>
    <td  nowrap>
-     <?php db_input('sd24_v_pressao',7,$Isd24_v_pressao,true,'text',3);?>
-   <?=$Lsd24_f_temperatura?> <?php db_input('sd24_v_temperatura',7,@$Isd24_f_temperatura,true,'text',3);?>
-   <?=$Lsd24_f_peso?><?php db_input('sd24_f_peso',7,$Isd24_f_peso,true,'text',3);?>
+     <?db_input('sd24_v_pressao',7,$Isd24_v_pressao,true,'text',3);?>
+   <?=$Lsd24_f_temperatura?> <?db_input('sd24_v_temperatura',7,@$Isd24_f_temperatura,true,'text',3);?>
+   <?=$Lsd24_f_peso?><?db_input('sd24_f_peso',7,$Isd24_f_peso,true,'text',3);?>
    </td>
   </td>
  </td>
@@ -103,7 +103,7 @@ db_fieldsmemory($result,$i);
      <?=$Lsd24_t_diagnostico?>
    </td>
    <td  nowrap>
-     <?php 
+     <?
          $sd24_t_diagnostico=!isset($sd24_t_diagnostico)?' ':$sd24_t_diagnostico;
          db_textarea('sd24_t_diagnostico',1,50,@$sd24_t_diagnostico,true,'text',3,"")
       ?>
@@ -117,8 +117,8 @@ db_fieldsmemory($result,$i);
      <?=$Lsd70_c_cid?>
    </td>
    <td nowrap>
-     <?php db_input('sd70_c_cid',7,$Isd70_c_cid,true,'text',3);?>
-      <?php db_input('sd70_c_nome',20,$Isd70_c_nome,true,'text',3);?>
+     <?db_input('sd70_c_cid',7,$Isd70_c_cid,true,'text',3);?>
+      <?db_input('sd70_c_nome',20,$Isd70_c_nome,true,'text',3);?>
    </td>
   </td>
  </tr>
@@ -127,7 +127,7 @@ db_fieldsmemory($result,$i);
 &nbsp;&nbsp;
 </td>
 </tr>
-<?php 
+<?
 //echo $clprontproced->sql_query("","*","sd29_i_codigo desc","sd29_i_prontuario=$sd24_i_codigo");
 $sql=$clprontproced->sql_query("","sd03_i_codigo,z01_nome,rh70_estrutural,rh70_descr","sd29_i_codigo desc","sd29_i_prontuario=$sd24_i_codigo");
 $query = db_query($sql);

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -48,10 +48,10 @@ if(isset($opcao) && $opcao=="alterar"){
 	
 	<tr>
 	  <td nowrap title="<?=@$Tdb61_codparag?>">
-	     <?php db_ancora(@$Ldb61_codparag,"js_pesquisa_codmater(true);",$db_opcao);?>
+	     <?db_ancora(@$Ldb61_codparag,"js_pesquisa_codmater(true);",$db_opcao);?>
 	  </td>
 	  <td> 
-      <?php 
+      <?
     
       db_input('db61_codparag',10,$Idb61_codparag,true,'text',$db_opcao,"onchange='js_pesquisa_codmater(false);'");
       db_input('db61_descr',40,$Idb61_descr,true,'text',3,"");
@@ -67,7 +67,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	</tr>
 	<tr>
 	<td colspan=2 align=center>
-	<?php 
+	<?
         if(!isset($opcao) && isset($db_opcao) && $db_opcao==3){
            $db_botao=false;	  
 	    }
@@ -87,7 +87,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <table>
   <tr>
     <td valign="top"> 
-    <?php 
+    <?
      $chavepri= array("db61_codparag"=>@$db61_codparag,"db61_descr"=>@$db61_descr);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      if (isset($db60_coddoc)&&@$db60_coddoc!=""){
@@ -154,11 +154,11 @@ function js_emite(){
 }
 function js_inclui(cod){
 	document.form1.db61_codparag.value=cod;
-	<?php 
+	<?
 	if ($db_opcao==1){
 	?>
 	document.form1.incluir.click();
-	<?php 
+	<?
     }
 	?>
 }	

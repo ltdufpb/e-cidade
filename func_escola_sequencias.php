@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clescola_sequencias->rotulo->label("ed129_i_codigo");
       <?=$Led129_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed129_i_codigo",15,$Ied129_i_codigo,true,"text",4,"","chave_ed129_i_codigo");?>
+      <?db_input("ed129_i_codigo",15,$Ied129_i_codigo,true,"text",4,"","chave_ed129_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,7 +62,7 @@ $clescola_sequencias->rotulo->label("ed129_i_codigo");
       <b>Descrição:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed18_c_nome",50,@$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
+      <?db_input("ed18_c_nome",50,@$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ $clescola_sequencias->rotulo->label("ed129_i_codigo");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_escola_sequencias.php")==true){

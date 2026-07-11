@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clproctranferint->rotulo->label("p88_codigo");
               <?=$Lp88_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p88_codigo",10,$Ip88_codigo,true,"text",4,"","chave_p88_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clproctranferint->rotulo->label("p88_codigo");
               <?=$Lp88_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p88_codigo",10,$Ip88_codigo,true,"text",4,"","chave_p88_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clproctranferint->rotulo->label("p88_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_proctranferint.php")==true){
@@ -119,12 +119,12 @@ $clproctranferint->rotulo->label("p88_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

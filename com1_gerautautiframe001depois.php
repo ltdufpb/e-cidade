@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -614,7 +614,7 @@ if (isset ($pc80_codproc) && trim($pc80_codproc) != "") {
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?php 
+    <?
 
 
 
@@ -1001,7 +1001,7 @@ function js_marcaautoriza(valor){
 </script>
 </body>
 </html>
-<?php 
+<?
 
 
 

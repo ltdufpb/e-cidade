@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -538,19 +538,19 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
 </head>
 <body bgcolor="#CCCCCC" onLoad="a=1" >
   <form name="form2" method="post" action="" class="container">
-          <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+          <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
           <fieldset>
             <legend><b>Matricular Alunos Transferidos (FORA)</b></legend>
             <table class="form-container">
               <tr>
                 <td colspan="2">
                   <b>Ano do Calendario da matricula: </b>
-                  <?php db_input( 'ano_matr', 4, $ano_matr, true, 'text', 1, "onchange='js_anomatr(this.value)';" );?>
+                  <?db_input( 'ano_matr', 4, $ano_matr, true, 'text', 1, "onchange='js_anomatr(this.value)';" );?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted56_i_aluno?>">
-                  <?php db_ancora( @$Led56_i_aluno, "js_pesquisatransf();", $db_opcao );?>
+                  <?db_ancora( @$Led56_i_aluno, "js_pesquisatransf();", $db_opcao );?>
                 </td>
                 <td>
                   <?php
@@ -601,7 +601,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                   <b>Escola:</b>
                 </td>
                 <td>
-                  <?php db_input( 'escola_trfora', 40, @$escola_trfora, true, 'text', 3 );?>
+                  <?db_input( 'escola_trfora', 40, @$escola_trfora, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -609,13 +609,13 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                   <b>Data Matrícula:</b>
                 </td>
                 <td>
-                  <?php db_input( 'matricula_data', 10, @$matricula_data, true, 'text', 3 );?>
+                  <?db_input( 'matricula_data', 10, @$matricula_data, true, 'text', 3 );?>
                   <b>Data Saída:</b>
-                  <?php db_inputdata( 'datasaida', @$datasaida_dia, @$datasaida_mes, @$datasaida_ano, true, 'text', 3 );?>
+                  <?db_inputdata( 'datasaida', @$datasaida_dia, @$datasaida_mes, @$datasaida_ano, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr><td colspan="2"><hr></td></tr>
-              <?php 
+              <?
               $camposant  = "matricula.ed60_i_codigo as matrant, matricula.ed60_i_turma, matricula.ed60_c_concluida as concluidaant";
               $camposant .= ", matricula.ed60_c_situacao as situacaoant, matricula.ed60_d_datamatricula as datamatrant";
               $camposant .= ", turma.ed57_c_descr, base.ed31_i_curso, cursoedu.ed29_c_descr, turma.ed57_i_base";
@@ -675,9 +675,9 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                   <b>Matrícula:</b>
                 </td>
                 <td>
-                  <?php db_input( 'matrant', 10, @$matrant, true, 'text', 3 );?>
+                  <?db_input( 'matrant', 10, @$matrant, true, 'text', 3 );?>
                   <b>Situação:</b>
-                  <?php db_input( 'situacaoant', 20, @$situacaoant, true, 'text', 3 );?>
+                  <?db_input( 'situacaoant', 20, @$situacaoant, true, 'text', 3 );?>
                 </td>
               </tr>
               <tr>
@@ -685,12 +685,12 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                   <b>Data Matrícula:</b>
                 </td>
                 <td>
-                  <?php db_inputdata( 'datamatrant', @$datamatrant_dia, @$datamatrant_mes, @$datamatrant_ano, true, 'text', 3 );?>
+                  <?db_inputdata( 'datamatrant', @$datamatrant_dia, @$datamatrant_mes, @$datamatrant_ano, true, 'text', 3 );?>
                   <b>Data Saida:</b>
-                  <?php db_inputdata( 'datasaidaant', @$datasaidaant_dia, @$datasaidaant_mes, @$datasaidaant_ano, true, 'text', 3 );?>
+                  <?db_inputdata( 'datasaidaant', @$datasaidaant_dia, @$datasaidaant_mes, @$datasaidaant_ano, true, 'text', 3 );?>
                 </td>
               </tr>
-              <?php }?>
+              <?}?>
               <tr>
                 <td>
                   <label class="bold">Tipo de Ingresso:</label>
@@ -704,8 +704,8 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted60_i_turma?>">
-                  <?php $opcaoturma = $linhas_verif == 0 ? 1 : 3?>
-                  <?php db_ancora( @$Led60_i_turma, "js_pesquisaed60_i_turma();", 1 );?>
+                  <?$opcaoturma = $linhas_verif == 0 ? 1 : 3?>
+                  <?db_ancora( @$Led60_i_turma, "js_pesquisaed60_i_turma();", 1 );?>
                 </td>
                 <td>
                   <?php
@@ -730,7 +730,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                   <?=@$Led57_i_base?>
                 </td>
                 <td>
-                  <?php 
+                  <?
                     db_input( 'ed57_i_base',  15, @$Ied57_i_base,  true, 'text', 3, '' );
                     db_input( 'ed31_c_descr', 40, @$Ied31_c_descr, true, 'text', 3, '' );
                   ?>
@@ -807,7 +807,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                               }
                               ?>
                               <option value="<?=$ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$descretapa?></option>
-                              <?php 
+                              <?
                             }
                           ?>
                         </select>
@@ -868,7 +868,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
               </tr>
               <tr>
                 <td nowrap title="<?=@$Ted56_i_escola?>" width="15%">
-                  <?php db_ancora( @$Led56_i_escola, "", 3 );?>
+                  <?db_ancora( @$Led56_i_escola, "", 3 );?>
                 </td>
                 <td>
                   <?php
@@ -882,7 +882,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                   <?=@$Led60_d_datamatricula?>
                 </td>
                 <td>
-                  <?php db_inputdata( 'ed60_d_datamatricula', @$ed60_d_datamatricula_dia, @$ed60_d_datamatricula_mes, @$ed60_d_datamatricula_ano, true, 'text', $db_opcao );?>
+                  <?db_inputdata( 'ed60_d_datamatricula', @$ed60_d_datamatricula_dia, @$ed60_d_datamatricula_mes, @$ed60_d_datamatricula_ano, true, 'text', $db_opcao );?>
                </td>
               </tr>
               <?php
@@ -938,7 +938,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                       <td style="text-decoration:underline;"
                           onmouseover="document.getElementById('aprov<?=$turmaorigem?>').style.visibility = 'visible'"
                           onmouseout="document.getElementById('aprov<?=$turmaorigem?>').style.visibility = 'hidden'">
-                        <?php db_input( 'turmaorigem', 15, @$Iturmaorigem, true, 'radio', 3, $checked );?>
+                        <?db_input( 'turmaorigem', 15, @$Iturmaorigem, true, 'radio', 3, $checked );?>
                         Turma Anterior:
                       </td>
                       <td>
@@ -954,7 +954,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                         <label class="bold">Matrícula:</label>
                       </td>
                       <td>
-                        <?php db_input( 'matricula', 10, @$Imatricula, true, 'text', 3, '' );?>
+                        <?db_input( 'matricula', 10, @$Imatricula, true, 'text', 3, '' );?>
                         <br>
                         <table border="1" cellspacing="0" cellpadding="0" id="aprov<?=$turmaorigem?>" style="position:absolute;visibility:hidden;">
                           <?php
@@ -1011,7 +1011,7 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
                         </table>
                       </td>
                     </tr>
-                   <?php 
+                   <?
                   }
                 }
               }
@@ -1026,9 +1026,9 @@ $ed60_d_datamatricula     = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_
             } else {
           ?>
               <input name="novamatricula" type="submit" value="Matricular Aluno" disabled onclick="return js_validaturma();">
-          <?php }?>
+          <?}?>
   </form>
-  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -1146,12 +1146,12 @@ function js_mostraturma1( chave1, chave2, chave3, chave4, chave5, chave6, chave7
       document.form2.novamatricula.disabled = false;
     }
 
-    <?php if ( !isset( $tem_matrant ) ) {?>
+    <?if ( !isset( $tem_matrant ) ) {?>
 
         document.form2.submit();
-    <?php } else {?>
+    <?} else {?>
         js_montaetapa( chave8, chave3, chave15, document.form2.codserietransf.value, document.form2.seriesequivalentes.value );
-    <?php }?>
+    <?}?>
   }
 }
 
@@ -1285,17 +1285,17 @@ function js_anomatr ( valor ) {
   }
 }
 
-<?php if ( ( isset( $ed60_i_turma ) && $linhas_verif == 0 ) || isset( $acesso ) ) {?>
+<?if ( ( isset( $ed60_i_turma ) && $linhas_verif == 0 ) || isset( $acesso ) ) {?>
     document.form2.incluirmatricula.disabled = false;
-<?php } else {
+<?} else {
 
     if ( isset( $linhas_verif ) && $linhas_verif > 0 ) {?>
       document.form2.novamatricula.disabled = false;
-  <?php }
+  <?}
 
     if ( $db_botao == false ) {?>
       document.form2.novamatricula.disabled = true;
-  <?php }
+  <?}
   }?>
 
 function js_validaTipo() {

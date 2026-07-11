@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clrotulo->label("tf24_i_codigo");
        <?=@$Ltf03_i_codigo?>
     </td>
     <td> 
-      <?php db_input('tf03_i_codigo',10,$Itf03_i_codigo,true,'text',3,"")?>
+      <?db_input('tf03_i_codigo',10,$Itf03_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -46,16 +46,16 @@ $clrotulo->label("tf24_i_codigo");
        <?=@$Ltf03_c_descr?>
     </td>
     <td> 
-      <?php db_input('tf03_c_descr',52,$Itf03_c_descr,true,'text',$db_opcao,"")?>
+      <?db_input('tf03_c_descr',52,$Itf03_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ttf03_i_tipodistancia?>">
-       <?php db_ancora(@$Ltf03_i_tipodistancia,"js_pesquisatf03_i_tipodistancia(true);",$db_opcao);?>
+       <?db_ancora(@$Ltf03_i_tipodistancia,"js_pesquisatf03_i_tipodistancia(true);",$db_opcao);?>
     </td>
     <td> 
-      <?php db_input('tf03_i_tipodistancia',10,@$Itf03_i_tipodistancia,true,'text',$db_opcao," onchange='js_pesquisatf03_i_tipodistancia(false);'")?>
-      <?php db_input('tf24_c_descr',40,@$Itf24_c_descr,true,'text',3,'')?>
+      <?db_input('tf03_i_tipodistancia',10,@$Itf03_i_tipodistancia,true,'text',$db_opcao," onchange='js_pesquisatf03_i_tipodistancia(false);'")?>
+      <?db_input('tf24_c_descr',40,@$Itf24_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -63,7 +63,7 @@ $clrotulo->label("tf24_i_codigo");
        <?=@$Ltf03_f_distancia?>
     </td>
     <td> 
-       <?php db_input('tf03_f_distancia',10,$Itf03_f_distancia,true,'text',$db_opcao,"")?>
+       <?db_input('tf03_f_distancia',10,$Itf03_f_distancia,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -71,7 +71,7 @@ $clrotulo->label("tf24_i_codigo");
        <?=@$Ltf03_d_validadeini?>
     </td>
     <td> 
-      <?php db_inputdata('tf03_d_validadeini',@$tf03_d_validadeini_dia,@$tf03_d_validadeini_mes,@$tf03_d_validadeini_ano,true,'text',$db_opcao,"")?>
+      <?db_inputdata('tf03_d_validadeini',@$tf03_d_validadeini_dia,@$tf03_d_validadeini_mes,@$tf03_d_validadeini_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -79,7 +79,7 @@ $clrotulo->label("tf24_i_codigo");
        <?=@$Ltf03_d_validadefim?>
     </td>
     <td> 
-      <?php db_inputdata('tf03_d_validadefim',@$tf03_d_validadefim_dia,@$tf03_d_validadefim_mes,@$tf03_d_validadefim_ano,true,'text',$db_opcao,"")?>
+      <?db_inputdata('tf03_d_validadefim',@$tf03_d_validadefim_dia,@$tf03_d_validadefim_mes,@$tf03_d_validadefim_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -146,7 +146,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_destino.hide();
-  <?php 
+  <?
   if($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

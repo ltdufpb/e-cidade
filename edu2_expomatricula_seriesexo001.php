@@ -58,7 +58,7 @@ $iModulo           = db_getsession('DB_modulo');
  <body class="body-default" >
 
   <div class="container">
-  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <a name="topo"></a>
 
   <form name="form1" method="post" action="">
@@ -67,7 +67,7 @@ $iModulo           = db_getsession('DB_modulo');
         <legend>Expansão de Matrícula</legend>
        <table border="0">
         <tr>
-         <?php 
+         <?
            if ($iModulo == 7159) {
 
              echo '<td align="left">';
@@ -455,14 +455,14 @@ function js_retornoPesquisaAssinatura(oRetorno) {
 
 }
 </script>
-<?php 
+<?
 if ($iModulo != 7159) {
 ?>
   <script>
     js_escola(<?=$iEscola?>);
   </script>
 
-<?php 
+<?
 
 }
 ?>

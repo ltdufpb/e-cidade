@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -161,7 +161,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Turma com Atividade Complementar / AEE</b></legend>
-    <?php include(modification("forms/db_frmturmaac.php"));?>
+    <?include(modification("forms/db_frmturmaac.php"));?>
    </fieldset>
    </center>
   </td>
@@ -172,7 +172,7 @@ if (isset($alterar)) {
 <script>
 js_tabulacaoforms("form1","ed268_c_descr",true,1,"ed268_c_descr",true);
 </script>
-<?php 
+<?
 if (isset($alterar)) {
   if ($clturmaac->erro_status == "0") {
     $clturmaac->erro(true,false);
@@ -186,7 +186,7 @@ if (isset($alterar)) {
     $clturmaac->erro(true,false);
 ?>
    <script>parent.document.form2.teste.click();</script>
-  <?php } 
+  <?} 
 }
 
 if ($db_opcao == 22) {

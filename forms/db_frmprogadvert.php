@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,17 +49,17 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led120_i_codigo?>
   </td>
   <td>
-   <?php db_input('ed120_i_codigo',10,$Ied120_i_codigo,true,'text',3,"")?>
+   <?db_input('ed120_i_codigo',10,$Ied120_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted120_i_progmatricula?>">
-   <?php db_ancora(@$Led120_i_progmatricula,"js_pesquisaed120_i_progmatricula(true);",$db_opcao1);?>
+   <?db_ancora(@$Led120_i_progmatricula,"js_pesquisaed120_i_progmatricula(true);",$db_opcao1);?>
   </td>
   <td>
-   <?php db_input('ed120_i_progmatricula',10,$Ied120_i_progmatricula,true,'hidden',3,"")?>
-   <?php db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
-   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?db_input('ed120_i_progmatricula',10,$Ied120_i_progmatricula,true,'hidden',3,"")?>
+   <?db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
+   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -67,10 +67,10 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led112_d_datainicio?>
   </td>
   <td>
-   <?php db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
+   <?db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,@$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
    <?=@$Led112_i_progclasse?>
-   <?php db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
-   <?php if($db_opcao!=1){
+   <?db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
+   <?if($db_opcao!=1){
     if(@$ed112_c_situacao=="A"){
      $ed112_c_situacao = "ABERTA";
     }elseif(@$ed112_c_situacao=="I"){
@@ -81,7 +81,7 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
     ?>
     <?=@$Led112_c_situacao?>
     <input name="ed112_c_situacao" type="text" value="<?=@$ed112_c_situacao?>" style="background:#DEB887;" readonly>
-   <?php }?>
+   <?}?>
   </td>
  </tr>
  <tr>
@@ -89,7 +89,7 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led120_d_data?>
   </td>
   <td>
-   <?php db_inputdata('ed120_d_data',@$ed120_d_data_dia,@$ed120_d_data_mes,@$ed120_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
+   <?db_inputdata('ed120_d_data',@$ed120_d_data_dia,@$ed120_d_data_mes,@$ed120_d_data_ano,true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();")?>
   </td>
  </tr>
  <tr>
@@ -97,7 +97,7 @@ if(isset($ed112_c_situacao) && trim($ed112_c_situacao)!="A"){
    <?=@$Led120_t_obs?>
   </td>
   <td>
-   <?php db_textarea('ed120_t_obs',2,70,$Ied120_t_obs,true,'text',$db_opcao,"")?>
+   <?db_textarea('ed120_t_obs',2,70,$Ied120_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -145,7 +145,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_progadvert.hide();
- <?php 
+ <?
  if($db_opcao!=1){
    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }

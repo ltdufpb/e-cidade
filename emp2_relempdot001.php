@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -75,7 +75,7 @@ $clempempenho->rotulo->label();
        </tr>
        <tr>
           <td nowrap width="50%">
-               <?php 
+               <?
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong> Dotações </strong>";
                  $aux->codigo = "o58_coddot"; //chave de retorno da func

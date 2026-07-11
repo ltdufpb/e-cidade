@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -1029,7 +1029,7 @@ if (isset ($l20_codigo) && trim($l20_codigo) != "") {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
   db_app::load("scripts.js, prototype.js, strings.js");
   db_app::load("estilos.css");
 ?>
@@ -1066,7 +1066,7 @@ if (isset ($l20_codigo) && trim($l20_codigo) != "") {
 <tr>
 <td align="left" valign="top" bgcolor="#CCCCCC">
 <center>
-<?php 
+<?
 db_input('valores', 8, 0, true, 'hidden', 3);
 $locationh = true;
 if ($numrows_itens == 0) {
@@ -1772,7 +1772,7 @@ function js_verificasaldo(oElemento, iCodigoItemProcesso, iCodigoDotacao, iOrcTi
 </script>
 </body>
 </html>
-<?php 
+<?
 if (isset ($incluir)) {
 
 	if ($sqlerro == false) {

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -202,7 +202,7 @@ if($iLinhas == 0)
       </td>
     </tr>
   </table>
-<?php 
+<?
   exit;
 }
 ?>
@@ -219,20 +219,20 @@ if($iLinhas == 0)
     </tr>
     <tr>
       <td nowrap width='12%'>
-        <?php db_input('m60_codmater',10,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
+        <?db_input('m60_codmater',10,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
       </td>
       <td align='left' nowrap>
-        <?php db_input('m60_descr',75,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
+        <?db_input('m60_descr',75,'Descri&ccedil;&atilde; do material',true,'text',3,'')?>
         <script>
-          document.getElementById('m60_descr').value = "<?php  echo $nome_departamento?>";
-          document.getElementById('m60_codmater').value = "<?php  echo $departamento?>";
+          document.getElementById('m60_descr').value = "<? echo $nome_departamento?>";
+          document.getElementById('m60_codmater').value = "<? echo $departamento?>";
         </script>
       </td>
     </tr>
   </table>
   <table width='730' cellspacing='0' border='0'>
    
-<?php 
+<?
 $iMaterial = '';
 
 for($iCount_linhas = 0; $iCount_linhas < $iLinhas; $iCount_linhas++) {

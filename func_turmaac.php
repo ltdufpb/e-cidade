@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,11 +63,11 @@ $escola = db_getsession("DB_coddepto");
     <tr>
      <td width="4%" nowrap title="<?=$Ted268_i_codigo?>">
       <?=$Led268_i_codigo?>
-      <?php db_input("ed268_i_codigo",10,$Ied268_i_codigo,true,"text",4,"","chave_ed268_i_codigo");?>
+      <?db_input("ed268_i_codigo",10,$Ied268_i_codigo,true,"text",4,"","chave_ed268_i_codigo");?>
       <?=$Led268_c_descr?>
-      <?php db_input("ed268_c_descr",10,$Ied268_c_descr,true,"text",4,"","chave_ed268_c_descr");?>
+      <?db_input("ed268_c_descr",10,$Ied268_c_descr,true,"text",4,"","chave_ed268_c_descr");?>
       <?=$Led57_i_turno?>
-      <?php 
+      <?
       $sql_tur = "SELECT ed15_i_codigo,ed15_c_nome,ed15_i_sequencia
                   FROM turno
                    inner join periodoescola on periodoescola.ed17_i_turno = turno.ed15_i_codigo
@@ -89,7 +89,7 @@ $escola = db_getsession("DB_coddepto");
     <tr>
      <td width="4%" nowrap title="<?=$Ted57_i_calendario?>">
       <?=$Led57_i_calendario?>
-      <?php 
+      <?
       $result_cal = $clcalendario->sql_record($clcalendario->sql_query_calescola("","ed52_i_codigo,ed52_c_descr","ed52_i_ano desc","  ed52_c_passivo = 'N' AND ed38_i_escola = $escola"));
       if($clcalendario->numrows==0){
        $x = array(''=>'NENHUM REGISTRO');
@@ -99,7 +99,7 @@ $escola = db_getsession("DB_coddepto");
       }
       ?>
       <?=$Led268_i_tipoatend?>
-      <?php 
+      <?
       $x = array(''=>'','4'=>'ATIVIDADE COMPLEMENTAR','5'=>'ATENDIMENTO EDUCACIONAL ESPECIAL - AEE');
       db_select('chave_ed268_i_tipoatend',$x,true,1,"");
       ?>
@@ -118,7 +118,7 @@ $escola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_turmaac.php")==true){

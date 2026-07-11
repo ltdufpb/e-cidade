@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -68,7 +68,7 @@ function js_emite(){
         <strong>Fechadas :&nbsp;&nbsp;</strong>
         </td>
         <td>
-	  <?php  
+	  <? 
 	  $tipo_fechada = array("t"=>"Todas","s"=>"Sim","n"=>"Não");
 	  db_select("fechadas",$tipo_fechada,true,2); ?>
         </td>
@@ -76,14 +76,14 @@ function js_emite(){
       <tr>
         <td ><b>Processadas :&nbsp;</b></td>
         <td >
-	  <?php  
+	  <? 
 	  $tipo_processadas = array("t"=>"Todas","s"=>"Sim","n"=>"Não");
 	  db_select("processadas",$tipo_processadas,true,2); ?>
 	</td>
       </tr>
       <tr>
-      <td><b>De:</b><?php db_inputdata("data","","","","true","text",2)      ?>      </td>
-      <td><b>Ate:</b>  <?php db_inputdata("data1","","","","true","text",2)      ?> </td>
+      <td><b>De:</b><?db_inputdata("data","","","","true","text",2)      ?>      </td>
+      <td><b>Ate:</b>  <?db_inputdata("data1","","","","true","text",2)      ?> </td>
       </tr>
       <tr>
         <td colspan="2" align = "center"> 
@@ -93,12 +93,12 @@ function js_emite(){
 
   </form>
     </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

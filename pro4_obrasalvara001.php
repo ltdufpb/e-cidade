@@ -80,12 +80,12 @@ db_app::load('estilos.css');
       <table class="form-container">
         <tr>
           <td nowrap title="<?= @$Tob04_codobra ?>">
-              <?php 
+              <?
               db_ancora(@$Lob04_codobra, "js_pesquisaObra(true);", ($db_opcao == 2 ? 3 : $db_opcao));
               ?>
           </td>
           <td>
-              <?php 
+              <?
               db_input('ob04_codobra', 10, $Iob04_codobra, true, 'text', ($db_opcao == 2 ? 3 : $db_opcao),
                 " onchange='js_pesquisaObra(false);'");
               db_input('ob01_nomeobra', 40, $Iob01_nomeobra, true, 'text', 3, '');
@@ -95,7 +95,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?= @$Tob04_alvara ?>"><?= @$Lob04_alvara ?></td>
           <td nowrap>
-              <?php 
+              <?
               db_input('ob04_alvara', 9, $Iob04_alvara, true, 'text', 1, "");
               if ($db_opcao == 1) {
                   echo "(Se no preencher, cdigo ser gerado automaticamente)";
@@ -106,7 +106,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?php echo $Tob04_dataexpedicao; ?>"><?php echo $Lob04_dataexpedicao; ?></td>
           <td>
-              <?php 
+              <?
               if ($db_opcao == 1) {
 
                   $ob04_dataexpedicao_dia = date("d", db_getsession("DB_datausu"));
@@ -121,7 +121,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?= @$Tob04_data ?>"><?= @$Lob04_data ?></td>
           <td>
-              <?php 
+              <?
               if ($db_opcao == 1) {
 
                   $ob04_data_dia = date("d", db_getsession("DB_datausu"));
@@ -137,7 +137,7 @@ db_app::load('estilos.css');
               <?= @$Lob04_dtvalidade ?>
           </td>
           <td>
-              <?php 
+              <?
               db_inputdata('ob04_dtvalidade', @$ob04_dtvalidade_dia, @$ob04_dtvalidade_mes, @$ob04_dtvalidade_ano, true,
                 'text', $db_opcao, "")
               ?>
@@ -148,7 +148,7 @@ db_app::load('estilos.css');
           <td nowrap title="Processos registrado no sistema?"><label id="lbl_lProcessoSistema">Processo do
               Sistema:</label></td>
           <td nowrap>
-              <?php 
+              <?
               $lProcessoSistema = true;
               db_select('lProcessoSistema', array(true => 'SIM', false => 'NO'), true, $db_opcao,
                 "onchange='js_processoSistema(this.value)' style='width: 95px'")
@@ -157,12 +157,12 @@ db_app::load('estilos.css');
         </tr>
         <tr id="processoSistema">
           <td nowrap title="<?= @$Tp58_codproc ?>">
-              <?php 
+              <?
               db_ancora($Lp58_codproc, 'js_pesquisaProcesso(true)', $db_opcao);
               ?>
           </td>
           <td nowrap>
-              <?php 
+              <?
               db_input('p58_codproc', 10, $Ip58_codproc, true, 'text', $db_opcao,
                 'onchange="js_pesquisaProcesso(false)"');
               db_input('p58_requer', 40, $Ip58_requer, true, 'text', 3);
@@ -172,7 +172,7 @@ db_app::load('estilos.css');
         <tr id="processoExterno1" style="display: none;">
           <td nowrap title="Nmero do processo externo"><label id="lbl_ob04_processo">Processo:</label></td>
           <td nowrap>
-              <?php 
+              <?
               db_input('ob04_processo', 10, $Iob04_processo, true, 'text', $db_opcao);
               ?>
           </td>
@@ -181,7 +181,7 @@ db_app::load('estilos.css');
         <tr id="processoExterno2" style="display: none;">
           <td nowrap title="Nmero do processo externo"><?= @$Lob04_titularprocesso ?></td>
           <td nowrap>
-              <?php 
+              <?
               db_input('ob04_titularprocesso', 54, $Iob04_titularprocesso, true, 'text', $db_opcao);
               ?>
           </td>
@@ -189,7 +189,7 @@ db_app::load('estilos.css');
         <tr id="processoExterno3" style="display: none;">
           <td nowrap title="Nmero do processo externo"><?= @$Lob04_dtprocesso ?></td>
           <td nowrap>
-              <?php 
+              <?
               db_inputdata('ob04_dtprocesso', @$ob04_dtprocesso_dia, @$ob04_dtprocesso_mes, @$ob04_dtprocesso_ano, true,
                 'text', $db_opcao);
               ?>
@@ -198,7 +198,7 @@ db_app::load('estilos.css');
         <tr>
           <td nowrap title="<?= @$Tob04_classe ?>"><?= @$Lob04_classe ?></td>
           <td nowrap>
-              <?php 
+              <?
               db_input('ob04_classe', 54, $Iob04_classe, true, 'text', 1, "");
               ?>
           </td>
@@ -209,7 +209,7 @@ db_app::load('estilos.css');
               <legend>
                   <?= $Lob04_obsprocesso ?>
               </legend>
-                <?php 
+                <?
                 db_textarea('ob04_obsprocesso', 10, 70, $Iob04_obsprocesso, true, 'text', $db_opcao);
                 ?>
             </fieldset>
@@ -777,7 +777,7 @@ db_app::load('estilos.css');
   }
 
 </script>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"),
   db_getsession("DB_instit"));
 ?>

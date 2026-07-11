@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clrhtipovale->rotulo->label();
        <?=@$Lrh68_sequencial?>
     </td>
     <td> 
-<?php 
+<?
 db_input('rh68_sequencial',4,$Irh68_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh68_sequencial',4,$Irh68_sequencial,true,'text',3,"")
        <?=@$Lrh68_descr?>
     </td>
     <td> 
-<?php 
+<?
 db_input('rh68_descr',40,$Irh68_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhtipovale.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -172,7 +172,7 @@ if (isset($incluir)&&trim($incluir)!=""){
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <center>
-<?php 
+<?
 if (isset($licitacao)&&trim($licitacao)!=""){
    $sql_marca    = "";
    $campos       = "l21_codigo,pc81_codprocitem,pc01_descrmater,l04_codigo,l04_descricao";
@@ -209,7 +209,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 <form name="form2" method="post" action="lic1_liclicitemlotenovo.php">
 <table border="0" cellspacing="2" cellpadding="0" align="center">
 <tr><td colspan="2">&nbsp;</td></tr>
-<?php 
+<?
    db_input("licitacao",10,"",true,"hidden",3);
    db_input("l04_liclicitem",50,"",true,"hidden",3);
    db_input("db_tranca",1,"",true,"hidden",3);
@@ -217,7 +217,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 <tr>
   <td nowrap align="right" title="<?=@$Tl04_codigo?>"><?=@$Ll04_codigo?></td>
   <td nowrap align="left">
-  <?php 
+  <?
       db_input("l04_codigo",10,$Il04_codigo,true,"text",3);
   ?>
   </td>
@@ -225,7 +225,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 <tr>
   <td nowrap align="right" title="<?=@$Tl04_descricao?>"><?=@$Ll04_descricao?></td>
   <td nowrap align="left">
-  <?php 
+  <?
       db_input("l04_descricao",40,$Il04_descricao,true,"text",$db_opcao);
   ?>
   </td>
@@ -281,7 +281,7 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 </form>
 </body>
 </html>
-<?php 
+<?
 }
 
 if (isset($db_opcao)&&$db_opcao==3){

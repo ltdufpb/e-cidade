@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -287,7 +287,7 @@ if(isset($submit)){
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden';">
 <form name="form1" method="POST">
-<?php 
+<?
 echo "<input type='hidden' name='numpre' value='".@ $numpre1."'>\n";
 echo "<input type='hidden' name='numpar' value='".@ $numpar1."'>\n";
 ?>
@@ -303,11 +303,11 @@ echo "<input type='hidden' name='numpar' value='".@ $numpar1."'>\n";
   <tr>
     <td>
      <?=$Lk27_obs?><br>
-     <?php db_textarea('k27_obs',5,55,$Ik27_obs,true,'text',$db_opcao,"")?>
+     <?db_textarea('k27_obs',5,55,$Ik27_obs,true,'text',$db_opcao,"")?>
     </td>
    </tr>
    <tr>
-    <td><?=$Lk27_dias?><?php db_input('k27_dias',5,$Ik27_dias,true,'text',1)?></td>
+    <td><?=$Lk27_dias?><?db_input('k27_dias',5,$Ik27_dias,true,'text',1)?></td>
    </tr>
    <tr>
     <td colspan="2" align="center"><input type="submit" name="submit" value="Confirmar" onClick="js_verifica()"></td>

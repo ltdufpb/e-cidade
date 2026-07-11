@@ -1,4 +1,4 @@
-<?php 
+<?
 if(!defined('DB_BIBLIOT')){
 
   session_cache_limiter('none');

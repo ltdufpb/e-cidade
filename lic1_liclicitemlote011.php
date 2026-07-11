@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@ $cabec_lote = "<b>&nbsp;Lote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -58,13 +58,13 @@ $cabec_lote = "<b>&nbsp;Lote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
          border-bottom-color: <?=$cor?>;
        }
-<?php $corfundo="E4F471"?>       
+<?$corfundo="E4F471"?>       
 .bordas_corp_anul{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -85,7 +85,7 @@ $cabec_lote = "<b>&nbsp;Lote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
     <td nowrap class='bordas' align='center'><b>Vlr. unit. aprox.</b>    </td>
     <td nowrap class='bordas' align='center'><?=$cabec_lote?></td>
   </tr>
-<?php 
+<?
     db_input("licitacao",10,"",true,"hidden",3);
     $codprocitem  = 0;
     $codlotedescr = "";
@@ -132,11 +132,11 @@ $cabec_lote = "<b>&nbsp;Lote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
   	<td align="center" class="<?=$class?>" width="25%"><?=$pc01_codmater?>   </td>
   	<td align="left"   class="<?=$class?>" width="30%"><?=$pc01_descrmater?> </td>
   	<td align="right"  class="<?=$class?>" width="15%"><?=$pc11_quant?>      </td>
-  	<td align="right"  class="<?=$class?>" width="15%"><?php  echo db_formatar($pc11_vlrun,"f"); ?></td>
+  	<td align="right"  class="<?=$class?>" width="15%"><? echo db_formatar($pc11_vlrun,"f"); ?></td>
     <td align="center" class="<?=$class?>" width="30%">
       <select name="descricao" id="descricao" onChange="parent.js_selecionado();" <?=($l21_situacao == 1?"disabled":"")?>>
-        <option value="<?php  echo $l21_codigo."_0"; ?>">Sem lote</option>
-<?php 
+        <option value="<? echo $l21_codigo."_0"; ?>">Sem lote</option>
+<?
                    for($ii = 0; $ii < $numrowslote; $ii++){
                         db_fieldsmemory($res_liclicitemlote, $ii);
 
@@ -146,18 +146,18 @@ $cabec_lote = "<b>&nbsp;Lote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
                              $selected = "";
                         }
 ?>
-            <option value="<?php  echo $l21_codigo."_".$l04_descricao; ?>" <?=$selected?>><?=$l04_descricao?></option>
-<?php 
+            <option value="<? echo $l21_codigo."_".$l04_descricao; ?>" <?=$selected?>><?=$l04_descricao?></option>
+<?
                    }
 ?>
       </select>
     </td>  
-<?php     
+<?    
          }
 ?>
     
   </tr>    
-<?php 
+<?
     }
 
     if ($numrows == 0){
@@ -166,7 +166,7 @@ $cabec_lote = "<b>&nbsp;Lote&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
   <tr nowrap>
   	<td colspan="8" align="center"><b>Nenhum lote cadastrado</b></td>
   </tr>
-<?php 
+<?
     }
 ?>
   <tr><td colspan="6">&nbsp;</td></tr>

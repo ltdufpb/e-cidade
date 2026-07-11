@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clvistoriasanu->rotulo->label("y28_codigo");
               <?=$Ly28_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y28_codigo",8,$Iy28_codigo,true,"text",4,"","chave_y28_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clvistoriasanu->rotulo->label("y28_codigo");
               <?=$Ly28_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y28_codigo",8,$Iy28_codigo,true,"text",4,"","chave_y28_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clvistoriasanu->rotulo->label("y28_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistoriasanu.php")==true){
@@ -123,12 +123,12 @@ $clvistoriasanu->rotulo->label("y28_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

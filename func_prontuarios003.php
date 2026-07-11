@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -86,7 +86,7 @@ db_fieldsmemory($query1,0);
               <?=$Lsd24_i_unidade?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php db_input("sd24_i_unidade",10,@$Isd24_i_unidade,true,"text",3,"","chave_sd24_i_unidade");?>
+              <?db_input("sd24_i_unidade",10,@$Isd24_i_unidade,true,"text",3,"","chave_sd24_i_unidade");?>
             </td>
           </tr>
           <tr>
@@ -94,7 +94,7 @@ db_fieldsmemory($query1,0);
               <?=$Lsd24_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php db_input("sd24_i_codigo",10,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
+              <?db_input("sd24_i_codigo",10,@$Isd24_i_codigo,true,"text",4,"","chave_sd24_i_codigo");?>
             </td>
           </tr>
           <tr>
@@ -102,7 +102,7 @@ db_fieldsmemory($query1,0);
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap colspan="2">
-              <?php db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
+              <?db_input("z01_v_nome",40,@$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");?>
             </td>
           </tr>
           <tr>
@@ -118,7 +118,7 @@ db_fieldsmemory($query1,0);
   </tr>
   <tr>
     <td align="center" valign="top">
-		<?php 
+		<?
 		if(!isset($pesquisa_chave)){
 			if(isset($campos)==false){
 				if(file_exists("funcoes/db_func_prontuarios.php")==true){
@@ -182,7 +182,7 @@ db_fieldsmemory($query1,0);
 					parent.db_iframe_prontuarios.hide();
 				}
 				</script>
-				<?php 
+				<?
 			}
 		}else{
 			if($pesquisa_chave!=null && $pesquisa_chave!=""){

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcsuplemretif->rotulo->label("o48_seq");
               <?=$Lo48_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o48_seq",10,$Io48_seq,true,"text",4,"","chave_o48_seq");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcsuplemretif->rotulo->label("o48_seq");
               <?=$Lo48_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o48_seq",10,$Io48_seq,true,"text",4,"","chave_o48_seq");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcsuplemretif->rotulo->label("o48_seq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcsuplemretif.php")==true){
@@ -119,12 +119,12 @@ $clorcsuplemretif->rotulo->label("o48_seq");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

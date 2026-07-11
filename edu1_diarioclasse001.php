@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,7 +58,7 @@ if(isset($retorno)){
 <table align="left" valign="top" marginwidth="0" width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left" >
-   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <fieldset style="width:98%"><legend><b>Diário de Classe</b></legend>
     <table width="100%" valign="top" marginwidth="0" border="0" cellspacing="0" cellpadding="0">
      <tr>
@@ -74,7 +74,7 @@ if(isset($retorno)){
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <table width="300" height="100" id="tab_aguarde" style="visibility:hidden;border:2px solid #444444;position:absolute;top:100px;" cellspacing="1" cellpading="2">

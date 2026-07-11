@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltipoprocgrupo->rotulo->label("p40_sequencial");
               <?=$Lp40_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p40_sequencial",10,$Ip40_sequencial,true,"text",4,"","chave_p40_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltipoprocgrupo->rotulo->label("p40_sequencial");
               <?=$Lp40_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p40_sequencial",10,$Ip40_sequencial,true,"text",4,"","chave_p40_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltipoprocgrupo->rotulo->label("p40_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoprocgrupo.php")==true){
@@ -123,12 +123,12 @@ $cltipoprocgrupo->rotulo->label("p40_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

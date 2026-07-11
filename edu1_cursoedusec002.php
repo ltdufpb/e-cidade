@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -80,7 +80,7 @@ $sTitulo = 'Alteração de Curso';
     ?>
  </body>
 </html>
-<?php 
+<?
 if (isset($alterar)) {
 
   if ($clcurso->erro_status == "0") {

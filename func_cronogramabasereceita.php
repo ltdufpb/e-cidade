@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcronogramabasereceita->rotulo->label("o126_cronogramabasecalculo");
               <?=$Lo126_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o126_sequencial",10,$Io126_sequencial,true,"text",4,"","chave_o126_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcronogramabasereceita->rotulo->label("o126_cronogramabasecalculo");
               <?=$Lo126_cronogramabasecalculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o126_cronogramabasecalculo",10,$Io126_cronogramabasecalculo,true,"text",4,"","chave_o126_cronogramabasecalculo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcronogramabasereceita->rotulo->label("o126_cronogramabasecalculo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cronogramabasereceita.php")==true){
@@ -123,12 +123,12 @@ $clcronogramabasereceita->rotulo->label("o126_cronogramabasecalculo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

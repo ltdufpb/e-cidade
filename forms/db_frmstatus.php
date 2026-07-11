@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -31,10 +31,10 @@ $cldb_config->rotulo->label();
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?php 
+<?
 db_input('codigo',2,$Icodigo,true,'hidden',3,"")
 ?>
-<?php if($db_botao != false){?>
+<?if($db_botao != false){?>
   <tr>
     <td>
       <fieldset>
@@ -45,7 +45,7 @@ db_input('codigo',2,$Icodigo,true,'hidden',3,"")
               <b>Status:</b>
             </td>
             <td> 
-              <?php 
+              <?
               $arr_ativo = array(1=>"On line",2=>"Não permitir novos logs",3=>"Off line");
               if($db21_ativo == 0){
                 $arr_ativo[0] = "Indefinido (Default: ".$arr_ativo[1].")";
@@ -63,13 +63,13 @@ db_input('codigo',2,$Icodigo,true,'hidden',3,"")
       </fieldset>
     </td>
   </tr>
-<?php }else{?>
+<?}else{?>
   <tr>
     <td align="center">
       <b>Configure os dados da Instituição Prefeitura.</b>
     </td>
   </tr>
-<?php }?>
+<?}?>
 </table>
 </center>
 </form>
@@ -79,7 +79,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_config.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

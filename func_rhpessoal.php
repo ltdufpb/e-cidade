@@ -172,7 +172,7 @@ $styleDivSelecao = !empty($somenteAtivos) ? 'display: none;' : '';
           document.form2.submit();
         }
       </script>
-        <?php 
+        <?
     }
     ?>
 </head>

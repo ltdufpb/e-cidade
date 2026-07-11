@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clsau_agravo->rotulo->label("sd71_c_nome");
               <?=$Lsd71_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd71_i_codigo",5,$Isd71_i_codigo,true,"text",4,"","chave_sd71_i_codigo");
                  ?>
             </td>
@@ -65,7 +65,7 @@ $clsau_agravo->rotulo->label("sd71_c_nome");
               <?=$Lsd71_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd71_c_nome",60,$Isd71_c_nome,true,"text",4,"","chave_sd71_c_nome");
                  ?>
             </td>
@@ -83,7 +83,7 @@ $clsau_agravo->rotulo->label("sd71_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_agravo.php")==true){
@@ -123,12 +123,12 @@ $clsau_agravo->rotulo->label("sd71_c_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

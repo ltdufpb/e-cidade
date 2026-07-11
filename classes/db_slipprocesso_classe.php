@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: caixa
 //CLASSE DA ENTIDADE slipprocesso
 class cl_slipprocesso { 

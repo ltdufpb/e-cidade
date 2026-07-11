@@ -162,7 +162,7 @@ db_app::load("estilos.css, grid.style.css");
                       <?php echo $Lac20_matunid ?>
                   </td>
                   <td>
-                      <?php 
+                      <?
                       $oDaoMatUnid = db_utils::getDao("matunid");
                       $sSqlUnidades = $oDaoMatUnid->sql_query_file(null,
                         "m61_codmatunid,substr(m61_descr,1,20) as m61_descr",

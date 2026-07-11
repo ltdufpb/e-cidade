@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpagordemtiporec->rotulo->label("e59_sequen");
               <?=$Le59_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e59_sequen",10,$Ie59_sequen,true,"text",4,"","chave_e59_sequen");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpagordemtiporec->rotulo->label("e59_sequen");
               <?=$Le59_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e59_sequen",10,$Ie59_sequen,true,"text",4,"","chave_e59_sequen");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpagordemtiporec->rotulo->label("e59_sequen");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pagordemtiporec.php")==true){
@@ -123,12 +123,12 @@ $clpagordemtiporec->rotulo->label("e59_sequen");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

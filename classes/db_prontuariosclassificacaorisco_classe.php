@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontuariosclassificacaorisco
 class cl_prontuariosclassificacaorisco { 

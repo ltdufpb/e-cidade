@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -177,7 +177,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
  function js_cancelar(){
     location.href='cad1_iptuconstrdemo001.php?j39_area=<?=$j39_area?>&j39_matric=<?=$j39_matric?>&z01_nome=<?=$z01_nome?>&j39_idcons=<?=$j39_idcons?>';
  }
-<?php  
+<? 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   echo "parent.document.form1.j39_area.value='$j39_area';";
 }  
@@ -196,7 +196,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
            <?=$Lj39_matric?>
           </td>
           <td> 
-          <?php 
+          <?
             db_input('j60_seq',5,$Ij60_seq,true,'hidden',3);
            db_input('j39_matric',5,0,true,'text',3,"onchange='js_matri(false)'");
            db_input('z01_nome',45,0,true,'text',3,"");
@@ -208,7 +208,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
            <?=$Lj39_idcons?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j39_idcons',5,$Ij39_idcons,true,'text',3);
 ?>
 	 </td>
@@ -219,7 +219,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
            <?=$Lj39_area?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j39_area',5,$Ij39_area,true,'text',3);
 ?>
 	 </td>
@@ -232,13 +232,13 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
 	        <tr>
                 <td nowrap title="<?=@$Tj60_codproc?>" colspan="2">
                   <?=@$Lj60_codproc?>
-                  <?php 
+                  <?
                    db_input('j60_codproc',5,$Ij60_codproc,true,'text',$db_opcao);
                   ?>
 		 </td> 
 		 <td> 
                   <?=@$Lj60_area?>
-                  <?php 
+                  <?
 		    if(isset($j60_area)){
 		      $j60_area_ant=$j60_area;
 		    }
@@ -248,7 +248,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
                 </td>
                 <td nowrap title="<?=@$Tj60_datademo?>">
                   <?=@$Lj60_datademo?>
-                  <?php 
+                  <?
 		  if($db_opcao==1){
 		    
 		  }
@@ -270,7 +270,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
               <tr>
 	        <td align="center" colspan="2">
 		 
-<?php 		
+<?		
 if(isset($j39_idcons)){
     $chavepri= array("j60_idcons"=>$j39_idcons,"j60_seq"=>@$j60_seq);
     $cliframe_alterar_excluir->chavepri=$chavepri;
@@ -292,7 +292,7 @@ if(isset($j39_idcons)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir) || isset($alterar) || isset($excluir)){
     $cliptuconstrdemo->erro(true,false);
 }    

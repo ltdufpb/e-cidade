@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -68,17 +68,17 @@ if(isset($alterar)){
 
 <br /> <br />
 <center>
-	<?php 
+	<?
   	include("forms/db_frmconrelinfo.php");
 	?>
 </center>
 
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
   if($clconrelinfo->erro_status=="0"){
     $clconrelinfo->erro(true,false);

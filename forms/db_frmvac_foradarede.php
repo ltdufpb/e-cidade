@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@
     <table border="0" width="100%">
       <tr>
         <td align="center">
-          <?php 
+          <?
           db_input('iCgs', 10, '', true, 'hidden', 3, '');
           ?>
           <input type="button" name="confirmar" value="Confirmar" onclick="return js_confirmar();">

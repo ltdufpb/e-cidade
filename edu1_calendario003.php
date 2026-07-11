@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -91,7 +91,7 @@ if ( isset( $chavepesquisa ) ) {
         <center>
         <fieldset style="width:95%">
           <legend><b>Exclusão de Calendário</b></legend>
-          <?php include(modification("forms/db_frmcalendario.php"));?>
+          <?include(modification("forms/db_frmcalendario.php"));?>
         </fieldset>
         </center>
       </td>
@@ -99,7 +99,7 @@ if ( isset( $chavepesquisa ) ) {
   </table>
 </body>
 </html>
-<?php 
+<?
 if ( $db_opcao == 33 ) {
   echo "<script>document.form1.pesquisar.click();</script>";
 }

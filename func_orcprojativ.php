@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,7 +82,7 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
               <?=$Lo55_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o55_descr",40,$Io55_descr,true,"text",4,"","chave_o55_descr");
 		       ?>
             </td>
@@ -100,7 +100,7 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 
       $chave_o55_descr = addslashes($chave_o55_descr);
 
@@ -196,7 +196,7 @@ $ano = isset($get->previsao) ? $get->ano : db_getsession('DB_anousu');
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -213,7 +213,7 @@ if(!isset($pesquisa_chave)){
       
     })();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

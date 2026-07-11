@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,7 +42,7 @@ $clrotulo->label("j13_descr");
        <?=@$Lcoddepto?>
     </td>
     <td> 
-<?php 
+<?
 db_input('coddepto',5,$Icoddepto,true,'text',3,"");
 /*
 if ($db_opcao==2||$db_opcao==3){
@@ -57,15 +57,15 @@ if ($db_opcao==2||$db_opcao==3){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcodlograd?>">
-       <?php 
+       <?
        db_ancora(@$Lcodlograd,"js_pesquisacodlograd(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('codlograd',7,$Icodlograd,true,'text',$db_opcao," onchange='js_pesquisacodlograd(false);'")
 ?>
-       <?php 
+       <?
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
     </td>
@@ -75,7 +75,7 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        <?=@$Lnumero?>
     </td>
     <td> 
-<?php 
+<?
 db_input('numero',10,$Inumero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -85,31 +85,31 @@ db_input('numero',10,$Inumero,true,'text',$db_opcao,"")
        <?=@$Lcompl?>
     </td>
     <td> 
-<?php 
+<?
 db_input('compl',20,$Icompl,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcodbairro?>">
-       <?php 
+       <?
        db_ancora(@$Lcodbairro,"js_pesquisacodbairro(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('codbairro',4,$Icodbairro,true,'text',$db_opcao," onchange='js_pesquisacodbairro(false);'")
 ?>
-       <?php 
+       <?
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   </table>
   </center>
-<?php   if ($db_opcao==1||$db_opcao==2||$db_opcao==22){?>
+<?  if ($db_opcao==1||$db_opcao==2||$db_opcao==22){?>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?php }?>
+<?}?>
 </form>
 <script>
 function js_pesquisacoddepto(mostra){
@@ -186,7 +186,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_departender.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

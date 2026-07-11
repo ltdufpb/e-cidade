@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ function armazena(){
 
 function js_cabecaltura(){
  valor=document.form1.pcabecaltura.value;
- <?php   
+ <?  
    for ($i = 0;$i < $fm_numfields;$i++){
      echo "document.form1.cabecaltura_".$i.".value=valor;";
    }  
@@ -78,7 +78,7 @@ function js_cabecaltura(){
 }
 function js_corpaltura(){
  valor=document.form1.pcorpaltura.value;
- <?php   
+ <?  
    for ($i = 0;$i < $fm_numfields;$i++){
      echo "document.form1.corpaltura_".$i.".value=valor;";
    }  
@@ -143,7 +143,7 @@ border: 2px outset #999999;
         <tr>
 	  <td valign="top" width="100%" >
 	    <br>
-           <?php 
+           <?
              if(@$libera==true){    
 	       echo "<input type=\"button\" size=\"10\" name=\"armazenar\" value=\"Confirmar Alteração\" onclick=\"armazena()\" >";
              }else{    
@@ -161,13 +161,13 @@ border: 2px outset #999999;
 	      <tr width="100%"> 
 	        <td colspan="1" width="20%" align="center">Página
 		   <select  name="visualizacao" value="<?=@$visualizacao?>">
-                     <option <?php echo(@$tvisualizacao=="P"? "selected":"selected")?> value="P">Retrato</option>
-                     <option <?php echo(@$tvisualizacao=="L"? "selected":"")?> value="L">Paisagem</option>
+                     <option <?echo(@$tvisualizacao=="P"? "selected":"selected")?> value="P">Retrato</option>
+                     <option <?echo(@$tvisualizacao=="L"? "selected":"")?> value="L">Paisagem</option>
                 </td>
 	        <td width="28%" nowrap align="center">
 		   Altura padrão cabeçalhos 
 		  <select name="pcabecaltura" onchange="js_cabecaltura()" > 
-		    <?php 
+		    <?
 		     for($t=0; $t<= 20; $t++){
        		       if(isset($pcabecaltura)){	
                          echo "<option ".($t==@$pcabecaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -181,7 +181,7 @@ border: 2px outset #999999;
 	        <td  nowrap  width="25%" align="center"> 
 		  Altura padrão corpo
 		  <select name="pcorpaltura" onchange="js_corpaltura()" > 
-		    <?php 
+		    <?
 		     for($t=0; $t<= 20; $t++){
        		       if(isset($pcorpaltura)){	
                          echo "<option ".($t==@$pcorpaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -200,25 +200,25 @@ border: 2px outset #999999;
                 <td  colspan="2" nowrap width="15%">
 		  Intercalar cores de fundo
 	          <select name="intercalar1"> 
-		    <option <?php echo(@$intercalar1=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$intercalar1=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$intercalar1=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$intercalar1=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
-		    <option <?php echo(@$intercalar1=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$intercalar1=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$intercalar1=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$intercalar1=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$intercalar1=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$intercalar1=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$intercalar1=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
+		    <option <?echo(@$intercalar1=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
+		    <option <?echo(@$intercalar1=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$intercalar1=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
 		  </select>  
                      com
 		  <select name="intercalar2"> 
-		    <option <?php echo(@$intercalar2=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$intercalar2=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$intercalar2=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$intercalar2=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
-		    <option <?php echo(@$intercalar2=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$intercalar2=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$intercalar2=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$intercalar2=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$intercalar2=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$intercalar2=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$intercalar2=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
+		    <option <?echo(@$intercalar2=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
+		    <option <?echo(@$intercalar2=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$intercalar2=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
 		  </select>  
 		</td>
 	      </tr>  	 		    
@@ -250,7 +250,7 @@ border: 2px outset #999999;
 	        <td align="center"width="10%"  style="border: 2px outset #999999"nowrap bordercolor="#cccccc">Altura</td>
                 <td align="center"width="10%"  style="border: 2px outset #999999"nowrap bordercolor="#cccccc">Largura</td>
 	      </tr>
-	      <?php 
+	      <?
                  for ($i = 0;$i < $fm_numfields;$i++){
 	          $qualcampo = pg_fieldname($resultsql,$i);
                   $tcampo = "T".$qualcampo;
@@ -275,7 +275,7 @@ border: 2px outset #999999;
                   }
 	      ?>
 	      <tr height="28" width="100%"  class='corpo'>
-	        <?php 
+	        <?
 		$qualcampo = pg_fieldname($resultsql,$i);
                 $rotulocampo->label($qualcampo);
                 $tcampo = "T".$qualcampo;
@@ -284,19 +284,19 @@ border: 2px outset #999999;
 		
 		?>
 	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=$$tcampo?>">
-                  <?php 
+                  <?
 		   echo $$lcampo;
 	           ?>
 		</td>
 		  <td width="14%" nowrap bordercolor="#ffffff">
 		  <select name="cabecfonte_<?=@$i?>">
-		    <option <?php echo(@$tcabecfonte=="courier"? "selected":"")?> <?php echo @$sele?> value="courier" >Courier</option>
-		    <option <?php echo(@$tcabecfonte=="arial"? "selected":"")?> value="arial">Arial</option>
-		    <option <?php echo(@$tcabecfonte=="times"? "selected":"")?>value="times">Times</option>
+		    <option <?echo(@$tcabecfonte=="courier"? "selected":"")?> <?echo @$sele?> value="courier" >Courier</option>
+		    <option <?echo(@$tcabecfonte=="arial"? "selected":"")?> value="arial">Arial</option>
+		    <option <?echo(@$tcabecfonte=="times"? "selected":"")?>value="times">Times</option>
 		</td>
 		<td align="center" width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="cabectamanho_<?=@$i?>">
-		    <?php 
+		    <?
 		     for($t=0; $t<= 20; $t++){
        		       if(isset($tcabectamanho)){	
                          echo "<option ".($t==@$tcabectamanho?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -308,44 +308,44 @@ border: 2px outset #999999;
 		</td>
 	        <td width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="cabeccortexto_<?=@$i?>">
-		    <option <?php echo(@$tcabeccortexto=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$tcabeccortexto=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$tcabeccortexto=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$tcabeccortexto=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$tcabeccortexto=="0#0#0"? "selected":"")?> <?php echo @$sele?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$tcabeccortexto=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$tcabeccortexto=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$tcabeccortexto=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$tcabeccortexto=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$tcabeccortexto=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$tcabeccortexto=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$tcabeccortexto=="0#0#0"? "selected":"")?> <?echo @$sele?> value="0#0#0">Preto</option>
+		    <option <?echo(@$tcabeccortexto=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$tcabeccortexto=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
 		</td>
 		<td width="12%" bordercolor="#ffffff"nowrap>
-		  N<input type="checkbox" name="cabecn_<?=@$i?>" value="B" <?php echo(@$tcabecn=="B"? "checked":"")?> <?php echo @$sele1?> >
-		  I<input type="checkbox" name="cabeci_<?=@$i?>" value="I" <?php echo(@$tcabeci=="I"? "checked":"")?>>
-		  S<input type="checkbox" name="cabecs_<?=@$i?>" value="U" <?php echo(@$tcabecs=="U"? "checked":"")?>>
+		  N<input type="checkbox" name="cabecn_<?=@$i?>" value="B" <?echo(@$tcabecn=="B"? "checked":"")?> <?echo @$sele1?> >
+		  I<input type="checkbox" name="cabeci_<?=@$i?>" value="I" <?echo(@$tcabeci=="I"? "checked":"")?>>
+		  S<input type="checkbox" name="cabecs_<?=@$i?>" value="U" <?echo(@$tcabecs=="U"? "checked":"")?>>
 	        </td>
 	        <td width="12%" bordercolor="#ffffff"nowrap>
 		  <select name="cabeccorborda_<?=@$i?>">
-		    <option <?php echo(@$tcabeccorborda=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$tcabeccorborda=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$tcabeccorborda=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$tcabeccorborda=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
-		    <option <?php echo(@$tcabeccorborda=="0#0#0"? "selected":"")?> <?php echo @$sele?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$tcabeccorborda=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$tcabeccorborda=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$tcabeccorborda=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$tcabeccorborda=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$tcabeccorborda=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$tcabeccorborda=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
+		    <option <?echo(@$tcabeccorborda=="0#0#0"? "selected":"")?> <?echo @$sele?> value="0#0#0">Preto</option>
+		    <option <?echo(@$tcabeccorborda=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$tcabeccorborda=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
 		</td>
 	        <td width="12%" bordercolor="#ffffff"nowrap>
 		  <select name="cabeccorfundo_<?=@$i?>">
-		    <option <?php echo(@$tcabeccorfundo=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$tcabeccorfundo=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$tcabeccorfundo=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$tcabeccorfundo=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
-		    <option <?php echo(@$tcabeccorfundo=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$tcabeccorfundo=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$tcabeccorfundo=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$tcabeccorfundo=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$tcabeccorfundo=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$tcabeccorfundo=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$tcabeccorfundo=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
+		    <option <?echo(@$tcabeccorfundo=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
+		    <option <?echo(@$tcabeccorfundo=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$tcabeccorfundo=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
 		</td>
 	        <td align="center" bordercolor="#ffffff" width="12%" nowrap >
 		  <select name="cabecaltura_<?=@$i?>">
-		    <?php 
+		    <?
 		     for($t=0; $t<= 20; $t++){
        		       if(isset($tcabecaltura)){	
                          echo "<option ".($t==$tcabecaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -357,7 +357,7 @@ border: 2px outset #999999;
 		</td>
 	        <td align="center"width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="cabeclargura_<?=@$i?>">
-		    <?php 
+		    <?
 		     for($t=0; $t<= 250; $t++){
        		       if(isset($tcabeclargura)){	
                          echo "<option ".($t==@$tcabeclargura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -368,7 +368,7 @@ border: 2px outset #999999;
 		    ?> 
 		</td>
 	      <tr>
-	      <?php }?>
+	      <?}?>
 	    </table>
 	  </td>
 	</tr>
@@ -395,7 +395,7 @@ border: 2px outset #999999;
 	  <td align="center"width="10%" nowrap bordercolor="#cccccc">Altura</td>
 	  <td align="center"width="10%" nowrap bordercolor="#cccccc">Largura</td>
 	</tr>
-	 <?php  for ($i = 0;$i < $fm_numfields;$i++){
+	 <? for ($i = 0;$i < $fm_numfields;$i++){
 	      $qualcampo = pg_fieldname($resultsql,$i);
               $tcampo = "T".$qualcampo;
               $lcampo = "L".$qualcampo;
@@ -420,26 +420,26 @@ border: 2px outset #999999;
           ?> 
 	      <tr height="25"  class='corpo'>
 	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=$$tcampo?>">
-                  <?php 
+                  <?
 	           echo $$lcampo;
 		   ?>
 		</td>
 	        <td width="14%" bordercolor="#ffffff"nowrap>
 		  <select name="corpfonte_<?=@$i?>">
-		    <option <?php echo(@$tcorpfonte=="courier"? "selected":"")?> value="courier" >Courier</option>
-		    <option <?php echo(@$tcorpfonte=="arial"? "selected":"")?> value="arial">Arial</option>
-		    <option <?php echo(@$tcorpfonte=="times"? "selected":"")?> value="times">Times</option>
+		    <option <?echo(@$tcorpfonte=="courier"? "selected":"")?> value="courier" >Courier</option>
+		    <option <?echo(@$tcorpfonte=="arial"? "selected":"")?> value="arial">Arial</option>
+		    <option <?echo(@$tcorpfonte=="times"? "selected":"")?> value="times">Times</option>
 		</td>
 	        <td width="14%" bordercolor="#ffffff"nowrap>
 		  <select name="corpopcao_<?=@$i?>">
-		    <option <?php echo(@$tcorpopcao=="nenhuma"? "selected":"")?> value="nenhuma">Nenhuma</option>
-		    <option <?php echo(@$tcorpopcao=="somar"? "selected":"")?> value="somar" >Somar</option>
-		    <option <?php echo(@$tcorpopcao=="contar"? "selected":"")?> value="contar" >Contar</option>
-		    <option <?php echo(@$tcorpopcao=="preenchidos"? "selected":"")?> value="preenchidos" >Preenchidos</option>
+		    <option <?echo(@$tcorpopcao=="nenhuma"? "selected":"")?> value="nenhuma">Nenhuma</option>
+		    <option <?echo(@$tcorpopcao=="somar"? "selected":"")?> value="somar" >Somar</option>
+		    <option <?echo(@$tcorpopcao=="contar"? "selected":"")?> value="contar" >Contar</option>
+		    <option <?echo(@$tcorpopcao=="preenchidos"? "selected":"")?> value="preenchidos" >Preenchidos</option>
 		</td>
 		<td align="center" bordercolor="#ffffff"width="12%" nowrap >
 		  <select name="corptamanho_<?=@$i?>">
-		    <?php 
+		    <?
 		     for($t=0; $t<= 20; $t++){
        		       if(isset($tcorptamanho)){	
                          echo "<option ".($t==@$tcorptamanho?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -451,45 +451,45 @@ border: 2px outset #999999;
 		</td>
 	        <td width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="corpcortexto_<?=@$i?>">
-		    <option <?php echo(@$tcorpcortexto=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$tcorpcortexto=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$tcorpcortexto=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$tcorpcortexto=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
-		    <option <?php echo(@$tcorpcortexto=="0#0#0"? "selected":"")?> <?php echo @$sele?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$tcorpcortexto=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$tcorpcortexto=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$tcorpcortexto=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$tcorpcortexto=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$tcorpcortexto=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$tcorpcortexto=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
+		    <option <?echo(@$tcorpcortexto=="0#0#0"? "selected":"")?> <?echo @$sele?> value="0#0#0">Preto</option>
+		    <option <?echo(@$tcorpcortexto=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$tcorpcortexto=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
 		</td>
 		<td width="12%" bordercolor="#ffffff"nowrap>
-		  N<input type="checkbox" name="corpn_<?=@$i?>" value="B" <?php echo(@$tcorpn=="B"? "checked":"")?>>
-		  I<input type="checkbox" name="corpi_<?=@$i?>" value="I" <?php echo(@$tcorpi=="I"? "checked":"")?>>
-		  S<input type="checkbox" name="corps_<?=@$i?>" value="U" <?php echo(@$tcorps=="U"? "checked":"")?>>
+		  N<input type="checkbox" name="corpn_<?=@$i?>" value="B" <?echo(@$tcorpn=="B"? "checked":"")?>>
+		  I<input type="checkbox" name="corpi_<?=@$i?>" value="I" <?echo(@$tcorpi=="I"? "checked":"")?>>
+		  S<input type="checkbox" name="corps_<?=@$i?>" value="U" <?echo(@$tcorps=="U"? "checked":"")?>>
 		</td>
 	        <td width="12%" bordercolor="#ffffff"nowrap>
 		  <select name="corpcorborda_<?=@$i?>">
-		    <option <?php echo(@$tcorpcorborda=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$tcorpcorborda=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$tcorpcorborda=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$tcorpcorborda=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
-		    <option <?php echo(@$tcorpcorborda=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$tcorpcorborda=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$tcorpcorborda=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$tcorpcorborda=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$tcorpcorborda=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$tcorpcorborda=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$tcorpcorborda=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
+		    <option <?echo(@$tcorpcorborda=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
+		    <option <?echo(@$tcorpcorborda=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$tcorpcorborda=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
                 </td>
 	        <td width="12%" bordercolor="#ffffff"nowrap>
 		  <select name="corpcorfundo_<?=@$i?>">
-		    <option <?php echo(@$tcorpcorfundo=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
-		    <option <?php echo(@$tcorpcorfundo=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
-		    <option <?php echo(@$tcorpcorfundo=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
-		    <option <?php echo(@$tcorpcorfundo=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
-		    <option <?php echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
-		    <option <?php echo(@$tcorpcorfundo=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
-		    <option <?php echo(@$tcorpcorfundo=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
-		    <option <?php echo(@$tcorpcorfundo=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
+		    <option <?echo(@$tcorpcorfundo=="255#255#255"? "selected":"")?> value="255#255#255">Branco</option>
+		    <option <?echo(@$tcorpcorfundo=="0#0#200"? "selected":"")?> value="0#0#200">Azul</option>
+		    <option <?echo(@$tcorpcorfundo=="255#255#0"? "selected":"")?> value="255#255#0">Amarelo</option>
+		    <option <?echo(@$tcorpcorfundo=="200#200#200"? "selected":"")?> value="200#200#200">Cinza</option>
+		    <option <?echo(@$intercalar1=="150#150#150"? "selected":"")?> value="150#150#150">Cinza2</option>
+		    <option <?echo(@$tcorpcorfundo=="0#0#0"? "selected":"")?> value="0#0#0">Preto</option>
+		    <option <?echo(@$tcorpcorfundo=="0#100#0"? "selected":"")?> value="0#100#0">Verde</option>
+		    <option <?echo(@$tcorpcorfundo=="200#0#0"? "selected":"")?> value="200#0#0">Vermelho</option>
 		</td>
 	        <td align="center"width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="corpaltura_<?=@$i?>">
-		    <?php 
+		    <?
 		     for($t=0; $t<= 20; $t++){
        		       if(isset($tcorpaltura)){	
                          echo "<option ".($t==@$tcorpaltura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -501,7 +501,7 @@ border: 2px outset #999999;
 		</td>
 	        <td align="center"width="12%" bordercolor="#ffffff"nowrap >
 		  <select name="corplargura_<?=@$i?>">
-		    <?php 
+		    <?
 		     for($t=0; $t<= 250; $t++){
        		       if(isset($tcorplargura)){	
                          echo "<option ".($t==$tcorplargura?'selected':'')." value=\"".$t."\">".$t."</option>\n";
@@ -512,13 +512,13 @@ border: 2px outset #999999;
 		    ?> 
 		</td>
 	      <tr>
-	      <?php }?>
+	      <?}?>
 	    </table>
 	  
 	</tr>
       </table>
     </table>
-	 <?php 
+	 <?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
      ?>
 </body>

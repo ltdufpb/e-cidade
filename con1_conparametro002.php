@@ -84,7 +84,7 @@ $db_botao = true;
 ?>
 </body>
 </html>
-<?php 
+<?
 
 	if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
 	  if($clconparametro->erro_status=="0"){

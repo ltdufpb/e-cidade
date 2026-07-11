@@ -102,7 +102,7 @@ if (isset($alterar)) {
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br />
     <center>
-    	<?php 
+    	<?
     	 include(modification("forms/db_frmpcforne.php"));
     	?>
     </center>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clissarqsimplesregdisbanco->rotulo->label("q44_issarqsimplesreg");
               <?=$Lq44_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q44_sequencial",8,$Iq44_sequencial,true,"text",4,"","chave_q44_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clissarqsimplesregdisbanco->rotulo->label("q44_issarqsimplesreg");
               <?=$Lq44_issarqsimplesreg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q44_issarqsimplesreg",8,$Iq44_issarqsimplesreg,true,"text",4,"","chave_q44_issarqsimplesreg");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clissarqsimplesregdisbanco->rotulo->label("q44_issarqsimplesreg");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issarqsimplesregdisbanco.php")==true){
@@ -123,12 +123,12 @@ $clissarqsimplesregdisbanco->rotulo->label("q44_issarqsimplesreg");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

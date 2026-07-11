@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ $escola             = db_getsession("DB_coddepto");
          <b>Cardápio:</b>
         </td>
         <td> 
-         <?php           
+         <?          
          $hoje = date("Y-m-d",db_getsession("DB_datausu"));
          $result_tipocardapio = $clmer_tipocardapio->sql_record($clmer_tipocardapio->sql_query("",
                                                                                           "me27_i_codigo,me27_c_nome,me27_f_versao,me27_i_id",
@@ -87,13 +87,13 @@ $escola             = db_getsession("DB_coddepto");
          <select name="cardapio" id="cardapio" onChange="js_cardapio(this.value);" 
                   style="height:18px;font-size:10px;">
            <option value="0"></option>
-           <?php for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
+           <?for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
         
                db_fieldsmemory($result_tipocardapio,$t);
                ?>
                <option value="<?=$me27_i_codigo?>"><?=$me27_c_nome?> - Versão: <?=$me27_f_versao?></option>
       
-           <?php }?>
+           <?}?>
           </select>
         </td>
       </tr>
@@ -149,7 +149,7 @@ $escola             = db_getsession("DB_coddepto");
  </tr>
 </table>
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
@@ -232,10 +232,10 @@ function js_processa() {
     
   }  
 }
-<?php //if ($clmer_cardapio->numrows>0) {?>
+<?//if ($clmer_cardapio->numrows>0) {?>
 
     //document.form1.cardapio.options[1].selected = true;
     //js_cardapio(document.form1.cardapio.value);
     
-<?php //}?>
+<?//}?>
 </script>

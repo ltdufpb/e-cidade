@@ -58,13 +58,13 @@ $clrotulo->label("ar47_valordefault");
                 <table class="form-container">
                     <tr>
                         <td nowrap title="<?=@$Tar47_codcam?>">
-                            <?php db_ancora(@$Lar47_codcam,"js_pesquisaCampo(true);",$db_opcao);?>
+                            <?db_ancora(@$Lar47_codcam,"js_pesquisaCampo(true);",$db_opcao);?>
                         </td>
                         <td>
-                            <?php 
+                            <?
                             db_input('ar47_codcam',5,$Iar47_codcam,true,'text',$db_opcao," onchange='js_pesquisaCampo(false);'")
                             ?>
-                            <?php 
+                            <?
                             db_input('nomecam',40,$Inomecam,true,'text',3,'')
                             ?>
                         </td>
@@ -101,7 +101,7 @@ $clrotulo->label("ar47_valordefault");
                             <?= $Lar47_valordefault ?>
                         </td>
                         <td>
-                            <?php 
+                            <?
                             db_textarea('ar47_valordefault', 1, 1, $Iar47_valordefault, true, 'text', 1, '')
                             ?>
                             <p style="margin: 0px;" id="mensagem"></p>
@@ -116,7 +116,7 @@ $clrotulo->label("ar47_valordefault");
     <center>
         <div id="ctnGridCampos" style="width: 650px;"></div>
     </center>
-    <?php  db_menu(); ?>
+    <? db_menu(); ?>
 </body>
 
 </html>

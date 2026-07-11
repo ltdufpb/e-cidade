@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_i_codigo?>
   </td>
   <td>
-   <?php db_input('sd50_i_codigo',10,$Isd50_i_codigo,true,'text',3,"")?>
+   <?db_input('sd50_i_codigo',10,$Isd50_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -44,8 +44,8 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_i_unidade?>
   </td>
   <td>
-   <?php db_input('sd50_i_unidade',10,$Isd50_i_unidade,true,'text',3,"")?>
-   <?php db_input('descrdepto',50,@$Idescrdepto,true,'text',3,"")?>
+   <?db_input('sd50_i_unidade',10,$Isd50_i_unidade,true,'text',3,"")?>
+   <?db_input('descrdepto',50,@$Idescrdepto,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -53,7 +53,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_v_contratosus?>
   </td>
   <td>
-   <?php db_input('sd50_v_contratosus',60,$Isd50_v_contratosus,true,'text',$db_opcao,"")?>
+   <?db_input('sd50_v_contratosus',60,$Isd50_v_contratosus,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_d_publicacao?>
   </td>
   <td>
-   <?php db_inputdata('sd50_d_publicacao',@$sd50_d_publicacao_dia,@$sd50_d_publicacao_mes,@$sd50_d_publicacao_ano,true,'text',$db_opcao,"")?>
+   <?db_inputdata('sd50_d_publicacao',@$sd50_d_publicacao_dia,@$sd50_d_publicacao_mes,@$sd50_d_publicacao_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -69,7 +69,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_v_contratosus2?>
   </td>
   <td>
-   <?php db_input('sd50_v_contratosus2',60,$Isd50_v_contratosus2,true,'text',$db_opcao,"")?>
+   <?db_input('sd50_v_contratosus2',60,$Isd50_v_contratosus2,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -77,7 +77,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_d_publicacao2?>
   </td>
   <td>
-   <?php db_inputdata('sd50_d_publicacao2',@$sd50_d_publicacao2_dia,@$sd50_d_publicacao2_mes,@$sd50_d_publicacao2_ano,true,'text',$db_opcao,"")?>
+   <?db_inputdata('sd50_d_publicacao2',@$sd50_d_publicacao2_dia,@$sd50_d_publicacao2_mes,@$sd50_d_publicacao2_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -85,7 +85,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_v_banco?>
   </td>
   <td>
-   <?php db_input('sd50_v_banco',3,$Isd50_v_banco,true,'text',$db_opcao,"")?>
+   <?db_input('sd50_v_banco',3,$Isd50_v_banco,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -93,7 +93,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_v_agencia?>
   </td>
   <td>
-   <?php db_input('sd50_v_agencia',5,$Isd50_v_agencia,true,'text',$db_opcao,"")?>
+   <?db_input('sd50_v_agencia',5,$Isd50_v_agencia,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -101,7 +101,7 @@ $clsau_vinculosus->rotulo->label();
    <?=@$Lsd50_v_cc?>
   </td>
   <td>
-   <?php db_input('sd50_v_cc',14,$Isd50_v_cc,true,'text',$db_opcao,"")?>
+   <?db_input('sd50_v_cc',14,$Isd50_v_cc,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>

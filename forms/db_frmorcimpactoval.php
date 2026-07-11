@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -81,18 +81,18 @@ function js_verificar(){
 <form name="form1" method="post" action="">
 <center>
 
-<?php 
+<?
 db_input('o91_codimp',8,$Io91_codimp,true,'hidden',3);
 db_input('o91_proces',8,$Io91_proces,true,'hidden',3);
 ?>
 
-<?php 
+<?
 
 $result = $clorcimpacto->sql_record($clorcimpacto->sql_query_compl($o91_codimp,"o90_codperiodo,o96_anoini,o96_anofim"));
 db_fieldsmemory($result,0);
 ?>
 <table cellpadding='0' cellspacing='0'>
-<?php 
+<?
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x  = "o91_codseqimp_$i";
@@ -145,7 +145,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 ?>
 <tr>
   <td>
-<?php 
+<?
 db_input("o91_codseqimp_$i",8,$Io91_codseqimp,true,'hidden',1);
 ?>
   
@@ -156,7 +156,7 @@ db_input("o91_codseqimp_$i",8,$Io91_codseqimp,true,'hidden',1);
        <?=@$Lo91_exercicio?>
     </td>
     <td> 
-<?php 
+<?
 $x = "o91_exercicio_$i";
 if(empty($$x)){
   $$x = $i;
@@ -168,36 +168,36 @@ db_input("o91_exercicio_$i",4,$Io91_exercicio,true,'text',3)
        <?=@$Lo91_valor?>
     </td>
     <td> 
-<?php 
+<?
 db_input("o91_valor_$i",8,$Io91_valor,true,'text',$db_opcao,($i == $o96_anoini?"onchange='js_valor();'":""));
 ?>
     </td>
     <td nowrap title="<?=@$To56_elemento?>">
-       <?php 
+       <?
        db_ancora(@$Lo56_elemento,"js_elemento_$i(true);",$db_opcao);
        ?>
     </td>
     <td> 
-    <?php 
+    <?
        $x = "o56_elemento_$i";
     ?>
     <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
     
     </td>
     <td nowrap title="<?=@$To93_codigo?>">
-       <?php 
+       <?
        db_ancora(@$Lo93_codigo,"js_codigo_$i(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 $x = "o93_codigo_$i";
 if(empty($$x)){
   $$x = 1;
 }  
 db_input("o93_codigo_$i",4,$Io93_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>
-       <?php 
+       <?
 //db_input('o56_descr',30,$Io56_descr,true,'text',3,'');
        ?>
     </td>
@@ -207,7 +207,7 @@ db_input("o93_codigo_$i",4,$Io93_codigo,true,'text',$db_opcao," onchange='js_cod
   </fieldset>
   </td>
 </tr> 
-<?php 
+<?
 }
 ?>
 
@@ -217,7 +217,7 @@ db_input("o93_codigo_$i",4,$Io93_codigo,true,'text',$db_opcao," onchange='js_cod
  <table cellpadding='0' cellspacing='0'> 
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
 	 $chavepri= array("o91_codseqimp"=>@$o91_codseqimp,"o91_proces"=>@$o91_proces);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clorcimpactoval->sql_query_dad(null,"o91_codseqimp,o91_codimp,o91_exercicio,o91_valor,o91_proces,o56_elemento,o15_codigo","","o91_codimp =$o91_codimp");
@@ -242,7 +242,7 @@ function js_cancelar(){
   document.form1.submit();
 }
 
-<?php 
+<?
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
   //rotina  para repetir os valores digitado na primeira linha para os campos abaixo
   if($i == $o96_anoini){
@@ -279,7 +279,7 @@ function js_mostraorcelemento_<?=$i?>(chave,erro){
     document.form1.o56_elemento_<?=$i?>.value = ''; 
     return false;
   }
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = document.form1.o56_elemento_$i.value;";
@@ -292,7 +292,7 @@ function js_mostraorcelemento_<?=$i?>(chave,erro){
 
 function js_mostraorcelemento1_<?=$i?>(chave1,chave2){
   document.form1.o56_elemento_<?=$i?>.value = chave1;
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = chave1;";
@@ -318,7 +318,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
     document.form1.o93_codigo_<?=$i?>.value = ''; 
     return false;
   }
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o93_codigo_$c.value = document.form1.o93_codigo_$i.value ;";
@@ -329,7 +329,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
 function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
   document.form1.o93_codigo_<?=$i?>.value = chave1;
 //  document.form1.o15_descr.value = chave2;
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o93_codigo_$c.value = document.form1.o93_codigo_$i.value ;";
@@ -341,5 +341,5 @@ function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
 
 
 
-<?php }?>
+<?}?>
 </script>

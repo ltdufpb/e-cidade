@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clconciliatipo->rotulo->label();
        <?=@$Lk65_sequencial?>
     </td>
     <td> 
-<?php 
+<?
 db_input('k65_sequencial',10,$Ik65_sequencial,true,'text',3,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('k65_sequencial',10,$Ik65_sequencial,true,'text',3,"")
        <?=@$Lk65_descricao?>
     </td>
     <td> 
-<?php 
+<?
 db_input('k65_descricao',50,$Ik65_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conciliatipo.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

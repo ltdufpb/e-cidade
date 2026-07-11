@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: caixa
 //CLASSE DA ENTIDADE empagemovslips
 class cl_empagemovslips { 

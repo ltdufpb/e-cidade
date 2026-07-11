@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ if (isset($alterar)) {
                                          '&me01_c_nome=<?=$me01_c_nome?>&me12_d_data=<?=$me12_d_data?>'+
                                          '&me03_c_tipo=<?=$me03_c_tipo?>';
   </script>
-  <?php 
+  <?
   
 }
 ?>
@@ -75,7 +75,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Desperdicio</b></legend>
-    <?php include(modification("forms/db_frmmer_desperdicio.php"));?>
+    <?include(modification("forms/db_frmmer_desperdicio.php"));?>
    </fieldset>
    </center>
   </td>
@@ -83,7 +83,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if (isset($alterar)) {
 	
   if ($clmer_desperdicio->erro_status=="0") {

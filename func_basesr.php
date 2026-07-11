@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clbasesr->rotulo->label("r09_base");
               <?=$Lr09_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r09_mesusu",2,$Ir09_mesusu,true,"text",4,"","chave_r09_mesusu");
 		       ?>
             </td>
@@ -68,7 +68,7 @@ $clbasesr->rotulo->label("r09_base");
               <?=$Lr09_base?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r09_base",4,$Ir09_base,true,"text",4,"","chave_r09_base");
 		       ?>
             </td>
@@ -78,7 +78,7 @@ $clbasesr->rotulo->label("r09_base");
               <?=$Lr09_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r09_rubric",4,$Ir09_rubric,true,"text",4,"","chave_r09_rubric");
 		       ?>
             </td>
@@ -88,7 +88,7 @@ $clbasesr->rotulo->label("r09_base");
               <?=$Lr09_base?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r09_base",4,$Ir09_base,true,"text",4,"","chave_r09_base");
 		       ?>
             </td>
@@ -106,7 +106,7 @@ $clbasesr->rotulo->label("r09_base");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_basesr.php")==true){
@@ -142,12 +142,12 @@ $clbasesr->rotulo->label("r09_base");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

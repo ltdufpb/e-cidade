@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ function carrega_destinatario(){
    <form name="form2" method="post" action="" >
           <tr> 
             <td  align="right" nowrap title="<?=$Tc70_codlan?>"> Ordem   </td>
-            <td  align="left" nowrap colspan=2><?php   db_input("ordem",10,'',true,"text",3);  ?></td>
+            <td  align="left" nowrap colspan=2><?  db_input("ordem",10,'',true,"text",3);  ?></td>
           </tr>
           <tr> 
             <td  align="right" nowrap>Descrição       </td>
@@ -84,7 +84,7 @@ function carrega_destinatario(){
             <td  align="right" nowrap> Responável     </td>
             <td  align="right" nowrap colspan=2>          
                   <select name=responsavel>
-                     <?php  echo carrega_destinatario(); ?>
+                     <? echo carrega_destinatario(); ?>
                   </select>      
             </td>
           </tr>                        

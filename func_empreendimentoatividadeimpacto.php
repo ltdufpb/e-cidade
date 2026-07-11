@@ -1,4 +1,4 @@
-<?php 
+<?
 /**
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBseller Servicos de Informatica
@@ -51,11 +51,11 @@ $clempreendimentoatividadeimpacto->rotulo->label("am06_atividadeimpacto");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam06_sequencial?></label></td>
-          <td><?php  db_input("am06_sequencial",10,$Iam06_sequencial,true,"text",4,"","chave_am06_sequencial"); ?></td>
+          <td><? db_input("am06_sequencial",10,$Iam06_sequencial,true,"text",4,"","chave_am06_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam06_atividadeimpacto?></label></td>
-          <td><?php  db_input("am06_atividadeimpacto",10,$Iam06_atividadeimpacto,true,"text",4,"","chave_am06_atividadeimpacto");?></td>
+          <td><? db_input("am06_atividadeimpacto",10,$Iam06_atividadeimpacto,true,"text",4,"","chave_am06_atividadeimpacto");?></td>
         </tr>
       </table>
     </fieldset>
@@ -63,7 +63,7 @@ $clempreendimentoatividadeimpacto->rotulo->label("am06_atividadeimpacto");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_empreendimentoatividadeimpacto.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empreendimentoatividadeimpacto.php")==true){
@@ -105,12 +105,12 @@ $clempreendimentoatividadeimpacto->rotulo->label("am06_atividadeimpacto");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

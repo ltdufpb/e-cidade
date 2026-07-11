@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,38 +44,38 @@ $clrotulo->label("me19_i_matrequi");
        <b>Calendario:</b>
     </td>
     <td>
-     <?php  
+     <? 
       $sql  = " select * from calendarioescola "; 
       $sql .= " inner join calendario on ed52_i_codigo=ed38_i_calendario where ed38_i_escola=".$escola; 
       $result=db_query($sql);
 	  $linhas=pg_num_rows($result);
-	  ?><select name="calendario" value=""><?php 
+	  ?><select name="calendario" value=""><?
 	  for ($y=0;$y<$linhas;$y++) {
 	  	
 	  	db_fieldsmemory($result,$y);
 	  	 ?><option value=<?=$ed52_i_codigo?>><?=$ed52_c_descr?></option>
 	  	 
-	  <?php }?>
+	  <?}?>
 	  </select>
 	</td>   
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme19_i_matrequi?>">
-       <?php db_ancora(@$Lme19_i_matrequi,"js_pesquisame19_i_matrequi(true);",1);?>
+       <?db_ancora(@$Lme19_i_matrequi,"js_pesquisame19_i_matrequi(true);",1);?>
     </td>
     <td> 
-       <?php db_input('me19_i_matrequi',5,$Ime19_i_matrequi,true,'text',1,
+       <?db_input('me19_i_matrequi',5,$Ime19_i_matrequi,true,'text',1,
                   " onchange='js_pesquisame19_i_matrequi(false);'"
                  )
        ?>
-       <?php db_input('m40_codigo',10,$Im40_codigo,true,'hidden',3,'')?>
+       <?db_input('m40_codigo',10,$Im40_codigo,true,'hidden',3,'')?>
     </td>
     <td>
        <input type="button" name="Listar" value="Listar" onclick="js_listar(document.form1.me19_i_matrequi.value)">
     </td>
   </tr>
 </table> 
-<?php if (isset($codrequi)) {
+<?if (isset($codrequi)) {
 	
 	$sql = $cl_matrequiitem->sql_query("","*","","m41_codmatrequi=".$codrequi);
 	$result=db_query($sql);
@@ -98,7 +98,7 @@ $clrotulo->label("me19_i_matrequi");
 	       </td>
 	       </b>
 	    </tr>
-	  	<?php 
+	  	<?
 	$tquant=0;
 	for ($x=0;$x<$linhas;$x++) {
 	  db_fieldsmemory($result,$x);
@@ -113,14 +113,14 @@ $clrotulo->label("me19_i_matrequi");
 	  <td>
 	   <center>
 	    <?=$m41_quant?>
-	    <?php $tquant = $tquant+$m41_quant ?>
+	    <?$tquant = $tquant+$m41_quant ?>
 	   </center>
 	  </td>
 	  <td>
 	   <input type="checkbox" name="item" checked>Entregue
 	  </td>
 	 </tr>    
-  <?php }?>  
+  <?}?>  
 	 <tr>
 	   <td>	           
 	   </td>
@@ -138,7 +138,7 @@ $clrotulo->label("me19_i_matrequi");
      <input type="button" name="incluir" value="Incluir" onclick="js_incluir(<?=$codrequi?>,<?=$linhas?>)">
      <input type="button" name="calcelar" value="Cancelar">
     </center>
-	<?php 
+	<?
   }
 ?>
 </fieldset> 

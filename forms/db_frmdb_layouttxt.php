@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -48,7 +48,7 @@ $clrotulo->label("db56_descr");
        <?=@$Ldb50_codigo?>
     </td>
     <td colspan=3 nowrap> 
-<?php 
+<?
 db_input('db50_codigo',6,$Idb50_codigo,true,'text',3,"");
 if(isset($chavepesquisa)){
   db_input('codigoimporta',6,0,true,'hidden',3,"");
@@ -61,22 +61,22 @@ if(isset($chavepesquisa)){
        <?=@$Ldb50_descr?>
     </td>
     <td colspan=3 nowrap> 
-<?php 
+<?
 db_input('db50_descr',46,$Idb50_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb50_layouttxtgrupo?>">
-       <?php 
+       <?
        db_ancora(@$Ldb50_layouttxtgrupo,"js_pesquisadb50_layouttxtgrupo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('db50_layouttxtgrupo',6,$Idb50_layouttxtgrupo,true,'text',$db_opcao," onchange='js_pesquisadb50_layouttxtgrupo(false);'")
 ?>
-       <?php 
+       <?
 db_input('db56_descr',37,$Idb56_descr,true,'text',3,'')
        ?>
     </td>
@@ -88,7 +88,7 @@ db_input('db56_descr',37,$Idb56_descr,true,'text',3,'')
        <?=@$Ldb50_obs?>
     </td>
     <td nowrap> 
-<?php 
+<?
 db_textarea('db50_obs',4,44,$Idb50_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -98,7 +98,7 @@ db_textarea('db50_obs',4,44,$Idb50_obs,true,'text',$db_opcao,"")
        <?=@$Ldb50_quantlinhas?>
     </td>
     <td> 
-<?php 
+<?
 db_input('db50_quantlinhas',10,$Idb50_quantlinhas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -106,13 +106,13 @@ db_input('db50_quantlinhas',10,$Idb50_quantlinhas,true,'text',$db_opcao,"")
 </table>
 </center>
 <input name="<?=($db_opcao==1?(!isset($chavepesquisa)?"incluir":"importar"):($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?(!isset($chavepesquisa)?"Incluir":"Importar"):($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?php if($db_opcao == 1 && !isset($chavepesquisa)){?>
+<?if($db_opcao == 1 && !isset($chavepesquisa)){?>
 <input name="importar" type="button" id="importar" value="Importar layout" onclick="js_pesquisa();" >
-<?php }else if($db_opcao != 1){?>
+<?}else if($db_opcao != 1){?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?php }else{?>
+<?}else{?>
 <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='con1_db_layouttxt004.php'" >
-<?php }?>
+<?}?>
 </form>
 <script>
 function js_pesquisa(){
@@ -120,7 +120,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_layouttxt.hide();
-  <?php 
+  <?
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clisencaomatric->rotulo->label("v15_matric");
               <?=$Lv15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v15_sequencial",10,$Iv15_sequencial,true,"text",4,"","chave_v15_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clisencaomatric->rotulo->label("v15_matric");
               <?=$Lv15_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v15_matric",10,$Iv15_matric,true,"text",4,"","chave_v15_matric");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clisencaomatric->rotulo->label("v15_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_isencaomatric.php")==true){
@@ -123,12 +123,12 @@ $clisencaomatric->rotulo->label("v15_matric");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

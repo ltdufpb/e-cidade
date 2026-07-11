@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -48,7 +48,7 @@ $clouvidoriaatendimentoretornotelefone = new cl_ouvidoriaatendimentoretornotelef
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
         
        $sCampos = "ov23_descricao,ov14_ddd,ov14_numero,ov14_ramal,ov14_obs";
        $sWhere  = "ov14_ouvidoriaatendimento = {$oGet->iCodAtendimento}";

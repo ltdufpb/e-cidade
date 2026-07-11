@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -77,19 +77,19 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Área de Trabalho</b></legend>
-    <?php include(modification("forms/db_frmareatrabalho.php"));?>
+    <?include(modification("forms/db_frmareatrabalho.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed25_c_descr",true,1,"ed25_c_descr",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
  if($clareatrabalho->erro_status=="0"){
   $clareatrabalho->erro(true,false);

@@ -128,9 +128,9 @@
                   <tr>
                     <td title="Data Inicial">
                       <strong>De:</strong>
-                      <?php  db_inputdata('datainicial', $diaDataInicial, $mesDataInicial, $anoDataInicial, true, 'text', 1); ?>
+                      <? db_inputdata('datainicial', $diaDataInicial, $mesDataInicial, $anoDataInicial, true, 'text', 1); ?>
                       <strong>à</strong>
-                      <?php  db_inputdata('datafinal', $diaDataFinal, $mesDataFinal, $anoDataFinal, true, 'text', 1); ?>
+                      <? db_inputdata('datafinal', $diaDataFinal, $mesDataFinal, $anoDataFinal, true, 'text', 1); ?>
                     </td>
                   </tr>
                 </table>
@@ -211,7 +211,7 @@
       ).setMessage("Aguarde, buscando débitos").execute();
   }
 </script>
-<?php  db_menu(); ?>
+<? db_menu(); ?>
 </body>
 </html>
  

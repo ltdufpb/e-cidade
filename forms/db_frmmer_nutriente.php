@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clrotulo->label("m60_descr");
    <?=@$Lme09_i_codigo?>
   </td>
   <td>
-   <?php db_input('me09_i_codigo',10,$Ime09_i_codigo,true,'text',3,"")?>
+   <?db_input('me09_i_codigo',10,$Ime09_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -46,7 +46,7 @@ $clrotulo->label("m60_descr");
    <?=@$Lme09_c_descr?>
   </td>
   <td>
-   <?php db_input('me09_c_descr',70,$Ime09_c_descr,true,'text',$db_opcao,"")?>
+   <?db_input('me09_c_descr',70,$Ime09_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -71,7 +71,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave){
 	
   db_iframe_mer_nutriente.hide();
-  <?php 
+  <?
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

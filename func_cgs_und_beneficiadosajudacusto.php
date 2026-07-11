@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,14 +58,14 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
    <table width="100%" border="0" align="center" cellspacing="0">
     <tr>
      <td>
-      <b>CGS:</b>&nbsp;&nbsp; <?php db_input('z01_i_cgsund',6,$Iz01_i_cgsund,true,'text',4,"","chave_z01_i_cgsund");?>
-      <b>Nasc:</b> <?php db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',4,"",'chave_z01_d_nasc');?>
-      <b>Identidade:</b>&nbsp;&nbsp; <?php db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',1,"","chave_z01_v_ident");?><br>
+      <b>CGS:</b>&nbsp;&nbsp; <?db_input('z01_i_cgsund',6,$Iz01_i_cgsund,true,'text',4,"","chave_z01_i_cgsund");?>
+      <b>Nasc:</b> <?db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',4,"",'chave_z01_d_nasc');?>
+      <b>Identidade:</b>&nbsp;&nbsp; <?db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',1,"","chave_z01_v_ident");?><br>
      </td>
     </tr>
     <tr>
      <td>
-      <b>Nome:</b> <?php db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',4,"onblur='js_nome(this)'",'chave_z01_v_nome');?>
+      <b>Nome:</b> <?db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',4,"onblur='js_nome(this)'",'chave_z01_v_nome');?>
      </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
  </tr>
  <tr>
  	<td align="center" valign="top">
-	<?php 
+	<?
 	if(!isset($pesquisa_chave)){
 
     $campos = 

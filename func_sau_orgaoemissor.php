@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clsau_orgaoemissor->rotulo->label("sd51_v_descricao");
               <?=$Lsd51_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd51_i_codigo",10,$Isd51_i_codigo,true,"text",4,"","chave_sd51_i_codigo");
                  ?>
             </td>
@@ -66,7 +66,7 @@ $clsau_orgaoemissor->rotulo->label("sd51_v_descricao");
               <?=$Lsd51_v_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd51_v_descricao",60,$Isd51_v_descricao,true,"text",4,"","chave_sd51_v_descricao");
                  ?>
             </td>
@@ -84,7 +84,7 @@ $clsau_orgaoemissor->rotulo->label("sd51_v_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_orgaoemissor.php")==true){
@@ -124,12 +124,12 @@ $clsau_orgaoemissor->rotulo->label("sd51_v_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

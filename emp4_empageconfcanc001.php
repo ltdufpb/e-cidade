@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -260,7 +260,7 @@ function js_pesquisar_slip(){
 </form
 </body>
 </html>
-<?php 
+<?
 if(isset($atualizar)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

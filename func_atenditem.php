@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clatenditem->rotulo->label("at05_solicitado");
               <?=$Lat05_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at05_seq",4,$Iat05_seq,true,"text",4,"","chave_at05_seq");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clatenditem->rotulo->label("at05_solicitado");
               <?=$Lat05_codatend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at05_codatend",6,$Iat05_codatend,true,"text",4,"","chave_at05_codatend");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clatenditem->rotulo->label("at05_solicitado");
               <?=$Lat05_solicitado?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at05_solicitado",1,$Iat05_solicitado,true,"text",4,"","chave_at05_solicitado");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clatenditem->rotulo->label("at05_solicitado");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atenditem.php")==true){
@@ -130,12 +130,12 @@ $clatenditem->rotulo->label("at05_solicitado");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

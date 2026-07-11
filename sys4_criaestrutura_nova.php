@@ -95,7 +95,7 @@ function valida_submit(){
 <td width="10%">
 
 <table border="0" cellspacing="0" cellpadding="0" bgcolor="#cccccc" style='border:1px solid black'>
-  <form method="post" name="estrut" onsubmit="return valida_submit();" action="<?php echo $PHP_SELF;?>">
+  <form method="post" name="estrut" onsubmit="return valida_submit();" action="<?echo $PHP_SELF;?>">
   <tr>
      <td colspan=4 align='center' style='border-bottom:1px solid black'>
        <font size='4'><b>Módulos</b></font>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,11 +40,11 @@ $clrotulo->label("ma04_c_descr");
     <?=@$Lma01_i_codigo?>
    </td>
    <td>
-    <?php db_input('ma01_i_codigo',10,$Ima01_i_codigo,true,'text',3,"")?>
+    <?db_input('ma01_i_codigo',10,$Ima01_i_codigo,true,'text',3,"")?>
    </td>
    <td rowspan="6" width="235">
     <iframe name="frame_imagem" id="frame_imagem" src="mar4_mostraimagem.php" width="230" height="200" frameborder="0"></iframe>
-    <?php 
+    <?
     if((isset($chavepesquisa) || isset($alterar)) && isset($ma01_c_nomeimagem)){
      if($ma01_o_imagem!=0){
       $arquivo = "tmp/".$ma01_c_nomeimagem;
@@ -58,26 +58,26 @@ $clrotulo->label("ma04_c_descr");
     <script>
      frame_imagem.location.href="mar4_mostraimagem.php?imagem_gerada=<?=$arquivo?>";
     </script>
-    <?php }?>
+    <?}?>
    </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tma01_i_cgm?>">
-     <?php db_ancora(@$Lma01_i_cgm,"js_pesquisama01_i_cgm(true);",$db_opcao==2?3:$db_opcao);?>
+     <?db_ancora(@$Lma01_i_cgm,"js_pesquisama01_i_cgm(true);",$db_opcao==2?3:$db_opcao);?>
     </td>
     <td>
-     <?php db_input('ma01_i_cgm',10,$Ima01_i_cgm,true,'text',$db_opcao," onchange='js_pesquisama01_i_cgm(false);'")?>
-     <?php db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
+     <?db_input('ma01_i_cgm',10,$Ima01_i_cgm,true,'text',$db_opcao," onchange='js_pesquisama01_i_cgm(false);'")?>
+     <?db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
     </td>
    </tr>
    <!--
    <tr>
     <td nowrap title="<?=@$Tma01_i_localmarca?>">
-     <?php db_ancora(@$Lma01_i_localmarca,"js_pesquisama01_i_localmarca(true);",$db_opcao);?>
+     <?db_ancora(@$Lma01_i_localmarca,"js_pesquisama01_i_localmarca(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('ma01_i_localmarca',10,$Ima01_i_localmarca,true,'text',$db_opcao," onchange='js_pesquisama01_i_localmarca(false);'")?>
-     <?php db_input('ma04_c_descr',40,$Ima04_c_descr,true,'text',3,'')?>
+     <?db_input('ma01_i_localmarca',10,$Ima01_i_localmarca,true,'text',$db_opcao," onchange='js_pesquisama01_i_localmarca(false);'")?>
+     <?db_input('ma04_c_descr',40,$Ima04_c_descr,true,'text',3,'')?>
     </td>
    </tr>
    -->
@@ -86,7 +86,7 @@ $clrotulo->label("ma04_c_descr");
      <?=@$Lma01_d_data?>
     </td>
     <td> 
-     <?php db_inputdata('ma01_d_data',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',$db_opcao,"")?>
+     <?db_inputdata('ma01_d_data',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',$db_opcao,"")?>
     </td>
    </tr>
    <tr>
@@ -94,7 +94,7 @@ $clrotulo->label("ma04_c_descr");
      <?=@$Lma01_i_livro?>
     </td>
     <td>
-     <?php db_input('ma01_i_livro',10,$Ima01_i_livro,true,'text',$db_opcao,"")?>
+     <?db_input('ma01_i_livro',10,$Ima01_i_livro,true,'text',$db_opcao,"")?>
     </td>
    </tr>
    <tr>
@@ -102,7 +102,7 @@ $clrotulo->label("ma04_c_descr");
      <?=@$Lma01_i_folha?>
     </td>
     <td>
-     <?php db_input('ma01_i_folha',10,$Ima01_i_folha,true,'text',$db_opcao,"")?>
+     <?db_input('ma01_i_folha',10,$Ima01_i_folha,true,'text',$db_opcao,"")?>
     </td>
    </tr>
    <tr>
@@ -119,39 +119,39 @@ $clrotulo->label("ma04_c_descr");
      <tr>
       <td nowrap title="<?=@$Tma01_c_figura1?>" colspan="3">
        <?=@$Lma01_c_figura1?>
-       <?php db_input('ma01_c_figura1',20,$Ima01_c_figura1,true,'text',$db_opcao,"")?>&nbsp;
+       <?db_input('ma01_c_figura1',20,$Ima01_c_figura1,true,'text',$db_opcao,"")?>&nbsp;
        <?=@$Lma01_c_figura2?>
-       <?php db_input('ma01_c_figura2',20,$Ima01_c_figura2,true,'text',$db_opcao,"")?>&nbsp;
+       <?db_input('ma01_c_figura2',20,$Ima01_c_figura2,true,'text',$db_opcao,"")?>&nbsp;
        <?=@$Lma01_c_figura3?>
-       <?php db_input('ma01_c_figura3',20,$Ima01_c_figura3,true,'text',$db_opcao,"")?>&nbsp;
+       <?db_input('ma01_c_figura3',20,$Ima01_c_figura3,true,'text',$db_opcao,"")?>&nbsp;
       </td>
      </tr>
      <tr>
       <td nowrap title="<?=@$Tma01_c_objeto1?>" colspan="3">
        <?=@$Lma01_c_objeto1?>
-       <?php db_input('ma01_c_objeto1',20,$Ima01_c_objeto1,true,'text',$db_opcao,"")?>&nbsp;
+       <?db_input('ma01_c_objeto1',20,$Ima01_c_objeto1,true,'text',$db_opcao,"")?>&nbsp;
        <?=@$Lma01_c_objeto2?>
-       <?php db_input('ma01_c_objeto2',20,$Ima01_c_objeto2,true,'text',$db_opcao,"")?>&nbsp;
+       <?db_input('ma01_c_objeto2',20,$Ima01_c_objeto2,true,'text',$db_opcao,"")?>&nbsp;
        <?=@$Lma01_c_objeto3?>
-       <?php db_input('ma01_c_objeto3',20,$Ima01_c_objeto3,true,'text',$db_opcao,"")?>&nbsp;
+       <?db_input('ma01_c_objeto3',20,$Ima01_c_objeto3,true,'text',$db_opcao,"")?>&nbsp;
       </td>
      </tr>
      <tr>
       <td nowrap title="<?=@$Tma01_c_letra1?>" colspan="3">
        <?=@$Lma01_c_letra1?>
-       <?php db_input('ma01_c_letra1',1,$Ima01_c_letra1,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
+       <?db_input('ma01_c_letra1',1,$Ima01_c_letra1,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
        <?=@$Lma01_c_letra2?>
-       <?php db_input('ma01_c_letra2',1,$Ima01_c_letra2,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
+       <?db_input('ma01_c_letra2',1,$Ima01_c_letra2,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
        <?=@$Lma01_c_letra3?>
-       <?php db_input('ma01_c_letra3',1,$Ima01_c_letra3,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
+       <?db_input('ma01_c_letra3',1,$Ima01_c_letra3,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
        <?=@$Lma01_c_letra4?>
-       <?php db_input('ma01_c_letra4',1,$Ima01_c_letra4,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
+       <?db_input('ma01_c_letra4',1,$Ima01_c_letra4,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
       </td>
      </tr>
      <tr>
       <td nowrap title="<?=@$Tma01_v_sinal?>" colspan="3">
        <?=@$Lma01_v_sinal?>
-       <?php db_input('ma01_v_sinal',60,$Ima01_v_sinal,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
+       <?db_input('ma01_v_sinal',60,$Ima01_v_sinal,true,'text',$db_opcao,"")?>&nbsp;&nbsp;
       </td>
      </tr>
     </table>
@@ -213,7 +213,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_marca.hide();
- <?php if($db_opcao!=1){
+ <?if($db_opcao!=1){
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }?>
 }

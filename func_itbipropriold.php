@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbipropriold->rotulo->label("it20_numcgm");
               <?=$Lit20_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it20_guia",10,$Iit20_guia,true,"text",4,"","chave_it20_guia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbipropriold->rotulo->label("it20_numcgm");
               <?=$Lit20_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it20_numcgm",8,$Iit20_numcgm,true,"text",4,"","chave_it20_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clitbipropriold->rotulo->label("it20_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbipropriold.php")==true){
@@ -119,12 +119,12 @@ $clitbipropriold->rotulo->label("it20_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_paragrafo->rotulo->label("db02_descr");
               <?=$Ldb02_idparag?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db02_idparag",8,$Idb02_idparag,true,"text",4,"","chave_db02_idparag");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_paragrafo->rotulo->label("db02_descr");
               <?=$Ldb02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db02_descr",40,$Idb02_descr,true,"text",4,"","chave_db02_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_paragrafo->rotulo->label("db02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_paragrafo.php")==true){
@@ -119,14 +119,14 @@ $cldb_paragrafo->rotulo->label("db02_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_db02_idparag.focus();
 document.form2.chave_db02_idparag.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

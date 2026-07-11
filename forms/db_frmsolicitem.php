@@ -1149,7 +1149,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
   if (document.form1.pc16_codmater.value != "") {
     <?php if ($iRegistroPreco == "") {?>
     js_pesquisapc16_codmater(false);
-    <?php } ?>
+    <?} ?>
   }
 
   function js_materanterior() {

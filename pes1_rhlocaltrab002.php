@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -122,19 +122,19 @@ if(isset($alterar)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
-      <?php 
+      <?
       include(modification("forms/db_frmrhlocaltrab.php"));
       ?>
       </center>
     </td>
   </tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
   if($clrhlocaltrab->erro_status=="0"){
     $clrhlocaltrab->erro(true,false);
@@ -155,7 +155,7 @@ if($db_opcao==22){
 <script>
 js_tabulacaoforms("form1","rh55_descr",true,1,"rh55_descr",true);
 </script>
-<?php 
+<?
 if(isset($sem_parametro_configurado)){
   db_msgbox($erro_msg);
 }

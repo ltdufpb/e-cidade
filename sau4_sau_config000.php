@@ -42,7 +42,7 @@ $oCriaAbas = new cl_criaabas;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
 db_app::load(" prototype.js, strings.js, webseller.js, scripts.js, estilos.css ");
 ?>
 </head>
@@ -56,7 +56,7 @@ db_app::load(" prototype.js, strings.js, webseller.js, scripts.js, estilos.css "
 <table marginwidth="0" width="100%" border="1" cellspacing="0" cellpadding="0">
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-   <?php 
+   <?
    $oCriaAbas->identifica    = array('a1' => 'Parâmetros Globais',
                                      'a2' => 'Agendamento',
                                      'a3' => 'Cartão SUS',
@@ -81,7 +81,7 @@ db_app::load(" prototype.js, strings.js, webseller.js, scripts.js, estilos.css "
  </tr>
 </table>
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),

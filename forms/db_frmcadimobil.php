@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,15 +37,15 @@ $clrotulo->label("z01_nome");
 <br>
   <tr>
     <td nowrap title="<?=@$Tj63_numcgm?>">
-       <?php 
+       <?
        db_ancora(@$Lj63_numcgm,"js_pesquisaj63_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('j63_numcgm',10,$Ij63_numcgm,true,'text',$db_opcao," onchange='js_pesquisaj63_numcgm(false);'")
 ?>
-       <?php 
+       <?
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -93,7 +93,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

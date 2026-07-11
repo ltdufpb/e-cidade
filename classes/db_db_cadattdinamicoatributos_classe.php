@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_cadattdinamicoatributos
 class cl_db_cadattdinamicoatributos { 

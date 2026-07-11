@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clliclicitatipoempresa->rotulo->label("l32_descricao");
               <?=$Ll32_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("l32_sequencial",10,$Il32_sequencial,true,"text",4,"","chave_l32_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clliclicitatipoempresa->rotulo->label("l32_descricao");
               <?=$Ll32_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("l32_descricao",30,$Il32_descricao,true,"text",4,"","chave_l32_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clliclicitatipoempresa->rotulo->label("l32_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_liclicitatipoempresa.php")==true){
@@ -123,12 +123,12 @@ $clliclicitatipoempresa->rotulo->label("l32_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

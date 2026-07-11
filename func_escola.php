@@ -62,7 +62,7 @@ $iEscola     = db_getsession('DB_coddepto');
       <?=$Led18_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed18_i_codigo",10,$Ied18_i_codigo,true,"text",4,"","chave_ed18_i_codigo");?>
+      <?db_input("ed18_i_codigo",10,$Ied18_i_codigo,true,"text",4,"","chave_ed18_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -70,7 +70,7 @@ $iEscola     = db_getsession('DB_coddepto');
       <?=$Led18_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
+      <?db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
      </td>
     </tr>
     <tr>

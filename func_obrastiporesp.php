@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clobrastiporesp->rotulo->label("ob02_descr");
               <?=$Lob02_cod?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ob02_cod",10,$Iob02_cod,true,"text",4,"","chave_ob02_cod");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clobrastiporesp->rotulo->label("ob02_descr");
               <?=$Lob02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ob02_descr",50,$Iob02_descr,true,"text",4,"","chave_ob02_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clobrastiporesp->rotulo->label("ob02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_obrastiporesp.php")==true){
@@ -119,12 +119,12 @@ $clobrastiporesp->rotulo->label("ob02_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

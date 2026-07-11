@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clacordocategoria->rotulo->label();
        <?=@$Lac50_sequencial?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('ac50_sequencial',10,$Iac50_sequencial,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -47,7 +47,7 @@ $clacordocategoria->rotulo->label();
        <?=@$Lac50_descricao?>
     </td>
     <td> 
-      <?php 
+      <?
       db_input('ac50_descricao',50,$Iac50_descricao,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -67,7 +67,7 @@ function js_pesquisa() {
 }
 function js_preenchepesquisa(chave){
   db_iframe_acordocategoria.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

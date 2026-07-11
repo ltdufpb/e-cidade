@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -29,7 +29,7 @@
 <center>
 <table border="0" width="60%">
 
-<?php   
+<?  
   //-- lista dados do projeto
 
   $res=$clauxiliar->sql_record("select * from orcprojeto where o39_codproj=$projeto");

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -81,12 +81,12 @@ function js_verificar(){
 <form name="form1" method="post" action="">
 <center>
 
-<?php 
+<?
 db_input('o64_codimpmov',8,$Io64_codimpmov,true,'hidden',3);
 db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
 ?>
 
-<?php 
+<?
       $result = $clorcimpactomov->sql_record($clorcimpactomov->sql_query_compl($o64_codimpmov,"o63_codperiodo,o96_anoini,o96_anofim")); 
       db_fieldsmemory($result,0);
 ?>
@@ -95,7 +95,7 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
     <td colspan='2' align='left'>
       <b>Tipo:</b>
       	
-<?php     
+<?    
   if(isset($tipo) && $tipo=='I' && empty($chave_nova)){
     echo "<font  color='darkblue'><b>Impacto</b></font>";
   }else if(isset($tipo) && $tipo=='P' && empty($chave_nova)){
@@ -119,7 +119,7 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
 ?>	
     </td> 	
   </tr>	
-<?php 
+<?
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x  = "o64_codseqimpmov_$i";
@@ -172,7 +172,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 ?>
 <tr>
   <td>
-<?php 
+<?
 db_input("o64_codseqimpmov_$i",8,$Io64_codseqimpmov,true,'hidden',1);
 ?>
   
@@ -183,7 +183,7 @@ db_input("o64_codseqimpmov_$i",8,$Io64_codseqimpmov,true,'hidden',1);
        <?=@$Lo64_exercicio?>
     </td>
     <td> 
-<?php 
+<?
 $x = "o64_exercicio_$i";
 if(empty($$x)){
   $$x = $i;
@@ -191,19 +191,19 @@ if(empty($$x)){
 db_input("o64_exercicio_$i",4,$Io64_exercicio,true,'text',3)
 ?>
     </td>
-<?php 
+<?
    if($numrows03>0){
 ?>        
     <td nowrap title="<?=@$To64_valor?>">
       <b>Previsão</b>
     </td>
     <td> 
-<?php 
+<?
 db_input("valor_$i",8,$Io64_valor,true,'text',3);
 ?>
     </td>
 
-<?php      
+<?     
    }  
 ?>
     
@@ -211,36 +211,36 @@ db_input("valor_$i",8,$Io64_valor,true,'text',3);
        <?=@$Lo64_valor?>
     </td>
     <td> 
-<?php 
+<?
 db_input("o64_valor_$i",8,$Io64_valor,true,'text',$db_opcao,($i == $o96_anoini?"onchange='js_valor();'":""));
 ?>
     </td>
     <td nowrap title="<?=@$To56_elemento?>">
-       <?php 
+       <?
        db_ancora(@$Lo56_elemento,"js_elemento_$i(true);",$db_opcao);
        ?>
     </td>
     <td> 
-    <?php 
+    <?
        $x = "o56_elemento_$i";
     ?>
     <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o56_elemento_<?=$i?>" size="9" maxlength='7'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_elemento_<?=$i?>(false);'>
     
     </td>
     <td nowrap title="<?=@$To67_codigo?>">
-       <?php 
+       <?
        db_ancora(@$Lo67_codigo,"js_codigo_$i(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 $x = "o67_codigo_$i";
 if(empty($$x)){
   $$x = 1;
 }  
 db_input("o67_codigo_$i",4,$Io67_codigo,true,'text',$db_opcao," onchange='js_codigo_$i(false);'")
 ?>
-       <?php 
+       <?
 //db_input('o56_descr',30,$Io56_descr,true,'text',3,'');
        ?>
     </td>
@@ -250,7 +250,7 @@ db_input("o67_codigo_$i",4,$Io67_codigo,true,'text',$db_opcao," onchange='js_cod
   </fieldset>
   </td>
 </tr> 
-<?php 
+<?
 }
 ?>
 
@@ -260,7 +260,7 @@ db_input("o67_codigo_$i",4,$Io67_codigo,true,'text',$db_opcao," onchange='js_cod
  <table cellpadding='0' cellspacing='0'> 
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
 	 $chavepri= array("o64_codseqimpmov"=>@$o64_codseqimpmov,"o64_proces"=>@$o64_proces);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clorcimpactovalmov->sql_query_dad(null,"o64_codseqimpmov,o64_codimpmov,o64_exercicio,o64_valor,o64_proces,o56_elemento,o15_codigo","","o64_codimpmov =$o64_codimpmov");
@@ -285,7 +285,7 @@ function js_cancelar(){
   document.form1.submit();
 }
 
-<?php 
+<?
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
   //rotina  para repetir os valores digitado na primeira linha para os campos abaixo
   if($i == $o96_anoini){
@@ -323,7 +323,7 @@ function js_mostraorcelemento_<?=$i?>(chave,erro){
     document.form1.o56_elemento_<?=$i?>.value = ''; 
     return false;
   }
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = document.form1.o56_elemento_$i.value;";
@@ -336,7 +336,7 @@ function js_mostraorcelemento_<?=$i?>(chave,erro){
 
 function js_mostraorcelemento1_<?=$i?>(chave1,chave2){
   document.form1.o56_elemento_<?=$i?>.value = chave1;
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = chave1;";
@@ -362,7 +362,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
     document.form1.o67_codigo_<?=$i?>.value = ''; 
     return false;
   }
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o67_codigo_$c.value = document.form1.o67_codigo_$i.value ;";
@@ -373,7 +373,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
 function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
   document.form1.o67_codigo_<?=$i?>.value = chave1;
 //  document.form1.o15_descr.value = chave2;
-  <?php 
+  <?
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o67_codigo_$c.value = document.form1.o67_codigo_$i.value ;";
@@ -385,5 +385,5 @@ function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
 
 
 
-<?php }?>
+<?}?>
 </script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,11 +62,11 @@ $clrotulo->label("sd03_c_nome");
     <table>
     <tr>
     <td nowrap title="Médico">
-     <?php db_ancora("Medico","js_pesquisasd03_i_medico(true);",$db_opcao);?>
+     <?db_ancora("Medico","js_pesquisasd03_i_medico(true);",$db_opcao);?>
     </td>
     <td>
-     <?php db_input('medico',10,$Isd03_i_medico,true,'text',$db_opcao," onchange='js_pesquisasd03_i_medico(false);'")?>
-     <?php db_input('sd03_c_nome',50,$Isd03_c_nome,true,'text',3,'')?>
+     <?db_input('medico',10,$Isd03_i_medico,true,'text',$db_opcao," onchange='js_pesquisasd03_i_medico(false);'")?>
+     <?db_input('sd03_c_nome',50,$Isd03_c_nome,true,'text',3,'')?>
     </td>
      </tr>
      <tr>
@@ -76,7 +76,7 @@ $clrotulo->label("sd03_c_nome");
      </tr>
     </table>
     </form>
-<?php 
+<?
  if(isset($Processar)){
   $result = $cl_especmedicos -> sql_record($cl_especmedicos->sql_query($medico,"","sd05_i_codigo,sd05_c_descr"));
   if($cl_especmedicos->numrows>0){
@@ -125,7 +125,7 @@ $clrotulo->label("sd03_c_nome");
   </td>
  </tr>
 </table>
-<?php 
+<?
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

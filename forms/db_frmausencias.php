@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,12 +52,12 @@ $clrotulo->label("sd27_i_codigo");
          <table border="0">
              <tr>
                  <td nowrap title="<?=@$Tsd04_i_medico?>">
-                      <?php 
+                      <?
                          db_ancora(@$Lsd04_i_medico,"js_pesquisasd04_i_medico(true);",$db_opcao);
                       ?>
                  </td>
                  <td>
-                    <?php 
+                    <?
                       db_input('sd04_i_medico',10,$Isd04_i_medico,true,'text',$db_opcao," onchange='js_pesquisasd04_i_medico(false);'");
                       db_input('z01_nome',59,$Iz01_nome,true,'text',3,'');
                      ?>
@@ -66,12 +66,12 @@ $clrotulo->label("sd27_i_codigo");
              <!--  vinculo -->
              <tr>
                  <td nowrap title="<?=@$Tsd06_i_especmed?>">
-                     <?php 
+                     <?
                         db_ancora(@$Lsd06_i_especmed,"js_pesquisasd06_i_especmed(true);",$db_opcao);
                      ?>
                  </td>
                  <td>
-                     <?php 
+                     <?
                        db_input('sd06_i_especmed',10,$Isd06_i_especmed,true,'text',$db_opcao," onchange='js_pesquisasd06_i_especmed(false);'");
                        db_input('rh70_descr',59,$Irh70_descr,true,'text',3,'');
                      ?>
@@ -83,10 +83,10 @@ $clrotulo->label("sd27_i_codigo");
                     <?=@$Lsd04_i_unidade?>
                  </td>
                  <td>
-                 <?php 
+                 <?
                     db_input('sd04_i_unidade',10,$Isd04_i_unidade,true,'text',3)
                  ?>
-                 <?php 
+                 <?
                     db_input('descrdepto',59,$Idescrdepto,true,'text',3,'');
                  ?>
                  </td>
@@ -103,7 +103,7 @@ $clrotulo->label("sd27_i_codigo");
                                       <tr>
                                           <td nowrap title="<?=@$Tsd06_i_codigo?>"><?=@$Lsd06_i_codigo?></td>
                                           <td>
-                                             <?php 
+                                             <?
                                                 db_input('sd06_i_codigo',10,$Isd06_i_codigo,true,'text',3)
                                              ?>                                          
                                           </td>
@@ -111,7 +111,7 @@ $clrotulo->label("sd27_i_codigo");
                                       <tr>
                                           <td nowrap title="<?=@$Tsd06_i_tipo?>"><?=@$Lsd06_i_tipo?></td>
                                           <td>
-                                             <?php 
+                                             <?
 					        $sql = $clmotivo_ausencia->sql_query(null,"s139_i_codigo, s139_c_descr","s139_i_codigo");
 						//echo $sql;
                                                 $resultado = $clmotivo_ausencia->sql_record($sql);
@@ -128,7 +128,7 @@ $clrotulo->label("sd27_i_codigo");
                                       <tr>
                                           <td nowrap title="Quantidade de Dias"><b>Qtde Dias:</b></td>
                                           <td>
-                                             <?php 
+                                             <?
                                                 db_input('sd06_i_qtd',10,@$Isd06_i_qtd,true,'text',3)
                                              ?>                                             
                                           </td>
@@ -144,7 +144,7 @@ $clrotulo->label("sd27_i_codigo");
                                                          <tr>
                                                             <td nowrap title="<?=@$Tsd06_d_inicio?>"><?=@$Lsd06_d_inicio?></td>
                                                             <td>
-                                                               <?php 
+                                                               <?
                                                                   db_inputdata('sd06_d_inicio',@$sd06_d_inicio_dia,@$sd06_d_inicio_mes,@$sd06_d_inicio_ano,true,'text',$db_opcao);
                                                                ?>
                                                             </td>
@@ -152,7 +152,7 @@ $clrotulo->label("sd27_i_codigo");
                                                          <tr>
                                                             <td nowrap title="<?=@$Tsd06_d_fim?>"><?=@$Lsd06_d_fim?></td>
                                                             <td>
-                                                               <?php 
+                                                               <?
                                                                   db_inputdata('sd06_d_fim',@$sd06_d_fim_dia,@$sd06_d_fim_mes,@$sd06_d_fim_ano,true,'text',$db_opcao );
                                                                ?>
                                                             </td>
@@ -165,11 +165,11 @@ $clrotulo->label("sd27_i_codigo");
                                                 <table>
                                                      <tr>
                                                          <td nowrap title="<?=@$Tsd06_d_inicio?>"><?=@$Lsd06_d_inicio?></td>
-                                                         <td><?php db_input('sd06_c_horainicio',5,@$Isd06_c_horainicio,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'sd06_c_horainicio', event)\" ");?></td>
+                                                         <td><?db_input('sd06_c_horainicio',5,@$Isd06_c_horainicio,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'sd06_c_horainicio', event)\" ");?></td>
                                                      </tr>
                                                      <tr>
                                                          <td nowrap title="<?=@$Tsd06_c_horafim?>"><?=@$Lsd06_c_horafim?></td>
-                                                         <td><?php db_input('sd06_c_horafim',5,@$Isd06_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'sd06_c_horafim', event)\" ");?></td>
+                                                         <td><?db_input('sd06_c_horafim',5,@$Isd06_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'sd06_c_horafim', event)\" ");?></td>
                                                      </tr>
                                                 </table>
                                                 </fieldset>
@@ -193,7 +193,7 @@ $clrotulo->label("sd27_i_codigo");
          <table width="100%">
            <tr>
               <td valign="top"><br>
-                <?php 
+                <?
                   $chavepri= array("sd06_i_codigo"=>@$sd06_i_codigo );
                   $cliframe_alterar_excluir->chavepri=$chavepri;
 		              @$cliframe_alterar_excluir->sql = $clausencias->sql_query_ext("","sd06_i_codigo, sd04_i_unidade, sd06_d_inicio, sd06_d_fim, sd06_i_especmed,sd06_c_horainicio,sd06_c_horafim, 

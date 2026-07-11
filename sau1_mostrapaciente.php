@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,9 +50,9 @@ $db_opcao = 1;
    <b>CGS:</b>
   </td>
   <td>
-   <?php db_input('cgs',10,@$Icgs,true,'text',$db_opcao,"")?>
+   <?db_input('cgs',10,@$Icgs,true,'text',$db_opcao,"")?>
    <b>Paciente:</b>
-   <?php db_input('paciente',50,@$Ipaciente,true,'text',$db_opcao,"")?>
+   <?db_input('paciente',50,@$Ipaciente,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -60,9 +60,9 @@ $db_opcao = 1;
    <b>RG:</b>
   </td>
   <td>
-   <?php db_input('rg',33,@$Irg,true,'text',$db_opcao,"")?>
+   <?db_input('rg',33,@$Irg,true,'text',$db_opcao,"")?>
    <b>CPF:</b>
-   <?php db_input('cpf',33,@$Icpf,true,'text',$db_opcao,"")?>
+   <?db_input('cpf',33,@$Icpf,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -70,9 +70,9 @@ $db_opcao = 1;
    <b>CEP:</b>
   </td>
   <td>
-   <?php db_input('cep',10,@$Icep,true,'text',$db_opcao,"")?>
+   <?db_input('cep',10,@$Icep,true,'text',$db_opcao,"")?>
    <b>Endereço:</b>
-   <?php db_input('endereco',50,@$Iendereco,true,'text',$db_opcao,"")?>
+   <?db_input('endereco',50,@$Iendereco,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -80,11 +80,11 @@ $db_opcao = 1;
    <b>N°:</b>
   </td>
   <td>
-   <?php db_input('numero',10,@$Inumero,true,'text',$db_opcao,"")?>
+   <?db_input('numero',10,@$Inumero,true,'text',$db_opcao,"")?>
    <b>Compl.:</b>
-   <?php db_input('compl',10,@$Icompl,true,'text',$db_opcao,"")?>
+   <?db_input('compl',10,@$Icompl,true,'text',$db_opcao,"")?>
    <b>Bairro:</b>
-   <?php db_input('bairro',28,@$Ibairro,true,'text',$db_opcao,"")?>
+   <?db_input('bairro',28,@$Ibairro,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -92,13 +92,13 @@ $db_opcao = 1;
    <b>Cidade:</b>
   </td>
   <td>
-   <?php db_input('cidade',30,@$Icidade,true,'text',$db_opcao,"")?>
+   <?db_input('cidade',30,@$Icidade,true,'text',$db_opcao,"")?>
    <b>UF:</b>
-   <?php db_input('uf',2,@$Iuf,true,'text',$db_opcao,"")?>
+   <?db_input('uf',2,@$Iuf,true,'text',$db_opcao,"")?>
    <b>Nascimento:</b>
-   <?php db_inputdata('nascimento',@$nascimento,@$nascimento,@$nascimento,true,'text',$db_opcao,"")?>
+   <?db_inputdata('nascimento',@$nascimento,@$nascimento,@$nascimento,true,'text',$db_opcao,"")?>
    <b>Sexo:</b>
-   <?php db_input('sexo',1,@$Isexo,true,'text',$db_opcao,"")?>
+   <?db_input('sexo',1,@$Isexo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -106,17 +106,17 @@ $db_opcao = 1;
    <b>Tipo Sangue:</b>
   </td>
   <td>
-   <?php 
+   <?
    $x = array(''=>'','1'=>'1 - A','2'=>'2 -B','3'=>'3 - AB','4'=>'4 - O');
    db_select('tiposangue',$x,true,$db_opcao,"");
    ?>
    <b>Fator RH:</b>
-   <?php 
+   <?
    $x = array(''=>'','1'=>'Positivo','2'=>'Negativo');
    db_select('fatorrh',$x,true,$db_opcao,"");
    ?>
    <b>Cartao SUS:</b>
-   <?php db_input('cartao',20,@$Icartao,true,'text',$db_opcao,"")?>
+   <?db_input('cartao',20,@$Icartao,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -124,7 +124,7 @@ $db_opcao = 1;
    <b>Telefone:</b>
   </td>
   <td>
-   <?php db_input('telefone',20,@$Itelefone,true,'text',$db_opcao,"")?>
+   <?db_input('telefone',20,@$Itelefone,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cllevandam->rotulo->label("y67_codandam");
               <?=$Ly67_codlev?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y67_codlev",10,$Iy67_codlev,true,"text",4,"","chave_y67_codlev");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cllevandam->rotulo->label("y67_codandam");
               <?=$Ly67_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y67_codandam",20,$Iy67_codandam,true,"text",4,"","chave_y67_codandam");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cllevandam->rotulo->label("y67_codandam");
               <?=$Ly67_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y67_codandam",20,$Iy67_codandam,true,"text",4,"","chave_y67_codandam");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cllevandam->rotulo->label("y67_codandam");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_levandam.php")==true){
@@ -130,12 +130,12 @@ $cllevandam->rotulo->label("y67_codandam");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

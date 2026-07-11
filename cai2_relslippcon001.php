@@ -165,7 +165,7 @@ db_menu();
     $('o15_recursodescr').className = 'field-size8';
     $('o15_recursodescr').setAttribute('rel', 'ignore-css');
 
-    <?php /*--------------------------------------------------*/?>
+    <?/*--------------------------------------------------*/?>
     function js_pesquisac60_codcon(mostra) {
         if (mostra == true) {
             js_OpenJanelaIframe('CurrentWindow.corpo', 'db_iframe_conplano', 'func_conplano.php?funcao_js=parent.js_mostraconplano1|c60_codcon|c60_descr', 'Pesquisa', true);
@@ -191,7 +191,7 @@ db_menu();
         document.form1.c60_descr.value = chave2;
         db_iframe_conplano.hide();
     }
-    <?php /*----------------------------------------*/?>
+    <?/*----------------------------------------*/?>
 
 
 </script>

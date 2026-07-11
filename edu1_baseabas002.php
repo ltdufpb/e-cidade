@@ -69,7 +69,7 @@ $db_opcao   = 1;
       </tr>
     </table>
   </form>
-  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <?php
@@ -79,5 +79,5 @@ if( isset( $chavepesquisa ) ) {
   <script>
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href = "edu1_base002.php?chavepesquisa=<?=$chavepesquisa?>";
   </script>
-  <?php 
+  <?
 }

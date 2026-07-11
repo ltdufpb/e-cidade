@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -258,7 +258,7 @@ function js_desconto(chave){
 
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?php 
+<?
 //verifica se clicou no link da matricula
 if(isset($inscricao) && !empty($inscricao)) {
   $inscr = $inscricao;
@@ -938,6 +938,6 @@ echo "<script>alert('kjkjk');</script>";
     parent.document.getElementById('enviar').disabled = false;
   }
 </script>
-<?php 
+<?
 }
 ?>

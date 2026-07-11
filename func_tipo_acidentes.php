@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltipo_acidentes->rotulo->label("tr01_descr");
               <?=$Ltr01_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("tr01_id",4,$Itr01_id,true,"text",4,"","chave_tr01_id");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltipo_acidentes->rotulo->label("tr01_descr");
               <?=$Ltr01_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("tr01_descr",35,$Itr01_descr,true,"text",4,"","chave_tr01_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltipo_acidentes->rotulo->label("tr01_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipo_acidentes.php")==true){
@@ -119,12 +119,12 @@ $cltipo_acidentes->rotulo->label("tr01_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

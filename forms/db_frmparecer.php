@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clparecer->rotulo->label();
           <?=@$Led92_i_codigo?>
         </td>
         <td>
-          <?php db_input('ed92_i_codigo',10,$Ied92_i_codigo,true,'text',3,"")?>
+          <?db_input('ed92_i_codigo',10,$Ied92_i_codigo,true,'text',3,"")?>
         </td>
       </tr>
       <tr>
@@ -45,7 +45,7 @@ $clparecer->rotulo->label();
           <?=@$Led92_i_sequencial?>
         </td>
         <td>
-          <?php db_input('ed92_i_sequencial',10,$Ied92_i_sequencial,true,'text',3,"")?>
+          <?db_input('ed92_i_sequencial',10,$Ied92_i_sequencial,true,'text',3,"")?>
         </td>
       </tr>
       <tr>
@@ -53,18 +53,18 @@ $clparecer->rotulo->label();
           <?=@$Led92_c_descr?>
         </td>
         <td>
-          <?php 
+          <?
           db_textarea('ed92_c_descr', 2, 88, $Ied92_c_descr, true, 'text', 1, null, null, null, 150)
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="Selecione a(s) disciplina(s) para vincular ao parecer.">
-          <?php db_ancora('<b>Disciplina:</b>', "js_pesquisadisciplina(true);", $db_opcao);?>
+          <?db_ancora('<b>Disciplina:</b>', "js_pesquisadisciplina(true);", $db_opcao);?>
         </td>
         <td>
           <div id="arquivodisciplina" >
-            <?php db_input('lista_disciplinas', 50, '', true, 'hidden', 3, '')?>
+            <?db_input('lista_disciplinas', 50, '', true, 'hidden', 3, '')?>
             <select multiple size="5" name="disciplina" id="disciplina" style="width:653px;"
                     onDblClick="js_apagarLinha(this);"
                     <?=($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22 ?"" : "disabled")?> >
@@ -75,11 +75,11 @@ $clparecer->rotulo->label();
       </tr>
       <tr>
         <td nowrap title="Selecione o(s) período(s) para vincular ao parecer.">
-          <?php db_ancora('<b>Período:</b>', "js_pesquisaPeriodo(true);", $db_opcao);?>
+          <?db_ancora('<b>Período:</b>', "js_pesquisaPeriodo(true);", $db_opcao);?>
         </td>
         <td>
           <div id="arquivoperiodo" >
-            <?php db_input('lista_periodos', 50, '', true, 'hidden', 3, '')?>
+            <?db_input('lista_periodos', 50, '', true, 'hidden', 3, '')?>
             <select multiple size="5" name="periodo" id="periodo" style="width:653px;"
                     onDblClick="js_apagarLinhaPeriodo(this);"
                     <?=($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22 ?"" : "disabled")?> >

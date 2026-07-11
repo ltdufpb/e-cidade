@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clrotulo->label("me30_i_codigo");
        <?=@$Lme35_i_codigo?>
     </td>
     <td> 
-    <?php db_input('me35_i_codigo',10,$Ime35_i_codigo,true,'text',3,"")?>
+    <?db_input('me35_i_codigo',10,$Ime35_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -46,7 +46,7 @@ $clrotulo->label("me30_i_codigo");
        <?=@$Lme35_c_nomealimento?>
     </td>
     <td> 
-     <?php db_input('me35_c_nomealimento',60,$Ime35_c_nomealimento,true,'text',$db_opcao,"")?>    
+     <?db_input('me35_c_nomealimento',60,$Ime35_c_nomealimento,true,'text',$db_opcao,"")?>    
     </td>
   </tr>
   <tr>
@@ -54,21 +54,21 @@ $clrotulo->label("me30_i_codigo");
        <?=@$Lme35_c_nomecientifico?>
     </td>
     <td> 
-      <?php db_input('me35_c_nomecientifico',60,$Ime35_c_nomecientifico,true,'text',$db_opcao,"")?>    
+      <?db_input('me35_c_nomecientifico',60,$Ime35_c_nomecientifico,true,'text',$db_opcao,"")?>    
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme35_i_grupoalimentar?>">
-       <?php 
+       <?
        db_ancora(@$Lme35_i_grupoalimentar,"js_pesquisame35_i_grupoalimentar(true);",$db_opcao);
        ?>
     </td>
     <td> 
-     <?php db_input('me35_i_grupoalimentar',10,$Ime35_i_grupoalimentar,true,'text',$db_opcao,
+     <?db_input('me35_i_grupoalimentar',10,$Ime35_i_grupoalimentar,true,'text',$db_opcao,
                  " onchange='js_pesquisame35_i_grupoalimentar(false);'"
                )
      ?>
-     <?php db_input('me30_c_descricao',48,@$Ime30_c_descricao,true,'text',3,'')?>
+     <?db_input('me30_c_descricao',48,@$Ime30_c_descricao,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -76,21 +76,21 @@ $clrotulo->label("me30_i_codigo");
        <?=@$Lme35_c_fonteinformacao?>
     </td>
     <td> 
-      <?php db_input('me35_c_fonteinformacao',60,$Ime35_c_fonteinformacao,true,'text',$db_opcao,"")?>    
+      <?db_input('me35_c_fonteinformacao',60,$Ime35_c_fonteinformacao,true,'text',$db_opcao,"")?>    
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme35_i_unidade?>">
-       <?php 
+       <?
        db_ancora(@$Lme35_i_unidade,"js_pesquisame35_i_unidade(true);",$db_opcao);
        ?>
     </td>
     <td> 
-     <?php db_input('me35_i_unidade',10,$Ime35_i_unidade,true,'text',$db_opcao,
+     <?db_input('me35_i_unidade',10,$Ime35_i_unidade,true,'text',$db_opcao,
                  " onchange='js_pesquisame35_i_unidade(false);'"
                )
      ?>
-     <?php db_input('m61_descr',48,@$Im61_descr,true,'text',3,'')?>
+     <?db_input('m61_descr',48,@$Im61_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -98,7 +98,7 @@ $clrotulo->label("me30_i_codigo");
        <?=@$Lme35_c_quant?>
     </td>
     <td> 
-      <?php db_input('me35_c_quant',10,$Ime35_c_quant,true,'text',$db_opcao,"")?>    
+      <?db_input('me35_c_quant',10,$Ime35_c_quant,true,'text',$db_opcao,"")?>    
     </td>
   </tr> 
   </table>
@@ -208,7 +208,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_mer_alimento.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";

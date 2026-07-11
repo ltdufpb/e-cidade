@@ -42,7 +42,7 @@ $clrotulo->label("db90_descr");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 
-<?php PHP
+<?PHP
 $db_opcao = 1;
 db_app::load("scripts.js");
 db_app::load("prototype.js");

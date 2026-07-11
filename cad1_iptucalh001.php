@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,12 +51,12 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
   <div class="container">
-    <?php  include(modification("forms/db_frmiptucalh.php")); ?>
+    <? include(modification("forms/db_frmiptucalh.php")); ?>
   </div>
-<?php  db_menu(); ?>
+<? db_menu(); ?>
 </body>
 </html>
-<?php 
+<?
 if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
   if($cliptucalh->erro_status=="0"){
     $cliptucalh->erro(true,false);

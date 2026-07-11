@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk54_notifica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k54_notifica",8,$Ik54_notifica,true,"text",4,"","chave_k54_notifica");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk54_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k54_data",8,$Ik54_data,true,"text",4,"","chave_k54_data");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_noticonf.php")==true){
@@ -120,12 +120,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

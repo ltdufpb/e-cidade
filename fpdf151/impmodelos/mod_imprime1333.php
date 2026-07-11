@@ -1,4 +1,4 @@
-<?php 
+<?
 $this->objpdf->SetAutoPageBreak('on',0);
 $this->objpdf->AliasNbPages();
 $this->objpdf->AddPage();

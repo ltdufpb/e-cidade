@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2012  DBselller Servicos de Informatica             
@@ -101,7 +101,7 @@ function js_removeElementSelect() {
 						<tr>
 							<td> <b> Pessoa </b> </td>
 							<td>
-							  <?php 
+							  <?
 								  $aPessoa = array ("j" => "Jurídica", "f" => "Física", "t" => "Todas");
 								  db_select("pessoa", $aPessoa, null, 1); 
 							  ?>
@@ -111,7 +111,7 @@ function js_removeElementSelect() {
 						<tr>		
 							<td> <b> Baixada </b> </td>
 							<td>
-							  <?php 
+							  <?
 								  $aBaixada = array ("n" => "Não", "s" => "Sim", "t" => "Todas");
 								  db_select("baixada", $aBaixada, null, 1); 
 							  ?>
@@ -121,7 +121,7 @@ function js_removeElementSelect() {
 						<tr>	
 							<td> <b> Atividade </b> </td>
 							<td>
-							  <?php 
+							  <?
 								  $aAtividade = array ("p" => "Somente Principal", "t" => "Todas");
 								  db_select("atividade", $aAtividade, null, 1,"onchange='js_removeElementSelect()'"); 
 							  ?>
@@ -131,7 +131,7 @@ function js_removeElementSelect() {
 						<tr>
 							<td> <b> Ordenar por </b> </td>
 							<td>
-							  <?php 
+							  <?
 								  $aOrdem = array ("i" => "Inscrição", "n" => "Nome", "a" => "Atividade");
 								  db_select("ordem", $aOrdem, null, 1); 
 							  ?>
@@ -148,7 +148,7 @@ function js_removeElementSelect() {
 		</td>
 	</tr>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,19 +40,19 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_codigo?>
     </td>
     <td colspan="3"> 
-	  <?php 
+	  <?
 	 	db_input('db51_codigo',10,$Idb51_codigo,true,'text',3,"");
 	  ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb51_layouttxt?>">
-      <?php 
+      <?
         db_ancora(@$Ldb51_layouttxt,"js_pesquisadb51_layouttxt(true);",3);
       ?>
     </td>
     <td colspan="3"> 
-	  <?php 
+	  <?
 	  
 		db_input('db51_layouttxt',6,$Idb51_layouttxt,true,'text',3," onchange='js_pesquisadb51_layouttxt(false);'");
 	    db_input('db50_descr',50,$Idb50_descr,true,'text',3,'');
@@ -69,7 +69,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_descr?>
     </td>
     <td colspan="3"> 
-	  <?php 
+	  <?
 	    db_input('db51_descr',59,$Idb51_descr,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -79,7 +79,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_tipolinha?>
     </td>
     <td> 
-	  <?php 
+	  <?
 		$x = array('1'=>'1 - Header de arquivo','2'=>'2 - Header de lote','3'=>'3 - Registro','4'=>'4 - Trailler de lote','5'=>'5 - Trailler de arquivo');
 		db_select('db51_tipolinha',$x,true,$db_opcao,"");
 	  ?>
@@ -88,7 +88,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_tamlinha?>
     </td>
     <td> 
-	  <?php 
+	  <?
 	    db_input('db51_tamlinha',6,$Idb51_tamlinha,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -99,7 +99,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_separador?>
     </td>
     <td> 
-	  <?php 
+	  <?
 	    db_input('db51_separador',6,$Idb51_separador,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -107,7 +107,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_compacta?>
     </td>
     <td> 
-	  <?php 
+	  <?
 	  
 	  	if (isset($db51_compacta)) {
 	  	  if ($db51_compacta == "f") {
@@ -131,7 +131,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_obs?>
     </td>
     <td colspan="3"> 
-	  <?php 
+	  <?
 		db_textarea('db51_obs',4,56,$Idb51_obs,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -141,7 +141,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_linhasantes?>
     </td>
     <td> 
-	  <?php 
+	  <?
 	    db_input('db51_linhasantes',6,$Idb51_linhasantes,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -149,7 +149,7 @@ $clrotulo->label("db50_descr");
       <?=@$Ldb51_linhasdepois?>
     </td>
     <td> 
-	  <?php 
+	  <?
 	    db_input('db51_linhasdepois',6,$Idb51_linhasdepois,true,'text',$db_opcao,"");
 	  ?>
     </td>
@@ -157,21 +157,21 @@ $clrotulo->label("db50_descr");
   <tr>
     <td colspan="4" align="center">
       <input name="<?=($db_opcao==1||$importalinha==true?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1||$importalinha==true?($importalinha==false?"Incluir":"Importar linha"):($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
-      <?php if($db_opcao==1 && $importalinha == false){?>
+      <?if($db_opcao==1 && $importalinha == false){?>
       <input name="importar" type="button" id="importar" value="Importar linha" onclick="js_importarlinha();" >
-      <?php }else{?>
-        <?php if($importalinha == true){?>
+      <?}else{?>
+        <?if($importalinha == true){?>
         <input name="importarcampos" type="submit" id="importarcampos" value="Importar linha / campos">
-        <?php }?>
+        <?}?>
       <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();">
-      <?php }?>
+      <?}?>
     </td>
   </tr>
 </table>
 <table>
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
     $dbwhere = " db51_layouttxt = ".@$db51_layouttxt;
     if(isset($db51_codigo) && trim($db51_codigo) != ""){
       $dbwhere .= " and db51_codigo <> ".$db51_codigo;

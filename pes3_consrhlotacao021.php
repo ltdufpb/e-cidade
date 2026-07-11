@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -101,7 +101,7 @@ th {
 <center>
 <form name="form1" method="post">
 <table border="1" cellpadding="0" cellspacing="0">
-<?php 
+<?
 if($porlotacao == true){
 ?>
   <tr bgcolor="#FFCC66">
@@ -111,7 +111,7 @@ if($porlotacao == true){
     <th class="borda" style="font-size:12px" nowrap>Descrição</th>
     <th class="borda" style="font-size:12px" nowrap>Vínculo</th>
   </tr>
-  <?php 
+  <?
   $cor = "#EFE029";
   $totalvalor = 0;
   $totalquant = 0;
@@ -126,7 +126,7 @@ if($porlotacao == true){
   ?>
   <tr>
     <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-      <?php db_ancora($r01_regist,"js_consultaregistro('$r01_regist','$lotacao');","1");?>
+      <?db_ancora($r01_regist,"js_consultaregistro('$r01_regist','$lotacao');","1");?>
       &nbsp;
     </td>
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$z01_nome?></td>
@@ -134,7 +134,7 @@ if($porlotacao == true){
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$rh37_descr?></td>
     <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$vinculo?></td>
   </tr>
-  <?php 
+  <?
   }
 }else{
 ?>
@@ -145,7 +145,7 @@ if($porlotacao == true){
     <th class="borda" style="font-size:12px" nowrap>Órgão</th>
     <th class="borda" style="font-size:12px" nowrap>Descrição</th>
   </tr>
-  <?php 
+  <?
   $cor = "#EFE029";
   $orgaoantigo = "";
   $totalp = 0;
@@ -159,7 +159,7 @@ if($porlotacao == true){
   ?>
   <tr>
     <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-      <?php db_ancora($r70_codigo,"js_consultalotacao('$r70_codigo');","1");?>
+      <?db_ancora($r70_codigo,"js_consultalotacao('$r70_codigo');","1");?>
       &nbsp;
     </td>
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$r70_estrut?></td>
@@ -167,7 +167,7 @@ if($porlotacao == true){
     <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$o40_orgao?></td>
     <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$o40_descr?></td>
   </tr>
-  <?php 
+  <?
   }
 }
 ?>

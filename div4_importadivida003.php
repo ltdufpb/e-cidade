@@ -102,7 +102,7 @@ $hoje                   = $datavenc;
       <table height="100%" width="100%"  border="0" cellspacing="5" cellpadding="0">
 	    </td>
 	    <td align="center">
-	      <?php 
+	      <?
 
 
 if (isset ($procreg) && $procreg != "") {
@@ -110,7 +110,7 @@ if (isset ($procreg) && $procreg != "") {
 }
 ?>
 	    </td>
-<?php 
+<?
 
 
 $wherereceita = "";
@@ -340,7 +340,7 @@ function js_troca(){
   document.form1.codreceita.value     = codreceit;
 }
 </script>
-<?php 
+<?
 if (isset ($procreg) && $procreg == 't') {
 
   if (isset ($cod_k02_codigo) && trim($cod_k02_codigo) != "" && isset ($cod_v03_codigo) && trim($cod_v03_codigo) != "") {

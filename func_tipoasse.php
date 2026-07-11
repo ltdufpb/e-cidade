@@ -62,7 +62,7 @@ if (isset($chave_h12_natureza)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
-  <?php 
+  <?
   if(!isset($consulta)){
   ?>
   <tr> 
@@ -74,7 +74,7 @@ if (isset($chave_h12_natureza)) {
               <?=$Lh12_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h12_codigo",6,$Ih12_codigo,true,"text",4,"","chave_h12_codigo");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ if (isset($chave_h12_natureza)) {
               <?=$Lh12_assent?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h12_assent",5,$Ih12_assent,true,"text",4,"","chave_h12_assent");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ if (isset($chave_h12_natureza)) {
               <?=$Lh12_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h12_descr",40,$Ih12_descr,true,"text",4,"","chave_h12_descr");
 		       ?>
             </td>
@@ -118,12 +118,12 @@ if (isset($chave_h12_natureza)) {
         </table>
       </td>
   </tr>
-  <?php 
+  <?
   }
   ?>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 
       if ( isset($sAcao) && ($sAcao == 'vincularTipoAssentamentoDadosExternos' || $sAcao == 'agendaAssentamento')) {
 
@@ -290,12 +290,12 @@ if (isset($chave_h12_natureza)) {
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

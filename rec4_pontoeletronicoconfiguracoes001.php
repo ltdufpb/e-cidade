@@ -83,6 +83,6 @@ $oAbasConfiguracoes = new cl_criaabas;
 </table>
 <script type="text/javascript">
 </script>
-<?php  db_menu(); ?>
+<? db_menu(); ?>
 </body>
 </html>

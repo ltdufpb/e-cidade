@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cldb_itenshelp->rotulo->label("id_help");
               <?=$Lid_item?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("id_item",5,$Iid_item,true,"text",4,"","chave_id_item");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cldb_itenshelp->rotulo->label("id_help");
               <?=$Lid_help?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("id_help",5,$Iid_help,true,"text",4,"","chave_id_help");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cldb_itenshelp->rotulo->label("id_help");
               <?=$Lid_help?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("id_help",5,$Iid_help,true,"text",4,"","chave_id_help");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cldb_itenshelp->rotulo->label("id_help");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_itenshelp.php")==true){
@@ -130,12 +130,12 @@ $cldb_itenshelp->rotulo->label("id_help");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

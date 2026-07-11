@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $escola = db_getsession("DB_nomedepto");
 <table width="100%" align="left" valign="top" marginwidth="0" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left">
-   <?php 
+   <?
    if(isset($ed52_i_codigo)){
     $sql = "SELECT DISTINCT ed29_i_codigo,ed29_c_descr,ed10_c_descr,ed10_c_abrev
             FROM cursoedu
@@ -168,14 +168,14 @@ $escola = db_getsession("DB_nomedepto");
      <td class='titulo' align="center" colspan="<?=$ncampos?>"><b><?=$titulo?></b></td>
     </tr>
     <tr>
-     <?php 
+     <?
      $labels = explode("|",$labels);
      for($c=0;$c<$ncampos;$c++){
       ?>
       <td class='cabec' align="center"><b><?=$labels[$c]?></b></td>
-     <?php }?>
+     <?}?>
     </tr>
-    <?php 
+    <?
     if($linhas>0){
      $cor1 = "#f3f3f3";
      $cor2 = "#DBDBDB";
@@ -190,9 +190,9 @@ $escola = db_getsession("DB_nomedepto");
       $proximo = pg_fetch_result($result,$c,1);
       if(isset($mudar) && $mudar==true){?>
        <tr bgcolor="<?=$cor?>" onclick="javascript:location.href='<?=$destino.$cod?>&ed57_c_descr=<?=$proximo?>'" style="Cursor='hand';" onmouseover="bgColor='#DEB887'" onmouseout="bgColor='<?=$cor?>'">
-      <?php }else{?>
+      <?}else{?>
        <tr bgcolor="<?=$cor?>" onclick="javascript:location.href='<?=$destino.$cod?>&proximo=<?=$proximo?>'" style="Cursor='hand';" onmouseover="bgColor='#DEB887'" onmouseout="bgColor='<?=$cor?>'">
-      <?php }
+      <?}
        for($b=0;$b<$ncampos;$b++){
         if(pg_field_type($result,$b)=="int4"){
          $align = "center";
@@ -201,9 +201,9 @@ $escola = db_getsession("DB_nomedepto");
         }
         ?>
          <td class='aluno' align="<?=$align?>"><?=pg_fetch_result($result,$c,$b)?></td>
-       <?php }?>
+       <?}?>
       </tr>
-      <?php 
+      <?
      }
     }?>
    </table>

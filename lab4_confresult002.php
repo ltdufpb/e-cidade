@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $oRequiitem = new cl_lab_requiitem;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<?php 
+<?
    if(isset($iRequiitem)){
    	   $sSql=$oRequiitem->sql_query_nova($iRequiitem,"la08_i_codigo,la42_i_atributo");
    	   $rResult=$oRequiitem->sql_record($sSql);

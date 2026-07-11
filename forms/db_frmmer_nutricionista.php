@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,12 +39,12 @@ $clrotulo->label("me02_c_nutriativo");
    <?=@$Lme02_i_codigo?>
   </td>
   <td>
-   <?php db_input('me02_i_codigo',10,$Ime02_i_codigo,true,'text',3,"")?>
+   <?db_input('me02_i_codigo',10,$Ime02_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme02_i_cgm?>">
-   <?php 
+   <?
    if($db_opcao==1){
     db_ancora(@$Lme02_i_cgm,"js_pesquisame02_i_cgm(true);",$db_opcao1);
    }else{
@@ -53,8 +53,8 @@ $clrotulo->label("me02_c_nutriativo");
    ?>
   </td>
   <td>
-   <?php db_input('me02_i_cgm',10,$Ime02_i_cgm,true,'text',$db_opcao1," onchange='js_pesquisame02_i_cgm(false);'")?>
-   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?db_input('me02_i_cgm',10,$Ime02_i_cgm,true,'text',$db_opcao1," onchange='js_pesquisame02_i_cgm(false);'")?>
+   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -62,7 +62,7 @@ $clrotulo->label("me02_c_nutriativo");
    <?=@$Lme02_c_crn?>
   </td>
   <td>
-   <?php db_input('me02_c_crn',10,$Ime02_c_crn,true,'text',$db_opcao,"")?>
+   <?db_input('me02_c_crn',10,$Ime02_c_crn,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -70,7 +70,7 @@ $clrotulo->label("me02_c_nutriativo");
        <?=@$Lme02_c_nutriativo?>       
     </td>
     <td> 
-      <?php 
+      <?
        if (!isset($me02_c_nutriativo)||$me02_c_nutriativo=="") {
          $me02_c_nutriativo = 1;
        }
@@ -139,7 +139,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
  db_iframe_mer_nutricionista.hide();
- <?php 
+ <?
  if ($db_opcao!=1) {
    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }

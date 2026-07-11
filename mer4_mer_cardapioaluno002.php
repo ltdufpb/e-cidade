@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,13 +72,13 @@ $clmer_cardapioaluno = new cl_mer_cardapioaluno;
                     <tr class='cabec'>
                        <td colspan="2">Lista de alunos presente na merenda  </td>
                     </tr>
-                    <?php $alunos = explode(",",$cod_alunos);
+                    <?$alunos = explode(",",$cod_alunos);
                       for ($x=0;$x<count($alunos);$x++) { ?>
                         <tr>
                           <td>
                              <?=$alunos[$x]?>
                           </td>
-                          <?php $ed47_v_nome="";
+                          <?$ed47_v_nome="";
                             $sql    = " SELECT DISTINCT ed60_i_codigo, ed60_matricula,ed47_v_nome FROM aluno ";
                             $sql   .= "             inner join matricula on ed60_i_aluno=ed47_i_codigo ";
 				            $sql   .= "             inner join turma on ed60_i_turma=ed57_i_codigo ";			   
@@ -92,7 +92,7 @@ $clmer_cardapioaluno = new cl_mer_cardapioaluno;
                            <?=$ed47_v_nome?>
                         </td>
                      </tr>
-                    <?php }?>
+                    <?}?>
                  </table>
                  <input type="button" name="voltar" value="Voltar" onClick="js_voltar();">
                  <input type="button" name="cancelar" value="Cancelar" 
@@ -105,7 +105,7 @@ $clmer_cardapioaluno = new cl_mer_cardapioaluno;
   </tr>
 </table>
 </center>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),

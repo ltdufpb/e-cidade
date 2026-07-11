@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,8 +52,8 @@ function js_emite() {
     
   } else{
     
-    var perini  = "<?php echo db_getsession('DB_anousu');?>-01-01"; 
-    var perfin  = "<?php echo date("Y-m-d", db_getsession('DB_datausu'))?>";
+    var perini  = "<?echo db_getsession('DB_anousu');?>-01-01"; 
+    var perfin  = "<?echo date("Y-m-d", db_getsession('DB_datausu'))?>";
         
 	 jan = window.open('con2_balancrece002_2008.php?tipo=rec&impressao=retrato&perfin='+perfin+'&perini='+perini+'&opcao=1&origem=O&db_selinstit='+document.form1.db_selinstit.value+'&recurso=0&nivel_agrupar=0','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
      return true;
@@ -80,7 +80,7 @@ function js_emite() {
       </tr>
       <tr>
         <td colspan="2">
-	<?php 
+	<?
 	db_selinstit();
 	?>
 	</td>
@@ -97,7 +97,7 @@ function js_emite() {
 
   </form>
     </table>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

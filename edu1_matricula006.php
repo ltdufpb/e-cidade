@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -110,7 +110,7 @@ db_fieldsmemory($result,0);
    <tr>
     <td valign="top" >
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?php 
+      <?
       $array_mov = [];
       $sCamposResult  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,ed57_c_descr,";
       $sCamposResult .= " ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr,nome, ed60_matricula";
@@ -195,7 +195,7 @@ db_fieldsmemory($result,0);
          <td>Etapa</td>
          <td>Procedimento</td>
         </tr>
-        <?php 
+        <?
         for ($f = 0; $f < count($array_mov); $f++) {
         	
           $array_mov1 = explode("|",$array_mov[$f]);
@@ -207,7 +207,7 @@ db_fieldsmemory($result,0);
 	         <td height="1" bgcolor="black" colspan="7">
 	         </td>
 	        </tr>
-          <?php 
+          <?
          
           } 
          ?>
@@ -235,7 +235,7 @@ db_fieldsmemory($result,0);
            </table>
           </td>
          </tr>
-        <?php 
+        <?
         }
       } else {
         ?>
@@ -244,10 +244,10 @@ db_fieldsmemory($result,0);
           Nenhum registro.
          </td>
         </tr>
-        <?php 
+        <?
       }
       ?>
-      </table><?php 
+      </table><?
        $result_log = $cllogmatricula->sql_record($cllogmatricula->sql_query("","*","ed248_d_data,ed248_c_hora"," ed248_i_aluno = $ed47_i_codigo"));
        if($cllogmatricula->numrows>0){
         ?>
@@ -259,12 +259,12 @@ db_fieldsmemory($result,0);
           </td>
          </tr>
          <tr><td colspan="2" height="1" bgcolor="#999999"></td></tr>
-         <?php for ($q= 0; $q < $cllogmatricula->numrows; $q++) {
+         <?for ($q= 0; $q < $cllogmatricula->numrows; $q++) {
              db_fieldsmemory($result_log,$q);
              ?>
              <tr>
               <td colspan="2">
-              <?php 
+              <?
                if ($ed248_c_tipo == "E") {
                  $descrlog = "Matrícula Excluída";
                } else if ($ed248_c_tipo == "R") {
@@ -287,11 +287,11 @@ db_fieldsmemory($result,0);
                <?=trim($ed248_t_obs)!=""?"Observações: $ed248_t_obs":""?>
               </td>
              </tr>
-          <?php 
+          <?
            }
         ?>
         </table>
-        <?php 
+        <?
        }
      ?>
     </td>

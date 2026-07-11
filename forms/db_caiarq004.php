@@ -39,18 +39,18 @@
             <td>Agência:</td>
             <td><input name="k15_codage" type="text" id="k15_codage" size="6" maxlength="5"></td>
           </tr>
-          <?php 
+          <?
             if (@$db_opcao != 5){
           ?>
           <tr>
             <td>Data:</td>
             <td>
-              <?php 
+              <?
              db_inputdata('datapes', '', '', '', true, 'text', 1);
               ?>
             </td>
           </tr>
-          <?php 
+          <?
             }
           ?>
       </table>

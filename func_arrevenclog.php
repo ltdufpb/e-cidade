@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clarrevenclog->rotulo->label("k75_usuario");
               <?=$Lk75_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k75_sequencial",10,$Ik75_sequencial,true,"text",4,"","chave_k75_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clarrevenclog->rotulo->label("k75_usuario");
               <?=$Lk75_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k75_usuario",10,$Ik75_usuario,true,"text",4,"","chave_k75_usuario");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clarrevenclog->rotulo->label("k75_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         $where = "where k75_instit = ".db_getsession("DB_instit") ;
 				
@@ -126,12 +126,12 @@ $clarrevenclog->rotulo->label("k75_usuario");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

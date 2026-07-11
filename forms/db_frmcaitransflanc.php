@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -65,7 +65,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td nowrap title="<?=@$Tk93_transf?>"> <?=@$Lk93_transf?> </td>
     <td>
-    <?php  
+    <? 
     	db_input('k93_transf',10,$Ik93_transf,true,'text',3,"");
         db_input('k93_sequen',10,$Ik93_sequen,true,'hidden',3,"");
     ?> 
@@ -73,7 +73,7 @@ if(isset($db_opcaoal)){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk93_instit?>"><?=@$Lk93_instit?></td>
-    <td><?php  
+    <td><? 
          // seleciona as instituições que estejam na caitransf e caitransflanc
          $res = db_query("select codigo,nomeinst
  	                  from db_config
@@ -99,20 +99,20 @@ if(isset($db_opcaoal)){
     </td>
   </tr>  
   <tr>
-    <td nowrap title="<?=@$Tk93_debito?>"><?php  db_ancora(@$Lk93_debito,"js_pesquisak93_debito(true);",$db_opcao);?></td>
-    <td><?php  db_input('k93_debito',8,$Ik93_debito,true,'text',$db_opcao," onchange='js_pesquisak93_debito(false);'") ?> 
-        <?php  db_input('k13_descr',40,$Ik13_descr,true,'text',3,'') ?>
+    <td nowrap title="<?=@$Tk93_debito?>"><? db_ancora(@$Lk93_debito,"js_pesquisak93_debito(true);",$db_opcao);?></td>
+    <td><? db_input('k93_debito',8,$Ik93_debito,true,'text',$db_opcao," onchange='js_pesquisak93_debito(false);'") ?> 
+        <? db_input('k13_descr',40,$Ik13_descr,true,'text',3,'') ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tk93_credito?>"><?php  db_ancora(@$Lk93_credito,"js_pesquisak93_credito(true);",$db_opcao);?> </td>
-    <td><?php  db_input('k93_credito',8,$Ik93_credito,true,'text',$db_opcao," onchange='js_pesquisak93_credito(false);'") ?>
-        <?php  db_input('k02_descr',40,$Ik02_descr,true,'text',3,'') ?>
+    <td nowrap title="<?=@$Tk93_credito?>"><? db_ancora(@$Lk93_credito,"js_pesquisak93_credito(true);",$db_opcao);?> </td>
+    <td><? db_input('k93_credito',8,$Ik93_credito,true,'text',$db_opcao," onchange='js_pesquisak93_credito(false);'") ?>
+        <? db_input('k02_descr',40,$Ik02_descr,true,'text',3,'') ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk93_finalidade?>"><?=@$Lk93_finalidade?></td>
-    <td><?php db_textarea('k93_finalidade',2,48,$Ik93_finalidade,true,'text',$db_opcao,"")?></td>
+    <td><?db_textarea('k93_finalidade',2,48,$Ik93_finalidade,true,'text',$db_opcao,"")?></td>
   </tr>  
   <tr>
     <td colspan="2" align="center">
@@ -124,7 +124,7 @@ if(isset($db_opcaoal)){
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?php 
+    <?
      $where = "";
      if($db_opcao==1||$db_opcao==11) {
 	     $chavepri = array("k93_sequen"=>@$k93_sequen,"k93_transf"=>@$k93_transf);

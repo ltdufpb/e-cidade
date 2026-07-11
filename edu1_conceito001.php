@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,13 +78,13 @@ if(isset($excluir)){
   <center>
     <div style="display: table;" id='divConceito'>
       <fieldset><legend><b>Cadastro de Níveis</b></legend>
-       <?php include(modification("forms/db_frmconceito.php"));?>
+       <?include(modification("forms/db_frmconceito.php"));?>
       </fieldset>
     </div>
   </center>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
  if($clconceito->erro_status=="0"){
   $clconceito->erro(true,false);
@@ -95,7 +95,7 @@ if(isset($incluir)){
    echo "<script> document.form1.".$clconceito->erro_campo.".focus();</script>";
   };
  }else{
-  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
+  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
  };
 };
 if(isset($alterar)){
@@ -108,18 +108,18 @@ if(isset($alterar)){
    echo "<script> document.form1.".$clconceito->erro_campo.".focus();</script>";
   };
  }else{
-  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
+  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
  };
 };
 if(isset($excluir)){
  if($clconceito->erro_status=="0"){
   $clconceito->erro(true,false);
  }else{
-  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
+  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
  };
 };
 if(isset($cancelar)){
- ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
+ ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
 }
 
 ?>

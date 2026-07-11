@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clvac_campanha->rotulo->label();
        <?=@$Lvc11_i_codigo?>
     </td>
     <td> 
-     <?php db_input('vc11_i_codigo',10,$Ivc11_i_codigo,true,'text',3,"")?>
+     <?db_input('vc11_i_codigo',10,$Ivc11_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -45,7 +45,7 @@ $clvac_campanha->rotulo->label();
        <?=@$Lvc11_c_nome?>
     </td>
     <td> 
-     <?php db_input('vc11_c_nome',30,$Ivc11_c_nome,true,'text',$db_opcao,"")?>
+     <?db_input('vc11_c_nome',30,$Ivc11_c_nome,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -53,7 +53,7 @@ $clvac_campanha->rotulo->label();
        <?=@$Lvc11_c_descr?>
     </td>
     <td> 
-     <?php db_input('vc11_c_descr',50,$Ivc11_c_descr,true,'text',$db_opcao,"")?>
+     <?db_input('vc11_c_descr',50,$Ivc11_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -61,7 +61,7 @@ $clvac_campanha->rotulo->label();
        <?=@$Lvc11_d_inicio?>
     </td>
     <td> 
-     <?php db_inputdata('vc11_d_inicio',
+     <?db_inputdata('vc11_d_inicio',
                     @$vc11_d_inicio_dia,
                     @$vc11_d_inicio_mes,
                     @$vc11_d_inicio_ano,
@@ -77,7 +77,7 @@ $clvac_campanha->rotulo->label();
        <?=@$Lvc11_d_fim?>
     </td>
     <td> 
-     <?php db_inputdata('vc11_d_fim',@$vc11_d_fim_dia,@$vc11_d_fim_mes,@$vc11_d_fim_ano,true,'text',$db_opcao,"")?>
+     <?db_inputdata('vc11_d_fim',@$vc11_d_fim_dia,@$vc11_d_fim_mes,@$vc11_d_fim_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -104,7 +104,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_campanha.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

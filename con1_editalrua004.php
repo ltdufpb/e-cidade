@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -141,7 +141,7 @@ function js_marca(obj){
               <td nowrap class='table_header' align="center"><b> Valor Obra          </b> </td>
             </tr>
     
-            <?php 
+            <?
             if(isset($dados)){
     
               $ma = split("XX",$dados);

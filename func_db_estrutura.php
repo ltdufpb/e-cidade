@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_estrutura->rotulo->label("db77_descr");
               <?=$Ldb77_codestrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db77_codestrut",8,$Idb77_codestrut,true,"text",4,"","chave_db77_codestrut");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_estrutura->rotulo->label("db77_descr");
               <?=$Ldb77_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db77_descr",40,$Idb77_descr,true,"text",4,"","chave_db77_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_estrutura->rotulo->label("db77_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_estrutura.php")==true){
@@ -119,12 +119,12 @@ $cldb_estrutura->rotulo->label("db77_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

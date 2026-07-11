@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -119,7 +119,7 @@ background-color:#ccddcc;
  <table border="0" width="100%" cellspacing="0" cellpadding="0" nowrap >
   <tr>
     <td align="center" valign="top">
-<?php  
+<? 
 
 
 db_input('db62_coddoc', 8, '', true, 'hidden', 3);
@@ -127,7 +127,7 @@ db_input('atualizar', 8, '', true, 'hidden', 3);
 db_input('ordem', 8, '', true, 'hidden', 3);
 ?>     
       <table border='1' width="100%" nowrap>
-<?php  
+<? 
 
 
 if (isset ($db62_coddoc)) {
@@ -168,7 +168,7 @@ if (isset ($db62_coddoc)) {
 </form>
 </body>  
 </html>
-<?php 
+<?
 
 
 

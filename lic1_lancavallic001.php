@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -77,21 +77,21 @@ function js_abre(){
   <tr> 
     <td  align="left" nowrap title="<?=$Tl20_codigo?>">
     <b>
-    <?php db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
+    <?db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
     </b> 
     </td>
     
     <td align="left" nowrap>
-      <?php  db_input("l20_codigo",6,$Il20_codigo,true,"text",4,"onchange='js_pesquisa_liclicita(false);'");
+      <? db_input("l20_codigo",6,$Il20_codigo,true,"text",4,"onchange='js_pesquisa_liclicita(false);'");
           $lic='true'; 
 	     db_input('lic',6,0,true,'hidden',3);
          ?></td>
   </tr>
   <!--
   <tr> 
-    <td  align="left" nowrap title="<?=$Tpc20_codorc?>"> <?php  db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Tpc20_codorc?>"> <? db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?php 
+      <?
          db_input("pc20_codorc",8,@$Ipc20_codorc,true,"text",4,"onchange='js_pesquisa_pcorcam(false);'");
          $lic='true'; 
 	     db_input('lic',6,0,true,'hidden',3);
@@ -111,7 +111,7 @@ function js_abre(){
 </table>
 </form>
 </center>
-<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_pesquisa_liclicita(mostra){
   if(mostra==true){
@@ -146,7 +146,7 @@ function js_mostraliclicita1(chave1){
 //--------------------------------
 function js_pesquisa_pcorcam(mostra){
   qry = "";
-  <?php 
+  <?
   echo "qry='&lic=true';";
   ?>
   if(mostra==true){

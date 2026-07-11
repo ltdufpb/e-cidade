@@ -102,7 +102,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 </body>
 </html>
-<?php 
+<?
 if(isset($incluir)){
   if($clorcunidade->erro_status=="0"){
     $clorcunidade->erro(true,false);

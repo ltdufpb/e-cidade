@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,19 +83,19 @@ if (isset($excluir)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Exclusão de Participações em Convocações</b></legend>
-       <?php include(modification("forms/db_frmprogconvocacaores.php"));?>
+       <?include(modification("forms/db_frmprogconvocacaores.php"));?>
       </fieldset>
      </center>
     </td>
    </tr>
   </table>
-   <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
+   <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
              db_getsession("DB_anousu"),db_getsession("DB_instit")
             );
    ?>
  </body>
 </html>
-<?php 
+<?
 if (isset($excluir)) {
 	
   if ($oDaoProgConvocacaoRes->erro_status == "0") {

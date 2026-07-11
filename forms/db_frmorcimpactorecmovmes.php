@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -87,7 +87,7 @@ function js_verificar(){
   return true;
 }
 function js_calcula(){
-<?php   
+<?  
   echo "arr_ano = new Array(";
   $sep = '';
   for($i=$o96_anoini; $i<= $o96_anofim; $i++){
@@ -108,7 +108,7 @@ function js_calcula(){
    }
 }
 function js_divide(){
-<?php   
+<?  
   echo "arr_ano = new Array(";
   $sep = '';
   for($i=$o96_anoini; $i<= $o96_anofim; $i++){
@@ -161,7 +161,7 @@ function js_verif(ano,mes){
 <form name="form1" method="post" action="">
 <center>
 
-<?php 
+<?
 db_input('o69_proces',8,$Io69_proces,true,'hidden',3);
 ?>
 
@@ -172,7 +172,7 @@ db_input('o69_proces',8,$Io69_proces,true,'hidden',3);
     <td nowrap title="<?=@$To69_exercicio?>">
        <b>Exe</b>
     </td>
-<?php 
+<?
     $arr_mes = array("1"=>"JAN","2"=>"FEV","3"=>"MAR","4"=>"ABR","5"=>"MAI","6"=>"JUN","7"=>"JUL","8"=>"AGO","9"=>"SET","10"=>"OUT","11"=>"NOV","12"=>"DEZ");
     for($t=1; $t<count($arr_mes)+1; $t++){   
       echo "<td nowrap align='center'><b>";
@@ -190,7 +190,7 @@ db_input('o69_proces',8,$Io69_proces,true,'hidden',3);
        <b>Resto</b>
     </td>
   </tr>
-<?php 
+<?
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x = "o97_valor_$i";
@@ -221,9 +221,9 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 
   <tr>
     <td nowrap title="<?=@$To69_exercicio?>">
-      <?php db_input("o69_exercicio_$i",4,$Io69_exercicio,true,'text',3);?>
+      <?db_input("o69_exercicio_$i",4,$Io69_exercicio,true,'text',3);?>
     </td>
-<?php 
+<?
    
     $total = "total_$i";  
     $tot=0;
@@ -266,17 +266,17 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 ?>
 
     <td nowrap title="">
-        <?php db_input("$soma",8,0,true,'text',3);?>
+        <?db_input("$soma",8,0,true,'text',3);?>
     </td>
     <td nowrap title="">
-        <?php db_input("$total",8,0,true,'text',3);?>
+        <?db_input("$total",8,0,true,'text',3);?>
     </td>
     <td nowrap title="">
-        <?php db_input("$resto",8,0,true,'text',3);?>
+        <?db_input("$resto",8,0,true,'text',3);?>
     </td>
   </tr>
 
-<?php 
+<?
 }
 ?>
 
@@ -284,7 +284,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
  <input name="atualizar" type="submit" id="db_opcao" value="Atualizar" <?=($db_botao==false?"disabled":"")?> onclick="return js_verificar();"  >
   </center>
 </form>
-<?php 
+<?
  if(isset($numrows99) && $numrows99 == 0 ){
    echo "<script>document.form1.atualizar.click();</script>";
  }

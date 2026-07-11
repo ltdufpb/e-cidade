@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -184,7 +184,7 @@ function js_desab(cod){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-<?php 
+<?
 
   if(isset($codcam) && $codcam!="" ){
     

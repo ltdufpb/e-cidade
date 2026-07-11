@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clvac_tipovacina->rotulo->label();
        <?=@$Lvc04_i_codigo?>
     </td>
     <td> 
-     <?php db_input('vc04_i_codigo',10,$Ivc04_i_codigo,true,'text',3,"")?>
+     <?db_input('vc04_i_codigo',10,$Ivc04_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -45,7 +45,7 @@ $clvac_tipovacina->rotulo->label();
        <?=@$Lvc04_c_descr?>
     </td>
     <td> 
-     <?php db_input('vc04_c_descr',30,$Ivc04_c_descr,true,'text',$db_opcao,"")?>
+     <?db_input('vc04_c_descr',30,$Ivc04_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -73,7 +73,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_tipovacina.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

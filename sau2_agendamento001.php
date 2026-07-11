@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,17 +51,17 @@ $db_opcao = 1;
 <meta http-equiv="Expires" CONTENT="0">
 <script type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
-<?php 
+<?
       $sLib  = "scripts.js,prototype.js,datagrid.widget.js,strings.js,grid.style.css,";
       $sLib .= "estilos.css,/widgets/dbautocomplete.widget.js,webseller.js, DBFormularios.css";
       db_app::load($sLib);
 ?>
 </head>
 <body bgcolor=#CCCCCC onLoad="a=1" >
-  <?php 
+  <?
     include(modification("forms/db_frmrelatorioagenda001.php"));
   ?>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

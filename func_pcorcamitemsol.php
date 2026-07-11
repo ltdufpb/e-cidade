@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clpcorcamitemsol->rotulo->label("pc29_solicitem");
               <?=$Lpc29_orcamitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc29_orcamitem",10,$Ipc29_orcamitem,true,"text",4,"","chave_pc29_orcamitem");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clpcorcamitemsol->rotulo->label("pc29_solicitem");
               <?=$Lpc29_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc29_solicitem",10,$Ipc29_solicitem,true,"text",4,"","chave_pc29_solicitem");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clpcorcamitemsol->rotulo->label("pc29_solicitem");
               <?=$Lpc29_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc29_solicitem",10,$Ipc29_solicitem,true,"text",4,"","chave_pc29_solicitem");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clpcorcamitemsol->rotulo->label("pc29_solicitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamitemsol.php")==true){
@@ -130,12 +130,12 @@ $clpcorcamitemsol->rotulo->label("pc29_solicitem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

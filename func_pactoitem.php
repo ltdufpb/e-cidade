@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpactoitem->rotulo->label("o109_descricao");
               <?=$Lo109_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o109_sequencial",10,$Io109_sequencial,true,"text",4,"","chave_o109_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpactoitem->rotulo->label("o109_descricao");
               <?=$Lo109_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o109_descricao",50,$Io109_descricao,true,"text",4,"","chave_o109_descricao");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpactoitem->rotulo->label("o109_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pactoitem.php")==true){
@@ -123,12 +123,12 @@ $clpactoitem->rotulo->label("o109_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

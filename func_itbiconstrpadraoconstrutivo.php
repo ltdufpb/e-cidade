@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clitbiconstrpadraoconstrutivo->rotulo->label("it34_codigo");
               <?=$Lit34_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it34_codigo",5,$Iit34_codigo,true,"text",4,"","chave_it34_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clitbiconstrpadraoconstrutivo->rotulo->label("it34_codigo");
               <?=$Lit34_caract?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it34_caract",5,$Iit34_caract,true,"text",4,"","chave_it34_caract");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clitbiconstrpadraoconstrutivo->rotulo->label("it34_codigo");
               <?=$Lit34_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it34_codigo",5,$Iit34_codigo,true,"text",4,"","chave_it34_codigo");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clitbiconstrpadraoconstrutivo->rotulo->label("it34_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbiconstrpadraoconstrutivo.php")==true){
@@ -134,12 +134,12 @@ $clitbiconstrpadraoconstrutivo->rotulo->label("it34_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -226,12 +226,12 @@ $oRotulo->label( "db71_sigla" );
   </div>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

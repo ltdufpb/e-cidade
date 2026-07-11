@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -210,7 +210,7 @@ function js_verifica_valor_soma(objeto,objreduz){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <form name='form1' method='post' >
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
-  <?php 
+  <?
 
 
 if ($erro == false || isset ($atualiza)) {
@@ -265,7 +265,7 @@ if ($erro == false || isset ($atualiza)) {
 </form>
 </body>
 </html>
-<?php 
+<?
 
 
 if ($erro == true)

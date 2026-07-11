@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clagualeiturista->rotulo->label("x16_numcgm");
               <?=$Lx16_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x16_numcgm",10,$Ix16_numcgm,true,"text",4,"","chave_x16_numcgm");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clagualeiturista->rotulo->label("x16_numcgm");
               <?=$Lx16_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x16_numcgm",10,$Ix16_numcgm,true,"text",4,"","chave_x16_numcgm");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clagualeiturista->rotulo->label("x16_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_agualeiturista.php")==true){
@@ -123,12 +123,12 @@ $clagualeiturista->rotulo->label("x16_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

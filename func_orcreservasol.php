@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clorcreservasol->rotulo->label("o82_solicitem");
               <?=$Lo82_codres?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o82_codres",8,$Io82_codres,true,"text",4,"","chave_o82_codres");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clorcreservasol->rotulo->label("o82_solicitem");
               <?=$Lo82_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o82_solicitem",10,$Io82_solicitem,true,"text",4,"","chave_o82_solicitem");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clorcreservasol->rotulo->label("o82_solicitem");
               <?=$Lo82_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o82_solicitem",10,$Io82_solicitem,true,"text",4,"","chave_o82_solicitem");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clorcreservasol->rotulo->label("o82_solicitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcreservasol.php")==true){
@@ -130,12 +130,12 @@ $clorcreservasol->rotulo->label("o82_solicitem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

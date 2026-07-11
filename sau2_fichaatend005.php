@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -83,7 +83,7 @@ body {
 <body>
 <table width="100%"  border="0">
 
-<?php 
+<?
 $aChaveProntuarios = explode(",",$chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
 for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
@@ -208,25 +208,25 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
       <tr>
         <td width="100%" height="18" colspan="4"></td>
       </tr>
-      <?php  for( $x=0; $x<10; $x++){ ?>
+      <? for( $x=0; $x<10; $x++){ ?>
       <tr>
         <td width="10%" height="25" class="style37"> <?=@$objRetorno->prontprocedCon[$x]->sd29_d_data ?></td>
         <td width="90%" height="25" class="style37" colspan="3"> <?=@$objRetorno->prontprocedCon[$x]->nome_profissional ?></td>
       </tr>
-      <?php } ?>
+      <?} ?>
       <tr>
         <td width="100%" height="18" colspan="4"></td>
       </tr>
-      <?php  for( $x=0; $x<17; $x++){ ?>
+      <? for( $x=0; $x<17; $x++){ ?>
       <tr>
         <td width="10%" height="25" class="style37"><?=@$objRetorno->prontprocedExa[$x]->sd29_d_data ?></td>
         <td width="90%" height="25" class="style37" colspan="3" nowrap="nowrap"><?=@substr( $objRetorno->prontprocedExa[$x]->sd63_c_nome, 0, 40 ) ?></td>
       </tr>
-      <?php } ?>
+      <?} ?>
     </table>
   </td>
   </tr>
-<?php } ?>  
+<?} ?>  
 </table>
 
 <script language="JavaScript">

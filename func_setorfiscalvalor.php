@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clsetorfiscalvalor->rotulo->label("j82_setorfiscal");
               <?=$Lj82_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		           db_input("j82_codigo",10,$Ij82_codigo,true,"text",4,"","chave_j82_codigo");
 		          ?>
             </td>
@@ -67,7 +67,7 @@ $clsetorfiscalvalor->rotulo->label("j82_setorfiscal");
               <?=$Lj82_setorfiscal?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		            db_input("j82_setorfiscal",10,$Ij82_setorfiscal,true,"text",4,"","chave_j82_setorfiscal");
 		          ?>
             </td>
@@ -85,7 +85,7 @@ $clsetorfiscalvalor->rotulo->label("j82_setorfiscal");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -134,12 +134,12 @@ $clsetorfiscalvalor->rotulo->label("j82_setorfiscal");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

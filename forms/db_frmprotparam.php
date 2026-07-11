@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,7 +43,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_emiterecib?>
 		    </td>
 		    <td> 
-					<?php 
+					<?
 					$x = array('f'=>'Não','t'=>'Sim');
 					db_select('p90_emiterecib',$x,true,$db_opcao,"");
 					?>
@@ -54,7 +54,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_alteracgmprot?>
 		    </td>
 		    <td> 
-					<?php 
+					<?
 					$x = array('f'=>'Não','t'=>'Sim');
 					db_select('p90_alteracgmprot',$x,true,$db_opcao,"");
 					?>
@@ -65,7 +65,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_valcpfcnpj?>
 		    </td>
 		    <td> 
-					<?php 
+					<?
 					$x = array('f'=>'Não','t'=>'Sim');
 					db_select('p90_valcpfcnpj',$x,true,$db_opcao,"");
 					?>
@@ -76,7 +76,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_impusuproc?>
 		    </td>
 		    <td> 
-					<?php 
+					<?
 					$x = array('f'=>'Não','t'=>'Sim');
 					db_select('p90_impusuproc',$x,true,$db_opcao,"");
 					?>
@@ -87,7 +87,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_debiaber?>
 		    </td>
 		    <td> 
-					<?php 
+					<?
 					$x = array('f'=>'Não','t'=>'Sim');
 					db_select('p90_debiaber',$x,true,$db_opcao,"");
 					?>
@@ -95,15 +95,15 @@ $clrotulo->label("p90_db_documentotemplate");
 		  </tr>
 		  <tr>
 		    <td nowrap  align="right" title="<?=@$Tp90_taxagrupo?>">
-		       <?php 
+		       <?
 		       db_ancora(@$Lp90_taxagrupo,"js_pesquisap90_taxagrupo(true);",$db_opcao);
 		       ?>
 		    </td>
 		    <td> 
-					<?php 
+					<?
 					db_input('p90_taxagrupo',6,$Ip90_taxagrupo,true,'text',$db_opcao," onchange='js_pesquisap90_taxagrupo(false);'")
 					?>
-		      <?php 
+		      <?
 		      db_input('k06_descr',50,$Ik06_descr,true,'text',3,'')
 		      ?>
 		    </td>
@@ -113,7 +113,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_histpadcert?>
 		    </td>
 		    <td> 
-				<?php 
+				<?
 				db_textarea('p90_histpadcert',0,56,$Ip90_histpadcert,true,'text',$db_opcao,"")
 				?>
 		    </td>
@@ -123,7 +123,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_despachoob?>
 		    </td>
 		    <td> 
-				<?php 
+				<?
 				$x = array('t'=>'Sim','f'=>'Não');
 				db_select('p90_despachoob',$x,true,$db_opcao);
 				?>
@@ -134,7 +134,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    <?=@$Lp90_minchardesp?>
 		    </td>
 		    <td> 
-				<?php 
+				<?
 				db_input('p90_minchardesp',6,@$Ip90_minchardesp,true,'text',$db_opcao,"")
 				?>
 		    </td>
@@ -144,7 +144,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_andatual?>
 		    </td>
 		    <td> 
-				<?php 
+				<?
 				$x = array('f'=>'Não','t'=>'Sim');
 				db_select('p90_andatual',$x,true,$db_opcao,"");
 				?>
@@ -155,7 +155,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		      <b>Tramite/transferencia: </b>
 		    </td>
 		    <td> 
-		     <?php 
+		     <?
 		     $tra = array('1'=>'Permitir escolher departamentos diferentes',
 		                  '2'=>'Não permitir escolher departamentos diferentes',
 		                  '3'=>'Permitir escolher departamentos diferentes, mas avisar o usuário');
@@ -168,7 +168,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_modelcapaproc?>
 		    </td>
 		    <td> 
-				<?php 
+				<?
 				$x = array(
 					'0' =>'Modelo Padrão',
 					'1'=>'Modelo 1',
@@ -183,12 +183,12 @@ $clrotulo->label("p90_db_documentotemplate");
 		<tr id='documentoTemplate' style="display: <?=$templateOculta?>; text-align: right">
 
 			<td nowrap="nowrap" title="<?=@$Tp90_db_documentotemplate?>">
-				<?php 
+				<?
 				db_ancora(@$Lp90_db_documentotemplate,"js_pesquisaDocumento(true);",$db_opcao);
 				?>
 			</td>
 			<td nowrap="nowrap"> 
-				<?php 
+				<?
 				db_input('p90_db_documentotemplate',10,$Ip90_db_documentotemplate,true,'text',$db_opcao,"onchange='js_pesquisaDocumento(false);'");
 				db_input('db82_descricao',50,$Idb82_descricao,true,'text',3,'');
 				?>
@@ -199,7 +199,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		       <?=@$Lp90_imprimevar?>
 		    </td>
 		    <td> 
-				<?php 
+				<?
 				$x = array('f'=>'Não','t'=>'Sim');
 				db_select('p90_imprimevar',$x,true,$db_opcao,"");
 				?>
@@ -210,7 +210,7 @@ $clrotulo->label("p90_db_documentotemplate");
       <?=@$Lp90_impdepto?>
     </td>
     <td> 
-    <?php 
+    <?
     $x = array("f"=>"Não","t"=>"Sim");
     db_select('p90_impdepto',$x,true,$db_opcao,"");
     ?>
@@ -297,7 +297,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_protparam.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clempempaut->rotulo->label("e61_autori");
               <?=$Le61_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e61_numemp",8,$Ie61_numemp,true,"text",4,"","chave_e61_numemp");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clempempaut->rotulo->label("e61_autori");
               <?=$Le61_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e61_autori",6,$Ie61_autori,true,"text",4,"","chave_e61_autori");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clempempaut->rotulo->label("e61_autori");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empempaut.php")==true){
@@ -119,12 +119,12 @@ $clempempaut->rotulo->label("e61_autori");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

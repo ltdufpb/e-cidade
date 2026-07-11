@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -126,7 +126,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Informação Nutricional</b></legend>
-    <?php 
+    <?
     include(modification("forms/db_frmmer_infnutricional.php"));
     ?>
    </fieldset>
@@ -139,7 +139,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1", "me08_i_codmater", true, 1, "me08_i_codmater", true);
 </script>
-<?php 
+<?
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 	
  if ($clmer_infnutricional->erro_status == "0") {

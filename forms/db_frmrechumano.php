@@ -669,7 +669,7 @@ if( isset( $chavepesquisa ) ) {
   </fieldset>
 
   </div>
-<?php }?>
+<?}?>
 <input type="hidden" name="ed75_i_codigo" id="ed75_i_codigo" value=""/>
 <input name="<?=( $db_opcao == 1 ? "incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir" ) )?>"
        type="submit"
@@ -856,7 +856,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave, iRechumanoEscola) {
 
   db_iframe_rechumano.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&ed75_i_codigo='+iRechumanoEscola";
   }

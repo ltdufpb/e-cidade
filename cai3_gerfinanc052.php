@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -51,7 +51,7 @@ $oGet  = db_utils::postMemory($_GET);
 </head>
 <body bgcolor=#CCCCCC bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'">
 <center>
-<?php 
+<?
 
 
   /**
@@ -411,7 +411,7 @@ $oGet  = db_utils::postMemory($_GET);
         <th nowrap>Data                </th>
         <th nowrap>Observação          </th>
       </tr>
-    <?php 
+    <?
 
     $sCor1   = "#EFE029";
     $sCor2   = "#E4F471";
@@ -447,7 +447,7 @@ $oGet  = db_utils::postMemory($_GET);
         <td align="center" nowrap ><?=db_formatar($oCredito->k125_datalanc, 'd') ?>&nbsp;</td>
         <td align="left" nowrap ><?= (isset($oCredito->k157_observacao) ? $oCredito->k157_observacao  : '') ?>&nbsp;</td>
       </tr>
-    <?php 
+    <?
     }
 
   ?>

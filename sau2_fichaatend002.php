@@ -41,7 +41,7 @@ db_postmemory($HTTP_POST_VARS);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?php 
+    <?
       $sLib  = "scripts.js,prototype.js,datagrid.widget.js,strings.js,grid.style.css,";
       $sLib .= "estilos.css,webseller.js,classes/DBVisualizadorImpressaoTexto.js";
       db_app::load($sLib);
@@ -53,7 +53,7 @@ db_postmemory($HTTP_POST_VARS);
     <center>
       <big>Pré-visualização da Impressão</big>
     </center>
-    <?php db_input('sSessionNome',500,null,true,'hidden',1,'');?>
+    <?db_input('sSessionNome',500,null,true,'hidden',1,'');?>
   </body>
 </html>
 <script>

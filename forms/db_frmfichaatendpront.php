@@ -100,11 +100,11 @@ $clrotulo->label("sd04_i_cbo");
        <?=@$Lsd24_v_pressao?>
     </td>
     <td>
-      <?php db_input('sd24_v_pressao',10,$Isd24_v_pressao,true,'text',$db_opcao)?>
+      <?db_input('sd24_v_pressao',10,$Isd24_v_pressao,true,'text',$db_opcao)?>
     </td>
     <td align="right" >
        <?=@$Lsd24_f_peso?>
-      <?php db_input('sd24_f_peso',10,$Isd24_f_peso,true,'text',$db_opcao)?>
+      <?db_input('sd24_f_peso',10,$Isd24_f_peso,true,'text',$db_opcao)?>
     </td>
   </tr>
   
@@ -113,24 +113,24 @@ $clrotulo->label("sd04_i_cbo");
        <?=@$Lsd24_f_temperatura?>
     </td>
     <td colspan="4">
-      <?php db_input('sd24_f_temperatura',10,$Isd24_f_temperatura,true,'text',$db_opcao)?>
+      <?db_input('sd24_f_temperatura',10,$Isd24_f_temperatura,true,'text',$db_opcao)?>
     </td>
   </tr>
   <!-- PROFISSIONAL 
   <tr>
     <td nowrap title="<?=@$Tsd24_i_profissional?>">
-       <?php 
+       <?
        db_ancora(@$Lsd24_i_profissional,"js_pesquisamedicos(true);",$db_opcao);
        ?>
     </td>
     <td>
-      <?php 
+      <?
         db_input('sd24_i_profissional',10,$Isd24_i_profissional,true,'text',$db_opcao,"onchange='js_pesquisamedicos(false);'");
         db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',$db_opcao,"onchange='js_pesquisamedicos(false);'")
       ?>
     </td>
     <td>
-      <?php 
+      <?
         db_input('z01_nome',60,@$Iz01_nome,true,'text',3,'')
       ?>
     </td>

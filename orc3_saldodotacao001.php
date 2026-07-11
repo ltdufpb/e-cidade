@@ -150,7 +150,7 @@ db_postmemory($HTTP_POST_VARS);
                 <?= $Lo58_coddot ?>
             </td>
             <td align="left" nowrap>
-                <?php 
+                <?
                 db_input("o58_coddot", 6, $Io58_coddot, true, "text", 4);
                 ?>
             </td>
@@ -163,7 +163,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr>
             <td><?= $Lo40_orgao ?></td>
             <td>
-                <?php 
+                <?
                 $result = $clorcorgao->sql_record($clorcorgao->sql_query(null, null, "o40_orgao,o40_descr", "o40_orgao", "o40_anousu=" . db_getsession("DB_anousu") . " and o40_instit=" . db_getsession("DB_instit")));
                 db_selectrecord("o40_orgao", $result, true, 2, "", "", "", "0", $onchange = " js_troca('o40_orgao');");
                 ?>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clzonastaxa->rotulo->label("j57_valor");
               <?=$Lj57_zona?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j57_zona",10,$Ij57_zona,true,"text",4,"","chave_j57_zona");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clzonastaxa->rotulo->label("j57_valor");
               <?=$Lj57_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j57_receit",4,$Ij57_receit,true,"text",4,"","chave_j57_receit");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clzonastaxa->rotulo->label("j57_valor");
               <?=$Lj57_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j57_valor",15,$Ij57_valor,true,"text",4,"","chave_j57_valor");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clzonastaxa->rotulo->label("j57_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_zonastaxa.php")==true){
@@ -131,12 +131,12 @@ $clzonastaxa->rotulo->label("j57_valor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

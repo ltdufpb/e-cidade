@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@
       </tr>
       <tr> 
         <td align="center"> 
-          <?php 
+          <?
   if (isset($nome_imobiliaria)){
     $nome_imobiliaria = strtoupper($nome_imobiliaria);
     $sql = "

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -77,7 +77,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
     </td>
    </tr>
   </table>
-  <?php 
+  <?
   exit;
 
  }
@@ -99,7 +99,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
     </td>
    </tr>
   </table>
-  <?php 
+  <?
   exit;
 
  }
@@ -125,7 +125,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
     </td>
    </tr>
   </table>
-  <?php 
+  <?
   exit;
 
  }
@@ -153,7 +153,7 @@ $iDiaLimite = DBDate::getQuantidadeDiasMes($iMes, $oDadosCalendario->ano_calenda
     </td>
    </tr>
   </table>
-  <?php 
+  <?
   exit;
 
  }
@@ -226,7 +226,7 @@ if ($iLinhasMatriculado == 0) {
     </td>
    </tr>
   </table>
- <?php 
+ <?
  exit;
 
 }

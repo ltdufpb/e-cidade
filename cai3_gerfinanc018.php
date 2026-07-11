@@ -142,7 +142,7 @@ MM_reloadPage(true);
 <table border="1" cellpadding="0" cellspacing="0">
 
 <tr bgcolor="#FFCC66">
-<?php 
+<?
   if ( $opcao == 'matricula' ){
    //busca informações do loteloc se o campo j18_utilizaloc da tabela cfiptu estiver habilita
     include(modification("classes/db_loteloc_classe.php"));
@@ -177,14 +177,14 @@ MM_reloadPage(true);
      <th class="borda" style="font-size:12px" nowrap>Quadra</th>
      <th class="borda" style="font-size:12px" nowrap>Lote</th>
      <th class="borda" style="font-size:12px" nowrap>Área M2</th>
-     <?php if($j18_utilizaloc != 'f'){?>
+     <?if($j18_utilizaloc != 'f'){?>
       <th class="borda" style="font-size:12px" nowrap>Setorloc</th>
       <th class="borda" style="font-size:12px" nowrap>Quadraloc</th>
       <th class="borda" style="font-size:12px" nowrap>Loteloc</th>
-     <?php }?>
+     <?}?>
      <th class="borda" style="font-size:12px" nowrap></th>
    </tr>
-<?php 
+<?
   }elseif ( $opcao == 'inscricao' ) {
 ?>
      <th class="borda" style="font-size:12px" nowrap>Inscrição</th>
@@ -195,7 +195,7 @@ MM_reloadPage(true);
      <th class="borda" style="font-size:12px" nowrap> Situação da Empresa</th>
      <th class="borda" style="font-size:12px" nowrap></th>
    </tr>
-<?php 
+<?
   }elseif ( $opcao == 'socios' || $opcao == 'proprietario' ||$opcao == 'promitente') {
 ?>
      <th class="borda" style="font-size:12px" nowrap>Numcgm</th>
@@ -205,7 +205,7 @@ MM_reloadPage(true);
      <th class="borda" style="font-size:12px" nowrap>Município</th>
      <th class="borda" style="font-size:12px" nowrap></th>
    </tr>
-<?php 
+<?
   }
 
 $cor="#EFE029";
@@ -221,7 +221,7 @@ $cor="#EFE029";
 	     $cor = "#ff0000";
 	   }
 ?>
-<?php  
+<? 
   if (!$bloqueiaLinkCTM) {
     $strLinkMatric = "'js_mostrabic_matricula($j01_matric);return false;'";
   } else {
@@ -242,7 +242,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$j34_quadra?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$j34_lote?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$j34_area?></td>
-	    <?php 
+	    <?
 	     if($j18_utilizaloc != 'f'){
 	      $resultloc = $clloteloc->sql_record($clloteloc->sql_query($j01_idbql,"j06_setorloc,j06_quadraloc,j06_lote"));
 	      if($clloteloc->numrows > 0){
@@ -252,13 +252,13 @@ $cor="#EFE029";
              <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=@$j06_setorloc?></td>
              <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=@$j06_quadraloc?></td>
              <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=@$j06_lote?></td>
-           <?php }?>
+           <?}?>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><a href=''>&nbsp;mais detalhes</a></td>
 
 	   <?php $cor == '#ff0000'?$cor="#EFE029":""; ?>
  
            </tr>
-<?php 
+<?
         }elseif ( $opcao == 'inscricao' ) { 
 ?>
            <tr title="Clique aqui para verificar os dados" style="cursor: hand"  onclick='js_mostrabic_inscricao(<?=$q02_inscr?>);return false;'>
@@ -268,7 +268,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$q02_dtinic?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$q02_dtbaix.'   '?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-           <?php 
+           <?
            if ($q02_dtbaix == null) {
               $sqlparalisada = "select 
                                   q140_issbase 
@@ -291,7 +291,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><a href=''>&nbsp;mais detalhes</a></td>
            </tr>
 	   
-<?php 
+<?
   }elseif ( $opcao == 'socios' || $opcao == 'proprietario' ||$opcao == 'promitente' ) {
 ?>
            <tr title="Clique aqui para verificar os dados" style="cursor: hand"  onclick='js_mostracgm(<?=$z01_numcgm?>);return false;'>
@@ -302,7 +302,7 @@ $cor="#EFE029";
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$z01_munic?></td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><a href=''>&nbsp;mais detalhes</a></td>
            </tr>
-<?php   
+<?  
         }
    }
 ?>
@@ -312,7 +312,7 @@ $cor="#EFE029";
    <td colspan="6" >&nbsp;&nbsp;</td>
 </tr>
 
-<?php 
+<?
 
 if($opcao == 'matricula') {
 ?>	
@@ -321,7 +321,7 @@ if($opcao == 'matricula') {
 Regra para Emissao:
 </td>
 <td colspan="4">
-<?php 
+<?
 
 $sql_regracgm = "
 	select db_syscampodef.defcampo, db_syscampodef.defdescr
@@ -344,7 +344,7 @@ db_selectrecord("regracgm", $result_regracgm, true, @$db_opcao, " ", "", "", "",
 ?>
 </td>
 </tr>
-<?php 
+<?
 }
 ?>
 

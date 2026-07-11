@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -88,7 +88,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
       <br><br>
       <center>
-      <?php 
+      <?
       if($sair==true){      	 
 	    echo "<strong> Solicitação não encontrada.</strong>";
       }else if($sair==false){
@@ -194,7 +194,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
   </tr>
 </table>
 </body>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

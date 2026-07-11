@@ -756,14 +756,14 @@ function validaAlterarEstagiarioS2306($seqpes = null,
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?php 
+	<?
 	include modification("forms/db_frmadmissao.php");
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?php 
+<?
 
 /** Código para extensão */
 

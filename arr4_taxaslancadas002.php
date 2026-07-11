@@ -75,7 +75,7 @@ $clIframeSeleciona->iframe_nome   ="ifr_departamentos";
                 <input name="salvar" id="salvar" type="button" onclick="js_salvarDepartamentos();" value="Salvar">
             </form>
         </div>
-        <?php  db_menu(); ?>
+        <? db_menu(); ?>
     </body>
 </html>
 <script>

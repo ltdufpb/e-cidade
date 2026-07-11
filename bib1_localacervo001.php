@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -143,18 +143,18 @@ if(isset($incluir)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
-   <?php if($clexemplar->numrows==0){
+   <?if($clexemplar->numrows==0){
     $sql = "DELETE FROM localacervo WHERE bi20_acervo = $bi20_acervo";
     $result = db_query($sql);
     ?>
     <fieldset style='width:95%'><legend><b>Cadastro de Localização de Acervo</b></legend>
      Nenhum exemplar cadastrado para este acervo.
     </fieldset>
-   <?php }else{?>
+   <?}else{?>
     <fieldset style="width:95%"><legend><b>Cadastro de Localização de Acervo</b></legend>
-     <?php include(modification("forms/db_frmlocalacervo.php"));?>
+     <?include(modification("forms/db_frmlocalacervo.php"));?>
     </fieldset>
-   <?php }?>
+   <?}?>
    </center>
   </td>
  </tr>
@@ -164,7 +164,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","bi20_sequencia",true,1,"bi20_sequencia",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
  if($cllocalacervo->erro_status=="0"){
   $cllocalacervo->erro(true,false);

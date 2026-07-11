@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -202,7 +202,7 @@ function js_dados(){
 </script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php //$cor="#999999"?>
+<?//$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: #999999;
@@ -217,7 +217,7 @@ function js_dados(){
          background-color: #999999;
 */	 
 }
-<?php //$cor="999999"?>
+<?//$cor="999999"?>
 .bordas_corp{
 /*       border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -252,7 +252,7 @@ function js_dados(){
     <tr>
     <td align="center">
         <b>Alterar Todas Faces Para o Setor Fiscal:</b>        
-    	<?php 
+    	<?
     	$sql1="select 0 as j90_codigo, 'Selecione Setor Fiscal' as j90_descr
                   union all
                   select j90_codigo,j90_descr from setorfiscal
@@ -264,7 +264,7 @@ function js_dados(){
         
     	?>
     	<b>e Zona:</b>
-    	<?php 
+    	<?
     	$sql2="select 0 as j50_zona, 'Nenhum...' as j50_descr
                   union all
                   select j50_zona,j50_descr from zonas
@@ -282,7 +282,7 @@ function js_dados(){
     <td>
     <table>
     
-    <?php  
+    <? 
         db_input("chaves",10,"",true,"hidden",3);
         db_input("dados",10,"",true,"hidden",3);
         $faces = str_replace("#",",",$chaves);
@@ -357,7 +357,7 @@ function js_dados(){
   </tr>  
 </table>
 </form>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

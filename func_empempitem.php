@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clempempitem->rotulo->label("e62_item");
               <?=$Le62_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e62_numemp",8,$Ie62_numemp,true,"text",4,"","chave_e62_numemp");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clempempitem->rotulo->label("e62_item");
               <?=$Le62_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e62_sequen",6,$Ie62_sequen,true,"text",4,"","chave_e62_sequen");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clempempitem->rotulo->label("e62_item");
               <?=$Le62_item?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e62_item",6,$Ie62_item,true,"text",4,"","chave_e62_item");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clempempitem->rotulo->label("e62_item");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empempitem.php")==true){
@@ -130,12 +130,12 @@ $clempempitem->rotulo->label("e62_item");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

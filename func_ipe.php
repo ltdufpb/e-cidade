@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clipe->rotulo->label("r36_numcgm");
               <?=$Lr36_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r36_mesusu",2,$Ir36_mesusu,true,"text",4,"","chave_r36_mesusu");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clipe->rotulo->label("r36_numcgm");
               <?=$Lr36_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r36_regist",6,$Ir36_regist,true,"text",4,"","chave_r36_regist");
 		       ?>
             </td>
@@ -77,7 +77,7 @@ $clipe->rotulo->label("r36_numcgm");
               <?=$Lr36_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("r36_numcgm",10,$Ir36_numcgm,true,"text",4,"","chave_r36_numcgm");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clipe->rotulo->label("r36_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ipe.php")==true){
@@ -131,12 +131,12 @@ $clipe->rotulo->label("r36_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

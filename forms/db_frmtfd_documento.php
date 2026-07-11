@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $cltfd_documento->rotulo->label();
        <?=@$Ltf07_i_codigo?>
     </td>
     <td> 
-     <?php db_input('tf07_i_codigo',10,$Itf07_i_codigo,true,'text',3,"")?>
+     <?db_input('tf07_i_codigo',10,$Itf07_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -44,7 +44,7 @@ $cltfd_documento->rotulo->label();
        <?=@$Ltf07_c_descr?>
     </td>
     <td> 
-      <?php db_input('tf07_c_descr',50,$Itf07_c_descr,true,'text',$db_opcao,"")?>
+      <?db_input('tf07_c_descr',50,$Itf07_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -52,7 +52,7 @@ $cltfd_documento->rotulo->label();
        <?=@$Ltf07_d_validade?>
     </td>
     <td> 
-      <?php db_inputdata('tf07_d_validade',@$tf07_d_validade_dia,@$tf07_d_validade_mes,@$tf07_d_validade_ano,true,'text',$db_opcao,"")?>
+      <?db_inputdata('tf07_d_validade',@$tf07_d_validade_dia,@$tf07_d_validade_mes,@$tf07_d_validade_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -66,7 +66,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tfd_documento.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

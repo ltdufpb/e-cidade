@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cldb_docparag->rotulo->label("db04_ordem");
               <?=$Ldb04_docum?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db04_docum",8,$Idb04_docum,true,"text",4,"","chave_db04_docum");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cldb_docparag->rotulo->label("db04_ordem");
               <?=$Ldb04_idparag?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db04_idparag",8,$Idb04_idparag,true,"text",4,"","chave_db04_idparag");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cldb_docparag->rotulo->label("db04_ordem");
               <?=$Ldb04_ordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("db04_ordem",4,$Idb04_ordem,true,"text",4,"","chave_db04_ordem");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $cldb_docparag->rotulo->label("db04_ordem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(isset($db04_docum) && $db04_docum != ""){
         $where = " db04_docum =  $db04_docum";
       }else{
@@ -135,14 +135,14 @@ $cldb_docparag->rotulo->label("db04_ordem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_db04_docum.focus();
 document.form2.chave_db04_docum.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

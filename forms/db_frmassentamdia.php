@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -174,7 +174,7 @@ if(!isset($opcao_dtterm)){
             <table width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td> 
-                  <?php 
+                  <?
                   db_input('valor_ano',4,1,true,'text',1,"");
                   ?>
                 </td>
@@ -182,7 +182,7 @@ if(!isset($opcao_dtterm)){
                   <b>Meses:</b>
                 </td>
                 <td> 
-                  <?php 
+                  <?
                   db_input('valor_mes',4,1,true,'text',1,"");
                   ?>
                 </td>
@@ -190,7 +190,7 @@ if(!isset($opcao_dtterm)){
                   <b>Dias:</b>
                 </td>
                 <td> 
-                  <?php 
+                  <?
                   db_input('valor_dia',4,1,true,'text',1,"");
                   ?>
                 </td>
@@ -248,7 +248,7 @@ if(!isset($opcao_dtterm)){
           <?=@$Lh16_login?>
         </td>
         <td> 
-          <?php 
+          <?
           ?>
         </td>
       </tr>
@@ -257,7 +257,7 @@ if(!isset($opcao_dtterm)){
           <?=@$Lh16_conver?>
         </td>
         <td> 
-          <?php 
+          <?
           $x = array("f"=>"NAO","t"=>"SIM");
           db_select('h16_conver',$x,true,$db_opcao,"");
           ?>
@@ -556,12 +556,12 @@ if(!isset($opcao_dtterm)){
   }
 
   function js_preenchepesquisa(chave){
-    <?php if($meiodia == true){?>
+    <?if($meiodia == true){?>
     db_iframe_assmeio.hide();
-    <?php }else{?>
+    <?}else{?>
     db_iframe_assenta.hide();
-    <?php }?>
-    <?php 
+    <?}?>
+    <?
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

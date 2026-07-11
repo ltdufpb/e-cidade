@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
               <?=$Lk101_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k101_sequencial",10,$Ik101_sequencial,true,"text",4,"","chave_k101_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
               <?=$Lk101_db_documento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k101_db_documento",10,$Ik101_db_documento,true,"text",4,"","chave_k101_db_documento");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
           $campos = "k101_sequencial,k101_db_documento,db03_descr,k101_tipo,k00_descr";
@@ -116,12 +116,12 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -107,12 +107,12 @@ if ( $oDaoConhistdoc->numrows > 0 ) {
 
          <tr>
           <td colspan="1" nowrap title="<?=@$Tk17_codigo?>" align='left'>
-            <?php  db_ancora(@$Lk17_codigo,"js_pesquisak17_codigo(true);",$db_opcao);  ?>
+            <? db_ancora(@$Lk17_codigo,"js_pesquisak17_codigo(true);",$db_opcao);  ?>
           </td>
           <td style="margin:0 12px;">
-            <?php  db_input('k17_codigo',10,$Ik17_codigo,true,'text',$db_opcao,"onkeyup='js_ValidaCampos(this,1,\"Código Slip\",\"f\",\"f\",event)'; onchange='js_pesquisak17_codigo(false);'")  ?>
-            <?php  db_ancora("<strong>Até:</strong>","js_pesquisak17_codigo02(true);",$db_opcao," margin-left:43px;");  ?>
-            <?php  db_input('k17_codigo',10,$Ik17_codigo,true,'text',$db_opcao," onkeyup='js_ValidaCampos(this,1,\"Código Slip\",\"f\",\"f\",event)'; onchange='js_pesquisak17_codigo02(false);'","k17_codigo02",null," margin-left:5px;")?>
+            <? db_input('k17_codigo',10,$Ik17_codigo,true,'text',$db_opcao,"onkeyup='js_ValidaCampos(this,1,\"Código Slip\",\"f\",\"f\",event)'; onchange='js_pesquisak17_codigo(false);'")  ?>
+            <? db_ancora("<strong>Até:</strong>","js_pesquisak17_codigo02(true);",$db_opcao," margin-left:43px;");  ?>
+            <? db_input('k17_codigo',10,$Ik17_codigo,true,'text',$db_opcao," onkeyup='js_ValidaCampos(this,1,\"Código Slip\",\"f\",\"f\",event)'; onchange='js_pesquisak17_codigo02(false);'","k17_codigo02",null," margin-left:5px;")?>
           </td>
         </tr>
 

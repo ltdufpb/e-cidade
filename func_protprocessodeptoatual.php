@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clprotprocesso->rotulo->label("p58_numero");
               <?=$Lp58_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p58_codproc",10,$Ip58_codproc,true,"text",4,"","chave_p58_codproc");
 		       ?>
             </td>
@@ -67,7 +67,7 @@ $clprotprocesso->rotulo->label("p58_numero");
               <?=$Lp58_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
            db_input("p58_numero",10,$Ip58_numero,true,"text",4,"","chave_p58_numero");
            ?>
             </td>
@@ -77,7 +77,7 @@ $clprotprocesso->rotulo->label("p58_numero");
               <?=$Lp58_requer?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("p58_requer",50,$Ip58_requer,true,"text",4,"","chave_p58_requer");
 		       ?>
             </td>
@@ -95,7 +95,7 @@ $clprotprocesso->rotulo->label("p58_numero");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 
       $depart_atual = db_getsession("DB_coddepto");
       $where        = "p58_coddepto = {$depart_atual}";
@@ -167,14 +167,14 @@ $clprotprocesso->rotulo->label("p58_numero");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p58_codproc.focus();
 document.form2.chave_p58_codproc.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

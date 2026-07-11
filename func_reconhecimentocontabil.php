@@ -62,7 +62,7 @@ $oGet = db_utils::postMemory($_GET);
               <?=$Lc112_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("c112_sequencial",10,$Ic112_sequencial,true,"text",4,"","chave_c112_sequencial");
 		       ?>
             </td>

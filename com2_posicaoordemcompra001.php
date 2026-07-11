@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -102,30 +102,30 @@ db_postmemory($HTTP_POST_VARS);
       <tr> 
         <td  align="left" nowrap title="<?=$Tm51_codordem?>">
           <strong>
-            <?php db_ancora("Ordem de Compra:","js_pesquisa_matordem(true);",1);?>
+            <?db_ancora("Ordem de Compra:","js_pesquisa_matordem(true);",1);?>
           </strong>
         </td>
         <td align="left" nowrap>
-           <?php db_input("m51_codordem",10,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");?>
+           <?db_input("m51_codordem",10,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");?>
         </td>
       </tr>      
       
       <tr> 
         <td align="left" nowrap title="<?=$Te60_numemp?>"> 
-          <?php  db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1); ?>  
+          <? db_ancora(@$Le60_numemp,"js_pesquisa_empenho(true);",1); ?>  
         </td>
         <td align="left" nowrap>
-          <?php  db_input("e60_numemp",10,$Ie60_numemp,true,"text",4); ?>
+          <? db_input("e60_numemp",10,$Ie60_numemp,true,"text",4); ?>
         </td>
       </tr>
  
  
       <tr> 
         <td align="left" nowrap title="<?=$Te60_emiss?>">
-          <?php db_ancora(@$Le60_emiss,"",3);?>
+          <?db_ancora(@$Le60_emiss,"",3);?>
         </td>
         <td align="left" nowrap>
-          <?php  
+          <? 
              db_inputdata('e60_emiss1',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");   		          
              echo " <strong>à</strong> ";
              db_inputdata('e60_emiss2',@$e60_emiss_dia,@$e60_emiss_mes,@$e60_emiss_ano,true,'text',1,"");
@@ -136,12 +136,12 @@ db_postmemory($HTTP_POST_VARS);
    
      <tr>
        <td nowrap title="<?=@$Tpc60_numcgm?>" align="left">
-         <?php 
+         <?
            db_ancora(@$Lpc60_numcgm,"js_pesquisa(true);",1);
          ?>
        </td>
        <td>
-         <?php 
+         <?
            db_input('pc60_numcgm',10,$Ipc60_numcgm,true,'text',1," onchange='js_pesquisa(false);'");
           // echo "&nbsp;";
            db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'');
@@ -151,12 +151,12 @@ db_postmemory($HTTP_POST_VARS);
      
     <tr>
       <td nowrap title="Departamento de Origem" >
-         <?php 
+         <?
          db_ancora("<strong>Departamento de Origem:</strong>","js_pesquisap62_coddeptorec(true);",1);
          ?>
       </td>
       <td nowrap> 
-        <?php 
+        <?
           db_input('p62_coddeptorec',10,1,true,'text',1," onchange='js_pesquisap62_coddeptorec(false);'");
           db_input('descrdepto',40,null,true,'text',3);
          ?>
@@ -166,12 +166,12 @@ db_postmemory($HTTP_POST_VARS);
     
     <tr>
       <td nowrap title="Departamento de Destino" >
-         <?php 
+         <?
          db_ancora("<strong>Departamento de Destino:</strong>","js_pesquisap62_coddeptorecDestino(true);",1);
          ?>
       </td>
       <td nowrap> 
-        <?php 
+        <?
           db_input('p62_coddeptorecDestino',10,1,true,'text',1," onchange='js_pesquisap62_coddeptorecDestino(false);'");
           db_input('descrdeptoDestino',40,null,true,'text',3);
          ?>
@@ -190,7 +190,7 @@ db_postmemory($HTTP_POST_VARS);
 </form>
 </div>
 </center>
-<?php  
+<? 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clmatricula = new cl_matricula;
 </head>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?php 
+ <?
  # Seleciona todos os calendários
  $sql = "SELECT ed52_i_codigo,ed52_c_descr
          FROM calendario
@@ -125,14 +125,14 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
   selectCtrl.options[0].selected = true;
   document.form1.subgrupo.disabled = false;
  }
- <?php if(isset($curso)){?>
+ <?if(isset($curso)){?>
   qtd = document.form1.serie.length;
   for (i = 0; i < qtd; i++) {
    document.form1.serie.options[0] = null;
   }
   document.form1.serie.disabled = true;
   iframe_grafico.location.href = "edu2_gfcofreqcompara002.php?calendario=0&serie=0";
- <?php }?>
+ <?}?>
 }
 function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem){
  var i, j;
@@ -156,18 +156,18 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    if (itemArray[i][1] != null){
     selectCtrl.options[j].value = itemArray[i][1];
    }
-   <?php if(isset($curso)){?>
+   <?if(isset($curso)){?>
     if(<?=trim($curso)?>==itemArray[i][1]){
      indice = i;
     }
-   <?php }?>
+   <?}?>
    j++;
   }
-  <?php if(isset($curso)){?>
+  <?if(isset($curso)){?>
    selectCtrl.options[indice].selected = true;
-  <?php }else{?>
+  <?}else{?>
    selectCtrl.options[0].selected = true;
-  <?php }?>
+  <?}?>
   document.form1.subgrupo.disabled = false;
  }
 }
@@ -181,7 +181,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Gráfico de Frequência - Comparação entre Turmas</b></legend>
 <table border="0" align="left">
@@ -193,7 +193,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       <b>Calendário:</b><br>
       <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:150px;height:18px;">
        <option></option>
-       <?php 
+       <?
        #Seleciona todos os grupos para setar os valores no combo
        $sql = "SELECT ed52_i_codigo,ed52_c_descr
                FROM calendario
@@ -207,7 +207,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         $desc_curso=$row["ed52_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-        <?php 
+        <?
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -219,10 +219,10 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        <option value=""></option>
       </select>
      </td>
-     <?php if(isset($curso)){?>
+     <?if(isset($curso)){?>
       <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
       <td>
-       <?php 
+       <?
        $sql = "SELECT DISTINCT ed11_i_codigo, ed11_c_descr,ed11_i_sequencia
                FROM serie                
                 inner join matriculaserie on ed221_i_serie = ed11_i_codigo
@@ -240,7 +240,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        <b>Etapa:</b><br>
        <select name="serie" style="font-size:9px;width:200px;height:18px;" onchange="js_pesquisa(document.form1.grupo.value,document.form1.serie.value);">
          <option value=''></option>
-        <?php 
+        <?
         for($i=0;$i<$linhas;$i++){
          db_fieldsmemory($result,$i);
          echo "<option value='$ed11_i_codigo'>$ed11_c_descr</option>\n";
@@ -248,7 +248,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         ?>
        </select>
       </td>
-      <?php }?>
+      <?}?>
     </tr>
    </table>
   </td>
@@ -258,7 +258,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
 <iframe name="iframe_grafico" id="iframe_grafico" src="" width="97%" height="470" frameborder="0"></iframe>
 </center>
 </form>
-<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -266,12 +266,12 @@ function js_botao(valor,calendario,curso){
  if(valor!=""){
   location.href = "edu2_gfcofreqcompara001.php?calendario="+calendario+"&curso="+curso;
  }
- <?php if(isset($curso)){?>
+ <?if(isset($curso)){?>
   qtd = document.form1.serie.length;
   for (i = 0; i < qtd; i++) {
    document.form1.serie.options[0] = null;
   }
- <?php }?>
+ <?}?>
 }
 function js_pesquisa(calendario,serie){
  if(serie==""){
@@ -280,8 +280,8 @@ function js_pesquisa(calendario,serie){
   iframe_grafico.location.href = "edu2_gfcofreqcompara002.php?serie="+serie+"&calendario="+calendario+"&larg_pagina="+(screen.availWidth-60);
  }
 }
-<?php if(!isset($curso) && pg_num_rows($sql_result)>0){?>
+<?if(!isset($curso) && pg_num_rows($sql_result)>0){?>
  fillSelectFromArray2(document.form1.subgrupo,team[0]);
  document.form1.grupo.options[1].selected = true;
-<?php }?>
+<?}?>
 </script>

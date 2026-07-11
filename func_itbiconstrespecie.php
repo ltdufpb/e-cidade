@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbiconstrespecie->rotulo->label("it09_caract");
               <?=$Lit09_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it09_codigo",10,$Iit09_codigo,true,"text",4,"","chave_it09_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbiconstrespecie->rotulo->label("it09_caract");
               <?=$Lit09_caract?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it09_caract",4,$Iit09_caract,true,"text",4,"","chave_it09_caract");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clitbiconstrespecie->rotulo->label("it09_caract");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbiconstrespecie.php")==true){
@@ -119,12 +119,12 @@ $clitbiconstrespecie->rotulo->label("it09_caract");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

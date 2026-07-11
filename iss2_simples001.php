@@ -69,21 +69,21 @@ require_once(modification("dbforms/db_funcoes.php"));
 			</tr>
 			<tr>
 				<td height="30"><strong>Considerar CNPJ com débito não vencido como apto?</strong></td>
-				<td height="30"><?php 
+				<td height="30"><?
 				$arr_aptos_deb = array("n"=>"Não","s"=>"Sim");
 				db_select("cons_debvenc",$arr_aptos_deb,true,"text",1);
 				?></td>
 			</tr>
 			<tr>
 				<td height="30"><strong>Tipo:</strong></td>
-				<td height="30"><?php 
+				<td height="30"><?
 				$arr_aptos_deb = array("1"=>"aptos ao simples","2"=>"Não Aptos ao Simples");
 				db_select("tipo",$arr_aptos_deb,true,"text",1);
 				?></td>
 			</tr>
 			<tr>
 				<td><b>Data:</b></td>
-				<td><?php db_inputdata('data','','','',true,'text',1,""); ?></td>
+				<td><?db_inputdata('data','','','',true,'text',1,""); ?></td>
 			</tr>
 
 			<tr>

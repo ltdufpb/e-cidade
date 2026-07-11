@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,14 +59,14 @@ $clprocrec->rotulo->label("p52_codrec");
 			<tr>
 				<td width="4%" align="right" nowrap title="<?=$Tp52_codigo?>"><?=$Lp52_codigo?>
 				</td>
-				<td width="96%" align="left" nowrap><?php 
+				<td width="96%" align="left" nowrap><?
 				db_input("p52_codigo",3,$Ip52_codigo,true,"text",4,"","chave_p52_codigo");
 				?></td>
 			</tr>
 			<tr>
 				<td width="4%" align="right" nowrap title="<?=$Tp52_codrec?>"><?=$Lp52_codrec?>
 				</td>
-				<td width="96%" align="left" nowrap><?php 
+				<td width="96%" align="left" nowrap><?
 				db_input("p52_codrec",3,$Ip52_codrec,true,"text",4,"","chave_p52_codrec");
 				?></td>
 			</tr>
@@ -82,7 +82,7 @@ $clprocrec->rotulo->label("p52_codrec");
 		</td>
 	</tr>
 	<tr>
-		<td align="center" valign="top"><?php 
+		<td align="center" valign="top"><?
     $sWhere = " p51_instit = ".db_getSession("DB_instit");
 		if(!isset($pesquisa_chave)){
 
@@ -120,14 +120,14 @@ $clprocrec->rotulo->label("p52_codrec");
 </table>
 </body>
 </html>
-		<?php 
+		<?
 		if(!isset($pesquisa_chave)){
 		  ?>
 <script>
 document.form2.chave_p52_codigo.focus();
 document.form2.chave_p52_codigo.select();
   </script>
-		  <?php 
+		  <?
 }
 ?>
 <script type="text/javascript">

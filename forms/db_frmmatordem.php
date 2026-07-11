@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 
   ?>
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -85,13 +85,13 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr>
           <td nowrap align="right" title="<?=@$Te60_numcgm?>"><?=@$Le60_numcgm?></td>
           <td> 
-            <?php 
+            <?
               db_input('m51_numcgm',20,$Im51_numcgm,true,'text',3)
             ?>
           </td>
           <td nowrap align="right" title="<?=@$z01_nome?>"><?=@$Lz01_nome?></td>
           <td>
-            <?php 
+            <?
               db_input('z01_nome',45,$Iz01_nome,true,'text',3)
             ?>
           </td>
@@ -99,7 +99,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr>
           <td nowrap align="right" title="<?=@$Tm51_codordem?>"><b>Ordem de Compra:</b></td>
           <td>
-	    <?php 
+	    <?
               db_input('m51_codordem',20,$Im51_codordem,true,'text',3)
 	    ?>
 	  </td>
@@ -109,7 +109,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr>
           <td nowrap align="right" title="<?=@$Tm53_data?>"><b>Data da anula&ccedil;&atilde;o:</b></td>
           <td> 
-            <?php   $m53_data_dia =  date("d",db_getsession("DB_datausu"));
+            <?  $m53_data_dia =  date("d",db_getsession("DB_datausu"));
 	        $m53_data_mes =  date("m",db_getsession("DB_datausu"));
 		$m53_data_ano =  date("Y",db_getsession("DB_datausu"));
 					    
@@ -119,7 +119,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
           <td nowrap align="right" title="<?=@$descrdepto?>">
              <?=@$Lcoddepto?>
           <td> 
-             <?php 
+             <?
              db_input('m51_depto',6,$Im51_depto,true,'text',3);
              db_input('descrdepto',36,$Idescrdepto,true,'text',3);
              ?>
@@ -128,7 +128,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
         <tr> 
 	<td align='right'><b>Obs:</b></td>
           <td colspan='3' align='left'>
-	 <?php  
+	 <? 
 	 db_textarea("m53_obs","","90",$Im53_obs,true,'text',1);
 	 
 	 ?>
@@ -137,12 +137,12 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 	</tr>  
         <tr>
           <td colspan='4' align='center'>
-	  <?php if ($m51_codordem!=""){
+	  <?if ($m51_codordem!=""){
 	  ?>
             <input name="anula" type="submit"  value="Anular">
-	    <?php }else{?>
+	    <?}else{?>
 	   <input name="anula" type="submit" disabled  value="Anular">
-	  <?php }?>
+	  <?}?>
 	    <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra003.php';" >
 	  </td>
         </tr>
@@ -151,7 +151,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
     </tr>
     <tr>
    <td align='center' valign='top' colspan='1' align='center'>
-  <?php if(isset($m51_codordem)){?>  
+  <?if(isset($m51_codordem)){?>  
      <table>
        <tr>
          <td>
@@ -159,7 +159,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
          </td>
        </tr>
      </table>
-  <?php }?>  
+  <?}?>  
    </td>
   </tr>
 </table>

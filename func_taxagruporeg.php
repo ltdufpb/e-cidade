@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cltaxagruporeg->rotulo->label("k08_taxagrupo");
               <?=$Lk08_taxagruporeg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k08_taxagruporeg",10,$Ik08_taxagruporeg,true,"text",4,"","chave_k08_taxagruporeg");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cltaxagruporeg->rotulo->label("k08_taxagrupo");
               <?=$Lk08_taxagrupo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k08_taxagrupo",10,$Ik08_taxagrupo,true,"text",4,"","chave_k08_taxagrupo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cltaxagruporeg->rotulo->label("k08_taxagrupo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_taxagruporeg.php")==true){
@@ -119,12 +119,12 @@ $cltaxagruporeg->rotulo->label("k08_taxagrupo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbinumpre->rotulo->label("it15_numpre");
               <?=$Lit15_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it15_guia",10,$Iit15_guia,true,"text",4,"","chave_it15_guia");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbinumpre->rotulo->label("it15_numpre");
               <?=$Lit15_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it15_numpre",20,$Iit15_numpre,true,"text",4,"","chave_it15_numpre");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clitbinumpre->rotulo->label("it15_numpre");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbinumpre.php")==true){
@@ -119,12 +119,12 @@ $clitbinumpre->rotulo->label("it15_numpre");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

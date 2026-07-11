@@ -68,7 +68,7 @@ db_app::load("estilos.css");
        
     </tr>
     <tbody style='background-color: white;height:100px;width: 100%;overflow: scroll; overflow-x: hidden'>   
-    <?php 
+    <?
      $sWhere         = " s131_i_exames  = {$oGet->iCodigoExame}";
      $iCodigoConfirmaExame = null;
      

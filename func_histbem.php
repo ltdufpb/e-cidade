@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clhistbem->rotulo->label("t56_codbem");
               <?=$Lt56_histbem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t56_histbem",10,$It56_histbem,true,"text",4,"","chave_t56_histbem");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clhistbem->rotulo->label("t56_codbem");
               <?=$Lt56_codbem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("t56_codbem",10,$It56_codbem,true,"text",4,"","chave_t56_codbem");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clhistbem->rotulo->label("t56_codbem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_histbem.php")==true){
@@ -119,12 +119,12 @@ $clhistbem->rotulo->label("t56_codbem");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

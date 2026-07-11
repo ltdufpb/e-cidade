@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,22 +39,22 @@
       <tr> 
         <td height="24"><strong>Libera recibo:</strong></td>
         <td height="24"><select name="k00_emrec">
-            <option value="f" <?php  echo isset($k00_emrec)?($k00_emrec=="f"?"selected":""):"" ?>>N&atilde;o</option>
-            <option value="t" <?php  echo isset($k00_emrec)?($k00_emrec=="t"?"selected":""):"" ?>>Sim</option>
+            <option value="f" <? echo isset($k00_emrec)?($k00_emrec=="f"?"selected":""):"" ?>>N&atilde;o</option>
+            <option value="t" <? echo isset($k00_emrec)?($k00_emrec=="t"?"selected":""):"" ?>>Sim</option>
           </select></td>
       </tr>
       <tr> 
         <td height="24"><strong>Agrupa por Numpre:</strong></td>
         <td height="24"><select name="k00_agnum">
-            <option value="f" <?php  echo isset($k00_agnum)?($k00_agnum=="f"?"selected":""):"" ?>>N&atilde;o</option>
-            <option value="t" <?php  echo isset($k00_agnum)?($k00_agnum=="t"?"selected":""):"" ?>>Sim</option>
+            <option value="f" <? echo isset($k00_agnum)?($k00_agnum=="f"?"selected":""):"" ?>>N&atilde;o</option>
+            <option value="t" <? echo isset($k00_agnum)?($k00_agnum=="t"?"selected":""):"" ?>>Sim</option>
           </select></td>
       </tr>
       <tr> 
         <td height="25"><strong>Agrupa por Parcelamento:</strong></td>
         <td height="25"><select name="k00_agpar">
-            <option value="f" <?php  echo isset($k00_agpar)?($k00_agpar=="f"?"selected":""):"" ?>>N&atilde;o</option>
-            <option value="t" <?php  echo isset($k00_agpar)?($k00_agpar=="t"?"selected":""):"" ?>>Sim</option>
+            <option value="f" <? echo isset($k00_agpar)?($k00_agpar=="f"?"selected":""):"" ?>>N&atilde;o</option>
+            <option value="t" <? echo isset($k00_agpar)?($k00_agpar=="t"?"selected":""):"" ?>>Sim</option>
           </select></td>
       </tr>
       <tr> 
@@ -102,7 +102,7 @@
         <td height="24"> 
            <select name="codmodelo">
             <option value="0">Nenhum ...</option>
-            <?php 
+            <?
 		$sql = "select codmodelo as a_codmodelo,nomemodelo from db_carnesimg";
 		$result = db_query($sql);
 		if(pg_numrows($result)!=0){
@@ -133,7 +133,7 @@
         <td height="25"><strong>Tipo Débito:</strong></td>
         <td height="24"> 
            <select name="k03_tipo">
-            <?php 
+            <?
 		$sql = "select k03_tipo as tipo,k03_descr from cadtipo order by k03_tipo";
 		$result = db_query($sql);
 		if(pg_numrows($result)!=0){
@@ -152,8 +152,8 @@
         <td height="25">&nbsp;</td>
         
         <td height="25"><input name="enviar" type="submit" id="enviar" value="Enviar">&nbsp;&nbsp;&nbsp;
-        <?php if(isset($db_opcao)&&$db_opcao==1){?><input name="importa" type="button" id="importa" value="Importar Tipo" onclick="js_importatipo();">
-        	<?php }?></td>
+        <?if(isset($db_opcao)&&$db_opcao==1){?><input name="importa" type="button" id="importa" value="Importar Tipo" onclick="js_importatipo();">
+        	<?}?></td>
       </tr>
     </table>
   </form>

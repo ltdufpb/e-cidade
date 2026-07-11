@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -73,7 +73,7 @@ $clRotulo->label("ob06_lote");
 	      <?=$Lob09_codhab?>
 	    </td>
 	    <td nowrap> 
-	      <?php 
+	      <?
 		 			db_input("ob09_codhab",10,$Iob09_codhab,true,"text",1,"","chave_ob09_codhab");
 		 		?>
 	    </td>
@@ -83,7 +83,7 @@ $clRotulo->label("ob06_lote");
 	      <?=$Lob09_habite?>
 	    </td>
 	    <td  nowrap> 
-	      <?php 
+	      <?
 		 			db_input("ob09_habite",10,$Iob09_habite,true,"text",1,"","chave_ob09_habite");
 		 		?>
 	    </td>
@@ -93,7 +93,7 @@ $clRotulo->label("ob06_lote");
 	  	  <?=$Lj01_matric?>
 	    </td>
 	    <td>
-	    	<?php 
+	    	<?
 	    		db_input('j01_matric', 10, $Ij01_matric, true, 'text', 1)
 	    	?>
 	  	</td>
@@ -104,15 +104,15 @@ $clRotulo->label("ob06_lote");
 	  	  <strong>Setor/Quadra/Lote: </strong>
 	    </td>
 	    <td>
-	    <?php 
+	    <?
 	      db_input('ob06_setor',10,$Iob06_setor,true,'text',1,"")
 	    ?>
 	    /
-	    <?php 
+	    <?
 	      db_input('ob06_quadra',10,$Iob06_quadra,true,'text',1,"")
 	    ?>
 	    /
-	    <?php 
+	    <?
 	      db_input('ob06_lote',10,$Iob06_lote,true,'text',1,"")
 	    ?>
 	  	</td>
@@ -129,7 +129,7 @@ $clRotulo->label("ob06_lote");
 <table align="center">
 	<tr>
 		<td>
-		<?php 
+		<?
 	    if(!isset($pesquisa_chave)  && !isset($constr)){                                                                                                   
 	
 	    	$aWherePesquisa = array();

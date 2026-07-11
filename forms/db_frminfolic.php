@@ -69,7 +69,7 @@ $clrotulo->label("pc23_obs");
     <form name='form1'>
     <center>
  <table width='100%' cellpading="0" cellspacing="0" style="border:2px inset white;">   
-<?php 
+<?
   
   if (isset($l20_codigo) && $l20_codigo!= "") {
 

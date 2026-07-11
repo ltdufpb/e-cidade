@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cldisbancotxt->rotulo->label("k34_numpremigra");
               <?=$Lk34_numpremigra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k34_numpremigra",50,$Ik34_numpremigra,true,"text",4,"","chave_k34_numpremigra");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cldisbancotxt->rotulo->label("k34_numpremigra");
               <?=$Lk34_codret?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("k34_sequencial",10,$Ik34_sequencial,true,"text",4,"","chave_k34_sequencial");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $cldisbancotxt->rotulo->label("k34_numpremigra");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_disbancotxt.php")==true){
@@ -120,12 +120,12 @@ $cldisbancotxt->rotulo->label("k34_numpremigra");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

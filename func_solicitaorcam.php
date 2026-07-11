@@ -59,7 +59,7 @@ $clsolicita->rotulo->label("pc10_data");
                 <?=$Lpc10_numero?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_input("pc10_numero",10,$Ipc10_numero,true,"text",4,"","chave_pc10_numero");
                 ?>
               </td>
@@ -69,7 +69,7 @@ $clsolicita->rotulo->label("pc10_data");
                 <?=$Lpc10_data?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?php 
+                <?
                 db_inputdata("pc10_data", "","", "", true,"text",4,"","chave_pc10_data");
                 ?>
               </td>
@@ -147,12 +147,12 @@ $clsolicita->rotulo->label("pc10_data");
   </table>
   </body>
   </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?php 
+<?
 }
 ?>
 <script type="text/javascript">

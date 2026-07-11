@@ -59,9 +59,9 @@ $oDaoSerie = new cl_serie();
           <?=$Led47_i_codigo?>
         </td>
         <td align="left" nowrap title="<?=$Ted47_v_nome?>">
-          <?php db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
+          <?db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
           <?=$Led47_v_nome?>
-          <?php db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+          <?db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
         </td>
       </tr>
       <tr>
@@ -69,7 +69,7 @@ $oDaoSerie = new cl_serie();
           <?=$Led223_i_serie?>
         </td>
         <td align="left" nowrap>
-          <?php 
+          <?
           $sCampoSerie = "ed11_i_codigo,ed11_c_descr||' - '||ed10_c_descr as serie,ed11_i_ensino,ed11_i_sequencia";
           $sSqlSerie   = $oDaoSerie->sql_query_equiv("", $sCampoSerie, " ed11_i_ensino,ed11_i_sequencia");
           $rsSerie     = $oDaoSerie ->sql_record($sSqlSerie);

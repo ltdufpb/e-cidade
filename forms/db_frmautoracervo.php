@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,17 +52,17 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi21_acervo?>
   </td>
   <td>
-   <?php db_input('bi21_acervo',10,$Ibi21_acervo,true,'text',3,"")?>
-   <?php db_input('bi06_titulo',80,@$Ibi06_titulo,true,'text',3,'')?>
+   <?db_input('bi21_acervo',10,$Ibi21_acervo,true,'text',3,"")?>
+   <?db_input('bi06_titulo',80,@$Ibi06_titulo,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tbi21_autor?>">
-   <?php db_ancora(@$Lbi21_autor,"js_pesquisabi21_autor(true);",$db_opcao);?>
+   <?db_ancora(@$Lbi21_autor,"js_pesquisabi21_autor(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('bi21_autor',10,$Ibi21_autor,true,'text',$db_opcao," onchange='js_pesquisabi21_autor(false);'")?>
-   <?php db_input('bi01_nome',50,@$Ibi01_nome,true,'text',3,'')?>
+   <?db_input('bi21_autor',10,$Ibi21_autor,true,'text',$db_opcao," onchange='js_pesquisabi21_autor(false);'")?>
+   <?db_input('bi01_nome',50,@$Ibi01_nome,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -71,7 +71,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-  <?php 
+  <?
    $chavepri= array("bi21_acervo"=>@$bi21_acervo,"bi06_titulo"=>@$bi06_titulo,"bi21_autor"=>@$bi21_autor,"bi01_nome"=>@$bi01_nome);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clautoracervo->sql_query("","*","bi01_nome"," bi21_acervo = $bi21_acervo");

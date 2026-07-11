@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -73,7 +73,7 @@ if ($clmatordemitement->numrows!=0){
 <script language="JavaScript" type="text/javascript" src="../scripts/scripts.js"></script>
 <link href="../estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -81,7 +81,7 @@ if ($clmatordemitement->numrows!=0){
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?php $cor="999999"?>
+<?$cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -96,7 +96,7 @@ if ($clmatordemitement->numrows!=0){
     <form name='form1' >
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?php 
+ <?
    $errosomaquant="";
    db_input('m51_codordem',5,"",true,'hidden',3);
    if (isset($m51_codordem) && $m51_codordem!= "") {

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,17 +38,17 @@ $db_botao1 = false;
     <?=@$Led270_i_codigo?>
    </td>
    <td>
-    <?php db_input('ed270_i_codigo',15,"",true,'text',3,"")?>
+    <?db_input('ed270_i_codigo',15,"",true,'text',3,"")?>
    </td>
   </tr>
   <tr>
    <td nowrap title="<?=@$Ted270_i_rechumano?>">
-    <?php db_ancora(@$Led270_i_rechumano,"js_pesquisaed270_i_rechumano(true);",$db_opcao);?>
+    <?db_ancora(@$Led270_i_rechumano,"js_pesquisaed270_i_rechumano(true);",$db_opcao);?>
    </td>
    <td>
-    <?php db_input('ed270_i_rechumano',15,"",true,'hidden',3,"");?>
-    <?php db_input('identificacao',15,"",true,'text',3,"");?>    
-    <?php db_input('z01_nome',40,"",true,'text',3,'');?>
+    <?db_input('ed270_i_rechumano',15,"",true,'hidden',3,"");?>
+    <?db_input('identificacao',15,"",true,'text',3,"");?>    
+    <?db_input('z01_nome',40,"",true,'text',3,'');?>
    </td>
   </tr>
  </table>
@@ -56,7 +56,7 @@ $db_botao1 = false;
   <tr>
    <td>
     <table cellspacing="0" cellpading="0" border="1" bordercolor="#000000">
-     <?php      
+     <?     
      $turno   = "";     
      $sql     = $clperiodoescola->sql_query("",
                                             "*",
@@ -85,7 +85,7 @@ $db_botao1 = false;
          <tr bgcolor="#444444">
          <td align="center" width="30" style="font-weight: bold; color: #DEB887;"><?=pg_fetch_result($result1,$z,"ed15_c_nome");?>
          </td>
-         <?php 
+         <?
          if ($cldiasemana->numrows == 0) {
            ?><tr>
               <td>
@@ -94,7 +94,7 @@ $db_botao1 = false;
                </a>
               </td>
              </tr>
-          <?php 
+          <?
          }
          for ($x = 0; $x < $cldiasemana->numrows; $x++) {
          	
@@ -110,13 +110,13 @@ $db_botao1 = false;
              </table>
             </td>
             
-       <?php }?>
+       <?}?>
          </tr>
-     <?php }
+     <?}
        $turno = $ed15_c_nome?>
        <td align="center" width="120" style="font-weight: bold; background-color: #f3f3f3;">
         <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?>
-       </td><?php 
+       </td><?
        for ($x = 0; $x < $cldiasemana->numrows; $x++) {
        	
          $quadro = "Q".$z.$x;
@@ -197,13 +197,13 @@ $db_botao1 = false;
            </tr>
           </table>
          </td>
-      <?php 
+      <?
         $marcar            = "";
         $ed270_i_rechumano = "";
       }
       ?>
       <tr>
-   <?php }?>
+   <?}?>
      </tr>
     </table>
    </td>

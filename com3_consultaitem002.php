@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,25 +80,25 @@ if(isset($pc01_codmater)){
 				<table border="0">
   					<tr>
     					<td nowrap title="<?=@$Tpc01_codmater?>"><?=@$Lpc01_codmater?></td>
-    					<td><?php db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',3,"");?></td>
+    					<td><?db_input('pc01_codmater',6,$Ipc01_codmater,true,'text',3,"");?></td>
   					</tr>
   					<tr>
     					<td nowrap title="<?=@$Tpc01_descrmater?>"> <?=@$Lpc01_descrmater?></td>
-    					<td><?php db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',$db_opcao,"")?></td>
+    					<td><?db_input('pc01_descrmater',80,$Ipc01_descrmater,true,'text',$db_opcao,"")?></td>
   					</tr>
   					<tr>
     					<td nowrap title="<?=@$Tpc01_complmater?>"><?=@$Lpc01_complmater?></td>
-    					<td><?php db_textarea('pc01_complmater',0,50,$Ipc01_complmater,true,'text',$db_opcao,"")?></td>
+    					<td><?db_textarea('pc01_complmater',0,50,$Ipc01_complmater,true,'text',$db_opcao,"")?></td>
   					</tr>
   					<tr>
     					<td nowrap title="<?=@$Tpc01_libaut?>"><?=@$Lpc01_libaut?></td>
     					<td>
-    					<?php 
+    					<?
     					$arrlibaut_truefalse = array('t'=>'Sim','f'=>'Não');
     					db_select("pc01_libaut",$arrlibaut_truefalse,true,$db_opcao);
     					?>
     					<?=$Lpc01_ativo?> 
-    					<?php 
+    					<?
     					$arr_truefalse = array('f'=>'Não','t'=>'Sim');
     					db_select("pc01_ativo",$arr_truefalse,true,$db_opcao);
     					?>  
@@ -107,7 +107,7 @@ if(isset($pc01_codmater)){
   					<tr>
     					<td><?=$Lpc03_codgrupo?></td>
     					<td align='left'>
-    					<?php 
+    					<?
         				db_input('pc04_codgrupo',6,$Ipc01_codsubgrupo,true,'text',3,"");
         				db_input('pc03_descrgrupo',60,$Ipc04_descrsubgrupo,true,'text',3,"");
         				?>  
@@ -116,7 +116,7 @@ if(isset($pc01_codmater)){
    				    <tr>
        					<td><?=$Lpc04_codsubgrupo?></td>
        					<td align='left'>
-        				<?php 
+        				<?
         				db_input('pc01_codsubgrupo',6,$Ipc01_codsubgrupo,true,'text',3,"");
         				db_input('pc04_descrsubgrupo',60,$Ipc04_descrsubgrupo,true,'text',3,"");
 				       	?>  

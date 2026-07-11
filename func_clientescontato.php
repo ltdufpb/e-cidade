@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clclientescontato->rotulo->label("at92_nome");
               <?=$Lat92_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at92_sequencial",10,$Iat92_sequencial,true,"text",4,"","chave_at92_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clclientescontato->rotulo->label("at92_nome");
               <?=$Lat92_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("at92_nome",100,$Iat92_nome,true,"text",4,"","chave_at92_nome");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clclientescontato->rotulo->label("at92_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_clientescontato.php")==true){
@@ -123,12 +123,12 @@ $clclientescontato->rotulo->label("at92_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

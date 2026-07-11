@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmer_estoque->rotulo->label("me18_i_codigo");
               <?=$Lme18_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me18_i_codigo",5,$Ime18_i_codigo,true,"text",4,"","chave_me18_i_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmer_estoque->rotulo->label("me18_i_codigo");
               <?=$Lme18_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("me18_i_codigo",5,$Ime18_i_codigo,true,"text",4,"","chave_me18_i_codigo");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clmer_estoque->rotulo->label("me18_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if (!isset($pesquisa_chave)) {
       	 
         if (isset($campos)==false) {
@@ -132,13 +132,13 @@ $clmer_estoque->rotulo->label("me18_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?php 
+  <?
   
 }
 ?>

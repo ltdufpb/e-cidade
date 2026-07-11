@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cllegista->rotulo->label("cm32_i_crm");
               <?=$Lcm32_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("cm32_i_codigo",5,$Icm32_i_codigo,true,"text",4,"","chave_cm32_i_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $cllegista->rotulo->label("cm32_i_crm");
               <?=$Lcm32_i_numcgm?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("cm32_i_numcgm",10,$Icm32_i_numcgm,true,"text",4,"","chave_cm32_i_numcgm");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $cllegista->rotulo->label("cm32_i_crm");
               <strong> Nome:</strong>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("z01_nome",40,"",true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -86,7 +86,7 @@ $cllegista->rotulo->label("cm32_i_crm");
               <strong> Crm/Cro: </strong>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("cm32_i_crm",10,@$Icm32_i_crm,true,"text",4,"","chave_cm32_i_crm");
 		       ?>
             </td>
@@ -104,7 +104,7 @@ $cllegista->rotulo->label("cm32_i_crm");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_legista.php")==true){
@@ -148,12 +148,12 @@ $cllegista->rotulo->label("cm32_i_crm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

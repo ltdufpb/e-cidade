@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcadfiscais->rotulo->label("z01_nome");
               <?=$Lid_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("id_usuario",5,$Iid_usuario,true,"text",4,"","chave_id_usuario");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcadfiscais->rotulo->label("z01_nome");
               <b>Nome:</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("nome",50,"",true,"text",4,"","chave_nome");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcadfiscais->rotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
 			$where = "";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -129,12 +129,12 @@ $clcadfiscais->rotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

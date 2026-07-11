@@ -55,7 +55,7 @@ $clorcprogramavinculoobjetivo->rotulo->label("o144_sequencial");
               <?=$Lo144_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o144_sequencial",10,$Io144_sequencial,true,"text",4,"","chave_o144_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcprogramavinculoobjetivo->rotulo->label("o144_sequencial");
               <?=$Lo144_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o144_sequencial",10,$Io144_sequencial,true,"text",4,"","chave_o144_sequencial");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcprogramavinculoobjetivo->rotulo->label("o144_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcprogramavinculoobjetivo.php")==true){
@@ -123,12 +123,12 @@ $clorcprogramavinculoobjetivo->rotulo->label("o144_sequencial");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

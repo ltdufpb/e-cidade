@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd48_i_codigo?>
   </td>
   <td>
-   <?php db_input('sd48_i_codigo',10,$Isd48_i_codigo,true,'text',3,"")?>
+   <?db_input('sd48_i_codigo',10,$Isd48_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -62,26 +62,26 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lsd48_i_unidade?>
   </td>
   <td>
-   <?php db_input('sd48_i_unidade',10,$Isd48_i_unidade,true,'text',3,"")?>
-   <?php db_input('descrdepto',40,@$Idescrdepto,true,'text',3,"")?>
+   <?db_input('sd48_i_unidade',10,$Isd48_i_unidade,true,'text',3,"")?>
+   <?db_input('descrdepto',40,@$Idescrdepto,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tsd48_i_atendprestado?>">
-   <?php db_ancora(@$Lsd48_i_atendprestado,"js_pesquisasd48_i_atendprestado(true);",$db_opcao);?>
+   <?db_ancora(@$Lsd48_i_atendprestado,"js_pesquisasd48_i_atendprestado(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('sd48_i_atendprestado',10,$Isd48_i_atendprestado,true,'text',$db_opcao,"onchange='js_pesquisasd48_i_atendprestado(false);'")?>
-   <?php db_input('sd46_v_descricao',60,@$Isd46_v_descricao,true,'text',3,'')?>
+   <?db_input('sd48_i_atendprestado',10,$Isd48_i_atendprestado,true,'text',$db_opcao,"onchange='js_pesquisasd48_i_atendprestado(false);'")?>
+   <?db_input('sd46_v_descricao',60,@$Isd46_v_descricao,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tsd48_i_convenio?>">
-   <?php db_ancora(@$Lsd48_i_convenio,"js_pesquisasd48_i_convenio(true);",$db_opcao);?>
+   <?db_ancora(@$Lsd48_i_convenio,"js_pesquisasd48_i_convenio(true);",$db_opcao);?>
   </td>
   <td>
-   <?php db_input('sd48_i_convenio',10,$Isd48_i_convenio,true,'text',$db_opcao," onchange='js_pesquisasd48_i_convenio(false);'")?>
-   <?php db_input('sd49_v_descricao',60,@$Isd49_v_descricao,true,'text',3,'')?>
+   <?db_input('sd48_i_convenio',10,$Isd48_i_convenio,true,'text',$db_opcao," onchange='js_pesquisasd48_i_convenio(false);'")?>
+   <?db_input('sd49_v_descricao',60,@$Isd49_v_descricao,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -91,7 +91,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?php 
+  <?
    $escola = db_getsession("DB_coddepto");
    $chavepri= array("sd48_i_codigo"=>@$sd48_i_codigo,"sd48_i_unidade"=>@$sd48_i_unidade,"descrdepto"=>@$descrdepto,"sd48_i_atendprestado"=>@$sd48_i_atendprestado,"sd46_v_descricao"=>@$sd46_v_descricao,"sd48_i_convenio"=>@$sd48_i_convenio,"sd49_v_descricao"=>@$sd49_v_descricao);
    $cliframe_alterar_excluir->chavepri=$chavepri;

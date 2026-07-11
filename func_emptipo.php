@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clemptipo->rotulo->label("e41_descr");
               <?=$Le41_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e41_codtipo",4,$Ie41_codtipo,true,"text",4,"","chave_e41_codtipo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clemptipo->rotulo->label("e41_descr");
               <?=$Le41_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e41_descr",60,$Ie41_descr,true,"text",4,"","chave_e41_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clemptipo->rotulo->label("e41_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_emptipo.php")==true){
@@ -119,12 +119,12 @@ $clemptipo->rotulo->label("e41_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

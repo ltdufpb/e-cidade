@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ $clunidademedicos->rotulo->label("sd04_i_codigo");
               <?=$Lsd04_i_medico?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd04_i_medico",10,$Isd04_i_medico,true,"text",4,"","chave_sd04_i_medico");
 		       ?>
             </td>
@@ -69,7 +69,7 @@ $clunidademedicos->rotulo->label("sd04_i_codigo");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("z01_nome",10,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -79,7 +79,7 @@ $clunidademedicos->rotulo->label("sd04_i_codigo");
               <?=$Lrh70_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh70_estrutural",10,$Irh70_estrutural,true,"text",4,"","chave_rh70_estrutural");
 		       ?>
             </td>
@@ -97,7 +97,7 @@ $clunidademedicos->rotulo->label("sd04_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where = '';
       if( isset($chave_sd04_i_unidade)){
          $where .= " sd04_i_unidade = ".(int)$chave_sd04_i_unidade;
@@ -182,12 +182,12 @@ $clunidademedicos->rotulo->label("sd04_i_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

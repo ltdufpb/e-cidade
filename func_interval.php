@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ if(isset($valorvariavel) && trim($valorvariavel) != ""){
 <script>
 function js_enviarvalor(){
 	erro = 0;
-<?php 
+<?
 if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bool") == "" && $conteudo != "date"){
 ?>
 	if(document.form1.<?=$campofoco?>.value != "" || document.form1.<?=$camporecb?>.value != ""){
@@ -80,7 +80,7 @@ if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bo
 		erro++;
 		parent.document.form1.campo_camporecb_filtro<?=$campo?>.value = '';
 	}
-<?php 
+<?
 }else if($conteudo == "date"){
 ?>
 	if(document.form1.<?=$campofoco?>.value != ""){
@@ -92,7 +92,7 @@ if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bo
 		erro++;
 		parent.document.form1.campo_camporecb_filtro<?=$campo?>.value = '';
 	}
-<?php 
+<?
 }else{
 ?>
 	if(document.form1.<?=$campofoco?>.value != ""){
@@ -103,7 +103,7 @@ if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bo
 		erro++;
 		parent.document.form1.campo_camporecb_filtro<?=$campo?>.value = '';
 	}
-<?php 
+<?
 }
 ?>
 
@@ -126,7 +126,7 @@ function js_fechar(){
   js_retornavalor();
   parent.db_iframe_interval.hide();
 }
-<?php 
+<?
 flush();
 if($cldb_syscampo->numrows == 0){
 	echo "
@@ -147,7 +147,7 @@ js_retornavalor();
       <?=@$$Lnomecam?>
     </td>
     <td> 
-			<?php 
+			<?
 			if($conteudo != "text" && strpos($conteudo,"char") == "" && strpos($conteudo,"bool") == "" && $conteudo != "date"){
 			  db_input($nomecam."1",10,$$Inomecam,true,'text',1,"onchange='js_passaval();'");
 			  echo "&nbsp;<b>a</b>&nbsp;";

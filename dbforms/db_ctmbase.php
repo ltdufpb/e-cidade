@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -91,7 +91,7 @@ else
 </tr>
 <tr>
 <td align="center">
-<?php 
+<?
 db_lov($sql,15,"db_ctmbase.php?".base64_encode("campo=$campo"),$HTTP_POST_VARS["filtro"]);
 ?>
 </td>

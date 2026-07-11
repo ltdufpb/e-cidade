@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: pessoal
 //CLASSE DA ENTIDADE folhapagamentogeracao
 class cl_folhapagamentogeracao { 

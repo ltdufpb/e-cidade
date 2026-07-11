@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE movimentacaoprontuario
 class cl_movimentacaoprontuario { 

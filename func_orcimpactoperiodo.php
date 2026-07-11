@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clorcimpactoperiodo->rotulo->label("o96_descr");
               <?=$Lo96_codperiodo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o96_codperiodo",5,$Io96_codperiodo,true,"text",4,"","chave_o96_codperiodo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clorcimpactoperiodo->rotulo->label("o96_descr");
               <?=$Lo96_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("o96_descr",40,$Io96_descr,true,"text",4,"","chave_o96_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clorcimpactoperiodo->rotulo->label("o96_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactoperiodo.php")==true){
@@ -119,12 +119,12 @@ $clorcimpactoperiodo->rotulo->label("o96_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

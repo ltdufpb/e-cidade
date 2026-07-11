@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clinfcab->rotulo->label("i03_descr");
               <?=$Li03_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("i03_codigo",6,$Ii03_codigo,true,"text",4,"","chave_i03_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clinfcab->rotulo->label("i03_descr");
               <?=$Li03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("i03_descr",40,$Ii03_descr,true,"text",4,"","chave_i03_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clinfcab->rotulo->label("i03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_infcab.php")==true){
@@ -119,12 +119,12 @@ $clinfcab->rotulo->label("i03_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

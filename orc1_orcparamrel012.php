@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <form name="form1" method="post">
 <table border="0" cellspacing="0" cellpadding="0">
-  <?php  
+  <? 
   $clorcparamelemento = new cl_orcparamelemento;
   //echo ($clorcparamelemento->sql_query_elemento(db_getsession("DB_anousu"),$o43_codparrel));
   $result = $clorcparamelemento->sql_record($clorcparamelemento->sql_query_fontes(db_getsession("DB_anousu"),$o43_codparrel));
@@ -55,10 +55,10 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
       ?>
       <tr> 
         <td align="left" nowrap><strong><?=$o57_fonte?></strong></td>
-        <td align="left" nowrap><input type="checkbox" value="<?php $o57_codfon?>" name="<?=$o57_codfon?>" <?=($o43_codparrel!=null?"checked":"")?> ></td>
+        <td align="left" nowrap><input type="checkbox" value="<?$o57_codfon?>" name="<?=$o57_codfon?>" <?=($o43_codparrel!=null?"checked":"")?> ></td>
         <td align="left" nowrap><?=$o57_descr?></td>
       </tr>
-      <?php 
+      <?
     }
   }
   ?>

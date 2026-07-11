@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcnae->rotulo->label("q71_estrutural");
               <?=$Lq71_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		           db_input("q71_sequencial",10,$Iq71_sequencial,true,"text",4,"","chave_q71_sequencial");
 		          ?>
             </td>
@@ -65,7 +65,7 @@ $clcnae->rotulo->label("q71_estrutural");
               <?=$Lq71_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		            db_input("q71_estrutural",10,$Iq71_estrutural,true,"text",4,"","chave_q71_estrutural");
 		          ?>
             </td>
@@ -73,7 +73,7 @@ $clcnae->rotulo->label("q71_estrutural");
           <tr>
 	          <td align="right"><b>Mostrar:</b></td>
 	          <td align="left" > 
-	          <?php 
+	          <?
 		        $arraymostra = array("A" => "Somente analítico ","T" => "Todos");
 		        db_select("mostra",$arraymostra,1,1,"onchange='document.form2.submit();'");
 		        ?>
@@ -92,7 +92,7 @@ $clcnae->rotulo->label("q71_estrutural");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
            $where  = "";
            $where2 = "";
            if(!isset($mostra) ||$mostra=='A'){
@@ -211,13 +211,13 @@ $clcnae->rotulo->label("q71_estrutural");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
             
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -124,7 +124,7 @@ if($numpre != ""){
   <td align='center'><?=$Lk00_numpar?></td>
   <td align='center'><?=$Lk00_valor?></td>
 </tr>
-<?php for($x = 0; $x < $clcancdebitosreg->numrows; $x++) {
+<?for($x = 0; $x < $clcancdebitosreg->numrows; $x++) {
     db_fieldsmemory($result,$x);
     echo "<tr><td><input type='checkbox' name='id' value='$k21_sequencia'></td><td>$k21_numpre</td><td>$k21_numpar</td><td>$k00_valor</td></tr>";
   }?>
@@ -132,7 +132,7 @@ if($numpre != ""){
   <td colspan="4"><strong>Observações:</strong></td>
 </tr>
 <tr>
-  <td colspan="4"><?php  db_textarea('k23_obs',2,50,$Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
+  <td colspan="4"><? db_textarea('k23_obs',2,50,$Ik23_obs,true,'text',$db_opcao,"","","#FFFFFF; text-transform:uppercase")?></td>
 </tr>
 </table>
 </form>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $cltiporegracompensacao->rotulo->label("k154_descricao");
             <?=$Lk154_sequencial?>
           </td>
           <td nowrap> 
-          <?php 
+          <?
             db_input("k154_sequencial",10,$Ik154_sequencial,true,"text",4,"","chave_k154_sequencial");
           ?>
           </td>
@@ -66,7 +66,7 @@ $cltiporegracompensacao->rotulo->label("k154_descricao");
             <?=$Lk154_descricao?>
           </td>
           <td nowrap> 
-          <?php 
+          <?
             db_input("k154_descricao",40,$Ik154_descricao,true,"text",4,"","chave_k154_descricao");
           ?>
           </td>
@@ -86,7 +86,7 @@ $cltiporegracompensacao->rotulo->label("k154_descricao");
   <tr> 
     <td align="center" valign="top"> 
     <fieldset>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tiporegracompensacao.php")==true){
@@ -127,12 +127,12 @@ $cltiporegracompensacao->rotulo->label("k154_descricao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

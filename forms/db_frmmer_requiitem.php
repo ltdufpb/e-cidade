@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clrotulo->label("me16_i_codigo");
        <?=@$Lme17_i_codigo?>
     </td>
     <td> 
-     <?php db_input('me17_i_codigo',5,$Ime17_i_codigo,true,'text',$db_opcao,"")?>
+     <?db_input('me17_i_codigo',5,$Ime17_i_codigo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -48,40 +48,40 @@ $clrotulo->label("me16_i_codigo");
        <?=@$Lme17_f_quant?>
     </td>
     <td> 
-      <?php db_input('me17_f_quant',4,$Ime17_f_quant,true,'text',$db_opcao,"")?>
+      <?db_input('me17_f_quant',4,$Ime17_f_quant,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme17_i_unidade?>">
-       <?php db_ancora(@$Lme17_i_unidade,"js_pesquisame17_i_unidade(true);",$db_opcao);?>
+       <?db_ancora(@$Lme17_i_unidade,"js_pesquisame17_i_unidade(true);",$db_opcao);?>
     </td>
     <td> 
-      <?php db_input('me17_i_unidade',5,$Ime17_i_unidade,true,'text',$db_opcao,
+      <?db_input('me17_i_unidade',5,$Ime17_i_unidade,true,'text',$db_opcao,
                  " onchange='js_pesquisame17_i_unidade(false);'"
                 )
       ?>
-      <?php db_input('me15_i_codigo',5,$Ime15_i_codigo,true,'text',3,'')?>
+      <?db_input('me15_i_codigo',5,$Ime15_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme17_i_item?>">
-       <?php db_ancora(@$Lme17_i_item,"js_pesquisame17_i_item(true);",$db_opcao);?>
+       <?db_ancora(@$Lme17_i_item,"js_pesquisame17_i_item(true);",$db_opcao);?>
     </td>
     <td> 
-    <?php db_input('me17_i_item',5,$Ime17_i_item,true,'text',$db_opcao," onchange='js_pesquisame17_i_item(false);'")?>
-    <?php db_input('me10_i_codigo',5,$Ime10_i_codigo,true,'text',3,'')?>
+    <?db_input('me17_i_item',5,$Ime17_i_item,true,'text',$db_opcao," onchange='js_pesquisame17_i_item(false);'")?>
+    <?db_input('me10_i_codigo',5,$Ime10_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme17_i_merrequi?>">
-     <?php db_ancora(@$Lme17_i_merrequi,"js_pesquisame17_i_merrequi(true);",$db_opcao);?>
+     <?db_ancora(@$Lme17_i_merrequi,"js_pesquisame17_i_merrequi(true);",$db_opcao);?>
     </td>
     <td> 
-    <?php db_input('me17_i_merrequi',5,$Ime17_i_merrequi,true,'text',$db_opcao,
+    <?db_input('me17_i_merrequi',5,$Ime17_i_merrequi,true,'text',$db_opcao,
                " onchange='js_pesquisame17_i_merrequi(false);'"
               )
     ?>
-    <?php db_input('me16_i_codigo',5,$Ime16_i_codigo,true,'text',3,'')?>
+    <?db_input('me16_i_codigo',5,$Ime16_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -219,7 +219,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_requiitem.hide();
-  <?php 
+  <?
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

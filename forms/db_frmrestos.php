@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,37 +39,37 @@ $clrotulo->label("cm02_i_proprietario");
        <?=@$Lcm12_i_codigo?>
     </td>
     <td> 
-<?php 
+<?
 db_input('cm12_i_codigo',10,$Icm12_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm12_i_ossoariopart?>">
-       <?php 
+       <?
        db_ancora(@$Lcm12_i_ossoariopart,"js_pesquisacm12_i_ossoariopart(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('cm12_i_ossoariopart',10,$Icm12_i_ossoariopart,true,'text',$db_opcao," onchange='js_pesquisacm12_i_ossoariopart(false);'")
 ?>
-       <?php 
+       <?
 db_input('proprietario',50,$proprietario,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm12_i_sepultamento?>">
-       <?php 
+       <?
        db_ancora(@$Lcm12_i_sepultamento,"js_pesquisacm12_i_sepultamento(true);",3);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('cm12_i_sepultamento',10,$Icm12_i_sepultamento,true,'text',3," onchange='js_pesquisacm12_i_sepultamento(false);'")
 ?>
-       <?php 
+       <?
 db_input('nome_sepultamento',50,$nome,true,'text',3,'')
        ?>
     </td>
@@ -79,25 +79,25 @@ db_input('nome_sepultamento',50,$nome,true,'text',3,'')
        <?=@$Lcm12_d_entrada?>
     </td>
     <td> 
-<?php 
+<?
 db_inputdata('cm12_d_entrada',@$cm12_d_entrada_dia,@$cm12_d_entrada_mes,@$cm12_d_entrada_ano,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   </table>
   </center>
-<?php if($antigo != "X"){?>
+<?if($antigo != "X"){?>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?php }?>
+<?}?>
 </form>
 <script>
 function js_pesquisacm12_i_ossoariopart(mostra){
   if(mostra==true){
-    js_OpenJanelaIframe('CurrentWindow.corpo<?php if(!isset($antigo)){?>.iframe_a3<?php }else{?>.iframe_a4<?php }?>','db_iframe_ossoariopart','func_ossoariopart.php?funcao_js=parent.js_mostraossoariopart1|cm02_i_codigo|z01_nome','Pesquisa',true);
+    js_OpenJanelaIframe('CurrentWindow.corpo<?if(!isset($antigo)){?>.iframe_a3<?}else{?>.iframe_a4<?}?>','db_iframe_ossoariopart','func_ossoariopart.php?funcao_js=parent.js_mostraossoariopart1|cm02_i_codigo|z01_nome','Pesquisa',true);
   }else{
      if(document.form1.cm12_i_ossoariopart.value != ''){ 
-        js_OpenJanelaIframe('CurrentWindow.corpo<?php if(!isset($antigo)){?>.iframe_a3<?php }else{?>.iframe_a4<?php }?>','db_iframe_ossoariopart','func_ossoariopart.php?pesquisa_chave='+document.form1.cm12_i_ossoariopart.value+'&funcao_js=parent.js_mostraossoariopart','Pesquisa',false);
+        js_OpenJanelaIframe('CurrentWindow.corpo<?if(!isset($antigo)){?>.iframe_a3<?}else{?>.iframe_a4<?}?>','db_iframe_ossoariopart','func_ossoariopart.php?pesquisa_chave='+document.form1.cm12_i_ossoariopart.value+'&funcao_js=parent.js_mostraossoariopart','Pesquisa',false);
      }else{
        document.form1.proprietario.value = '';
      }
@@ -120,7 +120,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_restos.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

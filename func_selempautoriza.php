@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,13 +60,13 @@ $clrotulo->label("z01_numcgm");
               <?=$Le54_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e54_autori",6,$Ie54_autori,true,"text",4,"","chave_e54_autori");
 		       ?>
             </td>
             <td width="4%" align="right" nowrap title="<?=$Te54_anousu?>">
               <?=$Le54_anousu?>
-              <?php 
+              <?
 		       db_input("e54_anousu",4,$Ie54_anousu,true,"text",4,"","chave_e54_anousu");
 		       ?>
             </td>
@@ -74,7 +74,7 @@ $clrotulo->label("z01_numcgm");
               <?=$Lz01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?php  db_input("z01_numcgm",8,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm");?>
+            <? db_input("z01_numcgm",8,$Iz01_numcgm,true,"text",4,"","chave_z01_numcgm");?>
             </td>
          </tr>
           <tr> 
@@ -82,7 +82,7 @@ $clrotulo->label("z01_numcgm");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap colspan='4'> 
-            <?php  db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+            <? db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
             </td>
          </tr>
           <tr> 
@@ -98,7 +98,7 @@ $clrotulo->label("z01_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
     	$dbwhere=" e61_autori is null and e54_anulad is null and e54_instit = ".db_getsession("DB_instit");
       /* [Extensão] - Filtro da Despesa - Parte 1 */
 
@@ -144,12 +144,12 @@ $clrotulo->label("z01_numcgm");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

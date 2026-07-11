@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,31 +40,31 @@ $clrotulo->label("nome");
        <?=@$Lme11_i_codigo?>
     </td>
     <td> 
-    <?php db_input('me11_i_codigo',5,$Ime11_i_codigo,true,'text',$db_opcao,"")?>
+    <?db_input('me11_i_codigo',5,$Ime11_i_codigo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme11_i_cardapiodia?>">
-     <?php db_ancora(@$Lme11_i_cardapiodia,"js_pesquisame11_i_cardapiodia(true);",$db_opcao);?>
+     <?db_ancora(@$Lme11_i_cardapiodia,"js_pesquisame11_i_cardapiodia(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('me11_i_cardapiodia',5,$Ime11_i_cardapiodia,true,'text',$db_opcao,
+     <?db_input('me11_i_cardapiodia',5,$Ime11_i_cardapiodia,true,'text',$db_opcao,
                 " onchange='js_pesquisame11_i_cardapiodia(false);'"
                )
      ?>
-     <?php db_input('me12_i_codigo',5,$Ime12_i_codigo,true,'text',3,'')?>
+     <?db_input('me12_i_codigo',5,$Ime12_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme11_i_matricula?>">
-     <?php db_ancora(@$Lme11_i_matricula,"js_pesquisame11_i_matricula(true);",$db_opcao);?>
+     <?db_ancora(@$Lme11_i_matricula,"js_pesquisame11_i_matricula(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('me11_i_matricula',5,$Ime11_i_matricula,true,'text',$db_opcao,
+     <?db_input('me11_i_matricula',5,$Ime11_i_matricula,true,'text',$db_opcao,
                 " onchange='js_pesquisame11_i_matricula(false);'"
                )
      ?>
-     <?php db_input('ed60_i_codigo',20,$Ied60_i_codigo,true,'text',3,'')?>
+     <?db_input('ed60_i_codigo',20,$Ied60_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -72,19 +72,19 @@ $clrotulo->label("nome");
        <?=@$Lme11_d_data?>
     </td>
     <td> 
-     <?php db_inputdata('me11_d_data',@$me11_d_data_dia,@$me11_d_data_mes,@$me11_d_data_ano,true,'text',$db_opcao,"")?>
+     <?db_inputdata('me11_d_data',@$me11_d_data_dia,@$me11_d_data_mes,@$me11_d_data_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme11_i_usuario?>">
-     <?php db_ancora(@$Lme11_i_usuario,"js_pesquisame11_i_usuario(true);",$db_opcao);?>
+     <?db_ancora(@$Lme11_i_usuario,"js_pesquisame11_i_usuario(true);",$db_opcao);?>
     </td>
     <td> 
-     <?php db_input('me11_i_usuario',10,$Ime11_i_usuario,true,'text',$db_opcao,
+     <?db_input('me11_i_usuario',10,$Ime11_i_usuario,true,'text',$db_opcao,
                 " onchange='js_pesquisame11_i_usuario(false);'"
                )
      ?>
-     <?php db_input('nome',40,$Inome,true,'text',3,'')?>
+     <?db_input('nome',40,$Inome,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -236,7 +236,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_mer_cardapioaluno.hide();
-  <?php 
+  <?
   if ($db_opcao != 1) {
 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";

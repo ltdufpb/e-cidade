@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cldb_syscadproceditem->rotulo->label("codproced");
               <?=$Lseqproitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("seqproitem",6,$Iseqproitem,true,"text",4,"","chave_seqproitem");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $cldb_syscadproceditem->rotulo->label("codproced");
               <?=$Lcodproced?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("codproced",10,$Icodproced,true,"text",4,"","chave_codproced");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $cldb_syscadproceditem->rotulo->label("codproced");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_syscadproceditem.php")==true){
@@ -123,12 +123,12 @@ $cldb_syscadproceditem->rotulo->label("codproced");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

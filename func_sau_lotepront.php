@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clsau_lotepront->rotulo->label("sd59_i_prontuario");
               <?=$Lsd59_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd59_i_codigo",10,$Isd59_i_codigo,true,"text",4,"","chave_sd59_i_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clsau_lotepront->rotulo->label("sd59_i_prontuario");
               <?=$Lsd59_i_lote?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd59_i_lote",10,$Isd59_i_lote,true,"text",4,"","chave_sd59_i_lote");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clsau_lotepront->rotulo->label("sd59_i_prontuario");
               <?=$Lsd59_i_prontuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("sd59_i_prontuario",10,$Isd59_i_prontuario,true,"text",4,"","chave_sd59_i_prontuario");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clsau_lotepront->rotulo->label("sd59_i_prontuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_lotepront.php")==true){
@@ -138,12 +138,12 @@ $clsau_lotepront->rotulo->label("sd59_i_prontuario");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

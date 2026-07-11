@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -56,13 +56,13 @@ $rotulo->label("z01_nome");
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Te54_autori?>"><?=$Le54_autori?></td>
             <td width="96%" align="left" nowrap>
-            <?php  db_input("e54_autori",6,$Ie54_autori,true,"text",4,"","chave_e54_autori"); ?>
+            <? db_input("e54_autori",6,$Ie54_autori,true,"text",4,"","chave_e54_autori"); ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
             <td width="96%" align="left" nowrap>
-            <?php  db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+            <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
             </td>
           </tr>
 
@@ -71,7 +71,7 @@ $rotulo->label("z01_nome");
             <?=$Le54_anousu?>
             </td>
             <td width="96%" align="left" nowrap>
-            <?php  db_input("e54_anousu",4,$Ie54_anousu,true,"text",4,"","chave_e54_anousu"); ?>
+            <? db_input("e54_anousu",4,$Ie54_anousu,true,"text",4,"","chave_e54_anousu"); ?>
             </td>
           </tr>
           <tr>
@@ -87,7 +87,7 @@ $rotulo->label("z01_nome");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
         $where_anul = "";
         if (isset($anul)) {
             $where_anul = " and e54_anulad is null ";
@@ -142,12 +142,12 @@ $rotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

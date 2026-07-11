@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -198,7 +198,7 @@ function js_submit_form(){
     <td ></td>
     <td ></td>
   </tr>
-  <?php  
+  <? 
   $inner_arrecad = "";
   $inner_tipo = "";
   $inner = "";
@@ -214,7 +214,7 @@ function js_submit_form(){
   ?>
   <tr>
     <td colspan=2>
-    <?php 
+    <?
     $campos = " distinct divida.v01_exerc,arrecad.k00_numpre,arrecad.k00_numpar,arrecad.k00_receit,k02_descr,arrecad.k00_dtvenc ";
     $sql_numpres = "select $campos 
 	         		from $tab
@@ -257,14 +257,14 @@ function js_submit_form(){
     </td>
   </tr>
 </table>
-<?php 
+<?
 db_input('q02_inscr',10,'',true,'hidden',3);
 db_input('inner',10,'',true,'hidden',3);
 db_input('where',10,'',true,'hidden',3);
 ?>
 </form>
 </center>
-<?php  
+<? 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -277,7 +277,7 @@ function js_mandadados(tipor,tipdes,inner,where){
 }
 */
 </script>
-<?php 
+<?
 if (isset($cancelar)){
   if ($sqlerro==false){
     db_msgbox("Cancelamento Efetuado!!");

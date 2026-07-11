@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -64,7 +64,7 @@ function js_emite(){
   }else{
     obj     = document.form1;
     periodo = obj.periodo.value;
-    fonte="<?php  $fonte ?>";
+    fonte="<? $fonte ?>";
     jan = window.open('<?=$fonte?>?db_selinstit='+obj.db_selinstit.value+'&periodo='+periodo,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
     jan.moveTo(0,0);
   }
@@ -81,7 +81,7 @@ function js_emite(){
     </tr>
     <tr>
         <td align="center" colspan="2">
-	   <?php 	db_selinstit('',300,100); ?>
+	   <?	db_selinstit('',300,100); ?>
         </td>
     </tr>
    

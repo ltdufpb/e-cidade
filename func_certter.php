@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clcertter->rotulo->label("v14_parcel");
               <?=$Lv14_certid?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v14_certid",4,$Iv14_certid,true,"text",4,"","chave_v14_certid");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clcertter->rotulo->label("v14_parcel");
               <?=$Lv14_parcel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v14_parcel",4,$Iv14_parcel,true,"text",4,"","chave_v14_parcel");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clcertter->rotulo->label("v14_parcel");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "certter.*,v13_dtemis";
@@ -112,14 +112,14 @@ $clcertter->rotulo->label("v14_parcel");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v14_certid.focus();
 document.form2.chave_v14_certid.select();
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,10 +60,10 @@ if(isset($solicita) && trim($solicita)!=""){
 
   <tr>
     <td align='left' colspan='1' nowrap title="<?=$Tpc10_numero?>" width="150"> 
-      <?php  db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?>
+      <? db_ancora(@$Lpc10_numero,"js_pesquisapc10_numero(true);",1);?>
     </td>
     <td align="left"   nowrap>
-      <?php  db_input('pc10_numero',8,$Ipc10_numero,true,"text",1,"onchange='js_pesquisapc10_numero(false);'"); ?>
+      <? db_input('pc10_numero',8,$Ipc10_numero,true,"text",1,"onchange='js_pesquisapc10_numero(false);'"); ?>
     </td>
   </tr>
   
@@ -72,7 +72,7 @@ if(isset($solicita) && trim($solicita)!=""){
       <strong>Data: </strong>      
     </td>
     <td align="left" nowrap>
-    <?php 
+    <?
 //    db_inputdata('pc10_data',@$pc10_data_dia,@$pc10_data_mes,@$pc10_data_ano,true,'text',3);
       db_input('pc10_data_dia',2,0,true,'text',3);
       db_input('pc10_data_mes',2,0,true,'text',3);
@@ -87,7 +87,7 @@ if(isset($solicita) && trim($solicita)!=""){
       <strong>Departamento: </strong>      
     </td>
     <td align="left" nowrap>
-    <?php 
+    <?
       db_input('descrdepto',40,$Idescrdepto,true,'text',3);
     ?>
     </td>
@@ -99,7 +99,7 @@ if(isset($solicita) && trim($solicita)!=""){
       <table>
        <tr>
             <td colspan="2" nowrap>
-              <?php 
+              <?
                 db_textarea('pc10_resumo',2,77,$Ipc10_resumo,true,'text',3,"")
               ?>
             </td>
@@ -122,7 +122,7 @@ if(isset($solicita) && trim($solicita)!=""){
 
 </center>
 <input name="incluir" type="submit" id="db_opcao" value="Liberar solicitação" <?=($db_botao==false?"disabled":"")?> onclick=' return js_enviardados();'>
-<?php 
+<?
 //<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 db_input('valores',50,0,true,'hidden',3);
 ?>
@@ -180,7 +180,7 @@ function js_mostrapcorcamitem(chave1,erro){
     location.href = "com1_liberasol001.php?solicita="+document.form1.pc10_numero.value;
   }
 }
-<?php 
+<?
   if($desabilita==true){
   echo "
     numele = document.form1.length;

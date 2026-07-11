@@ -205,7 +205,7 @@ $clrotulo->label("ed61_i_aluno");
 </div>
 </body>
 </html>
-<?php  db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
+<? db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit")); ?>
 <script language="JavaScript" type="text/javascript" src="scripts/session.js"></script>
 <script>
     const ctnLancamentoArea = document.getElementById('ctnLancamentoArea');

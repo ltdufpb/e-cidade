@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -122,15 +122,15 @@ $clrotulo->label("ed220_i_procedimento");
               <tr>
                 <td width="4%" nowrap title="<?=$Ted57_i_codigo?>">
                   <?=$Led57_i_codigo?>
-                  <?php db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
+                  <?db_input("ed57_i_codigo",10,$Ied57_i_codigo,true,"text",4,"","chave_ed57_i_codigo");?>
                 </td>
                 <td width="4%" nowrap title="<?=$Ted57_c_descr?>">
                   <?=$Led57_c_descr?>
-                  <?php db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
+                  <?db_input("ed57_c_descr",10,$Ied57_c_descr,true,"text",4,"","chave_ed57_c_descr");?>
                 </td>
                 <td width="4%" nowrap title="<?=$Ted31_i_curso?>">
                   <?=$Led31_i_curso?>
-                  <?php 
+                  <?
                     $sCamposCurso = " ed29_i_codigo,ed29_c_descr ";
                     $sSqlCurso    = $oDaoCurso->sql_query_file("", $sCamposCurso, "ed29_c_descr");
                     $rsCurso      = $oDaoCurso->sql_record($sSqlCurso);
@@ -141,7 +141,7 @@ $clrotulo->label("ed220_i_procedimento");
               <tr>
                 <td width="4%" nowrap title="<?=$Ted57_i_turno?>">
                   <?=$Led57_i_turno?>
-                  <?php 
+                  <?
                     $sCamposTurno = " ed15_i_codigo,ed15_c_nome,ed15_i_sequencia ";
                     $sWhereTurno  = " periodoescola.ed17_i_escola = ".$iEscola;
                     $sSqlTurno    = " SELECT ".$sCamposTurno;
@@ -166,7 +166,7 @@ $clrotulo->label("ed220_i_procedimento");
                 </td>
                 <td width="4%" nowrap title="<?=$Ted57_i_calendario?>">
                   <?=$Led57_i_calendario?>
-                  <?php 
+                  <?
                     $sCamposCalendario = " ed52_i_codigo,ed52_c_descr ";
                     $sWhereCalendario  = " ed52_c_passivo = 'N' AND ed38_i_escola = ".$iEscola;
                     $sSqlCalendario    = $oDaoCalendario->sql_query_calescola("", $sCamposCalendario, "ed52_i_ano DESC", $sWhereCalendario);
@@ -186,7 +186,7 @@ $clrotulo->label("ed220_i_procedimento");
                 </td>
                 <td width="4%" nowrap title="<?=$Ted220_i_procedimento?>">
                   <?=$Led220_i_procedimento?>
-                  <?php 
+                  <?
                     $sCamposProcedimento = " ed40_i_codigo,ed40_c_descr ";
                     $sWhereProcedimento  = " ed86_i_escola = ".$iEscola." GROUP BY ed40_i_codigo,ed40_c_descr ";
                     $sSqlProcedimento    = $oDaoProcedimento->sql_query_procturma("",
@@ -222,7 +222,7 @@ $clrotulo->label("ed220_i_procedimento");
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?php 
+          <?
             if (!isset($pesquisa_chave)) {
 
               $sCampos  = " distinct turma.ed57_i_codigo, ";

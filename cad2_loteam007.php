@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -88,7 +88,7 @@ if(isset($j37_setor) && $j37_setor != ""){
   </tr>
   <tr>
     <td nowrap width="50%">
-<?php 
+<?
 $aux = new cl_arquivo_auxiliar;
 $aux->cabecalho = "<strong>QUE CONTENHAM ESTAS RUAS</strong>";
 $aux->codigo = "j14_codigo";

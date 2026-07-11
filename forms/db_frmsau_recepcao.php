@@ -149,15 +149,15 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
          if(<?=trim($z01_i_familiamicroarea)?>==itemArray[i][1]){
            indice = i;
          }
-        <?php }?>
+        <?}?>
         j++;
       }
 
-      <?php if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
+      <?if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
        selectCtrl.options[indice].selected = true;
-      <?php }else{?>
+      <?}else{?>
        selectCtrl.options[0].selected = true;
-      <?php }?>
+      <?}?>
     }
   }
 </script>
@@ -183,7 +183,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                   db_input( 'sd24_i_codigo', 12, $Isd24_i_codigo, true, 'text', 3 );
                   ?>
                 </td>
-                <?php  if( $obj_sau_config->s103_c_lancafaa == "I" ){ ?>
+                <? if( $obj_sau_config->s103_c_lancafaa == "I" ){ ?>
                 <td align="right" title="<?=@$Tsd23_i_codigo?>">
                   <label for="sd23_i_codigo">
                     <?php
@@ -196,7 +196,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                   db_input( 'sd23_i_codigo', 21, $Isd23_i_codigo, true, 'text', 3 );
                   ?>
                 </td>
-                <?php  } ?>
+                <? } ?>
               </tr>
               <tr>
                 <td align="right" nowrap title="<?=@$Tsd24_i_unidade?>">
@@ -259,7 +259,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                      <option value="<?=$cod_micro;?>" <?=$cod_micro==@$sd34_i_codigo?"selected":""?>>
                        <?=$desc_micro;?>
                      </option>
-                     <?php 
+                     <?
                    }
                    ?>
                    </select>
@@ -279,9 +279,9 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                     onchange="if(this.value=='')document.form1.z01_v_micro.value='';">
                     <option value=""></option>
                   </select>
-                  <?php if( isset( $z01_i_familiamicroarea ) && $z01_i_familiamicroarea != "" ) {?>
+                  <?if( isset( $z01_i_familiamicroarea ) && $z01_i_familiamicroarea != "" ) {?>
                     <script>fillSelectFromArray(document.form1.z01_i_familiamicroarea, team[document.form1.z01_v_micro.selectedIndex-1]);</script>
-                  <?php }?>
+                  <?}?>
                 </td>
               </tr>
 
@@ -505,7 +505,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                         db_fieldsmemory( $rsSelect, $y );
                       ?>
                         <option value="<?=$cod?>" <?=( @$sd24_i_tipo == $cod ) ? "selected" : ""?>><?=$label?></option>
-                    <?php }?>
+                    <?}?>
                   </select>
                 </td>
               </tr>
@@ -525,7 +525,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                         db_fieldsmemory( $rsSelect, $y );
                       ?>
                         <option value="<?=$cod?>" <?=( @$sd24_i_motivo == $cod ) ? "selected" : ""?>><?=$label?></option>
-                    <?php }?>
+                    <?}?>
                   </select>
                 </td>
               </tr>
@@ -545,7 +545,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
                         db_fieldsmemory( $rsSelect, $y );
                       ?>
                         <option value="<?=$cod?>" <?=( @$sd24_i_acaoprog == $cod ) ? "selected" : ""?>><?=$label?></option>
-                    <?php }?>
+                    <?}?>
                   </select>
                 </td>
               </tr>
@@ -1177,7 +1177,7 @@ function js_mostracgs1( chave1, chave2 ) {
 }
 
 
-<?php if(isset($triagem) && $triagem=="false"){?>
+<?if(isset($triagem) && $triagem=="false"){?>
 function js_pesquisaprontuarios() {
 
   js_OpenJanelaIframe(
@@ -1189,7 +1189,7 @@ function js_pesquisaprontuarios() {
                      );
 }
 
-<?php }else{?>
+<?}else{?>
 function js_pesquisaprontuarios() {
 
   js_OpenJanelaIframe(
@@ -1200,7 +1200,7 @@ function js_pesquisaprontuarios() {
                        true
                      );
 }
-<?php }?>
+<?}?>
 
 function js_preenchecgs( chave ) {
 
@@ -1208,24 +1208,24 @@ function js_preenchecgs( chave ) {
   location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+chave+'&triagem='+'<?=@$triagem?>';
 }
 
-<?php if( isset( $triagem ) && $triagem == "false" ) {?>
+<?if( isset( $triagem ) && $triagem == "false" ) {?>
 
 function js_preenchepesquisa( chave ) {
   db_iframe_prontuarios002.hide();
   location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave+'&triagem='+'<?=@$triagem?>';
 }
-<?php } else {?>
+<?} else {?>
 
 function js_preenchepesquisa( chave ) {
 
   db_iframe_prontuarios.hide();
   location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave+'&triagem='+'<?=@$triagem?>';
 }
-<?php }?>
+<?}?>
 
 function js_limpa(){
 
-  <?php 
+  <?
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 }

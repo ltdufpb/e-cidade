@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
               <?=$Lsd53_i_vinculacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd53_i_vinculacao",2,$Isd53_i_vinculacao,true,"text",4,"","chave_sd53_i_vinculacao");
                  ?>
             </td>
@@ -68,7 +68,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
               <?=$Lsd53_i_tpvinculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd53_i_tpvinculo",2,$Isd53_i_tpvinculo,true,"text",4,"","chave_sd53_i_tpvinculo");
                  ?>
             </td>
@@ -78,7 +78,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
               <?=$Lsd53_v_descrvinculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("sd53_v_descrvinculo",60,$Isd53_v_descrvinculo,true,"text",4,"","chave_sd53_v_descrvinculo");
                  ?>
             </td>
@@ -96,7 +96,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_tpmodvinculo.php")==true){
@@ -136,12 +136,12 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

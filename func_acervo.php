@@ -138,7 +138,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_seq"><?=$Lbi06_seq?></label>
         </td>
         <td >
-          <?php db_input("bi06_seq",10,$Ibi06_seq,true,"text",4,"","chave_bi06_seq");?>
+          <?db_input("bi06_seq",10,$Ibi06_seq,true,"text",4,"","chave_bi06_seq");?>
         </td>
       </tr>
 
@@ -147,7 +147,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_titulo"><?=$Lbi06_titulo?></label>
         </td>
         <td >
-          <?php db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+          <?db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
         </td>
       </tr>
 
@@ -156,7 +156,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_subtitulo"><?=$Lbi06_subtitulo?></label>
         </td>
         <td >
-          <?php db_input("bi06_subtitulo",50,$Ibi06_subtitulo,true,"text",4,"","chave_bi06_subtitulo");?>
+          <?db_input("bi06_subtitulo",50,$Ibi06_subtitulo,true,"text",4,"","chave_bi06_subtitulo");?>
         </td>
       </tr>
 
@@ -165,7 +165,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi06_titulooriginal"><?=$Lbi06_titulooriginal?></label>
         </td>
         <td >
-          <?php db_input("bi06_titulooriginal",50,$Ibi06_titulooriginal,true,"text",4,"","chave_bi06_titulooriginal");?>
+          <?db_input("bi06_titulooriginal",50,$Ibi06_titulooriginal,true,"text",4,"","chave_bi06_titulooriginal");?>
         </td>
       </tr>
 
@@ -175,7 +175,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi15_assunto"><?=$Lbi15_assunto?></label>
         </td>
         <td >
-          <?php db_input("bi15_assunto",50,$Ibi15_assunto,true,"text",4,"","chave_bi15_assunto");?>
+          <?db_input("bi15_assunto",50,$Ibi15_assunto,true,"text",4,"","chave_bi15_assunto");?>
         </td>
       </tr>
 
@@ -184,7 +184,7 @@ function js_mostraColecao1(iColecao, sNome) {
           <label for="chave_bi01_nome"><b>Nome do Autor:</b></label>
         </td>
         <td >
-          <?php db_input("bi01_nome",50,$Ibi01_nome,true,"text",4,"","chave_bi01_nome");?>
+          <?db_input("bi01_nome",50,$Ibi01_nome,true,"text",4,"","chave_bi01_nome");?>
         </td>
       </tr>
 
@@ -200,23 +200,23 @@ function js_mostraColecao1(iColecao, sNome) {
         </td>
       </tr>
 
-      <?php if($bi26_leitorbarra=="S"){?>
+      <?if($bi26_leitorbarra=="S"){?>
       <tr>
         <td >
           <label for="chave_bi23_codbarras"><b>Código de Barras:</b></label>
         </td>
         <td >
-          <?php db_input("bi23_codbarras",20,@$Ibi23_codbarras,true,"text",4,"","chave_bi23_codbarras");?>
+          <?db_input("bi23_codbarras",20,@$Ibi23_codbarras,true,"text",4,"","chave_bi23_codbarras");?>
         </td>
       </tr>
-      <?php }?>
+      <?}?>
 
       <tr>
         <td title="Coleção">
-         <label for="bi29_sequencial"><?php  db_ancora("Coleção: ","js_pesquisaColecao(true);",1);?></label>
+         <label for="bi29_sequencial"><? db_ancora("Coleção: ","js_pesquisaColecao(true);",1);?></label>
         </td>
         <td  title="Coleção">
-         <?php 
+         <?
           db_input("bi29_sequencial", 10, $Ibi29_sequencial, true, "text", 1, "onchange='js_pesquisaColecao(false);'");
           db_input("bi29_nome", 36, '', true, "text", 3, '');
          ?>
@@ -341,11 +341,11 @@ function js_mostraColecao1(iColecao, sNome) {
 </body>
 </html>
 <script>
- <?php if($bi26_leitorbarra=="S"){?>
+ <?if($bi26_leitorbarra=="S"){?>
   js_tabulacaoforms("form1","chave_bi23_codbarras",true,1,"chave_bi23_codbarras",true);
- <?php }else{?>
+ <?}else{?>
   js_tabulacaoforms("form1","chave_bi06_titulo",true,1,"chave_bi06_titulo",true);
- <?php }?>
+ <?}?>
 </script>
 <script type="text/javascript">
 (function() {

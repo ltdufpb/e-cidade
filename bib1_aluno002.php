@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -107,7 +107,7 @@ if(isset($chavepesquisa)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Documentação do Aluno</b></legend>
-    <?php include(modification("forms/db_frmbibaluno.php"));?>
+    <?include(modification("forms/db_frmbibaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -115,7 +115,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?php 
+<?
 if(isset($alterar)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);
@@ -139,7 +139,7 @@ if(isset($alterar)){
     parent.parent.document.form1.tipo.value = "ALUNO";
    }
   </script>
-  <?php 
+  <?
  }
 }
 if($linhas_vinculo>0){
@@ -184,7 +184,7 @@ function js_removeMsg(idObj){
  obj = document.getElementById("MsgBox");
  document.body.removeChild(obj);
 }
-<?php if($linhas_vinculo>0){?>
+<?if($linhas_vinculo>0){?>
  js_msg_nao_altera("<?=$esc_vinculo?>","MsgBox");
-<?php }?>
+<?}?>
 </script>

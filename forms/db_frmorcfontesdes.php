@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,7 @@ $clrotulo->label("o57_descr");
 $clrotulo->label("o50_estrutreceita");
 ?>
 <script>
-<?php        
+<?       
 if(isset($atualizar) || isset($chavepesquisa)){
   $fonte_full=str_replace('.','',$o50_estrutreceita); 
   /*rotina que traz somente o código*/
@@ -164,14 +164,14 @@ function js_verifica(){
        total  = js_round(total,2);
      }
   }
-  <?php 
+  <?
      if($db_opcao!=3){
   ?>
   if(total<100){
     alert('O total de percentual não atingiu 100%. Verifique!');
     return false;
   }
-  <?php 
+  <?
      }   
   ?>
   obj=document.createElement('input');
@@ -181,7 +181,7 @@ function js_verifica(){
   document.form1.appendChild(obj);
   return true;
 }
-<?php 
+<?
 }
 ?>
 function js_soma(){
@@ -232,13 +232,13 @@ function js_totaliza(camp){
        <?=@$Lo60_anousu?>
     </td>
     <td> 
-        <?php  $o60_anousu = db_getsession('DB_anousu');
+        <? $o60_anousu = db_getsession('DB_anousu');
            db_input('o60_anousu',4,$Io60_anousu,true,'text',3) ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To60_codfon?>">
-       <?php 
+       <?
        if($db_opcao==1){
 	 $db_opcao02=1;
        }else{
@@ -248,7 +248,7 @@ function js_totaliza(camp){
        ?>
     </td>
     <td colspan='2'> 
-   <?php 
+   <?
      $clestrutura->funcao_onchange  = "js_pesquisao60_codfon(false);";
      $clestrutura->autocompletar = true;
      $clestrutura->mascara = false;
@@ -265,24 +265,24 @@ function js_totaliza(camp){
   <tr>
     <td colspan='2' align='center' >
       <fieldset><Legend align='center'><b>Filhos</b></Legend>
-<?php        
+<?       
    if(isset($testa) && $testa=='ok'){   
      if(isset($chavepesquisa)){
 ?>
      <iframe id="filhos"  frameborder="0" name="filhos" src="orc1_orcfontesdes004.php?db_opcao=<?=$db_opcao?>&o50_estrutreceita=<?=$o50_estrutreceita?>&chavepesquisa=<?=$chavepesquisa?>"   scrolling="auto"  width='100%'>
-<?php 
+<?
      }else{ 
 ?>     
 
     <iframe id="filhos"  frameborder="0" name="filhos" src="orc1_orcfontesdes004.php?db_opcao=<?=$db_opcao?>&o50_estrutreceita=<?=$o50_estrutreceita?>"   scrolling="auto"  width='100%'>
      
-<?php 
+<?
      }
 ?>     
      </iframe>
      <br>
      <b>Total da soma(%)</b>
-<?php    
+<?   
      if(empty($total)){
        $total='0.00';
      }
@@ -290,7 +290,7 @@ function js_totaliza(camp){
    
 ?>
      <b>Restante(%)</b>
-<?php    
+<?   
      if(empty($total)){
        $total='0.00';
      }
@@ -356,14 +356,14 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave1,chave){
   db_iframe_orcfontesdes.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }
 </script>
-<?php 
+<?
 if(isset($fonts) && $fonts!=''){
   echo "
        <script>

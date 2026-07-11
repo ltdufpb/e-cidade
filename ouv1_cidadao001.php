@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -83,14 +83,14 @@ if (isset($oGet->lTelaSocial) && $oGet->lTelaSocial) {
   <tr align="center">
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    	<?php 
+    	<?
     	  require_once(modification("forms/db_frmcidadao.php"));
     	?>
     </center>
 	</td>
   </tr>
 </table>
-<?php 
+<?
   if ($lHabilitaMenu) {
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   }
@@ -100,7 +100,7 @@ if (isset($oGet->lTelaSocial) && $oGet->lTelaSocial) {
 <script>
 //js_tabulacaoforms("form1","ov02_seq",true,1,"ov02_seq",true);
 </script>
-<?php 
+<?
 if (isset($incluir)) {
 
   if ($clcidadao->erro_status == "0") {

@@ -783,7 +783,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-      <?php  include(modification("forms/db_frmiptuconstralt.php")); ?>
+      <? include(modification("forms/db_frmiptuconstralt.php")); ?>
     </center>
     </td>
   </tr>

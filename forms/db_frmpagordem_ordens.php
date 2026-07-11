@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -53,7 +53,7 @@ $clrotulo->label("e50_codord");
 </script>
 <link href="../estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?php $cor="#999999"?>
+<?$cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -78,7 +78,7 @@ $clrotulo->label("e50_codord");
     <td  align="left" valign="top" bgcolor="#CCCCCC">
     <form name='form1'>
     <center>
-<?php 
+<?
 if(isset($e60_numemp) && $e60_numemp!=""){
    //rotina que traz os dados do empenho
      $result = $clempempenho->sql_record($clempempenho->sql_query_file($e60_numemp));

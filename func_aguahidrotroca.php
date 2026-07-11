@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claguahidrotroca->rotulo->label("x28_codhidrometro");
               <?=$Lx28_codhidrometro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x28_codhidrometro",6,$Ix28_codhidrometro,true,"text",4,"","chave_x28_codhidrometro");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claguahidrotroca->rotulo->label("x28_codhidrometro");
               <?=$Lx28_codhidrometro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("x28_codhidrometro",6,$Ix28_codhidrometro,true,"text",4,"","chave_x28_codhidrometro");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $claguahidrotroca->rotulo->label("x28_codhidrometro");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguahidrotroca.php")==true){
@@ -119,12 +119,12 @@ $claguahidrotroca->rotulo->label("x28_codhidrometro");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

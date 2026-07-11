@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
               <?=$Lk12_id?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k12_id",5,$Ik12_id,true,"text",4,"","chave_k12_id");
 		       ?>
             </td>
@@ -70,7 +70,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
               <?=$Lk12_data?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k12_data",8,$Ik12_data,true,"text",4,"","chave_k12_data");
 		       ?>
             </td>
@@ -80,7 +80,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
               <?=$Lk12_autent?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k12_autent",5,$Ik12_autent,true,"text",4,"","chave_k12_autent");
 		       ?>
             </td>
@@ -90,7 +90,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
               <?=$Lk12_numpre?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k12_numpre",8,$Ik12_numpre,true,"text",4,"","chave_k12_numpre");
 		       ?>
             </td>
@@ -100,7 +100,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
               <?=$Lk12_numpar?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k12_numpar",3,$Ik12_numpar,true,"text",4,"","chave_k12_numpar");
 		       ?>
             </td>
@@ -110,7 +110,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
               <?=$Lk12_receit?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k12_receit",10,$Ik12_receit,true,"text",4,"","chave_k12_receit");
 		       ?>
             </td>
@@ -120,7 +120,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
               <?=$Lk12_id?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?php 
+              <?
 		       db_input("k12_id",5,$Ik12_id,true,"text",4,"","chave_k12_id");
 		       ?>
             </td>
@@ -138,7 +138,7 @@ $clcornumpdesconto->rotulo->label("k12_id");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cornumpdesconto.php")==true){
@@ -178,12 +178,12 @@ $clcornumpdesconto->rotulo->label("k12_id");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

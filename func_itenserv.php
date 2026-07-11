@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $clrotulo->label("z01_nome");
               <?=$Lcm10_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("cm10_i_codigo",10,$Icm10_i_codigo,true,"text",4,"","chave_cm10_i_codigo");
                  ?>
             </td>
@@ -68,7 +68,7 @@ $clrotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
                  db_input("z01_nome",10,$Iz01_nome,true,"text",4,"","chave_z01_nome");
                  ?>
             </td>
@@ -86,7 +86,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itenserv.php")==true){
@@ -127,12 +127,12 @@ $clrotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

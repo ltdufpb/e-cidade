@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clveiccadcomb->rotulo->label("ve26_descr");
               <?=$Lve26_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ve26_codigo",10,$Ive26_codigo,true,"text",4,"","chave_ve26_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clveiccadcomb->rotulo->label("ve26_descr");
               <?=$Lve26_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ve26_descr",40,$Ive26_descr,true,"text",4,"","chave_ve26_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clveiccadcomb->rotulo->label("ve26_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadcomb.php")==true){
@@ -123,12 +123,12 @@ $clveiccadcomb->rotulo->label("ve26_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

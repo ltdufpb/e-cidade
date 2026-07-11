@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,7 @@ $oRotulo->label("c60_descr");
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?php 
+    <?
      db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
      db_app::load("widgets/windowAux.widget.js, dbmessageBoard.widget.js, AjaxRequest.js");
      db_app::load("estilos.css,grid.style.css");
@@ -57,7 +57,7 @@ $oRotulo->label("c60_descr");
                  Conta TCE/RJ:
                </td>
                <td>
-                  <?php 
+                  <?
                     db_input('codigocontatce', 10, $Ic60_codcon, true, "text", 3);
                     db_input('descricaocontatce',  40, $Ic60_descr, true, "text", 1);
                   ?>
@@ -65,12 +65,12 @@ $oRotulo->label("c60_descr");
              </tr>
              <tr>
                <td>
-                <?php 
+                <?
                  db_ancora($Lc60_codcon, "js_pesquisaPlano(true)", 1);
                 ?>
                </td>
                <td>
-                  <?php 
+                  <?
                     db_input('c60_codcon', 10, $Ic60_codcon, true, "text", 1, 'onchange="js_pesquisaPlano(false)"');
                     db_input('c60_descr',  40, $Ic60_descr, true, "text", 1);
                   ?>
@@ -79,7 +79,7 @@ $oRotulo->label("c60_descr");
              <tr>
                 <td>Natureza do Saldo:</td>
                 <td>
-                  <?php  
+                  <? 
                     $aNaturezaSaldo = array(
                                             "C" => "Crédito",
                                             "D" => "Débito",  
@@ -110,7 +110,7 @@ $oRotulo->label("c60_descr");
   </div>
   </body>
 </html>  
-<?php  
+<? 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

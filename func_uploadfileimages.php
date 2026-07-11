@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -100,7 +100,7 @@ if (isset($_FILES[$oGet->idcampo])) {
 </body>
 </html>
 <script>
-<?php  
+<? 
 if (isset($sMsgErro) && $lErro) {
 	
 	echo "parent.$('{$oGet->idcampo}').value = '';\n";

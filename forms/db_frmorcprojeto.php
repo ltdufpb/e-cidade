@@ -43,30 +43,30 @@ $clrotulo->label("o45_numlei");
 
     <table border="0">
     <tr>
-      <td nowrap title="<?php echo @$To39_anousu?>"><?php PHP echo @$Lo39_anousu?></td>
+      <td nowrap title="<?php echo @$To39_anousu?>"><?PHP echo @$Lo39_anousu?></td>
       <td><?php $o39_anousu = db_getsession('DB_anousu');
               db_input('o39_anousu',5,$Io39_anousu,true,'text',3,"") ?>
       </td>
     </tr>
 
     <tr>
-       <td nowrap title="<?php PHP echo @$To39_codproj?>"><?php PHP echo @$Lo39_codproj?></td>
+       <td nowrap title="<?PHP echo @$To39_codproj?>"><?PHP echo @$Lo39_codproj?></td>
        <td><?php db_input('o39_codproj',5,$Io39_codproj,true,'text',3,"")?></td>
     </tr>
     <tr>
-      <td nowrap title="<?php PHP echo @$To39_descr?>"><?php PHP echo @$Lo39_descr?></td>
+      <td nowrap title="<?PHP echo @$To39_descr?>"><?PHP echo @$Lo39_descr?></td>
       <td><?php db_textarea('o39_descr',0,35,$Io39_descr,true,'text',$db_opcao,"") ?></td>
     </tr>
    <tr>
-    <td nowrap title="<?php PHP echo @$To39_codlei?>"><?php db_ancora(@$Lo39_codlei,"js_pesquisao39_codlei(true);",$db_opcao);?></td>
+    <td nowrap title="<?PHP echo @$To39_codlei?>"><?db_ancora(@$Lo39_codlei,"js_pesquisao39_codlei(true);",$db_opcao);?></td>
     <td>
        <?php db_input('o39_codlei',5,$Io39_codlei,true,'text',$db_opcao," onchange='js_pesquisao39_codlei(false);'")?>
        <?php db_input('o45_numlei',30,$Io45_numlei,true,'text',3,'')     ?>
     </td>
    </tr>
   <tr>
-    <td nowrap title="<?php PHP echo @$To39_tipoproj?>">
-       <?php PHP echo @$Lo39_tipoproj?>
+    <td nowrap title="<?PHP echo @$To39_tipoproj?>">
+       <?PHP echo @$Lo39_tipoproj?>
     </td>
     <td>
       <?php  // $x = array('1'=>'DECRETO','2'=>'LEI','3'=>'PROJETO RETIFICADOR');
@@ -78,8 +78,8 @@ $clrotulo->label("o45_numlei");
     </td>
     </tr>
     <tr>
-    <td nowrap title="<?php PHP echo @$To39_usalimite?>">
-       <?php PHP echo @$Lo39_usalimite?>
+    <td nowrap title="<?PHP echo @$To39_usalimite?>">
+       <?PHP echo @$Lo39_usalimite?>
     </td>
     <td>
       <?php  // $x = array('1'=>'DECRETO','2'=>'LEI','3'=>'PROJETO RETIFICADOR');
@@ -92,11 +92,11 @@ $clrotulo->label("o45_numlei");
 <td>
   <table border=0>
      <tr><td align=left colspan=2><fieldset><b>Decreto</b></fieldset></td></tr>
-     <tr><td nowrap title="<?php PHP echo @$To39_numero?>"><?php PHP echo @$Lo39_numero?></td>
+     <tr><td nowrap title="<?PHP echo @$To39_numero?>"><?PHP echo @$Lo39_numero?></td>
          <td><?php db_input('o39_numero',22,$Io39_numero,true,'text',$db_opcao,"") ?> </td>
      </tr>
      <tr>
-      <td nowrap title="<?php PHP echo @$To39_data?>"><?php PHP echo @$Lo39_data?> </td>
+      <td nowrap title="<?PHP echo @$To39_data?>"><?PHP echo @$Lo39_data?> </td>
       <td><?php db_inputdata('o39_data',@$o39_data_dia,@$o39_data_mes,@$o39_data_ano,true,'text',$db_opcao,"")?> </td>
      </tr>
 
@@ -104,11 +104,11 @@ $clrotulo->label("o45_numlei");
 
      <tr style='display: none'><td align=left colspan=2><fieldset><b>Lei </b></fieldset></td></tr>
      <tr style='display: none'>
-        <td nowrap title="<?php PHP echo @$To39_lei?>"><?php PHP echo @$Lo39_lei?></td>
+        <td nowrap title="<?PHP echo @$To39_lei?>"><?PHP echo @$Lo39_lei?></td>
         <td><?php db_input('o39_lei',22,$Io39_lei,true,'text',$db_opcao,"") ?> </td>
      </tr>
      <tr style='display: none'>
-        <td nowrap title="<?php PHP echo @$To39_leidata?>"><?php PHP echo @$Lo39_leidata?> </td>
+        <td nowrap title="<?PHP echo @$To39_leidata?>"><?PHP echo @$Lo39_leidata?> </td>
         <td><?php db_inputdata('o39_leidata',@$o39_leidata_dia,@$o39_leidata_mes,@$o39_leidata_ano,true,'text',$db_opcao,"")?> </td>
      </tr>
 
@@ -133,10 +133,10 @@ $clrotulo->label("o45_numlei");
 
 <div style="margin-top: 10px;">
 
-    <input name="<?php PHP echo ($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
+    <input name="<?PHP echo ($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>"
     onclick='return js_validalimite()' type="submit" id="db_opcao"
-    value="<?php PHP echo ($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
-    <?php PHP echo ($db_botao==false?"disabled":"")?> >
+    value="<?PHP echo ($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>"
+    <?PHP echo ($db_botao==false?"disabled":"")?> >
     <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 
 </div>
@@ -186,7 +186,7 @@ function js_mostraorclei1(chave1,chave2){
   db_iframe_orclei.hide();
 }
 function js_pesquisa(){
-  <?php 
+  <?
  //  if($db_opcao==22){
      echo "js_OpenJanelaIframe('CurrentWindow.corpo.iframe_projeto','db_iframe_orcprojeto','func_orcprojeto001.php?funcao_js=parent.js_preenchepesquisa|o39_codproj','Pesquisa',true);";
  // }else {
@@ -196,7 +196,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcprojeto.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

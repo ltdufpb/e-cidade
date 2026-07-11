@@ -85,14 +85,14 @@ function js_mudapagina(iCodigoProcesso, iNumCgm, sNome, lErro){
       <table>
 	      <tr>
 	        <td title="<?=$Tp58_codproc?>">
-	           <?php  db_ancora("Processo:","js_pesquisa(true);",1); ?>
+	           <? db_ancora("Processo:","js_pesquisa(true);",1); ?>
 	        </td>
 	        <td>
 	           <?php db_input("p58_numero", 15, $Ip58_numero, true, "text", 3, "onchange='js_pesquisa(false);'"); ?>
              <?php db_input("p58_codproc", 30, 0, true, "hidden", 1); ?>
 	        </td>
 	        <td> 
-	           <?php db_input("p58_requer",40,$Ip58_codproc,true,"text",3);?>
+	           <?db_input("p58_requer",40,$Ip58_codproc,true,"text",3);?>
 	        </td>
         </tr>
       </table>

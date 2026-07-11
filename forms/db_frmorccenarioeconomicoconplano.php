@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -34,18 +34,18 @@
           <table style="width:100%" border="0">
             <tr>
               <td style="width:100px">
-                <?php 
+                <?
                 db_ancora("<b>$sLabelFormulario</b>","js_pesquisa_estrutural(true);",1);
                ?>
               </td>
               <td style="width:100px">
-                <?php 
+                <?
                 db_input('codfon',15,"",true,'hidden',3);
                 db_input('fonte',15,"",true,'text',1,"onchange='js_pesquisa_estrutural(false)'");
                 ?>
               </td>
               <td >
-                <?php 
+                <?
                 db_input('descricao', 90, "", true, 'text', 3, "");
                 ?>
               </td>

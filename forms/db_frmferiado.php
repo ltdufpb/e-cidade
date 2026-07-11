@@ -118,7 +118,7 @@ if( $clregencia->numrows > 0 ) {
             </td>
           </tr>
           <tr>
-            <td nowrap title="<?php $Ted54_c_descr?>">
+            <td nowrap title="<?$Ted54_c_descr?>">
               <label><?=$Led54_c_descr?></label>
             </td>
            <td>

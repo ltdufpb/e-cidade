@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ function js_emite(){
 	      Certidões:
 	    </td>
 	    <td>
-	    <?php 
+	    <?
           $tipo_ordem = array("t"=>"Todas","d"=>"Dívida Ativa","p"=>"Parceladas");
           db_select("ordem",$tipo_ordem,true,2);
         ?>
@@ -71,7 +71,7 @@ function js_emite(){
           De: 
         </td>      
         <td>
-          <?php db_inputdata("data","","","","true","text",2)?>
+          <?db_inputdata("data","","","","true","text",2)?>
         </td>
       </tr>
       <tr>
@@ -79,7 +79,7 @@ function js_emite(){
           Até :
         </td>      
         <td>
-          <?php db_inputdata("data1","","","","true","text",2)?>
+          <?db_inputdata("data1","","","","true","text",2)?>
         </td>
       </tr>
       <tr>
@@ -87,7 +87,7 @@ function js_emite(){
 	      Relátorio :
 	    </td>
 	    <td>
-	      <?php  
+	      <? 
 	        $tipo_ordem1 = array("r"=>"Resumido","c"=>"Completo");
 	        db_select("rela",$tipo_ordem1,true,2); 
 	      ?>
@@ -98,7 +98,7 @@ function js_emite(){
 	    Iniciais :
 	    </td>
 	    <td>
-	      <?php 
+	      <?
             $tipo_inicial1 = array("0"=>"Todas","1"=>"Com Inicial Emitida", "2"=>"Sem Inicial Emitida");
 	        db_select("inicial",$tipo_inicial1,true,2);
           ?>
@@ -108,7 +108,7 @@ function js_emite(){
   </fieldset>
   <input  name="emite2" id="emite2" type="button" value="Emitir Relátorio" onclick="js_emite();" >  
 </form>
-<?php 
+<?
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -139,7 +139,7 @@ function js_mostratabdesc1(chave1,chave2){
 </script>
 
 
-<?php 
+<?
 if(isset($ordem)){
   echo "<script>
        js_emite();

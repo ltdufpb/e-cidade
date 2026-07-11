@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -95,15 +95,15 @@ function js_troca(codigo){
   <tr>
     <td align=right nowrap title="<?=@$Tc47_seqtranslan?>">
        <?=@$Lc47_seqtranslan ?>
-       <?php db_input('cod',8,0,true,'hidden',1);?>
+       <?db_input('cod',8,0,true,'hidden',1);?>
 
     </td>
     <td> 
-<?php 
+<?
 db_input('c47_seqtranslan',8,$Ic47_seqtranslan,true,'text',3)
 ?>
        <?=@$Lc47_seqtranslr?>
-<?php 
+<?
 db_input('c47_seqtranslr',8,$Ic47_seqtranslr,true,'text',3,"")
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('c47_seqtranslr',8,$Ic47_seqtranslr,true,'text',3,"")
        <?=@$Lc47_anousu?>
     </td>
     <td> 
-<?php 
+<?
 if(empty($c47_anousu)){
   $c47_anousu=db_getsession("DB_anousu");
 } 
@@ -123,12 +123,12 @@ db_input('c47_anousu',8,$Ic47_anousu,true,'text',$db_opcao);
   </tr>
   <tr>
     <td align=right nowrap title="<?=@$Tc47_debito?>">
-       <?php 
+       <?
        db_ancora(@$Lc47_debito,"js_pesquisac47_debito(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('c47_debito',6,$Ic47_debito,true,'text',$db_opcao," onchange='js_pesquisac47_debito(false);'");
 db_input('c60_descr',50,$Ic61_reduz,true,'text',3,"c60_descr_debito");
        ?>
@@ -136,12 +136,12 @@ db_input('c60_descr',50,$Ic61_reduz,true,'text',3,"c60_descr_debito");
   </tr>
   <tr>
     <td align=right nowrap title="<?=@$Tc47_credito?>">
-       <?php 
+       <?
        db_ancora(@$Lc47_credito,"js_pesquisac47_credito(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?php 
+<?
 db_input('c47_credito',6,$Ic47_credito,true,'text',$db_opcao," onchange='js_pesquisac47_credito(false);'");
 db_input('c60_descr',50,$Ic61_reduz,true,'text',3,'',"c60_descr_credito");
 ?>
@@ -152,7 +152,7 @@ db_input('c60_descr',50,$Ic61_reduz,true,'text',3,'',"c60_descr_credito");
        <?=$Lc47_instit?>
     </td>
     <td> 
-<?php 
+<?
 if(isset($c47_instit) && $c47_instit==''){
   $nomeinst='';
 }
@@ -168,7 +168,7 @@ if(isset($c47_instit) && $c47_instit==''){
   
     </td>
     <td> 
-<?php 
+<?
   $result=$clemprestotipo->sql_record($clemprestotipo->sql_query_file(null,"e90_codigo,e90_descr"));
   db_selectrecord("c47_tiporesto",$result,true,$db_opcao,"","","","0");
 ?>
@@ -179,7 +179,7 @@ if(isset($c47_instit) && $c47_instit==''){
     <td align=right>
 
        <?=@$Lc47_compara?>
-<?php 
+<?
   $db_o = 1;
   if(isset($opcao) && ($opcao=='alterar' || $opcao == 'excluir')){
     $db_o = 3;
@@ -187,16 +187,16 @@ if(isset($c47_instit) && $c47_instit==''){
 ?>
   </td>
   <td>
-<?php 
+<?
   $xy = array("0"=>"Não","1"=>"Débito","2"=>"Crédito","3"=>"Elemento");
   db_select('c47_compara',$xy,true,$db_o,"onchange='js_troca(this.value);'");
 ?>
     </td>
   </tr>
 
-<?php if( (( isset($cod) &&  $cod != 0)  ||  ( isset($c47_compara) && $c47_compara != 0  ))  && empty($novo) ){?>
+<?if( (( isset($cod) &&  $cod != 0)  ||  ( isset($c47_compara) && $c47_compara != 0  ))  && empty($novo) ){?>
 
-<?php 
+<?
     if(isset($opcao) && ($opcao=='alterar' || $opcao == 'excluir')){
 
    ?>
@@ -206,7 +206,7 @@ if(isset($c47_instit) && $c47_instit==''){
 	 <b>Elemento</b>
       </td>
       <td> 
-	 <?php 
+	 <?
 
 	 //parein aki
 	 $result = $clconplano->sql_record($clconplano->sql_query_reduz($c47_ref,"c60_descr as descr","","c60_anousu=".db_getsession("DB_anousu")));
@@ -215,26 +215,26 @@ if(isset($c47_instit) && $c47_instit==''){
 	 }
 	 
 	 db_input('c47_ref',15,1,true,'text',3);?>
-	 <?php db_input('descr',30,1,true,'text',3);?>
+	 <?db_input('descr',30,1,true,'text',3);?>
       </td>
     </tr>
- <?php }else{?>
+ <?}else{?>
     <tr>
       <td nowrap title="Estrutural do elemento">
 	 <b>Estrutural</b>
       </td>
       <td> 
-	 <?php db_input('estrutural',15,1,true,'text',1);?>
+	 <?db_input('estrutural',15,1,true,'text',1);?>
       </td>
     </tr>
-  <?php }?>
-<?php }else{?>
+  <?}?>
+<?}else{?>
   <tr>
     <td align=right owrap title="<?=@$Te54_codcom?>">
        <?=$Le54_codcom?>
     </td>
     <td > 
-      <?php 
+      <?
       if(isset($e54_codcom) && $e54_codcom==''){
 	$pc50_descr='';
       }
@@ -243,14 +243,14 @@ if(isset($c47_instit) && $c47_instit==''){
       ?>
     </td>
   </tr>
-<?php }?>
+<?}?>
 
   <tr>
     <td align=right nowrap title="<?=@$Tc47_obs?>">
        <?=@$Lc47_obs?>
     </td>
     <td> 
-<?php 
+<?
 db_textarea('c47_obs',1,60,$Ic47_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -265,7 +265,7 @@ db_textarea('c47_obs',1,60,$Ic47_obs,true,'text',$db_opcao,"")
   </tr>
   <tr>
     <td colspan=2 align="center" height="80%">  
-    <?php 
+    <?
 	 $chavepri= array("c47_seqtranslan"=>@$c47_seqtranslan,"c47_seqtranslr"=>@$c47_seqtranslr);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcontranslr->sql_query_file(null,'*','c47_seqtranslr',"c47_seqtranslan=$c47_seqtranslan");

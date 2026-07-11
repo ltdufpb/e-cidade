@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,7 +53,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
@@ -103,18 +103,18 @@ function js_mascara(evt){
     <table>
       <tr>
         <td  align="left" nowrap title="<?=$Te69_numero?>">
-        <?php  db_ancora("<b>Código da OP:</b>","js_pesquisaOrdemPagamento(true);",1);  ?>
+        <? db_ancora("<b>Código da OP:</b>","js_pesquisaOrdemPagamento(true);",1);  ?>
         </td>
         <td>
-        <?php 
+        <?
           db_input("e42_sequencial",13,$Ie42_sequencial,true,"text",4,"onchange='js_pesquisaOrdemPagamento(false);'"); 
         ?>
         </td>
       </tr>
       <tr> 
-        <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora('<b>Credor:</b>',"js_pesquisa_cgm(true);",1);?></td>
+        <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora('<b>Credor:</b>',"js_pesquisa_cgm(true);",1);?></td>
         <td align="left" nowrap>
-          <?php  
+          <? 
             db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"onchange='js_pesquisa_cgm(false);'");
             db_input("z01_nome2",40,"",true,"text",3);  
           ?>
@@ -125,11 +125,11 @@ function js_mascara(evt){
         
         </td>
         <td align='left'>
-        <?php 
+        <?
           db_inputdata('dt_inicial',"","","",false,'text',1,"","",""); 
         ?>
         &nbsp;à&nbsp;<b>Data Inicial:</b>
-        <?php 
+        <?
           db_inputdata('dt_final',"","","",false,'text',1,"","",""); 
         ?> 
         </td>
@@ -147,7 +147,7 @@ function js_mascara(evt){
 </form>
 </center>
 
-<?php  
+<? 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

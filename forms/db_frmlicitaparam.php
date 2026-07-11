@@ -88,7 +88,7 @@ if ($db_opcao == 1) {
                 ?>
               </td>
             </tr>
-            <?php  $sDisplay = $l12_tipoliberacaoweb <> 1 ? '' : 'none'; ?>
+            <? $sDisplay = $l12_tipoliberacaoweb <> 1 ? '' : 'none'; ?>
             <tr id="trLiberacaoWebDias" style="display: <?=$sDisplay; ?>;">
               <td nowrap title="<?php echo $Tl12_qtdediasliberacaoweb; ?>" >
                 <label class="bold" for="l12_qtdediasliberacaoweb" id="lbl_l12_qtdediasliberacaoweb"><?php echo $Sl12_qtdediasliberacaoweb; ?>:</label>

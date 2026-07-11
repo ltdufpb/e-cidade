@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE tipoassedb_cadattdinamico
 class cl_tipoassedb_cadattdinamico { 

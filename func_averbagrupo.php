@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $claverbagrupo->rotulo->label("j105_descr");
               <?=$Lj105_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j105_sequencial",10,$Ij105_sequencial,true,"text",4,"","chave_j105_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $claverbagrupo->rotulo->label("j105_descr");
               <?=$Lj105_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j105_descr",40,$Ij105_descr,true,"text",4,"","chave_j105_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $claverbagrupo->rotulo->label("j105_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_averbagrupo.php")==true){
@@ -123,12 +123,12 @@ $claverbagrupo->rotulo->label("j105_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 </head>
 <body>
-<?php 
+<?
 if (isset($tipo)){
   if ($num > 0) { 
     db_fieldsmemory($result,0,1);
@@ -112,7 +112,7 @@ if (isset($tipo)){
       </table></td>
   </tr>
 </table>
-<?php 
+<?
 }  
   }else{ 
 ?>
@@ -126,7 +126,7 @@ if (isset($tipo)){
       n&atilde;o retornou nenhum registro.</strong></td>
   </tr>
 </table>
-<?php  
+<? 
   }
   
 ?>

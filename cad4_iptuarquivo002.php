@@ -14,7 +14,7 @@ $j01_matric = $parametro;
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
       <form id='formDownload'>
-        <?php  db_input('j01_matric',10,0,false,'hidden',3,""); ?>
+        <? db_input('j01_matric',10,0,false,'hidden',3,""); ?>
         <input type="hidden" id='exec' name='exec'>
         <input type="hidden" id='db59_sequencial' name='db59_sequencial' >
         <fieldset>

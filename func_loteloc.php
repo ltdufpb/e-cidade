@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clloteloc->rotulo->label("j06_setorloc");
               <?=$Lj06_idbql?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j06_idbql",6,$Ij06_idbql,true,"text",4,"","chave_j06_idbql");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clloteloc->rotulo->label("j06_setorloc");
               <?=$Lj06_setorloc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("j06_setorloc",6,$Ij06_setorloc,true,"text",4,"","chave_j06_setorloc");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clloteloc->rotulo->label("j06_setorloc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_loteloc.php")==true){
@@ -119,12 +119,12 @@ $clloteloc->rotulo->label("j06_setorloc");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

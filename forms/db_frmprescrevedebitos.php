@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,28 +49,28 @@ $func_nome ->mostrar();
   <tr>
   </tr>
   <tr id="numcgm">
-    <td><?php db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
+    <td><?db_ancora("<strong>Numcgm</strong>","js_pesquisa_numcgm(true);",1);?></td>
     <td> 
-        <?php  db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
-        <?php  db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
+        <? db_input('k31_numcgm',10,@$k31_numcgm,true,'text',$db_opcao,"onblur=js_pesquisa_numcgm(false);") ?>
+        <? db_input('k31_nome',50,@$k31_nome,true,'text',3) ?>
     </td>    
   </tr>
   <tr id="matricula">
-     <td><?php db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
+     <td><?db_ancora("<strong>Matrícula</strong>","js_mostramatricula(true);",1);?></td>
      <td> 
-        <?php  db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
+        <? db_input('k31_matric',10,@$k31_matric,true,'text',$db_opcao,"onblur=js_mostramatricula(false);") ?>
      </td>    
    </tr>
    <tr id="inscr">
-    <td><?php db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
+    <td><?db_ancora("<strong>Inscrição</strong>","js_mostrainscricao(true);",1);?></td>
     <td> 
-        <?php  db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
+        <? db_input('k31_inscr',10,@$k31_inscr,true,'text',$db_opcao,"onblur=js_mostrainscricao(false);") ?>
     </td>    
   </tr>
  <tr>
      <td><strong>Data</strong></td>
      <td> 
-         <?php 
+         <?
         	   $k31_data_dia = date('d');
         	   $k31_data_mes = date('m');
         	   $k31_data_ano = date('Y');
@@ -81,7 +81,7 @@ $func_nome ->mostrar();
 <tr>
     <td><strong>Hora</strong></td>
     <td> 
-       <?php        
+       <?       
          $k31_hora = date( 'H:i' );
          db_input('k31_hora',5,@$k31_hora,true,'text',3)
        ?>
@@ -90,7 +90,7 @@ $func_nome ->mostrar();
  <tr>
      <td><strong>Usuário</strong></td>
      <td> 
-         <?php  
+         <? 
       	  $k31_usuario = db_getsession("DB_id_usuario");
       	  db_input('k31_usuario',10, $k31_usuario ,true,'text',3,"");
           db_input('db_usunome',50,$db_usunome,true,'text',3);

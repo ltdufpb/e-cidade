@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clisencaoproc->rotulo->label("v17_protprocesso");
               <?=$Lv17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v17_sequencial",10,$Iv17_sequencial,true,"text",4,"","chave_v17_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clisencaoproc->rotulo->label("v17_protprocesso");
               <?=$Lv17_protprocesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("v17_protprocesso",10,$Iv17_protprocesso,true,"text",4,"","chave_v17_protprocesso");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clisencaoproc->rotulo->label("v17_protprocesso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_isencaoproc.php")==true){
@@ -123,12 +123,12 @@ $clisencaoproc->rotulo->label("v17_protprocesso");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

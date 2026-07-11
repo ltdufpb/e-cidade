@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ if(!isset($datai_dia) &&
               <strong>Tipo :</strong>
             </td>
             <td align="left">
-              <?php 
+              <?
               $arr_adm_dem = array("a"=>"Admitidos","d"=>"Demitidos");
               db_select('adm_dem',$arr_adm_dem,true,4,"");
               ?>
@@ -86,13 +86,13 @@ if(!isset($datai_dia) &&
               <strong>Admitidos entre:</strong>
             </td>
             <td align="left" nowrap>
-              <?php 
+              <?
               db_inputdata("datai",$datai_dia,$datai_mes,$datai_ano, true,"text",1)
               ?>
             </td> 
             <td align="left" nowrap>
               &nbsp;<strong>e</strong>&nbsp;
-              <?php 
+              <?
               db_inputdata("dataf",$dataf_dia,$dataf_mes,$dataf_ano, true,"text",1)
               ?>
             </td>
@@ -102,7 +102,7 @@ if(!isset($datai_dia) &&
               <strong>Ordem:</strong>
             </td>
             <td align="left">
-              <?php 
+              <?
               $arr_ordem = array("a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão");
               if(!isset($ordem)){
                 $ordem = "a";
@@ -124,7 +124,7 @@ if(!isset($datai_dia) &&
               <strong>Quebrar por:</strong>
             </td>
             <td align="left">
-              <?php 
+              <?
               $arr_quebra = array("n"=>"Sem quebra","l"=>"Por lotação","c"=>"Por cargo");
               if(!isset($lota)){
                 $lota = "n";
@@ -146,7 +146,7 @@ if(!isset($datai_dia) &&
               <strong>Quebra de página:</strong>
             </td>
             <td align="left">
-              <?php 
+              <?
               $arr_SouN = array("s"=>"Sim","n"=>"Não");
               if(!isset($quebra)){
                 $quebra = "n";
@@ -155,7 +155,7 @@ if(!isset($datai_dia) &&
               ?>
             </td>
             <td align="left">
-              <?php 
+              <?
               $arr_SouN = array("s"=>"Sim","n"=>"Não");
               if(isset($listapens)){
                 $chk_listapens = "checked";
@@ -171,7 +171,7 @@ if(!isset($datai_dia) &&
               <strong>Tipo :</strong>
             </td>
             <td align="left">
-              <?php 
+              <?
               $arr_SouN = array("r"=>"Regime","v"=>"Vínculos");
               if(!isset($tipo)){
                 $tipo = "r";
@@ -190,11 +190,11 @@ if(!isset($datai_dia) &&
           </tr>
 					<tr					>
 					<td colspan=2 align=Left >
-              <strong><?php $arr_SouN[$tipo]?></strong>
+              <strong><?$arr_SouN[$tipo]?></strong>
 					</td>
           <tr>
             <td align="right" nowrap colspan=3>
-              <?php 
+              <?
               if($tipo == "r"){
 	              $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null,"rh52_regime,rh52_regime||' - '||rh52_descr as rh52_descr  "));
                 db_multiploselect("rh52_regime", "rh52_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
@@ -216,7 +216,7 @@ if(!isset($datai_dia) &&
     </td>
   </tr>
 </table>
-<?php  
+<? 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

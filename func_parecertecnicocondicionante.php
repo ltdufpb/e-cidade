@@ -51,11 +51,11 @@ $clparecertecnicocondicionante->rotulo->label("am12_arquivo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam12_sequencial?></label></td>
-          <td><?php  db_input("am12_sequencial",10,$Iam12_sequencial,true,"text",4,"","chave_am12_sequencial"); ?></td>
+          <td><? db_input("am12_sequencial",10,$Iam12_sequencial,true,"text",4,"","chave_am12_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam12_arquivo?></label></td>
-          <td><?php  db_input("am12_arquivo",10,$Iam12_arquivo,true,"text",4,"","chave_am12_arquivo");?></td>
+          <td><? db_input("am12_arquivo",10,$Iam12_arquivo,true,"text",4,"","chave_am12_arquivo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -63,7 +63,7 @@ $clparecertecnicocondicionante->rotulo->label("am12_arquivo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_parecertecnicocondicionante.hide();">
   </form>
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parecertecnicocondicionante.php")==true){
@@ -105,12 +105,12 @@ $clparecertecnicocondicionante->rotulo->label("am12_arquivo");
       ?>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

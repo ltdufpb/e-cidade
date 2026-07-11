@@ -132,7 +132,7 @@ if(isset($incluir)){
 <body class='body_default' >
 
   <div class='container'>
-	<?php 
+	<?
     $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"] = 'lab1_lab_valorreferencia001.php';
   	require_once(modification("forms/db_frmlab_valorreferencia.php"));
 	?>
@@ -146,7 +146,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","la27_i_unidade",true,1,"la27_i_unidade",true);
 </script>
-<?php 
+<?
 if(isset($incluir)){
   if($cllab_valorreferencia->erro_status=="0"){
     $cllab_valorreferencia->erro(true,false);

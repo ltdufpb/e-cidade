@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -95,7 +95,7 @@ if(isset($pc80_codproc) && trim($pc80_codproc)!=""){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?php 
+    <?
     db_input('valores',8,0,true,'hidden',3);
     if($numrows_itens==0){
       echo "                                                                                                                                                                                                                                                                                   <br><br><br><br><br><br><br>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -163,7 +163,7 @@ db_menu();
 ?>
 </body>
 </html>
-<?php 
+<?
 
 
 if (isset ($incluir)) {
@@ -181,7 +181,7 @@ if (isset ($incluir)) {
 };
 ?>
 <script>
-<?php 
+<?
 
 
 if ($db_opcao == 22)

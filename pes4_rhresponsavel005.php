@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -105,7 +105,7 @@ if (isset($oPost->alterar)) {
   <tr> 
     <td valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?php 
+      <?
         include(modification("forms/db_frmrhresponsavel.php"));
       ?>
     </center>
@@ -113,7 +113,7 @@ if (isset($oPost->alterar)) {
   </tr>
 </table>
 </body>
-<?php 
+<?
 if (isset($oPost->alterar)) {
   
   db_msgbox($sMsgUsuario);

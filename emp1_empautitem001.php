@@ -278,7 +278,7 @@ if (isset ($autori_importa)) {
 		<tr>
 			<td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 				<center>
-					<?php 
+					<?
 
 
 					include(modification("forms/db_frmempautitem.php"));
@@ -289,7 +289,7 @@ if (isset ($autori_importa)) {
 	</table>
 	</body>
 	</html>
-<?php 
+<?
 
 
 if (isset ($incluir) || isset ($alterar) || isset ($excluir) || isset ($autori_importa)) {

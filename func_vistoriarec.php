@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clvistoriarec->rotulo->label("y76_valor");
               <?=$Ly76_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y76_codvist",10,$Iy76_codvist,true,"text",4,"","chave_y76_codvist");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clvistoriarec->rotulo->label("y76_valor");
               <?=$Ly76_receita?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y76_receita",4,$Iy76_receita,true,"text",4,"","chave_y76_receita");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clvistoriarec->rotulo->label("y76_valor");
               <?=$Ly76_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("y76_valor",10,$Iy76_valor,true,"text",4,"","chave_y76_valor");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clvistoriarec->rotulo->label("y76_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistoriarec.php")==true){
@@ -130,12 +130,12 @@ $clvistoriarec->rotulo->label("y76_valor");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

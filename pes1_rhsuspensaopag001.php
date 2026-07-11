@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -95,7 +95,7 @@ if(isset($oGet->db_opcao)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?php 
+<?
  db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, estilos.css, grid.style.css");
 ?>
 </head>
@@ -112,12 +112,12 @@ if(isset($oGet->db_opcao)){
 	  <table id="tableForm">
 	    <tr>
 	      <td><?= $Lrh101_sequencial?></td>
-	      <td><?php  db_input('rh101_sequencial',5,$Irh101_sequencial,true,'text',3,"") ?></td>
+	      <td><? db_input('rh101_sequencial',5,$Irh101_sequencial,true,'text',3,"") ?></td>
 	    </tr>
 	    <tr>
 	      <td><?= $Lrh101_regist; ?></td>
 	      <td>
-	      <?php  
+	      <? 
 	        db_input('rh101_regist',5,$Irh101_regist,true,'text',3,"");
 	        db_input('z01_nome',30,$Irh01_numcgm ,true,'text',3,"");
 	      ?>
@@ -125,23 +125,23 @@ if(isset($oGet->db_opcao)){
 	    </tr>
 	    <tr>
 	      <td><?= $Lrh101_dtinicial?></td>
-	      <td><?php  db_inputdata('rh101_dtinicial', $rh101_dtinicial[2], $rh101_dtinicial[1], $rh101_dtinicial[0], true,"",$db_opcao,""); ?></td>
+	      <td><? db_inputdata('rh101_dtinicial', $rh101_dtinicial[2], $rh101_dtinicial[1], $rh101_dtinicial[0], true,"",$db_opcao,""); ?></td>
 	    </tr>
 	    <tr>
 	      <td><?= $Lrh101_dtfinal?></td>
-	      <td><?php  db_inputdata('rh101_dtfinal', $rh101_dtfinal[2], $rh101_dtfinal[1], $rh101_dtfinal[0], true, "", $db_opcao, ""); ?></td>
+	      <td><? db_inputdata('rh101_dtfinal', $rh101_dtfinal[2], $rh101_dtfinal[1], $rh101_dtfinal[0], true, "", $db_opcao, ""); ?></td>
 	    </tr>
 	    <tr <?= ($iTotalSuspensoesAtivas > 0  &&  $db_opcao != 3) ? "" : "style='display:none'" ;?> >
 	      <td colspan="2">
 		      <fieldset><legend><?= $Lrh101_obs; ?></legend>
-		        <?php  db_textarea("rh101_obs",5,"","","","",2,"style='width:100%;'");?>
+		        <? db_textarea("rh101_obs",5,"","","","",2,"style='width:100%;'");?>
 		      </fieldset>
 	      </td>
 	    </tr>
 	  </table>
 	</fieldset>
 
-<?php 
+<?
 if($db_opcao != 3){
   
   db_input("lblCadastrar","20","","","submit",1,"onClick='return {$jsCadastrar}'");
@@ -159,7 +159,7 @@ if($db_opcao != 3){
 </body>
 
 </html>
-<?php 
+<?
 if(isset($_POST['tipoCadastro'])){
 	$oPost = db_utils::postMemory($_POST);
 	

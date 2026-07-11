@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhteutri->rotulo->label("rh67_regist");
               <?=$Lrh67_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh67_sequencial",6,$Irh67_sequencial,true,"text",4,"","chave_rh67_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhteutri->rotulo->label("rh67_regist");
               <?=$Lrh67_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh67_regist",6,$Irh67_regist,true,"text",4,"","chave_rh67_regist");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhteutri->rotulo->label("rh67_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhteutri.php")==true){
@@ -123,12 +123,12 @@ $clrhteutri->rotulo->label("rh67_regist");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

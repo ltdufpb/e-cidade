@@ -40,12 +40,12 @@ $clparitbi   = new cl_paritbi;
     <table align="center" border="0">
       <tr>
         <td nowrap title="<?=@$Tit16_guia?>">
-           <?php 
+           <?
              db_ancora(@$Lit01_guia,"js_pesquisait01_guia(true);",$db_opcao);
            ?>
         </td>
         <td> 
-    			<?php 
+    			<?
     			  db_input('it01_guia',10,$Iit01_guia,false,'text',3," onkeyup=\"js_onlyNumbers(this, event);\" onblur=\"js_onlyNumbers(this, event);\"");
     			?>
         </td>
@@ -61,7 +61,7 @@ $clparitbi   = new cl_paritbi;
           <b>Tipo :</b>
         </td>
         <td colspan='3'>
-          <?php 
+          <?
             if ($bEmiteDeclarQuit) {
                 $aTipo = array( 'n'=>'Guia normal',
                                 'q'=>'Declaração de quitação' );

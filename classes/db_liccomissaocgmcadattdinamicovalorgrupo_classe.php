@@ -1,4 +1,4 @@
-<?php
+<?
 //MODULO: licitacao
 //CLASSE DA ENTIDADE liccomissaocgmcadattdinamicovalorgrupo
 class cl_liccomissaocgmcadattdinamicovalorgrupo { 

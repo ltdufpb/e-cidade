@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -95,7 +95,7 @@ function js_trocapri(seq){
       <iframe  frameborder="0" name="sequencia"   leftmargin="0" topmargin="0" src="iss1_tabativbaixaiframe02.php?q07_inscr=<?=$q07_inscr?>" height="1" width="1" style="visibility:hidden">
               </iframe>
       <table border='1' width="100%" bgcolor="#cccccc" id="tabela_seleciona">
-<?php 
+<?
 if(isset($sql) && $sql!=""){ 
        $result=db_query($sql);
        $numrows=pg_numrows($result);

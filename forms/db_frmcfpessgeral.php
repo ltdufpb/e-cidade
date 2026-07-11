@@ -38,7 +38,7 @@ $clrotulo->label("db149_descricao");
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-  <?php 
+  <?
   $r11_anousu = DBPessoal::getAnoFolha();
   $r11_mesusu = DBPessoal::getMesFolha();
   db_input('r11_anousu',4,$Ir11_anousu,true,'hidden',$db_opcao,"");
@@ -54,7 +54,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_tbprev?>
             </td>
             <td>
-              <?php 
+              <?
               $result_tbprev = $clinssirf->sql_record($clinssirf->sql_query_file(null,db_getsession("DB_instit")," distinct cast(r33_codtab as integer)-2 as r33_codtab,r33_nome","r33_codtab","r33_codtab between 3 and 6 and r33_mesusu=$r11_mesusu and r33_anousu=$r11_anousu "));
               db_selectrecord("r11_tbprev",$result_tbprev,true,$db_opcao,"","","","0-Nenhum...");
               ?>
@@ -67,7 +67,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_pctemp?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_pctemp',8,$Ir11_pctemp,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -75,7 +75,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_peactr?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_peactr',8,$Ir11_peactr,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -85,7 +85,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_pcterc?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_pcterc',8,$Ir11_pcterc,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -93,7 +93,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_codaec?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_codaec',8,$Ir11_codaec,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -103,7 +103,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_natest?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_natest',8,$Ir11_natest,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -111,7 +111,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_cdfpas?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_cdfpas',8,$Ir11_cdfpas,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -121,7 +121,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_cdcef?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_cdcef',8,$Ir11_cdcef,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -129,7 +129,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_cdfgts?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_cdfgts',8,$Ir11_cdfgts,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -139,7 +139,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_cdactr?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_cdactr',8,$Ir11_cdactr,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -147,7 +147,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_fgts12?>
             </td>
             <td>
-              <?php 
+              <?
               $x = array("1"=>"CGC","2"=>"CEI");
               db_select('r11_fgts12',$x,true,$db_opcao," style='width: 68px;'");
               ?>
@@ -164,57 +164,57 @@ $clrotulo->label("db149_descricao");
         <table>
           <tr>
             <td nowrap align="left" title="<?=@$Tr11_codestrut?>">
-              <?php 
+              <?
               db_ancora(@$Lr11_codestrut,"js_pesquisar11_codestrut(true);",$db_opcao);
               ?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_codestrut',8,$Ir11_codestrut,true,'text',$db_opcao," onchange='js_pesquisar11_codestrut(false);'")
               ?>
-              <?php 
+              <?
               db_input('db77_descr',40,$Idb77_descr,true,'text',3,'')
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap align="left" title="<?=@$Tr11_localtrab?>">
-              <?php 
+              <?
               db_ancora(@$Lr11_localtrab,"js_pesquisar11_localtrab(true);",$db_opcao);
               ?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_localtrab',8,$Ir11_localtrab,true,'text',$db_opcao," onchange='js_pesquisar11_localtrab(false);'")
               ?>
-              <?php 
+              <?
               db_input('db77_descr',40,$Idb77_descr,true,'text',3,'',"db77_descr1")
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tr11_infla?>" align="left">
-              <?php 
+              <?
               db_ancora(@$Lr11_infla,"js_pesquisar11_infla(true);",1);
               ?>
             </td>
             <td align="left">
-              <?php 
+              <?
               db_input('r11_infla',8,$Ir11_infla,true,'text',1," onchange='js_pesquisar11_infla(false);'")
               ?>
-              <?php 
+              <?
               db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')
               ?>
             </td>
           </tr>
           <tr>
             <td nowrap title="<?=@$Tr11_baseipe?>" align="left">
-              <?php 
+              <?
               db_ancora(@$Lr11_baseipe,"js_pesquisar11_baseipe(true);",1);
               ?>
             </td>
             <td align="left">
-              <?php 
+              <?
               db_input('r11_baseipe',8,$Ir11_baseipe,true,'text',1," onchange='js_pesquisar11_baseipe(false);'");
 
                 if (!empty($r11_baseipe)) {
@@ -232,12 +232,12 @@ $clrotulo->label("db149_descricao");
           </tr>
           <tr>
             <td nowrap title="<?=@$Tr11_histslip?>" align="left">
-              <?php 
+              <?
                 db_ancora(@$Lr11_histslip,"js_pesquisar11_histslip(true);",1);
               ?>
             </td>
             <td align="left">
-              <?php 
+              <?
                 db_input('r11_histslip',8,$Ir11_histslip,true,'text',1," onchange='js_pesquisar11_histslip(false);'");
                 db_input('c50_descr',40,'',true,'text',3,'');
               ?>
@@ -248,7 +248,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_geraretencaoempenho?>
             </td>
             <td>
-              <?php 
+              <?
               $x = array("t"=>"SIM","f"=>"NÃO");
               db_select('r11_geraretencaoempenho',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
@@ -259,7 +259,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_arredn?>
             </td>
             <td>
-              <?php 
+              <?
               $x = array(0=>"Sem arredondar",1=>"2a casa decimal",2=>"1a casa decimal",3=>"Unidade",5=>"Dezena");
               db_select('r11_arredn',$x,true,$db_opcao," style='width: 135px;'");
               ?>
@@ -270,7 +270,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_concatdv?>
             </td>
             <td>
-              <?php 
+              <?
               $x = array("f"=>"NAO","t"=>"SIM");
               db_select('r11_concatdv',$x,true,$db_opcao," style='width: 135px;'");
               ?>
@@ -281,7 +281,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_sald13?>
             </td>
             <td>
-              <?php 
+              <?
               $x = array("f"=>"NAO","t"=>"SIM");
               db_select('r11_sald13',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
@@ -292,7 +292,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_mes13?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_mes13',4,$Ir11_mes13,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -302,7 +302,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_txadm?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_txadm',4,$Ir11_txadm,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -312,7 +312,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_modanalitica?>
             </td>
             <td>
-              <?php 
+              <?
               db_input('r11_modanalitica',4,$Ir11_modanalitica,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -322,7 +322,7 @@ $clrotulo->label("db149_descricao");
               <?=@$Lr11_mensagempadraotxt?>
             </td>
             <td>
-              <?php 
+              <?
                 db_input('r11_mensagempadraotxt',4,$Ir11_mensagempadraotxt,true,'text',$db_opcao,"");
               ?>
             </td>
@@ -358,7 +358,7 @@ $clrotulo->label("db149_descricao");
               <?=$Lr11_filtralotacaousuario?>
             </td>
             <td>
-              <?php 
+              <?
               $x = array("f"=>"NAO","t"=>"SIM");
               db_select('r11_filtralotacaousuario',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
@@ -369,7 +369,7 @@ $clrotulo->label("db149_descricao");
                     <?=$Lr11_utilizarhlotavincrubrica?>
                 </td>
                 <td>
-                    <?php 
+                    <?
                     $x = array("f"=>"NAO","t"=>"SIM");
                     db_select('r11_utilizarhlotavincrubrica',$x,true,$db_opcao," style='width: 135px;' ");
                     ?>
@@ -380,7 +380,7 @@ $clrotulo->label("db149_descricao");
                     <?=$Lr11_emissaocontracheque?>
                 </td>
                 <td>
-                    <?php 
+                    <?
                     $x = array("f"=>"NAO","t"=>"SIM");
                     db_select('r11_emissaocontracheque',$x,true,$db_opcao," style='width: 135px;' ");
                     ?>
@@ -391,7 +391,7 @@ $clrotulo->label("db149_descricao");
               <b>Bloqueia acesso de competências em aberto:</b>
             </td>
             <td>
-              <?php 
+              <?
               $x = array("f"=>"NAO","t"=>"SIM");
               db_select('r11_bloqueiocompetenciaaberta',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
@@ -762,7 +762,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave,chave1){
 
   db_iframe_cfpess.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }

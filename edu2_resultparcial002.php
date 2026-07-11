@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -71,7 +71,7 @@ if($clturma->numrows==0){?>
    </td>
   </tr>
  </table>
- <?php 
+ <?
  exit;
 }
 db_fieldsmemory($result, 0);
@@ -87,7 +87,7 @@ if($clprocresultado->numrows==0){?>
    </td>
   </tr>
  </table>
- <?php 
+ <?
  exit;
 }else{
  db_fieldsmemory($result_proc,0);

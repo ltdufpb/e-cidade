@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmeiimportalinhaatividade->rotulo->label("q106_cnae");
               <?=$Lq106_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q106_sequencial",10,$Iq106_sequencial,true,"text",4,"","chave_q106_sequencial");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmeiimportalinhaatividade->rotulo->label("q106_cnae");
               <?=$Lq106_cnae?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("q106_cnae",8,$Iq106_cnae,true,"text",4,"","chave_q106_cnae");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmeiimportalinhaatividade->rotulo->label("q106_cnae");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meiimportalinhaatividade.php")==true){
@@ -123,12 +123,12 @@ $clmeiimportalinhaatividade->rotulo->label("q106_cnae");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

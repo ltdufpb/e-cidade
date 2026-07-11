@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhcadcalend->rotulo->label("rh53_descr");
               <?=$Lrh53_calend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh53_calend",10,$Irh53_calend,true,"text",4,"","chave_rh53_calend");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhcadcalend->rotulo->label("rh53_descr");
               <?=$Lrh53_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh53_descr",40,$Irh53_descr,true,"text",4,"","chave_rh53_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhcadcalend->rotulo->label("rh53_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where = " rh53_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -124,12 +124,12 @@ $clrhcadcalend->rotulo->label("rh53_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

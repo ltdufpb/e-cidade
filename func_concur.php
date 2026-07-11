@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clconcur->rotulo->label("h06_eaber");
               <?=$Lh06_refer?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h06_refer",5,$Ih06_refer,true,"text",4,"","chave_h06_refer");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clconcur->rotulo->label("h06_eaber");
               <?=$Lh06_eaber?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("h06_eaber",10,$Ih06_eaber,true,"text",4,"","chave_h06_eaber");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clconcur->rotulo->label("h06_eaber");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_concur.php")==true){
@@ -123,12 +123,12 @@ $clconcur->rotulo->label("h06_eaber");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

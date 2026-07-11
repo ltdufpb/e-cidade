@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -51,7 +51,7 @@ $iOpcao = 3;
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?php 
+  <?
     db_app::load("scripts.js");
     db_app::load("prototype.js");
     db_app::load("estilos.css");
@@ -65,7 +65,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap ><?=$Lac16_sequencial?></td>
           <td>
-            <?php 
+            <?
               db_input('ac16_sequencial', 10, $Iac16_sequencial, true, 'text', $iOpcao);
             ?>
           </td>
@@ -73,7 +73,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap><?=$Lac16_origem?></td>
           <td>
-            <?php 
+            <?
              $aValores = array(
                                 0 => 'Selecione',
                                 1 => 'Processo de Compras',
@@ -88,7 +88,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap><?=$Lac16_acordogrupo;?></td>
           <td>
-            <?php 
+            <?
               db_input('ac16_acordogrupo', 10, $Iac16_acordogrupo, true, 'text', $iOpcao);
               db_input('ac02_descricao', 30, $Iac02_sequencial, true, 'text', $iOpcao);
             ?>
@@ -97,7 +97,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap><?=$Lac16_numero?></td>
           <td>
-            <?php 
+            <?
               db_input('ac16_numero', 10, $Iac16_numero, true, 'text', $iOpcao);
             ?>
           </td>
@@ -105,7 +105,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap><?=$Lac16_contratado;?></td>
           <td>
-            <?php 
+            <?
               db_input('ac16_contratado', 10, $Iac16_contratado, true, 'text', $iOpcao);
               db_input('nomecontratado', 30, $Iz01_nome, true, 'text', $iOpcao);
             ?>
@@ -116,7 +116,7 @@ $iOpcao = 3;
             <label>Depto Responsável:</label>
           </td>
           <td>
-            <?php 
+            <?
               db_input('ac16_deptoresponsavel', 10, $Iac16_deptoresponsavel, true, 'text', $iOpcao);
               db_input('descrdepto', 30, $Idescrdepto, true, 'text', $iOpcao);
             ?>
@@ -127,7 +127,7 @@ $iOpcao = 3;
             <label>Comissão:</label>
           </td>
           <td>
-            <?php 
+            <?
               db_input('ac16_acordocomissao', 10, $Iac16_acordocomissao, true, 'text', $iOpcao);
               db_input('ac08_descricao', 30, $Iac08_descricao, true, 'text', $iOpcao);
             ?>
@@ -136,7 +136,7 @@ $iOpcao = 3;
         <tr id="trLei">
           <td nowrap><?=$Lac16_lei;?></td>
           <td>
-            <?php 
+            <?
               db_input('ac16_lei', 50, $Iac16_lei, true, 'text', $iOpcao);
             ?>
           </td>
@@ -144,7 +144,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap><?=$Lac16_numeroprocesso;?></td>
           <td>
-            <?php 
+            <?
               db_input('ac16_numeroprocesso', 50, $Iac16_numeroprocesso, true, 'text', $iOpcao);
             ?>
           </td>
@@ -152,7 +152,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap><?=$Lac16_qtdrenovacao;?></td>
           <td>
-            <?php 
+            <?
               db_input('ac16_qtdrenovacao', 2, @$Iac16_qtdrenovacao, true, 'text', $iOpcao);
               db_input("ac16_tipounidtempo", 4, $Iac16_tipounidtempo, true, 'text', $iOpcao);
             ?>
@@ -163,7 +163,7 @@ $iOpcao = 3;
              <label>Contrato Emergencial:</label>
           </td>
           <td>
-            <?php 
+            <?
               $aEmergencial = array("f" => "Não", "t" => "Sim");
               db_select("ac26_emergencial", $aEmergencial, true, $iOpcao);
             ?>
@@ -173,7 +173,7 @@ $iOpcao = 3;
         <tr>
           <td nowrap><?=$Lac16_dataassinatura?></td>
           <td>
-            <?php 
+            <?
               db_inputdata('ac16_dataassinatura', @$ac16_dataassinatura_dia, @$ac16_dataassinatura_mes,
                            @$ac16_dataassinatura_ano, true, 'text', $iOpcao);
             ?>
@@ -184,7 +184,7 @@ $iOpcao = 3;
         		<label>Períodos por Mês Comercial:</label>
         	</td>
         	<td>
-        		<?php 
+        		<?
         		  $aDivisaoPeriodos = array("false" => "NÃO", "true" => "SIM");
         		  db_select("ac16_periodocomercial", $aDivisaoPeriodos, true, $iOpcao);
         		?>
@@ -195,7 +195,7 @@ $iOpcao = 3;
             <label>Categoria:</label>
           </td>
           <td>
-            <?php 
+            <?
               db_input('ac50_sequencial', 10, $Iac50_descricao, true, 'text', $iOpcao);
               db_input('ac50_descricao', 30, $Iac50_descricao, true, 'text', $iOpcao);
             ?>
@@ -211,7 +211,7 @@ $iOpcao = 3;
                     <label>Inicio:</label>
                   </td>
                   <td>
-                    <?php 
+                    <?
                       db_inputdata('ac16_datainicio', @$ac16_datainicio_dia, @$ac16_datainicio_mes,
                                    @$ac16_datainicio_ano, true, 'text', $iOpcao);
                     ?>
@@ -220,7 +220,7 @@ $iOpcao = 3;
                     <label>Fim:</label>
                   </td>
                   <td style="text-align: right;">
-                    <?php 
+                    <?
                       db_inputdata('ac16_datafim', @$ac16_datafim_dia, @$ac16_datafim_mes, @$ac16_datafim_ano, true, 'text', $iOpcao);
                     ?>
                   </td>
@@ -228,7 +228,7 @@ $iOpcao = 3;
                     <label>Dias:</label>
                   </td>
                   <td style="text-align: right;">
-                    <?php 
+                    <?
                       db_input('diasvigencia', 10, "", true, 'text', $iOpcao);
                     ?>
                   </td>
@@ -238,12 +238,12 @@ $iOpcao = 3;
                     <label>Período:</label>
                   </td>
                   <td>
-                    <?php 
+                    <?
                       db_input('ac16_qtdperiodo', 2, @$Iac16_qtdperiodo, true, 'text', $iOpcao);
                     ?>
                   </td>
                   <td colspan="4">
-                    <?php 
+                    <?
                       db_input("ac16_tipounidtempoperiodo", 4, $Iac16_tipounidtempoperiodo, true, 'text', $iOpcao);
                     ?>
                   </td>
@@ -256,7 +256,7 @@ $iOpcao = 3;
 	        <td nowrap colspan="2">
 	          <fieldset>
 	            <legend><?=@$Lac16_objeto?></legend>
-	            <?php 
+	            <?
 	              db_textarea('ac16_objeto', 3, 58, $Iac16_objeto, true, 'text', $iOpcao);
 	            ?>
 	          </fieldset>
@@ -266,7 +266,7 @@ $iOpcao = 3;
 	        <td nowrap colspan="2">
 	          <fieldset>
 	            <legend><?=@$Lac16_resumoobjeto?></legend>
-				        <?php 
+				        <?
 				          db_input('ac16_resumoobjeto', 40, $Iac16_resumoobjeto, true, 'text', $iOpcao);
 				        ?>
 	          </fieldset>
@@ -279,7 +279,7 @@ $iOpcao = 3;
     <input id="btnPesquisar" type="button" value="Pesquisar" />
   </form>
 </body>
-<?php 
+<?
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </html>

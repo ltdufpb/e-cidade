@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clpcorcamitem->rotulo->label("pc22_codorc");
               <?=$Lpc22_orcamitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc22_orcamitem",10,$Ipc22_orcamitem,true,"text",4,"","chave_pc22_orcamitem");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clpcorcamitem->rotulo->label("pc22_codorc");
               <?=$Lpc22_codorc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("pc22_codorc",10,$Ipc22_codorc,true,"text",4,"","chave_pc22_codorc");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clpcorcamitem->rotulo->label("pc22_codorc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamitem.php")==true){
@@ -119,12 +119,12 @@ $clpcorcamitem->rotulo->label("pc22_codorc");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

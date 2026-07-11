@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -135,7 +135,7 @@ if(isset($incluir)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:98%;padding:1px;"><legend><b>Infraestrutura da Escola</b></legend>
-    <?php include(modification("forms/db_frmescolaestrutura.php"));?>
+    <?include(modification("forms/db_frmescolaestrutura.php"));?>
    </fieldset>
   </td>
  </tr>

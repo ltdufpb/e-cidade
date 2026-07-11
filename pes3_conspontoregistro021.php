@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -152,7 +152,7 @@ MM_reloadPage(true);
 
 <form name="form1" method="post">
 <table border="1" cellpadding="0" cellspacing="0">
-<?php 
+<?
 
 
 if (trim($opcao) != '') {
@@ -164,7 +164,7 @@ if (trim($opcao) != '') {
      <th class="borda" style="font-size:12px" nowrap>Quantidade</th>
      <th class="borda" style="font-size:12px" nowrap>Valor</th>
    </tr>
-    <?php 
+    <?
 
 
 	$cor = "#EFE029";
@@ -185,7 +185,7 @@ if (trim($opcao) != '') {
 ?>
     <tr>
       <td align="center" style="font-size:12px" nowrap bgcolor="<?=$cor?>">
-        <?php db_ancora($rh27_rubric,"js_consultarubric('$rh27_rubric','$matricula');","1");?>
+        <?db_ancora($rh27_rubric,"js_consultarubric('$rh27_rubric','$matricula');","1");?>
         &nbsp;
       </td>
       <td align="left" style="font-size:12px" bgcolor="<?=$cor?>">&nbsp;<?=$rh27_descr?></td>
@@ -193,7 +193,7 @@ if (trim($opcao) != '') {
       <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($quant,'f')?></td>
       <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($valor,'f')?></td>
     </tr>
-    <?php 
+    <?
 	}
 	?>
 	<tr>
@@ -202,7 +202,7 @@ if (trim($opcao) != '') {
       <td align="right" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($totalquant,"f")?></strong></td>
       <td align="right" style="font-size:12px" nowrap bgcolor="#FFCC66">&nbsp;<strong><?=db_formatar($totalvalor,'f')?></strong></td>
 	</tr>
-<?php 
+<?
 }
 ?>
 </table>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clmatestoqueiniti->rotulo->label("m85_codigo");
               <?=$Lm85_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m85_codigo",10,$Im85_codigo,true,"text",4,"","chave_m85_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clmatestoqueiniti->rotulo->label("m85_codigo");
               <?=$Lm85_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("m85_codigo",10,$Im85_codigo,true,"text",4,"","chave_m85_codigo");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clmatestoqueiniti->rotulo->label("m85_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matestoqueiniti.php")==true){
@@ -119,12 +119,12 @@ $clmatestoqueiniti->rotulo->label("m85_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,32 +63,32 @@ $clrotulo->label("sd29_i_procedimento");
        <b> Período:</b>
      </td>
      <td>
-       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
         A
-       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
      </tr>
      <tr>
-      <td><?php db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(true);",1);?></td>
+      <td><?db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(true);",1);?></td>
       <td>
-       <?php db_input('sd04_i_unidade',10,@$Isd04_i_unidade,true,'text',1," onchange='js_pesquisasd04_i_unidade(false);'")?>
-       <?php db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')?>
+       <?db_input('sd04_i_unidade',10,@$Isd04_i_unidade,true,'text',1," onchange='js_pesquisasd04_i_unidade(false);'")?>
+       <?db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
-      <td><?php db_ancora(@$Lsd04_i_medico,"js_pesquisasd04_i_medico(true);",1);?></td>
+      <td><?db_ancora(@$Lsd04_i_medico,"js_pesquisasd04_i_medico(true);",1);?></td>
       <td>
-       <?php db_input('sd04_i_medico',10,@$Isd04_i_medico,true,'text',1," onchange='js_pesquisasd04_i_medico(false);'")?>
-       <?php db_input('z01_nome',80,@$z01_nome,true,'text',3,'')?>
+       <?db_input('sd04_i_medico',10,@$Isd04_i_medico,true,'text',1," onchange='js_pesquisasd04_i_medico(false);'")?>
+       <?db_input('z01_nome',80,@$z01_nome,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
       <td nowrap >
-       <?php db_ancora("<b>Procedimento:</b>","js_pesquisa_procedimento(true);",1)?>
+       <?db_ancora("<b>Procedimento:</b>","js_pesquisa_procedimento(true);",1)?>
       </td>
       <td>
-       <?php db_input('sd09_i_codigo',10,"",true,'text',1," onchange='js_pesquisa_procedimento(false);'")?>
-       <?php db_input('sd09_c_descr',80,"",true,'text',3,'')?>
+       <?db_input('sd09_i_codigo',10,"",true,'text',1," onchange='js_pesquisa_procedimento(false);'")?>
+       <?db_input('sd09_c_descr',80,"",true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -101,7 +101,7 @@ $clrotulo->label("sd29_i_procedimento");
   </td>
  </tr>
 </table>
-    <?php 
+    <?
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

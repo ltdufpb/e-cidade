@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -156,11 +156,11 @@ function js_verificaid(valor){
    }
   }
 
-<?php if(isset($j52_matric)){?>
+<?if(isset($j52_matric)){?>
   function js_trocaid(valor){
     location.href="cad4_constrescr002.php?j52_matric=<?=$j52_matric?>&j52_idcons="+valor+"&z01_nome="+document.form1.z01_nome.value;
   } 
-<?php }?>
+<?}?>
 </script> 	
 <style type="text/css">
 <!--
@@ -204,7 +204,7 @@ function js_lo2(){
            <?=$Lj52_matric?>
           </td>
           <td> 
-          <?php 
+          <?
            db_input('j52_matric',5,0,true,'text',3,"onchange='js_matri(false)'");
            db_input('z01_nome',30,0,true,'text',3,"");
           ?>
@@ -215,7 +215,7 @@ function js_lo2(){
            <?=$Lj52_idcons?>*
           </td>
           <td> 
-<?php 
+<?
   db_input('j52_idcons',5,$Ij52_idcons,true,'text',$db_opcaoid,"");
 ?>
           </td>
@@ -225,7 +225,7 @@ function js_lo2(){
               <tr><td><b>Construções já Cadastradas</b></td></tr> 
               <tr>
                 <td align="center">  
-<?php 
+<?
 if(isset($j52_matric)){
 
 
@@ -257,7 +257,7 @@ if(isset($j52_matric)){
            <?=$Lj52_ano?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j52_ano',5,$Ij52_ano,true,'text',1,"");
 ?>
           </td>
@@ -267,7 +267,7 @@ if(isset($j52_matric)){
            <?=$Lj52_area?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j52_area',5,$Ij52_area,true,'text',1,"");
 ?>
           </td>
@@ -277,7 +277,7 @@ if(isset($j52_matric)){
            <?=$Lj52_areap?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j52_areap',5,$Ij52_areap,true,'text',1,"");
 ?>
           </td>
@@ -287,19 +287,19 @@ if(isset($j52_matric)){
            <?=$Lj52_dtlan?>
           </td>
           <td> 
-<?php 
+<?
   db_inputdata('j52_dtlan',@$j52_dtlan_dia,@$j52_dtlan_mes,@$j52_dtlan_ano,true,'text',2,"");
 ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj52_codigo?>">
-<?php 
+<?
   db_ancora(@$Lj52_codigo,"js_pesquisaj52_codigo(true);",$db_opcao);
 ?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j52_codigo',5,$Ij52_codigo,true,'text',$db_opcao," onchange='js_pesquisaj52_codigo(false);'");
   db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 ?>
@@ -310,7 +310,7 @@ if(isset($j52_matric)){
            <?=$Lj52_numero?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j52_numero',5,$Ij52_numero,true,'text',1,"");
 ?>
           </td>
@@ -320,7 +320,7 @@ if(isset($j52_matric)){
            <?=$Lj52_compl?>
           </td>
           <td> 
-<?php 
+<?
   db_input('j52_compl',5,$Ij52_compl,true,'text',1,"");
 ?>
           </td>
@@ -328,13 +328,13 @@ if(isset($j52_matric)){
         <tr>
           <td>
             <b>
-<?php 
+<?
   db_ancora("Características","js_mostracaracteristica();",1);
 ?>
             </b> 
           </td>
           <td> 
-<?php 
+<?
 
   db_input('caracteristica',15,1,true,'hidden',1,"")
 ?>
@@ -359,7 +359,7 @@ if(isset($j52_matric)){
   </tr>
 </form>
 </table>
-<?php 
+<?
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -427,7 +427,7 @@ function js_mostraruas(chave,erro){
   }
 }
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

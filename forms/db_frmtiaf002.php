@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -27,7 +27,7 @@
 ?>
 <form name="form1" method="post" action="">
     <center>
-    <?php 
+    <?
 	    $where = "";
 	    if(isset($y99_coddoc) && $y99_coddoc != ""){  
 	      $where = " and y99_coddoc = $y99_coddoc ";
@@ -59,41 +59,41 @@
    <table border="0">
       <tr>
          <td nowrap title="<?=@$Ty90_codtiaf?>"> 
-	    <?php 
+	    <?
 	      db_ancora(@$Ly90_codtiaf,"js_pesquisay90_codtiaf(true);",$db_opcao);
 	    ?>
 	 </td>
 	 <td>
-	    <?php 
+	    <?
 	     db_input('y90_codtiaf',10,$Iy90_codtiaf,true,'text',3," onchange='js_pesquisay90_codtiaf(false);'");
 	    ?>
 	 </td>
 	 </tr>
-	 <?php if (isset($opcao) && $opcao!="incluir"){?>
+	 <?if (isset($opcao) && $opcao!="incluir"){?>
 	  <tr>	
 	  <td nowrap title="<?=@$Ty99_coddoc?>"> 
-	    <?php 
+	    <?
 	      db_ancora(@$Ly99_coddoc,"js_pesquisay99_coddoc(true);",3);
 	    ?>
 	 </td>
 	 <td>
-	    <?php 
+	    <?
 	     db_input('y99_coddoc',10,$Iy99_coddoc,true,'text',3," onchange='js_pesquisay99_coddoc(false);'");
 	    ?>
 	 </td>
-      <?php }?>
+      <?}?>
      </tr>
       <tr>
          <td nowrap title="<?=@$Ty98_tiafdoc?>"> 
-	    <?php 
+	    <?
 	     db_ancora(@$Ly98_tiafdoc,"js_pesquisay98_tiafdoc(true);",$db_opcao);
 	    ?>
 	 </td>
 	 <td>
-	    <?php 
+	    <?
 	     db_input('y98_tiafdoc',10,$Iy98_tiafdoc,true,'text',$db_opcao," onchange='js_pesquisay98_tiafdoc(false);'");
 	    ?>
-	    <?php 
+	    <?
 	     db_input('y98_descr',40,$Iy98_descr,true,'text',3,'');
 	    ?>
 	 </td>
@@ -104,7 +104,7 @@
             <b> Data inicial : </b>
         </td>
         <td>
-            <?php  
+            <? 
               db_inputdata('y99_dataini',@$y99_dataini_dia,@$y99_dataini_mes,@$y99_dataini_ano,true,'text',$db_opcao,"")
             ?>
     	</td>
@@ -115,7 +115,7 @@
 	       <b> Data final : </b>
 	    </td>
 	    <td>
-	      <?php  
+	      <? 
 	         db_inputdata('y99_datafim',@$y99_datafim_dia,@$y99_datafim_mes,@$y99_datafim_ano,true,'text',$db_opcao,"")       
 	      ?>
         </td>
@@ -125,7 +125,7 @@
        <?=@$Ly99_obs?>
     </td>
     <td> 
-		<?php 
+		<?
 			db_textarea('y99_obs',5,50,$Iy99_obs,true,'text',$db_opcao,"")
 		?>
     </td>
@@ -136,7 +136,7 @@
   </tr>
     </table>
     <center>
-    <?php  
+    <? 
        //echo($cltiafdoc->sql_query($y99_coddoc,"y99_coddoc, y98_descr, y99_obs,y90_codtiaf",$y99_coddoc,"y99_codtiaf = $y90_codtiaf"));
        $chavepri= array("y90_codtiaf"=>$y90_codtiaf,"y99_coddoc"=>$y99_coddoc);
        $cliframe_alterar_excluir->chavepri = $chavepri;
@@ -212,7 +212,7 @@ function js_mostratiaf1(chave) {
 
 function js_limpacampos1(chave){
   alert('js_limpacampos1');
-  <?php 
+  <?
   	$tipobotao = "Incluir";
   ?>	
   location.href="fis1_tiafaba002.php?y90_codtiaf="+chave;

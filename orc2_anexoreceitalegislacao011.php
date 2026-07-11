@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -77,7 +77,7 @@ function js_emite() {
         <table  align="center" border=0>
           <tr>
              <td align="center" colspan="2">
-             <?php 
+             <?
                db_selinstit('', 300, 140);
              ?>
              </td>

@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,7 +43,7 @@ $clrotulo->label("t70_descr");
           <?=@$Lt42_codigo?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t42_codigo',8,$It42_codigo,true,'text',3,"")
           ?>
         </td>
@@ -53,7 +53,7 @@ $clrotulo->label("t70_descr");
           <?=@$Lt42_descr?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t42_descr',51,$It42_descr,true,'text',3,"")
           ?>
         </td>
@@ -63,7 +63,7 @@ $clrotulo->label("t70_descr");
           <?=@$Lt56_data?>
         </td>
         <td> 
-          <?php 
+          <?
             $t56_data_dia = date('d',db_getsession("DB_datausu"));
             $t56_data_mes= date('m',db_getsession("DB_datausu"));
             $t56_data_ano= date('Y',db_getsession("DB_datausu"));
@@ -74,20 +74,20 @@ $clrotulo->label("t70_descr");
       </tr>
       <tr>
         <td nowrap title="<?=@$Tt56_depart?>">
-          <?php 
+          <?
             db_ancora(@$Lt56_depart,"js_pesquisat56_depart(true);",3);
           ?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t56_depart',8,$It56_depart,true,'text',3," onchange='js_pesquisat56_depart(false);'")
           ?>
-          <?php 
+          <?
             db_input('descrdepto',60,$Idescrdepto,true,'text',3,'')
           ?>
         </td>
       </tr>
-      <?php if (isset($t52_depart)&&$t52_depart!=""){?>
+      <?if (isset($t52_depart)&&$t52_depart!=""){?>
       <tr>
         <td nowrap title="Divisão do Depart.">
           Divisão:   
@@ -95,27 +95,27 @@ $clrotulo->label("t70_descr");
         <td>    
           <select name='t33_divisao'>
     	      <option value=''>Nenhuma</option>
-          	<?php 
+          	<?
           	$result=$cldepartdiv->sql_record($cldepartdiv->sql_query_file(null,"t30_codigo,t30_descr",null,"t30_depto=$t52_depart"));
           	for($y=0;$y<$cldepartdiv->numrows;$y++){
            	  db_fieldsmemory($result,$y);
      	      ?>
     	      <option value=<?=@$t30_codigo?> <?=(isset($t33_divisao)&&$t33_divisao==$t30_codigo?"selected":"")?> > <?=@$t30_descr?></option>
-       	    <?php }?>
+       	    <?}?>
           </select> 
         </td>
-      <?php }?>
+      <?}?>
       <tr>
         <td nowrap title="<?=@$Tt56_situac?>">
-          <?php 
+          <?
             db_ancora(@$Lt56_situac,"js_pesquisat56_situac(true);",$db_opcao);
           ?>
         </td>
         <td> 
-          <?php 
+          <?
             db_input('t56_situac',8,$It56_situac,true,'text',$db_opcao," onchange='js_pesquisat56_situac(false);'")
           ?>
-          <?php 
+          <?
             db_input('t70_descr',60,$It70_descr,true,'text',3,'')
           ?>
         </td>
@@ -124,7 +124,7 @@ $clrotulo->label("t70_descr");
         <td nowrap title="<?=@$Tt56_histor?>" colspan="2">
           <fieldset class="separator">
             <legend>Justificativa:</legend>
-            <?php 
+            <?
               db_textarea('t56_histor',0,50,$It56_histor,true,'text',$db_opcao,"")
             ?>
           </fieldset>
@@ -220,7 +220,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bens.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -232,7 +232,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benslote.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

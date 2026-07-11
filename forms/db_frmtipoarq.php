@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $cltipoarq->rotulo->label();
        <?=@$Lp66_codarq?>
     </td>
     <td> 
-<?php 
+<?
 db_input('p66_codarq',8,$Ip66_codarq,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('p66_codarq',8,$Ip66_codarq,true,'text',$db_opcao,"")
        <?=@$Lp66_descr?>
     </td>
     <td> 
-<?php 
+<?
 db_input('p66_descr',50,$Ip66_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -68,7 +68,7 @@ function js_preenchepesquisa(chave){
   location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
-<?php 
+<?
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

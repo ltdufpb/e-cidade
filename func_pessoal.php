@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,14 +61,14 @@ $clrotulo->label("DBtxt25");
              <strong>Ano / Mês :&nbsp;&nbsp;</strong>
            </td>
            <td colspan='3'>
-           <?php 
+           <?
            if(!isset($chave_r01_anousu)){
            	 $chave_r01_anousu = db_anofolha();
            }
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,"",'chave_r01_anousu');
            ?>
            &nbsp;/&nbsp;
-           <?php 
+           <?
            if(!isset($chave_r01_mesusu)){
            	 $chave_r01_mesusu = db_mesfolha();
            }
@@ -81,7 +81,7 @@ $clrotulo->label("DBtxt25");
            <?=$Lr01_regist?>
            </td>
            <td width="96%" align="left" nowrap> 
-           <?php 
+           <?
 		   db_input("r01_regist",8,$Ir01_regist,true,"text",4,"","chave_r01_regist");
 		   ?>
            </td>
@@ -89,7 +89,7 @@ $clrotulo->label("DBtxt25");
            <?=$Lr01_numcgm?>
            </td>
            <td width="96%" align="left" nowrap> 
-           <?php 
+           <?
            db_input("r01_numcgm",8,$Ir01_numcgm,true,"text",4,"","chave_r01_numcgm");
 	       ?>
            </td>
@@ -99,7 +99,7 @@ $clrotulo->label("DBtxt25");
            <?=$Lz01_nome?>
            </td>
            <td width="96%" align="left" nowrap colspan='3'> 
-           <?php 
+           <?
            db_input("z01_nome",80,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 	       ?>
            </td>
@@ -117,7 +117,7 @@ $clrotulo->label("DBtxt25");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $dbwhere = " r01_mesusu = $chave_r01_mesusu ";
       $dbwhere.= " and r01_anousu = $chave_r01_anousu ";
       
@@ -166,12 +166,12 @@ $clrotulo->label("DBtxt25");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

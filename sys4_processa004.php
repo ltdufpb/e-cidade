@@ -101,7 +101,7 @@ if (file_exists($arquivo) && !is_writable($arquivo)){
 </table>
 </body>
 </html>
-<?php 
+<?
 exit;
 }
 
@@ -385,7 +385,7 @@ if (!is_writable($root . "/funcoes")) {
     </table>
     </body>
     </html>
-    <?php 
+    <?
     exit;
 }
 if (file_exists($arquivo) && !is_writable($arquivo)) {
@@ -397,12 +397,12 @@ if (file_exists($arquivo) && !is_writable($arquivo)) {
     </table>
     </body>
     </html>
-    <?php 
+    <?
     exit;
 }
 umask(74);
 $fd = fopen($arquivo, "w");
-fputs($fd, "<?php \n");
+fputs($fd, "<?\n");
 fputs($fd, '$campos = "' . $nometab . '.');
 $sql = "select trim(nomecam)
           from db_syscampo c

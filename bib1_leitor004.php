@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ $db_opcao = 3;
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   </head>
   <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-  <?php 
+  <?
     if (isset($chavepesquisa)) {
     
       if ($tipo == "ALUNO") {
@@ -136,9 +136,9 @@ $db_opcao = 3;
                   <?="<b>CPF: </b>"?>
                 </td>
                 <td>
-                  <?php db_input('cpf', 15, @$cpf, true, 'text', $db_opcao, "");?>
+                  <?db_input('cpf', 15, @$cpf, true, 'text', $db_opcao, "");?>
                   <?="<b>Identidade: </b>"?>
-                  <?php db_input('identidade', 15, @$identidade, true, 'text', $db_opcao);?>
+                  <?db_input('identidade', 15, @$identidade, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -146,7 +146,7 @@ $db_opcao = 3;
                   <?="<b>Código: </b>"?>
                 </td>
                 <td nowrap>
-                  <?php db_input('codigo', 10, $codigo, true, 'text', 3);?>
+                  <?db_input('codigo', 10, $codigo, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -154,7 +154,7 @@ $db_opcao = 3;
                   <?="<b>Nome: </b>"?>
                 </td>
                 <td nowrap title="<?=@$nome?>">
-                  <?php db_input('nome', 50, $nome, true, 'text', $db_opcao, "");?>
+                  <?db_input('nome', 50, $nome, true, 'text', $db_opcao, "");?>
                 </td>
               </tr>
               <tr>
@@ -162,7 +162,7 @@ $db_opcao = 3;
                   <?="<b>Nome do Pai: </b>"?>
                 </td>
                 <td nowrap title="<?=@$Ted47_v_pai?>">
-                  <?php db_input('pai', 50, $pai, true, 'text', $db_opcao, "");?>
+                  <?db_input('pai', 50, $pai, true, 'text', $db_opcao, "");?>
                 </td>
               </tr>
               <tr>
@@ -170,7 +170,7 @@ $db_opcao = 3;
                   <?="<b>Nome da Mãe: </b>"?>
                 </td>
                 <td nowrap title="<?=@$mae?>">
-                  <?php db_input('mae', 50, $mae, true, 'text', $db_opcao, "");?>
+                  <?db_input('mae', 50, $mae, true, 'text', $db_opcao, "");?>
                 </td>
               </tr>
               <tr>
@@ -178,7 +178,7 @@ $db_opcao = 3;
                   <?="<b>Data de Nascimento: </b>"?>
                 </td>
                 <td nowrap title="<?=$data_nascimento?>">
-                  <?php db_inputdata('data_nascimento', @$ed47_d_nasc_dia,@$ed47_d_nasc_mes,@$ed47_d_nasc_ano,true,'text',$db_opcao);?>
+                  <?db_inputdata('data_nascimento', @$ed47_d_nasc_dia,@$ed47_d_nasc_mes,@$ed47_d_nasc_ano,true,'text',$db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -186,12 +186,12 @@ $db_opcao = 3;
                   <?="<b>Estado Civil: </b>"?>
                 </td>
                 <td nowrap title="<?=$estado_civil?>">
-                  <?php 
+                  <?
                     $x = array("" => "", "1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
                     db_select('estado_civil', $x, true, $db_opcao);
                   ?>
                   <?="<b>Sexo: </b>"?>
-                  <?php 
+                  <?
                     $sex = array("" => "", "M"=>"Masculino","F"=>"Feminino");
                     db_select('sexo', $sex, true, $db_opcao);
                   ?>
@@ -203,10 +203,10 @@ $db_opcao = 3;
             <table width="100%" border="1" cellspacing="0" cellpadding="0">
               <tr>
                 <td nowrap title="<?=@$endereco?>">
-                  <?php db_ancora("<b>Endereço: </b>", "", $db_opcao);?>
+                  <?db_ancora("<b>Endereço: </b>", "", $db_opcao);?>
                 </td>
                 <td nowrap>
-                  <?php db_input('endereco', 40, $endereco, true, 'text', 3);?>
+                  <?db_input('endereco', 40, $endereco, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -214,18 +214,18 @@ $db_opcao = 3;
                   <?="<b>Número: </b>"?>
                 </td>
                 <td width="71%" nowrap>
-                  <?php db_input('numero', 8, $numero, true, 'text', $db_opcao);?>
+                  <?db_input('numero', 8, $numero, true, 'text', $db_opcao);?>
                   &nbsp;
                   <?="<b>Complemento: </b>"?>
-                  <?php db_input('complemento', 10, $complemento, true, 'text', $db_opcao);?>
+                  <?db_input('complemento', 10, $complemento, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$bairro?>">
-                  <?php db_ancora("<b>Bairro: </b>", "", $db_opcao);?>
+                  <?db_ancora("<b>Bairro: </b>", "", $db_opcao);?>
                 </td>
                 <td nowrap>
-                  <?php db_input('bairro', 25, $bairro, true, 'text', 3);?>
+                  <?db_input('bairro', 25, $bairro, true, 'text', 3);?>
                 </td>
               </tr>
               <tr>
@@ -233,9 +233,9 @@ $db_opcao = 3;
                   <?="<b>Munícipio: </b>"?>
                 </td>
                 <td nowrap>
-                  <?php db_input('municipio', 30, @$municipio, true, 'text', $db_opcao);?>
+                  <?db_input('municipio', 30, @$municipio, true, 'text', $db_opcao);?>
                   <?="<b>UF: </b>"?>
-                  <?php db_input('uf', 2, @$uf, true, 'text', $db_opcao);?>
+                  <?db_input('uf', 2, @$uf, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -243,7 +243,7 @@ $db_opcao = 3;
                   <?="<b>CEP: </b>"?>
                 </td>
                 <td nowrap>
-                  <?php db_input('cep', 9, $cep, true, 'text', $db_opcao);?>
+                  <?db_input('cep', 9, $cep, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -251,7 +251,7 @@ $db_opcao = 3;
                   <?="<b>Telefone: </b>"?>
                 </td>
                 <td nowrap>
-                  <?php db_input('telefone', 12, $telefone, true, 'text', $db_opcao);?>
+                  <?db_input('telefone', 12, $telefone, true, 'text', $db_opcao);?>
                 </td>
               </tr>
               <tr>
@@ -259,7 +259,7 @@ $db_opcao = 3;
                   <?="<b>Celular: </b>"?>
                 </td>
                 <td nowrap>
-                  <?php db_input('celular', 12, $celular, true, 'text', $db_opcao);?>
+                  <?db_input('celular', 12, $celular, true, 'text', $db_opcao);?>
                 </td>
               </tr>
             </table>
@@ -271,6 +271,6 @@ $db_opcao = 3;
         js_OpenJanelaIframe('parent','db_iframe_alteradados','bib1_alunoabas000.php?leitor&chavepesquisa=<?=$chavepesquisa?>','Alterar Dados do Aluno',true);
       }
     </script>
-    <?php }?>
+    <?}?>
   </body>
 </html>

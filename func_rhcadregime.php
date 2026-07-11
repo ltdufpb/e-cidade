@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhcadregime->rotulo->label("rh52_descr");
               <?=$Lrh52_regime?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh52_regime",1,$Irh52_regime,true,"text",4,"","chave_rh52_regime");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhcadregime->rotulo->label("rh52_descr");
               <?=$Lrh52_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-             <?php 
+             <?
 		           db_input("rh52_descr",20,$Irh52_descr,true,"text",4,"","chave_rh52_descr");
 		         ?>
             </td>
@@ -83,7 +83,7 @@ $clrhcadregime->rotulo->label("rh52_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhcadregime.php")==true){
@@ -127,12 +127,12 @@ $clrhcadregime->rotulo->label("rh52_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

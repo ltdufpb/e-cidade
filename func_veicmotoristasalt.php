@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $clveicmotoristas->rotulo->label("ve05_codigo");
               <?=$Lve05_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("ve05_codigo",10,$Ive05_codigo,true,"text",4,"","chave_ve05_codigo");
 		       ?>
             </td>
@@ -75,7 +75,7 @@ $clveicmotoristas->rotulo->label("ve05_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       $where   = "";
       $dbinner = "";
       if (isset ($pessoal) && trim($pessoal) != "") {
@@ -146,12 +146,12 @@ $clveicmotoristas->rotulo->label("ve05_codigo");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>

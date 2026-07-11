@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -65,7 +65,7 @@ input {
 <table width="790" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="middle" bgcolor="#CCCCCC">
-  <?php 
+  <?
    if(!isset($HTTP_POST_VARS["b_estrut"])) { ?>
     <form method="post" name="estrut">                
         <table border="0" cellpadding="0" cellspacing="0">
@@ -86,7 +86,7 @@ input {
           </tr>
         </table>
 	</form>
-<?php 
+<?
 } else {
   db_postmemory($HTTP_POST_VARS);
   // Tabelas
@@ -125,7 +125,7 @@ input {
     $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
     $arquivo = $root."/"."func_".trim($nometab).".php";
     $fd = fopen($arquivo,"w");
-    fputs($fd,"<?php \n");
+    fputs($fd,"<?\n");
     for($i = 0;$i < $numrows;$i++) {
 	  fputs($fd,'require(modification("libs/db_stdlib.php"));'."\n");
 	  fputs($fd,'require(modification("libs/db_conecta.php"));'."\n");
@@ -173,7 +173,7 @@ input {
           fputs($fd,'              <?=$L'.trim(pg_result($pk,$p,'nomecam')).'?>'."\n");
           fputs($fd,'            </td>'."\n");
           fputs($fd,'            <td width="96%" align="left" nowrap> '."\n");
-          fputs($fd,'              <?php '."\n");
+          fputs($fd,'              <?'."\n");
           fputs($fd,'		       db_input("'.trim(pg_result($pk,$p,'nomecam')).'",'.trim(pg_result($pk,$p,'tamanho')).',$I'.trim(pg_result($pk,$p,'nomecam')).',true,"text",4,"","chave_'.trim(pg_result($pk,$p,'nomecam')).'");'."\n");
           fputs($fd,'		       ?>'."\n");
           fputs($fd,'            </td>'."\n");
@@ -185,7 +185,7 @@ input {
           fputs($fd,'              <?=$L'.trim(pg_result($pk,0,'campoca')).'?>'."\n");
           fputs($fd,'            </td>'."\n");
           fputs($fd,'            <td width="96%" align="left" nowrap> '."\n");
-          fputs($fd,'              <?php '."\n");
+          fputs($fd,'              <?'."\n");
           fputs($fd,'		       db_input("'.trim(pg_result($pk,0,'campoca')).'",'.trim(pg_result($pk,0,'catamanho')).',$I'.trim(pg_result($pk,0,'campoca')).',true,"text",4,"","chave_'.trim(pg_result($pk,0,'campoca')).'");'."\n");
           fputs($fd,'		       ?>'."\n");
           fputs($fd,'            </td>'."\n");
@@ -205,7 +205,7 @@ input {
       fputs($fd,'  </tr>'."\n");
       fputs($fd,'  <tr> '."\n");
       fputs($fd,'    <td align="center" valign="top"> '."\n");
-      fputs($fd,'      <?php '."\n");
+      fputs($fd,'      <?'."\n");
       fputs($fd,'      if(!isset($pesquisa_chave)){'."\n");
       fputs($fd,'        if(isset($campos)==false){'."\n");
       fputs($fd,'           $campos = "'.trim(pg_result($result,$i,'nomearq')).'.*";'."\n");
@@ -259,7 +259,7 @@ input {
       fputs($fd,'</table>'."\n");
       fputs($fd,'</body>'."\n");
       fputs($fd,'</html>'."\n");
-      fputs($fd,'<?php '."\n");
+      fputs($fd,'<?'."\n");
       fputs($fd,'if(!isset($pesquisa_chave)){'."\n");
       fputs($fd,'  ?>'."\n");
       fputs($fd,'  <script>'."\n");
@@ -268,7 +268,7 @@ input {
          fputs($fd,'document.form2.chave_'.trim(pg_result($pk,$p,'nomecam')).'.select();'."\n");
 	  }
       fputs($fd,'  </script>'."\n");
-      fputs($fd,'  <?php '."\n");
+      fputs($fd,'  <?'."\n");
       fputs($fd,'}'."\n");
       fputs($fd,'?>'."\n");
   	  // fim dos java scripts
@@ -284,7 +284,7 @@ input {
 	</td>
   </tr>
 </table>
-<?php 
+<?
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

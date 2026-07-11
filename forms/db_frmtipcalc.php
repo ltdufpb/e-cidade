@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ function js_hab(){
              <?=@$Lq81_codigo?>
           </td>
           <td> 
-          <?php 
+          <?
             db_input('q81_codigo',10,$Iq81_codigo,true,'text',3)
           ?>
           </td>
@@ -66,7 +66,7 @@ function js_hab(){
              <?=@$Lq81_descr?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_descr',60,$Iq81_descr,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -76,19 +76,19 @@ function js_hab(){
              <?=@$Lq81_abrev?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_abrev',60,$Iq81_abrev,true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tq81_cadcalc?>">
-             <?php 
+             <?
                db_ancora(@$Lq81_cadcalc,"js_pesquisaq81_cadcalc(true);",$db_opcao);
              ?>
           </td>
           <td> 
-            <?php 
+            <?
                db_input('q81_cadcalc',10,$Iq81_cadcalc,true,'text',$db_opcao," onchange='js_pesquisaq81_cadcalc(false);'");
                db_input('q85_descr',47,$Iq85_descr,true,'text',3,'');
              ?>
@@ -99,7 +99,7 @@ function js_hab(){
              <?=@$Lq81_integr?>
           </td>
           <td> 
-              <?php 
+              <?
                 $x = array("f"=>"NAO","t"=>"SIM");
                 db_select('q81_integr',$x,true,$db_opcao,"onchange='js_troca(this.value);'");
               ?>
@@ -110,7 +110,7 @@ function js_hab(){
              <?=@$Lq81_tippro?>
           </td>
           <td nowrap> 
-              <?php 
+              <?
                 $x = array("Q"=>"QUINZENAL","M"=>"MENSAL","S"=>"SEMESTRAL","D"=>"DIARIA","T"=>"TRIMESTRAL");
                 db_select('q81_tippro',$x,true,$db_opcao,"");
                 echo @$Lq81_tipo;
@@ -121,12 +121,12 @@ function js_hab(){
         </tr>
         <tr>
           <td nowrap title="<?=@$Tq81_recexe?>">
-             <?php 
+             <?
                db_ancora(@$Lq81_recexe,"js_pesquisaq81_recexe(true);",$db_opcao);
              ?>
           </td>
           <td> 
-             <?php 
+             <?
                db_input('q81_recexe',10,$Iq81_recexe,true,'text',$db_opcao," onchange='js_pesquisaq81_recexe(false);'");
                db_input('k02_descr',47,$Ik02_descr,true,'text',3,'','k02_descrexe');
              ?>
@@ -137,7 +137,7 @@ function js_hab(){
              <?=@$Lq81_qiexe?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_qiexe',10,$Iq81_qiexe,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -147,7 +147,7 @@ function js_hab(){
              <?=@$Lq81_qfexe?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_qfexe',10,$Iq81_qfexe,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -157,19 +157,19 @@ function js_hab(){
              <?=@$Lq81_valexe?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_valexe',10,$Iq81_valexe,true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tq81_recpro?>">
-             <?php 
+             <?
              db_ancora(@$Lq81_recpro,"js_pesquisaq81_recpro(true);",$db_opcao);
              ?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_recpro',10,$Iq81_recpro,true,'text',$db_opcao," onchange='js_pesquisaq81_recpro(false);'");
               db_input('k02_descr',47,$Ik02_descr,true,'text',3,'');
             ?>
@@ -180,7 +180,7 @@ function js_hab(){
              <?=@$Lq81_qipro?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_qipro',10,$Iq81_qipro,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -190,7 +190,7 @@ function js_hab(){
              <?=@$Lq81_qfpro?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_qfpro',10,$Iq81_qfpro,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -200,7 +200,7 @@ function js_hab(){
              <?=@$Lq81_valpro?>
           </td>
           <td> 
-            <?php 
+            <?
               db_input('q81_valpro',10,$Iq81_valpro,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -210,7 +210,7 @@ function js_hab(){
              <?=@$Lq81_uqtab?>
           </td>
           <td> 
-            <?php 
+            <?
               $x = array("f"=>"NAO","t"=>"SIM");
               db_select('q81_uqtab',$x,true,$db_opcao,"");
             ?>
@@ -221,7 +221,7 @@ function js_hab(){
              <?=@$Lq81_uqcad?>
           </td>
           <td> 
-            <?php 
+            <?
               $x = array("f"=>"NAO","t"=>"SIM");
               db_select('q81_uqcad',$x,true,$db_opcao,"");
             ?>
@@ -231,12 +231,12 @@ function js_hab(){
       
         <tr>
           <td nowrap title="<?=@$Tq81_gera?>">
-             <?php 
+             <?
              db_ancora(@$Lq81_gera,"js_pesquisaq81_gera(true);",$db_opcao);
              ?>
           </td>
           <td> 
-              <?php 
+              <?
               db_input('q81_gera',10,$Iq81_gera,true,'text',$db_opcao," onchange='js_pesquisaq81_gera(false);'");
               db_input('q89_descr',47,$Iq89_descr,true,'text',3,'');
              ?>
@@ -247,7 +247,7 @@ function js_hab(){
              <?=@$Lq81_percprovis?>
           </td>
           <td>
-          <?php 
+          <?
             db_input('q81_percprovis',15,$Iq81_percprovis,true,'text',$db_opcao,"")
           ?>
           </td>
@@ -257,7 +257,7 @@ function js_hab(){
              <?=@$Lq81_usaretido?>
           </td>
           <td>
-          <?php 
+          <?
             $x = array("f"=>"NAO","t"=>"SIM");
             db_select('q81_usaretido',$x,true,$db_opcao,"");
           ?>
@@ -268,7 +268,7 @@ function js_hab(){
              <?=@$Lq81_excedenteativ?>
           </td>
           <td>
-          <?php 
+          <?
             db_input('q81_excedenteativ',15,$Iq81_excedenteativ,true,'text',$db_opcao,"")
           ?>
           </td>
@@ -367,13 +367,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tipcalc.hide();
-  <?php 
+  <?
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }
-<?php 
+<?
 if(($db_opcao==1||$db_opcao==2) && isset($q81_integr)){
   echo "js_troca('$q81_integr');\n";
 }

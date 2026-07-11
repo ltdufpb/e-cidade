@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clempelemento->rotulo->label("e64_vlremp");
               <?=$Le64_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e64_numemp",8,$Ie64_numemp,true,"text",4,"","chave_e64_numemp");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clempelemento->rotulo->label("e64_vlremp");
               <?=$Le64_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e64_codele",6,$Ie64_codele,true,"text",4,"","chave_e64_codele");
 		       ?>
             </td>
@@ -76,7 +76,7 @@ $clempelemento->rotulo->label("e64_vlremp");
               <?=$Le64_vlremp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("e64_vlremp",15,$Ie64_vlremp,true,"text",4,"","chave_e64_vlremp");
 		       ?>
             </td>
@@ -94,7 +94,7 @@ $clempelemento->rotulo->label("e64_vlremp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empelemento.php")==true){
@@ -130,12 +130,12 @@ $clempelemento->rotulo->label("e64_vlremp");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

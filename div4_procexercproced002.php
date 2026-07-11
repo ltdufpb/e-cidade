@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,11 +44,11 @@ db_postmemory($_GET);
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
 <form name='form1'>
-<?php 
+<?
   db_criatermometro('termometro','Concluido...','blue',1);
 ?>
 
-<?php 
+<?
 dropTables();
 
 $exercicios = '';

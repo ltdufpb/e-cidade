@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,7 +52,7 @@ extract($_parseStr, EXTR_SKIP);
       <b>Descrição:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?php db_input("tabela",30,'',true,"text",4,"","chave_tabela");?>
+      <?db_input("tabela",30,'',true,"text",4,"","chave_tabela");?>
      </td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ extract($_parseStr, EXTR_SKIP);
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?php 
+   <?
    if(!isset($pesquisa_chave)){
     if(isset($chave_tabela) && (trim($chave_tabela)!="") ){
      $where = " AND db_sysarquivo.nomearq like '$chave_tabela%'";

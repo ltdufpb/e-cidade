@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clclassiliteraria->rotulo->label("bi03_classificacao");
               <?=$Lbi03_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("bi03_codigo",10,$Ibi03_codigo,true,"text",4,"","chave_bi03_codigo");
 		       ?>
             </td>
@@ -66,7 +66,7 @@ $clclassiliteraria->rotulo->label("bi03_classificacao");
               <?=$Lbi03_classificacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("bi03_classificacao",50,$Ibi03_classificacao,true,"text",4,"","chave_bi03_classificacao");
 		       ?>
             </td>
@@ -84,7 +84,7 @@ $clclassiliteraria->rotulo->label("bi03_classificacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_classiliteraria.php")==true){
@@ -120,12 +120,12 @@ $clclassiliteraria->rotulo->label("bi03_classificacao");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

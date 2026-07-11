@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -105,7 +105,7 @@ if( x != 0){
 						<table border="0">
 							<tr>
 								<td align="top" colspan="2">
-									<?php 
+									<?
 									
 									if(isset($j34_setor)&& $j34_setor!=""){
                         //$sql = 	$cllote->sql_query(""," distinct on(j34_setor,j34_quadra,j34_lote) j34_setor,j34_quadra,j34_lote ,j34_idbql","j34_setor,j34_quadra,j34_lote","j34_quadra in ($qua) and j34_setor in ($set)");

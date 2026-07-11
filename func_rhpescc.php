@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clrhpescc->rotulo->label("rh17_cc");
               <?=$Lrh17_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh17_regist",6,$Irh17_regist,true,"text",4,"","chave_rh17_regist");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clrhpescc->rotulo->label("rh17_cc");
               <?=$Lrh17_cc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("rh17_cc",1,$Irh17_cc,true,"text",4,"","chave_rh17_cc");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clrhpescc->rotulo->label("rh17_cc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpescc.php")==true){
@@ -119,12 +119,12 @@ $clrhpescc->rotulo->label("rh17_cc");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script type="text/javascript">

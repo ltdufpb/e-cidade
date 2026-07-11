@@ -1,4 +1,4 @@
-<?php 
+<?
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clitbitransacao->rotulo->label("it04_descr");
               <?=$Lit04_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it04_codigo",10,$Iit04_codigo,true,"text",4,"","chave_it04_codigo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clitbitransacao->rotulo->label("it04_descr");
               <?=$Lit04_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?php 
+              <?
 		       db_input("it04_descr",100,$Iit04_descr,true,"text",4,"","chave_it04_descr");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clitbitransacao->rotulo->label("it04_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?php 
+      <?
       
       $sWhere 	  = "1=1";
        
@@ -133,12 +133,12 @@ $clitbitransacao->rotulo->label("it04_descr");
 </table>
 </body>
 </html>
-<?php 
+<?
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?php 
+  <?
 }
 ?>
 <script>
