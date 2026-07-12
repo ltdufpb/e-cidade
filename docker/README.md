@@ -40,7 +40,7 @@ docker-compose up -d --build
 Execute o comando para descompactar o banco de dados:
 
 ```bash
-docker exec -it ecidade_php56 gunzip docker/database/ecidade_base.sql.gz
+docker exec -it ecidade_php gunzip docker/database/ecidade_base.sql.gz
 ```
 
 ## 🛠️ Passo 4 – Executar o Script de Instalação
@@ -48,7 +48,7 @@ docker exec -it ecidade_php56 gunzip docker/database/ecidade_base.sql.gz
 Execute o script de instalação dentro do container PHP:
 
 ```bash
-docker exec -it ecidade_php56 bash docker/install.sh
+docker exec -it ecidade_php bash docker/install.sh
 ```
 
 ## 🛠️ Passo 5 Ajustar permissões do e-Cidade
@@ -57,7 +57,7 @@ Deverá ser executado na raiz do e-cidade.
 Para garantir a execução correta, aplique as permissões necessárias:
 
 ```bash
-docker exec -it ecidade_php56 chmod -R 775 /var/www/html
+docker exec -it ecidade_php chmod -R 775 /var/www/html
 ```
 
 ## 🔑 Passo 6 – Acessar a Aplicação
