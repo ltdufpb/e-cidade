@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_caraliq_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clcaraliq = new cl_caraliq;
 $clcaraliq->rotulo->label("j73_anousu");
@@ -57,7 +58,7 @@ $clcaraliq->rotulo->label("j73_aliq");
               <?=$Lj73_caract?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("j73_caract",10,$Ij73_caract,true,"text",4,"","chave_j73_caract");
 		          ?>
             </td>
@@ -67,7 +68,7 @@ $clcaraliq->rotulo->label("j73_aliq");
               <?=$Lj73_aliq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("j73_aliq",15,$Ij73_aliq,true,"text",4,"","chave_j73_aliq");
 		          ?>
             </td>
@@ -85,7 +86,7 @@ $clcaraliq->rotulo->label("j73_aliq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -134,12 +135,12 @@ $clcaraliq->rotulo->label("j73_aliq");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

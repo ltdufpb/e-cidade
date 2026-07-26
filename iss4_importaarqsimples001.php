@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -73,7 +73,7 @@ $dVlrTotal                    = 0;
               <strong>Arquivo de Retorno:</strong>
            </td>
            <td>
-             <?
+             <?php 
                db_input('arquivo',30,'',true,'file',$db_opcao,"onChange=\"if (this.value != ''){\$('db_opcao').disabled=false};\"",'','','');
              ?>
            </td>

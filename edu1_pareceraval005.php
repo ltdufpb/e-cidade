@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,7 @@ include(modification("classes/db_parecer_classe.php"));
 include(modification("classes/db_parecerlegenda_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clpareceraval = new cl_pareceraval;
@@ -49,20 +49,20 @@ if(isset($incluir)){
   $result1 = $clpareceraval->sql_record($clpareceraval->sql_query("","ed93_i_codigo,ed93_t_parecer",""," ed93_i_diarioavaliacao = $ed93_i_diarioavaliacao"));
   if($clpareceraval->numrows>0){
    db_fieldsmemory($result1,0);
-   $conf_sequencial = trim($ed92_c_descr);
-   if(strstr($ed93_t_parecer,$conf_sequencial)){
+   $conf_sequencial = trim((string) $ed92_c_descr);
+   if(strstr((string) $ed93_t_parecer,$conf_sequencial)){
     $clpareceraval->erro_status = "0";
     $clpareceraval->erro_msg = "Parecer já Informado para este período.";
    }else{
     db_inicio_transacao();
-    $clpareceraval->ed93_t_parecer= trim($ed93_t_parecer)." ** ".$ed92_i_sequencial." - ".trim($ed92_c_descr).($ed91_c_descr!=""?" =>".trim($ed91_c_descr):"");
+    $clpareceraval->ed93_t_parecer= trim((string) $ed93_t_parecer)." ** ".$ed92_i_sequencial." - ".trim((string) $ed92_c_descr).($ed91_c_descr!=""?" =>".trim((string) $ed91_c_descr):"");
     $clpareceraval->ed93_i_codigo=$ed93_i_codigo;
     $clpareceraval->alterar($ed93_i_codigo);
     db_fim_transacao();
    }
   }else{
    db_inicio_transacao();
-   $clpareceraval->ed93_t_parecer= $ed92_i_sequencial." - ".trim($ed92_c_descr).($ed91_c_descr!=""?" => ".trim($ed91_c_descr):"");
+   $clpareceraval->ed93_t_parecer= $ed92_i_sequencial." - ".trim((string) $ed92_c_descr).($ed91_c_descr!=""?" => ".trim((string) $ed91_c_descr):"");
    $clpareceraval->ed93_i_diarioavaliacao=$ed93_i_diarioavaliacao;
    $clpareceraval->incluir(null);
    db_fim_transacao();
@@ -129,27 +129,27 @@ if($encerrado=="S"){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td bgcolor="#CCCCCC">
-   <?db_input('ed93_i_codigo',10,@$Ied93_i_codigo,true,'hidden',$db_opcao,"")?>
-   <?db_input('ed93_i_diarioavaliacao',10,@$Ied93_i_diarioavaliacao,true,'hidden',$db_opcao,"")?>
+   <?php db_input('ed93_i_codigo',10,@$Ied93_i_codigo,true,'hidden',$db_opcao,"")?>
+   <?php db_input('ed93_i_diarioavaliacao',10,@$Ied93_i_diarioavaliacao,true,'hidden',$db_opcao,"")?>
   </td>
  </tr>
- <?if((isset($opcao) && $opcao=="alterar") || (isset($opcao) && $opcao=="excluir") || (isset($alterar))){?>
+ <?php if((isset($opcao) && $opcao=="alterar") || (isset($opcao) && $opcao=="excluir") || (isset($alterar))){?>
   <tr>
    <td>
     <b>Parecer:</b>
    </td>
    <td>
-    <?db_textarea('ed93_t_parecer',2,80,@$ed93_t_parecer,true,'text',@$db_opcao,"")?><br>
+    <?php db_textarea('ed93_t_parecer',2,80,@$ed93_t_parecer,true,'text',@$db_opcao,"")?><br>
    </td>
   </tr>
- <?}else{?>
+ <?php }else{?>
   <tr>
    <td nowrap title="<?=@$Ted92_i_sequencial?>">
-    <?db_ancora("<b>Parecer:</b>","js_pesquisaed92_i_sequencial(true);",$db_opcao);?>
+    <?php db_ancora("<b>Parecer:</b>","js_pesquisaed92_i_sequencial(true);",$db_opcao);?>
    </td>
    <td>
-    <?db_input('ed92_i_sequencial',15,@$Ied92_i_sequencial,true,'text',$db_opcao,"onchange='js_pesquisaed92_i_sequencial(false)';")?>
-    <?db_input('ed92_c_descr',60,@$Ied92_c_descr,true,'text',3,"")?>
+    <?php db_input('ed92_i_sequencial',15,@$Ied92_i_sequencial,true,'text',$db_opcao,"onchange='js_pesquisaed92_i_sequencial(false)';")?>
+    <?php db_input('ed92_c_descr',60,@$Ied92_c_descr,true,'text',3,"")?>
    </td>
   </tr>
   <tr>
@@ -159,19 +159,19 @@ if($encerrado=="S"){
    <td>
     <select name="ed91_c_descr" <?=$encerrado=="S"?"disabled style=\"background:#f3f3f3;\"":"style=\"height:17px;font-size:10px;padding:0px;\""?>>
     <option value=""></option>
-    <?
+    <?php 
     $result = $clparecerlegenda->sql_record($clparecerlegenda->sql_query("","ed91_i_codigo,ed91_c_descr",""," ed91_i_escola = ".db_getsession("DB_coddepto")));
     $linhas_leg = $clparecerlegenda->numrows;
     for($y=0;$y<$clparecerlegenda->numrows;$y++){
      db_fieldsmemory($result,$y);
      ?>
-      <option value="<?=trim($ed91_c_descr)?>"><?=trim($ed91_c_descr)?></option>
-     <?
+      <option value="<?=trim((string) $ed91_c_descr)?>"><?=trim((string) $ed91_c_descr)?></option>
+     <?php 
     }
     ?>
    </td>
   </tr>
- <?}?>
+ <?php }?>
  <tr>
   <td>
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
@@ -182,8 +182,8 @@ if($encerrado=="S"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
-   $chavepri= array("ed93_i_codigo"=>@$ed93_i_codigo);
+  <?php 
+   $chavepri= ["ed93_i_codigo"=>@$ed93_i_codigo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clpareceraval->sql_query("","*","ed93_i_codigo","ed93_i_diarioavaliacao = $ed93_i_diarioavaliacao");
    $cliframe_alterar_excluir->campos  ="ed93_t_parecer";
@@ -209,7 +209,7 @@ if($encerrado=="S"){
 <script>
 js_tabulacaoforms("form1","ed92_i_sequencial",true,1,"ed92_i_sequencial",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clpareceraval->erro_status=="0"){
   $clpareceraval->erro(true,false);

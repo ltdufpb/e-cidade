@@ -90,6 +90,7 @@ class AssentamentoControleMedico extends Assentamento
         $this->controleMedico = $controleMedico;
     }
 
+    #[\Override]
     public function toArray()
     {
         $servidor = ServidorRepository::getInstanciaByCodigo(
@@ -102,12 +103,12 @@ class AssentamentoControleMedico extends Assentamento
 
         foreach ($this->getControleMedico()->getExames() as $exame) {
             $exames[] = [
-                "descricao" => utf8_encode($exame->getDescricaoProcedimento()),
+                "descricao" => mb_convert_encoding($exame->getDescricaoProcedimento(), 'UTF-8', 'ISO-8859-1'),
                 "data" => $exame->getData(),
                 "resultado" => $exame->getResultado(),
                 "ordem" => $exame->getOrdem(),
                 "procedimento" => $exame->getProcedimento(),
-                "observacao" => utf8_encode($exame->getObservacao()),
+                "observacao" => mb_convert_encoding($exame->getObservacao(), 'UTF-8', 'ISO-8859-1'),
                 "codigoMonitoramentoSaude" => $exame->getCodigoMonitoramentoSaude(),
                 "codigo" => $exame->getCodigo()
             ];
@@ -125,12 +126,12 @@ class AssentamentoControleMedico extends Assentamento
             ? $this->getDataConcessao()->getDate(DBDate::DATA_PTBR)
             : $this->getDataConcessao();
 
-        return array(
+        return [
             'codigo' => $this->getCodigo(),
             'tipo' => $this->getTipoAssentamento(),
             'natureza' => 'padrao',
             'cgm_servidor' => $servidor->getCgm()->getCodigo(),
-            'nome_servidor' => utf8_encode($servidor->getCgm()->getNome()),
+            'nome_servidor' => mb_convert_encoding($servidor->getCgm()->getNome(), 'UTF-8', 'ISO-8859-1'),
             'matricula' => $this->getMatricula(),
             'dataConcessao' => $dataConcessao,
             'historico' => $this->getHistorico(),
@@ -156,6 +157,6 @@ class AssentamentoControleMedico extends Assentamento
             "ufCrmMedico" => $this->getControleMedico()->getUfCrm(),
             "ufCrmResponsavel" => $this->getControleMedico()->getUfCrmResponsavel(),
             "exames" => $exames
-        );
+        ];
     }
 }

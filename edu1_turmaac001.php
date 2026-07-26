@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("model/educacao/Escola.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clturmaac          = new cl_turmaac;
 $clturmaacmatricula = new cl_turmaacmatricula;
 $clescola           = new cl_escola;
@@ -159,7 +159,7 @@ if (isset($incluir)) {
   
   $clturmaac->ed268_programamaiseducacao = $ed268_programamaiseducacao;
   $clturmaac->ed268_c_aee                = $ed268_c_aee;
-  $clturmaac->ed268_c_descr              = trim($ed268_c_descr);
+  $clturmaac->ed268_c_descr              = trim((string) $ed268_c_descr);
   $clturmaac->incluir($ed268_i_codigo);
   db_fim_transacao();
 }
@@ -182,7 +182,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Turma com Atividade Complementar / AEE</b></legend>
-    <?include(modification("forms/db_frmturmaac.php"));?>
+    <?php include(modification("forms/db_frmturmaac.php"));?>
    </fieldset>
    </center>
   </td>
@@ -193,7 +193,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","ed268_c_descr",true,1,"ed268_c_descr",true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 	
   if ($clturmaac->erro_status == "0") {
@@ -217,7 +217,7 @@ if (isset($incluir)) {
      <script>
       parent.location.href = "edu1_turmaacabas002.php?chavepesquisa=<?=$ultimo?>&tipoatendimento=<?=$ed268_i_tipoatend?>";
      </script>
-    <?
+    <?php 
     
   }
 }

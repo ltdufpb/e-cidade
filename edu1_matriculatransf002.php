@@ -35,7 +35,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $datamatricula_dia = date( "d", db_getsession( "DB_datausu" ) );
 $datamatricula_mes = date( "m", db_getsession( "DB_datausu" ) );
@@ -83,7 +83,7 @@ $oDaoMatriculaTurnoReferente = new cl_matriculaturnoreferente();
   </tr>
 </table>
 
-<?
+<?php 
 if (!isset($incluir) && !isset($incluir2)) {
 
   $result_cod = $clmatricula->sql_record($clmatricula->sql_query("","turma.ed57_i_escola as escola, ed60_i_aluno,ed60_c_concluida,ed221_i_serie as etapaorigem",""," ed60_i_codigo = $matricula"));
@@ -102,11 +102,11 @@ if (!isset($incluir) && !isset($incluir2)) {
     <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
       <form name="form1" METHOD="POST" action="">
       <input type="hidden" id="sTurnoReferente" name="sTurnoReferente" value=<?php echo $oGet->sTurnoReferente;?>>
-      <? if ($ed60_c_concluida == "S") {?>
+      <?php  if ($ed60_c_concluida == "S") {?>
         <br>
         <b>Data da Matrícula:</b>
-        <?db_inputdata('datamatricula',@$datamatricula_dia,@$datamatricula_mes,@$datamatricula_ano,true,'text',1,"")?><br>
-        <?
+        <?php db_inputdata('datamatricula',@$datamatricula_dia,@$datamatricula_mes,@$datamatricula_ano,true,'text',1,"")?><br>
+        <?php 
           $campos               = "atestvaga.ed102_i_serie as codseriedestino";
           $sSqlTransfescolarede = $cltransfescolarede->sql_query("",$campos,""," ed103_i_codigo = $ed103_i_codigo");
           $result111            = $cltransfescolarede->sql_record($sSqlTransfescolarede);
@@ -117,7 +117,7 @@ if (!isset($incluir) && !isset($incluir2)) {
         ?>
           <tr>
             <td colspan="4">Escola:<?=$ed57_i_escola?>
-              <?
+              <?php 
                 $tem = false;
                 for ($c=0; $c < $clturmaserieregimemat->numrows; $c++) {
 
@@ -131,12 +131,12 @@ if (!isset($incluir) && !isset($incluir2)) {
                 if ($tem == true) {
               ?>
                 <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-              <?
+              <?php 
                 } else {
               ?>
                 <b>Informe a Etapa na turma de destino:</b>
                 <select name="codetapadestino">
-                <?
+                <?php 
                   $result_equiv = $clserieequiv->sql_record($clserieequiv->sql_query("","ed234_i_serieequiv",""," ed234_i_serie = $etapaorigem"));
                   for ($r=0; $r < $clturmaserieregimemat->numrows; $r++) {
 
@@ -156,26 +156,26 @@ if (!isset($incluir) && !isset($incluir2)) {
                     }
                 ?>
                   <option value="<?=$ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$descretapa?></option>
-                <?
+                <?php 
                    }
                 ?>
                 </select>
-              <?
+              <?php 
                 }
               ?>
             </td>
           </tr>
-        <?
+        <?php 
           } else {
             db_fieldsmemory($result_etp,0);
         ?>
           <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-        <?
+        <?php 
           }
         ?>
         <br><br>
         <input name="incluir2" type="button" value="Confirmar Matrícula" onclick="return js_processar2();"<?=isset($incluir2)?"style='visibility:hidden;'":""?>>
-      <? } else {?>
+      <?php  } else {?>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td colspan="4" valign="top" bgcolor="#CCCCCC">
@@ -200,7 +200,7 @@ if (!isset($incluir) && !isset($incluir2)) {
               <b>Aproveitamento na TURMA DE ORIGEM:</b>
             </td>
           </tr>
-          <?
+          <?php 
             $result_equivorig = $clserieequiv->sql_record($clserieequiv->sql_query("","ed234_i_serieequiv as equivorig",""," ed234_i_serie = $etapaorigem"));
             $codequivorig     = "";
             $seporig          = "";
@@ -214,10 +214,10 @@ if (!isset($incluir) && !isset($incluir2)) {
 
             $codequivorig = ($codequivorig==""?0:$codequivorig).",".$etapaorigem;
             $result       = $clregencia->sql_record($clregencia->sql_query("","ed59_i_codigo,ed232_i_codigo,ed232_c_descr,ed232_c_abrev,ed220_i_procedimento as procorigem,ed59_i_ordenacao","ed59_i_ordenacao"," ed59_i_turma = $turmaorigem AND ed59_i_serie in ($etapaorigem)"));
-            $procorigem   = pg_result($result,0,'procorigem');
+            $procorigem   = pg_fetch_result($result,0,'procorigem');
             $linhas       = $clregencia->numrows;
             $result1      = $clregencia->sql_record($clregencia->sql_query("","ed59_i_codigo as regdestino,ed232_i_codigo as coddestino,ed232_c_descr as descrdestino,ed220_i_procedimento as procdestino,ed59_i_ordenacao","ed59_i_ordenacao"," ed59_i_turma = $turmadestino AND ed59_i_serie in ($codequivorig)"));
-            $procdestino  = pg_result($result1,0,'procdestino');
+            $procdestino  = pg_fetch_result($result1,0,'procdestino');
             $linhas1      = $clregencia->numrows;
             $regmarcadas  = "";
             $veraprovnulo = "";
@@ -232,7 +232,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                 </td>
                 <td align="center">--></td>
                 <td>
-                  <?
+                  <?php 
                     $temreg = false;
 
                     for ($w=0; $w < $linhas1; $w++) {
@@ -251,7 +251,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                   ?>
                     <input name="regenciadestino" type="text" value="<?=$regenciadestino?>" size="10" readonly style="width:75px">
                     <input name="regdestinodescr" type="text" value="<?=$regdestinodescr?>" size="30" readonly style="width:180px">
-                  <?
+                  <?php 
                     }else{
                     $sql2 = "select ed59_i_codigo as regsobra,trim(ed232_c_descr) as descrsobra
                              from regencia
@@ -270,7 +270,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                   ?>
                     <select name="regenciadestino" style="padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminareg(this.value,<?=$t?>)">
                     <option value=""></option>
-                    <?
+                    <?php 
                       if ($linhas == 1) {
                         echo "<option value='0'>TODAS</option>";
                       }
@@ -284,7 +284,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                     </select>
                     <select name="regdestinodescr" style="padding:0px;width:180px;height:16px;font-size:12px;" onchange="js_eliminareg(this.value,<?=$t?>)">
                       <option value=""></option>
-                      <?
+                      <?php 
                         if ($linhas == 1) {
                           echo "<option value='0'>TODAS</option>";
                         }
@@ -296,14 +296,14 @@ if (!isset($incluir) && !isset($incluir2)) {
                     </select>
                     <input type="hidden" name="combo" value="<?=$t?>">
                     <input type="hidden" name="comboselect<?=$t?>" value="">
-                  <?
+                  <?php 
                     }
                   ?>
                 </td>
                 <td>
                   <table border="1" cellspacing="0" cellpadding="0">
                     <tr>
-                      <?
+                      <?php 
                         $result_diario = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed09_c_abrev,ed72_i_valornota,ed72_c_valorconceito,ed72_t_parecer,ed37_c_tipo","ed41_i_sequencia ASC"," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed09_c_somach = 'S'"));
                         echo "<td width='50px' style='background:#444444;color:#DEB887'><b>$ed232_c_abrev</b></td>";
 
@@ -314,14 +314,14 @@ if (!isset($incluir) && !isset($incluir2)) {
                           for ($v=0; $v < $cldiarioavaliacao->numrows; $v++) {
 
                             db_fieldsmemory($result_diario,$v);
-                            if (trim($ed37_c_tipo) == "NOTA") {
+                            if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                               if ($resultedu == 'S') {
                                 $aproveitamento = $ed72_i_valornota!=""?number_format($ed72_i_valornota,2,",","."):"";
                               } else {
                                 $aproveitamento = $ed72_i_valornota!=""?number_format($ed72_i_valornota,0):"";
                               }
-                            } elseif(trim($ed37_c_tipo) == "NIVEL") {
+                            } elseif(trim((string) $ed37_c_tipo) == "NIVEL") {
                               $aproveitamento = $ed72_c_valorconceito;
                             } else {
                               $aproveitamento = $ed72_t_parecer!=""?"Parecer":"";
@@ -337,7 +337,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                   </table>
                 </td>
               </tr>
-          <?
+          <?php 
             }
           ?>
           <tr>
@@ -350,7 +350,7 @@ if (!isset($incluir) && !isset($incluir2)) {
             </td>
             <td></td>
           </tr>
-          <?
+          <?php 
             $result  = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_codigo,ed09_i_codigo,ed09_c_descr,ed37_c_tipo,ed37_i_menorvalor,ed37_i_maiorvalor","ed41_i_sequencia"," ed41_i_procedimento = $procorigem"));
             $linhas  = $clprocavaliacao->numrows;
             $result1 = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_codigo as codaval,ed09_i_codigo as codperaval,ed09_c_descr as descraval,ed37_c_tipo as tipodest,ed37_i_menorvalor as menordest,ed37_i_maiorvalor as maiordest","ed41_i_sequencia"," ed41_i_procedimento = $procdestino"));
@@ -367,7 +367,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                 </td>
                 <td align="center">--></td>
                 <td>
-                  <?
+                  <?php 
                     $temper = false;
                     for ($w=0; $w < $linhas1; $w++) {
 
@@ -384,7 +384,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                   ?>
                     <input name="periododestino" type="text" value="<?=$periododestino?>" size="10" readonly style="width:75px">
                     <input name="perdestinodescr" type="text" value="<?=$perdestinodescr?>" size="30" readonly style="width:180px">
-                  <?
+                  <?php 
                       } else {
                         $sql2 = "select ed41_i_codigo as persobra,ed09_c_descr as descrsobra,ed37_c_tipo as tipodest,ed37_i_menorvalor as menordest,ed37_i_maiorvalor as maiordest
                                  from procavaliacao
@@ -410,7 +410,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                   ?>
                       <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminaper(this.value,<?=$t?>)">
                         <option value=""></option>
-                        <?
+                        <?php 
                           for ($w=0; $w < $linhas2; $w++) {
 
                             db_fieldsmemory($result2,$w);
@@ -420,7 +420,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                        </select>
                        <select name="perdestinodescr" style="padding:0px;width:180px;height:16px;font-size:12px;" onchange="js_eliminaper(this.value,<?=$t?>)">
                          <option value=""></option>
-                         <?
+                         <?php 
                            for ($w=0; $w < $linhas2; $w++) {
 
                              db_fieldsmemory($result2,$w);
@@ -431,19 +431,19 @@ if (!isset($incluir) && !isset($incluir2)) {
                        </select>
                        <input type="hidden" name="pcombo" value="<?=$t?>">
                        <input type="hidden" name="pcomboselect<?=$t?>" value="">
-                    <?
+                    <?php 
                       }
                     ?>
                 </td>
                 <td></td>
               </tr>
-            <?
+            <?php 
               }
             ?>
             <tr>
               <td nowrap colspan="4">
                 <b>Data da Matrícula:</b>
-                <?db_inputdata('datamatricula',@$datamatricula_dia,@$datamatricula_mes,@$datamatricula_ano,true,'text',1,"")?>
+                <?php db_inputdata('datamatricula',@$datamatricula_dia,@$datamatricula_mes,@$datamatricula_ano,true,'text',1,"")?>
               </td>
             </tr>
             <tr>
@@ -455,14 +455,14 @@ if (!isset($incluir) && !isset($incluir2)) {
                 </select>
               </td>
             </tr>
-            <?
+            <?php 
               $result_etp = $clturmaserieregimemat->sql_record($clturmaserieregimemat->sql_query("","ed223_i_serie,ed11_c_descr as descretapa","ed223_i_ordenacao"," ed220_i_turma = $turmadestino"));
 
               if ($clturmaserieregimemat->numrows > 1) {
             ?>
               <tr>
                 <td colspan="4">
-                  <?
+                  <?php 
                     $tem = false;
                     for ($c=0; $c < $clturmaserieregimemat->numrows; $c++) {
 
@@ -476,12 +476,12 @@ if (!isset($incluir) && !isset($incluir2)) {
                     if ($tem == true) {
                   ?>
                    <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-                  <?
+                  <?php 
                     } else {
                   ?>
                     <b>Informe a Etapa na turma de destino:</b>
                     <select name="codetapadestino">
-                      <?
+                      <?php 
                         $result_equiv = $clserieequiv->sql_record($clserieequiv->sql_query("","ed234_i_serieequiv",""," ed234_i_serie = $etapaorigem"));
                         for ($r=0; $r < $clturmaserieregimemat->numrows; $r++) {
 
@@ -502,22 +502,22 @@ if (!isset($incluir) && !isset($incluir2)) {
                           }
                       ?>
                         <option value="<?=$ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$descretapa?></option>
-                      <?
+                      <?php 
                         }
                       ?>
                     </select>
-                  <?
+                  <?php 
                     }
                   ?>
                 </td>
               </tr>
-              <?
+              <?php 
                 } else {
 
                 db_fieldsmemory($result_etp,0);
               ?>
                 <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-              <?
+              <?php 
                 }
               ?>
             <tr>
@@ -525,22 +525,22 @@ if (!isset($incluir) && !isset($incluir2)) {
             </tr>
             <tr>
               <td colspan="4">
-                <? if (isset($matriculaante)) {?>
+                <?php  if (isset($matriculaante)) {?>
                   <input name="novamatricula" type="button" value="Gerar Nova Matrícula" onclick="js_processar(2);" <?=isset($incluir)?"style='visibility:hidden;'":""?>>
-                <? }else{ ?>
+                <?php  }else{ ?>
                   <input name="incluir" type="button" value="Confirmar Matrícula" onclick="js_processar(1);" <?=isset($incluir)?"style='visibility:hidden;'":""?>>
-                <? } ?>
+                <?php  } ?>
               </td>
             </tr>
           </table>
           <script>
-            <?if ($veraprovnulo == "") {?>
+            <?php if ($veraprovnulo == "") {?>
              document.form1.import[0] = null;
-            <? } else {?>
+            <?php  } else {?>
              document.form1.import[0].selected = true;
-            <? } ?>
+            <?php  } ?>
           </script>
-        <?}?>
+        <?php }?>
       <form>
     </body>
   </html>
@@ -921,30 +921,30 @@ if (!isset($incluir) && !isset($incluir2)) {
         sGetMatricula += "&aTurnosSelecionados=" + aTurnosSelecionados;
 
     if (botao == 2) {
-      sGetMatricula += "&novamatricula=<?php echo isset($matriculaante) ? $matriculaante : '' ?>";
+      sGetMatricula += "&novamatricula=<?php echo $matriculaante ?? '' ?>";
     } else if (botao == 3) {
-      sGetMatricula += sGetMatricula + "&reativar=<?php echo isset($matriculaante) ? $matriculaante : '' ?>";
+      sGetMatricula += sGetMatricula + "&reativar=<?php echo $matriculaante ?? '' ?>";
     }
 
     if (msggeral != "" && document.form1.import.value == "S") {
 
       if (confirm(msggeral+"\n\nConfirmar Matrícula do aluno?")) {
 
-        <? if (isset($matriculaante)){ ?>
+        <?php  if (isset($matriculaante)){ ?>
           document.form1.novamatricula.style.visibility = "hidden";
-        <? } else {?>
+        <?php  } else {?>
           document.form1.incluir.style.visibility = "hidden";
-        <? } ?>
+        <?php  } ?>
 
         location.href = sGetMatricula;
       }
     } else {
 
-      <? if (isset($matriculaante)) { ?>
+      <?php  if (isset($matriculaante)) { ?>
        document.form1.novamatricula.style.visibility = "hidden";
-      <? } else { ?>
+      <?php  } else { ?>
        document.form1.incluir.style.visibility = "hidden";
-      <? } ?>
+      <?php  } ?>
 
       location.href = sGetMatricula;
     }
@@ -1029,7 +1029,7 @@ if (!isset($incluir) && !isset($incluir2)) {
   }
   </script>
 
-  <?
+  <?php 
     }
 
   if (isset($incluir)) {
@@ -1074,11 +1074,11 @@ if (!isset($incluir) && !isset($incluir2)) {
 
     if ($importaprov == "S") {
 
-      $periodos                     = explode("X",$perequiv);
+      $periodos                     = explode("X",(string) $perequiv);
       $msg_conversao                = "";
       $sep_conversao                = "";
-      $aDisciplinasValidadas        = array();
-      $aPeriodosDestinoSelecionados = array();
+      $aDisciplinasValidadas        = [];
+      $aPeriodosDestinoSelecionados = [];
 
       for ($x = 0; $x < count($periodos); $x++) {
 
@@ -1092,7 +1092,7 @@ if (!isset($incluir) && !isset($incluir2)) {
         $result_per1           = $clprocavaliacao->sql_record( $sSqlProcAvaliacao1 );
         db_fieldsmemory($result_per1, 0);
 
-        $regencias = explode("X", $regequiv);
+        $regencias = explode("X", (string) $regequiv);
 
         for ($r = 0; $r < count($regencias); $r++) {
 
@@ -1412,8 +1412,8 @@ if (!isset($incluir) && !isset($incluir2)) {
                 WHERE ed60_i_codigo = {$novamatricula}";
       $query3 = db_query($sql3);
 
-      $clmatricula->ed60_d_datamodif     =  substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
-      $clmatricula->ed60_d_datamatricula = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+      $clmatricula->ed60_d_datamodif     =  substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
+      $clmatricula->ed60_d_datamatricula = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
       $clmatricula->ed60_d_datamodifant  = null;
       $clmatricula->ed60_d_datasaida     = "null";
       $clmatricula->ed60_t_obs           = "";
@@ -1458,7 +1458,7 @@ if (!isset($incluir) && !isset($incluir2)) {
 
       if ($codmatrjatem != "") {
 
-        $data_modif = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+        $data_modif = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
         $sql        = "UPDATE matricula SET
                               ed60_i_turmaant      = {$turmaorigem},
                               ed60_c_rfanterior    = '{$ed79_c_resulant}',
@@ -1481,8 +1481,8 @@ if (!isset($incluir) && !isset($incluir2)) {
         $result21   = db_query($sql21);
       } else {
 
-        $clmatricula->ed60_d_datamodif     = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
-        $clmatricula->ed60_d_datamatricula = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+        $clmatricula->ed60_d_datamodif     = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
+        $clmatricula->ed60_d_datamatricula = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
         $clmatricula->ed60_d_datamodifant  = null;
         $clmatricula->ed60_d_datasaida     = "null";
         $clmatricula->ed60_t_obs           = "";
@@ -1529,7 +1529,7 @@ if (!isset($incluir) && !isset($incluir2)) {
         $oTurma                 = TurmaRepository::getTurmaByCodigo( $turmadestino );
         $oEtapa                 = EtapaRepository::getEtapaByCodigo( $codetapadestino );
         $oProcedimentoAvaliacao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa( $oEtapa );
-        $aPeriodosAvaliacao     = array();
+        $aPeriodosAvaliacao     = [];
 
         /**
          * Percorre os elementos da turma de destino, adicionando o código do período ao array, somente quando este for
@@ -1547,7 +1547,7 @@ if (!isset($incluir) && !isset($incluir2)) {
         /**
          * Verifica a diferença entre os arrays, incrementando períodos que não tenham sido criados em diarioavaliacao
          */
-        $aPeriodosFaltantes = array();
+        $aPeriodosFaltantes = [];
         $aPeriodosFaltantes = array_diff( $aPeriodosAvaliacao, $aPeriodosDestinoSelecionados );
 
         /**
@@ -1658,8 +1658,8 @@ if (!isset($incluir) && !isset($incluir2)) {
     $clmatriculamov->ed229_i_matricula    = $matrmov;
     $clmatriculamov->ed229_i_usuario      = db_getsession("DB_id_usuario");
     $clmatriculamov->ed229_c_procedimento = "MATRICULAR ALUNOS TRANSFERIDOS";
-    $clmatriculamov->ed229_t_descr        = "ALUNO MATRICULADO NA TURMA ".trim($ed57_c_descrdest)." VINDO DA ESCOLA ".trim($nomeescolaorig);
-    $clmatriculamov->ed229_d_dataevento   = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+    $clmatriculamov->ed229_t_descr        = "ALUNO MATRICULADO NA TURMA ".trim((string) $ed57_c_descrdest)." VINDO DA ESCOLA ".trim((string) $nomeescolaorig);
+    $clmatriculamov->ed229_d_dataevento   = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
     $clmatriculamov->ed229_c_horaevento   = date("H:i");
     $clmatriculamov->ed229_d_data         = date("Y-m-d",db_getsession("DB_datausu"));
     $clmatriculamov->incluir(null);
@@ -1711,7 +1711,7 @@ if (!isset($incluir) && !isset($incluir2)) {
     if ($linhas10 > 0) {
 
       $result          = @db_query("select nextval('transflocal_ed131_i_codigo_seq')");
-      $transflocal_cod = pg_result($result,0,0);
+      $transflocal_cod = pg_fetch_result($result,0,0);
       $sql_tr          = "INSERT INTO transflocal
                           VALUES($transflocal_cod,
                                  $escoladest,
@@ -1770,7 +1770,7 @@ if (!isset($incluir) && !isset($incluir2)) {
 
     ?>
       <script>parent.location.href = "edu1_matriculatransf001.php";</script>;
-    <?
+    <?php 
   }
 
   if (isset($incluir2)) {
@@ -1836,7 +1836,7 @@ if (!isset($incluir) && !isset($incluir2)) {
 
     if ($codmatrjatem != "") {
 
-      $data_modif = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+      $data_modif = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
       $sql     = "UPDATE matricula SET
                          ed60_i_turmaant     = {$turmaorigem},
                          ed60_c_rfanterior   = '{$ed79_c_resulant}',
@@ -1850,8 +1850,8 @@ if (!isset($incluir) && !isset($incluir2)) {
       $matrmov = $codmatrjatem;
     } else {
 
-      $clmatricula->ed60_d_datamodif     = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
-      $clmatricula->ed60_d_datamatricula = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+      $clmatricula->ed60_d_datamodif     = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
+      $clmatricula->ed60_d_datamatricula = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
       $clmatricula->ed60_d_datamodifant  = null;
       $clmatricula->ed60_d_datasaida     = "null";
       $clmatricula->ed60_t_obs           = "";
@@ -1926,8 +1926,8 @@ if (!isset($incluir) && !isset($incluir2)) {
     $clmatriculamov->ed229_i_matricula    = $matrmov;
     $clmatriculamov->ed229_i_usuario      = db_getsession("DB_id_usuario");
     $clmatriculamov->ed229_c_procedimento = "MATRICULAR ALUNOS TRANSFERIDOS";
-    $clmatriculamov->ed229_t_descr        = "ALUNO MATRICULADO NA TURMA ".trim($ed57_c_descrdest)." VINDO DA ESCOLA ".trim($nomeescolaorig);
-    $clmatriculamov->ed229_d_dataevento   = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+    $clmatriculamov->ed229_t_descr        = "ALUNO MATRICULADO NA TURMA ".trim((string) $ed57_c_descrdest)." VINDO DA ESCOLA ".trim((string) $nomeescolaorig);
+    $clmatriculamov->ed229_d_dataevento   = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
     $clmatriculamov->ed229_c_horaevento   = date("H:i");
     $clmatriculamov->ed229_d_data         = date("Y-m-d",db_getsession("DB_datausu"));
     $clmatriculamov->incluir(null);
@@ -1979,7 +1979,7 @@ if (!isset($incluir) && !isset($incluir2)) {
     if ($linhas10 > 0) {
 
       $result          = @db_query("select nextval('transflocal_ed131_i_codigo_seq')");
-      $transflocal_cod = pg_result($result,0,0);
+      $transflocal_cod = pg_fetch_result($result,0,0);
       $sql_tr          = "INSERT INTO transflocal
                           VALUES($transflocal_cod,
                                  $escoladest,
@@ -1999,7 +1999,7 @@ if (!isset($incluir) && !isset($incluir2)) {
 
   ?>
     <script>parent.location.href = "edu1_matriculatransf001.php";</script>
-  <?
+  <?php 
   }
   ?>
 

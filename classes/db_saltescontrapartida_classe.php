@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE saltescontrapartida
 class cl_saltescontrapartida { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k103_sequencial = 0; 
-   var $k103_saltes = 0; 
-   var $k103_contrapartida = 0; 
+   public $k103_sequencial = 0; 
+   public $k103_saltes = 0; 
+   public $k103_contrapartida = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k103_sequencial = int4 = Código da contrapartida 
                  k103_saltes = int4 = Código da Conta 
                  k103_contrapartida = int4 = Contrapartida 
                  ";
    //funcao construtor da classe 
-   function cl_saltescontrapartida() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("saltescontrapartida"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_saltescontrapartida {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k103_sequencial = pg_result($result,0,0); 
+       $this->k103_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from saltescontrapartida_k103_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k103_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k103_sequencial)){
          $this->erro_sql = " Campo k103_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_saltescontrapartida {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contrapartida da conta ($this->k103_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contrapartida da conta já Cadastrado";
@@ -166,12 +166,12 @@ class cl_saltescontrapartida {
      $resaco = $this->sql_record($this->sql_query_file($this->k103_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12369,'$this->k103_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2155,12369,'','".AddSlashes(pg_result($resaco,0,'k103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2155,12370,'','".AddSlashes(pg_result($resaco,0,'k103_saltes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2155,12371,'','".AddSlashes(pg_result($resaco,0,'k103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2155,12369,'','".AddSlashes(pg_fetch_result($resaco,0,'k103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2155,12370,'','".AddSlashes(pg_fetch_result($resaco,0,'k103_saltes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2155,12371,'','".AddSlashes(pg_fetch_result($resaco,0,'k103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_saltescontrapartida {
       $this->atualizacampos();
      $sql = " update saltescontrapartida set ";
      $virgula = "";
-     if(trim($this->k103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k103_sequencial"])){ 
+     if(trim((string) $this->k103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k103_sequencial"])){ 
        $sql  .= $virgula." k103_sequencial = $this->k103_sequencial ";
        $virgula = ",";
-       if(trim($this->k103_sequencial) == null ){ 
+       if(trim((string) $this->k103_sequencial) == null ){ 
          $this->erro_sql = " Campo Código da contrapartida nao Informado.";
          $this->erro_campo = "k103_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_saltescontrapartida {
          return false;
        }
      }
-     if(trim($this->k103_saltes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k103_saltes"])){ 
+     if(trim((string) $this->k103_saltes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k103_saltes"])){ 
        $sql  .= $virgula." k103_saltes = $this->k103_saltes ";
        $virgula = ",";
-       if(trim($this->k103_saltes) == null ){ 
+       if(trim((string) $this->k103_saltes) == null ){ 
          $this->erro_sql = " Campo Código da Conta nao Informado.";
          $this->erro_campo = "k103_saltes";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_saltescontrapartida {
          return false;
        }
      }
-     if(trim($this->k103_contrapartida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k103_contrapartida"])){ 
+     if(trim((string) $this->k103_contrapartida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k103_contrapartida"])){ 
        $sql  .= $virgula." k103_contrapartida = $this->k103_contrapartida ";
        $virgula = ",";
-       if(trim($this->k103_contrapartida) == null ){ 
+       if(trim((string) $this->k103_contrapartida) == null ){ 
          $this->erro_sql = " Campo Contrapartida nao Informado.";
          $this->erro_campo = "k103_contrapartida";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_saltescontrapartida {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12369,'$this->k103_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k103_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2155,12369,'".AddSlashes(pg_result($resaco,$conresaco,'k103_sequencial'))."','$this->k103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2155,12369,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k103_sequencial'))."','$this->k103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k103_saltes"]))
-           $resac = db_query("insert into db_acount values($acount,2155,12370,'".AddSlashes(pg_result($resaco,$conresaco,'k103_saltes'))."','$this->k103_saltes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2155,12370,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k103_saltes'))."','$this->k103_saltes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k103_contrapartida"]))
-           $resac = db_query("insert into db_acount values($acount,2155,12371,'".AddSlashes(pg_result($resaco,$conresaco,'k103_contrapartida'))."','$this->k103_contrapartida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2155,12371,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k103_contrapartida'))."','$this->k103_contrapartida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_saltescontrapartida {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12369,'$k103_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2155,12369,'','".AddSlashes(pg_result($resaco,$iresaco,'k103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2155,12370,'','".AddSlashes(pg_result($resaco,$iresaco,'k103_saltes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2155,12371,'','".AddSlashes(pg_result($resaco,$iresaco,'k103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2155,12369,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2155,12370,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k103_saltes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2155,12371,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from saltescontrapartida
@@ -345,7 +345,7 @@ class cl_saltescontrapartida {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:saltescontrapartida";
@@ -360,7 +360,7 @@ class cl_saltescontrapartida {
    function sql_query ( $k103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_saltescontrapartida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_saltescontrapartida {
    function sql_query_file ( $k103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_saltescontrapartida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_saltescontrapartida {
    function sql_query_contrapartida ( $k103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_saltescontrapartida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -38,7 +38,7 @@ class Periodo {
     /**
      * @var PeriodoModel[]
      */
-    private $aPeriodos = array();
+    private $aPeriodos = [];
 
     /**
      * @param array $aPeriodos
@@ -51,8 +51,8 @@ class Periodo {
 
         foreach($aPeriodos as $oDadosPeriodo) {
 
-            $oDadosPeriodo->rh186_datainicioefetividade     = trim($oDadosPeriodo->rh186_datainicioefetividade);
-            $oDadosPeriodo->rh186_datafechamentoefetividade = trim($oDadosPeriodo->rh186_datafechamentoefetividade);
+            $oDadosPeriodo->rh186_datainicioefetividade     = trim((string) $oDadosPeriodo->rh186_datainicioefetividade);
+            $oDadosPeriodo->rh186_datafechamentoefetividade = trim((string) $oDadosPeriodo->rh186_datafechamentoefetividade);
 
             if(empty($oDadosPeriodo->rh186_datainicioefetividade) || empty($oDadosPeriodo->rh186_datafechamentoefetividade)) {
 

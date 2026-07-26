@@ -54,12 +54,12 @@ if(isset($opcao)){
         <table>
           <tr>
             <td nowrap title="<?=@$Tr17_regist?>">
-              <?
+              <?php 
               db_ancora($Lr17_regist,"js_pesquisar17_regist(true)",(isset($opcao)?3:$db_opcao));
               ?>
             </td>
             <td colspan="3"> 
-              <?
+              <?php 
               db_input('r17_regist',8,$Ir17_regist,true,'text',(isset($opcao)?3:$db_opcao),"onchange='js_pesquisar17_regist(false)'");
               db_input('z01_numcgm',13,$Iz01_numcgm,true,'text',3,"");
               db_input('z01_nome',30,$Iz01_nome,true,'text',3);
@@ -68,12 +68,12 @@ if(isset($opcao)){
           </tr>
           <tr>
             <td nowrap title="<?=@$Tr17_lotac?>">
-              <?
+              <?php 
               db_ancora($Lr17_lotac,"",3);
               ?>
             </td>
             <td colspan="3"> 
-              <?
+              <?php 
               db_input('r17_lotac',8,$Ir17_lotac,true,'text',3);
               db_input('r70_estrut',13,$Ir70_estrut,true,'text',3);
               db_input('r70_descr',30,$Ir70_descr,true,'text',3);
@@ -98,12 +98,12 @@ if(isset($opcao)){
         <table>
           <tr>
             <td nowrap title="<?=@$Tr17_codigo?>">
-              <?
+              <?php 
               db_ancora(@$Lr17_codigo,"js_pesquisar17_codigo(true);",(isset($opcao)?3:$db_opcao));
               ?>
             </td>
             <td colspan="3"> 
-              <?
+              <?php 
               db_input('r17_codigo',8,$Ir17_codigo,true,'text',(isset($opcao)?3:$db_opcao)," onchange='js_pesquisar17_codigo(false);'");
               db_input('r16_descr',46,$Ir16_descr,true,'text',3,'');
               ?>
@@ -114,7 +114,7 @@ if(isset($opcao)){
               <?=@$Lr17_tipo?>
             </td>
             <td> 
-              <?
+              <?php 
               if(!isset($r17_tipo)){
                 $r17_tipo = "t";
               }
@@ -126,7 +126,7 @@ if(isset($opcao)){
               <?=@$Lr17_difere?>
             </td>
             <td> 
-              <?
+              <?php 
               $x = array("f"=>"NAO","t"=>"SIM");
               db_select('r17_difere',$x,true,(isset($opcao)?3:$db_opcao));
               ?>
@@ -137,7 +137,7 @@ if(isset($opcao)){
               <?=@$Lr17_quant?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('r17_quant',8,$Ir17_quant,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -145,7 +145,7 @@ if(isset($opcao)){
               <?=@$Lr17_situac?>
             </td>
             <td> 
-              <?
+              <?php 
               $x = array("A"=>"Ativo","I"=>"Inativo");
               db_select('r17_situac',$x,true,$db_opcao,"");
               ?>
@@ -182,44 +182,44 @@ if(isset($opcao)){
                     </tr>
                     <tr>
                       <td align="center">
-                        <?
+                        <?php 
                         db_input('dom',10,3,true,'text',3,"")
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         db_input('seg',10,3,true,'text',3,"")
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         db_input('ter',10,3,true,'text',3,"")
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         db_input('qua',10,3,true,'text',3,"")
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         db_input('qui',10,3,true,'text',3,"")
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         db_input('sex',10,3,true,'text',3,"")
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         db_input('sab',10,3,true,'text',3,"")
                         ?>
                       </td>
                     </tr>
                     <tr>
                       <td align="center">
-                        <?
+                        <?php 
                         $arr_obrigatorio = array("t"=>"Sim","f"=>"Não");
                         if(!isset($odom)){
                           $odom = "f";
@@ -228,7 +228,7 @@ if(isset($opcao)){
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         if(!isset($oseg)){
                           $oseg = "f";
                         }
@@ -236,7 +236,7 @@ if(isset($opcao)){
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         if(!isset($oter)){
                           $oter = "f";
                         }
@@ -244,7 +244,7 @@ if(isset($opcao)){
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         if(!isset($oqua)){
                           $oqua = "f";
                         }
@@ -252,7 +252,7 @@ if(isset($opcao)){
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         if(!isset($oqui)){
                           $oqui = "f";
                         }
@@ -260,7 +260,7 @@ if(isset($opcao)){
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         if(!isset($osex)){
                           $osex = "f";
                         }
@@ -268,7 +268,7 @@ if(isset($opcao)){
                         ?>
                       </td>
                       <td align="center">
-                        <?
+                        <?php 
                         if(!isset($osab)){
                           $osab = "f";
                         }
@@ -288,15 +288,15 @@ if(isset($opcao)){
   <tr>
     <td align="center">
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?if(isset($opcao)){?>
+      <?php if(isset($opcao)){?>
       <input name="novo" type="button" id="novo" value="Outro vale" onclick="location.href='pes4_vtffunc001.php?r17_regist=<?=@$r17_regist?>'" >
       <input name="novamatricula" type="button" id="novamatricula" value="Outra matrícula" onclick="location.href='pes4_vtffunc001.php';" >
-      <?}?>
+      <?php }?>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <?
+      <?php 
       $ano = db_anofolha();
       $mes = db_mesfolha();
       $res_cf = db_query("select * from cfpess where r11_anousu = $ano and r11_mesusu = $mes and r11_instit = ".db_getsession('DB_instit'));
@@ -359,7 +359,7 @@ function js_cadastraLocaisTrabalho() {
  * @return void
  */
 function js_verificatipo(valor){
-  <?if($db_opcao != 3){?>
+  <?php if($db_opcao != 3){?>
   if(valor == 't'){
     document.form1.dom.value                 = "";
     document.form1.seg.value                 = "";
@@ -399,11 +399,11 @@ function js_verificatipo(valor){
     document.form1.sab.style.backgroundColor = "#DEB887";
     document.form1.r17_quant.style.backgroundColor = "";
   }else{
-    <?
+    <?php 
     if($db_opcao == 1){
     ?>
     document.form1.r17_quant.value           = "";
-    <?
+    <?php 
     }
     ?>
     document.form1.odom.disabled             = false;
@@ -431,7 +431,7 @@ function js_verificatipo(valor){
     document.form1.r17_quant.style.backgroundColor = "#DEB887";
   }
   js_tabulacaoforms("form1","r17_regist",false,1,"r17_regist",false);
-  <?}?>
+  <?php }?>
 }
 function js_pesquisar17_regist(mostra){
   if(mostra==true){
@@ -499,7 +499,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2,chave3,chave4){
   db_iframe_vtffunc.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&chavepesquisa4='+chave4";
   }

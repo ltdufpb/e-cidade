@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_testadanumero_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltestadanumero = new cl_testadanumero;
 $cltestadanumero->rotulo->label("j15_codigo");
 $cltestadanumero->rotulo->label("j15_idbql");
@@ -54,7 +55,7 @@ $cltestadanumero->rotulo->label("j15_idbql");
               <?=$Lj15_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j15_codigo",10,$Ij15_codigo,true,"text",4,"","chave_j15_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltestadanumero->rotulo->label("j15_idbql");
               <?=$Lj15_idbql?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j15_idbql",6,$Ij15_idbql,true,"text",4,"","chave_j15_idbql");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltestadanumero->rotulo->label("j15_idbql");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_testadanumero.php")==true){
@@ -118,12 +119,12 @@ $cltestadanumero->rotulo->label("j15_idbql");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

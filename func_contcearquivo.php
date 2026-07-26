@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contcearquivo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcontcearquivo = new cl_contcearquivo;
 $clcontcearquivo->rotulo->label("c11_sequencial");
 $clcontcearquivo->rotulo->label("c11_id_usuario");
@@ -54,7 +55,7 @@ $clcontcearquivo->rotulo->label("c11_id_usuario");
               <?=$Lc11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c11_sequencial",10,$Ic11_sequencial,true,"text",4,"","chave_c11_sequencial");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clcontcearquivo->rotulo->label("c11_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contcearquivo.php")==true){
@@ -112,12 +113,12 @@ $clcontcearquivo->rotulo->label("c11_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

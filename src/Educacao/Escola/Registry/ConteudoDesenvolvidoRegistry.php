@@ -12,7 +12,7 @@ class ConteudoDesenvolvidoRegistry
     /**
      * @var ConteudoDesenvolvido[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param ConteudoDesenvolvido $conteudoDesenvolvido
@@ -29,7 +29,7 @@ class ConteudoDesenvolvidoRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $componenteCurricular = ConteudoDesenvolvidoRepository::find($key);
             if (is_null($componenteCurricular)) {
                 return null;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -166,7 +166,7 @@ class cl_cadban {
                  k15_bancotef = char(1) = Banco TEF
                  ";
    //funcao construtor da classe
-   function cl_cadban() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadban");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

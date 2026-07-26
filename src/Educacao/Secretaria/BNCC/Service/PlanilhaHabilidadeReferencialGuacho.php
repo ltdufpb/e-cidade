@@ -27,11 +27,6 @@ class PlanilhaHabilidadeReferencialGuacho extends PlanilhaHabilidadeService impl
         'ed168_habilidade',
         'ed168_ano',
     ];
-
-    /**
-     * @var string
-     */
-    private $tipoEnsino;
     /**
      * @var integer
      */
@@ -41,9 +36,8 @@ class PlanilhaHabilidadeReferencialGuacho extends PlanilhaHabilidadeService impl
      * PlanilhaHabilidadeReferencialGuacho constructor.
      * @param string $tipoEnsino
      */
-    public function __construct($tipoEnsino)
+    public function __construct(private $tipoEnsino)
     {
-        $this->tipoEnsino = $tipoEnsino;
         $this->ano = date('Y');
     }
 

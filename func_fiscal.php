@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fiscal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfiscal = new cl_fiscal;
 $clfiscal->rotulo->label("y30_codnoti");
 $clfiscal->rotulo->label("y30_data");
@@ -54,7 +55,7 @@ $clfiscal->rotulo->label("y30_data");
               <?=$Ly30_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y30_codnoti",20,$Iy30_codnoti,true,"text",4,"","chave_y30_codnoti");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clfiscal->rotulo->label("y30_data");
               <?=$Ly30_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y30_data",10,$Iy30_data,true,"text",4,"","chave_y30_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clfiscal->rotulo->label("y30_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscal.php")==true){
@@ -118,12 +119,12 @@ $clfiscal->rotulo->label("y30_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

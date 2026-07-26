@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE matparam
 class cl_matparam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m90_tipocontrol = null; 
-   var $m90_reqsemest = 'f'; 
-   var $m90_dtimplan_dia = null; 
-   var $m90_dtimplan_mes = null; 
-   var $m90_dtimplan_ano = null; 
-   var $m90_dtimplan = null; 
-   var $m90_deptalmox = 'f'; 
-   var $m90_liqentoc = 'f'; 
-   var $m90_entratrans = 'f'; 
-   var $m90_modrelsaidamat = 0; 
-   var $m90_almoxordemcompra = 0; 
-   var $m90_prazovenc = 0; 
-   var $m90_corfundorequisicao = 0; 
-   var $m90_mostrarsaldosolictransf = 0; 
-   var $m90_validarsaldosolictransf = 0; 
-   var $m90_versaldoitemreq = 'f'; 
-   var $m90_db_estrutura = 0; 
+   public $m90_tipocontrol = null; 
+   public $m90_reqsemest = 'f'; 
+   public $m90_dtimplan_dia = null; 
+   public $m90_dtimplan_mes = null; 
+   public $m90_dtimplan_ano = null; 
+   public $m90_dtimplan = null; 
+   public $m90_deptalmox = 'f'; 
+   public $m90_liqentoc = 'f'; 
+   public $m90_entratrans = 'f'; 
+   public $m90_modrelsaidamat = 0; 
+   public $m90_almoxordemcompra = 0; 
+   public $m90_prazovenc = 0; 
+   public $m90_corfundorequisicao = 0; 
+   public $m90_mostrarsaldosolictransf = 0; 
+   public $m90_validarsaldosolictransf = 0; 
+   public $m90_versaldoitemreq = 'f'; 
+   public $m90_db_estrutura = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m90_tipocontrol = char(1) = Tipo de Controle do Estoque 
                  m90_reqsemest = bool = Fazer Requisição sem Estoque 
                  m90_dtimplan = date = Data Implantação 
@@ -77,10 +77,10 @@ class cl_matparam {
                  m90_db_estrutura = int4 = Estrutura dos Grupos 
                  ";
    //funcao construtor da classe 
-   function cl_matparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matparam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -276,7 +276,7 @@ class cl_matparam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "matparam () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "matparam já Cadastrado";
@@ -303,10 +303,10 @@ class cl_matparam {
       $this->atualizacampos();
      $sql = " update matparam set ";
      $virgula = "";
-     if(trim($this->m90_tipocontrol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_tipocontrol"])){ 
+     if(trim((string) $this->m90_tipocontrol)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_tipocontrol"])){ 
        $sql  .= $virgula." m90_tipocontrol = '$this->m90_tipocontrol' ";
        $virgula = ",";
-       if(trim($this->m90_tipocontrol) == null ){ 
+       if(trim((string) $this->m90_tipocontrol) == null ){ 
          $this->erro_sql = " Campo Tipo de Controle do Estoque nao Informado.";
          $this->erro_campo = "m90_tipocontrol";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_reqsemest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_reqsemest"])){ 
+     if(trim((string) $this->m90_reqsemest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_reqsemest"])){ 
        $sql  .= $virgula." m90_reqsemest = '$this->m90_reqsemest' ";
        $virgula = ",";
-       if(trim($this->m90_reqsemest) == null ){ 
+       if(trim((string) $this->m90_reqsemest) == null ){ 
          $this->erro_sql = " Campo Fazer Requisição sem Estoque nao Informado.";
          $this->erro_campo = "m90_reqsemest";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_dtimplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_dtimplan_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m90_dtimplan_dia"] !="") ){ 
+     if(trim((string) $this->m90_dtimplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_dtimplan_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m90_dtimplan_dia"] !="") ){ 
        $sql  .= $virgula." m90_dtimplan = '$this->m90_dtimplan' ";
        $virgula = ",";
-       if(trim($this->m90_dtimplan) == null ){ 
+       if(trim((string) $this->m90_dtimplan) == null ){ 
          $this->erro_sql = " Campo Data Implantação nao Informado.";
          $this->erro_campo = "m90_dtimplan_dia";
          $this->erro_banco = "";
@@ -345,7 +345,7 @@ class cl_matparam {
        if(isset($GLOBALS["HTTP_POST_VARS"]["m90_dtimplan_dia"])){ 
          $sql  .= $virgula." m90_dtimplan = null ";
          $virgula = ",";
-         if(trim($this->m90_dtimplan) == null ){ 
+         if(trim((string) $this->m90_dtimplan) == null ){ 
            $this->erro_sql = " Campo Data Implantação nao Informado.";
            $this->erro_campo = "m90_dtimplan_dia";
            $this->erro_banco = "";
@@ -356,10 +356,10 @@ class cl_matparam {
          }
        }
      }
-     if(trim($this->m90_deptalmox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_deptalmox"])){ 
+     if(trim((string) $this->m90_deptalmox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_deptalmox"])){ 
        $sql  .= $virgula." m90_deptalmox = '$this->m90_deptalmox' ";
        $virgula = ",";
-       if(trim($this->m90_deptalmox) == null ){ 
+       if(trim((string) $this->m90_deptalmox) == null ){ 
          $this->erro_sql = " Campo Permite Depart. p/ mais de 1 Almox nao Informado.";
          $this->erro_campo = "m90_deptalmox";
          $this->erro_banco = "";
@@ -369,10 +369,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_liqentoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_liqentoc"])){ 
+     if(trim((string) $this->m90_liqentoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_liqentoc"])){ 
        $sql  .= $virgula." m90_liqentoc = '$this->m90_liqentoc' ";
        $virgula = ",";
-       if(trim($this->m90_liqentoc) == null ){ 
+       if(trim((string) $this->m90_liqentoc) == null ){ 
          $this->erro_sql = " Campo Gerar nota de liquidação automaticamente nao Informado.";
          $this->erro_campo = "m90_liqentoc";
          $this->erro_banco = "";
@@ -382,10 +382,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_entratrans)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_entratrans"])){ 
+     if(trim((string) $this->m90_entratrans)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_entratrans"])){ 
        $sql  .= $virgula." m90_entratrans = '$this->m90_entratrans' ";
        $virgula = ",";
-       if(trim($this->m90_entratrans) == null ){ 
+       if(trim((string) $this->m90_entratrans) == null ){ 
          $this->erro_sql = " Campo Entrada com Saida/Transferência nao Informado.";
          $this->erro_campo = "m90_entratrans";
          $this->erro_banco = "";
@@ -395,17 +395,17 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_modrelsaidamat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_modrelsaidamat"])){ 
-        if(trim($this->m90_modrelsaidamat)=="" && isset($GLOBALS["HTTP_POST_VARS"]["m90_modrelsaidamat"])){ 
+     if(trim((string) $this->m90_modrelsaidamat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_modrelsaidamat"])){ 
+        if(trim((string) $this->m90_modrelsaidamat)=="" && isset($GLOBALS["HTTP_POST_VARS"]["m90_modrelsaidamat"])){ 
            $this->m90_modrelsaidamat = "0" ; 
         } 
        $sql  .= $virgula." m90_modrelsaidamat = $this->m90_modrelsaidamat ";
        $virgula = ",";
      }
-     if(trim($this->m90_almoxordemcompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_almoxordemcompra"])){ 
+     if(trim((string) $this->m90_almoxordemcompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_almoxordemcompra"])){ 
        $sql  .= $virgula." m90_almoxordemcompra = $this->m90_almoxordemcompra ";
        $virgula = ",";
-       if(trim($this->m90_almoxordemcompra) == null ){ 
+       if(trim((string) $this->m90_almoxordemcompra) == null ){ 
          $this->erro_sql = " Campo Almoxarifado da Ordem de Compra nao Informado.";
          $this->erro_campo = "m90_almoxordemcompra";
          $this->erro_banco = "";
@@ -415,10 +415,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_prazovenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_prazovenc"])){ 
+     if(trim((string) $this->m90_prazovenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_prazovenc"])){ 
        $sql  .= $virgula." m90_prazovenc = $this->m90_prazovenc ";
        $virgula = ",";
-       if(trim($this->m90_prazovenc) == null ){ 
+       if(trim((string) $this->m90_prazovenc) == null ){ 
          $this->erro_sql = " Campo Prazo à Vencer em Dias nao Informado.";
          $this->erro_campo = "m90_prazovenc";
          $this->erro_banco = "";
@@ -428,10 +428,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_corfundorequisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_corfundorequisicao"])){ 
+     if(trim((string) $this->m90_corfundorequisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_corfundorequisicao"])){ 
        $sql  .= $virgula." m90_corfundorequisicao = $this->m90_corfundorequisicao ";
        $virgula = ",";
-       if(trim($this->m90_corfundorequisicao) == null ){ 
+       if(trim((string) $this->m90_corfundorequisicao) == null ){ 
          $this->erro_sql = " Campo Cor de Fundo da Requisição nao Informado.";
          $this->erro_campo = "m90_corfundorequisicao";
          $this->erro_banco = "";
@@ -441,10 +441,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_mostrarsaldosolictransf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_mostrarsaldosolictransf"])){ 
+     if(trim((string) $this->m90_mostrarsaldosolictransf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_mostrarsaldosolictransf"])){ 
        $sql  .= $virgula." m90_mostrarsaldosolictransf = $this->m90_mostrarsaldosolictransf ";
        $virgula = ",";
-       if(trim($this->m90_mostrarsaldosolictransf) == null ){ 
+       if(trim((string) $this->m90_mostrarsaldosolictransf) == null ){ 
          $this->erro_sql = " Campo Mostrar saldo mat. na solic. de transf. nao Informado.";
          $this->erro_campo = "m90_mostrarsaldosolictransf";
          $this->erro_banco = "";
@@ -454,10 +454,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_validarsaldosolictransf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_validarsaldosolictransf"])){ 
+     if(trim((string) $this->m90_validarsaldosolictransf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_validarsaldosolictransf"])){ 
        $sql  .= $virgula." m90_validarsaldosolictransf = $this->m90_validarsaldosolictransf ";
        $virgula = ",";
-       if(trim($this->m90_validarsaldosolictransf) == null ){ 
+       if(trim((string) $this->m90_validarsaldosolictransf) == null ){ 
          $this->erro_sql = " Campo Validar qtd. informada com saldo nao Informado.";
          $this->erro_campo = "m90_validarsaldosolictransf";
          $this->erro_banco = "";
@@ -467,10 +467,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_versaldoitemreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_versaldoitemreq"])){ 
+     if(trim((string) $this->m90_versaldoitemreq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_versaldoitemreq"])){ 
        $sql  .= $virgula." m90_versaldoitemreq = '$this->m90_versaldoitemreq' ";
        $virgula = ",";
-       if(trim($this->m90_versaldoitemreq) == null ){ 
+       if(trim((string) $this->m90_versaldoitemreq) == null ){ 
          $this->erro_sql = " Campo Visualizar Saldo do Item  na Requisição nao Informado.";
          $this->erro_campo = "m90_versaldoitemreq";
          $this->erro_banco = "";
@@ -480,10 +480,10 @@ class cl_matparam {
          return false;
        }
      }
-     if(trim($this->m90_db_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_db_estrutura"])){ 
+     if(trim((string) $this->m90_db_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m90_db_estrutura"])){ 
        $sql  .= $virgula." m90_db_estrutura = $this->m90_db_estrutura ";
        $virgula = ",";
-       if(trim($this->m90_db_estrutura) == null ){ 
+       if(trim((string) $this->m90_db_estrutura) == null ){ 
          $this->erro_sql = " Campo Estrutura dos Grupos nao Informado.";
          $this->erro_campo = "m90_db_estrutura";
          $this->erro_banco = "";
@@ -573,7 +573,7 @@ class cl_matparam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matparam";
@@ -588,7 +588,7 @@ class cl_matparam {
    function sql_query ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -607,7 +607,7 @@ class cl_matparam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -620,7 +620,7 @@ class cl_matparam {
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -638,7 +638,7 @@ class cl_matparam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

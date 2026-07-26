@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -36,7 +36,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $HTTP_POST_VARS );
-parse_str    ( $HTTP_SERVER_VARS["QUERY_STRING"] );
+parse_str    ( $HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 
 $clserie = new cl_serie;
 $clserie->rotulo->label( "ed11_i_codigo" );
@@ -119,7 +120,7 @@ if( isset( $iEtapa ) && !empty( $iEtapa ) ) {
                     if ( isset( $inicial ) ) {
                   ?>
                       <input name="inicial" type="hidden" value="<?=$inicial?>">
-                  <?}?>
+                  <?php }?>
                 </td>
               </tr>
             </table>

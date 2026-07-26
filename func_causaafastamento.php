@@ -36,7 +36,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_causaafastamento_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcausaafastamento = new cl_causaafastamento;
 $clcausaafastamento->rotulo->label("rh115_sequencial");
 $clcausaafastamento->rotulo->label("rh115_sequencial");
@@ -64,7 +65,7 @@ if ( !empty($oGet->sSigla) ) {
               <?=$Lrh115_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh115_sequencial",10,$Irh115_sequencial,true,"text",4,"","chave_rh115_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ if ( !empty($oGet->sSigla) ) {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_causaafastamento.php")==true){
@@ -145,12 +146,12 @@ if ( !empty($oGet->sSigla) ) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

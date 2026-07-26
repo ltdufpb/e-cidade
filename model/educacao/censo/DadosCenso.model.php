@@ -148,7 +148,7 @@ class DadosCenso {
 
       //remove sempre os acentos antes
       $string = $this->retiraAcento( trim($string) );
-      $string = preg_replace("/[^a-zA-Z0-9的\-\s]/", "", $string);
+      $string = preg_replace("/[^a-zA-Z0-9的\-\s]/", "", (string) $string);
       $retira_acentos = false;
     }
 
@@ -156,21 +156,21 @@ class DadosCenso {
     if ($tipo == 7 ) {
 
       $string = $this->retiraAcento( trim($string) );
-      $string = preg_replace("/[^a-zA-Z0-9的\-\s\/.,]/", "", $string);
+      $string = preg_replace("/[^a-zA-Z0-9的\-\s\/.,]/", "", (string) $string);
       $retira_acentos = false;
     }
 
     if ( $tipo == 8 ) {
 
       $string = $this->retiraAcento( trim($string) );
-      $string = preg_replace("/[^a-zA-Z0-9\s]/", "", $string);
+      $string = preg_replace("/[^a-zA-Z0-9\s]/", "", (string) $string);
       $retira_acentos = false;
     }
 
     if ( $retira_acentos ) {
       $string = $this->retiraAcento($string);
     }
-    $string = strtoupper($string);
+    $string = strtoupper((string) $string);
     return $string;
 
   }
@@ -181,9 +181,9 @@ class DadosCenso {
     $letras     = 'AEIOUAEIOUAAAAEEOOUUIIOONNAAOOCCAA ';
     $new_string = '';
 
-    for ($x = 0; $x < strlen($string); $x++) {
+    for ($x = 0; $x < strlen((string) $string); $x++) {
 
-      $let = substr($string, $x, 1);
+      $let = substr((string) $string, $x, 1);
       for ($y = 0; $y < strlen($acentos); $y++) {
 
         if ($let == substr($acentos, $y, 1)) {
@@ -231,12 +231,12 @@ class DadosCenso {
    */
   static function VerificaDuplicidade($aArray){
 
-  	$aArrayTemp = array();
+  	$aArrayTemp = [];
 
   	foreach($aArray as $iValor){
 
   		if (!in_array($iValor, $aArrayTemp)) {
-  			if( trim($iValor) <> ''){
+  			if( trim((string) $iValor) <> ''){
   				$aArrayTemp[] = $iValor;
   			}
   		}else{
@@ -274,8 +274,8 @@ class DadosCenso {
    * @return array
    */
   static function getAtividadesComplementaresExcluidasCenso2015() {
-    return array(   31001, 31002, 31003, 31004, 31005, 31006, 31007, 31011, 31012, 31013, 91001, 91002, 13102, 13103
+    return [   31001, 31002, 31003, 31004, 31005, 31006, 31007, 31011, 31012, 31013, 91001, 91002, 13102, 13103
                   , 13201, 22010, 31008, 61002, 61003, 61004, 61005, 14106, 16105, 16104
-                );
+                ];
   }
 }

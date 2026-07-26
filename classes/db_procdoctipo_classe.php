@@ -52,7 +52,7 @@ class cl_procdoctipo {
                  p57_ouvidoriaobrigatorio = boolean = Obrigatório( Sistema Externo ) 
                  ";
    //funcao construtor da classe 
-   function cl_procdoctipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdoctipo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadimobil_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcadimobil = new cl_cadimobil;
 $clcadimobil->rotulo->label("j63_numcgm");
 $clcadimobil->rotulo->label("j63_numcgm");
@@ -54,7 +55,7 @@ $clcadimobil->rotulo->label("j63_numcgm");
               <?=$Lj63_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j63_numcgm",10,$Ij63_numcgm,true,"text",4,"","chave_j63_numcgm");
 		       ?>
             </td>
@@ -71,7 +72,7 @@ $clcadimobil->rotulo->label("j63_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top" width="100%" height="100%"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "cadimobil.*";
@@ -107,14 +108,14 @@ $clcadimobil->rotulo->label("j63_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form1.chave_j63_numcgm.focus();
 document.form1.chave_j63_numcgm.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

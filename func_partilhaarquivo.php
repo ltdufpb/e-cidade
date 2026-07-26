@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_partilhaarquivo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpartilhaarquivo = new cl_partilhaarquivo;
 $clpartilhaarquivo->rotulo->label("v78_sequencial");
 $clpartilhaarquivo->rotulo->label("v78_nomearq");
@@ -54,7 +55,7 @@ $clpartilhaarquivo->rotulo->label("v78_nomearq");
               <?=$Lv78_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v78_sequencial",10,$Iv78_sequencial,true,"text",4,"","chave_v78_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpartilhaarquivo->rotulo->label("v78_nomearq");
               <?=$Lv78_nomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v78_nomearq",50,$Iv78_nomearq,true,"text",4,"","chave_v78_nomearq");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpartilhaarquivo->rotulo->label("v78_nomearq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_partilhaarquivo.php")==true){
@@ -122,12 +123,12 @@ $clpartilhaarquivo->rotulo->label("v78_nomearq");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

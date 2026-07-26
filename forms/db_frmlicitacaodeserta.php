@@ -46,11 +46,11 @@ $clrotulo->label("l11_obs");
           <tr> 
             <td  align="left" nowrap title="<?=$Tl20_codigo?>">
             <b>
-            <?db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
+            <?php db_ancora('Licitação',"js_pesquisa_liclicita(true);",1);?>&nbsp;:
             </b> 
             </td>
             <td align="left" nowrap>
-              <? 
+              <?php  
                 db_input("l20_codigo",6,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
               ?>
             </td>
@@ -62,7 +62,7 @@ $clrotulo->label("l11_obs");
             </b> 
             </td>
             <td align="left" nowrap>
-              <? 
+              <?php  
                 db_input("l20_edital",6,$Il20_edital,true,"text",3);
               ?>
             </td>
@@ -72,7 +72,7 @@ $clrotulo->label("l11_obs");
               <b>Motivo:</b>
             </td>
             <td>
-               <?
+               <?php 
                  db_textarea("l11_obs",10,60,$Il11_obs,true,"text", 1);
                ?>
             </td>
@@ -136,7 +136,7 @@ function js_mostraliclicita1(chave1, chave2){
 }
 function js_atualizaDados(iValor) {
   
-  <?
+  <?php 
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+iValor";
   ?>
 }
@@ -155,7 +155,7 @@ function js_validaAcao(iAcao) {
   }
   return true;
 }
-<?
+<?php 
 if (!isset($oGet->chavepesquisa) ) {
   echo "js_pesquisa_liclicita(true)\n";
 }

@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_licencaempreendimento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllicencaempreendimento = new cl_licencaempreendimento;
 $cllicencaempreendimento->rotulo->label("am13_sequencial");
 $cllicencaempreendimento->rotulo->label("am13_arquivo");
@@ -50,11 +51,11 @@ $cllicencaempreendimento->rotulo->label("am13_arquivo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam13_sequencial?></label></td>
-          <td><? db_input("am13_sequencial",10,$Iam13_sequencial,true,"text",4,"","chave_am13_sequencial"); ?></td>
+          <td><?php  db_input("am13_sequencial",10,$Iam13_sequencial,true,"text",4,"","chave_am13_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam13_arquivo?></label></td>
-          <td><? db_input("am13_arquivo",10,$Iam13_arquivo,true,"text",4,"","chave_am13_arquivo");?></td>
+          <td><?php  db_input("am13_arquivo",10,$Iam13_arquivo,true,"text",4,"","chave_am13_arquivo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $cllicencaempreendimento->rotulo->label("am13_arquivo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_licencaempreendimento.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_licencaempreendimento.php")==true){
@@ -104,12 +105,12 @@ $cllicencaempreendimento->rotulo->label("am13_arquivo");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

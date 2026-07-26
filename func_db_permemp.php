@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_permemp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_permemp = new cl_db_permemp;
 $cldb_permemp->rotulo->label("db20_codperm");
 $cldb_permemp->rotulo->label("db20_anousu");
@@ -54,7 +55,7 @@ $cldb_permemp->rotulo->label("db20_anousu");
               <?=$Ldb20_codperm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db20_codperm",6,$Idb20_codperm,true,"text",4,"","chave_db20_codperm");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_permemp->rotulo->label("db20_anousu");
               <?=$Ldb20_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db20_anousu",4,$Idb20_anousu,true,"text",4,"","chave_db20_anousu");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_permemp->rotulo->label("db20_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_permemp.php")==true){
@@ -118,12 +119,12 @@ $cldb_permemp->rotulo->label("db20_anousu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

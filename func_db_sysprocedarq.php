@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysprocedarq_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_sysprocedarq = new cl_db_sysprocedarq;
 $cldb_sysprocedarq->rotulo->label("sequencial");
 $cldb_sysprocedarq->rotulo->label("codarq");
@@ -54,7 +55,7 @@ $cldb_sysprocedarq->rotulo->label("codarq");
               <?=$Lsequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sequencial",10,$Isequencial,true,"text",4,"","chave_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_sysprocedarq->rotulo->label("codarq");
               <?=$Lcodarq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codarq",5,$Icodarq,true,"text",4,"","chave_codarq");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_sysprocedarq->rotulo->label("codarq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_sysprocedarq.php")==true){
@@ -122,12 +123,12 @@ $cldb_sysprocedarq->rotulo->label("codarq");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

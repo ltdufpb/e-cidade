@@ -1,4 +1,4 @@
-<?
+<?php 
 include(modification("fpdf151/assinatura.php"));
 
 class cl_cabec_rodape extends cl_assinatura {
@@ -9,7 +9,7 @@ class cl_cabec_rodape extends cl_assinatura {
 //|15|//$classinatura = new cl_assinatura;
   var $modelo = null;
   
-  function cl_cabec_rodape ($modelo){
+  function __construct ($modelo){
     $this->modelo = $modelo;
   }
 

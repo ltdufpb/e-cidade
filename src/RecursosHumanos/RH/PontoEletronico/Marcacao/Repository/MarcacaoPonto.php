@@ -119,14 +119,14 @@ class MarcacaoPonto
             $rsMarcacao,
             function ($oRetorno) use ($oMarcacaoPontoRepository) {
 
-                $aDados = array(
+                $aDados = [
                     "codigo" => $oRetorno->rh198_sequencial,
                     "data" => $oRetorno->rh198_data,
                     "hora" => $oRetorno->rh198_registro,
                     "manual" => $oRetorno->rh198_registro_manual,
                     "origem_marcacao" => $oRetorno->rh198_origem_marcacao,
                     'justificativa' => null
-                );
+                ];
 
                 $oMarcacaoPonto = new MarcacaoPontoModel();
                 $oMarcacaoPonto->setCodigo($oRetorno->rh198_sequencial);
@@ -150,7 +150,7 @@ class MarcacaoPonto
     private function getMarcacoesNaData(DiaTrabalho $oDiaTrabalho)
     {
 
-        $aCampos = array(
+        $aCampos = [
             'rh197_data',
             'rh198_registro',
             'rh198_sequencial',
@@ -158,7 +158,7 @@ class MarcacaoPonto
             'rh198_origem_marcacao',
             'rh198_ordem',
             'rh198_data'
-        );
+        ];
 
         $oDaoMarcacao = new \cl_pontoeletronicoarquivodataregistro();
         $sWhereMarcacao = "     rh197_matricula = {$oDiaTrabalho->getServidor()->getMatricula()}";
@@ -218,7 +218,7 @@ class MarcacaoPonto
         $sWhereMarcacao .= " AND ({$sWhereInicio} OR {$sWhereFim})";
         $sWhereMarcacao .= " AND rh197_data >= '{$oDiaTrabalho->getData()->getDate()}'";
 
-        $aCampos = array(
+        $aCampos = [
             'rh197_data',
             'rh198_registro',
             'rh198_sequencial',
@@ -226,7 +226,7 @@ class MarcacaoPonto
             'rh198_origem_marcacao',
             'rh198_ordem',
             'rh198_data'
-        );
+        ];
 
         $oDao = new \cl_pontoeletronicoarquivodataregistro();
         $sSqlMarcacao = $oDao->sql_query(null, implode(' , ', $aCampos), 'rh197_data, rh198_ordem', $sWhereMarcacao);
@@ -253,7 +253,7 @@ class MarcacaoPonto
 
         $sWhereJustificativa = "rh199_pontoeletronicoarquivodataregistro = {$oMarcacaoPonto->getCodigo()}";
         $oDaoJustificativa = new \cl_pontoeletronicoregistrojustificativa();
-        $sSqlJustificativa = $oDaoJustificativa->sqlJustificativasTipoasse(array(), '', array($sWhereJustificativa));
+        $sSqlJustificativa = $oDaoJustificativa->sqlJustificativasTipoasse([], '', [$sWhereJustificativa]);
         $rsJustificativa = db_query($sSqlJustificativa);
 
         if (!$rsJustificativa) {

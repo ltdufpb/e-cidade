@@ -28,33 +28,33 @@
 //CLASSE DA ENTIDADE tipoausencia
 class cl_tipoausencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed320_sequencial = 0; 
-   var $ed320_descricao = null; 
-   var $ed320_tipo = 0; 
+   public $ed320_sequencial = 0; 
+   public $ed320_descricao = null; 
+   public $ed320_tipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed320_sequencial = int4 = Código 
                  ed320_descricao = varchar(100) = Descrição 
                  ed320_tipo = int4 = Tipo de Licença 
                  ";
    //funcao construtor da classe 
-   function cl_tipoausencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoausencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,10 +106,10 @@ class cl_tipoausencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed320_sequencial = pg_result($result,0,0); 
+       $this->ed320_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipoausencia_ed320_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed320_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed320_sequencial)){
          $this->erro_sql = " Campo ed320_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -141,7 +141,7 @@ class cl_tipoausencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de Ausência ($this->ed320_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de Ausência já Cadastrado";
@@ -170,12 +170,12 @@ class cl_tipoausencia {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19749,'$this->ed320_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3540,19749,'','".AddSlashes(pg_result($resaco,0,'ed320_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3540,19750,'','".AddSlashes(pg_result($resaco,0,'ed320_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3540,21618,'','".AddSlashes(pg_result($resaco,0,'ed320_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3540,19749,'','".AddSlashes(pg_fetch_result($resaco,0,'ed320_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3540,19750,'','".AddSlashes(pg_fetch_result($resaco,0,'ed320_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3540,21618,'','".AddSlashes(pg_fetch_result($resaco,0,'ed320_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -185,10 +185,10 @@ class cl_tipoausencia {
       $this->atualizacampos();
      $sql = " update tipoausencia set ";
      $virgula = "";
-     if(trim($this->ed320_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed320_sequencial"])){ 
+     if(trim((string) $this->ed320_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed320_sequencial"])){ 
        $sql  .= $virgula." ed320_sequencial = $this->ed320_sequencial ";
        $virgula = ",";
-       if(trim($this->ed320_sequencial) == null ){ 
+       if(trim((string) $this->ed320_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed320_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_tipoausencia {
          return false;
        }
      }
-     if(trim($this->ed320_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed320_descricao"])){ 
+     if(trim((string) $this->ed320_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed320_descricao"])){ 
        $sql  .= $virgula." ed320_descricao = '$this->ed320_descricao' ";
        $virgula = ",";
-       if(trim($this->ed320_descricao) == null ){ 
+       if(trim((string) $this->ed320_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "ed320_descricao";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_tipoausencia {
          return false;
        }
      }
-     if(trim($this->ed320_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed320_tipo"])){ 
+     if(trim((string) $this->ed320_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed320_tipo"])){ 
        $sql  .= $virgula." ed320_tipo = $this->ed320_tipo ";
        $virgula = ",";
-       if(trim($this->ed320_tipo) == null ){ 
+       if(trim((string) $this->ed320_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Licença não informado.";
          $this->erro_campo = "ed320_tipo";
          $this->erro_banco = "";
@@ -238,15 +238,15 @@ class cl_tipoausencia {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19749,'$this->ed320_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed320_sequencial"]) || $this->ed320_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3540,19749,'".AddSlashes(pg_result($resaco,$conresaco,'ed320_sequencial'))."','$this->ed320_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3540,19749,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed320_sequencial'))."','$this->ed320_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed320_descricao"]) || $this->ed320_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3540,19750,'".AddSlashes(pg_result($resaco,$conresaco,'ed320_descricao'))."','$this->ed320_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3540,19750,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed320_descricao'))."','$this->ed320_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed320_tipo"]) || $this->ed320_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,3540,21618,'".AddSlashes(pg_result($resaco,$conresaco,'ed320_tipo'))."','$this->ed320_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3540,21618,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed320_tipo'))."','$this->ed320_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -300,12 +300,12 @@ class cl_tipoausencia {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19749,'$ed320_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3540,19749,'','".AddSlashes(pg_result($resaco,$iresaco,'ed320_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3540,19750,'','".AddSlashes(pg_result($resaco,$iresaco,'ed320_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3540,21618,'','".AddSlashes(pg_result($resaco,$iresaco,'ed320_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3540,19749,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed320_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3540,19750,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed320_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3540,21618,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed320_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

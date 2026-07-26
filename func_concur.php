@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_concur_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconcur = new cl_concur;
 $clconcur->rotulo->label("h06_refer");
 $clconcur->rotulo->label("h06_eaber");
@@ -54,7 +55,7 @@ $clconcur->rotulo->label("h06_eaber");
               <?=$Lh06_refer?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h06_refer",5,$Ih06_refer,true,"text",4,"","chave_h06_refer");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconcur->rotulo->label("h06_eaber");
               <?=$Lh06_eaber?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h06_eaber",10,$Ih06_eaber,true,"text",4,"","chave_h06_eaber");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconcur->rotulo->label("h06_eaber");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_concur.php")==true){
@@ -122,12 +123,12 @@ $clconcur->rotulo->label("h06_eaber");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

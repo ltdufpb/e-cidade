@@ -62,7 +62,7 @@ class GradeAvaliacaoMediaPonderada
     /**
      * Total de Faltas por Periodo
      */
-    protected $aTotalFaltas = array();
+    protected $aTotalFaltas = [];
 
     /**
      * Percentual da frequencia
@@ -133,7 +133,7 @@ class GradeAvaliacaoMediaPonderada
     private function getAvaliacoes()
     {
 
-        $aAvaliacoes = array();
+        $aAvaliacoes = [];
         foreach ($this->oGradeAvaliacao->getPeriodos() as $oPeriodo) {
             if ($oPeriodo->isResultado()) {
                 continue;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,14 +63,14 @@ $db_opcao   = 1;
       <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-            <?
+            <?php 
 
               MsgAviso(db_getsession("DB_coddepto"), "escola");
               
-              $clCriaAbas->identifica    = array("a1" => "Ato Legal", "a2" => "Anexar Documento");
-              $clCriaAbas->sizecampo     = array("a1" => "20", "a2" => "25");
-              $clCriaAbas->src           = array("a1" => "edu1_atolegal001.php", "a2" => "edu1_edu_anexoatolegal001.php");
-              $clCriaAbas->disabled      = array("a2" => "true");
+              $clCriaAbas->identifica    = ["a1" => "Ato Legal", "a2" => "Anexar Documento"];
+              $clCriaAbas->sizecampo     = ["a1" => "20", "a2" => "25"];
+              $clCriaAbas->src           = ["a1" => "edu1_atolegal001.php", "a2" => "edu1_edu_anexoatolegal001.php"];
+              $clCriaAbas->disabled      = ["a2" => "true"];
               $clCriaAbas->cordisabled   = "#9b9b9b";
               $clCriaAbas->iframe_height = "600";
               $clCriaAbas->cria_abas();
@@ -80,7 +80,7 @@ $db_opcao   = 1;
         </tr>
       </table>
     </form>
-    <? 
+    <?php  
       
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),

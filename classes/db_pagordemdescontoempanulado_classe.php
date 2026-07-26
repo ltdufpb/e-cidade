@@ -1,35 +1,35 @@
-<?
+<?php 
 //MODULO: empenho
 //CLASSE DA ENTIDADE pagordemdescontoempanulado
 class cl_pagordemdescontoempanulado {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $e06_sequencial = 0;
-   var $e06_empanulado = 0;
-   var $e06_pagordemdesconto = 0;
+   public $e06_sequencial = 0;
+   public $e06_empanulado = 0;
+   public $e06_pagordemdesconto = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  e06_sequencial = int4 = Sequencial
                  e06_empanulado = int4 = Anulação de Empenho
                  e06_pagordemdesconto = int4 = Desconto da Ordem de Pagamento
                  ";
    //funcao construtor da classe
-   function cl_pagordemdescontoempanulado() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pagordemdescontoempanulado");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -72,10 +72,10 @@ class cl_pagordemdescontoempanulado {
          $this->erro_status = "0";
          return false;
        }
-       $this->e06_sequencial = pg_result($result,0,0);
+       $this->e06_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from pagordemdescontoempanulado_e06_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e06_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e06_sequencial)){
          $this->erro_sql = " Campo e06_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -107,7 +107,7 @@ class cl_pagordemdescontoempanulado {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "pagordemdescontoempanulado ($this->e06_empanulado) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "pagordemdescontoempanulado já Cadastrado";
@@ -136,12 +136,12 @@ class cl_pagordemdescontoempanulado {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21516,'$this->e06_empanulado','I')");
-         $resac = db_query("insert into db_acount values($acount,3865,21514,'','".AddSlashes(pg_result($resaco,0,'e06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3865,21516,'','".AddSlashes(pg_result($resaco,0,'e06_empanulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3865,21515,'','".AddSlashes(pg_result($resaco,0,'e06_pagordemdesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3865,21514,'','".AddSlashes(pg_fetch_result($resaco,0,'e06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3865,21516,'','".AddSlashes(pg_fetch_result($resaco,0,'e06_empanulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3865,21515,'','".AddSlashes(pg_fetch_result($resaco,0,'e06_pagordemdesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -151,10 +151,10 @@ class cl_pagordemdescontoempanulado {
       $this->atualizacampos();
      $sql = " update pagordemdescontoempanulado set ";
      $virgula = "";
-     if(trim($this->e06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e06_sequencial"])){
+     if(trim((string) $this->e06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e06_sequencial"])){
        $sql  .= $virgula." e06_sequencial = $this->e06_sequencial ";
        $virgula = ",";
-       if(trim($this->e06_sequencial) == null ){
+       if(trim((string) $this->e06_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "e06_sequencial";
          $this->erro_banco = "";
@@ -164,10 +164,10 @@ class cl_pagordemdescontoempanulado {
          return false;
        }
      }
-     if(trim($this->e06_empanulado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e06_empanulado"])){
+     if(trim((string) $this->e06_empanulado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e06_empanulado"])){
        $sql  .= $virgula." e06_empanulado = $this->e06_empanulado ";
        $virgula = ",";
-       if(trim($this->e06_empanulado) == null ){
+       if(trim((string) $this->e06_empanulado) == null ){
          $this->erro_sql = " Campo Anulação de Empenho não informado.";
          $this->erro_campo = "e06_empanulado";
          $this->erro_banco = "";
@@ -177,10 +177,10 @@ class cl_pagordemdescontoempanulado {
          return false;
        }
      }
-     if(trim($this->e06_pagordemdesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e06_pagordemdesconto"])){
+     if(trim((string) $this->e06_pagordemdesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e06_pagordemdesconto"])){
        $sql  .= $virgula." e06_pagordemdesconto = $this->e06_pagordemdesconto ";
        $virgula = ",";
-       if(trim($this->e06_pagordemdesconto) == null ){
+       if(trim((string) $this->e06_pagordemdesconto) == null ){
          $this->erro_sql = " Campo Desconto da Ordem de Pagamento não informado.";
          $this->erro_campo = "e06_pagordemdesconto";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_pagordemdescontoempanulado {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21516,'$this->e06_empanulado','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e06_sequencial"]) || $this->e06_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3865,21514,'".AddSlashes(pg_result($resaco,$conresaco,'e06_sequencial'))."','$this->e06_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3865,21514,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e06_sequencial'))."','$this->e06_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e06_empanulado"]) || $this->e06_empanulado != "")
-             $resac = db_query("insert into db_acount values($acount,3865,21516,'".AddSlashes(pg_result($resaco,$conresaco,'e06_empanulado'))."','$this->e06_empanulado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3865,21516,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e06_empanulado'))."','$this->e06_empanulado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e06_pagordemdesconto"]) || $this->e06_pagordemdesconto != "")
-             $resac = db_query("insert into db_acount values($acount,3865,21515,'".AddSlashes(pg_result($resaco,$conresaco,'e06_pagordemdesconto'))."','$this->e06_pagordemdesconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3865,21515,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e06_pagordemdesconto'))."','$this->e06_pagordemdesconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -266,12 +266,12 @@ class cl_pagordemdescontoempanulado {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21516,'$e06_empanulado','E')");
-           $resac  = db_query("insert into db_acount values($acount,3865,21514,'','".AddSlashes(pg_result($resaco,$iresaco,'e06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3865,21516,'','".AddSlashes(pg_result($resaco,$iresaco,'e06_empanulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3865,21515,'','".AddSlashes(pg_result($resaco,$iresaco,'e06_pagordemdesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3865,21514,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3865,21516,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e06_empanulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3865,21515,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e06_pagordemdesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -387,7 +387,7 @@ class cl_pagordemdescontoempanulado {
      return $sql;
   }
 
-  public function sql_query_itens_empenho($sCampos = "*", $sWhere) {
+  public function sql_query_itens_empenho($sCampos = "*", $sWhere = null) {
 
     $sSql  = "   select {$sCampos} ";
     $sSql .= "     from pagordemdescontoempanulado ";

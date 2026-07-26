@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhtipofolha
 class cl_rhtipofolha { 
@@ -24,7 +24,7 @@ class cl_rhtipofolha {
                  rh142_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_rhtipofolha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhtipofolha"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

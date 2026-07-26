@@ -69,13 +69,13 @@ require_once(modification("libs/db_stdlibwebseller.php"));
 
 </head>
 <body bgcolor="#cccccc" style="margin-top: 25px" onload="">
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <center>
   <div id='gridContainer'></div>
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script type="text/javascript">
 
 	oAvaliacao = new DBViewFiltroLancamentoAvaliacao("oAvaliacao");

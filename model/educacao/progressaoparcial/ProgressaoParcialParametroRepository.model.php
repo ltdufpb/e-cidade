@@ -36,7 +36,7 @@
      * Collection de ProgressaoParcialParametro
      * @var array
      */
-    private $aProgressaoParcial = array();
+    private $aProgressaoParcial = [];
 
     /**
      * Instancia da classe

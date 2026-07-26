@@ -78,7 +78,7 @@ if(isset($canc)){
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-  <?
+  <?php 
   if(isset($e87_codgera)){
     $result_dadosret = $clempagedadosret->sql_record($clempagedadosret->sql_query("","e75_codret,e87_codgera,e87_descgera"," e75_codret desc limit 1 "," e75_codgera = $e87_codgera"));
     if($clempagedadosret->numrows>0){
@@ -101,15 +101,15 @@ if(isset($canc)){
   }
   ?>
   <tr> 
-    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <? db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
+    <td  align="left" nowrap title="<?=$Te87_codgera?>"> <?php  db_ancora(@$Le87_codgera,"js_pesquisa_gera(true);",1);?>  </td>
     <td align="left" nowrap>
-  <?
+  <?php 
    db_input("e87_codgera",8,$Ie87_codgera,true,"text",4,"onchange='js_pesquisa_gera(false);'"); 
    db_input("e87_descgera",40,$Ie87_descgera,true,"text",3);
   ?>
     </td>
   </tr>
-  <?
+  <?php 
   $db_passapar = "true";
   if(isset($e87_codgera)){
     echo "
@@ -141,7 +141,7 @@ if(isset($canc)){
 </table>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_geraact(x){

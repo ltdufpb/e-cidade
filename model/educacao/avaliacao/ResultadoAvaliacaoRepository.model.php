@@ -38,7 +38,7 @@ class ResultadoAvaliacaoRepository
      * Array com instancias de ResultadoAvaliacao
      * @var array
      */
-    private $aResultadoAvaliacao = array();
+    private $aResultadoAvaliacao = [];
     private static $oInstance;
 
     private function __construct()

@@ -58,7 +58,7 @@ class HorasJustificadas extends CalculoHoraLinear implements Horas {
     {
         parent::__construct($oDiaTrabalho);
         $this->horaJustificada = $this->getHoraZerada();
-        $this->marcacoes       = array();
+        $this->marcacoes       = [];
 
         if($this->getDiaTrabalho()->getMarcacoes() instanceof MarcacoesPontoCollection) {
             $this->marcacoes = $this->getDiaTrabalho()->getMarcacoes()->getMarcacoes();

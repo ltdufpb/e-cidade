@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_emparquivopit_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clemparquivopit = new cl_emparquivopit;
 $clemparquivopit->rotulo->label("e14_sequencial");
 $clemparquivopit->rotulo->label("e14_nomearquivo");
@@ -54,7 +55,7 @@ $clemparquivopit->rotulo->label("e14_nomearquivo");
               <?=$Le14_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e14_sequencial",10,$Ie14_sequencial,true,"text",4,"","chave_e14_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clemparquivopit->rotulo->label("e14_nomearquivo");
               <?=$Le14_nomearquivo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e14_nomearquivo",50,$Ie14_nomearquivo,true,"text",4,"","chave_e14_nomearquivo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clemparquivopit->rotulo->label("e14_nomearquivo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_emparquivopit.php")==true){
@@ -123,12 +124,12 @@ $clemparquivopit->rotulo->label("e14_nomearquivo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,11 +40,11 @@ db_fieldsmemory($result,0);
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Tsd06_i_medico?>">
-   <?db_ancora(@$Lsd06_i_medico,"",3);?>
+   <?php db_ancora(@$Lsd06_i_medico,"",3);?>
   </td>
   <td>
-   <?db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',3,"")?>
-   <?db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('sd03_i_codigo',10,$Isd03_i_codigo,true,'text',3,"")?>
+   <?php db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')?>
  </td>
  </tr>
  <tr>
@@ -52,7 +52,7 @@ db_fieldsmemory($result,0);
    <?=@$Lsd04_d_folgaini?>
   </td>
   <td>
-   <?db_inputdata('sd04_d_folgaini',@$sd04_d_folgaini_dia,@$sd04_d_folgaini_mes,@$sd04_d_folgaini_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('sd04_d_folgaini',@$sd04_d_folgaini_dia,@$sd04_d_folgaini_mes,@$sd04_d_folgaini_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -60,7 +60,7 @@ db_fieldsmemory($result,0);
    <?=@$Lsd04_d_folgafim?>
   </td>
   <td>
-   <?db_inputdata('sd04_d_folgafim',@$sd04_d_folgafim_dia,@$sd04_d_folgafim_mes,@$sd04_d_folgafim_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('sd04_d_folgafim',@$sd04_d_folgafim_dia,@$sd04_d_folgafim_mes,@$sd04_d_folgafim_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>

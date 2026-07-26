@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -64,21 +64,21 @@ if(isset($chavepesquisa)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmdb_contatos.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","g01_tipocon",true,1,"g01_tipocon",true);
-<?
+<?php 
 if(!isset($chavepesquisa)){
   echo "document.form1.pesquisar.click();";
 }

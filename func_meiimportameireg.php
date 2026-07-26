@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meiimportameireg_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmeiimportameireg = new cl_meiimportameireg;
 $clmeiimportameireg->rotulo->label("q111_sequencial");
 $clmeiimportameireg->rotulo->label("q111_meievento");
@@ -54,7 +55,7 @@ $clmeiimportameireg->rotulo->label("q111_meievento");
               <?=$Lq111_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q111_sequencial",10,$Iq111_sequencial,true,"text",4,"","chave_q111_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmeiimportameireg->rotulo->label("q111_meievento");
               <?=$Lq111_meievento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q111_meievento",10,$Iq111_meievento,true,"text",4,"","chave_q111_meievento");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmeiimportameireg->rotulo->label("q111_meievento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meiimportameireg.php")==true){
@@ -122,12 +123,12 @@ $clmeiimportameireg->rotulo->label("q111_meievento");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

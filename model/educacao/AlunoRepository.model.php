@@ -33,7 +33,7 @@
  */
 class AlunoRepository {
 
-  private $aAluno = array();
+  private $aAluno = [];
   private static $oInstance;
 
   private function __construct() {
@@ -115,11 +115,11 @@ class AlunoRepository {
      * @return array
      * @throws Exception
      */
-    public static function getAlunosByTurma(Turma $turma, array $ordem = array('ed60_i_numaluno', 'ed47_v_nome'))
+    public static function getAlunosByTurma(Turma $turma, array $ordem = ['ed60_i_numaluno', 'ed47_v_nome'])
     {
         $dao = new cl_matricula();
-        $campos = array('ed60_i_aluno', 'ed60_i_numaluno');
-        $where = array("ed60_i_turma = {$turma->getCodigo()}");
+        $campos = ['ed60_i_aluno', 'ed60_i_numaluno'];
+        $where = ["ed60_i_turma = {$turma->getCodigo()}"];
         $sql = $dao->sql_query_aluno_matricula(
             null,
             implode(', ', $campos),
@@ -132,7 +132,7 @@ class AlunoRepository {
             throw new Exception("Não foi possível buscar os alunos da turma {$turma->getDescricao()}. Contate o suporte.");
         }
 
-        $alunos = array();
+        $alunos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $alunos;
@@ -152,7 +152,7 @@ class AlunoRepository {
      */
     public static function getAlunosByTurmaOrdemAlfabetica(Turma $turma)
     {
-        return static::getAlunosByTurma($turma, array('ed47_v_nome', 'ed60_i_numaluno'));
+        return static::getAlunosByTurma($turma, ['ed47_v_nome', 'ed60_i_numaluno']);
     }
 
   /**

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguaconsumorec_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguaconsumorec = new cl_aguaconsumorec;
 $claguaconsumorec->rotulo->label("x20_codconsumo");
 $claguaconsumorec->rotulo->label("x20_codconsumotipo");
@@ -55,7 +56,7 @@ $claguaconsumorec->rotulo->label("x20_valor");
               <?=$Lx20_codconsumo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x20_codconsumo",5,$Ix20_codconsumo,true,"text",4,"","chave_x20_codconsumo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $claguaconsumorec->rotulo->label("x20_valor");
               <?=$Lx20_codconsumotipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x20_codconsumotipo",5,$Ix20_codconsumotipo,true,"text",4,"","chave_x20_codconsumotipo");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $claguaconsumorec->rotulo->label("x20_valor");
               <?=$Lx20_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x20_valor",15,$Ix20_valor,true,"text",4,"","chave_x20_valor");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $claguaconsumorec->rotulo->label("x20_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguaconsumorec.php")==true){
@@ -129,12 +130,12 @@ $claguaconsumorec->rotulo->label("x20_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

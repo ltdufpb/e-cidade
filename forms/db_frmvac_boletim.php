@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,17 +42,17 @@ $clrotulo->label("vc06_c_descr");
        <?=@$Lvc13_i_codigo?>
     </td>
     <td> 
-     <?db_input('vc13_i_codigo',10,$Ivc13_i_codigo,true,'text',3,"")?>
+     <?php db_input('vc13_i_codigo',10,$Ivc13_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc13_i_vacina?>">
-     <? db_ancora(@$Lvc13_i_vacina,"js_pesquisavc13_i_vacina(true);",$db_opcao);?>
+     <?php  db_ancora(@$Lvc13_i_vacina,"js_pesquisavc13_i_vacina(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('vc13_i_vacina',10,$Ivc13_i_vacina,true,'text',$db_opcao,
+     <?php db_input('vc13_i_vacina',10,$Ivc13_i_vacina,true,'text',$db_opcao,
                 " onchange='js_pesquisavc13_i_vacina(false);'")?>
-     <?db_input('vc06_c_descr',20,$Ivc06_c_descr,true,'text',3,'')?>
+     <?php db_input('vc06_c_descr',20,$Ivc06_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -60,7 +60,7 @@ $clrotulo->label("vc06_c_descr");
        <?=@$Lvc13_c_descr?>
     </td>
     <td> 
-     <?db_input('vc13_c_descr',30,$Ivc13_c_descr,true,'text',$db_opcao,"")?>
+     <?php db_input('vc13_c_descr',30,$Ivc13_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -75,7 +75,7 @@ $clrotulo->label("vc06_c_descr");
             <?=@$Lvc13_i_diaini?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('vc13_i_diaini',2,$Ivc13_i_diaini,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -85,7 +85,7 @@ $clrotulo->label("vc06_c_descr");
             <?=@$Lvc13_i_mesini?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('vc13_i_mesini',2,$Ivc13_i_mesini,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -95,7 +95,7 @@ $clrotulo->label("vc06_c_descr");
             <?=@$Lvc13_i_anoini?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('vc13_i_anoini',3,$Ivc13_i_anoini,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -109,7 +109,7 @@ $clrotulo->label("vc06_c_descr");
             <?=@$Lvc13_i_diafim?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('vc13_i_diafim',2,$Ivc13_i_diafim,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -119,7 +119,7 @@ $clrotulo->label("vc06_c_descr");
             <?=@$Lvc13_i_mesfim?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('vc13_i_mesfim',2,$Ivc13_i_mesfim,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -129,7 +129,7 @@ $clrotulo->label("vc06_c_descr");
             <?=@$Lvc13_i_anofim?>
           </td>
           <td>
-            <?
+            <?php 
             db_input('vc13_i_anofim',3,$Ivc13_i_anofim,true,'text',$db_opcao,"")
             ?>
           </td>
@@ -146,7 +146,7 @@ $clrotulo->label("vc06_c_descr");
        <?=@$Lvc13_i_situacao?>
     </td>
     <td> 
-      <?
+      <?php 
         $aTipos= Array("1"=>"ATIVO","2"=>"INATIVO");
         db_select("vc13_i_situacao",$aTipos,$Ivc13_i_situacao,$db_opcao,"");
       ?>
@@ -168,7 +168,7 @@ $clrotulo->label("vc06_c_descr");
 <script>
 oGridBoletim = new DBGrid('GridBoletim');
 js_init();
-<?
+<?php 
   if(isset($vc13_i_vacina)){
     echo "js_pesquisavc13_i_vacina(false)";
   }
@@ -382,7 +382,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_boletim.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

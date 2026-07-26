@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE tipoassunto
 class cl_tipoassunto { 
@@ -24,7 +24,7 @@ class cl_tipoassunto {
                  bi30_descricao = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassunto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassunto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ $db_botao2    = true;
 $codigoescola = db_getsession("DB_coddepto");
 $lTemPermissao = db_permissaomenu(db_getsession("DB_anousu"), db_getsession('DB_modulo'), 228385);
 
-$aMapaTurnoReferente = array(1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE');
+$aMapaTurnoReferente = [1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE'];
 $lTemErro            = false;
 
 if( isset( $incluir ) ) {
@@ -66,7 +66,7 @@ if( isset( $incluir ) ) {
   }
 
   $clturma->ed57_censoprogramamaiseducacao = $ed57_censoprogramamaiseducacao;
-  $clturma->ed57_c_descr                   = trim($ed57_c_descr);
+  $clturma->ed57_c_descr                   = trim((string) $ed57_c_descr);
   $clturma->incluir($ed57_i_codigo);
 
   $oCalendario  = new Calendario($ed57_i_calendario);
@@ -86,7 +86,7 @@ if( isset( $incluir ) ) {
     $oDaoTurmaCensoEtapa->incluir(null);
   }
 
-  $aTurnoReferenteInformado = explode(", ", $ed336_turnoreferente);
+  $aTurnoReferenteInformado = explode(", ", (string) $ed336_turnoreferente);
 
   $oEnsino = EnsinoRepository::getEnsinoByCodigo($ed29_i_ensino);
   $oTurno  = new Turno($ed57_i_turno);
@@ -145,7 +145,7 @@ if( isset( $incluir ) ) {
   }
 
   $ultimo    = $clturma->ed57_i_codigo;
-  $arr_etapa = explode( ",", $etapa_turma );
+  $arr_etapa = explode( ",", (string) $etapa_turma );
 
   for ($t = 0; $t < count($arr_etapa); $t++) {
 
@@ -153,8 +153,8 @@ if( isset( $incluir ) ) {
     $codprocedaval   = "ed220_i_procedimento" . $arr_campos[2];
     $aprovautomatica = "ed220_c_aprovauto" . $arr_campos[2];
 
-    $clturmaserieregimemat->ed220_i_procedimento   = $$codprocedaval;
-    $clturmaserieregimemat->ed220_c_aprovauto      = $$aprovautomatica;
+    $clturmaserieregimemat->ed220_i_procedimento   = ${$codprocedaval};
+    $clturmaserieregimemat->ed220_c_aprovauto      = ${$aprovautomatica};
     $clturmaserieregimemat->ed220_i_serieregimemat = $arr_campos[0];
     $clturmaserieregimemat->ed220_c_historico      = $arr_campos[1];
     $clturmaserieregimemat->ed220_i_turma          = $ultimo;
@@ -217,7 +217,7 @@ if( isset( $incluir ) ) {
         $clregencia->ed59_lancarhistorico      = $ed34_lancarhistorico      == 't' ? 'true' : 'false';
         $clregencia->ed59_caracterreprobatorio = $ed34_caracterreprobatorio == 't' ? 'true' : 'false';
         $clregencia->ed59_basecomum            = $ed34_basecomum            == 't' ? 'true' : 'false';
-        $clregencia->ed59_procedimento         = $$codprocedaval;
+        $clregencia->ed59_procedimento         = ${$codprocedaval};
         $clregencia->ed59_areaconhecimento     = $ed34_areaconhecimento;
         $clregencia->ed59_tipobase             = $ed34_tipobase;  
 
@@ -265,7 +265,7 @@ if( isset( $incluir ) ) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Turma</b></legend>
-    <?include(modification("forms/db_frmturma.php"));?>
+    <?php include(modification("forms/db_frmturma.php"));?>
    </fieldset>
    </center>
   </td>

@@ -58,7 +58,7 @@ class cl_confvencissqnvariavel {
                  q144_valor = float4 = Valor Mínimo 
                  ";
    //funcao construtor da classe 
-   function cl_confvencissqnvariavel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("confvencissqnvariavel"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

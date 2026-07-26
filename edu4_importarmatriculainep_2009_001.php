@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $escola = db_getsession("DB_coddepto");
 function db_criatermometro_edu($dbnametermo='termometro',$dbtexto='Concluído',$dbcor='blue',$dbborda=1,$dbacao='Aguarde Processando...'){
  //#00#//db_criatermometro
@@ -114,7 +114,7 @@ if(isset($ano_opcao)){
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <form name="form1" method="post" action="" enctype="multipart/form-data">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
@@ -122,9 +122,9 @@ if(isset($ano_opcao)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Importação de informações do CENSO ESCOLAR <?=$titulofieldset?></b></legend>
-    <?
+    <?php 
     $result = db_query("SELECT ed18_c_codigoinep FROM escola WHERE ed18_i_codigo = $escola");
-    $codigoinep_banco = pg_result($result,0,0);
+    $codigoinep_banco = pg_fetch_result($result,0,0);
     ?>
     <table border="0" align="left">
      <tr>
@@ -151,8 +151,8 @@ if(isset($ano_opcao)){
      <tr>
       <td>
        <b>Arquivo de importação do Censo:</b>
-       <?db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
-       <?db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
+       <?php db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
+       <?php db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
       </td>
      </tr>
      <tr>
@@ -160,7 +160,7 @@ if(isset($ano_opcao)){
        <table id="table_termo" style="visibility:hidden;">
         <tr>
          <td align="center">
-          <?if(isset($processar)){?>
+          <?php if(isset($processar)){?>
           <script>
            var sHors  = "00";
            var sMins  = "00";
@@ -190,7 +190,7 @@ if(isset($ano_opcao)){
            Tempo de execução:<br>
            <span id="clock1">00:00:00</span><script>varTempo = setTimeout('getSecs()',1000);</script>
           </b>
-          <?}?>
+          <?php }?>
          </td>
          <td>
           <?=db_criatermometro_edu('termometro', 'Concluido...', 'blue', 1);?>
@@ -206,7 +206,7 @@ if(isset($ano_opcao)){
  </tr>
  <tr>
   <td align="center">
-   <?
+   <?php 
    if(trim($codigoinep_banco)==""){
     echo "<font color=red><b>* Código INEP desta escola não informado no sistema. Operação Não Permitida.</b></font>
           &nbsp;&nbsp;<a href='edu1_escolaabas002.php'>Informar Código INEP</a>
@@ -219,7 +219,7 @@ if(isset($ano_opcao)){
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_valida(){
  if(document.form1.tipo_opcao.value=="0"){
@@ -266,13 +266,13 @@ function js_anoopcao(valor){
  }
 }
 </script>
-<?
+<?php 
 $sql_nomes = "SELECT ed47_i_codigo as cod1,trim(ed47_v_nome) as nome1 FROM aluno WHERE trim(ed47_v_nome) like '%  %'";
 $result_nomes = db_query($sql_nomes);
 $linhas_nomes = pg_num_rows($result_nomes);
 for($t=0;$t<$linhas_nomes;$t++){
  db_fieldsmemory($result_nomes,$t);
- $nome_partes = explode(" ",$nome1);
+ $nome_partes = explode(" ",(string) $nome1);
  $novo_nome = "";
  $espaco = "";
  for($e=0;$e<count($nome_partes);$e++){
@@ -323,21 +323,21 @@ if(isset($processar)){
   fclose($ponteiro3);
   if($valida_arquivo2==true){
    db_msgbox("[2] Arquivo informado não pertence a esta escola !");
-   ?><script>document.form1.processar.disabled = false;</script><?   
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
+   ?><script>document.form1.processar.disabled = false;</script><?php    
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php    
   }elseif($valida_arquivo3==true){
    db_msgbox("[3] Arquivo informado não pertence ao ano de $ano_opcao!");
-   ?><script>document.form1.processar.disabled = false;</script><?   
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
+   ?><script>document.form1.processar.disabled = false;</script><?php    
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php    
   }elseif($valida_arquivo1==true){      
    db_msgbox("[1] Arquivo informado não é um arquivo de exportação de Situação do Aluno gerado pelo Educacenso!");
-   ?><script>document.form1.processar.disabled = false;</script><?   
-   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?   
+   ?><script>document.form1.processar.disabled = false;</script><?php    
+   ?><script>document.form1.recomecar.style.visibility = "visible";</script><?php    
   }else{
    ?>
    <script>document.getElementById("termo").style.visibility = "visible";</script>
    <script>document.getElementById("table_termo").style.visibility = "visible";</script>
-   <?
+   <?php 
    set_time_limit(0);
    $arquivo_logerro = "tmp/censo_impMatInep_".$escola."_".db_getsession("DB_id_usuario")."_".date("dmY")."_".date("His")."_log.txt";
    $ponteiro_log = fopen($arquivo_logerro,"w");
@@ -374,7 +374,7 @@ if(isset($processar)){
       fwrite($ponteiro_log,"\n[Matr.INEP: $matcenso Turma INEP: $turmacenso Ano: $anocenso] $nome_censo2 : Nome cadastrado no censo não existe no sistema.");
       $erro_naoencontrado = true;
     }else{
-      $codigoaluno = pg_result($result11,0,'ed47_i_codigo');
+      $codigoaluno = pg_fetch_result($result11,0,'ed47_i_codigo');
       $sql21 = "UPDATE aluno SET
                  ed47_c_codigoinep = '$codigoinepaluno' 
                 WHERE ed47_i_codigo = $codigoaluno 
@@ -421,14 +421,14 @@ if(isset($processar)){
      jan = window.open('edu4_importarmatriculainep_2009_002.php?arquivo_erro=<?=$arquivo_logerro?>','','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
      jan.moveTo(0,0);
     </script>
-    <?
+    <?php 
    }
    db_atutermometro_edu(99, 100, 'termometro',1,'...Processo Concluído');
    ?>
    <script>
     clearTimeout(varTempo);
     document.form1.recomecar.style.visibility = "visible";
-   </script><?
+   </script><?php 
    db_query("commit");
    unlink($caminho_arquivo);
    db_msgbox("Importação realizada com sucesso!");

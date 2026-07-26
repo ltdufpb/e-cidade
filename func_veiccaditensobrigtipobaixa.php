@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccaditensobrigtipobaixa_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveiccaditensobrigtipobaixa = new cl_veiccaditensobrigtipobaixa;
 $clveiccaditensobrigtipobaixa->rotulo->label("ve11_sequencial");
 $clveiccaditensobrigtipobaixa->rotulo->label("ve11_descr");
@@ -54,7 +55,7 @@ $clveiccaditensobrigtipobaixa->rotulo->label("ve11_descr");
               <?=$Lve11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve11_sequencial",10,$Ive11_sequencial,true,"text",4,"","chave_ve11_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clveiccaditensobrigtipobaixa->rotulo->label("ve11_descr");
               <?=$Lve11_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve11_descr",40,$Ive11_descr,true,"text",4,"","chave_ve11_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clveiccaditensobrigtipobaixa->rotulo->label("ve11_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccaditensobrigtipobaixa.php")==true){
@@ -122,12 +123,12 @@ $clveiccaditensobrigtipobaixa->rotulo->label("ve11_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

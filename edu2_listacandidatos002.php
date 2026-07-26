@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -84,7 +84,7 @@ $sql     .= "         OR ($where_cal ";
 $sql     .= "         ( alunocurso.ed56_c_situacao='APROVADO' OR alunocurso.ed56_c_situacao='REPETENTE'))) ";
 $sql     .= "  ORDER BY ed52_i_codigo, ed56_c_situacao, ed11_i_sequencia ";
 $result   = db_query( $sql );
-$linhas   = pg_numrows( $result );
+$linhas   = pg_num_rows( $result );
 
 if ( $linhas == 0 ) {?>
 
@@ -98,7 +98,7 @@ if ( $linhas == 0 ) {?>
     </td>
    </tr>
   </table>
-  <?
+  <?php 
   exit;
 }
 

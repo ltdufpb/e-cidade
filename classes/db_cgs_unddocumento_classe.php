@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE cgs_unddocumento
 class cl_cgs_unddocumento { 
@@ -26,7 +26,7 @@ class cl_cgs_unddocumento {
                  sd108_documento = int4 = Código Documento 
                  ";
    //funcao construtor da classe 
-   function cl_cgs_unddocumento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgs_unddocumento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

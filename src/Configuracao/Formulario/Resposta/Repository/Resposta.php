@@ -77,16 +77,16 @@ class Resposta
      */
     public static function getPorFormularioEPerguntas(Formulario $oFormulario, array $aPerguntas)
     {
-        $aCodigos = array();
+        $aCodigos = [];
         foreach ($aPerguntas as $oPergunta) {
             $aCodigos[] = $oPergunta->getCodigo();
         }
 
         $sCodigos = implode(', ', $aCodigos);
-        $aWhere = array(
+        $aWhere = [
             "db101_sequencial = {$oFormulario->getCodigo()}",
             "db104_avaliacaopergunta in({$sCodigos})",
-        );
+        ];
 
         $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
         $sCampos = 'distinct db107_sequencial, db107_usuario, db107_datalancamento, db107_hora';
@@ -96,9 +96,7 @@ class Resposta
             throw new \BusinessException("Erro ao pesquisar as respostas do formulário {$oFormulario->getNome()}.");
         }
 
-        $aRespostas = \db_utils::makeCollectionFromRecord($rsRespostas, function ($oDados) use ($oFormulario) {
-            return Resposta::make($oDados, $oFormulario);
-        });
+        $aRespostas = \db_utils::makeCollectionFromRecord($rsRespostas, fn($oDados) => Resposta::make($oDados, $oFormulario));
 
         return $aRespostas;
     }
@@ -139,12 +137,12 @@ class Resposta
      */
     private static function getPreenchimentosPorRespostas(Formulario $formulario, $perguntas)
     {
-        $respostas = array();
+        $respostas = [];
         foreach ($perguntas as $pergunta) {
-            $a = array(
+            $a = [
                 $pergunta['pergunta']->getCodigo(),
                 $pergunta['resposta']
-            );
+            ];
             $respostas[] = "{". implode(',', $a) . '}';
         }
 
@@ -259,8 +257,8 @@ class Resposta
     {
         $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
 
-        $idPerguntas = array();
-        $respostasCarga = array();
+        $idPerguntas = [];
+        $respostasCarga = [];
         // Percorre as perguntas informadas separando os codigos das perguntas e as respostas em dois arrays
         foreach ($perguntas as $dadosPergunta) {
             $idPerguntas[] = $dadosPergunta['pergunta']->getCodigo();
@@ -269,7 +267,7 @@ class Resposta
 
         $preenchimentos = self::getPreenchimentosPorRespostas($formulario, $perguntas);
         if (empty($preenchimentos)) {
-            return array();
+            return [];
         }
 
         // Percorre todos preenchimentos do formulário e valida se encontra um preenchimento que respondeu
@@ -303,7 +301,7 @@ class Resposta
             }
         }
 
-        $respostas = array();
+        $respostas = [];
         foreach ($preenchimentos as $dadoPreenchimento) {
             if ($dadoPreenchimento->match) {
                 $respostas[] = Resposta::make($dadoPreenchimento, $formulario);
@@ -420,7 +418,7 @@ class Resposta
     {
 
         if ($resposta->getCodigo() == '') {
-            return array();
+            return [];
         }
         $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
         $where                 = "db107_sequencial = {$resposta->getCodigo()}";
@@ -456,7 +454,7 @@ class Resposta
     {
 
         if (empty($codigoResposta)) {
-            return array();
+            return [];
         }
         $oDaoAvaliacaoResposta = new \cl_avaliacaogruporesposta();
         $where                 = "db107_sequencial = {$codigoResposta}";

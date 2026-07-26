@@ -134,9 +134,7 @@ class MaiorNivel extends FormulaAvaliacao
 
             $avaliacao = $avaliacaoArea->getAvaliacao();
 
-            $saida = array_filter($conceitos, function ($var) use ($avaliacao) {
-                return $var->sConceito === $avaliacao;
-            });
+            $saida = array_filter($conceitos, fn($var) => $var->sConceito === $avaliacao);
 
             $nivel = array_shift($saida);
 

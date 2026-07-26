@@ -59,7 +59,7 @@ class cl_lab_autoriza {
                  la48_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_lab_autoriza() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_autoriza"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

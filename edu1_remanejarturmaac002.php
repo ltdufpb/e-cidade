@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,8 +36,8 @@ include(modification("classes/db_escola_classe.php"));
 include(modification("classes/db_escolaestrutura_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clturmaac          = new cl_turmaac;
 $clturmaacmatricula = new cl_turmaacmatricula;
 $clescola           = new cl_escola;
@@ -132,7 +132,7 @@ if (isset($alterar)) {
   }
   
   $clturmaac->ed268_c_aee   = $ed268_c_aee;
-  $clturmaac->ed268_c_descr = trim($ed268_c_descr);
+  $clturmaac->ed268_c_descr = trim((string) $ed268_c_descr);
   $clturmaac->alterar($ed268_i_codigo);
   db_fim_transacao();
   $db_botao = true;
@@ -161,7 +161,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Turma com Atividade Complementar / AEE</b></legend>
-    <?include(modification("forms/db_frmturmaac.php"));?>
+    <?php include(modification("forms/db_frmturmaac.php"));?>
    </fieldset>
    </center>
   </td>
@@ -172,7 +172,7 @@ if (isset($alterar)) {
 <script>
 js_tabulacaoforms("form1","ed268_c_descr",true,1,"ed268_c_descr",true);
 </script>
-<?
+<?php 
 if (isset($alterar)) {
   if ($clturmaac->erro_status == "0") {
     $clturmaac->erro(true,false);
@@ -186,7 +186,7 @@ if (isset($alterar)) {
     $clturmaac->erro(true,false);
 ?>
    <script>parent.document.form2.teste.click();</script>
-  <?} 
+  <?php } 
 }
 
 if ($db_opcao == 22) {

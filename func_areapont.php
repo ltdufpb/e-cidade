@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_areapont_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clareapont = new cl_areapont;
 $clareapont->rotulo->label("q28_sequencia");
 $clareapont->rotulo->label("q28_pontuacao");
@@ -54,7 +55,7 @@ $clareapont->rotulo->label("q28_pontuacao");
               <?=$Lq28_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q28_sequencia",10,$Iq28_sequencia,true,"text",4,"","chave_q28_sequencia");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clareapont->rotulo->label("q28_pontuacao");
               <?=$Lq28_pontuacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q28_pontuacao",15,$Iq28_pontuacao,true,"text",4,"","chave_q28_pontuacao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clareapont->rotulo->label("q28_pontuacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_areapont.php")==true){
@@ -122,12 +123,12 @@ $clareapont->rotulo->label("q28_pontuacao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

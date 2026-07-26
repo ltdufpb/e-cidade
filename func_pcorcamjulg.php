@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcamjulg_classe.php"));
 include(modification("classes/db_pcorcam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpcorcamjulg = new cl_pcorcamjulg;
 $clpcorcam = new cl_pcorcam;
 $clpcorcam->rotulo->label("pc20_codorc");
@@ -57,7 +58,7 @@ $clpcorcamjulg->rotulo->label("pc24_pontuacao");
               <?=$Lpc20_codorc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc20_codorc",10,$Ipc20_codorc,true,"text",4,"","chave_pc20_codorc");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clpcorcamjulg->rotulo->label("pc24_pontuacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamjulg.php")==true){
@@ -109,12 +110,12 @@ $clpcorcamjulg->rotulo->label("pc24_pontuacao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

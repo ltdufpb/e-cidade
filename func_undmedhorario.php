@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoundmedhorario = db_utils::getdao('undmedhorario_ext');
 $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
@@ -55,7 +56,7 @@ $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
               <?=$Lsd30_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("sd30_i_codigo",10,$Isd30_i_codigo,true,"text",4,"","chave_sd30_i_codigo");
               ?>
             </td>
@@ -73,7 +74,7 @@ $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sSepEspecmed = '';
       $sEspecmed    = '';
       $sSepDatas    = '';
@@ -217,12 +218,12 @@ $oDaoundmedhorario->rotulo->label("sd30_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -120,7 +120,7 @@ $iEscola = db_getsession("DB_coddepto");
                         </td>
                         <td nowrap="nowrap" id='ctnNumeroColunas'>
                             <?php
-                            $aColunas = array();
+                            $aColunas = [];
                             for ($i = 40; $i <= 70; $i++) {
                                 $aColunas[$i] = $i;
                             }

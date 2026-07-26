@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -112,13 +112,13 @@ function js_verifica(){
 <table border="0">
   <tr>
     <td title="<?=$Tq07_inscr?>" >
-    <?
+    <?php 
      db_input('calculo',5,0,true,'hidden',1);
      db_ancora($Lq07_inscr,' js_inscr(true); ',1);
     ?>
     </td>
     <td title="<?=$Tq07_inscr?>" colspan="4">
-    <?
+    <?php 
       db_input('q07_inscr',5,$Iq07_inscr,true,'text',1,"onchange='js_inscr(false)'");
       isset($q07_inscr)?$inscricao=$q07_inscr:"";
       db_input('inscricao',5,$Iq07_inscr,true,'hidden',1);
@@ -129,15 +129,15 @@ function js_verifica(){
   </tr>
     <tr>
       <td nowrap title="<?=@$Tq11_processo?>">
-	 <?
+	 <?php 
        db_ancora(@$Lq11_processo,"js_pesquisaq11_processo(true);",$db_opcao);
        ?>
       </td>
       <td colspan=3>
-  <?
+  <?php 
   db_input('q11_processo',10,$Iq11_processo,true,'text',$db_opcao," onchange='js_pesquisaq11_processo(false);'")
   ?>
-  <?db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
+  <?php db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
 
   ?>
       <td>
@@ -147,7 +147,7 @@ function js_verifica(){
        <?=@$Lq11_oficio?>
     </td>
     <td valign="top">
-<?
+<?php 
 $xe = array("false"=>"NORMAL","true"=>"OFÍCIO");
 db_select('q11_oficio',$xe,true,$db_opcao);
 ?>
@@ -157,7 +157,7 @@ db_select('q11_oficio',$xe,true,$db_opcao);
        <?=@$Lq07_databx?>
     </td>
     <td nowrap title="<?=@$Tq07_databx?>" align='left'>
-<?
+<?php 
 if(empty($q07_databx)){
   $q07_databx_dia=date("d",db_getsession('DB_datausu'));
   $q07_databx_mes=date("m",db_getsession('DB_datausu'));
@@ -171,7 +171,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
   </tr>
     <td nowrap colspan=4 title="<?=@$Tq11_obs?>">
     <?=$Lq11_obs?>
-    <?
+    <?php 
     db_textarea('q11_obs',0,70,@$Iq11_obs,true,'text',$db_opcao);
     ?>
     </td>
@@ -187,7 +187,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
 <td>
   <tr>
     <td align="center" colspan="2">
-   <?
+   <?php 
      //todos as propiedades alteradas, deverão ser alterada em iss1_tabativbaixaiframe.php
      $query_string = "a=1";
    $campos= "q07_inscr,q07_seq,q88_inscr,q07_ativ,q03_descr,q07_datain,q07_datafi,q07_databx,q07_perman,q07_quant,q11_tipcalc, q81_descr";

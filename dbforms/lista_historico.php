@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -77,7 +77,7 @@ if(isset($HTTP_POST_VARS["arg"]))
 </tr>
 <tr>
 <td align="center">
-<?
+<?php 
 db_lov($sql,15,"lista_historico.php",$HTTP_POST_VARS["filtro"]);
 ?>
 </td>

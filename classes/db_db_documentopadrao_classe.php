@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_documentopadrao
 class cl_db_documentopadrao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db60_coddoc = 0; 
-   var $db60_descr = null; 
-   var $db60_tipodoc = 0; 
-   var $db60_instit = 0; 
+   public $db60_coddoc = 0; 
+   public $db60_descr = null; 
+   public $db60_tipodoc = 0; 
+   public $db60_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db60_coddoc = int4 = Código Documento 
                  db60_descr = varchar(40) = Descr. Documento 
                  db60_tipodoc = int8 = Cód. do Tipo de Documento 
                  db60_instit = int4 = Cod. da Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_db_documentopadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_documentopadrao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_db_documentopadrao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db60_coddoc = pg_result($result,0,0); 
+       $this->db60_coddoc = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_documentopadrao_db60_coddoc_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db60_coddoc)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db60_coddoc)){
          $this->erro_sql = " Campo db60_coddoc maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_db_documentopadrao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de documentos padrões ($this->db60_coddoc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de documentos padrões já Cadastrado";
@@ -180,13 +180,13 @@ class cl_db_documentopadrao {
      $resaco = $this->sql_record($this->sql_query_file($this->db60_coddoc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9157,'$this->db60_coddoc','I')");
-       $resac = db_query("insert into db_acount values($acount,1568,9157,'','".AddSlashes(pg_result($resaco,0,'db60_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1568,9158,'','".AddSlashes(pg_result($resaco,0,'db60_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1568,9159,'','".AddSlashes(pg_result($resaco,0,'db60_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1568,9160,'','".AddSlashes(pg_result($resaco,0,'db60_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1568,9157,'','".AddSlashes(pg_fetch_result($resaco,0,'db60_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1568,9158,'','".AddSlashes(pg_fetch_result($resaco,0,'db60_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1568,9159,'','".AddSlashes(pg_fetch_result($resaco,0,'db60_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1568,9160,'','".AddSlashes(pg_fetch_result($resaco,0,'db60_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_db_documentopadrao {
       $this->atualizacampos();
      $sql = " update db_documentopadrao set ";
      $virgula = "";
-     if(trim($this->db60_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_coddoc"])){ 
+     if(trim((string) $this->db60_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_coddoc"])){ 
        $sql  .= $virgula." db60_coddoc = $this->db60_coddoc ";
        $virgula = ",";
-       if(trim($this->db60_coddoc) == null ){ 
+       if(trim((string) $this->db60_coddoc) == null ){ 
          $this->erro_sql = " Campo Código Documento nao Informado.";
          $this->erro_campo = "db60_coddoc";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_db_documentopadrao {
          return false;
        }
      }
-     if(trim($this->db60_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_descr"])){ 
+     if(trim((string) $this->db60_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_descr"])){ 
        $sql  .= $virgula." db60_descr = '$this->db60_descr' ";
        $virgula = ",";
-       if(trim($this->db60_descr) == null ){ 
+       if(trim((string) $this->db60_descr) == null ){ 
          $this->erro_sql = " Campo Descr. Documento nao Informado.";
          $this->erro_campo = "db60_descr";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_db_documentopadrao {
          return false;
        }
      }
-     if(trim($this->db60_tipodoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_tipodoc"])){ 
+     if(trim((string) $this->db60_tipodoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_tipodoc"])){ 
        $sql  .= $virgula." db60_tipodoc = $this->db60_tipodoc ";
        $virgula = ",";
-       if(trim($this->db60_tipodoc) == null ){ 
+       if(trim((string) $this->db60_tipodoc) == null ){ 
          $this->erro_sql = " Campo Cód. do Tipo de Documento nao Informado.";
          $this->erro_campo = "db60_tipodoc";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_db_documentopadrao {
          return false;
        }
      }
-     if(trim($this->db60_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_instit"])){ 
+     if(trim((string) $this->db60_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db60_instit"])){ 
        $sql  .= $virgula." db60_instit = $this->db60_instit ";
        $virgula = ",";
-       if(trim($this->db60_instit) == null ){ 
+       if(trim((string) $this->db60_instit) == null ){ 
          $this->erro_sql = " Campo Cod. da Instituição nao Informado.";
          $this->erro_campo = "db60_instit";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_db_documentopadrao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9157,'$this->db60_coddoc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db60_coddoc"]))
-           $resac = db_query("insert into db_acount values($acount,1568,9157,'".AddSlashes(pg_result($resaco,$conresaco,'db60_coddoc'))."','$this->db60_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1568,9157,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db60_coddoc'))."','$this->db60_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db60_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1568,9158,'".AddSlashes(pg_result($resaco,$conresaco,'db60_descr'))."','$this->db60_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1568,9158,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db60_descr'))."','$this->db60_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db60_tipodoc"]))
-           $resac = db_query("insert into db_acount values($acount,1568,9159,'".AddSlashes(pg_result($resaco,$conresaco,'db60_tipodoc'))."','$this->db60_tipodoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1568,9159,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db60_tipodoc'))."','$this->db60_tipodoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db60_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1568,9160,'".AddSlashes(pg_result($resaco,$conresaco,'db60_instit'))."','$this->db60_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1568,9160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db60_instit'))."','$this->db60_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_db_documentopadrao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9157,'$db60_coddoc','E')");
-         $resac = db_query("insert into db_acount values($acount,1568,9157,'','".AddSlashes(pg_result($resaco,$iresaco,'db60_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1568,9158,'','".AddSlashes(pg_result($resaco,$iresaco,'db60_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1568,9159,'','".AddSlashes(pg_result($resaco,$iresaco,'db60_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1568,9160,'','".AddSlashes(pg_result($resaco,$iresaco,'db60_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1568,9157,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db60_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1568,9158,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db60_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1568,9159,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db60_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1568,9160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db60_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_documentopadrao
@@ -376,7 +376,7 @@ class cl_db_documentopadrao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_documentopadrao";
@@ -390,7 +390,7 @@ class cl_db_documentopadrao {
    function sql_query ( $db60_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_db_documentopadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_db_documentopadrao {
    function sql_query_file ( $db60_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_db_documentopadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

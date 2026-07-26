@@ -75,7 +75,7 @@ class cl_tfd_fechamento {
                  tf32_i_financiamento = int4 = Financiamento
                  ";
    //funcao construtor da classe
-   function cl_tfd_fechamento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_fechamento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

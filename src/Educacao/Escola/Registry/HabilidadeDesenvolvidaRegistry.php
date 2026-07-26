@@ -12,7 +12,7 @@ class HabilidadeDesenvolvidaRegistry
     /**
      * @var HabilidadeDesenvolvida[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param HabilidadeDesenvolvida $habilidadeDesenvolvida
@@ -29,7 +29,7 @@ class HabilidadeDesenvolvidaRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $repository = new HabilidadeDesenvolvidaRepository();
             $aluno = $repository->find($key);
             if (is_null($aluno)) {

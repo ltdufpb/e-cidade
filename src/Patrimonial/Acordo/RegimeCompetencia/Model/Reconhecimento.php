@@ -176,7 +176,7 @@ class Reconhecimento {
         $sMensagemEmpenho .= "Não foram encontrados empenhos para esse acordo.\nVerifique.";
         throw new \BusinessException($sMensagemEmpenho);
       }
-      $contaLiquidacao = \cl_translan::getContaLiquidacao($aEmpenhos[0]->getNumero(), array(3, 23), $ano, 2);
+      $contaLiquidacao = \cl_translan::getContaLiquidacao($aEmpenhos[0]->getNumero(), [3, 23], $ano, 2);
       if (empty($contaLiquidacao)) {
 
         $sMensagemLiquidacao = "Para o acordo ({$this->getAcordo()->getCodigo()}), foi realizada a programação do regime de competência como despesa antecipada.\n";

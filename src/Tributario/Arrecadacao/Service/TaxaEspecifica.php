@@ -13,17 +13,11 @@ use Exception;
 class TaxaEspecifica
 {
     /**
-     * @var TaxaEspecificaRepository
-     */
-    private $repositorio;
-
-    /**
      * TaxaEspecifica constructor.
-     * @param TaxaEspecificaRepository $taxaEspecificaRepository
+     * @param TaxaEspecificaRepository $repositorio
      */
-    public function __construct(TaxaEspecificaRepository $taxaEspecificaRepository)
+    public function __construct(private readonly TaxaEspecificaRepository $repositorio)
     {
-        $this->repositorio = $taxaEspecificaRepository;
     }
 
     /**

@@ -27,11 +27,6 @@ use Turma;
  */
 class GradeAproveitamentoAreaPorAreaService
 {
-    /**
-     * @var DiarioClasse
-     */
-    private $diarioClasse;
-
     private $mapper;
 
     /**
@@ -52,9 +47,8 @@ class GradeAproveitamentoAreaPorAreaService
      * GradeAproveitamentoAreaPorAreaService constructor.
      * @param DiarioClasse $diarioClasse
      */
-    public function __construct(DiarioClasse $diarioClasse)
+    public function __construct(private readonly DiarioClasse $diarioClasse)
     {
-        $this->diarioClasse = $diarioClasse;
         $this->ano = $this->diarioClasse->getTurma()->getCalendario()->getAnoExecucao();
 
 
@@ -116,12 +110,7 @@ class GradeAproveitamentoAreaPorAreaService
         }
 
         $avaliacoes = $areaMapper->getAvaliacoes();
-        usort($avaliacoes, function ($x, $y) {
-            if ($x->getOrdem() == $y->getOrdem()) {
-                return 0;
-            }
-                return ( ( $x->getOrdem() < $y->getOrdem() ) ? -1 : 1 );
-        });
+        usort($avaliacoes, fn($x, $y) => $x->getOrdem() <=> $y->getOrdem());
 
         $areaMapper->setAvaliacoes($avaliacoes);
 
@@ -129,7 +118,7 @@ class GradeAproveitamentoAreaPorAreaService
         $resultadoMapper->setAreaResultado($diarioArea->getResultado()->getAreaProcedimentoResultado());
         $resultadoMapper->setAvaliacao($this->getAvaliacao($diarioArea->getResultado()));
         $resultadoMapper->setAtingiuMinimo($this->atingiuMinimo($diarioArea->getResultado()));
-        $resultadoMapper->isAmparado($diarioArea->getResultado()->isAmparado());
+        $resultadoMapper->isAmparado();
 
         $resultadoAvaliacao = $diarioArea->getResultado()->getResultadoAvaliacao();
         $resultadoMapper->setResultadoAvaliacao($resultadoAvaliacao);
@@ -262,7 +251,7 @@ class GradeAproveitamentoAreaPorAreaService
      */
     public function getTermoAbreviadoEncerramento($resultadoAvaliacao)
     {
-        if (!array_key_exists($resultadoAvaliacao, $this->termosResultado)) {
+        if (!array_key_exists((string) $resultadoAvaliacao, $this->termosResultado)) {
             throw new Exception("Não foi encontrado termo de encerramento para o resultado: {$resultadoAvaliacao}");
         }
 
@@ -277,7 +266,7 @@ class GradeAproveitamentoAreaPorAreaService
      */
     public function getTermoEncerramento($resultadoAvaliacao)
     {
-        if (!array_key_exists($resultadoAvaliacao, $this->termosResultado)) {
+        if (!array_key_exists((string) $resultadoAvaliacao, $this->termosResultado)) {
             throw new Exception("Não foi encontrado termo de encerramento para o resultado: {$resultadoAvaliacao}");
         }
 

@@ -82,7 +82,8 @@ if (isset($oParam->pesquisa_chave) && !empty($oParam->pesquisa_chave)) {
 $oRotulo        = new rotulocampo;
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oRotulo->label("c61_reduz");
 $oRotulo->label("c60_descr");

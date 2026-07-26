@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_tpmodvinculo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_tpmodvinculo = new cl_sau_tpmodvinculo;
 $clsau_tpmodvinculo->rotulo->label("sd53_i_vinculacao");
 $clsau_tpmodvinculo->rotulo->label("sd53_i_tpvinculo");
@@ -56,7 +57,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
               <?=$Lsd53_i_vinculacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                  db_input("sd53_i_vinculacao",2,$Isd53_i_vinculacao,true,"text",4,"","chave_sd53_i_vinculacao");
                  ?>
             </td>
@@ -67,7 +68,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
               <?=$Lsd53_i_tpvinculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                  db_input("sd53_i_tpvinculo",2,$Isd53_i_tpvinculo,true,"text",4,"","chave_sd53_i_tpvinculo");
                  ?>
             </td>
@@ -77,7 +78,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
               <?=$Lsd53_v_descrvinculo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                  db_input("sd53_v_descrvinculo",60,$Isd53_v_descrvinculo,true,"text",4,"","chave_sd53_v_descrvinculo");
                  ?>
             </td>
@@ -95,7 +96,7 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_tpmodvinculo.php")==true){
@@ -135,12 +136,12 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

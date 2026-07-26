@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_ordemimagens_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_ordemimagens = new cl_db_ordemimagens;
 $cldb_ordemimagens->rotulo->label("codordem");
 $cldb_ordemimagens->rotulo->label("codimg");
@@ -55,7 +56,7 @@ $cldb_ordemimagens->rotulo->label("codimg");
               <?=$Lcodordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codordem",5,$Icodordem,true,"text",4,"","chave_codordem");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cldb_ordemimagens->rotulo->label("codimg");
               <?=$Lcodimg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codimg",0,$Icodimg,true,"text",4,"","chave_codimg");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $cldb_ordemimagens->rotulo->label("codimg");
               <?=$Lcodimg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codimg",0,$Icodimg,true,"text",4,"","chave_codimg");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $cldb_ordemimagens->rotulo->label("codimg");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_ordemimagens.php")==true){
@@ -129,12 +130,12 @@ $cldb_ordemimagens->rotulo->label("codimg");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

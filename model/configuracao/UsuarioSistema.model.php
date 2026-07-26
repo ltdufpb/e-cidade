@@ -101,13 +101,13 @@ class UsuarioSistema {
    * Armazena todas as instituições que o usuário tem permissão
    * @var Instituicao[]
    */
-  protected $aInstituicoes = array();
+  protected $aInstituicoes = [];
 
   /**
    * Departamentos que o usuario tem permissao
    * @var DBDepartamento[]
    */
-  protected $aDepartamentos = array();
+  protected $aDepartamentos = [];
 
 
   /**
@@ -152,7 +152,7 @@ class UsuarioSistema {
       $this->ativo         ($oUsuario->usuarioativo );
       $this->usuarioExterno($oUsuario->usuext       );
       $this->administrador ($oUsuario->administrador);
-      $this->setDataToken  (isset($oUsuario->datatoken) ? $oUsuario->datatoken : '');
+      $this->setDataToken  ($oUsuario->datatoken ?? '');
     }
 
   }
@@ -388,7 +388,7 @@ class UsuarioSistema {
     $this->setSenha      ($oDadoUsuario->senha        );
 
       /* Ajuste feito pois em Charqueadas o campo email tinha caracteres inválidos 21/06/2021 */
-    $this->setEmail      (utf8_encode($oDadoUsuario->email));
+    $this->setEmail      (mb_convert_encoding($oDadoUsuario->email, 'UTF-8', 'ISO-8859-1'));
 
     $this->ativo         ($oDadoUsuario->usuarioativo );
     $this->usuarioExterno($oDadoUsuario->usuext       );
@@ -467,7 +467,7 @@ class UsuarioSistema {
       }
 
       $iDepartamentos = pg_num_rows($rsDepartamentos);
-      $aDepartamentos = array();
+      $aDepartamentos = [];
 
       for($iIndice = 0; $iIndice < $iDepartamentos; $iIndice++) {
 
@@ -648,9 +648,9 @@ class UsuarioSistema {
   }
 
   public function toArray() {
-    return array(
+    return [
       'sequencial' => $this->getCodigo(),
       'descricao' => $this->getNome()
-    );
+    ];
   }
 }

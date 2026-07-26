@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_orcparamelemento_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clorcparamelemento          = new cl_orcparamelemento;
 $cliframe_importarparametros = new cl_iframe_seleciona;
@@ -47,7 +48,7 @@ function js_retornar(){
   document.location.href="con2_conrelparametros.php?c83_codrel=<?=$o69_codparamrel?>";
 }
 </script>
-<?
+<?php 
 
 if (isset($codinst) && trim(@$codinst)!=""){
      db_inicio_transacao();
@@ -134,7 +135,7 @@ function js_voltar(){
 
 <form name=form1 action=""  method="POST">
   <table align="center" border="0">
-<?
+<?php 
    db_input("o69_codparamrel",10,0,true,"hidden");
    db_input("o69_codseq",10,0,true,"hidden");
    db_input("grupo",10,0,true,"hidden");
@@ -145,7 +146,7 @@ function js_voltar(){
 ?>
     <tr align="center">
       <td nowrap colspan="2">
-   <?
+   <?php 
          $sql          = "select distinct codigo,nomeinst 
                           from db_config 
                                inner join orcparamelemento on o44_anousu    = ".db_getsession("DB_anousu")." and
@@ -175,7 +176,7 @@ function js_voltar(){
     </tr>
 </table>
 </form>
-<?
+<?php 
    if (trim(@$erro_msg)!=""){
         db_msgbox($erro_msg);
    }

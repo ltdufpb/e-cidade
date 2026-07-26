@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: patrimonio
 //CLASSE DA ENTIDADE levantamentopatrimonial
 class cl_levantamentopatrimonial { 
@@ -29,7 +29,7 @@ class cl_levantamentopatrimonial {
                  p13_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_levantamentopatrimonial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levantamentopatrimonial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

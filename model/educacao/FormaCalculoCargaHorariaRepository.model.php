@@ -36,9 +36,9 @@ class FormaCalculoCargaHorariaRepository {
 
   private static $oInstance;
 
-  private $aFormaCalculo = array();
+  private $aFormaCalculo = [];
 
-  private $aFormaCalculoAnoEscola = array();
+  private $aFormaCalculoAnoEscola = [];
 
   private function __construct() {
 

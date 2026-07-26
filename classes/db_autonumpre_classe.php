@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -50,7 +50,7 @@ class cl_autonumpre {
                  y17_codauto = int4 = Código do Auto de Infração
                  ";
    //funcao construtor da classe
-   function cl_autonumpre() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autonumpre");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

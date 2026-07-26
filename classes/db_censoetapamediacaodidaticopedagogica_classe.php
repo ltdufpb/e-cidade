@@ -61,7 +61,7 @@ class cl_censoetapamediacaodidaticopedagogica {
                  ed131_profissional = char(1) = Profissional 
                  ";
    //funcao construtor da classe 
-   function cl_censoetapamediacaodidaticopedagogica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("censoetapamediacaodidaticopedagogica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

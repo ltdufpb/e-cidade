@@ -52,7 +52,7 @@ class cl_solicitaprotprocesso {
                  pc90_numeroprocesso = varchar(15) = Processo Administrativo 
                  ";
    //funcao construtor da classe 
-   function cl_solicitaprotprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitaprotprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -81,7 +81,7 @@ class cl_tabativ {
                  q07_imprimealvara = varchar(10) = Imprime Alvará
                  ";
    //funcao construtor da classe
-   function cl_tabativ() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabativ");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

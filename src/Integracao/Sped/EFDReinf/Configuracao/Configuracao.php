@@ -121,9 +121,7 @@ class Configuracao implements ConfiguracaoInterface
             throw new Exception('Não foi possível buscar as versões do EFD Reinf');
         }
 
-        return db_utils::makeCollectionFromRecord($rs, function ($data) {
-            return $data->efd03_versao;
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($data) => $data->efd03_versao);
     }
 
     /**

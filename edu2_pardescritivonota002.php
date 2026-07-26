@@ -54,7 +54,7 @@ $oRegencia    = RegenciaRepository::getRegenciaByCodigo($disciplinas);
 $aDisciplinas = explode(",", $disciplinas);
 
 
-$obs1       = base64_decode($obs1);
+$obs1       = base64_decode((string) $obs1);
 $descr_disc = $oRegencia->getDisciplina()->getNomeDisciplina();
 
 if ( strstr($disciplinas,",") ) {
@@ -63,7 +63,7 @@ if ( strstr($disciplinas,",") ) {
   $descr_disc = "PARECER ÚNICO";
 }
 
-$periodo = explode("|",$periodo);
+$periodo = explode("|",(string) $periodo);
 if ($periodo[0] == "A") {
 
   $tp_per = "A";
@@ -139,7 +139,7 @@ if ($periodo[0] == 'R') {
 
   $oElementoTurma     = AvaliacaoPeriodicaRepository::getAvaliacaoPeriodicaByCodigo($periodo[1]);
   $iOrdemSequencia    = $oElementoTurma->getOrdemSequencia();
-  $aAvaliacoes        = array($oRegencia->getProcedimentoAvaliacao()->getElementoAvaliacaoByOrdem($iOrdemSequencia));
+  $aAvaliacoes        = [$oRegencia->getProcedimentoAvaliacao()->getElementoAvaliacaoByOrdem($iOrdemSequencia)];
 }
 
 $oElementoAvaliacao = $oRegencia->getProcedimentoAvaliacao()->getElementoAvaliacaoByOrdem($iOrdemSequencia);
@@ -172,7 +172,7 @@ for ($x = 0; $x < $linhas1; $x++) {
                                           AND ed60_i_aluno = $ed47_i_codigo AND ed60_c_ativa = 'S'");
   $rsMatricula = $clmatricula->sql_record($sSqlMatricula);
   db_fieldsmemory($rsMatricula,0);
-  $rfatual = ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,trim($ed60_c_situacao),trim($ed60_c_concluida), $ed29_i_ensino);
+  $rfatual = ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,trim((string) $ed60_c_situacao),trim((string) $ed60_c_concluida), $ed29_i_ensino);
   db_inicio_transacao();
   $oMatricula = MatriculaRepository::getMatriculaByCodigo($ed60_i_codigo);
   $oDiario = $oMatricula->getDiarioDeClasse();
@@ -189,14 +189,14 @@ for ($x = 0; $x < $linhas1; $x++) {
      */
     $oParecer = LancamentoAvaliacaoAluno::getParecer($oMatricula, $oRegencia, $oElementoAvaliacao->getOrdemSequencia());
 
-    if (trim($oParecer->sParecerPadronizado) == '' && trim($oParecer->sParecer) == '')  {
+    if (trim((string) $oParecer->sParecerPadronizado) == '' && trim((string) $oParecer->sParecer) == '')  {
 
       foreach ($oTurma->getDisciplinas() as $oRegenciaAux) {
 
         $oElementoAvaliacaoAux = $oRegencia->getProcedimentoAvaliacao()->getElementoAvaliacaoByOrdem($iOrdemSequencia);
         $oParecerAux = LancamentoAvaliacaoAluno::getParecer($oMatricula, $oRegenciaAux, $oElementoAvaliacao->getOrdemSequencia());
 
-        if (trim($oParecerAux->sParecerPadronizado) != '' || trim($oParecerAux->sParecer) != '') {
+        if (trim((string) $oParecerAux->sParecerPadronizado) != '' || trim((string) $oParecerAux->sParecer) != '') {
 
           $oElementoAvaliacao = $oElementoAvaliacaoAux;
           $disciplinas        = $oRegenciaAux->getCodigo();
@@ -289,7 +289,7 @@ for ($x = 0; $x < $linhas1; $x++) {
   $head6 = "Matrícula: $ed60_i_codigo";
   $head7 = "Disciplina: $descr_disc";
 
-  if (strlen($nome) > 42 || strlen($sNomeEscola) > 42) {
+  if (strlen((string) $nome) > 42 || strlen((string) $sNomeEscola) > 42) {
     $TamFonteNome = 8;
   } else {
     $TamFonteNome = 9;
@@ -447,7 +447,7 @@ for ($x = 0; $x < $linhas1; $x++) {
           $seppadrao = "    ";
           if ($padraotipo == "L") {
 
-            $explode_parecer = explode("**",$parecerconcat);
+            $explode_parecer = explode("**",(string) $parecerconcat);
             for ($b=0; $b<count($explode_parecer); $b++) {
 
               $pdf->cell(5,5,"","",0,"L",0);
@@ -473,11 +473,11 @@ for ($x = 0; $x < $linhas1; $x++) {
       $pdf->setfillcolor(223);
 
       $iPaginaAntesImpressaoObservacao = $pdf->PageNo();
-      if (trim($parecer) != "" || $descr_disc == "TODAS") {
+      if (trim((string) $parecer) != "" || $descr_disc == "TODAS") {
 
         $pdf->setfont('arial','',10);
         $pdf->cell(5,5,"","",0,"L",0);
-        $pdf->multicell(180,5,"  ".trim($parecer),"LRBT","L",0,0);
+        $pdf->multicell(180,5,"  ".trim((string) $parecer),"LRBT","L",0,0);
       } else {
 
           $iYParecerVazio = $pdf->GetY();
@@ -503,9 +503,9 @@ for ($x = 0; $x < $linhas1; $x++) {
       $pdf->cell(10,5,"","",1,"L",0);
       $pdf->cell(10,5,"","",0,"L",0);
       if ($ed81_i_justificativa != "") {
-        $pdf->cell(170,5,"Justificativa Legal: ".pg_result($result,0,'justificativa'),0,0,"L",0);
+        $pdf->cell(170,5,"Justificativa Legal: ".pg_fetch_result($result,0,'justificativa'),0,0,"L",0);
       } else {
-        $pdf->cell(170,5,pg_result($result,0,'ed250_c_abrev'),0,0,"L",0);
+        $pdf->cell(170,5,pg_fetch_result($result,0,'ed250_c_abrev'),0,0,"L",0);
       }
       $pdf->cell(10,5,"","",1,"L",0);
     }

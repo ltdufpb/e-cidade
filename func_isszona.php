@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isszona_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clisszona = new cl_isszona;
 $clisszona->rotulo->label("q35_inscr");
 $clisszona->rotulo->label("q35_zona");
@@ -54,7 +55,7 @@ $clisszona->rotulo->label("q35_zona");
               <?=$Lq35_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q35_inscr",8,$Iq35_inscr,true,"text",4,"","chave_q35_inscr");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clisszona->rotulo->label("q35_zona");
               <?=$Lq35_zona?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q35_zona",15,$Iq35_zona,true,"text",4,"","chave_q35_zona");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clisszona->rotulo->label("q35_zona");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_isszona.php")==true){
@@ -118,12 +119,12 @@ $clisszona->rotulo->label("q35_zona");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -127,7 +127,7 @@ class Jornada extends \BaseClassRepository {
      * @param array $tiposJornada
      * @return Jornada[] | array()
      */
-    public static function getJornadasPorPeriodo(\Servidor $servidor, PeriodoEfetividade $periodo, array $tiposJornada = null)
+    public static function getJornadasPorPeriodo(\Servidor $servidor, PeriodoEfetividade $periodo, ?array $tiposJornada = null)
     {
         $periodoAnterior = clone $periodo->getDataInicio();
         $periodoAnterior->modificarIntervalo('-1 month');
@@ -166,7 +166,7 @@ class Jornada extends \BaseClassRepository {
 
         $qtdeJornadas = pg_num_rows($rsJornadas);
         if($qtdeJornadas == 0) {
-            return array();
+            return [];
         }
 
         for ($i = 0; $i < $qtdeJornadas; $i++) {
@@ -180,7 +180,7 @@ class Jornada extends \BaseClassRepository {
         return $jornadas;
     }
 
-    public static function getJornadasNoIntervalo(\Servidor $servidor, PeriodoEfetividade $periodo, array $tiposJornada = null)
+    public static function getJornadasNoIntervalo(\Servidor $servidor, PeriodoEfetividade $periodo, ?array $tiposJornada = null)
     {
         $matricula     = $servidor->getMatricula();
         $sqlJornadas   = " SELECT
@@ -214,7 +214,7 @@ class Jornada extends \BaseClassRepository {
 
         $qtdeJornadas = pg_num_rows($rsJornadas);
         if($qtdeJornadas == 0) {
-            return array();
+            return [];
         }
 
         for ($i = 0; $i < $qtdeJornadas; $i++) {

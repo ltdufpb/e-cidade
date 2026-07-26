@@ -134,10 +134,10 @@ function js_atualizar(){
   <tr> 
     <td height="90%"  width="100%" align="center" valign="top">
       <center>
-        <?
+        <?php 
         if(isset($retornoarq) && trim($retornoarq)!=""){
         ?><br>
-          <?
+          <?php 
 	      db_input("movs",10,'',true,'hidden',3);
 	      db_input("retornoarq",10,'',true,'hidden',3);
 	      $passaparametro = "";
@@ -154,16 +154,16 @@ function js_atualizar(){
           <iframe name="canc" src="emp4_empageretornocanc001_iframe.php?lCancelado=0&retornoarq=<?=(@$retornoarq)?><?=$passaparametro?>" width="100%"  height='500' marginwidth="0" marginheight="0" frameborder="0"></iframe><br>
           <small><span style="color:darkblue;">**Movimento processado ou agendado pelo banco</span></small><BR>
           <input name="atualizar" type="submit"  value="Cancelar selecionados" onclick='return js_atualizar();'>
-	    <?
+	    <?php 
 	    }else{
 	    ?>
 	      <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
 	      <b>Arquivo retorno não encontrado.</b>
 	      <BR><BR><BR><BR><BR><BR><BR><BR><BR>
-	    <?
+	    <?php 
 	    }
 	    ?>
-	<?
+	<?php 
 	$voltacorreto = "emp4_selarquivo001.php?canc=true";
 	?>
           <input name="voltar" type="button"  value="Voltar" onclick="location.href='<?=$voltacorreto?>'">
@@ -172,12 +172,12 @@ function js_atualizar(){
   </tr>
   </form>
 </table>
-<? 
+<?php  
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($atualizar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

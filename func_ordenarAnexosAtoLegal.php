@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -36,7 +36,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_edu_anexoatolegal_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 function getOptionsArquivos($iCodigo) {
 
@@ -87,7 +88,7 @@ if (isset($ordenar)) {
     parent.db_iframe_ordenar.hide();
 
   </script>
-<?
+<?php 
 
 }
 
@@ -117,7 +118,7 @@ if (isset($ordenar)) {
                     <select multiple="true" name="ordenar[]" id="ordenar" size="10" style="font-size:9px;width:300px"
                             onClick="js_selecionaUm('ordenar');" >
 
-                      <?
+                      <?php 
                         echo getOptionsArquivos($iCodAtoLegal);
                       ?>
 

@@ -45,7 +45,7 @@ $iEscola           = db_getsession("DB_coddepto");
 $oJson             = new Services_JSON();
 $oParam            = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno          = new stdClass();
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->status  = 1;
 $oRetorno->message = '';
 
@@ -60,7 +60,7 @@ try {
      */
     case 'getAlunosAprovadosPeloConselhoPorRegencia':
 
-      $oRetorno->aResultados = array();
+      $oRetorno->aResultados = [];
 
       $oTurma    = EducacaoSessionManager::carregarTurma( $oParam->iTurma );
       $oEtapa    = EducacaoSessionManager::carregarEtapa( $oParam->iEtapa );
@@ -118,7 +118,7 @@ try {
      */
     case 'getAlunosAlteraResultadoFinal':
 
-      $oRetorno->aAlunos = array() ;
+      $oRetorno->aAlunos = [] ;
 
       $oTurma    = EducacaoSessionManager::carregarTurma( $oParam->iTurma );
       $oEtapa    = EducacaoSessionManager::carregarEtapa( $oParam->iEtapa );
@@ -256,7 +256,7 @@ try {
       $oDados->sFormaAvaliacao  = $oElementoResultado->getFormaDeAvaliacao()->getTipo();
       $oDados->mVariacao        = $oElementoResultado->getFormaDeAvaliacao()->getVariacao();
       $oDados->sMascara         = ArredondamentoNota::getMascara($oTurma->getCalendario()->getAnoExecucao());
-      $oDados->aConceitos       = array();
+      $oDados->aConceitos       = [];
 
       if ($oDados->sFormaAvaliacao == 'NIVEL') {
 

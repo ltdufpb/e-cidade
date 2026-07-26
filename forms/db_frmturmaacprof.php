@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -67,25 +67,25 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Led222_i_codigo?>
     </td>
     <td> 
-     <?db_input('ed222_i_codigo',10,@$Ied222_i_codigo,true,'text',3,"")?>
+     <?php db_input('ed222_i_codigo',10,@$Ied222_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted222_i_turmaac?>">
-       <?db_ancora(@$Led222_i_turmaac,"js_pesquisaed222_i_turmaac(true);",3);?>
+       <?php db_ancora(@$Led222_i_turmaac,"js_pesquisaed222_i_turmaac(true);",3);?>
     </td>
     <td> 
-      <?db_input('ed222_i_turmaac',10,@$Ied222_i_turmaac,true,'text',3,"")?>
-      <?db_input('ed268_c_descr',40,@$Ied268_c_descr,true,'text',3,'')?>
+      <?php db_input('ed222_i_turmaac',10,@$Ied222_i_turmaac,true,'text',3,"")?>
+      <?php db_input('ed268_c_descr',40,@$Ied268_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted222_i_rechumano?>">
-       <?db_ancora(@$Led222_i_rechumano,"js_pesquisaed222_i_rechumano(true);",$db_opcao);?>
+       <?php db_ancora(@$Led222_i_rechumano,"js_pesquisaed222_i_rechumano(true);",$db_opcao);?>
     </td>
     <td> 
-	  <?db_input('ed222_i_rechumano',10,@$Ied222_i_rechumano,true,'text',$db_opcao," onchange='js_pesquisaed222_i_rechumano(false);'")?>
-      <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+	  <?php db_input('ed222_i_rechumano',10,@$Ied222_i_rechumano,true,'text',$db_opcao," onchange='js_pesquisaed222_i_rechumano(false);'")?>
+      <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -94,8 +94,8 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
-   $chavepri= array("ed222_i_codigo"=>@$ed222_i_codigo,"ed222_i_turmaac"=>@$ed222_i_turmaac,"ed268_c_descr"=>@$ed268_c_descr,"ed222_i_rechumano"=>@$ed222_i_rechumano,"z01_nome"=>@$z01_nome);
+  <?php 
+   $chavepri= ["ed222_i_codigo"=>@$ed222_i_codigo,"ed222_i_turmaac"=>@$ed222_i_turmaac,"ed268_c_descr"=>@$ed268_c_descr,"ed222_i_rechumano"=>@$ed222_i_rechumano,"z01_nome"=>@$z01_nome];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clturmaacprof->sql_query("","*","","ed222_i_turmaac=$ed222_i_turmaac");
    $cliframe_alterar_excluir->campos  ="ed222_i_codigo,ed222_i_rechumano,z01_nome";
@@ -145,9 +145,9 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_turmaacprof.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_duracaocal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clduracaocal = new cl_duracaocal;
 $clduracaocal->rotulo->label("ed55_i_codigo");
 $clduracaocal->rotulo->label("ed55_c_descr");
@@ -56,7 +57,7 @@ $clduracaocal->rotulo->label("ed55_c_descr");
       <?=$Led55_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed55_i_codigo",10,$Ied55_i_codigo,true,"text",4,"","chave_ed55_i_codigo");?>
+      <?php db_input("ed55_i_codigo",10,$Ied55_i_codigo,true,"text",4,"","chave_ed55_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +65,7 @@ $clduracaocal->rotulo->label("ed55_c_descr");
       <?=$Led55_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed55_c_descr",20,$Ied55_c_descr,true,"text",4,"","chave_ed55_c_descr");?>
+      <?php db_input("ed55_c_descr",20,$Ied55_c_descr,true,"text",4,"","chave_ed55_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $clduracaocal->rotulo->label("ed55_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_duracaocal.php")==true){

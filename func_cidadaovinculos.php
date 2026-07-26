@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cidadao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcidadao = new cl_cidadao;
 $clcidadao->rotulo->label("ov02_sequencial");
 $clcidadao->rotulo->label("ov02_seq");
@@ -59,7 +60,7 @@ $chave_ov02_seq = null;
               <?=$Lov02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ov02_sequencial",10,$Iov02_sequencial,true,"text",4,"","chave_ov02_sequencial");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $chave_ov02_seq = null;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = "";
       if(isset($ativo) && trim($ativo) == 'true'){
       	if($sWhere != ""){
@@ -172,12 +173,12 @@ $chave_ov02_seq = null;
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

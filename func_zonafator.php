@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_zonafator_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clzonafator = new cl_zonafator;
 $clzonafator->rotulo->label("j110_sequencial");
@@ -55,7 +56,7 @@ $clzonafator->rotulo->label("j110_sequencial");
               <?=$Lj110_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("j110_sequencial",10,$Ij110_sequencial,true,"text",4,"","chave_j110_sequencial");
 		          ?>
             </td>
@@ -73,7 +74,7 @@ $clzonafator->rotulo->label("j110_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -121,12 +122,12 @@ $clzonafator->rotulo->label("j110_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

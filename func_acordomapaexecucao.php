@@ -36,7 +36,8 @@ define('EXECUCAO_CONTRATO_FINANCEIRA', 1);
 define('EXECUCAO_FINANCEIRA_EMPENHO', 2);
 $oGet = db_utils::postMemory($_GET);
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoAcordo = new cl_acordo;
 $oDaoAcordo->rotulo->label();
@@ -194,7 +195,7 @@ if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -69,7 +69,7 @@ $db_botao = false;
         </td>
         <td>
           <?php
-            $x = array('S'=>'SIM','N'=>'NÃO');
+            $x = ['S'=>'SIM','N'=>'NÃO'];
             db_select('ed29_c_historico',$x,true,3,"");
           ?>
         </td>
@@ -140,9 +140,9 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_curso.hide();
-  <?
+  <?php 
    if ($db_opcao != 1) {
-     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }
  ?>
 

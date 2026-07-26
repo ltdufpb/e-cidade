@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE parecerperiodo
 class cl_parecerperiodo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed120_sequencial = 0; 
-   var $ed120_parecer = 0; 
-   var $ed120_periodoavaliacao = 0; 
+   public $ed120_sequencial = 0; 
+   public $ed120_parecer = 0; 
+   public $ed120_periodoavaliacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed120_sequencial = int4 = Código 
                  ed120_parecer = int4 = Parecer 
                  ed120_periodoavaliacao = int4 = Periodo de Avaliação 
                  ";
    //funcao construtor da classe 
-   function cl_parecerperiodo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parecerperiodo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_parecerperiodo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed120_sequencial = pg_result($result,0,0); 
+       $this->ed120_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from parecerperiodo_ed120_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed120_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed120_sequencial)){
          $this->erro_sql = " Campo ed120_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_parecerperiodo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parecer Periodo ($this->ed120_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parecer Periodo já Cadastrado";
@@ -166,12 +166,12 @@ class cl_parecerperiodo {
      $resaco = $this->sql_record($this->sql_query_file($this->ed120_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19597,'$this->ed120_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3482,19597,'','".AddSlashes(pg_result($resaco,0,'ed120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3482,19598,'','".AddSlashes(pg_result($resaco,0,'ed120_parecer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3482,19600,'','".AddSlashes(pg_result($resaco,0,'ed120_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3482,19597,'','".AddSlashes(pg_fetch_result($resaco,0,'ed120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3482,19598,'','".AddSlashes(pg_fetch_result($resaco,0,'ed120_parecer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3482,19600,'','".AddSlashes(pg_fetch_result($resaco,0,'ed120_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_parecerperiodo {
       $this->atualizacampos();
      $sql = " update parecerperiodo set ";
      $virgula = "";
-     if(trim($this->ed120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed120_sequencial"])){ 
+     if(trim((string) $this->ed120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed120_sequencial"])){ 
        $sql  .= $virgula." ed120_sequencial = $this->ed120_sequencial ";
        $virgula = ",";
-       if(trim($this->ed120_sequencial) == null ){ 
+       if(trim((string) $this->ed120_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed120_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_parecerperiodo {
          return false;
        }
      }
-     if(trim($this->ed120_parecer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed120_parecer"])){ 
+     if(trim((string) $this->ed120_parecer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed120_parecer"])){ 
        $sql  .= $virgula." ed120_parecer = $this->ed120_parecer ";
        $virgula = ",";
-       if(trim($this->ed120_parecer) == null ){ 
+       if(trim((string) $this->ed120_parecer) == null ){ 
          $this->erro_sql = " Campo Parecer nao Informado.";
          $this->erro_campo = "ed120_parecer";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_parecerperiodo {
          return false;
        }
      }
-     if(trim($this->ed120_periodoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed120_periodoavaliacao"])){ 
+     if(trim((string) $this->ed120_periodoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed120_periodoavaliacao"])){ 
        $sql  .= $virgula." ed120_periodoavaliacao = $this->ed120_periodoavaliacao ";
        $virgula = ",";
-       if(trim($this->ed120_periodoavaliacao) == null ){ 
+       if(trim((string) $this->ed120_periodoavaliacao) == null ){ 
          $this->erro_sql = " Campo Periodo de Avaliação nao Informado.";
          $this->erro_campo = "ed120_periodoavaliacao";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_parecerperiodo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19597,'$this->ed120_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed120_sequencial"]) || $this->ed120_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3482,19597,'".AddSlashes(pg_result($resaco,$conresaco,'ed120_sequencial'))."','$this->ed120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3482,19597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed120_sequencial'))."','$this->ed120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed120_parecer"]) || $this->ed120_parecer != "")
-           $resac = db_query("insert into db_acount values($acount,3482,19598,'".AddSlashes(pg_result($resaco,$conresaco,'ed120_parecer'))."','$this->ed120_parecer',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3482,19598,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed120_parecer'))."','$this->ed120_parecer',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed120_periodoavaliacao"]) || $this->ed120_periodoavaliacao != "")
-           $resac = db_query("insert into db_acount values($acount,3482,19600,'".AddSlashes(pg_result($resaco,$conresaco,'ed120_periodoavaliacao'))."','$this->ed120_periodoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3482,19600,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed120_periodoavaliacao'))."','$this->ed120_periodoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_parecerperiodo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19597,'$ed120_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3482,19597,'','".AddSlashes(pg_result($resaco,$iresaco,'ed120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3482,19598,'','".AddSlashes(pg_result($resaco,$iresaco,'ed120_parecer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3482,19600,'','".AddSlashes(pg_result($resaco,$iresaco,'ed120_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3482,19597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3482,19598,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed120_parecer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3482,19600,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed120_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from parecerperiodo
@@ -345,7 +345,7 @@ class cl_parecerperiodo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parecerperiodo";
@@ -360,7 +360,7 @@ class cl_parecerperiodo {
    function sql_query ( $ed120_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_parecerperiodo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_parecerperiodo {
    function sql_query_file ( $ed120_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_parecerperiodo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

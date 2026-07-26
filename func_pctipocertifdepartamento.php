@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pctipocertifdepartamento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpctipocertifdepartamento = new cl_pctipocertifdepartamento;
 $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
 $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
@@ -54,7 +55,7 @@ $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
               <?=$Lpc34_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc34_sequencial",10,$Ipc34_sequencial,true,"text",4,"","chave_pc34_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
               <?=$Lpc34_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc34_sequencial",10,$Ipc34_sequencial,true,"text",4,"","chave_pc34_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pctipocertifdepartamento.php")==true){
@@ -122,12 +123,12 @@ $clpctipocertifdepartamento->rotulo->label("pc34_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -184,7 +184,7 @@ $clrotulo = new rotulocampo;
                                                         </select>
                                                     </td>
                                                 </tr>
-                                                <?
+                                                <?php 
                                             }
                                         }
                                     }

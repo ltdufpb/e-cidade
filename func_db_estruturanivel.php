@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_estruturanivel_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_estruturanivel = new cl_db_estruturanivel;
 $cldb_estruturanivel->rotulo->label("db78_codestrut");
 $cldb_estruturanivel->rotulo->label("db78_nivel");
@@ -55,7 +56,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
               <?=$Ldb78_codestrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db78_codestrut",8,$Idb78_codestrut,true,"text",4,"","chave_db78_codestrut");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
               <?=$Ldb78_nivel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db78_nivel",8,$Idb78_nivel,true,"text",4,"","chave_db78_nivel");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
               <?=$Ldb78_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db78_descr",40,$Idb78_descr,true,"text",4,"","chave_db78_descr");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_estruturanivel.php")==true){
@@ -129,12 +130,12 @@ $cldb_estruturanivel->rotulo->label("db78_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

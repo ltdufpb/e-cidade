@@ -34,12 +34,12 @@ require_once(modification('fpdf151/FpdfMultiCellBorder.php'));
 
 $oGet = db_utils::postMemory($_GET);
 
-$aEtapasErEp = array();
-$aEtapasSegundoQuadro = array();
-$aEscolasPrimeiroQuadro = array(); // Qtd de alunos matrículados em ensinos regular
-$aEscolasSegundoQuadro = array(); // Qtd de alunos matrículados em turmas de correção de fluxo e especial
-$aEscolasTerceiroQuadro = array(); // Qtd de alunos ensinos regular matrículados separado por turno e sexo e qtd por situação
-$aEscolasQuartoQuadro = array(); // Qtd de alunos ensinos AEE/AtivComplementar matrículados separado por turno e sexo
+$aEtapasErEp = [];
+$aEtapasSegundoQuadro = [];
+$aEscolasPrimeiroQuadro = []; // Qtd de alunos matrículados em ensinos regular
+$aEscolasSegundoQuadro = []; // Qtd de alunos matrículados em turmas de correção de fluxo e especial
+$aEscolasTerceiroQuadro = []; // Qtd de alunos ensinos regular matrículados separado por turno e sexo e qtd por situação
+$aEscolasQuartoQuadro = []; // Qtd de alunos ensinos AEE/AtivComplementar matrículados separado por turno e sexo
 
 $iNumeroEtapasPrimeiroQuadro = 0;
 $iNumeroEtapasSegundoQuadro = 0;
@@ -65,7 +65,7 @@ try {
     $oNomeCal = str_replace(",", "','", $oGet->nomeCal);
     $sFiltraAno = " ed52_i_ano = " . $oDtInicio->getAno();
     if (mb_detect_encoding($oNomeCal . 'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-        $oNomeCal = utf8_decode($oGet->nomeCal);
+        $oNomeCal = mb_convert_encoding($oGet->nomeCal, 'ISO-8859-1');
         $oNomeCal = str_replace(",", "','", $oNomeCal);
 
     } else {
@@ -85,7 +85,7 @@ try {
     /**
      * Busca os ensinos do tipo ENSINO REGULAR e EDUCAÇÃO DE JOVENS E ADULTOS
      */
-    $aWhere = array();
+    $aWhere = [];
     $aWhere[] = $sFiltraAno;
     $aWhere[] = " ed57_i_tipoturma not in (6,7) ";
 
@@ -94,7 +94,7 @@ try {
 
     if (count($aEnsinosNoAno) > 0) {
 
-        $aWherePrimeiroQuadro = array();
+        $aWherePrimeiroQuadro = [];
         $aWherePrimeiroQuadro[] = " ed10_i_codigo in ({$sEnsinosFiltro}) ";
         $aWherePrimeiroQuadro[] = " ed10_i_tipoensino in (1,3) ";
 
@@ -109,14 +109,14 @@ try {
 
             $oDados = db_utils::fieldsMemory($rsPrimeiroQuadro, $i);
             $iEnsino = $oDados->cod_ensino;
-            if (!array_key_exists($iEnsino, $aEtapasErEp)) {
+            if (!array_key_exists((string) $iEnsino, $aEtapasErEp)) {
 
                 $oEnsino = new stdClass();
                 $oEnsino->iEnsino = $oDados->cod_ensino;
                 $oEnsino->sEnsino = $oDados->ensino;
                 $oEnsino->sEnsinoAbrev = $oDados->ensino_abrev;
                 $oEnsino->iTotalEnsino = 0;
-                $oEnsino->aEtapas = array();
+                $oEnsino->aEtapas = [];
 
                 $aEtapasErEp[$iEnsino] = $oEnsino;
             }
@@ -161,7 +161,7 @@ try {
     /**
      * Busca ensinos que possuam turmas de correção de fluxo
      */
-    $aWhereCorrecaoFluxo = array();
+    $aWhereCorrecaoFluxo = [];
     $aWhereCorrecaoFluxo[] = " ed57_i_tipoturma = 7 ";
     $aWhereCorrecaoFluxo[] = $sFiltraAno;
     $aEnsinosCorrecaoFluxo = buscaCursosMinistradoAno($aWhereCorrecaoFluxo);
@@ -169,7 +169,7 @@ try {
 
     if (count($aEnsinosCorrecaoFluxo) > 0) {
 
-        $aWhereSegundoQuadro = array();
+        $aWhereSegundoQuadro = [];
         $aWhereSegundoQuadro[] = " ed10_i_codigo in ({$sEnsinosSegundoQuandro}) ";
         $rsSegundoQuandro = buscaDadosEnsinosMinistrados($aWhereSegundoQuadro);
 
@@ -183,7 +183,7 @@ try {
 
             $oDados = db_utils::fieldsMemory($rsSegundoQuandro, $i);
             $iEnsino = $oDados->cod_ensino;
-            if (!array_key_exists($iEnsino, $aEtapasSegundoQuadro)) {
+            if (!array_key_exists((string) $iEnsino, $aEtapasSegundoQuadro)) {
 
                 $oEnsino = new stdClass();
                 $oEnsino->iEnsino = $oDados->cod_ensino;
@@ -191,7 +191,7 @@ try {
                 $oEnsino->sEnsinoAbrev = $oDados->ensino_abrev;
                 $oEnsino->lCorrecaoFluxo = true;
                 $oEnsino->iTotalEnsino = 0;
-                $oEnsino->aEtapas = array();
+                $oEnsino->aEtapas = [];
 
                 $aEtapasSegundoQuadro[$iEnsino] = $oEnsino;
             }
@@ -284,7 +284,7 @@ try {
         $oEscola->iTotalTurnoSexo = 0; // totalizador do quadro Quantidade de Alunos, totalizando todos turnos
         $oEscola->iTotalSituacoes = 0; // totalizador do quadro Quantidade de Alunos, totalizando todas situacoes
 
-        $oEscola->aTurnos = array();
+        $oEscola->aTurnos = [];
         $oEscola->aTurnos[1] = clone($oStdSexo);
         $oEscola->aTurnos[2] = clone($oStdSexo);
         $oEscola->aTurnos[3] = clone($oStdSexo);
@@ -475,7 +475,7 @@ $head1 = "Mapa Estatístico por Calendário";
 $head2 = "Período: {$oGet->dtInicio} até {$oGet->dtFim}";
 $nomecalhead = str_replace(",", ", ", $oGet->nomeCal);
 if (mb_detect_encoding($nomecalhead . 'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-    $nomecalhead = utf8_decode($oGet->nomeCal);
+    $nomecalhead = mb_convert_encoding($oGet->nomeCal, 'ISO-8859-1');
 }
 $nomecalhead = str_replace(",", "','", $nomecalhead);
 $head3 = "Calendário(s): {$nomecalhead}";
@@ -521,7 +521,7 @@ if (count($aEtapasErEp) > 0) {
             foreach ($oEscola->aAlunosEtapa as $sIndex => $iAlunosMatriculados) {
 
                 $iFill = 1;
-                if (strpos($sIndex, "T") === false) {
+                if (!str_contains((string) $sIndex, "T")) {
                     $iFill = 0;
                 }
                 $iAlunosMatriculados = $iAlunosMatriculados == 0 ? "" : $iAlunosMatriculados;
@@ -590,7 +590,7 @@ foreach ($aEscolasSegundoQuadro as $oEscola) {
         foreach ($oEscola->aAlunosEtapa as $sIndex => $iAlunosMatriculados) {
 
             $iFill = 1;
-            if (strpos($sIndex, "T") === false) {
+            if (!str_contains((string) $sIndex, "T")) {
                 $iFill = 0;
             }
             $iAlunosMatriculados = $iAlunosMatriculados == 0 ? "" : $iAlunosMatriculados;
@@ -721,7 +721,7 @@ $oStdSexo->iTotalMasculino = 0;
 $oStdSexo->iTotalFeminino = 0;
 $oStdSexo->iTotal = 0;
 
-$aTotaisTurnos = array();
+$aTotaisTurnos = [];
 $aTotaisTurnos[1] = clone($oStdSexo);
 $aTotaisTurnos[2] = clone($oStdSexo);
 $aTotaisTurnos[3] = clone($oStdSexo);
@@ -1137,7 +1137,7 @@ function buscaCursosMinistradoAno($aFiltros)
     }
 
     $iLinhas = pg_num_rows($rs);
-    $aEnsinos = array();
+    $aEnsinos = [];
 
     for ($i = 0; $i < $iLinhas; $i++) {
         $aEnsinos[] = db_utils::fieldsMemory($rs, $i)->ed29_i_ensino;
@@ -1176,7 +1176,7 @@ function calculaAlunosMatriculadosEscola($aEscolas, $aEnsinos, $oDtInicio, $oDtF
 
     foreach ($aEscolas as $oEscola) {
 
-        $oEscola->aAlunosEtapa = array();
+        $oEscola->aAlunosEtapa = [];
         $oEscola->iTotalEscola = 0;
         foreach ($aEnsinos as $oEnsino) {
 
@@ -1548,7 +1548,7 @@ function buscaEscolas()
         throw new Exception("Não há escolas com alunos matriculados no período informado.");
     }
 
-    $aEscolas = array();
+    $aEscolas = [];
     $iEscolas = pg_num_rows($rsEscolas);
 
     for ($i = 0; $i < $iEscolas; $i++) {

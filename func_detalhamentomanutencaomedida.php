@@ -56,7 +56,7 @@ $sSqlBuscaManutencoes  = $oDaoVeicManutencaoMedida->sql_query_manutencoes(null, 
   <body>
     <center>
       <fieldset>
-        <?db_lovrot($sSqlBuscaManutencoes, 15, "()", "%", $funcao_js);?>
+        <?php db_lovrot($sSqlBuscaManutencoes, 15, "()", "%", $funcao_js);?>
       </fieldset>
     </center>
   </body>

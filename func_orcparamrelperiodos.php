@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcparamrelperiodos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcparamrelperiodos = new cl_orcparamrelperiodos;
 $clorcparamrelperiodos->rotulo->label("o113_sequencial");
 $clorcparamrelperiodos->rotulo->label("o113_periodo");
@@ -54,7 +55,7 @@ $clorcparamrelperiodos->rotulo->label("o113_periodo");
               <?=$Lo113_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o113_sequencial",10,$Io113_sequencial,true,"text",4,"","chave_o113_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcparamrelperiodos->rotulo->label("o113_periodo");
               <?=$Lo113_periodo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o113_periodo",10,$Io113_periodo,true,"text",4,"","chave_o113_periodo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcparamrelperiodos->rotulo->label("o113_periodo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcparamrelperiodos.php")==true){
@@ -122,12 +123,12 @@ $clorcparamrelperiodos->rotulo->label("o113_periodo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

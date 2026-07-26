@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procvar_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocvar = new cl_procvar;
 $clprocvar->rotulo->label("p54_codigo");
 $clprocvar->rotulo->label("p54_codcam");
@@ -55,7 +56,7 @@ $clprocvar->rotulo->label("p54_codigo");
               <?=$Lp54_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p54_codigo",5,$Ip54_codigo,true,"text",4,"","chave_p54_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clprocvar->rotulo->label("p54_codigo");
               <?=$Lp54_codcam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p54_codcam",6,$Ip54_codcam,true,"text",4,"","chave_p54_codcam");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clprocvar->rotulo->label("p54_codigo");
               <?=$Lp54_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p54_codigo",5,$Ip54_codigo,true,"text",4,"","chave_p54_codigo");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clprocvar->rotulo->label("p54_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procvar.php")==true){
@@ -133,12 +134,12 @@ $clprocvar->rotulo->label("p54_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoRecHumano = new cl_rechumano();
 $oDaoRotulo    = new rotulocampo();
@@ -95,7 +96,7 @@ $oDaoRotulo->label( "z01_nome" );
     </form>
   </div>
   <div class="container">
-    <?
+    <?php 
     $iEscola = db_getsession("DB_coddepto");
 
     $sCampos = "rechumano.ed20_i_codigo,

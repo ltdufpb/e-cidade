@@ -52,7 +52,7 @@ class cl_autolevanta {
                  y117_levanta = int4 = Levantamento
                  ";
    //funcao construtor da classe
-   function cl_autolevanta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolevanta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

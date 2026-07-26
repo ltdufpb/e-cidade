@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_devolucaoacervo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldevolucaoacervo = new cl_devolucaoacervo;
 $cldevolucaoacervo->rotulo->label("bi21_codigo");
 $cldevolucaoacervo->rotulo->label("bi21_entrega");
@@ -55,7 +56,7 @@ $cldevolucaoacervo->rotulo->label("bi21_entrega");
               <?=$Lbi21_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi21_codigo",8,$Ibi21_codigo,true,"text",4,"","chave_bi21_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cldevolucaoacervo->rotulo->label("bi21_entrega");
               <?=$Lbi21_entrega?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi21_entrega",10,$Ibi21_entrega,true,"text",4,"","chave_bi21_entrega");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $cldevolucaoacervo->rotulo->label("bi21_entrega");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_devolucaoacervo.php")==true){
@@ -119,12 +120,12 @@ $cldevolucaoacervo->rotulo->label("bi21_entrega");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_saltes_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsaltes = new cl_saltes;
 $clsaltes->rotulo->label("k13_conta");
 $clsaltes->rotulo->label("k13_descr");
@@ -61,19 +62,19 @@ if (!isset($op)){
             <td width="4%" align="right" nowrap title="<?=$Tk13_conta?>"><?=$Lk13_conta?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("k13_conta",5,$Ik13_conta,true,"text",4,"");  ?>
+              <?php  db_input("k13_conta",5,$Ik13_conta,true,"text",4,"");  ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tk13_descr?>"><?=$Lk13_descr?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("k13_descr",40,$Ik13_descr,true,"text",4,""); ?>
+              <?php  db_input("k13_descr",40,$Ik13_descr,true,"text",4,""); ?>
             </td>
           </tr>
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$Tk13_descr?>"><b>Seleção:  </b></td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	         
 	         $x = array(1=>"bla",2=>"blaaaaa",3=>"blaaaaarrrrshhh");
 	         db_select('op',$x,"false",1);
@@ -95,7 +96,7 @@ if (!isset($op)){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $campos="saltes.*";
       if(!isset($pesquisa_chave)){
 	
@@ -160,12 +161,12 @@ if (!isset($op)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

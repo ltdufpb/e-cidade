@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -269,7 +269,7 @@ if ( pg_numrows($rsReduz ) > 0) {
                   </script>
                     <select name='data_conciliar' 
                              onChange="js_troca_data(this.options[this.selectedIndex].text,this.value)">
-                  <?
+                  <?php 
                   $sqlDadosContaDatas .= " select k68_sequencial,
                                                   k68_data
                                              from concilia
@@ -294,7 +294,7 @@ if ( pg_numrows($rsReduz ) > 0) {
 
                   <td align='center'> 
                     <strong>Arquivo:</strong>
-                      <?
+                      <?php 
 
 /*
                       $sCampos = "distinct e75_codgera, 

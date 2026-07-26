@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -69,7 +69,7 @@ $clvac_vacina->rotulo->label();
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br><br>
 <center>
-<?
+<?php 
 $sSql=$clvac_vacina->sql_query("","vc06_i_codigo,vc06_c_descr","vc06_i_orden");
 $rsResult=$clvac_vacina->sql_record($sSql);
 ?>
@@ -87,7 +87,7 @@ $rsResult=$clvac_vacina->sql_record($sSql);
               <tr>
                 <td rowspan="3">
                   <select name="vc06_i_orden" size="5" style="width: 200px">
-                    <?
+                    <?php 
                     for ($iX=0; $iX < $clvac_vacina->numrows; $iX++) {
 
                       $oVacina = db_utils::fieldsmemory($rsResult,$iX);
@@ -107,7 +107,7 @@ $rsResult=$clvac_vacina->sql_record($sSql);
                 </td>
               </tr>
             </table>
-            <?db_input('sLista',10,"",true,'hidden',$db_opcao,"")?>
+            <?php db_input('sLista',10,"",true,'hidden',$db_opcao,"")?>
           </td>
         </tr>
       </table>
@@ -171,7 +171,7 @@ function js_listar() {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($clvac_vacina->erro_status=="0") {

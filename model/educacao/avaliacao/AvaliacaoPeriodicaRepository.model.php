@@ -37,7 +37,7 @@ class AvaliacaoPeriodicaRepository
      * Array com instancias de AvaliacaoPeriodica
      * @var AvaliacaoPeriodica[]
      */
-    private $aAvaliacaoPeriodica = array();
+    private $aAvaliacaoPeriodica = [];
     private static $oInstance;
 
     private function __construct()
@@ -122,7 +122,7 @@ class AvaliacaoPeriodicaRepository
 
         $iCodigoProcavaliacao = '';
 
-        switch (get_class($oElementoAvaliacao)) {
+        switch ($oElementoAvaliacao::class) {
 
             case 'ResultadoAvaliacao':
                 $iCodigoProcavaliacao = ProcedimentoAvaliacaoRepository::getVinculoResultado($oElementoAvaliacao);

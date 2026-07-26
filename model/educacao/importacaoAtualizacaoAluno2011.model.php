@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,8 @@ class importacaoAtualizacaoAluno2011 extends importacaoCenso {
    *                              false busca pelo codigo inep do aluno
    * @override 
    */
-  function getDadosAluno($oLinha) {
+  #[\Override]
+  function getDadosAluno($oLinha, $lPesquisaInep = \false) {
 
   	$oDaoAluno     = db_utils::getdao('aluno');
   	$sCamposAluno  = "distinct ed47_i_codigo,ed47_v_nome,aluno.*, ed228_i_paisonu, ";
@@ -50,29 +51,29 @@ class importacaoAtualizacaoAluno2011 extends importacaoCenso {
 
     /* Nao encontrou o aluno pelo codigo inep, entao tenta encontrar pelo nome, data de nascimento,nome da mae */
   	if ($oDaoAluno->numrows <= 0 && isset($oLinha->nomealuno)) {
-  		  
-  	  $sNomeAlunoCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nomealuno);  
-      $sNomeMae            = str_replace(array('ª', 'º'), array('', ''), $oLinha->mae);
+
+  	  $sNomeAlunoCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nomealuno);  
+      $sNomeMae            = str_replace(['ª', 'º'], ['', ''], $oLinha->mae);
       $dNascAluno          = substr($oLinha->nascaluno, 6, 4)."-".substr($oLinha->nascaluno, 3, 2).
                              "-".substr($oLinha->nascaluno, 0, 2);    
-    
+
       $sWhere              = " ((to_ascii(ed47_v_nome, 'LATIN1') = '".$sNomeAlunoCensoNovo."'";
       $sWhere             .= "   AND ed47_d_nasc =".$dNascAluno.") OR ";
       $sWhere             .= "  (to_ascii(ed47_v_nome, 'LATIN1') = '".$sNomeAlunoCensoNovo."'";
       $sWhere             .= "   AND to_ascii(ed47_v_mae, 'LATIN1') = '".$sNomeMae."'))";  
-            
+
    } 
-   
+
    $sSqlAluno = $oDaoAluno->sql_query_censo("", $sCamposAluno, "", $sWhere);       
    $rsAluno   = $oDaoAluno->sql_record($sSqlAluno);
-  
+
    if ($oDaoAluno->numrows > 0) {   
      return $aDadosAluno = db_utils::getCollectionByRecord($rsAluno, false, false, false);       
    } else {
      return null;
    } //fecha o else
-                    
+
  } //fecha a funcao getDadosAluno	
-	  
+
 }//fecha a classe
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE slipfinalidadepagamentofundeb
 class cl_slipfinalidadepagamentofundeb { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e153_sequencial = 0; 
-   var $e153_slip = 0; 
-   var $e153_finalidadepagamentofundeb = 0; 
+   public $e153_sequencial = 0; 
+   public $e153_slip = 0; 
+   public $e153_finalidadepagamentofundeb = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e153_sequencial = int4 = Código Sequencial 
                  e153_slip = int4 = Código do Slip 
                  e153_finalidadepagamentofundeb = int4 = Seq. Finalidade Pagamento Fundeb 
                  ";
    //funcao construtor da classe 
-   function cl_slipfinalidadepagamentofundeb() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("slipfinalidadepagamentofundeb"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_slipfinalidadepagamentofundeb {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e153_sequencial = pg_result($result,0,0); 
+       $this->e153_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from slipfinalidadepagamentofundeb_e153_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e153_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e153_sequencial)){
          $this->erro_sql = " Campo e153_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_slipfinalidadepagamentofundeb {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "slipfinalidadepagamentofundeb ($this->e153_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "slipfinalidadepagamentofundeb já Cadastrado";
@@ -171,12 +171,12 @@ class cl_slipfinalidadepagamentofundeb {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20217,'$this->e153_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3631,20217,'','".AddSlashes(pg_result($resaco,0,'e153_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3631,20218,'','".AddSlashes(pg_result($resaco,0,'e153_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3631,20219,'','".AddSlashes(pg_result($resaco,0,'e153_finalidadepagamentofundeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3631,20217,'','".AddSlashes(pg_fetch_result($resaco,0,'e153_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3631,20218,'','".AddSlashes(pg_fetch_result($resaco,0,'e153_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3631,20219,'','".AddSlashes(pg_fetch_result($resaco,0,'e153_finalidadepagamentofundeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_slipfinalidadepagamentofundeb {
       $this->atualizacampos();
      $sql = " update slipfinalidadepagamentofundeb set ";
      $virgula = "";
-     if(trim($this->e153_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e153_sequencial"])){ 
+     if(trim((string) $this->e153_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e153_sequencial"])){ 
        $sql  .= $virgula." e153_sequencial = $this->e153_sequencial ";
        $virgula = ",";
-       if(trim($this->e153_sequencial) == null ){ 
+       if(trim((string) $this->e153_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "e153_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_slipfinalidadepagamentofundeb {
          return false;
        }
      }
-     if(trim($this->e153_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e153_slip"])){ 
+     if(trim((string) $this->e153_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e153_slip"])){ 
        $sql  .= $virgula." e153_slip = $this->e153_slip ";
        $virgula = ",";
-       if(trim($this->e153_slip) == null ){ 
+       if(trim((string) $this->e153_slip) == null ){ 
          $this->erro_sql = " Campo Código do Slip não informado.";
          $this->erro_campo = "e153_slip";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_slipfinalidadepagamentofundeb {
          return false;
        }
      }
-     if(trim($this->e153_finalidadepagamentofundeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e153_finalidadepagamentofundeb"])){ 
+     if(trim((string) $this->e153_finalidadepagamentofundeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e153_finalidadepagamentofundeb"])){ 
        $sql  .= $virgula." e153_finalidadepagamentofundeb = $this->e153_finalidadepagamentofundeb ";
        $virgula = ",";
-       if(trim($this->e153_finalidadepagamentofundeb) == null ){ 
+       if(trim((string) $this->e153_finalidadepagamentofundeb) == null ){ 
          $this->erro_sql = " Campo Seq. Finalidade Pagamento Fundeb não informado.";
          $this->erro_campo = "e153_finalidadepagamentofundeb";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_slipfinalidadepagamentofundeb {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20217,'$this->e153_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e153_sequencial"]) || $this->e153_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3631,20217,'".AddSlashes(pg_result($resaco,$conresaco,'e153_sequencial'))."','$this->e153_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3631,20217,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e153_sequencial'))."','$this->e153_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e153_slip"]) || $this->e153_slip != "")
-             $resac = db_query("insert into db_acount values($acount,3631,20218,'".AddSlashes(pg_result($resaco,$conresaco,'e153_slip'))."','$this->e153_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3631,20218,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e153_slip'))."','$this->e153_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e153_finalidadepagamentofundeb"]) || $this->e153_finalidadepagamentofundeb != "")
-             $resac = db_query("insert into db_acount values($acount,3631,20219,'".AddSlashes(pg_result($resaco,$conresaco,'e153_finalidadepagamentofundeb'))."','$this->e153_finalidadepagamentofundeb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3631,20219,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e153_finalidadepagamentofundeb'))."','$this->e153_finalidadepagamentofundeb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_slipfinalidadepagamentofundeb {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20217,'$e153_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3631,20217,'','".AddSlashes(pg_result($resaco,$iresaco,'e153_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3631,20218,'','".AddSlashes(pg_result($resaco,$iresaco,'e153_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3631,20219,'','".AddSlashes(pg_result($resaco,$iresaco,'e153_finalidadepagamentofundeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3631,20217,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e153_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3631,20218,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e153_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3631,20219,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e153_finalidadepagamentofundeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -367,7 +367,7 @@ class cl_slipfinalidadepagamentofundeb {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:slipfinalidadepagamentofundeb";
@@ -382,7 +382,7 @@ class cl_slipfinalidadepagamentofundeb {
    function sql_query ( $e153_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,7 +406,7 @@ class cl_slipfinalidadepagamentofundeb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_slipfinalidadepagamentofundeb {
    function sql_query_file ( $e153_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_slipfinalidadepagamentofundeb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

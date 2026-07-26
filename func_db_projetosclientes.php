@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_projetosclientes_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_projetosclientes = new cl_db_projetosclientes;
 $cldb_projetosclientes->rotulo->label("at64_sequencial");
 $cldb_projetosclientes->rotulo->label("at64_projeto");
@@ -54,7 +55,7 @@ $cldb_projetosclientes->rotulo->label("at64_projeto");
               <?=$Lat64_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at64_sequencial",10,$Iat64_sequencial,true,"text",4,"","chave_at64_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_projetosclientes->rotulo->label("at64_projeto");
               <?=$Lat64_projeto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at64_projeto",10,$Iat64_projeto,true,"text",4,"","chave_at64_projeto");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_projetosclientes->rotulo->label("at64_projeto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_projetosclientes.php")==true){
@@ -118,12 +119,12 @@ $cldb_projetosclientes->rotulo->label("at64_projeto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

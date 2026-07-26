@@ -7,14 +7,14 @@ abstract class Repository
     /**
      * @var array
      */
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * @return $this
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
 
         return $this;
     }
@@ -25,7 +25,7 @@ abstract class Repository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
 

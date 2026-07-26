@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,8 @@ include(modification("classes/db_mer_cardapiodata_classe.php"));
 include(modification("classes/db_mer_cardapiodia_classe.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
 $clmer_cardapioescola = new cl_mer_cardapioescola;
@@ -73,7 +74,7 @@ if (isset($alterar) || isset($incluir)) {
   	<script>
   	parent.iframe_a2.location.href=' mer1_mer_cardapioescola001.php?me32_i_tipocardapio=<?=$me32_i_tipocardapio?>&me27_c_nome=<?=$me27_c_nome?>';    
   	</script>
-    <?
+    <?php 
 
   }
   
@@ -129,12 +130,12 @@ if ($clmer_cardapiodata->numrows>0 || $clmer_cardapiodia->numrows>0) {
               <tr>
                 <td>
                   <table width="100%" border="1" cellspacing="0" cellpadding="0">
-                  <?
+                  <?php 
                   $rsCardapioEscola = $clmer_cardapioescola->sql_record($clmer_cardapioescola->sql_query("","me32_i_codigo,ed18_i_codigo,ed18_c_nome,me27_i_ano","me32_i_ordem"," me32_i_tipocardapio = $me32_i_tipocardapio"));
                   for ($t=0;$t<$clmer_cardapioescola->numrows;$t++) {
                 	
                     $oCardapioEscola = db_utils::fieldsMemory($rsCardapioEscola, $t);         	
-                    ?><tr><td colspan="2" style="color:#DEB887;font-weight:bold;background:#444444"><?=$oCardapioEscola->ed18_i_codigo?> - <?=$oCardapioEscola->ed18_c_nome?></td></tr><?
+                    ?><tr><td colspan="2" style="color:#DEB887;font-weight:bold;background:#444444"><?=$oCardapioEscola->ed18_i_codigo?> - <?=$oCardapioEscola->ed18_c_nome?></td></tr><?php 
                     $rsMatricula = $clmatricula->sql_record(
                                     $clmatricula->sql_query("",
                                                             "count(*) as qtde,
@@ -164,8 +165,8 @@ if ($clmer_cardapiodata->numrows>0 || $clmer_cardapiodia->numrows>0) {
                         $oMatricula = db_utils::fieldsMemory($rsMatricula, $i);
                         if ($pri_curso!=$oMatricula->ed29_i_codigo) {
 
-                          ?><tr><td colspan="2" style="font-weight:bold;background:#DBDBDB">Curso: <?=$oMatricula->ed29_c_descr?></td></tr><?
-                          ?><tr style="background:#DBDBDB"><td>Etapa</td><td>Qtde. Alunos</td></tr><?
+                          ?><tr><td colspan="2" style="font-weight:bold;background:#DBDBDB">Curso: <?=$oMatricula->ed29_c_descr?></td></tr><?php 
+                          ?><tr style="background:#DBDBDB"><td>Etapa</td><td>Qtde. Alunos</td></tr><?php 
                           $pri_curso = $oMatricula->ed29_i_codigo;
 
                         }
@@ -202,7 +203,7 @@ if ($clmer_cardapiodata->numrows>0 || $clmer_cardapiodia->numrows>0) {
                         <tr id="etapa<?=$oMatricula->ed11_i_codigo?>" style="visibility:hidden;position:absolute;">
                           <td colspan="2">
                             <table width="100%" cellspacing="0" cellpadding="1" border="1">
-                              <?
+                              <?php 
                               for ($tt=0;$tt<$linhas_matricula2;$tt++) {
                               	
                               	$oMatriculaTurma = db_utils::fieldsMemory($rsMatriculaTurma, $tt);
@@ -215,14 +216,14 @@ if ($clmer_cardapiodata->numrows>0 || $clmer_cardapiodia->numrows>0) {
                                     <?=$oMatriculaTurma->qtde?>
                               	  </td>
                                 </tr>
-                              	<?
+                              	<?php 
                               	
                               }
                               ?>
                             </table>
                           </td>
                         </tr>
-                        <?
+                        <?php 
                         
                       } 	
                        	

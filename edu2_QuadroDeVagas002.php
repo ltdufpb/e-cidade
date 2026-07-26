@@ -37,8 +37,8 @@ require_once(modification("libs/db_utils.php"));
 
 
 if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selecionadas todas as escolas da rede
-    $aCalendario = array();
-    $aCalendario = explode(",", $iCalendario); //Wallace 2018-06-13 Transforma calendário em um array com os nomes dos calendários
+    $aCalendario = [];
+    $aCalendario = explode(",", (string) $iCalendario); //Wallace 2018-06-13 Transforma calendário em um array com os nomes dos calendários
     $iCalendario = "";
 
     for ($i = 0; $i < sizeof($aCalendario); $i++) { //Wallace 2018-06-13 Com os nomes dos calendários, montará um where para ser usado no banco de dados
@@ -53,7 +53,7 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
         }
     }
 
-    $aEscola = array();
+    $aEscola = [];
     $sCampos = " Distinct ed18_i_codigo,ed52_i_codigo,ed18_codigoreferencia,ed18_c_nome";
     $sWhere = " ";
     $sWhere .= " (ed52_c_descr  = $iCalendario ";
@@ -82,7 +82,7 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
         }
     }
 
-    $aEtapas = array(); // Wallace 2018-06-13 Zera array Etapa
+    $aEtapas = []; // Wallace 2018-06-13 Zera array Etapa
     $sCampos = " distinct ed11_i_codigo";
     $sWhere = " ";
     $sWhere .= " (ed52_c_descr  = $iCalendario"; // Wallace 2018-06-13 Busca todas as etapas referentes ao calendário selecionados
@@ -101,8 +101,8 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
 
 } else { // Wallace 2018-06-13 Senão  a pesquisa será feita com a escola selecionada
     $oEscola = EscolaRepository::getEscolaByCodigo($iEscola);
-    $aCalendario = array();
-    $aCalendario = explode(",", $iCalendario);//Wallace 2018-06-13 Transforma calendário em um array com os nomes dos calendários
+    $aCalendario = [];
+    $aCalendario = explode(",", (string) $iCalendario);//Wallace 2018-06-13 Transforma calendário em um array com os nomes dos calendários
     $iCalendario = "";
 
     for ($i = 0; $i < sizeof($aCalendario); $i++) {  //Wallace 2018-06-13 Com os nomes dos calendários, montará um where para ser usado no banco de dados
@@ -147,7 +147,7 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
 
     }
 
-    $aEtapas = array();// Wallace 2018-06-13 Zera array Etapa
+    $aEtapas = [];// Wallace 2018-06-13 Zera array Etapa
     $sCampos = " distinct ed11_i_codigo";
     $sWhere = "     ed57_i_escola     = $iEscola";
     $sWhere .= " AND  (ed52_c_descr  = $iCalendario "; // Wallace 2018-06-13 Busca todas as etapas referentes ao calendário selecionados

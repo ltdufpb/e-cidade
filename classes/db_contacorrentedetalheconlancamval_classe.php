@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE contacorrentedetalheconlancamval
 class cl_contacorrentedetalheconlancamval { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c28_sequencial = 0; 
-   var $c28_contacorrentedetalhe = 0; 
-   var $c28_conlancamval = 0; 
-   var $c28_tipo = null; 
+   public $c28_sequencial = 0; 
+   public $c28_contacorrentedetalhe = 0; 
+   public $c28_conlancamval = 0; 
+   public $c28_tipo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c28_sequencial = int4 = Sequencial 
                  c28_contacorrentedetalhe = int4 = Conta Corrente Detalhe 
                  c28_conlancamval = int4 = Valores do Lançamento 
                  c28_tipo = char(1) = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_contacorrentedetalheconlancamval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contacorrentedetalheconlancamval"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_contacorrentedetalheconlancamval {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c28_sequencial = pg_result($result,0,0); 
+       $this->c28_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from contacorrentedetalheconlancamval_c28_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c28_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c28_sequencial)){
          $this->erro_sql = " Campo c28_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_contacorrentedetalheconlancamval {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Conta Corrente e Valores ($this->c28_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Conta Corrente e Valores já Cadastrado";
@@ -180,13 +180,13 @@ class cl_contacorrentedetalheconlancamval {
      $resaco = $this->sql_record($this->sql_query_file($this->c28_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19666,'$this->c28_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3494,19666,'','".AddSlashes(pg_result($resaco,0,'c28_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3494,19667,'','".AddSlashes(pg_result($resaco,0,'c28_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3494,19668,'','".AddSlashes(pg_result($resaco,0,'c28_conlancamval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3494,19675,'','".AddSlashes(pg_result($resaco,0,'c28_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3494,19666,'','".AddSlashes(pg_fetch_result($resaco,0,'c28_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3494,19667,'','".AddSlashes(pg_fetch_result($resaco,0,'c28_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3494,19668,'','".AddSlashes(pg_fetch_result($resaco,0,'c28_conlancamval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3494,19675,'','".AddSlashes(pg_fetch_result($resaco,0,'c28_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_contacorrentedetalheconlancamval {
       $this->atualizacampos();
      $sql = " update contacorrentedetalheconlancamval set ";
      $virgula = "";
-     if(trim($this->c28_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_sequencial"])){ 
+     if(trim((string) $this->c28_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_sequencial"])){ 
        $sql  .= $virgula." c28_sequencial = $this->c28_sequencial ";
        $virgula = ",";
-       if(trim($this->c28_sequencial) == null ){ 
+       if(trim((string) $this->c28_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "c28_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_contacorrentedetalheconlancamval {
          return false;
        }
      }
-     if(trim($this->c28_contacorrentedetalhe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_contacorrentedetalhe"])){ 
+     if(trim((string) $this->c28_contacorrentedetalhe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_contacorrentedetalhe"])){ 
        $sql  .= $virgula." c28_contacorrentedetalhe = $this->c28_contacorrentedetalhe ";
        $virgula = ",";
-       if(trim($this->c28_contacorrentedetalhe) == null ){ 
+       if(trim((string) $this->c28_contacorrentedetalhe) == null ){ 
          $this->erro_sql = " Campo Conta Corrente Detalhe nao Informado.";
          $this->erro_campo = "c28_contacorrentedetalhe";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_contacorrentedetalheconlancamval {
          return false;
        }
      }
-     if(trim($this->c28_conlancamval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_conlancamval"])){ 
+     if(trim((string) $this->c28_conlancamval)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_conlancamval"])){ 
        $sql  .= $virgula." c28_conlancamval = $this->c28_conlancamval ";
        $virgula = ",";
-       if(trim($this->c28_conlancamval) == null ){ 
+       if(trim((string) $this->c28_conlancamval) == null ){ 
          $this->erro_sql = " Campo Valores do Lançamento nao Informado.";
          $this->erro_campo = "c28_conlancamval";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_contacorrentedetalheconlancamval {
          return false;
        }
      }
-     if(trim($this->c28_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_tipo"])){ 
+     if(trim((string) $this->c28_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c28_tipo"])){ 
        $sql  .= $virgula." c28_tipo = '$this->c28_tipo' ";
        $virgula = ",";
-       if(trim($this->c28_tipo) == null ){ 
+       if(trim((string) $this->c28_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "c28_tipo";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_contacorrentedetalheconlancamval {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19666,'$this->c28_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c28_sequencial"]) || $this->c28_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3494,19666,'".AddSlashes(pg_result($resaco,$conresaco,'c28_sequencial'))."','$this->c28_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3494,19666,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c28_sequencial'))."','$this->c28_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c28_contacorrentedetalhe"]) || $this->c28_contacorrentedetalhe != "")
-           $resac = db_query("insert into db_acount values($acount,3494,19667,'".AddSlashes(pg_result($resaco,$conresaco,'c28_contacorrentedetalhe'))."','$this->c28_contacorrentedetalhe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3494,19667,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c28_contacorrentedetalhe'))."','$this->c28_contacorrentedetalhe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c28_conlancamval"]) || $this->c28_conlancamval != "")
-           $resac = db_query("insert into db_acount values($acount,3494,19668,'".AddSlashes(pg_result($resaco,$conresaco,'c28_conlancamval'))."','$this->c28_conlancamval',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3494,19668,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c28_conlancamval'))."','$this->c28_conlancamval',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c28_tipo"]) || $this->c28_tipo != "")
-           $resac = db_query("insert into db_acount values($acount,3494,19675,'".AddSlashes(pg_result($resaco,$conresaco,'c28_tipo'))."','$this->c28_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3494,19675,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c28_tipo'))."','$this->c28_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_contacorrentedetalheconlancamval {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19666,'$c28_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3494,19666,'','".AddSlashes(pg_result($resaco,$iresaco,'c28_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3494,19667,'','".AddSlashes(pg_result($resaco,$iresaco,'c28_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3494,19668,'','".AddSlashes(pg_result($resaco,$iresaco,'c28_conlancamval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3494,19675,'','".AddSlashes(pg_result($resaco,$iresaco,'c28_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3494,19666,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c28_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3494,19667,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c28_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3494,19668,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c28_conlancamval'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3494,19675,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c28_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from contacorrentedetalheconlancamval
@@ -376,7 +376,7 @@ class cl_contacorrentedetalheconlancamval {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:contacorrentedetalheconlancamval";
@@ -391,7 +391,7 @@ class cl_contacorrentedetalheconlancamval {
    function sql_query ( $c28_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_contacorrentedetalheconlancamval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_contacorrentedetalheconlancamval {
    function sql_query_file ( $c28_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_contacorrentedetalheconlancamval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

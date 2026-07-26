@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,16 +53,16 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_codigo?>
   </td>
   <td>
-   <?db_input('bi09_codigo',10,$Ibi09_codigo,true,'text',3,"")?>
+   <?php db_input('bi09_codigo',10,$Ibi09_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tbi09_biblioteca?>">
-   <?db_ancora(@$Lbi09_biblioteca,"",3);?>
+   <?php db_ancora(@$Lbi09_biblioteca,"",3);?>
   </td>
   <td>
-   <?db_input('bi09_biblioteca',10,$Ibi09_biblioteca,true,'text',3,"")?>
-   <?db_input('bi17_nome',80,@$Ibi17_nome,true,'text',3,'')?>
+   <?php db_input('bi09_biblioteca',10,$Ibi09_biblioteca,true,'text',3,"")?>
+   <?php db_input('bi17_nome',80,@$Ibi17_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_nome?>
   </td>
   <td>
-   <?db_input('bi09_nome',30,$Ibi09_nome,true,'text',$db_opcao,"")?>
+   <?php db_input('bi09_nome',30,$Ibi09_nome,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -78,7 +78,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_abrev?>
   </td>
   <td>
-   <?db_input('bi09_abrev',10,$Ibi09_abrev,true,'text',$db_opcao,"")?>
+   <?php db_input('bi09_abrev',10,$Ibi09_abrev,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -86,7 +86,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi09_capacidade?>
   </td>
   <td>
-   <?db_input('bi09_capacidade',10,$Ibi09_capacidade,true,'text',$db_opcao,"")?>
+   <?php db_input('bi09_capacidade',10,$Ibi09_capacidade,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -95,7 +95,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("bi09_codigo"=>@$bi09_codigo,"bi09_nome"=>@$bi09_nome,"bi09_abrev"=>@$bi09_abrev,"bi09_capacidade"=>@$bi09_capacidade);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cllocalizacao->sql_query("","*","bi09_nome"," bi09_biblioteca = $bi09_biblioteca");

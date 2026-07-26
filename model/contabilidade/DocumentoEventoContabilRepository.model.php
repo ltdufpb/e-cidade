@@ -33,7 +33,7 @@ class DocumentoEventoContabilRepository {
   /**
    * @var DocumentoEventoContabil[]
    */
-  private $aDocumentos = array();
+  private $aDocumentos = [];
 
   /**
    * @var DocumentoEventoContabilRepository
@@ -65,7 +65,7 @@ class DocumentoEventoContabilRepository {
       throw new ParameterException("Parâmetro CÓDIGO não informado.");
     }
 
-    if (!array_key_exists($iCodigo, self::getInstancia()->aDocumentos)) {
+    if (!array_key_exists((string) $iCodigo, self::getInstancia()->aDocumentos)) {
 
       $oDaoBuscarDocumento = new cl_conhistdoc();
       $sSqlBuscaDocumento  = $oDaoBuscarDocumento->sql_query_file($iCodigo);

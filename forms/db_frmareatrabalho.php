@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,16 +53,16 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led25_i_codigo?>
   </td>
   <td>
-   <?db_input('ed25_i_codigo',10,$Ied25_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed25_i_codigo',10,$Ied25_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted25_i_ensino?>">
-   <?db_ancora(@$Led25_i_ensino,"js_pesquisaed25_i_ensino(true);",$db_opcao);?>
+   <?php db_ancora(@$Led25_i_ensino,"js_pesquisaed25_i_ensino(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed25_i_ensino',10,$Ied25_i_ensino,true,'text',$db_opcao," onchange='js_pesquisaed25_i_ensino(false);'")?>
-   <?db_input('ed10_c_descr',30,@$Ied10_c_descr,true,'text',3,'')?>
+   <?php db_input('ed25_i_ensino',10,$Ied25_i_ensino,true,'text',$db_opcao," onchange='js_pesquisaed25_i_ensino(false);'")?>
+   <?php db_input('ed10_c_descr',30,@$Ied10_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led25_c_descr?>
   </td>
   <td>
-   <?db_input('ed25_c_descr',50,$Ied25_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed25_c_descr',50,$Ied25_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -79,8 +79,8 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
-   $chavepri= array("ed25_i_codigo"=>@$ed25_i_codigo,"ed25_c_descr"=>@$ed25_c_descr,"ed25_i_ensino"=>@$ed25_i_ensino,"ed10_c_descr"=>@$ed10_c_descr);
+  <?php 
+   $chavepri= ["ed25_i_codigo"=>@$ed25_i_codigo,"ed25_c_descr"=>@$ed25_c_descr,"ed25_i_ensino"=>@$ed25_i_ensino,"ed10_c_descr"=>@$ed10_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clareatrabalho->sql_query("","ed25_i_codigo,ed25_c_descr,ed25_i_ensino,ed10_c_descr","ed10_c_descr,ed25_c_descr");
    $cliframe_alterar_excluir->campos  ="ed25_i_codigo,ed25_c_descr,ed10_c_descr";

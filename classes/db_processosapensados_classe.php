@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE processosapensados
 class cl_processosapensados { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p30_sequencial = 0; 
-   var $p30_procprincipal = 0; 
-   var $p30_procapensado = 0; 
+   public $p30_sequencial = 0; 
+   public $p30_procprincipal = 0; 
+   public $p30_procapensado = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p30_sequencial = int4 = Sequencial 
                  p30_procprincipal = int4 = Processo Principal 
                  p30_procapensado = int4 = Processo Apensado 
                  ";
    //funcao construtor da classe 
-   function cl_processosapensados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processosapensados"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_processosapensados {
          $this->erro_status = "0";
          return false; 
        }
-       $this->p30_sequencial = pg_result($result,0,0); 
+       $this->p30_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from processosapensados_p30_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p30_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p30_sequencial)){
          $this->erro_sql = " Campo p30_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_processosapensados {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Apensar Processos ($this->p30_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Apensar Processos já Cadastrado";
@@ -166,12 +166,12 @@ class cl_processosapensados {
      $resaco = $this->sql_record($this->sql_query_file($this->p30_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15053,'$this->p30_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2647,15053,'','".AddSlashes(pg_result($resaco,0,'p30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2647,15055,'','".AddSlashes(pg_result($resaco,0,'p30_procprincipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2647,15054,'','".AddSlashes(pg_result($resaco,0,'p30_procapensado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2647,15053,'','".AddSlashes(pg_fetch_result($resaco,0,'p30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2647,15055,'','".AddSlashes(pg_fetch_result($resaco,0,'p30_procprincipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2647,15054,'','".AddSlashes(pg_fetch_result($resaco,0,'p30_procapensado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_processosapensados {
       $this->atualizacampos();
      $sql = " update processosapensados set ";
      $virgula = "";
-     if(trim($this->p30_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p30_sequencial"])){ 
+     if(trim((string) $this->p30_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p30_sequencial"])){ 
        $sql  .= $virgula." p30_sequencial = $this->p30_sequencial ";
        $virgula = ",";
-       if(trim($this->p30_sequencial) == null ){ 
+       if(trim((string) $this->p30_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "p30_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_processosapensados {
          return false;
        }
      }
-     if(trim($this->p30_procprincipal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p30_procprincipal"])){ 
+     if(trim((string) $this->p30_procprincipal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p30_procprincipal"])){ 
        $sql  .= $virgula." p30_procprincipal = $this->p30_procprincipal ";
        $virgula = ",";
-       if(trim($this->p30_procprincipal) == null ){ 
+       if(trim((string) $this->p30_procprincipal) == null ){ 
          $this->erro_sql = " Campo Processo Principal nao Informado.";
          $this->erro_campo = "p30_procprincipal";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_processosapensados {
          return false;
        }
      }
-     if(trim($this->p30_procapensado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p30_procapensado"])){ 
+     if(trim((string) $this->p30_procapensado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p30_procapensado"])){ 
        $sql  .= $virgula." p30_procapensado = $this->p30_procapensado ";
        $virgula = ",";
-       if(trim($this->p30_procapensado) == null ){ 
+       if(trim((string) $this->p30_procapensado) == null ){ 
          $this->erro_sql = " Campo Processo Apensado nao Informado.";
          $this->erro_campo = "p30_procapensado";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_processosapensados {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15053,'$this->p30_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p30_sequencial"]) || $this->p30_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2647,15053,'".AddSlashes(pg_result($resaco,$conresaco,'p30_sequencial'))."','$this->p30_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2647,15053,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p30_sequencial'))."','$this->p30_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p30_procprincipal"]) || $this->p30_procprincipal != "")
-           $resac = db_query("insert into db_acount values($acount,2647,15055,'".AddSlashes(pg_result($resaco,$conresaco,'p30_procprincipal'))."','$this->p30_procprincipal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2647,15055,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p30_procprincipal'))."','$this->p30_procprincipal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p30_procapensado"]) || $this->p30_procapensado != "")
-           $resac = db_query("insert into db_acount values($acount,2647,15054,'".AddSlashes(pg_result($resaco,$conresaco,'p30_procapensado'))."','$this->p30_procapensado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2647,15054,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p30_procapensado'))."','$this->p30_procapensado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_processosapensados {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15053,'$p30_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2647,15053,'','".AddSlashes(pg_result($resaco,$iresaco,'p30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2647,15055,'','".AddSlashes(pg_result($resaco,$iresaco,'p30_procprincipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2647,15054,'','".AddSlashes(pg_result($resaco,$iresaco,'p30_procapensado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2647,15053,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p30_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2647,15055,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p30_procprincipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2647,15054,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p30_procapensado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from processosapensados
@@ -345,7 +345,7 @@ class cl_processosapensados {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:processosapensados";
@@ -387,7 +387,7 @@ class cl_processosapensados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_processosapensados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_processosapensados {
     if ($ordem != null ) {
       
       $sql        .= " order by ";
-      $campos_sql  = explode("#",$ordem);
+      $campos_sql  = explode("#",(string) $ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql);$i++) {
 
@@ -515,7 +515,7 @@ class cl_processosapensados {
     if ($ordem != null) {
       
       $sql        .= " order by ";
-      $campos_sql  = explode("#", $ordem);
+      $campos_sql  = explode("#", (string) $ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         

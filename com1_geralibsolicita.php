@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ $db_botao=true;
       <strong>Solicitação: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       $desabilita = false;
       $arr_numero = array();
       $arr_index  = array();
@@ -140,7 +140,7 @@ $db_botao=true;
       <strong>Data: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
   //    db_inputdata('pc10_data',@$pc10_data_dia,@$pc10_data_mes,@$pc10_data_ano,true,'text',3);
       db_input('pc10_data_dia',2,0,true,'text',3);
       db_input('pc10_data_mes',2,0,true,'text',3);
@@ -151,7 +151,7 @@ $db_botao=true;
       <strong>Departamento: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       db_input('descrdepto',40,$Idescrdepto,true,'text',3);
     ?>
     </td>
@@ -161,7 +161,7 @@ $db_botao=true;
       <strong>Resumo: </strong>      
     </td>
     <td colspan="3" nowrap>
-    <?
+    <?php 
       db_textarea('pc10_resumo',2,77,$Ipc10_resumo,true,'text',3,"")
     ?>
     </td>
@@ -200,7 +200,7 @@ function js_mudasolicita(){
 if(document.form1.pc10_numero.value!=""){
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_solicitem.location.href= 'com1_geralibsolicitem.php?solicita='+document.form1.pc10_numero.value;
 }
-<?
+<?php 
   if($desabilita==true){
   echo "
     numele = parent.document.form1.length;

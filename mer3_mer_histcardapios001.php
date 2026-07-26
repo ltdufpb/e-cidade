@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,8 @@ include(modification("classes/db_mer_cardapiodata_classe.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("classes/db_mer_subitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_desper_und    = new cl_mer_desper_und;
 $clmer_cardapioaluno = new cl_mer_cardapioaluno;
@@ -141,9 +142,9 @@ if (!isset($fim)) {
         <table border="0" cellpadding="0" cellspacing="0">
          <tr>
           <td><b>De&nbsp;&nbsp;</b></td>
-          <td><?db_inputdata('inicio',@$inicio_dia,@$inicio_mes,@$inicio_ano,true,'text',1,"");?></td>
+          <td><?php db_inputdata('inicio',@$inicio_dia,@$inicio_mes,@$inicio_ano,true,'text',1,"");?></td>
 	      <td><b>&nbsp;&nbsp;até&nbsp;&nbsp;</b></td>
-	      <td><?db_inputdata('fim',@$fim_dia,@$fim_mes,@$fim_ano,true,'text',1,"");?></td>
+	      <td><?php db_inputdata('fim',@$fim_dia,@$fim_mes,@$fim_ano,true,'text',1,"");?></td>
           <td><input name="consultar" type="button" value="Consultar" onclick="js_consulta2()"></td>
          </tr>
         </table>
@@ -156,7 +157,7 @@ if (!isset($fim)) {
   </td>
  </tr>
 </table>
-<?
+<?php 
 if (isset($opcao)) {
 	
   if ($opcao==1) {
@@ -230,13 +231,13 @@ if ($nutricionista != "") {
    <tr>
     <td width="45%" valign="top" bgcolor="#f3f3f3" >
      <table width="100%" border="1" cellpadding="0" cellspacing="0">
-     <?
+     <?php 
      $primeiro = "";
      if ($clmer_cardapiodia->numrows == 0) {
      	
        ?>
        <tr><td bgcolor="#CCCCCC">Nenhum registro para o período</td></tr>
-       <?
+       <?php 
        
      }
      for ($x=0;$x<$clmer_cardapiodia->numrows;$x++) {
@@ -246,7 +247,7 @@ if ($nutricionista != "") {
        	
          ?>
          <tr><td bgcolor="#f3f3f3"><b><?=db_formatar($me12_d_data,'d')?></b></td></tr>
-         <?
+         <?php 
          $primeiro = $me12_d_data;
          
        }
@@ -466,7 +467,7 @@ if ($nutricionista != "") {
          </table>  
         </td>
        </tr>
-      <?
+      <?php 
      }
     ?>
     </table> 
@@ -474,11 +475,11 @@ if ($nutricionista != "") {
     <td width="1%"><a name="inicio"></a><input type="hidden" id="clicado" value=""></td>
     <td width="54%" id="dados" valign="top" align="center">
      &nbsp;
-     <?
+     <?php 
       if ($clmer_cardapiodia->numrows>0) {
      ?>
         Clique sobre uma refeição ao lado.
-      <?
+      <?php 
       }
       ?>
     </td>
@@ -486,11 +487,11 @@ if ($nutricionista != "") {
   </table>
  </fieldset>
 </center>
- <?
+ <?php 
 }
 ?>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

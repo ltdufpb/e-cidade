@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_projetoscliente_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_projetoscliente = new cl_db_projetoscliente;
 $cldb_projetoscliente->rotulo->label("at60_codproj");
 $cldb_projetoscliente->rotulo->label("at60_codcli");
@@ -54,7 +55,7 @@ $cldb_projetoscliente->rotulo->label("at60_codcli");
               <?=$Lat60_codproj?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at60_codproj",10,$Iat60_codproj,true,"text",4,"","chave_at60_codproj");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_projetoscliente->rotulo->label("at60_codcli");
               <?=$Lat60_codcli?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at60_codcli",5,$Iat60_codcli,true,"text",4,"","chave_at60_codcli");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_projetoscliente->rotulo->label("at60_codcli");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_projetoscliente.php")==true){
@@ -122,12 +123,12 @@ $cldb_projetoscliente->rotulo->label("at60_codcli");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

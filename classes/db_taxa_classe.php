@@ -69,7 +69,7 @@ class cl_taxa {
                  ar36_honorario = bool = Campo honorario
                  ";
    //funcao construtor da classe
-   function cl_taxa() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

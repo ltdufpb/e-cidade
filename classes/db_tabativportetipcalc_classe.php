@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: issqn
 //CLASSE DA ENTIDADE tabativportetipcalc
 class cl_tabativportetipcalc { 
@@ -28,7 +28,7 @@ class cl_tabativportetipcalc {
                  q143_tipcalc = int4 = Código do Tipo de Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_tabativportetipcalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabativportetipcalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

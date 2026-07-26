@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE situacaoafastamento
 class cl_situacaoafastamento { 
@@ -24,7 +24,7 @@ class cl_situacaoafastamento {
                  rh166_descricao = varchar(60) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_situacaoafastamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("situacaoafastamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

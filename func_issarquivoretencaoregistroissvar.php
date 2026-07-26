@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_issarquivoretencaoregistroissvar_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissarquivoretencaoregistroissvar = new cl_issarquivoretencaoregistroissvar;
 $clissarquivoretencaoregistroissvar->rotulo->label("q146_sequencial");
 $clissarquivoretencaoregistroissvar->rotulo->label("q146_sequencial");
@@ -50,11 +51,11 @@ $clissarquivoretencaoregistroissvar->rotulo->label("q146_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lq146_sequencial?></label></td>
-          <td><? db_input("q146_sequencial",10,$Iq146_sequencial,true,"text",4,"","chave_q146_sequencial"); ?></td>
+          <td><?php  db_input("q146_sequencial",10,$Iq146_sequencial,true,"text",4,"","chave_q146_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lq146_sequencial?></label></td>
-          <td><? db_input("q146_sequencial",10,$Iq146_sequencial,true,"text",4,"","chave_q146_sequencial");?></td>
+          <td><?php  db_input("q146_sequencial",10,$Iq146_sequencial,true,"text",4,"","chave_q146_sequencial");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clissarquivoretencaoregistroissvar->rotulo->label("q146_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_issarquivoretencaoregistroissvar.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issarquivoretencaoregistroissvar.php")==true){
@@ -104,12 +105,12 @@ $clissarquivoretencaoregistroissvar->rotulo->label("q146_sequencial");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

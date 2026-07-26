@@ -63,7 +63,7 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                         <?=@$Lc90_estrutsistema?>
                     </td>
                     <td>
-                        <?
+                        <?php 
                         db_input('c90_estrutsistema',50,$Ic90_estrutsistema,true,'text',$db_opcao,"");
                         ?>
                     </td>
@@ -73,7 +73,7 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                         <?=@$Lc90_estrutcontabil?>
                     </td>
                     <td>
-                        <?
+                        <?php 
                         db_input('c90_estrutcontabil',50,$Ic90_estrutcontabil,true,'text',$db_opcao,"");
                         ?>
                     </td>
@@ -83,7 +83,7 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                         <?=@$Lc90_codestrut?>
                     </td>
                     <td>
-                        <?
+                        <?php 
                         db_input('c90_codestrut',8,$Ic90_codestrut,true,'text',$db_opcao,"");
                         ?>
                     </td>
@@ -93,7 +93,7 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                         <?=@$Lc90_utilcontabancaria?>
                     </td>
                     <td>
-                        <?
+                        <?php 
                         $aUtilContaBancaria = array( 'f'=>'Não',
                             't'=>'Sim');
 
@@ -106,7 +106,7 @@ if ( isset($_POST["btnAtivarDomicilioBancario"]) ) {
                         <?=@$Lc90_confirmadata?>
                     </td>
                     <td>
-                        <?
+                        <?php 
                         $aConfirmaData = array( 'f'=>'Não','t'=>'Sim');
 
                         db_select('c90_confirmadata',$aConfirmaData,true,1,"style='width:80px;'");

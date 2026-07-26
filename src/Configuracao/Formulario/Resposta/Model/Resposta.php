@@ -58,7 +58,7 @@ class Resposta
    * Valores de Respostas da pergunta
    * @var \ECidade\Configuracao\Formulario\Resposta\Model\Valor[]
    */
-    private $respostas = array();
+    private $respostas = [];
 
   /**
    * @return \ECidade\Configuracao\Formulario\Model\Formulario

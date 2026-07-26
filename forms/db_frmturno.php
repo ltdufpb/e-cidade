@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -111,7 +111,7 @@ if (isset($atualizar)) {
                 <?=@$Led15_i_codigo?>
               </td>
               <td>
-                <?
+                <?php 
                   db_input('ed15_i_codigo', 10, $Ied15_i_codigo, true, 'text', 3, "")
                 ?>
               </td>
@@ -121,7 +121,7 @@ if (isset($atualizar)) {
                 <?=@$Led15_c_nome?>
               </td>
               <td>
-                <?
+                <?php 
                   db_input('ed15_c_nome', 20, $Ied15_c_nome, true, 'text', $db_opcao, "")
                 ?>
               </td>
@@ -162,14 +162,14 @@ if (isset($atualizar)) {
               <td>
                 <b>Ordenar Turnos:</b><br>
                 <select name="campos[]" id="campos" size="4" style="width:250px" multiple>
-                <?
+                <?php 
                   $sql = "SELECT ed15_i_codigo,ed15_c_nome from turno order by ed15_i_sequencia";
                   $query = db_query($sql);
                   $linhas = pg_num_rows($query);
                   if ($linhas > 0) {
                     for ($i = 0; $i < $linhas; $i++) {
                       $dados = pg_fetch_array($query);
-                      echo "<option value=\"".$dados["ed15_i_codigo"]."\">".trim($dados["ed15_c_nome"])."</option>\n";
+                      echo "<option value=\"".$dados["ed15_i_codigo"]."\">".trim((string) $dados["ed15_c_nome"])."</option>\n";
                     }
                   }
                 ?>
@@ -191,7 +191,7 @@ if (isset($atualizar)) {
     <table width="100%">
       <tr>
         <td valign="top"><br>
-          <?
+          <?php 
             $campos = "ed15_i_codigo,
                        ed15_c_nome,
                        (select array(select case
@@ -205,7 +205,7 @@ if (isset($atualizar)) {
                                     )
                        ) as ed231_i_referencia
                       ";
-            $chavepri= array("ed15_i_codigo"=>@$ed15_i_codigo,"ed15_c_nome"=>@$ed15_c_nome);
+            $chavepri= ["ed15_i_codigo"=>@$ed15_i_codigo,"ed15_c_nome"=>@$ed15_c_nome];
             $cliframe_alterar_excluir->chavepri=$chavepri;
             $cliframe_alterar_excluir->sql = $oDaoTurno->sql_query("",$campos,"ed15_i_sequencia","");
             $cliframe_alterar_excluir->campos  ="ed15_i_codigo,ed15_c_nome,ed231_i_referencia";

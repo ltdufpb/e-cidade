@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 ?>
@@ -61,24 +61,24 @@ $db_botao = true;
     <table border="0">
      <tr>
       <td nowrap title="<?=@$Ted17_i_turno?>">
-       <?db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",$db_opcao);?>
+       <?php db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",$db_opcao);?>
       </td>
       <td>
-       <?db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed129_i_escola(false);'")?>
-       <?db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
+       <?php db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed129_i_escola(false);'")?>
+       <?php db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
       <td colspan="2">
        <b>Arquivo:</b>&nbsp;&nbsp;&nbsp;
-       <?db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
+       <?php db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
        <input type="button" value="Importar" name="processar" onclick="js_processar();">
       </td>
      </tr>
     </table>
     <br>
     </form>
-    <?
+    <?php 
     if(isset($GLOBALS["_FILES"]["arquivo"]) && $GLOBALS["_FILES"]["arquivo"]!=""){
      db_postmemory($GLOBALS["_FILES"]["arquivo"]);
      $escola = $ed129_i_escola;
@@ -87,8 +87,8 @@ $db_botao = true;
              where ed129_i_escola = $escola
             ";
      $result = db_query($sql);
-     $ultima_atualizacaoes = trim(pg_result($result,0,'ed129_i_ultatualizes'));
-     $array_arquivo = explode("_",$name);
+     $ultima_atualizacaoes = trim(pg_fetch_result($result,0,'ed129_i_ultatualizes'));
+     $array_arquivo = explode("_",(string) $name);
      $escola_arquivo = trim($array_arquivo[0]);
      $base_arquivo = trim($array_arquivo[1]);
      $data_arquivo = trim($array_arquivo[2]);
@@ -127,7 +127,7 @@ $db_botao = true;
        if(empty($linha)){
         continue;
        }
-       if(substr($linha,0,2)!="--"){
+       if(!str_starts_with($linha, "--")){
         if(substr($linha,12,10)=="rechumano "){
          $cod_rh = str_replace(");","",trim(substr($linha,29)));
          $sql2 = "select * from rechumano where ed20_i_codigo = $cod_rh";
@@ -161,7 +161,7 @@ $db_botao = true;
          break;
         }else{
          $array = explode(" ",$linha);
-         if(substr($linha,0,6)=="UPDATE"){
+         if(str_starts_with($linha, "UPDATE")){
           $tabela = $array[1];
          }else{
           $tabela = $array[2];
@@ -188,7 +188,7 @@ $db_botao = true;
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

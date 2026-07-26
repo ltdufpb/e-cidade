@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ $clrotulo->label("nome");
       document.form1.submit();
   }
 </script>
-<?
+<?php 
   if($db_opcao==1){
     $pg="con1_db_depart001.php";
   }else if($db_opcao==2 || $db_opcao==22){
@@ -90,7 +90,7 @@ $clrotulo->label("nome");
       <?=@$Lcoddepto?>
     </td>
     <td colspan="3">
-    <?
+    <?php 
       db_input('coddepto',5,$Icoddepto,true,'text',3)
     ?>
     </td>
@@ -100,19 +100,19 @@ $clrotulo->label("nome");
     <?=@$Ldescrdepto?>
   </td>
   <td colspan="3">
-  <?
+  <?php 
     db_input('descrdepto',40,$Idescrdepto,true,'text',$db_opcao,"")
   ?>
   </td>
 </tr>
 <tr>
 	<td nowrap title="<?=@$Tid_usuarioresp?>">
-  <?
+  <?php 
     db_ancora(@$Lnome,"js_usu(true);",$db_opcao);
   ?>
   </td>
   <td> 
-	<?
+	<?php 
 	  db_input('id_usuarioresp',7,$Iid_usuarioresp, true, 'text', $db_opcao, " onchange='js_usu(false);'" );
 	  db_input ('nome', 40, $Inome, true, 'text', 3, '' );
   ?>
@@ -123,7 +123,7 @@ $clrotulo->label("nome");
       <?=@$Linstit?>
     </td>
 		<td colspan="3">
-      <?
+      <?php 
       if ( ($db_opcao==1||$db_opcao==11)||trim(@$instit)=="" ){
         $instit = db_getsession("DB_instit");
       }
@@ -152,7 +152,7 @@ $clrotulo->label("nome");
           <?=@$Lo40_orgao?>
         </td>
 		<td colspan="3">
-          <?
+          <?php 
           $sWhere  = " o40_anousu     = ".db_getSession("DB_anousu");
           $sWhere .= " and o41_instit = {$instit}";
           //echo $clorcunidade->sql_query(null,null,null,"distinct o40_orgao,o40_descr","o40_descr",$sWhere);
@@ -171,7 +171,7 @@ $clrotulo->label("nome");
           <?=@$Lo41_unidade?>
         </td>
 		<td colspan="3">
-        <?
+        <?php 
           if (empty($o40_orgao)){
          	  @db_fieldsmemory($result,0);
           }
@@ -186,7 +186,7 @@ $clrotulo->label("nome");
         ?>
         </td>
 	</tr>
-      <?
+      <?php 
       if ($db_opcao != 1){
         
         echo " <tr> ";
@@ -217,7 +217,7 @@ $clrotulo->label("nome");
                     <?=@$Lemaildepto?>
                   </td>
 				<td colspan="5">
-                    <?
+                    <?php 
                      db_input('emaildepto',50,$Iemaildepto,true,'text',$db_opcao,"")
                     ?>
                   </td>
@@ -227,7 +227,7 @@ $clrotulo->label("nome");
                     <?=@$Lfonedepto?>
                   </td>
 				<td>
-                    <?
+                    <?php 
                     db_input('fonedepto',12,$Ifonedepto,true,'text',$db_opcao,"")
                     ?>
                   </td>
@@ -235,7 +235,7 @@ $clrotulo->label("nome");
                     <?=@$Lramaldepto?>
                   </td>
 				<td align="right">
-                    <?
+                    <?php 
                      db_input('ramaldepto',5,$Iramaldepto,true,'text',$db_opcao,"")
                     ?>
                   </td>
@@ -243,7 +243,7 @@ $clrotulo->label("nome");
                     <?=@$Lfaxdepto?>
                   </td>
 				<td colspan="3">
-                    <?
+                    <?php 
                      db_input('faxdepto',12,$Ifaxdepto,true,'text',$db_opcao,"")
                     ?>
                   </td>
@@ -257,15 +257,15 @@ $clrotulo->label("nome");
 </center>
 <input name="db_opcao" type="submit" id="db_opcao"value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>>
 	
-	<?
+	<?php 
    if ($db_opcao==2||$db_opcao==22){
   ?>
 	<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick='js_pesquisaalt();'><input name="novo" type="button" id="novo" value="Novo" onclick='js_novo_reg();'>
-  <?
+  <?php 
   }else{
   ?>
   <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick='js_pesquisa();'>
-  <?
+  <?php 
   }
   ?>
 </form>
@@ -278,17 +278,17 @@ $clrotulo->label("nome");
       js_OpenJanelaIframe('CurrentWindow.corpo.iframe_g1','db_iframe_db_depart','func_db_depart.php?funcao_js=parent.js_preenchepesquisa|coddepto','Pesquisa',true);
     }
     function js_preenchepesquisa(chave){
-      <?
+      <?php 
       if($db_opcao!=1){
         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
         if($db_opcao==2||$db_opcao==22){
         ?>
          parent.iframe_g2.location.href='con1_db_departender002.php?chavepesquisa='+chave+'&coddepto='+chave;
-        <?}else{?> 
+        <?php }else{?> 
          parent.iframe_g2.location.href='con1_db_departender003.php?chavepesquisa='+chave+'&coddepto='+chave;
-         <?}?>
+         <?php }?>
         db_iframe_db_depart.hide();
-       <?
+       <?php 
       }
       ?>
     }

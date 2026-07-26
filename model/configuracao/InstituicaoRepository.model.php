@@ -42,7 +42,7 @@ class InstituicaoRepository
      * Collection de Instituicao
      * @var array
      */
-    private $aInstituicao = array();
+    private $aInstituicao = [];
 
     /**
      * Instancia da classe
@@ -168,7 +168,7 @@ class InstituicaoRepository
         $cldb_config = new cl_db_config();
 
         $rsInstituicao = $cldb_config->sql_record($cldb_config->sql_query_file(null, "codigo", null, "db21_tipoinstit in (" . implode(',', $aTipos) . ")"));
-        $aListaInstituicoes = array();
+        $aListaInstituicoes = [];
 
         if ($cldb_config->numrows > 0) {
 
@@ -220,10 +220,8 @@ class InstituicaoRepository
             throw new \DBException("Ocorreu um erro ao consultar os tipos de Instituicao.\nContate o suporte.");
         }
 
-        $aTiposInstituicoes = array();
-        $aTiposInstituicoes = \db_utils::makeCollectionFromRecord($rsTipoInstituicao, function ($oRetorno) {
-            return $oRetorno;
-        });
+        $aTiposInstituicoes = [];
+        $aTiposInstituicoes = \db_utils::makeCollectionFromRecord($rsTipoInstituicao, fn($oRetorno) => $oRetorno);
 
         return $aTiposInstituicoes;
     }

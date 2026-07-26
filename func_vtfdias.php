@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vtfdias_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvtfdias = new cl_vtfdias;
 $clvtfdias->rotulo->label("r63_anousu");
 $clvtfdias->rotulo->label("r63_mesusu");
@@ -59,7 +60,7 @@ $clvtfdias->rotulo->label("r63_regist");
               <?=$Lr63_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r63_mesusu",2,$Ir63_mesusu,true,"text",4,"","chave_r63_mesusu");
 		       ?>
             </td>
@@ -69,7 +70,7 @@ $clvtfdias->rotulo->label("r63_regist");
               <?=$Lr63_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r63_regist",6,$Ir63_regist,true,"text",4,"","chave_r63_regist");
 		       ?>
             </td>
@@ -79,7 +80,7 @@ $clvtfdias->rotulo->label("r63_regist");
               <?=$Lr63_vale?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r63_vale",4,$Ir63_vale,true,"text",4,"","chave_r63_vale");
 		       ?>
             </td>
@@ -89,7 +90,7 @@ $clvtfdias->rotulo->label("r63_regist");
               <?=$Lr63_difere?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r63_difere",1,$Ir63_difere,true,"text",4,"","chave_r63_difere");
 		       ?>
             </td>
@@ -99,7 +100,7 @@ $clvtfdias->rotulo->label("r63_regist");
               <?=$Lr63_dia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r63_dia",8,$Ir63_dia,true,"text",4,"","chave_r63_dia");
 		       ?>
             </td>
@@ -109,7 +110,7 @@ $clvtfdias->rotulo->label("r63_regist");
               <?=$Lr63_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r63_regist",6,$Ir63_regist,true,"text",4,"","chave_r63_regist");
 		       ?>
             </td>
@@ -127,7 +128,7 @@ $clvtfdias->rotulo->label("r63_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vtfdias.php")==true){
@@ -163,12 +164,12 @@ $clvtfdias->rotulo->label("r63_regist");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

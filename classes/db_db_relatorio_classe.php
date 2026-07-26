@@ -65,7 +65,7 @@ class cl_db_relatorio
                  db63_db_relatorioorigem = int4 = Origem Relatório 
                  ";
   //funcao construtor da classe 
-  function cl_db_relatorio()
+  function __construct()
   {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("db_relatorio");

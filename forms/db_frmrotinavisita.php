@@ -71,7 +71,7 @@ $aOpcoes = array("0" => "Não", "1" => "Sim");
     </tr>
     <tr>
       <td nowrap="nowrap" style="font-weight: bold;">
-        <? db_ancora("Cidadão: ","js_pesquisaCidadao(true, false);", $db_opcao);?>
+        <?php  db_ancora("Cidadão: ","js_pesquisaCidadao(true, false);", $db_opcao);?>
       <td nowrap="nowrap">
         <?php
           db_input("codigoCidadao", 10, $Iov02_sequencial, true, "text", $db_opcao, 

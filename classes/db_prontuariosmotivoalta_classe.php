@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontuariosmotivoalta
 class cl_prontuariosmotivoalta { 
@@ -35,7 +35,7 @@ class cl_prontuariosmotivoalta {
                  sd25_db_usuarios = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_prontuariosmotivoalta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuariosmotivoalta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

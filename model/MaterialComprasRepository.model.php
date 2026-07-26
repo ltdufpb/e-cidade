@@ -13,7 +13,7 @@ class MaterialComprasRepository {
    *
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
   /**
    * Instancia da classe
    *
@@ -65,7 +65,7 @@ class MaterialComprasRepository {
    */
   public static function adicionarMaterialCompras(MaterialCompras $oMaterialCompras) {
 
-    if (!array_key_exists($oMaterialCompras->getCodigo(), MaterialComprasRepository::getInstance()->aItens)) {
+    if (!array_key_exists((string) $oMaterialCompras->getCodigo(), MaterialComprasRepository::getInstance()->aItens)) {
       MaterialComprasRepository::getInstance()->aItens[$oMaterialCompras->getCodigo()] = $oMaterialCompras;
     }
     return true;
@@ -81,7 +81,7 @@ class MaterialComprasRepository {
     /**
      *
      */
-    if (array_key_exists($oMaterialCompras->getCodigo(), MaterialComprasRepository::getInstance()->aItens)) {
+    if (array_key_exists((string) $oMaterialCompras->getCodigo(), MaterialComprasRepository::getInstance()->aItens)) {
       unset(MaterialComprasRepository::getInstance()->aItens[$oMaterialCompras->getCodigo()]);
     }
     return true;

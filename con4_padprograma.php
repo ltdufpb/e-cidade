@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -28,7 +28,7 @@
 class programa {
     var $arq = null;
 
-  function programa($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/PROGRAMA.TXT",'w+');
      fputs($this->arq,$header);

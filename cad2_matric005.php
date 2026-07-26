@@ -174,7 +174,7 @@ if(isset($j34_setor) && $j34_setor != "") {
 				<tr>
 					<td>
 						<input type="hidden" name="j37_quadra">
-						<input type="hidden" name="j34_setor" value="<?@$j34_setor?>">
+						<input type="hidden" name="j34_setor" value="<?php @$j34_setor?>">
 					</td>
 			  </tr>
 			</table>

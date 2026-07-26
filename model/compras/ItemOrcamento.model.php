@@ -31,14 +31,6 @@
 class ItemOrcamento {
 
   /**
-   * Código do item do orçamento
-   *
-   * @access private
-   * @var Integer
-   */
-  private $iCodigo;
-
-  /**
    * Objeto item da solicitação
    * @access private
    * @var itemSolicitacao
@@ -59,15 +51,22 @@ class ItemOrcamento {
    *
    * @var CotacaoItem[]
    */
-  private $aCotacoes = array();
+  private $aCotacoes = [];
 
   /**
    * Construto da classe
    *
    * @param Integer $iCodigo
    */
-  public function __construct($iCodigo) {
-    $this->iCodigo = $iCodigo;
+  public function __construct(
+      /**
+       * Código do item do orçamento
+       *
+       * @access private
+       */
+      private $iCodigo
+  )
+  {
   }
 
   /**

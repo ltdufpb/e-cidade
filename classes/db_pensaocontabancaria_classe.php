@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE pensaocontabancaria
 class cl_pensaocontabancaria { 
@@ -32,7 +32,7 @@ class cl_pensaocontabancaria {
                  rh139_contabancaria = int4 = Conta Bancária 
                  ";
    //funcao construtor da classe 
-   function cl_pensaocontabancaria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pensaocontabancaria"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

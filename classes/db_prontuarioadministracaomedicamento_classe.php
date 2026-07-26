@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontuarioadministracaomedicamento
 class cl_prontuarioadministracaomedicamento { 
@@ -26,7 +26,7 @@ class cl_prontuarioadministracaomedicamento {
                  sd106_administracaomedicamento = int4 = Administração de Medicamento 
                  ";
    //funcao construtor da classe 
-   function cl_prontuarioadministracaomedicamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuarioadministracaomedicamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -2,10 +2,8 @@
 
 class DDSequenceXML {
   
-  private $oSequenceXml = null;
-
-  public function __construct(DOMNode $oDomNode){
-    $this->oSequenceXml = $oDomNode;
+  public function __construct(private readonly DOMNode $oSequenceXml)
+  {
   }
   
   public function __get($sName){    

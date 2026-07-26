@@ -62,7 +62,7 @@ abstract class Ocorrencia {
    * Notificacoes Enviadas para a Ocorrencia
    * @var array
    */
-  protected $aNotificacoes = array();
+  protected $aNotificacoes = [];
   
   /**
    * Texto na Notificacao

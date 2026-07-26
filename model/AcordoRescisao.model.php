@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,6 +70,7 @@ class AcordoRescisao extends AcordoMovimentacao {
    *
    * @return integer $iTipo
    */
+  #[\Override]
   public function setTipo($iTipo) {
 
   	$this->iTipo = 6;
@@ -90,6 +91,7 @@ class AcordoRescisao extends AcordoMovimentacao {
    *
    * @return AcordoRescisao
    */
+  #[\Override]
   public function save() {
 
     parent::save();
@@ -111,6 +113,7 @@ class AcordoRescisao extends AcordoMovimentacao {
    *
    * @return AcordoRescisao
    */
+  #[\Override]
   public function cancelar() {
 
     parent::cancelar();

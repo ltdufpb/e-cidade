@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ class cl_publicidadesigap {
                  c48_tiporelatoriofiscal = int4 = Tipo Relatório Fiscal 
                  ";
    //funcao construtor da classe 
-   function cl_publicidadesigap() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("publicidadesigap"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

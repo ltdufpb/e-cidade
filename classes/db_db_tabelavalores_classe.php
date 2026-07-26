@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_tabelavalores
 class cl_db_tabelavalores { 
@@ -26,7 +26,7 @@ class cl_db_tabelavalores {
                  db149_db_tabelavalorestipo = int4 = Identificador do TIpo 
                  ";
    //funcao construtor da classe 
-   function cl_db_tabelavalores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_tabelavalores"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

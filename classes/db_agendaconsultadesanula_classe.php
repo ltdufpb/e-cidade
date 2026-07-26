@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ class cl_agendaconsultadesanula {
                  s151_i_logindesanulamento = int4 = Login desanulamento 
                  ";
    //funcao construtor da classe 
-   function cl_agendaconsultadesanula() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendaconsultadesanula"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

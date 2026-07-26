@@ -129,7 +129,7 @@ class Matricula {
    * Situações referentes a matrícula, indexadas pela abreviatura padrão
    * @var array
    */
-  private $aSituacaoMatricula = array(
+  private $aSituacaoMatricula = [
                                        'AVAN'  => 'AVANÇADO',
                                        'CANC'  => 'CANCELADO',
                                        'EVAD'  => 'EVADIDO',
@@ -144,7 +144,7 @@ class Matricula {
                                        'TT'    => 'TROCA DE TURMA',
                                        'RECL'  => 'RECLASSIFICADO',
                                        'CLASS' => 'CLASSIFICADO'
-                                     );
+                                     ];
 
     /**
      * @var DiarioClasse
@@ -197,10 +197,10 @@ class Matricula {
    * Array com os tipos de ingresso
    * @var array
    */
-  public static $aTiposIngresso = array();
+  public static $aTiposIngresso = [];
 
 
-  private static $aSituacoesMatriculaMov = array("ALTERAÇÃO DE DATA DA MATRÍCULA E/OU OBSERVAÇÕES",
+  private static $aSituacoesMatriculaMov = ["ALTERAÇÃO DE DATA DA MATRÍCULA E/OU OBSERVAÇÕES",
                                                  "ALTERAR SITUAÇÃO DA MATRÍCULA",
                                                  "CANCELAR ENCERRAMENTO DE AVALIAÇÕES",
                                                  "ENCERRAR AVALIAÇÕES",
@@ -215,7 +215,7 @@ class Matricula {
                                                  "TROCAR ALUNO DE MODALIDADE",
                                                  "TROCAR ALUNO DE TURMA",
                                                  "TROCA TURNO ED. INFANTIL",
-                                                 "TRANSFERÊNCIA APÓS ENCERRAMENTO");
+                                                 "TRANSFERÊNCIA APÓS ENCERRAMENTO"];
 
     /**
      * @var DBDate
@@ -529,7 +529,7 @@ class Matricula {
    */
   protected function validarSituacaoMatricula($sSituacao) {
 
-    if (in_array(trim($sSituacao), $this->aSituacaoMatricula)) {
+    if (in_array(trim((string) $sSituacao), $this->aSituacaoMatricula)) {
       return true;
     }
     return false;
@@ -554,7 +554,7 @@ class Matricula {
    */
   public function getFaltasNoDia(DBDate $dtFalta) {
 
-    $aFaltasNoDia    = array();
+    $aFaltasNoDia    = [];
     $oDaoAlunoFalta  = db_utils::getDao("diarioclassealunofalta");
     $sWhere          = "ed301_aluno              = {$this->getAluno()->getCodigoAluno()}";
     $sWhere         .= "and ed300_datalancamento = '".$dtFalta->convertTo(DBDate::DATA_EN)."'";
@@ -591,10 +591,10 @@ class Matricula {
                                                       "ed221_i_matricula = {$this->getCodigo()} ";
       $sWhere            .= " and ed221_c_origem  = 'S' ";
       $sWhere            .= $trocaMatricula == true ? " and ed60_c_concluida = 'N'" : "";
-      
+
       $sSqlSerieOrigem    = $oDaoMatriculaSerie->sql_query(null, "ed221_i_serie", null, $sWhere);
       $rsSerieOrigem      = $oDaoMatriculaSerie->sql_record($sSqlSerieOrigem);
-      
+
       if ($oDaoMatriculaSerie->numrows > 0) {
         $iCodigoEtapa       = db_utils::fieldsMemory($rsSerieOrigem, 0)->ed221_i_serie;
         $this->oEtapaOrigem = EtapaRepository::getEtapaByCodigo($iCodigoEtapa);
@@ -984,7 +984,7 @@ class Matricula {
      */
     $sCamposSqlMatricula  = " ed60_i_codigo as matricula_atual, ed47_v_nome as aluno, turma.ed57_c_descr as turma, ";
     $sCamposSqlMatricula .= " calendario.ed52_c_descr as calendario, ed60_c_situacao ";
-    $aWhereSqlMatricula   = array();
+    $aWhereSqlMatricula   = [];
     $aWhereSqlMatricula[] = "ed60_i_aluno            = {$this->oAluno->getCodigoAluno()}";
     $aWhereSqlMatricula[] = "turma.ed57_i_calendario = {$this->oTurma->getCalendario()->getCodigo()}";
     $aWhereSqlMatricula[] = "ed60_c_situacao != 'AVANÇADO'";
@@ -1011,9 +1011,9 @@ class Matricula {
     /*@todo Adicionar Classificação*/
 
       $oDadosMatricula      = db_utils::fieldsMemory($rsMatricula, 0);
-      $oMsgErro->aluno      = trim($oDadosMatricula->aluno);
-      $oMsgErro->turma      = trim($oDadosMatricula->turma);
-      $oMsgErro->calendario = trim($oDadosMatricula->matricula_atual);
+      $oMsgErro->aluno      = trim((string) $oDadosMatricula->aluno);
+      $oMsgErro->turma      = trim((string) $oDadosMatricula->turma);
+      $oMsgErro->calendario = trim((string) $oDadosMatricula->matricula_atual);
       $oMsgErro->situacao   = $oDadosMatricula->ed60_c_situacao;
       $oMsgErro->menu       = "Procedimentos -> Matrículas -> Alterar Situação da Matrícula";
 
@@ -1023,7 +1023,7 @@ class Matricula {
       throw new BusinessException(_M(URL_MENSAGEM_MATRICULA."erro_matricula_existente", $oMsgErro));
     }
 
-    $aCodigoEtapasTurma = array();
+    $aCodigoEtapasTurma = [];
     foreach ($this->oTurma->getEtapas() as $oEtapaTurma) {
       $aCodigoEtapasTurma[] = $oEtapaTurma->getEtapa()->getCodigo();
     }
@@ -1155,7 +1155,7 @@ class Matricula {
    */
   public function getTurnosVinculados() {
 
-    $aTurnosReferentes           = array();
+    $aTurnosReferentes           = [];
     $oDaoMatriculaTurnoReferente = new cl_matriculaturnoreferente();
     $sSqlMatriculaTurnoReferente = $oDaoMatriculaTurnoReferente->sql_query(
                                                                             null,
@@ -1251,15 +1251,15 @@ class Matricula {
         $concluida = $this->isConcluida();
         // TROCA DE TURMA pegar o resultado da turma de destino
         if ($sSituacaoMatricula === 'TROCA DE TURMA' && !$concluida) {
-            $filtros = array(
+            $filtros = [
                 "ed60_matricula = {$this->getMatricula()}",
                 "ed60_i_turmaant = {$this->getTurma()->getCodigo()}"
-            );
+            ];
             $matricula = MatriculaRepository::getMatriculaByFiltros($filtros);
             $sSituacaoMatricula = $this->getSituacao();
         }
 
-        $aSituacoesRetorna = array(
+        $aSituacoesRetorna = [
             'CLASSIFICADO',
             'AVANÇADO',
             'RECLASSIFICADO',
@@ -1272,7 +1272,7 @@ class Matricula {
             'TROCA DE MODALIDADE',
             'FALECIDO',
             'DESISTENTE'
-        );
+        ];
 
         if (in_array($sSituacaoMatricula, $aSituacoesRetorna)) {
             return $sSituacaoMatricula;

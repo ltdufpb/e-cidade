@@ -50,7 +50,7 @@ class cl_aguacontratoligacao {
                  x55_aguacontrato = int4 = Contrato
                  ";
    //funcao construtor da classe
-   function cl_aguacontratoligacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacontratoligacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

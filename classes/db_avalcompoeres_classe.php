@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE avalcompoeres
 class cl_avalcompoeres { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed44_i_codigo = 0; 
-   var $ed44_i_procavaliacao = 0; 
-   var $ed44_i_procresultado = 0; 
-   var $ed44_i_peso = 0; 
-   var $ed44_c_obrigatorio = null; 
-   var $ed44_c_minimoaprov = null; 
+   public $ed44_i_codigo = 0; 
+   public $ed44_i_procavaliacao = 0; 
+   public $ed44_i_procresultado = 0; 
+   public $ed44_i_peso = 0; 
+   public $ed44_c_obrigatorio = null; 
+   public $ed44_c_minimoaprov = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed44_i_codigo = int8 = Código 
                  ed44_i_procavaliacao = int8 = Período de Avaliação 
                  ed44_i_procresultado = int8 = Resultado 
@@ -58,7 +58,7 @@ class cl_avalcompoeres {
                  ed44_c_minimoaprov = char(10) = Mínimo 
                  ";
    //funcao construtor da classe 
-   function cl_avalcompoeres() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avalcompoeres");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]."?ed44_i_procresultado=".@$GLOBALS["HTTP_POST_VARS"]["ed44_i_procresultado"]."&ed42_c_descr=".@$GLOBALS["HTTP_POST_VARS"]["ed42_c_descr"]."&procedimento=".@$GLOBALS["HTTP_POST_VARS"]["procedimento"]."&forma=".@$GLOBALS["HTTP_POST_VARS"]["forma"]); 
@@ -135,10 +135,10 @@ class cl_avalcompoeres {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed44_i_codigo = pg_result($result,0,0); 
+       $this->ed44_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from avalcompoeresult_ed44_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed44_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed44_i_codigo)){
          $this->erro_sql = " Campo ed44_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,7 +176,7 @@ class cl_avalcompoeres {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Avaliações que compoem o Resultado ($this->ed44_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Avaliações que compoem o Resultado já Cadastrado";
@@ -200,15 +200,15 @@ class cl_avalcompoeres {
      $resaco = $this->sql_record($this->sql_query_file($this->ed44_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1008469,'$this->ed44_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1010080,1008469,'','".AddSlashes(pg_result($resaco,0,'ed44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010080,1008470,'','".AddSlashes(pg_result($resaco,0,'ed44_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010080,1008471,'','".AddSlashes(pg_result($resaco,0,'ed44_i_procresultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010080,1008472,'','".AddSlashes(pg_result($resaco,0,'ed44_i_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010080,1008473,'','".AddSlashes(pg_result($resaco,0,'ed44_c_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010080,1008474,'','".AddSlashes(pg_result($resaco,0,'ed44_c_minimoaprov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010080,1008469,'','".AddSlashes(pg_fetch_result($resaco,0,'ed44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010080,1008470,'','".AddSlashes(pg_fetch_result($resaco,0,'ed44_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010080,1008471,'','".AddSlashes(pg_fetch_result($resaco,0,'ed44_i_procresultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010080,1008472,'','".AddSlashes(pg_fetch_result($resaco,0,'ed44_i_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010080,1008473,'','".AddSlashes(pg_fetch_result($resaco,0,'ed44_c_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010080,1008474,'','".AddSlashes(pg_fetch_result($resaco,0,'ed44_c_minimoaprov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -217,10 +217,10 @@ class cl_avalcompoeres {
       $this->atualizacampos();
      $sql = " update avalcompoeres set ";
      $virgula = "";
-     if(trim($this->ed44_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_codigo"])){ 
+     if(trim((string) $this->ed44_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_codigo"])){ 
        $sql  .= $virgula." ed44_i_codigo = $this->ed44_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed44_i_codigo) == null ){ 
+       if(trim((string) $this->ed44_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed44_i_codigo";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_avalcompoeres {
          return false;
        }
      }
-     if(trim($this->ed44_i_procavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_procavaliacao"])){ 
+     if(trim((string) $this->ed44_i_procavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_procavaliacao"])){ 
        $sql  .= $virgula." ed44_i_procavaliacao = $this->ed44_i_procavaliacao ";
        $virgula = ",";
-       if(trim($this->ed44_i_procavaliacao) == null ){ 
+       if(trim((string) $this->ed44_i_procavaliacao) == null ){ 
          $this->erro_sql = " Campo Período de Avaliação nao Informado.";
          $this->erro_campo = "ed44_i_procavaliacao";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_avalcompoeres {
          return false;
        }
      }
-     if(trim($this->ed44_i_procresultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_procresultado"])){ 
+     if(trim((string) $this->ed44_i_procresultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_procresultado"])){ 
        $sql  .= $virgula." ed44_i_procresultado = $this->ed44_i_procresultado ";
        $virgula = ",";
-       if(trim($this->ed44_i_procresultado) == null ){ 
+       if(trim((string) $this->ed44_i_procresultado) == null ){ 
          $this->erro_sql = " Campo Resultado nao Informado.";
          $this->erro_campo = "ed44_i_procresultado";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_avalcompoeres {
          return false;
        }
      }
-     if(trim($this->ed44_i_peso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_peso"])){ 
+     if(trim((string) $this->ed44_i_peso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_peso"])){ 
        $sql  .= $virgula." ed44_i_peso = $this->ed44_i_peso ";
        $virgula = ",";
-       if(trim($this->ed44_i_peso) == null ){ 
+       if(trim((string) $this->ed44_i_peso) == null ){ 
          $this->erro_sql = " Campo Peso nao Informado.";
          $this->erro_campo = "ed44_i_peso";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_avalcompoeres {
          return false;
        }
      }
-     if(trim($this->ed44_c_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_c_obrigatorio"])){ 
+     if(trim((string) $this->ed44_c_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_c_obrigatorio"])){ 
        $sql  .= $virgula." ed44_c_obrigatorio = '$this->ed44_c_obrigatorio' ";
        $virgula = ",";
-       if(trim($this->ed44_c_obrigatorio) == null ){ 
+       if(trim((string) $this->ed44_c_obrigatorio) == null ){ 
          $this->erro_sql = " Campo Obrigatório nao Informado.";
          $this->erro_campo = "ed44_c_obrigatorio";
          $this->erro_banco = "";
@@ -282,7 +282,7 @@ class cl_avalcompoeres {
          return false;
        }
      }
-     if(trim($this->ed44_c_minimoaprov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_c_minimoaprov"])){ 
+     if(trim((string) $this->ed44_c_minimoaprov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed44_c_minimoaprov"])){ 
        $sql  .= $virgula." ed44_c_minimoaprov = '$this->ed44_c_minimoaprov' ";
        $virgula = ",";
      }
@@ -294,21 +294,21 @@ class cl_avalcompoeres {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008469,'$this->ed44_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1010080,1008469,'".AddSlashes(pg_result($resaco,$conresaco,'ed44_i_codigo'))."','$this->ed44_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010080,1008469,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed44_i_codigo'))."','$this->ed44_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_procavaliacao"]))
-           $resac = db_query("insert into db_acount values($acount,1010080,1008470,'".AddSlashes(pg_result($resaco,$conresaco,'ed44_i_procavaliacao'))."','$this->ed44_i_procavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010080,1008470,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed44_i_procavaliacao'))."','$this->ed44_i_procavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_procresultado"]))
-           $resac = db_query("insert into db_acount values($acount,1010080,1008471,'".AddSlashes(pg_result($resaco,$conresaco,'ed44_i_procresultado'))."','$this->ed44_i_procresultado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010080,1008471,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed44_i_procresultado'))."','$this->ed44_i_procresultado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed44_i_peso"]))
-           $resac = db_query("insert into db_acount values($acount,1010080,1008472,'".AddSlashes(pg_result($resaco,$conresaco,'ed44_i_peso'))."','$this->ed44_i_peso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010080,1008472,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed44_i_peso'))."','$this->ed44_i_peso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed44_c_obrigatorio"]))
-           $resac = db_query("insert into db_acount values($acount,1010080,1008473,'".AddSlashes(pg_result($resaco,$conresaco,'ed44_c_obrigatorio'))."','$this->ed44_c_obrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010080,1008473,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed44_c_obrigatorio'))."','$this->ed44_c_obrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed44_c_minimoaprov"]))
-           $resac = db_query("insert into db_acount values($acount,1010080,1008474,'".AddSlashes(pg_result($resaco,$conresaco,'ed44_c_minimoaprov'))."','$this->ed44_c_minimoaprov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1010080,1008474,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed44_c_minimoaprov'))."','$this->ed44_c_minimoaprov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -353,15 +353,15 @@ class cl_avalcompoeres {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008469,'$ed44_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1010080,1008469,'','".AddSlashes(pg_result($resaco,$iresaco,'ed44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010080,1008470,'','".AddSlashes(pg_result($resaco,$iresaco,'ed44_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010080,1008471,'','".AddSlashes(pg_result($resaco,$iresaco,'ed44_i_procresultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010080,1008472,'','".AddSlashes(pg_result($resaco,$iresaco,'ed44_i_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010080,1008473,'','".AddSlashes(pg_result($resaco,$iresaco,'ed44_c_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010080,1008474,'','".AddSlashes(pg_result($resaco,$iresaco,'ed44_c_minimoaprov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010080,1008469,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010080,1008470,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed44_i_procavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010080,1008471,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed44_i_procresultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010080,1008472,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed44_i_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010080,1008473,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed44_c_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010080,1008474,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed44_c_minimoaprov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from avalcompoeres
@@ -421,7 +421,7 @@ class cl_avalcompoeres {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:avalcompoeres";
@@ -435,7 +435,7 @@ class cl_avalcompoeres {
    function sql_query ( $ed44_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_avalcompoeres {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_avalcompoeres {
    function sql_query_file ( $ed44_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -497,7 +497,7 @@ class cl_avalcompoeres {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

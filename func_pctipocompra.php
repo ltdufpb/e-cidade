@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -40,7 +40,8 @@ if (empty($chave_pc50_codcom)) {
   $chave_pc50_codcom = null;
 }
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpctipocompra = new cl_pctipocompra;
 $clpctipocompra->rotulo->label("pc50_codcom");
 $clpctipocompra->rotulo->label("pc50_descr");
@@ -64,7 +65,7 @@ $sDescricao = isset($chave_pc50_descr) ? $chave_pc50_descr : null;
               <?=$Lpc50_codcom?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("pc50_codcom",4,$Ipc50_codcom,true,"text",4,"","chave_pc50_codcom");
               ?>
             </td>
@@ -129,12 +130,12 @@ $sDescricao = isset($chave_pc50_descr) ? $chave_pc50_descr : null;
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_placaixa_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clplacaixa = new cl_placaixa;
 $clplacaixa->rotulo->label("k80_codpla");
 $clplacaixa->rotulo->label("k80_data");
@@ -54,7 +55,7 @@ $clplacaixa->rotulo->label("k80_data");
               <?=$Lk80_codpla ?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("k80_codpla", 6, $Ik80_codpla, true, "text", 4, "", "chave_k80_codpla");
               ?>
             </td>
@@ -72,7 +73,7 @@ $clplacaixa->rotulo->label("k80_data");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhere  = "     k80_instit = " . db_getsession("DB_instit");
       $sWhere .= " and to_char(k80_data,'YYYY') = '". db_getsession("DB_anousu") . "'";
 

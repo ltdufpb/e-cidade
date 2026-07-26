@@ -741,9 +741,9 @@ $iParcelaMaxima = 12;
 ?>
 
 
-<? //db_criatermometro('termometro','Concluido...','blue',1); ?>
+<?php  //db_criatermometro('termometro','Concluido...','blue',1); ?>
 
-<?
+<?php 
 echo "iniciou o processamento.";
 //die("fim \r");
 $sQuebraLinha = "\r\n";

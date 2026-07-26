@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clconcarpeculiarclassificacao->rotulo->label();
        <?=@$Lc09_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('c09_sequencial',10,$Ic09_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('c09_sequencial',10,$Ic09_sequencial,true,'text',$db_opcao,"")
        <?=@$Lc09_descricao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('c09_descricao',30,$Ic09_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_concarpeculiarclassificacao.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_processoforopartilhacusta_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocessoforopartilhacusta = new cl_processoforopartilhacusta;
 $clprocessoforopartilhacusta->rotulo->label("v77_sequencial");
 $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
@@ -54,7 +55,7 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
               <?=$Lv77_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v77_sequencial",10,$Iv77_sequencial,true,"text",4,"","chave_v77_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
               <?=$Lv77_processoforopartilha?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v77_processoforopartilha",10,$Iv77_processoforopartilha,true,"text",4,"","chave_v77_processoforopartilha");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_processoforopartilhacusta.php")==true){
@@ -122,12 +123,12 @@ $clprocessoforopartilhacusta->rotulo->label("v77_processoforopartilha");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

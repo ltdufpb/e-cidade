@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pontof13_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpontof13 = new cl_pontof13;
 $clpontof13->rotulo->label("r34_anousu");
 $clpontof13->rotulo->label("r34_mesusu");
@@ -57,7 +58,7 @@ $clpontof13->rotulo->label("r34_regist");
               <?=$Lr34_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r34_mesusu",2,$Ir34_mesusu,true,"text",4,"","chave_r34_mesusu");
 		       ?>
             </td>
@@ -67,7 +68,7 @@ $clpontof13->rotulo->label("r34_regist");
               <?=$Lr34_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r34_regist",6,$Ir34_regist,true,"text",4,"","chave_r34_regist");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $clpontof13->rotulo->label("r34_regist");
               <?=$Lr34_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r34_rubric",4,$Ir34_rubric,true,"text",4,"","chave_r34_rubric");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $clpontof13->rotulo->label("r34_regist");
               <?=$Lr34_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r34_regist",6,$Ir34_regist,true,"text",4,"","chave_r34_regist");
 		       ?>
             </td>
@@ -105,7 +106,7 @@ $clpontof13->rotulo->label("r34_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pontof13.php")==true){
@@ -141,12 +142,12 @@ $clpontof13->rotulo->label("r34_regist");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -70,7 +70,7 @@ class cl_tipoproc
                  ";
 
     //funcao construtor da classe
-    function cl_tipoproc()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("protocolo.tipoproc");

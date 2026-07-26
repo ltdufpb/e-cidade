@@ -176,7 +176,7 @@ if( isset( $chavepesquisa ) ) {
                     <?=$Lz01_sexo?> <?=$z01_sexo == "M" ? "Masculino" : "Feminino"?>
                     &nbsp;&nbsp;
                     <?=$Lz01_estciv?>
-                    <?
+                    <?php 
                     if ($z01_estciv == 1) {
                       echo "Solteiro";
                     } else if ($z01_estciv == 2) {
@@ -374,9 +374,9 @@ function js_trocaMatricula(matricula,cgm) {
 
 </script>
 <?php
-$array_cores     = array("#FFCC99","#CCCCFF","#99FFCC","#CCFF66","#CC9933","#FF99FF","#996699","#66CC99","#FFCCCC","#9999FF");
-$sess_corhorario = array();
-$sess_cordisp    = array();
+$array_cores     = ["#FFCC99","#CCCCFF","#99FFCC","#CCFF66","#CC9933","#FF99FF","#996699","#66CC99","#FFCCCC","#9999FF"];
+$sess_corhorario = [];
+$sess_cordisp    = [];
 
 $sWhere  = " case";
 $sWhere .= "   when ed20_i_tiposervidor = 1";
@@ -417,7 +417,7 @@ if ($clrechumanohoradisp->numrows > 0) {
   @session_register("sess_cordisp");
 }
 
-$array_cores = array("#FFCC99","#CCCCFF","#99FFCC","#CCFF66","#CC9933","#FF99FF","#996699","#66CC99","#FFCCCC","#9999FF");
+$array_cores = ["#FFCC99","#CCCCFF","#99FFCC","#CCFF66","#CC9933","#FF99FF","#996699","#66CC99","#FFCCCC","#9999FF"];
 for ($y = 0; $y < count($array_cores); $y++) {
   echo "<td width='30' heigth='30' bgcolor='".$array_cores[$y]."'>&nbsp;</td>";
 }

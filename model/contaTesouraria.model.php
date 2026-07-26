@@ -394,7 +394,7 @@ class contaTesouraria
         $sSqlSaltes = $oDaoSaltes->sql_query(null, $sCampos, $sOrder, $sWhere);
         $rsSaltes   = $oDaoSaltes->sql_record($sSqlSaltes);
         $iNumRows   = $oDaoSaltes->numrows;
-        $aContas    = array();
+        $aContas    = [];
         if ($iNumRows > 0) {
             for ($i = 0; $i < $iNumRows; $i++) {
                 $iConta    = db_utils::fieldsMemory($rsSaltes, $i)->k13_conta;
@@ -428,7 +428,7 @@ class contaTesouraria
             throw new Exception($oDaoSaltes->erro_msg);
         }
 
-        $dtDataAtualizar = implode("-", array_reverse(explode("/", $dtDataAtualizar)));
+        $dtDataAtualizar = implode("-", array_reverse(explode("/", (string) $dtDataAtualizar)));
 
         /*
          * se o parametro $lverificaData == true
@@ -505,10 +505,10 @@ class contaTesouraria
         }
 
         $oSaldoTesouraria                 = new stdClass();
-        $oSaldoTesouraria->nSaldoAnterior = trim(substr($oSaldo->saldo, 2, 13));
-        $oSaldoTesouraria->nDebitado      = trim(substr($oSaldo->saldo, 15, 13));
-        $oSaldoTesouraria->nCreditado     = trim(substr($oSaldo->saldo, 28, 13));
-        $oSaldoTesouraria->nSaldoFinal    = trim(substr($oSaldo->saldo, 41, 13));
+        $oSaldoTesouraria->nSaldoAnterior = trim(substr((string) $oSaldo->saldo, 2, 13));
+        $oSaldoTesouraria->nDebitado      = trim(substr((string) $oSaldo->saldo, 15, 13));
+        $oSaldoTesouraria->nCreditado     = trim(substr((string) $oSaldo->saldo, 28, 13));
+        $oSaldoTesouraria->nSaldoFinal    = trim(substr((string) $oSaldo->saldo, 41, 13));
 
         return $oSaldoTesouraria;
     }

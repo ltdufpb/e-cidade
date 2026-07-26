@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $clrotulo->label("sd02_c_nome");
        <b> Data Inicial:</b>
      </td>
      <td>
-       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
      </td>
      </tr>
      <tr>
@@ -71,7 +71,7 @@ $clrotulo->label("sd02_c_nome");
        <b> Data Final: </b>
       </td>
       <td>
-       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
       </td>
      </tr>
      <tr>
@@ -84,7 +84,7 @@ $clrotulo->label("sd02_c_nome");
   </td>
  </tr>
 </table>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

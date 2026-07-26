@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clrotulo->label("z01_nome");
        <?=@$Lx16_dtini?>
     </td>
     <td> 
-      <?
+      <?php 
         db_inputdata('x16_dtini',@$x16_dtini_dia,@$x16_dtini_mes,@$x16_dtini_ano,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -48,28 +48,28 @@ $clrotulo->label("z01_nome");
        <?=@$Lx16_dtfim?>
     </td>
     <td> 
-      <?
+      <?php 
         db_inputdata('x16_dtfim',@$x16_dtfim_dia,@$x16_dtfim_mes,@$x16_dtfim_ano,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tx16_numcgm?>">
-       <?
+       <?php 
          db_ancora(@$Lx16_numcgm,"js_pesquisax16_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('x16_numcgm',10,$Ix16_numcgm,true,'text',$db_opcao," onchange='js_pesquisax16_numcgm(false);'")
       ?>
-      <?
+      <?php 
         db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
       ?>
     </td>
   </tr>
   
-  <?
+  <?php 
   //Constroi input se usuario não for administrador do sistema e somente na tela de alteração. 
   //Variável $mostrainputalterar setada em agu1_agualeiturista002.php
   if((db_getsession("DB_administrador") != 1) and ($mostrainputalterar == true)) { 
@@ -79,12 +79,12 @@ $clrotulo->label("z01_nome");
        <b>Senha Atual</b>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('x16_senha_atual',50,'',true,'password',$db_opcao," onchange=\"return validaSenhaAtual()\"; ")
       ?>
     </td>
   </tr>
-  <?
+  <?php 
   }
   ?>
  
@@ -93,7 +93,7 @@ $clrotulo->label("z01_nome");
        <b>Nova Senha:</b>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('x16_senha',50,'',true,'password',$db_opcao,"")
       ?>
     </td>
@@ -104,7 +104,7 @@ $clrotulo->label("z01_nome");
        <b>Confirma Senha:</b>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('x16_senha_confirma',50,"",true,'password',$db_opcao,"")
       ?>
     </td>
@@ -194,7 +194,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_agualeiturista.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

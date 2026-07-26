@@ -1259,8 +1259,8 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         <td align="center" colspan="3" style="text-align:center !important;">
           <br/>
           <input name="pesquisar" type="button" id="pesquisar" value="Processar" onclick="js_pesquisa(document.form1.subgrupo.value);" disabled>
-          <input type="hidden" name="base" value="<?=isset($base) ? $base : ""?>">
-          <input type="hidden" name="curso" value="<?=isset($curso) ? $curso : ""?>">
+          <input type="hidden" name="base" value="<?=$base ?? ""?>">
+          <input type="hidden" name="curso" value="<?=$curso ?? ""?>">
         </td>
       </tr>
         <?php }?>

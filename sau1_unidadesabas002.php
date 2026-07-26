@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    $clcriaabas->identifica = array("a1"=>"Identificação","a2"=>"Caracterização","a3"=>"Convênios / Vigilância");
    $clcriaabas->sizecampo  = array("a1"=>"25","a2"=>"25","a3"=>"25");
    $clcriaabas->src        = array("a1"=>"sau1_unidades002.php","a2"=>"","a3"=>"");
@@ -68,6 +68,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

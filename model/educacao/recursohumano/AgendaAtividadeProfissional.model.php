@@ -58,7 +58,7 @@ class AgendaAtividadeProfissional {
   private $sHoraInicio;
   private $sHoraFim;
 
-  static $aTurnos = array(1 => "Manhã", 2 => "Tarde", 3 => "Noite");
+  static $aTurnos = [1 => "Manhã", 2 => "Tarde", 3 => "Noite"];
 
   function __construct( $iCodigo = null ) {
 

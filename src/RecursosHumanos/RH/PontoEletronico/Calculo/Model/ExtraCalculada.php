@@ -34,17 +34,6 @@ namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model;
  */
 class ExtraCalculada {
   /**
-   * @var int
-   */
-  private $iMinutos;
-
-  /**
-   * Constante da classe Extra
-   * @var int
-   */
-  private $iTipo;
-
-  /**
    * @return int
    */
   public function getMinutos()
@@ -83,10 +72,14 @@ class ExtraCalculada {
    * @param int $iMinutos
    * @param int $iTipo
    */
-  public function __construct($iMinutos, $iTipo)
+  public function __construct(
+      private $iMinutos,
+      /**
+       * Constante da classe Extra
+       */
+      private $iTipo
+  )
   {
-    $this->iMinutos = $iMinutos;
-    $this->iTipo = $iTipo;
   }
 
 }

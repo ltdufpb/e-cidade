@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -41,7 +41,8 @@ $clbens->rotulo->label("t52_bem");
 $clbens->rotulo->label("t52_descr");
 $clclabens->rotulo->label("t64_class");
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 ?>
 <html>
 <head>
@@ -66,13 +67,13 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
                                  <?=$Lt52_bem?>
                 </td>
                 <td align="left" nowrap>
-                                 <?
+                                 <?php 
                     db_input("t52_bem",10,$It52_bem,true,"text",4,"","chave_t52_bem");
 	                         ?>
                 </td>
               </tr>
               <tr>
-                                 <?
+                                 <?php 
                     $cldb_estrut->autocompletar = true;
                     $cldb_estrut->funcao_onchange = 'js_troca(this.value)';
                     $cldb_estrut->nomeform = 'form1';
@@ -90,7 +91,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
                                  <?=$Lt52_descr?>
                 </td>
                 <td align="left" nowrap>
-                <?
+                <?php 
                     db_input("t52_descr",40,$It52_descr,true,"text",4,"","chave_t52_descr");
                 ?>
                 </td>
@@ -110,7 +111,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 	  <td>
             <table border="0" >
 	      <tr>
-                                <?
+                                <?php 
 		$campos = " distinct t52_bem,t64_class,t52_descr,t52_depart,descrdepto ";
                 if(isset($t52_depart)){
 		  if(isset($t64_class) && trim($t64_class) != ""){

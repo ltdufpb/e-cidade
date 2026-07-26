@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -119,7 +119,7 @@ $sSql = $oDaoSolicitaRegistroPreco->sql_query(null, $sCampos, null, $sWhere);
   
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
        $totalizacao = array();
        db_lovrot($sSql,15,"()","",$oGet->funcao_js,"","NoMe", array(),false, $totalizacao);
        /*      

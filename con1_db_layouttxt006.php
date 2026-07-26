@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -92,7 +92,7 @@ if(isset($excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmdb_layouttxt.php"));
 	?>
     </center>
@@ -104,7 +104,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","excluir",true,1,"excluir",true);
 </script>
-<?
+<?php 
 if(isset($excluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

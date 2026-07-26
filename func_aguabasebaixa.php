@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguabasebaixa_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguabasebaixa = new cl_aguabasebaixa;
 $claguabasebaixa->rotulo->label("x08_matric");
 $claguabasebaixa->rotulo->label("x08_obs");
@@ -54,7 +55,7 @@ $claguabasebaixa->rotulo->label("x08_obs");
               <?=$Lx08_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x08_matric",8,$Ix08_matric,true,"text",4,"","chave_x08_matric");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $claguabasebaixa->rotulo->label("x08_obs");
               <?=$Lx08_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x08_obs",50,$Ix08_obs,true,"text",4,"","chave_x08_obs");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $claguabasebaixa->rotulo->label("x08_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguabasebaixa.php")==true){
@@ -118,12 +119,12 @@ $claguabasebaixa->rotulo->label("x08_obs");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

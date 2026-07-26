@@ -54,13 +54,13 @@ function erro($sDescricao) {
     <tr>
       <td align='center'>
         <font color='#FF0000' face='arial'>
-          <b><br><br><?echo $sDescricao;?><br><br>
+          <b><br><br><?php echo $sDescricao;?><br><br>
           <input type='button' value='Fechar' onclick='window.close()'></b>
         </font>
       </td>
     </tr>
  </table>
- <?
+ <?php 
  exit;
 
 }

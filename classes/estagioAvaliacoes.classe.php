@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -27,7 +27,7 @@
 
 class estagioAvaliacao {
   
-  function estagioAvaliacao($iCodAvaliacao,$setSession=true){
+  function __construct($iCodAvaliacao,$setSession=true){
 
      if (!class_exists("rhestagioagendadata")){
          require_once modification("classes/db_rhestagioagendadata_classe.php");

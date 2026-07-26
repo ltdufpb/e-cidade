@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcppavalele_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcppavalele = new cl_orcppavalele;
 $clorcppavalele->rotulo->label("o25_codseqppa");
 $clorcppavalele->rotulo->label("o25_codele");
@@ -55,7 +56,7 @@ $clorcppavalele->rotulo->label("o25_codele");
               <?=$Lo25_codseqppa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o25_codseqppa",8,$Io25_codseqppa,true,"text",4,"","chave_o25_codseqppa");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clorcppavalele->rotulo->label("o25_codele");
               <?=$Lo25_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o25_codele",6,$Io25_codele,true,"text",4,"","chave_o25_codele");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clorcppavalele->rotulo->label("o25_codele");
               <?=$Lo25_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o25_codele",6,$Io25_codele,true,"text",4,"","chave_o25_codele");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clorcppavalele->rotulo->label("o25_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcppavalele.php")==true){
@@ -129,12 +130,12 @@ $clorcppavalele->rotulo->label("o25_codele");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -68,7 +68,7 @@ class cl_lote {
                  j34_areapreservada = float8 = Area Preservada
                  ";
    //funcao construtor da classe
-   function cl_lote() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lote");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

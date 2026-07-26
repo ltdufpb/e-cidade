@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("classes/db_orcfontes_classe.php"));
 require(modification("libs/db_liborcamento.php"));
 include(modification("classes/db_orcparametro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcparametro = new cl_orcparametro;
 $clestrutura = new cl_estrutura;
 $clorcfontes = new cl_orcfontes;
@@ -67,12 +68,12 @@ function js_limpa(){
               <?=$Lo57_codfon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o57_codfon",6,$Io57_codfon,true,"text",4,"","chave_o57_codfon");
 		       ?>
             </td>
           </tr>
-<?
+<?php 
          $clestrutura->mascara =false;
          $clestrutura->input   =false;
          $clestrutura->nomeform="form2";//o nome do campo é DB_txtdotacao
@@ -91,7 +92,7 @@ function js_limpa(){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $dbwhere = "o57_anousu = ".db_getsession("DB_anousu") ;
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -136,12 +137,12 @@ function js_limpa(){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

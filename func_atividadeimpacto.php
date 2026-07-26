@@ -34,7 +34,8 @@ require_once(modification("classes/db_atividadeimpacto_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatividadeimpacto = new cl_atividadeimpacto;
 $clatividadeimpacto->rotulo->label("am03_sequencial");
 $clatividadeimpacto->rotulo->label("am03_descricao");
@@ -52,11 +53,11 @@ $clatividadeimpacto->rotulo->label("am03_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam03_sequencial?></label></td>
-          <td><? db_input("am03_sequencial",10,$Iam03_sequencial,true,"text",4,"","chave_am03_sequencial"); ?></td>
+          <td><?php  db_input("am03_sequencial",10,$Iam03_sequencial,true,"text",4,"","chave_am03_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam03_descricao?></label></td>
-          <td><? db_input("am03_descricao",40,$Iam03_descricao,true,"text",4,"","chave_am03_descricao");?></td>
+          <td><?php  db_input("am03_descricao",40,$Iam03_descricao,true,"text",4,"","chave_am03_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -112,12 +113,12 @@ $clatividadeimpacto->rotulo->label("am03_descricao");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

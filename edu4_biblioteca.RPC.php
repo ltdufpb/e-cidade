@@ -50,7 +50,7 @@ try {
 
     case "buscaCategoriaDeCarteira":
 
-      $oRetorno->aCategorias = array();
+      $oRetorno->aCategorias = [];
 
       $sWhere  = " biblioteca.bi17_coddepto = {$iDepartamento} ";
       $sCampos = "bi07_codigo as codigo, bi07_nome as categoria ";

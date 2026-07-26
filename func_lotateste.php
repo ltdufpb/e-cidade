@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lotateste_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllotateste = new cl_lotateste;
 $cllotateste->rotulo->label("lotaant");
 $cllotateste->rotulo->label("descrlota");
@@ -54,7 +55,7 @@ $cllotateste->rotulo->label("descrlota");
               <?=$Llotaant?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("lotaant",15,$Ilotaant,true,"text",4,"","chave_lotaant");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cllotateste->rotulo->label("descrlota");
               <?=$Ldescrlota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("descrlota",40,$Idescrlota,true,"text",4,"","chave_descrlota");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cllotateste->rotulo->label("descrlota");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lotateste.php")==true){
@@ -118,12 +119,12 @@ $cllotateste->rotulo->label("descrlota");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

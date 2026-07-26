@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ class cl_arreinscr {
                  k00_perc = float8 = Percentual em relação ao débito 
                  ";
   //funcao construtor da classe 
-  function cl_arreinscr() {
+  function __construct() {
 
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("arreinscr");

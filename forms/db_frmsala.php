@@ -62,16 +62,16 @@ if (isset($opcao) && $opcao == "alterar") {
                     <?= @$Led16_i_codigo ?>
                 </td>
                 <td colspan="2">
-                    <? db_input('ed16_i_codigo', 15, $Ied16_i_codigo, true, 'text', 3, "") ?>
+                    <?php  db_input('ed16_i_codigo', 15, $Ied16_i_codigo, true, 'text', 3, "") ?>
                 </td>
             </tr>
             <tr>
                 <td nowrap title="<?= @$Ted16_i_escola ?>">
-                    <? db_ancora(@$Led16_i_escola, "js_pesquisaed16_i_escola(true);", 3); ?>
+                    <?php  db_ancora(@$Led16_i_escola, "js_pesquisaed16_i_escola(true);", 3); ?>
                 </td>
                 <td colspan="2">
-                    <? db_input('ed16_i_escola', 15, @$Ied16_i_escola, true, 'text', 3, '') ?>
-                    <? db_input('descrdepto', 50, @$Idescrdepto, true, 'text', 3, '') ?>
+                    <?php  db_input('ed16_i_escola', 15, @$Ied16_i_escola, true, 'text', 3, '') ?>
+                    <?php  db_input('descrdepto', 50, @$Idescrdepto, true, 'text', 3, '') ?>
                 </td>
             </tr>
             <tr>
@@ -101,9 +101,9 @@ if (isset($opcao) && $opcao == "alterar") {
                         <?= @$Led16_f_metragem ?>
                         <?php db_input('ed16_f_metragem', 10, $Ied16_f_metragem, true, 'text', $db_opcao, " onchange='js_calculo(this.value);'") ?><br>
                         <?= @$Led233_f_medidaaluno ?>
-                        <? db_input('ed233_f_medidaaluno', 10, $Ied233_f_medidaaluno, true, 'text', 3, "") ?> <?= isset($ed233_f_medidaaluno) && $ed233_f_medidaaluno != "" ? "" : " (Procedimentos -> Parâmetros)" ?><br>
+                        <?php  db_input('ed233_f_medidaaluno', 10, $Ied233_f_medidaaluno, true, 'text', 3, "") ?> <?= isset($ed233_f_medidaaluno) && $ed233_f_medidaaluno != "" ? "" : " (Procedimentos -> Parâmetros)" ?><br>
                         <?= @$Led16_i_calculoaluno ?>
-                        <? db_input('ed16_i_calculoaluno', 10, $Ied16_i_calculoaluno, true, 'text', 3, "") ?>
+                        <?php  db_input('ed16_i_calculoaluno', 10, $Ied16_i_calculoaluno, true, 'text', 3, "") ?>
                     </fieldset>
                 </td>
             </tr>
@@ -121,7 +121,7 @@ if (isset($opcao) && $opcao == "alterar") {
                 </td>
                 <td>
                     <?php
-                    $x = array('S' => 'SIM', 'N' => 'NÃO');
+                    $x = ['S' => 'SIM', 'N' => 'NÃO'];
                     db_select('ed16_c_pertence', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -132,13 +132,13 @@ if (isset($opcao) && $opcao == "alterar") {
                 </td>
                 <td colspan="2">
                     <?php
-                    $x = array(
+                    $x = [
                         '' => "Selecione",
                         0 => "A turma não está em local de funcionamento diferenciado",
                         1 => "Sala anexa",
                         2 => "Unidade de atendimento socioeducativo",
                         3 => "Unidade prisional"
-                    );
+                    ];
                     db_select('ed16_local_funcionamento', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -150,7 +150,7 @@ if (isset($opcao) && $opcao == "alterar") {
 
     <div >
         <?php
-        $chavepri = array(
+        $chavepri = [
             "ed16_i_escola" => @$ed16_i_escola,
             "ed16_i_codigo" => @$ed16_i_codigo,
             "ed16_i_tiposala" => @$ed16_i_tiposala,
@@ -162,7 +162,7 @@ if (isset($opcao) && $opcao == "alterar") {
             "ed16_f_metragem" => @$ed16_f_metragem,
             "ed16_i_calculoaluno" => @$ed16_i_calculoaluno,
             "ed16_local_funcionamento" => @$ed16_local_funcionamento
-        );
+        ];
         $cliframe_alterar_excluir->chavepri = $chavepri;
         $cliframe_alterar_excluir->sql = $clsala->sql_query("", "*", "ed16_c_descr", " ed16_i_escola = $ed16_i_escola");
         $cliframe_alterar_excluir->campos = "ed16_i_codigo,ed16_c_descr,ed16_i_capacidade,ed16_f_metragem,ed16_i_calculoaluno,ed16_c_pertence,ed14_c_descr";

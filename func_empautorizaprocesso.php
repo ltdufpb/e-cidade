@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empautorizaprocesso_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempautorizaprocesso = new cl_empautorizaprocesso;
 $clempautorizaprocesso->rotulo->label("e150_sequencial");
 $clempautorizaprocesso->rotulo->label("e150_numeroprocesso");
@@ -54,7 +55,7 @@ $clempautorizaprocesso->rotulo->label("e150_numeroprocesso");
               <?=$Le150_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e150_sequencial",10,$Ie150_sequencial,true,"text",4,"","chave_e150_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clempautorizaprocesso->rotulo->label("e150_numeroprocesso");
               <?=$Le150_numeroprocesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e150_numeroprocesso",15,$Ie150_numeroprocesso,true,"text",4,"","chave_e150_numeroprocesso");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clempautorizaprocesso->rotulo->label("e150_numeroprocesso");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empautorizaprocesso.php")==true){
@@ -122,12 +123,12 @@ $clempautorizaprocesso->rotulo->label("e150_numeroprocesso");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

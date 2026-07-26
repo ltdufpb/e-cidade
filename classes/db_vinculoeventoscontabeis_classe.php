@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE vinculoeventoscontabeis
 class cl_vinculoeventoscontabeis {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c115_sequencial = 0;
-   var $c115_conhistdocinclusao = 0;
-   var $c115_conhistdocestorno = 0;
+   public $c115_sequencial = 0;
+   public $c115_conhistdocinclusao = 0;
+   public $c115_conhistdocestorno = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c115_sequencial = int4 = Sequencial
                  c115_conhistdocinclusao = int4 = Histórico de inclusão
                  c115_conhistdocestorno = int4 = Histórico de estorno
                  ";
    //funcao construtor da classe
-   function cl_vinculoeventoscontabeis() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vinculoeventoscontabeis");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_vinculoeventoscontabeis {
          $this->erro_status = "0";
          return false;
        }
-       $this->c115_sequencial = pg_result($result,0,0);
+       $this->c115_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from vinculoeventoscontabeis_c115_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c115_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c115_sequencial)){
          $this->erro_sql = " Campo c115_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_vinculoeventoscontabeis {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vinculo dos eventos contábeis ($this->c115_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vinculo dos eventos contábeis já Cadastrado";
@@ -171,12 +171,12 @@ class cl_vinculoeventoscontabeis {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20286,'$this->c115_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3646,20286,'','".AddSlashes(pg_result($resaco,0,'c115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3646,20287,'','".AddSlashes(pg_result($resaco,0,'c115_conhistdocinclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3646,20288,'','".AddSlashes(pg_result($resaco,0,'c115_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3646,20286,'','".AddSlashes(pg_fetch_result($resaco,0,'c115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3646,20287,'','".AddSlashes(pg_fetch_result($resaco,0,'c115_conhistdocinclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3646,20288,'','".AddSlashes(pg_fetch_result($resaco,0,'c115_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -206,10 +206,10 @@ class cl_vinculoeventoscontabeis {
          $this->erro_status = "0";
          return false;
        }
-       $this->c115_sequencial = pg_result($result,0,0);
+       $this->c115_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from vinculoeventoscontabeis_c115_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c115_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c115_sequencial)){
          $this->erro_sql = " Campo c115_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -241,7 +241,7 @@ class cl_vinculoeventoscontabeis {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vinculo dos eventos contábeis ($this->c115_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vinculo dos eventos contábeis já Cadastrado";
@@ -270,12 +270,12 @@ class cl_vinculoeventoscontabeis {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20286,'$this->c115_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3646,20286,'','".AddSlashes(pg_result($resaco,0,'c115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3646,20287,'','".AddSlashes(pg_result($resaco,0,'c115_conhistdocinclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3646,20288,'','".AddSlashes(pg_result($resaco,0,'c115_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3646,20286,'','".AddSlashes(pg_fetch_result($resaco,0,'c115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3646,20287,'','".AddSlashes(pg_fetch_result($resaco,0,'c115_conhistdocinclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3646,20288,'','".AddSlashes(pg_fetch_result($resaco,0,'c115_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -286,10 +286,10 @@ class cl_vinculoeventoscontabeis {
       $this->atualizacampos();
      $sql = " update vinculoeventoscontabeis set ";
      $virgula = "";
-     if(trim($this->c115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c115_sequencial"])){
+     if(trim((string) $this->c115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c115_sequencial"])){
        $sql  .= $virgula." c115_sequencial = $this->c115_sequencial ";
        $virgula = ",";
-       if(trim($this->c115_sequencial) == null ){
+       if(trim((string) $this->c115_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "c115_sequencial";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_vinculoeventoscontabeis {
          return false;
        }
      }
-     if(trim($this->c115_conhistdocinclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c115_conhistdocinclusao"])){
+     if(trim((string) $this->c115_conhistdocinclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c115_conhistdocinclusao"])){
        $sql  .= $virgula." c115_conhistdocinclusao = $this->c115_conhistdocinclusao ";
        $virgula = ",";
-       if(trim($this->c115_conhistdocinclusao) == null ){
+       if(trim((string) $this->c115_conhistdocinclusao) == null ){
          $this->erro_sql = " Campo Histórico de inclusão não informado.";
          $this->erro_campo = "c115_conhistdocinclusao";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_vinculoeventoscontabeis {
          return false;
        }
      }
-     if(trim($this->c115_conhistdocestorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c115_conhistdocestorno"])){
+     if(trim((string) $this->c115_conhistdocestorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c115_conhistdocestorno"])){
        $sql  .= $virgula." c115_conhistdocestorno = $this->c115_conhistdocestorno ";
        $virgula = ",";
-       if(trim($this->c115_conhistdocestorno) == null ){
+       if(trim((string) $this->c115_conhistdocestorno) == null ){
          $this->erro_sql = " Campo Histórico de estorno não informado.";
          $this->erro_campo = "c115_conhistdocestorno";
          $this->erro_banco = "";
@@ -339,15 +339,15 @@ class cl_vinculoeventoscontabeis {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20286,'$this->c115_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c115_sequencial"]) || $this->c115_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3646,20286,'".AddSlashes(pg_result($resaco,$conresaco,'c115_sequencial'))."','$this->c115_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3646,20286,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c115_sequencial'))."','$this->c115_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c115_conhistdocinclusao"]) || $this->c115_conhistdocinclusao != "")
-             $resac = db_query("insert into db_acount values($acount,3646,20287,'".AddSlashes(pg_result($resaco,$conresaco,'c115_conhistdocinclusao'))."','$this->c115_conhistdocinclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3646,20287,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c115_conhistdocinclusao'))."','$this->c115_conhistdocinclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c115_conhistdocestorno"]) || $this->c115_conhistdocestorno != "")
-             $resac = db_query("insert into db_acount values($acount,3646,20288,'".AddSlashes(pg_result($resaco,$conresaco,'c115_conhistdocestorno'))."','$this->c115_conhistdocestorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3646,20288,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c115_conhistdocestorno'))."','$this->c115_conhistdocestorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -401,12 +401,12 @@ class cl_vinculoeventoscontabeis {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20286,'$c115_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3646,20286,'','".AddSlashes(pg_result($resaco,$iresaco,'c115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3646,20287,'','".AddSlashes(pg_result($resaco,$iresaco,'c115_conhistdocinclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3646,20288,'','".AddSlashes(pg_result($resaco,$iresaco,'c115_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3646,20286,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3646,20287,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c115_conhistdocinclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3646,20288,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c115_conhistdocestorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -467,7 +467,7 @@ class cl_vinculoeventoscontabeis {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vinculoeventoscontabeis";
@@ -482,7 +482,7 @@ class cl_vinculoeventoscontabeis {
    function sql_query ( $c115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,7 +506,7 @@ class cl_vinculoeventoscontabeis {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_vinculoeventoscontabeis {
    function sql_query_file ( $c115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,7 +540,7 @@ class cl_vinculoeventoscontabeis {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

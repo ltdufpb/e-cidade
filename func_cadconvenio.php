@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadconvenio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcadconvenio = new cl_cadconvenio;
 $clcadconvenio->rotulo->label("ar11_sequencial");
 $clcadconvenio->rotulo->label("ar11_nome");
@@ -54,7 +55,7 @@ $clcadconvenio->rotulo->label("ar11_nome");
               <?=$Lar11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("ar11_sequencial",10,$Iar11_sequencial,true,"text",4,"","chave_ar11_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcadconvenio->rotulo->label("ar11_nome");
               <?=$Lar11_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("ar11_nome",50,$Iar11_nome,true,"text",4,"","chave_ar11_nome");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcadconvenio->rotulo->label("ar11_nome");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $sWhere  = " ar11_instit = ".db_getsession('DB_instit');
      
@@ -128,12 +129,12 @@ $clcadconvenio->rotulo->label("ar11_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

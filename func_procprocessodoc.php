@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procprocessodoc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocprocessodoc = new cl_procprocessodoc;
 $clprocprocessodoc->rotulo->label("p81_codproc");
 $clprocprocessodoc->rotulo->label("p81_coddoc");
@@ -55,7 +56,7 @@ $clprocprocessodoc->rotulo->label("p81_coddoc");
               <?=$Lp81_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p81_codproc",8,$Ip81_codproc,true,"text",4,"","chave_p81_codproc");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clprocprocessodoc->rotulo->label("p81_coddoc");
               <?=$Lp81_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p81_coddoc",3,$Ip81_coddoc,true,"text",4,"","chave_p81_coddoc");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clprocprocessodoc->rotulo->label("p81_coddoc");
               <?=$Lp81_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p81_coddoc",3,$Ip81_coddoc,true,"text",4,"","chave_p81_coddoc");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clprocprocessodoc->rotulo->label("p81_coddoc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procprocessodoc.php")==true){
@@ -129,12 +130,12 @@ $clprocprocessodoc->rotulo->label("p81_coddoc");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

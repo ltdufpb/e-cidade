@@ -54,7 +54,7 @@ class cl_veicabastpostoempnota
                  ";
 
     //funcao construtor da classe
-    function cl_veicabastpostoempnota()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veicabastpostoempnota");

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ $clveiculoscomb = new cl_veiculoscomb;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 
-<?
+<?php 
 $sqlerro  = false;
 $erro_msg = "";
 $db_botao = true;
@@ -171,7 +171,7 @@ if (isset($confirmar) && trim($confirmar)!=""){
 <center>
 <form name="form1" method="post" action="">
 
-      <?
+      <?php 
          db_input("comb_padrao",10,"",true,"hidden",3);
          db_input("ve06_veiccadcomb",10,"",true,"hidden",3);
          db_input("descr_veiccadcomb",10,"",true,"hidden",3);
@@ -185,7 +185,7 @@ if (isset($confirmar) && trim($confirmar)!=""){
   </tr>
   <tr> 
     <td nowrap align="center" valign="top" bgcolor="#CCCCCC"> 
-      <?
+      <?php 
          db_input("db_opcao",10,"",true,"hidden",3);
          if (isset($ve06_veiculos) && trim($ve06_veiculos) != ""){
            db_input("ve06_veiculos",10,"",true,"hidden",3);
@@ -264,7 +264,7 @@ function js_confirma_dados(){
            }
 }
 </script>
-<?
+<?php 
   if (trim($erro_msg) != ""){
     db_msgbox($erro_msg);
   }

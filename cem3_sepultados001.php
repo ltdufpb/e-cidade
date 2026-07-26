@@ -115,7 +115,7 @@ if( !isset($tipo) ){
              <?php if($tipo == 'J'){ ?>
     	        <td><?php echo $cm27_d_exumprevista; ?></td>
               <td><?php echo $cm27_d_exumfeita; ?></td>
-             <?}?>
+             <?php }?>
 
     	       <td><?php echo $cm27_c_ossoario == 'N' ? 'NÃO' : 'SIM'; ?></td>
 

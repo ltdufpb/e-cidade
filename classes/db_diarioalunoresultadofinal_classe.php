@@ -29,7 +29,7 @@ class cl_diarioalunoresultadofinal
     public function __construct()
     {
         $this->rotulo = new rotulo("diarioalunoresultadofinal");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -76,10 +76,10 @@ class cl_diarioalunoresultadofinal
                 $this->erro_status = "0";
                 return false;
             }
-            $this->ed165_codigo = pg_result($result, 0, 0);
+            $this->ed165_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from diarioalunoresultadofinal_ed165_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $ed165_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $ed165_codigo)) {
                 $this->erro_sql = " Campo ed165_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -115,7 +115,7 @@ class cl_diarioalunoresultadofinal
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Diário resultado final ($this->ed165_codigo) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Diário resultado final já Cadastrado";
@@ -144,12 +144,12 @@ class cl_diarioalunoresultadofinal
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1011136,'$this->ed165_codigo','I')");
-                $resac = db_query("insert into db_acount values($acount,1010541,1011136,'','" . AddSlashes(pg_result($resaco, 0, 'ed165_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010541,1011137,'','" . AddSlashes(pg_result($resaco, 0, 'ed165_diarioaluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010541,1011138,'','" . AddSlashes(pg_result($resaco, 0, 'ed165_resultado_final')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010541,1011136,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed165_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010541,1011137,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed165_diarioaluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010541,1011138,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed165_resultado_final')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -160,10 +160,10 @@ class cl_diarioalunoresultadofinal
         $this->atualizacampos();
         $sql = " update diarioalunoresultadofinal set ";
         $virgula = "";
-        if (trim($this->ed165_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed165_codigo"])) {
+        if (trim((string) $this->ed165_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed165_codigo"])) {
             $sql .= $virgula . " ed165_codigo = $this->ed165_codigo ";
             $virgula = ",";
-            if (trim($this->ed165_codigo) == null) {
+            if (trim((string) $this->ed165_codigo) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "ed165_codigo";
                 $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_diarioalunoresultadofinal
                 return false;
             }
         }
-        if (trim($this->ed165_diarioaluno) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed165_diarioaluno"])) {
+        if (trim((string) $this->ed165_diarioaluno) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed165_diarioaluno"])) {
             $sql .= $virgula . " ed165_diarioaluno = $this->ed165_diarioaluno ";
             $virgula = ",";
-            if (trim($this->ed165_diarioaluno) == null) {
+            if (trim((string) $this->ed165_diarioaluno) == null) {
                 $this->erro_sql = " Campo Diário Aluno não informado.";
                 $this->erro_campo = "ed165_diarioaluno";
                 $this->erro_banco = "";
@@ -187,7 +187,7 @@ class cl_diarioalunoresultadofinal
             }
         }
 
-        if (trim($this->ed165_resultado_final) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed165_resultado_final"])) {
+        if (trim((string) $this->ed165_resultado_final) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed165_resultado_final"])) {
             $sql .= $virgula . " ed165_resultado_final = '$this->ed165_resultado_final' ";
             $virgula = ",";
         }
@@ -211,15 +211,15 @@ class cl_diarioalunoresultadofinal
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1011136,'$this->ed165_codigo','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed165_codigo"]) || $this->ed165_codigo != "")
-                        $resac = db_query("insert into db_acount values($acount,1010541,1011136,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed165_codigo')) . "','$this->ed165_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010541,1011136,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed165_codigo')) . "','$this->ed165_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed165_diarioaluno"]) || $this->ed165_diarioaluno != "")
-                        $resac = db_query("insert into db_acount values($acount,1010541,1011137,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed165_diarioaluno')) . "','$this->ed165_diarioaluno'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010541,1011137,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed165_diarioaluno')) . "','$this->ed165_diarioaluno'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed165_resultado_final"]) || $this->ed165_resultado_final != "")
-                        $resac = db_query("insert into db_acount values($acount,1010541,1011138,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed165_resultado_final')) . "','$this->ed165_resultado_final'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010541,1011138,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed165_resultado_final')) . "','$this->ed165_resultado_final'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -273,12 +273,12 @@ class cl_diarioalunoresultadofinal
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1011136,'$ed165_codigo','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010541,1011136,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed165_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010541,1011137,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed165_diarioaluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010541,1011138,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed165_resultado_final')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010541,1011136,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed165_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010541,1011137,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed165_diarioaluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010541,1011138,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed165_resultado_final')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }

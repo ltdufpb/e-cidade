@@ -86,7 +86,7 @@ class cl_certidaoexistencia {
                  j133_dathabite = date = Data da Emissão do Habite-se
                  ";
    //funcao construtor da classe 
-   function cl_certidaoexistencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidaoexistencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -41,7 +41,7 @@ class cl_turmaatividadecomplementar
     public function __construct()
     {
         $this->rotulo = new rotulo("turmaatividadecomplementar");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -156,10 +156,10 @@ class cl_turmaatividadecomplementar
                 $this->erro_status = "0";
                 return false;
             }
-            $this->ed146_sequencial = pg_result($result, 0, 0);
+            $this->ed146_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from turmaatividadecomplementar_ed146_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $ed146_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $ed146_sequencial)) {
                 $this->erro_sql = " Campo ed146_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -203,7 +203,7 @@ class cl_turmaatividadecomplementar
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Turma Atividade Complementar ($this->ed146_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Turma Atividade Complementar já Cadastrado";
@@ -232,18 +232,18 @@ class cl_turmaatividadecomplementar
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1010449,'$this->ed146_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010449,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010450,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_turma')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010451,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_censoativcompl')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010452,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_funcaoatividade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010453,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_rechumanoescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010454,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_diasemana')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010455,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_horainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010456,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_horafinal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010443,1010458,'','" . AddSlashes(pg_result($resaco, 0, 'ed146_turnoreferente')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010449,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010450,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_turma')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010451,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_censoativcompl')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010452,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_funcaoatividade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010453,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_rechumanoescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010454,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_diasemana')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010455,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_horainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010456,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_horafinal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1010443,1010458,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed146_turnoreferente')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -254,10 +254,10 @@ class cl_turmaatividadecomplementar
         $this->atualizacampos();
         $sql = " update turmaatividadecomplementar set ";
         $virgula = "";
-        if (trim($this->ed146_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_sequencial"])) {
+        if (trim((string) $this->ed146_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_sequencial"])) {
             $sql .= $virgula . " ed146_sequencial = $this->ed146_sequencial ";
             $virgula = ",";
-            if (trim($this->ed146_sequencial) == null) {
+            if (trim((string) $this->ed146_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "ed146_sequencial";
                 $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_turma) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_turma"])) {
+        if (trim((string) $this->ed146_turma) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_turma"])) {
             $sql .= $virgula . " ed146_turma = $this->ed146_turma ";
             $virgula = ",";
-            if (trim($this->ed146_turma) == null) {
+            if (trim((string) $this->ed146_turma) == null) {
                 $this->erro_sql = " Campo Turma não informado.";
                 $this->erro_campo = "ed146_turma";
                 $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_censoativcompl) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_censoativcompl"])) {
+        if (trim((string) $this->ed146_censoativcompl) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_censoativcompl"])) {
             $sql .= $virgula . " ed146_censoativcompl = $this->ed146_censoativcompl ";
             $virgula = ",";
-            if (trim($this->ed146_censoativcompl) == null) {
+            if (trim((string) $this->ed146_censoativcompl) == null) {
                 $this->erro_sql = " Campo Turma Atividade Complementar não informado.";
                 $this->erro_campo = "ed146_censoativcompl";
                 $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_funcaoatividade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_funcaoatividade"])) {
+        if (trim((string) $this->ed146_funcaoatividade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_funcaoatividade"])) {
             $sql .= $virgula . " ed146_funcaoatividade = $this->ed146_funcaoatividade ";
             $virgula = ",";
-            if (trim($this->ed146_funcaoatividade) == null) {
+            if (trim((string) $this->ed146_funcaoatividade) == null) {
                 $this->erro_sql = " Campo Função/Atividade não informado.";
                 $this->erro_campo = "ed146_funcaoatividade";
                 $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_rechumanoescola) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_rechumanoescola"])) {
+        if (trim((string) $this->ed146_rechumanoescola) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_rechumanoescola"])) {
             $sql .= $virgula . " ed146_rechumanoescola = $this->ed146_rechumanoescola ";
             $virgula = ",";
-            if (trim($this->ed146_rechumanoescola) == null) {
+            if (trim((string) $this->ed146_rechumanoescola) == null) {
                 $this->erro_sql = " Campo Professor não informado.";
                 $this->erro_campo = "ed146_rechumanoescola";
                 $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_diasemana) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_diasemana"])) {
+        if (trim((string) $this->ed146_diasemana) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_diasemana"])) {
             $sql .= $virgula . " ed146_diasemana = $this->ed146_diasemana ";
             $virgula = ",";
-            if (trim($this->ed146_diasemana) == null) {
+            if (trim((string) $this->ed146_diasemana) == null) {
                 $this->erro_sql = " Campo Dia da Semana não informado.";
                 $this->erro_campo = "ed146_diasemana";
                 $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_horainicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_horainicial"])) {
+        if (trim((string) $this->ed146_horainicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_horainicial"])) {
             $sql .= $virgula . " ed146_horainicial = '$this->ed146_horainicial' ";
             $virgula = ",";
-            if (trim($this->ed146_horainicial) == null) {
+            if (trim((string) $this->ed146_horainicial) == null) {
                 $this->erro_sql = " Campo Hora inicial não informado.";
                 $this->erro_campo = "ed146_horainicial";
                 $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_horafinal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_horafinal"])) {
+        if (trim((string) $this->ed146_horafinal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_horafinal"])) {
             $sql .= $virgula . " ed146_horafinal = '$this->ed146_horafinal' ";
             $virgula = ",";
-            if (trim($this->ed146_horafinal) == null) {
+            if (trim((string) $this->ed146_horafinal) == null) {
                 $this->erro_sql = " Campo Hora final não informado.";
                 $this->erro_campo = "ed146_horafinal";
                 $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_turmaatividadecomplementar
                 return false;
             }
         }
-        if (trim($this->ed146_turnoreferente) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_turnoreferente"])) {
+        if (trim((string) $this->ed146_turnoreferente) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed146_turnoreferente"])) {
             $sql .= $virgula . " ed146_turnoreferente = $this->ed146_turnoreferente ";
             $virgula = ",";
-            if (trim($this->ed146_turnoreferente) == null) {
+            if (trim((string) $this->ed146_turnoreferente) == null) {
                 $this->erro_sql = " Campo Turno Referente não informado.";
                 $this->erro_campo = "ed146_turnoreferente";
                 $this->erro_banco = "";
@@ -385,27 +385,27 @@ class cl_turmaatividadecomplementar
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010449,'$this->ed146_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_sequencial"]) || $this->ed146_sequencial != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010449,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_sequencial')) . "','$this->ed146_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010449,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_sequencial')) . "','$this->ed146_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_turma"]) || $this->ed146_turma != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010450,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_turma')) . "','$this->ed146_turma'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010450,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_turma')) . "','$this->ed146_turma'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_censoativcompl"]) || $this->ed146_censoativcompl != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010451,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_censoativcompl')) . "','$this->ed146_censoativcompl'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010451,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_censoativcompl')) . "','$this->ed146_censoativcompl'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_funcaoatividade"]) || $this->ed146_funcaoatividade != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010452,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_funcaoatividade')) . "','$this->ed146_funcaoatividade'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010452,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_funcaoatividade')) . "','$this->ed146_funcaoatividade'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_rechumanoescola"]) || $this->ed146_rechumanoescola != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010453,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_rechumanoescola')) . "','$this->ed146_rechumanoescola'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010453,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_rechumanoescola')) . "','$this->ed146_rechumanoescola'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_diasemana"]) || $this->ed146_diasemana != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010454,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_diasemana')) . "','$this->ed146_diasemana'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010454,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_diasemana')) . "','$this->ed146_diasemana'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_horainicial"]) || $this->ed146_horainicial != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010455,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_horainicial')) . "','$this->ed146_horainicial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010455,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_horainicial')) . "','$this->ed146_horainicial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_horafinal"]) || $this->ed146_horafinal != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010456,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_horafinal')) . "','$this->ed146_horafinal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010456,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_horafinal')) . "','$this->ed146_horafinal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed146_turnoreferente"]) || $this->ed146_turnoreferente != "")
-                        $resac = db_query("insert into db_acount values($acount,1010443,1010458,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed146_turnoreferente')) . "','$this->ed146_turnoreferente'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1010443,1010458,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed146_turnoreferente')) . "','$this->ed146_turnoreferente'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -459,18 +459,18 @@ class cl_turmaatividadecomplementar
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010449,'$ed146_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010449,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010450,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_turma')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010451,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_censoativcompl')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010452,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_funcaoatividade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010453,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_rechumanoescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010454,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_diasemana')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010455,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_horainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010456,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_horafinal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010443,1010458,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed146_turnoreferente')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010449,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010450,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_turma')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010451,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_censoativcompl')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010452,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_funcaoatividade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010453,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_rechumanoescola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010454,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_diasemana')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010455,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_horainicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010456,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_horafinal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1010443,1010458,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed146_turnoreferente')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -634,7 +634,7 @@ class cl_turmaatividadecomplementar
         return $sql;
     }
 
-    public function sqlDadosCenso($where = array())
+    public function sqlDadosCenso($where = [])
     {
         $sql = "
         select distinct ed146_rechumanoescola as vinculo_escola,

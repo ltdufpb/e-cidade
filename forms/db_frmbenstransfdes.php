@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,22 +38,22 @@ $clrotulo->label("descrdepto");
        <?=(@$Lt94_codtran)?>
     </td>
     <td> 
-<?
+<?php 
 db_input('t94_codtran',8,$It94_codtran,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt94_depart?>">
-       <?
+       <?php 
        db_ancora(@$Lt94_depart,"js_pesquisat94_depart(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('t94_depart',5,$It94_depart,true,'text',$db_opcao," onchange='js_pesquisat94_depart(false);'")
 ?>
-<?
+<?php 
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
 ?>
     </td>

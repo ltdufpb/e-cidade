@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -54,7 +54,7 @@ $clrotulo->label("ar36_valormax");
          <?=$Lar36_sequencial?>
        </td>
        <td>
-         <?
+         <?php 
          db_input('ar36_sequencial',10,$Iar36_sequencial,true,'text',3,"")
          ?>
        </td>
@@ -65,7 +65,7 @@ $clrotulo->label("ar36_valormax");
           <?=$Lar36_descricao?>
         </td>
         <td>
-         <? db_input('ar36_descricao',70,$Iar36_descricao,true,'text',$db_opcao,"") ?>
+         <?php  db_input('ar36_descricao',70,$Iar36_descricao,true,'text',$db_opcao,"") ?>
         </td>
       </tr>
 
@@ -374,7 +374,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_taxa.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

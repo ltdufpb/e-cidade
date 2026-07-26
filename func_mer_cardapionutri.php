@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapionutri_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_cardapionutri = new cl_mer_cardapionutri;
 $cl_cgm = new cl_cgm;
 $clmer_cardapionutri->rotulo->label("me04_i_codigo");
@@ -56,7 +57,7 @@ $cl_cgm->rotulo->label("z01_nome");
               <?=$Lme04_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me04_i_codigo",10,$Ime04_i_codigo,true,"text",4,"","chave_me04_i_codigo");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $cl_cgm->rotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("z01_nome",20,@$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -85,7 +86,7 @@ $cl_cgm->rotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -132,13 +133,13 @@ $cl_cgm->rotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php 
   
 }
 ?>

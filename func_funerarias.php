@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_funerarias_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfunerarias = new cl_funerarias;
 $clfunerarias->rotulo->label("cm17_i_funeraria");
 ?>
@@ -53,7 +54,7 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
               <?=$Lcm17_i_funeraria?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("cm17_i_funeraria",10,$Icm17_i_funeraria,true,"text",4,"","chave_cm17_i_funeraria");
                        ?>
             </td>
@@ -63,7 +64,7 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
               <strong>Nome/Razão</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("z01_nome",40,"",true,"text",4,"","chave_cm17_c_nome");
                        ?>
             </td>
@@ -81,7 +82,7 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_funerarias.php")==true){
@@ -117,12 +118,12 @@ $clfunerarias->rotulo->label("cm17_i_funeraria");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

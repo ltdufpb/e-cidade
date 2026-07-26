@@ -31,7 +31,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lancamentotaxadiversos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrotulo = new rotulocampo;
 $clrotulo->label("y120_sequencial");
 $clrotulo->label("y120_cgm");
@@ -63,7 +64,7 @@ $cllancamentotaxadiversos = new cl_lancamentotaxadiversos;
     <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
       <tr>
         <td><label><?=$Ly120_sequencial?></label></td>
-        <td><? db_input("y120_sequencial",10,$Iy120_sequencial,true,"text",4,'class="field-size2"',"chave_y120_sequencial"); ?></td>
+        <td><?php  db_input("y120_sequencial",10,$Iy120_sequencial,true,"text",4,'class="field-size2"',"chave_y120_sequencial"); ?></td>
       </tr>
       <tr>
         <td>
@@ -72,8 +73,8 @@ $cllancamentotaxadiversos = new cl_lancamentotaxadiversos;
           </label>
         </td>
         <td>
-          <? db_input("y120_cgm",10,$Iy120_cgm,true,"text",4,'class="field-size2" data="z01_numcgm"', 'chave_y120_cgm'); ?>
-          <? db_input("cgm_nome",40,$Iz01_nome,true,"text",3,'class="field-size7" data="z01_nome"'); ?>
+          <?php  db_input("y120_cgm",10,$Iy120_cgm,true,"text",4,'class="field-size2" data="z01_numcgm"', 'chave_y120_cgm'); ?>
+          <?php  db_input("cgm_nome",40,$Iz01_nome,true,"text",3,'class="field-size7" data="z01_nome"'); ?>
         </td>
       </tr>
       <tr>
@@ -91,7 +92,7 @@ $cllancamentotaxadiversos = new cl_lancamentotaxadiversos;
       </tr>
       <tr>
         <td><label><?=$Ly119_natureza?></label></td>
-        <td><? db_input("y119_natureza",50,$Iy119_natureza,true,"text",4,'class="field-size9"',"chave_y119_natureza"); ?></td>
+        <td><?php  db_input("y119_natureza",50,$Iy119_natureza,true,"text",4,'class="field-size9"',"chave_y119_natureza"); ?></td>
       </tr>
     </table>
   </fieldset>
@@ -99,7 +100,7 @@ $cllancamentotaxadiversos = new cl_lancamentotaxadiversos;
   <input name="limpar" type="reset" id="limpar" value="Limpar" onclick="location.href=location.href" >
   <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_lancamentotaxadiversos.hide();">
 </form>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   if(isset($campos)==false){
     if(file_exists("funcoes/db_func_lancamentotaxadiversos.php")==true){
@@ -166,7 +167,7 @@ if(!isset($pesquisa_chave)){
 ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -190,7 +191,7 @@ if(!isset($pesquisa_chave)){
       }
     );
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

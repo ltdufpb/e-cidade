@@ -34,7 +34,7 @@ class FormaAvaliacaoRepository {
    * Array com as Formas de Avaliação
    * @var array
    */
-  private $aFormasAvaliacao = array();
+  private $aFormasAvaliacao = [];
 
   /**
    * Instância da classe
@@ -84,7 +84,7 @@ class FormaAvaliacaoRepository {
 
     $iLinhas = pg_num_rows($rs);
 
-    $aFormasAvaliacao = array();
+    $aFormasAvaliacao = [];
     for ($i=0; $i < $iLinhas; $i++) {
 
       $iCodigo            = db_utils::fieldsMemory($rs, $i)->codigo;
@@ -104,7 +104,7 @@ class FormaAvaliacaoRepository {
    */
   public static function clonarFormasAvaliacaoEscola($aFormasAvaliacao, Escola $oEscola) {
 
-    $aDePara = array();
+    $aDePara = [];
 
     foreach ($aFormasAvaliacao as $oFormaAvaliacao) {
 

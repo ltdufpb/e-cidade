@@ -123,7 +123,7 @@ class processoProtocolo
      * Processos apensados (adicionados) ao processo
      * @var array processoProtocolo
      */
-    protected $aProcessosApensados = array();
+    protected $aProcessosApensados = [];
 
     /**
      * Número do Processo
@@ -142,7 +142,7 @@ class processoProtocolo
      * Documentos anexados ao processo
      * @var array ProcessoDocumento
      */
-    protected $aDocumentosAnexados = array();
+    protected $aDocumentosAnexados = [];
 
     /**
      * Departamento atual do processo
@@ -586,10 +586,10 @@ class processoProtocolo
     {
         $oDaoProtprocesso = new cl_protprocesso();
 
-        $aWhere = array(
+        $aWhere = [
             "p58_codproc = {$this->getCodProcesso()}",
             "p61_codandam is null"
-        );
+        ];
 
         $sSqlTransferencia = $oDaoProtprocesso->sql_query_despachos(null, "p63_codtran", null,
             implode(" and ", $aWhere));
@@ -902,7 +902,7 @@ class processoProtocolo
         $rsBuscaAndamento = $oDaoProtProcesso->sql_record($sSqlBuscaAndamento);
 
         if ($oDaoProtProcesso->erro_status == "0") {
-            $oStdErro = (object)array("sNumeroProcesso" => "{$this->getNumeroProcesso()}/{$this->getAnoProcesso()}");
+            $oStdErro = (object)["sNumeroProcesso" => "{$this->getNumeroProcesso()}/{$this->getAnoProcesso()}"];
             throw new BusinessException(_M(URL_MENSAGEM_PROCESSOPROTOCOLO . "departamento_atual_nao_encontrado",
                 $oStdErro));
         }

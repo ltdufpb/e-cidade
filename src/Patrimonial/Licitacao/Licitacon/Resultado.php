@@ -44,16 +44,6 @@ class Resultado
 {
 
     /**
-     * @var Versao
-     */
-    private $oVersao;
-
-    /**
-     * @var \licitacao
-     */
-    private $oLicitacao;
-
-    /**
      * @var int|null
      */
     private $iNumeroCgm;
@@ -68,11 +58,8 @@ class Resultado
      * @param Versao $oVersao
      * @param \licitacao $oLicitacao
      */
-    public function __construct(Versao $oVersao, \licitacao $oLicitacao)
+    public function __construct(private readonly Versao $oVersao, private readonly \licitacao $oLicitacao)
     {
-
-        $this->oVersao = $oVersao;
-        $this->oLicitacao = $oLicitacao;
     }
 
     /**
@@ -99,21 +86,12 @@ class Resultado
      */
     public function getResultado()
     {
-
-        switch ($this->oLicitacao->getTipoJulgamento()) {
-            case \licitacao::TIPO_JULGAMENTO_GLOBAL:
-                return $this->getResultadoGlobal();
-                break;
-
-            case \licitacao::TIPO_JULGAMENTO_POR_ITEM:
-                return $this->getResultadoItem();
-                break;
-
-            case \licitacao::TIPO_JULGAMENTO_POR_LOTE:
-                return $this->getResultadoLote();
-                break;
-        }
-        return null;
+        return match ($this->oLicitacao->getTipoJulgamento()) {
+            \licitacao::TIPO_JULGAMENTO_GLOBAL => $this->getResultadoGlobal(),
+            \licitacao::TIPO_JULGAMENTO_POR_ITEM => $this->getResultadoItem(),
+            \licitacao::TIPO_JULGAMENTO_POR_LOTE => $this->getResultadoLote(),
+            default => null,
+        };
     }
 
     /**
@@ -165,7 +143,7 @@ class Resultado
             return null;
         }
 
-        $aModalidadesIgnorar = array('CPC', 'MAI', 'RPO', 'PRD', 'PRI');
+        $aModalidadesIgnorar = ['CPC', 'MAI', 'RPO', 'PRD', 'PRI'];
         if (in_array($iModalidade, $aModalidadesIgnorar)) {
             return null;
         }
@@ -223,7 +201,7 @@ class Resultado
         /**
          * Conforme documentação o campo NÃO deve ser preenchido nesses casos
          */
-        if (in_array(strtoupper($iTipoModalidade), array('CPC', 'MAI', 'RPO', 'PRD', 'PRI', 'CPP'))) {
+        if (in_array(strtoupper($iTipoModalidade), ['CPC', 'MAI', 'RPO', 'PRD', 'PRI', 'CPP'])) {
             return null;
         }
 

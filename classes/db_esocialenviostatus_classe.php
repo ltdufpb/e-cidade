@@ -30,7 +30,7 @@ class cl_esocialenviostatus {
                  rh214_situacao = bool = Situação 
                  ";
    //funcao construtor da classe
-   function cl_esocialenviostatus() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("esocialenviostatus");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

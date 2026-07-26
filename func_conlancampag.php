@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancampag_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconlancampag = new cl_conlancampag;
 $clconlancampag->rotulo->label("c82_codlan");
 $clconlancampag->rotulo->label("c82_anousu");
@@ -54,7 +55,7 @@ $clconlancampag->rotulo->label("c82_anousu");
               <?=$Lc82_codlan?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c82_codlan",8,$Ic82_codlan,true,"text",4,"","chave_c82_codlan");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconlancampag->rotulo->label("c82_anousu");
               <?=$Lc82_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c82_anousu",4,$Ic82_anousu,true,"text",4,"","chave_c82_anousu");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconlancampag->rotulo->label("c82_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancampag.php")==true){
@@ -118,12 +119,12 @@ $clconlancampag->rotulo->label("c82_anousu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ class cl_rhempenhofolhaexcecaorubrica {
                  rh74_rhempenhofolhaexcecaoregra = int4 = Código Exceção Rubrica 
                  ";
    //funcao construtor da classe 
-   function cl_rhempenhofolhaexcecaorubrica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhempenhofolhaexcecaorubrica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

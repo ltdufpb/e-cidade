@@ -9,14 +9,14 @@ class ParameterBag implements \IteratorAggregate, \Countable {
    *
    * @var array
    */
-  protected $data = array();
+  protected $data = [];
 
   /**
    * Constructor.
    *
    * @param array $data
    */
-  public function __construct(array $data = array()) {
+  public function __construct(array $data = []) {
     $this->data = $data;
   }
   
@@ -44,7 +44,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
    * @param array
    * @return ParameterBag
    */
-  public function replace(array & $data = array()) {
+  public function replace(array & $data = []) {
     $this->data = $data;
     return $this;
   }

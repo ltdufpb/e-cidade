@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_liclocal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clliclocal = new cl_liclocal;
 $clliclocal->rotulo->label("l26_codigo");
 $clliclocal->rotulo->label("l26_codigo");
@@ -54,7 +55,7 @@ $clliclocal->rotulo->label("l26_codigo");
               <?=$Ll26_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l26_codigo",8,$Il26_codigo,true,"text",4,"","chave_l26_codigo");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clliclocal->rotulo->label("l26_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_liclocal.php")==true){
@@ -106,12 +107,12 @@ $clliclocal->rotulo->label("l26_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

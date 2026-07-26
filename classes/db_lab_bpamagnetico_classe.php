@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE lab_bpamagnetico
 class cl_lab_bpamagnetico {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $la55_i_codigo = 0;
-   var $la55_i_fechamento = 0;
-   var $la55_i_usuario = 0;
-   var $la55_d_data_dia = null;
-   var $la55_d_data_mes = null;
-   var $la55_d_data_ano = null;
-   var $la55_d_data = null;
-   var $la55_c_hora = null;
-   var $la55_t_arquivo = null;
-   var $la55_o_arquivo = 0;
+   public $la55_i_codigo = 0;
+   public $la55_i_fechamento = 0;
+   public $la55_i_usuario = 0;
+   public $la55_d_data_dia = null;
+   public $la55_d_data_mes = null;
+   public $la55_d_data_ano = null;
+   public $la55_d_data = null;
+   public $la55_c_hora = null;
+   public $la55_t_arquivo = null;
+   public $la55_o_arquivo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  la55_i_codigo = int4 = Código
                  la55_i_fechamento = int4 = Fechamento
                  la55_i_usuario = int4 = Usuário
@@ -63,10 +63,10 @@ class cl_lab_bpamagnetico {
                  la55_o_arquivo = oid = Arquivo
                  ";
    //funcao construtor da classe
-   function cl_lab_bpamagnetico() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_bpamagnetico");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -167,10 +167,10 @@ class cl_lab_bpamagnetico {
          $this->erro_status = "0";
          return false;
        }
-       $this->la55_i_codigo = pg_result($result,0,0);
+       $this->la55_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from lab_bpamagnetico_la55_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la55_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la55_i_codigo)){
          $this->erro_sql = " Campo la55_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -202,7 +202,7 @@ class cl_lab_bpamagnetico {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "registra a geração do BPA () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "registra a geração do BPA já Cadastrado";
@@ -229,10 +229,10 @@ class cl_lab_bpamagnetico {
       $this->atualizacampos();
      $sql = " update lab_bpamagnetico set ";
      $virgula = "";
-     if(trim($this->la55_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_i_codigo"])){
+     if(trim((string) $this->la55_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_i_codigo"])){
        $sql  .= $virgula." la55_i_codigo = $this->la55_i_codigo ";
        $virgula = ",";
-       if(trim($this->la55_i_codigo) == null ){
+       if(trim((string) $this->la55_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la55_i_codigo";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_lab_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->la55_i_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_i_fechamento"])){
+     if(trim((string) $this->la55_i_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_i_fechamento"])){
        $sql  .= $virgula." la55_i_fechamento = $this->la55_i_fechamento ";
        $virgula = ",";
-       if(trim($this->la55_i_fechamento) == null ){
+       if(trim((string) $this->la55_i_fechamento) == null ){
          $this->erro_sql = " Campo Fechamento nao Informado.";
          $this->erro_campo = "la55_i_fechamento";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_lab_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->la55_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_i_usuario"])){
+     if(trim((string) $this->la55_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_i_usuario"])){
        $sql  .= $virgula." la55_i_usuario = $this->la55_i_usuario ";
        $virgula = ",";
-       if(trim($this->la55_i_usuario) == null ){
+       if(trim((string) $this->la55_i_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "la55_i_usuario";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_lab_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->la55_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la55_d_data_dia"] !="") ){
+     if(trim((string) $this->la55_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["la55_d_data_dia"] !="") ){
        $sql  .= $virgula." la55_d_data = '$this->la55_d_data' ";
        $virgula = ",";
-       if(trim($this->la55_d_data) == null ){
+       if(trim((string) $this->la55_d_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "la55_d_data_dia";
          $this->erro_banco = "";
@@ -284,7 +284,7 @@ class cl_lab_bpamagnetico {
        if(isset($GLOBALS["HTTP_POST_VARS"]["la55_d_data_dia"])){
          $sql  .= $virgula." la55_d_data = null ";
          $virgula = ",";
-         if(trim($this->la55_d_data) == null ){
+         if(trim((string) $this->la55_d_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "la55_d_data_dia";
            $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_lab_bpamagnetico {
          }
        }
      }
-     if(trim($this->la55_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_c_hora"])){
+     if(trim((string) $this->la55_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_c_hora"])){
        $sql  .= $virgula." la55_c_hora = '$this->la55_c_hora' ";
        $virgula = ",";
-       if(trim($this->la55_c_hora) == null ){
+       if(trim((string) $this->la55_c_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "la55_c_hora";
          $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_lab_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->la55_t_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_t_arquivo"])){
+     if(trim((string) $this->la55_t_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_t_arquivo"])){
        $sql  .= $virgula." la55_t_arquivo = '$this->la55_t_arquivo' ";
        $virgula = ",";
-       if(trim($this->la55_t_arquivo) == null ){
+       if(trim((string) $this->la55_t_arquivo) == null ){
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "la55_t_arquivo";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_lab_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->la55_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_o_arquivo"])){
+     if(trim((string) $this->la55_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la55_o_arquivo"])){
        $sql  .= $virgula." la55_o_arquivo = $this->la55_o_arquivo ";
        $virgula = ",";
-       if(trim($this->la55_o_arquivo) == null ){
+       if(trim((string) $this->la55_o_arquivo) == null ){
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "la55_o_arquivo";
          $this->erro_banco = "";
@@ -415,7 +415,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lab_bpamagnetico";
@@ -430,7 +430,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="lab_bpamagnetico.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -466,7 +466,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -512,7 +512,7 @@ function sql_querry_prd_bpa($oDados) {
   if ($oDados->sTipo == "02" || $oDados->sTipo == "03") {
 
     $sSql2 .= "    la22_i_codigo||la08_i_codigo as cod_faa, ";
-    $sSql2 .= "    '$oDados->iCompano".str_pad ($oDados->iCompmes,2, "0", STR_PAD_LEFT )."' as prd_cmp, ";
+    $sSql2 .= "    '$oDados->iCompano".str_pad ((string) $oDados->iCompmes,2, "0", STR_PAD_LEFT )."' as prd_cmp, ";
     $sSql2 .= "    la32_d_data as prd_dtaten, ";
     $sSql2 .= "    (select  s115_c_cartaosus from cgs_cartaosus ";
     $sSql2 .= "     where s115_i_cgs=cgs.z01_i_numcgs ";

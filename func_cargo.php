@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cargo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcargo = new cl_cargo;
 $clcargo->rotulo->label("r65_anousu");
 $clcargo->rotulo->label("r65_mesusu");
@@ -56,7 +57,7 @@ $clcargo->rotulo->label("r65_descr");
               <?=$Lr65_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r65_mesusu",2,$Ir65_mesusu,true,"text",4,"","chave_r65_mesusu");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clcargo->rotulo->label("r65_descr");
               <?=$Lr65_cargo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r65_cargo",5,$Ir65_cargo,true,"text",4,"","chave_r65_cargo");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $clcargo->rotulo->label("r65_descr");
               <?=$Lr65_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r65_descr",30,$Ir65_descr,true,"text",4,"","chave_r65_descr");
 		       ?>
             </td>
@@ -94,7 +95,7 @@ $clcargo->rotulo->label("r65_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cargo.php")==true){
@@ -130,12 +131,12 @@ $clcargo->rotulo->label("r65_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

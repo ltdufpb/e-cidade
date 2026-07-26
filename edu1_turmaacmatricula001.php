@@ -31,7 +31,7 @@
   include(modification("libs/db_usuariosonline.php"));
   include(modification("dbforms/db_funcoes.php"));
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   $clturmaacmatricula = new cl_turmaacmatricula;
   $clturmaac          = new cl_turmaac;
   $clmatricula        = new cl_matricula;
@@ -138,7 +138,7 @@
     <link href="estilos.css" rel="stylesheet" type="text/css">
   </head>
   <body bgcolor="#CCCCCC" onLoad="a=1" >
-    <?include(modification("forms/db_frmturmaacmatricula.php"));?>
+    <?php include(modification("forms/db_frmturmaacmatricula.php"));?>
   </body>
 </html>
 
@@ -146,7 +146,7 @@
 js_tabulacaoforms("form1","ed60_matricula",true,1,"ed60_matricula",true);
 </script>
 
-<?
+<?php 
   if (isset($incluir)) {
 
     if ($clturmaacmatricula->erro_status == "0") {
@@ -176,7 +176,7 @@ js_tabulacaoforms("form1","ed60_matricula",true,1,"ed60_matricula",true);
       <script>
         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href='edu1_turmaac002.php?chavepesquisa=<?=$ed269_i_turmaac?>';
       </script>
-<?
+<?php 
       db_redireciona("edu1_turmaacmatricula001.php?ed269_i_turmaac=$ed269_i_turmaac&ed268_c_descr=$ed268_c_descr&ed268_i_calendario=$ed268_i_calendario&ed268_i_tipoatend=$ed268_i_tipoatend");
     }
   }
@@ -201,7 +201,7 @@ js_tabulacaoforms("form1","ed60_matricula",true,1,"ed60_matricula",true);
     <script>
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href='edu1_turmaac002.php?chavepesquisa=<?=$ed269_i_turmaac?>';
     </script>
-<?
+<?php 
       db_redireciona("edu1_turmaacmatricula001.php?ed269_i_turmaac=$ed269_i_turmaac&ed268_c_descr=$ed268_c_descr&ed268_i_calendario=$ed268_i_calendario&ed268_i_tipoatend=$ed268_i_tipoatend");
     }
   }

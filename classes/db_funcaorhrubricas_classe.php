@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE funcaorhrubricas
 class cl_funcaorhrubricas { 
@@ -32,7 +32,7 @@ class cl_funcaorhrubricas {
                  rh177_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_funcaorhrubricas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("funcaorhrubricas"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

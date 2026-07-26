@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -160,7 +160,7 @@ input {
           <tr> 
             <td> <strong>Especialidade:</strong><br>
               <select style="font-size:9px" name="especial" size="10" id="especial">
-                <?
+                <?php 
 			  $result = db_query("select w12_codigo,w12_descr from especial order by w12_descr");
 			  $numrows = pg_numrows($result);
 			  for($i = 0;$i < $numrows;$i++) {
@@ -179,7 +179,7 @@ input {
               </strong></td>
           </tr>
         </table>
-		<?		
+		<?php 		
 		  if(db_getsession("w03_codigo") != "") {
             $codpaciente = db_getsession("w03_codigo");
           } else {

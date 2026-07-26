@@ -30,11 +30,11 @@ namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Layout\Mapper
 
 abstract class Mapper
 {
-    protected $dePara = array();
+    protected $dePara = [];
 
     public function parse(array $dadosRegistro)
     {
-        $dados = array();
+        $dados = [];
         foreach ($this->dePara as $item) {
             $dados[] = $dadosRegistro[$item];
         }

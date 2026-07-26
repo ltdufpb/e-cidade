@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -498,7 +498,7 @@ if($numrows==0){
 <table  border="0" cellspacing="0" cellpadding="0" height='100%'>
   <tr> 
     <td  height='100%' align="left" valign="top" bgcolor="#CCCCCC"> 
-   <?
+   <?php 
    
    $clrotulo = new rotulocampo;
    $clrotulo->label("e80_data");
@@ -538,7 +538,7 @@ function js_mostra(codage,data){
   
 }
 </script>
-<?
+<?php 
 if(isset($atualizar) ){
   if($sqlerro == true){
     db_msgbox($erro_msg);

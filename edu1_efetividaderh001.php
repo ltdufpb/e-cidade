@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoEfetividadeRh = db_utils::getdao("efetividaderh");
 $db_opcao          = 1;
 $db_opcao1         = 1;
@@ -62,7 +62,7 @@ if (isset($incluir)) {
       <br>
      <center>
       <fieldset style="width:95%"><legend><b>Informe a competência da efetividade:</b></legend>
-        <?include(modification("forms/db_frmefetividaderh.php"));?>
+        <?php include(modification("forms/db_frmefetividaderh.php"));?>
       </fieldset>
      </center>
     </td>
@@ -73,7 +73,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "ed98_i_escola", true, 1, "ed98_i_escola", true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 	
   if ($oDaoEfetividadeRh->erro_status == "0") {
@@ -96,7 +96,7 @@ if (isset($incluir)) {
     <script>
      parent.iframe_a1.location.href = "edu1_efetividaderh002.php?chavepesquisa=<?=$oDaoEfetividadeRh->ed98_i_codigo?>";
     </script>
-   <?
+   <?php 
    
   }
   

@@ -34,7 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oPost = db_utils::postMemory($_POST,0);
 $oGet  = db_utils::postMemory($_GET,0);
@@ -74,7 +75,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_codproc?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("p58_codproc",10,$Ip58_codproc,true,"text",4,"","chave_p58_codproc");
                 ?>
             </td>
@@ -84,7 +85,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_numero?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("p58_numero",10,$Ip58_numero,true,"text",4,"","chave_p58_numero");
                 ?>
             </td>
@@ -94,7 +95,7 @@ if (isset($chave_p58_requer)) {
                 <?=$Lp58_requer?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("p58_requer",50,$Ip58_requer,true,"text",4,"","chave_p58_requer");
                 ?>
             </td>
@@ -112,7 +113,7 @@ if (isset($chave_p58_requer)) {
   </tr>
   <tr>
     <td align="center" valign="top">
-        <?
+        <?php 
 
 
         /**

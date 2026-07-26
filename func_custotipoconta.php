@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custotipoconta_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcustotipoconta = new cl_custotipoconta;
 $clcustotipoconta->rotulo->label("cc02_sequencial");
 $clcustotipoconta->rotulo->label("cc02_descricao");
@@ -54,7 +55,7 @@ $clcustotipoconta->rotulo->label("cc02_descricao");
               <?=$Lcc02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cc02_sequencial",10,$Icc02_sequencial,true,"text",4,"","chave_cc02_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcustotipoconta->rotulo->label("cc02_descricao");
               <?=$Lcc02_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cc02_descricao",50,$Icc02_descricao,true,"text",4,"","chave_cc02_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcustotipoconta->rotulo->label("cc02_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_custotipoconta.php")==true){
@@ -122,12 +123,12 @@ $clcustotipoconta->rotulo->label("cc02_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

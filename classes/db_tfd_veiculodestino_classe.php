@@ -68,7 +68,7 @@ class cl_tfd_veiculodestino {
                  tf18_c_horaretorno = char(5) = Hora de Retorno
                  ";
    //funcao construtor da classe
-   function cl_tfd_veiculodestino() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_veiculodestino");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

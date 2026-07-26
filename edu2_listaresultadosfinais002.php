@@ -91,14 +91,14 @@ foreach ($aTurmas as $oRetornoTurma) {
   $oTurma = TurmaRepository::getTurmaByCodigo($oRetornoTurma->ed57_i_codigo);
   $oEtapa = EtapaRepository::getEtapaByCodigo($oRetornoTurma->codigo_etapa);
   
-  $oFiltros->aAlunosMatriculados      = array();
-  $oFiltros->aDadosAlunos             = array();
+  $oFiltros->aAlunosMatriculados      = [];
+  $oFiltros->aDadosAlunos             = [];
   $oFiltros->aAlunosMatriculados      = $oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa);
   $oFiltros->iTotalAlunosMatriculados = count($oFiltros->aAlunosMatriculados);
   $oFiltros->iEnsino                  = $oTurma->getBaseCurricular()->getCurso()->getEnsino()->getCodigo();
   $oFiltros->iAno                     = $oTurma->getCalendario()->getAnoExecucao();
   
-  $oFiltros->aSituacoes         = array();
+  $oFiltros->aSituacoes         = [];
   $oFiltros->iTotalAprovados    = 0;
   $oFiltros->iTotalReprovados   = 0;
   $oFiltros->iTotalTransferidos = 0;
@@ -212,7 +212,7 @@ foreach ($aTurmas as $oRetornoTurma) {
     
     case '1':
       
-      uasort($oFiltros->aDadosAlunos, "ordernarMatriculaPorNome");
+      uasort($oFiltros->aDadosAlunos, ordernarMatriculaPorNome(...));
       break;
       
     case '2':
@@ -220,14 +220,14 @@ foreach ($aTurmas as $oRetornoTurma) {
       
     case '3':
       
-      uasort($oFiltros->aDadosAlunos, "ordernarMatriculaPorResultadoFinal");
+      uasort($oFiltros->aDadosAlunos, ordernarMatriculaPorResultadoFinal(...));
       break;
   }
 
   /**
    * Criamos um array com o total de alunos a serem impressos por pagina
    */
-  $aAlunosPorPagina = array();
+  $aAlunosPorPagina = [];
   $iPagina          = 0;
   $iContador        = 1;
   
@@ -386,7 +386,7 @@ function rodapeRelatorio($oPdf, $oFiltros) {
  * @param array $aProximoArray
  */
 function ordernarMatriculaPorNome($aArrayAtual, $aProximoArray) {
-  return strcasecmp($aArrayAtual->sNomeAluno, $aProximoArray->sNomeAluno);
+  return strcasecmp((string) $aArrayAtual->sNomeAluno, (string) $aProximoArray->sNomeAluno);
 }
 
 /**
@@ -395,7 +395,7 @@ function ordernarMatriculaPorNome($aArrayAtual, $aProximoArray) {
  * @param array $aProximoArray
  */
 function ordernarMatriculaPorResultadoFinal($aArrayAtual, $aProximoArray) {
-  return strcasecmp($aArrayAtual->sResultadoFinal, $aProximoArray->sResultadoFinal);
+  return strcasecmp((string) $aArrayAtual->sResultadoFinal, (string) $aProximoArray->sResultadoFinal);
 }
 
 $oPdf->Output();

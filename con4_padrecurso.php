@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -30,7 +30,7 @@ class recurso
 {
     var $arq = null;
 
-    function recurso($header)
+    function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/RECURSO.TXT", 'w+');

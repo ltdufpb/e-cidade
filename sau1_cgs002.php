@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -82,7 +82,7 @@ if(isset($alterar)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <br>
-	<?
+	<?php 
 	include(modification("forms/db_frmcgs.php"));
 	?>
     </center>
@@ -91,7 +91,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar) || isset($incluir)){
   if($clcgs->erro_status=="0"){
     $clcgs->erro(true,false);

@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_inventario_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clinventario = new cl_inventario;
 $clinventario->rotulo->label("t75_sequencial");
 $clinventario->rotulo->label("t75_sequencial");
@@ -59,7 +60,7 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
               <?=$Lt75_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		           db_input("t75_sequencial",10,$It75_sequencial,true,"text",4,"","chave_t75_sequencial");
 		          ?>
             </td>
@@ -70,7 +71,7 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
               <?=$Lt75_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("t75_sequencial",10,$It75_sequencial,true,"text",4,"","chave_t75_sequencial");
 		          ?>
             </td>
@@ -90,7 +91,7 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
              
@@ -152,12 +153,12 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

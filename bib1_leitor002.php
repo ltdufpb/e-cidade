@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ if (isset($chavepesquisa)) {
     parent.document.formaba.acervo2.disabled = false;
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo2.location.href='bib1_carteira001.php?bi16_leitor=<?=$bi10_codigo?>&z01_nome=<?=$nome?>';
   </script>
-  <?
+  <?php 
 }
 ?>
 <html>
@@ -76,7 +76,7 @@ if (isset($chavepesquisa)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Leitor</b></legend>
-    <?require_once(modification("forms/db_frmleitor.php"));?>
+    <?php require_once(modification("forms/db_frmleitor.php"));?>
    </fieldset>
    </center>
   </td>
@@ -84,7 +84,7 @@ if (isset($chavepesquisa)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
   
   if ($clleitor->erro_status == "0") {
@@ -104,7 +104,7 @@ if (isset($alterar)) {
       parent.document.formaba.acervo2.disabled = false;
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo2.location.href='bib1_carteira001.php?bi16_leitor=<?=$bi10_codigo?>&z01_nome=<?=$nome?>';
     </script>
-    <?
+    <?php 
     $clleitor->erro(true,false);
   };
 };

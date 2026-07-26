@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clalunocurso = new cl_alunocurso;
 $clcurso      = new cl_curso;
@@ -60,7 +61,7 @@ $clcurso->rotulo->label("ed29_c_descr");
                   <?=$Led29_i_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input( "ed29_i_codigo", 10, $Ied29_i_codigo, true, "text", 4, "", "chave_ed29_i_codigo" );?>
+                  <?php db_input( "ed29_i_codigo", 10, $Ied29_i_codigo, true, "text", 4, "", "chave_ed29_i_codigo" );?>
                 </td>
               </tr>
               <tr>
@@ -68,7 +69,7 @@ $clcurso->rotulo->label("ed29_c_descr");
                  <?=$Led29_c_descr?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?
+                  <?php 
                   db_input( "ed29_c_descr", 30, @$Ied29_c_descr, true, "text", 4, "", "chave_ed29_c_descr" );
                   ?>
                 </td>

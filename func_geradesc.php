@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_geradesc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clgeradesc = new cl_geradesc;
 $clgeradesc->rotulo->label("q89_codigo");
 $clgeradesc->rotulo->label("q89_descr");
@@ -54,7 +55,7 @@ $clgeradesc->rotulo->label("q89_descr");
               <?=$Lq89_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q89_codigo",4,$Iq89_codigo,true,"text",4,"","chave_q89_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clgeradesc->rotulo->label("q89_descr");
               <?=$Lq89_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q89_descr",40,$Iq89_descr,true,"text",4,"","chave_q89_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clgeradesc->rotulo->label("q89_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "geradesc.*";
@@ -110,14 +111,14 @@ $clgeradesc->rotulo->label("q89_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_q89_codigo.focus();
 document.form2.chave_q89_codigo.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

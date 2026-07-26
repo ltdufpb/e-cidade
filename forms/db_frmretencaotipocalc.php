@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clretencaotipocalc->rotulo->label();
        <?=@$Le32_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e32_sequencial',10,$Ie32_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('e32_sequencial',10,$Ie32_sequencial,true,'text',$db_opcao,"")
        <?=@$Le32_descricao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e32_descrição',30,$Ie32_descricao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_retencaotipocalc.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

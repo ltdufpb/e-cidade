@@ -36,7 +36,8 @@ $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 $oData = new DBDate( date('d/m/Y') );
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( $_SERVER["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoProntuarios = new cl_prontuarios;
 $oDaoProntuarios->rotulo->label();

@@ -82,12 +82,12 @@ db_fieldsmemory( $result, 0 );
                <?=@$Led44_i_codigo?>
              </td>
              <td>
-               <?db_input( 'ed44_i_codigo', 15, $Ied44_i_codigo, true, 'text', 3 );?>
+               <?php db_input( 'ed44_i_codigo', 15, $Ied44_i_codigo, true, 'text', 3 );?>
              </td>
            </tr>
            <tr>
              <td nowrap title="<?=@$Ted44_i_procresultado?>">
-               <?db_ancora(@$Led44_i_procresultado,"",3);?>
+               <?php db_ancora(@$Led44_i_procresultado,"",3);?>
              </td>
              <td>
               <?php
@@ -98,7 +98,7 @@ db_fieldsmemory( $result, 0 );
            </tr>
            <tr>
              <td nowrap title="<?=@$Ted44_i_procavaliacao?>">
-               <?db_ancora( "<b>Elementos:</b>", "js_pesquisaed44_i_procavaliacao(true);", $db_opcao1 );?>
+               <?php db_ancora( "<b>Elementos:</b>", "js_pesquisaed44_i_procavaliacao(true);", $db_opcao1 );?>
              </td>
              <td>
                <?php
@@ -120,19 +120,19 @@ db_fieldsmemory( $result, 0 );
                    $result3      = $clconceito->sql_record( $sSqlConceito );
                ?>
                    <select name='ed44_c_minimoaprov' <?=$db_opcao == 3 ? "disabled" : ""?>>
-               <?
+               <?php 
                    echo "<option value=''></option>";
                    for ( $z = 0; $z < $clconceito->numrows; $z++ ) {
 
                      db_fieldsmemory( $result3, $z );
-                     $selected = trim( $ed44_c_minimoaprov) == trim( $ed39_c_conceito ) ? "selected" : "";
+                     $selected = trim( (string) $ed44_c_minimoaprov) == trim( (string) $ed39_c_conceito ) ? "selected" : "";
                      echo "<option value='{$ed39_c_conceito}' {$selected}>{$ed39_c_conceito}</option>";
                    }
                    echo "</select>";
                  } else if ( $forma == "NOTA" ) {
                ?>
                    <select name='ed44_c_minimoaprov' <?=$db_opcao == 3 ? "disabled" : ""?>>
-               <?
+               <?php 
                    echo "<option value=''></option>";
                    for ( $z = $ed37_i_menorvalor; $z <= $ed37_i_maiorvalor; $z = $z + $ed37_i_variacao ) {
 
@@ -149,8 +149,8 @@ db_fieldsmemory( $result, 0 );
                <?=@$Led44_c_obrigatorio?>
              </td>
              <td>
-               <?
-               $x = array('N'=>'NÃO','S'=>'SIM');
+               <?php 
+               $x = ['N'=>'NÃO','S'=>'SIM'];
                db_select( 'ed44_c_obrigatorio', $x, true, 4 );
                ?>
              </td>
@@ -163,7 +163,7 @@ db_fieldsmemory( $result, 0 );
              </td>
              <td>
              <?php
-               $x = array( '0' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10' );
+               $x = [ '0' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10' ];
                db_select( 'ed44_i_peso', $x, true, $db_opcao, " style='visibility:hidden;'" );
              ?>
              </td>
@@ -220,7 +220,7 @@ db_fieldsmemory( $result, 0 );
                          WHERE ed68_i_procresultado = {$ed44_i_procresultado}
                         ORDER BY ed41_i_sequencia
                        ";
-                 $chavepri= array(
+                 $chavepri= [
                                    "ed44_i_codigo"        => @$ed44_i_codigo,
                                    "ed44_i_procavaliacao" => @$ed44_i_procavaliacao,
                                    "ed09_c_descr"         => @$ed09_c_descr,
@@ -228,7 +228,7 @@ db_fieldsmemory( $result, 0 );
                                    "ed44_i_peso"          => @$ed14_i_peso,
                                    "ed44_c_minimoaprov"   => @$ed44_c_minimoaprov,
                                    "ed44_c_obrigatorio"   => @$ed44_c_obrigatorio
-                                 );
+                                 ];
                  $cliframe_alterar_excluir->chavepri      = $chavepri;
                  @$cliframe_alterar_excluir->sql          = $sql;
                  $cliframe_alterar_excluir->campos        = "ed09_c_descr, ed44_c_obrigatorio, ed44_i_peso, ed44_c_minimoaprov";
@@ -253,12 +253,12 @@ db_fieldsmemory( $result, 0 );
     </table>
   </div>
 </form>
-<?
+<?php 
 
 if ( @$ed14_c_descr == "RESULTADO" ) {
- ?><script>document.form1.ed44_c_obrigatorio.disabled = true;</script><?
+ ?><script>document.form1.ed44_c_obrigatorio.disabled = true;</script><?php 
 } else {
- ?><script>document.form1.ed44_c_obrigatorio.disabled = false;</script><?
+ ?><script>document.form1.ed44_c_obrigatorio.disabled = false;</script><?php 
 }
 $query  = db_query( $sql );
 $linhas = pg_num_rows( $query );

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,12 +38,12 @@ $clrotulo->label("z01_v_nome");
 <table border="0" width="100%">
   <tr>
     <td nowrap title="<?=@$Tla22_i_codigo?>">
-       <?db_ancora ('<b>Requisição</b>', "js_pesquisala22_i_codigo(true);", "");?>
+       <?php db_ancora ('<b>Requisição</b>', "js_pesquisala22_i_codigo(true);", "");?>
     </td>
     <td> 
-      <?db_input ('la22_i_codigo', 10, @$Ila22_i_codigo, true, 'text',"", 
+      <?php db_input ('la22_i_codigo', 10, @$Ila22_i_codigo, true, 'text',"", 
                    " onchange='js_pesquisala22_i_codigo(false);'")?>
-      <?db_input ('z01_v_nome', 30, @$Iz01_v_nome, true, 'text', 3, '')?>
+      <?php db_input ('z01_v_nome', 30, @$Iz01_v_nome, true, 'text', 3, '')?>
     </td>
   </tr> 
 </table>

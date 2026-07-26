@@ -9,6 +9,7 @@ use IExportacaoCenso;
 
 class DadosDocente2018 extends DadosCensoDocente2016
 {
+    #[\Override]
     protected static function validarRegistro40Coluna5Regra1($dadosDocente, $registro30, $registro40, IExportacaoCenso $exportacao)
     {
         if ($registro30->nacionalidade_docente != 3 && empty($registro40->numero_cpf)) {
@@ -24,6 +25,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return true;
     }
 
+    #[\Override]
     protected static function validarRegistro30Coluna12($dadosDocente, $exportacao, $registro30, $registro40)
     {
         $valido = true;
@@ -51,6 +53,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return $valido;
     }
 
+    #[\Override]
     protected static function validarRegistro30Coluna13($dadosDocente, $exportacao, $registro30, $registro40)
     {
         $valido = true;
@@ -82,6 +85,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return $valido;
     }
 
+    #[\Override]
     protected static function validarRegistro30Coluna12Regra1($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
         if ($registro30->filiacao == 0 && !empty($registro30->filiacao_1)) {
@@ -97,7 +101,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
 
     protected static function validarRegistro30Coluna12Regra2($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
-        if (strlen(trim($registro30->filiacao_1)) > 100) {
+        if (strlen(trim((string) $registro30->filiacao_1)) > 100) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O campo \"Filiação 1\" está maior que o especificado (100 caracteres).";
 
@@ -111,7 +115,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
 
     protected static function validarRegistro30Coluna12Regra3($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
-        if (!DBString::isNomeValido(trim($registro30->filiacao_1), DBString::NOME_REGRA_5)) {
+        if (!DBString::isNomeValido(trim((string) $registro30->filiacao_1), DBString::NOME_REGRA_5)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O campo \"Filiação 1\" foi preenchido com caracteres inválidos.";
 
@@ -125,9 +129,9 @@ class DadosDocente2018 extends DadosCensoDocente2016
 
     protected static function validarRegistro30Coluna12Regra4($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        $filiacao2 = trim($registro30->filiacao_2);
+        $filiacao2 = trim((string) $registro30->filiacao_2);
 
-        if (empty($filiacao2) && !DBString::isNomeValido(trim($registro30->filiacao_1), DBString::NOME_REGRA_3)) {
+        if (empty($filiacao2) && !DBString::isNomeValido(trim((string) $registro30->filiacao_1), DBString::NOME_REGRA_3)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O campo \"Filiação 1\" é obrigatório caso o campo \"Filiação 2\" não estiver preenchido e deve conter duas palavras ou mais.";
 
@@ -141,7 +145,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
 
     protected static function validarRegistro30Coluna12Regra5($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        if (!DBString::isNomeValido(trim($registro30->filiacao_1), DBString::NOME_REGRA_4)) {
+        if (!DBString::isNomeValido(trim((string) $registro30->filiacao_1), DBString::NOME_REGRA_4)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O campo \"Filiação 1\" foi preenchido com valor contendo 4 letras iguais em sequência.";
 
@@ -155,7 +159,7 @@ class DadosDocente2018 extends DadosCensoDocente2016
 
     protected static function validarRegistro30Coluna13Regra2($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
-        if (strlen(trim($registro30->filiacao_2)) > 100) {
+        if (strlen(trim((string) $registro30->filiacao_2)) > 100) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O campo \"Filiação 2\" está maior que o especificado (100 caracteres).";
 
@@ -167,11 +171,12 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return true;
     }
 
+    #[\Override]
     protected static function validarRegistro30Coluna13Regra4($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        $filiacao1 = trim($registro30->filiacao_1);
+        $filiacao1 = trim((string) $registro30->filiacao_1);
 
-        if (empty($filiacao1) && !DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_3)) {
+        if (empty($filiacao1) && !DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_3)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O campo \"Filiação 2\" é obrigatório caso o campo \"Filiação 1\" não estiver preenchido e deve conter duas palavras ou mais.";
 
@@ -183,9 +188,10 @@ class DadosDocente2018 extends DadosCensoDocente2016
         return true;
     }
 
+    #[\Override]
     protected static function validarRegistro30Coluna13Regra5($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        if (!DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_4)) {
+        if (!DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_4)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O campo \"Filiação 2\" foi preenchido com valor contendo 4 letras iguais em sequência.";
 
@@ -199,8 +205,8 @@ class DadosDocente2018 extends DadosCensoDocente2016
 
     protected static function validarRegistro30Coluna13Regra6($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
-        $filiacao1 = trim($registro30->filiacao_1);
-        $filiacao2 = trim($registro30->filiacao_2);
+        $filiacao1 = trim((string) $registro30->filiacao_1);
+        $filiacao2 = trim((string) $registro30->filiacao_2);
 
         if (!empty($filiacao1) && !empty($filiacao2) && $filiacao1 == $filiacao2) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";

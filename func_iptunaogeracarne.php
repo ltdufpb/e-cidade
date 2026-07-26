@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptunaogeracarne_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptunaogeracarne = new cl_iptunaogeracarne;
 $cliptunaogeracarne->rotulo->label("j66_sequencial");
 $cliptunaogeracarne->rotulo->label("j66_data");
@@ -54,7 +55,7 @@ $cliptunaogeracarne->rotulo->label("j66_data");
               <?=$Lj66_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j66_sequencial",10,$Ij66_sequencial,true,"text",4,"","chave_j66_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cliptunaogeracarne->rotulo->label("j66_data");
               <?=$Lj66_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j66_data",10,$Ij66_data,true,"text",4,"","chave_j66_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cliptunaogeracarne->rotulo->label("j66_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptunaogeracarne.php")==true){
@@ -122,12 +123,12 @@ $cliptunaogeracarne->rotulo->label("j66_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

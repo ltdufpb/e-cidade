@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhrubelementoprinc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhrubelementoprinc = new cl_rhrubelementoprinc;
 $clrhrubelementoprinc->rotulo->label("rh24_rubric");
 $clrhrubelementoprinc->rotulo->label("rh24_codele");
@@ -55,7 +56,7 @@ $clrhrubelementoprinc->rotulo->label("rh24_codele");
               <?=$Lrh24_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh24_rubric",4,$Irh24_rubric,true,"text",4,"","chave_rh24_rubric");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clrhrubelementoprinc->rotulo->label("rh24_codele");
               <?=$Lrh24_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh24_codele",6,$Irh24_codele,true,"text",4,"","chave_rh24_codele");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clrhrubelementoprinc->rotulo->label("rh24_codele");
               <?=$Lrh24_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh24_codele",6,$Irh24_codele,true,"text",4,"","chave_rh24_codele");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clrhrubelementoprinc->rotulo->label("rh24_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhrubelementoprinc.php")==true){
@@ -129,12 +130,12 @@ $clrhrubelementoprinc->rotulo->label("rh24_codele");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

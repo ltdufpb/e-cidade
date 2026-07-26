@@ -1,35 +1,35 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE criterioavaliacaoperiodoavaliacao
 class cl_criterioavaliacaoperiodoavaliacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed340_sequencial = 0; 
-   var $ed340_criterioavaliacao = 0; 
-   var $ed340_periodoavaliacao = 0; 
+   public $ed340_sequencial = 0; 
+   public $ed340_criterioavaliacao = 0; 
+   public $ed340_periodoavaliacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed340_sequencial = int4 = Código 
                  ed340_criterioavaliacao = int4 = Critéro de Avaliação 
                  ed340_periodoavaliacao = int4 = Período de avaliação 
                  ";
    //funcao construtor da classe 
-   function cl_criterioavaliacaoperiodoavaliacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("criterioavaliacaoperiodoavaliacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_criterioavaliacaoperiodoavaliacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed340_sequencial = pg_result($result,0,0); 
+       $this->ed340_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from criterioavaliacaoperiodoavaliacao_ed340_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed340_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed340_sequencial)){
          $this->erro_sql = " Campo ed340_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_criterioavaliacaoperiodoavaliacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Período de avaliação do critério de avaliação ($this->ed340_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Período de avaliação do critério de avaliação já Cadastrado";
@@ -145,12 +145,12 @@ class cl_criterioavaliacaoperiodoavaliacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20512,'$this->ed340_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3690,20512,'','".AddSlashes(pg_result($resaco,0,'ed340_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3690,20513,'','".AddSlashes(pg_result($resaco,0,'ed340_criterioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3690,20514,'','".AddSlashes(pg_result($resaco,0,'ed340_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3690,20512,'','".AddSlashes(pg_fetch_result($resaco,0,'ed340_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3690,20513,'','".AddSlashes(pg_fetch_result($resaco,0,'ed340_criterioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3690,20514,'','".AddSlashes(pg_fetch_result($resaco,0,'ed340_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_criterioavaliacaoperiodoavaliacao {
       $this->atualizacampos();
      $sql = " update criterioavaliacaoperiodoavaliacao set ";
      $virgula = "";
-     if(trim($this->ed340_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed340_sequencial"])){ 
+     if(trim((string) $this->ed340_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed340_sequencial"])){ 
        $sql  .= $virgula." ed340_sequencial = $this->ed340_sequencial ";
        $virgula = ",";
-       if(trim($this->ed340_sequencial) == null ){ 
+       if(trim((string) $this->ed340_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed340_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_criterioavaliacaoperiodoavaliacao {
          return false;
        }
      }
-     if(trim($this->ed340_criterioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed340_criterioavaliacao"])){ 
+     if(trim((string) $this->ed340_criterioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed340_criterioavaliacao"])){ 
        $sql  .= $virgula." ed340_criterioavaliacao = $this->ed340_criterioavaliacao ";
        $virgula = ",";
-       if(trim($this->ed340_criterioavaliacao) == null ){ 
+       if(trim((string) $this->ed340_criterioavaliacao) == null ){ 
          $this->erro_sql = " Campo Critéro de Avaliação não informado.";
          $this->erro_campo = "ed340_criterioavaliacao";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_criterioavaliacaoperiodoavaliacao {
          return false;
        }
      }
-     if(trim($this->ed340_periodoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed340_periodoavaliacao"])){ 
+     if(trim((string) $this->ed340_periodoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed340_periodoavaliacao"])){ 
        $sql  .= $virgula." ed340_periodoavaliacao = $this->ed340_periodoavaliacao ";
        $virgula = ",";
-       if(trim($this->ed340_periodoavaliacao) == null ){ 
+       if(trim((string) $this->ed340_periodoavaliacao) == null ){ 
          $this->erro_sql = " Campo Período de avaliação não informado.";
          $this->erro_campo = "ed340_periodoavaliacao";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_criterioavaliacaoperiodoavaliacao {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20512,'$this->ed340_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed340_sequencial"]) || $this->ed340_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3690,20512,'".AddSlashes(pg_result($resaco,$conresaco,'ed340_sequencial'))."','$this->ed340_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3690,20512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed340_sequencial'))."','$this->ed340_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed340_criterioavaliacao"]) || $this->ed340_criterioavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,3690,20513,'".AddSlashes(pg_result($resaco,$conresaco,'ed340_criterioavaliacao'))."','$this->ed340_criterioavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3690,20513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed340_criterioavaliacao'))."','$this->ed340_criterioavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed340_periodoavaliacao"]) || $this->ed340_periodoavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,3690,20514,'".AddSlashes(pg_result($resaco,$conresaco,'ed340_periodoavaliacao'))."','$this->ed340_periodoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3690,20514,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed340_periodoavaliacao'))."','$this->ed340_periodoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_criterioavaliacaoperiodoavaliacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20512,'$ed340_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3690,20512,'','".AddSlashes(pg_result($resaco,$iresaco,'ed340_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3690,20513,'','".AddSlashes(pg_result($resaco,$iresaco,'ed340_criterioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3690,20514,'','".AddSlashes(pg_result($resaco,$iresaco,'ed340_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3690,20512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed340_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3690,20513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed340_criterioavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3690,20514,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed340_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -341,7 +341,7 @@ class cl_criterioavaliacaoperiodoavaliacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:criterioavaliacaoperiodoavaliacao";
@@ -356,7 +356,7 @@ class cl_criterioavaliacaoperiodoavaliacao {
    function sql_query ( $ed340_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -379,7 +379,7 @@ class cl_criterioavaliacaoperiodoavaliacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_criterioavaliacaoperiodoavaliacao {
    function sql_query_file ( $ed340_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_criterioavaliacaoperiodoavaliacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,29 +68,29 @@ $db_opcao = 1;
        <b> Período:</b>
      </td>
      <td>
-       <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+       <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
         A
-       <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+       <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
      </td>
     </tr>
     <tr>
       <td nowrap title="<?=@$Tsd04_i_medico?>">
-       <?
+       <?php 
        db_ancora(@$Lsd04_i_medico,"js_pesquisasd04_i_medico(true);",$db_opcao);
        ?>
       </td>
       <td>
-       <?
+       <?php 
        db_input('sd04_i_medico',10,$Isd04_i_medico,true,'text',$db_opcao," onchange='js_pesquisasd04_i_medico(false);'")
        ?>
-       <?
+       <?php 
        db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
        ?>
      </td>
     </tr>
    </table>
    <table border="1" cellpadding="0" cellspacing="0" width="90%">
-     <?
+     <?php 
       $result = $clunidades->sql_record($clunidades->sql_query());
       if($clunidades->numrows > 0){
      ?>
@@ -98,7 +98,7 @@ $db_opcao = 1;
         <td bgcolor="#D0D0D0" width="30"><input type="button" value="M" name="marca" title="Marcar/Desmarcar" onclick="marcar(<?=$clunidades->numrows?>, this)"></td>
         <td colspan="5"><b>Selecione as Unidades</b></td>
        </tr>
-      <?$bg = "#E8E8E8";
+      <?php $bg = "#E8E8E8";
         echo "<tr bgcolor='#b0b0b0'>";
         for($u=0; $u< $clunidades->numrows; $u++){
          db_fieldsmemory($result,$u);
@@ -130,7 +130,7 @@ $db_opcao = 1;
   </td>
  </tr>
 </table>
-<?
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

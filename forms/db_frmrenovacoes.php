@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,19 +34,19 @@ $clrotulo->label("z01_nome");
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?if(!isset($cm07_i_sepultamento)){?>
+<?php if(!isset($cm07_i_sepultamento)){?>
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tcm07_i_sepultamento?>">
-       <?
+       <?php 
        db_ancora(@$Lcm07_i_sepultamento,"js_pesquisacm07_i_sepultamento(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('cm07_i_sepultamento',10,$Icm07_i_sepultamento,true,'text',3," onchange='js_pesquisacm07_i_sepultamento(false);'")
 ?>
-       <?
+       <?php 
 db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -55,17 +55,17 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
    <td colspan="2" align="center"><input type="submit" value="Processar" name="processar"></td>
   </tr>
 </table>
-<?}else{?>
+<?php }else{?>
 <fieldset style="width: 70%">
 <legend>Dados</legend>
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tcm07_i_sepultamento?>">
-      <?db_ancora(@$Lcm07_i_sepultamento,"js_pesquisacm07_i_sepultamento(true);",3);?>
+      <?php db_ancora(@$Lcm07_i_sepultamento,"js_pesquisacm07_i_sepultamento(true);",3);?>
     </td>
     <td>
-      <?db_input('cm07_i_sepultamento',10,@$Icm07_i_sepultamento,true,'text',3," onchange='js_pesquisacm07_i_sepultamento(false);'")?>
-      <?db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')?>
+      <?php db_input('cm07_i_sepultamento',10,@$Icm07_i_sepultamento,true,'text',3," onchange='js_pesquisacm07_i_sepultamento(false);'")?>
+      <?php db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -73,7 +73,7 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
       <?=@$Lcm01_d_falecimento?>
     </td>
     <td>
-      <?db_input('cm01_d_falecimento',10,$Icm01_d_falecimento,true,'text',3,'')?>
+      <?php db_input('cm01_d_falecimento',10,$Icm01_d_falecimento,true,'text',3,'')?>
     </td>
   </tr>
 
@@ -82,7 +82,7 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
        <?=@$Lcm07_i_codigo?>
     </td>
     <td> 
-      <?db_input('cm07_i_codigo',10,@$Icm07_i_codigo,true,'text',3,"")?>
+      <?php db_input('cm07_i_codigo',10,@$Icm07_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -90,7 +90,7 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
        <?=@$Lcm07_d_ultima?>
     </td>
     <td>
-     <?db_inputdata('cm07_d_ultima',@$cm07_d_ultima_dia,@$cm07_d_ultima_mes,@$cm07_d_ultima_ano,true,'text',3,"")?>
+     <?php db_inputdata('cm07_d_ultima',@$cm07_d_ultima_dia,@$cm07_d_ultima_mes,@$cm07_d_ultima_ano,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -98,7 +98,7 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
        <?=@$Lcm07_d_vencimento?>
     </td>
     <td>
-     <?db_inputdata('cm07_d_vencimento2',@$cm07_d_vencimento_dia,@$cm07_d_vencimento_mes,@$cm07_d_vencimento_ano,true,'text',3,"")?>
+     <?php db_inputdata('cm07_d_vencimento2',@$cm07_d_vencimento_dia,@$cm07_d_vencimento_mes,@$cm07_d_vencimento_ano,true,'text',3,"")?>
     </td>
   </tr>
 </table>
@@ -109,11 +109,11 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
  <table>
   <tr>
     <td nowrap title="<?=@$Tcm07_i_renovante?>">
-      <?db_ancora(@$Lcm07_i_renovante,"js_pesquisacm07_i_renovante(true);",$db_opcao);?>
+      <?php db_ancora(@$Lcm07_i_renovante,"js_pesquisacm07_i_renovante(true);",$db_opcao);?>
     </td>
     <td> 
-      <?db_input('cm07_i_renovante',10,$Icm07_i_renovante,true,'text',$db_opcao," onchange='js_pesquisacm07_i_renovante(false);'")?>
-      <?db_input('z01_renovante',40,@$z01_renovante,true,'text',3,'')?>
+      <?php db_input('cm07_i_renovante',10,$Icm07_i_renovante,true,'text',$db_opcao," onchange='js_pesquisacm07_i_renovante(false);'")?>
+      <?php db_input('z01_renovante',40,@$z01_renovante,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -121,7 +121,7 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
        <?=@$Lcm07_c_motivo?>
     </td>
     <td> 
-     <?db_input('cm07_c_motivo',40,$Icm07_c_motivo,true,'text',$db_opcao,"")?>
+     <?php db_input('cm07_c_motivo',40,$Icm07_c_motivo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -129,7 +129,7 @@ db_input('nome',50,$Icm01_i_codigo,true,'text',3,'')
        <?=@$Lcm07_d_vencimento?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('cm07_d_vencimento',"","","",true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ db_inputdata('cm07_d_vencimento',"","","",true,'text',$db_opcao,"")
 <tr><td coilspan="2" align="center"><input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> ></td></tr>
 </table>
 </fieldset>
-<?}?>
+<?php }?>
 </form>
 </center>
 <script>
@@ -200,7 +200,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_renovacoes.hide();
-  <?
+  <?php 
   if($db_opcao !=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

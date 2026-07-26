@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -34,7 +34,8 @@ require_once modification("dbforms/db_funcoes.php");
 
 db_postmemory($_POST);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clpcproc 	  = new cl_pcproc;
 $clpcprocitem = new cl_pcprocitem;
@@ -83,7 +84,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
               <?=$Lpc80_codproc?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("pc80_codproc",10,$Ipc80_codproc,true,"text",4,"","chave_pc80_codproc");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
               <?=$Lpc10_numero?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("pc10_numero",10,$Ipc10_numero,true,"text",4,"","chave_pc10_numero");
 		       ?>
             </td>
@@ -104,7 +105,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 	            <b>Data Inicial:</b>
 	          </td>
             <td width="96%" align="left" nowrap>
-	            <?
+	            <?php 
 					      db_inputdata("dataini",@$dataini_dia,@$dataini_mes,@$dataini_ano,true,"text",1,"","dataini");
 	            ?>
 	          </td>
@@ -115,7 +116,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 	            <b>Data Final:</b>
 	          </td>
             <td width="96%" align="left" nowrap>
-	            <?
+	            <?php 
 					      db_inputdata("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano,true,"text",1,"","datafim");
 	            ?>
 	          </td>
@@ -134,7 +135,7 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $sWhereSolicitaAnulada = " not exists (select 1 from solicitaanulada where pc67_solicita = pc10_numero) ";
 
@@ -262,12 +263,12 @@ $lFiltrarProcessoAutomatico = !empty($lBuscarProcessoAutomatico) && $lBuscarProc
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

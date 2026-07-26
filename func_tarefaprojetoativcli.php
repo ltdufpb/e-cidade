@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefaprojetoativcli_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltarefaprojetoativcli = new cl_tarefaprojetoativcli;
 $cltarefaprojetoativcli->rotulo->label("at69_sequencial");
 $cltarefaprojetoativcli->rotulo->label("at69_seqtarefa");
@@ -54,7 +55,7 @@ $cltarefaprojetoativcli->rotulo->label("at69_seqtarefa");
               <?=$Lat69_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at69_sequencial",8,$Iat69_sequencial,true,"text",4,"","chave_at69_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltarefaprojetoativcli->rotulo->label("at69_seqtarefa");
               <?=$Lat69_seqtarefa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at69_seqtarefa",10,$Iat69_seqtarefa,true,"text",4,"","chave_at69_seqtarefa");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltarefaprojetoativcli->rotulo->label("at69_seqtarefa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefaprojetoativcli.php")==true){
@@ -122,12 +123,12 @@ $cltarefaprojetoativcli->rotulo->label("at69_seqtarefa");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

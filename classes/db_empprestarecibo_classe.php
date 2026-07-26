@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE empprestarecibo
 class cl_empprestarecibo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e170_sequencial = 0; 
-   var $e170_numpre = 0; 
-   var $e170_numpar = 0; 
-   var $e170_emppresta = 0; 
+   public $e170_sequencial = 0; 
+   public $e170_numpre = 0; 
+   public $e170_numpar = 0; 
+   public $e170_emppresta = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e170_sequencial = int4 = Sequencial 
                  e170_numpre = int4 = Numpre 
                  e170_numpar = int4 = Numpar 
                  e170_emppresta = int4 = Prestação de Contas 
                  ";
    //funcao construtor da classe 
-   function cl_empprestarecibo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empprestarecibo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_empprestarecibo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e170_sequencial = pg_result($result,0,0); 
+       $this->e170_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empprestarecibo_e170_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e170_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e170_sequencial)){
          $this->erro_sql = " Campo e170_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_empprestarecibo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "empprestarecibo ($this->e170_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "empprestarecibo já Cadastrado";
@@ -185,13 +185,13 @@ class cl_empprestarecibo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20259,'$this->e170_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3640,20259,'','".AddSlashes(pg_result($resaco,0,'e170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3640,20260,'','".AddSlashes(pg_result($resaco,0,'e170_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3640,20261,'','".AddSlashes(pg_result($resaco,0,'e170_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3640,20262,'','".AddSlashes(pg_result($resaco,0,'e170_emppresta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3640,20259,'','".AddSlashes(pg_fetch_result($resaco,0,'e170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3640,20260,'','".AddSlashes(pg_fetch_result($resaco,0,'e170_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3640,20261,'','".AddSlashes(pg_fetch_result($resaco,0,'e170_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3640,20262,'','".AddSlashes(pg_fetch_result($resaco,0,'e170_emppresta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_empprestarecibo {
       $this->atualizacampos();
      $sql = " update empprestarecibo set ";
      $virgula = "";
-     if(trim($this->e170_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_sequencial"])){ 
+     if(trim((string) $this->e170_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_sequencial"])){ 
        $sql  .= $virgula." e170_sequencial = $this->e170_sequencial ";
        $virgula = ",";
-       if(trim($this->e170_sequencial) == null ){ 
+       if(trim((string) $this->e170_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "e170_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_empprestarecibo {
          return false;
        }
      }
-     if(trim($this->e170_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_numpre"])){ 
+     if(trim((string) $this->e170_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_numpre"])){ 
        $sql  .= $virgula." e170_numpre = $this->e170_numpre ";
        $virgula = ",";
-       if(trim($this->e170_numpre) == null ){ 
+       if(trim((string) $this->e170_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre não informado.";
          $this->erro_campo = "e170_numpre";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_empprestarecibo {
          return false;
        }
      }
-     if(trim($this->e170_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_numpar"])){ 
+     if(trim((string) $this->e170_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_numpar"])){ 
        $sql  .= $virgula." e170_numpar = $this->e170_numpar ";
        $virgula = ",";
-       if(trim($this->e170_numpar) == null ){ 
+       if(trim((string) $this->e170_numpar) == null ){ 
          $this->erro_sql = " Campo Numpar não informado.";
          $this->erro_campo = "e170_numpar";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_empprestarecibo {
          return false;
        }
      }
-     if(trim($this->e170_emppresta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_emppresta"])){ 
+     if(trim((string) $this->e170_emppresta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e170_emppresta"])){ 
        $sql  .= $virgula." e170_emppresta = $this->e170_emppresta ";
        $virgula = ",";
-       if(trim($this->e170_emppresta) == null ){ 
+       if(trim((string) $this->e170_emppresta) == null ){ 
          $this->erro_sql = " Campo Prestação de Contas não informado.";
          $this->erro_campo = "e170_emppresta";
          $this->erro_banco = "";
@@ -267,17 +267,17 @@ class cl_empprestarecibo {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20259,'$this->e170_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e170_sequencial"]) || $this->e170_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3640,20259,'".AddSlashes(pg_result($resaco,$conresaco,'e170_sequencial'))."','$this->e170_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3640,20259,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e170_sequencial'))."','$this->e170_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e170_numpre"]) || $this->e170_numpre != "")
-             $resac = db_query("insert into db_acount values($acount,3640,20260,'".AddSlashes(pg_result($resaco,$conresaco,'e170_numpre'))."','$this->e170_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3640,20260,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e170_numpre'))."','$this->e170_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e170_numpar"]) || $this->e170_numpar != "")
-             $resac = db_query("insert into db_acount values($acount,3640,20261,'".AddSlashes(pg_result($resaco,$conresaco,'e170_numpar'))."','$this->e170_numpar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3640,20261,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e170_numpar'))."','$this->e170_numpar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e170_emppresta"]) || $this->e170_emppresta != "")
-             $resac = db_query("insert into db_acount values($acount,3640,20262,'".AddSlashes(pg_result($resaco,$conresaco,'e170_emppresta'))."','$this->e170_emppresta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3640,20262,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e170_emppresta'))."','$this->e170_emppresta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,13 +331,13 @@ class cl_empprestarecibo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20259,'$e170_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3640,20259,'','".AddSlashes(pg_result($resaco,$iresaco,'e170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3640,20260,'','".AddSlashes(pg_result($resaco,$iresaco,'e170_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3640,20261,'','".AddSlashes(pg_result($resaco,$iresaco,'e170_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3640,20262,'','".AddSlashes(pg_result($resaco,$iresaco,'e170_emppresta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3640,20259,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3640,20260,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e170_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3640,20261,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e170_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3640,20262,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e170_emppresta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -398,7 +398,7 @@ class cl_empprestarecibo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empprestarecibo";
@@ -413,7 +413,7 @@ class cl_empprestarecibo {
    function sql_query ( $e170_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_empprestarecibo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_empprestarecibo {
    function sql_query_file ( $e170_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_empprestarecibo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_empprestarecibo {
    function sql_query_recibo_empenho ( $e170_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_empprestarecibo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_empprestarecibo {
   function sql_query_fileRecibo ( $e170_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_empprestarecibo {
   		$sql .= $sql2;
   		if($ordem != null ){
   		$sql .= " order by ";
-  			$campos_sql = split("#",$ordem);
+  			$campos_sql = preg_split("#\\##m",(string) $ordem);
   			$virgula = "";
   			for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];

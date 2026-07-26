@@ -121,7 +121,7 @@ class Cidadao {
    * Telefones que o cidadao possui para contado.
    * @var array
    */
-  protected $aTelefones = array();
+  protected $aTelefones = [];
 
   /**
    * Código sequencial interno @var ov02_seq
@@ -155,7 +155,7 @@ class Cidadao {
    * Tipos de contato o para retorno do Cidadao
    * @var array
    */
-  protected $aTiposRetorno = array();
+  protected $aTiposRetorno = [];
 
   /**
    * Código do Tipo de familiar.
@@ -206,7 +206,7 @@ class Cidadao {
    * lista de emails do cidadao
    * @var CidadaoEmail
    */
-  protected $aEmails = array();
+  protected $aEmails = [];
 
   /**
    * Controle para modificacao de emails
@@ -255,7 +255,7 @@ class Cidadao {
         $this->setEndereco($oDadosCidadao->ov02_endereco);
         $this->setIdentidade($oDadosCidadao->ov02_ident);
         $this->setMunicipio($oDadosCidadao->ov02_munic);
-        $this->setNome( addslashes($oDadosCidadao->ov02_nome));
+        $this->setNome( addslashes((string) $oDadosCidadao->ov02_nome));
         $this->setNumero($oDadosCidadao->ov02_numero);
         $this->setUF($oDadosCidadao->ov02_uf);
         $this->iSequencialCadastroUnico  = $oDadosCidadao->as02_sequencial;
@@ -765,7 +765,7 @@ class Cidadao {
       throw new BusinessException('Erro ao atualizar dados da filiacao do cidadao');
     }
 
-    $aFiliacao = array();
+    $aFiliacao = [];
     if ($this->getPai() != null) {
       $aFiliacao[] = $this->getPai();
     }
@@ -1023,7 +1023,7 @@ class Cidadao {
    */
   public function getCursosCidadao($lEmAndamento = true) {
 
-    $aCursos                   = array();
+    $aCursos                   = [];
     $oDaoCursoSocialCidadao    = new cl_cursosocialcidadao();
     $sWhereCursoSocialCidadao  = "as22_cidadao = {$this->getCodigo()} and as22_cidadao_seq = {$this->getSequencialInterno()}";
 
@@ -1135,7 +1135,7 @@ class Cidadao {
    * Define o pai do cidadao
    * @param Cidadao $oCidadao
    */
-  public function setPai(Cidadao $oCidadao = null) {
+  public function setPai(?Cidadao $oCidadao = null) {
 
     $oDadosCidadao = null;
     if ($oCidadao != null) {
@@ -1148,7 +1148,7 @@ class Cidadao {
    * Define a mae do Cidadao
    * @param Cidadao $oCidadao
    */
-  public function setMae(Cidadao $oCidadao = null) {
+  public function setMae(?Cidadao $oCidadao = null) {
 
     $oDadosCidadao = null;
     if ($oCidadao != null) {
@@ -1248,18 +1248,18 @@ class Cidadao {
    */
   private static function processarBusca($documento, $nome = null) {
 
-    $documento = trim($documento);
+    $documento = trim((string) $documento);
     if (empty($documento)) {
       throw new ParameterException("Documento não informado.");
     }
 
-    $where = array(
+    $where = [
       "cidadao.ov02_cnpjcpf = '{$documento}'",
-    );
+    ];
 
     if (!empty($nome)) {
 
-      $nome = strtoupper(trim($nome));
+      $nome = strtoupper(trim((string) $nome));
       $where[] = "trim(cidadao.ov02_nome) = '{$nome}'";
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_cardapioitem = new cl_mer_cardapioitem;
 $clmer_cardapioitem->rotulo->label("me07_i_codigo");
 $clrotulo = new rotulocampo;
@@ -55,7 +56,7 @@ $clrotulo->label("me35_c_nomealimento");
       <?=$Lme07_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me07_i_codigo",5,$Ime07_i_codigo,true,"text",4,"","chave_me07_i_codigo");?>
+      <?php db_input("me07_i_codigo",5,$Ime07_i_codigo,true,"text",4,"","chave_me07_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -63,7 +64,7 @@ $clrotulo->label("me35_c_nomealimento");
       <?=$Lme35_c_nomealimento?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me35_c_nomealimento",50,$Ime35_c_nomealimento,true,"text",4,"","chave_me35_c_nomealimento");?>
+      <?php db_input("me35_c_nomealimento",50,$Ime35_c_nomealimento,true,"text",4,"","chave_me35_c_nomealimento");?>
      </td>
     </tr>
     <tr>
@@ -79,7 +80,7 @@ $clrotulo->label("me35_c_nomealimento");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $restricao = " AND not exists(select * from mer_modpreparo where me05_i_alimento = me07_i_alimento and me05_i_cardapio = $cardapio)";
    if (!isset($pesquisa_chave)) {
    	

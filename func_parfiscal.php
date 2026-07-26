@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parfiscal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clparfiscal = new cl_parfiscal;
 $clparfiscal->rotulo->label("y32_instit");
 $clparfiscal->rotulo->label("y32_tipo");
@@ -50,11 +51,11 @@ $clparfiscal->rotulo->label("y32_tipo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ly32_instit?></label></td>
-          <td><? db_input("y32_instit",10,$Iy32_instit,true,"text",4,"","chave_y32_instit"); ?></td>
+          <td><?php  db_input("y32_instit",10,$Iy32_instit,true,"text",4,"","chave_y32_instit"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ly32_tipo?></label></td>
-          <td><? db_input("y32_tipo",10,$Iy32_tipo,true,"text",4,"","chave_y32_tipo");?></td>
+          <td><?php  db_input("y32_tipo",10,$Iy32_tipo,true,"text",4,"","chave_y32_tipo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clparfiscal->rotulo->label("y32_tipo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_parfiscal.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parfiscal.php")==true){
@@ -104,12 +105,12 @@ $clparfiscal->rotulo->label("y32_tipo");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

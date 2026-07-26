@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,7 +47,7 @@ $oDaoAtoLegal->rotulo->label();
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
 
-    <?
+    <?php 
       $sLib  = "scripts.js,prototype.js,webseller.js,strings.js,";
       $sLib .= "estilos.css,tab.style.css";
       db_app::load($sLib);
@@ -71,13 +71,13 @@ $oDaoAtoLegal->rotulo->label();
                 <?=$Led05_i_codigo?>
               </td>
               <td>
-                <?db_input('ed05_i_codigo', '10', '', true, 'text', 1, '')?>
+                <?php db_input('ed05_i_codigo', '10', '', true, 'text', 1, '')?>
               </td>
               <td nowrap title="<?=$Ted05_i_ano?>">
                 <?=$Led05_i_ano?>
               </td>
               <td>
-                <?db_input('ed05_i_ano', '10', '', true, 'text', 1, '')?>
+                <?php db_input('ed05_i_ano', '10', '', true, 'text', 1, '')?>
               </td>
             </tr>
             <tr>
@@ -85,13 +85,13 @@ $oDaoAtoLegal->rotulo->label();
                 <?=$Led05_c_competencia?>
               </td>
               <td>
-                <?
-                  $aCompetencias = array(
+                <?php 
+                  $aCompetencias = [
                                           "0" => "TODAS",
                                           "M" => "MUNICIPAL",
                                           "E" => "ESTADUAL",
                                           "F" => "FEDERAL"
-                                        );
+                                        ];
                   db_select('ed05_c_competencia', $aCompetencias, true, '1', '');
                 ?>
               </td>
@@ -99,10 +99,10 @@ $oDaoAtoLegal->rotulo->label();
                 <?=$Led05_i_tipoato?>
               </td>
               <td>
-                <?
+                <?php 
                   $sSql      = $oDaoTipoAtoLegal->sql_query('', '*', 'ed83_c_descr ASC', '');
                   $rsTipos   = $oDaoTipoAtoLegal->sql_record($sSql);
-                  $aTipoAtos = array("0" => "TODOS");
+                  $aTipoAtos = ["0" => "TODOS"];
                   
                   if ($oDaoTipoAtoLegal->numrows > 0) {
                     
@@ -130,17 +130,17 @@ $oDaoAtoLegal->rotulo->label();
       </fieldset>
       <!-- Fim da Consulta de Atos Legais -->
 
-      <? if (isset($pesquisar)) { ?>
+      <?php  if (isset($pesquisar)) { ?>
       <!-- Registros da Pesquisa -->
       <fieldset style="width:60%;"><legend><b>Registros<b></legend>
-      <?
+      <?php 
         $iEscola  = db_getsession('DB_coddepto');
         $sCampos  = " ed05_i_codigo,ed05_c_numero,ed05_c_finalidade,ed83_c_descr,ed05_c_competencia,ed05_i_ano ";
         $sOrderBy = " ed05_i_codigo ASC ";
         $sWhere   = "";
 
         if (isset($ed05_i_codigo)) {
-          $repassa = array("ed05_i_codigo" => $ed05_i_codigo);
+          $repassa = ["ed05_i_codigo" => $ed05_i_codigo];
         }
 
         if (isset($ed05_i_codigo) && trim($ed05_i_codigo) != "") {
@@ -178,12 +178,12 @@ $oDaoAtoLegal->rotulo->label();
       ?>
       </fieldset>
       <!-- Fim Registros da Pesquisa -->
-      <? } ?>
+      <?php  } ?>
     </center>
   </body>
 </html>
 
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"),
           db_getsession("DB_anousu"), db_getsession("DB_instit")
          );

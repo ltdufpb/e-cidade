@@ -55,13 +55,13 @@ class Calendario {
    * Periodos do calendario
    * @var array
    */
-  private $aPeriodos = array();
+  private $aPeriodos = [];
 
   /**
    * Feriados do Calendario
    * @var array
    */
-  private $aEventos = array();
+  private $aEventos = [];
 
   /**
    * Calendario está como passivio
@@ -270,7 +270,7 @@ class Calendario {
    */
   public function getPeriodoPorData(DBDate $dtPeriodo) {
 
-    $aPeriodosEncontrados = array();
+    $aPeriodosEncontrados = [];
     foreach ($this->getPeriodos() as $oPeriodo) {
 
       if ($dtPeriodo->getTimeStamp() >= $oPeriodo->getDataInicio()->getTimeStamp() &&
@@ -328,7 +328,7 @@ class Calendario {
 
           $oDadosFeriado        = db_utils::fieldsMemory($rsFeriado, $i);
 
-          $lDiaLetivo           = strtoupper($oDadosFeriado->ed54_c_dialetivo) == "S" ? true : false;
+          $lDiaLetivo           = strtoupper((string) $oDadosFeriado->ed54_c_dialetivo) == "S" ? true : false;
           $oCalendarioEvento    =   new CalendarioEvento();
 
           $oCalendarioEvento->setCodigoEvento($oDadosFeriado->ed54_i_codigo);
@@ -665,7 +665,7 @@ class Calendario {
     $aDatasPeriodoCalendario = DBDate::getDatasNoIntervalo($oPeriodoCalendario->getDataInicio(),
                                                            $oPeriodoCalendario->getDataTermino()
                                                           );
-    $aDiasLetivoPeriodo = array();
+    $aDiasLetivoPeriodo = [];
     $aEventos           = $this->getEventos();
     $aDiasSemanaLetivo  = $this->getEscola()->getDiasLetivos();
     foreach ( $aDatasPeriodoCalendario as $oDataPeriodo ) {

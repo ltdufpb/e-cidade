@@ -34,18 +34,6 @@
  */
 class DBLayoutLinha {
   
-  private $sLinha;
-  
-  private $aPropriedadesCampos;
- 	/**
-   * Identifica se usa ou não o separador para quebrar a linha e determinar o valor do campo solicitado.
-   * Se estiver setado para true e o separador for vazio, pega o valor pelas posição de início do campo.
-   * @var boolean
-   */
-  private $lUsaSeparador;
-  
-  private $lUsaChr;
-  
   private $sNomeCampo = ''; 
   /**
    * @param string $sLinha              // String da linha
@@ -59,13 +47,13 @@ class DBLayoutLinha {
    * do campo solicitado. Se estiver setado para true e o separador for vazio, pega o valor pelas posição de 
    * início do campo.
    */
-  function __construct($sLinha,$aPropriedadesCampos, $lUsaSeparador = false, $lUsaChr = false) {
+  function __construct(private $sLinha,private $aPropriedadesCampos, /**
+   * Identifica se usa ou não o separador para quebrar a linha e determinar o valor do campo solicitado.
+   * Se estiver setado para true e o separador for vazio, pega o valor pelas posição de início do campo.
+   */
+  private $lUsaSeparador = false, private $lUsaChr = false) {
     
-    $this->sLinha              = $sLinha;
-    $this->aPropriedadesCampos = $aPropriedadesCampos;
-    $this->lUsaSeparador       = $lUsaSeparador;
-    $this->lUsaChr             = $lUsaChr;
-    $this->sNomeCampo          =  key($aPropriedadesCampos);
+    $this->sNomeCampo          =  key($this->aPropriedadesCampos);
     
   }
 

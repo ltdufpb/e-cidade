@@ -42,9 +42,9 @@ $dataEntrada = "";
 
 if( isset( $ed269_d_data ) && !empty( $ed269_d_data ) ) {
 
-  $ed269_d_data_dia = substr( $ed269_d_data, 0, 2 );
-  $ed269_d_data_mes = substr( $ed269_d_data, 3, 2 );
-  $ed269_d_data_ano = substr( $ed269_d_data, 6, 4 );
+  $ed269_d_data_dia = substr( (string) $ed269_d_data, 0, 2 );
+  $ed269_d_data_mes = substr( (string) $ed269_d_data, 3, 2 );
+  $ed269_d_data_ano = substr( (string) $ed269_d_data, 6, 4 );
 
   $data_valor = $ed269_d_data_ano .'-'. $ed269_d_data_mes .'-'. $ed269_d_data_dia;
 
@@ -84,9 +84,9 @@ $db_botao1 = false;
 
 if( isset( $opcao ) && $opcao == "alterar" ) {
 
-  $ed269_d_data_dia = substr( $ed269_d_data, 0, 2 );
-  $ed269_d_data_mes = substr( $ed269_d_data, 3, 2 );
-  $ed269_d_data_ano = substr( $ed269_d_data, 6, 4 );
+  $ed269_d_data_dia = substr( (string) $ed269_d_data, 0, 2 );
+  $ed269_d_data_mes = substr( (string) $ed269_d_data, 3, 2 );
+  $ed269_d_data_ano = substr( (string) $ed269_d_data, 6, 4 );
 
   echo $ed269_d_data_dia;
 
@@ -205,19 +205,19 @@ if ($clturmaac->numrows > 0) {
   <table style="width:100%">
     <tr>
       <td valign="top">
-        <?
+        <?php 
         $campos1  = "distinct turmaacmatricula.ed269_aluno, turmaacmatricula.ed269_i_codigo";
         $campos1 .= ", turmaacmatricula.ed269_i_turmaac, turmaacmatricula.ed269_d_data, turmaac.ed268_c_descr";
         $campos1 .= ", aluno.ed47_v_nome";
 
-        $chavepri = array(
+        $chavepri = [
                           "ed269_aluno"     => $ed269_aluno,
                           "ed269_i_codigo"  => $ed269_i_codigo,
                           "ed269_i_turmaac" => $ed269_i_turmaac,
                           "ed269_d_data"    => $ed269_d_data,
                           "ed268_c_descr"   => $ed268_c_descr,
                           "ed47_v_nome"     => $ed47_v_nome
-                        );
+                        ];
 
         $sWhereTurma = "ed269_i_turmaac = {$ed269_i_turmaac}";
 

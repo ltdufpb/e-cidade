@@ -47,7 +47,7 @@ $clrotulo->label("j13_descr");
                   <?php
                     
 
-                    $x = array( '1' => 'Unidade escolar', '2' => 'Interno' );
+                    $x = [ '1' => 'Unidade escolar', '2' => 'Interno' ];
                     db_select( 'ed18_i_tipoescola', $x, true, @$db_opcao_tipoescola );
                   ?>
                 </td>
@@ -68,7 +68,7 @@ $clrotulo->label("j13_descr");
 
                   echo @$Led18_i_funcionamento;
 
-                  $x = array( '1' => 'EM ATIVIDADE', '2' => 'PARALISADA', '3' => 'EXTINTA' );
+                  $x = [ '1' => 'EM ATIVIDADE', '2' => 'PARALISADA', '3' => 'EXTINTA' ];
                   db_select( 'ed18_i_funcionamento', $x, true, @$db_opcao1 );
                   ?>
                 </td>
@@ -106,7 +106,7 @@ $clrotulo->label("j13_descr");
                   echo @$Led18_i_cnpj;
                   db_input( 'ed18_i_cnpj', 15, $Ied18_i_cnpj, true, 'text', $db_opcao );
                   echo @$Led18_i_credenciamento;
-                  $x = array( '' => '', '0' => 'NÃO CREDENCIADA', '1' => 'CREDENCIADA', '2' => 'EM TRAMITAÇÃO' );
+                  $x = [ '' => '', '0' => 'NÃO CREDENCIADA', '1' => 'CREDENCIADA', '2' => 'EM TRAMITAÇÃO' ];
                   db_select( 'ed18_i_credenciamento', $x, true, $db_opcao, "onchange=\"js_esferaadministrativa();\"");
                   ?>
                 </td>
@@ -117,7 +117,7 @@ $clrotulo->label("j13_descr");
                 </td>
                 <td>
                   <?php
-                  $x = array( '' => '', '1' => 'FEDERAL', '2' => 'ESTADUAL', '3' => 'MUNICIPAL');
+                  $x = [ '' => '', '1' => 'FEDERAL', '2' => 'ESTADUAL', '3' => 'MUNICIPAL'];
                   db_select( 'ed18_i_esferaadministrativa', $x, true, $db_opcao);
                   ?>
                 </td>
@@ -149,7 +149,7 @@ $clrotulo->label("j13_descr");
 
                     if( $clcensomunic->numrows == 0 ) {
 
-                      $x = array( '' => 'Selecione o Estado' );
+                      $x = [ '' => 'Selecione o Estado' ];
                       db_select(
                                  'ed18_i_censomunic',
                                  $x,
@@ -173,7 +173,7 @@ $clrotulo->label("j13_descr");
                     }
                   } else {
 
-                    $x = array( '' => 'Selecione o Estado' );
+                    $x = [ '' => 'Selecione o Estado' ];
                     db_select(
                                'ed18_i_censomunic',
                                $x,
@@ -200,14 +200,14 @@ $clrotulo->label("j13_descr");
 
                     if( $clcensodistrito->numrows == 0 ) {
 
-                      $x = array( '' => 'Selecione a Cidade' );
+                      $x = [ '' => 'Selecione a Cidade' ];
                       db_select( 'ed18_i_censodistrito', $x, true, @$db_opcao1 );
                     } else {
                       db_selectrecord( "ed18_i_censodistrito", $result_distrito, "", "", "", "", "", "  ", "", 1 );
                     }
                   } else {
 
-                    $x = array( '' => 'Selecione a Cidade' );
+                    $x = [ '' => 'Selecione a Cidade' ];
                     db_select( 'ed18_i_censodistrito', $x, true, @$db_opcao1 );
                   }
                   ?>
@@ -274,7 +274,7 @@ $clrotulo->label("j13_descr");
                   db_input( 'ed18_c_compl', 20, $Ied18_c_compl, true, 'text', $db_opcao, $sScript );
 
                   echo @$Led18_c_local;
-                  $x = array( '1' => 'URBANA', '2' => 'RURAL' );
+                  $x = [ '1' => 'URBANA', '2' => 'RURAL' ];
                   db_select( 'ed18_c_local', $x, true, @$db_opcao1 );
                   ?>
                 </td>
@@ -294,14 +294,14 @@ $clrotulo->label("j13_descr");
 
                     if( $clcensoorgreg->numrows == 0 ) {
 
-                      $x = array( '' => 'Nenhum registro neste estado' );
+                      $x = [ '' => 'Nenhum registro neste estado' ];
                       db_select( 'ed18_i_censoorgreg', $x, true, @$db_opcao1 );
                     } else {
                       db_selectrecord( "ed18_i_censoorgreg", $result_orgreg, "", "", "", "", "", "  ", "", 1 );
                     }
                   } else {
 
-                    $x = array( '' => 'Selecione o Estado' );
+                    $x = [ '' => 'Selecione o Estado' ];
                     db_select( 'ed18_i_censoorgreg', $x, true, @$db_opcao1 );
                   }
                   ?>
@@ -314,7 +314,7 @@ $clrotulo->label("j13_descr");
                       <td >
                         <?=@$Led18_c_mantenedora?>
                         <?php
-                        $x = array( '' => '', '1' => 'FEDERAL', '2' => 'ESTADUAL', '3' => 'MUNICIPAL', '4' => 'PRIVADA' );
+                        $x = [ '' => '', '1' => 'FEDERAL', '2' => 'ESTADUAL', '3' => 'MUNICIPAL', '4' => 'PRIVADA' ];
                         db_select( 'ed18_c_mantenedora', $x, true, $db_opcao, " onchange='js_mantenedora(this.value)'" );
 
                         if( isset( $ed18_c_mantenedora ) && $ed18_c_mantenedora == 4 ) {
@@ -362,7 +362,7 @@ $clrotulo->label("j13_descr");
                             <td nowrap valign="top">
                               <fieldset style="height: 122px;">
                                 <legend><?=@$Led18_c_mantprivada?></legend>
-                                <input <?=substr( @$ed18_c_mantprivada, 0, 1 ) == "1" ? "checked" : ""?>
+                                <input <?=str_starts_with(@$ed18_c_mantprivada, "1") ? "checked" : ""?>
                                        id="ed18_c_mantprivada"
                                        name="ed18_c_mantprivada[]"
                                        type="checkbox"

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ class cl_iptutabelasconfigcampocorrecao {
                  j123_iptutabelasconfig = int4 = Código da Tabela de Configuração 
                  ";
    //funcao construtor da classe 
-   function cl_iptutabelasconfigcampocorrecao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutabelasconfigcampocorrecao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fiscalprocrec_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfiscalprocrec = new cl_fiscalprocrec;
 $clfiscalprocrec->rotulo->label("y45_codtipo");
 $clfiscalprocrec->rotulo->label("y45_receit");
@@ -55,7 +56,7 @@ $clfiscalprocrec->rotulo->label("y45_valor");
               <?=$Ly45_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y45_codtipo",20,$Iy45_codtipo,true,"text",4,"","chave_y45_codtipo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clfiscalprocrec->rotulo->label("y45_valor");
               <?=$Ly45_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y45_receit",4,$Iy45_receit,true,"text",4,"","chave_y45_receit");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clfiscalprocrec->rotulo->label("y45_valor");
               <?=$Ly45_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y45_valor",10,$Iy45_valor,true,"text",4,"","chave_y45_valor");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clfiscalprocrec->rotulo->label("y45_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscalprocrec.php")==true){
@@ -129,12 +130,12 @@ $clfiscalprocrec->rotulo->label("y45_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

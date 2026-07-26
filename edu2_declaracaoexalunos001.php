@@ -183,7 +183,7 @@ if (db_getsession("DB_modulo") == 1100747) {
 
                         $repassa = [];
                         if (isset($ed47_i_codigo)) {
-                            $repassa = array("ed47_i_codigo" => $ed47_i_codigo);
+                            $repassa = ["ed47_i_codigo" => $ed47_i_codigo];
                         }
                         db_lovrot(@$sql, 5, "()", "", "js_redireciona|ed60_i_aluno|ed57_i_codigo|ed60_i_codigo", "", "NoMe", $repassa, false);
                     ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bairro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbairro = new cl_bairro;
 $clbairro->rotulo->label("j13_codi");
 $clbairro->rotulo->label("j13_descr");
@@ -54,7 +55,7 @@ $clbairro->rotulo->label("j13_descr");
               <?=$Lj13_codi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j13_codi",4,$Ij13_codi,true,"text",4,"","chave_j13_codi");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbairro->rotulo->label("j13_descr");
               <?=$Lj13_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbairro->rotulo->label("j13_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "bairro.*";
@@ -110,14 +111,14 @@ $clbairro->rotulo->label("j13_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j13_codi.focus();
 document.form2.chave_j13_codi.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

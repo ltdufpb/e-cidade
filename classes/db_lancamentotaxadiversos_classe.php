@@ -67,7 +67,7 @@ class cl_lancamentotaxadiversos {
                  y120_issbase = int4 = Inscrição Municipal 
                  ";
   //funcao construtor da classe
-  function cl_lancamentotaxadiversos() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("lancamentotaxadiversos");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

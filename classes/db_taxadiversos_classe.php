@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: fiscal
 //CLASSE DA ENTIDADE taxadiversos
 class cl_taxadiversos { 
@@ -34,7 +34,7 @@ class cl_taxadiversos {
                  y119_tipo_calculo = char(1) = Tipo de Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_taxadiversos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxadiversos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

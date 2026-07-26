@@ -292,6 +292,7 @@ class HabilidadeEnsinoFundamentalRepository extends Repository
     /**
      * @return HabilidadeEnsinoFundamentalRepository|void
      */
+    #[\Override]
     public function resetScopes()
     {
         parent::resetScopes();

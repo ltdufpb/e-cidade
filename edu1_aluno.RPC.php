@@ -61,7 +61,7 @@ if ($oPost->sAction == 'PesquisaCartorio') {
   if ($oPost->municipio == "") {
 
     $oJson    = new services_json();
-    echo $oJson->encode(array(array(),array()));
+    echo $oJson->encode([[],[]]);
     return false;
     
   } 

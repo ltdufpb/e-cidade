@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefacadsituacaousu_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltarefacadsituacaousu = new cl_tarefacadsituacaousu;
 $cltarefacadsituacaousu->rotulo->label("at17_sequencial");
 $cltarefacadsituacaousu->rotulo->label("at17_usuario");
@@ -54,7 +55,7 @@ $cltarefacadsituacaousu->rotulo->label("at17_usuario");
               <?=$Lat17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at17_sequencial",10,$Iat17_sequencial,true,"text",4,"","chave_at17_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltarefacadsituacaousu->rotulo->label("at17_usuario");
               <?=$Lat17_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at17_usuario",10,$Iat17_usuario,true,"text",4,"","chave_at17_usuario");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltarefacadsituacaousu->rotulo->label("at17_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefacadsituacaousu.php")==true){
@@ -122,12 +123,12 @@ $cltarefacadsituacaousu->rotulo->label("at17_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

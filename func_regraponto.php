@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regraponto_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clregraponto = new cl_regraponto;
 $clregraponto->rotulo->label("rh123_sequencial");
 $clregraponto->rotulo->label("rh123_descricao");
@@ -54,7 +55,7 @@ $clregraponto->rotulo->label("rh123_descricao");
               <strong>Código da Regra:</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh123_sequencial",20,$Irh123_sequencial,true,"text",4,"","chave_rh123_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clregraponto->rotulo->label("rh123_descricao");
               <?=$Lrh123_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh123_descricao",80,$Irh123_descricao,true,"text",4,"","chave_rh123_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clregraponto->rotulo->label("rh123_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_regraponto.php")==true){
@@ -122,12 +123,12 @@ $clregraponto->rotulo->label("rh123_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

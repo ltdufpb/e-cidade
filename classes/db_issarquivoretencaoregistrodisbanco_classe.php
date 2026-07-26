@@ -52,7 +52,7 @@ class cl_issarquivoretencaoregistrodisbanco {
                  q94_disbanco = int4 = Código Disbanco
                  ";
    //funcao construtor da classe
-   function cl_issarquivoretencaoregistrodisbanco() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarquivoretencaoregistrodisbanco");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

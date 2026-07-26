@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE cidadaoemail
 class cl_cidadaoemail { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ov08_sequencial = 0; 
-   var $ov08_seq = 0; 
-   var $ov08_cidadao = 0; 
-   var $ov08_email = null; 
-   var $ov08_principal = 'f'; 
+   public $ov08_sequencial = 0; 
+   public $ov08_seq = 0; 
+   public $ov08_cidadao = 0; 
+   public $ov08_email = null; 
+   public $ov08_principal = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ov08_sequencial = int4 = Sequencial 
                  ov08_seq = int4 = Sequencial 
                  ov08_cidadao = int4 = Cidadão 
@@ -56,10 +56,10 @@ class cl_cidadaoemail {
                  ov08_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaoemail() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaoemail"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -123,10 +123,10 @@ class cl_cidadaoemail {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ov08_sequencial = pg_result($result,0,0); 
+       $this->ov08_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cidadaoemail_ov08_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ov08_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ov08_sequencial)){
          $this->erro_sql = " Campo ov08_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -162,7 +162,7 @@ class cl_cidadaoemail {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de email do cidadao ($this->ov08_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de email do cidadao já Cadastrado";
@@ -186,14 +186,14 @@ class cl_cidadaoemail {
      $resaco = $this->sql_record($this->sql_query_file($this->ov08_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14757,'$this->ov08_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2598,14757,'','".AddSlashes(pg_result($resaco,0,'ov08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2598,14758,'','".AddSlashes(pg_result($resaco,0,'ov08_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2598,14759,'','".AddSlashes(pg_result($resaco,0,'ov08_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2598,14760,'','".AddSlashes(pg_result($resaco,0,'ov08_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2598,14858,'','".AddSlashes(pg_result($resaco,0,'ov08_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2598,14757,'','".AddSlashes(pg_fetch_result($resaco,0,'ov08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2598,14758,'','".AddSlashes(pg_fetch_result($resaco,0,'ov08_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2598,14759,'','".AddSlashes(pg_fetch_result($resaco,0,'ov08_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2598,14760,'','".AddSlashes(pg_fetch_result($resaco,0,'ov08_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2598,14858,'','".AddSlashes(pg_fetch_result($resaco,0,'ov08_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -202,10 +202,10 @@ class cl_cidadaoemail {
       $this->atualizacampos();
      $sql = " update cidadaoemail set ";
      $virgula = "";
-     if(trim($this->ov08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_sequencial"])){ 
+     if(trim((string) $this->ov08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_sequencial"])){ 
        $sql  .= $virgula." ov08_sequencial = $this->ov08_sequencial ";
        $virgula = ",";
-       if(trim($this->ov08_sequencial) == null ){ 
+       if(trim((string) $this->ov08_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov08_sequencial";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_cidadaoemail {
          return false;
        }
      }
-     if(trim($this->ov08_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_seq"])){ 
+     if(trim((string) $this->ov08_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_seq"])){ 
        $sql  .= $virgula." ov08_seq = $this->ov08_seq ";
        $virgula = ",";
-       if(trim($this->ov08_seq) == null ){ 
+       if(trim((string) $this->ov08_seq) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov08_seq";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_cidadaoemail {
          return false;
        }
      }
-     if(trim($this->ov08_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_cidadao"])){ 
+     if(trim((string) $this->ov08_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_cidadao"])){ 
        $sql  .= $virgula." ov08_cidadao = $this->ov08_cidadao ";
        $virgula = ",";
-       if(trim($this->ov08_cidadao) == null ){ 
+       if(trim((string) $this->ov08_cidadao) == null ){ 
          $this->erro_sql = " Campo Cidadão nao Informado.";
          $this->erro_campo = "ov08_cidadao";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_cidadaoemail {
          return false;
        }
      }
-     if(trim($this->ov08_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_email"])){ 
+     if(trim((string) $this->ov08_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_email"])){ 
        $sql  .= $virgula." ov08_email = '$this->ov08_email' ";
        $virgula = ",";
-       if(trim($this->ov08_email) == null ){ 
+       if(trim((string) $this->ov08_email) == null ){ 
          $this->erro_sql = " Campo Email nao Informado.";
          $this->erro_campo = "ov08_email";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_cidadaoemail {
          return false;
        }
      }
-     if(trim($this->ov08_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_principal"])){ 
+     if(trim((string) $this->ov08_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov08_principal"])){ 
        $sql  .= $virgula." ov08_principal = '$this->ov08_principal' ";
        $virgula = ",";
-       if(trim($this->ov08_principal) == null ){ 
+       if(trim((string) $this->ov08_principal) == null ){ 
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "ov08_principal";
          $this->erro_banco = "";
@@ -275,19 +275,19 @@ class cl_cidadaoemail {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14757,'$this->ov08_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov08_sequencial"]) || $this->ov08_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2598,14757,'".AddSlashes(pg_result($resaco,$conresaco,'ov08_sequencial'))."','$this->ov08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2598,14757,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov08_sequencial'))."','$this->ov08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov08_seq"]) || $this->ov08_seq != "")
-           $resac = db_query("insert into db_acount values($acount,2598,14758,'".AddSlashes(pg_result($resaco,$conresaco,'ov08_seq'))."','$this->ov08_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2598,14758,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov08_seq'))."','$this->ov08_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov08_cidadao"]) || $this->ov08_cidadao != "")
-           $resac = db_query("insert into db_acount values($acount,2598,14759,'".AddSlashes(pg_result($resaco,$conresaco,'ov08_cidadao'))."','$this->ov08_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2598,14759,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov08_cidadao'))."','$this->ov08_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov08_email"]) || $this->ov08_email != "")
-           $resac = db_query("insert into db_acount values($acount,2598,14760,'".AddSlashes(pg_result($resaco,$conresaco,'ov08_email'))."','$this->ov08_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2598,14760,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov08_email'))."','$this->ov08_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov08_principal"]) || $this->ov08_principal != "")
-           $resac = db_query("insert into db_acount values($acount,2598,14858,'".AddSlashes(pg_result($resaco,$conresaco,'ov08_principal'))."','$this->ov08_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2598,14858,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov08_principal'))."','$this->ov08_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -332,14 +332,14 @@ class cl_cidadaoemail {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14757,'$ov08_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2598,14757,'','".AddSlashes(pg_result($resaco,$iresaco,'ov08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2598,14758,'','".AddSlashes(pg_result($resaco,$iresaco,'ov08_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2598,14759,'','".AddSlashes(pg_result($resaco,$iresaco,'ov08_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2598,14760,'','".AddSlashes(pg_result($resaco,$iresaco,'ov08_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2598,14858,'','".AddSlashes(pg_result($resaco,$iresaco,'ov08_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2598,14757,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2598,14758,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov08_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2598,14759,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov08_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2598,14760,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov08_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2598,14858,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov08_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cidadaoemail
@@ -399,7 +399,7 @@ class cl_cidadaoemail {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cidadaoemail";
@@ -414,7 +414,7 @@ class cl_cidadaoemail {
    function sql_query ( $ov08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_cidadaoemail {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_cidadaoemail {
    function sql_query_file ( $ov08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_cidadaoemail {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

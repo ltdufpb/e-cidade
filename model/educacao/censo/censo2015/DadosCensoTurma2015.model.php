@@ -32,13 +32,14 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
    * Etapas e disciplinas do censo
    * @var array
    */
-  protected static $aEtapasDisciplinas = array();
+  protected static $aEtapasDisciplinas = [];
 
     /**
    * Valida os dados do arquivo
    * @param IExportacaoCenso $oExportacaoCenso da Importacao do censo
    * @return boolean
    */
+    #[\Override]
     public static function validarDados(IExportacaoCenso $oExportacaoCenso)
     {
 
@@ -46,7 +47,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     $aDadosDaTurma = $oExportacaoCenso->getDadosProcessadosTurma();
     $oDadosEscola  = $oExportacaoCenso->getDadosProcessadosEscola();
     $aDadosDocente = $oExportacaoCenso->getDadosProcessadosDocente();
-    $aTurmaSemProfissional  = array();
+    $aTurmaSemProfissional  = [];
 
 
     /**
@@ -67,7 +68,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       $lDadosValidos = false;
     }
 
-    $aStatusValidacao = array();
+    $aStatusValidacao = [];
     foreach ($aDadosDaTurma as $oDadosTurma) {
 
       $sMsgTurma = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
@@ -95,7 +96,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       /**
        * Valida se o Código da Turma na Entidade/Escola contém mais de 20 caracteres
        */
-      if ( strlen($oDadosTurma->codigo_turma_entidade_escola) > 20 ) {
+      if ( strlen((string) $oDadosTurma->codigo_turma_entidade_escola) > 20 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Código da Turma na Entidade/Escola deve conter no máximo 20 caracteres.";
@@ -118,7 +119,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       /**
        * Valida se o nome da turma contém mais de 80 caracteres
        */
-      if ( strlen($oDadosTurma->nome_turma) > 80 ) {
+      if ( strlen((string) $oDadosTurma->nome_turma) > 80 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Nome da Turma deve conter no máximo 80 caracteres.";
@@ -129,7 +130,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       /**
        * Valida para aceitar somente os caracteres (ABCDEFGHIJKLMNOPQRSTUWXYZ 0123456789ªº-)
        */
-      if ( preg_match ('/[^a-z0-9ªº\s\-]+/i',  $oDadosTurma->nome_turma) == 1 ) {
+      if ( preg_match ('/[^a-z0-9ªº\s\-]+/i',  (string) $oDadosTurma->nome_turma) == 1 ) {
 
         $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
         $sMsgErro .= "Nome da turma contém excesso de espaços.";
@@ -148,7 +149,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
         $lDadosValidos = false;
       }
 
-      $aValidacaoDidaticoComum = array(
+      $aValidacaoDidaticoComum = [
         'Horário da Turma - Horário Inicial - Hora'   => $oDadosTurma->horario_turma_horario_inicial_hora,
         'Horário da Turma - Horário Inicial - Minuto' => $oDadosTurma->horario_turma_horario_inicial_minuto,
         'Horário da Turma - Horário Final - Hora'     => $oDadosTurma->horario_turma_horario_final_hora,
@@ -160,7 +161,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
         'Quinta-feira'                                => $oDadosTurma->dia_semana_quinta,
         'Sexta-feira'                                 => $oDadosTurma->dia_semana_sexta,
         'Sábado'                                      => $oDadosTurma->dia_semana_sabado
-      );
+      ];
 
       $oDaoTurmaAcMatricula = new cl_turmaacmatricula();
       $sMensagemErro = "";
@@ -205,7 +206,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
          *   2 - Unidade de internação socioeducativa
          *   3 - Unidade prisional
          */
-        $aValorTipoAtendimento = array('0','1','2','3');
+        $aValorTipoAtendimento = ['0','1','2','3'];
         if ( !in_array($oDadosTurma->tipo_atendimento, $aValorTipoAtendimento) ) {
 
           $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
@@ -218,7 +219,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
         /**
          * Valida se a Etapa de Ensino informado está dentro dos valores: 69, 70, 71 e 72
          */
-        $aEtapaEnsino = array('69','70','71','72');
+        $aEtapaEnsino = ['69','70','71','72'];
         if ( !in_array($oDadosTurma->etapa_ensino_turma, $aEtapaEnsino) ) {
 
           $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
@@ -240,7 +241,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
          *   2 - Unidade de internação socioeducativa
          *   3 - Unidade prisional
          */
-        $aValorTipoAtendimento = array('0','1','2','3');
+        $aValorTipoAtendimento = ['0','1','2','3'];
         if ( !in_array($oDadosTurma->tipo_atendimento, $aValorTipoAtendimento) ) {
 
           $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
@@ -256,7 +257,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
          *   3 - Educação de Jovens e Adultos (EJA)
          * @var array
          */
-        $aModalidadeEnsino = array('1','3');
+        $aModalidadeEnsino = ['1','3'];
         if ( !in_array($oDadosTurma->modalidade_turma, $aModalidadeEnsino) ) {
 
           $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
@@ -269,7 +270,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
          * Valida se a Etapa de Ensino informado está dentro dos valores: '30','31','32','33','34','35','36','37',
          * '38','39','40','44','45','60','62','64','67','68'
          */
-        $aEtapaEnsino = array('30','31','32','33','34','35','36','37','38','39','40','44','45','60','62','64','67','68');
+        $aEtapaEnsino = ['30','31','32','33','34','35','36','37','38','39','40','44','45','60','62','64','67','68'];
         if ( !in_array($oDadosTurma->etapa_ensino_turma, $aEtapaEnsino) ) {
 
           $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
@@ -287,7 +288,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
         /**
          * Valida os minutos das horas iniciais e finais.
          */
-        $aMinutosValidos = array('00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55');
+        $aMinutosValidos = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
         if ( !in_array($oDadosTurma->horario_turma_horario_inicial_minuto, $aMinutosValidos) ) {
 
@@ -309,7 +310,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
          * Valida se ao menos um dia da semana foi informado.
          * @var array
          */
-        $aDiasSemana = array(
+        $aDiasSemana = [
           $oDadosTurma->dia_semana_domingo,
           $oDadosTurma->dia_semana_segunda,
           $oDadosTurma->dia_semana_terca,
@@ -317,7 +318,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
           $oDadosTurma->dia_semana_quinta,
           $oDadosTurma->dia_semana_sexta,
           $oDadosTurma->dia_semana_sabado
-        );
+        ];
 
         if ( !in_array(1, $aDiasSemana) ) {
 
@@ -345,14 +346,14 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
      /**
       * Validações referente ao Código do Tipo de Atividade Complementar
       */
-      $aTipoAtividade = array(
+      $aTipoAtividade = [
         $oDadosTurma->codigo_tipo_atividade_complementar_1,
         $oDadosTurma->codigo_tipo_atividade_complementar_2,
         $oDadosTurma->codigo_tipo_atividade_complementar_3,
         $oDadosTurma->codigo_tipo_atividade_complementar_4,
         $oDadosTurma->codigo_tipo_atividade_complementar_5,
         $oDadosTurma->codigo_tipo_atividade_complementar_6
-      );
+      ];
 
       $aTipoAtividade = array_filter($aTipoAtividade);
 
@@ -412,7 +413,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
        */
       if ( $oDadosTurma->tipo_atendimento == 5 ) {
 
-        $aAtividadeEducacionalEspecializada = array(
+        $aAtividadeEducacionalEspecializada = [
           $oDadosTurma->aee_ensino_sistema_braille,
           $oDadosTurma->aee_ensino_uso_recursos_opticos_nao_opticos,
           $oDadosTurma->aee_estrategias_desenvolvimento_processos_mentais,
@@ -424,7 +425,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
           $oDadosTurma->aee_ensino_usabilidade_funcionalidades_informatica,
           $oDadosTurma->aee_ensino_lingua_portuguesa_modalidade_escrita,
           $oDadosTurma->aee_estrategias_autonomia_ambiente_escolar
-        );
+        ];
 
         if ( !in_array(1, $aAtividadeEducacionalEspecializada) ) {
 
@@ -457,7 +458,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
          */
         if ( $oDadosTurma->tipo_atendimento == 1 ) {
 
-          $aEtapaEnsino = array( '1', '2', '3', '56' );
+          $aEtapaEnsino = [ '1', '2', '3', '56' ];
 
           if ( in_array( $oDadosTurma->etapa_ensino_turma, $aEtapaEnsino) ) {
 
@@ -474,7 +475,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
        */
       if ( !empty( $oDadosTurma->codigo_curso_educacao_profissional ) ) {
 
-        $aEtapaEnsino = array( '30', '31', '32', '33', '34', '39', '40', '64', '74' );
+        $aEtapaEnsino = [ '30', '31', '32', '33', '34', '39', '40', '64', '74' ];
         if ( !in_array($oDadosTurma->etapa_ensino_turma, $aEtapaEnsino) ) {
 
           $sMsgErro  = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
@@ -495,7 +496,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     if ( $lDadosValidos ) {
-      $lDadosValidos = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lDadosValidos = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lDadosValidos;
@@ -534,7 +535,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
          $oDadosEscola->registro10->local_funcionamento_escola_templo_igreja           == 0 &&
          $oDadosEscola->registro10->local_funcionamento_escola_unidade_prisional       == 0 &&
          $oDadosEscola->registro10->local_funcionamento_escola_un_internacao_socio     == 0 &&
-         !in_array($oDadosTurma->tipo_atendimento, array(0, 4, 5)) ) {
+         !in_array($oDadosTurma->tipo_atendimento, [0, 4, 5]) ) {
 
       $sMsgErro  = "{$sMsgTurma} Quando Local de funcionamento for Prédio Escolar, os Tipos de atendimentos devem ser ";
       $sMsgErro .= "Não se aplica, Atividade complementar, Atendimento Educacional Especializado (AEE)";
@@ -562,7 +563,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     /**
      * Coluna 18 registro 20 regra 6
      */
-    if (in_array($oDadosTurma->tipo_atendimento, array(1, 4, 5)) &&  $oDadosTurma->mediacao_didatico_pedagogica != 1 ) {
+    if (in_array($oDadosTurma->tipo_atendimento, [1, 4, 5]) &&  $oDadosTurma->mediacao_didatico_pedagogica != 1 ) {
 
       $sMsgErro  = "{$sMsgTurma} O campo \"Tipo de Atendimento\" não pode ser preenchido com com 1 (Classe hospitalar),";
       $sMsgErro .= " 4 (Atividade complementar) ou 5 (AEE) quando o campo \"Mediação didático-pedagógica\"";
@@ -574,7 +575,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     /**
      * Coluna 18 registro 20 regra 7
      */
-    if ( in_array($oDadosTurma->tipo_atendimento, array(2, 3)) && !in_array($oDadosTurma->mediacao_didatico_pedagogica, array(1,2) ) ) {
+    if ( in_array($oDadosTurma->tipo_atendimento, [2, 3]) && !in_array($oDadosTurma->mediacao_didatico_pedagogica, [1,2] ) ) {
 
       $sMsgErro  = $sMsgTurma . 'O campo "Tipo de Atendimento" não pode ser preenchido com 2 (Unidade de internação ';
       $sMsgErro .= 'socioeducativa) ou 3 (Unidade prisional) quando o campo "Mediação didático-pedagógica" for ';
@@ -586,7 +587,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     /**
      * Coluna 18 registro 20 regra 8 e e
      */
-    if ( in_array($oDadosTurma->tipo_atendimento, array(4, 5)) ) {
+    if ( in_array($oDadosTurma->tipo_atendimento, [4, 5]) ) {
 
       $lValidouDocente = false;
       foreach ( $aDadosDocente as $aRegistros ) {
@@ -596,7 +597,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
           if ( $oRegistro51->codigo_turma_entidade_escola == $oDadosTurma->codigo_turma_entidade_escola) {
 
             //docente ou profissional/monitor de atividade
-            if ($oDadosTurma->tipo_atendimento == 4 && in_array($oRegistro51->funcao_exerce_escola_turma, array(1,3)) ) {
+            if ($oDadosTurma->tipo_atendimento == 4 && in_array($oRegistro51->funcao_exerce_escola_turma, [1,3]) ) {
 
               $lValidouDocente = true;
               break;
@@ -688,7 +689,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     //Coluna 37 registro 20 - regra 9
-    if ( !in_array($oDadosTurma->modalidade_turma, array(2, 3)) && $oDadosTurma->mediacao_didatico_pedagogica == 2) {
+    if ( !in_array($oDadosTurma->modalidade_turma, [2, 3]) && $oDadosTurma->mediacao_didatico_pedagogica == 2) {
 
       $sMsgErro  = "{$sMsgTurma} O campo \"Modalidade\" deve ser preenchido com (Educação Especial - Modalidade Substitutiva)";
       $sMsgErro .= " ou 3 (EJA) quando o campo \"Mediação didático-pedagógica\" for igual a 2 (Semipresencial).";
@@ -698,7 +699,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     //Coluna 37 registro 20 - regra 10
-    if ( !in_array($oDadosTurma->modalidade_turma, array(1, 3, 4)) && $oDadosTurma->mediacao_didatico_pedagogica == 3) {
+    if ( !in_array($oDadosTurma->modalidade_turma, [1, 3, 4]) && $oDadosTurma->mediacao_didatico_pedagogica == 3) {
 
       $sMsgErro  = "{$sMsgTurma} O campo \"Modalidade\" deve ser preenchido com 1, 3 ou 4 ";
       $sMsgErro .= "quando o campo \"Mediação didático-pedagógica\" for igual a 2 (Educação a Distância).";
@@ -737,10 +738,10 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
      * 3 - EJA - EDUCAÇÃO DE JOVENS E ADULTOS
      * 4 - EP  - EDUCAÇÃO PROFISSIONAL
      */
-    $aEtapasER  = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,35,36,37,38,41,56);
-    $aEtapasES  = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,56,64,67,68,69,70,71,72,73,74);
-    $aEtapasEJA = array(65,69,70,71,72);
-    $aEtapasEP  = array(30,31,32,33,34,39,40,64,67,68,73,74);
+    $aEtapasER  = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,35,36,37,38,41,56];
+    $aEtapasES  = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,56,64,67,68,69,70,71,72,73,74];
+    $aEtapasEJA = [65,69,70,71,72];
+    $aEtapasEP  = [30,31,32,33,34,39,40,64,67,68,73,74];
 
     // regra 5 - valida etapa condiz com a modalidade da turma
     if (    $oDadosTurma->modalidade_turma == 1 && !in_array($oDadosTurma->etapa_ensino_turma, $aEtapasER)
@@ -756,8 +757,8 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     // regra 6
-    if ( in_array($oDadosTurma->etapa_ensino_turma, array(1, 2, 3, 56)) &&
-         in_array($oDadosTurma->tipo_atendimento, array(2,3))) {
+    if ( in_array($oDadosTurma->etapa_ensino_turma, [1, 2, 3, 56]) &&
+         in_array($oDadosTurma->tipo_atendimento, [2,3])) {
 
       $sMsgErro  = "{$sMsgTurma} O campo \"Etapa de Ensino\" não pode ser preenchido com educação infantil quando o campo ";
       $sMsgErro .= " \"Tipo de Atendimento\" for preenchido com 2 (Unidade de internação socioeducativa) ou 3 (Unidade prisional).";
@@ -767,7 +768,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     // regra 7
-    if ( !in_array($oDadosTurma->etapa_ensino_turma, array(69, 70, 71, 72)) && $oDadosTurma->mediacao_didatico_pedagogica == 2) {
+    if ( !in_array($oDadosTurma->etapa_ensino_turma, [69, 70, 71, 72]) && $oDadosTurma->mediacao_didatico_pedagogica == 2) {
 
       $sMsgErro  = "{$sMsgTurma} O campo \"Etapa de Ensino\" deve ser preenchido com 69, 70, 71 ou 72 quando o campo";
       $sMsgErro .= " \"Mediação didático-pedagógica\" for igual a 2 (Semipresencial).";
@@ -777,7 +778,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     // regra 8
-    if ( !in_array($oDadosTurma->etapa_ensino_turma, array(30,31,32,33,34,35,36,37,38,39,40,70,71,73,74,64,67, 68)) &&
+    if ( !in_array($oDadosTurma->etapa_ensino_turma, [30,31,32,33,34,35,36,37,38,39,40,70,71,73,74,64,67, 68]) &&
          $oDadosTurma->mediacao_didatico_pedagogica == 3) {
 
       $sMsgErro  = "{$sMsgTurma} O campo \"Etapa de Ensino\" deve ser preenchido com 30, 31, 32, 33, 34, 35, 36, 37, ";
@@ -798,7 +799,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
 
           //docente ou auxiliar/assistente educacional
           if ( $oRegistro51->codigo_turma_entidade_escola == $oDadosTurma->codigo_turma_entidade_escola &&
-               in_array($oRegistro51->funcao_exerce_escola_turma, array(1,2)) ) {
+               in_array($oRegistro51->funcao_exerce_escola_turma, [1,2]) ) {
 
             $lValidou = true;
             break;
@@ -817,7 +818,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     }
 
     // regra 10
-    if ( !in_array($oDadosTurma->tipo_atendimento, array(4,5)) && $oDadosTurma->etapa_ensino_turma != 1 ) {
+    if ( !in_array($oDadosTurma->tipo_atendimento, [4,5]) && $oDadosTurma->etapa_ensino_turma != 1 ) {
 
       $lValidou = false;
       foreach ( $aDadosDocente as $aRegistros ) {
@@ -863,8 +864,8 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
 
     $sMsgTurma     = "Turma {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma}: ";
     $lDadosValidos = true;
-    $aEtapaEnsino  = array(1, 2, 3, 65); // etapas infantis e eja
-    $aDisciplinas  = array(
+    $aEtapaEnsino  = [1, 2, 3, 65]; // etapas infantis e eja
+    $aDisciplinas  = [
       $oDadosTurma->disciplinas_turma_quimica,
       $oDadosTurma->disciplinas_turma_fisica,
       $oDadosTurma->disciplinas_turma_matematica,
@@ -891,13 +892,13 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       $oDadosTurma->disciplinas_turma_sociologia,
       $oDadosTurma->disciplinas_lingua_literatura_estrangeira_frances,
       $oDadosTurma->disciplinas_turma_outras
-    );
+    ];
 
     /**
      * Validado para quando tipo de ensino for infantil não permitir informar disciplinas
      * OBS.:Utilizamos a função strlen para que as possições contendo 0 fossem mantidas
      */
-    $aDisciplinasPreenchidas = array_filter( $aDisciplinas, 'strlen' );
+    $aDisciplinasPreenchidas = array_filter( $aDisciplinas, strlen(...) );
 
     // regra 1
     if ( count($aDisciplinasPreenchidas) == 0 &&
@@ -946,88 +947,88 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
     // regra 5
     if ( $oDadosTurma->tipo_atendimento != 4 && $oDadosTurma->tipo_atendimento != 5 ) {
 
-      $aValidaDisciplina = array();
-      if ( in_array($oDadosTurma->disciplinas_turma_quimica, array(1,2) )) {
+      $aValidaDisciplina = [];
+      if ( in_array($oDadosTurma->disciplinas_turma_quimica, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 1, "QUIMICA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_fisica, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_fisica, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 2, "FISICA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_matematica, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_matematica, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 3, "MATEMATICA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_biologia, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_biologia, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 4,"BIOLOGIA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_ciencias, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_ciencias, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 5, "CIENCIAS");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_lingua_literatura_portuguesa, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_lingua_literatura_portuguesa, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 6, "LINGUA /LITERATURA PORTUGUESA");
       }
-      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_inglesa, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_inglesa, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 7, "LINGUA /LITERATURA ESTRANGEIRA - INGLES");
       }
-      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_espanhol, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_espanhol, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 8, "LINGUA /LITERATURA ESTRANGEIRA - ESPANHOL");
       }
-      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_outra, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_outra, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 9, "LINGUA /LITERATURA ESTRANGEIRA - OUTRA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_artes, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_artes, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 10, "ARTES");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_educacao_fisica, array(1,2)) ) {
+      if ( in_array($oDadosTurma->disciplinas_turma_educacao_fisica, [1,2]) ) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 11, "EDUCACAO FISICA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_historia, array(1,2)) ) {
+      if ( in_array($oDadosTurma->disciplinas_turma_historia, [1,2]) ) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 12, "HISTORIA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_geografia, array(1,2)) ) {
+      if ( in_array($oDadosTurma->disciplinas_turma_geografia, [1,2]) ) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 13, "GEOGRAFIA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_filosofia, array(1,2)) ) {
+      if ( in_array($oDadosTurma->disciplinas_turma_filosofia, [1,2]) ) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 14, "FILOSOFIA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_informatica_computacao, array(1,2)) ){
+      if ( in_array($oDadosTurma->disciplinas_turma_informatica_computacao, [1,2]) ){
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 16, "INFORMATICA/COMPUTACAO");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_disciplinas_profissionalizantes, array(1,2)) ) {
+      if ( in_array($oDadosTurma->disciplinas_turma_disciplinas_profissionalizantes, [1,2]) ) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 17, "DISCIPLINAS PROFISSIONALIZANTES");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_voltadas_atendimento_necessidade, array(1,2)) ) {
+      if ( in_array($oDadosTurma->disciplinas_turma_voltadas_atendimento_necessidade, [1,2]) ) {
         static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 20, "DISCIPLINAS VOLTADAS AO ATENDIMENTO AS NECESSIDADES EDUCACIONAIS ESPECIFICAS DOS ALUNOS");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_voltadas_diversidade_sociocultur, array(1,2)) ) {
+      if ( in_array($oDadosTurma->disciplinas_turma_voltadas_diversidade_sociocultur, [1,2]) ) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 21, "DISCIPLINAS VOLTADAS A DIVERSIDADE SOCIOCULTURAL (DISCIPLINAS PEDAGOGICAS)");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_libras, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_libras, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 23, "LIBRAS");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_disciplinas_pedagogicas, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_disciplinas_pedagogicas, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 25, "DISCIPLINAS PEDAGOGICAS");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_ensino_religioso, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_ensino_religioso, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 26, "ENSINO RELIGIOSO");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_lingua_indigena, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_lingua_indigena, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 27, "LINGUA INDIGENA");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_estudos_sociais, array(1,2))) {
+      if ( in_array($oDadosTurma->disciplinas_turma_estudos_sociais, [1,2])) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 28, "ESTUDOS SOCIAIS");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_sociologia, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_sociologia, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 29, "SOCIOLOGIA");
       }
-      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_frances, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_lingua_literatura_estrangeira_frances, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 30, "LINGUA/LITERATURA ESTRANGEIRA - FRANCES");
       }
-      if ( in_array($oDadosTurma->disciplinas_turma_outras, array(1,2) )) {
+      if ( in_array($oDadosTurma->disciplinas_turma_outras, [1,2] )) {
         $aValidaDisciplina[] = static::validaDisciplinaComEtapa($oExportacaoCenso, $oDadosTurma, 99, "OUTRAS DISCIPLINAS");
       }
 
       if ($lDadosValidos && !empty($aValidaDisciplina) ) {
-        $lDadosValidos = array_reduce( $aValidaDisciplina, 'validaVerdadeiro');
+        $lDadosValidos = array_reduce( $aValidaDisciplina, validaVerdadeiro(...));
       }
     }
 
@@ -1064,7 +1065,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
       }
     }
 
-      $disciplinas = array_key_exists($iEtapa, static::$aEtapasDisciplinas) ? static::$aEtapasDisciplinas[$iEtapa] : array();
+      $disciplinas = array_key_exists((string) $iEtapa, static::$aEtapasDisciplinas) ? static::$aEtapasDisciplinas[$iEtapa] : [];
 
       if (!in_array($iDisciplina, $disciplinas)) {
 
@@ -1100,26 +1101,26 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
 
     // regra 3
     if (  $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov !== '' &&
-         !in_array($oDadosEscola->registro00->dependencia_administrativa, array(2,3)) ) {
+         !in_array($oDadosEscola->registro00->dependencia_administrativa, [2,3]) ) {
       $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov = '';
     }
 
     // regra 4
     if ( $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov !== '' &&
-         in_array($oDadosTurma->tipo_atendimento, array(1, 5)) )  {
+         in_array($oDadosTurma->tipo_atendimento, [1, 5]) )  {
       $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov = '';
     }
 
     // regra 5
-    $aEtapaEnsino = array(  4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-                           23, 24, 41, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38);
+    $aEtapaEnsino = [  4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+                           23, 24, 41, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38];
     if ( $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov !== '' &&
          $oDadosTurma->modalidade_turma == 3 || !in_array($oDadosTurma->etapa_ensino_turma, $aEtapaEnsino)) {
       $oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov = '';
     }
 
     // regra 6
-    if ( !in_array($oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov, array(0,1)) ) {
+    if ( !in_array($oDadosTurma->turma_participante_mais_educacao_ensino_medio_inov, [0,1]) ) {
 
       $sMsgErro = "{$sMsgTurma}foi preenchido com valor inválido.";
       $lValidou = false;

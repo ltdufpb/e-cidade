@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhtipoatras_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhtipoatras = new cl_rhtipoatras;
 $clrhtipoatras->rotulo->label("rh60_codigo");
 $clrhtipoatras->rotulo->label("rh60_descr");
@@ -54,7 +55,7 @@ $clrhtipoatras->rotulo->label("rh60_descr");
               <?=$Lrh60_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh60_codigo",6,$Irh60_codigo,true,"text",4,"","chave_rh60_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhtipoatras->rotulo->label("rh60_descr");
               <?=$Lrh60_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh60_descr",40,$Irh60_descr,true,"text",4,"","chave_rh60_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhtipoatras->rotulo->label("rh60_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhtipoatras.php")==true){
@@ -122,12 +123,12 @@ $clrhtipoatras->rotulo->label("rh60_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

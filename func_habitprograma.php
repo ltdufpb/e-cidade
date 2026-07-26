@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitprograma_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clhabitprograma = new cl_habitprograma;
 $clhabitprograma->rotulo->label("ht01_sequencial");
 $clhabitprograma->rotulo->label("ht01_descricao");
@@ -54,7 +55,7 @@ $clhabitprograma->rotulo->label("ht01_descricao");
               <?=$Lht01_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ht01_sequencial",10,$Iht01_sequencial,true,"text",4,"","chave_ht01_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clhabitprograma->rotulo->label("ht01_descricao");
               <?=$Lht01_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ht01_descricao",50,$Iht01_descricao,true,"text",4,"","chave_ht01_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clhabitprograma->rotulo->label("ht01_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
      
       $aWhere = array();
       $sAnd   = "";
@@ -150,12 +151,12 @@ $clhabitprograma->rotulo->label("ht01_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

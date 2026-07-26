@@ -86,7 +86,7 @@ class custorateio {
    * @var array
    */
   
-  private $aRegrasRaterio = array();
+  private $aRegrasRaterio = [];
   /**
    * Criterio de Raterio 
    *
@@ -232,8 +232,7 @@ class custorateio {
        */
       if (count($this->aRegrasRaterio) == 1) {
         
-        reset($this->aRegrasRaterio);
-        $this->aRegrasRaterio[key($this->aRegrasRaterio)]->setPercentual(100);
+        array_first($this->aRegrasRaterio)->setPercentual(100);
         $this->aRegrasRaterio[current($this->aRegrasRaterio)->getCodigoRegra()]->save();
          
       } else {
@@ -273,7 +272,7 @@ class custorateio {
                                                                  );
 
     $rsCriteriosAtualizar  = $oDaoCriterioRegra->sql_record($sSqlCriteriosAtualizar);
-    $aRegrasCadastradas    = array();
+    $aRegrasCadastradas    = [];
     if ($oDaoCriterioRegra->numrows > 0) {
 
       $aCriteriosAtualizar   = db_utils::getCollectionByRecord($rsCriteriosAtualizar);
@@ -315,7 +314,7 @@ class custorateio {
     $aRegras          = $this->getRegrasRateio();
     $nTotalQuantidade = 0;
     $nTotalValor      = 0;
-    $aRateioRealizado = array();
+    $aRateioRealizado = [];
     foreach ($aRegras as $oRegra) {
       
       $oRateio = new stdClass();

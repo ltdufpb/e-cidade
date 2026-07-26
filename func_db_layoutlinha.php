@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_layoutlinha_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_layoutlinha = new cl_db_layoutlinha;
 $cldb_layoutlinha->rotulo->label("db51_codigo");
 $cldb_layoutlinha->rotulo->label("db51_descr");
@@ -54,7 +55,7 @@ $cldb_layoutlinha->rotulo->label("db51_descr");
               <?=$Ldb51_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db51_codigo",6,$Idb51_codigo,true,"text",4,"","chave_db51_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_layoutlinha->rotulo->label("db51_descr");
               <?=$Ldb51_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db51_descr",40,$Idb51_descr,true,"text",4,"","chave_db51_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_layoutlinha->rotulo->label("db51_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_layoutlinha.php")==true){
@@ -122,12 +123,12 @@ $cldb_layoutlinha->rotulo->label("db51_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

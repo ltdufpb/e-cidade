@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -153,7 +153,7 @@ $parametroIntegracao = $parametroModel->getIntegracao();
 <br><br>
 <center>
 
-<?if($iLaboratorioLogado==0){ ?>
+<?php if($iLaboratorioLogado==0){ ?>
     <table width='100%'>
       <tr>
         <td align='center'>
@@ -166,14 +166,14 @@ $parametroIntegracao = $parametroModel->getIntegracao();
       </tr>
     </table>
     </center>
-    <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
+    <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     exit;
   }?>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmlab_coletaitem.php"));
 	?>
     </center>
@@ -181,7 +181,7 @@ $parametroIntegracao = $parametroModel->getIntegracao();
   </tr>
 </table>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -189,7 +189,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","la22_i_codigo",true,1,"la22_i_codigo",true);
 </script>
-<?
+<?php 
 if((isset($incluir))||(isset($falta))){
   if($cllab_coletaitem->erro_status=="0"){
     $cllab_coletaitem->erro(true,false);

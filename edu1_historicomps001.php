@@ -154,13 +154,13 @@ if (isset($incluir) && $erro == false) {
 
     $oDaoHistoricoMps->erro(true,false);
     $result = db_query("select last_value from historicomps_ed62_i_codigo_seq");
-    $ultimo = pg_result($result,0,0);
+    $ultimo = pg_fetch_result($result,0,0);
     ?>
     <script>
      location.href               = "edu1_histmpsdisc001.php?ed65_i_historicomps=<?=$ultimo?>&ed62_c_situacao="+document.getElementById('ed62_c_situacao').value;
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php 
   }
 }
 ?>

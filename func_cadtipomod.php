@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadtipomod_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcadtipomod = new cl_cadtipomod;
 $clcadtipomod->rotulo->label("k46_sequencial");
 $clcadtipomod->rotulo->label("k46_descr");
@@ -54,7 +55,7 @@ $clcadtipomod->rotulo->label("k46_descr");
               <?=$Lk46_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k46_sequencial",10,$Ik46_sequencial,true,"text",4,"","chave_k46_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcadtipomod->rotulo->label("k46_descr");
               <?=$Lk46_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k46_descr",40,$Ik46_descr,true,"text",4,"","chave_k46_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcadtipomod->rotulo->label("k46_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadtipomod.php")==true){
@@ -122,12 +123,12 @@ $clcadtipomod->rotulo->label("k46_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

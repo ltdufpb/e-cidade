@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE conlancamcorgrupocorrente
 class cl_conlancamcorgrupocorrente {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c23_sequencial = 0;
-   var $c23_conlancam = 0;
-   var $c23_corgrupocorrente = 0;
+   public $c23_sequencial = 0;
+   public $c23_conlancam = 0;
+   public $c23_corgrupocorrente = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c23_sequencial = int4 = Código Sequencial
                  c23_conlancam = int4 = Código do Lançamento
                  c23_corgrupocorrente = int4 = Código do grupo
                  ";
    //funcao construtor da classe
-   function cl_conlancamcorgrupocorrente() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancamcorgrupocorrente");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_conlancamcorgrupocorrente {
          $this->erro_status = "0";
          return false;
        }
-       $this->c23_sequencial = pg_result($result,0,0);
+       $this->c23_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from conlancamcorgrupocorrente_c23_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c23_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c23_sequencial)){
          $this->erro_sql = " Campo c23_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_conlancamcorgrupocorrente {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grupo de lancamentos ($this->c23_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grupo de lancamentos já Cadastrado";
@@ -170,12 +170,12 @@ class cl_conlancamcorgrupocorrente {
        if(($resaco!=false)||($this->numrows!=0)) {
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12441,'$this->c23_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,2169,12441,'','".AddSlashes(pg_result($resaco,0,'c23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2169,12442,'','".AddSlashes(pg_result($resaco,0,'c23_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2169,12443,'','".AddSlashes(pg_result($resaco,0,'c23_corgrupocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2169,12441,'','".AddSlashes(pg_fetch_result($resaco,0,'c23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2169,12442,'','".AddSlashes(pg_fetch_result($resaco,0,'c23_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2169,12443,'','".AddSlashes(pg_fetch_result($resaco,0,'c23_corgrupocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -185,10 +185,10 @@ class cl_conlancamcorgrupocorrente {
       $this->atualizacampos();
      $sql = " update conlancamcorgrupocorrente set ";
      $virgula = "";
-     if(trim($this->c23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c23_sequencial"])){
+     if(trim((string) $this->c23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c23_sequencial"])){
        $sql  .= $virgula." c23_sequencial = $this->c23_sequencial ";
        $virgula = ",";
-       if(trim($this->c23_sequencial) == null ){
+       if(trim((string) $this->c23_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "c23_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_conlancamcorgrupocorrente {
          return false;
        }
      }
-     if(trim($this->c23_conlancam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c23_conlancam"])){
+     if(trim((string) $this->c23_conlancam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c23_conlancam"])){
        $sql  .= $virgula." c23_conlancam = $this->c23_conlancam ";
        $virgula = ",";
-       if(trim($this->c23_conlancam) == null ){
+       if(trim((string) $this->c23_conlancam) == null ){
          $this->erro_sql = " Campo Código do Lançamento nao Informado.";
          $this->erro_campo = "c23_conlancam";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_conlancamcorgrupocorrente {
          return false;
        }
      }
-     if(trim($this->c23_corgrupocorrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c23_corgrupocorrente"])){
+     if(trim((string) $this->c23_corgrupocorrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c23_corgrupocorrente"])){
        $sql  .= $virgula." c23_corgrupocorrente = $this->c23_corgrupocorrente ";
        $virgula = ",";
-       if(trim($this->c23_corgrupocorrente) == null ){
+       if(trim((string) $this->c23_corgrupocorrente) == null ){
          $this->erro_sql = " Campo Código do grupo nao Informado.";
          $this->erro_campo = "c23_corgrupocorrente";
          $this->erro_banco = "";
@@ -235,15 +235,15 @@ class cl_conlancamcorgrupocorrente {
        if($this->numrows>0){
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,12441,'$this->c23_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c23_sequencial"]))
-             $resac = db_query("insert into db_acount values($acount,2169,12441,'".AddSlashes(pg_result($resaco,$conresaco,'c23_sequencial'))."','$this->c23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2169,12441,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c23_sequencial'))."','$this->c23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c23_conlancam"]))
-             $resac = db_query("insert into db_acount values($acount,2169,12442,'".AddSlashes(pg_result($resaco,$conresaco,'c23_conlancam'))."','$this->c23_conlancam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2169,12442,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c23_conlancam'))."','$this->c23_conlancam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["c23_corgrupocorrente"]))
-             $resac = db_query("insert into db_acount values($acount,2169,12443,'".AddSlashes(pg_result($resaco,$conresaco,'c23_corgrupocorrente'))."','$this->c23_corgrupocorrente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2169,12443,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c23_corgrupocorrente'))."','$this->c23_corgrupocorrente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -291,12 +291,12 @@ class cl_conlancamcorgrupocorrente {
        if(($resaco!=false)||($this->numrows!=0)){
          for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,12441,'$c23_sequencial','E')");
-           $resac = db_query("insert into db_acount values($acount,2169,12441,'','".AddSlashes(pg_result($resaco,$iresaco,'c23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2169,12442,'','".AddSlashes(pg_result($resaco,$iresaco,'c23_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2169,12443,'','".AddSlashes(pg_result($resaco,$iresaco,'c23_corgrupocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2169,12441,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2169,12442,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c23_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2169,12443,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c23_corgrupocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -357,7 +357,7 @@ class cl_conlancamcorgrupocorrente {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conlancamcorgrupocorrente";
@@ -372,7 +372,7 @@ class cl_conlancamcorgrupocorrente {
    function sql_query ( $c23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_conlancamcorgrupocorrente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,7 +407,7 @@ class cl_conlancamcorgrupocorrente {
    function sql_query_file ( $c23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_conlancamcorgrupocorrente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_conlancamcorgrupocorrente {
 
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -483,7 +483,7 @@ class cl_conlancamcorgrupocorrente {
   		if($ordem != null ) {
 
   			$sql .= " order by ";
-  			$campos_sql = split("#",$ordem);
+  			$campos_sql = preg_split("#\\##m",(string) $ordem);
   			$virgula = "";
 
   			for($i=0;$i<sizeof($campos_sql);$i++) {

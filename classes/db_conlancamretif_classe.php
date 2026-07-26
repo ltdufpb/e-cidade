@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE conlancamretif
 class cl_conlancamretif { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c79_codlan = 0; 
-   var $c79_codsup = 0; 
-   var $c79_data_dia = null; 
-   var $c79_data_mes = null; 
-   var $c79_data_ano = null; 
-   var $c79_data = null; 
-   var $c79_coddoc = 0; 
+   public $c79_codlan = 0; 
+   public $c79_codsup = 0; 
+   public $c79_data_dia = null; 
+   public $c79_data_mes = null; 
+   public $c79_data_ano = null; 
+   public $c79_data = null; 
+   public $c79_coddoc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c79_codlan = int4 = Código Lançamento 
                  c79_codsup = int4 = Código Suplementação 
                  c79_data = date = Data 
                  c79_coddoc = int4 = documento que originou o estorno 
                  ";
    //funcao construtor da classe 
-   function cl_conlancamretif() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancamretif"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,7 +143,7 @@ class cl_conlancamretif {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->c79_codlan) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -167,13 +167,13 @@ class cl_conlancamretif {
      $resaco = $this->sql_record($this->sql_query_file($this->c79_codlan));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5215,'$this->c79_codlan','I')");
-       $resac = db_query("insert into db_acount values($acount,1345,5215,'','".AddSlashes(pg_result($resaco,0,'c79_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1345,5216,'','".AddSlashes(pg_result($resaco,0,'c79_codsup'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1345,5905,'','".AddSlashes(pg_result($resaco,0,'c79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1345,7992,'','".AddSlashes(pg_result($resaco,0,'c79_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1345,5215,'','".AddSlashes(pg_fetch_result($resaco,0,'c79_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1345,5216,'','".AddSlashes(pg_fetch_result($resaco,0,'c79_codsup'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1345,5905,'','".AddSlashes(pg_fetch_result($resaco,0,'c79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1345,7992,'','".AddSlashes(pg_fetch_result($resaco,0,'c79_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -182,10 +182,10 @@ class cl_conlancamretif {
       $this->atualizacampos();
      $sql = " update conlancamretif set ";
      $virgula = "";
-     if(trim($this->c79_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_codlan"])){ 
+     if(trim((string) $this->c79_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_codlan"])){ 
        $sql  .= $virgula." c79_codlan = $this->c79_codlan ";
        $virgula = ",";
-       if(trim($this->c79_codlan) == null ){ 
+       if(trim((string) $this->c79_codlan) == null ){ 
          $this->erro_sql = " Campo Código Lançamento nao Informado.";
          $this->erro_campo = "c79_codlan";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_conlancamretif {
          return false;
        }
      }
-     if(trim($this->c79_codsup)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_codsup"])){ 
+     if(trim((string) $this->c79_codsup)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_codsup"])){ 
        $sql  .= $virgula." c79_codsup = $this->c79_codsup ";
        $virgula = ",";
-       if(trim($this->c79_codsup) == null ){ 
+       if(trim((string) $this->c79_codsup) == null ){ 
          $this->erro_sql = " Campo Código Suplementação nao Informado.";
          $this->erro_campo = "c79_codsup";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_conlancamretif {
          return false;
        }
      }
-     if(trim($this->c79_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c79_data_dia"] !="") ){ 
+     if(trim((string) $this->c79_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c79_data_dia"] !="") ){ 
        $sql  .= $virgula." c79_data = '$this->c79_data' ";
        $virgula = ",";
-       if(trim($this->c79_data) == null ){ 
+       if(trim((string) $this->c79_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "c79_data_dia";
          $this->erro_banco = "";
@@ -224,7 +224,7 @@ class cl_conlancamretif {
        if(isset($GLOBALS["HTTP_POST_VARS"]["c79_data_dia"])){ 
          $sql  .= $virgula." c79_data = null ";
          $virgula = ",";
-         if(trim($this->c79_data) == null ){ 
+         if(trim((string) $this->c79_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "c79_data_dia";
            $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_conlancamretif {
          }
        }
      }
-     if(trim($this->c79_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_coddoc"])){ 
+     if(trim((string) $this->c79_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c79_coddoc"])){ 
        $sql  .= $virgula." c79_coddoc = $this->c79_coddoc ";
        $virgula = ",";
-       if(trim($this->c79_coddoc) == null ){ 
+       if(trim((string) $this->c79_coddoc) == null ){ 
          $this->erro_sql = " Campo documento que originou o estorno nao Informado.";
          $this->erro_campo = "c79_coddoc";
          $this->erro_banco = "";
@@ -256,17 +256,17 @@ class cl_conlancamretif {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5215,'$this->c79_codlan','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c79_codlan"]))
-           $resac = db_query("insert into db_acount values($acount,1345,5215,'".AddSlashes(pg_result($resaco,$conresaco,'c79_codlan'))."','$this->c79_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1345,5215,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c79_codlan'))."','$this->c79_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c79_codsup"]))
-           $resac = db_query("insert into db_acount values($acount,1345,5216,'".AddSlashes(pg_result($resaco,$conresaco,'c79_codsup'))."','$this->c79_codsup',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1345,5216,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c79_codsup'))."','$this->c79_codsup',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c79_data"]))
-           $resac = db_query("insert into db_acount values($acount,1345,5905,'".AddSlashes(pg_result($resaco,$conresaco,'c79_data'))."','$this->c79_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1345,5905,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c79_data'))."','$this->c79_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c79_coddoc"]))
-           $resac = db_query("insert into db_acount values($acount,1345,7992,'".AddSlashes(pg_result($resaco,$conresaco,'c79_coddoc'))."','$this->c79_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1345,7992,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c79_coddoc'))."','$this->c79_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -311,13 +311,13 @@ class cl_conlancamretif {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5215,'$c79_codlan','E')");
-         $resac = db_query("insert into db_acount values($acount,1345,5215,'','".AddSlashes(pg_result($resaco,$iresaco,'c79_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1345,5216,'','".AddSlashes(pg_result($resaco,$iresaco,'c79_codsup'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1345,5905,'','".AddSlashes(pg_result($resaco,$iresaco,'c79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1345,7992,'','".AddSlashes(pg_result($resaco,$iresaco,'c79_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1345,5215,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c79_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1345,5216,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c79_codsup'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1345,5905,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1345,7992,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c79_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conlancamretif
@@ -377,7 +377,7 @@ class cl_conlancamretif {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conlancamretif";
@@ -391,7 +391,7 @@ class cl_conlancamretif {
    function sql_query ( $c79_codlan=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_conlancamretif {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_conlancamretif {
    function sql_query_file ( $c79_codlan=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,7 +448,7 @@ class cl_conlancamretif {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

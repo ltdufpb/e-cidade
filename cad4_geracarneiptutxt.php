@@ -725,7 +725,7 @@ try {
     </tr>
     <tr>
       <td width="100%" align="center">
-          <? db_criatermometro('termometro', 'Concluido...', 'blue', 1); ?>
+          <?php  db_criatermometro('termometro', 'Concluido...', 'blue', 1); ?>
       </td>
     </tr>
   </table>

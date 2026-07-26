@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ class importacaoCodigoInep2010 extends importacaoCenso {
    * (non-PHPdoc)
    * @see importacaoCenso::getDadosAluno()
    */
-  function getDadosAluno($oLinha) {
+  #[\Override]
+  function getDadosAluno($oLinha, $lPesquisaInep = \false) {
   	
   	$sNomeAluno  = $oLinha->nomealuno;
   	$oDaoAluno   = db_utils::getdao('aluno');
@@ -58,20 +59,20 @@ class importacaoCodigoInep2010 extends importacaoCenso {
 
   	$oDaoEscola   = db_utils::getDao('escola');
     $oDadosEscola = $this->getDadosEscola($oLinha);
-    
+
     if ($oDadosEscola != null) {
-                      
-      if ($oLinha->inep_escola != "" && $oLinha->inep_escola != trim($oDadosEscola->ed18_c_codigoinep)) {       
+
+      if ($oLinha->inep_escola != "" && $oLinha->inep_escola != trim((string) $oDadosEscola->ed18_c_codigoinep)) {       
         $oDaoEscola->ed18_c_codigoinep = $oLinha->inep_escola;
       }
-      
+
       $oDaoEscola->ed18_i_codigo = $oDadosEscola->ed18_i_codigo;    
       $oDaoEscola->alterar($oDadosEscola->ed18_i_codigo);
-    
+
       if ($oDaoEscola->erro_status == '0') {
         throw new Exception("Erro na alteração do código inep da escola. Erro da classe: ".$oDaoEscola->erro_msg);        
       }
-         
+
     } else {
       $this->log("Código inep da escola difere do informado no sistema!");	
     }//fecha o else
@@ -84,27 +85,27 @@ class importacaoCodigoInep2010 extends importacaoCenso {
   */
   function atualizaCodigoInepTurma($oLinha) {
 
-  	$sNomeTurmaCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nometurma);
-    $iTipoAtendimento    = trim($oLinha->tpatend);
-    $iCodTurma           = isset($oLinha->codigoturma) ? $oLinha->codigoturma : '';
-    $iModalidade         = trim($oLinha->modalidade);
-    $iEtapa              = trim($oLinha->etapaensino);
-    
+  	$sNomeTurmaCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nometurma);
+    $iTipoAtendimento    = trim((string) $oLinha->tpatend);
+    $iCodTurma           = $oLinha->codigoturma ?? '';
+    $iModalidade         = trim((string) $oLinha->modalidade);
+    $iEtapa              = trim((string) $oLinha->etapaensino);
+
     if ($oLinha->tpatend == 0 || $oLinha->tpatend == 1 
         || $oLinha->tpatend == 2 || $oLinha->tpatend == 3) {
 
       $oDaoTurma    = db_utils::getdao('turma');
       $sWhereTurma  = "";  
-      
+
       if ($iCodTurma != "") {
         $sWhereTurma .= " ed57_i_codigo = ".$iCodTurma;  
       } else {
-      	
+
       	$sWhereTurma .= " translate(to_ascii(ed57_c_descr, 'LATIN1'), ' ', '') = '";
         $sWhereTurma .=            str_replace('', '', $sNomeTurmaCensoNovo)."' ";
-      	
+
       }
-      
+
       $sWhereTurma .= empty($sWhereTurma) ? '' : ' AND ';
       $sWhereTurma .= "      ed57_i_tipoatend = $iTipoAtendimento ";
       $sWhereTurma .= "      AND ed52_i_ano = ".$this->iAnoEscolhido;
@@ -112,76 +113,76 @@ class importacaoCodigoInep2010 extends importacaoCenso {
       $sWhereTurma .= "      AND ed18_c_codigoinep = '".$this->iCodigoInepEscola."'";
       $sSqlTurma    = $oDaoTurma->sql_query_censo("", "ed57_i_codigo", "", $sWhereTurma);  
       $rsTurma      = $oDaoTurma->sql_record($sSqlTurma);            
-      
+
       if ($oDaoTurma->numrows == 0) {
- 
+
         $sMsg  = "TURMA: [".$this->iCodigoInepEscola."] ".$sNomeTurmaCensoNovo; 
         $sMsg .= " não foi encontrada no sistema.\n";
         $this->log($sMsg);           
-           
+
       } else {
-      	
+
       	$oDadosTurma = db_utils::fieldsmemory($rsTurma, 0);
-      	
+
         if (trim($this->iCodigoInepEscola) != "") {
-        
+
           $oDaoTurma->ed57_i_codigoinep = $oLinha->codigoinepturma;
           $oDaoTurma->ed57_i_codigo     = $oDadosTurma->ed57_i_codigo;
           $oDaoTurma->alterar($oDadosTurma->ed57_i_codigo);
-          
+
           if ($oDaoTurma->erro_status == '0') {
             throw new Exception("Erro na alteração dos dados da Turma. Erro da classe: ".$oDaoTurma->erro_msg);        
           } //fecha o if do erro_status
-                            
+
         }//fecha o if (trim($this->iCodigoInepEscola) != "")
-        
+
       } //fecha o else
-              
+
     } elseif ($oLinha->tpatend == 4 || $oLinha->tpatend == 5) {
-              
+
       $oDaoTurmaac    = db_utils::getdao('turmaac');
       $sWhereTurmaAc  = "";
-      
+
       if ($iCodTurma != "") {
         $sWhereTurmaAc .= " ed57_i_codigo = ".$iCodTurma;  
       } else {
-      	
+
       	$sWhereTurmaAc .= " translate(to_ascii(ed57_c_descr, 'LATIN1'), ' ', '') = '";
         $sWhereTurmaAc .=            str_replace('', '', $sNomeTurmaCensoNovo)."' ";
-      	
+
       }
-      
+
       $sWhereTurmaAc .= empty($sWhereTurma) ? '' : ' AND ';
       $sWhereTurmaAc .= "      AND ed268_i_tipoatend = ".$iTipoAtendimento ;
       $sWhereTurmaAc .= "      AND ed52_i_ano = ".$this->iAnoEscolhido;
       $sWhereTurmaAc .= "      AND ed18_c_codigoinep = '".$this->iCodigoInepEscola."'";  
       $sSqlTurmaac    = $oDaoTurmaac->sql_query_censo("", "*", "", $sWhereTurmaAc); 
       $rsTurmaac      = $oDaoTurmaac->sql_record($sSqlTurmaac);                    
-    
+
       if ($oDaoTurmaac->numrows == 0) {
-      	      	
+
         $sMsg  = "TURMA: [".$this->iCodigoInepEscola."] ".$sNomeTurmaCensoNovo; 
         $sMsg .= " código inep diferente do informado no sistema.\n";
         $this->log($sMsg);
-                                       
+
       } else {
-      	
+
       	$oDadosTurmaac = db_utils::fieldsmemory($rsTurmaac, 0);        
-      	
+
         if (trim($this->iCodigoInepEscola) != "") {
-        	
+
           $oDaoTurmaac->ed268_i_codigoinep = $oDadosTurmaAc->ed268_i_codigoinep;
           $oDaoTurmaac->ed268_i_codigo     = $oDadosTurmaAc->ed268_i_codigo; 
           $oDaoTurmaac->alterar($oDadosTurmaAc->ed268_i_codigo);
-              
+
           if ($oDaoTurmaac->erro_status == '0') {            
             throw new Exception("Erro na alteração do código inep da Turma. Erro da classe: ".$oDaoTurmaac->erro_msg);                    
           } //fecha if $oDaoTurmaac->erro_status == '0' 
-                      
+
         } //fecha if que verifica $codigoinep_turmacenso
-        
+
       } //fecha o else
-      
+
     } //fecha o elseif tipoatend ==4 e ==5
     
   } //fecha a funcao atualizaDadosTurma	
@@ -193,40 +194,40 @@ class importacaoCodigoInep2010 extends importacaoCenso {
   function atualizaCodigoInepDocente($oLinha) {
 
   	$oDaoRechumano   = db_utils::getdao('rechumano'); 
-    $aDadosRechumano = $this->getMatriculasRechumano($oLinha, true);
-   
+    $aDadosRechumano = $this->getMatriculasRechumano($oLinha);
+
     if ($aDadosRechumano == null) {
-      $aDadosRechumano = $this->getMatriculasRechumano($oLinha, false);
+      $aDadosRechumano = $this->getMatriculasRechumano($oLinha);
     }
 
     if ($aDadosRechumano != null) {
-    	
+
       $iTam = count($aDadosRechumano);
 
       for ($iCont = 0; $iCont < $iTam; $iCont++) {
-      	
+
         $oDaoRechumano              = db_utils::getdao('rechumano');
         $oDaoRechumano->ed20_i_pais = "";
-              
+
         if ($oLinha->inepdocente != "") {                      
           $oDaoRechumano->ed20_i_codigoinep = $oLinha->inepdocente;                  
         }	
-      
+
         $oDaoRechumano->ed20_i_codigo = $aDadosRechumano[$iCont]->ed20_i_codigo;
         $oDaoRechumano->alterar($aDadosRechumano[$iCont]->ed20_i_codigo);
-     
+
         if ($oDaoRechumano->erro_status == '0') {
           throw new Exception("Erro na alteração dos dados do Rechumano. Erro da classe ".$oDaoRechumano->erro_msg);        
         }//fecha o if do erro_status
-      	
+
       }//fecha o for
-       
+
     } else {//fecha o fi que verifica se os dados rechumano != null
-    	
+
       $sMsg  = "Docente: [".$oLinha->inepdocente."] ".$oLinha->nomedocente." - ".$oLinha->codigodocenteescola; 
       $sMsg .= " não foi encontrado no sistema.\n";
       $this->log($sMsg);
-      
+
     }//fecha o else
     	
   }//fecha funcao atualizaCodigoInepDocente
@@ -236,52 +237,52 @@ class importacaoCodigoInep2010 extends importacaoCenso {
   * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
   */
   function atualizaCodigoInepAluno($oLinha) {
-      
+
     $oDaoAluno                         = db_utils::getdao('aluno');
-    $aDadosAluno                       = $this->getDadosAluno($oLinha, false);       
+    $aDadosAluno                       = $this->getDadosAluno($oLinha);       
     $oDaoAluno->ed47_i_censoorgemissrg = "";
     $oDaoAluno->ed47_i_censocartorio   = "";
     $oDaoAluno->ed47_i_pais            = "";     
     $oDaoAluno->oid                    = "";                                      
-   
+
     if ($aDadosAluno != null) {
-    	
+
       $iTam = count($aDadosAluno);
 
       for ($iCont = 0; $iCont < $iTam; $iCont++) {
-      	
+
         if ($this->lImportarAlunoAtivo) { 
-        
-          if (trim($aDadosAluno[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
-                
+
+          if (trim((string) $aDadosAluno[$iCont]->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+
             $sMsg  = "Aluno [".$oDadosAluno[$iCont]->ed47_c_codigoinep."] ".$oDadosAluno[$iCont]->ed47_v_nome.": aluno";
             $sMsg .= " não está mais vinculado a esta escola.\n";      
             $this->log($sMsg);         
             return;
-                 
+
           } //fecha if $oDadosAluno->vinculo_escola) != trim($this->iCodigoInepEscola
-         
+
         } //fecha o if $this->lImportarAlunoAtivo
-        
-        if ($oLinha->inepaluno != "" && $oLinha->inepaluno != trim($aDadosAluno[$iCont]->ed47_c_codigoinep)) {                      
+
+        if ($oLinha->inepaluno != "" && $oLinha->inepaluno != trim((string) $aDadosAluno[$iCont]->ed47_c_codigoinep)) {                      
           $oDaoAluno->ed47_c_codigoinep = $oLinha->inepaluno;                 
         }
-      
+
         $oDaoAluno->ed47_i_codigo = $aDadosAluno[$iCont]->ed47_i_codigo;            
         $oDaoAluno->alterar($aDadosAluno[$iCont]->ed47_i_codigo);      
-                   
+
         if ($oDaoAluno->erro_status == '0') {
           throw new Exception("Erro na alteração do código inep do Aluno. Erro da classe ".$oDaoAluno->erro_msg);        
         }//fecha o erro_status
-        
+
       }//fecha o for
-      
+
     } else {  //fecha o else do if ($oDadosAluno == null) {
-       
+
       $sMsg  = "Aluno [".$oLinha->inepaluno. "] ". $oLinha->nomealuno;
       $sMsg .= " : Nome cadastrado no censo não existe no sistema.\n";             
       $this->log($sMsg); 
-              
+
     } //fecha o else
                                                                   
   }//fecha a funcao atualizaCodigoInepAluno
@@ -290,6 +291,7 @@ class importacaoCodigoInep2010 extends importacaoCenso {
    * (non-PHPdoc)
    * @see importacaoCenso::importarArquivo()
    */
+  #[\Override]
   function importarArquivo() {
     
     $sMsgErro = "Importação de Arquivo Censo abortada!\n";    
@@ -314,7 +316,7 @@ class importacaoCodigoInep2010 extends importacaoCenso {
     try {
       
       $this->validaArquivo(); 
-      $this->getLinhasArquivo($this->iCodigoLayout);   
+      $this->getLinhasArquivo();   
       $aLinhasArquivo = $this->getLinhasArquivo();
      
       

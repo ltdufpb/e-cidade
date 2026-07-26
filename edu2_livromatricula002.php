@@ -152,7 +152,7 @@ try {
         $oPdf->setfont('arial', '', 7);
         $oPdf->cell(20, 4, "Dt. Nasc: ", 0, 0, "L", 0);
         $oPdf->setfont('arial', 'b', 7);
-        $nascimento = date('d/m/Y', strtotime($datanasc));
+        $nascimento = date('d/m/Y', strtotime((string) $datanasc));
         $oPdf->cell(60, 4, $nascimento, 0, 0, "L", 0);
         $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
@@ -164,7 +164,7 @@ try {
         $oPdf->setfont('arial', '', 7);
         $oPdf->cell(12, 4, "Dt. Mat.: ", 0, 0, "L", 0);
         $oPdf->setfont('arial', 'b', 7);
-        $datamatricula = date('d/m/Y', strtotime($datamatr));
+        $datamatricula = date('d/m/Y', strtotime((string) $datamatr));
         $oPdf->cell(28, 4, $datamatricula, 0, 0, "L", 0);
         $oPdf->setfont('arial', '', 7);
         $oPdf->cell(20, 4, "Turma: ", 0, 0, "L", 0);
@@ -193,7 +193,7 @@ try {
         $oPdf->cell(20, 4, "Dt. Saída: ", 0, 0, "L", 0);
         $oPdf->setfont('arial', 'b', 7);
         if (!empty($datasaida)) {
-            $saida = date('d/m/Y', strtotime($datasaida));
+            $saida = date('d/m/Y', strtotime((string) $datasaida));
         } else {
             $saida = "";
         }
@@ -213,7 +213,7 @@ try {
         $oPdf->setfont('arial', '', 7);
         $oPdf->cell(20, 4, "CEP: ", 0, 0, "L", 0);
         $oPdf->setfont('arial', 'b', 7);
-        $cep = substr($cep, 0, 5) . '-' . substr($cep, -3);
+        $cep = substr((string) $cep, 0, 5) . '-' . substr((string) $cep, -3);
         $oPdf->cell(60, 4, $cep, 0, 0, "L", 0);
         $oPdf->cell(1, 4, "", "R", 1, "C", 0);
 
@@ -221,7 +221,7 @@ try {
         $oPdf->setfont('arial', '', 7);
         $oPdf->cell(20, 4, "", 0, 0, "L", 0);
         $oPdf->setfont('arial', 'b', 7);
-        $oPdf->cell(90, 4, strtoupper($bairro) . "   -   " . $municend . " - " . $ufend, 0, 0, "L", 0);
+        $oPdf->cell(90, 4, strtoupper((string) $bairro) . "   -   " . $municend . " - " . $ufend, 0, 0, "L", 0);
         $oPdf->setfont('arial', '', 7);
         $oPdf->cell(20, 4, "País: ", 0, 0, "L", 0);
         $oPdf->setfont('arial', 'b', 7);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE solandam
 class cl_solandam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc43_codigo = 0; 
-   var $pc43_solicitem = 0; 
-   var $pc43_ordem = 0; 
-   var $pc43_depto = 0; 
+   public $pc43_codigo = 0; 
+   public $pc43_solicitem = 0; 
+   public $pc43_ordem = 0; 
+   public $pc43_depto = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc43_codigo = int4 = Código Seq. 
                  pc43_solicitem = int4 = Cód. item da Solicitação 
                  pc43_ordem = int4 = Ordem Andamento 
                  pc43_depto = int4 = Depart. 
                  ";
    //funcao construtor da classe 
-   function cl_solandam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solandam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_solandam {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc43_codigo = pg_result($result,0,0); 
+       $this->pc43_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from solandam_pc43_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc43_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc43_codigo)){
          $this->erro_sql = " Campo pc43_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_solandam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Andamento da Solicitação ($this->pc43_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Andamento da Solicitação já Cadastrado";
@@ -180,13 +180,13 @@ class cl_solandam {
      $resaco = $this->sql_record($this->sql_query_file($this->pc43_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7993,'$this->pc43_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1346,7993,'','".AddSlashes(pg_result($resaco,0,'pc43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1346,7994,'','".AddSlashes(pg_result($resaco,0,'pc43_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1346,7995,'','".AddSlashes(pg_result($resaco,0,'pc43_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1346,7996,'','".AddSlashes(pg_result($resaco,0,'pc43_depto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1346,7993,'','".AddSlashes(pg_fetch_result($resaco,0,'pc43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1346,7994,'','".AddSlashes(pg_fetch_result($resaco,0,'pc43_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1346,7995,'','".AddSlashes(pg_fetch_result($resaco,0,'pc43_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1346,7996,'','".AddSlashes(pg_fetch_result($resaco,0,'pc43_depto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_solandam {
       $this->atualizacampos();
      $sql = " update solandam set ";
      $virgula = "";
-     if(trim($this->pc43_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_codigo"])){ 
+     if(trim((string) $this->pc43_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_codigo"])){ 
        $sql  .= $virgula." pc43_codigo = $this->pc43_codigo ";
        $virgula = ",";
-       if(trim($this->pc43_codigo) == null ){ 
+       if(trim((string) $this->pc43_codigo) == null ){ 
          $this->erro_sql = " Campo Código Seq. nao Informado.";
          $this->erro_campo = "pc43_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_solandam {
          return false;
        }
      }
-     if(trim($this->pc43_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_solicitem"])){ 
+     if(trim((string) $this->pc43_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_solicitem"])){ 
        $sql  .= $virgula." pc43_solicitem = $this->pc43_solicitem ";
        $virgula = ",";
-       if(trim($this->pc43_solicitem) == null ){ 
+       if(trim((string) $this->pc43_solicitem) == null ){ 
          $this->erro_sql = " Campo Cód. item da Solicitação nao Informado.";
          $this->erro_campo = "pc43_solicitem";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_solandam {
          return false;
        }
      }
-     if(trim($this->pc43_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_ordem"])){ 
+     if(trim((string) $this->pc43_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_ordem"])){ 
        $sql  .= $virgula." pc43_ordem = $this->pc43_ordem ";
        $virgula = ",";
-       if(trim($this->pc43_ordem) == null ){ 
+       if(trim((string) $this->pc43_ordem) == null ){ 
          $this->erro_sql = " Campo Ordem Andamento nao Informado.";
          $this->erro_campo = "pc43_ordem";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_solandam {
          return false;
        }
      }
-     if(trim($this->pc43_depto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_depto"])){ 
+     if(trim((string) $this->pc43_depto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc43_depto"])){ 
        $sql  .= $virgula." pc43_depto = $this->pc43_depto ";
        $virgula = ",";
-       if(trim($this->pc43_depto) == null ){ 
+       if(trim((string) $this->pc43_depto) == null ){ 
          $this->erro_sql = " Campo Depart. nao Informado.";
          $this->erro_campo = "pc43_depto";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_solandam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7993,'$this->pc43_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc43_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1346,7993,'".AddSlashes(pg_result($resaco,$conresaco,'pc43_codigo'))."','$this->pc43_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1346,7993,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc43_codigo'))."','$this->pc43_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc43_solicitem"]))
-           $resac = db_query("insert into db_acount values($acount,1346,7994,'".AddSlashes(pg_result($resaco,$conresaco,'pc43_solicitem'))."','$this->pc43_solicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1346,7994,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc43_solicitem'))."','$this->pc43_solicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc43_ordem"]))
-           $resac = db_query("insert into db_acount values($acount,1346,7995,'".AddSlashes(pg_result($resaco,$conresaco,'pc43_ordem'))."','$this->pc43_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1346,7995,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc43_ordem'))."','$this->pc43_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc43_depto"]))
-           $resac = db_query("insert into db_acount values($acount,1346,7996,'".AddSlashes(pg_result($resaco,$conresaco,'pc43_depto'))."','$this->pc43_depto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1346,7996,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc43_depto'))."','$this->pc43_depto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_solandam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7993,'$pc43_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1346,7993,'','".AddSlashes(pg_result($resaco,$iresaco,'pc43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1346,7994,'','".AddSlashes(pg_result($resaco,$iresaco,'pc43_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1346,7995,'','".AddSlashes(pg_result($resaco,$iresaco,'pc43_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1346,7996,'','".AddSlashes(pg_result($resaco,$iresaco,'pc43_depto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1346,7993,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1346,7994,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc43_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1346,7995,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc43_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1346,7996,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc43_depto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from solandam
@@ -376,7 +376,7 @@ class cl_solandam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:solandam";
@@ -390,7 +390,7 @@ class cl_solandam {
    function sql_query ( $pc43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_solandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_solandam {
    function sql_query_and ( $pc43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,7 +448,7 @@ class cl_solandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_solandam {
    function sql_query_andpad ( $pc43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_solandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,7 +496,7 @@ class cl_solandam {
    function sql_query_file ( $pc43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_solandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -529,7 +529,7 @@ class cl_solandam {
    function sql_query_proc ( $pc43_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -554,7 +554,7 @@ class cl_solandam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

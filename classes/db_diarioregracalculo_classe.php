@@ -1,37 +1,37 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE diarioregracalculo
 class cl_diarioregracalculo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed125_codigo = 0; 
-   var $ed125_ordemperiodo = 0; 
-   var $ed125_diario = 0; 
-   var $ed125_regracalculo = 0; 
+   public $ed125_codigo = 0; 
+   public $ed125_ordemperiodo = 0; 
+   public $ed125_diario = 0; 
+   public $ed125_regracalculo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed125_codigo = int4 = Código 
                  ed125_ordemperiodo = int4 = Ordem do Período 
                  ed125_diario = int4 = Código do Diário 
                  ed125_regracalculo = int4 = Regra de Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_diarioregracalculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diarioregracalculo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_diarioregracalculo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed125_codigo = pg_result($result,0,0); 
+       $this->ed125_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from diarioregracalculo_ed125_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed125_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed125_codigo)){
          $this->erro_sql = " Campo ed125_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_diarioregracalculo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Diario Regra Cálculo ($this->ed125_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Diario Regra Cálculo já Cadastrado";
@@ -159,13 +159,13 @@ class cl_diarioregracalculo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20892,'$this->ed125_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3759,20892,'','".AddSlashes(pg_result($resaco,0,'ed125_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3759,20893,'','".AddSlashes(pg_result($resaco,0,'ed125_ordemperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3759,20894,'','".AddSlashes(pg_result($resaco,0,'ed125_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3759,20895,'','".AddSlashes(pg_result($resaco,0,'ed125_regracalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3759,20892,'','".AddSlashes(pg_fetch_result($resaco,0,'ed125_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3759,20893,'','".AddSlashes(pg_fetch_result($resaco,0,'ed125_ordemperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3759,20894,'','".AddSlashes(pg_fetch_result($resaco,0,'ed125_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3759,20895,'','".AddSlashes(pg_fetch_result($resaco,0,'ed125_regracalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_diarioregracalculo {
       $this->atualizacampos();
      $sql = " update diarioregracalculo set ";
      $virgula = "";
-     if(trim($this->ed125_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_codigo"])){ 
+     if(trim((string) $this->ed125_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_codigo"])){ 
        $sql  .= $virgula." ed125_codigo = $this->ed125_codigo ";
        $virgula = ",";
-       if(trim($this->ed125_codigo) == null ){ 
+       if(trim((string) $this->ed125_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed125_codigo";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_diarioregracalculo {
          return false;
        }
      }
-     if(trim($this->ed125_ordemperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_ordemperiodo"])){ 
+     if(trim((string) $this->ed125_ordemperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_ordemperiodo"])){ 
        $sql  .= $virgula." ed125_ordemperiodo = $this->ed125_ordemperiodo ";
        $virgula = ",";
-       if(trim($this->ed125_ordemperiodo) == null ){ 
+       if(trim((string) $this->ed125_ordemperiodo) == null ){ 
          $this->erro_sql = " Campo Ordem do Período não informado.";
          $this->erro_campo = "ed125_ordemperiodo";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_diarioregracalculo {
          return false;
        }
      }
-     if(trim($this->ed125_diario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_diario"])){ 
+     if(trim((string) $this->ed125_diario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_diario"])){ 
        $sql  .= $virgula." ed125_diario = $this->ed125_diario ";
        $virgula = ",";
-       if(trim($this->ed125_diario) == null ){ 
+       if(trim((string) $this->ed125_diario) == null ){ 
          $this->erro_sql = " Campo Código do Diário não informado.";
          $this->erro_campo = "ed125_diario";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_diarioregracalculo {
          return false;
        }
      }
-     if(trim($this->ed125_regracalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_regracalculo"])){ 
+     if(trim((string) $this->ed125_regracalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed125_regracalculo"])){ 
        $sql  .= $virgula." ed125_regracalculo = $this->ed125_regracalculo ";
        $virgula = ",";
-       if(trim($this->ed125_regracalculo) == null ){ 
+       if(trim((string) $this->ed125_regracalculo) == null ){ 
          $this->erro_sql = " Campo Regra de Cálculo não informado.";
          $this->erro_campo = "ed125_regracalculo";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_diarioregracalculo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20892,'$this->ed125_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed125_codigo"]) || $this->ed125_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3759,20892,'".AddSlashes(pg_result($resaco,$conresaco,'ed125_codigo'))."','$this->ed125_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3759,20892,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed125_codigo'))."','$this->ed125_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed125_ordemperiodo"]) || $this->ed125_ordemperiodo != "")
-             $resac = db_query("insert into db_acount values($acount,3759,20893,'".AddSlashes(pg_result($resaco,$conresaco,'ed125_ordemperiodo'))."','$this->ed125_ordemperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3759,20893,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed125_ordemperiodo'))."','$this->ed125_ordemperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed125_diario"]) || $this->ed125_diario != "")
-             $resac = db_query("insert into db_acount values($acount,3759,20894,'".AddSlashes(pg_result($resaco,$conresaco,'ed125_diario'))."','$this->ed125_diario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3759,20894,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed125_diario'))."','$this->ed125_diario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed125_regracalculo"]) || $this->ed125_regracalculo != "")
-             $resac = db_query("insert into db_acount values($acount,3759,20895,'".AddSlashes(pg_result($resaco,$conresaco,'ed125_regracalculo'))."','$this->ed125_regracalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3759,20895,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed125_regracalculo'))."','$this->ed125_regracalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_diarioregracalculo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20892,'$ed125_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3759,20892,'','".AddSlashes(pg_result($resaco,$iresaco,'ed125_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3759,20893,'','".AddSlashes(pg_result($resaco,$iresaco,'ed125_ordemperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3759,20894,'','".AddSlashes(pg_result($resaco,$iresaco,'ed125_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3759,20895,'','".AddSlashes(pg_result($resaco,$iresaco,'ed125_regracalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3759,20892,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed125_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3759,20893,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed125_ordemperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3759,20894,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed125_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3759,20895,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed125_regracalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

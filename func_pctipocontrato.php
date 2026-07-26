@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pctipocontrato_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpctipocontrato = new cl_pctipocontrato;
 $clpctipocontrato->rotulo->label("p70_codtipo");
 $clpctipocontrato->rotulo->label("p70_descr");
@@ -54,7 +55,7 @@ $clpctipocontrato->rotulo->label("p70_descr");
               <?=$Lp70_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p70_codtipo",10,$Ip70_codtipo,true,"text",4,"","chave_p70_codtipo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpctipocontrato->rotulo->label("p70_descr");
               <?=$Lp70_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p70_descr",50,$Ip70_descr,true,"text",4,"","chave_p70_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpctipocontrato->rotulo->label("p70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pctipocontrato.php")==true){
@@ -118,12 +119,12 @@ $clpctipocontrato->rotulo->label("p70_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

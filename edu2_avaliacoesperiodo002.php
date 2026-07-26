@@ -36,7 +36,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
  
 $oGet   = db_utils::postMemory($_GET);
-$aWhere = array();
+$aWhere = [];
  
 if(!empty($oGet->iEscola)) {
   $aWhere[] = " ed18_i_codigo = {$oGet->iEscola} ";
@@ -70,9 +70,9 @@ $oPdf->oDadosRelatorio->iAvaliacoesRodape = $oGet->iAvaliacoes;
 $oPdf->oDadosRelatorio->iAlturaLinha      = 4;
  
 $iAlturaLinha = $oPdf->oDadosRelatorio->iAlturaLinha;
-$aDisciplinas = explode(",", $oGet->aDisciplinas);
+$aDisciplinas = explode(",", (string) $oGet->aDisciplinas);
  
-$aSituacoes = array(
+$aSituacoes = [
                      "AVANÇADO",
                      "CANCELADO",
                      "MATRICULA TRANCADA",
@@ -85,7 +85,7 @@ $aSituacoes = array(
                      "TROCA DE MODALIDADE",
                      "MATRICULA INDEVIDA",
                      "MATRICULA INDEFERIDA"
-                   );
+                   ];
  
 /**
  * Busca os dados dos alunos da turma
@@ -96,7 +96,7 @@ $sOrderAlunos = " ed60_i_numaluno, ed47_v_nome ";
 $sSqlAlunos                     = $oDaoAlunos->sql_query_alunomatriculado(null, "*", $sOrderAlunos, $sWhereAlunos);
 $rsAlunos                       = $oDaoAlunos->sql_record($sSqlAlunos);
 $iTotalLinhas                   = $oDaoAlunos->numrows;
-$oPdf->oDadosRelatorio->aAlunos = array();
+$oPdf->oDadosRelatorio->aAlunos = [];
 
 if($iTotalLinhas > 0) {
   for($iIndiceAlunos = 0; $iIndiceAlunos < $iTotalLinhas; $iIndiceAlunos++) {
@@ -132,7 +132,7 @@ if($iTotalLinhas > 0) {
 $oDaoEscola                      = db_utils::getDao("escola");
 $sSqlEscola                      = $oDaoEscola->sql_query(null, "*", null, "ed18_i_codigo = {$oGet->iEscola}");
 $rsEscola                        = $oDaoEscola->sql_record($sSqlEscola);
-$oPdf->oDadosRelatorio->aEscolas = array();
+$oPdf->oDadosRelatorio->aEscolas = [];
  
 if($oDaoEscola->numrows > 0) {
  
@@ -159,8 +159,8 @@ $oDaoTurma     = new cl_regencia();
 $sCamposTurma  = " calendario.ed52_i_ano, turma.ed57_c_descr, periodoavaliacao.ed09_c_descr ";
 $sCamposTurma .= " , turno.ed15_c_nome, disciplina.ed12_i_codigo, caddisciplina.ed232_c_descr ";
  
-$oPdf->oDadosRelatorio->aDadosDisciplinas = array();
-$oPdf->oDadosRelatorio->aDadosTurma       = array();
+$oPdf->oDadosRelatorio->aDadosDisciplinas = [];
+$oPdf->oDadosRelatorio->aDadosTurma       = [];
  
 
 for($iIndiceTurma = 0; $iIndiceTurma < count($aDisciplinas); $iIndiceTurma++) {
@@ -301,8 +301,8 @@ for($iIndiceDisciplinas = 0; $iIndiceDisciplinas < count($oPdf->oDadosRelatorio-
       $sNomeAluno       = $oDadosAvaliacoes->nome_aluno;
       $iEtapa           = $oDadosAvaliacoes->etapa;
       
-      if(strlen($oDadosAvaliacoes->nome_aluno) > $oPdf->oCalculosRelatorio->iTotalCaracteresPermitidos) {
-        $sNomeAluno = substr($oDadosAvaliacoes->nome_aluno, 0, $oPdf->oCalculosRelatorio->iTotalCaracteresPermitidos);
+      if(strlen((string) $oDadosAvaliacoes->nome_aluno) > $oPdf->oCalculosRelatorio->iTotalCaracteresPermitidos) {
+        $sNomeAluno = substr((string) $oDadosAvaliacoes->nome_aluno, 0, $oPdf->oCalculosRelatorio->iTotalCaracteresPermitidos);
       }
     }
  

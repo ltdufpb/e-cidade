@@ -30,7 +30,7 @@ class DBEstrutura {
   
   protected $iCodigo;
   
-  protected $aNiveis = array();
+  protected $aNiveis = [];
   
   protected $sMascara;
   
@@ -204,7 +204,7 @@ class DBEstrutura {
     $sNumero            = str_pad( $sNumero, $iCaracteresValidos, 0, STR_PAD_RIGHT );// Preenche espaços faltando
     $sNumero            = substr( $sNumero, 0, $iCaracteresValidos );                // Corta Pedaços Sobrando
     $aNumero            = str_split($sNumero);                                       // String Transformada em Array
-    $aLocaisPontuados = array();
+    $aLocaisPontuados = [];
 
     /**
      * Percorre a mascara procurando a pontuacao

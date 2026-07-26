@@ -28,7 +28,7 @@ class cl_bib_parametros {
                  bi26_impressora = int4 = Impressão de Comprovantes 
                  ";
    //funcao construtor da classe 
-   function cl_bib_parametros() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bib_parametros"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

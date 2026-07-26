@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -48,7 +48,7 @@ $ano=date('Y',db_getsession("DB_datausu"));
        <?=@$Lcm10_i_codigo?>
     </td>
     <td>
-<?
+<?php 
 db_input('cm10_i_codigo',10,$Icm10_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -58,7 +58,7 @@ db_input('cm10_i_codigo',10,$Icm10_i_codigo,true,'text',3,"")
        <?=@$Lcm28_i_ossoariojazigo?>
     </td>
     <td>
-<?
+<?php 
 db_input('cm28_i_ossoariojazigo',10,$Icm28_i_ossoariojazigo,true,'text',3,"readonly")
 ?>
     </td>
@@ -70,10 +70,10 @@ db_input('cm28_i_ossoariojazigo',10,$Icm28_i_ossoariojazigo,true,'text',3,"reado
        <?=@$Lcm28_i_proprietario?>
     </td>
     <td>
-<?
+<?php 
 db_input('cm28_i_proprietario',10,$Icm28_i_proprietario,true,'text',3,"")
 ?>
-       <?
+       <?php 
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -83,7 +83,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lcm10_d_data?>
     </td>
     <td>
-<?
+<?php 
 if(!isset($cm10_d_data_dia) && $db_opcao==1){
   $cm10_d_data_dia = $dia;
   $cm10_d_data_mes = $mes;
@@ -102,7 +102,7 @@ db_inputdata('cm10_d_data',@$cm10_d_data_dia,@$cm10_d_data_mes,@$cm10_d_data_ano
        <?=@$Lcm10_i_taxaserv?>
     </td>
     <td>
-       <?
+       <?php 
        include(modification("classes/db_taxaserv_classe.php"));
        $cltaxaserv = new cl_taxaserv;
        $clrotulo->label("cm11_f_valor");
@@ -146,7 +146,7 @@ db_inputdata('cm10_d_data',@$cm10_d_data_dia,@$cm10_d_data_mes,@$cm10_d_data_ano
        <?=@$Lcm10_f_valortaxa?>
     </td>
     <td>
-     <?
+     <?php 
        db_input('cm10_f_valortaxa',10,$Icm10_f_valortaxa,true,'text',3,"")
      ?>
     </td>
@@ -156,7 +156,7 @@ db_inputdata('cm10_d_data',@$cm10_d_data_dia,@$cm10_d_data_mes,@$cm10_d_data_ano
        <?=@$Lcm10_f_valor?>
     </td>
     <td>
-     <?
+     <?php 
       db_input('cm10_f_valor',10,$Icm10_f_valor,true,'text',$db_opcao,"")
      ?>
     </td>
@@ -166,7 +166,7 @@ db_inputdata('cm10_d_data',@$cm10_d_data_dia,@$cm10_d_data_mes,@$cm10_d_data_ano
        <?=@$Lcm10_d_privenc?>
     </td>
     <td>
-<?
+<?php 
 db_inputdata('cm10_d_privenc',@$cm10_d_privenc_dia,@$cm10_d_privenc_mes,@$cm10_d_privenc_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -176,7 +176,7 @@ db_inputdata('cm10_d_privenc',@$cm10_d_privenc_dia,@$cm10_d_privenc_mes,@$cm10_d
        <?=@$Lcm10_t_obs?>
     </td>
     <td>
-<?
+<?php 
 db_textarea('cm10_t_obs',3,50,$Icm10_t_obs,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -262,7 +262,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_itenserv.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

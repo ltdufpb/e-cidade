@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/educacao/ArredondamentoNota.model.php"));
 require_once(modification("std/DBDate.php"));
 
-$datas = explode("/",$dtAtual);
+$datas = explode("/",(string) $dtAtual);
 
 $dDia = $datas[0];
 $dMes = $datas[1];
@@ -66,7 +66,7 @@ if ($oDaoEduRelatModel->numrows > 0) {
 $iInstituicao = db_getsession( "DB_instit" );
 $sImagem      = RelatorioHistoricoEscolar::getBrasao( $oDadosRelatModel->ed217_brasao, new Instituicao( $iInstituicao ) );
 
-$arr_turma = explode('.', $turma);
+$arr_turma = explode('.', (string) $turma);
 $etapa     = $arr_turma[1];
 
 $sSqlAluno  = "SELECT ed11_c_descr as fase, ";
@@ -94,7 +94,7 @@ $rsAluno = db_query($sSqlAluno);
 $iLinhasAluno = pg_num_rows($rsAluno);
 $sSqlMunic = "SELECT munic FROM db_config WHERE codigo = $iInstituicao ";
 $rsMunic = db_query($sSqlMunic);
-$Munic = ucfirst(mb_strtolower(pg_result($rsMunic, 0)));
+$Munic = ucfirst(mb_strtolower(pg_fetch_result($rsMunic, 0)));
 
 $oPdf = new FPDF();
 $oPdf->Open();
@@ -122,7 +122,7 @@ for($cont = 0; $cont < $iLinhasAluno; $cont++){
   $oPdf->SetXY(117.5,80);
   $oPdf->SetFont('Arial', 'b', 25);
   $oPdf->Cell(62, 4, "CERTIFICADO", 0, 0, "L", 0);
-  $nascimento = date('d/m/Y', strtotime($datanasc));
+  $nascimento = date('d/m/Y', strtotime((string) $datanasc));
   $oPdf->SetXY(30,100);
   $oPdf->SetFont('Arial', '', 16);
   $oPdf->MultiCell(237, 8, "Certificamos, para os devidos fins, que o(a) aluno(a) ".$nomealuno.", nascido(a) em ".$nascimento.", filho(a) de ".$nomemae." e ".$nomepai.", concluiu o(a) ".$fase." do(a) ".$etapa." no ano de ".$ano.".", 0, "J", 0, 0);

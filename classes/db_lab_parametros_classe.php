@@ -66,7 +66,7 @@ class cl_lab_parametros {
                  la49_habilitargrupo = boolean = Flag que quando True habilita uso de grupos de exames.
                  ";
    //funcao construtor da classe
-   function cl_lab_parametros() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_parametros");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

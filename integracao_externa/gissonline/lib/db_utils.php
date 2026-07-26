@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ class _db_fields {
 class db_utils {
   
   
-  function db_utils()
+  function __construct()
   {
     
   }

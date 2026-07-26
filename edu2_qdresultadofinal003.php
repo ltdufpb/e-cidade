@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ if ($clturma->numrows == 0) { ?>
     </td>
    </tr>
   </table>
-  <?
+  <?php 
   exit;
 
 }
@@ -102,9 +102,9 @@ for ($x = 0; $x < $linhas; $x++) {
     $regente = "";
   }
   $pdf->setfillcolor(223);
-  $dia   = substr($ed52_d_resultfinal,8,2);
-  $mes   = db_mes(substr($ed52_d_resultfinal,5,2));
-  $ano   = substr($ed52_d_resultfinal,0,4);
+  $dia   = substr((string) $ed52_d_resultfinal,8,2);
+  $mes   = db_mes(substr((string) $ed52_d_resultfinal,5,2));
+  $ano   = substr((string) $ed52_d_resultfinal,0,4);
   $head1 = "QUADRO DE RESULTADOS FINAIS";
   $head2 = "Curso: $ed29_c_descr";
   $head3 = "Calendário: $ed52_c_descr";
@@ -238,14 +238,14 @@ for ($x = 0; $x < $linhas; $x++) {
        if ($ed60_c_parecer == "S") {
          $ed37_c_tipo = "PARECER";
        }
-       if (trim($ed60_c_situacao) != "MATRICULADO") {
+       if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
 
-         $aproveitamento = substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
+         $aproveitamento = substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
          $frequencia = "";
 
        } else {
 
-         if (trim($ed81_c_todoperiodo) == "S") {
+         if (trim((string) $ed81_c_todoperiodo) == "S") {
 
            if ($ed81_i_justificativa != "") {
              $aproveitamento = "AMP.";
@@ -256,7 +256,7 @@ for ($x = 0; $x < $linhas; $x++) {
 
          } else {
 
-           if (trim($ed59_c_freqglob) == "F") {
+           if (trim((string) $ed59_c_freqglob) == "F") {
 
              $aproveitamento = "-";
              if ($resultedu == 'S') {
@@ -264,9 +264,9 @@ for ($x = 0; $x < $linhas; $x++) {
              } else {
                $frequencia = ArredondamentoFrequencia::arredondar($ed74_i_percfreq, $ed52_i_ano);
              }
-           } else if (trim($ed59_c_freqglob) == "A") {
+           } else if (trim((string) $ed59_c_freqglob) == "A") {
 
-             if (trim($ed37_c_tipo) == "NOTA") {
+             if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                if ($resultedu == 'S') {
                  $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
@@ -274,7 +274,7 @@ for ($x = 0; $x < $linhas; $x++) {
                  $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
              }
 
-             } else if (trim($ed37_c_tipo) == "PARECER") {
+             } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                $aproveitamento = "Parecer";
              } else {
                $aproveitamento = $ed74_c_valoraprov;
@@ -301,7 +301,7 @@ for ($x = 0; $x < $linhas; $x++) {
 
            } else {
 
-             if (trim($ed37_c_tipo) == "NOTA") {
+             if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                if ($resultedu == 'S') {
                  $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
@@ -309,7 +309,7 @@ for ($x = 0; $x < $linhas; $x++) {
                  $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
                }
 
-             } else if (trim($ed37_c_tipo) == "PARECER") {
+             } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                $aproveitamento = "Parecer";
              } else {
                $aproveitamento = $ed74_c_valoraprov;
@@ -336,7 +336,7 @@ for ($x = 0; $x < $linhas; $x++) {
    } else {
 
      $pdf->setfont('arial','b',7);
-     $pdf->cell(12,4,substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
+     $pdf->cell(12,4,substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
      $pdf->cell(10,4,"",1,0,"C",$cor);
      $pdf->setfont('arial','',9);
      $cont3++;
@@ -360,7 +360,7 @@ for ($x = 0; $x < $linhas; $x++) {
    $sql6   .= "       AND ed74_c_resultadofinal != 'A' ";
    $result6 = db_query($sql6);
    $linhas6 = pg_num_rows($result6);
-   if (trim($ed60_c_situacao) != "MATRICULADO" || $linhas5 == 0) {
+   if (trim((string) $ed60_c_situacao) != "MATRICULADO" || $linhas5 == 0) {
      $rf = "";
    } else {
 
@@ -384,7 +384,7 @@ for ($x = 0; $x < $linhas; $x++) {
      }
      if ($ed74_c_valoraprov == "") {
 
-       if (trim($ed59_c_freqglob) == "F") {
+       if (trim((string) $ed59_c_freqglob) == "F") {
 
          $aDadosTermo = DBEducacaoTermo::getTermoEncerramento($ed11_i_ensino, $ed74_c_resultadofreq, $iAnoCalendario);
          if (isset($aDadosTermo[0])) {
@@ -413,7 +413,7 @@ for ($x = 0; $x < $linhas; $x++) {
      for ($y = 0; $y < $clregencia->numrows; $y++) {
 
        db_fieldsmemory($result2,$y);
-       $pdf->cell(30,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),0,0,"L",0);
+       $pdf->cell(30,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),0,0,"L",0);
 
      }
      $pdf->setY($alt_conv);
@@ -513,7 +513,7 @@ for ($x = 0; $x < $linhas; $x++) {
  for ($y = 0; $y < $clregencia->numrows; $y++) {
 
    db_fieldsmemory($result2,$y);
-   $pdf->cell(30.9,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),0,0,"L",0);
+   $pdf->cell(30.9,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),0,0,"L",0);
 
  }
  $pdf->setY($alt_conv);
@@ -643,14 +643,14 @@ for ($x = 0; $x < $linhas; $x++) {
          if ($ed60_c_parecer == "S") {
            $ed37_c_tipo = "PARECER";
          }
-         if (trim($ed60_c_situacao) != "MATRICULADO") {
+         if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
 
-           $aproveitamento = substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
+           $aproveitamento = substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5);
            $frequencia     = "";
 
          } else {
 
-           if (trim($ed81_c_todoperiodo) == "S") {
+           if (trim((string) $ed81_c_todoperiodo) == "S") {
 
              if ($ed81_i_justificativa != "") {
                $aproveitamento = "AMP.";
@@ -661,7 +661,7 @@ for ($x = 0; $x < $linhas; $x++) {
 
            } else {
 
-             if (trim($ed59_c_freqglob) == "F") {
+             if (trim((string) $ed59_c_freqglob) == "F") {
 
                $aproveitamento = "-";
                if ($resultedu == 'S') {
@@ -670,9 +670,9 @@ for ($x = 0; $x < $linhas; $x++) {
                  $frequencia = ArredondamentoFrequencia::arredondar($ed74_i_percfreq, $ed52_i_ano);
                }
 
-             } else if (trim($ed59_c_freqglob) == "A") {
+             } else if (trim((string) $ed59_c_freqglob) == "A") {
 
-               if (trim($ed37_c_tipo) == "NOTA") {
+               if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                  if ($rsultedu == 'S') {
                    $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
@@ -680,7 +680,7 @@ for ($x = 0; $x < $linhas; $x++) {
                    $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
                  }
 
-               } else if (trim($ed37_c_tipo) == "PARECER") {
+               } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                  $aproveitamento = "Parecer";
                } else {
                  $aproveitamento = $ed74_c_valoraprov;
@@ -698,14 +698,14 @@ for ($x = 0; $x < $linhas; $x++) {
                $result_f = db_query($sql_f);
                $linhas_f = pg_num_rows($result_f);
                if ($resultedu == 'S') {
-                 $frequencia = ArredondamentoFrequencia::arredondar(pg_result($result_f,0,'ed74_i_percfreq'), $ed52_i_ano);
+                 $frequencia = ArredondamentoFrequencia::arredondar(pg_fetch_result($result_f,0,'ed74_i_percfreq'), $ed52_i_ano);
                } else {
-                 $frequencia = ArredondamentoFrequencia::arredondar(pg_result($result_f,0,'ed74_i_percfreq'), $ed52_i_ano);
+                 $frequencia = ArredondamentoFrequencia::arredondar(pg_fetch_result($result_f,0,'ed74_i_percfreq'), $ed52_i_ano);
                }
 
              } else {
 
-               if (trim($ed37_c_tipo) == "NOTA") {
+               if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                  if ($resultedu == 'S') {
                    $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
@@ -713,7 +713,7 @@ for ($x = 0; $x < $linhas; $x++) {
                    $aproveitamento = ArredondamentoNota::formatar($ed74_c_valoraprov, $ed52_i_ano);
                  }
 
-               } else if (trim($ed37_c_tipo) == "PARECER") {
+               } else if (trim((string) $ed37_c_tipo) == "PARECER") {
                  $aproveitamento = "Parecer";
                } else {
                  $aproveitamento = $ed74_c_valoraprov;
@@ -736,7 +736,7 @@ for ($x = 0; $x < $linhas; $x++) {
      } else {
 
        $pdf->setfont('arial','b',7);
-       $pdf->cell(12,4,substr(trim(Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
+       $pdf->cell(12,4,substr(trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)),0,5),1,0,"C",$cor);
        $pdf->cell(10,4,"",1,0,"C",$cor);
        $pdf->setfont('arial','',9);
        $cont3++;
@@ -766,7 +766,7 @@ for ($x = 0; $x < $linhas; $x++) {
 
      $aDadosTermoAprovado  = DBEducacaoTermo::getTermoEncerramento($ed11_i_ensino, 'A', $iAnoCalendario);
      $aDadosTermoReprovado = DBEducacaoTermo::getTermoEncerramento($ed11_i_ensino, 'R', $iAnoCalendario);
-     if (trim($ed60_c_situacao) != "MATRICULADO") {
+     if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
        $rf = "";
      } else {
 
@@ -805,7 +805,7 @@ for ($x = 0; $x < $linhas; $x++) {
        for ($y = 0; $y < $clregencia->numrows; $y++) {
 
          db_fieldsmemory($result2,$y);
-         $pdf->cell(30,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),0,0,"L",0);
+         $pdf->cell(30,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),0,0,"L",0);
 
        }
        $pdf->setY($alt_conv);
@@ -905,7 +905,7 @@ for ($x = 0; $x < $linhas; $x++) {
    for ($y = 0; $y < $clregencia->numrows; $y++) {
 
      db_fieldsmemory($result2,$y);
-     $pdf->cell(30,4,$ed232_c_abrev." - ".substr($ed232_c_descr,0,15),0,0,"L",0);
+     $pdf->cell(30,4,$ed232_c_abrev." - ".substr((string) $ed232_c_descr,0,15),0,0,"L",0);
 
    }
    $pdf->setY($alt_conv);

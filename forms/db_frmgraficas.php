@@ -39,7 +39,7 @@ $clrotulo->label("nome");
       <table border="0">
         <tr>
           <td nowrap title="<?=@$Ty20_grafica?>">
-             <?
+             <?php 
              db_ancora(@$Ly20_grafica,"js_pesquisay20_grafica(true);",$db_opcao);
              ?>
           </td>

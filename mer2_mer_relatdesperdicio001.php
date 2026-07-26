@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_desperdicio = new cl_mer_desperdicio;
 ?>
@@ -66,11 +67,11 @@ $clmer_desperdicio = new cl_mer_desperdicio;
        <table border="0">
         <tr>
          <td><b>Data Inicial:</b></td>
-         <td><?db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
+         <td><?php db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
         </tr>
         <tr>
          <td><b>Data Final:</b></td>
-         <td><?db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
+         <td><?php db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
         </tr>
         <tr>
          <td colspan="2"><input name="Processar" type="button" value="Processar" onclick="js_consulta()"></td>
@@ -85,7 +86,7 @@ $clmer_desperdicio = new cl_mer_desperdicio;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

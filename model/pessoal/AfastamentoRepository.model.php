@@ -43,7 +43,7 @@ class AfastamentoRepository {
    * @var Array
    * @access private
    */
-  static private $aColecao = array();
+  static private $aColecao = [];
 
   /**
    * Representa a instancia a classe
@@ -81,7 +81,7 @@ class AfastamentoRepository {
 
     if (empty(self::$oInstance)) {
 
-      $sClasse  = get_class();
+      $sClasse  = self::class;
       self::$oInstance = new AfastamentoRepository();
     }
 
@@ -245,7 +245,7 @@ class AfastamentoRepository {
 
     $aAssentamentos = db_utils::makeCollectionFromRecord($rsDaoAfasta, function($oAfasta)  {
 
-      $oAssentamento = AfastamentoRepository::make($oAfasta->r45_codigo);
+      $oAssentamento = $this->make($oAfasta->r45_codigo);
       return $oAssentamento;
     });
     return $aAssentamentos;
@@ -275,7 +275,7 @@ class AfastamentoRepository {
     }
 
     $aAssentamentos = db_utils::makeCollectionFromRecord($rsDaoAfasta, function($oAfasta)  {
-      $oAssentamento = AfastamentoRepository::make($oAfasta->r45_codigo);
+      $oAssentamento = $this->make($oAfasta->r45_codigo);
       return $oAssentamento;
     });
     return $aAssentamentos;
@@ -331,7 +331,7 @@ class AfastamentoRepository {
      */
     public static function getTodosAfastamentosNoPeriodo($matricula, $dataInicio, $dataFim, $tipoAfastamento = null)
     {
-        $afastamentos = array();
+        $afastamentos = [];
         $oDaoAfastamento = new cl_afasta();
         $aWhere[] = "r45_regist = {$matricula}";
 

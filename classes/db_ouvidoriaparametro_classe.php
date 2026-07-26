@@ -54,7 +54,7 @@ class cl_ouvidoriaparametro {
                  ov06_db_documentotemplate = int4 = Documento Template
                  ";
    //funcao construtor da classe
-   function cl_ouvidoriaparametro() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriaparametro");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

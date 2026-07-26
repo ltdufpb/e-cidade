@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,14 +47,14 @@ $clrotulo->label("DBtxt5");
                 <tr>
                   <td nowrap title="<?=@$Ted47_v_cpf?>">
                     <?=@$Led47_v_cpf?>
-                    <?
+                    <?php 
                       db_input('ed47_v_cpf', 15, @$Ied47_v_cpf, true, 'text', $db_opcao, 
                                "onBlur='js_verificaCGCCPF(this);js_testanome(\"\",this.value,\"\")'");
                     ?>
                   </td>
                   <td>
                     <?=@$Led47_v_ident?>
-                    <?db_input('ed47_v_ident', 15, $Ied47_v_ident, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_ident', 15, $Ied47_v_ident, true, 'text', $db_opcao);?>
                     
                     <input type="button" value="+" name="ident" 
                            onclick="document.getElementById('identadic').style.visibility='visible'" 
@@ -82,7 +82,7 @@ $clrotulo->label("DBtxt5");
                           <?=@$Led47_i_censoorgemissrg?>
                         </td>
                         <td>
-                          <?
+                          <?php 
                             db_input('ed47_i_censoorgemissrg', 20, @$Ied47_i_censoorgemissrg, true, 
                                      'text', $db_opcao);
                           ?>
@@ -93,7 +93,7 @@ $clrotulo->label("DBtxt5");
                           <?=@$Led47_i_censoufident?>
                         </td>
                         <td>
-                          <?
+                          <?php 
                             db_input('ed47_i_censoufident', 2, @$Ied47_i_censoufident, true, 
                                      'text', $db_opcao);
                           ?>
@@ -104,7 +104,7 @@ $clrotulo->label("DBtxt5");
                           <?=@$Led47_v_identcompl?>
                         </td>
                         <td>
-                          <?db_input('ed47_v_identcompl', 20, @$Ied47_v_identcompl, true, 'text', $db_opcao);?>
+                          <?php db_input('ed47_v_identcompl', 20, @$Ied47_v_identcompl, true, 'text', $db_opcao);?>
                         </td>
                       </tr>
                       <tr>
@@ -112,7 +112,7 @@ $clrotulo->label("DBtxt5");
                           <?=@$Led47_d_identdtexp?>
                         </td>
                         <td>
-                          <?
+                          <?php 
                             db_inputdata('ed47_d_identdtexp', @$ed47_d_identdtexp_dia, @$ed47_d_identdtexp_mes,
                                          @$ed47_d_identdtexp_ano, true, 'text', $db_opcao
                                         );
@@ -126,8 +126,8 @@ $clrotulo->label("DBtxt5");
             </td>
             <td align="left">
               <b>Libera Endereço:</b>
-              <?
-                $aOptionsSelect = array("N" => "NÃO", "S" => "SIM");
+              <?php 
+                $aOptionsSelect = ["N" => "NÃO", "S" => "SIM"];
                 db_select('liberaendereco', $aOptionsSelect, true, $db_opcao, 
                           " onchange='LiberaEndereco(this.value);'"
                          );
@@ -142,7 +142,7 @@ $clrotulo->label("DBtxt5");
                     <?=$Led47_i_codigo?>
                   </td>
                   <td width="73%" nowrap>
-                    <?db_input('ed47_i_codigo', 20, $Ied47_i_codigo, true, 'text', 3);?>
+                    <?php db_input('ed47_i_codigo', 20, $Ied47_i_codigo, true, 'text', 3);?>
                   </td>
                 </tr>
                 <tr>
@@ -150,7 +150,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_nome?>
                   </td>
                   <td nowrap title="<?=@$Ted47_v_nome?>">
-                    <?db_input('ed47_v_nome', 40, $Ied47_v_nome, true, 'text', $db_opcao, "");?>
+                    <?php db_input('ed47_v_nome', 40, $Ied47_v_nome, true, 'text', $db_opcao, "");?>
                   </td>
                 </tr>
                 <tr>
@@ -158,7 +158,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_pai?>
                   </td>
                   <td nowrap title="<?=@$Ted47_v_pai?>">
-                    <?db_input('ed47_v_pai', 40, $Ied47_v_pai, true, 'text', $db_opcao, "");?>
+                    <?php db_input('ed47_v_pai', 40, $Ied47_v_pai, true, 'text', $db_opcao, "");?>
                   </td>
                 </tr>
                 <tr>
@@ -166,7 +166,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_mae?>
                   </td>
                   <td nowrap title="<?=@$Ted47_v_mae?>">
-                    <?db_input('ed47_v_mae', 40, $Ied47_v_mae, true, 'text', $db_opcao, "");?>
+                    <?php db_input('ed47_v_mae', 40, $Ied47_v_mae, true, 'text', $db_opcao, "");?>
                   </td>
                 </tr>
                 <tr>
@@ -174,7 +174,7 @@ $clrotulo->label("DBtxt5");
                     <?=$Led47_d_nasc?>
                   </td>
                   <td nowrap title="<?=$Ted47_d_nasc?>">
-                    <?db_inputdata('ed47_d_nasc', @$ed47_d_nasc_dia, @$ed47_d_nasc_mes, 
+                    <?php db_inputdata('ed47_d_nasc', @$ed47_d_nasc_dia, @$ed47_d_nasc_mes, 
                                    @$ed47_d_nasc_ano, true, 'text', $db_opcao
                                   );
                     ?>
@@ -185,17 +185,17 @@ $clrotulo->label("DBtxt5");
                     <?=$Led47_i_estciv?>
                   </td>
                   <td nowrap title="<?=$Ted47_i_estciv?>">
-                    <?
-                      $aSelect = array("1" => "Solteiro", 
+                    <?php 
+                      $aSelect = ["1" => "Solteiro", 
                                        "2" => "Casado", 
                                        "3" => "Viúvo", 
                                        "4" => "Divorciado"
-                                      );
+                                      ];
                       db_select('ed47_i_estciv', $aSelect, true, $db_opcao);
                     ?>
                     <?=$Led47_v_sexo?>
-                    <?
-                      $aSexos = array("M" => "Masculino", "F" => "Feminino");
+                    <?php 
+                      $aSexos = ["M" => "Masculino", "F" => "Feminino"];
                       db_select('ed47_v_sexo', $aSexos, true, $db_opcao);
                     ?>
                   </td>
@@ -203,7 +203,7 @@ $clrotulo->label("DBtxt5");
               </table>
             </td>
             
-            <?/*Muda lado da tela*/ ?>
+            <?php /*Muda lado da tela*/ ?>
       
             <td>
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -212,7 +212,7 @@ $clrotulo->label("DBtxt5");
                     <?=$Led47_v_profis?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_profis', 40, $Ied47_v_profis, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_profis', 40, $Ied47_v_profis, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -220,11 +220,11 @@ $clrotulo->label("DBtxt5");
                     <?=$Led47_i_nacion?>
                   </td>
                   <td nowrap title="<?=$Ted47_i_nacion?>">
-                    <?
-                      $aNacao = array("1" => "Brasileiro",
+                    <?php 
+                      $aNacao = ["1" => "Brasileiro",
                                       "3" => "Brasileiro Nascido no Exterior ou Naturalizado",
                                       "2" => "Estrangeiro"
-                                     );
+                                     ];
                       db_select('ed47_i_nacion', $aNacao, true, $db_opcao);
                     ?>
                   </td>
@@ -234,7 +234,7 @@ $clrotulo->label("DBtxt5");
                     <?=$Led47_i_pais?>
                   </td>
                   <td nowrap title="<?=$Ted47_i_pais?>">
-                    <?
+                    <?php 
                       if (!isset($ed47_i_pais)) {
                         $ed47_i_pais = 10;
                       }
@@ -244,7 +244,7 @@ $clrotulo->label("DBtxt5");
                       
                       if ($oDaoPais->numrows == 0) {
                         
-                        $aSelect = array('' => 'NENHUM REGISTRO');
+                        $aSelect = ['' => 'NENHUM REGISTRO'];
                         db_select('ed47_i_pais', $aSelect, true, $db_opcao, "");
                       
                       } else {
@@ -257,10 +257,10 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_cnh?>
                   </td>
                   <td nowrap title="<?=@$Ted47_v_cnh?>">
-                    <?db_input('ed47_v_cnh', 15, $Ied47_v_cnh, true, 'text', $db_opcao, "");?>
+                    <?php db_input('ed47_v_cnh', 15, $Ied47_v_cnh, true, 'text', $db_opcao, "");?>
                     <?=@$Led47_v_categoria?>
-                    <?
-                      $y = array("" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E");
+                    <?php 
+                      $y = ["" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E"];
                       db_select('ed47_v_categoria', $y, true, $db_opcao);
                     ?>
                   </td>
@@ -270,13 +270,13 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_d_dtemissao?>
                   </td>
                   <td nowrap title="<?=@$Ted47_d_dtemissao?>">
-                    <?
+                    <?php 
                       db_inputdata('ed47_d_dtemissao', @$ed47_d_dtemissao_dia, @$ed47_d_dtemissao_mes,
                                    @$ed47_d_dtemissao_ano, true, 'text', $db_opcao
                                   );
                     ?>
                     <?=@$Led47_d_dthabilitacao?>
-                    <?
+                    <?php 
                       db_inputdata('ed47_d_dthabilitacao', @$ed47_d_dthabilitacao_dia, @$ed47_d_dthabilitacao_mes,
                                    @$ed47_d_dthabilitacao_ano, true, 'text', $db_opcao
                                   );
@@ -296,7 +296,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_d_dtvencimento?>
                   </td>
                   <td nowrap title="<?=@$Ted47_d_dtvencimento?>">
-                    <?
+                    <?php 
                       db_inputdata('ed47_d_dtvencimento', @$ed47_d_dtvencimento_dia, @$ed47_d_dtvencimento_mes,
                                    @$ed47_d_dtvencimento_ano, true, 'text', $db_opcao
                                   );
@@ -319,10 +319,10 @@ $clrotulo->label("DBtxt5");
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td nowrap title="<?=@$Ted47_v_ender?>">
-                    <?db_ancora(@$Led47_v_ender, "js_ruas();", $db_opcao);?>
+                    <?php db_ancora(@$Led47_v_ender, "js_ruas();", $db_opcao);?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_ender', 40, $Ied47_v_ender, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_ender', 40, $Ied47_v_ender, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -331,10 +331,10 @@ $clrotulo->label("DBtxt5");
                   </td>
                   <td width="71%" nowrap>
                     <a name="AN3">
-                      <?db_input('ed47_c_numero', 8, $Ied47_c_numero, true, 'text', $db_opcao);?>
+                      <?php db_input('ed47_c_numero', 8, $Ied47_c_numero, true, 'text', $db_opcao);?>
                       &nbsp;
                       <?=@$Led47_v_compl?>
-                      <?db_input('ed47_v_compl', 10, $Ied47_v_compl, true, 'text', $db_opcao);?>
+                      <?php db_input('ed47_v_compl', 10, $Ied47_v_compl, true, 'text', $db_opcao);?>
                     </a>
                   </td>
                 </tr>
@@ -343,7 +343,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_i_censomunicend?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_i_censomunicend', 20, $Ied47_i_censomunicend, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_i_censomunicend', 20, $Ied47_i_censomunicend, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -351,16 +351,16 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_i_censoufend?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_i_censoufend', 2, $Ied47_i_censoufend, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_i_censoufend', 2, $Ied47_i_censoufend, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Ted47_v_bairro?>">
-                    <?db_ancora(@$Led47_v_bairro, "js_bairro();", $db_opcao);?>
+                    <?php db_ancora(@$Led47_v_bairro, "js_bairro();", $db_opcao);?>
                   </td>
                   <td nowrap>
-                    <?db_input('j13_codi', 10, $Ij13_codi, true, 'text', 3);?>
-                    <?db_input('ed47_v_bairro', 25, $Ied47_v_bairro, true, 'text', 3);?>
+                    <?php db_input('j13_codi', 10, $Ij13_codi, true, 'text', 3);?>
+                    <?php db_input('ed47_v_bairro', 25, $Ied47_v_bairro, true, 'text', 3);?>
                   </td>
                 </tr>
                 <tr>
@@ -368,7 +368,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_cep?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_cep', 9, $Ied47_v_cep, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_cep', 9, $Ied47_v_cep, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -376,7 +376,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_telef?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_telef', 12, $Ied47_v_telef, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_telef', 12, $Ied47_v_telef, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -384,7 +384,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_telcel?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_telcel', 12, $Ied47_v_telcel, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_telcel', 12, $Ied47_v_telcel, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -392,7 +392,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_email?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_email', 30, $Ied47_v_email, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_email', 30, $Ied47_v_email, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -400,7 +400,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_cxpostal?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_cxpostal', 10, $Ied47_v_cxpostal, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_cxpostal', 10, $Ied47_v_cxpostal, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
               </table>
@@ -409,10 +409,10 @@ $clrotulo->label("DBtxt5");
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td nowrap title="<?=@$Ted47_v_endcon?>">
-                    <?db_ancora(@$Led47_v_endcon, "js_ruas1();", $db_opcao);?>
+                    <?php db_ancora(@$Led47_v_endcon, "js_ruas1();", $db_opcao);?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_endcon', 40, $Ied47_v_endcon, true, 'text', 3);?>
+                    <?php db_input('ed47_v_endcon', 40, $Ied47_v_endcon, true, 'text', 3);?>
                   </td>
                 </tr>
                 <tr>
@@ -420,9 +420,9 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_i_numcon?>
                   </td>
                   <td width="71%" nowrap >
-                    <?db_input('ed47_i_numcon', 8, $Ied47_i_numcon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_i_numcon', 8, $Ied47_i_numcon, true, 'text', $db_opcao);?>
                     <?=@$Led47_v_comcon?>
-                    <?db_input('ed47_v_comcon', 10, $Ied47_v_comcon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_comcon', 10, $Ied47_v_comcon, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -430,7 +430,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_muncon?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_muncon', 20, $Ied47_v_muncon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_muncon', 20, $Ied47_v_muncon, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -438,15 +438,15 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_ufcon?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_ufcon', 2, $Ied47_v_ufcon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_ufcon', 2, $Ied47_v_ufcon, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Ted47_v_baicon?>">
-                    <?db_ancora(@$Led47_v_baicon, "js_bairro1();", $db_opcao);?>
+                    <?php db_ancora(@$Led47_v_baicon, "js_bairro1();", $db_opcao);?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_baicon', 25, $Ied47_v_baicon, true, 'text', 3);?>
+                    <?php db_input('ed47_v_baicon', 25, $Ied47_v_baicon, true, 'text', 3);?>
                   </td>
                 </tr>
                 <tr>
@@ -454,7 +454,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_cepcon?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_cepcon', 9, $Ied47_v_cepcon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_cepcon', 9, $Ied47_v_cepcon, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -462,7 +462,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_telcon?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_telcon', 12, $Ied47_v_telcon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_telcon', 12, $Ied47_v_telcon, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -470,7 +470,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_celcon?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_celcon', 12, $Ied47_v_celcon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_celcon', 12, $Ied47_v_celcon, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -478,7 +478,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_emailc?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_emailc', 30, $Ied47_v_emailc, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_emailc', 30, $Ied47_v_emailc, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
                 <tr>
@@ -486,7 +486,7 @@ $clrotulo->label("DBtxt5");
                     <?=@$Led47_v_cxposcon?>
                   </td>
                   <td nowrap>
-                    <?db_input('ed47_v_cxposcon', 10, $Ied47_v_cxposcon, true, 'text', $db_opcao);?>
+                    <?php db_input('ed47_v_cxposcon', 10, $Ied47_v_cxposcon, true, 'text', $db_opcao);?>
                   </td>
                 </tr>
               </table>
@@ -495,7 +495,7 @@ $clrotulo->label("DBtxt5");
           <tr align="left" valign="middle">
             <td>
               <?=@$Led47_d_cadast?>
-              <?
+              <?php 
                 db_inputdata('ed47_d_cadast', @$ed47_d_cadast_dia, @$ed47_d_cadast_mes,
                              @$ed47_d_cadast_ano, true, 'text', 3
                             );
@@ -503,7 +503,7 @@ $clrotulo->label("DBtxt5");
             </td>
             <td>
               <?=@$Led47_d_ultalt?>
-              <?
+              <?php 
                 db_inputdata('ed47_d_ultalt', @$ed47_d_ultalt_dia, @$ed47_d_ultalt_mes,
                              @$ed47_d_ultalt_ano, true, 'text', 3
                             );
@@ -627,7 +627,7 @@ function LiberaEndereco(valor) {
 function js_preenchepesquisa(chave) {
 
   db_iframe_alunofora.hide();
-  <?echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+  <?php echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
 
 }
 

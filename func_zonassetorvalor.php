@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_zonassetorvalor_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clzonassetorvalor = new cl_zonassetorvalor;
 $clzonassetorvalor->rotulo->label("j141_anousu");
@@ -54,15 +55,15 @@ $clzonassetorvalor->rotulo->label("j141_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj141_zonas?></label></td>
-          <td><? db_input("j141_zonas",10,$Ij141_zonas,true,"text",4,"","chave_j141_zonas"); ?></td>
+          <td><?php  db_input("j141_zonas",10,$Ij141_zonas,true,"text",4,"","chave_j141_zonas"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lj141_setor?></label></td>
-          <td><? db_input("j141_setor",4,$Ij141_setor,true,"text",4,"","chave_j141_setor"); ?></td>
+          <td><?php  db_input("j141_setor",4,$Ij141_setor,true,"text",4,"","chave_j141_setor"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lj141_sequencial?></label></td>
-          <td><? db_input("j141_sequencial",4,$Ij141_sequencial,true,"text",4,"","chave_j141_sequencial");?></td>
+          <td><?php  db_input("j141_sequencial",4,$Ij141_sequencial,true,"text",4,"","chave_j141_sequencial");?></td>
         </tr>
       </table>
     </fieldset>
@@ -70,7 +71,7 @@ $clzonassetorvalor->rotulo->label("j141_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_zonassetorvalor.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_zonassetorvalor.php")==true){
@@ -112,12 +113,12 @@ $clzonassetorvalor->rotulo->label("j141_sequencial");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

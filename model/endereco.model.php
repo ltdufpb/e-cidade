@@ -1102,7 +1102,7 @@ class endereco
             $sCampos .= " db71_sigla as sestadosigla ";
 
             $sWhere = " db86_cep = $1 ";
-            $aParametros = array((string)$sCep);
+            $aParametros = [(string)$sCep];
 
             if ($sNomeBairro != null) {
                 $sNomeBairro = mb_convert_encoding($sNomeBairro, 'ISO-8859-1', 'UTF-8');
@@ -1163,7 +1163,7 @@ class endereco
         if (!empty($sName)) {
 
             $oDaoPais = db_utils::getDao('cadenderpais');
-            $sWhere = " db70_descricao ilike '%" . str_replace(' ', '%', trim($sName)) . "%'";
+            $sWhere = " db70_descricao ilike '%" . str_replace(' ', '%', trim((string) $sName)) . "%'";
             $sCampos = "db70_sequencial, db70_descricao";
             if ($sAlias) {
                 $sCampos = "db70_sequencial as cod, db70_descricao as label";
@@ -1192,7 +1192,7 @@ class endereco
     static function getPaises()
     {
 
-        $aRetorno = array();
+        $aRetorno = [];
 
         $oDaoPais = db_utils::getDao('cadenderpais');
         $sSqlPais = $oDaoPais->sql_query_file(null, 'db70_sequencial as codigo, db70_descricao as descricao', 'db70_descricao asc', null);
@@ -1317,7 +1317,7 @@ class endereco
     static function findMunicipioByEstado($iCodigoEstado)
     {
 
-        $aRetorno = array();
+        $aRetorno = [];
 
         if (!empty($iCodigoEstado)) {
 
@@ -1354,7 +1354,7 @@ class endereco
         if (!empty($sName) && !empty($iCodigoEstado)) {
 
             $oDaoMunicipio = db_utils::getDao('cadendermunicipio');
-            $sWhere = " db72_descricao ilike '%" . str_replace(' ', '%', trim($sName)) . "%' ";
+            $sWhere = " db72_descricao ilike '%" . str_replace(' ', '%', trim((string) $sName)) . "%' ";
             $sWhere .= " and db72_cadenderestado = " . $iCodigoEstado;
             $sQueryMunicipio = $oDaoMunicipio->sql_query(null, "db72_sequencial, upper(trim(db72_descricao)) as db72_descricao", null, $sWhere);
 
@@ -1456,10 +1456,10 @@ class endereco
         if (!empty($sName)) {
 
             $oDaoBairro = db_utils::getDao('cadenderbairro');
-            $sWhere = " db73_descricao ilike '%" . str_replace(' ', '%', trim($sName)) . "%' ";
+            $sWhere = " db73_descricao ilike '%" . str_replace(' ', '%', trim((string) $sName)) . "%' ";
             $sWhere .= " and db72_cadenderestado = " . $iCodigoEstado;
 
-            if (trim($iCodigoMunicipio) != '') {
+            if (trim((string) $iCodigoMunicipio) != '') {
 
                 $sWhere .= " and db73_cadendermunicipio = " . $iCodigoMunicipio;
             }
@@ -1544,12 +1544,12 @@ class endereco
         if (!empty($sName) && !empty($iCodigoEstado)) {
 
             $oDaoRua = db_utils::getDao('cadenderrua');
-            $sWhere = " to_ascii(db74_descricao) ilike to_ascii('%" . str_replace(' ', '%', trim($sName)) . "%') ";
+            $sWhere = " to_ascii(db74_descricao) ilike to_ascii('%" . str_replace(' ', '%', trim((string) $sName)) . "%') ";
             $sWhere .= " and db72_cadenderestado = " . $iCodigoEstado;
-            if (trim($iCodigoMunicipio) != '') {
+            if (trim((string) $iCodigoMunicipio) != '') {
                 $sWhere .= " and db73_cadendermunicipio = " . $iCodigoMunicipio;
             }
-            if (trim($iCodigoBairro) != '') {
+            if (trim((string) $iCodigoBairro) != '') {
                 $sWhere .= " and db73_sequencial = " . $iCodigoBairro;
             }
             $sCampos = "db74_sequencial, db74_descricao";
@@ -1585,12 +1585,12 @@ class endereco
             $oDaoRua = db_utils::getDao('cadenderrua');
             $sWhere = " db87_sequencial = " . $iCodigoRua;
 
-            if (trim($iCodigoMunicipio) != "") {
+            if (trim((string) $iCodigoMunicipio) != "") {
 
                 $sWhere .= " and db72_sequencial = " . $iCodigoMunicipio;
             }
 
-            if (trim($iCodigoBairro) != "") {
+            if (trim((string) $iCodigoBairro) != "") {
 
                 $sWhere .= " and db73_sequencial = " . $iCodigoBairro;
             }
@@ -1644,7 +1644,7 @@ class endereco
 
         $aRetorno = false;
 
-        if (!empty($iCodigoNumero) && trim($iCodigoBairro) != '' && !empty($iCodigoRua)) {
+        if (!empty($iCodigoNumero) && trim((string) $iCodigoBairro) != '' && !empty($iCodigoRua)) {
 
             $oDaoLocal = db_utils::getDao('cadenderlocal');
             $sWhere = "     db87_cadenderrua    = " . $iCodigoRua;
@@ -1678,7 +1678,7 @@ class endereco
         if (!empty($iCodigoNumero) && !empty($iCodigoBairro) && !empty($iCodigoRua)) {
 
             $oDaoLocal = db_utils::getDao('cadenderlocal');
-            $sWhere = " db76_condominio ilike '%" . str_replace(' ', '%', trim($sName)) . "%' ";
+            $sWhere = " db76_condominio ilike '%" . str_replace(' ', '%', trim((string) $sName)) . "%' ";
             $sWhere .= " and db75_cadenderrua    = " . $iCodigoRua;
             $sWhere .= " and db75_cadenderbairro = " . $iCodigoBairro;
             $sWhere .= " and db75_numero         = " . $iCodigoNumero;
@@ -1710,7 +1710,7 @@ class endereco
         if (!empty($iCodigoNumero) && !empty($iCodigoBairro) && !empty($iCodigoRua)) {
 
             $oDaoLocal = db_utils::getDao('cadenderlocal');
-            $sWhere = " db76_loteamento ilike '%" . str_replace(' ', '%', trim($sName)) . "%' ";
+            $sWhere = " db76_loteamento ilike '%" . str_replace(' ', '%', trim((string) $sName)) . "%' ";
             $sWhere .= " and db87_cadenderrua    = " . $iCodigoRua;
             $sWhere .= " and db87_cadenderbairro = " . $iCodigoBairro;
             $sWhere .= " and db75_numero         = '" . $iCodigoNumero . "'";
@@ -1862,7 +1862,7 @@ class endereco
 
         $aRetorno = false;
 
-        if (trim($iCodigoEndereco) != "") {
+        if (trim((string) $iCodigoEndereco) != "") {
 
             $oDaoEndereco = db_utils::getDao('cadenderlocal');
             $sCampos = " distinct db74_descricao as sRua, db75_numero as sNumero, db73_descricao as sbairro, db76_complemento as scomplemento ";
@@ -1892,7 +1892,7 @@ class endereco
 
         $aRetorno = false;
 
-        if (trim($iOv02_sequencial) != "" && trim($iOv02_seq) != "") {
+        if (trim((string) $iOv02_sequencial) != "" && trim((string) $iOv02_seq) != "") {
 
             $oDaoCidadao = db_utils::getDao('cidadao');
 
@@ -1918,10 +1918,10 @@ class endereco
     {
 
         $aRetorno = false;
-        if (trim($iCodigoBairroMunicipio) != "") {
+        if (trim((string) $iCodigoBairroMunicipio) != "") {
 
             $oDaoRuaRuas = new cl_cadenderruaruas;
-            $aCampos = array(
+            $aCampos = [
                 'db72_descricao         as sMunicipio',
                 'db74_descricao         as sRua',
                 'db73_descricao         as sbairro',
@@ -1931,12 +1931,12 @@ class endereco
                 'db85_ruastipo          as iruatipo',
                 'db74_cadendermunicipio as imunicipio',
                 'j29_cep                as iruascep',
-            );
+            ];
 
-            $aWhere = array(
+            $aWhere = [
                 "j14_codigo = {$iCodigoRuaMunicipio}",
                 "trim(db73_descricao) in (select upper(trim(j13_descr)) from bairro where j13_codi = {$iCodigoBairroMunicipio})",
-            );
+            ];
 
             if ($iCodigoMunicipio) {
                 $aWhere[] = "db74_cadendermunicipio = {$iCodigoMunicipio}";
@@ -1955,7 +1955,7 @@ class endereco
     {
 
         $oRetorno = new stdClass();
-        if (trim($iCodigoBairroMunicipio) != "" && trim($iCodigoRuaMunicipio) != "") {
+        if (trim((string) $iCodigoBairroMunicipio) != "" && trim((string) $iCodigoRuaMunicipio) != "") {
 
             //Obtem os dados da Rua do municipio
             $oDaoRuas = db_utils::getDao('ruas');
@@ -1989,7 +1989,7 @@ class endereco
             //Pesquisar se existe o bairro vinculado ao municipio
             $oDaoBairroMunicipio = db_utils::getDao('cadenderbairro');
             $sCampos = "db73_sequencial ";
-            $sWhere = " db73_descricao = '" . trim($oRetorno->descrBairro) . "' ";
+            $sWhere = " db73_descricao = '" . trim((string) $oRetorno->descrBairro) . "' ";
             $sWhere .= " and db73_cadendermunicipio = " . $aParam[0]->db72_sequencial;
 
             $oRetorno->codigoMunicipio = $aParam[0]->db72_sequencial;
@@ -2004,7 +2004,7 @@ class endereco
 
             $oDaoRuaMunicipio = db_utils::getDao('cadenderrua');
             $sCampos = " db74_sequencial ";
-            $sWhere = " db74_descricao = '" . trim($oRetorno->descrEndereco) . "' ";
+            $sWhere = " db74_descricao = '" . trim((string) $oRetorno->descrEndereco) . "' ";
             $sWhere .= " and db74_cadendermunicipio = " . $aParam[0]->db72_sequencial;
             $sQueryRuaMunicipio = $oDaoRuaMunicipio->sql_query_file(null, $sCampos, null, $sWhere);
             $rsQueryRuaMunicipio = $oDaoRuaMunicipio->sql_record($sQueryRuaMunicipio);

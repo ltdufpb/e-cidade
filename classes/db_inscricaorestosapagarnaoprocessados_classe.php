@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2012  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ class cl_inscricaorestosapagarnaoprocessados {
                  c107_processado = bool = Processado 
                  ";
    //funcao construtor da classe 
-   function cl_inscricaorestosapagarnaoprocessados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inscricaorestosapagarnaoprocessados"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

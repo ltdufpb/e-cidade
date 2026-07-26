@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE matestoqueini
 class cl_matestoqueini {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $m80_codigo = 0;
-   var $m80_login = 0;
-   var $m80_data_dia = null;
-   var $m80_data_mes = null;
-   var $m80_data_ano = null;
-   var $m80_data = null;
-   var $m80_hora = null;
-   var $m80_obs = null;
-   var $m80_codtipo = 0;
-   var $m80_coddepto = 0;
+   public $m80_codigo = 0;
+   public $m80_login = 0;
+   public $m80_data_dia = null;
+   public $m80_data_mes = null;
+   public $m80_data_ano = null;
+   public $m80_data = null;
+   public $m80_hora = null;
+   public $m80_obs = null;
+   public $m80_codtipo = 0;
+   public $m80_coddepto = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  m80_codigo = int8 = Lançamento
                  m80_login = int4 = Cod. Usuário
                  m80_data = date = Data do lançamento
@@ -63,10 +63,10 @@ class cl_matestoqueini {
                  m80_coddepto = int4 = Depart.
                  ";
    //funcao construtor da classe
-   function cl_matestoqueini() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueini");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -167,10 +167,10 @@ class cl_matestoqueini {
          $this->erro_status = "0";
          return false;
        }
-       $this->m80_codigo = pg_result($result,0,0);
+       $this->m80_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from matestoqueini_m80_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m80_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m80_codigo)){
          $this->erro_sql = " Campo m80_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -210,7 +210,7 @@ class cl_matestoqueini {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Estoque Inicial ($this->m80_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Estoque Inicial já Cadastrado";
@@ -234,16 +234,16 @@ class cl_matestoqueini {
      $resaco = $this->sql_record($this->sql_query_file($this->m80_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6889,'$this->m80_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1133,6889,'','".AddSlashes(pg_result($resaco,0,'m80_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1133,6892,'','".AddSlashes(pg_result($resaco,0,'m80_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1133,6890,'','".AddSlashes(pg_result($resaco,0,'m80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1133,6891,'','".AddSlashes(pg_result($resaco,0,'m80_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1133,6893,'','".AddSlashes(pg_result($resaco,0,'m80_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1133,6899,'','".AddSlashes(pg_result($resaco,0,'m80_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1133,6904,'','".AddSlashes(pg_result($resaco,0,'m80_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1133,6889,'','".AddSlashes(pg_fetch_result($resaco,0,'m80_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1133,6892,'','".AddSlashes(pg_fetch_result($resaco,0,'m80_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1133,6890,'','".AddSlashes(pg_fetch_result($resaco,0,'m80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1133,6891,'','".AddSlashes(pg_fetch_result($resaco,0,'m80_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1133,6893,'','".AddSlashes(pg_fetch_result($resaco,0,'m80_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1133,6899,'','".AddSlashes(pg_fetch_result($resaco,0,'m80_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1133,6904,'','".AddSlashes(pg_fetch_result($resaco,0,'m80_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -253,10 +253,10 @@ class cl_matestoqueini {
       $this->atualizacampos();
      $sql = " update matestoqueini set ";
      $virgula = "";
-     if(trim($this->m80_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_codigo"])){
+     if(trim((string) $this->m80_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_codigo"])){
        $sql  .= $virgula." m80_codigo = $this->m80_codigo ";
        $virgula = ",";
-       if(trim($this->m80_codigo) == null ){
+       if(trim((string) $this->m80_codigo) == null ){
          $this->erro_sql = " Campo Lançamento nao Informado.";
          $this->erro_campo = "m80_codigo";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_matestoqueini {
          return false;
        }
      }
-     if(trim($this->m80_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_login"])){
+     if(trim((string) $this->m80_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_login"])){
        $sql  .= $virgula." m80_login = $this->m80_login ";
        $virgula = ",";
-       if(trim($this->m80_login) == null ){
+       if(trim((string) $this->m80_login) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "m80_login";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_matestoqueini {
          return false;
        }
      }
-     if(trim($this->m80_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m80_data_dia"] !="") ){
+     if(trim((string) $this->m80_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m80_data_dia"] !="") ){
        $sql  .= $virgula." m80_data = '$this->m80_data' ";
        $virgula = ",";
-       if(trim($this->m80_data) == null ){
+       if(trim((string) $this->m80_data) == null ){
          $this->erro_sql = " Campo Data do lançamento nao Informado.";
          $this->erro_campo = "m80_data_dia";
          $this->erro_banco = "";
@@ -295,7 +295,7 @@ class cl_matestoqueini {
        if(isset($GLOBALS["HTTP_POST_VARS"]["m80_data_dia"])){
          $sql  .= $virgula." m80_data = null ";
          $virgula = ",";
-         if(trim($this->m80_data) == null ){
+         if(trim((string) $this->m80_data) == null ){
            $this->erro_sql = " Campo Data do lançamento nao Informado.";
            $this->erro_campo = "m80_data_dia";
            $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_matestoqueini {
          }
        }
      }
-     if(trim($this->m80_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_hora"])){
+     if(trim((string) $this->m80_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_hora"])){
        $sql  .= $virgula." m80_hora = '$this->m80_hora' ";
        $virgula = ",";
-       if(trim($this->m80_hora) == null ){
+       if(trim((string) $this->m80_hora) == null ){
          $this->erro_sql = " Campo Hora do lançamento nao Informado.";
          $this->erro_campo = "m80_hora";
          $this->erro_banco = "";
@@ -319,12 +319,12 @@ class cl_matestoqueini {
          return false;
        }
      }
-     if(trim($this->m80_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_obs"])){
+     if(trim((string) $this->m80_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_obs"])){
 
        $sql  .= $virgula." m80_obs = '$this->m80_obs' ";
        $virgula = ",";
 
-       if(trim($this->m80_obs) == null ){
+       if(trim((string) $this->m80_obs) == null ){
          $this->erro_sql = " Campo Observação do lançamento nao Informado.";
          $this->erro_campo = "m80_obs";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_matestoqueini {
          return false;
        }
      }
-     if(trim($this->m80_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_codtipo"])){
+     if(trim((string) $this->m80_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_codtipo"])){
        $sql  .= $virgula." m80_codtipo = $this->m80_codtipo ";
        $virgula = ",";
-       if(trim($this->m80_codtipo) == null ){
+       if(trim((string) $this->m80_codtipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "m80_codtipo";
          $this->erro_banco = "";
@@ -347,10 +347,10 @@ class cl_matestoqueini {
          return false;
        }
      }
-     if(trim($this->m80_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_coddepto"])){
+     if(trim((string) $this->m80_coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m80_coddepto"])){
        $sql  .= $virgula." m80_coddepto = $this->m80_coddepto ";
        $virgula = ",";
-       if(trim($this->m80_coddepto) == null ){
+       if(trim((string) $this->m80_coddepto) == null ){
          $this->erro_sql = " Campo Depart. nao Informado.";
          $this->erro_campo = "m80_coddepto";
          $this->erro_banco = "";
@@ -368,23 +368,23 @@ class cl_matestoqueini {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6889,'$this->m80_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m80_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1133,6889,'".AddSlashes(pg_result($resaco,$conresaco,'m80_codigo'))."','$this->m80_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1133,6889,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m80_codigo'))."','$this->m80_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m80_login"]))
-           $resac = db_query("insert into db_acount values($acount,1133,6892,'".AddSlashes(pg_result($resaco,$conresaco,'m80_login'))."','$this->m80_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1133,6892,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m80_login'))."','$this->m80_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m80_data"]))
-           $resac = db_query("insert into db_acount values($acount,1133,6890,'".AddSlashes(pg_result($resaco,$conresaco,'m80_data'))."','$this->m80_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1133,6890,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m80_data'))."','$this->m80_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m80_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1133,6891,'".AddSlashes(pg_result($resaco,$conresaco,'m80_hora'))."','$this->m80_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1133,6891,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m80_hora'))."','$this->m80_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m80_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1133,6893,'".AddSlashes(pg_result($resaco,$conresaco,'m80_obs'))."','$this->m80_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1133,6893,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m80_obs'))."','$this->m80_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m80_codtipo"]))
-           $resac = db_query("insert into db_acount values($acount,1133,6899,'".AddSlashes(pg_result($resaco,$conresaco,'m80_codtipo'))."','$this->m80_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1133,6899,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m80_codtipo'))."','$this->m80_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m80_coddepto"]))
-           $resac = db_query("insert into db_acount values($acount,1133,6904,'".AddSlashes(pg_result($resaco,$conresaco,'m80_coddepto'))."','$this->m80_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1133,6904,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m80_coddepto'))."','$this->m80_coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -429,16 +429,16 @@ class cl_matestoqueini {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6889,'$m80_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1133,6889,'','".AddSlashes(pg_result($resaco,$iresaco,'m80_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1133,6892,'','".AddSlashes(pg_result($resaco,$iresaco,'m80_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1133,6890,'','".AddSlashes(pg_result($resaco,$iresaco,'m80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1133,6891,'','".AddSlashes(pg_result($resaco,$iresaco,'m80_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1133,6893,'','".AddSlashes(pg_result($resaco,$iresaco,'m80_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1133,6899,'','".AddSlashes(pg_result($resaco,$iresaco,'m80_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1133,6904,'','".AddSlashes(pg_result($resaco,$iresaco,'m80_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1133,6889,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m80_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1133,6892,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m80_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1133,6890,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1133,6891,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m80_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1133,6893,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m80_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1133,6899,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m80_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1133,6904,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m80_coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matestoqueini
@@ -498,7 +498,7 @@ class cl_matestoqueini {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matestoqueini";
@@ -512,7 +512,7 @@ class cl_matestoqueini {
    function sql_query ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_matestoqueini {
    function sql_query_file ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -581,7 +581,7 @@ class cl_matestoqueini {
    function sql_query_mater ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,7 +616,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -628,7 +628,7 @@ class cl_matestoqueini {
    function sql_query_qua ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -659,7 +659,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -671,7 +671,7 @@ class cl_matestoqueini {
    function sql_query_transf ( $m80_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_matestoqueini {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -714,7 +714,7 @@ class cl_matestoqueini {
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -744,7 +744,7 @@ class cl_matestoqueini {
     if ($ordem != null) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = preg_split("#\\##m",(string) $ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -760,7 +760,7 @@ class cl_matestoqueini {
     $sql = "select ";
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -794,7 +794,7 @@ class cl_matestoqueini {
     if ($ordem != null) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = preg_split("#\\##m",(string) $ordem);
       $virgula     = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -819,7 +819,7 @@ class cl_matestoqueini {
    $sql = "select ";
    if ($campos != "*" ) {
 
-     $campos_sql = split("#",$campos);
+     $campos_sql = preg_split("#\\##m",$campos);
      $virgula    = "";
 
      for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -858,7 +858,7 @@ class cl_matestoqueini {
    if ($ordem != null) {
 
      $sql        .= " order by ";
-     $campos_sql  = split("#",$ordem);
+     $campos_sql  = preg_split("#\\##m",$ordem);
      $virgula     = "";
      for ($i = 0; $i < sizeof($campos_sql); $i++) {
 

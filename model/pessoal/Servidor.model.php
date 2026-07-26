@@ -164,7 +164,7 @@ class Servidor
      * Array com coleção de objetos Dependente
      * Referente ao servidor
      */
-    private $aDependentes = array();
+    private $aDependentes = [];
 
     /**
      * Objeto DBDate com a data de nascimento do servidor
@@ -272,7 +272,7 @@ class Servidor
     /**
      * @var \LocalTrabalho[]
      */
-    private $locaisTrabalho = array();
+    private $locaisTrabalho = [];
 
     /**
      * Data da rescisao do servidor
@@ -294,7 +294,7 @@ class Servidor
     /**
      * @var Rubrica[]
      */
-    private $rubricasPonto = array();
+    private $rubricasPonto = [];
     /**
      * Controle da pesquisa rescisao - cache
      * @var bool
@@ -633,7 +633,7 @@ class Servidor
      * Define o código do cgm do servidor
      * @param object $oCgm
      */
-    public function setCgm(CgmBase $oCgm = null)
+    public function setCgm(?CgmBase $oCgm = null)
     {
         $this->oCgm = $oCgm;
     }
@@ -748,8 +748,8 @@ class Servidor
     /**
      * Define o código da instituição da matrícula do servidor
      * @param integer $iCodigoInstituicao
-     * @deprecated - Utilizar Servidor::getInstituicao();
      */
+    #[\Deprecated(message: '- Utilizar Servidor::getInstituicao();')]
     public function setCodigoInstituicao($iCodigoInstituicao)
     {
         $this->iCodigoInstituicao = $iCodigoInstituicao;
@@ -1228,7 +1228,7 @@ class Servidor
         $rsDependentes = $oDaoRhDepend->sql_record($sSqlDependentes);
 
         if (!$rsDependentes || pg_num_rows($rsDependentes) == 0) {
-            return array();
+            return [];
         }
 
         $aDependentes = db_utils::getCollectionByRecord($rsDependentes);
@@ -1260,15 +1260,10 @@ class Servidor
             return;
         }
 
-        switch ($sVariavel) {
-            case Servidor::VARIAVEL_SALARIO_BASE_PROGRESSAO:
-                return db_utils::fieldsMemory($rsValorVariaveisCalculo, 0)->variavel_salario_base_progressao;
-                break;
-
-            default:
-                return 0;
-                break;
-        }
+        return match ($sVariavel) {
+            Servidor::VARIAVEL_SALARIO_BASE_PROGRESSAO => db_utils::fieldsMemory($rsValorVariaveisCalculo, 0)->variavel_salario_base_progressao,
+            default => 0,
+        };
     }
 
     /**
@@ -1547,12 +1542,10 @@ class Servidor
         $tipoPrevidencia = $this->getTipoPrevidencia();
         // 2 -> RGPS
         // outros -> RPPS
-        switch ($tipoPrevidencia) {
-            case 2:
-                return true;
-            default:
-                return false;
-        }
+        return match ($tipoPrevidencia) {
+            2 => true,
+            default => false,
+        };
         return false;
     }
 
@@ -1749,7 +1742,7 @@ class Servidor
     public function getAssentamentosSubstituicao()
     {
 
-        $aListaAssentamentos = array();
+        $aListaAssentamentos = [];
         $oDaoAssentamento = new cl_assenta();
         $sCamposAssentamento = "h16_codigo as assentamento,
                               assentaloteregistroponto.*,
@@ -1872,14 +1865,14 @@ class Servidor
      * @return array
      * @throws \BusinessException
      */
-    public function getAfastamentosNoPeriodo(DBCompetencia $oCompetencia = null)
+    public function getAfastamentosNoPeriodo(?DBCompetencia $oCompetencia = null)
     {
 
         if (empty($oCompetencia)) {
             $oCompetencia = new DBCompetencia($this->getAnoCompetencia(), $this->getMesCompetencia());
         }
 
-        $aAfastamentos = array();
+        $aAfastamentos = [];
         $oDaoAfastamento = new cl_afasta();
         $iUltimoDiaCompetencia = cal_days_in_month(CAL_GREGORIAN, $oCompetencia->getMes(), $oCompetencia->getAno());
 
@@ -2025,9 +2018,7 @@ class Servidor
             throw new DBException('Erro ao buscar os dados do Cargo do Servidor.');
         }
 
-        return db_utils::makeFromRecord($rsRHPessoal, function ($oRetorno) {
-            return $oRetorno;
-        }, 0);
+        return db_utils::makeFromRecord($rsRHPessoal, fn($oRetorno) => $oRetorno, 0);
     }
 
     /**
@@ -2037,12 +2028,12 @@ class Servidor
     public function getPadrao()
     {
 
-        $aWhere = array(
+        $aWhere = [
             'rh02_anousu =' . $this->getAnoCompetencia(),
             'rh02_mesusu =' . $this->getMesCompetencia(),
             'rh02_instit =' . $this->getInstituicao()->getSequencial(),
             'rh02_regist =' . $this->getMatricula()
-        );
+        ];
 
         $aWhere = array_filter($aWhere);
 
@@ -2218,10 +2209,10 @@ class Servidor
      */
     public function toArray()
     {
-        return array(
+        return [
             'matricula' => $this->getMatricula(),
             'cgm' => $this->getCgm() instanceof CgmBase ? $this->getCgm()->toArray() : null
-        );
+        ];
     }
 
     /**
@@ -2803,9 +2794,7 @@ class Servidor
         if (!$rs) {
             throw new DBException("Erro ao buscar informações de pagamentos de rescisões.");
         }
-        return \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            return $retorno;
-        });
+        return \db_utils::makeCollectionFromRecord($rs, fn($retorno) => $retorno);
     }
 
     /**

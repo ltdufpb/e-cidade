@@ -41,7 +41,7 @@ class Feriado
   /**
    * @var \ECidade\Configuracao\Cadastro\Model\Feriado[]
    */
-    private $aFeriados = array();
+    private $aFeriados = [];
 
   /**
    * Monta a collection de Feriado. Recebe um array dos dados com os campos baseados na tabela feriadosgerais

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -220,10 +220,10 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
       <table class="form-container">
         <tr>
           <td title="<?=@$Tk60_codigo?>" >
-            <?db_ancora("Arquivo de Remessa:", "js_pesquisaremessa(true);", 4);?>
+            <?php db_ancora("Arquivo de Remessa:", "js_pesquisaremessa(true);", 4);?>
           </td>
           <td>
-            <?
+            <?php 
               db_input("iArqRemessa",  4, $Ik60_codigo, true, "text", 3, "onchange='js_pesquisaremessa(false);'");
               db_input("v83_nomearq",  38, $Ik60_descr,  true, "text", 3, "");
             ?>
@@ -234,15 +234,15 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
             Arquivo de Retorno:
           </td>
           <td>
-           <? db_input("arquivo",  40, null,  true, "file", 3, "onchange='js_habilita();'"); ?>
+           <?php  db_input("arquivo",  40, null,  true, "file", 3, "onchange='js_habilita();'"); ?>
           </td>
         </tr>        
       </table>
     </fieldset> 
     <input type="submit" id="sArqRetorno"  value="Procesar" >
-    <? db_input("v84_dtarquivo",  10, "",  true, "hidden", 3, "");?>
+    <?php  db_input("v84_dtarquivo",  10, "",  true, "hidden", 3, "");?>
   </form>
-<? 
+<?php  
   db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

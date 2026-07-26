@@ -42,7 +42,7 @@ class cl_avaliacaogruporespostaexclusaoeventos extends DAOBasica
      * @param string $outrosComandos 
      * @return string
      */
-    public function buscarRespostasPreenchimento(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function buscarRespostasPreenchimento(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $sql = " SELECT distinct " . implode(', ', $campos);
         $sql .= "  FROM avaliacaogruporespostaexclusaoeventos";

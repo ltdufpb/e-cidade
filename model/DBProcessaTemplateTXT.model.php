@@ -47,7 +47,7 @@
      * Variavel recebe array com os dados das variaveis
      * @var array $oDados
      */
-    private $aDados = array();
+    private $aDados = [];
 
     /**
      * Variável que recebe o arquivo gerado (string).
@@ -60,7 +60,7 @@
      * Cada posição do array possui um objeto cujo atributos possuem os nomes dos campos buscados na query.
      * @var array(Object) $iNumLinhasSql
      */
-    private $aDadosSql = array();
+    private $aDadosSql = [];
 
     /**
      * Variável que possui o número da linha que está sendo atualmente processada de $aDadosSql.
@@ -139,9 +139,8 @@
      */
     private function substituiVariavel($aPadroes) {
 
-      $sCampo = strtolower($aPadroes[1]);
-      $sTroca = isset($this->aDados[$this->iIndice][$this->iLinhaAtual]->$sCampo) ? 
-                      $this->aDados[$this->iIndice][$this->iLinhaAtual]->$sCampo : '';
+      $sCampo = strtolower((string) $aPadroes[1]);
+      $sTroca = $this->aDados[$this->iIndice][$this->iLinhaAtual]->$sCampo ?? '';
       if (count($aPadroes) > 2) { // Tem que ter pelo menos 4 posicoes
 
         /* Número máximo de caracteres definido */
@@ -225,9 +224,9 @@
       $sPadraoTrechoDinamico = "/<([0-9])(($sPadraoAtrib)*) *>((.|\n)*)<\/\\1>/";
 
       /* Os dois arrays abaixo possuem os índices de acordo com a numeração dos trechos dinâmicos no modelo. */
-      $aTrechosDinamicos = array(); // Vai conter todos os textos de trechos dinâmicos exatamente como estão no modelo
-      $aTextosDinamicos  = array(); // Vai conter todos os textos dinâmicos já processados
-      $aPadroes          = array();
+      $aTrechosDinamicos = []; // Vai conter todos os textos de trechos dinâmicos exatamente como estão no modelo
+      $aTextosDinamicos  = []; // Vai conter todos os textos dinâmicos já processados
+      $aPadroes          = [];
 
       preg_match_all($sPadraoTrechoDinamico, $sArqGerado, $aPadroes);
 
@@ -269,7 +268,7 @@
 
       $this->iLinhaAtual = 0;
       $this->iIndice     = 0;
-      $sArqGerado = preg_replace_callback($sPadraoVariavel, array(&$this, 'substituiVariavel'), $sArqGerado);
+      $sArqGerado = preg_replace_callback($sPadraoVariavel, $this->substituiVariavel(...), $sArqGerado);
 
       /* Processo cada trecho dinâmico, armazenando o texto gerado no array $aTextosDinamicos */
       foreach ($aTrechosDinamicos as $iInd => $oAtributos) {
@@ -290,8 +289,8 @@
 
           $this->iLinhaAtual        = $iCont;
           $aTextosDinamicos[$iInd] .= preg_replace_callback($sPadraoVariavel,
-                                                            array(&$this, 'substituiVariavel'),
-                                                            $oAtributos->sTexto
+                                                            $this->substituiVariavel(...),
+                                                            (string) $oAtributos->sTexto
                                                            );
 
         }
@@ -301,8 +300,8 @@
           $this->iLinhaAtual = $iCont;
           for ($iInd2=0; $iInd2 < $oAtributos->iLimite-$iLinhas; $iInd2++) {
             $aTextosDinamicos[$iInd] .= preg_replace_callback($sPadraoVariavel, 
-                                                              array(&$this, 'substituiVariavel'),
-                                                              $oAtributos->sTexto
+                                                              $this->substituiVariavel(...),
+                                                              (string) $oAtributos->sTexto
                                                              );
           }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procedparag_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocedparag = new cl_procedparag;
 $clprocedparag->rotulo->label("v80_proced");
 $clprocedparag->rotulo->label("v80_docum");
@@ -54,7 +55,7 @@ $clprocedparag->rotulo->label("v80_docum");
               <?=$Lv80_proced?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v80_proced",4,$Iv80_proced,true,"text",4,"","chave_v80_proced");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprocedparag->rotulo->label("v80_docum");
               <?=$Lv80_docum?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v80_docum",8,$Iv80_docum,true,"text",4,"","chave_v80_docum");
 		       ?>
             </td>
@@ -126,12 +127,12 @@ $clprocedparag->rotulo->label("v80_docum");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

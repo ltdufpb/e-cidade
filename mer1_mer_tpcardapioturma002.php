@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_tpcardapioturma_classe.php"));
 include(modification("classes/db_mer_cardapioescola_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
 $clmer_cardapioescola = new cl_mer_cardapioescola;
 if(isset($coddisciplinas)){
@@ -73,7 +74,7 @@ if(isset($coddisciplinas)){
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      = 'mer1_mer_cardapioescola001.php?me32_i_tipocardapio=<?=$iCodCardapio?>&me27_c_nome=<?=$nome?>&db_opcao=<?=$db_opcao?>';
     </script>
        
- <? }
+ <?php  }
  db_msgbox("Alterações efetuadas com sucesso!");
  exit;
 }
@@ -89,7 +90,7 @@ if(isset($coddisciplinas)){
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $result = $clmer_cardapioescola->sql_record($clmer_cardapioescola->sql_query("",
                                                                              "me32_i_codigo,ed18_c_nome",
                                                                              "",
@@ -99,24 +100,24 @@ if(isset($coddisciplinas)){
    if($linhas>0){
     ?>
     <select name="outras_disc[]" id="outras_disc" size="10" style="width:300px;font-size:10px;padding:0px;" multiple>
-    <?
+    <?php 
     for($r=0;$r<$linhas;$r++){
      db_fieldsmemory($result,$r);
      ?>
       <option value="<?=$me32_i_codigo?>"> <?=$ed18_c_nome?></option>
-     <?
+     <?php 
     }
     ?>
     </select>
     <br><br>
     <input type="button" value="Confirmar" onClick="js_confirmaserie();">
     <input type="button" value="Cancelar" onClick="js_fechar();">
-   <?}else{
+   <?php }else{
     ?>
     <script>
      parent.db_iframe_tpcardapioturma.hide();
     </script>
-    <?
+    <?php 
     exit;
    }?>
   </td>

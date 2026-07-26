@@ -81,7 +81,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
               <strong>Data Inicial: </strong>
             </td>
             <td>
-              <?
+              <?php 
               db_inputdata("dtini","01","01",date("Y",db_getsession("DB_datausu")),true,"text",2);
               ?>
             </td>
@@ -93,7 +93,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
               <strong>Data Final: </strong>
             </td>
             <td>
-              <?
+              <?php 
               db_inputdata("dtfim",date("d",db_getsession("DB_datausu")),date("m",db_getsession("DB_datausu")),date("Y",db_getsession("DB_datausu")),true,"text",2);
               ?>
             </td>
@@ -104,7 +104,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
               <strong>Agrupamento:</strong>
             </td>
             <td>
-              <?
+              <?php 
               $acumu = array(
                 "or"=>"Órgão",
                 "un"=>"Unidade",
@@ -129,7 +129,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
               <strong>Restos a Pagar:</strong>
             </td>
             <td>
-              <?
+              <?php 
               $acumu = array(
                 "0"=>"Geral-todos",
                 "1"=>"Com Movimento até a Data",
@@ -150,7 +150,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
               <strong>Exercício:</strong>
             </td>
             <td>
-              <?
+              <?php 
               $result = $clempresto->sql_record($clempresto->sql_query_empenho(db_getsession("DB_anousu"),null,' distinct e60_anousu ','e60_anousu'));
               $opcao = array("0"=>"Todos");
 

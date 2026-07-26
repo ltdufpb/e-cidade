@@ -52,7 +52,7 @@ class FolhaPagamentoComplementar extends FolhaPagamento
      * @throws BusinessException
      * @throws DBException
      */
-    public static function getFolhaAberta(DBCompetencia $oCompetencia = null)
+    public static function getFolhaAberta(?DBCompetencia $oCompetencia = null)
     {
         $iCodigoFolha = FolhaPagamento::getCodigoFolha(FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR, true, $oCompetencia);
 
@@ -74,9 +74,10 @@ class FolhaPagamentoComplementar extends FolhaPagamento
      * @return bool
      * @throws DBException
      */
+    #[\Override]
     public static function hasFolhaAberta(
       $tipoFolha = FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR,
-      DBCompetencia $oCompetencia = null
+      ?DBCompetencia $oCompetencia = null
     ) {
         $tipoFolhaPagamento = $tipoFolha;
         $competencia = $oCompetencia;
@@ -99,7 +100,7 @@ class FolhaPagamentoComplementar extends FolhaPagamento
      * @return bool
      * @throws Exception
      */
-    public static function hasFolha(DBCompetencia $oCompetencia = null)
+    public static function hasFolha(?DBCompetencia $oCompetencia = null)
     {
         if ($oCompetencia) {
             return FolhaPagamento::hasFolhaTipo(FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR, $oCompetencia);
@@ -116,7 +117,7 @@ class FolhaPagamentoComplementar extends FolhaPagamento
      * @throws BusinessException
      * @throws DBException
      */
-    public static function getUltimaFolha(DBCompetencia $oCompetencia = null)
+    public static function getUltimaFolha(?DBCompetencia $oCompetencia = null)
     {
         return new FolhaPagamentoComplementar(
           FolhaPagamento::getCodigoFolha(
@@ -133,6 +134,7 @@ class FolhaPagamentoComplementar extends FolhaPagamento
      * @return int
      * @throws DBException
      */
+    #[\Override]
     public static function getProximoNumero($tipoFolha = FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR)
     {
         return FolhaPagamento::getProximoNumero($tipoFolha);
@@ -342,6 +344,7 @@ class FolhaPagamentoComplementar extends FolhaPagamento
      * @throws BusinessException
      * @throws DBException
      */
+    #[\Override]
     public function cancelarFechamento()
     {
         parent::cancelarFechamento();
@@ -365,6 +368,7 @@ class FolhaPagamentoComplementar extends FolhaPagamento
      * @param int|null $tipoFolha
      * @return array
      */
+    #[\Override]
     public static function getFolhasFechadasCompetencia(
       DBCompetencia $oCompetencia,
       $tipoFolha = FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE matordemanu
 class cl_matordemanu { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m53_codordem = 0; 
-   var $m53_data_dia = null; 
-   var $m53_data_mes = null; 
-   var $m53_data_ano = null; 
-   var $m53_data = null; 
-   var $m53_obs = null; 
+   public $m53_codordem = 0; 
+   public $m53_data_dia = null; 
+   public $m53_data_mes = null; 
+   public $m53_data_ano = null; 
+   public $m53_data = null; 
+   public $m53_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m53_codordem = int8 = Código da ordem de compra 
                  m53_data = date = Data da anulacao 
                  m53_obs = text = Observacao da anulacao 
                  ";
    //funcao construtor da classe 
-   function cl_matordemanu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemanu"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_matordemanu {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Anulacao de ordem de compra ($this->m53_codordem) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Anulacao de ordem de compra já Cadastrado";
@@ -144,12 +144,12 @@ class cl_matordemanu {
      $resaco = $this->sql_record($this->sql_query_file($this->m53_codordem));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6224,'$this->m53_codordem','I')");
-       $resac = db_query("insert into db_acount values($acount,1009,6224,'','".AddSlashes(pg_result($resaco,0,'m53_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1009,6225,'','".AddSlashes(pg_result($resaco,0,'m53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1009,6226,'','".AddSlashes(pg_result($resaco,0,'m53_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1009,6224,'','".AddSlashes(pg_fetch_result($resaco,0,'m53_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1009,6225,'','".AddSlashes(pg_fetch_result($resaco,0,'m53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1009,6226,'','".AddSlashes(pg_fetch_result($resaco,0,'m53_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -158,10 +158,10 @@ class cl_matordemanu {
       $this->atualizacampos();
      $sql = " update matordemanu set ";
      $virgula = "";
-     if(trim($this->m53_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_codordem"])){ 
+     if(trim((string) $this->m53_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_codordem"])){ 
        $sql  .= $virgula." m53_codordem = $this->m53_codordem ";
        $virgula = ",";
-       if(trim($this->m53_codordem) == null ){ 
+       if(trim((string) $this->m53_codordem) == null ){ 
          $this->erro_sql = " Campo Código da ordem de compra nao Informado.";
          $this->erro_campo = "m53_codordem";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_matordemanu {
          return false;
        }
      }
-     if(trim($this->m53_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"] !="") ){ 
+     if(trim((string) $this->m53_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"] !="") ){ 
        $sql  .= $virgula." m53_data = '$this->m53_data' ";
        $virgula = ",";
-       if(trim($this->m53_data) == null ){ 
+       if(trim((string) $this->m53_data) == null ){ 
          $this->erro_sql = " Campo Data da anulacao nao Informado.";
          $this->erro_campo = "m53_data_dia";
          $this->erro_banco = "";
@@ -187,7 +187,7 @@ class cl_matordemanu {
        if(isset($GLOBALS["HTTP_POST_VARS"]["m53_data_dia"])){ 
          $sql  .= $virgula." m53_data = null ";
          $virgula = ",";
-         if(trim($this->m53_data) == null ){ 
+         if(trim((string) $this->m53_data) == null ){ 
            $this->erro_sql = " Campo Data da anulacao nao Informado.";
            $this->erro_campo = "m53_data_dia";
            $this->erro_banco = "";
@@ -198,7 +198,7 @@ class cl_matordemanu {
          }
        }
      }
-     if(trim($this->m53_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_obs"])){ 
+     if(trim((string) $this->m53_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m53_obs"])){ 
        $sql  .= $virgula." m53_obs = '$this->m53_obs' ";
        $virgula = ",";
      }
@@ -210,15 +210,15 @@ class cl_matordemanu {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6224,'$this->m53_codordem','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m53_codordem"]))
-           $resac = db_query("insert into db_acount values($acount,1009,6224,'".AddSlashes(pg_result($resaco,$conresaco,'m53_codordem'))."','$this->m53_codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1009,6224,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m53_codordem'))."','$this->m53_codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m53_data"]))
-           $resac = db_query("insert into db_acount values($acount,1009,6225,'".AddSlashes(pg_result($resaco,$conresaco,'m53_data'))."','$this->m53_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1009,6225,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m53_data'))."','$this->m53_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m53_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1009,6226,'".AddSlashes(pg_result($resaco,$conresaco,'m53_obs'))."','$this->m53_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1009,6226,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m53_obs'))."','$this->m53_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,12 +263,12 @@ class cl_matordemanu {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6224,'$m53_codordem','E')");
-         $resac = db_query("insert into db_acount values($acount,1009,6224,'','".AddSlashes(pg_result($resaco,$iresaco,'m53_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1009,6225,'','".AddSlashes(pg_result($resaco,$iresaco,'m53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1009,6226,'','".AddSlashes(pg_result($resaco,$iresaco,'m53_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1009,6224,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m53_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1009,6225,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1009,6226,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m53_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matordemanu
@@ -328,7 +328,7 @@ class cl_matordemanu {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matordemanu";
@@ -342,7 +342,7 @@ class cl_matordemanu {
    function sql_query ( $m53_codordem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -366,7 +366,7 @@ class cl_matordemanu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,7 +378,7 @@ class cl_matordemanu {
    function sql_query_file ( $m53_codordem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -399,7 +399,7 @@ class cl_matordemanu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

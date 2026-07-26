@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_departdiv_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldepartdiv = new cl_departdiv;
 $cldepartdiv->rotulo->label("t30_codigo");
 $cldepartdiv->rotulo->label("t30_codigo");
@@ -55,7 +56,7 @@ $cldepartdiv->rotulo->label("t30_codigo");
               <?=$Lt30_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t30_codigo",8,$It30_codigo,true,"text",4,"","chave_t30_codigo");
 		       ?>
             </td>
@@ -73,7 +74,7 @@ $cldepartdiv->rotulo->label("t30_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = "";
       if (isset($orgaos) && $orgaos != "") {
         
@@ -144,12 +145,12 @@ $cldepartdiv->rotulo->label("t30_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

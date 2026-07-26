@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pagordemrec_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpagordemrec = new cl_pagordemrec;
 $clpagordemrec->rotulo->label("e52_codord");
 $clpagordemrec->rotulo->label("e52_receit");
@@ -55,7 +56,7 @@ $clpagordemrec->rotulo->label("e52_valor");
               <?=$Le52_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e52_codord",6,$Ie52_codord,true,"text",4,"","chave_e52_codord");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clpagordemrec->rotulo->label("e52_valor");
               <?=$Le52_receit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e52_receit",4,$Ie52_receit,true,"text",4,"","chave_e52_receit");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clpagordemrec->rotulo->label("e52_valor");
               <?=$Le52_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e52_valor",15,$Ie52_valor,true,"text",4,"","chave_e52_valor");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clpagordemrec->rotulo->label("e52_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pagordemrec.php")==true){
@@ -129,12 +130,12 @@ $clpagordemrec->rotulo->label("e52_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

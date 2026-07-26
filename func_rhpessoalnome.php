@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhpessoal = new cl_rhpessoal;
 $clrotulo = new rotulocampo;
 $clrhpessoal->rotulo->label("rh01_regist");
@@ -52,7 +53,7 @@ if(isset($valor_testa_rescisao)){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -74,7 +75,7 @@ if(!isset($pesquisa_chave)){
       document.form2.submit();
     }
   </script>
-  <?
+  <?php 
 }
 ?>
 </head>
@@ -89,7 +90,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lrh01_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh01_regist",10,$Irh01_regist,true,"text",4,"","chave_rh01_regist");
 		       ?>
             </td>
@@ -99,7 +100,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lrh01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh01_numcgm",10,$Irh01_numcgm,true,"text",4,"","chave_rh01_numcgm");
 		       ?>
             </td>
@@ -109,7 +110,7 @@ if(!isset($pesquisa_chave)){
             <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap colspan='3'> 
-            <?
+            <?php 
             db_input("z01_nome",80,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 	        ?>
             </td>
@@ -127,7 +128,7 @@ if(!isset($pesquisa_chave)){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $dbwhere = "";
       if(isset($instit)){
       	$dbwhere = " and rh01_instit = $instit ";
@@ -177,12 +178,12 @@ if(!isset($pesquisa_chave)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

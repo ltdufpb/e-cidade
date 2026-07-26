@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_seguradoras_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clseguradoras = new cl_seguradoras;
 $clseguradoras->rotulo->label("t80_segura");
 $clseguradoras->rotulo->label("t80_numcgm");
@@ -54,7 +55,7 @@ $clseguradoras->rotulo->label("t80_numcgm");
               <?=$Lt80_segura?>
             </td>
             <td align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t80_segura",8,$It80_segura,true,"text",4,"","chave_t80_segura");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clseguradoras->rotulo->label("t80_numcgm");
               <?=$Lt80_numcgm?>
             </td>
             <td align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t80_numcgm",8,$It80_numcgm,true,"text",4,"","chave_t80_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clseguradoras->rotulo->label("t80_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_seguradoras.php")==true){
@@ -118,12 +119,12 @@ $clseguradoras->rotulo->label("t80_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

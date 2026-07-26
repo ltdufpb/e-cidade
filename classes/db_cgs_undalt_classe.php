@@ -103,7 +103,7 @@ class cl_cgs_undalt {
                  z33_v_rotina = varchar(20) = Rotina 
                  ";
    //funcao construtor da classe 
-   function cl_cgs_undalt() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgs_undalt"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

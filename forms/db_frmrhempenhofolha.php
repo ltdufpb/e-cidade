@@ -51,12 +51,12 @@ $clrotulo->label('DBtxt25');
 			      <strong>Ano / Mês:</strong>
 			    </td>
 			    <td>
-			      <?
+			      <?php 
 			        $anofolha = db_anofolha();
 			        db_input('anofolha',4,$IDBtxt23,true,'text',2,"onChange='js_validaTipoPonto()'");
 			      ?>
 			      &nbsp;/&nbsp;
-			      <?
+			      <?php 
 			        $mesfolha = db_mesfolha();
 			        db_input('mesfolha',2,$IDBtxt25,true,'text',2,"onChange='js_validaTipoPonto()'");
 			      ?>

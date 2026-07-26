@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gerfprovfer_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clgerfprovfer = new cl_gerfprovfer;
 $clgerfprovfer->rotulo->label("r93_anousu");
 $clgerfprovfer->rotulo->label("r93_mesusu");
@@ -58,7 +59,7 @@ $clgerfprovfer->rotulo->label("r93_valor");
               <?=$Lr93_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r93_mesusu",2,$Ir93_mesusu,true,"text",4,"","chave_r93_mesusu");
 		       ?>
             </td>
@@ -68,7 +69,7 @@ $clgerfprovfer->rotulo->label("r93_valor");
               <?=$Lr93_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r93_regist",9,$Ir93_regist,true,"text",4,"","chave_r93_regist");
 		       ?>
             </td>
@@ -78,7 +79,7 @@ $clgerfprovfer->rotulo->label("r93_valor");
               <?=$Lr93_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r93_rubric",4,$Ir93_rubric,true,"text",4,"","chave_r93_rubric");
 		       ?>
             </td>
@@ -88,7 +89,7 @@ $clgerfprovfer->rotulo->label("r93_valor");
               <?=$Lr93_tpp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r93_tpp",1,$Ir93_tpp,true,"text",4,"","chave_r93_tpp");
 		       ?>
             </td>
@@ -98,7 +99,7 @@ $clgerfprovfer->rotulo->label("r93_valor");
               <?=$Lr93_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r93_valor",15,$Ir93_valor,true,"text",4,"","chave_r93_valor");
 		       ?>
             </td>
@@ -116,7 +117,7 @@ $clgerfprovfer->rotulo->label("r93_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_gerfprovfer.php")==true){
@@ -156,12 +157,12 @@ $clgerfprovfer->rotulo->label("r93_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

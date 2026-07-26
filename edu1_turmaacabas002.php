@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,31 +53,31 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
    if(isset($tipoatendimento)) {
 
      if ($tipoatendimento==4) {
 
-       $clcriaabas->identifica = array("a1"=>"Turma","a2"=>"Atividade Complementar","a4"=>"Alunos","a5"=>"Horários da Turma");
-       $clcriaabas->sizecampo  = array("a1"=>"15","a2"=>"20","a4"=>"15","a5"=>"25");
-       $clcriaabas->src        = array("a1"=>"edu1_turmaac002.php?chavepesquisa=$chavepesquisa","a2"=>"","a4"=>"","a5"=>"");
-       $clcriaabas->disabled   = array("a2"=>"true","a4"=>"true","a5"=>"true");
+       $clcriaabas->identifica = ["a1"=>"Turma","a2"=>"Atividade Complementar","a4"=>"Alunos","a5"=>"Horários da Turma"];
+       $clcriaabas->sizecampo  = ["a1"=>"15","a2"=>"20","a4"=>"15","a5"=>"25"];
+       $clcriaabas->src        = ["a1"=>"edu1_turmaac002.php?chavepesquisa=$chavepesquisa","a2"=>"","a4"=>"","a5"=>""];
+       $clcriaabas->disabled   = ["a2"=>"true","a4"=>"true","a5"=>"true"];
      } else {
 
-       $clcriaabas->identifica = array("a1"=>"Turma","a4"=>"Alunos","a5"=>"Horários da Turma");
-       $clcriaabas->sizecampo  = array("a1"=>"15","a4"=>"15","a5"=>"20");
-       $clcriaabas->src        = array("a1"=>"edu1_turmaac002.php?chavepesquisa=$chavepesquisa","a4"=>"","a5"=>"");
-       $clcriaabas->disabled   = array("a4"=>"true","a5"=>"true");
+       $clcriaabas->identifica = ["a1"=>"Turma","a4"=>"Alunos","a5"=>"Horários da Turma"];
+       $clcriaabas->sizecampo  = ["a1"=>"15","a4"=>"15","a5"=>"20"];
+       $clcriaabas->src        = ["a1"=>"edu1_turmaac002.php?chavepesquisa=$chavepesquisa","a4"=>"","a5"=>""];
+       $clcriaabas->disabled   = ["a4"=>"true","a5"=>"true"];
      }
      $clcriaabas->cordisabled = "#9b9b9b";
      $clcriaabas->iframe_width = '100%';
      $clcriaabas->iframe_height = 600;
    } else {
-     $clcriaabas->identifica = array("a1"=>"Turma","a4"=>"Alunos");
-     $clcriaabas->sizecampo  = array("a1"=>"15","a4"=>"15");
-     $clcriaabas->src        = array("a1"=>"edu1_turmaac002.php","a4"=>"");
-     $clcriaabas->disabled   = array("a4"=>"true");
+     $clcriaabas->identifica = ["a1"=>"Turma","a4"=>"Alunos"];
+     $clcriaabas->sizecampo  = ["a1"=>"15","a4"=>"15"];
+     $clcriaabas->src        = ["a1"=>"edu1_turmaac002.php","a4"=>""];
+     $clcriaabas->disabled   = ["a4"=>"true"];
      $clcriaabas->cordisabled = "#9b9b9b";
      $clcriaabas->iframe_width = '100%';
      $clcriaabas->iframe_height = 600;
@@ -88,6 +88,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

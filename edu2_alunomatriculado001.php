@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoMatricula  = new cl_matricula();
 $oDaoCalendario = new cl_calendario();
@@ -64,7 +64,7 @@ $iModulo        = db_getsession("DB_modulo");
         <legend><strong>Relatório de Alunos Matriculados</strong></legend>
        <table border="0">
         <tr>
-         <?
+         <?php 
            if ($iModulo == 7159) {
 
               echo '<td align="left">';
@@ -211,15 +211,15 @@ function js_etapa(calendario) {
 
   oParam.exec          = "PesquisaEtapa";
 
-  <? if ($iModulo != 7159) { ?>
+  <?php  if ($iModulo != 7159) { ?>
 
     oParam.escola = <?=$iEscola?>
 
-  <? } else { ?>
+  <?php  } else { ?>
 
     oParam.escola  =  $('escola').value;
 
-  <? } ?>
+  <?php  } ?>
 
   oParam.calendario = calendario;
 
@@ -277,7 +277,7 @@ function js_liberaBotao(valor){
 
 </script>
 
-<?
+<?php 
 
   if ($iModulo != 7159) {
 
@@ -287,7 +287,7 @@ function js_liberaBotao(valor){
   js_escola(<?=$iEscola?>);
 </script>
 
-<?
+<?php 
 
   }
 

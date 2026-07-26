@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -88,7 +88,7 @@ if ($claluno->numrows == 0) {?>
     </td>
    </tr>
   </table>
-  <?
+  <?php 
   exit;
   
 }
@@ -112,18 +112,18 @@ $pdf->cell(34,2,"","LR",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_v_nome),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_v_nome),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(120,4,$ed47_v_nome,0,0,"L",0);
 $pdf->cell(2,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_i_codigo),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_i_codigo),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(20,4,$ed47_i_codigo,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_codigoinep),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_codigoinep),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(20,4,$ed47_c_codigoinep,0,0,"L",0);
 $pdf->setfont('arial','',7);
@@ -144,15 +144,15 @@ if ($ed47_o_oid != 0) {
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_d_nasc),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_d_nasc),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(20,4,db_formatar($ed47_d_nasc,'d'),0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_sexo),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_sexo),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(20,4,$ed47_v_sexo=="M"?"MASCULINO":"FEMININO",0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_i_estciv),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_i_estciv),0,0,"R",0);
 
 if ($ed47_i_estciv == 1) {
   $ed47_i_estciv = "SOLTEIRO";
@@ -170,39 +170,39 @@ $pdf->cell(2,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_i_filiacao),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_i_filiacao),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(65,4,$ed47_i_filiacao=="0"?"NÃO DECLARADO / IGNORADO":"PAI E/OU MÃE",0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_raca),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_raca),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(25,4,$ed47_c_raca,0,0,"L",0);
 $pdf->cell(2,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_v_pai),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_v_pai),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(120,4,$ed47_v_pai,0,0,"L",0);
 $pdf->cell(2,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_v_mae),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_v_mae),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(120,4,$ed47_v_mae,0,0,"L",0);
 $pdf->cell(2,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_c_nomeresp),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_c_nomeresp),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(120,4,$ed47_c_nomeresp,0,0,"L",0);
 $pdf->cell(2,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(35,4,strip_tags($Led47_c_emailresp),0,0,"L",0);
+$pdf->cell(35,4,strip_tags((string) $Led47_c_emailresp),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(120,4,$ed47_c_emailresp,0,0,"L",0);
 $pdf->cell(2,4,"","R",1,"C",0);
@@ -217,67 +217,67 @@ $pdf->cell(194,2,"","LR",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_ender),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_ender),0,0,"L",0);
 $pdf->setfont('arial','b',7);
-$pdf->cell(40,4,substr($ed47_v_ender,0,37),0,0,"L",0);
+$pdf->cell(40,4,substr((string) $ed47_v_ender,0,37),0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_numero),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_numero),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(30,4,$ed47_c_numero,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_v_compl),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_v_compl),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(35,4,$ed47_v_compl,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_censoufend),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_censoufend),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ufend,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_censomunicend),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_censomunicend),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(30,4,$municend,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_v_bairro),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_v_bairro),0,0,"R",0);
 $pdf->setfont('arial','b',7);
-$pdf->cell(35,4,substr($ed47_v_bairro,0,23),0,0,"L",0);
+$pdf->cell(35,4,substr((string) $ed47_v_bairro,0,23),0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_zona),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_zona),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_c_zona,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_cep),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_cep),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,$ed47_v_cep,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_telef),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_telef),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_v_telef,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_telcel),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_telcel),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(30,4,$ed47_v_telcel,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_v_fax),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_v_fax),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(35,4,$ed47_v_fax,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_email),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_email),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_v_email,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_cxpostal),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_cxpostal),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,$ed47_v_cxpostal,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
@@ -290,7 +290,7 @@ $pdf->cell(194,2,"","LR",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_nacion),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_nacion),0,0,"L",0);
 
 if ($ed47_i_nacion == 1) {
   $ed47_i_nacion = "BRASILEIRA";
@@ -310,22 +310,22 @@ $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_censoufnat),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_censoufnat),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ufnat,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_censomunicnat),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_censomunicnat),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,$municnat,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_transpublico),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_transpublico),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_i_transpublico=="0"?"NÃO UTILIZA":"UTILIZA",0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_transporte),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_transporte),0,0,"R",0);
 
 if ($ed47_c_transporte == 1) {
   $ed47_c_transporte = "ESTADUAL";
@@ -341,11 +341,11 @@ $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_bolsafamilia),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_bolsafamilia),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(23,4,$ed47_c_bolsafamilia=='N'?'NÃO':'SIM',0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(47,4,strip_tags($Led47_c_atenddifer),0,0,"L",0);
+$pdf->cell(47,4,strip_tags((string) $Led47_c_atenddifer),0,0,"L",0);
 
 if ($ed47_c_atenddifer == 1) {
   $ed47_c_atenddifer = "EM HOSPITAL";
@@ -376,11 +376,11 @@ if ($clalunoprimat->numrows > 0) {
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led76_i_escola),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led76_i_escola),0,0,"L",0);
 $pdf->setfont('arial','b',7);
-$pdf->cell(40,4,substr($nomeescola,0,30),0,0,"L",0);
+$pdf->cell(40,4,substr((string) $nomeescola,0,30),0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led76_d_data),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led76_d_data),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,db_formatar($ed76_d_data,'d'),0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
@@ -393,7 +393,7 @@ $pdf->cell(194,2,"","LR",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_certidaotipo),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_certidaotipo),0,0,"L",0);
 
 if ($ed47_c_certidaotipo == "N") {
   $ed47_c_certidaotipo = "NASCIMENTO";
@@ -406,42 +406,42 @@ if ($ed47_c_certidaotipo == "N") {
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_c_certidaotipo,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_certidaonum),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_certidaonum),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,$ed47_c_certidaonum,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_certidaofolha),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_certidaofolha),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_c_certidaofolha,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_certidaolivro),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_certidaolivro),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(30,4,$ed47_c_certidaolivro,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_c_certidaodata),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_c_certidaodata),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(35,4,db_formatar($ed47_c_certidaodata,'d'),0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_censoufcert),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_censoufcert),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ufcert,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_censomuniccert),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_censomuniccert),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,$municcert,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_certidaocart),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_certidaocart),0,0,"L",0);
 $pdf->setfont('arial','b',7);
-$pdf->cell(160,4,substr($ed47_c_certidaocart,0,90),0,0,"L",0);
+$pdf->cell(160,4,substr((string) $ed47_c_certidaocart,0,90),0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
@@ -450,26 +450,26 @@ $pdf->cell(3,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_ident),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_ident),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_v_ident,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_identcompl),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_identcompl),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(30,4,$ed47_v_identcompl,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_i_censoufident),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_i_censoufident),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(35,4,$ufident,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_i_censoorgemissrg),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_i_censoorgemissrg),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(100,4,$orgemissrg,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_d_identdtexp),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_d_identdtexp),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(35,4,db_formatar($ed47_d_identdtexp,'d'),0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
@@ -480,26 +480,26 @@ $pdf->cell(3,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_cnh),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_cnh),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_v_cnh,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_categoria),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_categoria),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,$ed47_v_categoria,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_d_dtemissao),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_d_dtemissao),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,db_formatar($ed47_d_dtemissao,'d'),0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_d_dthabilitacao),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_d_dthabilitacao),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(30,4,db_formatar($ed47_d_dthabilitacao,'d'),0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(25,4,strip_tags($Led47_d_dtvencimento),0,0,"R",0);
+$pdf->cell(25,4,strip_tags((string) $Led47_d_dtvencimento),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(35,4,db_formatar($ed47_d_dtvencimento,'d'),0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
@@ -510,11 +510,11 @@ $pdf->cell(3,4,"","R",1,"C",0);
 
 $pdf->cell(3,4,"","L",0,"C",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_v_cpf),0,0,"L",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_v_cpf),0,0,"L",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(40,4,$ed47_v_cpf,0,0,"L",0);
 $pdf->setfont('arial','',7);
-$pdf->cell(30,4,strip_tags($Led47_c_passaporte),0,0,"R",0);
+$pdf->cell(30,4,strip_tags((string) $Led47_c_passaporte),0,0,"R",0);
 $pdf->setfont('arial','b',7);
 $pdf->cell(90,4,$ed47_c_passaporte,0,0,"L",0);
 $pdf->cell(1,4,"","R",1,"C",0);
@@ -586,7 +586,7 @@ $pdf->cell(3,50,"","R",0,"C",0);
 
 $pdf->setXY(107,$alt_obs);
 $pdf->cell(3,50,"","L",0,"C",0);
-$pdf->multicell(91,4,trim($ed47_v_contato)==""?"Nenhum registro.":substr(trim($ed47_v_contato),0,500),0,"J",0,0);
+$pdf->multicell(91,4,trim((string) $ed47_v_contato)==""?"Nenhum registro.":substr(trim((string) $ed47_v_contato),0,500),0,"J",0,0);
 $pdf->setXY(201,$alt_obs);
 $pdf->cell(3,50,"","R",1,"C",0);
 
@@ -671,8 +671,8 @@ if ($clmatricula->numrows > 0) {
     $pdf->setfont('arial','',7);
     $pdf->cell(30,4,"Situação:",0,0,"L",1);
     $pdf->setfont('arial','b',7);
-    if (trim($ed60_c_situacao) == "AVANÇADO" || trim($ed60_c_situacao) == "CLASSIFICADO") {
-      $sitt = trim($ed60_c_situacao);
+    if (trim((string) $ed60_c_situacao) == "AVANÇADO" || trim((string) $ed60_c_situacao) == "CLASSIFICADO") {
+      $sitt = trim((string) $ed60_c_situacao);
     } else {
     	
       if ($ed60_c_concluida == "S") {
@@ -683,8 +683,8 @@ if ($clmatricula->numrows > 0) {
     }
     $pdf->cell(85,4,$sitt,"R",1,"L",1);
 
-    if (trim(Situacao($ed60_c_situacao,$ed60_i_codigo)) != "MATRICULADO" 
-        && trim(Situacao($ed60_c_situacao,$ed60_i_codigo)) != "REMATRICULADO") {
+    if (trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)) != "MATRICULADO" 
+        && trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo)) != "REMATRICULADO") {
      	
       $sCamposMatricula = "ed60_d_datasaida as datasaida, ";
       $sCamposMatricula .= "case ";
@@ -835,7 +835,7 @@ if ($linhas3 > 0) {
     $pdf->setY($alt_geral);
     $pdf->setX(125);
     $pdf->setfont('arial','b',7);
-    $pdf->cell(70,4,substr($ed18_c_nome,0,45),"RT",2,"L",0);
+    $pdf->cell(70,4,substr((string) $ed18_c_nome,0,45),"RT",2,"L",0);
     $pdf->cell(70,4,$ed62_i_qtdch ,"R",2,"L",0);
     $pdf->setY($alt_geral);
     $pdf->setX(195);
@@ -873,7 +873,7 @@ if ($linhas3 > 0) {
             } else {
               $cor = $cor1;
             }
-            if (trim($ed65_c_situacao) == "AMPARADO") {
+            if (trim((string) $ed65_c_situacao) == "AMPARADO") {
               $ed65_t_resultobtido = "";
             } /*else if ($ed65_c_tiporesultado == 'N' and is_numeric($ed65_t_resultobtido) ) {
               $ed65_t_resultobtido = ArredondamentoNota::arredondar($ed65_t_resultobtido, $ed62_i_anoref);
@@ -893,7 +893,7 @@ if ($linhas3 > 0) {
             $pdf->cell(30,4,$ed65_t_resultobtido,1,0,"C",0);
             $pdf->cell(25,4,$ed65_c_resultadofinal=="R"?"REPROVADO":"APROVADO",1,0,"C",0);
             $pdf->cell(20,4,$ed65_i_qtdch==""?0:$ed65_i_qtdch,1,0,"C",0);
-            $pdf->cell(30,4,trim($ed65_c_tiporesultado),1,0,"C",0);
+            $pdf->cell(30,4,trim((string) $ed65_c_tiporesultado),1,0,"C",0);
             $pdf->cell(5,4,"","R",1,"C",0);
           }
           $pdf->cell(190,4,"","LR",1,"C",0);
@@ -929,7 +929,7 @@ if ($linhas3 > 0) {
           for ($x = 0; $x < $clhistmpsdiscfora->numrows; $x++) {
           	
             db_fieldsmemory($result,$x);
-            if (trim($ed100_c_situacao) == "AMPARADO") {
+            if (trim((string) $ed100_c_situacao) == "AMPARADO") {
               $ed100_t_resultobtido = "&nbsp;";
             } /*else if ($ed100_c_tiporesultado == 'N' and is_numeric($ed100_t_resultobtido) ) {
               $ed100_t_resultobtido = ArredondamentoNota::arredondar($ed100_t_resultobtido, $ed62_i_anoref);
@@ -940,7 +940,7 @@ if ($linhas3 > 0) {
             $pdf->cell(30,4,$ed100_t_resultobtido,1,0,"C",0);
             $pdf->cell(25,4,$ed100_c_resultadofinal=="R"?"REPROVADO":"APROVADO",1,0,"C",0);
             $pdf->cell(20,4,$ed100_i_qtdch==""?0:$ed100_i_qtdch,1,0,"C",0);
-            $pdf->cell(30,4,trim($ed100_c_tiporesultado),1,0,"C",0);
+            $pdf->cell(30,4,trim((string) $ed100_c_tiporesultado),1,0,"C",0);
             $pdf->cell(5,4,"","R",1,"C",0);
             
           }
@@ -978,7 +978,7 @@ if($clmatricula->numrows!=0 || $linhas3>0){
 $pdf->cell(190,4,"MOVIMENTAÇÃO ESCOLAR",1,1,"C",1);
 $pdf->cell(190,4,"","LR",1,"C",0);
 $alt_inicio = $pdf->getY();
-$array_mov  = array();
+$array_mov  = [];
 $sCampos  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,";
 $sCampos .= " ed57_c_descr,ed52_i_ano,ed11_c_descr,ed229_c_procedimento,ed229_t_descr";
 $sOrder  = " ed229_d_dataevento ,ed229_i_codigo ";
@@ -997,9 +997,9 @@ if ($clmatriculamov->numrows > 0) {
     db_fieldsmemory($result,$f);
     $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
     $iContador    = count($array_mov)-1; 
-    $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+    $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
     $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
-    $array_mov[$iContador] .= "#".substr($ed229_c_procedimento,0,35)."#".$ed229_t_descr;
+    $array_mov[$iContador] .= "#".substr((string) $ed229_c_procedimento,0,35)."#".$ed229_t_descr;
     
   }
 }
@@ -1019,9 +1019,9 @@ if ($clmatriculamov->numrows > 0) {
   db_fieldsmemory($result1,0);
   $array_mov[]            = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
   $iContador              = count($array_mov)-1; 
-  $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+  $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
   $array_mov[$iContador] .="#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
-  $array_mov[$iContador] .="#".substr($ed229_c_procedimento,0,35)."#".$ed229_t_descr;
+  $array_mov[$iContador] .="#".substr((string) $ed229_c_procedimento,0,35)."#".$ed229_t_descr;
   
 }
 
@@ -1040,9 +1040,9 @@ if ($clmatriculamov->numrows > 0) {
  db_fieldsmemory($result2,0);
  $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
  $iContador    = count($array_mov)-1; 
- $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+ $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d')."#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
  $array_mov[$iContador] .= "#".$ed60_i_codigo."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
- $array_mov[$iContador] .="#".substr($ed229_c_procedimento,0,35)."#".$ed229_t_descr;
+ $array_mov[$iContador] .="#".substr((string) $ed229_c_procedimento,0,35)."#".$ed229_t_descr;
  
 }
 

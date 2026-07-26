@@ -85,8 +85,8 @@ final class DocenteSubstituto {
 	private $oUsuario       = null;
 	
 	
-	const TEMPORARIO = 1;
-	const PERMANENTE = 2;
+	const int TEMPORARIO = 1;
+	const int PERMANENTE = 2;
 	
 	
 	public function __construct($iCodigo = null) {

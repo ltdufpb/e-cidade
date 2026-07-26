@@ -45,7 +45,7 @@ class RRA {
 	 * @access private
 	 * @var    LancamentoRRA[]
 	 */
-	private $aLancamentos = array();
+	private $aLancamentos = [];
 
 	/**
 	 * @access private

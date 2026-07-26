@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -176,7 +176,7 @@ if(isset($alterar)){
          }
            
      </script>
-   <?
+   <?php 
 }
 ?>
 <html>
@@ -204,7 +204,7 @@ if(isset($alterar)){
     <center>
     <br><br>
     <fieldset><legend><b> Laboratório </b></legend>
-	<?
+	<?php 
 	include(modification("forms/db_frmlab_laboratorio.php"));
 	?>
     </fieldset>
@@ -213,12 +213,12 @@ if(isset($alterar)){
   </tr>
 </table>
 <center>
-<?
+<?php 
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
   if($cllab_laboratorio->erro_status=="0"){
     $cllab_laboratorio->erro(true,false);

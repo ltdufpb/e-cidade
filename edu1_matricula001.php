@@ -94,7 +94,7 @@ if ( isset( $incluir ) ) {
   $lEnsinoInfantil = $oTurma->getBaseCurricular()->getCurso()->getEnsino()->isInfantil();
   $lTurnoIntegral  = $oTurma->getTurno()->isIntegral();
 
-  $aTurnosSelecionados = array();
+  $aTurnosSelecionados = [];
   $iNumeroCandidatos   = count( $alunos );
   $lTurmaSemVagas      = false;
 
@@ -190,7 +190,7 @@ if ( isset( $incluir ) ) {
         $sSqlAlunoCurso = $clalunocurso->sql_query_file( "", "ed56_c_situacao as sitanterior", "", " ed56_i_aluno = {$alunos[$i]}" );
         $result3        = $clalunocurso->sql_record( $sSqlAlunoCurso );
 
-        $sitanterior     = pg_result( $result3, 0, 0 );
+        $sitanterior     = pg_fetch_result( $result3, 0, 0 );
         $sitmatricula    = trim( $sitanterior ) == "CANDIDATO" ? "MATRICULAR" : "REMATRICULAR";
         $sitmatricula1   = trim( $sitanterior ) == "CANDIDATO" ? "MATRICULADO" : "REMATRICULADO";
         $tipomatricula   = trim( $sitanterior ) == "CANDIDATO" ? "N" : "R";
@@ -310,19 +310,19 @@ if ( isset( $incluir ) ) {
                                                                 +'&ed57_c_descr=<?=$ed57_c_descr?>';
                                                                 +'&ed52_c_descr=<?=$ed52_c_descr?>';
 </script>
-<?
+<?php 
 }
 ?>
 
 <body bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
-    <?include(modification("forms/db_frmmatricula.php"));?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+    <?php include(modification("forms/db_frmmatricula.php"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed60_i_turma",true,1,"ed60_i_turma",true);
 </script>
-<?
+<?php 
 if ( isset( $incluir ) ) {
 
   if ( $clmatricula->erro_status == "0" ) {

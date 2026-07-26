@@ -34,7 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhlota_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhlota = new cl_rhlota();
 $clrhlota->rotulo->label("r70_codigo"); 
@@ -86,7 +87,7 @@ $chave_r70_estrut = isset($chave_r70_estrut) ? stripslashes($chave_r70_estrut) :
                 <?=$Lr70_descr?>
               </td>
               <td width="96%" align="left" nowrap> 
-                <?
+                <?php 
              db_input("r70_descr",40,$Ir70_descr,true,"text",4,"","chave_r70_descr");
              ?>
               </td>
@@ -94,7 +95,7 @@ $chave_r70_estrut = isset($chave_r70_estrut) ? stripslashes($chave_r70_estrut) :
             <tr> 
                <td width="4%" align="left" nowrap title="Selecionar todos, ativos ou inativos"><b>Seleção por:</b></td>
                <td width="96%" align="left" nowrap>
-               <?
+               <?php 
                if(!isset($opcao)){
                $opcao = "t";
                }
@@ -124,7 +125,7 @@ $chave_r70_estrut = isset($chave_r70_estrut) ? stripslashes($chave_r70_estrut) :
     <td align="center" valign="top">
       <fieldset>
         <legend>Resultado da Pesquisa</legend>
-        <?
+        <?php 
         $where_ativo = "";
         if(isset($opcao) && trim($opcao)!="i"){
           $where_ativo = " and r70_ativo='$opcao' ";

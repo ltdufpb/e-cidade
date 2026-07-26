@@ -55,7 +55,7 @@ class cl_regraencerramentonaturezaorcamentaria {
                  c117_contacredora = varchar(15) = Conta Credora
                  ";
    //funcao construtor da classe
-   function cl_regraencerramentonaturezaorcamentaria() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regraencerramentonaturezaorcamentaria");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

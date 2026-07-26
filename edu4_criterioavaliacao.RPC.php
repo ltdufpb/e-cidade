@@ -68,7 +68,7 @@ try {
         throw new ParameterException( _M( MENSAGENS_CRITERIO_AVALIACAO_RPC . 'criterio_nao_informado' ) );
       }
 
-      $oRetorno->aDisciplinas = array();
+      $oRetorno->aDisciplinas = [];
       $oCriterioAvaliacao     = new CriterioAvaliacao( $oParam->iCriterioAvaliacao );
 
       foreach( $oCriterioAvaliacao->getDisciplinas() as $oDisciplina ) {
@@ -100,15 +100,15 @@ try {
         throw new ParameterException( _M( MENSAGENS_CRITERIO_AVALIACAO_RPC . 'criterio_nao_informado' ) );
       }
 
-      $oRetorno->aPeriodosAvaliacao = array();
+      $oRetorno->aPeriodosAvaliacao = [];
       $oCriterioAvaliacao           = new CriterioAvaliacao( $oParam->iCriterioAvaliacao );
 
       foreach( $oCriterioAvaliacao->getPeriodos() as $oPeriodoAvaliacao ) {
 
         $oDadosPeriodo                  = new stdClass();
         $oDadosPeriodo->iPeriodo        = $oPeriodoAvaliacao->getCodigo();
-        $oDadosPeriodo->sPeriodo        = urlencode( $oPeriodoAvaliacao->getDescricao() );
-        $oDadosPeriodo->sAbreviatura    = urlencode( $oPeriodoAvaliacao->getDescricaoAbreviada() );
+        $oDadosPeriodo->sPeriodo        = urlencode( (string) $oPeriodoAvaliacao->getDescricao() );
+        $oDadosPeriodo->sAbreviatura    = urlencode( (string) $oPeriodoAvaliacao->getDescricaoAbreviada() );
         $oRetorno->aPeriodosAvaliacao[] = $oDadosPeriodo;
       }
 
@@ -208,8 +208,8 @@ try {
       $oRetorno->iCriterio       = $oCriterioAvaliacao->getCodigo();
       $oRetorno->sDescricao      = urlencode( $oCriterioAvaliacao->getDescricao() );
       $oRetorno->sAbreviatura    = urlencode( $oCriterioAvaliacao->getAbreviatura() );
-      $oRetorno->aDisciplinas    = array();
-      $oRetorno->aPeriodos       = array();
+      $oRetorno->aDisciplinas    = [];
+      $oRetorno->aPeriodos       = [];
 
       foreach( $oCriterioAvaliacao->getDisciplinas() as $oDisciplina ) {
 
@@ -224,13 +224,13 @@ try {
         
         if ( count( $aTurmasVinculadas ) > 0 ) {
           
-          $aTurmas = array();
+          $aTurmas = [];
           foreach ($aTurmasVinculadas as $oTurmaDisciplina) {
             $aTurmas[] = $oTurmaDisciplina->getDescricao();
           }
           $oDadosDisciplinas->lVinculadaTurma   = true;
           $oDadosDisciplinas->sTurmasVinculadas = implode(", ", $aTurmas);
-          $oDadosDisciplinas->sTurmasVinculadas = utf8_encode($oDadosDisciplinas->sTurmasVinculadas);
+          $oDadosDisciplinas->sTurmasVinculadas = mb_convert_encoding($oDadosDisciplinas->sTurmasVinculadas, 'UTF-8', 'ISO-8859-1');
         }
         
         $oRetorno->aDisciplinas[]              = $oDadosDisciplinas;
@@ -240,8 +240,8 @@ try {
 
         $oDadosPeriodo               = new stdClass();
         $oDadosPeriodo->iPeriodo     = $oPeriodoAvaliacao->getCodigo();
-        $oDadosPeriodo->sPeriodo     = urlencode( $oPeriodoAvaliacao->getDescricao() );
-        $oDadosPeriodo->sAbreviatura = urlencode( $oPeriodoAvaliacao->getDescricaoAbreviada() );
+        $oDadosPeriodo->sPeriodo     = urlencode( (string) $oPeriodoAvaliacao->getDescricao() );
+        $oDadosPeriodo->sAbreviatura = urlencode( (string) $oPeriodoAvaliacao->getDescricaoAbreviada() );
         $oRetorno->aPeriodos[]       = $oDadosPeriodo;
       }
 
@@ -292,7 +292,7 @@ try {
         throw new ParameterException( _M( MENSAGENS_CRITERIO_AVALIACAO_RPC . 'criterio_nao_informado' ) );
       }
 
-      $oRetorno->aTurmasVinculadas = array();
+      $oRetorno->aTurmasVinculadas = [];
       $oCriterioAvaliacao          = new CriterioAvaliacao( $oParam->iCriterioAvaliacao );
 
       foreach( $oCriterioAvaliacao->getTurmasVinculadas() as $oTurma ) {
@@ -310,7 +310,7 @@ try {
      */
     case 'getCriteriosAvaliacao':
 
-      $oRetorno->aCriterios = array();
+      $oRetorno->aCriterios = [];
 
       $iEscola = db_getsession( "DB_coddepto" );
       $oDaoCriterio   = new cl_criterioavaliacao();

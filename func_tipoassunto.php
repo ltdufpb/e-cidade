@@ -32,7 +32,8 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltipoassunto = new cl_tipoassunto;
 $cltipoassunto->rotulo->label("bi30_sequencial");
 $cltipoassunto->rotulo->label("bi30_descricao");
@@ -50,11 +51,11 @@ $cltipoassunto->rotulo->label("bi30_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lbi30_sequencial?></label></td>
-          <td><? db_input("bi30_sequencial",10,$Ibi30_sequencial,true,"text",4,"","chave_bi30_sequencial"); ?></td>
+          <td><?php  db_input("bi30_sequencial",10,$Ibi30_sequencial,true,"text",4,"","chave_bi30_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lbi30_descricao?></label></td>
-          <td><? db_input("bi30_descricao",10,$Ibi30_descricao,true,"text",4,"","chave_bi30_descricao");?></td>
+          <td><?php  db_input("bi30_descricao",10,$Ibi30_descricao,true,"text",4,"","chave_bi30_descricao");?></td>
         </tr>
       </table>
     </fieldset>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,7 +42,7 @@ $clrotulo->label("s139_i_codigo");
        <?=@$Ls140_i_unidade?>
     </td>
     <td> 
-<?
+<?php 
 db_input('s140_i_unidade',10,$Is140_i_unidade,true,'text',3,"");
 db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
 ?>
@@ -63,7 +63,7 @@ db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
                            <?=@$Ls140_i_codigo?>
                          </td>
                          <td> 
-                           <?
+                           <?php 
                            db_input('s140_i_codigo',10,$Is140_i_codigo,true,'text',3,"");
                            ?>
                          </td>
@@ -73,7 +73,7 @@ db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
                           <?= @$Ls140_i_tipo?>
                          </td>
                          <td> 
-                           <?
+                           <?php 
                            $sql = $clmotivo_ausencia->sql_query(null,"s139_i_codigo, s139_c_descr","s139_i_codigo");
                            $resultado = $clmotivo_ausencia->sql_record($sql);
                            if($resultado)
@@ -88,7 +88,7 @@ db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
                            <b>Quantidade:</b>
                          </td>
                          <td> 
-                           <?
+                           <?php 
                              db_input('s140_i_quantidade',10,$Is140_i_codigo,true,'text',3,"");
                            ?>
                          </td>
@@ -111,7 +111,7 @@ db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
                                   <?=@$Ls140_d_inicio?>
                                 </td>
                                 <td nowrap> 
-                                  <?
+                                  <?php 
                                   db_inputdata('s140_d_inicio',@$s140_d_inicio_dia,@$s140_d_inicio_mes,@$s140_d_inicio_ano,true,'text',$db_opcao,"")
                                   ?>
                                 </td>
@@ -121,7 +121,7 @@ db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
                                   <?=@$Ls140_d_fim?>
                                 </td>
                                 <td nowrap> 
-                                  <?
+                                  <?php 
                                   db_inputdata('s140_d_fim',@$s140_d_fim_dia,@$s140_d_fim_mes,@$s140_d_fim_ano,true,'text',$db_opcao,"")
                                   ?>
                                </td>
@@ -134,11 +134,11 @@ db_input('descrdepto',75,$Is140_i_unidade,true,'text',3,"");
                             <table>
                               <tr>
                                 <td nowrap title=""><?=$Ls140_c_horaini?></td>
-                                <td><?db_input('s140_c_horaini',5,@$Is140_c_horaini,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'s140_c_horaini', event)\"");?></td>
+                                <td><?php db_input('s140_c_horaini',5,@$Is140_c_horaini,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'s140_c_horaini', event)\"");?></td>
                               </tr>
                               <tr>
                                 <td nowrap title=""><?=$Ls140_c_horafim?></td>
-                                <td><?db_input('s140_c_horafim',5,@$Is140_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'s140_c_horafim', event)\"");?></td>
+                                <td><?php db_input('s140_c_horafim',5,@$Is140_c_horafim,true,'text',$db_opcao,"onKeyUp=\"mascara_hora(this.value,'s140_c_horafim', event)\"");?></td>
                               </tr>
                             </table>
                           </fieldset>
@@ -276,7 +276,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_sau_upsparalisada.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

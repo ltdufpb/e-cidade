@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lab_requiitem_classe.php"));
 require_once(modification("classes/db_lab_exame_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllab_requiitem = new cl_lab_requiitem;
 $cllab_exame = new cl_lab_exame;
 $cllab_requiitem->rotulo->label("la21_i_codigo");
@@ -58,7 +59,7 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
               <?=$Lla08_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("la08_i_codigo",10,$Ila08_i_codigo,true,"text",4,"","chave_la08_i_codigo");
 		       ?>
             </td>
@@ -68,7 +69,7 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
               <?=$Lla08_c_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("la08_c_descr",40,@$Ila08_c_descr,true,"text",4,"","chave_la08_c_descr");
 		       ?>
             </td>
@@ -86,7 +87,7 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            //if(file_exists("funcoes/db_func_lab_requiitem.php")==true){

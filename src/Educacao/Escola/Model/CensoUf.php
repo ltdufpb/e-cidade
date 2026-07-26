@@ -102,7 +102,7 @@ class CensoUf
      * @param array $state
      * @return CensoUf
      */
-    public static function fromState($state = array())
+    public static function fromState($state = [])
     {
         $self = new self();
         if (array_key_exists('ed260_i_codigo', $state)) {

@@ -29,23 +29,8 @@ namespace ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao;
 
 class ParametrosLotacao {
 
-  private $iCodigoSequencial;
-  private $iTolerancia;
-  private $sHoraExtra50;
-  private $sHoraExtra75;
-  private $sHoraExtra100;
-  private $iCodigoLotacao;
-  private $oSupervisor;
-
-  function __construct ($iCodigoSequencial = null, $iTolerancia = null, $sHoraExtra50 = null, $sHoraExtra75 = null, $sHoraExtra100 = null, $iCodigoLotacao = null, $oSupervisor = null) {
-
-    $this->iCodigoSequencial = $iCodigoSequencial;
-    $this->iTolerancia       = $iTolerancia;
-    $this->sHoraExtra50      = $sHoraExtra50;
-    $this->sHoraExtra75      = $sHoraExtra75;
-    $this->sHoraExtra100     = $sHoraExtra100;
-    $this->iCodigoLotacao    = $iCodigoLotacao;
-    $this->oSupervisor       = $oSupervisor;
+  function __construct(private $iCodigoSequencial = null, private $iTolerancia = null, private $sHoraExtra50 = null, private $sHoraExtra75 = null, private $sHoraExtra100 = null, private $iCodigoLotacao = null, private $oSupervisor = null)
+  {
   }
 
   public function setCodigo($iCodigoSequencial) {

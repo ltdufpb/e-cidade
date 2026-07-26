@@ -91,7 +91,7 @@ class cl_tfd_pedidotfd {
                  tf01_rhcbosolicitante = int4 = Código cbo do solicitante
                  ";
    //funcao construtor da classe
-   function cl_tfd_pedidotfd() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_pedidotfd");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

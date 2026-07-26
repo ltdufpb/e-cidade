@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_solicita_classe.php"));
 require_once(modification("classes/db_pcorcamitemsol_classe.php"));
 require_once(modification("classes/db_pcorcamitemproc_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clsolicita = new cl_solicita;
 $clpcorcamitemsol = new cl_pcorcamitemsol;
@@ -58,7 +59,7 @@ $clsolicita->rotulo->label("pc10_data");
                 <?=$Lpc10_numero?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("pc10_numero",10,$Ipc10_numero,true,"text",4,"","chave_pc10_numero");
                 ?>
               </td>
@@ -68,7 +69,7 @@ $clsolicita->rotulo->label("pc10_data");
                 <?=$Lpc10_data?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_inputdata("pc10_data", "","", "", true,"text",4,"","chave_pc10_data");
                 ?>
               </td>
@@ -146,12 +147,12 @@ $clsolicita->rotulo->label("pc10_data");
   </table>
   </body>
   </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?
+<?php 
 }
 ?>
 <script type="text/javascript">

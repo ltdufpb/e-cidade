@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_setorloc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsetorloc = new cl_setorloc;
 $clsetorloc->rotulo->label("j05_codigoproprio");
 $clsetorloc->rotulo->label("j05_descr");
@@ -54,7 +55,7 @@ $clsetorloc->rotulo->label("j05_descr");
               <?=$Lj05_codigoproprio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j05_codigoproprio",6,$Ij05_codigoproprio,true,"text",4,"","chave_j05_codigoproprio");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsetorloc->rotulo->label("j05_descr");
               <?=$Lj05_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j05_descr",40,$Ij05_descr,true,"text",4,"","chave_j05_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsetorloc->rotulo->label("j05_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_setorloc.php")==true){
@@ -122,12 +123,12 @@ $clsetorloc->rotulo->label("j05_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

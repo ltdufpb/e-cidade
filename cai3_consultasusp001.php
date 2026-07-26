@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -135,7 +135,7 @@ function js_marca(obj){
       </tr>    
     </table>
 </fieldset>
-<?
+<?php 
   if ( trim($oSuspensao->ar19_sequencial) != "" ) {
 
   	 $sCamposFinaliza  = " nome, 	  ";
@@ -188,7 +188,7 @@ function js_marca(obj){
          <td width='20%' valign='top' height='100%' rowspan='2'>
            <a class='selecionados' onclick='js_marca(this);this.blur()' href='arr3_consultadebitossuspensos.php?suspensao=<?=$oGet->suspensao;?>'  target='dados'><b> Débitos   </b></a> 
            <a class='dados'        onclick='js_marca(this);this.blur()' href='arr3_consultaprocessos001.php?suspensao=<?=$oGet->suspensao;?>'      target='dados'><b> Processo  </b></a>
-           <?
+           <?php 
 		 	 if ( trim($oSuspensao->v63_sequencial) != "") {
 		 	   echo "<a class='dados' onclick='js_marca(this);this.blur()' href='arr3_consultprocjuradvog001.php?suspensao={$oGet->suspensao}' 	   target='dados'><b> Advogados  </b></a>";
 		 	 }         

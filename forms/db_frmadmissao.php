@@ -901,7 +901,7 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
                 js_OpenJanelaIframe('','db_iframe_rhpessoal','func_rhpessoal.php?pesquisa_chave='+document.form1.h07_regist.value+'&funcao_js=parent.js_mostrarhpessoal','Pesquisa',false);
             }else{
                 document.form1.z01_nome.value = '';
-                <?
+                <?php 
                 echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
                 ?>
             }
@@ -931,7 +931,7 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
 
     function js_preenchepesquisa(chave){
         db_iframe_admissao.hide();
-        <?
+        <?php 
         if($db_opcao != 1 && db_getsession('DB_nome_modulo') != 'Pessoal'){
             echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
         }

@@ -47,7 +47,7 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @example FolhaPagamentoSuplementar::getFolhaAberta()
    * @return FolhaPagamentoSuplementar
    */
-  public static function getFolhaAberta(DBCompetencia $oCompetencia = null) {
+  public static function getFolhaAberta(?DBCompetencia $oCompetencia = null) {
 
     $iCodigoFolha = FolhaPagamento::getCodigoFolha(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR, true, $oCompetencia);
 
@@ -63,7 +63,8 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @example FolhaPagamentoSuplementar::hasFolhaAberta()
    * @return  boolean
    */
-  public static function hasFolhaAberta( DBCompetencia $oCompetencia = null) {
+  #[\Override]
+  public static function hasFolhaAberta( ?DBCompetencia $oCompetencia = null) {
     return FolhaPagamento::hasFolhaAberta(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR, $oCompetencia);
   }
 
@@ -75,7 +76,7 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @param DBCompetencia $oCompetencia Opcional
    * @return Boolean
    */
-  public static function hasFolha(DBCompetencia $oCompetencia = null) {
+  public static function hasFolha(?DBCompetencia $oCompetencia = null) {
 
     if ($oCompetencia) {
       return FolhaPagamento::hasFolhaTipo(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR, $oCompetencia);
@@ -91,7 +92,7 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @param  DBCompetencia $oCompetencia
    * @return FolhaPAgamentoSuplementar Última folha retornada.
    */
-  public static function getUltimaFolha( DBCompetencia $oCompetencia = null ) {
+  public static function getUltimaFolha( ?DBCompetencia $oCompetencia = null ) {
     return new FolhaPagamentoSuplementar(FolhaPagamento::getCodigoFolha(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR, null, $oCompetencia) );
   }
 
@@ -101,7 +102,8 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @example  FolhaPagamento:getProximoNumero(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR)
    * @return   Integer  Próximo numero de folha suplementar
    */
-  public static function getProximoNumero() {
+  #[\Override]
+  public static function getProximoNumero($iTipoFolha) {
     return FolhaPagamento::getProximoNumero(FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR);
   }
 
@@ -277,7 +279,7 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
       throw new DBException(_M(self::MENSAGENS . 'erro_buscar_historicocalculo'));
     }
 
-    $aEventosFinanceiros = array();
+    $aEventosFinanceiros = [];
 
     /**
      * Percorre os eventos financeiros retornados da consulta, criando os seus respectivos eventos financeiros
@@ -301,15 +303,12 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
     /**
      * Percorre os eventos financeiros, persistindo os dados no banco.
      */
-    while (list($iMatricula, $aEventosFinanceirosServidor) = each($aEventosFinanceiros)) {
-
-      $oCalculoFolhaSalario = new CalculoFolhaSalario($aEventosFinanceirosServidor[0]->getServidor());
-
-      foreach ($aEventosFinanceirosServidor as $oEventoFinanceiro) {
-        $oCalculoFolhaSalario->adicionarEvento($oEventoFinanceiro);
-      }
-
-      $oCalculoFolhaSalario->salvar();
+    foreach ($aEventosFinanceiros as $iMatricula => $aEventosFinanceirosServidor) {
+        $oCalculoFolhaSalario = new CalculoFolhaSalario($aEventosFinanceirosServidor[0]->getServidor());
+        foreach ($aEventosFinanceirosServidor as $oEventoFinanceiro) {
+          $oCalculoFolhaSalario->adicionarEvento($oEventoFinanceiro);
+        }
+        $oCalculoFolhaSalario->salvar();
     }
 
     return true;
@@ -321,7 +320,8 @@ class FolhaPagamentoSuplementar extends FolhaPagamento {
    * @param  DBCompetencia $oCompetencia Competencia da Folha
    * @return FolhaPagamentoSuplementar[]
    */
-  public static function getFolhasFechadasCompetencia( DBCompetencia $oCompetencia ) {
+  #[\Override]
+  public static function getFolhasFechadasCompetencia( DBCompetencia $oCompetencia, $iTipoFolha = \null ) {
     return FolhaPagamento::getFolhasFechadasCompetencia($oCompetencia, FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR);
   }
 }

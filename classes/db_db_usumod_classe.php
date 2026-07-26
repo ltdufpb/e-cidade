@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE db_usumod
 class cl_db_usumod { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_item = 0; 
-   var $anousu = 0; 
-   var $id_usuario = 0; 
-   var $datausu_dia = null; 
-   var $datausu_mes = null; 
-   var $datausu_ano = null; 
-   var $datausu = null; 
+   public $id_item = 0; 
+   public $anousu = 0; 
+   public $id_usuario = 0; 
+   public $datausu_dia = null; 
+   public $datausu_mes = null; 
+   public $datausu_ano = null; 
+   public $datausu = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_item = int4 = Código do ítem 
                  anousu = int4 = Exercício 
                  id_usuario = int4 = Cod. Usuário 
                  datausu = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_db_usumod() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_usumod"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -142,7 +142,7 @@ class cl_db_usumod {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Usuário módulo () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Usuário módulo já Cadastrado";
@@ -169,10 +169,10 @@ class cl_db_usumod {
       $this->atualizacampos();
      $sql = " update db_usumod set ";
      $virgula = "";
-     if(trim($this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+     if(trim((string) $this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
        $sql  .= $virgula." id_item = $this->id_item ";
        $virgula = ",";
-       if(trim($this->id_item) == null ){ 
+       if(trim((string) $this->id_item) == null ){ 
          $this->erro_sql = " Campo Código do ítem nao Informado.";
          $this->erro_campo = "id_item";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_db_usumod {
          return false;
        }
      }
-     if(trim($this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
+     if(trim((string) $this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
        $sql  .= $virgula." anousu = $this->anousu ";
        $virgula = ",";
-       if(trim($this->anousu) == null ){ 
+       if(trim((string) $this->anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "anousu";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_db_usumod {
          return false;
        }
      }
-     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
+     if(trim((string) $this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
        $sql  .= $virgula." id_usuario = $this->id_usuario ";
        $virgula = ",";
-       if(trim($this->id_usuario) == null ){ 
+       if(trim((string) $this->id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "id_usuario";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_db_usumod {
          return false;
        }
      }
-     if(trim($this->datausu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datausu_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datausu_dia"] !="") ){ 
+     if(trim((string) $this->datausu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datausu_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datausu_dia"] !="") ){ 
        $sql  .= $virgula." datausu = '$this->datausu' ";
        $virgula = ",";
-       if(trim($this->datausu) == null ){ 
+       if(trim((string) $this->datausu) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "datausu_dia";
          $this->erro_banco = "";
@@ -224,7 +224,7 @@ class cl_db_usumod {
        if(isset($GLOBALS["HTTP_POST_VARS"]["datausu_dia"])){ 
          $sql  .= $virgula." datausu = null ";
          $virgula = ",";
-         if(trim($this->datausu) == null ){ 
+         if(trim((string) $this->datausu) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "datausu_dia";
            $this->erro_banco = "";
@@ -316,7 +316,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_usumod";
@@ -364,7 +364,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="db_usumod.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,10 +429,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $this->atualizacampos();
      $sql = " update db_usumod set ";
      $virgula = "";
-     if(trim($this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+     if(trim((string) $this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
        $sql  .= $virgula." id_item = $this->id_item ";
        $virgula = ",";
-       if(trim($this->id_item) == null ){ 
+       if(trim((string) $this->id_item) == null ){ 
          $this->erro_sql = " Campo Código do ítem nao Informado.";
          $this->erro_campo = "id_item";
          $this->erro_banco = "";
@@ -442,10 +442,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          return false;
        }
      }
-     if(trim($this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
+     if(trim((string) $this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
        $sql  .= $virgula." anousu = $this->anousu ";
        $virgula = ",";
-       if(trim($this->anousu) == null ){ 
+       if(trim((string) $this->anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "anousu";
          $this->erro_banco = "";
@@ -455,10 +455,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          return false;
        }
      }
-     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
+     if(trim((string) $this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
        $sql  .= $virgula." id_usuario = $this->id_usuario ";
        $virgula = ",";
-       if(trim($this->id_usuario) == null ){ 
+       if(trim((string) $this->id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "id_usuario";
          $this->erro_banco = "";
@@ -468,10 +468,10 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
          return false;
        }
      }
-     if(trim($this->datausu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datausu_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datausu_dia"] !="") ){ 
+     if(trim((string) $this->datausu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["datausu_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["datausu_dia"] !="") ){ 
        $sql  .= $virgula." datausu = '$this->datausu' ";
        $virgula = ",";
-       if(trim($this->datausu) == null ){ 
+       if(trim((string) $this->datausu) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "datausu_dia";
          $this->erro_banco = "";
@@ -484,7 +484,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        if(isset($GLOBALS["HTTP_POST_VARS"]["datausu_dia"])){ 
          $sql  .= $virgula." datausu = null ";
          $virgula = ",";
-         if(trim($this->datausu) == null ){ 
+         if(trim((string) $this->datausu) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "datausu_dia";
            $this->erro_banco = "";

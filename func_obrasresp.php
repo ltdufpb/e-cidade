@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_obrasresp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clobrasresp = new cl_obrasresp;
 $clobrasresp->rotulo->label("ob10_codobra");
 $clobrasresp->rotulo->label("ob10_numcgm");
@@ -54,7 +55,7 @@ $clobrasresp->rotulo->label("ob10_numcgm");
               <?=$Lob10_codobra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ob10_codobra",10,$Iob10_codobra,true,"text",4,"","chave_ob10_codobra");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clobrasresp->rotulo->label("ob10_numcgm");
               <?=$Lob10_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ob10_numcgm",8,$Iob10_numcgm,true,"text",4,"","chave_ob10_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clobrasresp->rotulo->label("ob10_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_obrasresp.php")==true){
@@ -118,12 +119,12 @@ $clobrasresp->rotulo->label("ob10_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

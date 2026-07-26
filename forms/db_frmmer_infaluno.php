@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,16 +40,16 @@ $escola = db_getsession("DB_coddepto");
    <?=@$Lme14_i_codigo?>
   </td>
   <td colspan='4'>
-   <?db_input('me14_i_codigo',10,$Ime14_i_codigo,true,'text',3,"")?>
+   <?php db_input('me14_i_codigo',10,$Ime14_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme14_i_aluno?>">
-   <?db_ancora("<b>Aluno:</b>","js_pesquisame14_i_aluno(true);",$db_opcao2);?>
+   <?php db_ancora("<b>Aluno:</b>","js_pesquisame14_i_aluno(true);",$db_opcao2);?>
   </td>
   <td colspan='4'>
-   <?db_input('me14_i_aluno',10,$Ime14_i_aluno,true,'text',3,"")?>
-   <?db_input('ed47_v_nome',30,@$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_input('me14_i_aluno',10,$Ime14_i_aluno,true,'text',3,"")?>
+   <?php db_input('ed47_v_nome',30,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -57,7 +57,7 @@ $escola = db_getsession("DB_coddepto");
    <?=@$Lme14_f_peso?>
   </td>
   <td colspan='4'>
-   <?db_input('me14_f_peso',10,$Ime14_f_peso,true,'text',$db_opcao,"onchange ='js_verifica();'")?>
+   <?php db_input('me14_f_peso',10,$Ime14_f_peso,true,'text',$db_opcao,"onchange ='js_verifica();'")?>
   </td>
  </tr>
  <tr>
@@ -65,7 +65,7 @@ $escola = db_getsession("DB_coddepto");
    <?=@$Lme14_f_altura?>
   </td>
   <td>
-   <?db_input('me14_f_altura',10,$Ime14_f_altura,true,'text',$db_opcao,"onchange='js_imc();'")?>
+   <?php db_input('me14_f_altura',10,$Ime14_f_altura,true,'text',$db_opcao,"onchange='js_imc();'")?>
   </td>
  </tr>
  <tr>
@@ -73,7 +73,7 @@ $escola = db_getsession("DB_coddepto");
    <b>Idade: </b>
   </td>
   <td>
-   <?db_input('idade',10,@$Iidade,true,'text',3,"")?>
+   <?php db_input('idade',10,@$Iidade,true,'text',3,"")?>
   </td>
  </tr>
   <tr>
@@ -81,7 +81,7 @@ $escola = db_getsession("DB_coddepto");
    <b>IMC: </b>
   </td>
   <td>
-   <?
+   <?php 
    if(isset($me14_f_peso) && $me14_f_peso!=""){
    	 $imc = number_format($me14_f_peso/($me14_f_altura*2),2,".",".");
    }
@@ -95,7 +95,7 @@ $escola = db_getsession("DB_coddepto");
    <tr>
     <td>     
     <b>Competência:</b>
-    <?
+    <?php 
     if(isset($me14_i_mes) && $me14_i_mes!=""){
      $tipocompetencia = "1";	
     }elseif(isset($me14_i_periodocalendario) && $me14_i_periodocalendario!=""){
@@ -108,7 +108,7 @@ $escola = db_getsession("DB_coddepto");
     </td>
     <td colspan="4" align="center" id="mes" style="display: none;" >
     <b>Meses:</b>
-     <?$xme14_i_mes = array( ""=>"",
+     <?php $xme14_i_mes = array( ""=>"",
                              "1"=>"Janeiro",
                             "2"=>"Fevereiro",
                             "3"=>"Março",
@@ -126,14 +126,14 @@ $escola = db_getsession("DB_coddepto");
     </td>    
     <td colspan="4" align="center" id="ano" style="display: none;" >
     <b>Ano:</b>
-     <?$xme14_i_ano = array(""=>"",date('Y')=>date('Y'),
+     <?php $xme14_i_ano = array(""=>"",date('Y')=>date('Y'),
                            date('Y')-1=>date('Y')-1                                                     
                           );
        db_select("me14_i_ano",$xme14_i_ano,true,$db_opcao,"");?>      
       </td>    
       <td align="center" id="calendario2" style="display: none;" >
         <b>Calendário:</b>
-          <?
+          <?php 
            $campos     = "ed52_i_codigo as cod_cal,ed52_c_descr as descr_cal,ed52_i_ano as ano_cal";
            $result_cal = $clcalendario->sql_record($clcalendario->sql_query_calturma("",
                                                                                      $campos,
@@ -145,36 +145,36 @@ $escola = db_getsession("DB_coddepto");
         <select name="calendario" id="calendario" onChange="js_calendario(this.value);" 
                 style="height:18px;font-size:10px;">
          <option value=""></option>
-          <?for ($t = 0; $t < $clcalendario->numrows; $t++) {
+          <?php for ($t = 0; $t < $clcalendario->numrows; $t++) {
         
                db_fieldsmemory($result_cal,$t);
            ?>
                <option value="<?=$cod_cal?>" <?=@$ed52_i_codigo==$cod_cal?"selected":""?> ><?=$descr_cal?></option>
       
-           <?}?>
+           <?php }?>
        </select>
       </td>        
       <td style="display: none;" id="periodo">
          <b>Períodos de Avaliação:</b>
        <select name="periodoavaliacao" id="periodoavaliacao" style="width:130px;height:18px;font-size:10px;" <?=isset($me14_i_periodocalendario)&&$me14_i_periodocalendario!=""?"":"disabled"?>>
-       <?if(isset($me14_i_periodocalendario) && $me14_i_periodocalendario!=""){
+       <?php if(isset($me14_i_periodocalendario) && $me14_i_periodocalendario!=""){
          $result_per = $clperiodocalendario->sql_record($clperiodocalendario->sql_query("",
                                                                                  "ed53_i_codigo as cod_per,ed09_c_descr as descr_per",
                                                                                  "ed09_c_descr",
                                                                                  "ed53_i_calendario=$ed52_i_codigo"
                                                                                  ));?>
           <option value="" ></option>
-          <?for ($t = 0; $t < $clperiodocalendario->numrows; $t++) {
+          <?php for ($t = 0; $t < $clperiodocalendario->numrows; $t++) {
         
                db_fieldsmemory($result_per,$t);
            ?>
                <option value="<?=$cod_per?>" <?=@$ed53_i_codigo==$cod_per?"selected":""?> ><?=$descr_per?></option>
       
-           <?}?>
+           <?php }?>
                                                                                  
        	
        	?>
-       <?}?>
+       <?php }?>
        </select>
       </td>
      </tr>
@@ -194,7 +194,7 @@ $escola = db_getsession("DB_coddepto");
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array( "me14_i_codigo"=>@$me14_i_codigo,
                      "ed47_v_nome"=>@$ed47_v_nome,
                      "me14_f_peso"=>@$me14_f_peso,

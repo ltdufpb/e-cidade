@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbirural_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitbirural = new cl_itbirural;
 $clitbirural->rotulo->label("it18_guia");
 $clitbirural->rotulo->label("it18_area");
@@ -54,7 +55,7 @@ $clitbirural->rotulo->label("it18_area");
               <?=$Lit18_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it18_guia",10,$Iit18_guia,true,"text",4,"","chave_it18_guia");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clitbirural->rotulo->label("it18_area");
               <?=$Lit18_area?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it18_area",20,$Iit18_area,true,"text",4,"","chave_it18_area");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clitbirural->rotulo->label("it18_area");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbirural.php")==true){
@@ -118,12 +119,12 @@ $clitbirural->rotulo->label("it18_area");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

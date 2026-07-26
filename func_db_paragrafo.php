@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_paragrafo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_paragrafo = new cl_db_paragrafo;
 $cldb_paragrafo->rotulo->label("db02_idparag");
 $cldb_paragrafo->rotulo->label("db02_descr");
@@ -54,7 +55,7 @@ $cldb_paragrafo->rotulo->label("db02_descr");
               <?=$Ldb02_idparag?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db02_idparag",8,$Idb02_idparag,true,"text",4,"","chave_db02_idparag");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_paragrafo->rotulo->label("db02_descr");
               <?=$Ldb02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db02_descr",40,$Idb02_descr,true,"text",4,"","chave_db02_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_paragrafo->rotulo->label("db02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_paragrafo.php")==true){
@@ -118,14 +119,14 @@ $cldb_paragrafo->rotulo->label("db02_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_db02_idparag.focus();
 document.form2.chave_db02_idparag.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

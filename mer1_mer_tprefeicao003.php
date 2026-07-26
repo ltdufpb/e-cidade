@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,8 @@ include(modification("classes/db_mer_cardapiotipo_classe.php"));
 include(modification("classes/db_mer_cardapiodia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_libdicionario.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_tprefeicao   = new cl_mer_tprefeicao;
 $clmer_cardapiotipo = new cl_mer_cardapiotipo;
@@ -118,13 +119,13 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão Tipo de Refeição</b></legend>
-    <?include(modification("forms/db_frmmer_tprefeicao.php"));?>
+    <?php include(modification("forms/db_frmmer_tprefeicao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -132,7 +133,7 @@ if (isset($excluir)) {
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
  if ($clmer_tprefeicao->erro_status=="0") {

@@ -14,14 +14,14 @@ class TipoItinerarioFormativoEnum extends Enum
     const CIENCIAS_HUMANAS_SUAS_TECNOLOGIAS = 4;
     const FORMACAO_TECNICA_PROFISSIONAL = 5;
     const ITINERARIO_FORMATIVO_INTEGRADO = 6;
-    private static $descricoes = array(
+    private static $descricoes = [
             self::LINGUAGEM_SUAS_TECNOLOGIAS => "Linguagens e suas tecnologias",
             self::MATEMATICA_SUAS_TECNOLOGIAS => "Matemática e suas tecnologias",
             self::CIENCIAS_NATUREZA_SUAS_TECNOLOGIAS => "Ciências da natureza e suas tecnologias",
             self::CIENCIAS_HUMANAS_SUAS_TECNOLOGIAS => "Ciências humanas e sociais aplicadas",
             self::FORMACAO_TECNICA_PROFISSIONAL => "Formação técnica e profissional",
             self::ITINERARIO_FORMATIVO_INTEGRADO => "Itinerário Formativo Integrado"
-    );
+    ];
 
     /**
      * @return string

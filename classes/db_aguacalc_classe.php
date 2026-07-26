@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: agua
 //CLASSE DA ENTIDADE aguacalc
 class cl_aguacalc { 
@@ -53,7 +53,7 @@ class cl_aguacalc {
                  x22_responsavelpagamento = int4 = Responsável Pagamento 
                  ";
    //funcao construtor da classe 
-   function cl_aguacalc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacalc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -61,7 +61,7 @@ $rsTurmaAC   = $oTurmaAC->sql_record($sSqlTurmaAC);
 $iRegistros  = $oTurmaAC->numrows;
 
 $oCalendario       = new Calendario($oGet->iCalendario);
-$aAlunosVinculados = array();
+$aAlunosVinculados = [];
 
 if ($iRegistros == 0) {
 
@@ -139,7 +139,7 @@ foreach ($aAlunosVinculados as $iIndice => $oAluno) {
   if (($oPdf->GetY() > $oPdf->h -10) || $lPrimeiraVolta) {
 
     $lPrimeiraVolta = false;
-    imprimeHeader($oPdf, $iTamanhoColuna,  $oGet->iNumeroColunas);
+    imprimeHeader($oPdf, $iTamanhoColuna);
   }
 
   /**
@@ -147,7 +147,7 @@ foreach ($aAlunosVinculados as $iIndice => $oAluno) {
    */
   $oPdf->SetFont("arial", "", 7);
   $oPdf->Cell(5,  $iHeigth, $iIndice + 1,                      1, 0, "C");
-  $oPdf->Cell(70, $iHeigth, strtoupper(substr($oAluno->aluno, 0, 43)), 1, 0, "L");
+  $oPdf->Cell(70, $iHeigth, strtoupper(substr((string) $oAluno->aluno, 0, 43)), 1, 0, "L");
   $oPdf->Cell(5,  $iHeigth, $oAluno->idade,                            1, 0, "C");
 
   $iEixoX = $oPdf->getX();

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $ed101_d_data_dia = date("d",db_getsession("DB_datausu"));
 $ed101_d_data_mes = date("m",db_getsession("DB_datausu"));
 $ed101_d_data_ano = date("Y",db_getsession("DB_datausu"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltrocaserie          = new cl_trocaserie;
 $clalunocurso          = new cl_alunocurso;
 $clalunopossib         = new cl_alunopossib;
@@ -110,17 +110,17 @@ if (count($aParagrafos) > 0) {
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Classificação de Aluno</b></legend>
-    <?include(modification("forms/db_frmtrocaserie.php"));?>
+    <?php include(modification("forms/db_frmtrocaserie.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

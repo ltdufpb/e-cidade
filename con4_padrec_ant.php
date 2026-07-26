@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,7 @@ class rec_ant
 {
     var $arq = null;
 
-    function rec_ant($header)
+    function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/REC_ANT.TXT", 'w+');

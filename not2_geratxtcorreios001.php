@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load('estilos.css');
   db_app::load('scripts.js');
   db_app::load('strings.js');
@@ -76,10 +76,10 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
     <table class="form-container">
       <tr>
         <td nowrap title="<?=@$Tk60_codigo?>">
-          <? db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao) ?>
+          <?php  db_ancora(@$Lk60_codigo,"js_pesquisalista(true);",$db_opcao) ?>
         </td>
         <td>
-          <?
+          <?php 
 	       db_input('k60_codigo',10,$Ik60_codigo,true,'text',$db_opcao,"onchange='js_pesquisalista(false);'");
            db_input('k60_descr',37,$Ik60_descr,true,'text',3,'');
           ?>
@@ -90,7 +90,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
           Ordernar por:
         </td>
         <td>
-          <?
+          <?php 
             $xx = array("a"=>"Alfabética",
       	   	 	      "n"=>"Numérica",
       	  		      "t"=>'Notificação',
@@ -105,7 +105,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
           Tratamento do Endereço:
         </td>
         <td>
-          <?
+          <?php 
 	        $xxx = array();
 	        
 	        if ( isset($k60_codigo) && trim($k60_codigo) != "" ) {
@@ -148,7 +148,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td title="Serviço AR">
           Serviço AR:
         <td>
-          <? db_input("lServAr", 1, null, true, "checkbox",1); ?>
+          <?php  db_input("lServAr", 1, null, true, "checkbox",1); ?>
         </td>
       </tr>
       <tr>
@@ -161,7 +161,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Fonte:
                 </td>
                 <td>
-                  <?
+                  <?php 
              	    $aFontes = array("16602"=>"16602 - Arial", "4099"=>"4099 - Currier", "16901"=>"16901 - Times New Roman");
              	    db_select("fonte", $aFontes, true, 1, "");
            		  ?>
@@ -172,7 +172,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Espaçamento entre linhas:
                 </td>
                 <td>
-                  <?
+                  <?php 
              	    $aEspacamento = array("1.0"=>"1.0", "1.5"=>"1.5", "2.0"=>"2.0");
              	    db_select("espacamento", $aEspacamento, true, 1, "");
            		  ?>
@@ -183,7 +183,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Estilo da fonte:
                 </td>
                 <td>
-                <?
+                <?php 
              	  $aEstiloFonte = array(""=>"Normal", "I"=>"Itálico", "N"=>"Negrito", "IN"=>"Negrito e Itálico");
              	  db_select("estilofonte", $aEstiloFonte, true, 1, "");
            		?>
@@ -194,7 +194,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   Tamanho da fonte do texto:
                 </td>
                 <td>
-                  <?
+                  <?php 
 	        	    $tamanhofonte=10;
 	        	    db_input('tamanhofonte', 10, "Tamanho da fonte do texto", true, 'text', @$db_opcao);
 		          ?>
@@ -214,21 +214,21 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 Gera boleto:
               </td>
               <td>
-                <? db_select('lBoleto', array('1' => 'Sim', '0' => 'Não'), true, 1, "onChange='js_boleto();'"); ?>
+                <?php  db_select('lBoleto', array('1' => 'Sim', '0' => 'Não'), true, 1, "onChange='js_boleto();'"); ?>
               </td>
             </tr>
             <tr id="datavenc" style="display: none;">
               <td nowrap title="Data para vencimento do boleto">
                 Vencimento do Boleto:
               <td>
-                <?db_inputdata('datavencimento', @$datavencimento_dia, @$datavencimento_mes, @$datavencimento_ano, true, 'text', 1) ?>
+                <?php db_inputdata('datavencimento', @$datavencimento_dia, @$datavencimento_mes, @$datavencimento_ano, true, 'text', 1) ?>
               </td>
             </tr>
             <tr>
               <td nowrap title="Local para Pagto">
                 Local para Pagto:
               <td>
-                <? db_input('localpgto', 51, null, true, 'text', @$db_opcao); ?>
+                <?php  db_input('localpgto', 51, null, true, 'text', @$db_opcao); ?>
               </td>
             </tr>
           </table>
@@ -241,7 +241,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         
         
         
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -344,7 +344,7 @@ function fechar() {
   db_iframe_correios.hide();  
 }
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

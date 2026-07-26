@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -48,7 +48,7 @@ $db_botao  = true;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js, prototype.js, strings.js, arrays.js, windowAux.widget.js, datagrid.widget.js, 
                 dbmessageBoard.widget.js, dbcomboBox.widget.js, dbtextField.widget.js, webseller.js, 
                 DBVisualizadorImpressaoTexto.js");
@@ -58,8 +58,8 @@ $db_botao  = true;
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
   <center>
     <div style="margin-top: 25px;"></div>
-      <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
-      <?include(modification("forms/db_frmparecer.php"));?>
+      <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+      <?php include(modification("forms/db_frmparecer.php"));?>
     </div>
   </center>
 </body>

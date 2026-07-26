@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veictipoabast_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveictipoabast = new cl_veictipoabast;
 $clveictipoabast->rotulo->label("ve07_sequencial");
 $clveictipoabast->rotulo->label("ve07_descr");
@@ -54,7 +55,7 @@ $clveictipoabast->rotulo->label("ve07_descr");
               <?=$Lve07_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve07_sequencial",10,$Ive07_sequencial,true,"text",4,"","chave_ve07_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clveictipoabast->rotulo->label("ve07_descr");
               <?=$Lve07_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve07_descr",40,$Ive07_descr,true,"text",4,"","chave_ve07_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clveictipoabast->rotulo->label("ve07_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veictipoabast.php")==true){
@@ -122,12 +123,12 @@ $clveictipoabast->rotulo->label("ve07_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

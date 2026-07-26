@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -72,7 +72,7 @@ if ($oSauConfig != false) {
     <meta http-equiv="Expires" CONTENT="0">
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
-    <?
+    <?php 
       db_app::load("scripts.js");
       db_app::load("prototype.js");
     ?>
@@ -96,7 +96,7 @@ if ($oSauConfig != false) {
                   <tr>
                     <td><b>Tipo de BPA:</b></td>
                     <td>
-                      <?
+                      <?php 
                         $arr_tipo = array ("02" => "Individual", "01" => "Consolidado");
                         db_select('sTipo', $arr_tipo, true, 4);
                       ?>
@@ -109,12 +109,12 @@ if ($oSauConfig != false) {
                         <table>
                           <tr>
                             <td>
-                              <?
+                              <?php 
                                 db_ancora("<b>Competencia:</b>", "js_pesquisala54_i_codigo(true);", $db_opcao);
                               ?>
                             </td>
                             <td colspan="3"> 
-                              <?
+                              <?php 
                                 db_input('linhas', 5, @$Ilinhas, true, 'hidden', $db_opcao, "");
                                 db_input('la54_i_codigo', 2, @$Ila53_i_codigo, true, 'hidden', 3, "");
                                 db_input('la54_i_compmes', 2, @$Ila54_i_compmes, true, 'text', 3, 
@@ -128,13 +128,13 @@ if ($oSauConfig != false) {
                               <b>Período de Fechamento :</b>
                             </td>
                             <td> 
-                          <? 
+                          <?php  
                           db_inputdata('la54_d_ini', @$la54_d_ini_dia, @$la54_d_ini_mes, @$la54_d_ini_ano, true, 'text',
                                        3
                                       );
                           ?>
                          A
-                          <?
+                          <?php 
                           db_inputdata('la54_d_fim', @$la54_d_fim_dia, @$la54_d_fim_mes, @$la54_d_fim_ano, true, 'text',
                                        3
                                       );
@@ -144,7 +144,7 @@ if ($oSauConfig != false) {
                       <tr>
                         <td><b>Tipo de Fianciamento:</b></td>
                         <td colspan="3">
-                          <?
+                          <?php 
                             db_input ('la54_i_financiamento', 6, @$sd97_i_financiamento, true, 'hidden', 3, "");
                             db_input ('sd65_c_nome', 60, @$sd65_c_nome, true, 'text', 3, "");
                           ?>
@@ -158,7 +158,7 @@ if ($oSauConfig != false) {
                     <td colspan="2">
                       <fieldset>
                         <legend><b>Laboratorio:</b></legend>
-                        <?
+                        <?php 
                           $sSql           = $cllab_laboratorio->sql_query("", "la02_i_codigo,la02_c_descr");
                           $rsLaboratorios = $cllab_laboratorio->sql_record($sSql);
                           db_multiploselect("la02_i_codigo", "la02_c_descr", "nselecionados", "sselecionados",
@@ -179,7 +179,7 @@ if ($oSauConfig != false) {
                               <b>Nome:</b>
                             </td>
                             <td>
-                              <?
+                              <?php 
                                 db_input ('snomedepart', 40, @$Lsnomedepart, true, 'text', 3, "");
                               ?>
                             </td>
@@ -187,7 +187,7 @@ if ($oSauConfig != false) {
                           <tr>
                             <td nowrap title="Sigla"><b>Sigla:<b/></td>
                             <td colspan=3>
-                              <?
+                              <?php 
                                 if (!isset ( $sigla )) {
                                   $sigla = "";
                                 }
@@ -197,7 +197,7 @@ if ($oSauConfig != false) {
                           </tr>
                           <tr>
                             <td><b>CNPJ:</b></td>
-                            <td><?
+                            <td><?php 
                                   db_input ('cnpj', 30, @$cnpj, true, 'text', 3, "");
                                 ?>
                             </td>
@@ -214,7 +214,7 @@ if ($oSauConfig != false) {
                          <tr>
                            <td nowrap title="Sec. de Destino "><B>Sec. de Destino:</b></td>
                            <td colspan=3>
-                             <?
+                             <?php 
                                db_input ('sDestino', 40, @$destino, true, 'text', 3, "");
                              ?>
                            </td>
@@ -240,7 +240,7 @@ if ($oSauConfig != false) {
                              <td><b>Arquivo:</b></td>
                              <td>
                                PA
-                               <?
+                               <?php 
                                  db_input('sNomeArquivo', 8, @$sNomeArquivo, true, 'text', $db_opcao, "", "", "", "", 
                                           8
                                          );
@@ -271,7 +271,7 @@ if ($oSauConfig != false) {
          </tr>
        </table>
      </center>
-     <?
+     <?php 
        db_menu (
                 db_getsession ("DB_id_usuario"),
                 db_getsession ("DB_modulo"),
@@ -282,7 +282,7 @@ if ($oSauConfig != false) {
   </body>
 </html>
 <script>
-<?
+<?php 
   if (isset($la54_i_compmes)) {
     echo "document.getElementById('nomeExtencao').innerHTML = js_nomeMes($la54_i_compmes,1);";
   } else { 
@@ -414,7 +414,7 @@ function js_nomeMes(iNumero, iTipo) {
   return aNome[iTipo]; 
 }
 </script>
-<?
+<?php 
   if (isset($gerararquivo)) {
 
     /* PEGA A ULTIMA RELEASE */
@@ -495,7 +495,7 @@ function js_nomeMes(iNumero, iTipo) {
 
           }
           </script>
-        <?
+        <?php 
         $cllab_bpamagnetico->erro(true, false);
 
       }

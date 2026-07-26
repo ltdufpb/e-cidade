@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empnotaele_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempnotaele = new cl_empnotaele;
 $clempnotaele->rotulo->label("e70_codnota");
 $clempnotaele->rotulo->label("e70_codele");
@@ -55,7 +56,7 @@ $clempnotaele->rotulo->label("e70_valor");
               <?=$Le70_codnota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e70_codnota",6,$Ie70_codnota,true,"text",4,"","chave_e70_codnota");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clempnotaele->rotulo->label("e70_valor");
               <?=$Le70_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e70_codele",6,$Ie70_codele,true,"text",4,"","chave_e70_codele");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clempnotaele->rotulo->label("e70_valor");
               <?=$Le70_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e70_valor",8,$Ie70_valor,true,"text",4,"","chave_e70_valor");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clempnotaele->rotulo->label("e70_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empnotaele.php")==true){
@@ -129,12 +130,12 @@ $clempnotaele->rotulo->label("e70_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

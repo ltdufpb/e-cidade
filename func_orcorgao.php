@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcorgao_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $chave_o40_descr = isset($chave_o40_descr) ? stripslashes($chave_o40_descr) : '';
 
@@ -150,7 +151,7 @@ $clorcorgao->rotulo->label("o40_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -167,7 +168,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?
+    <?php 
 }
 ?>
 <script type="text/javascript">

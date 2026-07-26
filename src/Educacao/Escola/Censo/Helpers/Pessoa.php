@@ -41,14 +41,14 @@ class Pessoa
     {
         $len = strlen(self::CODIGO_PROFISSIONAL);
 
-        return substr($codigo, $len);
+        return substr((string) $codigo, $len);
     }
 
     public static function decodeCodigoAluno($codigo)
     {
         $len = strlen(self::CODIGO_ALUNO);
 
-        return substr($codigo, $len);
+        return substr((string) $codigo, $len);
     }
 
     public static function isAluno($codigo)
@@ -60,7 +60,7 @@ class Pessoa
 
     private static function match($pattern, $codigoTurma)
     {
-        return preg_match($pattern, $codigoTurma) === 1;
+        return preg_match($pattern, (string) $codigoTurma) === 1;
     }
 
     /**
@@ -69,6 +69,6 @@ class Pessoa
      */
     public static function decode($codigo)
     {
-        return substr($codigo, 3);
+        return substr((string) $codigo, 3);
     }
 }

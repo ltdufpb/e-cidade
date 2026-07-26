@@ -61,7 +61,7 @@ class cl_orcparamrel
     public function __construct()
     {
         $this->rotulo = new rotulo('orcparamrel');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -117,7 +117,7 @@ class cl_orcparamrel
                 $this->erro_status = "0";
                 return false;
             }
-            $this->o42_codparrel = pg_result($result, 0, 0);
+            $this->o42_codparrel = pg_fetch_result($result, 0, 0);
         } else {
             $this->o42_codparrel = $o42_codparrel;
         }
@@ -144,7 +144,7 @@ class cl_orcparamrel
         $result = db_query($sql);
         if ($result==false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = "Parâmetros para Relatórios ($this->o42_codparrel) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = "Parâmetros para Relatórios já Cadastrado";
@@ -168,13 +168,13 @@ class cl_orcparamrel
         $resaco = $this->sql_record($this->sql_query_file($this->o42_codparrel));
         if (($resaco!=false)||($this->numrows!=0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
             $resac = db_query("insert into db_acountkey values($acount,5705,'$this->o42_codparrel','I')");
-            $resac = db_query("insert into db_acount values($acount,901,5705,'','".AddSlashes(pg_result($resaco, 0, 'o42_codparrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-            $resac = db_query("insert into db_acount values($acount,901,14101,'','".AddSlashes(pg_result($resaco, 0, 'o42_orcparamrelgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-            $resac = db_query("insert into db_acount values($acount,901,5706,'','".AddSlashes(pg_result($resaco, 0, 'o42_descrrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-            $resac = db_query("insert into db_acount values($acount,901,15561,'','".AddSlashes(pg_result($resaco, 0, 'o42_notapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,901,5705,'','".AddSlashes(pg_fetch_result($resaco, 0, 'o42_codparrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,901,14101,'','".AddSlashes(pg_fetch_result($resaco, 0, 'o42_orcparamrelgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,901,5706,'','".AddSlashes(pg_fetch_result($resaco, 0, 'o42_descrrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,901,15561,'','".AddSlashes(pg_fetch_result($resaco, 0, 'o42_notapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
 
         if (!empty($o42_codparrel)) {
@@ -188,10 +188,10 @@ class cl_orcparamrel
         $this->atualizacampos();
         $sql = " update orcparamrel set ";
         $virgula = "";
-        if (trim($this->o42_codparrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_codparrel"])) {
+        if (trim((string) $this->o42_codparrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_codparrel"])) {
             $sql  .= $virgula." o42_codparrel = $this->o42_codparrel ";
             $virgula = ",";
-            if (trim($this->o42_codparrel) == null) {
+            if (trim((string) $this->o42_codparrel) == null) {
                 $this->erro_sql = " Campo Código Relatório nao Informado.";
                 $this->erro_campo = "o42_codparrel";
                 $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_orcparamrel
                 return false;
             }
         }
-        if (trim($this->o42_orcparamrelgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_orcparamrelgrupo"])) {
+        if (trim((string) $this->o42_orcparamrelgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_orcparamrelgrupo"])) {
             $sql  .= $virgula." o42_orcparamrelgrupo = $this->o42_orcparamrelgrupo ";
             $virgula = ",";
-            if (trim($this->o42_orcparamrelgrupo) == null) {
+            if (trim((string) $this->o42_orcparamrelgrupo) == null) {
                 $this->erro_sql = " Campo Código do grupo de relatório nao Informado.";
                 $this->erro_campo = "o42_orcparamrelgrupo";
                 $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_orcparamrel
                 return false;
             }
         }
-        if (trim($this->o42_descrrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_descrrel"])) {
+        if (trim((string) $this->o42_descrrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_descrrel"])) {
             $sql  .= $virgula." o42_descrrel = '$this->o42_descrrel' ";
             $virgula = ",";
-            if (trim($this->o42_descrrel) == null) {
+            if (trim((string) $this->o42_descrrel) == null) {
                 $this->erro_sql = " Campo Descrição nao Informado.";
                 $this->erro_campo = "o42_descrrel";
                 $this->erro_banco = "";
@@ -227,7 +227,7 @@ class cl_orcparamrel
                 return false;
             }
         }
-        if (trim($this->o42_notapadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_notapadrao"])) {
+        if (trim((string) $this->o42_notapadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o42_notapadrao"])) {
             $sql  .= $virgula." o42_notapadrao = '$this->o42_notapadrao' ";
             $virgula = ",";
         }
@@ -239,20 +239,20 @@ class cl_orcparamrel
         if ($this->numrows>0) {
             for ($conresaco=0; $conresaco<$this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                 $resac = db_query("insert into db_acountkey values($acount,5705,'$this->o42_codparrel','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o42_codparrel"]) || $this->o42_codparrel != "") {
-                    $resac = db_query("insert into db_acount values($acount,901,5705,'".AddSlashes(pg_result($resaco, $conresaco, 'o42_codparrel'))."','$this->o42_codparrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac = db_query("insert into db_acount values($acount,901,5705,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'o42_codparrel'))."','$this->o42_codparrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o42_orcparamrelgrupo"]) || $this->o42_orcparamrelgrupo != "") {
-                    $resac = db_query("insert into db_acount values($acount,901,14101,'".AddSlashes(pg_result($resaco, $conresaco, 'o42_orcparamrelgrupo'))."','$this->o42_orcparamrelgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac = db_query("insert into db_acount values($acount,901,14101,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'o42_orcparamrelgrupo'))."','$this->o42_orcparamrelgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o42_descrrel"]) || $this->o42_descrrel != "") {
-                    $resac = db_query("insert into db_acount values($acount,901,5706,'".AddSlashes(pg_result($resaco, $conresaco, 'o42_descrrel'))."','$this->o42_descrrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac = db_query("insert into db_acount values($acount,901,5706,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'o42_descrrel'))."','$this->o42_descrrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o42_notapadrao"]) || $this->o42_notapadrao != "") {
-                    $resac = db_query("insert into db_acount values($acount,901,15561,'".AddSlashes(pg_result($resaco, $conresaco, 'o42_notapadrao'))."','$this->o42_notapadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac = db_query("insert into db_acount values($acount,901,15561,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'o42_notapadrao'))."','$this->o42_notapadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
             }
         }
@@ -299,13 +299,13 @@ class cl_orcparamrel
         if (($resaco!=false)||($this->numrows!=0)) {
             for ($iresaco=0; $iresaco<$this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                 $resac = db_query("insert into db_acountkey values($acount,5705,'$o42_codparrel','E')");
-                $resac = db_query("insert into db_acount values($acount,901,5705,'','".AddSlashes(pg_result($resaco, $iresaco, 'o42_codparrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,901,14101,'','".AddSlashes(pg_result($resaco, $iresaco, 'o42_orcparamrelgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,901,5706,'','".AddSlashes(pg_result($resaco, $iresaco, 'o42_descrrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,901,15561,'','".AddSlashes(pg_result($resaco, $iresaco, 'o42_notapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,901,5705,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'o42_codparrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,901,14101,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'o42_orcparamrelgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,901,5706,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'o42_descrrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,901,15561,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'o42_notapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
             }
         }
         $sql = " delete from orcparamrel
@@ -366,7 +366,7 @@ class cl_orcparamrel
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows==0) {
             $this->erro_banco = "";
             $this->erro_sql   = "Record Vazio na Tabela:orcparamrel";
@@ -404,7 +404,7 @@ class cl_orcparamrel
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -439,7 +439,7 @@ class cl_orcparamrel
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_orcparamrel
     }
     public function sql_funcao($relatorio, $parametro = "", $instituicao = "(1)")
     {
-        $matriz = array();
+        $matriz = [];
 
         $sql = "select distinct o45_func 
                from orcparamrel
@@ -467,11 +467,11 @@ class cl_orcparamrel
         }
 
         $r = @db_query($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
 
         if ($rows > 0) {
-            for ($x=0; $x < pg_numrows($r); $x++) {
-                $matriz[$x] = pg_result($r, $x, "o45_func");
+            for ($x=0; $x < pg_num_rows($r); $x++) {
+                $matriz[$x] = pg_fetch_result($r, $x, "o45_func");
             }
         }
 
@@ -495,10 +495,10 @@ class cl_orcparamrel
             $sql.= " and orcparamseq.o69_codseq = $parametro   ";
         }
         $r = @db_query($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
         if ($rows > 0) {
-            for ($x=0; $x < pg_numrows($r); $x++) {
-                $nivel = pg_result($r, $x, "o44_nivel");
+            for ($x=0; $x < pg_num_rows($r); $x++) {
+                $nivel = pg_fetch_result($r, $x, "o44_nivel");
             }
         }
         return $nivel;
@@ -516,10 +516,10 @@ class cl_orcparamrel
             $sql.= " and orcparamseq.o69_codseq = $parametro   ";
         }
         $r = @db_query($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
         if ($rows > 0) {
-            for ($x=0; $x < pg_numrows($r); $x++) {
-                $nivel = pg_result($r, $x, "o44_nivelexclusao");
+            for ($x=0; $x < pg_num_rows($r); $x++) {
+                $nivel = pg_fetch_result($r, $x, "o44_nivelexclusao");
             }
         }
         return $nivel;
@@ -531,10 +531,10 @@ class cl_orcparamrel
 
         $sql_instit      = "select codigo from db_config where prefeitura is true limit 1";
         $res_instit      = @db_query($sql_instit);
-        $num_rows_instit = @pg_numrows($res_instit);
+        $num_rows_instit = @pg_num_rows($res_instit);
 
         if ($num_rows_instit > 0) {
-            $codigo = pg_result($res_instit, 0, "codigo");
+            $codigo = pg_fetch_result($res_instit, 0, "codigo");
             if ($instituicao == "1") {
                 if ($codigo != $instituicao) {
                     $instituicao = $codigo;
@@ -546,7 +546,7 @@ class cl_orcparamrel
             $anousu = db_getsession("DB_anousu");
         }
 
-        $matriz= array();
+        $matriz= [];
         $sql= "select distinct c60_estrut 
     from orcparamrel 
     inner join orcparamseq on o69_codparamrel=o42_codparrel
@@ -570,7 +570,7 @@ class cl_orcparamrel
         $sql .= " and orcparamelemento.o44_instit in ($instituicao) ";
 
         $r = @db_query(analiseQueryPlanoOrcamento($sql)) or die($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
 
         // Caso nao tenha conta definida na instituicao pega como defautl da Prefeitura (1)
         if ($rows == 0 && $obrig == false) {
@@ -595,14 +595,14 @@ class cl_orcparamrel
         }
 
         $r = @db_query(analiseQueryPlanoOrcamento($sql)) or die($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
 
         if ($rows > 0) {
             //echo $sql."<br>"; exit;
 
-            for ($x=0; $x < pg_numrows($r); $x++) {
-                if (in_array(pg_result($r, $x, "c60_estrut"), $matriz) == false) {
-                    $matriz[$x] = pg_result($r, $x, "c60_estrut");
+            for ($x=0; $x < pg_num_rows($r); $x++) {
+                if (in_array(pg_fetch_result($r, $x, "c60_estrut"), $matriz) == false) {
+                    $matriz[$x] = pg_fetch_result($r, $x, "c60_estrut");
                 }
             }
         }
@@ -613,10 +613,10 @@ class cl_orcparamrel
     {
         $sql_instit      = "select codigo from db_config where prefeitura is true limit 1";
         $res_instit      = @db_query($sql_instit);
-        $num_rows_instit = @pg_numrows($res_instit);
+        $num_rows_instit = @pg_num_rows($res_instit);
 
         if ($num_rows_instit > 0) {
-            $codigo = pg_result($res_instit, 0, "codigo");
+            $codigo = pg_fetch_result($res_instit, 0, "codigo");
             if ($instituicao == "1") {
                 if ($codigo != $instituicao) {
                     $instituicao = $codigo;
@@ -628,7 +628,7 @@ class cl_orcparamrel
             $anousu = db_getsession("DB_anousu");
         }
 
-        $matriz= array();
+        $matriz= [];
 
         $sql  = "select distinct c60_estrut, o44_instit ";
         $sql .= "  from orcparamrel ";
@@ -653,7 +653,7 @@ class cl_orcparamrel
         $sql .= " and orcparamelemento.o44_instit in ($instituicao) ";
 
         $r = @db_query($sql) or die($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
 
         // Caso nao tenha conta definida na instituicao pega como defautl da Prefeitura (1)
         if ($rows == 0 && $obrig == false) {
@@ -678,14 +678,14 @@ class cl_orcparamrel
         }
 
         $r = @db_query($sql) or die($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
 
         if ($rows > 0) {
             //echo $sql."<br>"; exit;
 
-            for ($x=0; $x < pg_numrows($r); $x++) {
-                $aElemento = array(pg_result($r, $x, "c60_estrut"),
-                           pg_result($r, $x, "o44_instit"));
+            for ($x=0; $x < pg_num_rows($r); $x++) {
+                $aElemento = [pg_fetch_result($r, $x, "c60_estrut"),
+                           pg_fetch_result($r, $x, "o44_instit")];
 
                 if (in_array($aElemento, $matriz) == false) {
                     $matriz[$x] = $aElemento;
@@ -698,7 +698,7 @@ class cl_orcparamrel
     public function sql_recurso($relatorio, $parametro = "", $instituicao = "(1)")
     {
         //#10#//
-        $matriz= array();
+        $matriz= [];
         $sql= "select o44_codrec
     from orcparamrel 
     inner join orcparamseq on o69_codparamrel=o42_codparrel
@@ -714,10 +714,10 @@ class cl_orcparamrel
             $sql.= " and orcparamseq.o69_codseq = $parametro   ";
         }
         $r = @db_query($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
         if ($rows > 0) {
-            for ($x=0; $x < pg_numrows($r); $x++) {
-                $matriz[$x] = pg_result($r, $x, "o44_codrec");
+            for ($x=0; $x < pg_num_rows($r); $x++) {
+                $matriz[$x] = pg_fetch_result($r, $x, "o44_codrec");
             }
         }
         return $matriz;
@@ -725,7 +725,7 @@ class cl_orcparamrel
     public function sql_subfunc($relatorio, $parametro = "", $instituicao = "(1)")
     {
         //#10#//
-        $matriz= array();
+        $matriz= [];
         $sql= "select distinct o58_subfuncao as o44_subfunc
     from orcparamrel 
     inner join orcparamseq on o69_codparamrel=o42_codparrel
@@ -754,7 +754,7 @@ class cl_orcparamrel
         }
 
         $res_func = @db_query($sql_func);
-        $numrows  = @pg_numrows($res_func);
+        $numrows  = @pg_num_rows($res_func);
 
         if ($numrows > 0) {
             $tem_funcao = true;
@@ -763,7 +763,7 @@ class cl_orcparamrel
         }
 
         $r = @db_query($sql);
-        $rows = @pg_numrows($r);
+        $rows = @pg_num_rows($r);
 
         // Se não existir subfuncao, verifica se existe funcao definida.
         if ($rows == 0 && $tem_funcao == true) {
@@ -782,7 +782,7 @@ class cl_orcparamrel
             }
 
             $r = @db_query($sql);
-            $rows = @pg_numrows($r);
+            $rows = @pg_num_rows($r);
         }
         /*
             if ($parametro == 19){
@@ -791,8 +791,8 @@ class cl_orcparamrel
         */
 
         if ($rows > 0) {
-            for ($x=0; $x < pg_numrows($r); $x++) {
-                $matriz[$x] = pg_result($r, $x, "o44_subfunc");
+            for ($x=0; $x < pg_num_rows($r); $x++) {
+                $matriz[$x] = pg_fetch_result($r, $x, "o44_subfunc");
             }
         }
 

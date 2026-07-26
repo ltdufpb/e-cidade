@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benscorlanc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbenscorlanc = new cl_benscorlanc;
 $clbenscorlanc->rotulo->label("t62_codcor");
 $clbenscorlanc->rotulo->label("t62_data");
@@ -54,7 +55,7 @@ $clbenscorlanc->rotulo->label("t62_data");
               <?=$Lt62_codcor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t62_codcor",10,$It62_codcor,true,"text",4,"","chave_t62_codcor");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbenscorlanc->rotulo->label("t62_data");
               <?=$Lt62_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t62_data",10,$It62_data,true,"text",4,"","chave_t62_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbenscorlanc->rotulo->label("t62_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(isset($campos)==false){
          if(file_exists("funcoes/db_func_benscorlanc.php")==true){
            include(modification("funcoes/db_func_benscorlanc.php"));
@@ -119,12 +120,12 @@ $clbenscorlanc->rotulo->label("t62_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

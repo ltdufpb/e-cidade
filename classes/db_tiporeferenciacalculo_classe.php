@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE tiporeferenciacalculo
 class cl_tiporeferenciacalculo { 
@@ -28,7 +28,7 @@ class cl_tiporeferenciacalculo {
                  la61_tipocalculo = int4 = Tipo do Calculo 
                  ";
    //funcao construtor da classe 
-   function cl_tiporeferenciacalculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiporeferenciacalculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

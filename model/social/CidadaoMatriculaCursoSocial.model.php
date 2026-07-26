@@ -58,7 +58,7 @@ class CidadaoMatriculaCursoSocial {
    */
   private $sObservacao;
 
-  private $aAusencias = array(); 
+  private $aAusencias = []; 
   
   public function __construct($iCodigo = null) {
 
@@ -277,7 +277,7 @@ class CidadaoMatriculaCursoSocial {
       throw new BusinessException($sMsgErro);
     }
   
-    $this->aAusencias = array();
+    $this->aAusencias = [];
   }
   /**
    * Seta uma ausencia para o Cidadao no Curso atual

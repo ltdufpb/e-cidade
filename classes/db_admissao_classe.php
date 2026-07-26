@@ -101,7 +101,7 @@ class cl_admissao {
                  h07_justif = varchar(100) = Justificativa 
                  ";
    //funcao construtor da classe 
-   function cl_admissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("admissao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

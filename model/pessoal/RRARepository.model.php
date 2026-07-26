@@ -50,7 +50,7 @@ class RRARepository {
    *
    * @var $aRRA;
    */
-  private $aRRA = array();
+  private $aRRA = [];
 
   /**
     * Construtor da classe de RRA

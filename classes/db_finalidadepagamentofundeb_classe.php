@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE finalidadepagamentofundeb
 class cl_finalidadepagamentofundeb { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e151_sequencial = 0; 
-   var $e151_codigo = null; 
-   var $e151_descricao = null; 
+   public $e151_sequencial = 0; 
+   public $e151_codigo = null; 
+   public $e151_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e151_sequencial = int4 = Código Sequencial 
                  e151_codigo = varchar(5) = Código Finalidade 
                  e151_descricao = varchar(200) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_finalidadepagamentofundeb() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("finalidadepagamentofundeb"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_finalidadepagamentofundeb {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e151_sequencial = pg_result($result,0,0); 
+       $this->e151_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from finalidadepagamentofundeb_e151_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e151_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e151_sequencial)){
          $this->erro_sql = " Campo e151_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_finalidadepagamentofundeb {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "finalidadepagamentofundeb ($this->e151_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "finalidadepagamentofundeb já Cadastrado";
@@ -171,12 +171,12 @@ class cl_finalidadepagamentofundeb {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20211,'$this->e151_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3629,20211,'','".AddSlashes(pg_result($resaco,0,'e151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3629,20212,'','".AddSlashes(pg_result($resaco,0,'e151_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3629,20213,'','".AddSlashes(pg_result($resaco,0,'e151_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3629,20211,'','".AddSlashes(pg_fetch_result($resaco,0,'e151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3629,20212,'','".AddSlashes(pg_fetch_result($resaco,0,'e151_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3629,20213,'','".AddSlashes(pg_fetch_result($resaco,0,'e151_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_finalidadepagamentofundeb {
       $this->atualizacampos();
      $sql = " update finalidadepagamentofundeb set ";
      $virgula = "";
-     if(trim($this->e151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e151_sequencial"])){ 
+     if(trim((string) $this->e151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e151_sequencial"])){ 
        $sql  .= $virgula." e151_sequencial = $this->e151_sequencial ";
        $virgula = ",";
-       if(trim($this->e151_sequencial) == null ){ 
+       if(trim((string) $this->e151_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "e151_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_finalidadepagamentofundeb {
          return false;
        }
      }
-     if(trim($this->e151_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e151_codigo"])){ 
+     if(trim((string) $this->e151_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e151_codigo"])){ 
        $sql  .= $virgula." e151_codigo = '$this->e151_codigo' ";
        $virgula = ",";
-       if(trim($this->e151_codigo) == null ){ 
+       if(trim((string) $this->e151_codigo) == null ){ 
          $this->erro_sql = " Campo Código Finalidade não informado.";
          $this->erro_campo = "e151_codigo";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_finalidadepagamentofundeb {
          return false;
        }
      }
-     if(trim($this->e151_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e151_descricao"])){ 
+     if(trim((string) $this->e151_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e151_descricao"])){ 
        $sql  .= $virgula." e151_descricao = '$this->e151_descricao' ";
        $virgula = ",";
-       if(trim($this->e151_descricao) == null ){ 
+       if(trim((string) $this->e151_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "e151_descricao";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_finalidadepagamentofundeb {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20211,'$this->e151_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e151_sequencial"]) || $this->e151_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3629,20211,'".AddSlashes(pg_result($resaco,$conresaco,'e151_sequencial'))."','$this->e151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3629,20211,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e151_sequencial'))."','$this->e151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e151_codigo"]) || $this->e151_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3629,20212,'".AddSlashes(pg_result($resaco,$conresaco,'e151_codigo'))."','$this->e151_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3629,20212,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e151_codigo'))."','$this->e151_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e151_descricao"]) || $this->e151_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3629,20213,'".AddSlashes(pg_result($resaco,$conresaco,'e151_descricao'))."','$this->e151_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3629,20213,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e151_descricao'))."','$this->e151_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_finalidadepagamentofundeb {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20211,'$e151_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3629,20211,'','".AddSlashes(pg_result($resaco,$iresaco,'e151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3629,20212,'','".AddSlashes(pg_result($resaco,$iresaco,'e151_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3629,20213,'','".AddSlashes(pg_result($resaco,$iresaco,'e151_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3629,20211,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3629,20212,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e151_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3629,20213,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e151_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -367,7 +367,7 @@ class cl_finalidadepagamentofundeb {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:finalidadepagamentofundeb";
@@ -382,7 +382,7 @@ class cl_finalidadepagamentofundeb {
    function sql_query ( $e151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,7 +403,7 @@ class cl_finalidadepagamentofundeb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_finalidadepagamentofundeb {
    function sql_query_file ( $e151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_finalidadepagamentofundeb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

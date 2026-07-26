@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,14 +57,14 @@ if(isset($db_opcaoal)){
  <tr>
     <td nowrap title="<?=@$Tj16_lograd?>">
     <b>
-       <?
+       <?php 
        db_ancora("Logradouro :","",3);
        ?>
        </b>
     </td>
     <td>
      
-<?
+<?php 
 if (isset($j16_lograd)&&$j16_lograd!=""){
 	if (!isset($j14_nome)){
 		$Result = $clruas->sql_record($clruas->sql_query_file($j16_lograd,"j14_nome"));
@@ -77,7 +77,7 @@ if (isset($j16_lograd)&&$j16_lograd!=""){
 db_input('j16_lograd',10,$Ij16_lograd,true,'text',3,"");
 db_input('j16_codigo',10,$Ij16_codigo,true,'hidden',3,"");
 ?>
-       <?
+       <?php 
 db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
        ?>
        
@@ -87,16 +87,16 @@ db_input('j14_nome',40,$Ij14_nome,true,'text',3,'')
   <tr>
     <td nowrap title="<?=@$Tj16_bairro?>">
     <b>
-       <?
+       <?php 
        db_ancora("Bairro :","js_bairro(true);",$db_opcao);
        ?>
       </b>
     </td>
     <td> 
-<?
+<?php 
 db_input('j16_bairro',10,$Ij16_bairro,true,'text',$db_opcao," onchange='js_bairro(false);'")
 ?>
-       <?
+       <?php 
 db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
        ?>
     </td>
@@ -110,7 +110,7 @@ db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php 
 	 $chavepri= array("j16_codigo"=>@$j16_codigo,"j16_lograd"=>@$j16_lograd);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clruasbairro->sql_query(null,"*",null,"j16_lograd=$j16_lograd");

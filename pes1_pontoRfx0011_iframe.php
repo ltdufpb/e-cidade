@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -133,7 +133,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
 <form name="form1" method="post" action="">
 <center>
 <table border="6" width="100%">
-  <?
+  <?php 
   if(isset($registro) && trim($registro)!=""){
   	$arr_rubricas = split(",",$rubricas_selecionadas_enviar);
   	db_input('r90_lotac', 10, $Ir90_lotac, true, 'hidden', 3, '');
@@ -143,13 +143,13 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
   ?>
 
   <tr>
-    <?
+    <?php 
     if($mostrar_check_repassa == true){
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="2%"  height="3%" title="Marque se deseja repassar ponto">
       <strong>R</strong>
     </td>
-    <?
+    <?php 
     }
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="5%" height="3%">
@@ -158,19 +158,19 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
     <td align="center" valign="top" nowrap class='bordas02' width="40%" height="3%">
       <strong><?=@$RLrh27_descr?></strong>
     </td>
-    <?
+    <?php 
     if($ponto == "fx" || $ponto == "fs"){
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="10%" height="3%">
       <strong><?=@$RLr90_datlim?></strong>
     </td>
-    <?
+    <?php 
     }else if($ponto == "fe" || $ponto == "fr"){
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="10%" height="3%">
       <strong><?=@$RLr29_tpp?></strong>
     </td>
-    <?
+    <?php 
     }
     ?>
     <td align="center" valign="top" nowrap class='bordas02' width="10%" height="3%">
@@ -183,7 +183,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <strong><?=@$RLr90_valor?></strong>
     </td>
   </tr>
-    <?
+    <?php 
     // $sigla - É a sigla a ser utilizada no select.
     // $campoextra - É para quando as tabelas tiverem campos como o DATLIM ou o TPP
     // $mostracamp - É para quando o DATLIM ou o TPP forem apresentados no Select, serem mostrados no IFRAME_SELECIONA
@@ -351,7 +351,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       }
     ?>
   <tr>
-    <?
+    <?php 
       $imprime_tabIndex = "";
       if($mostrar_check_repassa == true){
       	if(trim($liberar_para_repassar_ponto)==""){
@@ -371,7 +371,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="2%"  height="3%" title="Marque se deseja repassar ponto">
         <input type="checkbox" name="chk_<?=$rh27_rubric?>" <?=$imprime_tabIndex?> <?=$mostrar_box_checked?> value="chk_<?=$rh27_rubric?>" <?=$liberar_para_repassar_ponto?> onBlur="js_ativa_passa_proximo_campo(this.name);" onChange="js_adiciona_itens_array(this.name,this.value);" onfocus="js_mudar_caixa_de_texto('<?=($rh27_obs)?>');">
       </td>
-    <?
+    <?php 
         if($i == 0 && $liberar_para_repassar_ponto != "disabled"){
           $setar_foco_campo = "chk_".$rh27_rubric;
         }
@@ -379,7 +379,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="5%" height="3%">
         <?=$rh27_rubric?>
-        <?
+        <?php 
         $campo_recebe_formula = 'form_'.$rh27_rubric;
         $$campo_recebe_formula = 'f';
         if($rubrica_tem_formula == true){
@@ -391,7 +391,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <td align="left"   valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="40%" height="3%">
         <?=$rh27_descr?>
       </td>
-    <?
+    <?php 
       if($ponto == "fx" || $ponto == "fs"){
       	$datlim_recebe_valor_select = "datlim_".$rh27_rubric;
       	if(isset($datlim)){
@@ -407,11 +407,11 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       	}
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="10%" height="3%">
-        <?
+        <?php 
           db_input('datlim_'.$rh27_rubric, 15, $Ir90_datlim, true, 'text', $mostrar_ano_mes_rub, "onKeyUp='js_mascaradata(this.value,this.name);' $imprime_tabIndex onChange='js_calculaQuant(this,quant_{$rh27_rubric},\"{$rh27_presta}\",\"{$rh27_limdat}\");' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");'");
         ?>
       </td>
-    <?
+    <?php 
 
 
       // ESTE PROGRAMA NÃO USA FR E NEM FE, MAS DEIXEI O CÓDIGO PREVENDO UM DIA SER NECESSÁRIO
@@ -425,13 +425,13 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
         }
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="10%" height="3%">
-        <?
+        <?php 
         //db_input('tpp_'.$rh27_rubric, 5, $Ir29_tpp, true, 'text', 1, "onKeyPress='js_passa_para_proximo_campo(this.name,this,event);'");
         db_input('tpp_'.$rh27_rubric, 5, $Ir29_tpp, true, 'text', 1, " tabIndex='$tabIndex' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");'");
         $tabIndex ++;
         ?>
       </td>
-    <?
+    <?php 
       }
       $quant_recebe_valor_select = "quant_".$rh27_rubric;
       if(isset($quant) && trim($quant) != ""){
@@ -444,21 +444,21 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       }
     ?>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="10%" height="3%">
-        <?
+        <?php 
 	$arr_opcoes = Array("al"=>"Alterar","so"=>"Somar","su"=>"Subtrair");
         db_select("opc_".$rh27_rubric, $arr_opcoes, true, 1, " tabIndex='$tabIndex' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");' onchange='js_zera_valores(document.form1.quant_".$rh27_rubric.",document.form1.valor_".$rh27_rubric.")' ");
         $tabIndex ++;
         ?>
       </td>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="15%" height="3%">
-        <?
+        <?php 
         db_input('quant_'.$rh27_rubric, 15, $Ir90_quant, true, 'text', 1, " tabIndex='$tabIndex' onChange='js_calculaDataLimit(this,datlim_{$rh27_rubric},\"{$rh27_presta}\",\"{$rh27_limdat}\");' onfocus='js_mudar_caixa_de_texto(\"$rh27_obs\");'");
         $tabIndex ++;        
         $aCampos[] = "'quant_{$rh27_rubric}'";
         ?>
       </td>
       <td align="center" valign="top" nowrap class='<?=$mostrar_class_bordas01?>' width="15%" height="3%">
-        <?
+        <?php 
         $valor_recebe_valor_select = "valor_".$rh27_rubric;
         if(isset($valor) && trim($valor) != ""){
       	  $$valor_recebe_valor_select = $valor;
@@ -470,7 +470,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
         ?>
       </td>
     </tr>
-  <?
+  <?php 
 	}
   }else{
   ?>
@@ -479,7 +479,7 @@ if($ponto == "fx" || $ponto == "fs" || $ponto == "fe" || $ponto == "fr"){
       <strong>Informe a matrícula</strong>
     </td>
   </tr>
-  <?
+  <?php 
   }
   ?>
 </table>
@@ -812,7 +812,7 @@ function js_seleciona_campo_confirma(){
 }
 
 function js_setar_foco_campo(){
-<?
+<?php 
 if(isset($setar_foco_campo)){
   echo "  document.form1.$setar_foco_campo.focus();\n";
 }

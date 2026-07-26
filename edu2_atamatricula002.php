@@ -36,8 +36,8 @@ $oEscola = EscolaRepository::getEscolaByCodigo($iEscola);
 
 $oDataBase         = new DBDate($oGet->dtBase);
 $oCalendario       = null;
-$aEnsinosRelatorio = array();
-$aDadosRelatorio   = array();
+$aEnsinosRelatorio = [];
+$aDadosRelatorio   = [];
 
 try {
 
@@ -58,7 +58,7 @@ try {
   $sCampos .= " ed57_i_codigo ";
 
   $sOrdem = " ed10_ordem, ed11_i_sequencia ";
-  $aWhere = array(" ed57_i_calendario = {$oGet->iCalendario} ");
+  $aWhere = [" ed57_i_calendario = {$oGet->iCalendario} "];
   if ( $oGet->iEnsino != 'T' ) {
     $aWhere[] = " ed10_i_codigo = {$oGet->iEnsino} ";
   }
@@ -89,23 +89,23 @@ try {
     $iEnsino = $oDados->ed10_i_codigo;
     $iEtapa  = $oDados->ed11_i_codigo;
 
-    if ( !array_key_exists($iEnsino, $aDadosRelatorio) ) {
+    if ( !array_key_exists((string) $iEnsino, $aDadosRelatorio) ) {
 
       $oEnsino                   = new stdClass();
       $oEnsino->sEnsino          = $oDados->ensino;
       $oEnsino->lTemAlunos       = false;
       $oEnsino->iTotalAlunos     = 0;
-      $oEnsino->aEtapas          = array();
+      $oEnsino->aEtapas          = [];
       $aDadosRelatorio[$iEnsino] = $oEnsino;
     }
 
-    if ( !array_key_exists($iEtapa, $aDadosRelatorio[$iEnsino]->aEtapas) ) {
+    if ( !array_key_exists((string) $iEtapa, $aDadosRelatorio[$iEnsino]->aEtapas) ) {
 
       $oEtapa               = new stdClass();
       $oEtapa->sEtapa       = $oDados->etapa;
       $oEtapa->iTotalAlunos = 0;
       $oEtapa->lTemAlunos   = false;
-      $oEtapa->aTurmas      = array();
+      $oEtapa->aTurmas      = [];
 
       $aDadosRelatorio[$iEnsino]->aEtapas[$iEtapa] = $oEtapa;
     }
@@ -165,7 +165,7 @@ try {
 function buscaAlunoParaModelo($sModelo, $sDtBase, Turma $oTurma, Etapa $oEtapa) {
 
   $oDataBase   = new DBDate($sDtBase);
-  $aAlunos = array();
+  $aAlunos = [];
 
   foreach ($oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa, false) as $oMatricula) {
 
@@ -366,11 +366,11 @@ foreach ($aDadosRelatorio as $oDadosEnsino) {
             $oPdf->ln();
           }
 
-          imprimeCabecalhoAluno($oPdf, false);
+          imprimeCabecalhoAluno($oPdf);
           $lImprimeCabecalhoAluno = false;
         }
 
-        $aFiliacao = array();
+        $aFiliacao = [];
         if ( !empty($oAluno->sNomeMae) ) {
           $aFiliacao[] = $oAluno->sNomeMae;
         }
@@ -391,7 +391,7 @@ foreach ($aDadosRelatorio as $oDadosEnsino) {
 
         $oPdf->Line(8, $iYInicial, 289, $iYInicial);
 
-        $aPosicaoYAposCadaMultCell = array();
+        $aPosicaoYAposCadaMultCell = [];
         $oPdf->Cell( 10, $iAlturaLinha, $iContadorAluno, 0, 0, 'C');
         $oPdf->MultiCell( 90, 4, $oAluno->sNome, 0, 'L');
         $aPosicaoYAposCadaMultCell[] = $oPdf->GetY();
@@ -407,7 +407,7 @@ foreach ($aDadosRelatorio as $oDadosEnsino) {
         $oPdf->MultiCell( 30, 4, $oAluno->sSituacaoMatricula, 0, 'L');
         $aPosicaoYAposCadaMultCell[] = $oPdf->GetY();
 
-        $iMaiorYDefinido = array_reduce($aPosicaoYAposCadaMultCell, "maior");
+        $iMaiorYDefinido = array_reduce($aPosicaoYAposCadaMultCell, maior(...));
 
         $oPdf->Line(8,   $iMaiorYDefinido, 289, $iMaiorYDefinido); // borda de baixo da linha
         $oPdf->Line(8,   $iYInicial,         8, $iMaiorYDefinido); // borda inicial vertical

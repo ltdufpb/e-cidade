@@ -194,13 +194,13 @@ class ControleRubricasParametrosRubricas
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'sequencial' => $this->getSequencial(),
             'codigoInstituicao' => $this->getInstituicao()->getCodigo(),
             'codigoRubrica' => $this->getRubrica()->getCodigo(),
             'descricaoRubrica' => $this->getRubrica()->getDescricao(),
             'permiteExclusao' => $this->isPermiteExclusao()
-        );
+        ];
 
         return $retorno;
     }

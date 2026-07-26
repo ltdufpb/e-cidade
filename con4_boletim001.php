@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -443,7 +443,7 @@ if( isset($processar) || isset($desprocessar) ){
 <tr> 
 <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
 <center>
-<?
+<?php 
 if($executar == false && $mensagem != ""){
   echo $mensagem;
 }else{
@@ -454,12 +454,12 @@ if($executar == false && $mensagem != ""){
 </td>
 </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if($msg_erro!='' && $debug==false){
   db_msgbox($msg_erro);
   db_redireciona("con4_boletim001.php");

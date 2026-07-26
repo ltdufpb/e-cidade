@@ -237,13 +237,13 @@ if (isset($incluir)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
    <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatrequiitemauto.php"));
 	?>
     </center>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($sqlerro==true){
     db_msgbox(str_replace("\n","\\n",$erro_msg));

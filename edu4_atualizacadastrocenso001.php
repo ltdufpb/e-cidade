@@ -104,7 +104,7 @@ if (isset($oPost->importar)) {
   	  $iAnoEscolhido = $oPost->ano_opcao;
   	}
 
-    $aErrosArquivo = array(
+    $aErrosArquivo = [
       1 => 'Tamanho máximo do arquivo excedido conforme diretiva do php.ini.',
       2 => 'Tamanho máximo do arquivo excedido conforme especificado no formulário HTML.',
       3 => 'Arquivo corrompido.',
@@ -112,7 +112,7 @@ if (isset($oPost->importar)) {
       6 => 'Diretório temporario não encontrado.',
       7 => 'Diretório sem permissão de escrita.',
       8 => 'Upload do arquivo interrompido.'
-    );
+    ];
 
     if ($oFile->arquivo['error'] != 0 ) {
 
@@ -259,7 +259,7 @@ if (isset($oPost->importar)) {
            </td>
            <td>
              <?php
-             $ano_opcao = isset( $ano_opcao ) ? $ano_opcao : "";
+             $ano_opcao ??= "";
              ?>
              <select name="ano_opcao" >
                <option value="<?=$iAnoAtual?>" <?=$ano_opcao==$iAnoAtual?"selected":""?>><?=$iAnoAtual?></option>
@@ -303,7 +303,7 @@ if (isset($oPost->importar)) {
          <tr>
            <td colspan="2">
              <?php
-             if (trim($iCodigoInepBanco) == "") : ?>
+             if (trim((string) $iCodigoInepBanco) == "") : ?>
                <div style="color:red; margin-top:8px;">
                  * Código INEP desta escola não informado no sistema. Operação Não Permitida.
                  <br>

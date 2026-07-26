@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -66,7 +66,7 @@ if($ob01_tecnico > 0){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmobrastecalt.php"));
 	?>
     </center>
@@ -75,7 +75,7 @@ if($ob01_tecnico > 0){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar)){
   if($clobrastec->erro_status=="0"){
     $clobras->erro(true,false);

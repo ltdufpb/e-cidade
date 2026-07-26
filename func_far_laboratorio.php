@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_laboratorio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfar_laboratorio = new cl_far_laboratorio;
 $clfar_laboratorio->rotulo->label("fa24_i_codigo");
 $clfar_laboratorio->rotulo->label("fa24_c_laboratorio");
@@ -54,7 +55,7 @@ $clfar_laboratorio->rotulo->label("fa24_c_laboratorio");
               <?=$Lfa24_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa24_i_codigo",10,$Ifa24_i_codigo,true,"text",4,"","chave_fa24_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clfar_laboratorio->rotulo->label("fa24_c_laboratorio");
               <?=$Lfa24_c_laboratorio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa24_c_laboratorio",20,$Ifa24_c_laboratorio,true,"text",4,"","chave_fa24_c_laboratorio");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clfar_laboratorio->rotulo->label("fa24_c_laboratorio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_laboratorio.php")==true){
@@ -122,12 +123,12 @@ $clfar_laboratorio->rotulo->label("fa24_c_laboratorio");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

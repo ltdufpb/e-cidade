@@ -88,6 +88,7 @@ class File extends AbstractMetadata {
   /**
    * @return boolean
    */
+  #[\Override]
   public function save() {
     return $this->getStorage()->save();
   }

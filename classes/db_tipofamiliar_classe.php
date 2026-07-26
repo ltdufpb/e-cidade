@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tipofamiliar
 class cl_tipofamiliar { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $z14_sequencial = 0; 
-   var $z14_descricao = null; 
+   public $z14_sequencial = 0; 
+   public $z14_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  z14_sequencial = int4 = Sequencial 
                  z14_descricao = varchar(50) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipofamiliar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipofamiliar"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_tipofamiliar {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de Familiar do CGM ($this->z14_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de Familiar do CGM já Cadastrado";
@@ -134,11 +134,11 @@ class cl_tipofamiliar {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17038,'$this->z14_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3011,17038,'','".AddSlashes(pg_result($resaco,0,'z14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3011,17039,'','".AddSlashes(pg_result($resaco,0,'z14_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3011,17038,'','".AddSlashes(pg_fetch_result($resaco,0,'z14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3011,17039,'','".AddSlashes(pg_fetch_result($resaco,0,'z14_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -148,10 +148,10 @@ class cl_tipofamiliar {
       $this->atualizacampos();
      $sql = " update tipofamiliar set ";
      $virgula = "";
-     if(trim($this->z14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z14_sequencial"])){ 
+     if(trim((string) $this->z14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z14_sequencial"])){ 
        $sql  .= $virgula." z14_sequencial = $this->z14_sequencial ";
        $virgula = ",";
-       if(trim($this->z14_sequencial) == null ){ 
+       if(trim((string) $this->z14_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "z14_sequencial";
          $this->erro_banco = "";
@@ -161,10 +161,10 @@ class cl_tipofamiliar {
          return false;
        }
      }
-     if(trim($this->z14_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z14_descricao"])){ 
+     if(trim((string) $this->z14_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z14_descricao"])){ 
        $sql  .= $virgula." z14_descricao = '$this->z14_descricao' ";
        $virgula = ",";
-       if(trim($this->z14_descricao) == null ){ 
+       if(trim((string) $this->z14_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "z14_descricao";
          $this->erro_banco = "";
@@ -188,13 +188,13 @@ class cl_tipofamiliar {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,17038,'$this->z14_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["z14_sequencial"]) || $this->z14_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3011,17038,'".AddSlashes(pg_result($resaco,$conresaco,'z14_sequencial'))."','$this->z14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3011,17038,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z14_sequencial'))."','$this->z14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["z14_descricao"]) || $this->z14_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3011,17039,'".AddSlashes(pg_result($resaco,$conresaco,'z14_descricao'))."','$this->z14_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3011,17039,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z14_descricao'))."','$this->z14_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -248,11 +248,11 @@ class cl_tipofamiliar {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,17038,'$z14_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3011,17038,'','".AddSlashes(pg_result($resaco,$iresaco,'z14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3011,17039,'','".AddSlashes(pg_result($resaco,$iresaco,'z14_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3011,17038,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3011,17039,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z14_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -313,7 +313,7 @@ class cl_tipofamiliar {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tipofamiliar";
@@ -328,7 +328,7 @@ class cl_tipofamiliar {
    function sql_query ( $z14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_tipofamiliar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,7 +362,7 @@ class cl_tipofamiliar {
    function sql_query_file ( $z14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_tipofamiliar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

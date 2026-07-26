@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhcadcalend_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhcadcalend = new cl_rhcadcalend;
 $clrhcadcalend->rotulo->label("rh53_calend");
 $clrhcadcalend->rotulo->label("rh53_descr");
@@ -54,7 +55,7 @@ $clrhcadcalend->rotulo->label("rh53_descr");
               <?=$Lrh53_calend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh53_calend",10,$Irh53_calend,true,"text",4,"","chave_rh53_calend");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhcadcalend->rotulo->label("rh53_descr");
               <?=$Lrh53_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh53_descr",40,$Irh53_descr,true,"text",4,"","chave_rh53_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhcadcalend->rotulo->label("rh53_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = " rh53_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -123,12 +124,12 @@ $clrhcadcalend->rotulo->label("rh53_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

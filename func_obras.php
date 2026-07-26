@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -36,7 +36,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_obras_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 if (isset($chave_ob01_nomeobra)) {
   $chave_ob01_nomeobra = stripslashes($chave_ob01_nomeobra);
@@ -85,7 +86,7 @@ $oGet    = db_utils::postMemory($_GET);
               <?=$Lob01_codobra?>
             </td>
             <td nowrap>
-              <?
+              <?php 
 		       db_input("ob01_codobra",10,$Iob01_codobra,true,"text",4,"","chave_ob01_codobra");
 		       ?>
             </td>
@@ -95,7 +96,7 @@ $oGet    = db_utils::postMemory($_GET);
               <?=$Lob01_nomeobra?>
             </td>
             <td nowrap>
-              <?
+              <?php 
 		       db_input("ob01_nomeobra",55,$Iob01_nomeobra,true,"text",4,"","chave_ob01_nomeobra");
 		       ?>
             </td>
@@ -106,7 +107,7 @@ $oGet    = db_utils::postMemory($_GET);
           	  <?=$Lj01_matric?>
 	          </td>
 	          <td>
-	          	<?
+	          	<?php 
 	          		db_input('j01_matric', 10, $Ij01_matric, true, 'text', 1)
 	          	?>
           	</td>
@@ -117,15 +118,15 @@ $oGet    = db_utils::postMemory($_GET);
           	  <strong>Setor/Quadra/Lote: </strong>
 	          </td>
 	          <td>
-	          <?
+	          <?php 
 	            db_input('ob06_setor',10,$Iob06_setor,true,'text',1,"")
 	          ?>
 	          /
-	          <?
+	          <?php 
 	            db_input('ob06_quadra',10,$Iob06_quadra,true,'text',1,"")
 	          ?>
 	          /
-	          <?
+	          <?php 
 	            db_input('ob06_lote',10,$Iob06_lote,true,'text',1,"")
 	          ?>
           	</td>
@@ -136,7 +137,7 @@ $oGet    = db_utils::postMemory($_GET);
           	  <strong>Possui Alvará: </strong>
 	          </td>
 	          <td>
-	          	<?
+	          	<?php 
 	          		db_select('lPossuiAlvara', array(''=>'Todos', 'S'=>'Sim', 'N'=>'Não'), true, 1, "style='width:92px;'");
 	          	?>
           	</td>
@@ -155,7 +156,7 @@ $oGet    = db_utils::postMemory($_GET);
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       if (isset($chave_ob01_nomeobra)) {
         $chave_ob01_nomeobra = addslashes($chave_ob01_nomeobra);
@@ -288,12 +289,12 @@ $oGet    = db_utils::postMemory($_GET);
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

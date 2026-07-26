@@ -60,7 +60,7 @@
    * Coleção de instancias de VinculoServidor
    * @var VinculoServidor[]
    */
-  private $aColecao = array();
+  private $aColecao = [];
 
 
   /**
@@ -98,7 +98,7 @@
 
     $oRepository = self::getInstance();
 
-    if ( !array_key_exists($iCodigoVinculoServidor, $oRepository->aColecao) ) {
+    if ( !array_key_exists((string) $iCodigoVinculoServidor, $oRepository->aColecao) ) {
       self::add($oRepository->make($iCodigoVinculoServidor));
     }
 

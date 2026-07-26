@@ -65,7 +65,7 @@ class cl_empnotasuspensao {
                  cc36_dataretorno = date = Data de Retorno
                  ";
   //funcao construtor da classe
-  function cl_empnotasuspensao() {
+  function __construct() {
 
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("empnotasuspensao");

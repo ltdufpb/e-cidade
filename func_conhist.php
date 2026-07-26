@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conhist_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconhist = new cl_conhist;
 $clconhist->rotulo->label("c50_codhist");
 $clconhist->rotulo->label("c50_descr");
@@ -54,7 +55,7 @@ $clconhist->rotulo->label("c50_descr");
               <?=$Lc50_codhist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c50_codhist",4,$Ic50_codhist,true,"text",4,"","chave_c50_codhist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconhist->rotulo->label("c50_descr");
               <?=$Lc50_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c50_descr",40,$Ic50_descr,true,"text",4,"","chave_c50_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconhist->rotulo->label("c50_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conhist.php")==true){
@@ -118,12 +119,12 @@ $clconhist->rotulo->label("c50_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

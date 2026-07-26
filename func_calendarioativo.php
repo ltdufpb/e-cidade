@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_calendario_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcalendario = new cl_calendario;
 $clcalendario->rotulo->label("ed52_i_codigo");
 $clcalendario->rotulo->label("ed52_c_descr");
@@ -56,7 +57,7 @@ $clcalendario->rotulo->label("ed52_c_descr");
       <?=$Led52_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed52_i_codigo",10,$Ied52_i_codigo,true,"text",4,"","chave_ed52_i_codigo");?>
+      <?php db_input("ed52_i_codigo",10,$Ied52_i_codigo,true,"text",4,"","chave_ed52_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +65,7 @@ $clcalendario->rotulo->label("ed52_c_descr");
       <?=$Led52_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed52_c_descr",20,$Ied52_c_descr,true,"text",4,"","chave_ed52_c_descr");?>
+      <?php db_input("ed52_c_descr",20,$Ied52_c_descr,true,"text",4,"","chave_ed52_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $clcalendario->rotulo->label("ed52_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){

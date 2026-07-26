@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE retencaopagordem
 class cl_retencaopagordem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e20_sequencial = 0; 
-   var $e20_pagordem = 0; 
-   var $e20_data_dia = null; 
-   var $e20_data_mes = null; 
-   var $e20_data_ano = null; 
-   var $e20_data = null; 
+   public $e20_sequencial = 0; 
+   public $e20_pagordem = 0; 
+   public $e20_data_dia = null; 
+   public $e20_data_mes = null; 
+   public $e20_data_ano = null; 
+   public $e20_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e20_sequencial = int4 = Código Sequencial 
                  e20_pagordem = int4 = Nota de Liquidação 
                  e20_data = date = Data da Inclusão 
                  ";
    //funcao construtor da classe 
-   function cl_retencaopagordem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("retencaopagordem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -117,10 +117,10 @@ class cl_retencaopagordem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e20_sequencial = pg_result($result,0,0); 
+       $this->e20_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from retencaopagordem_e20_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e20_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e20_sequencial)){
          $this->erro_sql = " Campo e20_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,7 +152,7 @@ class cl_retencaopagordem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Retenções da Ordem de pagmento ($this->e20_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Retenções da Ordem de pagmento já Cadastrado";
@@ -176,12 +176,12 @@ class cl_retencaopagordem {
      $resaco = $this->sql_record($this->sql_query_file($this->e20_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12173,'$this->e20_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2115,12173,'','".AddSlashes(pg_result($resaco,0,'e20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2115,12175,'','".AddSlashes(pg_result($resaco,0,'e20_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2115,12174,'','".AddSlashes(pg_result($resaco,0,'e20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2115,12173,'','".AddSlashes(pg_fetch_result($resaco,0,'e20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2115,12175,'','".AddSlashes(pg_fetch_result($resaco,0,'e20_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2115,12174,'','".AddSlashes(pg_fetch_result($resaco,0,'e20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -190,10 +190,10 @@ class cl_retencaopagordem {
       $this->atualizacampos();
      $sql = " update retencaopagordem set ";
      $virgula = "";
-     if(trim($this->e20_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e20_sequencial"])){ 
+     if(trim((string) $this->e20_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e20_sequencial"])){ 
        $sql  .= $virgula." e20_sequencial = $this->e20_sequencial ";
        $virgula = ",";
-       if(trim($this->e20_sequencial) == null ){ 
+       if(trim((string) $this->e20_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "e20_sequencial";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_retencaopagordem {
          return false;
        }
      }
-     if(trim($this->e20_pagordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e20_pagordem"])){ 
+     if(trim((string) $this->e20_pagordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e20_pagordem"])){ 
        $sql  .= $virgula." e20_pagordem = $this->e20_pagordem ";
        $virgula = ",";
-       if(trim($this->e20_pagordem) == null ){ 
+       if(trim((string) $this->e20_pagordem) == null ){ 
          $this->erro_sql = " Campo Nota de Liquidação nao Informado.";
          $this->erro_campo = "e20_pagordem";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_retencaopagordem {
          return false;
        }
      }
-     if(trim($this->e20_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e20_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e20_data_dia"] !="") ){ 
+     if(trim((string) $this->e20_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e20_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e20_data_dia"] !="") ){ 
        $sql  .= $virgula." e20_data = '$this->e20_data' ";
        $virgula = ",";
-       if(trim($this->e20_data) == null ){ 
+       if(trim((string) $this->e20_data) == null ){ 
          $this->erro_sql = " Campo Data da Inclusão nao Informado.";
          $this->erro_campo = "e20_data_dia";
          $this->erro_banco = "";
@@ -232,7 +232,7 @@ class cl_retencaopagordem {
        if(isset($GLOBALS["HTTP_POST_VARS"]["e20_data_dia"])){ 
          $sql  .= $virgula." e20_data = null ";
          $virgula = ",";
-         if(trim($this->e20_data) == null ){ 
+         if(trim((string) $this->e20_data) == null ){ 
            $this->erro_sql = " Campo Data da Inclusão nao Informado.";
            $this->erro_campo = "e20_data_dia";
            $this->erro_banco = "";
@@ -251,15 +251,15 @@ class cl_retencaopagordem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12173,'$this->e20_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e20_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2115,12173,'".AddSlashes(pg_result($resaco,$conresaco,'e20_sequencial'))."','$this->e20_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2115,12173,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e20_sequencial'))."','$this->e20_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e20_pagordem"]))
-           $resac = db_query("insert into db_acount values($acount,2115,12175,'".AddSlashes(pg_result($resaco,$conresaco,'e20_pagordem'))."','$this->e20_pagordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2115,12175,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e20_pagordem'))."','$this->e20_pagordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e20_data"]))
-           $resac = db_query("insert into db_acount values($acount,2115,12174,'".AddSlashes(pg_result($resaco,$conresaco,'e20_data'))."','$this->e20_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2115,12174,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e20_data'))."','$this->e20_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -304,12 +304,12 @@ class cl_retencaopagordem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12173,'$e20_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2115,12173,'','".AddSlashes(pg_result($resaco,$iresaco,'e20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2115,12175,'','".AddSlashes(pg_result($resaco,$iresaco,'e20_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2115,12174,'','".AddSlashes(pg_result($resaco,$iresaco,'e20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2115,12173,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e20_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2115,12175,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e20_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2115,12174,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e20_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from retencaopagordem
@@ -369,7 +369,7 @@ class cl_retencaopagordem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:retencaopagordem";
@@ -383,7 +383,7 @@ class cl_retencaopagordem {
    function sql_query ( $e20_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,7 +407,7 @@ class cl_retencaopagordem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_retencaopagordem {
    function sql_query_file ( $e20_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_retencaopagordem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

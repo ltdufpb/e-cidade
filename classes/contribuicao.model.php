@@ -44,7 +44,7 @@ class contribuicaoModel {
   var $aServicos          = array();
   var $nTotalTestada      = 0;  
   
-  function contribuicaoModel($iContribuicao) {
+  function __construct($iContribuicao) {
     
     $this->iContribuicao = $iContribuicao;
 

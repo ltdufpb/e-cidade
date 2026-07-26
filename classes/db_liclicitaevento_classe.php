@@ -1,39 +1,39 @@
-<?
+<?php 
 //MODULO: licitacao
 //CLASSE DA ENTIDADE liclicitaevento
 class cl_liclicitaevento {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $l46_sequencial = 0;
-   var $l46_liclicita = 0;
-   var $l46_fase = 0;
-   var $l46_liclicitatipoevento = 0;
-   var $l46_dataevento_dia = null;
-   var $l46_dataevento_mes = null;
-   var $l46_dataevento_ano = null;
-   var $l46_dataevento = null;
-   var $l46_datajulgamento_dia = null;
-   var $l46_datajulgamento_mes = null;
-   var $l46_datajulgamento_ano = null;
-   var $l46_datajulgamento = null;
-   var $l46_cgm = null;
-   var $l46_tipopublicacao = null;
-   var $l46_descricaopublicacao = null;
-   var $l46_tiporesultado = null;
+   public $l46_sequencial = 0;
+   public $l46_liclicita = 0;
+   public $l46_fase = 0;
+   public $l46_liclicitatipoevento = 0;
+   public $l46_dataevento_dia = null;
+   public $l46_dataevento_mes = null;
+   public $l46_dataevento_ano = null;
+   public $l46_dataevento = null;
+   public $l46_datajulgamento_dia = null;
+   public $l46_datajulgamento_mes = null;
+   public $l46_datajulgamento_ano = null;
+   public $l46_datajulgamento = null;
+   public $l46_cgm = null;
+   public $l46_tipopublicacao = null;
+   public $l46_descricaopublicacao = null;
+   public $l46_tiporesultado = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  l46_sequencial = int4 = Código
                  l46_liclicita = int4 = Código da Licitação
                  l46_fase = int4 = Fase
@@ -46,10 +46,10 @@ class cl_liclicitaevento {
                  l46_tiporesultado = int4 = Tipo de Resultado
                  ";
    //funcao construtor da classe
-   function cl_liclicitaevento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaevento");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -152,10 +152,10 @@ class cl_liclicitaevento {
          $this->erro_status = "0";
          return false;
        }
-       $this->l46_sequencial = pg_result($result,0,0);
+       $this->l46_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from liclicitaevento_l46_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l46_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l46_sequencial)){
          $this->erro_sql = " Campo l46_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -201,7 +201,7 @@ class cl_liclicitaevento {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Eventos da Licitação ($this->l46_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Eventos da Licitação já Cadastrado";
@@ -230,19 +230,19 @@ class cl_liclicitaevento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21739,'$this->l46_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3917,21739,'','".AddSlashes(pg_result($resaco,0,'l46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21740,'','".AddSlashes(pg_result($resaco,0,'l46_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21741,'','".AddSlashes(pg_result($resaco,0,'l46_fase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21742,'','".AddSlashes(pg_result($resaco,0,'l46_liclicitatipoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21743,'','".AddSlashes(pg_result($resaco,0,'l46_dataevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21744,'','".AddSlashes(pg_result($resaco,0,'l46_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21745,'','".AddSlashes(pg_result($resaco,0,'l46_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21746,'','".AddSlashes(pg_result($resaco,0,'l46_tipopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21747,'','".AddSlashes(pg_result($resaco,0,'l46_descricaopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3917,21748,'','".AddSlashes(pg_result($resaco,0,'l46_tiporesultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21739,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21740,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21741,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_fase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21742,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_liclicitatipoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21743,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_dataevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21744,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21745,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21746,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_tipopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21747,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_descricaopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3917,21748,'','".AddSlashes(pg_fetch_result($resaco,0,'l46_tiporesultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -252,10 +252,10 @@ class cl_liclicitaevento {
       $this->atualizacampos();
      $sql = " update liclicitaevento set ";
      $virgula = "";
-     if(trim($this->l46_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_sequencial"])){
+     if(trim((string) $this->l46_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_sequencial"])){
        $sql  .= $virgula." l46_sequencial = $this->l46_sequencial ";
        $virgula = ",";
-       if(trim($this->l46_sequencial) == null ){
+       if(trim((string) $this->l46_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "l46_sequencial";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_liclicitaevento {
          return false;
        }
      }
-     if(trim($this->l46_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_liclicita"])){
+     if(trim((string) $this->l46_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_liclicita"])){
        $sql  .= $virgula." l46_liclicita = $this->l46_liclicita ";
        $virgula = ",";
-       if(trim($this->l46_liclicita) == null ){
+       if(trim((string) $this->l46_liclicita) == null ){
          $this->erro_sql = " Campo Código da Licitação não informado.";
          $this->erro_campo = "l46_liclicita";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_liclicitaevento {
          return false;
        }
      }
-     if(trim($this->l46_fase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_fase"])){
+     if(trim((string) $this->l46_fase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_fase"])){
        $sql  .= $virgula." l46_fase = $this->l46_fase ";
        $virgula = ",";
-       if(trim($this->l46_fase) == null ){
+       if(trim((string) $this->l46_fase) == null ){
          $this->erro_sql = " Campo Fase não informado.";
          $this->erro_campo = "l46_fase";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_liclicitaevento {
          return false;
        }
      }
-     if(trim($this->l46_liclicitatipoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_liclicitatipoevento"])){
+     if(trim((string) $this->l46_liclicitatipoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_liclicitatipoevento"])){
        $sql  .= $virgula." l46_liclicitatipoevento = $this->l46_liclicitatipoevento ";
        $virgula = ",";
-       if(trim($this->l46_liclicitatipoevento) == null ){
+       if(trim((string) $this->l46_liclicitatipoevento) == null ){
          $this->erro_sql = " Campo Tipo de Evento não informado.";
          $this->erro_campo = "l46_liclicitatipoevento";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_liclicitaevento {
          return false;
        }
      }
-     if(trim($this->l46_dataevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_dataevento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l46_dataevento_dia"] !="") ){
+     if(trim((string) $this->l46_dataevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_dataevento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l46_dataevento_dia"] !="") ){
        $sql  .= $virgula." l46_dataevento = '$this->l46_dataevento' ";
        $virgula = ",";
-       if(trim($this->l46_dataevento) == null ){
+       if(trim((string) $this->l46_dataevento) == null ){
          $this->erro_sql = " Campo Data do Evento não informado.";
          $this->erro_campo = "l46_dataevento_dia";
          $this->erro_banco = "";
@@ -320,7 +320,7 @@ class cl_liclicitaevento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l46_dataevento_dia"])){
          $sql  .= $virgula." l46_dataevento = null ";
          $virgula = ",";
-         if(trim($this->l46_dataevento) == null ){
+         if(trim((string) $this->l46_dataevento) == null ){
            $this->erro_sql = " Campo Data do Evento não informado.";
            $this->erro_campo = "l46_dataevento_dia";
            $this->erro_banco = "";
@@ -331,28 +331,28 @@ class cl_liclicitaevento {
          }
        }
      }
-     if(trim($this->l46_datajulgamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_datajulgamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l46_datajulgamento_dia"] !="") ){
+     if(trim((string) $this->l46_datajulgamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_datajulgamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l46_datajulgamento_dia"] !="") ){
        $sql  .= $virgula." l46_datajulgamento = '$this->l46_datajulgamento' ";
        $virgula = ",";
      } else {
        $sql  .= $virgula." l46_datajulgamento = null ";
        $virgula = ",";
      }
-     if(trim($this->l46_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_cgm"])){
-        if(trim($this->l46_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["l46_cgm"])){
+     if(trim((string) $this->l46_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_cgm"])){
+        if(trim((string) $this->l46_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["l46_cgm"])){
            $this->l46_cgm = "null" ;
         }
        $sql  .= $virgula." l46_cgm = $this->l46_cgm ";
        $virgula = ",";
      }
-     if(trim($this->l46_tipopublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_tipopublicacao"])){
-        if(trim($this->l46_tipopublicacao)==""){
+     if(trim((string) $this->l46_tipopublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_tipopublicacao"])){
+        if(trim((string) $this->l46_tipopublicacao)==""){
            $this->l46_tipopublicacao = "null" ;
         }
        $sql  .= $virgula." l46_tipopublicacao = $this->l46_tipopublicacao ";
        $virgula = ",";
      }
-     if(trim($this->l46_descricaopublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_descricaopublicacao"])){
+     if(trim((string) $this->l46_descricaopublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_descricaopublicacao"])){
 
        if ($this->l46_descricaopublicacao == "null") {
          $sql .= $virgula . " l46_descricaopublicacao = $this->l46_descricaopublicacao ";
@@ -361,10 +361,10 @@ class cl_liclicitaevento {
        }
        $virgula = ",";
      }
-     if(trim($this->l46_tiporesultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_tiporesultado"])){
+     if(trim((string) $this->l46_tiporesultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l46_tiporesultado"])){
        $sql  .= $virgula." l46_tiporesultado = $this->l46_tiporesultado ";
        $virgula = ",";
-       if(trim($this->l46_tiporesultado) == null ){
+       if(trim((string) $this->l46_tiporesultado) == null ){
          $this->erro_sql = " Campo Tipo de Resultado não informado.";
          $this->erro_campo = "l46_tiporesultado";
          $this->erro_banco = "";
@@ -388,29 +388,29 @@ class cl_liclicitaevento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21739,'$this->l46_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_sequencial"]) || $this->l46_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21739,'".AddSlashes(pg_result($resaco,$conresaco,'l46_sequencial'))."','$this->l46_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21739,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_sequencial'))."','$this->l46_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_liclicita"]) || $this->l46_liclicita != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21740,'".AddSlashes(pg_result($resaco,$conresaco,'l46_liclicita'))."','$this->l46_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21740,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_liclicita'))."','$this->l46_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_fase"]) || $this->l46_fase != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21741,'".AddSlashes(pg_result($resaco,$conresaco,'l46_fase'))."','$this->l46_fase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21741,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_fase'))."','$this->l46_fase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_liclicitatipoevento"]) || $this->l46_liclicitatipoevento != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21742,'".AddSlashes(pg_result($resaco,$conresaco,'l46_liclicitatipoevento'))."','$this->l46_liclicitatipoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21742,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_liclicitatipoevento'))."','$this->l46_liclicitatipoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_dataevento"]) || $this->l46_dataevento != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21743,'".AddSlashes(pg_result($resaco,$conresaco,'l46_dataevento'))."','$this->l46_dataevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21743,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_dataevento'))."','$this->l46_dataevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_datajulgamento"]) || $this->l46_datajulgamento != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21744,'".AddSlashes(pg_result($resaco,$conresaco,'l46_datajulgamento'))."','$this->l46_datajulgamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21744,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_datajulgamento'))."','$this->l46_datajulgamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_cgm"]) || $this->l46_cgm != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21745,'".AddSlashes(pg_result($resaco,$conresaco,'l46_cgm'))."','$this->l46_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21745,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_cgm'))."','$this->l46_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_tipopublicacao"]) || $this->l46_tipopublicacao != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21746,'".AddSlashes(pg_result($resaco,$conresaco,'l46_tipopublicacao'))."','$this->l46_tipopublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21746,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_tipopublicacao'))."','$this->l46_tipopublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_descricaopublicacao"]) || $this->l46_descricaopublicacao != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21747,'".AddSlashes(pg_result($resaco,$conresaco,'l46_descricaopublicacao'))."','$this->l46_descricaopublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21747,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_descricaopublicacao'))."','$this->l46_descricaopublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l46_tiporesultado"]) || $this->l46_tiporesultado != "")
-             $resac = db_query("insert into db_acount values($acount,3917,21748,'".AddSlashes(pg_result($resaco,$conresaco,'l46_tiporesultado'))."','$this->l46_tiporesultado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3917,21748,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l46_tiporesultado'))."','$this->l46_tiporesultado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -464,19 +464,19 @@ class cl_liclicitaevento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21739,'$l46_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3917,21739,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21740,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21741,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_fase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21742,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_liclicitatipoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21743,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_dataevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21744,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21745,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21746,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_tipopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21747,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_descricaopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3917,21748,'','".AddSlashes(pg_result($resaco,$iresaco,'l46_tiporesultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21739,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21740,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21741,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_fase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21742,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_liclicitatipoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21743,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_dataevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21744,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21745,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21746,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_tipopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21747,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_descricaopublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3917,21748,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l46_tiporesultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

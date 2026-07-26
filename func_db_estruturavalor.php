@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_estruturavalor_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_estruturavalor = new cl_db_estruturavalor;
 $cldb_estruturavalor->rotulo->label("db121_sequencial");
 $cldb_estruturavalor->rotulo->label("db121_descricao");
@@ -59,7 +60,7 @@ if (isset($iEstruturaValorPai)) {
               <?=$Ldb121_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db121_sequencial",10,$Idb121_sequencial,true,"text",4,"","chave_db121_sequencial");
 		       ?>
             </td>
@@ -69,7 +70,7 @@ if (isset($iEstruturaValorPai)) {
               <?=$Ldb121_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db121_descricao",100,$Idb121_descricao,true,"text",4,"","chave_db121_descricao");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ if (isset($iEstruturaValorPai)) {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_estruturavalor.php")==true){
@@ -132,12 +133,12 @@ if (isset($iEstruturaValorPai)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

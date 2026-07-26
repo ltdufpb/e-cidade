@@ -44,25 +44,20 @@ class ControleRubricasMatriculasRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var cl_controlehorasextrasmatriculas
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * @var array
      */
-    private $order = array();
+    private $order = [];
 
     /**
      * ControleHorasExtrasMatriculasRepository
      * @param $dao cl_controlehorasextrasmatriculas
+     * @param cl_controlehorasextrasmatriculas $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -135,7 +130,7 @@ class ControleRubricasMatriculasRepository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
 
@@ -144,12 +139,12 @@ class ControleRubricasMatriculasRepository
 
     public function clearScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 
     public function clearOrder()
     {
-        $this->order = array();
+        $this->order = [];
     }
 
     public function reset()
@@ -178,10 +173,10 @@ class ControleRubricasMatriculasRepository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $registros = array();
+        $registros = [];
         while ($state = pg_fetch_array($rs)) {
             $registros[] = ControleRubricasMatriculas::fromState($state);
         }
@@ -197,7 +192,7 @@ class ControleRubricasMatriculasRepository
      * @return bool|ControleRubricasMatriculas
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -291,10 +286,10 @@ class ControleRubricasMatriculasRepository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $registros = array();
+        $registros = [];
         while ($state = pg_fetch_array($rs)) {
             $registros[] = ControleRubricasMatriculas::fromState($state);
         }

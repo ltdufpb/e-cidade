@@ -70,7 +70,7 @@ class cl_solicitem
                  ";
 
     //funcao construtor da classe
-    function cl_solicitem()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("solicitem");

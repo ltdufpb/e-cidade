@@ -35,12 +35,12 @@ require_once(modification("libs/db_jsplibwebseller.php"));
 
 if ( !isset( $ed60_d_datamatricula_dia ) ) {
   
-  $ed60_d_datamatricula_dia = substr( $datamat, 0, 2 );
-  $ed60_d_datamatricula_mes = substr( $datamat, 3, 2 );
-  $ed60_d_datamatricula_ano = substr( $datamat, 6, 4 );
+  $ed60_d_datamatricula_dia = substr( (string) $datamat, 0, 2 );
+  $ed60_d_datamatricula_mes = substr( (string) $datamat, 3, 2 );
+  $ed60_d_datamatricula_ano = substr( (string) $datamat, 6, 4 );
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clmatricula                 = new cl_matricula;
 $clmatriculamov              = new cl_matriculamov;
@@ -127,7 +127,7 @@ if ( isset( $incluir ) ) {
       $sSqlAlunoCurso = $clalunocurso->sql_query_file( "", "ed56_c_situacao as sitanterior", "", "ed56_i_aluno = {$codigoaluno[$i]}" );
       $result3        = $clalunocurso->sql_record( $sSqlAlunoCurso );
       
-      $sitanterior     = pg_result( $result3, 0, 0 );
+      $sitanterior     = pg_fetch_result( $result3, 0, 0 );
       $sitmatricula    = trim( $sitanterior ) == "CANDIDATO" ? "MATRICULAR" : "REMATRICULAR";
       $sitmatricula1   = trim( $sitanterior ) == "CANDIDATO" ? "MATRICULADO" : "REMATRICULADO";
       $tipomatricula   = trim( $sitanterior ) == "CANDIDATO" ? "N" : "R";
@@ -250,7 +250,7 @@ if ( isset( $incluir ) ) {
     parent.location.href = "edu1_matricula001.php?chavepesquisa=<?=$turma?>";
     parent.db_iframe_matric.hide();
   </script>
-  <?
+  <?php 
   exit;
 }
 ?>
@@ -264,7 +264,7 @@ if ( isset( $incluir ) ) {
 </head>
 <body bgcolor="#CCCCCC">
   <div class="container">
-    <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+    <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
     <br>
     <form name="form1" method="post" action="" class="form-container">
       <fieldset style="width:95%">
@@ -321,7 +321,7 @@ if ( isset( $incluir ) ) {
               &nbsp;&nbsp;&nbsp;
               <select name="etapaorigem[]" id="etapaorigem">
                 <option value=""></option>
-                <?
+                <?php 
                 $temequiv       = false;
                 $sSqlSerieEquiv = $clserieequiv->sql_query( "", "ed234_i_serieequiv", "", "ed234_i_serie = {$ed11_i_codigo}");
                 $result_equiv   = $clserieequiv->sql_record( $sSqlSerieEquiv );
@@ -359,7 +359,7 @@ if ( isset( $incluir ) ) {
                   }
                   ?>
                   <option value="<?=$ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$descretapa?></option>
-                  <?
+                  <?php 
                 }
                 ?>
               </select>
@@ -367,7 +367,7 @@ if ( isset( $incluir ) ) {
               <input name="codigoaluno[]" type="hidden" value="<?=$ed47_i_codigo?>">
             </td>
           </tr>
-          <?
+          <?php 
           }
           ?>
           <tr>
@@ -403,7 +403,7 @@ if ( isset( $incluir ) ) {
   </div>
 </body>
 </html>
-<?
+<?php 
 if ( isset( $incluir ) ) {
 
   if ( $clmatricula->erro_status == "0" ) {

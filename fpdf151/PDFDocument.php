@@ -96,7 +96,7 @@ class PDFDocument extends FPDF {
   /**
    * @var array Array contendo as informações a imprimir no header do relatório
    */
-  private $aHeaderDescription = array();
+  private $aHeaderDescription = [];
 
   /**
    * @param string $orientation
@@ -129,7 +129,7 @@ class PDFDocument extends FPDF {
    * Remove todas as informações do header
    */
   public function clearHeaderDescription() {
-    $this->aHeaderDescription = array();
+    $this->aHeaderDescription = [];
   }
 
   /**
@@ -357,7 +357,7 @@ class PDFDocument extends FPDF {
                             and modulo = ".db_getsession("DB_modulo");
 
       $rsMenuAcess   = db_query($sSqlMenuAcess);
-      $sMenuAcess    = substr(pg_result($rsMenuAcess, 0, "menu"), 0, 50);
+      $sMenuAcess    = substr(pg_fetch_result($rsMenuAcess, 0, "menu"), 0, 50);
 
       //Position at 1.5 cm from bottom
       $this->SetFont('Arial','',5);
@@ -365,17 +365,17 @@ class PDFDocument extends FPDF {
       $this->SetFont('Arial', 'I', 6);
       $this->SetY(-10);
       $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-      $nome = substr($nome,strrpos($nome,"/")+1);
+      $nome = substr((string) $nome,strrpos((string) $nome,"/")+1);
       $result_nomeusu = db_query("select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario"));
-      if (pg_numrows($result_nomeusu) > 0) {
-        $nomeusu = pg_result($result_nomeusu,0,0);
+      if (pg_num_rows($result_nomeusu) > 0) {
+        $nomeusu = pg_fetch_result($result_nomeusu,0,0);
       }
       if (isset($nomeusu) && $nomeusu != ""){
         $emissor = $nomeusu;
       } else {
         $emissor = @$GLOBALS["DB_login"];
       }
-      $this->Cell(0,10,$sMenuAcess. "  ". $nome.'   Emissor: '.substr(ucwords(mb_strtolower($emissor)),0,30).'  Exerc: '.db_getsession("DB_anousu").
+      $this->Cell(0,10,$sMenuAcess. "  ". $nome.'   Emissor: '.substr(ucwords(mb_strtolower((string) $emissor)),0,30).'  Exerc: '.db_getsession("DB_anousu").
         '   Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'L');
 
       $this->Cell(0,10,'Pág '.$this->PageNo().'/{nb}',0,1,'R');

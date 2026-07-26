@@ -109,7 +109,7 @@ $deposito = \ECidade\Patrimonial\Material\Repositories\DepositoRepository::find(
 
         <tr>
           <td nowrap title="<?=@$Tm60_codmater?>">
-            <?db_ancora(@$Lm60_codmater,"js_pesquisa_codmater(true);",$db_opcao);?>
+            <?php db_ancora(@$Lm60_codmater,"js_pesquisa_codmater(true);",$db_opcao);?>
           </td>
           <td>
             <?php
@@ -378,7 +378,7 @@ function js_adicionaCentroCusto() {
   <?php if (isset($oDeptoRequi) && $oDeptoRequi !== null) : ?>
   var iOrigem  = 2;
   var sUrl     = 'iOrigem='+iOrigem+'&iCodItem='+$F('m41_codmatmater')+'&iCodigoDaLinha='+$F('m41_codmatmater');
-  sUrl        += '&iCodigoDepto=<?echo $oDeptoRequi->m40_depto?>';
+  sUrl        += '&iCodigoDepto=<?php echo $oDeptoRequi->m40_depto?>';
   if ($F('m41_codmatmater')) {
 
     js_OpenJanelaIframe('',

@@ -27,17 +27,16 @@
 
 class InformacoesExternasTipoAssentamento {
 
-  private static $aInstance = array();
+  private static $aInstance = [];
   private $oCompetencia;
   private $sSefip;
-  private $oTipoAssentamento;
   private $oInstituicao;
   private $iSituacaoAfastamento;
   private $sCodigoRetorno;
 
   const MENSAGEM = 'recursoshumanos.rh.InformacoesFinanceirasTipoAssentamento.';
 
-  public function __construct(TipoAssentamento $oTipoAssentamento, DBCompetencia $oCompetencia = null, Instituicao $oInstituicao = null) {
+  public function __construct(private readonly TipoAssentamento $oTipoAssentamento, ?DBCompetencia $oCompetencia = null, ?Instituicao $oInstituicao = null) {
 
     if (!$oCompetencia) {
       $oCompetencia = DBPessoal::getCompetenciaFolha();
@@ -48,13 +47,12 @@ class InformacoesExternasTipoAssentamento {
     }
 
     $this->oCompetencia      = $oCompetencia;
-    $this->oTipoAssentamento = $oTipoAssentamento;
     $this->oInstituicao      = $oInstituicao;
 
     $oDaoTipoAsseExterno    = new cl_tipoasseexterno();
     $sWhereTipoAsseExterno  = "    rh167_anousu   = {$oCompetencia->getAno()} ";
     $sWhereTipoAsseExterno .= "and rh167_mesusu   = {$oCompetencia->getMes()} ";
-    $sWhereTipoAsseExterno .= "and rh167_tipoasse = {$oTipoAssentamento->getSequencial()} ";
+    $sWhereTipoAsseExterno .= "and rh167_tipoasse = {$this->oTipoAssentamento->getSequencial()} ";
     $sWhereTipoAsseExterno .= "and rh167_instit   = {$oInstituicao->getSequencial()} ";
     $sSqlTipoAsseExterno    = $oDaoTipoAsseExterno->sql_query(null, "rh167_codmovsefip, rh167_situacaoafastamento, r67_reto", null, $sWhereTipoAsseExterno);
 
@@ -103,7 +101,7 @@ class InformacoesExternasTipoAssentamento {
     return $this->sCodigoRetorno;
   }
 
-  public static function getTipoAssentamentoConfiguradosPorCompetencia(DBCompetencia $oCompetencia = null, Instituicao $oInstituicao = null) {
+  public static function getTipoAssentamentoConfiguradosPorCompetencia(?DBCompetencia $oCompetencia = null, ?Instituicao $oInstituicao = null) {
 
     if(empty($oCompetencia)) {
       $oCompetencia = DBPessoal::getCompetenciaFolha();
@@ -128,7 +126,7 @@ class InformacoesExternasTipoAssentamento {
       throw new DBException("Ocorreu um erro ao buscar os tipos de assentamentos com configurações externas.");
     }
 
-    $aListaTipos = array();
+    $aListaTipos = [];
     if(pg_num_rows($rsTipoAsseExterno) > 0) {
       for ($iIndTipoasseExterno=0; $iIndTipoasseExterno < pg_num_rows($rsTipoAsseExterno) ; $iIndTipoasseExterno++) { 
         $aListaTipos[] = InformacoesExternasTipoAssentamento::getInstance(TipoAssentamentoRepository::getInstanciaPorCodigo(db_utils::fieldsMemory($rsTipoAsseExterno, $iIndTipoasseExterno)->rh167_tipoasse));

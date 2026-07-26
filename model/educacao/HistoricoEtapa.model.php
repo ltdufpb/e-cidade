@@ -110,7 +110,7 @@ abstract class HistoricoEtapa {
    * Disciplinas da Etapa
    * @var Array
    */
-  protected $aDisciplinas = array();
+  protected $aDisciplinas = [];
 
   /**
    * Codigo do historico em que a etapa está vinculada
@@ -401,17 +401,11 @@ abstract class HistoricoEtapa {
    */
   public static function getInstanciaPeloTipo( $sTipoEtapa, $iCodigoEtapa = null ) {
 
-     switch ( $sTipoEtapa ) {
-       case HistoricoEtapa::ETAPA_REDE :
-         return new HistoricoEtapaRede($iCodigoEtapa);
-       break;
-       case HistoricoEtapa::ETAPA_FORA_REDE :
-         return new HistoricoEtapaForaRede($iCodigoEtapa);
-       break;
-       default:
-         throw new ParameterException("Tipo de Etapa não Informada.");
-       break;
-     }
+     return match ($sTipoEtapa) {
+         HistoricoEtapa::ETAPA_REDE => new HistoricoEtapaRede($iCodigoEtapa),
+         HistoricoEtapa::ETAPA_FORA_REDE => new HistoricoEtapaForaRede($iCodigoEtapa),
+         default => throw new ParameterException("Tipo de Etapa não Informada."),
+     };
      return;
   }
 
@@ -479,7 +473,7 @@ abstract class HistoricoEtapa {
 
     $oMensagem             = new stdClass();
     $oMensagem->aluno      = $oAluno->getNome();
-    $aMensagemEquivalencia = array();
+    $aMensagemEquivalencia = [];
 
     if (empty($oUltimaEtapaCursada)) {
       return true;
@@ -490,13 +484,13 @@ abstract class HistoricoEtapa {
     $oMensagem->ensino_abrev = $oUltimaEtapaCursada->getEtapa()->getEnsino()->getAbreviatura();
 
     $oEtapaVerificar        = $oEtapa;
-    $aCodigoEtapasVerificar = array();
+    $aCodigoEtapasVerificar = [];
     switch ($oUltimaEtapaCursada->getResultadoAno()) {
 
       case 'R':
 
         $oMensagem->situacao    = "REPROVADO";
-        $aCodigoEtapasVerificar = array($oUltimaEtapaCursada->getEtapa()->getCodigo());
+        $aCodigoEtapasVerificar = [$oUltimaEtapaCursada->getEtapa()->getCodigo()];
         $oEtapaVerificar        = $oUltimaEtapaCursada->getEtapa();
         break;
 
@@ -509,7 +503,7 @@ abstract class HistoricoEtapa {
           return true;
         }
         $oEtapaVerificar = $aEtapasPosteriores[0];
-        $aCodigoEtapasVerificar = array($oEtapaVerificar->getCodigo());
+        $aCodigoEtapasVerificar = [$oEtapaVerificar->getCodigo()];
 
         unset ($aEtapasPosteriores);
         break;
@@ -518,7 +512,7 @@ abstract class HistoricoEtapa {
 
         $oMensagem->situacao = "APROVADO PARCIAL";
         $oEtapaVerificar     = $oUltimaEtapaCursada->getEtapa();
-        $aCodigoEtapasVerificar = array($aCodigoEtapasTurma);
+        $aCodigoEtapasVerificar = [$aCodigoEtapasTurma];
         break;
 
     }

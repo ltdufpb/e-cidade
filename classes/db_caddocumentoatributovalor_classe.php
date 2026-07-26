@@ -56,7 +56,7 @@ class cl_caddocumentoatributovalor
                  ";
 
     //funcao construtor da classe
-    function cl_caddocumentoatributovalor()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("caddocumentoatributovalor");

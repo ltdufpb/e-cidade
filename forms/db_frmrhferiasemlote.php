@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -213,7 +213,7 @@
 				  	  db_input("DBtxt23", 4,'rh110_anopagamento', true, "text", 1,"","rh110_anopagamento");
 				  	?>
 				  	&nbsp;/&nbsp;
-				  	<?
+				  	<?php 
 				  	  db_input("DBtxt25", 2, 'rh110_mespagamento', true, "text", 1,"","rh110_mespagamento");
 				  	?>
 				  </td>

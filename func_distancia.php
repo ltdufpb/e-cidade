@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_distancia_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldistancia = new cl_distancia;
 $clrotulo = new rotulocampo;
 $clrotulo->label("j13_descr");
@@ -56,7 +57,7 @@ $clrotulo->label("ed223_i_bairrodestino");
       <?=$Led223_i_bairroorigem?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrorigem");?>
+      <?php db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrorigem");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +65,7 @@ $clrotulo->label("ed223_i_bairrodestino");
       <?=$Led223_i_bairrodestino?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrdestino");?>
+      <?php db_input("j13_descr",40,$Ij13_descr,true,"text",4,"","chave_j13_descrdestino");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $clrotulo->label("ed223_i_bairrodestino");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_distancia.php")==true){

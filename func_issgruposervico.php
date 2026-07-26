@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissgruposervico = new cl_issgruposervico;
 $clissgruposervico->rotulo->label("q126_sequencial");
 ?>
@@ -54,7 +55,7 @@ $clissgruposervico->rotulo->label("q126_sequencial");
               <?=$Lq126_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("q126_sequencial",10,$Iq126_sequencial,true,"text",4,"","chave_q126_sequencial");
 		       ?>
             </td>

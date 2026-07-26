@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -80,7 +80,7 @@ class cl_lab_controlefisicofinanceiro {
                  la56_i_liberarequisicaosemsaldo = int4 = Liberar Requisição sem Saldo 
                  ";
    //funcao construtor da classe 
-   function cl_lab_controlefisicofinanceiro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_controlefisicofinanceiro"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

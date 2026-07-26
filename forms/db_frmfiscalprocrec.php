@@ -292,14 +292,14 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave,chave1){
 
   db_iframe_fiscalprocrec.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 +"&chavepesquisa1="+chave1}
 </script>
-<?
+<?php 
 
 if ($db_opcao == 1) {
   echo "<script>js_validaValor();</script>";

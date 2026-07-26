@@ -32,13 +32,8 @@
  */
 class RegraArredondamentoVO {
 
-  private $iCodigo    = null;
-  private $sDescricao = null;
-
-  public function __construct($iCodigo, $sDescricao) {
-
-    $this->iCodigo    = $iCodigo;
-    $this->sDescricao = $sDescricao;
+  public function __construct(private $iCodigo, private $sDescricao)
+  {
   }
 
   /**

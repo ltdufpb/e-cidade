@@ -40,14 +40,12 @@ class lancamentoContabil
 
     public $iCodLanc = null;
     private $dDataLanc = null;
-    private $iAnousu = null;
-    private $iCodDoc = null;
     private $nValorLancando = null;
     private $iAnoEmpenho = null;
     private $iCodCom = null;
     private $oTransaction = null;
     private $lInverterLancamento = false;
-    private $aLancamentos = array();
+    private $aLancamentos = [];
 
     /**
      * metodo Construtor
@@ -56,32 +54,30 @@ class lancamentoContabil
      * @param date $dDataLanc Data do lancamento.
      * @param float $nValorLancado valor do lancamento;.
      */
-    function __construct($iCodDoc, $iAnousu, $dDataLanc, $nValorLancado)
+    function __construct(private $iCodDoc, private $iAnousu, $dDataLanc, $nValorLancado)
     {
 
         $this->dDataLanc = $dDataLanc;
-        $this->iAnoUsu = $iAnousu;
         $this->nValorLancado = $nValorLancado;
-        $this->iCodDoc = $iCodDoc;
         $this->lSqlErro = false;
         $this->sErroMsg = '';
-        $this->aLancamentos = array(
-          "lancamCgm" => array("set" => 0),
-          "lancamCompl" => array("set" => 0),
-          "lancamDig" => array("set" => 0),
-          "lancamDot" => array("set" => 0),
-          "lancamEle" => array("set" => 0),
-          "lancamEmp" => array("set" => 0),
-          "lancamNota" => array("set" => 0),
-          "lancamOrd" => array("set" => 0),
-          "lancamPag" => array("set" => 0),
-          "lancamRec" => array("set" => 0),
-          "lancamRetif" => array("set" => 0),
-          "lancamSup" => array("set" => 0)
-        );
+        $this->aLancamentos = [
+          "lancamCgm" => ["set" => 0],
+          "lancamCompl" => ["set" => 0],
+          "lancamDig" => ["set" => 0],
+          "lancamDot" => ["set" => 0],
+          "lancamEle" => ["set" => 0],
+          "lancamEmp" => ["set" => 0],
+          "lancamNota" => ["set" => 0],
+          "lancamOrd" => ["set" => 0],
+          "lancamPag" => ["set" => 0],
+          "lancamRec" => ["set" => 0],
+          "lancamRetif" => ["set" => 0],
+          "lancamSup" => ["set" => 0]
+        ];
 
         if (!db_utils::inTransaction()) {
-            throw new exception("{$iCodDoc} Nao foi possível iniciar lancamento.Nao foi possível achar uma transacao valida;");
+            throw new exception("{$this->iCodDoc} Nao foi possível iniciar lancamento.Nao foi possível achar uma transacao valida;");
         }
     }
 
@@ -539,18 +535,10 @@ class lancamentoContabil
                     $oObjeto->$sPropriedade = $sValor;
                 }
                 //algumas das conlancam possuem mais de um parametro. tratamos aqui.
-                switch ($sObjNome) {
-
-                    case "conlancamnota" :
-
-                        $oObjeto->incluir($oConLancam->c70_codlan, $this->aLancamentos["lancamNota"]["c66_conota"]);
-                        break;
-
-                    default:
-
-                        $oObjeto->incluir($oConLancam->c70_codlan);
-                        break;
-                }
+                match ($sObjNome) {
+                    "conlancamnota" => $oObjeto->incluir($oConLancam->c70_codlan, $this->aLancamentos["lancamNota"]["c66_conota"]),
+                    default => $oObjeto->incluir($oConLancam->c70_codlan),
+                };
                 if ($oObjeto->erro_status == 0) {
 
                     $this->sErroMsg = "{$sObjNome}: " . $oObjeto->erro_msg;
@@ -594,7 +582,7 @@ class lancamentoContabil
         $data = new \DBDate($this->dDataLanc);
         $competencia = new DBCompetencia($data->getAno(), $data->getMes());
         $oProcessamento = new Processamento($instituicao, $competencia);
-        $oProcessamento->processar(array($oConLancam->c70_codlan));
+        $oProcessamento->processar([$oConLancam->c70_codlan]);
         PosProcessamento::processar($oConLancam->c70_codlan);
 
         ComplementoLancamentoService::createIfNotExists($oConLancam->c70_codlan);
@@ -1258,7 +1246,7 @@ class lancamentoContabil
             throw new Exception("Lançamento {$iCodigoLancamento} não existe.");
         }
         $oDadosLancamento = db_utils::fieldsMemory($rsDadosLancamento, 0, false, false, true);
-        $oDadosLancamento->contas = array();
+        $oDadosLancamento->contas = [];
         if ($lMostraContas) {
 
             $sSqlContas = "select  c69_debito as contadebito, ";
@@ -1348,7 +1336,7 @@ class lancamentoContabil
                 if (!$rsBuscaContaCorrente) {
                     throw new Exception("Não foi possível buscar os dados da conta corrente.");
                 }
-                $aDadosContaCorrente = array();
+                $aDadosContaCorrente = [];
                 if (pg_num_rows($rsBuscaContaCorrente) > 0) {
                     $aDadosContaCorrente = db_utils::getCollectionByRecord($rsBuscaContaCorrente);
                 }
@@ -1879,7 +1867,7 @@ class lancamentoContabil
         }
 
         $iLinhas = pg_num_rows($rsApropriacao);
-        $aTesourariaExcluida = array();
+        $aTesourariaExcluida = [];
         for ($i = 0; $i < $iLinhas; $i++) {
 
             $oStd = db_utils::fieldsMemory($rsApropriacao, $i);
@@ -1981,7 +1969,7 @@ class lancamentoContabil
         }
 
 
-        $retornoLog = array();
+        $retornoLog = [];
         $buscaLog = self::buscaDadosLog($codigoLancamento);
         for ($i = 0; $i < pg_num_rows($buscaLog); $i++) {
 
@@ -2043,7 +2031,7 @@ class lancamentoContabil
     public static function buscaLogPorCodigoDocumento($codigo, $codigoTipoDocumento = null)
     {
 
-        $where = array();
+        $where = [];
         $sql  = "select c70_codlan ";
         $sql .= "  from conlancam ";
         $sql .= "       join conlancamdoc on c71_codlan = c70_codlan ";

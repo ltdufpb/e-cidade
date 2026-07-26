@@ -31,7 +31,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( $_SERVER["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 
 $clsau_prestadorvinculos = new cl_sau_prestadorvinculos;
 $clsau_prestadorvinculos->rotulo->label();
@@ -52,14 +53,14 @@ $oRotulo->label( "sd63_c_procedimento" );
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ls111_i_codigo?></label></td>
-          <td><? db_input("s111_i_codigo",10,$Is111_i_codigo,true,"text",4,"","chave_s111_i_codigo"); ?></td>
+          <td><?php  db_input("s111_i_codigo",10,$Is111_i_codigo,true,"text",4,"","chave_s111_i_codigo"); ?></td>
         </tr>
         <tr>
           <td width="4%" align="right" nowrap title="<?=$Ts111_procedimento?>">
             <?=$Ls111_procedimento?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php 
          db_input("sd63_c_procedimento",10,$Isd63_c_procedimento,true,"text",4,"","chave_sd63_c_procedimento");
          ?>
           </td>
@@ -69,7 +70,7 @@ $oRotulo->label( "sd63_c_procedimento" );
             <?=$Ls111_i_prestador?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php 
          db_input("s111_i_prestador",10,$Is111_i_prestador,true,"text",4,"","chave_s111_i_prestador");
          ?>
           </td>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,8 @@ include(modification("classes/db_conlancamcompl_classe.php"));
 include(modification("classes/db_conlancamdig_classe.php"));
 include(modification("classes/db_conplano_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clconplano     = new cl_conplano;
@@ -89,7 +90,7 @@ $anousu = db_getsession("DB_anousu");
     <center>
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_conlancam003.hide();">
  
-	<?
+	<?php 
 	if (isset($sql)) {
 	    $js_funcao="";
             db_lovrot($sql,15,"()","","$js_funcao");

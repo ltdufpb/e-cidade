@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -137,13 +137,13 @@ if(isset($excluir)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-	<?
+	<?php 
 	include(modification("forms/db_frmtabdesc.php"));
 	?>
 
 </body>
 </html>
-<?
+<?php 
 
 if($db_opcao==33){
   echo "<script>document.form1.pesquisar.click();</script>";

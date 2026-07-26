@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoqueitemlote_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatestoqueitemlote = new cl_matestoqueitemlote;
 $clmatestoqueitemlote->rotulo->label("m77_sequencial");
 $clmatestoqueitemlote->rotulo->label("m77_lote");
@@ -55,7 +56,7 @@ $iDepartamento= db_getsession("DB_coddepto");
               <?=$Lm77_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-             <?db_input("m77_sequencial",10,$Im77_sequencial,true,"text",4,"","chave_m77_sequencial");?>
+             <?php db_input("m77_sequencial",10,$Im77_sequencial,true,"text",4,"","chave_m77_sequencial");?>
             </td>
           </tr>
           <tr> 
@@ -63,7 +64,7 @@ $iDepartamento= db_getsession("DB_coddepto");
               <?=$Lm77_lote?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?db_input("m77_lote",50,$Im77_lote,true,"text",4,"","chave_m77_lote");?>
+            <?php db_input("m77_lote",50,$Im77_lote,true,"text",4,"","chave_m77_lote");?>
             </td>
           </tr>
           <tr> 
@@ -79,7 +80,7 @@ $iDepartamento= db_getsession("DB_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos)==false) {
@@ -161,13 +162,13 @@ $iDepartamento= db_getsession("DB_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 
   ?>
   <script>
   </script>
-  <?
+  <?php 
 
 }
 ?>

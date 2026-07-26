@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -90,7 +90,7 @@ db_postmemory($HTTP_POST_VARS);
       <input name="processa" id='btnProcessar' value='Processar' type="button">
     </center>
   </form>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),

@@ -54,7 +54,7 @@ class DBCache {
         $oFile = file(self::PATH_CACHE . $sCache);
         $creation = $oFile[0];
 
-        $maxtime = strtotime($time, intval($creation));
+        $maxtime = strtotime((string) $time, intval($creation));
         return time() <= $maxtime;
       }
 
@@ -139,7 +139,7 @@ class DBCache {
     if (is_dir(self::PATH_CACHE . $sPath)) {
 
       $aDirFiles = scandir(self::PATH_CACHE . $sPath);
-      $aRetorno  = array();
+      $aRetorno  = [];
 
       if (empty($aDirFiles)) {
         return $aRetorno;

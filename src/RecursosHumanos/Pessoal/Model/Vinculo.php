@@ -33,17 +33,17 @@ use InstituicaoRepository;
 
 class Vinculo
 {
-    private static $tipoVinculo = array(
+    private static $tipoVinculo = [
         "A" => "Ativo",
         "I" => "Inativo",
         "P" => "Pensionista",
-    );
+    ];
 
-    private static $regimes = array(
+    private static $regimes = [
         "1" => "Estatutário",
         "2" => "CLT",
         "3" => "Extra Quadro",
-    );
+    ];
 
     private $codigo;
     private $descricao;

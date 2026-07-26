@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -68,7 +68,7 @@ if (isset($proximo)) {
     /**
      * Variável de alunos com progressão parcial encerrada em que a progressão é da etapa que se deseja cancelar o encerramento
      */
-    $aAlunosInconsistentes = array();
+    $aAlunosInconsistentes = [];
 
     for ($iCont = 0; $iCont < $tam; $iCont++) {
 
@@ -437,7 +437,7 @@ if (isset($proximo)) {
                                 "&ed52_c_descr=<?=$ed52_c_descr?>&codserieregencia=<?=$codserieregencia?>";
    parent.db_iframe_cancelar<?=$turma?>.hide();
   </script>
-  <?
+  <?php 
   exit;
 
 }//fecha o if (isset($proximo ))
@@ -485,7 +485,7 @@ if (isset($proximo)) {
   </style>
  </head>
  <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
- <?
+ <?php 
   $sCamposMat = " DISTINCT ed60_i_aluno, ed47_v_nome, ed60_i_numaluno, ed60_c_situacao, ed52_i_ano, ed52_d_inicio,ed52_d_fim,ed52_i_codigo";
   $sWhereMat  = " ed60_i_turma = $ed59_i_turma AND ed221_i_serie = $codserieregencia AND ed60_c_concluida = 'S' ";
   $sWhereMat .= " AND ed95_c_encerrado = 'S' AND ed60_c_ativa = 'S' AND ed221_c_origem = 'S'";
@@ -510,7 +510,7 @@ if (isset($proximo)) {
        <input type="button" name="fechar" value="Fechar" onclick="parent.db_iframe_cancelar<?=$turma?>.hide();">
       </td>
      </tr>
- <?
+ <?php 
 
   } else {
 
@@ -523,7 +523,7 @@ if (isset($proximo)) {
         <b>Alunos:</b><br>
         <select name="alunospossib" id="alunospossib" size="10" onclick="js_desabinc()"
                 style="font-size:9px;width:320px;height:180px" multiple>
-        <?
+        <?php 
          if ($iLinhasMat > 0) {
 
            $alunos_nao = 0;
@@ -613,7 +613,7 @@ if (isset($proximo)) {
       </td>
      </tr>
 
-   <?if ($alunos_nao > 0) {?>
+   <?php if ($alunos_nao > 0) {?>
 
        <tr>
         <td colspan="3">
@@ -624,7 +624,7 @@ if (isset($proximo)) {
         </td>
        </tr>
 
-   <?}?>
+   <?php }?>
 
      </table>
      <input name="proximo" type="submit" value="Confirmar" disabled onClick="js_selecionar();">
@@ -634,7 +634,7 @@ if (isset($proximo)) {
    </form>
   </center>
 
-<?}?>
+<?php }?>
  </body>
 </html>
 <script>

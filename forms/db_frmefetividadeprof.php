@@ -240,23 +240,23 @@ textarea[disabled] {
                   if ( DBDate::dataEstaNoIntervalo( $oDataInicioLicenca, $oDataInicioEfetividade, $oDataTerminoEfetividade ) ) {
 
                     $sLicenca   .= "{$oDadosLicenca->ed320_descricao} - {$oDataInicioLicenca->convertTo(DBDate::DATA_PTBR)}";
-                    continue;
+                    break;
                   } elseif ( $oDataInicioEfetividade->getTimeStamp() >= $oDataInicioLicenca->getTimeStamp() ) {
 
                     $sLicenca   .= "{$oDadosLicenca->ed320_descricao} - {$oDataInicioLicenca->convertTo(DBDate::DATA_PTBR)}";
-                    continue;
+                    break;
                   }
                 } else {
 
                   $aPeriodoEfetividadeAux = DBDate::getDatasNoIntervalo( $oDataInicioEfetividade, $oDataTerminoEfetividade );
-                  $aPeriodoEfetividade    = array();
+                  $aPeriodoEfetividade    = [];
 
                   foreach ( $aPeriodoEfetividadeAux as $oDataEfetividade ) {
                     $aPeriodoEfetividade[] = $oDataEfetividade->convertTo(DBDate::DATA_PTBR);
                   }
 
                   $aPeriodoLicencaAux = DBDate::getDatasNoIntervalo( $oDataInicioLicenca, $oDataTerminoLicenca );
-                  $aPeriodoLicenca    = array();
+                  $aPeriodoLicenca    = [];
 
                   foreach ( $aPeriodoLicencaAux as $oDataLicenca ) {
                     $aPeriodoLicenca[] = $oDataLicenca->convertTo(DBDate::DATA_PTBR);
@@ -269,7 +269,7 @@ textarea[disabled] {
                     $sLicenca   .= "{$oDadosLicenca->ed320_descricao} - {$oDataInicioLicenca->convertTo(DBDate::DATA_PTBR)}";
                     $sLicenca   .= " à {$oDataTerminoLicenca->convertTo(DBDate::DATA_PTBR)}. ";
 
-                    continue;
+                    break;
                   }
                 }
 
@@ -314,23 +314,23 @@ textarea[disabled] {
           <td align="center">
             <input type="checkbox" name="individual" value="true" <?=$sChecked?>
                    onclick="MarcaIndividual(this.value,<?=$x?>,<?=$linhas?>)" />
-            <input type="hidden" name="ed97_i_codigo" value="<?=isset( $ed97_i_codigo ) ? $ed97_i_codigo : ""?>" />
+            <input type="hidden" name="ed97_i_codigo" value="<?=$ed97_i_codigo ?? ""?>" />
             <input type="hidden" name="efetividaderh" value="<?=$efetividaderh?>" />
             <input type="hidden" name="ed98_c_tipo" value="<?=$ed98_c_tipo?>" />
           </td>
           <td class="aluno" align="center">
-            <?=isset( $identificacao ) ? $identificacao : ""?>
+            <?=$identificacao ?? ""?>
             <input type="hidden" name="ed97_i_rechumano" id="ed97_i_rechumano" value="<?=$ed97_i_rechumano?>" >
           </td>
           <td class="aluno">
-            <?=isset( $z01_nome ) ? $z01_nome : ""?>
+            <?=$z01_nome ?? ""?>
           </td>
           <td align="center">
             <input type="text"
                    size="3"
                    name="ed97_i_diasletivos"
                    id="ed97_i_diasletivos"
-                   value="<?=isset( $ed97_i_diasletivos ) ? $ed97_i_diasletivos : ""?>"
+                   value="<?=$ed97_i_diasletivos ?? ""?>"
                    style="<?=$sStyle?>" <?=$sDisabled?>
                    onKeyUp="js_ValidaCampos( this, 1, 'Dias Letivos', 'f', 'f', event );">
           </td>
@@ -395,8 +395,8 @@ textarea[disabled] {
           }
 
           $ed97_t_horario = empty( $ed97_t_horario ) ? $horario        : $ed97_t_horario;
-          $sHorario       = isset( $ed97_t_horario ) ? $ed97_t_horario : "";
-          $sObservacao    = isset( $ed97_t_obs )     ? $ed97_t_obs     : "";
+          $sHorario       = $ed97_t_horario ?? "";
+          $sObservacao    = $ed97_t_obs ?? "";
           ?>
           <td align="center">
             <textarea name="ed97_t_horario"

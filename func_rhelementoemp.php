@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhelementoemp_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhelementoemp = new cl_rhelementoemp;
 $clrhelementoemp->rotulo->label("rh38_seq");
@@ -78,7 +79,7 @@ $chave_pc01_descrmater = isset($chave_pc01_descrmater) ? stripslashes($chave_pc0
               <?=$Lrh38_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh38_seq",6,$Irh38_seq,true,"text",4,"","chave_rh38_seq");
 		       ?>
             </td>
@@ -88,7 +89,7 @@ $chave_pc01_descrmater = isset($chave_pc01_descrmater) ? stripslashes($chave_pc0
               <?=$Lrh38_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh38_codele",6,$Irh38_codele,true,"text",4,"","chave_rh38_codele");
 		       ?>
             </td>
@@ -98,7 +99,7 @@ $chave_pc01_descrmater = isset($chave_pc01_descrmater) ? stripslashes($chave_pc0
               <?=$Lrh36_pcmater?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh36_pcmater",10,$Irh36_pcmater,true,"text",4,"","chave_rh36_pcmater");
 		       ?>
             </td>
@@ -108,7 +109,7 @@ $chave_pc01_descrmater = isset($chave_pc01_descrmater) ? stripslashes($chave_pc0
               <?=$Lo56_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o56_descr",50,$Io56_descr,true,"text",4,"","chave_o56_descr");
 		       ?>
             </td>
@@ -118,7 +119,7 @@ $chave_pc01_descrmater = isset($chave_pc01_descrmater) ? stripslashes($chave_pc0
               <?=$Lpc01_descrmater?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc01_descrmater",50,$Ipc01_descrmater,true,"text",4,"","chave_pc01_descrmater");
 		       ?>
             </td>
@@ -186,12 +187,12 @@ $chave_pc01_descrmater = isset($chave_pc01_descrmater) ? stripslashes($chave_pc0
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

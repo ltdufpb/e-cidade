@@ -1,30 +1,30 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE agendaatividade
 class cl_agendaatividade { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed129_codigo = 0; 
-   var $ed129_tipohoratrabalho = 0; 
-   var $ed129_diasemana = 0; 
-   var $ed129_turno = 0; 
-   var $ed129_rechumanoativ = 0; 
-   var $ed129_horainicio = null; 
-   var $ed129_horafim = null; 
+   public $ed129_codigo = 0; 
+   public $ed129_tipohoratrabalho = 0; 
+   public $ed129_diasemana = 0; 
+   public $ed129_turno = 0; 
+   public $ed129_rechumanoativ = 0; 
+   public $ed129_horainicio = null; 
+   public $ed129_horafim = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed129_codigo = int4 = Código 
                  ed129_tipohoratrabalho = int4 = Tipo de Hora de Trabalho 
                  ed129_diasemana = int4 = Dia da Semana 
@@ -34,10 +34,10 @@ class cl_agendaatividade {
                  ed129_horafim = varchar(5) = Hora Final 
                  ";
    //funcao construtor da classe 
-   function cl_agendaatividade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendaatividade"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_agendaatividade {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed129_codigo = pg_result($result,0,0); 
+       $this->ed129_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from agendaatividade_ed129_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed129_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed129_codigo)){
          $this->erro_sql = " Campo ed129_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -172,7 +172,7 @@ class cl_agendaatividade {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agenda de atividade ($this->ed129_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agenda de atividade já Cadastrado";
@@ -201,16 +201,16 @@ class cl_agendaatividade {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21033,'$this->ed129_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3790,21033,'','".AddSlashes(pg_result($resaco,0,'ed129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3790,21034,'','".AddSlashes(pg_result($resaco,0,'ed129_tipohoratrabalho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3790,21035,'','".AddSlashes(pg_result($resaco,0,'ed129_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3790,21036,'','".AddSlashes(pg_result($resaco,0,'ed129_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3790,21037,'','".AddSlashes(pg_result($resaco,0,'ed129_rechumanoativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3790,21038,'','".AddSlashes(pg_result($resaco,0,'ed129_horainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3790,21039,'','".AddSlashes(pg_result($resaco,0,'ed129_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3790,21033,'','".AddSlashes(pg_fetch_result($resaco,0,'ed129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3790,21034,'','".AddSlashes(pg_fetch_result($resaco,0,'ed129_tipohoratrabalho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3790,21035,'','".AddSlashes(pg_fetch_result($resaco,0,'ed129_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3790,21036,'','".AddSlashes(pg_fetch_result($resaco,0,'ed129_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3790,21037,'','".AddSlashes(pg_fetch_result($resaco,0,'ed129_rechumanoativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3790,21038,'','".AddSlashes(pg_fetch_result($resaco,0,'ed129_horainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3790,21039,'','".AddSlashes(pg_fetch_result($resaco,0,'ed129_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -220,10 +220,10 @@ class cl_agendaatividade {
       $this->atualizacampos();
      $sql = " update agendaatividade set ";
      $virgula = "";
-     if(trim($this->ed129_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_codigo"])){ 
+     if(trim((string) $this->ed129_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_codigo"])){ 
        $sql  .= $virgula." ed129_codigo = $this->ed129_codigo ";
        $virgula = ",";
-       if(trim($this->ed129_codigo) == null ){ 
+       if(trim((string) $this->ed129_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed129_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_agendaatividade {
          return false;
        }
      }
-     if(trim($this->ed129_tipohoratrabalho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_tipohoratrabalho"])){ 
+     if(trim((string) $this->ed129_tipohoratrabalho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_tipohoratrabalho"])){ 
        $sql  .= $virgula." ed129_tipohoratrabalho = $this->ed129_tipohoratrabalho ";
        $virgula = ",";
-       if(trim($this->ed129_tipohoratrabalho) == null ){ 
+       if(trim((string) $this->ed129_tipohoratrabalho) == null ){ 
          $this->erro_sql = " Campo Tipo de Hora de Trabalho não informado.";
          $this->erro_campo = "ed129_tipohoratrabalho";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_agendaatividade {
          return false;
        }
      }
-     if(trim($this->ed129_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_diasemana"])){ 
+     if(trim((string) $this->ed129_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_diasemana"])){ 
        $sql  .= $virgula." ed129_diasemana = $this->ed129_diasemana ";
        $virgula = ",";
-       if(trim($this->ed129_diasemana) == null ){ 
+       if(trim((string) $this->ed129_diasemana) == null ){ 
          $this->erro_sql = " Campo Dia da Semana não informado.";
          $this->erro_campo = "ed129_diasemana";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_agendaatividade {
          return false;
        }
      }
-     if(trim($this->ed129_turno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_turno"])){ 
+     if(trim((string) $this->ed129_turno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_turno"])){ 
        $sql  .= $virgula." ed129_turno = $this->ed129_turno ";
        $virgula = ",";
-       if(trim($this->ed129_turno) == null ){ 
+       if(trim((string) $this->ed129_turno) == null ){ 
          $this->erro_sql = " Campo Turno não informado.";
          $this->erro_campo = "ed129_turno";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_agendaatividade {
          return false;
        }
      }
-     if(trim($this->ed129_rechumanoativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_rechumanoativ"])){ 
+     if(trim((string) $this->ed129_rechumanoativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_rechumanoativ"])){ 
        $sql  .= $virgula." ed129_rechumanoativ = $this->ed129_rechumanoativ ";
        $virgula = ",";
-       if(trim($this->ed129_rechumanoativ) == null ){ 
+       if(trim((string) $this->ed129_rechumanoativ) == null ){ 
          $this->erro_sql = " Campo Atividade não informado.";
          $this->erro_campo = "ed129_rechumanoativ";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_agendaatividade {
          return false;
        }
      }
-     if(trim($this->ed129_horainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_horainicio"])){ 
+     if(trim((string) $this->ed129_horainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_horainicio"])){ 
        $sql  .= $virgula." ed129_horainicio = '$this->ed129_horainicio' ";
        $virgula = ",";
-       if(trim($this->ed129_horainicio) == null ){ 
+       if(trim((string) $this->ed129_horainicio) == null ){ 
          $this->erro_sql = " Campo Hora de Inicio não informado.";
          $this->erro_campo = "ed129_horainicio";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_agendaatividade {
          return false;
        }
      }
-     if(trim($this->ed129_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_horafim"])){ 
+     if(trim((string) $this->ed129_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed129_horafim"])){ 
        $sql  .= $virgula." ed129_horafim = '$this->ed129_horafim' ";
        $virgula = ",";
-       if(trim($this->ed129_horafim) == null ){ 
+       if(trim((string) $this->ed129_horafim) == null ){ 
          $this->erro_sql = " Campo Hora Final não informado.";
          $this->erro_campo = "ed129_horafim";
          $this->erro_banco = "";
@@ -325,23 +325,23 @@ class cl_agendaatividade {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21033,'$this->ed129_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed129_codigo"]) || $this->ed129_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3790,21033,'".AddSlashes(pg_result($resaco,$conresaco,'ed129_codigo'))."','$this->ed129_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3790,21033,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed129_codigo'))."','$this->ed129_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed129_tipohoratrabalho"]) || $this->ed129_tipohoratrabalho != "")
-             $resac = db_query("insert into db_acount values($acount,3790,21034,'".AddSlashes(pg_result($resaco,$conresaco,'ed129_tipohoratrabalho'))."','$this->ed129_tipohoratrabalho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3790,21034,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed129_tipohoratrabalho'))."','$this->ed129_tipohoratrabalho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed129_diasemana"]) || $this->ed129_diasemana != "")
-             $resac = db_query("insert into db_acount values($acount,3790,21035,'".AddSlashes(pg_result($resaco,$conresaco,'ed129_diasemana'))."','$this->ed129_diasemana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3790,21035,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed129_diasemana'))."','$this->ed129_diasemana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed129_turno"]) || $this->ed129_turno != "")
-             $resac = db_query("insert into db_acount values($acount,3790,21036,'".AddSlashes(pg_result($resaco,$conresaco,'ed129_turno'))."','$this->ed129_turno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3790,21036,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed129_turno'))."','$this->ed129_turno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed129_rechumanoativ"]) || $this->ed129_rechumanoativ != "")
-             $resac = db_query("insert into db_acount values($acount,3790,21037,'".AddSlashes(pg_result($resaco,$conresaco,'ed129_rechumanoativ'))."','$this->ed129_rechumanoativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3790,21037,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed129_rechumanoativ'))."','$this->ed129_rechumanoativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed129_horainicio"]) || $this->ed129_horainicio != "")
-             $resac = db_query("insert into db_acount values($acount,3790,21038,'".AddSlashes(pg_result($resaco,$conresaco,'ed129_horainicio'))."','$this->ed129_horainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3790,21038,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed129_horainicio'))."','$this->ed129_horainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed129_horafim"]) || $this->ed129_horafim != "")
-             $resac = db_query("insert into db_acount values($acount,3790,21039,'".AddSlashes(pg_result($resaco,$conresaco,'ed129_horafim'))."','$this->ed129_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3790,21039,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed129_horafim'))."','$this->ed129_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -395,16 +395,16 @@ class cl_agendaatividade {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21033,'$ed129_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3790,21033,'','".AddSlashes(pg_result($resaco,$iresaco,'ed129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3790,21034,'','".AddSlashes(pg_result($resaco,$iresaco,'ed129_tipohoratrabalho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3790,21035,'','".AddSlashes(pg_result($resaco,$iresaco,'ed129_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3790,21036,'','".AddSlashes(pg_result($resaco,$iresaco,'ed129_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3790,21037,'','".AddSlashes(pg_result($resaco,$iresaco,'ed129_rechumanoativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3790,21038,'','".AddSlashes(pg_result($resaco,$iresaco,'ed129_horainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3790,21039,'','".AddSlashes(pg_result($resaco,$iresaco,'ed129_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3790,21033,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed129_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3790,21034,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed129_tipohoratrabalho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3790,21035,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed129_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3790,21036,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed129_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3790,21037,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed129_rechumanoativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3790,21038,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed129_horainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3790,21039,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed129_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

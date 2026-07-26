@@ -59,7 +59,7 @@ class cl_atendrequi {
                  m42_depto = int4 = Depart.
                  ";
    //funcao construtor da classe
-   function cl_atendrequi() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendrequi");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

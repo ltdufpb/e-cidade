@@ -55,7 +55,7 @@ class cl_programacaofinanceiraitem {
                  k175_valortotal = float8 = Valor Total 
                  ";
    //funcao construtor da classe
-   function cl_programacaofinanceiraitem() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("programacaofinanceiraitem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

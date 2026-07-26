@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,15 +66,15 @@ function js_emite(){
       <tr>
 	      <td>De:</td>
 	      <td>
-	        <?db_inputdata("data","","","","true","text",2) ?> 
+	        <?php db_inputdata("data","","","","true","text",2) ?> 
 	        <b>Até:</b>
-	        <?db_inputdata("data1","","","","true","text",2)?> 
+	        <?php db_inputdata("data1","","","","true","text",2)?> 
 	      </td>
 	    </tr>
       <tr>
         <td title="Habite-se" >Habite-se:</td>
         <td>
-          <?
+          <?php 
             $xx = array("t"=>"Todos","p"=>"Parcial","g"=>"Total");
             db_select('ordem',$xx,true,4,"");
           ?>
@@ -83,11 +83,11 @@ function js_emite(){
       <tr>
         <td>Area de:</td>
   	    <td>
-  	      <?
+  	      <?php 
             db_input('ob09_area',6,$Iob09_area,true,'text',1,"","ob09_areaINI","");             
           ?>
   	      <b>Até:</b>
-          <?
+          <?php 
             db_input('ob09_area',6,$Iob09_area,true,'text',1,"","ob09_areaFIN","");             
           ?>
   	    </td>
@@ -96,7 +96,7 @@ function js_emite(){
   </fieldset>
   <input  name="emite2" id="emite2" type="button" value="Emitir Relatório" onclick="js_emite();" >
 </form>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -105,7 +105,7 @@ function js_emite(){
 </script>
 
 
-<?
+<?php 
 if(isset($ordem)){
   echo "<script>
        js_emite();

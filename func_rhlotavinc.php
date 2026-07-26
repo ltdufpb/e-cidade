@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlotavinc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhlotavinc = new cl_rhlotavinc;
 $clrhlotavinc->rotulo->label("rh25_codlotavinc");
 $clrhlotavinc->rotulo->label("rh25_codigo");
@@ -62,7 +63,7 @@ if($filtroano) {
               <?=$Lrh25_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh25_codigo",4,$Irh25_codigo,true,"text",4,"","chave_rh25_codigo");
 		       ?>
             </td>
@@ -80,7 +81,7 @@ if($filtroano) {
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlotavinc.php")==true){
@@ -114,12 +115,12 @@ if($filtroano) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

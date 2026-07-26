@@ -37,7 +37,7 @@ require_once(modification('model/educacao/ArredondamentoNota.model.php'));
 use \ECidade\Pdf\Pdf;
 
 $oGet                   = db_utils::postMemory($_GET);
-$aAlunosSelecionados    = explode(",", $oGet->sAlunos);
+$aAlunosSelecionados    = explode(",", (string) $oGet->sAlunos);
 $lExibirReclassificacao = $oGet->sExibirReclassificacao == 't' ? true : false;
 
 $oFpdf = new Pdf("P");

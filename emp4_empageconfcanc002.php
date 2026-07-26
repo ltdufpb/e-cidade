@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,7 +85,7 @@ $numrows= $clempageconf->numrows;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
   border: 2px solid #cccccc;
   border-top-color: <?=$cor?>;
@@ -192,7 +192,7 @@ function js_calcula(campo){
 <td class='bordas02'><small><b><?=$RLe86_cheque?></b></small></td>
 <td class='bordas02'><small><b><?=$RLe81_valor?></b></small></td>
 </tr>
-<?
+<?php 
 
 for($i=0; $i<$numrows; $i++){
   db_fieldsmemory($result,$i,true);
@@ -210,7 +210,7 @@ for($i=0; $i<$numrows; $i++){
   <td class='bordas' align='center'><small><?=$e82_codord?></small></td>
   <td class='bordas' align='left'><small label='Numcgm:<?=$z01_numcgm?>'><?=$z01_nome?>  </small></td>
   <td class='bordas' align='center'><small><?=$e60_emiss?>  </small></td>
-  <?
+  <?php 
   $x= "valor_$e81_codmov";
   $$x = $e81_valor;
   db_input("valor_$e81_codmov",10,'',true,'hidden',1);
@@ -227,7 +227,7 @@ for($i=0; $i<$numrows; $i++){
   <td class='bordas' align='right'><small><?=$e86_cheque?></small></td>
   <td class='bordas' align='right'><small><?=number_format($e81_valor,"2",".","")?></small></td>
   </tr>
-  <?
+  <?php 
 }
 ?>
 </table>

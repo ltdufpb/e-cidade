@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pctipocompratribunal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpctipocompratribunal = new cl_pctipocompratribunal;
 $clpctipocompratribunal->rotulo->label("l44_sequencial");
 $clpctipocompratribunal->rotulo->label("l44_sequencial");
@@ -54,7 +55,7 @@ $clpctipocompratribunal->rotulo->label("l44_sequencial");
               <?=$Ll44_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l44_sequencial",10,$Il44_sequencial,true,"text",4,"","chave_l44_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpctipocompratribunal->rotulo->label("l44_sequencial");
               <?=$Ll44_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l44_sequencial",10,$Il44_sequencial,true,"text",4,"","chave_l44_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpctipocompratribunal->rotulo->label("l44_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pctipocompratribunal.php")==true){
@@ -122,12 +123,12 @@ $clpctipocompratribunal->rotulo->label("l44_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

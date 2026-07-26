@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -71,7 +71,7 @@ if(isset($excluir)){
   <tr> 
     <td height="430"  align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-     <?
+     <?php 
      include(modification("forms/db_frmquadracemit.php"));
      ?>
     </center>
@@ -80,7 +80,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
   if($clquadracemit->erro_status=="0"){
     $clquadracemit->erro(true,false);
@@ -98,6 +98,6 @@ if(isset($cm22_i_codigo) && $cm22_i_codigo != ""){
   parent.document.formaba.a2.disabled=false;
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='cem1_lotecemit001.php?cm23_i_quadracemit=<?=$cm22_i_codigo?>';
  </script>
- <?
+ <?php 
  }
 ?>

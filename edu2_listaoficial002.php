@@ -57,7 +57,7 @@ $oDaoTurma           = new cl_turma();
 $oDaoEscola          = new cl_escola();
 $oDaoTipoSanguineo   = new cl_tiposanguineo();
 $iEscola             = db_getsession("DB_coddepto");
-$cabecalho           = utf8_decode(base64_decode($cabecalho));
+$cabecalho           = mb_convert_encoding(base64_decode((string) $cabecalho), 'ISO-8859-1');
 $campos              = base64_decode($campos);
 
 if (isset($_GET["idadeInicial"])) {
@@ -113,29 +113,29 @@ $oPdf->exibeHeader(true, \Fpdf\Pdf::HEADER_ESCOLA);
 $oPdf->setExibeBrasao(true);
 $oPdf->AliasNbPages();
 
-$head1 = $titulorel == "" ? "LISTA OFICIAL DAS TURMAS" : base64_decode($titulorel);
+$head1 = $titulorel == "" ? "LISTA OFICIAL DAS TURMAS" : base64_decode((string) $titulorel);
 $oPdf->addTitulo($head1);
 $oPdf->AddPage($orientacao);
 
 $larguraUtil = ($oPdf->getW() - $oPdf->getRightMargin() - $oPdf->getLeftMargin());
 
-$aMeses           = array("JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ");
+$aMeses           = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
 $aCamposCabecalho = explode("|", $cabecalho);
 // Largura dos campos é enviada pelo cliente
 $aCamposLargura   = explode("|", $colunas);
-$aCamposAlinha    = explode("|", $alinhamento);
+$aCamposAlinha    = explode("|", (string) $alinhamento);
 $aCamposImpressao = explode("__", $campos);
 $campos  = implode(", ", $aCamposImpressao);
 $iLinhas = $oDaoTurma->numrows;
 
 $iLarguraMaxima      = $orientacao == "P" ? 195 : 280;
-$aCamposTexto        = array( "Nome do Aluno", "Endereço/Bairro", "Email", "Filiação 1", "Filiação 2", "CPF Filiação 1", "CPF Filiação 2", "CPF Responsável" );
-$aCamposData         = array( "ed47_d_nasc", "ed60_d_datamatricula", "ed60_d_datasaida", "ed76_d_data" );
+$aCamposTexto        = [ "Nome do Aluno", "Endereço/Bairro", "Email", "Filiação 1", "Filiação 2", "CPF Filiação 1", "CPF Filiação 2", "CPF Responsável" ];
+$aCamposData         = [ "ed47_d_nasc", "ed60_d_datamatricula", "ed60_d_datasaida", "ed76_d_data" ];
 $iSomaColunas        = array_sum($aCamposLargura);
 $aCabecalhosTexto    = array_intersect($aCamposCabecalho, $aCamposTexto);
 $iTamanhoIncrementar = floor(( $iLarguraMaxima - $iSomaColunas ) / count($aCabecalhosTexto));
-$aLarguraCorrigida   = array();
-$aCamposConcatenados = array(
+$aLarguraCorrigida   = [];
+$aCamposConcatenados = [
                               "Endereço/Bairro",
                               "Telefones",
                               "Naturalidade",
@@ -152,7 +152,7 @@ $aCamposConcatenados = array(
                               "Meses da Idade",
                               "Dias da Idade",
                               "Foto"
-                            );
+                            ];
 
 for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
     $oDadosTurmaSerie    = db_utils::fieldsmemory($rsTurmaSerie, $iContFor);
@@ -349,7 +349,7 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
                     $oPdf->cell($aLarguraCorrigida[$iContFor1]/12, 4, "", 1, $next_mes, "C", 0);
                 }
             } elseif (pg_field_name($rsMatricula, $iContFor1) == "ed47_certidaomatricula") {
-                $iMatricula = pg_result($rsMatricula, $iContFor3, $iContFor1);
+                $iMatricula = pg_fetch_result($rsMatricula, $iContFor3, $iContFor1);
                 $sMatricula = substr($iMatricula, 0, 6)." ".substr($iMatricula, 6, 2)." ".
                       substr($iMatricula, 8, 2)." ".substr($iMatricula, 10, 4)." ".
                       substr($iMatricula, 14, 1)." ".substr($iMatricula, 15, 5)." ".
@@ -357,18 +357,18 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
                       substr($iMatricula, 30, 2);
                 $oPdf->cell($aLarguraCorrigida[$iContFor1], 4, $sMatricula, 1, $next, $aCamposAlinha[$iContFor1], 0);
             } elseif (pg_field_name($rsMatricula, $iContFor1) == "anomes") {
-                $sMes = pg_result($rsMatricula, $iContFor3, $iContFor1);
+                $sMes = pg_fetch_result($rsMatricula, $iContFor3, $iContFor1);
                 $aMes = explode(",", $sMes);
                 $iMes = str_replace("meses", " ", $aMes[1]);
                 $oPdf->cell($aLarguraCorrigida[$iContFor1], 4, $iMes, 1, $next, $aCamposAlinha[$iContFor1], 0);
             } elseif (pg_field_name($rsMatricula, $iContFor1) == "idadedia") {
-                $sDia = pg_result($rsMatricula, $iContFor3, $iContFor1);
+                $sDia = pg_fetch_result($rsMatricula, $iContFor3, $iContFor1);
                 $aDia = explode(",", $sDia);
                 $iDia = str_replace("dias", " ", $aDia[2]);
                 $oPdf->cell($aLarguraCorrigida[$iContFor1], 4, $iDia, 1, $next, $aCamposAlinha[$iContFor1], 0);
             } elseif (pg_field_name($rsMatricula, $iContFor1) == "ed47_tiposanguineo") {
                 $sTipoSanguineo = "Não informado";
-                $iTipoSanguineo = pg_result($rsMatricula, $iContFor3, $iContFor1);
+                $iTipoSanguineo = pg_fetch_result($rsMatricula, $iContFor3, $iContFor1);
 
                 if (!empty($iTipoSanguineo)) {
                     $sSqlTipoSanguineo = $oDaoTipoSanguineo->sql_query_file(null, "sd100_tipo", null, " sd100_sequencial = {$iTipoSanguineo}");
@@ -378,27 +378,27 @@ for ($iContFor = 0; $iContFor < $iLinhas; $iContFor++) {
 
                 $oPdf->cell($aLarguraCorrigida[$iContFor1], 4, $sTipoSanguineo, 1, $next, $aCamposAlinha[$iContFor1], 0);
             } elseif (pg_field_name($rsMatricula, $iContFor1) == "ed47_localizacaodiferenciada") {
-                $localizacoes = array (
+                $localizacoes =  [
                     '' => "",
                     1 => "Área de assentamento",
                     2 => "Terra indígena",
                     3 => "Área onde se localiza comunidade remanescente de quilombos",
                     7 => "Não está em área de localização diferenciada"
-                );
+                ];
                 $localizacaoAluno = $localizacoes[$oDadosAluno->ed47_localizacaodiferenciada];
                 $oPdf->cell($aLarguraCorrigida[$iContFor1], 4, $localizacaoAluno, 1, $next, $aCamposAlinha[$iContFor1], 0);
             } else {
                 $sValor = "";
 
                 if (in_array($aCamposCabecalho[$iContFor1], $aCamposConcatenados)) {
-                    $sValor = pg_result($rsMatricula, $iContFor3, $iContFor1);
+                    $sValor = pg_fetch_result($rsMatricula, $iContFor3, $iContFor1);
                 } elseif (in_array($aCamposImpressao[$iContFor1], $aCamposData)) {
-                    $sValor = pg_result($rsMatricula, $iContFor3, $iContFor1);
+                    $sValor = pg_fetch_result($rsMatricula, $iContFor3, $iContFor1);
                     if (!empty($sValor)) {
                         $sValor = db_formatar($sValor, 'd');
                     }
                 } else {
-                    $sValor = isset($oDadosAluno->$aCamposImpressao[$iContFor1]) ? $oDadosAluno->$aCamposImpressao[$iContFor1] : "";
+                    $sValor = $oDadosAluno->$aCamposImpressao[$iContFor1] ?? "";
                     if ($aCamposImpressao[$iContFor1] == "ed47_v_mae as filiacao1") {
                         $sValor = $oDadosAluno->cpf_filiacao1;
                     }

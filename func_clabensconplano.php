@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_clabensconplano_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clclabensconplano = new cl_clabensconplano;
 $clclabensconplano->rotulo->label("t86_sequencial");
 $clclabensconplano->rotulo->label("t86_sequencial");
@@ -54,7 +55,7 @@ $clclabensconplano->rotulo->label("t86_sequencial");
               <?=$Lt86_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t86_sequencial",10,$It86_sequencial,true,"text",4,"","chave_t86_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clclabensconplano->rotulo->label("t86_sequencial");
               <?=$Lt86_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t86_sequencial",10,$It86_sequencial,true,"text",4,"","chave_t86_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clclabensconplano->rotulo->label("t86_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_clabensconplano.php")==true){
@@ -122,12 +123,12 @@ $clclabensconplano->rotulo->label("t86_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

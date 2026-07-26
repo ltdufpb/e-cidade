@@ -66,7 +66,7 @@ class cl_lab_laboratorio {
                  la02_interfaceado = boolean = Possui interfaceamento
                  ";
    //funcao construtor da classe
-   function cl_lab_laboratorio() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_laboratorio");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cairetordem
 class cl_cairetordem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k32_sequencia = 0; 
-   var $k32_numpre = 0; 
-   var $k32_ordpag = 0; 
+   public $k32_sequencia = 0; 
+   public $k32_numpre = 0; 
+   public $k32_ordpag = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k32_sequencia = int4 = Sequencia 
                  k32_numpre = int4 = Numpre 
                  k32_ordpag = int4 = Ordem de pagamento 
                  ";
    //funcao construtor da classe 
-   function cl_cairetordem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cairetordem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_cairetordem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k32_sequencia = pg_result($result,0,0); 
+       $this->k32_sequencia = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cairetordem_k32_sequencia_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k32_sequencia)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k32_sequencia)){
          $this->erro_sql = " Campo k32_sequencia maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_cairetordem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Retenções de ordem de pagamento ($this->k32_sequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Retenções de ordem de pagamento já Cadastrado";
@@ -166,12 +166,12 @@ class cl_cairetordem {
      $resaco = $this->sql_record($this->sql_query_file($this->k32_sequencia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8865,'$this->k32_sequencia','I')");
-       $resac = db_query("insert into db_acount values($acount,1511,8865,'','".AddSlashes(pg_result($resaco,0,'k32_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1511,8866,'','".AddSlashes(pg_result($resaco,0,'k32_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1511,8867,'','".AddSlashes(pg_result($resaco,0,'k32_ordpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1511,8865,'','".AddSlashes(pg_fetch_result($resaco,0,'k32_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1511,8866,'','".AddSlashes(pg_fetch_result($resaco,0,'k32_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1511,8867,'','".AddSlashes(pg_fetch_result($resaco,0,'k32_ordpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_cairetordem {
       $this->atualizacampos();
      $sql = " update cairetordem set ";
      $virgula = "";
-     if(trim($this->k32_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k32_sequencia"])){ 
+     if(trim((string) $this->k32_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k32_sequencia"])){ 
        $sql  .= $virgula." k32_sequencia = $this->k32_sequencia ";
        $virgula = ",";
-       if(trim($this->k32_sequencia) == null ){ 
+       if(trim((string) $this->k32_sequencia) == null ){ 
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "k32_sequencia";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_cairetordem {
          return false;
        }
      }
-     if(trim($this->k32_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k32_numpre"])){ 
+     if(trim((string) $this->k32_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k32_numpre"])){ 
        $sql  .= $virgula." k32_numpre = $this->k32_numpre ";
        $virgula = ",";
-       if(trim($this->k32_numpre) == null ){ 
+       if(trim((string) $this->k32_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "k32_numpre";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_cairetordem {
          return false;
        }
      }
-     if(trim($this->k32_ordpag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k32_ordpag"])){ 
+     if(trim((string) $this->k32_ordpag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k32_ordpag"])){ 
        $sql  .= $virgula." k32_ordpag = $this->k32_ordpag ";
        $virgula = ",";
-       if(trim($this->k32_ordpag) == null ){ 
+       if(trim((string) $this->k32_ordpag) == null ){ 
          $this->erro_sql = " Campo Ordem de pagamento nao Informado.";
          $this->erro_campo = "k32_ordpag";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_cairetordem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8865,'$this->k32_sequencia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k32_sequencia"]))
-           $resac = db_query("insert into db_acount values($acount,1511,8865,'".AddSlashes(pg_result($resaco,$conresaco,'k32_sequencia'))."','$this->k32_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1511,8865,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k32_sequencia'))."','$this->k32_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k32_numpre"]))
-           $resac = db_query("insert into db_acount values($acount,1511,8866,'".AddSlashes(pg_result($resaco,$conresaco,'k32_numpre'))."','$this->k32_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1511,8866,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k32_numpre'))."','$this->k32_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k32_ordpag"]))
-           $resac = db_query("insert into db_acount values($acount,1511,8867,'".AddSlashes(pg_result($resaco,$conresaco,'k32_ordpag'))."','$this->k32_ordpag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1511,8867,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k32_ordpag'))."','$this->k32_ordpag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_cairetordem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8865,'$k32_sequencia','E')");
-         $resac = db_query("insert into db_acount values($acount,1511,8865,'','".AddSlashes(pg_result($resaco,$iresaco,'k32_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1511,8866,'','".AddSlashes(pg_result($resaco,$iresaco,'k32_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1511,8867,'','".AddSlashes(pg_result($resaco,$iresaco,'k32_ordpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1511,8865,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k32_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1511,8866,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k32_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1511,8867,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k32_ordpag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cairetordem
@@ -345,7 +345,7 @@ class cl_cairetordem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cairetordem";
@@ -359,7 +359,7 @@ class cl_cairetordem {
    function sql_query ( $k32_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_cairetordem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_cairetordem {
    function sql_query_file ( $k32_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_cairetordem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

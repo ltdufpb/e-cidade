@@ -36,7 +36,7 @@ class PeriodoAvaliacaoRepository {
    * Coleção de PeriodoAvaliacao
    * @var array
    */
-  private $aPeriodoAvaliacao = array();
+  private $aPeriodoAvaliacao = [];
 
   /**
    * Instancia da classe
@@ -105,7 +105,7 @@ class PeriodoAvaliacaoRepository {
    */
   public static function getPeriodosCriteriosAvaliacaoPorEscola( Escola $oEscola ) {
 
-    $aPeriodoAvaliacao      = array();
+    $aPeriodoAvaliacao      = [];
     $oDaoPeriodoAvaliacao   = new cl_criterioavaliacaoperiodoavaliacao();
     $sWherePeriodoAvaliacao = "ed338_escola = {$oEscola->getCodigo()}";
     $sSqlPeriodoAvaliacao   = $oDaoPeriodoAvaliacao->sql_query( null, "ed09_i_codigo", null, $sWherePeriodoAvaliacao );

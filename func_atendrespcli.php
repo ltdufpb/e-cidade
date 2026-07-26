@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendrespcli_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatendrespcli = new cl_atendrespcli;
 $clrotulo = new rotulocampo;
 $clatendrespcli->rotulo->label("at84_seq");
@@ -55,7 +56,7 @@ $clrotulo->label("nome");
               <?=$Lat84_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at84_seq",6,$Iat84_seq,true,"text",4,"","chave_at84_seq");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clrotulo->label("nome");
               <?=$Lnome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("nome",40,$Inome,true,"text",4,"","chave_nome");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clrotulo->label("nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendrespcli.php")==true){
@@ -123,12 +124,12 @@ $clrotulo->label("nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

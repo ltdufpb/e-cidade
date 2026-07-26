@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gestaodepartamentoprocesso_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clgestaodepartamentoprocesso = new cl_gestaodepartamentoprocesso;
 $clgestaodepartamentoprocesso->rotulo->label("p103_db_depart");
@@ -27,7 +28,7 @@ $iUsuario = db_getsession("DB_id_usuario");
         <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
             <tr>
                 <td><label><?= $Lp103_db_depart ?></label></td>
-                <td><? db_input("p103_db_depart", 10, $Ip103_db_depart, true, "text", 4, "",
+                <td><?php  db_input("p103_db_depart", 10, $Ip103_db_depart, true, "text", 4, "",
                         "chave_p103_db_depart"); ?></td>
             </tr>
         </table>
@@ -37,7 +38,7 @@ $iUsuario = db_getsession("DB_id_usuario");
     <input name="Fechar" type="button" id="fechar" value="Fechar"
            onClick="parent.db_iframe_gestaodepartamentoprocesso.hide();">
 </form>
-<?
+<?php 
 $sOrdenacao = 'p103_db_depart';
 
 if (isset($campos) == false) {
@@ -112,12 +113,12 @@ if (!isset($pesquisa_chave)) {
 }
 ?>
 </body>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
     </script>
-    <?
+    <?php 
 }
 ?>
 <script>

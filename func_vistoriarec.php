@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vistoriarec_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvistoriarec = new cl_vistoriarec;
 $clvistoriarec->rotulo->label("y76_codvist");
 $clvistoriarec->rotulo->label("y76_receita");
@@ -55,7 +56,7 @@ $clvistoriarec->rotulo->label("y76_valor");
               <?=$Ly76_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y76_codvist",10,$Iy76_codvist,true,"text",4,"","chave_y76_codvist");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clvistoriarec->rotulo->label("y76_valor");
               <?=$Ly76_receita?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y76_receita",4,$Iy76_receita,true,"text",4,"","chave_y76_receita");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clvistoriarec->rotulo->label("y76_valor");
               <?=$Ly76_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y76_valor",10,$Iy76_valor,true,"text",4,"","chave_y76_valor");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clvistoriarec->rotulo->label("y76_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistoriarec.php")==true){
@@ -129,12 +130,12 @@ $clvistoriarec->rotulo->label("y76_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parcustos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clparcustos = new cl_parcustos;
 $clparcustos->rotulo->label("cc09_anousu");
 $clparcustos->rotulo->label("cc09_mascaracustoplano");
@@ -54,7 +55,7 @@ $clparcustos->rotulo->label("cc09_mascaracustoplano");
               <?=$Lcc09_mascaracustoplano?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cc09_mascaracustoplano",8,$Icc09_mascaracustoplano,true,"text",4,"","chave_cc09_mascaracustoplano");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clparcustos->rotulo->label("cc09_mascaracustoplano");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parcustos.php")==true){
@@ -112,12 +113,12 @@ $clparcustos->rotulo->label("cc09_mascaracustoplano");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

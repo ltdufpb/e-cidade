@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("classes/db_mer_cardapio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_desperdicio = new cl_mer_desperdicio;
 $clmer_cardapio = new cl_mer_cardapio;
 $clmer_desperdicio->rotulo->label("me22_i_codigo");
@@ -56,7 +57,7 @@ $clmer_cardapio->rotulo->label("me01_c_nome");
       <?=$Lme22_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me22_i_codigo",4,$Ime22_i_codigo,true,"text",4,"","chave_me22_i_codigo");?>
+      <?php db_input("me22_i_codigo",4,$Ime22_i_codigo,true,"text",4,"","chave_me22_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +65,7 @@ $clmer_cardapio->rotulo->label("me01_c_nome");
       <?=$Lme01_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me01_c_nome",20,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
+      <?php db_input("me01_c_nome",20,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $clmer_cardapio->rotulo->label("me01_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    if (!isset($pesquisa_chave)) {
    	

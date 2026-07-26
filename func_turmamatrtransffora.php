@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -35,7 +35,8 @@ require_once(modification('libs/db_utils.php'));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clserie  = new cl_serie;
 $clturma  = new cl_turma;
@@ -115,7 +116,7 @@ if ( isset( $oGet->lReclassificacao ) ) {
  <tr>
   <td align="center" valign="top">
    <br><b>Turmas em <?=$anocalendario?>:</b><br><br>
-   <?
+   <?php 
    $sWhere = '';
    $sSep   = '';
 

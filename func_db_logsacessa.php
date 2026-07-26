@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_logsacessa_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_logsacessa = new cl_db_logsacessa;
 $cldb_logsacessa->rotulo->label("codsequen");
 $cldb_logsacessa->rotulo->label("data");
@@ -54,7 +55,7 @@ $cldb_logsacessa->rotulo->label("data");
               <?=$Lcodsequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codsequen",6,$Icodsequen,true,"text",4,"","chave_codsequen");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_logsacessa->rotulo->label("data");
               <?=$Ldata?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("data",8,$Idata,true,"text",4,"","chave_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_logsacessa->rotulo->label("data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_logsacessa.php")==true){
@@ -122,12 +123,12 @@ $cldb_logsacessa->rotulo->label("data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

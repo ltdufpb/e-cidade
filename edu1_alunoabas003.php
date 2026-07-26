@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,12 +53,12 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1"=>"Dados Pessoais","a2"=>"Documentos","a3"=>"Cursos","a4"=>"Documentos Pendentes","a5"=>"Necessidades Especiais","a6"=>"Histórico");
-   $clcriaabas->sizecampo  = array("a1"=>"15","a2"=>"10","a3"=>"15","a4"=>"25","a5"=>"25","a6"=>"15");
-   $clcriaabas->src        = array("a1"=>"edu1_alunodados003.php","a2"=>"","a3"=>"","a4"=>"","a5"=>"","a6"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Dados Pessoais","a2"=>"Documentos","a3"=>"Cursos","a4"=>"Documentos Pendentes","a5"=>"Necessidades Especiais","a6"=>"Histórico"];
+   $clcriaabas->sizecampo  = ["a1"=>"15","a2"=>"10","a3"=>"15","a4"=>"25","a5"=>"25","a6"=>"15"];
+   $clcriaabas->src        = ["a1"=>"edu1_alunodados003.php","a2"=>"","a3"=>"","a4"=>"","a5"=>"","a6"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->scrolling = "no";
    $clcriaabas->iframe_height = "1200";
@@ -69,6 +69,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

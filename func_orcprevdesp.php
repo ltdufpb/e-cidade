@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprevdesp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcprevdesp = new cl_orcprevdesp;
 $clorcprevdesp->rotulo->label("o35_anousu");
 $clorcprevdesp->rotulo->label("o35_projativ");
@@ -57,7 +58,7 @@ $clorcprevdesp->rotulo->label("o35_projativ");
               <?=$Lo35_projativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o35_projativ",4,$Io35_projativ,true,"text",4,"","chave_o35_projativ");
 		       ?>
             </td>
@@ -67,7 +68,7 @@ $clorcprevdesp->rotulo->label("o35_projativ");
               <?=$Lo35_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o35_codigo",4,$Io35_codigo,true,"text",4,"","chave_o35_codigo");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $clorcprevdesp->rotulo->label("o35_projativ");
               <?=$Lo35_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o35_mes",2,$Io35_mes,true,"text",4,"","chave_o35_mes");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $clorcprevdesp->rotulo->label("o35_projativ");
               <?=$Lo35_projativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o35_projativ",4,$Io35_projativ,true,"text",4,"","chave_o35_projativ");
 		       ?>
             </td>
@@ -105,7 +106,7 @@ $clorcprevdesp->rotulo->label("o35_projativ");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcprevdesp.php")==true){
@@ -141,12 +142,12 @@ $clorcprevdesp->rotulo->label("o35_projativ");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

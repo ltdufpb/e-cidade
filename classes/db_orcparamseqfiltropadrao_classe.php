@@ -62,7 +62,7 @@ class cl_orcparamseqfiltropadrao
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("orcparamseqfiltropadrao");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -150,7 +150,7 @@ class cl_orcparamseqfiltropadrao
                 $this->erro_status = "0";
                 return false;
             }
-            $this->o132_sequencial = pg_result($result, 0, 0);
+            $this->o132_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $this->o132_sequencial = $o132_sequencial;
         }
@@ -183,7 +183,7 @@ class cl_orcparamseqfiltropadrao
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Configuração Padrao das linhas do Relatorio ($this->o132_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Configuração Padrao das linhas do Relatorio já Cadastrado";
@@ -219,30 +219,30 @@ class cl_orcparamseqfiltropadrao
         $resaco = $this->sql_record($this->sql_query_file($this->o132_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,15417,'$this->o132_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,2706,15417,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2706,15417,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o132_sequencial'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2706,15418,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2706,15418,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o132_orcparamrel'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2706,15419,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2706,15419,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o132_orcparamseq'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2706,15421,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2706,15421,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o132_anousu'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2706,15420,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,2706,15420,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o132_filtro'
@@ -261,10 +261,10 @@ class cl_orcparamseqfiltropadrao
         $this->atualizacampos();
         $sql = " UPDATE orcparamseqfiltropadrao SET ";
         $virgula = "";
-        if (trim($this->o132_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"])) {
+        if (trim((string) $this->o132_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"])) {
             $sql .= $virgula . " o132_sequencial = $this->o132_sequencial ";
             $virgula = ",";
-            if (trim($this->o132_sequencial) == null) {
+            if (trim((string) $this->o132_sequencial) == null) {
                 $this->erro_sql = " Campo Código Sequencial nao Informado.";
                 $this->erro_campo = "o132_sequencial";
                 $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_orcparamseqfiltropadrao
                 return false;
             }
         }
-        if (trim($this->o132_orcparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"])) {
+        if (trim((string) $this->o132_orcparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"])) {
             $sql .= $virgula . " o132_orcparamrel = $this->o132_orcparamrel ";
             $virgula = ",";
-            if (trim($this->o132_orcparamrel) == null) {
+            if (trim((string) $this->o132_orcparamrel) == null) {
                 $this->erro_sql = " Campo Código do Relatório nao Informado.";
                 $this->erro_campo = "o132_orcparamrel";
                 $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_orcparamseqfiltropadrao
                 return false;
             }
         }
-        if (trim($this->o132_orcparamseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"])) {
+        if (trim((string) $this->o132_orcparamseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"])) {
             $sql .= $virgula . " o132_orcparamseq = $this->o132_orcparamseq ";
             $virgula = ",";
-            if (trim($this->o132_orcparamseq) == null) {
+            if (trim((string) $this->o132_orcparamseq) == null) {
                 $this->erro_sql = " Campo Sequencia da Linha nao Informado.";
                 $this->erro_campo = "o132_orcparamseq";
                 $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_orcparamseqfiltropadrao
                 return false;
             }
         }
-        if (trim($this->o132_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"])) {
+        if (trim((string) $this->o132_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"])) {
             $sql .= $virgula . " o132_anousu = $this->o132_anousu ";
             $virgula = ",";
-            if (trim($this->o132_anousu) == null) {
+            if (trim((string) $this->o132_anousu) == null) {
                 $this->erro_sql = " Campo Ano da Configuração nao Informado.";
                 $this->erro_campo = "o132_anousu";
                 $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_orcparamseqfiltropadrao
                 return false;
             }
         }
-        if (trim($this->o132_filtro) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_filtro"])) {
+        if (trim((string) $this->o132_filtro) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o132_filtro"])) {
             $sql .= $virgula . " o132_filtro = '$this->o132_filtro' ";
             $virgula = ",";
         }
@@ -341,39 +341,39 @@ class cl_orcparamseqfiltropadrao
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,15417,'$this->o132_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"]) || $this->o132_sequencial != "") {
-                    $resac = db_query("insert into db_acount values($acount,2706,15417,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2706,15417,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o132_sequencial'
                         )) . "','$this->o132_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"]) || $this->o132_orcparamrel != "") {
-                    $resac = db_query("insert into db_acount values($acount,2706,15418,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2706,15418,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o132_orcparamrel'
                         )) . "','$this->o132_orcparamrel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"]) || $this->o132_orcparamseq != "") {
-                    $resac = db_query("insert into db_acount values($acount,2706,15419,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2706,15419,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o132_orcparamseq'
                         )) . "','$this->o132_orcparamseq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"]) || $this->o132_anousu != "") {
-                    $resac = db_query("insert into db_acount values($acount,2706,15421,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2706,15421,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o132_anousu'
                         )) . "','$this->o132_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o132_filtro"]) || $this->o132_filtro != "") {
-                    $resac = db_query("insert into db_acount values($acount,2706,15420,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,2706,15420,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o132_filtro'
@@ -437,30 +437,30 @@ class cl_orcparamseqfiltropadrao
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,15417,'$o132_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,2706,15417,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2706,15417,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o132_sequencial'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2706,15418,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2706,15418,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o132_orcparamrel'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2706,15419,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2706,15419,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o132_orcparamseq'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2706,15421,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2706,15421,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o132_anousu'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2706,15420,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,2706,15420,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o132_filtro'
@@ -542,7 +542,7 @@ class cl_orcparamseqfiltropadrao
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:orcparamseqfiltropadrao";
@@ -588,7 +588,7 @@ class cl_orcparamseqfiltropadrao
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -626,7 +626,7 @@ class cl_orcparamseqfiltropadrao
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

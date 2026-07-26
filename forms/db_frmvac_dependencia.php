@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,26 +40,26 @@ $clrotulo->label("vc07_c_nome");
        <?=@$Lvc09_i_codigo?>
     </td>
     <td> 
-     <?db_input('vc09_i_codigo',10,$Ivc09_i_codigo,true,'text',3,"")?>
+     <?php db_input('vc09_i_codigo',10,$Ivc09_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc09_i_dependente?>">
-    <?db_ancora(@$Lvc09_i_dependente,"",3);?>
+    <?php db_ancora(@$Lvc09_i_dependente,"",3);?>
     </td>
     <td> 
-     <?db_input('vc09_i_dependente',10,$Ivc09_i_dependente,true,'text',3,"")?>
-     <?db_input('dependente',30,$Ivc07_c_nome,true,'text',3,'')?>
+     <?php db_input('vc09_i_dependente',10,$Ivc09_i_dependente,true,'text',3,"")?>
+     <?php db_input('dependente',30,$Ivc07_c_nome,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc09_i_dependencia?>">
-     <?db_ancora(@$Lvc09_i_dependencia,"js_pesquisavc09_i_dependencia(true);",$db_opcao);?>
+     <?php db_ancora(@$Lvc09_i_dependencia,"js_pesquisavc09_i_dependencia(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('vc09_i_dependencia',10,$Ivc09_i_dependencia,true,'text',$db_opcao,
+     <?php db_input('vc09_i_dependencia',10,$Ivc09_i_dependencia,true,'text',$db_opcao,
                 " onchange='js_pesquisavc09_i_dependencia(false);'")?>
-     <?db_input('vc07_c_nome',30,$Ivc07_c_nome,true,'text',3,'')?>
+     <?php db_input('vc07_c_nome',30,$Ivc07_c_nome,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -67,7 +67,7 @@ $clrotulo->label("vc07_c_nome");
        <?=@$Lvc09_i_situacao?>
     </td>
     <td> 
-    <?
+    <?php 
      $x = array('1'=>'ATIVA','2'=>'INATIVA');
      db_select('vc09_i_situacao',$x,true,$db_opcao,"");
     ?>
@@ -92,7 +92,7 @@ $clrotulo->label("vc07_c_nome");
 </fieldset>
 <br><br>
 
-<?
+<?php 
   $chavepri= array("vc09_i_codigo"=>@$vc09_i_codigo);
   $oIframeAE->chavepri=$chavepri;
   if (isset($vc09_i_dependente) && $vc09_i_dependente != "") {
@@ -185,7 +185,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_dependencia.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

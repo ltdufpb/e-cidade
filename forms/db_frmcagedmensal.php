@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,7 +42,7 @@ $clrotulo->label("z01_nome");
               <b>Ano / Mês:</b>
             </td>
             <td nowrap>
-              <?
+              <?php 
               if(!isset($mesusu)){
                 $mesusu = DBPessoal::getMesFolha();
               }
@@ -53,7 +53,7 @@ $clrotulo->label("z01_nome");
               db_input('anousu',4,1,true,'text',1);
               ?>
               <b>/</b>
-              <?
+              <?php 
               db_input('mesusu',2,1,true,'text',1);
               ?>
             </td>
@@ -63,7 +63,7 @@ $clrotulo->label("z01_nome");
               <b>Autorização:</b>
             </td>
             <td> 
-              <?
+              <?php 
               $autorizacao = 0;
               db_input('autorizacao',6,1,true,'text',1);
               db_input('digautoriza',1,1,true,'text',1);
@@ -75,7 +75,7 @@ $clrotulo->label("z01_nome");
               <b>Alteração:</b>
             </td>
             <td> 
-              <?
+              <?php 
               $alteracao = 1;
               $arr_alteracao= array("1"=>"Nada a alterar","2"=>"Alterar dados cadastrais","3"=>"Encerramento de atividades");
               db_select('alteracao',$arr_alteracao,true,1,"");
@@ -87,7 +87,7 @@ $clrotulo->label("z01_nome");
               <b>Primeira declaração:</b>
             </td>
             <td> 
-              <?
+              <?php 
               $primeiradeclaracao = 2;
               $arr_primeiradeclaracao= array("1"=>"Primeira declaração","2"=>"Já informou");
               db_select('primeiradeclaracao',$arr_primeiradeclaracao,true,1,"");
@@ -108,7 +108,7 @@ $clrotulo->label("z01_nome");
               <b>DDD / Telefone:</b>
             </td>
             <td> 
-              <?
+              <?php 
 	            echo "<b></b>";
               db_input('ddd',4,1,true,'text',1);
               db_input('codarea',4,1,true,'text',1);
@@ -122,7 +122,7 @@ $clrotulo->label("z01_nome");
               <b>Ramal:</b>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('ramal',4,1,true,'text',1);
               ?>
             </td>
@@ -164,7 +164,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

@@ -16,7 +16,7 @@ class HabilidadeReferencialCurricularEstadualRegistry
     /**
      * @var HabilidadeReferencialCurricularEstadual[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param HabilidadeReferencialCurricularEstadual $habilidadeReferencial
@@ -33,7 +33,7 @@ class HabilidadeReferencialCurricularEstadualRegistry
      */
     public static function get($id)
     {
-        if (!array_key_exists($id, self::$storage)) {
+        if (!array_key_exists((string) $id, self::$storage)) {
             $repository = new HabilidadeReferencialCurricularEstadualRepository();
             $habilidadeReferencial = $repository->find($id);
             if (is_null($habilidadeReferencial)) {

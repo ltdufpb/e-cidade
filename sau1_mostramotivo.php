@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,8 +50,8 @@ $db_opcao = 1;
    <b>Grupo:</b>
   </td>
   <td>
-   <?db_input('grupo',10,@$Igrupo,true,'text',$db_opcao,"")?>
-   <?db_input('nomegrupo',40,@$Inomegrupo,true,'text',3,"")?>
+   <?php db_input('grupo',10,@$Igrupo,true,'text',$db_opcao,"")?>
+   <?php db_input('nomegrupo',40,@$Inomegrupo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -59,8 +59,8 @@ $db_opcao = 1;
    <b>CID:</b>
   </td>
   <td>
-   <?db_input('cid',10,@$Icid,true,'text',$db_opcao,"")?>
-   <?db_input('nomecid',40,@$Inomecid,true,'text',3,"")?>
+   <?php db_input('cid',10,@$Icid,true,'text',$db_opcao,"")?>
+   <?php db_input('nomecid',40,@$Inomecid,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -68,7 +68,7 @@ $db_opcao = 1;
    <b>Motivo:</b>
   </td>
   <td>
-   <?db_textarea('motivo',2,60,@$Imotivo,true,'text',$db_opcao,"")?>
+   <?php db_textarea('motivo',2,60,@$Imotivo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>

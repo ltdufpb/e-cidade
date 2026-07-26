@@ -83,52 +83,19 @@ class CalculoMediaRubrica {
 
     $iTipoMedia = ($sTipoCalculo == CalculoMediaRubrica::TIPO_CALCULO_FERIAS) ? $oRubrica->getMediaFerias() : $oRubrica->getMedia13oSalario();
 
-    switch ($iTipoMedia) {
-      
-      case CalculoMediaRubrica::SEM_MEDIA:
-        $this->setInstancia(new CalculoMediaRubricaSemMedia($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-
-      case CalculoMediaRubrica::MEDIA_VALOR_INTEGRAL_EXISTINDO_FIXO:
-        $this->setInstancia(new CalculoMediaRubricaValorIntegralFixo($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-
-      case CalculoMediaRubrica::MEDIA_VALOR_INTEGRAL :
-        $this->setInstancia(new CalculoMediaRubricaValorIntegral($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-
-      case CalculoMediaRubrica::PROPORCIONAL_NUMERO_MESES_EXISTINDO_FIXO :
-        $this->setInstancia(new CalculoMediaRubricaProporcionalMesesFixo($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-
-      case CalculoMediaRubrica::PROPORCIONAL_MESES : 
-        $this->setInstancia(new CalculoMediaRubricaProporcionalMeses($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-
-      case CalculoMediaRubrica::MEDIA_POR_QUANTIDADE_EXISTINDO_FIXO :
-        $this->setInstancia(new CalculoMediaRubricaQuantidadeFixo($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-
-      case CalculoMediaRubrica::MEDIA_POR_QUANTIDADE :
-        $this->setInstancia(new CalculoMediaRubricaPorQuantidade($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-        
-      case CalculoMediaRubrica::EXISTINDO_INTEGRAL : 
-        $this->setInstancia(new CalculoMediaRubricaExistindoIntegral($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-        
-      case CalculoMediaRubrica::MEDIA_DE_VALORES : 
-        $this->setInstancia(new CalculoMediaRubricaMediaValores($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-        
-      case CalculoMediaRubrica::MEDIA_OCORRENCIA_VALORES :
-        $this->setInstancia(new CalculoMediaRubricaOcorrenciaValores($oServidor, $oRubrica, $oDataInicial, $oDataFinal));
-      break;
-
-      default :
-        throw new BusinessException('Tipo de média não informada ou inválida.');
-      break;   
-    }
+    match ($iTipoMedia) {
+        CalculoMediaRubrica::SEM_MEDIA => $this->setInstancia(new CalculoMediaRubricaSemMedia($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::MEDIA_VALOR_INTEGRAL_EXISTINDO_FIXO => $this->setInstancia(new CalculoMediaRubricaValorIntegralFixo($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::MEDIA_VALOR_INTEGRAL => $this->setInstancia(new CalculoMediaRubricaValorIntegral($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::PROPORCIONAL_NUMERO_MESES_EXISTINDO_FIXO => $this->setInstancia(new CalculoMediaRubricaProporcionalMesesFixo($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::PROPORCIONAL_MESES => $this->setInstancia(new CalculoMediaRubricaProporcionalMeses($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::MEDIA_POR_QUANTIDADE_EXISTINDO_FIXO => $this->setInstancia(new CalculoMediaRubricaQuantidadeFixo($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::MEDIA_POR_QUANTIDADE => $this->setInstancia(new CalculoMediaRubricaPorQuantidade($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::EXISTINDO_INTEGRAL => $this->setInstancia(new CalculoMediaRubricaExistindoIntegral($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::MEDIA_DE_VALORES => $this->setInstancia(new CalculoMediaRubricaMediaValores($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        CalculoMediaRubrica::MEDIA_OCORRENCIA_VALORES => $this->setInstancia(new CalculoMediaRubricaOcorrenciaValores($oServidor, $oRubrica, $oDataInicial, $oDataFinal)),
+        default => throw new BusinessException('Tipo de média não informada ou inválida.'),
+    };
   }
   
   /**

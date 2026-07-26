@@ -41,13 +41,13 @@ class ExportacaoCenso2014 extends ExportacaoCensoBase implements IExportacaoCens
    * Coleção das turmas únicas ( turmas vinculadas na tabela turmacenso)
    * @var array
    */
-  private $aTurmasUnicas          = array();
+  private $aTurmasUnicas          = [];
   
   /**
    * Coleção das turmas que não devem ir no arquivo do censo pois compartilham a mesma sala e não são a turma principal.
    * @var array
    */
-  private $aTurmasNaoVaiNoArquivo = array();
+  private $aTurmasNaoVaiNoArquivo = [];
 
   public function __construct($iCodigoEscola, $iAnoCenso) {
 
@@ -94,6 +94,7 @@ class ExportacaoCenso2014 extends ExportacaoCensoBase implements IExportacaoCens
   /**
    * Método que busca as turmas da escola
    */
+  #[\Override]
   protected function getDadosCensoTurma() {
 
     $this->getTurmasUnicas();

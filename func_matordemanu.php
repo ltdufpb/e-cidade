@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matordemanu_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatordemanu = new cl_matordemanu;
 $clmatordemanu->rotulo->label("m53_codordem");
 $clmatordemanu->rotulo->label("m53_obs");
@@ -54,7 +55,7 @@ $clmatordemanu->rotulo->label("m53_obs");
               <?=$Lm53_codordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m53_codordem",10,$Im53_codordem,true,"text",4,"","chave_m53_codordem");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmatordemanu->rotulo->label("m53_obs");
               <?=$Lm53_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m53_obs",1,$Im53_obs,true,"text",4,"","chave_m53_obs");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmatordemanu->rotulo->label("m53_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matordemanu.php")==true){
@@ -118,12 +119,12 @@ $clmatordemanu->rotulo->label("m53_obs");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

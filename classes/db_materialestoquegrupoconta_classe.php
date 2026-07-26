@@ -56,7 +56,7 @@ class cl_materialestoquegrupoconta {
                  m66_codconvpd = int4 = Conta VPD
                  ";
    //funcao construtor da classe
-   function cl_materialestoquegrupoconta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("materialestoquegrupoconta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

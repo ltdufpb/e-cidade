@@ -280,7 +280,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                         </td>
                       </tr>
 
-            <? if ( $oGet->tipo == "urbano" ) {?>
+            <?php  if ( $oGet->tipo == "urbano" ) {?>
 
                       <tr>
                         <td colspan="1" nowrap title="<?php echo $Tit05_itbisituacao; ?>">
@@ -296,7 +296,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                         </td>
                       </tr>
 
-            <? } else { ?>
+            <?php  } else { ?>
 
                       <tr>
                         <td colspan="1">
@@ -378,7 +378,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                         </td>
                       </tr>
 
-            <? } ?>
+            <?php  } ?>
 
                     </table>
                   </fieldset>
@@ -624,7 +624,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
                   <strong>Valor Total:</strong>
                 </td>
                 <td colspan="1">
-                  <?
+                  <?php 
                     db_input('it01_valortransacao',20,$Iit01_valortransacao,true,'text',$db_opcao,"onkeyup='jsFormataMoeda(this, (nValor) => {js_validaValores(this);})'", "", "", "", 50, true);
                   ?>
                 </td>

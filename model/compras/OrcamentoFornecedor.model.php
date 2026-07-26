@@ -32,11 +32,6 @@ class OrcamentoFornecedor
 {
 
     /**
-     * @var integer do Orcamento
-     */
-    private $iCodigo;
-
-    /**
      * @var CgmJuridico|CgmFisico
      */
     private $oFornecedor = null;
@@ -45,7 +40,7 @@ class OrcamentoFornecedor
      * Cotacoes
      * @var CotacaoItem[]
      */
-    private $aCotacoes = array();
+    private $aCotacoes = [];
 
     /**
      * @var OrcamentoCompra
@@ -67,10 +62,9 @@ class OrcamentoFornecedor
     /**
      * @param null $iCodigo
      */
-    public function __construct($iCodigo = null)
+    public function __construct(private $iCodigo = null)
     {
 
-        $this->iCodigo = $iCodigo;
         if (empty($this->iCodigo)) {
             return;
         }
@@ -156,7 +150,7 @@ class OrcamentoFornecedor
      * Prazo de entrega dos materiais/ servico
      * @param DBDate $oPrazoEntrega
      */
-    public function setPrazoEntrega(DBDate $oPrazoEntrega = null)
+    public function setPrazoEntrega(?DBDate $oPrazoEntrega = null)
     {
         $this->oPrazoEntrega = $oPrazoEntrega;
     }
@@ -173,7 +167,7 @@ class OrcamentoFornecedor
      * Data de validade do orçamento
      * @param DBDate $oValidadeOrcamento
      */
-    public function setValidadeOrcamento(DBDate $oValidadeOrcamento = null)
+    public function setValidadeOrcamento(?DBDate $oValidadeOrcamento = null)
     {
         $this->oValidadeOrcamento = $oValidadeOrcamento;
     }

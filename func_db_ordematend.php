@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_ordematend_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_ordematend = new cl_db_ordematend;
 $cldb_ordematend->rotulo->label("or10_codordem");
 $cldb_ordematend->rotulo->label("or10_codatend");
@@ -56,7 +57,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_codordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("or10_codordem",10,$Ior10_codordem,true,"text",4,"","chave_or10_codordem");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_codatend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("or10_codatend",6,$Ior10_codatend,true,"text",4,"","chave_or10_codatend");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("or10_seq",4,$Ior10_seq,true,"text",4,"","chave_or10_seq");
 		       ?>
             </td>
@@ -86,7 +87,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
               <?=$Lor10_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("or10_seq",4,$Ior10_seq,true,"text",4,"","chave_or10_seq");
 		       ?>
             </td>
@@ -104,7 +105,7 @@ $cldb_ordematend->rotulo->label("or10_seq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_ordematend.php")==true){
@@ -140,12 +141,12 @@ $cldb_ordematend->rotulo->label("or10_seq");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

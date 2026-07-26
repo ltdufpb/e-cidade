@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomovimentoservidor
 class cl_rhconsignadomovimentoservidor { 
@@ -30,7 +30,7 @@ class cl_rhconsignadomovimentoservidor {
                  rh152_consignadomotivo = int4 = Motivo 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomovimentoservidor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomovimentoservidor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

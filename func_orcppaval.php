@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcppaval_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcppaval = new cl_orcppaval;
 $clorcppaval->rotulo->label("o24_codseqppa");
 $clorcppaval->rotulo->label("o24_codppa");
@@ -54,7 +55,7 @@ $clorcppaval->rotulo->label("o24_codppa");
               <?=$Lo24_codseqppa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o24_codseqppa",8,$Io24_codseqppa,true,"text",4,"","chave_o24_codseqppa");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcppaval->rotulo->label("o24_codppa");
               <?=$Lo24_codppa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o24_codppa",8,$Io24_codppa,true,"text",4,"","chave_o24_codppa");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcppaval->rotulo->label("o24_codppa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcppaval.php")==true){
@@ -118,12 +119,12 @@ $clorcppaval->rotulo->label("o24_codppa");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

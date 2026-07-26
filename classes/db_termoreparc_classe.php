@@ -52,7 +52,7 @@ class cl_termoreparc {
                  v08_parcelorigem = int4 = Código do Parcelamento 
                  ";
    //funcao construtor da classe 
-   public function cl_termoreparc() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termoreparc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

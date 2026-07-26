@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -34,7 +34,8 @@ require_once(modification("classes/db_orcdotacao_classe.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcdotacao = new cl_orcdotacao;
 $clorcdotacao->rotulo->label("o58_anousu");
 $clorcdotacao->rotulo->label("o58_coddot");
@@ -59,10 +60,10 @@ $clorcparametro = new cl_orcparametro;
                 <?=$Lo58_coddot?>
               </td>
               <td width="96%" align="left" nowrap>
-                <? db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?>
+                <?php  db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot"); ?>
               </td>
             </tr>
-            <?
+            <?php 
             $clestrutura->nomeform="form2";//o nome do campo é DB_txtdotacao
             $clestrutura->estrutura('o50_estrutdespesa')
             ?>
@@ -78,7 +79,7 @@ $clorcparametro = new cl_orcparametro;
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
+        <?php 
         if(!isset($pesquisa_chave)){
           if(isset($campos)==false){
             if(file_exists("funcoes/db_func_orcdotacao.php")==true){
@@ -183,12 +184,12 @@ $clorcparametro = new cl_orcparametro;
   </form>
   </body>
   </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?
+<?php 
 }
 ?>
 <script type="text/javascript">

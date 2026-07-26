@@ -79,7 +79,7 @@ class HistoricoAluno
      * Etapas cursadas pelo aluno
      * @var Array
      */
-    protected $aEtapasCursadas = array();
+    protected $aEtapasCursadas = [];
     /**
      * Método Construtor.
      * @param integer $iCodigoHistorico Código do Historico
@@ -336,9 +336,9 @@ class HistoricoAluno
      * @param integer $iCodigoEtapa
      * @param integer $iTipoEtapa Tipo da etapa 1 para etapas na rede, 2 para etapas fora da rede
      * @return HistoricoEtapa
-     * @deprecated
      *
      */
+    #[\Deprecated]
     public function getEtapaDeCodigo($iCodigoEtapa, $iTipoEtapa)
     {
         $aEtapas = $this->getEtapas();

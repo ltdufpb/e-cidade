@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoMatricula = db_utils::getdao('matricula');
 $oDaoTurma     = db_utils::getdao('turma');
@@ -73,7 +74,7 @@ $clrotulo->label("ed47_v_nome");
                   <?=$Led60_i_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <? db_input("ed60_i_codigo", 10, $Ied60_i_codigo, true, "text", 4, "", "chave_ed60_i_codigo"); ?>
+                  <?php  db_input("ed60_i_codigo", 10, $Ied60_i_codigo, true, "text", 4, "", "chave_ed60_i_codigo"); ?>
                 </td>
               </tr>
               <tr>
@@ -81,7 +82,7 @@ $clrotulo->label("ed47_v_nome");
                   <?=$Led47_v_nome?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <? db_input("ed47_v_nome", 50, $Ied47_v_nome, true, "text", 4, "", "chave_ed47_v_nome"); ?>
+                  <?php  db_input("ed47_v_nome", 50, $Ied47_v_nome, true, "text", 4, "", "chave_ed47_v_nome"); ?>
                 </td>
               </tr>
               <tr>
@@ -97,7 +98,7 @@ $clrotulo->label("ed47_v_nome");
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?
+          <?php 
             $sCampos  = " DISTINCT (ed60_i_codigo), ed60_i_codigo,ed60_i_aluno,ed47_v_nome,ed60_i_turma, ";
             $sCampos .= " ed60_c_situacao,ed60_d_datamatricula,ed60_d_datasaida,ed60_c_concluida,ed60_i_numaluno ";
           

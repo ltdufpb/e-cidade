@@ -413,7 +413,7 @@ class BaseHora {
      */
     public static function converterStringHoraEmDateTime($stringHora) {
 
-        list($hora, $minuto) = explode(":", $stringHora);
+        [$hora, $minuto] = explode(":", (string) $stringHora);
         return \DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
     }
 
@@ -424,7 +424,7 @@ class BaseHora {
      */
     public static function converterStringHoraEmDateInterval($stringHora) {
 
-        list($hora, $minuto) = explode(":", $stringHora);
+        [$hora, $minuto] = explode(":", (string) $stringHora);
 
         $intervalo  = "PT{$hora}H{$minuto}M";
         return new \DateInterval($intervalo);
@@ -483,7 +483,7 @@ class BaseHora {
      */
     protected function marcacaoEstaNaTolerancia($marcacao, $tolerancia, $tipoMarcacaoComparar = null) {
 
-        $tipoMarcacaoComparar = $tipoMarcacaoComparar !== null ? $tipoMarcacaoComparar : $marcacao->getTipo();
+        $tipoMarcacaoComparar ??= $marcacao->getTipo();
         $horasDaJornada = $this->getDiaTrabalho()->getJornada()->getHoras();
         $horaJornada    = !empty($horasDaJornada[$tipoMarcacaoComparar - 1]) ? $horasDaJornada[$tipoMarcacaoComparar - 1] : null;
 
@@ -501,7 +501,7 @@ class BaseHora {
 
     public static function converterEmHorasNoturnas($sHorasCalculadas)
     {
-        list($quantidadehora, $quantidademinutos) = explode(':', $sHorasCalculadas);
+        [$quantidadehora, $quantidademinutos] = explode(':', $sHorasCalculadas);
 
         $totalminutos = round( ( ( $quantidadehora * 60 ) + $quantidademinutos), 2);
         $totalminutos = ($totalminutos * 60 / 52.5 );

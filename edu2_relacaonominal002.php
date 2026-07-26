@@ -62,12 +62,12 @@ $sTipoModelo = "{$oDadosFormulario->iTipo}{$oDadosFormulario->iModelo}";
 /**
  * Array com os titulos que devem ser apresentados no cabecalho, de acordo com o Tipo e Modelo selecionados
  */
-$aTituloCabecalho = array(
+$aTituloCabecalho = [
     "11" => "RELAÇÃO NOMINAL - MATRICULA INICIAL",
     "12" => "RELAÇÃO NOMINAL - MATRICULA INICIAL",
     "21" => "RELAÇÃO NOMINAL - MATRICULA FINAL",
     "22" => "RELAÇÃO NOMINAL - MATRICULA FINAL"
-);
+];
 
 /**
  * stdClass com filtros padroes a serem utilizados no relatorio
@@ -203,10 +203,10 @@ foreach ($aTurmas as $oTurmaSelecionada) {
     $oFiltros->iEnsino = $oEtapa->getEnsino()->getCodigo();
     $oFiltros->iAno = $oTurma->getCalendario()->getAnoExecucao();
 
-    $oFiltros->aAlunosMatriculados = array();
+    $oFiltros->aAlunosMatriculados = [];
     $oFiltros->aAlunosMatriculados = $oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa);
     $oFiltros->iTotalAlunosTurma = count($oFiltros->aAlunosMatriculados);
-    $oFiltros->aAlunosPorPagina = array();
+    $oFiltros->aAlunosPorPagina = [];
     $oFiltros->dtInicio = new DBDate($oTurma->getCalendario()->getDataInicio()->getDate());
 
     /**
@@ -469,7 +469,7 @@ function rodapeRelatorio($oPdf, $oFiltros, $oTurma)
     $oPdf->SetXY(10, 190);
 
     $sMunicipioData = "{$oTurma->getEscola()->getMunicipio()}, " . date("d", db_getsession("DB_datausu")) . " de ";
-    $sMunicipioData .= ucfirst(db_mes(date("m", db_getsession("DB_datausu")))) . " de " . date("Y", db_getsession("DB_datausu")) . ".";
+    $sMunicipioData .= ucfirst((string) db_mes(date("m", db_getsession("DB_datausu")))) . " de " . date("Y", db_getsession("DB_datausu")) . ".";
     $oPdf->Cell($oFiltros->iLarguraMaxima, $oFiltros->iAlturaLinhaPadrao, $sMunicipioData, 0, 1, "C");
 
     /**
@@ -481,11 +481,11 @@ function rodapeRelatorio($oPdf, $oFiltros, $oTurma)
         $aDiretor = $oTurma->getEscola()->getDiretor($oFiltros->iDiretor);
         foreach ($aDiretor as $oDiretor) {
 
-            $sDiretor = ucwords(strtolower($oDiretor->sNome));
+            $sDiretor = ucwords(strtolower((string) $oDiretor->sNome));
             $sFuncaoAto = "Diretor";
 
             if (!empty($oDiretor->sAtoLegal) && !empty($oDiretor->iNumero)) {
-                $sFuncaoAto .= " - " . ucwords(strtolower($oDiretor->sAtoLegal)) . " - Nº: {$oDiretor->iNumero}";
+                $sFuncaoAto .= " - " . ucwords(strtolower((string) $oDiretor->sAtoLegal)) . " - Nº: {$oDiretor->iNumero}";
             }
         }
         $oPdf->Ln(4);

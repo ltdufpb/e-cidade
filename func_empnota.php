@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_empnota_classe.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempnota = new cl_empnota;
 $clempnota->rotulo->label("e69_numero");
 $clempnota->rotulo->label("e69_dtnota");
@@ -71,7 +72,7 @@ $rotulo->label("e60_numemp");
 
               <input name="chave_e60_codemp" size="10" type='text'  onKeyPress="return js_mascara(event);" >
               <?=$Le60_numemp?>
-              <? db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
+              <?php  db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
             </td>
           </tr>
           <tr>
@@ -86,7 +87,7 @@ $rotulo->label("e60_numemp");
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
             <td width="96%" align="left" nowrap>
-              <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+              <?php  db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
             </td>
           </tr>
           <tr>
@@ -102,7 +103,7 @@ $rotulo->label("e60_numemp");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhere = "";
       $sAnd   = "";
       if(!isset($pesquisa_chave)){
@@ -204,12 +205,12 @@ $rotulo->label("e60_numemp");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -28,7 +28,7 @@
 class cta_oper {
    var $arq = null;
 
-  function cta_oper($header){
+  function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/CTA_OPER.TXT",'w+');
     fputs($this->arq,$header);

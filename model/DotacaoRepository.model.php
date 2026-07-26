@@ -35,7 +35,7 @@ class DotacaoRepository {
    * Collection de Dotacoes
    * @var Dotacao[]
    */
-  private $aDotacao = array();
+  private $aDotacao = [];
 
   /**
    * Instancia da classe
@@ -90,7 +90,7 @@ class DotacaoRepository {
      * @return bool|Dotacao
      * @throws \Exception
      */
-    public function find($id, $dao, $columns = array('*'))
+    public function find($id, $dao, $columns = ['*'])
     {
         $sql = $dao->sql_query_file(null, $id, implode(', ', $columns));
         $rs = db_query($sql);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@
 class orgao {
   var $arq = null;
   
-  function orgao($header){     
+  function __construct($header){     
      umask(74);
      $this->arq = fopen("tmp/ORGAO.TXT",'w+');
      fputs($this->arq,$header);

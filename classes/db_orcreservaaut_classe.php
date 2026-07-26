@@ -55,7 +55,7 @@ class cl_orcreservaaut
     {
       //classes dos rotulos dos campos
         $this->rotulo = new rotulo("orcreservaaut");
-        $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
    //funcao erro
    public function erro($mostra, $retorna)
@@ -110,7 +110,7 @@ class cl_orcreservaaut
         $result = db_query($sql);
         if ($result==false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = "Reserva Autorização ($this->o83_codres) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = "Reserva Autorização já Cadastrado";
@@ -134,11 +134,11 @@ class cl_orcreservaaut
         $resaco = $this->sql_record($this->sql_query_file($this->o83_codres));
         if (($resaco!=false)||($this->numrows!=0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
             $resac = db_query("insert into db_acountkey values($acount,5370,'$this->o83_codres','I')");
-            $resac = db_query("insert into db_acount values($acount,783,5370,'','".AddSlashes(pg_result($resaco, 0, 'o83_codres'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-            $resac = db_query("insert into db_acount values($acount,783,5371,'','".AddSlashes(pg_result($resaco, 0, 'o83_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,783,5370,'','".AddSlashes(pg_fetch_result($resaco, 0, 'o83_codres'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,783,5371,'','".AddSlashes(pg_fetch_result($resaco, 0, 'o83_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
         return true;
     }
@@ -148,10 +148,10 @@ class cl_orcreservaaut
         $this->atualizacampos();
         $sql = " update orcreservaaut set ";
         $virgula = "";
-        if (trim($this->o83_codres)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o83_codres"])) {
+        if (trim((string) $this->o83_codres)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o83_codres"])) {
             $sql  .= $virgula." o83_codres = $this->o83_codres ";
             $virgula = ",";
-            if (trim($this->o83_codres) == null) {
+            if (trim((string) $this->o83_codres) == null) {
                 $this->erro_sql = " Campo Código nao Informado.";
                 $this->erro_campo = "o83_codres";
                 $this->erro_banco = "";
@@ -161,10 +161,10 @@ class cl_orcreservaaut
                 return false;
             }
         }
-        if (trim($this->o83_autori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o83_autori"])) {
+        if (trim((string) $this->o83_autori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o83_autori"])) {
             $sql  .= $virgula." o83_autori = $this->o83_autori ";
             $virgula = ",";
-            if (trim($this->o83_autori) == null) {
+            if (trim((string) $this->o83_autori) == null) {
                 $this->erro_sql = " Campo Número da Autorização nao Informado.";
                 $this->erro_campo = "o83_autori";
                 $this->erro_banco = "";
@@ -182,14 +182,14 @@ class cl_orcreservaaut
         if ($this->numrows>0) {
             for ($conresaco=0; $conresaco<$this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                 $resac = db_query("insert into db_acountkey values($acount,5370,'$this->o83_codres','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o83_codres"])) {
-                    $resac = db_query("insert into db_acount values($acount,783,5370,'".AddSlashes(pg_result($resaco, $conresaco, 'o83_codres'))."','$this->o83_codres',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac = db_query("insert into db_acount values($acount,783,5370,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'o83_codres'))."','$this->o83_codres',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o83_autori"])) {
-                    $resac = db_query("insert into db_acount values($acount,783,5371,'".AddSlashes(pg_result($resaco, $conresaco, 'o83_autori'))."','$this->o83_autori',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac = db_query("insert into db_acount values($acount,783,5371,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'o83_autori'))."','$this->o83_autori',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
             }
         }
@@ -236,11 +236,11 @@ class cl_orcreservaaut
         if (($resaco!=false)||($this->numrows!=0)) {
             for ($iresaco=0; $iresaco<$this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                 $resac = db_query("insert into db_acountkey values($acount,5370,'$o83_codres','E')");
-                $resac = db_query("insert into db_acount values($acount,783,5370,'','".AddSlashes(pg_result($resaco, $iresaco, 'o83_codres'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,783,5371,'','".AddSlashes(pg_result($resaco, $iresaco, 'o83_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,783,5370,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'o83_codres'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,783,5371,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'o83_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
             }
         }
         $sql = " delete from orcreservaaut
@@ -301,7 +301,7 @@ class cl_orcreservaaut
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows==0) {
             $this->erro_banco = "";
             $this->erro_sql   = "Record Vazio na Tabela:orcreservaaut";
@@ -317,7 +317,7 @@ class cl_orcreservaaut
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -339,7 +339,7 @@ class cl_orcreservaaut
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -352,7 +352,7 @@ class cl_orcreservaaut
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_orcreservaaut
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_orcreservaaut
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_orcreservaaut
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i=0; $i<sizeof($campos_sql); $i++) {
                 $sql .= $virgula.$campos_sql[$i];

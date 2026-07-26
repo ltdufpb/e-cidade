@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 // require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $iAnoEtapaCenso = null;
@@ -60,7 +60,7 @@ $db_botao     = false;
 $db_botao2    = true;
 $codigoescola = db_getsession("DB_coddepto");
 
-$aMapaTurnoReferente = array(1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE');
+$aMapaTurnoReferente = [1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE'];
 
 /**
  * Responsável por excluir os vínculos das tabelas matriculaturnoreferente e turmaturnoreferente
@@ -132,7 +132,7 @@ function verificaAtividadeComplementarDisponivel($iTurma) {
     for ($i = 0; $i < $numLinhas; $i++) {
         $vinculo = db_utils::fieldsMemory($rsTurmaCensoEtapa, $i);
 
-        if (in_array($vinculo->ed132_censoetapa, array(14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 41, 56))) {
+        if (in_array($vinculo->ed132_censoetapa, [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 41, 56])) {
             return true;
         }
     }
@@ -146,9 +146,9 @@ if (isset($alterar)) {
   $db_opcao          = 2;
   $db_opcao1         = 3;
   $lErroTransacao    = false;
-  $aTurnosReferentes = explode( ", " , $ed336_turnoreferente );
+  $aTurnosReferentes = explode( ", " , (string) $ed336_turnoreferente );
   $iTotalTurnos      = count( $aTurnosReferentes );
-  $aNovosTurnos      = array();
+  $aNovosTurnos      = [];
 
   $oTurma              = TurmaRepository::getTurmaByCodigo($ed57_i_codigo);
   $aTurnoAnterior      = $oTurma->getTurnoReferente();
@@ -252,12 +252,12 @@ if (isset($alterar)) {
 
             case 1:
 
-              $iVagas = isset($vagasmanha) ? $vagasmanha : $vagasTurma;
+              $iVagas = $vagasmanha ?? $vagasTurma;
               break;
 
             case 2:
 
-              $iVagas = isset($vagastarde) ? $vagastarde : $vagasTurma;
+              $iVagas = $vagastarde ?? $vagasTurma;
               break;
 
             case 3:
@@ -316,7 +316,7 @@ if (isset($alterar)) {
   }
 
   $clturma->ed57_censoprogramamaiseducacao = $ed57_censoprogramamaiseducacao;
-  $clturma->ed57_c_descr                   = trim($ed57_c_descr);
+  $clturma->ed57_c_descr                   = trim((string) $ed57_c_descr);
   $clturma->alterar($ed57_i_codigo);
 
   if ( !$lAlterarSomenteVagas ) {
@@ -436,7 +436,7 @@ if (isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'edu1_outrosprofissionaisturma001.php?iTurma=<?=$ed57_i_codigo?>' ;
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a7.location.href = 'edu1_turmaatividadecomplementar001.php?iCalendario=<?=$ed57_i_calendario?>&ed57_i_codigo=<?=$ed57_i_codigo?>';
   </script>
- <?
+ <?php 
 }
 ?>
 <html>
@@ -534,7 +534,7 @@ if (isset($alterar)) {
                                         );
     $linhas2 = $clturmaturnoadicional->numrows;
     if ($linhas2 > 0) {
-      $turnoaddant = pg_result($result2,0,'turnoaddant');
+      $turnoaddant = pg_fetch_result($result2,0,'turnoaddant');
     }
 
     if ($ed246_i_turno == "") {

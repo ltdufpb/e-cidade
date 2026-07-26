@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarqsimplesreg_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissarqsimplesreg = new cl_issarqsimplesreg;
 $clissarqsimplesreg->rotulo->label("q23_sequencial");
 $clissarqsimplesreg->rotulo->label("q23_issarqsimples");
@@ -54,7 +55,7 @@ $clissarqsimplesreg->rotulo->label("q23_issarqsimples");
               <?=$Lq23_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q23_sequencial",8,$Iq23_sequencial,true,"text",4,"","chave_q23_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clissarqsimplesreg->rotulo->label("q23_issarqsimples");
               <?=$Lq23_issarqsimples?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q23_issarqsimples",8,$Iq23_issarqsimples,true,"text",4,"","chave_q23_issarqsimples");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clissarqsimplesreg->rotulo->label("q23_issarqsimples");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issarqsimplesreg.php")==true){
@@ -122,12 +123,12 @@ $clissarqsimplesreg->rotulo->label("q23_issarqsimples");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

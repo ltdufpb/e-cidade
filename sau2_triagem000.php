@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,10 +70,10 @@ db_fieldsmemory($result,0);
      </tr>
      <tr>
       <td>
-      <?db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(false);",3);?></td>
+      <?php db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(false);",3);?></td>
       <td>
-       <?db_input('sd04_i_unidade',10,@$Isd04_i_unidade,true,'text',3," onchange='js_pesquisasd04_i_unidade(false);'")?>
-       <?db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')?>
+       <?php db_input('sd04_i_unidade',10,@$Isd04_i_unidade,true,'text',3," onchange='js_pesquisasd04_i_unidade(false);'")?>
+       <?php db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
@@ -87,7 +87,7 @@ db_fieldsmemory($result,0);
   </td>
  </tr>
 </table>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

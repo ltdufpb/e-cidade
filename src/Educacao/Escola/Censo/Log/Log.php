@@ -30,7 +30,7 @@ namespace ECidade\Educacao\Escola\Censo\Log;
 
 abstract class Log
 {
-    protected $logs = array();
+    protected $logs = [];
 
     abstract public function add($type, $log);
 

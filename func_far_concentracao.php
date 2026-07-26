@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_concentracao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfar_concentracao = new cl_far_concentracao;
 $clfar_concentracao->rotulo->label("fa30_i_codigo");
 $clfar_concentracao->rotulo->label("fa30_c_concentracao");
@@ -54,7 +55,7 @@ $clfar_concentracao->rotulo->label("fa30_c_concentracao");
               <?=$Lfa30_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa30_i_codigo",10,$Ifa30_i_codigo,true,"text",4,"","chave_fa30_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clfar_concentracao->rotulo->label("fa30_c_concentracao");
               <?=$Lfa30_c_concentracao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa30_c_concentracao",30,$Ifa30_c_concentracao,true,"text",4,"","chave_fa30_c_concentracao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clfar_concentracao->rotulo->label("fa30_c_concentracao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_concentracao.php")==true){
@@ -122,12 +123,12 @@ $clfar_concentracao->rotulo->label("fa30_c_concentracao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

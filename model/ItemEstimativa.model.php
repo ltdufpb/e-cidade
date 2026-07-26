@@ -82,6 +82,7 @@ final class ItemEstimativa extends itemSolicitacao {
    * @throws Exception
    * @return ItemEstimativa
    */
+  #[\Override]
   public function save($iSolicitacao = '') {
 
     parent::save($iSolicitacao);
@@ -119,6 +120,7 @@ final class ItemEstimativa extends itemSolicitacao {
    * @param float $nQuantidade Quantidade do item
    * @return ItemEstimativa
    */
+  #[\Override]
   public function setQuantidade($nQuantidade) {
     $nPercentual                 = ParametroRegistroPreco::getPercentualExecedente();
     $this->nQuantidade           = $nQuantidade;
@@ -306,7 +308,7 @@ final class ItemEstimativa extends itemSolicitacao {
    */
   public function getCedenciasRealizadas() {
 
-    $aCedencias        = array();
+    $aCedencias        = [];
     $oDaoCedenciaItens = db_utils::getDao("registroprecocedenciaitem");
     $sCampos           = "pc37_sequencial as codigocedencia, pc37_data as datacedencia, pc37_resumo as resumo,";
     $sCampos          .= "solicitadestino.pc10_depto as coddpto, pc36_quantidade as quantidade,";
@@ -325,7 +327,7 @@ final class ItemEstimativa extends itemSolicitacao {
    */
   public function getCedenciasRecebidas() {
 
-    $aCedencias        = array();
+    $aCedencias        = [];
     $oDaoCedenciaItens = db_utils::getDao("registroprecocedenciaitem");
     $sCampos           = "pc37_sequencial as codigocedencia, pc37_data as datacedencia, pc37_resumo as resumo,";
     $sCampos          .= "solicitaorigem.pc10_depto as coddpto, pc36_quantidade as quantidade,";
@@ -353,6 +355,7 @@ final class ItemEstimativa extends itemSolicitacao {
     return $this->iCodigoRegistro;
   }
 
+  #[\Override]
   public function remover() {
 
     /**

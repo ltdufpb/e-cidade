@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE setorlocvalor
 class cl_setorlocvalor { 
@@ -28,7 +28,7 @@ class cl_setorlocvalor {
                  j05_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_setorlocvalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("setorlocvalor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

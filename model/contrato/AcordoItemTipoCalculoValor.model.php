@@ -62,7 +62,7 @@ class AcordoItemTipoCalculoValor implements IAcordoItemTipoCalculo {
    * Coleção de períodos de um item
    * @var array
    */
-  protected $aPeriodosItem = array();
+  protected $aPeriodosItem = [];
   
   /**
    * Construtor

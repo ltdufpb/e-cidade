@@ -33,7 +33,7 @@ class cl_empagemovretencoes
     public function __construct()
     {
         $this->rotulo = new rotulo("empagemovretencoes");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -108,10 +108,10 @@ class cl_empagemovretencoes
                 $this->erro_status = "0";
                 return false;
             }
-            $this->e145_codigo = pg_result($result, 0, 0);
+            $this->e145_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from empagemovretencoes_e145_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $e145_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $e145_codigo)) {
                 $this->erro_sql = " Campo e145_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -147,7 +147,7 @@ class cl_empagemovretencoes
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Movimento Retenções ($this->e145_codigo) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Movimento Retenções já Cadastrado";
@@ -177,10 +177,10 @@ class cl_empagemovretencoes
         $this->atualizacampos();
         $sql = " update empagemovretencoes set ";
         $virgula = "";
-        if (trim($this->e145_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_codigo"])) {
+        if (trim((string) $this->e145_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_codigo"])) {
             $sql .= $virgula . " e145_codigo = $this->e145_codigo ";
             $virgula = ",";
-            if (trim($this->e145_codigo) == null) {
+            if (trim((string) $this->e145_codigo) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "e145_codigo";
                 $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_empagemovretencoes
                 return false;
             }
         }
-        if (trim($this->e145_pagordem_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_pagordem_id"])) {
+        if (trim((string) $this->e145_pagordem_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_pagordem_id"])) {
             $sql .= $virgula . " e145_pagordem_id = $this->e145_pagordem_id ";
             $virgula = ",";
-            if (trim($this->e145_pagordem_id) == null) {
+            if (trim((string) $this->e145_pagordem_id) == null) {
                 $this->erro_sql = " Campo Ordem de Compra não informado.";
                 $this->erro_campo = "e145_pagordem_id";
                 $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_empagemovretencoes
                 return false;
             }
         }
-        if (trim($this->e145_movimento_original) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_movimento_original"])) {
+        if (trim((string) $this->e145_movimento_original) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_movimento_original"])) {
             $sql .= $virgula . " e145_movimento_original = $this->e145_movimento_original ";
             $virgula = ",";
-            if (trim($this->e145_movimento_original) == null) {
+            if (trim((string) $this->e145_movimento_original) == null) {
                 $this->erro_sql = " Campo Movimento Original não informado.";
                 $this->erro_campo = "e145_movimento_original";
                 $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_empagemovretencoes
                 return false;
             }
         }
-        if (trim($this->e145_movimento_retencao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_movimento_retencao"])) {
+        if (trim((string) $this->e145_movimento_retencao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_movimento_retencao"])) {
             $sql .= $virgula . " e145_movimento_retencao = $this->e145_movimento_retencao ";
             $virgula = ",";
-            if (trim($this->e145_movimento_retencao) == null) {
+            if (trim((string) $this->e145_movimento_retencao) == null) {
                 $this->erro_sql = " Campo Movimento Retenção não informado.";
                 $this->erro_campo = "e145_movimento_retencao";
                 $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_empagemovretencoes
                 return false;
             }
         }
-        if (trim($this->e145_valor_retencao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_valor_retencao"])) {
+        if (trim((string) $this->e145_valor_retencao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e145_valor_retencao"])) {
             $sql .= $virgula . " e145_valor_retencao = $this->e145_valor_retencao ";
             $virgula = ",";
-            if (trim($this->e145_valor_retencao) == null) {
+            if (trim((string) $this->e145_valor_retencao) == null) {
                 $this->erro_sql = " Campo Valor total da retenção não informado.";
                 $this->erro_campo = "e145_valor_retencao";
                 $this->erro_banco = "";

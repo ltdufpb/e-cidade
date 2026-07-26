@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -81,7 +81,7 @@ function js_marca(obj){
        OBJ.elements[i].checked = !(OBJ.elements[i].checked == true);            
      }
    }
-<?   
+<?php    
     if(isset($js_marcador)){
        echo str_replace(";","",$js_marcador).";";
     }
@@ -103,7 +103,7 @@ function js_marca(obj){
   <tr>
     <td  valign="top">
       <table border='1' width="100%" bgcolor="#cccccc" id="tabela_seleciona">
-<?
+<?php 
 if(isset($sql) && $sql!=""){ 
   $sql=base64_decode($sql);
   $campos=base64_decode($campos);
@@ -280,7 +280,7 @@ if(isset($sql) && $sql!=""){
   </form>
 </body>  
 </html>
-<?
+<?php 
  $retorno = @unlink(base64_decode($arquivo));
  if($retorno==false){
    echo "<blink>Carregando...</blink>";

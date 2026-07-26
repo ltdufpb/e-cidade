@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacortemat_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguacortemat = new cl_aguacortemat;
 $claguacortemat->rotulo->label("x41_codcortemat");
 $claguacortemat->rotulo->label("x41_matric");
@@ -54,7 +55,7 @@ $claguacortemat->rotulo->label("x41_matric");
               <?=$Lx41_codcortemat?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x41_codcortemat",5,$Ix41_codcortemat,true,"text",4,"","chave_x41_codcortemat");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $claguacortemat->rotulo->label("x41_matric");
               <?=$Lx41_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x41_matric",10,$Ix41_matric,true,"text",4,"","chave_x41_matric");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $claguacortemat->rotulo->label("x41_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacortemat.php")==true){
@@ -118,12 +119,12 @@ $claguacortemat->rotulo->label("x41_matric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

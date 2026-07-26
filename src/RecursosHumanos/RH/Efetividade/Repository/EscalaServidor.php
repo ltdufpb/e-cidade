@@ -58,7 +58,7 @@ class EscalaServidor {
     $sCaseEscalaPosterior  .= "     else false";
     $sCaseEscalaPosterior  .= " end as tem_escala_posterior";
     $sCamposEscalaServidor  = "escalaservidor.*, {$sCaseEscalaPosterior}";
-    $aWhereEscalaServidor   = array();
+    $aWhereEscalaServidor   = [];
     
     $aWhereEscalaServidor[] = "rh192_regist = {$oServidor->getMatricula()}";
     $aWhereEscalaServidor[] = "rh192_instit = " . db_getsession("DB_instit");

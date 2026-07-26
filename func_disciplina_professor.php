@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_disciplina_professor_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldisciplina_professor = new cl_disciplina_professor;
 $cldisciplina_professor->rotulo->label("ed12_i_codigo");
 $cldisciplina_professor->rotulo->label("ed12_f_ch");
@@ -56,7 +57,7 @@ $cldisciplina_professor->rotulo->label("ed12_f_ch");
               <?=$Led12_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");
                        ?>
             </td>
@@ -66,7 +67,7 @@ $cldisciplina_professor->rotulo->label("ed12_f_ch");
               <b>Nome da Disciplina:</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("ed27_c_nome",40,$ed27_c_nome,true,"text",4,"","chave_ed27_c_nome");
               ?>
             </td>
@@ -84,7 +85,7 @@ $cldisciplina_professor->rotulo->label("ed12_f_ch");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_disciplina_professor.php")==true){
@@ -121,12 +122,12 @@ $cldisciplina_professor->rotulo->label("ed12_f_ch");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

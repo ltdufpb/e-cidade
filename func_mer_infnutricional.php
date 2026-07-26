@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_infnutricional_classe.php"));
 include(modification("classes/db_mer_nutriente_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_infnutricional = new cl_mer_infnutricional;
 $clmer_nutriente = new cl_mer_nutriente;
 $clmer_infnutricional->rotulo->label("me08_i_codigo");
@@ -56,7 +57,7 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
               <?=$Lme08_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me08_i_codigo",10,$Ime08_i_codigo,true,"text",4,"","chave_me08_i_codigo");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
               <?=$Lme09_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me09_c_descr",20,$Ime09_c_descr,true,"text",4,"","chave_me09_c_descr");
 		       ?>
             </td>
@@ -84,7 +85,7 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -130,13 +131,13 @@ $clmer_nutriente->rotulo->label("me09_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php 
   
 }
 ?>

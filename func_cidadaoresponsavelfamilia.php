@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cidadaocadastrounico_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcidadaocadastrounico = new cl_cidadaocadastrounico;
 $clcidadaocadastrounico->rotulo->label("as02_nis");
 ?>
@@ -53,7 +54,7 @@ $clcidadaocadastrounico->rotulo->label("as02_nis");
               <?=$Las02_nis?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("as02_nis",10,$Ias02_nis,true,"text",4,"","chave_as02_nis");
 		       ?>
             </td>
@@ -71,7 +72,7 @@ $clcidadaocadastrounico->rotulo->label("as02_nis");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhere = ' as03_tipofamiliar = 0 ';
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -123,12 +124,12 @@ $clcidadaocadastrounico->rotulo->label("as02_nis");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

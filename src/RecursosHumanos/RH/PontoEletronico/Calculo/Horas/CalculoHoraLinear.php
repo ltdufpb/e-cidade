@@ -243,47 +243,19 @@ class CalculoHoraLinear extends BaseHora
          */
         if ($this->horaEstaNoIntervalo($momentoAtual, $this->horaNoturnaInicio, $this->horaNoturnaFim)
             || $momentoAtual->getTimestamp() <= $this->horaNoturnaFimNoMesmoDia->getTimestamp()) {
-            switch ($tipoExtra) {
-                case BaseHora::HORAS_EXTRA50:
-                case BaseHora::HORAS_EXTRA50_NOTURNA:
-                    $this->oHorasExtra50Noturna->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA75:
-                case BaseHora::HORAS_EXTRA75_NOTURNA:
-                    $this->oHorasExtra75Noturna->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA100:
-                case BaseHora::HORAS_EXTRA100_NOTURNA:
-                    $this->oHorasExtra100Noturna->add(new \DateInterval('PT1M'));
-                    break;
-
-                default:
-                    $this->oHorasNoturnas->add(new \DateInterval('PT1M'));
-                    break;
-            }
+            match ($tipoExtra) {
+                BaseHora::HORAS_EXTRA50, BaseHora::HORAS_EXTRA50_NOTURNA => $this->oHorasExtra50Noturna->add(new \DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA75, BaseHora::HORAS_EXTRA75_NOTURNA => $this->oHorasExtra75Noturna->add(new \DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA100, BaseHora::HORAS_EXTRA100_NOTURNA => $this->oHorasExtra100Noturna->add(new \DateInterval('PT1M')),
+                default => $this->oHorasNoturnas->add(new \DateInterval('PT1M')),
+            };
         } else {
-            switch ($tipoExtra) {
-                case BaseHora::HORAS_EXTRA50:
-                case BaseHora::HORAS_EXTRA50_NOTURNA:
-                    $this->oHorasExtra50->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA75:
-                case BaseHora::HORAS_EXTRA75_NOTURNA:
-                    $this->oHorasExtra75->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA100:
-                case BaseHora::HORAS_EXTRA100_NOTURNA:
-                    $this->oHorasExtra100->add(new \DateInterval('PT1M'));
-                    break;
-
-                default:
-                    $this->oHorasDiurnas->add(new \DateInterval('PT1M'));
-                    break;
-            }
+            match ($tipoExtra) {
+                BaseHora::HORAS_EXTRA50, BaseHora::HORAS_EXTRA50_NOTURNA => $this->oHorasExtra50->add(new \DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA75, BaseHora::HORAS_EXTRA75_NOTURNA => $this->oHorasExtra75->add(new \DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA100, BaseHora::HORAS_EXTRA100_NOTURNA => $this->oHorasExtra100->add(new \DateInterval('PT1M')),
+                default => $this->oHorasDiurnas->add(new \DateInterval('PT1M')),
+            };
         }
     }
 
@@ -311,7 +283,7 @@ class CalculoHoraLinear extends BaseHora
     {
         $this->logger->debug("------------------------------------------------------");
         $this->logger->debug("----------------- CALCULO HORA LINEAR ----------------");
-        $this->logger->debug("-- Executando regra: ". get_class($regraCalculo));
+        $this->logger->debug("-- Executando regra: ". $regraCalculo::class);
 
         $debug = "-- MarcacoesCollection....: ";
         $entrada1 = $marcacoesCollection->getMarcacaoEntrada1()->getMarcacao();
@@ -372,7 +344,7 @@ class CalculoHoraLinear extends BaseHora
             throw new BusinessException('Não foi possível percorrer o intervalo para o cálculo de horas extras.');
         }
 
-        $momentoCalculado = array();
+        $momentoCalculado = [];
 
         do {
             $lCalculou = $regraCalculo->processar($momentoAtual);

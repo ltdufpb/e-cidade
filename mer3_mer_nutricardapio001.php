@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ include(modification("classes/db_mer_tipocardapio_classe.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("classes/db_diasemana_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $cldiasemana        = new cl_diasemana;
 $clmer_desperdicio  = new cl_mer_desperdicio;
@@ -77,7 +78,7 @@ $clrotulo->label("me01_c_nome");
      <td>
       <select name="cardapio" onchange="js_load();">
        <option></option>
-       <?       
+       <?php        
          $hoje = date("Y-m-d",db_getsession("DB_datausu"));
          $result = $clmer_tipocardapio->sql_record($clmer_tipocardapio->sql_query("",
                                                                                           "me27_i_codigo,me27_c_nome,me27_f_versao,me27_i_id",
@@ -108,7 +109,7 @@ $clrotulo->label("me01_c_nome");
      <td>
       <select name="item">
        <option value="0">Todos</option>
-       <?if (isset($cardapio)) {
+       <?php if (isset($cardapio)) {
        	
            $sql    = " select distinct me01_i_codigo,me01_c_nome,me01_f_versao from mer_cardapiodia ";
            $sql   .= "             inner join mer_cardapio on me01_i_codigo=mer_cardapiodia.me12_i_cardapio "; 
@@ -129,7 +130,7 @@ $clrotulo->label("me01_c_nome");
     <tr>
      <td><b>Data:</b></td>
      <td>
-      <?db_inputdata("data","","","","","",1); ?>
+      <?php db_inputdata("data","","","","","",1); ?>
      </td>
     </tr>
     <tr>
@@ -147,7 +148,7 @@ $clrotulo->label("me01_c_nome");
 </table>
 <iframe name="iframe_tabela" id="iframe_tabela" src="" frameborder="0" width="100%" height="340"></iframe>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

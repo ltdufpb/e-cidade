@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,8 @@ include(modification("classes/db_orcparamelemento_classe.php"));
 
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 
 $clorcparamseq = new cl_orcparamseq;
@@ -53,7 +54,7 @@ function js_voltar(){
   document.location.href="con2_conrelparametros.php?c83_codrel=<?=$o69_codparamrel?>";
 }
 </script>
-<?
+<?php 
 
 if (isset ($atualizar) && $atualizar == "atualizar") {
 	db_inicio_transacao();
@@ -223,7 +224,7 @@ function js_select(tipo){
 <table border="1" align=center>
  <tr>
    <td colspan=1>
-     <? $s = "select o69_descr 
+     <?php  $s = "select o69_descr 
               from orcparamseq 
 	      where o69_codparamrel = $o69_codparamrel
 	             and o69_codseq = $o69_codseq 
@@ -249,7 +250,7 @@ function js_select(tipo){
  <table border="0"  align="left" cellspacing="1" bgcolor="#CCCCCC">
  <tr> 
    <td colspan="3" valign="middle" align=left nowrap>
-   <? if (isset($grupo) && $grupo !='' && $grupo !='0') {   
+   <?php  if (isset($grupo) && $grupo !='' && $grupo !='0') {   
       switch($grupo){
 	 case 1:echo "<input id=ativo type=button value=ATIVO onclick=\"js_select('ativo');return false\" >";
 	        break;
@@ -267,13 +268,13 @@ function js_select(tipo){
       <input id="rec" type="button" value="RECEITA" onclick="js_select('rec');return false" >
       <input id="desp" type="button" value="DESPESA" onclick="js_select('desp');return false" >
       <input id="outros" type="button" value="OUTROS" onclick="js_select('outros');return false" >
-   <? } ?>
+   <?php  } ?>
    </td>
   </tr>
  </table>
  </td></tr></table>
 <!--   -->
-<?
+<?php 
   if (!isset($o69_codparamrel) || $o69_codparamrel ==""){
          $o69_codparamrel=0;
          $o69_codseq=0;  	 
@@ -365,7 +366,7 @@ function js_select(tipo){
 
   <div id='div_ativo' style='position:absolute;visibility:hidden;' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC" align="center"> 
-  <?// se alteração     
+  <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($a_codcon);$i++) {
          echo "<tr>";
@@ -391,7 +392,7 @@ function js_select(tipo){
   </div> 
   <div id='div_passivo' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC">
-   <?// se alteração     
+   <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($p_codcon);$i++) {
          echo "<tr>";
@@ -417,7 +418,7 @@ function js_select(tipo){
   </div>
   <div id='div_rec' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC"> 
-   <?// se alteração     
+   <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($r_codcon);$i++) {
          echo "<tr>";
@@ -443,7 +444,7 @@ function js_select(tipo){
   </div>
   <div id='div_desp' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC"> 
-  <?
+  <?php 
    // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($d_codcon);$i++) {
@@ -471,7 +472,7 @@ function js_select(tipo){
   </div>
   <div id='div_outros' style='position:absolute; visibility:hidden' >
   <table border=1 cellspacing=0 width="100%" bgcolor="#CCCCCC"> 
-   <?// se alteração     
+   <?php // se alteração     
      echo "<tr><th>&nbsp;</th><th>Estrutural</th><th>Sistema</th><th>descr<th></tr>";
      for($i = 0;$i < sizeof($o_codcon);$i++) {
          echo "<tr>";
@@ -523,7 +524,7 @@ function js_mostraorcparamrel1(chave1,chave2){
   document.form1.o42_descrrel.value = chave2;
   db_iframe_orcparamrel.hide();
 }
-<?
+<?php 
  if (isset($grupo) && $grupo !='' && $grupo !='0') {   
     switch($grupo){
        case 1:echo "js_select('ativo');>";

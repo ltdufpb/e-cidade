@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE remessacobrancaregistrada
 class cl_remessacobrancaregistrada { 
@@ -38,7 +38,7 @@ class cl_remessacobrancaregistrada {
                  k147_tiposemissao = varchar = Tipos de Débito da Remessa
                  ";
    //funcao construtor da classe 
-   function cl_remessacobrancaregistrada() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("remessacobrancaregistrada"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

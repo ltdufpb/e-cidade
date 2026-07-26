@@ -29,7 +29,7 @@ class cl_emppreautorizacaounidade
     public function __construct()
     {
         $this->rotulo = new rotulo("emppreautorizacaounidade");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -98,7 +98,7 @@ class cl_emppreautorizacaounidade
         $result = db_query($sql);
         if ($result==false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = " ($this->exercicio."-".$this->orgao_id."-".$this->unidade_id) não Incluído. Inclusão Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -127,17 +127,17 @@ class cl_emppreautorizacaounidade
         $this->atualizacampos();
         $sql = " update emppreautorizacaounidade set ";
         $virgula = "";
-        if (trim($this->exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
-            if (trim($this->exercicio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
+        if (trim((string) $this->exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
+            if (trim((string) $this->exercicio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
                 $this->exercicio = "0" ;
             }
             $sql  .= $virgula." exercicio = $this->exercicio ";
             $virgula = ",";
         }
-        if (trim($this->orgao_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["orgao_id"])) {
+        if (trim((string) $this->orgao_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["orgao_id"])) {
             $sql  .= $virgula." orgao_id = $this->orgao_id ";
             $virgula = ",";
-            if (trim($this->orgao_id) == null) {
+            if (trim((string) $this->orgao_id) == null) {
                 $this->erro_sql = " Campo Id do Orgao não informado.";
                 $this->erro_campo = "orgao_id";
                 $this->erro_banco = "";
@@ -147,10 +147,10 @@ class cl_emppreautorizacaounidade
                 return false;
             }
         }
-        if (trim($this->unidade_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["unidade_id"])) {
+        if (trim((string) $this->unidade_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["unidade_id"])) {
             $sql  .= $virgula." unidade_id = $this->unidade_id ";
             $virgula = ",";
-            if (trim($this->unidade_id) == null) {
+            if (trim((string) $this->unidade_id) == null) {
                 $this->erro_sql = " Campo Id da unidade não informado.";
                 $this->erro_campo = "unidade_id";
                 $this->erro_banco = "";

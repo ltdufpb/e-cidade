@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanosis_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconplanosis = new cl_conplanosis;
 $clconplanosis->rotulo->label("c64_codpla");
 $clconplanosis->rotulo->label("c64_estrut");
@@ -56,7 +57,7 @@ $clconplanosis->rotulo->label("c64_descr");
               <?=$Lc64_codpla?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	       db_input("c64_codpla",6,$Ic64_codpla,true,"text",4,"","chave_c64_codpla");
               ?>
             </td>
@@ -66,7 +67,7 @@ $clconplanosis->rotulo->label("c64_descr");
               <?=$Lc64_estrut ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	       db_input("c64_estrut",20,$Ic64_descr,true,"text",4,"","chave_c64_estrut");
 	      ?>
             </td>
@@ -77,7 +78,7 @@ $clconplanosis->rotulo->label("c64_descr");
               <?=$Lc64_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	       db_input("c64_descr",60,$Ic64_descr,true,"text",4,"","chave_c64_descr");
 	      ?>
             </td>
@@ -96,7 +97,7 @@ $clconplanosis->rotulo->label("c64_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplanosis.php")==true){
@@ -135,12 +136,12 @@ $clconplanosis->rotulo->label("c64_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

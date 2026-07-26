@@ -38,7 +38,7 @@
      * Collection de ContaPlanoPCASP
      * @var ContaPlanoPCASP[]
      */
-    private static $aContas = array();
+    private static $aContas = [];
 
     private function __construct() {
 
@@ -109,7 +109,7 @@
      * @param integer $iAno
      * @return false | ContaPlanoPCASP
      */
-    public static function getContaPorEstrutural($sEstrutural, $iAno,  Instituicao $oInstituicao = null) {
+    public static function getContaPorEstrutural($sEstrutural, $iAno,  ?Instituicao $oInstituicao = null) {
 
       foreach (self::$aContas as $oConta) {
 
@@ -151,7 +151,7 @@
        * @param Instituicao|null $oInstituicao
        * @return bool|ContaPlanoPCASP
        */
-    public static function getContaPorReduzido($iReduzido, $iAno,  Instituicao $oInstituicao = null) {
+    public static function getContaPorReduzido($iReduzido, $iAno,  ?Instituicao $oInstituicao = null) {
 
       $oDaoPlano = new cl_conplano;
       $sWhere  = "c61_reduz       = '{$iReduzido}'";
@@ -187,7 +187,7 @@
      */
     public static function getContasPorEstrutural($sEstrutural, Instituicao $oInstituicao, $iAnoUsu) {
 
-      $aContas      = Array();
+      $aContas      = [];
       $oDaoConplano = new cl_conplano();
 
       $sWhere  = " c60_estrut like '{$sEstrutural}%' ";
@@ -202,7 +202,7 @@
                                                       );
       $rsContas = $oDaoConplano->sql_record($sSqlPlanoPcasp);
       if (!$rsContas || $oDaoConplano->numrows == 0) {
-        return array();
+        return [];
       }
       for ($iConta = 0; $iConta < $oDaoConplano->numrows; $iConta++) {
 
@@ -230,11 +230,11 @@
     public static function getReduzidoPorContaInstituicao($codigoConta, $ano, $codigoInstituicao) {
 
         $daoReduz = new cl_conplanoreduz();
-        $where = implode(' and ', array(
+        $where = implode(' and ', [
             "c61_codcon = {$codigoConta}",
             "c61_anousu = {$ano}",
             "c61_instit = {$codigoInstituicao}",
-        ));
+        ]);
         $buscaReduzido = $daoReduz->sql_query_file(null, null, 'c61_reduz', null, $where);
         $buscaReduzido = db_query($buscaReduzido);
         if (!$buscaReduzido) {

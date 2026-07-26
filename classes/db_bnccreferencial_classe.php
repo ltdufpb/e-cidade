@@ -64,7 +64,7 @@ class cl_bnccreferencial
     public function __construct()
     {
         $this->rotulo = new rotulo("bnccreferencial"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -151,10 +151,10 @@ class cl_bnccreferencial
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed168_codigo = pg_result($result,0,0); 
+       $this->ed168_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bnccreferencial_ed168_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed168_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed168_codigo)){
          $this->erro_sql = " Campo ed168_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -196,7 +196,7 @@ class cl_bnccreferencial
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Referencial Curricular Estadual ($this->ed168_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Referencial Curricular Estadual já Cadastrado";
@@ -225,17 +225,17 @@ class cl_bnccreferencial
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011771,'$this->ed168_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010614,1011771,'','".AddSlashes(pg_result($resaco,0,'ed168_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010614,1011772,'','".AddSlashes(pg_result($resaco,0,'ed168_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010614,1011773,'','".AddSlashes(pg_result($resaco,0,'ed168_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010614,1011774,'','".AddSlashes(pg_result($resaco,0,'ed168_codigohabilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010614,1011775,'','".AddSlashes(pg_result($resaco,0,'ed168_codigoreferencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010614,1011776,'','".AddSlashes(pg_result($resaco,0,'ed168_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010614,1011780,'','".AddSlashes(pg_result($resaco,0,'ed168_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010614,1013803,'','".AddSlashes(pg_result($resaco,0,'ed168_objeto_conhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1011771,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1011772,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1011773,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1011774,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_codigohabilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1011775,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_codigoreferencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1011776,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1011780,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010614,1013803,'','".AddSlashes(pg_fetch_result($resaco,0,'ed168_objeto_conhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -246,10 +246,10 @@ class cl_bnccreferencial
       $this->atualizacampos();
      $sql = " update bnccreferencial set ";
      $virgula = "";
-     if(trim($this->ed168_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigo"])){ 
+     if(trim((string) $this->ed168_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigo"])){ 
        $sql  .= $virgula." ed168_codigo = $this->ed168_codigo ";
        $virgula = ",";
-       if(trim($this->ed168_codigo) == null ){ 
+       if(trim((string) $this->ed168_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed168_codigo";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_bnccreferencial
          return false;
        }
      }
-     if(trim($this->ed168_ensino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_ensino"])){ 
+     if(trim((string) $this->ed168_ensino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_ensino"])){ 
        $sql  .= $virgula." ed168_ensino = '$this->ed168_ensino' ";
        $virgula = ",";
-       if(trim($this->ed168_ensino) == null ){ 
+       if(trim((string) $this->ed168_ensino) == null ){ 
          $this->erro_sql = " Campo Ensino BNCC não informado.";
          $this->erro_campo = "ed168_ensino";
          $this->erro_banco = "";
@@ -272,14 +272,14 @@ class cl_bnccreferencial
          return false;
        }
      }
-     if(trim($this->ed168_etapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_etapa"])){ 
+     if(trim((string) $this->ed168_etapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_etapa"])){ 
        $sql  .= $virgula." ed168_etapa = '$this->ed168_etapa' ";
        $virgula = ",";
      }
-     if(trim($this->ed168_codigohabilidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigohabilidade"])){ 
+     if(trim((string) $this->ed168_codigohabilidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigohabilidade"])){ 
        $sql  .= $virgula." ed168_codigohabilidade = '$this->ed168_codigohabilidade' ";
        $virgula = ",";
-       if(trim($this->ed168_codigohabilidade) == null ){ 
+       if(trim((string) $this->ed168_codigohabilidade) == null ){ 
          $this->erro_sql = " Campo Código BNCC não informado.";
          $this->erro_campo = "ed168_codigohabilidade";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_bnccreferencial
          return false;
        }
      }
-     if(trim($this->ed168_codigoreferencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigoreferencial"])){ 
+     if(trim((string) $this->ed168_codigoreferencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigoreferencial"])){ 
        $sql  .= $virgula." ed168_codigoreferencial = '$this->ed168_codigoreferencial' ";
        $virgula = ",";
-       if(trim($this->ed168_codigoreferencial) == null ){ 
+       if(trim((string) $this->ed168_codigoreferencial) == null ){ 
          $this->erro_sql = " Campo Código Referencial não informado.";
          $this->erro_campo = "ed168_codigoreferencial";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_bnccreferencial
          return false;
        }
      }
-     if(trim($this->ed168_habilidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_habilidade"])){ 
+     if(trim((string) $this->ed168_habilidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_habilidade"])){ 
        $sql  .= $virgula." ed168_habilidade = '$this->ed168_habilidade' ";
        $virgula = ",";
-       if(trim($this->ed168_habilidade) == null ){ 
+       if(trim((string) $this->ed168_habilidade) == null ){ 
          $this->erro_sql = " Campo Habilidade do referencial não informado.";
          $this->erro_campo = "ed168_habilidade";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_bnccreferencial
          return false;
        }
      }
-     if(trim($this->ed168_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_ano"])){ 
+     if(trim((string) $this->ed168_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_ano"])){ 
        $sql  .= $virgula." ed168_ano = $this->ed168_ano ";
        $virgula = ",";
-       if(trim($this->ed168_ano) == null ){ 
+       if(trim((string) $this->ed168_ano) == null ){ 
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "ed168_ano";
          $this->erro_banco = "";
@@ -328,7 +328,7 @@ class cl_bnccreferencial
          return false;
        }
      }
-     if(trim($this->ed168_objeto_conhecimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_objeto_conhecimento"])){ 
+     if(trim((string) $this->ed168_objeto_conhecimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed168_objeto_conhecimento"])){ 
        $sql  .= $virgula." ed168_objeto_conhecimento = '$this->ed168_objeto_conhecimento' ";
        $virgula = ",";
      }
@@ -346,25 +346,25 @@ class cl_bnccreferencial
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1011771,'$this->ed168_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigo"]) || $this->ed168_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1011771,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_codigo'))."','$this->ed168_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1011771,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_codigo'))."','$this->ed168_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_ensino"]) || $this->ed168_ensino != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1011772,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_ensino'))."','$this->ed168_ensino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1011772,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_ensino'))."','$this->ed168_ensino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_etapa"]) || $this->ed168_etapa != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1011773,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_etapa'))."','$this->ed168_etapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1011773,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_etapa'))."','$this->ed168_etapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigohabilidade"]) || $this->ed168_codigohabilidade != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1011774,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_codigohabilidade'))."','$this->ed168_codigohabilidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1011774,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_codigohabilidade'))."','$this->ed168_codigohabilidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_codigoreferencial"]) || $this->ed168_codigoreferencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1011775,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_codigoreferencial'))."','$this->ed168_codigoreferencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1011775,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_codigoreferencial'))."','$this->ed168_codigoreferencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_habilidade"]) || $this->ed168_habilidade != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1011776,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_habilidade'))."','$this->ed168_habilidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1011776,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_habilidade'))."','$this->ed168_habilidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_ano"]) || $this->ed168_ano != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1011780,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_ano'))."','$this->ed168_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1011780,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_ano'))."','$this->ed168_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed168_objeto_conhecimento"]) || $this->ed168_objeto_conhecimento != "")
-             $resac = db_query("insert into db_acount values($acount,1010614,1013803,'".AddSlashes(pg_result($resaco,$conresaco,'ed168_objeto_conhecimento'))."','$this->ed168_objeto_conhecimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010614,1013803,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed168_objeto_conhecimento'))."','$this->ed168_objeto_conhecimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -418,17 +418,17 @@ class cl_bnccreferencial
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1011771,'$ed168_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1011771,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1011772,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1011773,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1011774,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_codigohabilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1011775,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_codigoreferencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1011776,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1011780,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010614,1013803,'','".AddSlashes(pg_result($resaco,$iresaco,'ed168_objeto_conhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1011771,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1011772,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1011773,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1011774,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_codigohabilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1011775,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_codigoreferencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1011776,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1011780,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010614,1013803,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed168_objeto_conhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,7 +47,7 @@ $oGet = db_utils::postMemory($_GET);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js");
   db_app::load("prototype.js"); 
   db_app::load("strings.js, grid.style.css, datagrid.widget.js");
@@ -63,15 +63,15 @@ $oGet = db_utils::postMemory($_GET);
           <tr>
             <td><b>Código Conta:</b></td>
             <td>
-              <?
+              <?php 
                 db_input("iCodigoConta", 10, null, true, "text", 3);
               ?>
             </td>
           </tr>
           <tr>
-            <td><?db_ancora('<b>Grupo:</b>', "js_pesquisaGrupos(true);", 1)?></td>
+            <td><?php db_ancora('<b>Grupo:</b>', "js_pesquisaGrupos(true);", 1)?></td>
             <td>
-              <?
+              <?php 
                 db_input("c20_sequencial", 10, @$Ic20_sequencial, true, 'text', 1, "onChange='js_pesquisaGrupos(false);'");
                 db_input('c20_descr',50, @$Ic20_descr,true,'text',3,"");
               ?>

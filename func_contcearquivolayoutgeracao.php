@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contcearquivolayoutgeracao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcontcearquivolayoutgeracao = new cl_contcearquivolayoutgeracao;
 $clcontcearquivolayoutgeracao->rotulo->label("c15_sequencial");
 $clcontcearquivolayoutgeracao->rotulo->label("c15_db_layouttxtgeracao");
@@ -54,7 +55,7 @@ $clcontcearquivolayoutgeracao->rotulo->label("c15_db_layouttxtgeracao");
               <?=$Lc15_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c15_sequencial",10,$Ic15_sequencial,true,"text",4,"","chave_c15_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcontcearquivolayoutgeracao->rotulo->label("c15_db_layouttxtgeracao");
               <?=$Lc15_db_layouttxtgeracao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c15_db_layouttxtgeracao",10,$Ic15_db_layouttxtgeracao,true,"text",4,"","chave_c15_db_layouttxtgeracao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcontcearquivolayoutgeracao->rotulo->label("c15_db_layouttxtgeracao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contcearquivolayoutgeracao.php")==true){
@@ -122,12 +123,12 @@ $clcontcearquivolayoutgeracao->rotulo->label("c15_db_layouttxtgeracao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -502,7 +502,7 @@ $s_cont_ens6 = 0;
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"  Masculino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
  $sql1 = "SELECT count(ed60_i_codigo) as qtdmasc,
@@ -537,17 +537,17 @@ for($x=0;$x<count($racas);$x++){
    $pdf->cell(60,4,"      ".($ensinomasc==6?$qtdmasc:"--"),"BR",0,"L",0);
    $pdf->cell(60,4,"      ".($ensinomasc==1?$qtdmasc:"--"),"B",1,"L",0);
   }else{
-   $s_cont_ens1 += pg_result($result1,1,'qtdmasc');
-   $s_cont_ens6 += pg_result($result1,0,'qtdmasc');
-   $pdf->cell(60,4,"      ".pg_result($result1,0,'qtdmasc'),"BR",0,"L",0);
-   $pdf->cell(60,4,"      ".pg_result($result1,1,'qtdmasc'),"B",1,"L",0);
+   $s_cont_ens1 += pg_fetch_result($result1,1,'qtdmasc');
+   $s_cont_ens6 += pg_fetch_result($result1,0,'qtdmasc');
+   $pdf->cell(60,4,"      ".pg_fetch_result($result1,0,'qtdmasc'),"BR",0,"L",0);
+   $pdf->cell(60,4,"      ".pg_fetch_result($result1,1,'qtdmasc'),"B",1,"L",0);
   }
  }
 }
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"  Feminino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
  $sql1 = "SELECT count(ed60_i_codigo) as qtdmasc,
@@ -582,10 +582,10 @@ for($x=0;$x<count($racas);$x++){
    $pdf->cell(60,4,"      ".($ensinomasc==6?$qtdmasc:"--"),"BR",0,"L",0);
    $pdf->cell(60,4,"      ".($ensinomasc==1?$qtdmasc:"--"),"B",1,"L",0);
   }else{
-   $s_cont_ens1 += pg_result($result1,1,'qtdmasc');
-   $s_cont_ens6 += pg_result($result1,0,'qtdmasc');
-   $pdf->cell(60,4,"      ".pg_result($result1,0,'qtdmasc'),"BR",0,"L",0);
-   $pdf->cell(60,4,"      ".pg_result($result1,1,'qtdmasc'),"B",1,"L",0);
+   $s_cont_ens1 += pg_fetch_result($result1,1,'qtdmasc');
+   $s_cont_ens6 += pg_fetch_result($result1,0,'qtdmasc');
+   $pdf->cell(60,4,"      ".pg_fetch_result($result1,0,'qtdmasc'),"BR",0,"L",0);
+   $pdf->cell(60,4,"      ".pg_fetch_result($result1,1,'qtdmasc'),"B",1,"L",0);
   }
  }
 }
@@ -611,8 +611,8 @@ $pdf->cell(60,4,"  Educação Infantil Pré-escola","B",1,"L",0);
 $pdf->cell(190,3,"",0,1,"L",0);
 $s_cont_ens1 = 0;
 $s_cont_ens6 = 0;
-$situacao = array("'MATRICULADO'","'CANCELADO','EVADIDO','FALECIDO'","'TRANSFERIDO'");
-$descrsit = array("Admitidos após 30/03/$anoant","Afastados por abandono após 30/03/$anoant","Afastados por transferência após 30/03/$anoant");
+$situacao = ["'MATRICULADO'","'CANCELADO','EVADIDO','FALECIDO'","'TRANSFERIDO'"];
+$descrsit = ["Admitidos após 30/03/$anoant","Afastados por abandono após 30/03/$anoant","Afastados por transferência após 30/03/$anoant"];
 for($x=0;$x<count($situacao);$x++){
  $sql1 = "SELECT count(ed60_i_codigo) as qtdsit,
                  ed11_i_ensino as ensinosit
@@ -644,10 +644,10 @@ for($x=0;$x<count($situacao);$x++){
    $pdf->cell(60,4,"      ".($ensinosit==6?$qtdsit:"--"),"BR",0,"L",0);
    $pdf->cell(60,4,"      ".($ensinosit==1?$qtdsit:"--"),"B",1,"L",0);
   }else{
-   $s_cont_ens1 += pg_result($result1,1,'qtdsit');
-   $s_cont_ens6 += pg_result($result1,0,'qtdsit');
-   $pdf->cell(60,4,"      ".pg_result($result1,0,'qtdsit'),"BR",0,"L",0);
-   $pdf->cell(60,4,"      ".pg_result($result1,1,'qtdsit'),"B",1,"L",0);
+   $s_cont_ens1 += pg_fetch_result($result1,1,'qtdsit');
+   $s_cont_ens6 += pg_fetch_result($result1,0,'qtdsit');
+   $pdf->cell(60,4,"      ".pg_fetch_result($result1,0,'qtdsit'),"BR",0,"L",0);
+   $pdf->cell(60,4,"      ".pg_fetch_result($result1,1,'qtdsit'),"B",1,"L",0);
   }
   $pdf->cell(190,3,"",0,1,"L",0);
  }
@@ -1193,7 +1193,7 @@ for($x=0;$x<$linhas_s;$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Masculino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
@@ -1228,7 +1228,7 @@ for($x=0;$x<count($racas);$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Feminino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
  $pdf->cell(30,4,"$racas[$x] ","BR",0,"R",0);
@@ -1307,7 +1307,7 @@ for($x=0;$x<$linhas_s;$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Masculino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
@@ -1342,7 +1342,7 @@ for($x=0;$x<count($racas);$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Feminino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
  $pdf->cell(30,4,"$racas[$x] ","BR",0,"R",0);
@@ -2518,8 +2518,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
     $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
     $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
    }else{
-    $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-    $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
    }
   }
   $pdf->cell(20,4,"",0,0,"L",0);
@@ -2547,8 +2547,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
     $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
     $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
   }else{
-    $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-    $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
   }
   $pdf->cell(190,2,"",0,1,"L",0);
  }
@@ -2578,8 +2578,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
    $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
    $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
   }else{
-   $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-   $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
   }
  }
  $pdf->cell(20,4,"",0,0,"L",0);
@@ -2607,8 +2607,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
    $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
    $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
  }else{
-   $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-   $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
  }
  $pdf->cell(190,2,"",0,1,"L",0);
  if($x==$ano_fim){
@@ -2648,8 +2648,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
       $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
       $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
      }else{
-      $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-      $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
      }
     }
     $pdf->cell(20,4,"",0,0,"L",0);
@@ -2677,8 +2677,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
       $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
       $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
     }else{
-      $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-      $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
     }
     $pdf->cell(190,2,"",0,1,"L",0);
     $ano_base -= 5;
@@ -2711,8 +2711,8 @@ if($linhas1==0){
   $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
   $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
  }else{
-  $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-  $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
  }
 }
 $pdf->cell(20,4,"",0,0,"L",0);
@@ -2739,8 +2739,8 @@ if($linhas1==0){
   $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
   $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
 }else{
-  $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-  $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
 }
 $pdf->cell(190,2,"",0,1,"L",0);
 
@@ -3276,7 +3276,7 @@ for($x=0;$x<$linhas_s;$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Masculino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
@@ -3311,7 +3311,7 @@ for($x=0;$x<count($racas);$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Feminino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
  $pdf->cell(55,4,"$racas[$x] ","BR",0,"R",0);
@@ -3390,7 +3390,7 @@ for($x=0;$x<$linhas_s;$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Masculino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
@@ -3425,7 +3425,7 @@ for($x=0;$x<count($racas);$x++){
 $pdf->setfont('arial','B',9);
 $pdf->cell(190,4,"Feminino","BT",1,"L",0);
 $pdf->setfont('arial','',9);
-$racas = array('BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA');
+$racas = ['BRANCA','PRETA','PARDA','AMARELA','INDÍGENA','NÃO DECLARADA'];
 for($x=0;$x<count($racas);$x++){
  $pdf->cell(190,2,"",0,1,"L",0);
  $pdf->cell(55,4,"$racas[$x] ","BR",0,"R",0);
@@ -4601,8 +4601,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
     $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
     $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
    }else{
-    $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-    $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
    }
   }
   $pdf->cell(20,4,"",0,0,"L",0);
@@ -4630,8 +4630,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
     $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
     $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
   }else{
-    $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-    $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+    $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
   }
   $pdf->cell(190,2,"",0,1,"L",0);
  }
@@ -4661,8 +4661,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
    $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
    $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
   }else{
-   $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-   $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
   }
  }
  $pdf->cell(20,4,"",0,0,"L",0);
@@ -4690,8 +4690,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
    $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
    $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
  }else{
-   $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-   $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+   $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
  }
  $pdf->cell(190,2,"",0,1,"L",0);
  if($x==$ano_fim){
@@ -4731,8 +4731,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
       $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
       $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
      }else{
-      $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-      $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
      }
     }
     $pdf->cell(20,4,"",0,0,"L",0);
@@ -4760,8 +4760,8 @@ for($x=$ano_inicio;$x>=$ano_fim;$x--){
       $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
       $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
     }else{
-      $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-      $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+      $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
     }
     $pdf->cell(190,2,"",0,1,"L",0);
     $ano_base -= 5;
@@ -4794,8 +4794,8 @@ if($linhas1==0){
   $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
   $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",0,"C",0);
  }else{
-  $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-  $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",0,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",0,"C",0);
  }
 }
 $pdf->cell(20,4,"",0,0,"L",0);
@@ -4822,8 +4822,8 @@ if($linhas1==0){
   $pdf->cell(30,4,($ed47_v_sexo=="M"?$qtd:"--"),"BL",0,"C",0);
   $pdf->cell(30,4,($ed47_v_sexo=="F"?$qtd:"--"),"BLR",1,"C",0);
 }else{
-  $pdf->cell(30,4,(pg_result($result1,0,'qtd')),"BL",0,"C",0);
-  $pdf->cell(30,4,(pg_result($result1,1,'qtd')),"BLR",1,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,0,'qtd')),"BL",0,"C",0);
+  $pdf->cell(30,4,(pg_fetch_result($result1,1,'qtd')),"BLR",1,"C",0);
 }
 $pdf->cell(190,2,"",0,1,"L",0);
 $pdf->Output();

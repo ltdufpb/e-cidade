@@ -827,7 +827,7 @@ class Autorizacao
         $processoAdministrativo = $this->getProcessoAdministrativo();
         $dotacao = $this->getDotacao();
 
-        $itens= array();
+        $itens= [];
 
         foreach ((array) $this->getItens() as $item) {
             $itens[] = $item->toArray();
@@ -842,7 +842,7 @@ class Autorizacao
             $numeroLicitacao = $dadosLicitacao[0];
             $anoLicitacao = $dadosLicitacao[1];
         }
-        $retorno = array(
+        $retorno = [
             'e54_autori' => $this->getCodigoAutorizacao(),
             'e54_numcgm' => $this->getFornecedor()->toArray(),
             'e54_login' => $this->getLogin(),
@@ -871,7 +871,7 @@ class Autorizacao
             'dotacao' => !is_null($dotacao) ? $dotacao->toArray() : null,
             'itens' => $itens,
             'instituicaoLicitacao' => $this->getInstituicaoLicitacao()
-        );
+        ];
 
         return $retorno;
     }

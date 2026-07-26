@@ -83,7 +83,7 @@ $oRotulo->label("ed37_c_descr");
       </td>
       <td>
        <?php
-         $xx = array( "" => "", "1" => "Por Disciplina", "2" => "Por Carga Horária Total");
+         $xx = [ "" => "", "1" => "Por Disciplina", "2" => "Por Carga Horária Total"];
          db_select('ed40_i_calcfreq',$xx,true,$db_opcao,"");
        ?>
       </td>
@@ -184,7 +184,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_procedimento.hide();
   <?php
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 

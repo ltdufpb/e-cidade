@@ -54,7 +54,8 @@ require_once(modification('classes/db_empresto_classe.php'));
 require_once(modification("dbforms/verticalTab.widget.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clempempenho = new cl_empempenho;
 $clempempenhonl = new cl_empempenhonl;
@@ -452,7 +453,7 @@ if (isset($e60_numemp) and $e60_numemp != "") {
             </tr>
             <tr>
                 <td align="left" nowrap title="<?= $Te61_autori ?>">
-                    <? db_ancora($Le61_autori, "pesquisa_autori();", 1); ?></td>
+                    <?php  db_ancora($Le61_autori, "pesquisa_autori();", 1); ?></td>
                 <td align="left" nowrap class='valores' colspan="3">
                     <?=$e61_autori;?>
                 </td>

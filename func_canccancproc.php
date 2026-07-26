@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("classes/db_cancdebitos_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clcancdebitos = new cl_cancdebitos;
 
@@ -60,7 +61,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk20_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                 db_input("k20_codigo",10,$Ik20_codigo,true,"text",4,"","chave_k20_codigo");
               ?>
             </td>
@@ -70,7 +71,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk20_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                 db_input("k20_data",10,$Ik20_data,true,"text",4,"","chave_k20_data");
               ?>
             </td>
@@ -80,7 +81,7 @@ $instit = db_getsession("DB_instit");
               <?=$Lk20_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?db_input("k20_descr",10,$Ik20_descr,true,"text",4,"","chave_k20_descr");?>
+              <?php db_input("k20_descr",10,$Ik20_descr,true,"text",4,"","chave_k20_descr");?>
             </td>
           </tr>
           <tr> 
@@ -96,7 +97,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
 
        $sql = "select distinct
@@ -146,12 +147,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

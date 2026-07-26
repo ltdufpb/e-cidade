@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isencaoinscr_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clisencaoinscr = new cl_isencaoinscr;
 $clisencaoinscr->rotulo->label("v16_sequencial");
 $clisencaoinscr->rotulo->label("v16_inscr");
@@ -54,7 +55,7 @@ $clisencaoinscr->rotulo->label("v16_inscr");
               <?=$Lv16_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v16_sequencial",10,$Iv16_sequencial,true,"text",4,"","chave_v16_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clisencaoinscr->rotulo->label("v16_inscr");
               <?=$Lv16_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v16_inscr",8,$Iv16_inscr,true,"text",4,"","chave_v16_inscr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clisencaoinscr->rotulo->label("v16_inscr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_isencaoinscr.php")==true){
@@ -122,12 +123,12 @@ $clisencaoinscr->rotulo->label("v16_inscr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

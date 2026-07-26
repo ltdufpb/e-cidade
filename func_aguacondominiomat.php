@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacondominiomat_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguacondominiomat = new cl_aguacondominiomat;
 $claguacondominiomat->rotulo->label("x40_codcondominio");
 $claguacondominiomat->rotulo->label("x40_matric");
@@ -55,7 +56,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
               <?=$Lx40_codcondominio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x40_codcondominio",8,$Ix40_codcondominio,true,"text",4,"","chave_x40_codcondominio");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
               <?=$Lx40_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x40_matric",10,$Ix40_matric,true,"text",4,"","chave_x40_matric");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
               <?=$Lx40_codcondominio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x40_codcondominio",8,$Ix40_codcondominio,true,"text",4,"","chave_x40_codcondominio");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacondominiomat.php")==true){
@@ -129,12 +130,12 @@ $claguacondominiomat->rotulo->label("x40_codcondominio");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_tipocompatibilidade_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_tipocompatibilidade = new cl_sau_tipocompatibilidade;
 $clsau_tipocompatibilidade->rotulo->label("sd68_i_codigo");
 $clsau_tipocompatibilidade->rotulo->label("sd68_c_nome");
@@ -54,7 +55,7 @@ $clsau_tipocompatibilidade->rotulo->label("sd68_c_nome");
               <?=$Lsd68_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                  db_input("sd68_i_codigo",5,$Isd68_i_codigo,true,"text",4,"","chave_sd68_i_codigo");
                  ?>
             </td>
@@ -64,7 +65,7 @@ $clsau_tipocompatibilidade->rotulo->label("sd68_c_nome");
               <?=$Lsd68_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                  db_input("sd68_c_nome",50,$Isd68_c_nome,true,"text",4,"","chave_sd68_c_nome");
                  ?>
             </td>
@@ -82,7 +83,7 @@ $clsau_tipocompatibilidade->rotulo->label("sd68_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_tipocompatibilidade.php")==true){
@@ -122,12 +123,12 @@ $clsau_tipocompatibilidade->rotulo->label("sd68_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -219,7 +219,7 @@ if(isset($notificacao)){
 </style>
 </head>
 <body bgcolor=#CCCCCC onload="parent.document.getElementById('processando').style.visibility = 'hidden'"  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php 
 $erro = false;
 if(isset($matric)){
   $chave1 = "matric";
@@ -265,12 +265,12 @@ if(isset($notificacao_tipo)){
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td nowrap title="<?=@$Tk52_notifica?>" width="15%">
-       <?
+       <?php 
        echo $Lk50_notifica;
        ?>
     </td>
     <td width="15%"> 
-       <?
+       <?php 
        db_input('k50_notifica',8,$Ik50_notifica,true,'text',3,"");
        db_input('tipo',100,$Ik50_notifica,true,'hidden',3);
        db_input('numpres',100,$Ik50_notifica,true,'hidden',3);
@@ -287,23 +287,23 @@ if(isset($notificacao_tipo)){
 	   <table width="100%" cellspacing="0" cellpadding="0">
 	   <tr>
 	   <td>
-	   <?
+	   <?php 
 	   echo $Lk58_data;
            ?>
 	   </td>
 	   <td>
-	   <?
+	   <?php 
 	   db_inputdata('k58_data','','','',true,'text',2,'');
 	   ?>
 	   <td>
 	   <tr>
 	   <td>
-	   <?
+	   <?php 
 	   echo $Lk58_hora;
 	   ?>
 	   </td>
 	   <td>
-	   <?
+	   <?php 
            db_input('k58_hora',6,$Ik58_hora,true,'text',2);
            ?>
 	   </td>
@@ -319,12 +319,12 @@ if(isset($notificacao_tipo)){
 	   <table cellspacing="0" cellpadding="0">
 	   <tr>
 	   <td>
-	   <?
+	   <?php 
 	   echo $Lk54_codigo;
            ?>
 	   </td>
            <td nowrap>
-	   <?
+	   <?php 
 	   $record = $clnotisitu->sql_record($clnotisitu->sql_query());
            db_selectrecord("k54_codigo",$record,true,2,'','','',"0-Aguarda Retorno");
            ?>
@@ -332,24 +332,24 @@ if(isset($notificacao_tipo)){
 	   </tr>
 	   <tr>
 	   <td>
-	   <?
+	   <?php 
 	   echo $Lk54_assinante;
            ?>
 	   </td>
            <td>
-	   <?
+	   <?php 
            db_input('k54_assinante',30,$Ik54_assinante,true,'text',2);
            ?>
 	   </td>
 	   </tr>
 	   <tr>
 	   <td>
-	   <?
+	   <?php 
 	   echo $Lk54_obs;
            ?>
 	   </td>
 	   <td>
-	   <?
+	   <?php 
            db_textarea("k54_obs",3,30,$Ik54_obs,true,'text',2);
            ?>
 	   </td>
@@ -362,12 +362,12 @@ if(isset($notificacao_tipo)){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk52_id_usuario?>">
-       <?
+       <?php 
        echo $Lk50_procede;
        ?>
     </td>
     <td> 
-       <?
+       <?php 
        $result = $clnotitipo->sql_record($clnotitipo->sql_query_file('','k51_procede,k51_descr'));
        db_selectrecord('k50_procede',$result,true,$db_opcao);
        ?>
@@ -378,7 +378,7 @@ if(isset($notificacao_tipo)){
        <?=$Lk50_dtemite?>
     </td>
     <td> 
-      <?
+      <?php 
       db_inputdata('k50_dtemite',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',3)
       ?>
     </td>
@@ -388,7 +388,7 @@ if(isset($notificacao_tipo)){
        <?=@$Lk50_obs?>
     </td>
     <td> 
-<?
+<?php 
 db_textarea("k50_obs",3,40,$Ik50_obs,true,'text',$db_opcao);
 ?>
     </td>
@@ -409,7 +409,7 @@ db_textarea("k50_obs",3,40,$Ik50_obs,true,'text',$db_opcao);
 
 </body>
 </html>
-<?
+<?php 
 if(isset($sql_erro) && $sql_erro==false){
   echo "<script>
         alert('Notificação Incluida.');

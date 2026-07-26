@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE turmamedicaodidaticopedagogica
 class cl_turmamedicaodidaticopedagogica { 
@@ -26,7 +26,7 @@ class cl_turmamedicaodidaticopedagogica {
                  ed345_medicaodidaticopedagogica = int4 = Medição Didático-Pedagógica 
                  ";
    //funcao construtor da classe 
-   function cl_turmamedicaodidaticopedagogica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmamedicaodidaticopedagogica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

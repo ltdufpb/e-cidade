@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ include(modification("classes/db_issmovalvara_classe.php"));
 
 $oPost = db_utils::postmemory($_POST);
 $oGet  = db_utils::postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clIssMovAlvara = new cl_issmovalvara();
 $clIssMovAlvara->rotulo->label("q120_sequencial");
 
@@ -57,7 +58,7 @@ $clIssMovAlvara->rotulo->label("q120_sequencial");
               <b>Inscrição : </b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                 db_input("q123_inscr",10,"Inscrição",true,"text",1,"","chave_q123_inscr");
               ?>
             </td>
@@ -68,7 +69,7 @@ $clIssMovAlvara->rotulo->label("q120_sequencial");
               <b>Nome : </b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                 db_input("z01_nome",45,"Nome",true,"text",1,"","chave_z01_nome");
               ?>
             </td>
@@ -87,7 +88,7 @@ $clIssMovAlvara->rotulo->label("q120_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($oGet->pesquisa_chave)) {
 
         if(isset($chave_q123_inscr) && (trim($chave_q123_inscr) != "") ) {
@@ -131,12 +132,12 @@ $clIssMovAlvara->rotulo->label("q120_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ include(modification("classes/db_cancmarca_classe.php"));
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php 
 $clcgm = new cl_cgm;
 $clmarca = new cl_marca;
 $cllocalmarca = new cl_localmarca;
@@ -79,7 +79,7 @@ if(isset($data_ini) && isset($data_fim)){
   <tr>
    <td colspan="5" height="1" bgcolor="#cccccc"></td>
   </tr>
-   <?
+   <?php 
    $cor1="#E796A4";
    $cor2="#97B5E6";
    $cor=$cor1;
@@ -122,14 +122,14 @@ if(isset($data_ini) && isset($data_fim)){
      <tr>
       <td colspan="5" height="1" bgcolor="#cccccc"></td>
      </tr>
-    <?}?>
+    <?php }?>
     <table>
-   <?}else{?>
+   <?php }else{?>
     <tr>
      <td colspan="3" align="center">Nenhum cancelamento para este período</td>
     </tr>
     </table>
-   <?}
+   <?php }
   }else{
    echo "<div align='center'><br>Digite o período, selecione o tipo e clique em Pesquisar</div>";
   }

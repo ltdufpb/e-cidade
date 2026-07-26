@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE db_registrosinconsistentes
 class cl_db_registrosinconsistentes { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db136_sequencial = 0; 
-   var $db136_data_dia = null; 
-   var $db136_data_mes = null; 
-   var $db136_data_ano = null; 
-   var $db136_data = null; 
-   var $db136_usuario = 0; 
-   var $db136_tabela = 0; 
-   var $db136_processado = 'f'; 
+   public $db136_sequencial = 0; 
+   public $db136_data_dia = null; 
+   public $db136_data_mes = null; 
+   public $db136_data_ano = null; 
+   public $db136_data = null; 
+   public $db136_usuario = 0; 
+   public $db136_tabela = 0; 
+   public $db136_processado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db136_sequencial = int4 = Sequencial 
                  db136_data = date = Data da operação 
                  db136_usuario = int4 = Cod. Usuário 
@@ -59,10 +59,10 @@ class cl_db_registrosinconsistentes {
                  db136_processado = bool = Processado 
                  ";
    //funcao construtor da classe 
-   function cl_db_registrosinconsistentes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_registrosinconsistentes"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -135,10 +135,10 @@ class cl_db_registrosinconsistentes {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db136_sequencial = pg_result($result,0,0); 
+       $this->db136_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_registrosInconsistentes_db136_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db136_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db136_sequencial)){
          $this->erro_sql = " Campo db136_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,7 +174,7 @@ class cl_db_registrosinconsistentes {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registros inconsistentes ($this->db136_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registros inconsistentes já Cadastrado";
@@ -198,14 +198,14 @@ class cl_db_registrosinconsistentes {
      $resaco = $this->sql_record($this->sql_query_file($this->db136_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19782,'$this->db136_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3546,19782,'','".AddSlashes(pg_result($resaco,0,'db136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3546,19783,'','".AddSlashes(pg_result($resaco,0,'db136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3546,19784,'','".AddSlashes(pg_result($resaco,0,'db136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3546,19785,'','".AddSlashes(pg_result($resaco,0,'db136_tabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3546,19786,'','".AddSlashes(pg_result($resaco,0,'db136_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3546,19782,'','".AddSlashes(pg_fetch_result($resaco,0,'db136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3546,19783,'','".AddSlashes(pg_fetch_result($resaco,0,'db136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3546,19784,'','".AddSlashes(pg_fetch_result($resaco,0,'db136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3546,19785,'','".AddSlashes(pg_fetch_result($resaco,0,'db136_tabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3546,19786,'','".AddSlashes(pg_fetch_result($resaco,0,'db136_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -214,10 +214,10 @@ class cl_db_registrosinconsistentes {
       $this->atualizacampos();
      $sql = " update db_registrosinconsistentes set ";
      $virgula = "";
-     if(trim($this->db136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_sequencial"])){ 
+     if(trim((string) $this->db136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_sequencial"])){ 
        $sql  .= $virgula." db136_sequencial = $this->db136_sequencial ";
        $virgula = ",";
-       if(trim($this->db136_sequencial) == null ){ 
+       if(trim((string) $this->db136_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db136_sequencial";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_db_registrosinconsistentes {
          return false;
        }
      }
-     if(trim($this->db136_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db136_data_dia"] !="") ){ 
+     if(trim((string) $this->db136_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db136_data_dia"] !="") ){ 
        $sql  .= $virgula." db136_data = '$this->db136_data' ";
        $virgula = ",";
-       if(trim($this->db136_data) == null ){ 
+       if(trim((string) $this->db136_data) == null ){ 
          $this->erro_sql = " Campo Data da operação nao Informado.";
          $this->erro_campo = "db136_data_dia";
          $this->erro_banco = "";
@@ -243,7 +243,7 @@ class cl_db_registrosinconsistentes {
        if(isset($GLOBALS["HTTP_POST_VARS"]["db136_data_dia"])){ 
          $sql  .= $virgula." db136_data = null ";
          $virgula = ",";
-         if(trim($this->db136_data) == null ){ 
+         if(trim((string) $this->db136_data) == null ){ 
            $this->erro_sql = " Campo Data da operação nao Informado.";
            $this->erro_campo = "db136_data_dia";
            $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_db_registrosinconsistentes {
          }
        }
      }
-     if(trim($this->db136_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_usuario"])){ 
+     if(trim((string) $this->db136_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_usuario"])){ 
        $sql  .= $virgula." db136_usuario = $this->db136_usuario ";
        $virgula = ",";
-       if(trim($this->db136_usuario) == null ){ 
+       if(trim((string) $this->db136_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "db136_usuario";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_db_registrosinconsistentes {
          return false;
        }
      }
-     if(trim($this->db136_tabela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_tabela"])){ 
+     if(trim((string) $this->db136_tabela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_tabela"])){ 
        $sql  .= $virgula." db136_tabela = $this->db136_tabela ";
        $virgula = ",";
-       if(trim($this->db136_tabela) == null ){ 
+       if(trim((string) $this->db136_tabela) == null ){ 
          $this->erro_sql = " Campo Tabela nao Informado.";
          $this->erro_campo = "db136_tabela";
          $this->erro_banco = "";
@@ -280,7 +280,7 @@ class cl_db_registrosinconsistentes {
          return false;
        }
      }
-     if(trim($this->db136_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_processado"])){ 
+     if(trim((string) $this->db136_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db136_processado"])){ 
        $sql  .= $virgula." db136_processado = '$this->db136_processado' ";
        $virgula = ",";
      }
@@ -292,19 +292,19 @@ class cl_db_registrosinconsistentes {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19782,'$this->db136_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db136_sequencial"]) || $this->db136_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3546,19782,'".AddSlashes(pg_result($resaco,$conresaco,'db136_sequencial'))."','$this->db136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3546,19782,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db136_sequencial'))."','$this->db136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db136_data"]) || $this->db136_data != "")
-           $resac = db_query("insert into db_acount values($acount,3546,19783,'".AddSlashes(pg_result($resaco,$conresaco,'db136_data'))."','$this->db136_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3546,19783,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db136_data'))."','$this->db136_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db136_usuario"]) || $this->db136_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3546,19784,'".AddSlashes(pg_result($resaco,$conresaco,'db136_usuario'))."','$this->db136_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3546,19784,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db136_usuario'))."','$this->db136_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db136_tabela"]) || $this->db136_tabela != "")
-           $resac = db_query("insert into db_acount values($acount,3546,19785,'".AddSlashes(pg_result($resaco,$conresaco,'db136_tabela'))."','$this->db136_tabela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3546,19785,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db136_tabela'))."','$this->db136_tabela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db136_processado"]) || $this->db136_processado != "")
-           $resac = db_query("insert into db_acount values($acount,3546,19786,'".AddSlashes(pg_result($resaco,$conresaco,'db136_processado'))."','$this->db136_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3546,19786,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db136_processado'))."','$this->db136_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -349,14 +349,14 @@ class cl_db_registrosinconsistentes {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19782,'$db136_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3546,19782,'','".AddSlashes(pg_result($resaco,$iresaco,'db136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3546,19783,'','".AddSlashes(pg_result($resaco,$iresaco,'db136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3546,19784,'','".AddSlashes(pg_result($resaco,$iresaco,'db136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3546,19785,'','".AddSlashes(pg_result($resaco,$iresaco,'db136_tabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3546,19786,'','".AddSlashes(pg_result($resaco,$iresaco,'db136_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3546,19782,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3546,19783,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3546,19784,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3546,19785,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db136_tabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3546,19786,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db136_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_registrosinconsistentes
@@ -416,7 +416,7 @@ class cl_db_registrosinconsistentes {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_registrosinconsistentes";
@@ -431,7 +431,7 @@ class cl_db_registrosinconsistentes {
    function sql_query ( $db136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -454,7 +454,7 @@ class cl_db_registrosinconsistentes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_db_registrosinconsistentes {
    function sql_query_file ( $db136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,7 +488,7 @@ class cl_db_registrosinconsistentes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

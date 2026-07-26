@@ -34,7 +34,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoVeiculos             = db_utils::getdao('veiculos');
 $oDaoVeicCadCentralDepart = db_utils::getdao('veiccadcentraldepart');
@@ -61,7 +62,7 @@ $oDaoVeicCadCentralDepart->rotulo->label("ve37_veiccadcentral");
                   <?=$Lve01_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?
+                  <?php 
 		                db_input("ve01_codigo", 10, $Ive01_codigo, true, "text", 4, "", "chave_ve01_codigo");
 		              ?>
                 </td>
@@ -80,7 +81,7 @@ $oDaoVeicCadCentralDepart->rotulo->label("ve37_veiccadcentral");
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?
+          <?php 
             $sWhere = "";
 
             if (isset($baixa) && $baixa != "") {

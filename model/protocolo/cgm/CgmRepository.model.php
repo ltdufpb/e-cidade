@@ -40,7 +40,7 @@ class CgmRepository
      *
      * @var array
      */
-    private $aItens = array();
+    private $aItens = [];
 
     private function __construct() {}
 
@@ -149,11 +149,11 @@ class CgmRepository
     public static function buscarTodosCGMCompetencia(DBCompetencia $dbCompetencia)
     {
         $instituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
-        $where = array(
+        $where = [
           "rh02_anousu = {$dbCompetencia->getAno()}",
           "rh02_mesusu = {$dbCompetencia->getMes()}",
           "rh02_instit = {$instituicao}"
-        );
+        ];
 
         $daoRhPessoalMov = new cl_rhpessoalmov();
         $sqlRhPessoalMov = $daoRhPessoalMov->sql_query_matricula_cgm(
@@ -174,9 +174,7 @@ class CgmRepository
             throw new DBException("Nenhum CGM, com matrcula ativa na instituio, encontrado.");
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, function ($retorno) {
-            return $retorno->cgm;
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, fn($retorno) => $retorno->cgm);
     }
 
     /**

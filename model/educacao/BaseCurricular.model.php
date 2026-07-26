@@ -80,7 +80,7 @@ class BaseCurricular {
    * Disciplina que compoem a Etapa de uma Base curricular
    * @var array
    */
-  private $aDisciplinas = array();
+  private $aDisciplinas = [];
 
   /**
    * ultima etapa a ser cursada na base
@@ -260,7 +260,7 @@ class BaseCurricular {
    */
   public function getDisciplina(Etapa $oEtapa) {
 
-    $this->aDisciplinas = array();
+    $this->aDisciplinas = [];
 
     $oDaoBaseMPS = db_utils::getDao('basemps');
 

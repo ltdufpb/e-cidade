@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -34,15 +34,15 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("model/educacao/ArredondamentoNota.model.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oDaoProcResultado       = db_utils::getdao("procresultado");
 $oDaoConceito            = db_utils::getdao("conceito");
 $db_botao                = false;
 $db_opcao                = 33;
 $db_opcao1               = 3;
-$sPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) ? $_GET['possuiTurmasEncerradas'] : '';
+$sPossuiTurmasEncerradas = $_GET['possuiTurmasEncerradas'] ?? '';
 
 function ElementosFreq($ed67_i_procresultado) {
 
@@ -152,7 +152,7 @@ if (isset($excluir)) {
      <br>
      <center>
       <fieldset style="width:95%" ><legend><b>Exclusão do Resultado <?=@$ed42_c_descr?></b></legend>
-       <?include(modification("forms/db_frmprocresultado.php"));?>
+       <?php include(modification("forms/db_frmprocresultado.php"));?>
       </fieldset>
      </center>
     </td>
@@ -163,7 +163,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1", "excluir", true, 1, "excluir", true);
 </script>
-<?
+<?php 
 if (isset($excluir)) {
 
   if ($oDaoProcResultado->erro_status == "0") {
@@ -177,7 +177,7 @@ if (isset($excluir)) {
                                                                                      "&ed40_c_descr=<?=$ed40_c_descr?>&forma=<?=$forma?>"+
                                                                                      "&possuiTurmasEncerradas=<?=$sPossuiTurmasEncerradas?>";
     </script>
-    <?
+    <?php 
 
   }
 

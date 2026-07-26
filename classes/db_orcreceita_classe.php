@@ -50,7 +50,7 @@ class cl_orcreceita
     public function __construct()
     {
         $this->rotulo = new rotulo("orcreceita");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -171,10 +171,10 @@ class cl_orcreceita
          $this->erro_status = "0";
          return false;
        }
-       $this->o70_codrec = pg_result($result,0,0);
+       $this->o70_codrec = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from orcreceita_o70_codrec_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o70_codrec)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o70_codrec)){
          $this->erro_sql = " Campo o70_codrec maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -232,7 +232,7 @@ class cl_orcreceita
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Receitas Orçamento ($this->o70_anousu."-".$this->o70_codrec) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Receitas Orçamento já Cadastrado";
@@ -261,10 +261,10 @@ class cl_orcreceita
       $this->atualizacampos();
      $sql = " update orcreceita set ";
      $virgula = "";
-     if(trim($this->o70_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_anousu"])){
+     if(trim((string) $this->o70_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_anousu"])){
        $sql  .= $virgula." o70_anousu = $this->o70_anousu ";
        $virgula = ",";
-       if(trim($this->o70_anousu) == null ){
+       if(trim((string) $this->o70_anousu) == null ){
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "o70_anousu";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_codrec"])){
+     if(trim((string) $this->o70_codrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_codrec"])){
        $sql  .= $virgula." o70_codrec = $this->o70_codrec ";
        $virgula = ",";
-       if(trim($this->o70_codrec) == null ){
+       if(trim((string) $this->o70_codrec) == null ){
          $this->erro_sql = " Campo Código Reduzido não informado.";
          $this->erro_campo = "o70_codrec";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_codfon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_codfon"])){
+     if(trim((string) $this->o70_codfon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_codfon"])){
        $sql  .= $virgula." o70_codfon = $this->o70_codfon ";
        $virgula = ",";
-       if(trim($this->o70_codfon) == null ){
+       if(trim((string) $this->o70_codfon) == null ){
          $this->erro_sql = " Campo Código Fonte não informado.";
          $this->erro_campo = "o70_codfon";
          $this->erro_banco = "";
@@ -300,10 +300,10 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_codigo"])){
+     if(trim((string) $this->o70_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_codigo"])){
        $sql  .= $virgula." o70_codigo = $this->o70_codigo ";
        $virgula = ",";
-       if(trim($this->o70_codigo) == null ){
+       if(trim((string) $this->o70_codigo) == null ){
          $this->erro_sql = " Campo Codigo do Recurso não informado.";
          $this->erro_campo = "o70_codigo";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_valor"])){
+     if(trim((string) $this->o70_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_valor"])){
        $sql  .= $virgula." o70_valor = $this->o70_valor ";
        $virgula = ",";
-       if(trim($this->o70_valor) == null ){
+       if(trim((string) $this->o70_valor) == null ){
          $this->erro_sql = " Campo Valor Previsto não informado.";
          $this->erro_campo = "o70_valor";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_reclan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_reclan"])){
+     if(trim((string) $this->o70_reclan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_reclan"])){
        $sql  .= $virgula." o70_reclan = '$this->o70_reclan' ";
        $virgula = ",";
-       if(trim($this->o70_reclan) == null ){
+       if(trim((string) $this->o70_reclan) == null ){
          $this->erro_sql = " Campo Receita Lançada não informado.";
          $this->erro_campo = "o70_reclan";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_instit"])){
+     if(trim((string) $this->o70_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_instit"])){
        $sql  .= $virgula." o70_instit = $this->o70_instit ";
        $virgula = ",";
-       if(trim($this->o70_instit) == null ){
+       if(trim((string) $this->o70_instit) == null ){
          $this->erro_sql = " Campo Código da Instituição não informado.";
          $this->erro_campo = "o70_instit";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_concarpeculiar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_concarpeculiar"])){
+     if(trim((string) $this->o70_concarpeculiar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_concarpeculiar"])){
        $sql  .= $virgula." o70_concarpeculiar = '$this->o70_concarpeculiar' ";
        $virgula = ",";
-       if(trim($this->o70_concarpeculiar) == null ){
+       if(trim((string) $this->o70_concarpeculiar) == null ){
          $this->erro_sql = " Campo Caracteristica Peculiar não informado.";
          $this->erro_campo = "o70_concarpeculiar";
          $this->erro_banco = "";
@@ -365,7 +365,7 @@ class cl_orcreceita
          return false;
        }
      }
-     if(trim($this->o70_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o70_datacriacao_dia"] !="") ){
+     if(trim((string) $this->o70_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o70_datacriacao_dia"] !="") ){
        $sql  .= $virgula." o70_datacriacao = '$this->o70_datacriacao' ";
        $virgula = ",";
      }     else{
@@ -374,22 +374,22 @@ class cl_orcreceita
          $virgula = ",";
        }
      }
-     if(trim($this->o70_orcorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_orcorgao"])){
-        if(trim($this->o70_orcorgao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o70_orcorgao"])){
+     if(trim((string) $this->o70_orcorgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_orcorgao"])){
+        if(trim((string) $this->o70_orcorgao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o70_orcorgao"])){
            $this->o70_orcorgao = "null" ;
         }
        $sql  .= $virgula." o70_orcorgao = $this->o70_orcorgao ";
        $virgula = ",";
      }
-     if(trim($this->o70_orcunidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_orcunidade"])){
-        if(trim($this->o70_orcunidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o70_orcunidade"])){
+     if(trim((string) $this->o70_orcunidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_orcunidade"])){
+        if(trim((string) $this->o70_orcunidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o70_orcunidade"])){
            $this->o70_orcunidade = "null" ;
         }
        $sql  .= $virgula." o70_orcunidade = $this->o70_orcunidade ";
        $virgula = ",";
      }
-     if(trim($this->o70_esferaorcamentaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_esferaorcamentaria"])){
-        if(trim($this->o70_esferaorcamentaria)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o70_esferaorcamentaria"])){
+     if(trim((string) $this->o70_esferaorcamentaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o70_esferaorcamentaria"])){
+        if(trim((string) $this->o70_esferaorcamentaria)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o70_esferaorcamentaria"])){
            $this->o70_esferaorcamentaria = "null" ;
         }
        $sql  .= $virgula." o70_esferaorcamentaria = $this->o70_esferaorcamentaria ";
@@ -555,7 +555,7 @@ class cl_orcreceita
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -597,7 +597,7 @@ class cl_orcreceita
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -715,7 +715,7 @@ class cl_orcreceita
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -758,7 +758,7 @@ class cl_orcreceita
         }
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -806,7 +806,7 @@ class cl_orcreceita
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -861,7 +861,7 @@ class cl_orcreceita
         }
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -932,7 +932,7 @@ class cl_orcreceita
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -988,7 +988,7 @@ class cl_orcreceita
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -1060,7 +1060,7 @@ class cl_orcreceita
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = explode("#",$ordem);
+            $campos_sql = explode("#",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];

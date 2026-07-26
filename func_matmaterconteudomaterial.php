@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matmaterconteudomaterial_classe.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $oDaoConteudoMaterial = new cl_matmaterconteudomaterial;
 $oDaoConteudoMaterial->rotulo->label("m08_codigo");
 
@@ -53,7 +54,7 @@ $oRotulo->label("m60_descr");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for="chave_m08_codigo"><?=$Lm08_codigo?></label></td>
-          <td><? db_input("m08_codigo", 10, $Im08_codigo, true, "text", 4, "", "chave_m08_codigo"); ?></td>
+          <td><?php  db_input("m08_codigo", 10, $Im08_codigo, true, "text", 4, "", "chave_m08_codigo"); ?></td>
         </tr>
 
         <tr>
@@ -72,7 +73,7 @@ $oRotulo->label("m60_descr");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_matmaterconteudomaterial.hide();">
   </form>
-      <?
+      <?php 
       if ( !isset($pesquisa_chave) ) {
 
         $sCampos  = " m08_codigo    as DB_m08_codigo,           ";

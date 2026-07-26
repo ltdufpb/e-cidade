@@ -14,7 +14,7 @@ namespace ECidade\Educacao\Escola\Censo\MatriculaInicial\Censo2019\Layout\Mapper
  */
 class Registro60Mapper extends Mapper
 {
-    protected $dePara = array(
+    protected $dePara = [
         "Tipo de registro" => "tipoRegistro",
         "Código de escola - Inep" => "codigoInepEscola",
         "Código da pessoa física no sistema próprio" => "codigoPessoa",
@@ -64,5 +64,5 @@ class Registro60Mapper extends Mapper
         "Aquaviário - Capacidade entre 5 a 15 aluno(a)s" => "aquaviárioEntre5A15",
         "Aquaviário - Capacidade entre 15 a 35 aluno(a)s" => "aquaviárioEntre15A35",
         "Aquaviário - Capacidade acima de 35 aluno(a)s" => "aquaviárioAcima35"
-    );
+    ];
 }

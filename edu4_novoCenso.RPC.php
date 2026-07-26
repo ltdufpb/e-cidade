@@ -88,9 +88,7 @@ try {
             break;
         case 'gerarArquivoIdentificacao':
             $censo = new Censo($parametros->ano);
-            $escolas = array_map(function ($codigo) {
-                return EscolaRepository::getEscolaByCodigo($codigo);
-            }, $parametros->escolas);
+            $escolas = array_map(EscolaRepository::getEscolaByCodigo(...), $parametros->escolas);
 
             $retorno->arquivo_censo = $censo->exportarArquivoIdentificacao($escolas);
             break;

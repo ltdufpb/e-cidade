@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_configdbprefagua_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconfigdbprefagua = new cl_configdbprefagua;
 $clconfigdbprefagua->rotulo->label("w16_sequencial");
 $clconfigdbprefagua->rotulo->label("w16_aguacortesituacao");
@@ -54,7 +55,7 @@ $clconfigdbprefagua->rotulo->label("w16_aguacortesituacao");
               <?=$Lw16_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("w16_sequencial",10,$Iw16_sequencial,true,"text",4,"","chave_w16_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconfigdbprefagua->rotulo->label("w16_aguacortesituacao");
               <?=$Lw16_aguacortesituacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("w16_aguacortesituacao",10,$Iw16_aguacortesituacao,true,"text",4,"","chave_w16_aguacortesituacao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconfigdbprefagua->rotulo->label("w16_aguacortesituacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_configdbprefagua.php")==true){
@@ -122,12 +123,12 @@ $clconfigdbprefagua->rotulo->label("w16_aguacortesituacao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

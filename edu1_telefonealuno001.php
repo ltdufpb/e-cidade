@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_telefonealuno_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltelefonealuno = new cl_telefonealuno;
 $db_opcao = 1;
 $db_botao = true;
@@ -69,7 +69,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Telefones do Aluno</b></legend>
-    <?include(modification("forms/db_frmtelefonealuno.php"));?>
+    <?php include(modification("forms/db_frmtelefonealuno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -77,7 +77,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($cltelefonealuno->erro_status=="0"){
   $cltelefonealuno->erro(true,false);

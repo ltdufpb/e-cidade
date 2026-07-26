@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -152,7 +152,7 @@ $soma_receitas  = $oSuplementacao->getValorReceita();
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	   include(modification("forms/db_frmorcsuplemrec.php"));
 	?>
     </center>
@@ -162,7 +162,7 @@ $soma_receitas  = $oSuplementacao->getValorReceita();
 
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
   if($clorcsuplemrec->erro_status=="0"){
     $clorcsuplemrec->erro(true,false);

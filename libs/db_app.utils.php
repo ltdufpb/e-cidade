@@ -33,22 +33,22 @@ class db_app {
    */
   public static function load($files) {
 
-    $aFiles                       = array();
+    $aFiles                       = [];
     $aFiles["estilos.css"]        = "<link href='estilos.css' rel='stylesheet' type='text/css'>";
     $aFiles["grid.style.css"]     = "<link href='estilos/grid.style.css' rel='stylesheet' type='text/css'>";
     $aFiles["scripts.js"]         = "<script language='JavaScript' type='text/javascript' src='scripts/scripts.js?version=".DB_VERSION."'></script>";
     $aFiles["strings.js"]         = "<script language='JavaScript' type='text/javascript' src='scripts/strings.js?version=".DB_VERSION."'></script>";
     $aFiles["datagrid.widget.js"] = "<script language='JavaScript' type='text/javascript' src='scripts/datagrid.widget.js?version=".DB_VERSION."'></script>";
     $aFiles["prototype.js"]       = "<script language='JavaScript' type='text/javascript' src='scripts/prototype.js?version=".DB_VERSION."'></script>";
-    $aFileToLoad = is_array($files) ? $files : explode(",", $files);
+    $aFileToLoad = is_array($files) ? $files : explode(",", (string) $files);
 
     foreach ($aFileToLoad as $index => $filename) {
 
-      if (isset($aFiles[trim($filename)])) {
-        echo $aFiles[trim($filename)]."\n";
+      if (isset($aFiles[trim((string) $filename)])) {
+        echo $aFiles[trim((string) $filename)]."\n";
       } else {
 
-        $extension  = explode(".", trim($filename));
+        $extension  = explode(".", trim((string) $filename));
         $extension  = array_reverse($extension);
         $directory  = "";
         $sStringPrefix = "";
@@ -66,14 +66,14 @@ class db_app {
           $directory     = "estilos";
 
         }
-        if (file_exists("{$directory}/".trim($filename))) {
-          echo str_replace("#filename", "{$directory}/".trim($filename), $sStringPrefix)."{$sStringSufix}\n";
-        }else if (file_exists("{$directory}/widgets/".trim($filename))) {
-          echo str_replace("#filename", "{$directory}/widgets/".trim($filename), $sStringPrefix)."{$sStringSufix}\n";
-        }else if (file_exists("{$directory}/classes/".trim($filename))) {
-          echo str_replace("#filename", "{$directory}/classes/".trim($filename), $sStringPrefix)."{$sStringSufix}\n";
-        } else if (file_exists("ext/javascript/".trim($filename))) {
-          echo str_replace("#filename", "ext/javascript/".trim($filename), $sStringPrefix)."{$sStringSufix}\n";
+        if (file_exists("{$directory}/".trim((string) $filename))) {
+          echo str_replace("#filename", "{$directory}/".trim((string) $filename), $sStringPrefix)."{$sStringSufix}\n";
+        }else if (file_exists("{$directory}/widgets/".trim((string) $filename))) {
+          echo str_replace("#filename", "{$directory}/widgets/".trim((string) $filename), $sStringPrefix)."{$sStringSufix}\n";
+        }else if (file_exists("{$directory}/classes/".trim((string) $filename))) {
+          echo str_replace("#filename", "{$directory}/classes/".trim((string) $filename), $sStringPrefix)."{$sStringSufix}\n";
+        } else if (file_exists("ext/javascript/".trim((string) $filename))) {
+          echo str_replace("#filename", "ext/javascript/".trim((string) $filename), $sStringPrefix)."{$sStringSufix}\n";
         } else {
           echo "<!-- Arquivo não encontrado {$filename}. -->";
           throw new Exception("Include {$filename} não existe");
@@ -92,7 +92,7 @@ class db_app {
   static public function import($sClasse) {
 
     return false;
-    $aBasePath = array("model/", "libs/", "std/");
+    $aBasePath = ["model/", "libs/", "std/"];
     if (preg_match('/(\.\*)$/', $sClasse)) {
 
       $sImportFilePath = substr($sClasse, 0, strlen($sClasse) - 2);
@@ -114,7 +114,7 @@ class db_app {
             /**
              * não carrega arquivos que não sejam php
              */
-            if (substr($sFile, -3) !== "php") {
+            if (!str_ends_with($sFile, "php")) {
               continue;
             }
             if (is_file($sBasePath . $sImportFilePath . "/" . $sFile)) {

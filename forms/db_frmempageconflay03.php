@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -137,9 +137,9 @@ function js_anular(){
 	      <?=$Le80_codage?>
 	      </td>	
 	      <td nowrap>
-		 <? db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
+		 <?php  db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
 	      <?=$Le80_data?>
-	       <?
+	       <?php 
                   $result07= $clempage->sql_record($clempage->sql_query_file(null, "*", null, " e80_codage = $e80_codage and e80_instit = " . db_getsession("DB_instit")));
                   db_fieldsmemory($result07,0);    
                    $arr_x  = split("-",$e80_data);
@@ -165,7 +165,7 @@ function js_anular(){
 	         <?=$Le87_descgera?>
 	      </td> 
 	      <td>
-		 <?db_input('e87_descgera',40,'',true,'text',1);?>
+		 <?php db_input('e87_descgera',40,'',true,'text',1);?>
 	      </td>
 	    </tr>
 	</table>  
@@ -176,19 +176,19 @@ function js_anular(){
 	  <tr>
 	    <td nowrap><b>Data geração:</b></td>
 	    <td>
-              <?db_inputdata('dtin',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
+              <?php db_inputdata('dtin',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
 	    </td>  
 	  </tr>  
 	  <tr>
 	    <td><b>Data depósito:</b></td>
 	    <td>
-              <?db_inputdata('deposito',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
+              <?php db_inputdata('deposito',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td><b>Convênio:</b></td>
 	    <td>
-	    <?
+	    <?php 
             $result =  $clempagetipo->sql_record($clempagetipo->sql_query($e83_codtipo,'e83_convenio as e83_conv'));  
 	    if($clempagetipo->numrows>0){
 	      db_fieldsmemory($result,0);
@@ -205,9 +205,9 @@ function js_anular(){
     </tr>
     <tr>
       <td colspan='2' align='center'>
-      <?if(isset($arquivo) && isset($atualizar) && $sqlerro == false){?>
+      <?php if(isset($arquivo) && isset($atualizar) && $sqlerro == false){?>
 	<input name="emite" type="button" id="pesquisar" value="Reemitir arquivo" onclick='return js_emitir();'>
-      <?}?>  	
+      <?php }?>  	
 	<input name="atualizar" type="submit" id="pesquisar" value="Gerar arquivo" onclick='return js_atualizar();'>
 	<input name="entrar_codord" type="button" id="pesquisar" value="Pesquisar" onclick='js_pesquisar(this.form);' >
 	<input name="fechar" type="button"  value="Fechar" onclick='parent.db_iframe_gerar.hide();' >

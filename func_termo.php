@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_termo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltermo = new cl_termo;
 $cltermo->rotulo->label("v07_parcel");
 $cltermo->rotulo->label("v07_dtlanc");
@@ -54,7 +55,7 @@ $cltermo->rotulo->label("v07_dtlanc");
               <?=$Lv07_parcel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v07_parcel",6,$Iv07_parcel,true,"text",4,"","chave_v07_parcel");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltermo->rotulo->label("v07_dtlanc");
               <?=$Lv07_dtlanc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v07_dtlanc",8,$Iv07_dtlanc,true,"text",4,"","chave_v07_dtlanc");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltermo->rotulo->label("v07_dtlanc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "v07_parcel, v07_dtlanc, v07_numpre, v07_totpar, v07_numcgm, z01_nome";
@@ -110,14 +111,14 @@ $cltermo->rotulo->label("v07_dtlanc");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v07_parcel.focus();
 document.form2.chave_v07_parcel.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

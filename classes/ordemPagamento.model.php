@@ -40,11 +40,6 @@ class ordemPagamento
      * @var string
      */
     const COMPLEMENTO = 'Controle de prestação de contas.';
-
-  /**
-   * Codigo da ordem;
-   */
-  private $iCodOrdem = null;
   /**
    * ano da ordem (variavel da sessao)
    */
@@ -81,7 +76,7 @@ class ordemPagamento
    * Retencoes da nota de liquidacao
    * @var array;
    */
-  private $aRetencoes   = array();
+  private $aRetencoes   = [];
   /**
    * Codigo do grupo de autenticação
    *
@@ -123,10 +118,9 @@ class ordemPagamento
    * metodo construtor;
    * @param integer $iCodOrdem codigo da ordem
    */
-    function __construct($iCodOrdem)
+    function __construct(private $iCodOrdem)
     {
 
-    $this->iCodOrdem    = $iCodOrdem;
     $this->iAnoUsu      = db_getsession("DB_anousu");
     $this->dtDataUsu    = date("Y-m-d",db_getsession("DB_datausu"));
     $this->oDaoPagOrdem = new cl_pagordem;
@@ -380,7 +374,7 @@ class ordemPagamento
     ";
 
     $rs = db_query($sql);
-    if (pg_numrows($rs) > 0 ) {
+    if (pg_num_rows($rs) > 0 ) {
       $nValorSlip += db_utils::fieldsMemory($rs, 0)->total;
     }
     if ($nValorSlip <= 0) {
@@ -609,7 +603,7 @@ class ordemPagamento
       {$iCodDoc},
       ".$this->getValorPago().") as retorno";
     $rsVerifica = db_query($sSqlVerifica);
-    $sRetorno   = pg_result($rsVerifica, 0, 0);
+    $sRetorno   = pg_fetch_result($rsVerifica, 0, 0);
     if ((int)substr($sRetorno, 0, 2) > 0) {
 
       $sErroMsg    = "Erro: ".substr($sRetorno, 3);
@@ -707,7 +701,7 @@ class ordemPagamento
       $oLancam->setCgm($oDadosOrdem->e60_numcgm);
       $oLancam->setEmpenho($oDadosOrdem->e60_numemp, $oDadosOrdem->e60_anousu, $oDadosOrdem->e60_codcom);
       $oLancam->setElemento($oElemento->e64_codele);
-      if (trim($this->getHistorico()) != "") {
+      if (trim((string) $this->getHistorico()) != "") {
         $oLancam->setComplemento($this->getHistorico());
       }
       $oLancam->setOrdemPagamento($oDadosOrdem->e50_codord);
@@ -720,8 +714,8 @@ class ordemPagamento
         $sSqlSaldoDot  .= $this->getValorPago().") as dotacao";
         $rsDotacaoSaldo = db_query($sSqlSaldoDot);
         $oSaldoDot      = db_utils::fieldsMemory($rsDotacaoSaldo, 0);
-        if (substr($oSaldoDot->dotacao, 0, 1) == 0) {
-          throw new exception("Erro na atualização do orçamento \\n ".substr($oSaldoDot->dotacao, 1));
+        if (substr((string) $oSaldoDot->dotacao, 0, 1) == 0) {
+          throw new exception("Erro na atualização do orçamento \\n ".substr((string) $oSaldoDot->dotacao, 1));
         }
         $oLancam->setDotacao($oDadosOrdem->e60_coddot);
       }
@@ -863,9 +857,9 @@ class ordemPagamento
                   $sSqlSaldoDot .= $this->getValorPago() . ") as dotacao";
                   $rsDotacaoSaldo = db_query($sSqlSaldoDot);
                   $oSaldoDot = db_utils::fieldsMemory($rsDotacaoSaldo, 0);
-                  if (substr($oSaldoDot->dotacao, 0, 1) == 0) {
+                  if (substr((string) $oSaldoDot->dotacao, 0, 1) == 0) {
 
-                      throw new exception("Erro na atualização do orçamento \\n " . substr($oSaldoDot->dotacao, 1));
+                      throw new exception("Erro na atualização do orçamento \\n " . substr((string) $oSaldoDot->dotacao, 1));
                       return false;
 
                   }
@@ -1151,7 +1145,7 @@ class ordemPagamento
         if ($lAtualizarObjetoAutenticacao) {
           $this->sRetornoAutentica = $oAut->retorno;
         }
-        if (substr($oAut->retorno,0,1) != '1') {
+        if (!str_starts_with((string) $oAut->retorno, '1')) {
 
           $sErroMsg = $oAut->retorno;
           throw new exception($sErroMsg);
@@ -1321,7 +1315,7 @@ class ordemPagamento
       {$iCodDoc},
       ".$this->getValorPago().") as retorno";
     $rsVerifica = db_query($sSqlVerifica);
-    $sRetorno   = pg_result($rsVerifica, 0, 0);
+    $sRetorno   = pg_fetch_result($rsVerifica, 0, 0);
     if ((int)substr($sRetorno, 0, 2) > 0) {
 
       $sErroMsg    = substr($sRetorno, 3);
@@ -1424,8 +1418,8 @@ class ordemPagamento
       $sSqlSaldoDot  .= $this->getValorPago().") as dotacao";
       $rsDotacaoSaldo = db_query($sSqlSaldoDot);
       $oSaldoDot      = db_utils::fieldsMemory($rsDotacaoSaldo, 0);
-      if (substr($oSaldoDot->dotacao, 0, 1) == 0) {
-        throw new exception("Erro na atualização do orçamento \\n ".substr($oSaldoDot->dotacao, 1));
+      if (substr((string) $oSaldoDot->dotacao, 0, 1) == 0) {
+        throw new exception("Erro na atualização do orçamento \\n ".substr((string) $oSaldoDot->dotacao, 1));
       }
       $oLancam->setDotacao($oDadosOrdem->e60_coddot);
     }
@@ -1524,14 +1518,14 @@ class ordemPagamento
       }
     }
 
-    $aWhere = array(
+    $aWhere = [
       "e82_codord = {$this->iCodOrdem}",
       "e97_codmov is null",
       "e85_codmov is null",
       "e43_empagemov is null",
       "e81_cancelado is null",
       "k12_sequencial is null"
-    );
+    ];
 
     $oDaoMovimentoPago = new cl_empagemov();
     $sSqlMovimentoPago = $oDaoMovimentoPago->sql_query_movimentos_desconto("e81_codmov, e81_valor", implode(' and ', $aWhere));
@@ -1699,7 +1693,7 @@ class ordemPagamento
       date("Y-m-d", db_getsession("DB_datausu")).
       "',".$iCodDoc.",".$nValor.") as teste";
     $result = db_query($sql);
-    $status = pg_result($result, 0, "teste");
+    $status = pg_fetch_result($result, 0, "teste");
     if (substr($status, 0, 2) > 0) {
 
       $sErroMsg    = "Validação (codigo: fc_verifica_lançamento) ".substr($status,3);
@@ -1871,9 +1865,9 @@ class ordemPagamento
 
       if ($this->iAnoUsu == $oEmpenho->e60_anousu) {
 
-        if (substr($oEmpenho->o56_elemento, 0, 2) == '33') {
+        if (str_starts_with((string) $oEmpenho->o56_elemento, '33')) {
           $iCodDoc = '4'; // despesa corrente
-        } else if (substr($oEmpenho->o56_elemento, 0, 2) == '34') {
+        } else if (str_starts_with((string) $oEmpenho->o56_elemento, '34')) {
           $iCodDoc = '24'; //estorno de despesa capital
         }
         /**
@@ -1896,27 +1890,19 @@ class ordemPagamento
           }
 
         if ($oCodigoGrupoContaOrcamento && !$lPassivo && !$lPrestacaoConta) {
-            switch ($oCodigoGrupoContaOrcamento->getCodigo()) {
-
-              case 7 :
-                $iCodDoc = 203;
-                break;
-              case 8 :
-                $iCodDoc = 205;
-                break;
-              case 9 :
-                $iCodDoc = 207;
-                break;
-              default:
-                $iCodDoc = $iCodDoc;
-            }
+            $iCodDoc = match ($oCodigoGrupoContaOrcamento->getCodigo()) {
+                7 => 203,
+                8 => 205,
+                9 => 207,
+                default => $iCodDoc,
+            };
           }
         }
       } else {
         $iCodDoc = 34; // estorno de liquacao RPs
       }
 
-      if ( ! cl_translan::possuiLancamentoDeControle($oEmpenhoFinanceiro->getNumero(), false) && in_array($iCodDoc, array(203,205)) ) {
+      if ( ! cl_translan::possuiLancamentoDeControle($oEmpenhoFinanceiro->getNumero(), false) && in_array($iCodDoc, [203,205]) ) {
         $iCodDoc = 4;
       }
 
@@ -2387,9 +2373,9 @@ class ordemPagamento
             $sSqlSaldoDot .= $this->getValorPago() . ") as dotacao";
             $rsDotacaoSaldo = db_query($sSqlSaldoDot);
             $oSaldoDot = db_utils::fieldsMemory($rsDotacaoSaldo, 0);
-            if (substr($oSaldoDot->dotacao, 0, 1) == 0) {
+            if (substr((string) $oSaldoDot->dotacao, 0, 1) == 0) {
 
-                throw new exception("Erro na atualização do orçamento \\n " . substr($oSaldoDot->dotacao, 1));
+                throw new exception("Erro na atualização do orçamento \\n " . substr((string) $oSaldoDot->dotacao, 1));
                 return false;
 
             }
@@ -2457,14 +2443,14 @@ class ordemPagamento
      * senao. incluimos um movimento pela agenda;
      */
     $sequencialEmpenho = $oEmpenhoFinanceiro->getNumero();
-    $whereMovimento = implode(' and ', array(
+    $whereMovimento = implode(' and ', [
             "not exists (select 1 from corempagemov where corempagemov.k12_codmov = empagemov.e81_codmov)",
             "not exists (select 1 from empageconfche where empageconfche.e91_codmov = empagemov.e81_codmov)",
             "e81_numemp = {$sequencialEmpenho}",
             "e81_valor > 0",
             "e82_codord = {$oDadosOrdem->e50_codord}",
             "e81_cancelado is null"
-        )) . " order by empagemov.e81_codmov limit 1 ";
+        ]) . " order by empagemov.e81_codmov limit 1 ";
     $daoEmpOrd = new cl_empord();
     $buscaMovimento = $daoEmpOrd->sql_query_movimento_ordem("empagemov.*", $whereMovimento);
     $buscaMovimento = db_query($buscaMovimento);
@@ -2506,7 +2492,7 @@ class ordemPagamento
 
     require_once(modification("std/db_stdClass.php"));
     $lControlePacto       = false;
-    $aParametrosOrcamento = db_stdClass::getParametro("orcparametro",array(db_getsession("DB_anousu")));
+    $aParametrosOrcamento = db_stdClass::getParametro("orcparametro",[db_getsession("DB_anousu")]);
     if (count($aParametrosOrcamento) > 0) {
       if (isset($aParametrosOrcamento[0]->o50_utilizapacto)) {
         $lControlePacto = @$aParametrosOrcamento[0]->o50_utilizapacto=="t"?true:false;
@@ -2558,7 +2544,7 @@ class ordemPagamento
     public function getSlipsGeradosAutomaticamente( $situacao = null )
     {
         $oDao = new cl_slipretencaoreceitas;
-        $aWhere = array();
+        $aWhere = [];
 
         $aWhere[] = "e20_pagordem = {$this->iCodOrdem}";
         if (!empty($situacao)) {
@@ -2568,7 +2554,7 @@ class ordemPagamento
         $sWhere = implode(" and ", $aWhere);
         $sql = $oDao->sql_query(null, "k206_slip", 1, $sWhere );
         $rs = $oDao->sql_record($sql);
-        $aSlips = array();
+        $aSlips = [];
 
         if ( $oDao->numrows > 0 ) {
 
@@ -2579,7 +2565,7 @@ class ordemPagamento
         /**
          * busca o slip de transferencia bancaria gerado automaticamente
          */
-        $aWhere = array("k209_pagordem = {$this->iCodOrdem}");
+        $aWhere = ["k209_pagordem = {$this->iCodOrdem}"];
         if (!empty($situacao)) {
           $aWhere[] = "k17_situacao = {$situacao}";
         }

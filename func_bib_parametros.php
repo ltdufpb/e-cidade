@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bib_parametros_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbib_parametros = new cl_bib_parametros;
 $clbib_parametros->rotulo->label("bi26_codigo");
 $clbib_parametros->rotulo->label("bi26_codigo");
@@ -54,7 +55,7 @@ $clbib_parametros->rotulo->label("bi26_codigo");
               <?=$Lbi26_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi26_codigo",20,$Ibi26_codigo,true,"text",4,"","chave_bi26_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbib_parametros->rotulo->label("bi26_codigo");
               <?=$Lbi26_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi26_codigo",20,$Ibi26_codigo,true,"text",4,"","chave_bi26_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbib_parametros->rotulo->label("bi26_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bib_parametros.php")==true){
@@ -122,12 +123,12 @@ $clbib_parametros->rotulo->label("bi26_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

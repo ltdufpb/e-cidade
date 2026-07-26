@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_syscampo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 //db_postmemory($HTTP_GET_VARS,2);exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_syscampo = new cl_db_syscampo;
 $clrotulo = new rotulocampo;
 if(isset($campousar)){
@@ -74,7 +75,7 @@ function js_enviarvalor(){
 	          <b>Somatório dos campos</b>
 			    </legend>
 			    <table width='100%'>
-   	      <?
+   	      <?php 
    	      $arr = split(",",$sel);
 		      $numrows = $cldb_syscampo->numrows;
 		      for($i=0;$i<$numrows;$i++){

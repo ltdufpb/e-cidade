@@ -74,6 +74,7 @@ class TransferenciaFinanceira extends Transferencia {
    * Metodo que salva um slip do tipo transferencia bancaria
    * @see Transferencia::salvar()
    */
+  #[\Override]
   public function salvar() {
 
     parent::salvar();
@@ -117,7 +118,7 @@ class TransferenciaFinanceira extends Transferencia {
     $sSqlBuscaTransferencia      = $oDaoTransferenciaFinanceira->sql_query(null, "k17_codigo", null, $sWhereInstituicao);
     $rsBuscaTransferencia        = $oDaoTransferenciaFinanceira->sql_record($sSqlBuscaTransferencia);
     $iLinhasTransferencia        = $oDaoTransferenciaFinanceira->numrows;
-    $aTransferencias             = array();
+    $aTransferencias             = [];
 
     if ($oDaoTransferenciaFinanceira->numrows > 0) {
 
@@ -143,7 +144,7 @@ class TransferenciaFinanceira extends Transferencia {
     $sSqlBuscaTransferencia      = $oDaoTransferenciaFinanceira->sql_query_recebimento(null, "k17_codigo", null, $sWhereInstituicao);
     $rsBuscaTransferencia        = $oDaoTransferenciaFinanceira->sql_record($sSqlBuscaTransferencia);
     $iLinhasTransferencia        = $oDaoTransferenciaFinanceira->numrows;
-    $aTransferencias             = array();
+    $aTransferencias             = [];
 
     if ($oDaoTransferenciaFinanceira->numrows > 0) {
 
@@ -290,6 +291,7 @@ class TransferenciaFinanceira extends Transferencia {
    * @throws BusinessException
    * @throws Exception
    */
+  #[\Override]
   public function anular($sMotivo) {
 
     /**

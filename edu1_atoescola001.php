@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_atoescola_classe.php"));
 include(modification("classes/db_escola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clatoescola = new cl_atoescola;
 $clescola = new cl_escola;
 $db_opcao = 1;
@@ -77,7 +77,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Escola vinculadas ao Ato Legal: <?=@$ed05_c_finalidade?></b></legend>
-    <?include(modification("forms/db_frmatoescola.php"));?>
+    <?php include(modification("forms/db_frmatoescola.php"));?>
    </fieldset>
    </center>
   </td>
@@ -85,7 +85,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clatoescola->erro_status=="0"){
   $clatoescola->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_habitinscricao_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clhabitinscricao = new cl_habitinscricao;
 $clhabitinscricao->rotulo->label("ht15_sequencial");
@@ -57,7 +58,7 @@ $clhabitinscricao->rotulo->label("ht15_candidato");
               <b>Código Inscrição:</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("ht15_sequencial", 10, $Iht15_sequencial, true, "text", 4, "", "chave_ht15_sequencial");
 		          ?>
             </td>
@@ -75,7 +76,7 @@ $clhabitinscricao->rotulo->label("ht15_candidato");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
         
         $sWhere = ' habitcandidatointeresse.ht20_ativo is true ';
         
@@ -148,12 +149,12 @@ $clhabitinscricao->rotulo->label("ht15_candidato");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

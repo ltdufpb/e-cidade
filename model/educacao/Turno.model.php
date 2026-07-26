@@ -59,8 +59,8 @@ class Turno {
   private $iOrdem;
 
 
-  static $aTurnoReferente = array(1 => "Manhã", 2 => "Tarde", 3 => "Noite");
-  static $aTurnoSigla     = array(1 => "M", 2 => "T", 3 => "N");
+  static $aTurnoReferente = [1 => "Manhã", 2 => "Tarde", 3 => "Noite"];
+  static $aTurnoSigla     = [1 => "M", 2 => "T", 3 => "N"];
 
   public function __construct($iCodigoTurno = null) {
 
@@ -132,7 +132,7 @@ class Turno {
     $sSqlTurnoReferente   = $oDaoTurnoReferente->sql_query_file( null, "ed231_i_referencia", null, $sWhereTurnoReferente );
     $rsTurnoReferente     = db_query( $sSqlTurnoReferente );
 
-    $aReferencias = array();
+    $aReferencias = [];
     if( $rsTurnoReferente && pg_num_rows( $rsTurnoReferente ) > 0 ) {
 
       $iLinha = pg_num_rows( $rsTurnoReferente );
@@ -208,11 +208,11 @@ class Turno {
      */
     public function toArray()
     {
-        return array(
+        return [
             'codigo' => $this->iCodigoTurno,
             'descricao' => $this->sDescricao,
             'ordem' => $this->iOrdem,
-        );
+        ];
     }
 }
 

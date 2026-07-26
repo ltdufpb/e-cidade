@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_progconvocacaores_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprogconvocacaores = new cl_progconvocacaores;
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
@@ -55,9 +56,9 @@ $clrotulo->label("ed127_i_ano");
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
       <?=$Led127_i_ano?>
-      <?db_input("ed127_i_ano",4,$Ied127_i_ano,true,"text",4,"","chave_ed127_i_ano");?>
+      <?php db_input("ed127_i_ano",4,$Ied127_i_ano,true,"text",4,"","chave_ed127_i_ano");?>
      </td>
     </tr>
     <tr>
@@ -73,7 +74,7 @@ $clrotulo->label("ed127_i_ano");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_progconvocacaores.php")==true){

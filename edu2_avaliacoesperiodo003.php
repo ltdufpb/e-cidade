@@ -45,7 +45,7 @@ db_app::import("exceptions.*");
 
 $oGet  = db_utils::postMemory($_GET);
 $oTurma            = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aDisciplinas      = explode(",", $oGet->aDisciplinas);
+$aDisciplinas      = explode(",", (string) $oGet->aDisciplinas);
 $aEtapas           = $oTurma->getEtapas();
 $oEtapSelecionada = null;
 
@@ -127,7 +127,7 @@ $lPrimeiroLaco = true;
 /**
  * Filtra as disciplinas selecionadas na tela, criando uma estrutura somente com as regencias da turma
  */
-$aRegenciasSelecionadas = array();
+$aRegenciasSelecionadas = [];
 
 foreach ( $aDisciplinas as $iCodigoDisciplina) {
 

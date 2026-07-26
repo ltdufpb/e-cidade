@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE cidadaofiliacao
 class cl_cidadaofiliacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ov29_sequencial = 0; 
-   var $ov29_cidadao = 0; 
-   var $ov29_cidadao_seq = 0; 
-   var $ov29_tipofamiliar = 0; 
-   var $ov29_cidadaovinculo = 0; 
-   var $ov29_cidadaovinculo_seq = 0; 
+   public $ov29_sequencial = 0; 
+   public $ov29_cidadao = 0; 
+   public $ov29_cidadao_seq = 0; 
+   public $ov29_tipofamiliar = 0; 
+   public $ov29_cidadaovinculo = 0; 
+   public $ov29_cidadaovinculo_seq = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ov29_sequencial = int4 = Código CidadaoFiliacao 
                  ov29_cidadao = int4 = Cidadão 
                  ov29_cidadao_seq = int4 = Cidadão Sequencial 
@@ -58,10 +58,10 @@ class cl_cidadaofiliacao {
                  ov29_cidadaovinculo_seq = int4 = Cidadão Vínculo Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaofiliacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaofiliacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_cidadaofiliacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ov29_sequencial = pg_result($result,0,0); 
+       $this->ov29_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cidadaofiliacao_ov29_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ov29_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ov29_sequencial)){
          $this->erro_sql = " Campo ov29_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_cidadaofiliacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "CidadaoFiliacao ($this->ov29_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "CidadaoFiliacao já Cadastrado";
@@ -213,15 +213,15 @@ class cl_cidadaofiliacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20152,'$this->ov29_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3618,20152,'','".AddSlashes(pg_result($resaco,0,'ov29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3618,20153,'','".AddSlashes(pg_result($resaco,0,'ov29_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3618,20154,'','".AddSlashes(pg_result($resaco,0,'ov29_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3618,20155,'','".AddSlashes(pg_result($resaco,0,'ov29_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3618,20156,'','".AddSlashes(pg_result($resaco,0,'ov29_cidadaovinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3618,20157,'','".AddSlashes(pg_result($resaco,0,'ov29_cidadaovinculo_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3618,20152,'','".AddSlashes(pg_fetch_result($resaco,0,'ov29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3618,20153,'','".AddSlashes(pg_fetch_result($resaco,0,'ov29_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3618,20154,'','".AddSlashes(pg_fetch_result($resaco,0,'ov29_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3618,20155,'','".AddSlashes(pg_fetch_result($resaco,0,'ov29_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3618,20156,'','".AddSlashes(pg_fetch_result($resaco,0,'ov29_cidadaovinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3618,20157,'','".AddSlashes(pg_fetch_result($resaco,0,'ov29_cidadaovinculo_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -231,10 +231,10 @@ class cl_cidadaofiliacao {
       $this->atualizacampos();
      $sql = " update cidadaofiliacao set ";
      $virgula = "";
-     if(trim($this->ov29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_sequencial"])){ 
+     if(trim((string) $this->ov29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_sequencial"])){ 
        $sql  .= $virgula." ov29_sequencial = $this->ov29_sequencial ";
        $virgula = ",";
-       if(trim($this->ov29_sequencial) == null ){ 
+       if(trim((string) $this->ov29_sequencial) == null ){ 
          $this->erro_sql = " Campo Código CidadaoFiliacao nao Informado.";
          $this->erro_campo = "ov29_sequencial";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_cidadaofiliacao {
          return false;
        }
      }
-     if(trim($this->ov29_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadao"])){ 
+     if(trim((string) $this->ov29_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadao"])){ 
        $sql  .= $virgula." ov29_cidadao = $this->ov29_cidadao ";
        $virgula = ",";
-       if(trim($this->ov29_cidadao) == null ){ 
+       if(trim((string) $this->ov29_cidadao) == null ){ 
          $this->erro_sql = " Campo Cidadão nao Informado.";
          $this->erro_campo = "ov29_cidadao";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_cidadaofiliacao {
          return false;
        }
      }
-     if(trim($this->ov29_cidadao_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadao_seq"])){ 
+     if(trim((string) $this->ov29_cidadao_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadao_seq"])){ 
        $sql  .= $virgula." ov29_cidadao_seq = $this->ov29_cidadao_seq ";
        $virgula = ",";
-       if(trim($this->ov29_cidadao_seq) == null ){ 
+       if(trim((string) $this->ov29_cidadao_seq) == null ){ 
          $this->erro_sql = " Campo Cidadão Sequencial nao Informado.";
          $this->erro_campo = "ov29_cidadao_seq";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_cidadaofiliacao {
          return false;
        }
      }
-     if(trim($this->ov29_tipofamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_tipofamiliar"])){ 
+     if(trim((string) $this->ov29_tipofamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_tipofamiliar"])){ 
        $sql  .= $virgula." ov29_tipofamiliar = $this->ov29_tipofamiliar ";
        $virgula = ",";
-       if(trim($this->ov29_tipofamiliar) == null ){ 
+       if(trim((string) $this->ov29_tipofamiliar) == null ){ 
          $this->erro_sql = " Campo Tipo Familiar nao Informado.";
          $this->erro_campo = "ov29_tipofamiliar";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_cidadaofiliacao {
          return false;
        }
      }
-     if(trim($this->ov29_cidadaovinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadaovinculo"])){ 
+     if(trim((string) $this->ov29_cidadaovinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadaovinculo"])){ 
        $sql  .= $virgula." ov29_cidadaovinculo = $this->ov29_cidadaovinculo ";
        $virgula = ",";
-       if(trim($this->ov29_cidadaovinculo) == null ){ 
+       if(trim((string) $this->ov29_cidadaovinculo) == null ){ 
          $this->erro_sql = " Campo Cidadão Vínculo nao Informado.";
          $this->erro_campo = "ov29_cidadaovinculo";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_cidadaofiliacao {
          return false;
        }
      }
-     if(trim($this->ov29_cidadaovinculo_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadaovinculo_seq"])){ 
+     if(trim((string) $this->ov29_cidadaovinculo_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadaovinculo_seq"])){ 
        $sql  .= $virgula." ov29_cidadaovinculo_seq = $this->ov29_cidadaovinculo_seq ";
        $virgula = ",";
-       if(trim($this->ov29_cidadaovinculo_seq) == null ){ 
+       if(trim((string) $this->ov29_cidadaovinculo_seq) == null ){ 
          $this->erro_sql = " Campo Cidadão Vínculo Sequencial nao Informado.";
          $this->erro_campo = "ov29_cidadaovinculo_seq";
          $this->erro_banco = "";
@@ -323,21 +323,21 @@ class cl_cidadaofiliacao {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20152,'$this->ov29_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov29_sequencial"]) || $this->ov29_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3618,20152,'".AddSlashes(pg_result($resaco,$conresaco,'ov29_sequencial'))."','$this->ov29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3618,20152,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov29_sequencial'))."','$this->ov29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadao"]) || $this->ov29_cidadao != "")
-             $resac = db_query("insert into db_acount values($acount,3618,20153,'".AddSlashes(pg_result($resaco,$conresaco,'ov29_cidadao'))."','$this->ov29_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3618,20153,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov29_cidadao'))."','$this->ov29_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadao_seq"]) || $this->ov29_cidadao_seq != "")
-             $resac = db_query("insert into db_acount values($acount,3618,20154,'".AddSlashes(pg_result($resaco,$conresaco,'ov29_cidadao_seq'))."','$this->ov29_cidadao_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3618,20154,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov29_cidadao_seq'))."','$this->ov29_cidadao_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov29_tipofamiliar"]) || $this->ov29_tipofamiliar != "")
-             $resac = db_query("insert into db_acount values($acount,3618,20155,'".AddSlashes(pg_result($resaco,$conresaco,'ov29_tipofamiliar'))."','$this->ov29_tipofamiliar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3618,20155,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov29_tipofamiliar'))."','$this->ov29_tipofamiliar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadaovinculo"]) || $this->ov29_cidadaovinculo != "")
-             $resac = db_query("insert into db_acount values($acount,3618,20156,'".AddSlashes(pg_result($resaco,$conresaco,'ov29_cidadaovinculo'))."','$this->ov29_cidadaovinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3618,20156,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov29_cidadaovinculo'))."','$this->ov29_cidadaovinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov29_cidadaovinculo_seq"]) || $this->ov29_cidadaovinculo_seq != "")
-             $resac = db_query("insert into db_acount values($acount,3618,20157,'".AddSlashes(pg_result($resaco,$conresaco,'ov29_cidadaovinculo_seq'))."','$this->ov29_cidadaovinculo_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3618,20157,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov29_cidadaovinculo_seq'))."','$this->ov29_cidadaovinculo_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -391,15 +391,15 @@ class cl_cidadaofiliacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20152,'$ov29_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3618,20152,'','".AddSlashes(pg_result($resaco,$iresaco,'ov29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3618,20153,'','".AddSlashes(pg_result($resaco,$iresaco,'ov29_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3618,20154,'','".AddSlashes(pg_result($resaco,$iresaco,'ov29_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3618,20155,'','".AddSlashes(pg_result($resaco,$iresaco,'ov29_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3618,20156,'','".AddSlashes(pg_result($resaco,$iresaco,'ov29_cidadaovinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3618,20157,'','".AddSlashes(pg_result($resaco,$iresaco,'ov29_cidadaovinculo_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3618,20152,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3618,20153,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov29_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3618,20154,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov29_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3618,20155,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov29_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3618,20156,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov29_cidadaovinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3618,20157,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov29_cidadaovinculo_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -460,7 +460,7 @@ class cl_cidadaofiliacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cidadaofiliacao";
@@ -475,7 +475,7 @@ class cl_cidadaofiliacao {
    function sql_query ( $ov29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_cidadaofiliacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -512,7 +512,7 @@ class cl_cidadaofiliacao {
    function sql_query_file ( $ov29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -533,7 +533,7 @@ class cl_cidadaofiliacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

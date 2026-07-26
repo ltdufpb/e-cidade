@@ -76,7 +76,7 @@ function TiraEspacoNome( $nome ) {
 
   $sep   = "";
   $str   = "";
-  $parte = explode( " ", $nome );
+  $parte = explode( " ", (string) $nome );
 
   for( $i = 0; $i < count( $parte ); $i++ ) {
 
@@ -125,7 +125,7 @@ if( isset( $incluir ) ) {
         exit;
       }
 
-      if( trim( $ed47_v_mae) == trim( $maesim ) && trim( $ed47_v_mae ) != "" && trim( $maesim ) != "" ) {
+      if( trim( (string) $ed47_v_mae) == trim( (string) $maesim ) && trim( (string) $ed47_v_mae ) != "" && trim( (string) $maesim ) != "" ) {
 
         $erroconf = true;
 
@@ -146,13 +146,13 @@ if( isset( $incluir ) ) {
 
     if ($erroconf == false) {
 
-      $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-      $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+      $ed47_c_foto = @trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+      $ed47_o_oid  = "tmp/".@trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
 
       if ($ed47_c_foto != "") {
 
         db_query("begin");
-        $oid_imagem = pg_loimport($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
+        $oid_imagem = pg_lo_import($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
         db_query("end");
         $ed47_o_oid = $oid_imagem;
       } else {
@@ -166,7 +166,7 @@ if( isset( $incluir ) ) {
         /**
         * Verifica se o campo ed47_celularresponsavel já possui DDD
         */
-        if ( strlen($ed47_celularresponsavel) <= 9 ) {
+        if ( strlen((string) $ed47_celularresponsavel) <= 9 ) {
           $ed47_celularresponsavel = "{$dddcelularresponsavel}{$ed47_celularresponsavel}";
         }
       
@@ -177,16 +177,16 @@ if( isset( $incluir ) ) {
         $claluno->ed47_v_mae                = $ed47_v_mae;
         $claluno->ed47_v_pai                = $ed47_v_pai;
         $claluno->ed47_c_nomeresp           = $ed47_c_nomeresp;
-        $claluno->ed47_celularresponsavel   = preg_replace("/[^0-9]/", "", $ed47_celularresponsavel);
-        $claluno->ed47_v_telef              = preg_replace("/[^0-9]/", "", $ed47_v_telef);
-        $claluno->ed47_v_telcel             = preg_replace("/[^0-9]/", "", $ed47_v_telcel);
-        $claluno->ed47_v_fax                = preg_replace("/[^0-9]/", "", $ed47_v_fax);
+        $claluno->ed47_celularresponsavel   = preg_replace("/[^0-9]/", "", (string) $ed47_celularresponsavel);
+        $claluno->ed47_v_telef              = preg_replace("/[^0-9]/", "", (string) $ed47_v_telef);
+        $claluno->ed47_v_telcel             = preg_replace("/[^0-9]/", "", (string) $ed47_v_telcel);
+        $claluno->ed47_v_fax                = preg_replace("/[^0-9]/", "", (string) $ed47_v_fax);
         $claluno->ed47_i_login              = $iUsuarioLogado;
         $claluno->ed47_situacaodocumentacao = "0";
         $claluno->ed47_censoregiao = empty($ed47_censoregiao) ? "null" : $ed47_censoregiao;
         $claluno->ed47_censoregiaonat = empty($ed47_censoregiaonat) ? "null" : $ed47_censoregiaonat;
 
-        $ed47_paisresidencia = trim($ed47_paisresidencia);
+        $ed47_paisresidencia = trim((string) $ed47_paisresidencia);
           $claluno->ed47_paisresidencia = empty($ed47_paisresidencia) ? "null" : $ed47_paisresidencia;
           $claluno->ed47_localizacaodiferenciada = empty($ed47_localizacaodiferenciada) ? "null" : $ed47_localizacaodiferenciada;
     
@@ -247,7 +247,7 @@ if( isset( $incluir ) ) {
           /**
            * Busca a descrição do município para setar no cidadão caso tenha sido selecionada uma opção
            */
-          $ed47_i_censomunicnat = trim($ed47_i_censomunicnat);
+          $ed47_i_censomunicnat = trim((string) $ed47_i_censomunicnat);
           if ( !empty($ed47_i_censomunicnat) ) {
 
             $oDaoCensoMunicipio = new cl_censomunic();
@@ -376,19 +376,19 @@ if( isset( $incluir ) ) {
         }
 
         db_fim_transacao();
-      } catch( Exception $oErro ) {
+      } catch( Exception ) {
         db_fim_transacao( true );
       }
     }
   } else {
 
-    $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-    $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+    $ed47_c_foto = @trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+    $ed47_o_oid  = "tmp/".@trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
 
     if ($ed47_c_foto != "") {
 
       db_query("begin");
-      $oid_imagem = pg_loimport($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
+      $oid_imagem = pg_lo_import($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
       db_query("end");
       $ed47_o_oid = $oid_imagem;
     } else {
@@ -420,7 +420,7 @@ if( isset( $incluir ) ) {
       }
 
       db_fim_transacao();
-    } catch( Exception $oErro ) {
+    } catch( Exception ) {
       db_fim_transacao( true );
     }
   }
@@ -452,7 +452,7 @@ if( isset( $incluir ) ) {
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Aluno</b></legend>
-    <?include(modification("forms/db_frmalunodados.php"));?>
+    <?php include(modification("forms/db_frmalunodados.php"));?>
    </fieldset>
    </center>
   </td>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensconfplaca_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensconfplaca = new cl_bensconfplaca;
 $clbensconfplaca->rotulo->label("t40_codigo");
 $clbensconfplaca->rotulo->label("t40_descr");
@@ -54,7 +55,7 @@ $clbensconfplaca->rotulo->label("t40_descr");
               <?=$Lt40_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t40_codigo",5,$It40_codigo,true,"text",4,"","chave_t40_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbensconfplaca->rotulo->label("t40_descr");
               <?=$Lt40_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t40_descr",40,$It40_descr,true,"text",4,"","chave_t40_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbensconfplaca->rotulo->label("t40_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensconfplaca.php")==true){
@@ -122,12 +123,12 @@ $clbensconfplaca->rotulo->label("t40_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

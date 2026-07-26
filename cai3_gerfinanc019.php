@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -92,7 +92,7 @@ if(isset($incluir)){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <input name="proximobanco" value="" type="hidden">
-    <?
+    <?php 
 	include(modification("forms/db_notifi019.php"));
 	?>
     </td>

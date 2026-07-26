@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@
   require_once(modification("dbforms/db_funcoes.php"));
   
   db_postmemory($HTTP_POST_VARS);
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+  extract($_parseStr, EXTR_SKIP);
   
   $oDaoRegraArredondamento = db_utils::getDao("regraarredondamento");
   $oDaoRegraArredondamento->rotulo->label("ed316_sequencial");
@@ -56,7 +57,7 @@
                   <?=$Led316_sequencial?>
                 </td>
                 <td width="96%" align="left" nowrap> 
-                  <?
+                  <?php 
     		            db_input("ed316_sequencial",10,$Ied316_sequencial,true,"text",4,"","chave_ed316_sequencial");
     		          ?>
                 </td>
@@ -66,7 +67,7 @@
                   <?=$Led316_descricao?>
                 </td>
                 <td width="96%" align="left" nowrap> 
-                  <?
+                  <?php 
     		            db_input("ed316_descricao",100,$Ied316_descricao,true,"text",4,"","chave_ed316_descricao");
     		          ?>
                 </td>
@@ -84,7 +85,7 @@
       </tr>
       <tr> 
         <td align="center" valign="top"> 
-          <?
+          <?php 
             $sWhere = " ed316_ativo <> 'f'";
             if (!isset($pesquisa_chave)) {
               
@@ -142,12 +143,12 @@
     </table>
   </body>
 </html>
-<?
+<?php 
   if (!isset($pesquisa_chave)) {
 ?>
 <script>
 </script>
-<?
+<?php 
   }
 ?>
 <script>

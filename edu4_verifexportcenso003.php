@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed52_i_ano");
 $escola   = db_getsession("DB_coddepto");
@@ -42,7 +42,7 @@ function SiglaUF($uf) {
   if ($uf != "") {
   	
     $result = db_query("SELECT ed260_c_sigla FROM censouf WHERE ed260_i_codigo = $uf");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -54,7 +54,7 @@ function Municipio($municipio) {
   if ($municipio != "") {
   	
     $result = db_query("SELECT ed261_c_nome FROM censomunic WHERE ed261_i_codigo = $municipio");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -67,7 +67,7 @@ function Distrito($distrito,$municipio) {
   	
     $result = db_query("SELECT ed262_c_nome FROM censodistrito 
                         WHERE ed262_i_censomunic = $municipio AND ed262_i_coddistrito = $distrito");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -80,7 +80,7 @@ function OrgaoEnsino($orgao,$uf) {
 
     $result = db_query("SELECT ed263_c_nome FROM censoorgreg WHERE ed263_i_censouf = $uf 
                                AND ed263_i_codigocenso = '$orgao'");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -92,7 +92,7 @@ function EtapaTurma($etapa) {
   if ($etapa != "") {
   	
     $result = db_query("SELECT ed266_c_descr FROM censoetapa WHERE ed266_i_codigo = $etapa");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -104,7 +104,7 @@ function AtivCompl($atividade) {
   if ($atividade != "") {
   	
     $result = db_query("SELECT ed133_c_descr FROM censoativcompl WHERE ed133_i_codigo = $atividade");   
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -116,7 +116,7 @@ function NomeAluno($aluno) {
   if ($aluno != "") {
   	
     $result = db_query("SELECT ed47_v_nome FROM aluno WHERE ed47_i_codigo = $aluno");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -128,7 +128,7 @@ function NomeDocente($docente) {
   if ($docente != "") {
   	
     $result = db_query("SELECT z01_nome FROM cgm WHERE z01_numcgm = $docente");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -140,7 +140,7 @@ function Pais($pais) {
   if ($pais != "") {
   	
     $result = db_query("SELECT ed228_c_descr FROM pais WHERE ed228_i_codigo = $pais");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -152,7 +152,7 @@ function OrgaoRG($orgao) {
   if ($orgao != "") {
   	
     $result = db_query("SELECT ed132_c_descr FROM censoorgemissrg WHERE ed132_i_codigo = $orgao");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -164,7 +164,7 @@ function CursoSup($curso) {
   if ($curso != "") {
   	
     $result = db_query("SELECT ed94_c_descr FROM cursoformacao WHERE ed94_c_codigocenso = '$curso'");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -176,7 +176,7 @@ function InstSup($inst) {
   if ($inst != "") {
   	
     $result = db_query("SELECT ed257_c_nome FROM censoinstsuperior WHERE ed257_i_codigo = $inst");
-    return trim(pg_result($result,0,0));
+    return trim(pg_fetch_result($result,0,0));
     
   } else {
     return "";
@@ -195,13 +195,13 @@ function NomeTurma($turma) {
                                      inner join serieregimemat on ed223_i_serie = ed11_i_codigo
                                      inner join turmaserieregimemat on ed220_i_serieregimemat = ed223_i_codigo
                                 WHERE ed220_i_turma = $turma");
-      return trim(pg_result($result,0,0))." / ".EtapaTurma(trim(pg_result($result1,0,0)));
+      return trim(pg_fetch_result($result,0,0))." / ".EtapaTurma(trim(pg_fetch_result($result1,0,0)));
       
     } else {
     	
       $result1 = db_query("SELECT ed268_c_descr,ed268_i_tipoatend FROM turmaac WHERE ed268_i_codigo = $turma");
       if (pg_num_rows($result1) > 0) {
-        return trim(pg_result($result1,0,0))." / ".(trim(pg_result($result1,0,1))==4?"ATIVIDADE COMPLEMENTAR":"AEE");
+        return trim(pg_fetch_result($result1,0,0))." / ".(trim(pg_fetch_result($result1,0,1))==4?"ATIVIDADE COMPLEMENTAR":"AEE");
       }
     }
     
@@ -210,12 +210,12 @@ function NomeTurma($turma) {
   }
 }
 
-$array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Registro 10 - Autenticação",
+$array_registro = ["null"=>"","00"=>"Registro 00 - Identificação","10"=>"Registro 10 - Autenticação",
                         "20"=>"Registro 20 - Cadastro de Turma","21"=>"Registro 51 - Vínculo Turma / Docentes",
                         "30"=>"Registro 30 - Dados do Docente","40"=>"Registro 40 - Documentos do Docente",
                         "50"=>"Registro 50 - Dados Variáveis do Docente","51"=>"Registro 51 - Vínculo Docente / Turmas",
                         "60"=>"Registro 60 - Dados do Aluno","70"=>"Registro 70 - Documentos do Aluno",
-                        "80"=>"Registro 80 - Vínculo Aluno / Turmas","81"=>"Registro 80 - Vínculo Turma / Alunos");
+                        "80"=>"Registro 80 - Vínculo Aluno / Turmas","81"=>"Registro 80 - Vínculo Turma / Alunos"];
 ?>
 <html>
 <head>
@@ -234,16 +234,16 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
      <td valign="top" bgcolor="#CCCCCC">
       <br>
       <b><?=$array_registro[$registro]?></b><br><br>
-      <?
+      <?php 
       if ($registro == "00") {
       	
-        $array_situacao       = array("1"=>"EM FUNCIONAMENTO","2"=>"PARALISADA","3"=>"EXTINTA");
-        $array_dependencia    = array("1"=>"FEDERAL","2"=>"ESTADUAL","3"=>"MUNICIPAL","4"=>"PRIVADA");
-        $array_categprivada   = array(""=>"","1"=>"PARTICULAR","2"=>"COMUNITÁRIA",
-                                      "3"=>"CONFESSIONAL","4"=>"FILANTRÓPICA");
-        $array_credenciamento = array("0"=>"NÃO","1"=>"SIM","2"=>"EM TRAMITAÇÃO");
-        $array_mantprivada    = array("EMPRESAS / PESSOA FÍSICA","SINDICATOS / COOPERATIVAS",
-                                      "ONG","INSTITUIÇÕES SEM FINS LUCRATIVOS");
+        $array_situacao       = ["1"=>"EM FUNCIONAMENTO","2"=>"PARALISADA","3"=>"EXTINTA"];
+        $array_dependencia    = ["1"=>"FEDERAL","2"=>"ESTADUAL","3"=>"MUNICIPAL","4"=>"PRIVADA"];
+        $array_categprivada   = [""=>"","1"=>"PARTICULAR","2"=>"COMUNITÁRIA",
+                                      "3"=>"CONFESSIONAL","4"=>"FILANTRÓPICA"];
+        $array_credenciamento = ["0"=>"NÃO","1"=>"SIM","2"=>"EM TRAMITAÇÃO"];
+        $array_mantprivada    = ["EMPRESAS / PESSOA FÍSICA","SINDICATOS / COOPERATIVAS",
+                                      "ONG","INSTITUIÇÕES SEM FINS LUCRATIVOS"];
         $ponteiro = fopen($arquivogerado,"r");
         
         while (!feof($ponteiro)) {
@@ -312,7 +312,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
             $iAnoInicio .= "/".substr(trim($explode_linha[3]),4,4);
             $iAnoFim     = substr(trim($explode_linha[4]),0,2)."/".substr(trim($explode_linha[4]),2,2);
             $iAnoFim    .= "/".substr(trim($explode_linha[4]),4,4); 
-            $array = array("Código INEP                   : <b> ".trim($explode_linha[1])."</b>",
+            $array = ["Código INEP                   : <b> ".trim($explode_linha[1])."</b>",
                            "Situação de Funcionamento     : <b> ".$array_situacao[trim($explode_linha[2])]."</b>",
                            "Início do Ano Letivo          : <b> ".$iAnoInicio."</b>",
                            "Término do Ano Letivo         : <b> ".$iAnoFim."</b>",
@@ -335,14 +335,14 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                            "Dependência Administrativa    : <b> ".$dep."</b>",
                            "Zona                          : <b> ".($explode_linha[22]=="1"?"URBANA":"RURAL")."</b>",
                            "Categoria de Escola Privada   : <b> ".@$categprivada."</b>",
-                           "Conveniada com Poder Público  : <b> ".$explode_linha[24]=="1"?"ESTADUAL":$explode_linha[24]=="2"?"MUNICIPAL":""."</b>",
+                           ("Conveniada com Poder Público  : <b> ".$explode_linha[24]=="1" ? "ESTADUAL" : $explode_linha[24]=="2")?"MUNICIPAL":""."</b>",
                            "N° CNAS                       : <b> ".trim($explode_linha[25])."</b>",
                            "N° CEBAS                      : <b> ".trim($explode_linha[26])."</b>",
                            "Mantenedora da Escola Privada : <b> ".@$mantprivada."</b>", //27 a 30
                            "CNPJ Mantenedora Privada      : <b> ".trim($explode_linha[31])."</b>",
                            "CNPJ Escola Privada           : <b> ".trim($explode_linha[32])."</b>",                          
                            "Credenciamento                : <b> ".$credenciamento."</b>"
-                          );
+                          ];
           }
         }
         fclose($ponteiro);
@@ -350,27 +350,27 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
       
       if ($registro == "10") {
       	
-        $array_aee_ativ     = array(""=>"","0"=>"NÃO OFERECE","1"=>"NÃO EXCLUSIVAMENTE","2"=>"EXCLUSIVAMENTE");
-        $array_locdifer     = array("0"=>"NÃO SE APLICA","1"=>"ÁREA DE ASSENTAMENTO","2"=>"TERRA INDÍGENA",
-                                    "3"=>"ÁREA REMANESCENTE DE QUILOMBOS");
-        $array_localizacao  = array("PRÉDIO ESCOLAR","TEMPLO/IGREJA","SALAS DE EMPRESA","CASA DO PROFESSOR",
+        $array_aee_ativ     = [""=>"","0"=>"NÃO OFERECE","1"=>"NÃO EXCLUSIVAMENTE","2"=>"EXCLUSIVAMENTE"];
+        $array_locdifer     = ["0"=>"NÃO SE APLICA","1"=>"ÁREA DE ASSENTAMENTO","2"=>"TERRA INDÍGENA",
+                                    "3"=>"ÁREA REMANESCENTE DE QUILOMBOS"];
+        $array_localizacao  = ["PRÉDIO ESCOLAR","TEMPLO/IGREJA","SALAS DE EMPRESA","CASA DO PROFESSOR",
                                     "SALAS EM OUTRA ESCOLA","GALPÃO/RANCHO/PAIOL/BARRACÃO",
-                                    "UNIDADE DE INTERNAÇÃO/PRISIONAL","OUTROS");
-        $array_abastagua    = array("REDE PÚBLICA","POÇO ARTESIANO","CACIMBA/CISTERNA/POÇO",
-                                    "FONTE/RIO/IGARAPÊ/RIACHO/CÓRREGO","INEXISTENTE");
-        $array_abastenergia = array("REDE PÚBLICA","GERADOR","OUTROS (ENERGIA ALTERNATIVA)","INEXISTENTE");
-        $array_esgoto       = array("REDE PÚBLICA","FOSSA","INEXISTENTE");
-        $array_lixo         = array("COLETA PERIÓDICA","QUEIMA","JOGA EM OUTRA ÁREA","RECICLA","ENTERRA","OUTROS");
-        $array_dependencia  = array("DIRETORIA","SALA DE PROFESSORES","LABORATÓRIO DE INFORMÁTICA",
+                                    "UNIDADE DE INTERNAÇÃO/PRISIONAL","OUTROS"];
+        $array_abastagua    = ["REDE PÚBLICA","POÇO ARTESIANO","CACIMBA/CISTERNA/POÇO",
+                                    "FONTE/RIO/IGARAPÊ/RIACHO/CÓRREGO","INEXISTENTE"];
+        $array_abastenergia = ["REDE PÚBLICA","GERADOR","OUTROS (ENERGIA ALTERNATIVA)","INEXISTENTE"];
+        $array_esgoto       = ["REDE PÚBLICA","FOSSA","INEXISTENTE"];
+        $array_lixo         = ["COLETA PERIÓDICA","QUEIMA","JOGA EM OUTRA ÁREA","RECICLA","ENTERRA","OUTROS"];
+        $array_dependencia  = ["DIRETORIA","SALA DE PROFESSORES","LABORATÓRIO DE INFORMÁTICA",
                                     "LABORATÓRIO DE CIÊNCIAS","SALA DE RECURSOS MULTIFUNCIONAIS","QUADRA DE ESPORTES",
                                     "COZINHA","BIBLIOTECA","SALA DE LEITURA","PARQUE INFANTIL","BERÇÁRIO",
                                     "SANITÁRIO FORA DO PRÉDIO","SANITÁRIO DENTRO DO PRÉDIO",
                                     "SANITÁRIO ADEQUADO À EDUCAÇÃO INFANTIL","SANITÁRIO P/ DEFICIENTES",
-                                    "DEPENDÊNCIA ADEQUADA P/ DEFICIENTES","NENHUMA DEPENDÊNCIA");
-        $array_equipamento  = array("APARELHO TELEVISÃO","VIDEOCASSETE","DVD","ANTENA PARABÓLICA",
-                                    "COPIADORA","RETROPROJETOR","IMPRESSORA");
-        $array_modalidade   = array("REGULAR","ESPECIAL","EDUCAÇÃO DE JOVENS E ADULTOS");
-        $array_etapa        = array("REGULAR (EDUCAÇÃO INFANTIL - CRECHE)","REGULAR (EDUCAÇÃO INFANTIL - PRÉ-ESCOLA)",
+                                    "DEPENDÊNCIA ADEQUADA P/ DEFICIENTES","NENHUMA DEPENDÊNCIA"];
+        $array_equipamento  = ["APARELHO TELEVISÃO","VIDEOCASSETE","DVD","ANTENA PARABÓLICA",
+                                    "COPIADORA","RETROPROJETOR","IMPRESSORA"];
+        $array_modalidade   = ["REGULAR","ESPECIAL","EDUCAÇÃO DE JOVENS E ADULTOS"];
+        $array_etapa        = ["REGULAR (EDUCAÇÃO INFANTIL - CRECHE)","REGULAR (EDUCAÇÃO INFANTIL - PRÉ-ESCOLA)",
                                     "REGULAR (ENSINO FUNDAMENTAL - 8 ANOS)","REGULAR (ENSINO FUNDAMENTAL - 9 ANOS)",
                                     "REGULAR (ENSINO MÉDIO - MÉDIO)","REGULAR (ENSINO MÉDIO - INTEGRADO)",
                                     "REGULAR (ENSINO MÉDIO - NORMAL/MAGISTÉRIO)",
@@ -381,9 +381,9 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                                     "ESPECIAL (ENSINO MÉDIO - NORMAL/MAGISTÉRIO)",
                                     "ESPECIAL (ENSINO MÉDIO - EDUCAÇÃO PROFISSIONAL)",
                                     "ESPECIAL (EJA - ENSINO FUNDAMENTAL)","ESPECIAL (EJA - ENSINO MÉDIO)",
-                                    "EJA (ENSINO FUNDAMENTAL)","EJA (ENSINO MÉDIO)");
-        $array_mater        = array("NÃO UTILIZA","QUILOMBOLA","INDÍGENA");
-        $array_lingua       = array("LÍNGUA INDÍGENA","LÍNGUA PORTUGUESA");
+                                    "EJA (ENSINO FUNDAMENTAL)","EJA (ENSINO MÉDIO)"];
+        $array_mater        = ["NÃO UTILIZA","QUILOMBOLA","INDÍGENA"];
+        $array_lingua       = ["LÍNGUA INDÍGENA","LÍNGUA PORTUGUESA"];
         $ponteiro           = fopen($arquivogerado,"r");
         
         while (!feof($ponteiro)) {
@@ -547,7 +547,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
               } 
             }
             
-            $array = array("Código INEP                              : <b> ".trim($explode_linha[1])."</b>",
+            $array = ["Código INEP                              : <b> ".trim($explode_linha[1])."</b>",
                            "Nome do Diretor / Responsável            : <b> ".trim($explode_linha[3])."</b>",
                            "N° do CPF                                : <b> ".trim($explode_linha[2])."</b>",
                            "Cargo do Diretor / Responsável           : <b> ".trim($explode_linha[4])."</b>",
@@ -595,23 +595,23 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                             (trim($explode_linha[106])=="0"?"NÃO":"SIM")."</b>",
                            "Língua em que o ensino é ministrado      : <b> ".@$lingua."</b>",
                            "Código da Língua Indígena                : <b> ".trim($explode_linha[109])."</b>"
-                          );
+                          ];
           }
         }
         fclose($ponteiro);
       }
       if ($registro == "20") {
       	
-        $array_tipoaee    = array("SISTEMA BRAILE","ATIVIDADES DA VIDA AUTÔNOMA","RECURSOS PARA ALUNOS COM BAIXA VISÃO",
+        $array_tipoaee    = ["SISTEMA BRAILE","ATIVIDADES DA VIDA AUTÔNOMA","RECURSOS PARA ALUNOS COM BAIXA VISÃO",
                                   "DESENVOLVIMENTO DE PROCESSOS MENTAIS","ORIENTAÇÃO E MOBILIDADE",
                                   "LÍNGUA BRASILEIRA DE SINAIS","COMUNICAÇÃO ALTERNATIVA E AUMENTATIVA",
                                   "ATIVIDADES DE ENRIQUECIMENTO CURRICULAR","SOROBAN","INFORMÁTICA ACESSÍVEL",
-                                  "LÍNGUA PORTUGUESA NA MODALIDADE ESCRITA");
-        $array_tipoatend  = array("0"=>"NÃO SE APLICA","1"=>"CLASSE HOSPITALAR","2"=>"UNIDADE DE INTERNAÇÃO",
+                                  "LÍNGUA PORTUGUESA NA MODALIDADE ESCRITA"];
+        $array_tipoatend  = ["0"=>"NÃO SE APLICA","1"=>"CLASSE HOSPITALAR","2"=>"UNIDADE DE INTERNAÇÃO",
                                   "3"=>"UNIDADE PRISIONAL","4"=>"ATIVIDADE COMPLEMENTAR",
-                                  "5"=>"ATEND. EDUCACIONAL ESPECIAL");
-        $array_modalidade = array(""=>"","1"=>"REGULAR","2"=>"ESPECIAL","3"=>"EDUCAÇÃO DE JOVENS E ADULTOS");
-        $array_disciplina = array("QUÍMICA","FÍSICA","MATEMÁTICA","BIOLOGIA","CIÊNCIAS",
+                                  "5"=>"ATEND. EDUCACIONAL ESPECIAL"];
+        $array_modalidade = [""=>"","1"=>"REGULAR","2"=>"ESPECIAL","3"=>"EDUCAÇÃO DE JOVENS E ADULTOS"];
+        $array_disciplina = ["QUÍMICA","FÍSICA","MATEMÁTICA","BIOLOGIA","CIÊNCIAS",
                                   "LÍNGUA / LITERATURA PORTUGUESA","LÍNGUA / LITERATURA ESTRANGEIRA - INGLÊS",
                                   "LÍNGUA / LITERATURA ESTRANGEIRA - ESPANHOL",
                                   "LÍNGUA / LITERATURA ESTRANGEIRA - OUTRA",
@@ -621,7 +621,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                                   "DISCIPLINAS VOLTADAS AO ATENDIMENTO DE NECESSIDADES ESPECIAIS (DISCIPLINAS PEDAGÓGICAS)",
                                   "DISCIPLINAS VOLTADAS À DIVERSIDADE SÓCIO-CULTURAL (DISCIPLINAS PEDAGÓGICAS)",
                                   "LIBRAS","DISCIPLINAS PEDAGÓGICAS","ENSINO RELIGIOSO",
-                                  "LINGUA INDÍGENA","OUTRAS DISCIPLINAS");
+                                  "LINGUA INDÍGENA","OUTRAS DISCIPLINAS"];
         $ponteiro         = fopen($arquivogerado,"r");
         while (!feof($ponteiro)) {
         	
@@ -731,7 +731,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
 //          if (trim($explode_linha[39]) != "") {
 //             $disciplinas .= "<br>->".$array_disciplina[trim($explode_linha[39])];
 //           }
-            $array = array("Código INEP da Escola               : <b> ".trim($explode_linha[1])."</b>",
+            $array = ["Código INEP da Escola               : <b> ".trim($explode_linha[1])."</b>",
                            "Código INEP da Turma                : <b> ".trim($explode_linha[2])."</b>",
                            "Código da Turma na Escola           : <b> ".trim($explode_linha[3])."</b>",
                            "Nome da Turma                       : <b> ".trim($explode_linha[4])."</b>",
@@ -755,7 +755,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                            "Etapa                               : <b> ".EtapaTurma(trim($explode_linha[14]))."</b>",
                            "Curso Profiss                       : <b> ".trim($explode_linha[15])."</b>",                        
                            "Disciplinas                         : <b> ".$disciplinas."</b>"
-                          );
+                          ];
           }
         }
         fclose($ponteiro);
@@ -803,9 +803,9 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
       
       
       if ($registro == "30") {
-        $array_raca          = array("0"=>"NÃO DECLARADO","1"=>"BRANCA","2"=>"PRETA","3"=>"PARDA",
-                                     "4"=>"AMARELA","5"=>"INDÍGENA");
-        $array_nacionalidade = array("1"=>"BRASILEIRA","2"=>"BRASILEIRA NO EXTERIOR","3"=>"ESTRANGEIRA");
+        $array_raca          = ["0"=>"NÃO DECLARADO","1"=>"BRANCA","2"=>"PRETA","3"=>"PARDA",
+                                     "4"=>"AMARELA","5"=>"INDÍGENA"];
+        $array_nacionalidade = ["1"=>"BRASILEIRA","2"=>"BRASILEIRA NO EXTERIOR","3"=>"ESTRANGEIRA"];
         $ponteiro            = fopen($arquivogerado,"r");
         while (!feof($ponteiro)) {
         	
@@ -814,7 +814,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
           
           if ($explode_linha[0] == "30" && $explode_linha[3] == $codigodocente) {
           	 
-            $array = array("Código INEP da Escola       : <b> ".trim($explode_linha[1])."</b>",
+            $array = ["Código INEP da Escola       : <b> ".trim($explode_linha[1])."</b>",
                            "Código INEP do Docente      : <b> ".trim($explode_linha[2])."</b>",
                            "Código do Docente na Escola : <b> ".trim($explode_linha[3])."</b>",
                            "Nome                        : <b> ".trim($explode_linha[4])."</b>",
@@ -830,7 +830,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                            "País de Origem              : <b> ".Pais(trim($explode_linha[12]))."</b>",
                            "UF de Nascimento            : <b> ".SiglaUF(trim($explode_linha[13]))."</b>",
                            "Município de Nascimento     : <b> ".Municipio(trim($explode_linha[14]))."</b>"
-                          );
+                          ];
           }
         }
         fclose($ponteiro);
@@ -846,7 +846,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                  
           if ($explode_linha[0] == "40" && trim($explode_linha[3]) == $codigodocente) {
           	
-            $array = array("Código INEP da Escola       : <b> ".trim($explode_linha[1])."</b>",
+            $array = ["Código INEP da Escola       : <b> ".trim($explode_linha[1])."</b>",
                            "Código INEP do Docente      : <b> ".trim($explode_linha[2])."</b>",
                            "Código do Docente na Escola : <b> ".trim($explode_linha[3])." - ".$nomedocente."</b>",
                            "N° do CPF                   : <b> ".trim($explode_linha[4])."</b>",
@@ -857,7 +857,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                            "Bairro                      : <b> ".trim($explode_linha[9])."</b>",
                            "UF de Endereço              : <b> ".SiglaUF(trim($explode_linha[10]))."</b>",
                            "Município de Endereço       : <b> ".Municipio(trim($explode_linha[11]))."</b>"
-                          );
+                          ];
           }
         }
         fclose($ponteiro);
@@ -865,13 +865,13 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
 
       if ($registro == "50") { 
       	
-        $array_escolaridade = array("1"=>"FUNDAMENTAL INCOMPLETO","2"=>"FUNDAMENTAL COMPLETO",
+        $array_escolaridade = ["1"=>"FUNDAMENTAL INCOMPLETO","2"=>"FUNDAMENTAL COMPLETO",
                                     "3"=>"ENSINO MÉDIO - NORMAL/MAGISTÉRIO","4"=>"ENSINO MÉDIO - NORMAL/MAGISTÉRIO INDÍGENA",
-                                    "5"=>"ENSINO MÉDIO","6"=>"SUPERIOR COMPLETO");
-        $array_posgraduacao = array("ESPECIALIZAÇÃO","MESTRADO","DOUTORADO","NENHUM");
-        $array_outroscursos = array("ESPECÍFICO PARA CRECHE","ESPECÍFICO PARA PRÉ-ESCOLA",
+                                    "5"=>"ENSINO MÉDIO","6"=>"SUPERIOR COMPLETO"];
+        $array_posgraduacao = ["ESPECIALIZAÇÃO","MESTRADO","DOUTORADO","NENHUM"];
+        $array_outroscursos = ["ESPECÍFICO PARA CRECHE","ESPECÍFICO PARA PRÉ-ESCOLA",
                                     "ESPECÍFICO PARA EDUCAÇÃO ESPECIAL","ESPECÍFICO PARA EDUCAÇÃO INDÍGENA",
-                                    "INTERCULTURAL/DIVERSIDADE/OUTROS","NENHUM");
+                                    "INTERCULTURAL/DIVERSIDADE/OUTROS","NENHUM"];
         $ponteiro           = fopen($arquivogerado,"r");
         
         while (!feof($ponteiro)) {
@@ -940,14 +940,14 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
               }
             }
             
-            $array = array("Código INEP da Escola       : <b> ".trim($explode_linha[1])."</b>",
+            $array = ["Código INEP da Escola       : <b> ".trim($explode_linha[1])."</b>",
                            "Código INEP do Docente      : <b> ".trim($explode_linha[2])."</b>",
                            "Código do Docente na Escola : <b> ".trim($explode_linha[3])." - ".$nomedocente."</b>",
                            "Escolaridade                : <b> ".$array_escolaridade[trim($explode_linha[4])]."</b>",
                            "".@$formacao."</b>",
                            "Pós-Graduação               : <b> ".@$posgraduacao."</b>",
                            "Outros Cursos               : <b> ".@$outroscursos."</b>"
-                          );
+                          ];
          }
        }
        fclose($ponteiro);
@@ -955,9 +955,9 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
 
      if ($registro == "51") {
      	
-       $array_funcao     = array("1"=>"DOCENTE","2"=>"AUXILIAR DE EDUCAÇÃO INFANTIL",
-                                 "3"=>"MONITOR DE ATIVIDADE COMPLEMENTAR/AEE");
-       $array_disciplina = array("QUÍMICA","FÍSICA","MATEMÁTICA","BIOLOGIA","CIÊNCIAS",
+       $array_funcao     = ["1"=>"DOCENTE","2"=>"AUXILIAR DE EDUCAÇÃO INFANTIL",
+                                 "3"=>"MONITOR DE ATIVIDADE COMPLEMENTAR/AEE"];
+       $array_disciplina = ["QUÍMICA","FÍSICA","MATEMÁTICA","BIOLOGIA","CIÊNCIAS",
                                  "LÍNGUA / LITERATURA PORTUGUESA","LÍNGUA / LITERATURA ESTRANGEIRA - INGLÊS",
                                  "LÍNGUA / LITERATURA ESTRANGEIRA - ESPANHOL",
                                  "LÍNGUA / LITERATURA ESTRANGEIRA - OUTRA",
@@ -968,7 +968,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                                  "DISCIPLINAS VOLTADAS AO ATENDIMENTO DE NECESSIDADES ESPECIAIS (DISCIPLINAS PEDAGÓGICAS)",
                                  "DISCIPLINAS VOLTADAS À DIVERSIDADE SÓCIO-CULTURAL (DISCIPLINAS PEDAGÓGICAS)",
                                  "LIBRAS","DISCIPLINAS PEDAGÓGICAS","ENSINO RELIGIOSO",
-                                 "LINGUA INDÍGENA","OUTRAS DISCIPLINAS");
+                                 "LINGUA INDÍGENA","OUTRAS DISCIPLINAS"];
        $primeiro         = 0;
        $contavinculo     = 1;
        $ponteiro         = fopen($arquivogerado,"r");
@@ -982,9 +982,9 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
          	
            if ($primeiro == 0) {
            	
-             $array = array("Código INEP da Escola:<b> ".trim($explode_linha[1])."</b>",
+             $array = ["Código INEP da Escola:<b> ".trim($explode_linha[1])."</b>",
                          "Código INEP do Docente:<b> ".trim($explode_linha[2])."</b>",
-                         "Código do Docente na Escola:<b> ".trim($explode_linha[3])." - ".$nome_docente."</b><br>");
+                         "Código do Docente na Escola:<b> ".trim($explode_linha[3])." - ".$nome_docente."</b><br>"];
              
              for ($t = 0; $t < count($array); $t++) {
                echo $array[$t]."<br>";
@@ -1055,12 +1055,12 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
              }
            }
     
-           $array = array("<b>".$contavinculo."ª Turma :</b><br>Código INEP da Turma:<b> ".trim($explode_linha[4])."</b>",
-                          "Código da Turma na Escola:<b> ".trim($explode_linha[5])." - ".NomeTurma(trim($nometurma))."</b>",
+           $array = ["<b>".$contavinculo."ª Turma :</b><br>Código INEP da Turma:<b> ".trim($explode_linha[4])."</b>",
+                          "Código da Turma na Escola:<b> ".trim($explode_linha[5])." - ".NomeTurma(trim((string) $nometurma))."</b>",
                           "Função na Turma:<b> ".@$array_funcao[trim($explode_linha[6])]."</b>",
                           "Disciplinas:<b> ".@$disciplina."</b>",
                           "Situação Funcional:<b> ".@$situacao."</b><br>"
-                         );
+                         ];
            for ($t = 0; $t < count($array); $t++) {
              echo $array[$t]."<br>";
            }
@@ -1072,14 +1072,14 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
 
 
       if ($registro == "60") {
-        $array_raca          = array("0"=>"NÃO DECLARADO","1"=>"BRANCA","2"=>"PRETA","3"=>"PARDA",
-                                     "4"=>"AMARELA","5"=>"INDÍGENA");
-        $array_nacionalidade = array("1"=>"BRASILEIRA","2"=>"BRASILEIRA NO EXTERIOR","3"=>"ESTRANGEIRA");
-        $array_deficiencia   = array("CEGUEIRA","BAIXA VISÃO","SURDEZ","DEFICIÊNCIA AUDITIVA","SURDOCEGUEIRA",
+        $array_raca          = ["0"=>"NÃO DECLARADO","1"=>"BRANCA","2"=>"PRETA","3"=>"PARDA",
+                                     "4"=>"AMARELA","5"=>"INDÍGENA"];
+        $array_nacionalidade = ["1"=>"BRASILEIRA","2"=>"BRASILEIRA NO EXTERIOR","3"=>"ESTRANGEIRA"];
+        $array_deficiencia   = ["CEGUEIRA","BAIXA VISÃO","SURDEZ","DEFICIÊNCIA AUDITIVA","SURDOCEGUEIRA",
                                      "DEFICIÊNCIA FÍSICA","DEFICIÊNCIA MENTAL","DEFICIÊNCIA MÚLTIPLA",
                                      "AUTISMO CLÁSSICO","SÍNDROME DE ASPERGER","SÍNDROME DE RETT",
                                      "TRANSTORNO DESINTEGRATIVO DA INFÂNCIA (PSICOSE INFANTIL)",
-                                     "ALTAS HABILIDADES/SUPERDOTAÇÃO","DEFICIENCIA INTELECTUAL","AUTISMO INFANTIL");       
+                                     "ALTAS HABILIDADES/SUPERDOTAÇÃO","DEFICIENCIA INTELECTUAL","AUTISMO INFANTIL"];       
         $ponteiro            = fopen($arquivogerado,"r");
         while (!feof($ponteiro)) {
         	
@@ -1101,7 +1101,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                 
               }
             }
-            $array = array("Código INEP da Escola         : <b> ".trim($explode_linha[1])."</b>",
+            $array = ["Código INEP da Escola         : <b> ".trim($explode_linha[1])."</b>",
                            "Código INEP do Aluno          : <b> ".trim($explode_linha[2])."</b>",
                            "Código do Aluno na Escola     : <b> ".trim($explode_linha[3])."</b>",
                            "Nome                          : <b> ".trim($explode_linha[4])."</b>",
@@ -1122,7 +1122,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                            "Município de Nascimento       : <b> ".Municipio(trim($explode_linha[15]))."</b>",
                            "Deficiência/Transtorno Global : <b> ".(trim($explode_linha[16])=="0"?"NÃO":"SIM")."</b>",
                            "Tipos de Deficiência          : <b> ".@$deficiencia."</b><br>"
-                          );
+                          ];
           }
         }
         fclose($ponteiro);
@@ -1149,7 +1149,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
          $modelocertidao = "";        
         }
         if($explode_linha[0]=="70" && $codigoaluno==trim($explode_linha[3])){
-         $array = array("Código INEP da Escola:<b> ".trim($explode_linha[1])."</b>",
+         $array = ["Código INEP da Escola:<b> ".trim($explode_linha[1])."</b>",
                         "Código INEP do Aluno:<b> ".trim($explode_linha[2])."</b>",
                         "Código do Aluno na Escola:<b> ".trim($explode_linha[3])."-".$nomealuno."</b>",
                         "N° Identidade:<b> ".trim($explode_linha[4])."</b>",
@@ -1175,7 +1175,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
                         "Bairro:<b> ".trim($explode_linha[26])."</b>",
                         "UF de Endereço:<b> ".SiglaUF(trim($explode_linha[27]))."</b>",
                         "Município de Endereço:<b> ".Municipio(trim($explode_linha[28]))."</b>"
-                       );
+                       ];
         }
        }
        fclose($ponteiro);
@@ -1183,7 +1183,7 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
       
       if ($registro == "80") {
       	
-        $array_recebe = array("1"=>"EM HOSPITAL","2"=>"EM DOMICÍLIO","3"=>"NÃO RECEBE");
+        $array_recebe = ["1"=>"EM HOSPITAL","2"=>"EM DOMICÍLIO","3"=>"NÃO RECEBE"];
         $primeiro     = 0;
         $contavinculo = 1;        
         $ponteiro     = fopen($arquivogerado,"r");
@@ -1197,24 +1197,24 @@ $array_registro = array("null"=>"","00"=>"Registro 00 - Identificação","10"=>"Re
           	
             if ($primeiro == 0) {
             	
-              $array = array("Código INEP da Escola     : <b> ".trim($explode_linha[1])."</b>",
+              $array = ["Código INEP da Escola     : <b> ".trim($explode_linha[1])."</b>",
                              "Código INEP do Aluno      : <b> ".trim($explode_linha[2])."</b>",
-                             "Código do Aluno na Escola : <b> ".trim($explode_linha[3])." - ".$nomealuno."</b><br>");
+                             "Código do Aluno na Escola : <b> ".trim($explode_linha[3])." - ".$nomealuno."</b><br>"];
               for ($t = 0; $t < count($array); $t++) {
                 echo $array[$t]."<br>";
               }
               $primeiro = 1;
             }
-            $array = array("<b>Vínculo $contavinculo:</b><br>
+            $array = ["<b>Vínculo $contavinculo:</b><br>
                            Código INEP da Turma                       : <b> ".trim($explode_linha[4])."</b>",
                            "Código da Turma na Escola                 : <b> ".
                             trim($explode_linha[5])." - ".NomeTurma(trim($explode_linha[5]))."</b>",
                            "Recebe escolarização em outro espaço      : <b> ".$array_recebe[trim($explode_linha[9])]."</b>",
                            "Transporte Escolar Público                : <b> ".
                             (trim($explode_linha[10])=="0"?"NÃO UTILIZA":"UTILIZA")."</b>",
-                           "Poder Público Responsável pelo Transporte : <b> ".
-                            trim($explode_linha[11])=="1"?"ESTADUAL":trim($explode_linha[11])=="2"?"MUNICIPAL":""."</b>",
-                          );
+                           ("Poder Público Responsável pelo Transporte : <b> ".
+                            trim($explode_linha[11])=="1" ? "ESTADUAL" : trim($explode_linha[11])=="2")?"MUNICIPAL":""."</b>",
+                          ];
             for ($t = 0; $t < count($array); $t++) {
               echo $array[$t]."<br>";
             }

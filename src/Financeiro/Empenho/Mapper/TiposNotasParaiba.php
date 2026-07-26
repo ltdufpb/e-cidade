@@ -164,8 +164,8 @@ class TiposNotasParaiba
         $elemento = '';
         $subelemento = '';
         if ($desdobramento) {
-            $elemento = substr($desdobramento->o56_elemento, 5, 2);
-            $subelemento = substr($desdobramento->o56_elemento, 7, 2);
+            $elemento = substr((string) $desdobramento->o56_elemento, 5, 2);
+            $subelemento = substr((string) $desdobramento->o56_elemento, 7, 2);
         }
 
         return $this->getTiposNotasSegundoRegras($cgnFisico, $elemento, $subelemento);

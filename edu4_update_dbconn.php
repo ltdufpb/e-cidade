@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -28,7 +28,7 @@
 umask(74);
 $arquivo_conn = "tmp/db_conn.php";
 $fd1 = fopen($arquivo_conn,"w");
-fputs($fd1,"<?\n");
+fputs($fd1,"<?php \n");
 fputs($fd1,'$DB_COR_FUNDO = "#00CCFF";'."\n");
 fputs($fd1,'$DB_FILES = "/dbportal2/imagens/files";'."\n");
 fputs($fd1,'$DB_DIRPCB = "/home/sistema";'."\n");

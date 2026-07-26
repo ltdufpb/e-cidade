@@ -40,12 +40,7 @@ class HistoricoRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * @param  $numpre
@@ -61,10 +56,10 @@ class HistoricoRepository
     /**
      * AutorizacaoRepository constructor.
      * @param $dao \cl_emphist
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -73,7 +68,7 @@ class HistoricoRepository
      * @return bool|Historico
      * @throws \Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $rs = db_query($sql);

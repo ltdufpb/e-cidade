@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -27,7 +27,8 @@
 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 ?>
 <html>
 <title></title>
@@ -134,7 +135,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($enviar)){
   echo "<script>".$funcao_js."('$cor');</script>";
 }

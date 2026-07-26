@@ -33,7 +33,8 @@ require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_aguahidromatric_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $oAguaHidroMatric = new cl_aguahidromatric;
 $oAguaHidroMatric->rotulo->label("x04_codhidrometro");
 $oAguaHidroMatric->rotulo->label("x04_matric");

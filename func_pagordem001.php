@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pagordem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpagordem = new cl_pagordem;
 $clpagordem->rotulo->label("e50_codord");
 $clpagordem->rotulo->label("e50_numemp");
@@ -54,7 +55,7 @@ $clpagordem->rotulo->label("e50_numemp");
               <?=$Le50_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e50_codord",6,$Ie50_codord,true,"text",4,"","chave_e50_codord");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpagordem->rotulo->label("e50_numemp");
               <?=$Le50_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e50_numemp",8,$Ie50_numemp,true,"text",4,"","chave_e50_numemp");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpagordem->rotulo->label("e50_numemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pagordem.php")==true){
@@ -119,12 +120,12 @@ $clpagordem->rotulo->label("e50_numemp");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

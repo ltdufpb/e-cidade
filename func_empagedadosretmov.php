@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empagedadosretmov_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempagedadosretmov = new cl_empagedadosretmov;
 $clempagedadosretmov->rotulo->label("e76_codret");
 $clempagedadosretmov->rotulo->label("e76_codmov");
@@ -55,7 +56,7 @@ $clempagedadosretmov->rotulo->label("e76_errobanco");
               <?=$Le76_codret?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e76_codret",10,$Ie76_codret,true,"text",4,"","chave_e76_codret");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clempagedadosretmov->rotulo->label("e76_errobanco");
               <?=$Le76_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e76_codmov",6,$Ie76_codmov,true,"text",4,"","chave_e76_codmov");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clempagedadosretmov->rotulo->label("e76_errobanco");
               <?=$Le76_errobanco?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e76_errobanco",6,$Ie76_errobanco,true,"text",4,"","chave_e76_errobanco");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clempagedadosretmov->rotulo->label("e76_errobanco");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empagedadosretmov.php")==true){
@@ -129,12 +130,12 @@ $clempagedadosretmov->rotulo->label("e76_errobanco");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

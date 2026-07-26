@@ -69,7 +69,7 @@ try {
             );
 
             $rsDadosGestorCenso = $dao->sql_record($sSqlGestorEscola);
-            $oRetorno->gestores = array();
+            $oRetorno->gestores = [];
             if ($dao->numrows > 0) {
                 $oRetorno->gestores = db_utils::getCollectionByRecord($rsDadosGestorCenso, false, false, true);
             }

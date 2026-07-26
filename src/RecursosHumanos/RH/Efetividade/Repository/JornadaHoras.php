@@ -59,7 +59,7 @@ class JornadaHoras {
     }
 
     if(pg_num_rows($rsJornadaHoras) == 0) {
-      return array();
+      return [];
     }
 
     return \db_utils::makeCollectionFromRecord($rsJornadaHoras, function($oRetorno) {
@@ -81,12 +81,12 @@ class JornadaHoras {
    */
   public static function getTipoEntrada($iTipoEntrada) {
 
-    $aTipoEntrada = array(
+    $aTipoEntrada = [
       1 => 'ENTRADA 1',
       2 => 'SAIDA 1',
       3 => 'ENTRADA 2',
       4 => 'SAIDA 2'
-    );
+    ];
 
     return $aTipoEntrada[$iTipoEntrada];
   }

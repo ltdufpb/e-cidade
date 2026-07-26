@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
     <table border="0">
       <tr>
         <td nowrap title="<?=@$Ted20_i_codigo?>">
-          <?db_ancora( @$Led20_i_codigo, "", 3 );?>
+          <?php db_ancora( @$Led20_i_codigo, "", 3 );?>
         </td>
         <td>
           <?php
@@ -107,7 +107,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
     }
 
     $sql     = $clperiodoescola->sql_query( "", "*", "ed15_i_sequencia, ed08_i_sequencia", "ed17_i_escola = {$escola}" );
-    $result1 = $clperiodoescola->sql_record($sql) or die (pg_errormessage());
+    $result1 = $clperiodoescola->sql_record($sql) or die (pg_last_error());
 
     for($z=0;$z<$clperiodoescola->numrows;$z++){
     db_fieldsmemory($result1,$z);
@@ -115,7 +115,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
       ?>
     <tr bgcolor="#444444">
     <td onmouseover="MostraTurno('turno<?=$ed17_i_codigo?>');" onmouseout="OcultaTurno('turno<?=$ed17_i_codigo?>');" align="center" width="50" style="font-weight: bold; color: #DEB887;">
-     <?=pg_result($result1,$z,"ed15_c_nome");?>
+     <?=pg_fetch_result($result1,$z,"ed15_c_nome");?>
      <table cellpading="2" cellspacing="0" bgcolor="#f3f3f3" id="turno<?=$ed17_i_codigo?>" style="visibility:hidden;position:absolute;border:1px solid #666666;">
       <tr>
        <td>
@@ -128,7 +128,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        </td>
       </tr>
      </table>
-    </td><?
+    </td><?php 
     $result = $cldiasemana->sql_record($cldiasemana->sql_query_rh("","ed32_i_codigo,ed32_c_abrev","ed32_i_codigo",$where));
     //db_criatabela($result);
     for($x=0;$x<$cldiasemana->numrows;$x++){
@@ -154,11 +154,11 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        </tr>
       </table>
      </td>
-    <?}?>
+    <?php }?>
     </tr>
-   <?}
+   <?php }
    $turno = $ed15_c_nome?>
-   <td align="center" width="30" style="font-weight: bold; background-color: #f3f3f3;"> <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?></td><?
+   <td align="center" width="30" style="font-weight: bold; background-color: #f3f3f3;"> <?=$ed08_c_descr?> - <?=$ed17_h_inicio?> / <?=$ed17_h_fim?></td><?php 
    for($x=0;$x<$cldiasemana->numrows;$x++){
     $quadro = "Q".$z.$x;
     db_fieldsmemory($result,$x);
@@ -185,18 +185,18 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
        <td>
         <table class="texto" bgcolor="#cccccc" id="<?=$quadro?>" cellspacing="0" cellpading="0" style="border: 2px outset #f3f3f3; border-bottom-color:#999999; border-right-color:#999999;">
          <tr>
-          <?if($marcar==""){?>
+          <?php if($marcar==""){?>
            <td onclick="GravarHorario(<?=$ed32_i_codigo?>,<?=$ed17_i_codigo?>,<?=$ed17_i_periodoaula?>,<?=$ed17_i_turno?>)" width="50" height="15" onmouseover="InSet('<?=$quadro?>',false)" onmouseout="OutSet('<?=$quadro?>',false)">
-          <?}elseif($marcar=="OK" && $habilitar==true){?>
+          <?php }elseif($marcar=="OK" && $habilitar==true){?>
            <td onclick="ExcluirHorario(<?=$ed33_i_codigo?>)" width="50" height="15" onmouseover="InSet('<?=$quadro?>',true)" onmouseout="OutSet('<?=$quadro?>',true)">
-          <?}elseif($marcar=="OK" && $habilitar==false){?>
+          <?php }elseif($marcar=="OK" && $habilitar==false){?>
            <td width="50" height="15" onmouseover="InSet('<?=$quadro?>',true)" onmouseout="OutSet('<?=$quadro?>',true)">
-          <?}?>
+          <?php }?>
            <div align="center"><b><?=$escolacod?></b></div>
           </td>
          </tr>
         </table>
-        <?
+        <?php 
         if($marcar=="OK"){
          ?>
          <table id="escola<?=$quadro?>" style="position:absolute;visibility:hidden;" border="1" bgcolor="#f3f3f3">
@@ -206,18 +206,18 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
            </td>
           </tr>
          </table>
-         <?
+         <?php 
         }
         ?>
        </td>
       </tr>
      </table>
     </td>
-   <?
+   <?php 
    $marcar = "";
    }?>
    <tr>
-  <?}?>
+  <?php }?>
   </tr>
   </table>
 </center>

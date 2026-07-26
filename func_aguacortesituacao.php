@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacortesituacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguacortesituacao = new cl_aguacortesituacao;
 $claguacortesituacao->rotulo->label("x43_codsituacao");
 $claguacortesituacao->rotulo->label("x43_descr");
@@ -54,7 +55,7 @@ $claguacortesituacao->rotulo->label("x43_descr");
               <label for="chave_x43_codsituacao" class="bold"><?= $Lx43_codsituacao ?></label>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x43_codsituacao",5,$Ix43_codsituacao,true,"text",4,"","chave_x43_codsituacao");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $claguacortesituacao->rotulo->label("x43_descr");
               <label for="chave_x43_descr" class="bold"><?= $Lx43_descr ?></label>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x43_descr",40,$Ix43_descr,true,"text",4,"","chave_x43_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $claguacortesituacao->rotulo->label("x43_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacortesituacao.php")==true){
@@ -118,12 +119,12 @@ $claguacortesituacao->rotulo->label("x43_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

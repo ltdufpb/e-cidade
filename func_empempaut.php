@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempaut_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempempaut = new cl_empempaut;
 $clempempaut->rotulo->label("e61_numemp");
 $clempempaut->rotulo->label("e61_autori");
@@ -54,7 +55,7 @@ $clempempaut->rotulo->label("e61_autori");
               <?=$Le61_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e61_numemp",8,$Ie61_numemp,true,"text",4,"","chave_e61_numemp");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clempempaut->rotulo->label("e61_autori");
               <?=$Le61_autori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e61_autori",6,$Ie61_autori,true,"text",4,"","chave_e61_autori");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clempempaut->rotulo->label("e61_autori");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empempaut.php")==true){
@@ -118,12 +119,12 @@ $clempempaut->rotulo->label("e61_autori");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

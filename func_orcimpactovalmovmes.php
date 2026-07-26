@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcimpactovalmovmes_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcimpactovalmovmes = new cl_orcimpactovalmovmes;
 $clorcimpactovalmovmes->rotulo->label("o65_codseqimpmov");
 $clorcimpactovalmovmes->rotulo->label("o65_mes");
@@ -55,7 +56,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
               <?=$Lo65_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o65_codseqimpmov",5,$Io65_codseqimpmov,true,"text",4,"","chave_o65_codseqimpmov");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
               <?=$Lo65_mes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o65_mes",2,$Io65_mes,true,"text",4,"","chave_o65_mes");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
               <?=$Lo65_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o65_valor",12,$Io65_valor,true,"text",4,"","chave_o65_valor");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactovalmovmes.php")==true){
@@ -129,12 +130,12 @@ $clorcimpactovalmovmes->rotulo->label("o65_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

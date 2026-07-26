@@ -110,7 +110,7 @@ class NotificacaoTransferenciaService
                 $mail->Body = $mensagemHtml;
                 $mail->AltBody = $mensagem;
                 $mail->send();
-            } catch (Exception $e) {
+            } catch (Exception) {
                 throw new \Exception("A mensagem não foi enviada. Erro: {$mail->ErrorInfo}");
             }
         }
@@ -172,7 +172,7 @@ class NotificacaoTransferenciaService
                 $mail->Body = $mensagem;
 
                 $mail->send();
-            } catch (Exception $e) {
+            } catch (Exception) {
                 throw new \Exception("A mensagem não foi enviada. Erro: {$mail->ErrorInfo}");
             }
         }

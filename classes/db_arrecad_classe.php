@@ -76,7 +76,7 @@ class cl_arrecad {
                  k00_tipojm = int4 = tipo de juro e multa
                  ";
   //funcao construtor da classe
-  function cl_arrecad() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("arrecad");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -68,7 +68,7 @@ db_postmemory($HTTP_POST_VARS);
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js");
 db_app::load("estilos.css, grid.style.css");
 ?>
@@ -138,34 +138,34 @@ function js_mascara(evt){
     <table>
       <tr>
         <td  align="left" nowrap title="<?=$Te69_numero?>">
-        <? db_ancora(@$Le69_numero,"js_pesquisae69_numero(true);",1);  ?>
+        <?php  db_ancora(@$Le69_numero,"js_pesquisae69_numero(true);",1);  ?>
         </td>
         <td>
-        <?db_input("e69_numero",10,$Ie69_numero,true,"text",4,"onchange=''");?> 
+        <?php db_input("e69_numero",10,$Ie69_numero,true,"text",4,"onchange=''");?> 
         </td>
       </tr>
       <tr> 
-		    <td  align="left" nowrap title="<?=$Te60_codemp?>"> <? db_ancora(@$Le60_codemp,"js_pesquisa_empenho(true);",1);?>  </td>
+		    <td  align="left" nowrap title="<?=$Te60_codemp?>"> <?php  db_ancora(@$Le60_codemp,"js_pesquisa_empenho(true);",1);?>  </td>
 		    <td align="left" nowrap>
-	      <?
+	      <?php 
 	       db_input("e60_codemp",10,$Ie60_codemp,true,"text",4,"onchange=''"); 
 	       //  db_input("z01_nome1",40,"",true,"text",3);  
 	      ?>
 	      </td>
       </tr>
       <tr> 
-        <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora('<b>Credor:</b>',"js_pesquisa_cgm(true);",1);?></td>
+        <td  align="left" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora('<b>Credor:</b>',"js_pesquisa_cgm(true);",1);?></td>
 		    <td align="left" nowrap>
-		      <? 
+		      <?php  
 		        db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",4,"onchange='js_pesquisa_cgm(false);'");
 		        db_input("z01_nome2",40,"",true,"text",3);  
 		      ?>
 		    </td>
       </tr>
       <tr> 
-        <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?db_ancora('<b>Ordem de Compra:</b>',"js_pesquisa_ordemcompra(true);",1);?></td>
+        <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?php db_ancora('<b>Ordem de Compra:</b>',"js_pesquisa_ordemcompra(true);",1);?></td>
         <td align="left" nowrap>
-          <? 
+          <?php  
             db_input("m51_codordem",10,$Im51_codordem,true,"text",4,"onchange=''");
             //db_input("z01_nome2",40,"",true,"text",3);  
           ?>
@@ -177,11 +177,11 @@ function js_mascara(evt){
         
         </td>
         <td align='left'>
-        <?
+        <?php 
           db_inputdata('dt_inicial',"","","",false,'text',1,"","",""); 
         ?>
         <b>Data Final:</b>
-        <?
+        <?php 
          db_inputdata('dt_final',"","","",false,'text',1,"","",""); 
         ?>
         </td>
@@ -190,7 +190,7 @@ function js_mascara(evt){
       <tr> 
         <td  align="left" nowrap title="Processo administrativo"><strong>Processo Administrativo:</strong></td>
         <td align="left" nowrap>
-          <? 
+          <?php  
             db_input("e04_numeroprocesso", 10, null,true,"text",4, null, null, null, null,15);
           ?>
         </td>
@@ -210,7 +210,7 @@ function js_mascara(evt){
 </form>
 </center>
 
-<? 
+<?php  
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

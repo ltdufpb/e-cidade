@@ -111,7 +111,7 @@ class DBAttDinamicoValor {
    */
   public static function getValores($iCodigoGrupo) {
 
-    $aValores = array();
+    $aValores = [];
 
     if (empty($iCodigoGrupo)) {
       return $aValores;

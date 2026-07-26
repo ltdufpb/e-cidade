@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadpotencia_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveiccadpotencia = new cl_veiccadpotencia;
 $clveiccadpotencia->rotulo->label("ve31_codigo");
 $clveiccadpotencia->rotulo->label("ve31_descr");
@@ -54,7 +55,7 @@ $clveiccadpotencia->rotulo->label("ve31_descr");
               <?=$Lve31_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve31_codigo",10,$Ive31_codigo,true,"text",4,"","chave_ve31_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clveiccadpotencia->rotulo->label("ve31_descr");
               <?=$Lve31_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve31_descr",10,$Ive31_descr,true,"text",4,"","chave_ve31_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clveiccadpotencia->rotulo->label("ve31_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadpotencia.php")==true){
@@ -122,12 +123,12 @@ $clveiccadpotencia->rotulo->label("ve31_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -34,12 +34,6 @@
 class DocumentoContabilRegra {
 
   /**
-   * Código da Regra (conhistdocregra)
-   * @var integer
-   */
-  private $iCodigo;
-
-  /**
    * Ano da Regra (conhistdoctipo)
    * @var integer
    */
@@ -66,19 +60,21 @@ class DocumentoContabilRegra {
   /**
    * Contrutor da Classe
    * Se o parâmetro estivér setado, cria uma instância da Regra
-   * @param integer $iCodigoRegra
+   * @param integer $iCodigo
    */
-  public function __construct($iCodigoRegra = null) {
+  public function __construct(/**
+   * Código da Regra (conhistdocregra)
+   */
+  private $iCodigo = null) {
 
-  	$this->iCodigo = $iCodigoRegra;
-    if (isset($iCodigoRegra) && !empty($iCodigoRegra)) {
+  	if (isset($this->iCodigo) && !empty($this->iCodigo)) {
 
       $oDaoRegra = db_utils::getDao('conhistdocregra');
-      $sSqlRegra = $oDaoRegra->sql_query_file($iCodigoRegra);
+      $sSqlRegra = $oDaoRegra->sql_query_file($this->iCodigo);
       $rsRegra   = $oDaoRegra->sql_record($sSqlRegra);
 
       if ($oDaoRegra->numrows == 0) {
-        throw new Exception("Não foi localizada uma regra para o código: {$iCodigoRegra}");
+        throw new Exception("Não foi localizada uma regra para o código: {$this->iCodigo}");
       }
       $oRegra                 = db_utils::fieldsMemory($rsRegra, 0);
       $this->iCodigo          = $oRegra->c92_sequencial;

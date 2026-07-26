@@ -77,7 +77,7 @@ class LoteRegistrosPonto {
    * 
    * @var RegistroPonto[]
    */
-  private $aRegistroPonto = array();
+  private $aRegistroPonto = [];
 
   /**
    * Representa a situação do lote.
@@ -176,7 +176,7 @@ class LoteRegistrosPonto {
    */
   public function getRegistroPontoServidor(){
 
-    $aServidorRegistrosPonto = array();
+    $aServidorRegistrosPonto = [];
     
     foreach ($this->getRegistroPonto() as $oRegistro) {
       $aServidorRegistrosPonto[$oRegistro->getServidor()->getMatricula()][] = $oRegistro;
@@ -442,7 +442,7 @@ class LoteRegistrosPonto {
    */
   public function getFolhaPagamento() {
 
-    if($this->getSequencial() != null && trim($this->getSequencial()) != "") {
+    if($this->getSequencial() != null && trim((string) $this->getSequencial()) != "") {
 
       if(DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
 

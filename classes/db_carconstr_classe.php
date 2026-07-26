@@ -52,7 +52,7 @@ class cl_carconstr {
                  j48_caract = int4 = Caracteristica
                  ";
    //funcao construtor da classe
-   function cl_carconstr() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carconstr");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -41,7 +41,7 @@ class AutorizacaoEmpenho {
   
   protected $sCodigoLicitacao;
   
-  protected $aItens = array();
+  protected $aItens = [];
   
   protected $dtEmissao;
   
@@ -372,7 +372,7 @@ class AutorizacaoEmpenho {
       $oDaoAutori->e54_anousu = db_getsession("DB_anousu");
       $oDaoAutori->e54_depto  = db_getsession("DB_coddepto");
       $oDaoAutori->e54_login  = db_getsession("DB_id_usuario");
-      $oDaoAutori->e54_emiss  = implode("-", array_reverse(explode("/", $this->dtEmissao)));
+      $oDaoAutori->e54_emiss  = implode("-", array_reverse(explode("/", (string) $this->dtEmissao)));
       $oDaoAutori->incluir(null);
       $this->iCodigo = $oDaoAutori->e54_autori;
     } else {
@@ -507,7 +507,7 @@ class AutorizacaoEmpenho {
      * Altera a data de anulacao para false
      */
     $oDaoAutoriza = db_utils::getDao("empautoriza");
-    $oDaoAutoriza->e54_anulad = implode("-", array_reverse(explode("/", $dtAnulação)));
+    $oDaoAutoriza->e54_anulad = implode("-", array_reverse(explode("/", (string) $dtAnulação)));
     $oDaoAutoriza->e54_autori = $this->getCodigo();
     $oDaoAutoriza->alterar($this->getCodigo());
     if ($oDaoAutoriza->erro_status == 0) {
@@ -540,7 +540,7 @@ class AutorizacaoEmpenho {
    * @return boolean
    * 
    */
-  public static function verificaItemAutorizado($iCodigoItem, $iDotacao = null, $iSolicitacao) {
+  public static function verificaItemAutorizado($iCodigoItem, $iDotacao = null, $iSolicitacao = null) {
     
     // e55_item = $iCodigoItem
     // e56_coddot = $iDotacao
@@ -561,7 +561,7 @@ class AutorizacaoEmpenho {
     $sSqlEmpAutItem = $oDaoSolicitem->sql_query_verificaItemAutorizado( null, "e55_autori", null, $sWhereSolicitem);
     
     $rsEmpAutItem   = db_query($sSqlEmpAutItem);
-    if (pg_numrows($rsEmpAutItem) > 0) {
+    if (pg_num_rows($rsEmpAutItem) > 0) {
       return true;
     }
     return false;

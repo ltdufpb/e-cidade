@@ -1,35 +1,35 @@
-<?
+<?php 
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordoposicaoevento
 class cl_acordoposicaoevento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ac56_sequencial = 0; 
-   var $ac56_acordoevento = 0; 
-   var $ac56_acordoposicao = 0; 
+   public $ac56_sequencial = 0; 
+   public $ac56_acordoevento = 0; 
+   public $ac56_acordoposicao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ac56_sequencial = int4 = Sequencial 
                  ac56_acordoevento = int4 = Evento 
                  ac56_acordoposicao = int4 = Posiçao do Acordo 
                  ";
    //funcao construtor da classe 
-   function cl_acordoposicaoevento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoposicaoevento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_acordoposicaoevento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac56_sequencial = pg_result($result,0,0); 
+       $this->ac56_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from acordoposicaoevento_ac56_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac56_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac56_sequencial)){
          $this->erro_sql = " Campo ac56_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_acordoposicaoevento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Posição do acordo/evento ($this->ac56_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Posição do acordo/evento já Cadastrado";
@@ -145,12 +145,12 @@ class cl_acordoposicaoevento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21829,'$this->ac56_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3928,21829,'','".AddSlashes(pg_result($resaco,0,'ac56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3928,21830,'','".AddSlashes(pg_result($resaco,0,'ac56_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3928,21831,'','".AddSlashes(pg_result($resaco,0,'ac56_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3928,21829,'','".AddSlashes(pg_fetch_result($resaco,0,'ac56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3928,21830,'','".AddSlashes(pg_fetch_result($resaco,0,'ac56_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3928,21831,'','".AddSlashes(pg_fetch_result($resaco,0,'ac56_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_acordoposicaoevento {
       $this->atualizacampos();
      $sql = " update acordoposicaoevento set ";
      $virgula = "";
-     if(trim($this->ac56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac56_sequencial"])){ 
+     if(trim((string) $this->ac56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac56_sequencial"])){ 
        $sql  .= $virgula." ac56_sequencial = $this->ac56_sequencial ";
        $virgula = ",";
-       if(trim($this->ac56_sequencial) == null ){ 
+       if(trim((string) $this->ac56_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "ac56_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_acordoposicaoevento {
          return false;
        }
      }
-     if(trim($this->ac56_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac56_acordoevento"])){ 
+     if(trim((string) $this->ac56_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac56_acordoevento"])){ 
        $sql  .= $virgula." ac56_acordoevento = $this->ac56_acordoevento ";
        $virgula = ",";
-       if(trim($this->ac56_acordoevento) == null ){ 
+       if(trim((string) $this->ac56_acordoevento) == null ){ 
          $this->erro_sql = " Campo Evento não informado.";
          $this->erro_campo = "ac56_acordoevento";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_acordoposicaoevento {
          return false;
        }
      }
-     if(trim($this->ac56_acordoposicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac56_acordoposicao"])){ 
+     if(trim((string) $this->ac56_acordoposicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac56_acordoposicao"])){ 
        $sql  .= $virgula." ac56_acordoposicao = $this->ac56_acordoposicao ";
        $virgula = ",";
-       if(trim($this->ac56_acordoposicao) == null ){ 
+       if(trim((string) $this->ac56_acordoposicao) == null ){ 
          $this->erro_sql = " Campo Posiçao do Acordo não informado.";
          $this->erro_campo = "ac56_acordoposicao";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_acordoposicaoevento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21829,'$this->ac56_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac56_sequencial"]) || $this->ac56_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3928,21829,'".AddSlashes(pg_result($resaco,$conresaco,'ac56_sequencial'))."','$this->ac56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3928,21829,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac56_sequencial'))."','$this->ac56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac56_acordoevento"]) || $this->ac56_acordoevento != "")
-             $resac = db_query("insert into db_acount values($acount,3928,21830,'".AddSlashes(pg_result($resaco,$conresaco,'ac56_acordoevento'))."','$this->ac56_acordoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3928,21830,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac56_acordoevento'))."','$this->ac56_acordoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac56_acordoposicao"]) || $this->ac56_acordoposicao != "")
-             $resac = db_query("insert into db_acount values($acount,3928,21831,'".AddSlashes(pg_result($resaco,$conresaco,'ac56_acordoposicao'))."','$this->ac56_acordoposicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3928,21831,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac56_acordoposicao'))."','$this->ac56_acordoposicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_acordoposicaoevento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21829,'$ac56_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3928,21829,'','".AddSlashes(pg_result($resaco,$iresaco,'ac56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3928,21830,'','".AddSlashes(pg_result($resaco,$iresaco,'ac56_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3928,21831,'','".AddSlashes(pg_result($resaco,$iresaco,'ac56_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3928,21829,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3928,21830,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac56_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3928,21831,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac56_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -506,16 +506,16 @@ if(isset($incluir) && !isset($alertconfirma)){
     <td width="25%">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php 
 include(modification("forms/db_frmgerffx.php"));
 ?>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>js_campos('outros');</script>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if(isset($sqlerro) && $sqlerro == true){
     db_msgbox($erro_msg);

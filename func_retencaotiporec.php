@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_retencaotiporec_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clretencaotiporec = new cl_retencaotiporec;
 $clretencaotiporec->rotulo->label("e21_sequencial");
@@ -59,7 +60,7 @@ $oGet = db_utils::postMemory($_GET);
               <?=$Le21_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e21_sequencial",10,$Ie21_sequencial,true,"text",4,"","chave_e21_sequencial");
 		       ?>
             </td>
@@ -69,7 +70,7 @@ $oGet = db_utils::postMemory($_GET);
               <?=$Le21_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e21_descricao",10,$Ie21_descricao,true,"text",4,"","chave_e21_descricao");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $oGet = db_utils::postMemory($_GET);
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = ' e21_instit = '.db_getsession("DB_instit");
       
       if ( isset($tipo) && trim($tipo) != '' ) {
@@ -143,12 +144,12 @@ $oGet = db_utils::postMemory($_GET);
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

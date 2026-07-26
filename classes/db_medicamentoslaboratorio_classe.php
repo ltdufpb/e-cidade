@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE medicamentoslaboratorio
 class cl_medicamentoslaboratorio { 
@@ -26,7 +26,7 @@ class cl_medicamentoslaboratorio {
                  la43_abreviatura = varchar(3) = Abreviatura 
                  ";
    //funcao construtor da classe 
-   function cl_medicamentoslaboratorio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("medicamentoslaboratorio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

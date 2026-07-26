@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE tipodespacho
 class cl_tipodespacho { 
@@ -24,7 +24,7 @@ class cl_tipodespacho {
                  p100_descricao = varchar(20) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipodespacho() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipodespacho"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

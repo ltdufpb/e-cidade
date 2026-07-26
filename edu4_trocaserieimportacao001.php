@@ -48,12 +48,12 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/', $dData);
+    $dData = explode('/', (string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   }
 
-  $dData = explode('-', $dData);
+  $dData = explode('-', (string) $dData);
   $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
   return $dData;
 }
@@ -152,7 +152,7 @@ if (!isset($incluir)) {
               <b>Aproveitamento na TURMA DE ORIGEM:</b>
             </td>
           </tr>
-          <?
+          <?php 
           $sSql = $oDaoMatricula->sql_query('', 'ed60_i_aluno, ed221_i_serie as etapaorigem', '',
                                             " ed60_i_codigo = $matricula"
                                            );
@@ -164,7 +164,7 @@ if (!isset($incluir)) {
                                                   " ed59_i_turma = $turmaorigem and ed59_i_serie in ($etapaorigem)"
                                                  );
           $rs          = $oDaoRegencia->sql_record($sSql);
-          $procorigem  = pg_result($rs, 0, 'procorigem');
+          $procorigem  = pg_fetch_result($rs, 0, 'procorigem');
           $linhas      = $oDaoRegencia->numrows;
           $sSql        = $oDaoRegencia->sql_query('', 'ed59_i_codigo as regdestino, ed232_i_codigo as coddestino, '.
                                                   'ed232_c_descr as descrdestino, '.
@@ -173,7 +173,7 @@ if (!isset($incluir)) {
                                                 " ed59_i_turma = $turmadestino and ed59_i_serie in ($codetapadestino)"
                                                  );
           $rs2         = $oDaoRegencia->sql_record($sSql);
-          $procdestino = pg_result($rs2, 0, 'procdestino');
+          $procdestino = pg_fetch_result($rs2, 0, 'procdestino');
           $linhas1     = $oDaoRegencia->numrows;
           $regmarcadas = '';
           for ($iCont = 0; $iCont < $linhas; $iCont++) {
@@ -189,7 +189,7 @@ if (!isset($incluir)) {
               </td>
               <td align="center" nowrap>--></td>
               <td nowrap>
-                <?
+                <?php 
                 $temreg = false;
                 for ($iCont2 = 0; $iCont2 < $linhas1; $iCont2++) {
 
@@ -210,7 +210,7 @@ if (!isset($incluir)) {
                     size="10" readonly style="width:75px">
                   <input name="regdestinodescr" type="text" value="<?=$regdestinodescr?>"
                     size="30" readonly style="width:180px">
-                <?
+                <?php 
                 } else {
 
                   $sql2 = "select ed59_i_codigo as regsobra,trim(ed232_c_descr) as descrsobra
@@ -230,7 +230,7 @@ if (!isset($incluir)) {
                   <select name="regenciadestino" style="padding:0px;width:75px;height:16px;font-size:12px;"
                     onchange="js_eliminareg(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php 
                   for ($iCont2 = 0; $iCont2 < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -242,7 +242,7 @@ if (!isset($incluir)) {
                   <select name="regdestinodescr" style="padding:0px;width:180px;height:16px;font-size:12px;"
                     onchange="js_eliminareg(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php 
                   for ($iCont2 = 0; $iCont2 < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -253,14 +253,14 @@ if (!isset($incluir)) {
                   </select>
                   <input type="hidden" name="combo" value="<?=$iCont?>">
                   <input type="hidden" name="comboselect<?=$iCont?>" value="">
-                <?
+                <?php 
                 }
                 ?>
               </td>
               <td nowrap>
                 <table border="1" cellspacing="0" cellpadding="0">
                   <tr>
-                    <?
+                    <?php 
                     $sSql = $oDaoDiarioAvaliacao->sql_query('', 'ed09_c_abrev, ed72_i_valornota, '.
                                                             'ed72_c_valorconceito, ed72_t_parecer, '.
                                                             'ed37_c_tipo', 'ed41_i_sequencia asc',
@@ -278,7 +278,7 @@ if (!isset($incluir)) {
                       for ($iCont2 = 0; $iCont2 < $oDaoDiarioAvaliacao->numrows; $iCont2++) {
 
                         db_fieldsmemory($rs3, $iCont2);
-                        if (trim($ed37_c_tipo) == 'NOTA') {
+                        if (trim((string) $ed37_c_tipo) == 'NOTA') {
 
                           if ($resultedu == 'S') {
 
@@ -289,7 +289,7 @@ if (!isset($incluir)) {
                             $aproveitamento = $ed72_i_valornota != '' ? number_format($ed72_i_valornota, 0) : '';
                           }
 
-                        } elseif (trim($ed37_c_tipo) == 'NIVEL') {
+                        } elseif (trim((string) $ed37_c_tipo) == 'NIVEL') {
                           $aproveitamento = $ed72_c_valorconceito;
                         } else {
                           $aproveitamento = $ed72_t_parecer != '' ? "<font size='1'>Parecer</font>" : '';
@@ -307,7 +307,7 @@ if (!isset($incluir)) {
                 </table>
               </td>
             </tr>
-          <?
+          <?php 
           }
           ?>
           <tr>
@@ -319,7 +319,7 @@ if (!isset($incluir)) {
               <b>Períodos de Avaliação  TURMA DE DESTINO:</b>
             </td>
           </tr>
-          <?
+          <?php 
           $sSql    = $oDaoProcAvaliacao->sql_query('', 'ed41_i_codigo, ed09_i_codigo, ed09_c_descr, '.
                                                    'ed37_c_tipo, ed37_i_menorvalor, ed37_i_maiorvalor',
                                                    'ed41_i_sequencia', " ed41_i_procedimento = $procorigem"
@@ -349,7 +349,7 @@ if (!isset($incluir)) {
               </td>
               <td align="center" nowrap>--></td>
               <td nowrap>
-                <?
+                <?php 
                 $temper = false;
                 for ($iCont2 = 0; $iCont2 < $linhas1; $iCont2++) {
 
@@ -370,7 +370,7 @@ if (!isset($incluir)) {
                     style="width:75px">
                   <input name="perdestinodescr" type="text" value="<?=$perdestinodescr?>" size="30"
                     readonly style="width:180px">
-                <?
+                <?php 
                 } else {
 
                   $sql2 = "select ed41_i_codigo as persobra,ed09_c_descr as descrsobra,ed37_c_tipo as tipodest,
@@ -400,7 +400,7 @@ if (!isset($incluir)) {
                   <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;"
                     onchange="js_eliminaper(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php 
                   for ($iCont2 = 0; $iCont2 < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -412,7 +412,7 @@ if (!isset($incluir)) {
                   <select name="perdestinodescr" style="padding:0px;width:180px;height:16px;font-size:12px;"
                     onchange="js_eliminaper(this.value,<?=$iCont?>)">
                   <option value=""></option>
-                  <?
+                  <?php 
                   for ($iCont2 = 0; $iCont < $linhas2; $iCont2++) {
 
                     db_fieldsmemory($rs3, $iCont2);
@@ -424,13 +424,13 @@ if (!isset($incluir)) {
                   </select>
                   <input type="hidden" name="pcombo" value="<?=$iCont?>">
                   <input type="hidden" name="pcomboselect<?=$iCont?>" value="">
-                <?
+                <?php 
                 }
                 ?>
               </td>
               <td></td>
             </tr>
-          <?
+          <?php 
           }
 
           $sSql = $oDaoTurmaSerieRegimeMat->sql_query(null, 'ed223_i_serie, ed11_c_descr as descretapa',
@@ -441,7 +441,7 @@ if (!isset($incluir)) {
           ?>
             <tr>
               <td colspan="3">
-                <?
+                <?php 
                 $tem = false;
                 for ($iCont = 0; $iCont < $oDaoTurmaSerieRegimeMat->numrows; $iCont++) {
 
@@ -457,12 +457,12 @@ if (!isset($incluir)) {
                 if ($tem == true) {
                 ?>
                   <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-                <?
+                <?php 
                 } else {
                 ?>
                   <b>Informe a Etapa na turma de destino:</b>
                   <select name="codetapadestino">
-                    <?
+                    <?php 
                     $sSql = $oDaoSerieEquiv->sql_query(null, 'ed234_i_serieequiv', '',
                                                        " ed234_i_serie = $etapaorigem"
                                                       );
@@ -490,22 +490,22 @@ if (!isset($incluir)) {
                       }
                       ?>
                       <option value="<?=$ed223_i_serie?>" <?=$selected?> <?=$disabled?>><?=$descretapa?></option>
-                     <?
+                     <?php 
                     }
                   ?>
                   </select>
-                <?
+                <?php 
                 }
                 ?>
               </td>
             </tr>
-          <?
+          <?php 
           } else {
 
             db_fieldsmemory($rs, 0);
             ?>
             <input name="codetapadestino" type="hidden" value="<?=$ed223_i_serie?>">
-          <?
+          <?php 
           }
           ?>
           <tr>
@@ -890,7 +890,7 @@ if (!isset($incluir)) {
         </script>
       </body>
     </html>
-<?
+<?php 
   } else {
 
     $lErroTransacao = false;
@@ -943,7 +943,7 @@ if (!isset($incluir)) {
                                                       );
         $rs           = $oDaoProcAvaliacao->sql_record($sSql);
         $iNumProcAval = $oDaoProcAvaliacao->numrows;
-        $aProcAval    = array();
+        $aProcAval    = [];
         for ($iCont = 0; $iCont < $iNumProcAval; $iCont++) {
           $aProcAval[$iCont] = db_utils::fieldsmemory($rs, $iCont)->ed41_i_codigo;
         }
@@ -1032,11 +1032,11 @@ if (!isset($incluir)) {
           $iMax = $iMax == '' ? 'null' : ($iMax + 1);
 
           /* Data da Matrícula */
-          $aData          = explode('/', $ed101_d_data);
+          $aData          = explode('/', (string) $ed101_d_data);
           $dDataMatricula = $aData[2].'-'.$aData[1].'-'.$aData[0];
 
           /* Observação da nova matrícula */
-          $sObs  = $sPalavra2.'(A) DA ETAPA '.(trim($ed11_c_origem)).' PARA ETAPA '.(trim($ed11_c_destino));
+          $sObs  = $sPalavra2.'(A) DA ETAPA '.(trim((string) $ed11_c_origem)).' PARA ETAPA '.(trim((string) $ed11_c_destino));
           $sObs .= ' EM '.$ed101_d_data.', CONFORME LEI FEDERAL N° 9394/96 - ARTIGO 23, § 1o , ';
           $sObs .= 'PARECER CEED N° 740/99 E REGIMENTO ESCOLAR';
 
@@ -1122,7 +1122,7 @@ if (!isset($incluir)) {
             $oDaoMatriculaMov->ed229_i_usuario      = db_getsession('DB_id_usuario');
             $oDaoMatriculaMov->ed229_c_procedimento = "REMATRICULAR ALUNO";
             $oDaoMatriculaMov->ed229_t_descr        = "ALUNO {$sSituacaoAnteriorMov} NA TURMA ";
-            $oDaoMatriculaMov->ed229_t_descr       .= trim($ed57_c_descrdest) . ". SITUAÇÃO ANTERIOR: {$sSituacaoAnterior}";
+            $oDaoMatriculaMov->ed229_t_descr       .= trim((string) $ed57_c_descrdest) . ". SITUAÇÃO ANTERIOR: {$sSituacaoAnterior}";
             $oDaoMatriculaMov->ed229_d_dataevento   = $dDataMatricula;
             $oDaoMatriculaMov->ed229_c_horaevento   = date('H:i');
             $oDaoMatriculaMov->ed229_d_data         = date('Y-m-d', db_getsession('DB_datausu'));
@@ -1182,9 +1182,9 @@ if (!isset($incluir)) {
                   $oDaoMatriculaMov->ed229_i_matricula    = $oDadosMatricula->codmatricula;
                   $oDaoMatriculaMov->ed229_i_usuario      = db_getsession('DB_id_usuario');
                   $oDaoMatriculaMov->ed229_c_procedimento = 'PROGRESSÃO DE ALUNO -> '.$sPalavra1;
-                  $oDaoMatriculaMov->ed229_t_descr        = 'ALUNO '.$sPalavra2.' DA TURMA '.trim($ed57_c_descrorig).' / '.
-                                                            trim($ed11_c_origem).' PARA A TURMA '.trim($ed57_c_descrdest).
-                                                            ' / '.trim($ed11_c_destino);
+                  $oDaoMatriculaMov->ed229_t_descr        = 'ALUNO '.$sPalavra2.' DA TURMA '.trim((string) $ed57_c_descrorig).' / '.
+                                                            trim((string) $ed11_c_origem).' PARA A TURMA '.trim((string) $ed57_c_descrdest).
+                                                            ' / '.trim((string) $ed11_c_destino);
                   $oDaoMatriculaMov->ed229_d_dataevento   = $dDataMatricula;
                   $oDaoMatriculaMov->ed229_c_horaevento   = date('H:i');
                   $oDaoMatriculaMov->ed229_d_data         = date('Y-m-d', db_getsession('DB_datausu'));
@@ -1400,7 +1400,7 @@ if (!isset($incluir)) {
       /* $perequiv contém os períodos equivalentes informados pelo usuário no seguinte formato:
           per1|perequiv1Xper2|perequiv2...
       */
-      $periodos      = explode('X', $perequiv);
+      $periodos      = explode('X', (string) $perequiv);
       $msg_conversao = '';
       $sep_conversao = '';
       for ($iCont = 0; $iCont < count($periodos); $iCont++) {
@@ -1446,8 +1446,8 @@ if (!isset($incluir)) {
         /* Verifico as diferenças nas formas de avaliação dos procedimentos de avaliação dos dois períodos
            verificando a compatibilidade
         */
-        if (trim($oDadosPerOrig->tipoorigem) != trim($oDadosPerDest->tipodestino)
-            || (trim($oDadosPerOrig->tipoorigem) == trim($oDadosPerDest->tipodestino)
+        if (trim((string) $oDadosPerOrig->tipoorigem) != trim((string) $oDadosPerDest->tipodestino)
+            || (trim((string) $oDadosPerOrig->tipoorigem) == trim((string) $oDadosPerDest->tipodestino)
                 && $oDadosPerOrig->mvorigem != $oDadosPerDest->mvdestino)) {
 
           $msg_conversao .= $sep_conversao." ".$perdestdescricao;
@@ -1458,7 +1458,7 @@ if (!isset($incluir)) {
         /* $regequiv contém as regências (disciplinas nas séries) equivalentes informadas no seguinte formato:
             reg1|regequiv1Xreg2|regequiv2...
         */
-        $regencias = explode('X', $regequiv);
+        $regencias = explode('X', (string) $regequiv);
         for ($iCont2 = 0; $iCont2<count($regencias);$iCont2++) {
 
           $divideregencias = explode('|', $regencias[$iCont2]);
@@ -1608,8 +1608,8 @@ if (!isset($incluir)) {
 
           }
 
-          if (trim($oDadosPerOrig->tipoorigem) != trim($oDadosPerDest->tipodestino)
-              || (trim($oDadosPerOrig->tipoorigem) == trim($oDadosPerDest->tipodestino)
+          if (trim((string) $oDadosPerOrig->tipoorigem) != trim((string) $oDadosPerDest->tipodestino)
+              || (trim((string) $oDadosPerOrig->tipoorigem) == trim((string) $oDadosPerDest->tipodestino)
                   && $oDadosPerOrig->mvorigem != $oDadosPerDest->mvdestino)) {
 
             if ($oDadosDiarioAval->ed72_i_valornota == ''
@@ -1640,9 +1640,7 @@ if (!isset($incluir)) {
               ->get();
             $oRegenciaDestino = new Regencia($regenciadestino);
 
-            $baseCurricularDisciplina = array_filter($baseCurricularDisciplinas, function ($base) use ($oRegenciaDestino) {
-                return $base->getDisciplina()->getCodigoDisciplina() == $oRegenciaDestino->getDisciplina()->getCodigoDisciplina();
-            });
+            $baseCurricularDisciplina = array_filter($baseCurricularDisciplinas, fn($base) => $base->getDisciplina()->getCodigoDisciplina() == $oRegenciaDestino->getDisciplina()->getCodigoDisciplina());
             $baseCurricularDisciplina = array_shift($baseCurricularDisciplina);
             $periododestinodisciplina = null;
             if ($baseCurricularDisciplina->getProcedimento()) {

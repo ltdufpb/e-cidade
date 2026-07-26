@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcamjulgamentolog_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpcorcamjulgamentolog = new cl_pcorcamjulgamentolog;
 $clpcorcamjulgamentolog->rotulo->label("pc92_sequencial");
 $clpcorcamjulgamentolog->rotulo->label("pc92_sequencial");
@@ -54,7 +55,7 @@ $clpcorcamjulgamentolog->rotulo->label("pc92_sequencial");
               <?=$Lpc92_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc92_sequencial",10,$Ipc92_sequencial,true,"text",4,"","chave_pc92_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpcorcamjulgamentolog->rotulo->label("pc92_sequencial");
               <?=$Lpc92_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc92_sequencial",10,$Ipc92_sequencial,true,"text",4,"","chave_pc92_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpcorcamjulgamentolog->rotulo->label("pc92_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamjulgamentolog.php")==true){
@@ -122,12 +123,12 @@ $clpcorcamjulgamentolog->rotulo->label("pc92_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

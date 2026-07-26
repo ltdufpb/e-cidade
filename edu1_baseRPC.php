@@ -62,9 +62,9 @@ if($oPost->sAction == 'PesquisaDivisaoCadastrada') {
 }
 if($oPost->sAction == 'PesquisaRegime') {
 
-  $aRetorno = array();
+  $aRetorno = [];
   $sCodRegime = $oPost->codregime;
-  $aCodRegime = explode("|",$sCodRegime);
+  $aCodRegime = explode("|",(string) $sCodRegime);
   $aRetorno[] = $aCodRegime[1];   	
   $rsBasemps = $clbasemps->sql_record($clbasemps->sql_query(""," distinct ed34_i_serie,ed11_c_descr,ed11_i_sequencia","ed11_i_sequencia"," ed34_i_base = {$oPost->codbase}"));
   for ($t=0;$t<$clbasemps->numrows;$t++) {

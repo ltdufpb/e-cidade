@@ -33,7 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clturno      = new cl_turno;
 $clcursoturno = new cl_cursoturno;
 $clturno->rotulo->label("ed15_i_codigo");
@@ -56,7 +57,7 @@ $clturno->rotulo->label("ed15_c_nome");
             <label for="chave_ed15_i_codigo"><?=$Led15_i_codigo?></label>
           </td>
           <td width="96%" align="left" nowrap>
-            <?db_input("ed15_i_codigo",10,$Ied15_i_codigo,true,"text",4,"","chave_ed15_i_codigo");?>
+            <?php db_input("ed15_i_codigo",10,$Ied15_i_codigo,true,"text",4,"","chave_ed15_i_codigo");?>
           </td>
         </tr>
         <tr>
@@ -64,7 +65,7 @@ $clturno->rotulo->label("ed15_c_nome");
             <label for="chave_ed15_c_nome"> <?=$Led15_c_nome?></label>
           </td>
           <td width="96%" align="left" nowrap>
-            <?db_input("ed15_c_nome",20,$Ied15_c_nome,true,"text",4,"","chave_ed15_c_nome");?>
+            <?php db_input("ed15_c_nome",20,$Ied15_c_nome,true,"text",4,"","chave_ed15_c_nome");?>
           </td>
         </tr>
         <tr>
@@ -80,7 +81,7 @@ $clturno->rotulo->label("ed15_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    $where = " and exists(select * from periodoescola
                          where ed17_i_escola = $escola

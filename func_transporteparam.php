@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_transporteparam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltransporteparam = new cl_transporteparam;
 $cltransporteparam->rotulo->label("ed224_i_codigo");
 $cltransporteparam->rotulo->label("ed224_c_tipo");
@@ -54,7 +55,7 @@ $cltransporteparam->rotulo->label("ed224_c_tipo");
               <?=$Led224_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed224_i_codigo",10,$Ied224_i_codigo,true,"text",4,"","chave_ed224_i_codigo");
                        ?>
             </td>
@@ -64,7 +65,7 @@ $cltransporteparam->rotulo->label("ed224_c_tipo");
               <?=$Led224_c_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed224_c_tipo",10,$Ied224_c_tipo,true,"text",4,"","chave_ed224_c_tipo");
                        ?>
             </td>
@@ -82,7 +83,7 @@ $cltransporteparam->rotulo->label("ed224_c_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_transporteparam.php")==true){
@@ -122,12 +123,12 @@ $cltransporteparam->rotulo->label("ed224_c_tipo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

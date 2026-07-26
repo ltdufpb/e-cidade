@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led91_i_codigo?>
   </td>
   <td>
-   <?db_input('ed91_i_codigo',20,$Ied91_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed91_i_codigo',20,$Ied91_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led91_c_descr?>
   </td>
   <td>
-   <?db_input('ed91_c_descr',20,$Ied91_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed91_c_descr',20,$Ied91_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -69,7 +69,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led91_sigla?>
   </td>
   <td>
-   <?db_input('ed91_sigla',20,$Ied91_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed91_sigla',20,$Ied91_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -78,9 +78,9 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $escola = db_getsession("DB_coddepto");
-   $chavepri= array("ed91_i_codigo"=>@$ed91_i_codigo,"ed91_c_descr"=>@$ed91_c_descr, "ed91_sigla"=>@$ed91_sigla);
+   $chavepri= ["ed91_i_codigo"=>@$ed91_i_codigo,"ed91_c_descr"=>@$ed91_c_descr, "ed91_sigla"=>@$ed91_sigla];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clparecerlegenda->sql_query("","*","ed91_c_descr"," ed91_i_escola = $escola");
    $cliframe_alterar_excluir->campos  ="ed91_i_codigo, ed91_c_descr, ed91_sigla";

@@ -54,10 +54,10 @@ $db_opcao   = 1;
     <tr>
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
         <?php
-        $clcriaabas->identifica    = array( "a1" => "Etapas", "a2" => "Regime de Matrícula", "a3" => "Vínculo Etapa Censo"  );
-        $clcriaabas->src           = array( "a1" => "edu1_serie003.php", "a2" => "", "a3" => "" );
-        $clcriaabas->sizecampo     = array( "a1" => "20", "a2" => "25", "a3" => "25" );
-        $clcriaabas->disabled      = array( "a2" => "true", "a3" => "true" );
+        $clcriaabas->identifica    = [ "a1" => "Etapas", "a2" => "Regime de Matrícula", "a3" => "Vínculo Etapa Censo"  ];
+        $clcriaabas->src           = [ "a1" => "edu1_serie003.php", "a2" => "", "a3" => "" ];
+        $clcriaabas->sizecampo     = [ "a1" => "20", "a2" => "25", "a3" => "25" ];
+        $clcriaabas->disabled      = [ "a2" => "true", "a3" => "true" ];
         $clcriaabas->cordisabled   = "#9b9b9b";
         $clcriaabas->iframe_height = "1000";
         $clcriaabas->iframe_width  = "100%";
@@ -67,6 +67,6 @@ $db_opcao   = 1;
     </tr>
   </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

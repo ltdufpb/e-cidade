@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoProgConvocacaoRes = db_utils::getdao("progconvocacaores");
 $oDaoProgConfig         = db_utils::getdao("progconfig");
 $oDaoProgConvFaltas     = db_utils::getdao("progconvfaltas");   
@@ -82,19 +82,19 @@ if (isset($alterar)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Alteração de Participações em Convocações</b></legend>
-       <?include(modification("forms/db_frmprogconvocacaores.php"));?>
+       <?php include(modification("forms/db_frmprogconvocacaores.php"));?>
       </fieldset>
      </center>
     </td>
    </tr>
   </table>
-  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
+  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
             db_getsession("DB_anousu"),db_getsession("DB_instit")
            );
   ?>
  </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($oDaoProgConvocacaoRes->erro_status == "0") {

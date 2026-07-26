@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_arquivos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_arquivos = new cl_db_arquivos;
 $cldb_arquivos->rotulo->label("codfilho");
 $cldb_arquivos->rotulo->label("arqfilho");
@@ -54,7 +55,7 @@ $cldb_arquivos->rotulo->label("arqfilho");
               <?=$Lcodfilho?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codfilho",5,$Icodfilho,true,"text",4,"","chave_codfilho");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_arquivos->rotulo->label("arqfilho");
               <?=$Larqfilho?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("arqfilho",100,$Iarqfilho,true,"text",4,"","chave_arqfilho");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_arquivos->rotulo->label("arqfilho");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_arquivos.php")==true){
@@ -118,12 +119,12 @@ $cldb_arquivos->rotulo->label("arqfilho");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

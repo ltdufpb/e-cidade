@@ -69,12 +69,12 @@ $clrotulo->label("z01_cep");
     </td>
     <td>
       <?php
-        $x = array( "" => "", "1" => "SIM", "2" => 'NÃO' );
+        $x = [ "" => "", "1" => "SIM", "2" => 'NÃO' ];
         db_select( 'ed20_i_tiposervidor', $x, true, $db_opcao1, "onChange=\"js_tiposervidor(this.value)\"" );
       ?>
       <?=@$Led20_c_efetividade?>
       <?php
-        $x = array( "S" => "SIM", "N" => 'NÃO' );
+        $x = [ "S" => "SIM", "N" => 'NÃO' ];
         db_select( 'ed20_c_efetividade', $x, true, $db_opcao );
       ?>
     </td>
@@ -196,7 +196,7 @@ if( isset( $chavepesquisa ) ) {
           </td>
           <td>
             <?php
-            $arr_sexo = array( 'M' => 'MASCULINO', 'F' => 'FEMININO' );
+            $arr_sexo = [ 'M' => 'MASCULINO', 'F' => 'FEMININO' ];
             db_select( "rh01_sexo", $arr_sexo, true, 3 );
             db_ancora( @$Lrh01_estciv, "js_pesquisarh01_estciv(true);", 3 );
 
@@ -221,12 +221,12 @@ if( isset( $chavepesquisa ) ) {
           </td>
           <td>
             <?php
-            $a = array(
+            $a = [
                         "1" => "FUNDAMENTAL INCOMPLETO",
                         "2" => 'FUNDAMENTAL COMPLETO',
                         "5" => "ENSINO MÉDIO",
                         "6" => "SUPERIOR"
-                      );
+                      ];
             db_select( 'ed20_i_escolaridade', $a, true, $db_opcao );
             ?>
             </td>
@@ -235,11 +235,11 @@ if( isset( $chavepesquisa ) ) {
             </td>
             <td>
               <?php
-                $x = array( '1' => 'FORMAÇÃO GERAL',
+                $x = [ '1' => 'FORMAÇÃO GERAL',
                             '2' => 'MODALIDADE NORMAL(MAGISTÉRIO)',
                             '3' => 'CURSO TÉCNICO',
                             '4' => 'MAGISTÉRIO INDÍGENA MODALIDADE NORMAL'
-                );
+                ];
                 db_select('ed20_tipoensinomedio', $x, true, $db_opcao );
               ?>
             </td>
@@ -250,14 +250,14 @@ if( isset( $chavepesquisa ) ) {
             </td>
             <td>
               <?php
-                $x = array(
+                $x = [
                             "0" => "NÃO DECLARADA",
                             "1" => 'BRANCA',
                             "2" => "PRETA",
                             "3" => "PARDA",
                             "4" => "AMARELA",
                             "5" => "INDÍGENA"
-                          );
+                          ];
                 db_select( 'ed20_i_raca', $x, true, $db_opcao );
               ?>
           </td>
@@ -274,10 +274,10 @@ if( isset( $chavepesquisa ) ) {
           </td>
           <td>
             <?php
-            $x = array( "1" => "Brasileira",
+            $x = [ "1" => "Brasileira",
                         "2" => "Brasileira no Exterior ou Naturalizado",
                         "3" => "Estrangeira"
-            );
+            ];
             db_select( 'ed20_i_nacionalidade', $x, true, $db_opcao, " onchange='js_nacionalidade1(this.value)'" );
             ?>
           <td>
@@ -293,7 +293,7 @@ if( isset( $chavepesquisa ) ) {
             $result_pais = $clpais->sql_record( $sSqlPais );
 
             if ($clpais->numrows == 0) {
-              $x = array( '' => 'NENHUM REGISTRO' );
+              $x = [ '' => 'NENHUM REGISTRO' ];
               db_select( 'ed20_i_pais', $x, true, $db_opcao, "" );
             } else {
               db_selectrecord("ed20_i_pais", $result_pais, "", $db_opcao, "", "", "", "  ", "","");
@@ -331,14 +331,14 @@ if( isset( $chavepesquisa ) ) {
               $result_munic  = $clcensomunic->sql_record($sSqCensoMunic);
               if ($clcensomunic->numrows == 0) {
 
-                $x = array( ' ' => 'Selecione o Estado' );
+                $x = [ ' ' => 'Selecione o Estado' ];
                 db_select( 'ed20_i_censomunicnat', $x, true, @$db_opcao, "" );
               } else {
                 db_selectrecord( "ed20_i_censomunicnat", $result_munic, "", "", "", "", "", "  ", "", 1 );
               }
             } else {
 
-              $x = array( ' ' => 'Selecione o Estado' );
+              $x = [ ' ' => 'Selecione o Estado' ];
               db_select( 'ed20_i_censomunicnat', $x, true, @$db_opcao, "" );
             }
             ?>
@@ -373,7 +373,7 @@ if( isset( $chavepesquisa ) ) {
                           $db_opcao
                         );
 
-            $x = array( '' => '', '1' => 'NASCIMENTO', '2' => 'CASAMENTO' );
+            $x = [ '' => '', '1' => 'NASCIMENTO', '2' => 'CASAMENTO' ];
             db_select( 'ed20_i_certidaotipo', $x, true, 3 );
 
 
@@ -593,14 +593,14 @@ if( isset( $chavepesquisa ) ) {
               $result_munic = $clcensomunic->sql_record( $sSqCensoMunic );
               if ($clcensomunic->numrows == 0) {
 
-                $x = array(' '=>'Selecione o Estado');
+                $x = [' '=>'Selecione o Estado'];
                 db_select( 'ed20_i_censomunicender', $x, true, @$db_opcao );
               } else {
                 db_selectrecord( "ed20_i_censomunicender", $result_munic, "", "", "", "", "", "  ", "", 1 );
               }
             } else {
 
-              $x = array(' '=>'Selecione o Estado');
+              $x = [' '=>'Selecione o Estado'];
               db_select( 'ed20_i_censomunicender', $x, true, @$db_opcao );
             }
             ?>
@@ -614,9 +614,9 @@ if( isset( $chavepesquisa ) ) {
           </td>
           <td>
             <?php
-              $x = array( '0' => 'SELECIONE',
+              $x = [ '0' => 'SELECIONE',
                           '1' => 'URBANA',
-                          '2' => 'RURAL' );
+                          '2' => 'RURAL' ];
               db_select('ed20_i_zonaresidencia', $x, true, $db_opcao );
             ?>
           </td>
@@ -629,7 +629,7 @@ if( isset( $chavepesquisa ) ) {
     </td>
     <td>
       <?php
-        $x = array( '' => '',
+        $x = [ '' => '',
                     '21' => 'ARGENTINA',
                     '22' => 'BOLIVIA (ESTADO PLURINACIONAL DA)',
                     '10' => 'BRASIL',
@@ -642,7 +642,7 @@ if( isset( $chavepesquisa ) ) {
                     '25' => 'URUGUAI',
                     '92' => 'VENEZUELA',
                     '20' => 'OUTRA NACIONALIDADE'
-          );
+          ];
           db_select('ed20_paisresidencia', $x, true, $db_opcao);
       ?>
     </td>
@@ -653,12 +653,12 @@ if( isset( $chavepesquisa ) ) {
     </td>
     <td>
       <?php
-        $x = array( '7' => 'NÃO ESTÁ EM ÁREA DE LOCALIZAÇÃO DIFERENCIADA',
+        $x = [ '7' => 'NÃO ESTÁ EM ÁREA DE LOCALIZAÇÃO DIFERENCIADA',
                     '1' => 'ÁREA DE ASSENTAMENTO',
                     '2' => 'TERRA INDÍGENA',
                     '3' => 'ÁREA ONDE SE LOCALIZA COMUNIDADE REMANESCENTE DE QUILOMBOS'
 
-        );
+        ];
         db_select('ed20_localizacaodiferenciada', $x, true, $db_opcao);
       ?>
     </td>
@@ -669,7 +669,7 @@ if( isset( $chavepesquisa ) ) {
   </fieldset>
 
   </div>
-<?}?>
+<?php }?>
 <input type="hidden" name="ed75_i_codigo" id="ed75_i_codigo" value=""/>
 <input name="<?=( $db_opcao == 1 ? "incluir" : ( $db_opcao == 2 || $db_opcao == 22 ? "alterar" : "excluir" ) )?>"
        type="submit"
@@ -856,9 +856,9 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave, iRechumanoEscola) {
 
   db_iframe_rechumano.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&ed75_i_codigo='+iRechumanoEscola";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&ed75_i_codigo='+iRechumanoEscola";
   }
   ?>
 }

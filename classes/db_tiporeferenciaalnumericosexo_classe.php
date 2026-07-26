@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE tiporeferenciaalnumericosexo
 class cl_tiporeferenciaalnumericosexo { 
@@ -26,7 +26,7 @@ class cl_tiporeferenciaalnumericosexo {
                  la60_sexo = char(1) = Sexo 
                  ";
    //funcao construtor da classe 
-   function cl_tiporeferenciaalnumericosexo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiporeferenciaalnumericosexo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

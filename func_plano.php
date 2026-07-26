@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_plano_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clplano = new cl_plano;
 $clplano->rotulo->label("c01_anousu");
 $clplano->rotulo->label("c01_estrut");
@@ -55,7 +56,7 @@ $clplano->rotulo->label("c01_descr");
               <?=$Lc01_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c01_anousu",0,$Ic01_anousu,true,"text",4,"","chave_c01_anousu");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clplano->rotulo->label("c01_descr");
               <?=$Lc01_estrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c01_estrut",13,$Ic01_estrut,true,"text",4,"","chave_c01_estrut");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clplano->rotulo->label("c01_descr");
               <?=$Lc01_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c01_descr",40,$Ic01_descr,true,"text",4,"","chave_c01_descr");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clplano->rotulo->label("c01_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "c01_reduz#c01_estrut#c01_descr";
@@ -121,14 +122,14 @@ $clplano->rotulo->label("c01_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_c01_anousu.focus();
 document.form2.chave_c01_anousu.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

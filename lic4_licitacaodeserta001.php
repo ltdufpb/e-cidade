@@ -110,13 +110,13 @@ if (isset($oGet->chavepesquisa) && $oGet->chavepesquisa != "") {
     </tr>
   </table>
   <center>
-  <?
+  <?php 
     include(modification("forms/db_frmlicitacaodeserta.php"));
   ?>
   </center>
 </body>
 </html>
-<?
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
  
  if ($lErro) {

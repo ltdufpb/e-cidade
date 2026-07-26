@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,37 +39,37 @@ $clrotulo->label("ed59_i_codigo");
        <?=@$Led78_i_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed78_i_codigo',10,$Ied78_i_codigo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted78_i_regencia?>">
-       <?
+       <?php 
        db_ancora(@$Led78_i_regencia,"js_pesquisaed78_i_regencia(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed78_i_regencia',10,$Ied78_i_regencia,true,'text',$db_opcao," onchange='js_pesquisaed78_i_regencia(false);'")
 ?>
-       <?
+       <?php 
 db_input('ed59_i_codigo',10,$Ied59_i_codigo,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted78_i_procavaliacao?>">
-       <?
+       <?php 
        db_ancora(@$Led78_i_procavaliacao,"js_pesquisaed78_i_procavaliacao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed78_i_procavaliacao',10,$Ied78_i_procavaliacao,true,'text',$db_opcao," onchange='js_pesquisaed78_i_procavaliacao(false);'")
 ?>
-       <?
+       <?php 
 db_input('ed41_i_codigo',10,$Ied41_i_codigo,true,'text',3,'')
        ?>
     </td>
@@ -79,7 +79,7 @@ db_input('ed41_i_codigo',10,$Ied41_i_codigo,true,'text',3,'')
        <?=@$Led78_i_aulasdadas?>
     </td>
     <td> 
-<?
+<?php 
 db_input('ed78_i_aulasdadas',10,$Ied78_i_aulasdadas,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -141,9 +141,9 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_regenciaperiodo.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

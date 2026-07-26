@@ -63,7 +63,7 @@ class Etapa {
 
         $oDadosEtapa = db_utils::fieldsMemory($rsEtapa, 0);
         $oEnsino     = EnsinoRepository::getEnsinoByCodigo($oDadosEtapa->ed11_i_ensino);
-        $oEnsino->setNome(trim($oDadosEtapa->ed10_c_descr));
+        $oEnsino->setNome(trim((string) $oDadosEtapa->ed10_c_descr));
         $this->setEnsino($oEnsino);
         $this->setNome($oDadosEtapa->ed11_c_descr);
         $this->setNomeAbreviado($oDadosEtapa->ed11_c_abrev);
@@ -182,7 +182,7 @@ class Etapa {
     }
 
     $iLinhas             = pg_num_rows( $rsEquivalente );
-    $aSeriesEquivalentes = array();
+    $aSeriesEquivalentes = [];
 
     for ($i = 0; $i < $iLinhas; $i++) {
       $aSeriesEquivalentes[] = EtapaRepository::getEtapaByCodigo(db_utils::fieldsMemory($rsEquivalente, $i)->ed234_i_serieequiv);
@@ -197,13 +197,13 @@ class Etapa {
      */
     public function toArray($recursive = false)
     {
-       $data = array(
+       $data = [
            'codigo' => $this->getCodigo(),
            'nome' => $this->getNome(),
            'nomeAbreviado' => $this->getNomeAbreviado(),
            'ordem' => $this->getOrdem(),
            'codigoEtapaCenso' => $this->getEtapaCenso(),
-       );
+       ];
 
        if ($recursive) {
            $data['ensinos'] = $this->getEnsino()->toArray();

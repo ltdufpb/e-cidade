@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_termoanuproc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltermoanuproc = new cl_termoanuproc;
 $cltermoanuproc->rotulo->label("v22_sequencial");
 $cltermoanuproc->rotulo->label("v22_termoanu");
@@ -54,7 +55,7 @@ $cltermoanuproc->rotulo->label("v22_termoanu");
               <?=$Lv22_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v22_sequencial",10,$Iv22_sequencial,true,"text",4,"","chave_v22_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltermoanuproc->rotulo->label("v22_termoanu");
               <?=$Lv22_termoanu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v22_termoanu",10,$Iv22_termoanu,true,"text",4,"","chave_v22_termoanu");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltermoanuproc->rotulo->label("v22_termoanu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_termoanuproc.php")==true){
@@ -122,12 +123,12 @@ $cltermoanuproc->rotulo->label("v22_termoanu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

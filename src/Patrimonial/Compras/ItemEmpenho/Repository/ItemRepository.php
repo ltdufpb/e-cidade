@@ -8,17 +8,11 @@ class ItemRepository
 {
 
     /**
-     * @var \cl_pcmater
-     */
-    private $dao;
-
-    /**
      * ItemRepository constructor.
      * @param \cl_pcmater $dao
      */
-    public function __construct(\cl_pcmater $dao)
+    public function __construct(private readonly \cl_pcmater $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -27,7 +21,7 @@ class ItemRepository
      * @return bool|Item
      * @throws \Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -62,7 +56,7 @@ class ItemRepository
             return null;
         }
 
-        $retorno = array();
+        $retorno = [];
 
         for ($i = 0; $i < $numrows; $i++) {
             $codigo = pg_fetch_result($rs, $i, 'e55_item');

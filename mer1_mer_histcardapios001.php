@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -31,7 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_desperdicio = new cl_mer_desperdicio;
 
@@ -90,11 +91,11 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 	       <table border="0">
 	          <tr>
 	            <td>Inicio</td>
-	            <td><?db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
+	            <td><?php db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
 	          </tr>
 	          <tr>
 	            <td>Fim</td>   
-	            <td><?db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
+	            <td><?php db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
               </tr>
               <tr>  
                <td colspan="2"><input name="consultar" type="button" value="consultar" onclick="js_consulta2()"></td>	      
@@ -108,7 +109,7 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 	</fieldset>
 	</center>
 	<br><br>
-	<?if (isset($opcao)) {
+	<?php if (isset($opcao)) {
 		
 		if ($opcao==1){
 			
@@ -132,11 +133,11 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 	    <table border="0">
 	       <tr>
 	          <td align="center">
-	              <?
+	              <?php 
 	               $sql  = " select me01_i_codigo,me01_c_nome,me13_d_data from mer_cardapiodata ";
 	               $sql .= "        inner join mer_cardapio on me13_i_cardapio=me01_i_codigo ";
                    $sql .= "    where me13_d_data between '".$inicio."' and '".$fim."'";
-                  ?><fieldset><legend>Lista de Cardapios</legend> <?
+                  ?><fieldset><legend>Lista de Cardapios</legend> <?php 
 	              db_lovrot($sql,"10","()","","");
 	              ?></fieldset>
 	              </
@@ -145,19 +146,19 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 		   <tr>   
 		      <td align="center">
 		          <br><br>
-	              <?	
+	              <?php 	
 		          $sql  = " select me07_i_codmater,m60_descr,(sum(me07_f_quantidade)) as total from mer_cardapioitem ";
                   $sql .= "             inner join mer_cardapiodata on me07_i_cardapio=me13_i_cardapio ";
                   $sql .= "             inner join matmater on m60_codmater=me07_i_codmater ";
                   $sql .= "      where me13_d_data between '".$inicio."' and '".$fim."'  ";
                   $sql .= "      group by me07_i_codmater,m60_descr";
-                  ?><fieldset><legend>Lista de Itens</legend> <?
+                  ?><fieldset><legend>Lista de Itens</legend> <?php 
 		          db_lovrot($sql,"10","()","","");
                   ?>
 	          </td>
 	        </tr>
 	    </table>
-    <?
+    <?php 
 	  }
 	?>
 	</td>
@@ -165,7 +166,7 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 </table>
 </form>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),

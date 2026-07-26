@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: fiscal
 //CLASSE DA ENTIDADE grupotaxadiversos
 class cl_grupotaxadiversos { 
@@ -28,7 +28,7 @@ class cl_grupotaxadiversos {
                  y118_procedencia = int4 = Procedência 
                  ";
    //funcao construtor da classe 
-   function cl_grupotaxadiversos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("grupotaxadiversos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

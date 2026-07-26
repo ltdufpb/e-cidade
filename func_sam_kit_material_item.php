@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sam_kit_material_item_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsam_kit_material_item = new cl_sam_kit_material_item;
 $clsam_kit_material_item->rotulo->label("sm04_sequencial");
 $clsam_kit_material_item->rotulo->label("sm04_sequencial");
@@ -54,7 +55,7 @@ $clsam_kit_material_item->rotulo->label("sm04_sequencial");
               <?=$Lsm04_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sm04_sequencial",10,$Ism04_sequencial,true,"text",4,"","chave_sm04_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsam_kit_material_item->rotulo->label("sm04_sequencial");
               <?=$Lsm04_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sm04_sequencial",10,$Ism04_sequencial,true,"text",4,"","chave_sm04_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsam_kit_material_item->rotulo->label("sm04_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sam_kit_material_item.php")==true){
@@ -122,12 +123,12 @@ $clsam_kit_material_item->rotulo->label("sm04_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

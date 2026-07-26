@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensdispensatombamento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensdispensatombamento = new cl_bensdispensatombamento;
 $clbensdispensatombamento->rotulo->label("e139_sequencial");
 $clbensdispensatombamento->rotulo->label("e139_empnotaitem");
@@ -54,7 +55,7 @@ $clbensdispensatombamento->rotulo->label("e139_empnotaitem");
               <?=$Le139_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e139_sequencial",10,$Ie139_sequencial,true,"text",4,"","chave_e139_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbensdispensatombamento->rotulo->label("e139_empnotaitem");
               <?=$Le139_empnotaitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e139_empnotaitem",10,$Ie139_empnotaitem,true,"text",4,"","chave_e139_empnotaitem");
 		       ?>
             </td>
@@ -130,12 +131,12 @@ $clbensdispensatombamento->rotulo->label("e139_empnotaitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

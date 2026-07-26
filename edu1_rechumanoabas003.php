@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,9 +53,9 @@ $db_opcao   = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica    = array("a1"=>"Geral",
+   $clcriaabas->identifica    = ["a1"=>"Geral",
                                       "a2"=>"Telefones",
                                       "a3"=>"Formação",
                                       "a4"=>"Atividades",
@@ -64,8 +64,8 @@ $db_opcao   = 1;
                                       "a7"=>"Horários",
                                       "a8"=>"Escolas",
                                       "a9" => "Necessidades Especiais"
-                                     );
-   $clcriaabas->sizecampo     = array("a1" => "20",
+                                     ];
+   $clcriaabas->sizecampo     = ["a1" => "20",
                                       "a2" => "20",
                                       "a3" => "20",
                                       "a4" => "20",
@@ -74,8 +74,8 @@ $db_opcao   = 1;
                                       "a7" => "20",
                                       "a8" => "20",
                                       "a9" => "30"
-                                     );
-   $clcriaabas->src           = array("a1"=>"edu1_rechumano003.php",
+                                     ];
+   $clcriaabas->src           = ["a1"=>"edu1_rechumano003.php",
                                       "a2" => "",
                                       "a3" => "",
                                       "a4" => "",
@@ -84,8 +84,8 @@ $db_opcao   = 1;
                                       "a7" => "",
                                       "a8" => "",
                                       "a9" => ""
-                                     );
-   $clcriaabas->disabled      = array("a2" => "true",
+                                     ];
+   $clcriaabas->disabled      = ["a2" => "true",
                                       "a3" => "true",
                                       "a4" => "true",
                                       "a5" => "true",
@@ -93,7 +93,7 @@ $db_opcao   = 1;
                                       "a7" => "true",
                                       "a8" => "true",
                                       "a9" => ""
-                                     );
+                                     ];
    $clcriaabas->cordisabled   = "#9b9b9b";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->iframe_width  = "100%";
@@ -103,7 +103,7 @@ $db_opcao   = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"), 
           db_getsession("DB_anousu"),
           db_getsession("DB_instit"));

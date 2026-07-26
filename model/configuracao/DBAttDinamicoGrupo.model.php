@@ -33,12 +33,6 @@ class DBAttDinamicoGrupo {
   private $aCampos;
 
   /**
-   *
-   * @var integer
-   */
-  private $iCodigoGrupo;
-
-  /**
    * Grupo de atributos dinâmicos
    *
    * @var DBAttDinamico
@@ -49,9 +43,7 @@ class DBAttDinamicoGrupo {
    *
    * @param integet $iCodigoGrupo Código do grupo de valores
    */
-  public function __construct($iCodigoGrupo = null) {
-
-    $this->iCodigoGrupo = $iCodigoGrupo;
+  public function __construct(private $iCodigoGrupo = null) {
 
     if ($this->iCodigoGrupo) {
 
@@ -125,11 +117,7 @@ class DBAttDinamicoGrupo {
    */
   public function getValor($sCampo) {
 
-    if (isset($this->aCampos[$sCampo])) {
-      return $this->aCampos[$sCampo];
-    }
-
-    return null;
+    return $this->aCampos[$sCampo] ?? null;
   }
 
   /**

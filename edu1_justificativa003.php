@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $oDaoJustificativa    = db_utils::getdao("justificativa");
 $oDaoAtoJustificativa = db_utils::getdao("atojustificativa");
 $db_botao             = false;
@@ -77,23 +77,23 @@ if (isset($excluir)) {
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Justificativa</b></legend>
-    <?include(modification("forms/db_frmjustificativa.php"));?>
+    <?php include(modification("forms/db_frmjustificativa.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),db_getsession("DB_instit")
          );
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($oDaoJustificativa->erro_status == "0") {

@@ -100,7 +100,7 @@ define("ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001", "educacao.escola.edu2_atareclas
     </form>
   </div>
 </body>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script type="text/javascript">
 
 const ARQUIVO_MSG_EDU2_ATARECLASSIFICACAO001 = "educacao.escola.edu2_atareclassificacao001."

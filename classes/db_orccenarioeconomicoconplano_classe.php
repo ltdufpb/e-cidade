@@ -56,7 +56,7 @@ class cl_orccenarioeconomicoconplano {
                  o04_tipocalculo = int4 = Tipo de Cálculo
                  ";
    //funcao construtor da classe
-   function cl_orccenarioeconomicoconplano() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orccenarioeconomicoconplano");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

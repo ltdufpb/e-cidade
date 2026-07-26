@@ -84,7 +84,7 @@ $clrotulo->label("o15_codigo");
                     <tr>
                       <td colspan="1">
                         <b>Arquivos do :</b>
-                        <?
+                        <?php 
                           $periodopad = date("m",db_getsession("DB_datausu"))-1;
                           if(db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))){
                             $periodopad = 12;
@@ -99,7 +99,7 @@ $clrotulo->label("o15_codigo");
                       </td>
                       <td>
                         <b>Código TCE:</b>
-                        <?
+                        <?php 
                           db_input("codigotce", 4, 0, true, "text", 1);
                         ?>
                       </td>
@@ -344,12 +344,12 @@ $clrotulo->label("o15_codigo");
    <table>
      <tr>
        <td>
-         <?
+         <?php 
           db_ancora("<b>Perspectiva Cronograma:</b>","js_pesquisao125_cronogramaperspectiva(true);", 1);
          ?>
        </td>
        <td>
-         <?
+         <?php 
          db_input('o124_sequencial',10,$Io124_sequencial,true,'text',
                  1," onchange='js_pesquisao125_cronogramaperspectiva(false);'");
          db_input('o124_descricao',40,$Io124_descricao,true,'text',3,'')
@@ -358,12 +358,12 @@ $clrotulo->label("o15_codigo");
      </tr>
      <tr>
         <td>
-         <?
+         <?php 
           db_ancora("<b>Perspectiva PPA:</b>","js_pesquisa_ppa(true);", 1);
          ?>
        </td>
        <td>
-         <?
+         <?php 
          db_input('o119_sequencial',10,$Io124_sequencial,true,'text',
                  1," onchange='js_pesquisa_ppa(false);'");
          db_input('o119_descricao',40,$Io124_descricao,true,'text',3,'')
@@ -380,7 +380,7 @@ $clrotulo->label("o15_codigo");
    </fieldset>
   </div>
 </html>
-<? db_menu(db_getsession("DB_id_usuario"),
+<?php  db_menu(db_getsession("DB_id_usuario"),
            db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 
 <script>

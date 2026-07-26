@@ -84,7 +84,7 @@ class cl_unidademedicos {
                  sd04_d_folgafim = date = Fim da Folga 
                  ";
    //funcao construtor da classe 
-   function cl_unidademedicos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("unidademedicos"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

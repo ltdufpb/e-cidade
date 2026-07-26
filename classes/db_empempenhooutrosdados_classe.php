@@ -29,7 +29,7 @@ class cl_empempenhooutrosdados
     public function __construct()
     {
         $this->rotulo = new rotulo("empempenhooutrosdados");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -75,10 +75,10 @@ class cl_empempenhooutrosdados
                 $this->erro_status = "0";
                 return false;
             }
-            $this->e171_numdadosemp = pg_result($result, 0, 0);
+            $this->e171_numdadosemp = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from empempenhooutrosdados_e171_numdadosemp_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $e171_numdadosemp)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $e171_numdadosemp)) {
                 $this->erro_sql = " Campo e171_numdadosemp maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -111,7 +111,7 @@ class cl_empempenhooutrosdados
 
         if ($result==false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = "Outros dados relacionados ao empenho ($this->e171_numdadosemp) não Incluído. Inclusão Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = "Outros dados relacionados ao empenho já Cadastrado";
@@ -138,12 +138,12 @@ class cl_empempenhooutrosdados
             $resaco = $this->sql_record($this->sql_query_file($this->e171_numdadosemp));
             if (($resaco!=false)||($this->numrows!=0)) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                 $resac = db_query("insert into db_acountkey values($acount,1013848,'$this->e171_numdadosemp','I')");
-                $resac = db_query("insert into db_acount values($acount,1010877,1013848,'','".AddSlashes(pg_result($resaco, 0, 'e171_numdadosemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,1010877,1013842,'','".AddSlashes(pg_result($resaco, 0, 'e171_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,1010877,1013845,'','".AddSlashes(pg_result($resaco, 0, 'e171_dados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,1010877,1013848,'','".AddSlashes(pg_fetch_result($resaco, 0, 'e171_numdadosemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,1010877,1013842,'','".AddSlashes(pg_fetch_result($resaco, 0, 'e171_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,1010877,1013845,'','".AddSlashes(pg_fetch_result($resaco, 0, 'e171_dados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
             }
         }
         return true;
@@ -154,10 +154,10 @@ class cl_empempenhooutrosdados
         $this->atualizacampos();
         $sql = " update empempenhooutrosdados set ";
         $virgula = "";
-        if (trim($this->e171_numdadosemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e171_numdadosemp"])) {
+        if (trim((string) $this->e171_numdadosemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e171_numdadosemp"])) {
             $sql  .= $virgula." e171_numdadosemp = $this->e171_numdadosemp ";
             $virgula = ",";
-            if (trim($this->e171_numdadosemp) == null) {
+            if (trim((string) $this->e171_numdadosemp) == null) {
                 $this->erro_sql = " Campo Sequencial dos outros dados do empenho não informado.";
                 $this->erro_campo = "e171_numdadosemp";
                 $this->erro_banco = "";
@@ -167,10 +167,10 @@ class cl_empempenhooutrosdados
                 return false;
             }
         }
-        if (trim($this->e171_numemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e171_numemp"])) {
+        if (trim((string) $this->e171_numemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e171_numemp"])) {
             $sql  .= $virgula." e171_numemp = $this->e171_numemp ";
             $virgula = ",";
-            if (trim($this->e171_numemp) == null) {
+            if (trim((string) $this->e171_numemp) == null) {
                 $this->erro_sql = " Campo sequencial do empenho não informado.";
                 $this->erro_campo = "e171_numemp";
                 $this->erro_banco = "";
@@ -180,7 +180,7 @@ class cl_empempenhooutrosdados
                 return false;
             }
         }
-        if (trim($this->e171_dados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e171_dados"])) {
+        if (trim((string) $this->e171_dados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e171_dados"])) {
             $sql  .= $virgula." e171_dados = '$this->e171_dados' ";
             $virgula = ",";
         }
@@ -197,17 +197,17 @@ class cl_empempenhooutrosdados
             if ($this->numrows > 0) {
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                     $resac = db_query("insert into db_acountkey values($acount,1013848,'$this->e171_numdadosemp','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["e171_numdadosemp"]) || $this->e171_numdadosemp != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010877,1013848,'".AddSlashes(pg_result($resaco, $conresaco, 'e171_numdadosemp'))."','$this->e171_numdadosemp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                        $resac = db_query("insert into db_acount values($acount,1010877,1013848,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'e171_numdadosemp'))."','$this->e171_numdadosemp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["e171_numemp"]) || $this->e171_numemp != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010877,1013842,'".AddSlashes(pg_result($resaco, $conresaco, 'e171_numemp'))."','$this->e171_numemp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                        $resac = db_query("insert into db_acount values($acount,1010877,1013842,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'e171_numemp'))."','$this->e171_numemp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["e171_dados"]) || $this->e171_dados != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010877,1013845,'".AddSlashes(pg_result($resaco, $conresaco, 'e171_dados'))."','$this->e171_dados',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                        $resac = db_query("insert into db_acount values($acount,1010877,1013845,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'e171_dados'))."','$this->e171_dados',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                     }
                 }
             }
@@ -258,12 +258,12 @@ class cl_empempenhooutrosdados
             if (($resaco != false) || ($this->numrows!=0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                     $resac  = db_query("insert into db_acountkey values($acount,1013848,'$e171_numdadosemp','E')");
-                    $resac  = db_query("insert into db_acount values($acount,1010877,1013848,'','".AddSlashes(pg_result($resaco, $iresaco, 'e171_numdadosemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,1010877,1013842,'','".AddSlashes(pg_result($resaco, $iresaco, 'e171_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,1010877,1013845,'','".AddSlashes(pg_result($resaco, $iresaco, 'e171_dados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac  = db_query("insert into db_acount values($acount,1010877,1013848,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'e171_numdadosemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac  = db_query("insert into db_acount values($acount,1010877,1013842,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'e171_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac  = db_query("insert into db_acount values($acount,1010877,1013845,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'e171_dados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
             }
         }

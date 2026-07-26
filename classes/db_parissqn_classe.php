@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -115,7 +115,7 @@ class cl_parissqn {
                  q60_portepadraomei = int8 = Porte Padrão MEI 
                  ";
    //funcao construtor da classe
-   public function cl_parissqn() 
+   public function __construct() 
    {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parissqn");

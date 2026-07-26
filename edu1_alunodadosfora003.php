@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,8 +34,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oDaoAluno       = db_utils::getdao('aluno');
 $oDaoAlunoBairro = db_utils::getdao('alunobairro');
@@ -84,7 +84,7 @@ if (isset($excluir)) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <center>
             <fieldset style="width:95%"><legend><b>Exclusão de Aluno</b></legend>
-              <?
+              <?php 
                 include(modification("forms/db_frmalunodadosfora.php"));
               ?>
             </fieldset>
@@ -94,7 +94,7 @@ if (isset($excluir)) {
     </table>
   </body>
 </html>
-<?
+<?php 
 
 if (isset($excluir)) {
 

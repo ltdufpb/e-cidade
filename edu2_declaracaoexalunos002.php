@@ -42,7 +42,7 @@ $oJson = new services_json();
 $oParametros = new stdClass();
 $oGet = db_utils::postMemory($_GET);
 
-$aAlunos = array();
+$aAlunos = [];
 $oDadosAluno              = new stdClass();
 $oMatricula= MatriculaRepository::getMatriculaByCodigo($oGet->iMatriculas);
 $oDadosAluno->iMatricula  = $oMatricula->getCodigo();
@@ -53,7 +53,7 @@ $aAlunos[]=$oDadosAluno;
 
 
 $oParametros->aMatriculas = $aAlunos;
-$aDiretor = explode('|', $oGet->sDiretor);
+$aDiretor = explode('|', (string) $oGet->sDiretor);
 
 $oParametros->sDiretor = '';
 $oParametros->sCargo = '';
@@ -67,19 +67,19 @@ if (count($aDiretor) > 1) {
     $oParametros->sDiretor = $aDiretor[1];
 
     if (mb_detect_encoding($oParametros->sDiretor .'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-        $oParametros->sDiretor = utf8_decode($oParametros->sDiretor);
+        $oParametros->sDiretor = mb_convert_encoding($oParametros->sDiretor, 'ISO-8859-1');
     }
 
     $oParametros->sCargo = $aDiretor[0];
 
     if (mb_detect_encoding($oParametros->sCargo.'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-        $oParametros->sCargo = utf8_decode($oParametros->sCargo);
+        $oParametros->sCargo = mb_convert_encoding($oParametros->sCargo, 'ISO-8859-1');
     }
 
     if (isset($aDiretor[2]) && !empty($aDiretor[2])) {
         $oParametros->sCargo .= "({$aDiretor[2]})";
         if (mb_detect_encoding($oParametros->sCargo .'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-            $oParametros->sCargo .= utf8_decode($oParametros->sCargo);
+            $oParametros->sCargo .= mb_convert_encoding($oParametros->sCargo, 'ISO-8859-1');
         }
     }
     $oParametros->lTemDiretor = true;
@@ -91,16 +91,16 @@ $oParametros->iAlturaLinha = 4;
 
 $oParametros->sObservacao = "";
 
-if (trim($oGet->sObservacao) != '') {
+if (trim((string) $oGet->sObservacao) != '') {
     if (mb_detect_encoding($oGet->sObservacao.'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-        $oParametros->sObservacao = utf8_decode(trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao)));// Wallace 2018-06-18 Convertendo para ISO
+        $oParametros->sObservacao = mb_convert_encoding(trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao)), 'ISO-8859-1');// Wallace 2018-06-18 Convertendo para ISO
     } else {
         $oParametros->sObservacao = trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao));
     }
 }
 
 $oTurma = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aTurno = array();
+$aTurno = [];
 
 $aTurno[] = $oTurma->getTurno()->getCodigoTurno();
 if ($oTurma->temTurnoAdicional() != "") {
@@ -120,7 +120,7 @@ if ($oDaoPeriodoEscola->numrows == 0) {
 $oDadosHorarioTurno = db_utils::fieldsMemory($rsHorarioTurno, 0);
 
 
-$aGradeHorario = array();
+$aGradeHorario = [];
 
 if ($oParametros->lExibeGradeAluno) {
     $sCamposGradeHorario = "ed17_i_turno, ed17_i_periodoaula, ed17_h_inicio, ed17_h_fim, ed15_c_nome ";
@@ -152,8 +152,8 @@ if ($oParametros->lExibeGradeAluno) {
 }
 
 
-$aParagrafos = array();
-$aDadosAlunos = array();
+$aParagrafos = [];
+$aDadosAlunos = [];
 
 foreach ($oParametros->aMatriculas as $oMat) {
     $oParagrafo = new libdocumento(5028); // modelo Declaração de matrícula
@@ -170,13 +170,13 @@ foreach ($oParametros->aMatriculas as $oMat) {
         $oParagrafo->mes_extenso_nascimento = DBDate::getMesExtenso((int)$oDataNascimento->getMes());
         $oParagrafo->mes_numeral_nascimento = $oDataNascimento->getMes();
         $oParagrafo->ano_nascimento = $oDataNascimento->getAno();
-    } catch (Exception $oErro) {
+    } catch (Exception) {
         $oParagrafo->dia_nascimento = "";
         $oParagrafo->mes_extenso_nascimento = "";
         $oParagrafo->mes_numeral_nascimento = "";
         $oParagrafo->ano_nascimento = "";
     }
-    $aFiliacao = array();
+    $aFiliacao = [];
 
     if ($oMatricula->getAluno()->getNomeMae() != '') {
         $aFiliacao[] = $oMatricula->getAluno()->getNomeMae();
@@ -203,7 +203,7 @@ foreach ($oParametros->aMatriculas as $oMat) {
     $oParagrafo->hora_inicial = $oDadosHorarioTurno->hora_inicio;
     $oParagrafo->hora_final   = $oDadosHorarioTurno->hora_fim;
     $oParagrafo->ano_declaracao        = $oMatricula->getTurma()->getCalendario()->getAnoExecucao();
-    if (substr($oGrade->getMatricula()->retornaAndamentoDaMatricula(), 0, 11) == "TRANSFERIDO") { //2018-06-20 Se a primeira palavra for transferido entrar na condição
+    if (str_starts_with($oGrade->getMatricula()->retornaAndamentoDaMatricula(), "TRANSFERIDO")) { //2018-06-20 Se a primeira palavra for transferido entrar na condição
         $oParagrafo->situacao_aluno = " tendo sido  TRANSFERIDO(a)."; //2018-06-20 Criado para enviar a informação para a variável que será recebida como parâmetro no Sistema E-cidade
     } else {
         $oParagrafo->situacao_aluno = $oGrade->getMatricula()->retornaAndamentoDaMatricula() == "EM ANDAMENTO" ? "." : ", tendo sido " . $oGrade->getMatricula()->retornaAndamentoDaMatricula() . "(a)"; //2018-06-20 Se em andamento não imprimir este status

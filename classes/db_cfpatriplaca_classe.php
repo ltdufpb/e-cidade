@@ -56,7 +56,7 @@ class cl_cfpatriplaca {
                  t07_obrigplaca = bool = Obrigar informar placa 
                  ";
    //funcao construtor da classe 
-   function cl_cfpatriplaca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfpatriplaca"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

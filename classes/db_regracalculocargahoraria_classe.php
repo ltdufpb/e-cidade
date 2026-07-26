@@ -1,37 +1,37 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE regracalculocargahoraria
 class cl_regracalculocargahoraria { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed127_codigo = 0; 
-   var $ed127_ano = 0; 
-   var $ed127_calculaduracaoperiodo = 'f'; 
-   var $ed127_escola = 0; 
+   public $ed127_codigo = 0; 
+   public $ed127_ano = 0; 
+   public $ed127_calculaduracaoperiodo = 'f'; 
+   public $ed127_escola = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed127_codigo = int4 = Código 
                  ed127_ano = int4 = Ano 
                  ed127_calculaduracaoperiodo = bool = Calculo da Carga Horária 
                  ed127_escola = int4 = Escola 
                  ";
    //funcao construtor da classe 
-   function cl_regracalculocargahoraria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regracalculocargahoraria"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_regracalculocargahoraria {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed127_codigo = pg_result($result,0,0); 
+       $this->ed127_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from regracalculocargahoraria_ed127_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed127_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed127_codigo)){
          $this->erro_sql = " Campo ed127_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_regracalculocargahoraria {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Regra Calculo Carga Horaria ($this->ed127_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Regra Calculo Carga Horaria já Cadastrado";
@@ -159,13 +159,13 @@ class cl_regracalculocargahoraria {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20983,'$this->ed127_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3781,20983,'','".AddSlashes(pg_result($resaco,0,'ed127_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3781,20984,'','".AddSlashes(pg_result($resaco,0,'ed127_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3781,20985,'','".AddSlashes(pg_result($resaco,0,'ed127_calculaduracaoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3781,20986,'','".AddSlashes(pg_result($resaco,0,'ed127_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3781,20983,'','".AddSlashes(pg_fetch_result($resaco,0,'ed127_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3781,20984,'','".AddSlashes(pg_fetch_result($resaco,0,'ed127_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3781,20985,'','".AddSlashes(pg_fetch_result($resaco,0,'ed127_calculaduracaoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3781,20986,'','".AddSlashes(pg_fetch_result($resaco,0,'ed127_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_regracalculocargahoraria {
       $this->atualizacampos();
      $sql = " update regracalculocargahoraria set ";
      $virgula = "";
-     if(trim($this->ed127_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_codigo"])){ 
+     if(trim((string) $this->ed127_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_codigo"])){ 
        $sql  .= $virgula." ed127_codigo = $this->ed127_codigo ";
        $virgula = ",";
-       if(trim($this->ed127_codigo) == null ){ 
+       if(trim((string) $this->ed127_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed127_codigo";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_regracalculocargahoraria {
          return false;
        }
      }
-     if(trim($this->ed127_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_ano"])){ 
+     if(trim((string) $this->ed127_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_ano"])){ 
        $sql  .= $virgula." ed127_ano = $this->ed127_ano ";
        $virgula = ",";
-       if(trim($this->ed127_ano) == null ){ 
+       if(trim((string) $this->ed127_ano) == null ){ 
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "ed127_ano";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_regracalculocargahoraria {
          return false;
        }
      }
-     if(trim($this->ed127_calculaduracaoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_calculaduracaoperiodo"])){ 
+     if(trim((string) $this->ed127_calculaduracaoperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_calculaduracaoperiodo"])){ 
        $sql  .= $virgula." ed127_calculaduracaoperiodo = '$this->ed127_calculaduracaoperiodo' ";
        $virgula = ",";
-       if(trim($this->ed127_calculaduracaoperiodo) == null ){ 
+       if(trim((string) $this->ed127_calculaduracaoperiodo) == null ){ 
          $this->erro_sql = " Campo Calculo da Carga Horária não informado.";
          $this->erro_campo = "ed127_calculaduracaoperiodo";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_regracalculocargahoraria {
          return false;
        }
      }
-     if(trim($this->ed127_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_escola"])){ 
+     if(trim((string) $this->ed127_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed127_escola"])){ 
        $sql  .= $virgula." ed127_escola = $this->ed127_escola ";
        $virgula = ",";
-       if(trim($this->ed127_escola) == null ){ 
+       if(trim((string) $this->ed127_escola) == null ){ 
          $this->erro_sql = " Campo Escola não informado.";
          $this->erro_campo = "ed127_escola";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_regracalculocargahoraria {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20983,'$this->ed127_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed127_codigo"]) || $this->ed127_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3781,20983,'".AddSlashes(pg_result($resaco,$conresaco,'ed127_codigo'))."','$this->ed127_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3781,20983,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed127_codigo'))."','$this->ed127_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed127_ano"]) || $this->ed127_ano != "")
-             $resac = db_query("insert into db_acount values($acount,3781,20984,'".AddSlashes(pg_result($resaco,$conresaco,'ed127_ano'))."','$this->ed127_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3781,20984,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed127_ano'))."','$this->ed127_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed127_calculaduracaoperiodo"]) || $this->ed127_calculaduracaoperiodo != "")
-             $resac = db_query("insert into db_acount values($acount,3781,20985,'".AddSlashes(pg_result($resaco,$conresaco,'ed127_calculaduracaoperiodo'))."','$this->ed127_calculaduracaoperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3781,20985,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed127_calculaduracaoperiodo'))."','$this->ed127_calculaduracaoperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed127_escola"]) || $this->ed127_escola != "")
-             $resac = db_query("insert into db_acount values($acount,3781,20986,'".AddSlashes(pg_result($resaco,$conresaco,'ed127_escola'))."','$this->ed127_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3781,20986,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed127_escola'))."','$this->ed127_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_regracalculocargahoraria {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20983,'$ed127_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3781,20983,'','".AddSlashes(pg_result($resaco,$iresaco,'ed127_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3781,20984,'','".AddSlashes(pg_result($resaco,$iresaco,'ed127_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3781,20985,'','".AddSlashes(pg_result($resaco,$iresaco,'ed127_calculaduracaoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3781,20986,'','".AddSlashes(pg_result($resaco,$iresaco,'ed127_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3781,20983,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed127_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3781,20984,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed127_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3781,20985,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed127_calculaduracaoperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3781,20986,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed127_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_dae_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_dae = new cl_db_dae;
 $cldb_dae->rotulo->label("w04_codigo");
 $cldb_dae->rotulo->label("w04_inscr");
@@ -53,7 +54,7 @@ $cldb_dae->rotulo->label("w04_inscr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = "";
       if(isset($z01_numcgm) && $z01_numcgm != "" ){
         $where = " z01_numcgm = $z01_numcgm";

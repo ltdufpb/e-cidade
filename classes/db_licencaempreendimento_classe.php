@@ -52,7 +52,7 @@ class cl_licencaempreendimento {
                  am13_arquivo = oid = Arquivo
                  ";
    //funcao construtor da classe
-   function cl_licencaempreendimento() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licencaempreendimento");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -62,7 +62,7 @@ class cl_tfd_passageiroveiculo {
                  tf19_i_colo = int4 = Colo
                  ";
    //funcao construtor da classe
-   function cl_tfd_passageiroveiculo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_passageiroveiculo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

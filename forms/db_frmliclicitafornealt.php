@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ if(isset($opcao) && $opcao=="alterar"){
 	  </td>
 	  <td nowrap title="<?=@$Tl22_codliclicita?>">
          
-         <?
+         <?php 
          if (!isset($l22_codliclicita)||trim($l22_codliclicita)==""){
             $l22_codliclicita=@$l20_codigo;
          }
@@ -64,9 +64,9 @@ if(isset($opcao) && $opcao=="alterar"){
 	   </td>
 	  </tr>
  <tr> 
-    <td align="right" nowrap title="<?=$Tl22_numcgm?>"><?db_ancora(@$Ll22_numcgm,"js_pesquisal22_numcgm(true);",$db_opcao);?></td>
+    <td align="right" nowrap title="<?=$Tl22_numcgm?>"><?php db_ancora(@$Ll22_numcgm,"js_pesquisal22_numcgm(true);",$db_opcao);?></td>
     <td align="right" nowrap>
-      <? db_input("l22_numcgm",6,$Il22_numcgm,true,"text",$db_opcao,"onchange='js_pesquisal22_numcgm(false);'");
+      <?php  db_input("l22_numcgm",6,$Il22_numcgm,true,"text",$db_opcao,"onchange='js_pesquisal22_numcgm(false);'");
          db_input("z01_nome",40,"$Iz01_nome",true,"text",3);  
         ?></td>
   </tr>	  
@@ -75,7 +75,7 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Ll22_dtretira?>
     </td>
     <td> 
-<?
+<?php 
 $l22_dtretira_dia=date('d',db_getsession("DB_datausu"));
 $l22_dtretira_mes=date('m',db_getsession("DB_datausu"));
 $l22_dtretira_ano=date('Y',db_getsession("DB_datausu"));
@@ -90,7 +90,7 @@ db_inputdata("l22_dtretira",@$l22_dtretira_dia,@$l22_dtretira_mes,@$l22_dtretira
 	     <?=@$Ll22_nomeretira?> 
 	  </td>
 	  <td nowrap title="<?=@$Tl22_nomeretira?>">
-         <?
+         <?php 
          db_input('l22_nomeretira',50,$Il22_nomeretira,true,'text',$db_opcao,"");
 	     ?>
 	  </td>
@@ -106,7 +106,7 @@ db_inputdata("l22_dtretira",@$l22_dtretira_dia,@$l22_dtretira_mes,@$l22_dtretira
       <table>
   <tr>
     <td valign="top"> 
-    <?
+    <?php 
      $chavepri= array("l22_codigo"=>@$l22_codigo,"l22_codliclicita"=>@$l22_codliclicita,"l22_numcgm"=>@$l22_numcgm,"l22_dtretira"=>@$l22_dtretira,"l22_nomeretira"=>@$l22_nomeretira,"z01_nome"=>@$z01_nome);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      $cliframe_alterar_excluir->sql = $clliclicitaforne->sql_query(null,'*',null,"l22_codliclicita=".@$l20_codigo);
@@ -161,7 +161,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_liclicita.hide();
-  <?
+  <?php 
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
    		
   

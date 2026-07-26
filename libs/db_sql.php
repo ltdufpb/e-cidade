@@ -57,7 +57,7 @@ function debitos_tipos_matricula($matricula,$instit=null) {
 
 //  echo "debitos_tipos_matricula : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql <br> $sql");
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 }
 
 function debitos_tipos_inscricao($inscricao,$instit=null){
@@ -76,7 +76,7 @@ function debitos_tipos_inscricao($inscricao,$instit=null){
 //  echo "debitos_tipos_inscricao : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
 
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 
 
 }
@@ -95,7 +95,7 @@ function debitos_tipos_numcgm($numcgm,$instit=null ){
 //  echo "debitos_tipos_matricula : $sql <br>";
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 }
 
 function debitos_tipos_numpre($numpre,$instit=null ){
@@ -114,7 +114,7 @@ function debitos_tipos_numpre($numpre,$instit=null ){
 //  echo "debitos_tipos_numpre : $sql <br>";
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
-  return (pg_numrows($result)==0?false:$result);
+  return (pg_num_rows($result)==0?false:$result);
 }
 
 function debitos_matricula($matricula,$limite,$tipo,$datausu,$anousu,$totaliza="",$totalizaordem="",$db_where="",$justific=false,$instit=null ){
@@ -267,12 +267,12 @@ $sql = "select   y.k00_inscr,
   //echo "debitos_matricula : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if($limite == 0 ) {
-     if(pg_numrows($result) == 0 ) {
+     if(pg_num_rows($result) == 0 ) {
         return false;
      }
    return $result;
   }else{
-    if(pg_numrows($result) == 0 ) {
+    if(pg_num_rows($result) == 0 ) {
       return false;
   } else {
     return 1;
@@ -427,12 +427,12 @@ if($justific==true){
   //echo "debitos_inscricao : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
         return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -587,12 +587,12 @@ if($justific==true){
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
         return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -719,12 +719,12 @@ $sql = "select distinct on (y.k00_numpre, y.k00_numpar, y.k00_receit)  y.k00_ins
 //  echo "debitos_numpre_old : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -884,12 +884,12 @@ if($justific==true){
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -900,12 +900,12 @@ if($justific==true){
 function retornaRegraDescontoParcelamento($sNumpre) {
 
   $sSql = "select k38_cadtipoparc from arredesconto where k38_numpre = $sNumpre";
-  $rRes = db_query($sSql) or die("Erro(28) não encontrado no arredesconto: ".pg_errormessage());
+  $rRes = db_query($sSql) or die("Erro(28) não encontrado no arredesconto: ".pg_last_error());
 
-  if (pg_numrows($rRes) > 0) {
+  if (pg_num_rows($rRes) > 0) {
 
     // se existe regra cadastrada gera a variavel
-    return $regra_desconto = pg_result($rRes, 0, 0);
+    return $regra_desconto = pg_fetch_result($rRes, 0, 0);
   }
 
   return 0;
@@ -920,12 +920,12 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
   }
   // verifica se existe regra de desconto cadastrada para o numpre que será gerado o carne
   $sql = "select k38_cadtipoparc from arredesconto where k38_numpre = $numpre";
-  $res = db_query($sql) or die("Erro(28) não encontrado no arredesconto: ".pg_errormessage());
+  $res = db_query($sql) or die("Erro(28) não encontrado no arredesconto: ".pg_last_error());
 
-  if (pg_numrows($res) > 0) {
+  if (pg_num_rows($res) > 0) {
 
     // se existe regra cadastrada gera a variavel
-    $regra_desconto = pg_result($res,0,0);
+    $regra_desconto = pg_fetch_result($res,0,0);
 
     try {
       $oRecibo = new recibo(2,null);
@@ -963,7 +963,7 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
 
       }
 
-      $exerc = substr($minvenc,0,4);
+      $exerc = substr((string) $minvenc,0,4);
       /* se o menor vencimento do numpre for menor que a data para pagamento(data informada na CGF) menor vencimento = data para pagamento */
       if ($minvenc < date("Y-m-d",$DB_DATACALC)) {
         $minvenc = date("Y-m-d",$DB_DATACALC);
@@ -980,7 +980,7 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
 
       $oRecibo->setDataRecibo($minvenc);
       $oRecibo->setDataVencimentoRecibo($minvenc);
-      $oRecibo->setExercicioRecibo(substr($minvenc,0,4));
+      $oRecibo->setExercicioRecibo(substr((string) $minvenc,0,4));
       $oRecibo->emiteRecibo();
       $k03_numpre = $oRecibo->getNumpreRecibo();
 
@@ -1012,12 +1012,12 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
             where k00_numnov = $k03_numpre";
 
     $res = db_query($sql);
-    if(pg_numrows($res)==0){
+    if(pg_num_rows($res)==0){
       echo "Erro ao gerar recibo. Contate suporte (erro:9998)";
       exit;
     }
-    $receita = pg_result($res,0,0);
-    $vlrtot  = pg_result($res,1,0);
+    $receita = pg_fetch_result($res,0,0);
+    $vlrtot  = pg_fetch_result($res,1,0);
 
     // pesquisa qual inflator gerar o calculo da quantidade a ser impressa no carne
     $sql_inflator = "select k02_corr
@@ -1025,20 +1025,20 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
                           inner join tabrecjm on tabrec.k02_codjm = tabrecjm.k02_codjm
                      where k02_codigo = $receita";
     $res = db_query($sql_inflator);
-    if(pg_numrows($res)==0){
+    if(pg_num_rows($res)==0){
       echo "Inflator não cadastrado para receita ($receita). Contate suporte (erro:9999)";
       exit;
     }
 
-    $inflator = pg_result($res,0,0);
+    $inflator = pg_fetch_result($res,0,0);
     // pesquisa a quantidade de inflator a ser gerado
     $res = db_query(" select fc_vlinf('".$inflator."','$minvenc')");
-    if(pg_numrows($res)==0){
+    if(pg_num_rows($res)==0){
       echo "Não encontrado valor para o Inflator ($inflator) na data ($minvenc). Contate suporte (erro:9997)";
       exit;
     }
 
-    $v_calculoinfla = pg_result($res,0,0);
+    $v_calculoinfla = pg_fetch_result($res,0,0);
 
     if ( $v_calculoinfla == 0 ){
        $vlrinflator = 0;
@@ -1135,7 +1135,7 @@ function debitos_numpre_carne($numpre,$numpar,$datausu,$anousu,$instit=null,$DB_
   }
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
-  if (pg_numrows($result) == 0 ){
+  if (pg_num_rows($result) == 0 ){
      return false;
   }
   return $result;
@@ -1293,12 +1293,12 @@ function debitos_numcgm($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",$tot
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if($limite == 0 ) {
-     if(pg_numrows($result) == 0 ){
+     if(pg_num_rows($result) == 0 ){
         return false;
      }
    return $result;
   } else {
-    if(pg_numrows($result) == 0 ){
+    if(pg_num_rows($result) == 0 ){
       return false;
   } else {
     return 1;
@@ -1376,12 +1376,12 @@ function debitos_numcgm_var($numcgm,$limite,$tipo,$datausu,$anousu,$totaliza="",
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        false;
      }
      return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
        return false;
     }else{
        return 1;
@@ -1429,12 +1429,12 @@ function debitos_numcgm_var_cometado($numcgm,$limite,$tipo,$datausu,$anousu,$ins
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
 
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
      return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
     }else{
       return 1;
@@ -1499,12 +1499,12 @@ function debitos_numpre_var($numpre,$limite,$tipo,$datausu,$anousu,$justific=fal
   $sql .= ") as x";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -1550,12 +1550,12 @@ function debitos_numpre_var_comentado($numpre,$limite,$tipo,$datausu,$anousu,$in
   $sql .= ") as x";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        return false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -1626,12 +1626,12 @@ function debitos_inscricao_var($inscricao,$limite,$tipo,$datausu,$anousu,$justif
 //  echo "debitos_inscricao_var : $sql <br>";
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
   if ($limite == 0 ) {
-     if (pg_numrows($result) == 0 ){
+     if (pg_num_rows($result) == 0 ){
        false;
      }
    return $result;
   }else{
-    if (pg_numrows($result) == 0 ){
+    if (pg_num_rows($result) == 0 ){
       return false;
   }else{
     return 1;
@@ -1640,77 +1640,77 @@ function debitos_inscricao_var($inscricao,$limite,$tipo,$datausu,$anousu,$justif
 }
 
 class cl_gera_sql_folha {
-  var $inicio_rh = true; // True se for comecar o SQL pelo rhpessoal, false para comecar pelas tabelas GERF's
+  public $inicio_rh = true; // True se for comecar o SQL pelo rhpessoal, false para comecar pelas tabelas GERF's
 
-  var $inner_ger = true; // True se for inner join com as tabelas GERF's, false para left join.
-  var $inner_pes = true; // True se for inner join com a tabela rhpessoalmov, false para left join.
-  var $inner_doc = false; // True se for inner join com a tabela rhpesdoc, false para left join.
-  var $inner_pad = false; // True se for inner join com a tabela rhpespadrao e padroes, false para left join.
-  var $inner_cgm = true; // True se for inner join com a tabela CGM, false para left join.
-  var $inner_fun = true; // True se for inner join com a tabela rhfuncao, false para left join.
-  var $inner_lot = true; // True se for inner join com a tabela rhlota, false para left join.
-  var $inner_exe = false; // True se for inner join com a tabela rhlotaexe, false para left join.
-  var $inner_vin = false; // True se for inner join com a tabela rhlotavinc, false para left join.
-  var $inner_org = false; // True se for inner join com a tabela orcunidade, false para left join.
-  var $inner_atv = true; // True se for inner join com a tabela rhregime, false para left join.
-  var $inner_rub = true; // True se for inner join com a tabela rhrubricas, false para left join.
-  var $inner_cfp = true; // True se for inner join com a tabela rhcfpess, false para left join.
-  var $inner_res = false;// True se for inner join com a tabela rhpesrescisao, false para left join.
-  var $inner_rel = false; // True se for inner join com a tabela rhrubelemento, false para left join.
-  var $inner_fgt = false; // True se for inner join com a tabela rhpesfgts, false para left join.
-  var $inner_ins = false; // True se for inner join com a tabela rhinssoutros, false para left join.
-  var $inner_tpc = true; // True se for inner join com a tabela tpcontra, false para left join.
-  var $inner_rcs = false; // True se for inner join com a tabela rescisao, false para left join.
-  var $inner_cad = true; // True se for inner join com as tabelas rhinstru, rhestcivil e rhnacionalidade, false para left join.
-  var $inner_tra = false; //True se for inner join com a tabela rhpeslocaltrab, false para left join.
-  var $inner_car = false; //True se for inner join com a tabela rhpescargo, false para left join.
-  var $inner_ban = false; //True se for inner join com a tabela rhpesbanco, false para left join.
-  var $inner_pro = false; //True se for inner join com a tabela orcprojativ, false para left join.
-  var $inner_rec = false; //True se for inner join com a tabela orctiporec, false para left join.
-  var $inner_afa = false; //True se for inner join com a tabela afasta, false para left join.
-  var $inner_inf = false; // True se for inner join com a tabela infla, false para left outer join.
+  public $inner_ger = true; // True se for inner join com as tabelas GERF's, false para left join.
+  public $inner_pes = true; // True se for inner join com a tabela rhpessoalmov, false para left join.
+  public $inner_doc = false; // True se for inner join com a tabela rhpesdoc, false para left join.
+  public $inner_pad = false; // True se for inner join com a tabela rhpespadrao e padroes, false para left join.
+  public $inner_cgm = true; // True se for inner join com a tabela CGM, false para left join.
+  public $inner_fun = true; // True se for inner join com a tabela rhfuncao, false para left join.
+  public $inner_lot = true; // True se for inner join com a tabela rhlota, false para left join.
+  public $inner_exe = false; // True se for inner join com a tabela rhlotaexe, false para left join.
+  public $inner_vin = false; // True se for inner join com a tabela rhlotavinc, false para left join.
+  public $inner_org = false; // True se for inner join com a tabela orcunidade, false para left join.
+  public $inner_atv = true; // True se for inner join com a tabela rhregime, false para left join.
+  public $inner_rub = true; // True se for inner join com a tabela rhrubricas, false para left join.
+  public $inner_cfp = true; // True se for inner join com a tabela rhcfpess, false para left join.
+  public $inner_res = false;// True se for inner join com a tabela rhpesrescisao, false para left join.
+  public $inner_rel = false; // True se for inner join com a tabela rhrubelemento, false para left join.
+  public $inner_fgt = false; // True se for inner join com a tabela rhpesfgts, false para left join.
+  public $inner_ins = false; // True se for inner join com a tabela rhinssoutros, false para left join.
+  public $inner_tpc = true; // True se for inner join com a tabela tpcontra, false para left join.
+  public $inner_rcs = false; // True se for inner join com a tabela rescisao, false para left join.
+  public $inner_cad = true; // True se for inner join com as tabelas rhinstru, rhestcivil e rhnacionalidade, false para left join.
+  public $inner_tra = false; //True se for inner join com a tabela rhpeslocaltrab, false para left join.
+  public $inner_car = false; //True se for inner join com a tabela rhpescargo, false para left join.
+  public $inner_ban = false; //True se for inner join com a tabela rhpesbanco, false para left join.
+  public $inner_pro = false; //True se for inner join com a tabela orcprojativ, false para left join.
+  public $inner_rec = false; //True se for inner join com a tabela orctiporec, false para left join.
+  public $inner_afa = false; //True se for inner join com a tabela afasta, false para left join.
+  public $inner_inf = false; // True se for inner join com a tabela infla, false para left outer join.
 
-  var $usar_ger = false; // Se usar inner ou left join com as tabelas GERF's.
-  var $usar_pes = false; // Se usar inner ou left join com a tabela rhpessoalmov.
-  var $usar_doc = false; // Se usar inner ou left join com a tabela rhpesdoc.
-  var $usar_pad = false; // Se usar inner ou left join com a tabela rhpespadrao e padroes.
-  var $usar_cgm = false; // Se usar inner ou left join com a tabela CGM.
-  var $usar_fun = false; // Se usar inner ou left join com a tabela rhfuncao.
-  var $usar_lot = false; // Se usar inner ou left join com a tabela rhlota.
-  var $usar_exe = false; // Se usar inner ou left join com a tabela rhlotaexe.
-  var $usar_vin = false; // Se usar inner ou left join com a tabela rhlotavinc.
-  var $usar_org = false; // Se usar inner ou left join com a tabela orcunidade.
-  var $usar_atv = false; // Se usar inner ou left join com a tabela rhregime.
-  var $usar_rub = false; // Se usar inner ou left join com a tabela rhrubricas.
-  var $usar_cfp = false; // Se usar inner ou left join com a tabela cfpess.
-  var $usar_res = false; // Se usar inner ou left join com a tabela rhpesrescisao.
-  var $usar_rel = false; // Se usar inner ou left join com a tabela rhrubelemento.
-  var $usar_fgt = false; // Se usar inner ou left join com a tabela rhpesfgts.
-  var $usar_ins = false; // Se usar inner ou left join com a tabela rhinssoutros.
-  var $usar_tpc = false; // Se usar inner ou left join com a tabela tpcontra.
-  var $usar_rcs = false; // Se usar inner ou left join com a tabela rescisao.
-  var $usar_cad = false; // Se usar inner ou left join com as tabelas rhinstru, rhestcivil e rhnacionalidade, false para left join.
-  var $usar_tra = false; // Se usar inner ou left join com a tabela rhpeslocaltrab.
-  var $usar_car = false; // Se usar inner ou left join com a tabela rhpescargo.
-  var $usar_ban = false; // Se usar inner ou left join com a tabela rhpesbanco.
-  var $usar_pro = false; // Se usar inner ou left join com a tabela orcprojativ.
-  var $usar_rec = false; // Se usar inner ou left join com a tabela orctiporec.
-  var $usar_afa = false; // Se usar inner ou left join com a tabela afasta.
-  var $usar_inf = false; // Se usar inner ou left join com a tabela infla;
+  public $usar_ger = false; // Se usar inner ou left join com as tabelas GERF's.
+  public $usar_pes = false; // Se usar inner ou left join com a tabela rhpessoalmov.
+  public $usar_doc = false; // Se usar inner ou left join com a tabela rhpesdoc.
+  public $usar_pad = false; // Se usar inner ou left join com a tabela rhpespadrao e padroes.
+  public $usar_cgm = false; // Se usar inner ou left join com a tabela CGM.
+  public $usar_fun = false; // Se usar inner ou left join com a tabela rhfuncao.
+  public $usar_lot = false; // Se usar inner ou left join com a tabela rhlota.
+  public $usar_exe = false; // Se usar inner ou left join com a tabela rhlotaexe.
+  public $usar_vin = false; // Se usar inner ou left join com a tabela rhlotavinc.
+  public $usar_org = false; // Se usar inner ou left join com a tabela orcunidade.
+  public $usar_atv = false; // Se usar inner ou left join com a tabela rhregime.
+  public $usar_rub = false; // Se usar inner ou left join com a tabela rhrubricas.
+  public $usar_cfp = false; // Se usar inner ou left join com a tabela cfpess.
+  public $usar_res = false; // Se usar inner ou left join com a tabela rhpesrescisao.
+  public $usar_rel = false; // Se usar inner ou left join com a tabela rhrubelemento.
+  public $usar_fgt = false; // Se usar inner ou left join com a tabela rhpesfgts.
+  public $usar_ins = false; // Se usar inner ou left join com a tabela rhinssoutros.
+  public $usar_tpc = false; // Se usar inner ou left join com a tabela tpcontra.
+  public $usar_rcs = false; // Se usar inner ou left join com a tabela rescisao.
+  public $usar_cad = false; // Se usar inner ou left join com as tabelas rhinstru, rhestcivil e rhnacionalidade, false para left join.
+  public $usar_tra = false; // Se usar inner ou left join com a tabela rhpeslocaltrab.
+  public $usar_car = false; // Se usar inner ou left join com a tabela rhpescargo.
+  public $usar_ban = false; // Se usar inner ou left join com a tabela rhpesbanco.
+  public $usar_pro = false; // Se usar inner ou left join com a tabela orcprojativ.
+  public $usar_rec = false; // Se usar inner ou left join com a tabela orctiporec.
+  public $usar_afa = false; // Se usar inner ou left join com a tabela afasta.
+  public $usar_inf = false; // Se usar inner ou left join com a tabela infla;
 
-  var $vinculo_inner = ""; // Vinculo utilizado para filtro
-  var $local_trab_princ = true; // Selecionar local de trabalho principal
+  public $vinculo_inner = ""; // Vinculo utilizado para filtro
+  public $local_trab_princ = true; // Selecionar local de trabalho principal
 
-  var $subsql = "";
-  var $subsqlano = "";
-  var $subsqlmes = "";
-  var $subsqlreg = "";
-  var $subsqlrub = "";
-  var $trancaGer = false;
-  var $codigo_inflator = "";
-  var $somente_subsql = false;
+  public $subsql = "";
+  public $subsqlano = "";
+  public $subsqlmes = "";
+  public $subsqlreg = "";
+  public $subsqlrub = "";
+  public $trancaGer = false;
+  public $codigo_inflator = "";
+  public $somente_subsql = false;
 
-  var $numrows_exec = 0;
+  public $numrows_exec = 0;
 
   // $sigla : Sigla da tabela GERF que o programador deseja utilizar.
   // $ano   : Anousu referente ao campo rh02_anousu da tabela rhpessoalmov.
@@ -1786,18 +1786,18 @@ class cl_gera_sql_folha {
     }else{
       $campos = " * ";
     }
-    if(trim($order) != ""){
+    if(trim((string) $order) != ""){
       $order = str_replace("#s#",$sigla,$order);
       $order = str_replace("#S#",$sigla,$order);
     }
-    if(trim($where) != ""){
+    if(trim((string) $where) != ""){
       $where = str_replace("#s#",$sigla,$where);
       $where = str_replace("#S#",$sigla,$where);
     }
 
     $sql = " select ".$campos;
 
-    if(($this->usar_rub == true && $sigla != "" && $sigla != null) || ($rubric != null && trim($rubric) != "") || $this->usar_rel == true){
+    if(($this->usar_rub == true && $sigla != "" && $sigla != null) || ($rubric != null && trim((string) $rubric) != "") || $this->usar_rel == true){
       $this->usar_ger = true;
       $this->usar_rub = true;
     }
@@ -1826,10 +1826,10 @@ class cl_gera_sql_folha {
     if($this->usar_vin == true){
       $this->usar_atv = true;
     }
-    if(trim($this->subsql) != "" && $this->somente_subsql == true){
+    if(trim((string) $this->subsql) != "" && $this->somente_subsql == true){
         $sql.= " from (".$this->subsql.") x ";
     }else if($this->inicio_rh == true){
-      if(trim($this->subsql) == ""){
+      if(trim((string) $this->subsql) == ""){
         $sql.= " from rhpessoal ";
         $sql.= "      inner join rhpessoalmov on rhpessoalmov.rh02_regist = rhpessoal.rh01_regist ";
         $sql.= "      left join tomador on rhpessoalmov.rh02_seqpes = tomador.rh216_seqpes and rhpessoalmov.rh02_instit = tomador.rh216_instit ";
@@ -1920,7 +1920,7 @@ class cl_gera_sql_folha {
 
       }
     }else{
-      if(trim($this->subsql) == ""){
+      if(trim((string) $this->subsql) == ""){
 
         /**
          * Modificado a estrutura do código, por causa da implantação da suplementar na geração do empenho da folha.
@@ -2092,7 +2092,7 @@ class cl_gera_sql_folha {
       }
       $sql.=       $inner." rhregime on rhregime.rh30_codreg = rhpessoalmov.rh02_codreg ";
       $sql.=              "         and rhregime.rh30_instit = rhpessoalmov.rh02_instit ";
-      if(trim($this->vinculo_inner) != ""){
+      if(trim((string) $this->vinculo_inner) != ""){
   $sql.= " and rhregime.rh30_vinculo = '".$this->vinculo_inner."'";
       }
     }
@@ -2226,19 +2226,19 @@ class cl_gera_sql_folha {
 
     $valor_where = " where ";
     if($this->inicio_rh == true){
-      if($ano != null && trim($ano) != ""){
+      if($ano != null && trim((string) $ano) != ""){
         $sql.= $valor_where." rhpessoalmov.rh02_anousu = ".$ano;
         $valor_where = " and ";
       }
-      if($mes != null && trim($mes) != ""){
+      if($mes != null && trim((string) $mes) != ""){
         $sql.= $valor_where." rhpessoalmov.rh02_mesusu = ".$mes;
         $valor_where = " and ";
       }
-      if($regist != null && trim($regist) != ""){
+      if($regist != null && trim((string) $regist) != ""){
         $sql.= $valor_where." rhpessoalmov.rh02_regist = ".$regist;
         $valor_where = " and ";
       }
-      if($instit != null && trim($instit) != ""){
+      if($instit != null && trim((string) $instit) != ""){
         $sql.= $valor_where." rhpessoalmov.rh02_instit = ".$instit;
         $valor_where = " and ";
 //      }else{
@@ -2246,19 +2246,19 @@ class cl_gera_sql_folha {
 //        $valor_where = " and ";
       }
     }else{
-      if($ano != null && trim($ano) != ""){
+      if($ano != null && trim((string) $ano) != ""){
         $sql.= $valor_where.$arquivo.".".$sigla."_anousu = ".$ano;
         $valor_where = " and ";
       }
-      if($mes != null && trim($mes) != ""){
+      if($mes != null && trim((string) $mes) != ""){
         $sql.= $valor_where.$arquivo.".".$sigla."_mesusu = ".$mes;
         $valor_where = " and ";
       }
-      if($regist != null && trim($regist) != ""){
+      if($regist != null && trim((string) $regist) != ""){
         $sql.= $valor_where.$arquivo.".".$sigla."_regist = ".$regist;
         $valor_where = " and ";
       }
-      if($instit != null && trim($instit) != ""){
+      if($instit != null && trim((string) $instit) != ""){
         $sql.= $valor_where.$arquivo.".".$sigla."_instit = ".$instit;
         $valor_where = " and ";
       }else{
@@ -2268,16 +2268,16 @@ class cl_gera_sql_folha {
       }
     }
 
-    if($rubric != null && trim($rubric) != ""){
+    if($rubric != null && trim((string) $rubric) != ""){
       $sql.= $valor_where.$arquivo.".".$sigla."_rubric = '".$rubric."'";
       $valor_where = " and ";
     }
 
-    if(trim($where) != ""){
+    if(trim((string) $where) != ""){
       $sql.= $valor_where." ".$where;
     }
 
-    if(trim($order) != ""){
+    if(trim((string) $order) != ""){
       $sql.= " order by ".$order;
     }
 
@@ -2287,7 +2287,7 @@ class cl_gera_sql_folha {
   function sql_record($sql){
     $result = @db_query($sql);
     if($result !== false){
-      $this->numrows_exec = pg_numrows($result);
+      $this->numrows_exec = pg_num_rows($result);
     }
 
     return $result;
@@ -2327,8 +2327,8 @@ function recprocandsol($codtran){
       $sqlproc = "select p58_despacho,p58_publico  from protprocesso where p58_codproc = $p63_codproc";
       $rsproc = db_query($sqlproc);
       //inclui o andamento
-      $despach = pg_result($rsproc, 0, "p58_despacho");
-      $publico = pg_result($rsproc, 0, "p58_publico");
+      $despach = pg_fetch_result($rsproc, 0, "p58_despacho");
+      $publico = pg_fetch_result($rsproc, 0, "p58_publico");
       $despach = str_replace("'", "", $despach);
       $publico = str_replace("'", "", $publico);
       $publico = ($publico == 'f' ? "false" : "true");
@@ -2364,7 +2364,7 @@ function recprocandsol($codtran){
       //inclui a transferencia e o andamento do processo na tabela proctransand
       $clproctransand->p64_codtran = $codtran;
       $clproctransand->p64_codandam = $clprocandam->p61_codandam;
-      $clproctransand->incluir(null);
+      $clproctransand->incluir();
 
       if ($clproctransand->erro_status == "1") {
         $erro = 0;
@@ -2418,42 +2418,42 @@ function recprocandsol($codtran){
       }
     }
   }
-  db_inicio_transacao($sqlerro);
+  db_inicio_transacao();
   return $sqlerro;
 }
 
 class cl_gera_subsql_folha{
-  var $inner_sem = true; // True se for inner join com a tabela rhpessoalmov, false para left join (SOMENTE PARA GERAR PELO PONGER).
-  var $inner_pes = true; // True se for inner join com a tabela rhpessoalmov, false para left join (SOMENTE PARA GERAR PELO PONGER).
-  var $inner_cgm = true; // True se for inner join com a tabela CGM, false para left join.
-  var $inner_fun = true; // True se for inner join com a tabela rhfuncao, false para left join.
-  var $inner_lot = true; // True se for inner join com a tabela rhlota, false para left join.
-  var $inner_exe = true; // True se for inner join com a tabela rhlotaexe, false para left join.
-  var $inner_org = true; // True se for inner join com a tabela orcunidade, false para left join.
-  var $inner_atv = true; // True se for inner join com a tabela rhregime, false para left join.
-  var $inner_res = true; // True se for inner join com a tabela rhpesrescisao, false para left join.
-  var $inner_ban = true; // True se for inner join com a tabela rhpesbanco, false para left join.
-  var $inner_pad = true; // True se for inner join com a tabela rhpespadrao, false para left join.
-  var $inner_inf = false; // True se for inner join com a tabela infla, false para left outer join.
+  public $inner_sem = true; // True se for inner join com a tabela rhpessoalmov, false para left join (SOMENTE PARA GERAR PELO PONGER).
+  public $inner_pes = true; // True se for inner join com a tabela rhpessoalmov, false para left join (SOMENTE PARA GERAR PELO PONGER).
+  public $inner_cgm = true; // True se for inner join com a tabela CGM, false para left join.
+  public $inner_fun = true; // True se for inner join com a tabela rhfuncao, false para left join.
+  public $inner_lot = true; // True se for inner join com a tabela rhlota, false para left join.
+  public $inner_exe = true; // True se for inner join com a tabela rhlotaexe, false para left join.
+  public $inner_org = true; // True se for inner join com a tabela orcunidade, false para left join.
+  public $inner_atv = true; // True se for inner join com a tabela rhregime, false para left join.
+  public $inner_res = true; // True se for inner join com a tabela rhpesrescisao, false para left join.
+  public $inner_ban = true; // True se for inner join com a tabela rhpesbanco, false para left join.
+  public $inner_pad = true; // True se for inner join com a tabela rhpespadrao, false para left join.
+  public $inner_inf = false; // True se for inner join com a tabela infla, false para left outer join.
 
-  var $usar_pes = false; // Se usar inner ou left join com a tabela rhpessoalmov (SOMENTE PARA GERAR PELO PONGER).
-  var $usar_cgm = false; // Se usar inner ou left join com a tabela CGM.
-  var $usar_fun = false; // Se usar inner ou left join com a tabela rhfuncao.
-  var $usar_lot = false; // Se usar inner ou left join com a tabela rhlota.
-  var $usar_exe = false; // Se usar inner ou left join com a tabela rhlotaexe.
-  var $usar_org = false; // Se usar inner ou left join com a tabela orcunidade.
-  var $usar_atv = false; // Se usar inner ou left join com a tabela rhregime.
-  var $usar_res = false; // Se usar inner ou left join com a tabela rhpesrescisao.
-  var $usar_ban = false; // Se usar inner ou left join com a tabela rhpesbanco.
-  var $usar_pad = false; // Se usar inner ou left join com a tabela rhpespadrao.
-  var $usar_inf = false; // Se usar inner ou left join com a tabela infla;
+  public $usar_pes = false; // Se usar inner ou left join com a tabela rhpessoalmov (SOMENTE PARA GERAR PELO PONGER).
+  public $usar_cgm = false; // Se usar inner ou left join com a tabela CGM.
+  public $usar_fun = false; // Se usar inner ou left join com a tabela rhfuncao.
+  public $usar_lot = false; // Se usar inner ou left join com a tabela rhlota.
+  public $usar_exe = false; // Se usar inner ou left join com a tabela rhlotaexe.
+  public $usar_org = false; // Se usar inner ou left join com a tabela orcunidade.
+  public $usar_atv = false; // Se usar inner ou left join com a tabela rhregime.
+  public $usar_res = false; // Se usar inner ou left join com a tabela rhpesrescisao.
+  public $usar_ban = false; // Se usar inner ou left join com a tabela rhpesbanco.
+  public $usar_pad = false; // Se usar inner ou left join com a tabela rhpespadrao.
+  public $usar_inf = false; // Se usar inner ou left join com a tabela infla;
 
   function gera_subsql($sqlDENTRO,$camposFORA=" * ",$orderbFORA="",$wheresFORA="",$ALIAS=" x ",$ano="",$mes=""){
 
-    if(trim($camposFORA) == "" || $camposFORA == null){
+    if(trim((string) $camposFORA) == "" || $camposFORA == null){
       $camposFORA = " * ";
     }
-    if(trim($ALIAS) == "" || $ALIAS == null){
+    if(trim((string) $ALIAS) == "" || $ALIAS == null){
       $ALIAS = " x ";
     }
 
@@ -2615,7 +2615,7 @@ function debitos_numpre_carne_recibopaga($numpre,$numpar,$datausu,$anousu,$insti
   }
 
   $rsNumpreNovo   = db_query($sSqlNumpreNovo);
-  $numpre         = pg_result($rsNumpreNovo,0,"k00_numnov");
+  $numpre         = pg_fetch_result($rsNumpreNovo,0,"k00_numnov");
 
   $sql  = " select distinct k00_numpre,                                                                 ";
   if ($numpar <> 0 ) {
@@ -2688,7 +2688,7 @@ function debitos_numpre_carne_recibopaga($numpre,$numpar,$datausu,$anousu,$insti
 
   $result = db_query($sql) or die("<br><br><blink><font color=red>VERIFIQUE INFLATORES!!!<br></blink><font color=black> <br> $sql");
 
-  if (pg_numrows($result) == 0 ){
+  if (pg_num_rows($result) == 0 ){
     die("<br><br> $sql");
      return false;
   }

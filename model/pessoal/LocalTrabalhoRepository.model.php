@@ -32,7 +32,7 @@ class LocalTrabalhoRepository extends BaseClassRepository
      */
     protected static $oInstance;
 
-    private $locaisTrabalhoServidor = array();
+    private $locaisTrabalhoServidor = [];
 
     public function getLocalTrabalhoPorServidor( \Servidor $servidor, $ano = null, $mes = null) {
 
@@ -65,7 +65,7 @@ class LocalTrabalhoRepository extends BaseClassRepository
         }
 
         $linhas = pg_num_rows($rs);
-        $this->locaisTrabalhoServidor[$matricula][$instituicaoServidor][$ano][$mes] = array();
+        $this->locaisTrabalhoServidor[$matricula][$instituicaoServidor][$ano][$mes] = [];
 
         for($i = 0; $i < $linhas; $i++) {
             $dados = db_utils::fieldsMemory($rs, $i);

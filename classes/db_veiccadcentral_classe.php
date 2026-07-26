@@ -52,7 +52,7 @@ class cl_veiccadcentral
                  ";
 
     //funcao construtor da classe
-    function cl_veiccadcentral()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veiccadcentral");

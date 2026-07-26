@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldiasemana         = new cl_diasemana;
 $clperiodoescola     = new cl_periodoescola;
 $clregenciahorario   = new cl_regenciahorario;
@@ -66,7 +66,7 @@ $clrotulo = new rotulocampo;
        <b>Escola:</b>
       </td>
       <td>
-       <?
+       <?php 
        $sql = "SELECT DISTINCT ed18_i_codigo,ed18_c_nome
                  FROM regenciahorario
                       inner join regencia on ed59_i_codigo = ed58_i_regencia
@@ -78,19 +78,19 @@ $clrotulo = new rotulocampo;
        $result = db_query($sql);
        $linhas = pg_num_rows($result);
        if(!isset($escola) && $linhas>0){
-         $escola = pg_result( $result, 0, 'ed18_i_codigo' );
+         $escola = pg_fetch_result( $result, 0, 'ed18_i_codigo' );
        }
        ?>
        <select name="escola"
                style="font-size:9px;width:300px;height:18px;"
                onchange="location.href='edu3_consultaprofessor004.php?chavepesquisa=<?=$chavepesquisa?>&escola='+document.form1.escola.value+'&ano='+document.form1.ano.value">
-       <?
+       <?php 
        for( $x = 0; $x < $linhas; $x++ ) {
 
          db_fieldsmemory( $result, $x );
          ?>
          <option value="<?=$ed18_i_codigo?>" <?=@$ed18_i_codigo == @$escola ? "selected" : ""?>><?=$ed18_c_nome?></option>
-         <?
+         <?php 
        }
        ?>
       </select>
@@ -102,7 +102,7 @@ $clrotulo = new rotulocampo;
       <select name="ano"
               style="font-size:9px;width:150px;height:18px;"
               onchange="location.href='edu3_consultaprofessor004.php?chavepesquisa=<?=$chavepesquisa?>&escola='+document.form1.escola.value+'&ano='+document.form1.ano.value">
-       <?
+       <?php 
        $sql1 = "SELECT DISTINCT ed52_i_ano
                   FROM regenciahorario
                        inner join regencia         on ed59_i_codigo     = ed58_i_regencia
@@ -115,7 +115,7 @@ $clrotulo = new rotulocampo;
        $result1 = db_query($sql1);
        $linhas1 = pg_num_rows($result1);
        if( !isset( $ano ) && $linhas1 > 0 ) {
-         $ano = pg_result( $result1, 0, 'ed52_i_ano' );
+         $ano = pg_fetch_result( $result1, 0, 'ed52_i_ano' );
        }
 
        for( $x = 0; $x < $linhas1; $x++ ) {
@@ -123,7 +123,7 @@ $clrotulo = new rotulocampo;
          db_fieldsmemory( $result1, $x );
          ?>
          <option value="<?=$ed52_i_ano?>" <?=@$ed52_i_ano == @$ano ? "selected" : ""?>><?=$ed52_i_ano?></option>
-         <?
+         <?php 
        }
 
        if( $linhas == 0 || $linhas1 == 0 ) {
@@ -135,7 +135,7 @@ $clrotulo = new rotulocampo;
      </tr>
     </table>
     <table cellspacing="0" cellpading="0" border="1" bordercolor="#000000" width="100%">
-      <?
+      <?php 
       $turno   = "";
       $sql     = $clperiodoescola->sql_query( "", "*", "ed15_i_sequencia, ed08_i_sequencia", "ed17_i_escola = {$escola}");
       $result1 = $clperiodoescola->sql_record( $sql );
@@ -156,9 +156,9 @@ $clrotulo = new rotulocampo;
           ?>
             <tr bgcolor="#444444">
               <td width="40" align="center" style="font-weight: bold; color: #DEB887;">
-                <?=pg_result($result1,$z,"ed15_c_nome");?>
+                <?=pg_fetch_result($result1,$z,"ed15_c_nome");?>
               </td>
-          <?
+          <?php 
 
               $sWhereDiaSemana = "ed04_c_letivo = 'S' AND ed04_i_escola = {$escola}";
               $sSqlDiaSemana   = $cldiasemana->sql_query_rh( "", "*", "ed32_i_codigo", $sWhereDiaSemana );
@@ -172,7 +172,7 @@ $clrotulo = new rotulocampo;
                   </a>
                 </td>
               </tr>
-            <?
+            <?php 
             }
             for( $x = 0; $x < $cldiasemana->numrows; $x++ ) {
 
@@ -188,7 +188,7 @@ $clrotulo = new rotulocampo;
                   </tr>
                 </table>
               </td>
-            <?}?>
+            <?php }?>
             </tr>
           <?php
           }
@@ -245,12 +245,12 @@ $clrotulo = new rotulocampo;
                 <?=$str_turma?><br>
                 <?=$str_serie?>
               </td>
-            <?
+            <?php 
               $ed20_i_codigo = "";
             }
          ?>
          <tr>
-        <?
+        <?php 
         }
       }
       ?>

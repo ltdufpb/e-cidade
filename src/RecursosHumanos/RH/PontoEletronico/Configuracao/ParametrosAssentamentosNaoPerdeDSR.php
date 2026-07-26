@@ -39,7 +39,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
      * @var \TipoAssentamento[]
      * @access private
      */
-    private $tiposAssentamento = array(); 
+    private $tiposAssentamento = []; 
 
     /**
      * @param \Instituicao $instituicao
@@ -82,7 +82,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
      */
     public function getCodigosTiposAssentamento()
     {
-        $codigosTiposAssentamento = array();
+        $codigosTiposAssentamento = [];
 
         if(!empty($this->tiposAssentamento)) {
             foreach ($this->tiposAssentamento as $tipoAssentamento) {

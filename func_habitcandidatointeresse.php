@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitcandidatointeresse_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clhabitcandidatointeresse = new cl_habitcandidatointeresse;
 $clhabitcandidatointeresse->rotulo->label("ht20_sequencial");
 $clhabitcandidatointeresse->rotulo->label("ht20_habitcandidato");
@@ -54,7 +55,7 @@ $clhabitcandidatointeresse->rotulo->label("ht20_habitcandidato");
               <?=$Lht20_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ht20_sequencial",10,$Iht20_sequencial,true,"text",4,"","chave_ht20_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clhabitcandidatointeresse->rotulo->label("ht20_habitcandidato");
               <?=$Lht20_habitcandidato?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ht20_habitcandidato",10,$Iht20_habitcandidato,true,"text",4,"","chave_ht20_habitcandidato");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clhabitcandidatointeresse->rotulo->label("ht20_habitcandidato");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habitcandidatointeresse.php")==true){
@@ -122,12 +123,12 @@ $clhabitcandidatointeresse->rotulo->label("ht20_habitcandidato");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

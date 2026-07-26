@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_saniatividade_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsaniatividade = new cl_saniatividade;
 $clsaniatividade->rotulo->label("y83_codsani");
 $clsaniatividade->rotulo->label("y83_seq");
@@ -55,7 +56,7 @@ $clsaniatividade->rotulo->label("y83_ativ");
               <?=$Ly83_codsani?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y83_codsani",10,$Iy83_codsani,true,"text",4,"","chave_y83_codsani");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clsaniatividade->rotulo->label("y83_ativ");
               <?=$Ly83_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y83_seq",10,$Iy83_seq,true,"text",4,"","chave_y83_seq");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clsaniatividade->rotulo->label("y83_ativ");
               <?=$Ly83_ativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y83_ativ",8,$Iy83_ativ,true,"text",4,"","chave_y83_ativ");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clsaniatividade->rotulo->label("y83_ativ");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_saniatividade.php")==true){
@@ -129,12 +130,12 @@ $clsaniatividade->rotulo->label("y83_ativ");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

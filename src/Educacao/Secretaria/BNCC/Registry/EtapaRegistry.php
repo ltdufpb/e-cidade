@@ -15,7 +15,7 @@ class EtapaRegistry
     /**
      * @var Etapa[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Etapa $etapa
@@ -32,7 +32,7 @@ class EtapaRegistry
      */
     public static function get($id)
     {
-        if (!array_key_exists($id, self::$storage)) {
+        if (!array_key_exists((string) $id, self::$storage)) {
             $etapa = EtapaRepository::find($id);
             if (is_null($etapa)) {
                 return null;

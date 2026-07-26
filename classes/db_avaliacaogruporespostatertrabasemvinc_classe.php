@@ -55,7 +55,7 @@ class cl_avaliacaogruporespostatertrabasemvinc extends DAOBasica
         if (empty($dbwhere)) {
 
             $sql2 .=" where ";
-            $aWhere = array();
+            $aWhere = [];
 
             if (!empty($iCodigoPergunta)) {
                 $aWhere[] = " db103_sequencial = {$iCodigoPergunta} ";
@@ -90,7 +90,7 @@ class cl_avaliacaogruporespostatertrabasemvinc extends DAOBasica
      * @param string $outrosComandos
      * @return string
      */
-    public function sql_query_avaliacao_servidor_sem_vinculo($campos = array("*"), $where = array(), $outrosComandos = null)
+    public function sql_query_avaliacao_servidor_sem_vinculo($campos = ["*"], $where = [], $outrosComandos = null)
     {
         $sql = "select " . implode(', ', $campos);
         $sql .= "  from avaliacaogruporespostatertrabasemvinc ";

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 ?>
@@ -155,7 +156,7 @@ function js_marcapai(qpai){
       <input id="marca" type="button" value="Marca Todos" onclick="js_marca();return false" >
     </td>
   </tr>
-<?
+<?php 
 $xnumero = substr($nivel,0,1);
 if ($xnumero == 1){
   $xtitulo = 'Nivel 1 - Órgao';
@@ -178,7 +179,7 @@ if ($xnumero == 1){
   <tr>
     <td colspan="3" align="center"><strong><?=$xtitulo?></strong><td>
   <tr>
-<?
+<?php 
 
 $sel_orgaos = " o58_instit in (".str_replace('-',',',$db_selinstit).") ";
 
@@ -229,7 +230,7 @@ if(substr($nivel,1,1) == 'B'){
     <td colspan="3" valign="middle"><input type="checkbox" id="ultimo_<?=$xnivel?>" value="pai_<?=$xnivel?>" onclick="js_marcafilho('pai_<?=$xnivel?>');" name="pai_<?=$xnivel?>">&nbsp;&nbsp;<strong><?=$xnivel?></strong>&nbsp;&nbsp;-&nbsp;&nbsp;<strong><?=$descr?></strong></td>
   </tr>
 
-<?
+<?php 
  }
 }else{
 
@@ -256,7 +257,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
   <tr> 
     <td colspan="3" valign="middle"><input type="checkbox" value="pai_<?=$o41_orgao?>" onclick="js_marcafilho('pai_<?=$o41_orgao?>');" name="pai_<?=$o41_orgao?>" id="<?=$nivel=='1A'?'ultimo_'.$o41_orgao:'primeiro_'.$o41_orgao?>" >&nbsp;&nbsp;<strong><?=$o41_orgao?></strong>&nbsp;&nbsp;-&nbsp;&nbsp;<strong><?=$o40_descr?></strong></td>
   </tr>
-  <?
+  <?php 
    if ($nivel >= '2A'){
       $sql2 = "select 	distinct 
                  	o41_unidade,
@@ -273,7 +274,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
         <img src="imagens/alinha.gif" width="15">
       <input type="checkbox"  onclick="js_marcapai('pai_<?=$o41_orgao?>');" value="pai_<?=$o41_orgao?>_<?=$o41_unidade?>" name="pai_<?=$o41_orgao?>_<?=$o41_unidade?>" id="<?=$nivel=='2A'?'ultimo_'.$o41_unidade:'primeiro_'.$o41_unidade?>">&nbsp;&nbsp;<?=$o41_unidade?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$o41_descr?></td>
   </tr>
-    <?
+    <?php 
   
       if ($nivel >= '3A'){
         $sql3 = "select 	distinct 
@@ -294,7 +295,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	<img src="imagens/alinha.gif" width="15">
       <input type="checkbox"  onclick="js_marcapai('pai_<?=$o41_orgao?>_<?=$o41_unidade?>');" value="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>" name="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>" id="<?=$nivel=='3A'?'ultimo_'.$o52_funcao:'primeiro_'.$o52_funcao?>">&nbsp;&nbsp;<?=$o52_funcao?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$o52_descr?></td>
   </tr>
-  <?
+  <?php 
    if ($nivel >= '4A'){
       $sql4 = "  select	distinct 
                  	o53_subfuncao,
@@ -316,7 +317,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	<img src="imagens/alinha.gif" width="15">
       <input type="checkbox"  onclick="js_marcapai('pai_<?=$o41_orgao?>');" value="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>" name="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>" id="<?=$nivel=='4A'?'ultimo_'.$o53_subfuncao:'primeiro_'.$o53_subfuncao?>" >&nbsp;&nbsp;<?=$o53_subfuncao?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$o53_descr?></td>
   </tr>
-  <?
+  <?php 
    if ($nivel >= '5A'){
       $sql5 = "  select	distinct 
                  	o54_programa,
@@ -341,7 +342,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	<img src="imagens/alinha.gif" width="15">
       <input type="checkbox"  onclick="js_marcapai('pai_<?=$o41_orgao?>');" value="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>" name="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>" id="<?=$nivel=='5A'?'ultimo_'.$o54_programa:'primeiro_'.$o54_programa?>" >&nbsp;&nbsp;<?=$o54_programa?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$o54_descr?></td>
   </tr>
-  <?
+  <?php 
    if ($nivel >= '6A'){
       $sql6 = "  select	distinct 
                  	o55_projativ,
@@ -368,7 +369,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	<img src="imagens/alinha.gif" width="15">
       <input type="checkbox"  onclick="js_marcapai('pai_<?=$o41_orgao?>');" value="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>_<?=$o55_projativ?>" name="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>_<?=$o55_projativ?>" id="<?=$nivel=='6A'?'ultimo_'.$o55_projativ:'primeiro_'.$o55_projativ?>">&nbsp;&nbsp;<?=$o55_projativ?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$o55_descr?></td>
   </tr>
-  <?
+  <?php 
    if ($nivel >= '7A'){
       $sql7 = "  select	distinct
                         o56_codele,
@@ -396,7 +397,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	<img src="imagens/alinha.gif" width="15">
       <input type="checkbox"  onclick="js_marcapai('pai_<?=$o41_orgao?>');" value="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>_<?=$o55_projativ?>_<?=$o56_elemento?>" name="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>_<?=$o55_projativ?>_<?=$o56_elemento?>" id="<?=$nivel=='7A'?'ultimo_'.$o56_elemento:'primeiro_'.$o56_elemento?>">&nbsp;&nbsp;<?=$o56_elemento?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$o56_descr?></td>
   </tr>
-  <?
+  <?php 
    if ($nivel >= '8A'){
       $sql8 = "  select	distinct 
                  	o15_codigo,
@@ -425,7 +426,7 @@ for($i1=0;$i1<pg_numrows($result1);$i1++){
 	<img src="imagens/alinha.gif" width="15">
       <input type="checkbox"  onclick="js_marcapai('pai_<?=$o41_orgao?>');" value="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>_<?=$o55_projativ?>_<?=$o56_elemento?>_<?=$o15_codigo?>" name="pai_<?=$o41_orgao?>_<?=$o41_unidade?>_<?=$o52_funcao?>_<?=$o53_subfuncao?>_<?=$o54_programa?>_<?=$o55_projativ?>_<?=$o56_elemento?>_<?=$o15_codigo?>" id="<?=$nivel=='8A'?'ultimo_'.$o15_codigo:'primeiro_'.$o15_codigo?>">&nbsp;&nbsp;<?=$o15_codigo?>&nbsp;&nbsp;-&nbsp;&nbsp;<?=$o15_descr?></td>
   </tr>
-<?
+<?php 
    }}
 
    }}

@@ -103,7 +103,7 @@ if (isset($oGet->dfiscal) && $oGet->dfiscal == true) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php 
     $clcriaabas->identifica = array("relatorio" => "Relatório",
                                     "parametro" => "Parâmetros",
                                     "notas"     => "Notas Explicativas"

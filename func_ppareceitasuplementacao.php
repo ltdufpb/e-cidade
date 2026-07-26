@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ppaestimativareceita_classe.php"));
 include(modification("classes/db_ppaversao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clppaestimativareceita = new cl_ppaestimativareceita;
 $clppaestimativareceita->rotulo->label("o06_sequencial");
 $clppaestimativareceita->rotulo->label("o06_codrec");
@@ -56,7 +57,7 @@ $clppaestimativareceita->rotulo->label("o06_codrec");
               <?=$Lo06_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o06_sequencial",10,$Io06_sequencial,true,"text",4,"","chave_o06_sequencial");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clppaestimativareceita->rotulo->label("o06_codrec");
               <?=$Lo06_codrec?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o06_codrec",10,$Io06_codrec,true,"text",4,"","chave_o06_codrec");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $clppaestimativareceita->rotulo->label("o06_codrec");
               <b>Perspectiva:</b>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                $oDaoPPaVersao    = new cl_ppaversao;
                $sSqlPerspectivas = $oDaoPPaVersao->sql_query_integracao(null,
                                                                         "ppaversao.*,
@@ -118,7 +119,7 @@ $clppaestimativareceita->rotulo->label("o06_codrec");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = "c61_instit = ".db_getsession("DB_instit");
       if (isset($lEstimativa)) {
         $sWhere .= " and  o05_base is false";
@@ -179,12 +180,12 @@ $clppaestimativareceita->rotulo->label("o06_codrec");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,52 +49,52 @@ if(isset($opcao) && $opcao == "excluir"){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Ty31_codnoti?>">
-       <?
+       <?php 
        db_ancora(@$Ly31_codnoti,"js_pesquisay31_codnoti(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('y31_codnoti',10,$Iy31_codnoti,true,'text',3," onchange='js_pesquisay31_codnoti(false);'");
 db_input('y39_codandam',10,$Iy39_codandam,true,'hidden',3,"");
 ?>
-       <?
+       <?php 
 db_input('y30_data',50,$Iy30_data,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ty31_codtipo?>">
-       <?
+       <?php 
        db_ancora(@$Ly31_codtipo,"js_pesquisay31_codtipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('y31_codtipo',10,$Iy31_codtipo,true,'text',$db_opcao," onchange='js_pesquisay31_codtipo(false);'");
 db_input('y31_codtipo',10,$Iy31_codtipo,true,'hidden',$db_opcao,"","y31_codtipo_old");
 echo "<script>document.form1.y31_codtipo_old.value='".@$y31_codtipo."'</script>";
 ?>
-       <?
+       <?php 
 db_input('y29_descr',50,$Iy29_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td colspan="2" align="center"> 
-      <input <?($db_opcao == 1?"disabled":"")?> name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-      <?
+      <input <?php ($db_opcao == 1?"disabled":"")?> name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
+      <?php 
       if(($db_opcao==2||$db_opcao==22||$db_opcao==3||$db_opcao==33)){
       ?>
         <input name="novo" type="button" id="novo" value="Novo" onclick="location.href='fis1_fiscaltipo001.php?y31_codnoti=<?=$y31_codnoti?>&abas=1'" onblur="js_setatabulacao();">
-      <?
+      <?php 
       }
       ?>
     </td>
   </tr>  
   <tr>
     <td colspan="2" align="center">
-    <?
+    <?php 
     $chavepri= array("y31_codnoti"=>@$y31_codnoti,"y31_codtipo"=>@$y31_codtipo);
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y31_codtipo,y29_descr,y41_descr";
@@ -115,7 +115,7 @@ db_input('y29_descr',50,$Iy29_descr,true,'text',3,'')
     <td colspan="2" align="center">
       <fieldset>
       <legend align="center"><strong>Escolha um Andamento Padrão</strong></legend>
-<?
+<?php 
 $clfiscaltipo1 = new cl_fiscaltipo;
 $clfiscalandam = new cl_fiscalandam;
 $clfandam      = new cl_fandam;
@@ -258,7 +258,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe_fiscaltipo.hide();
-  <?
+  <?php 
     if($db_opcao == 2 || $db_opcao == 22){
       echo " location.href = 'fis1_fiscaltipo002.php?abas=1&chavepesquisa='+chave;";
     }elseif($db_opcao == 33 || $db_opcao == 3){
@@ -267,7 +267,7 @@ function js_preenchepesquisa(chave,chave1){
   ?>
 }
 </script>
-<?
+<?php 
 if(isset($y31_codnoti) && $y31_codnoti != ""){
   echo "<script>js_OpenJanelaIframe('','db_iframe_fiscal','func_fiscal.php?pesquisa_chave=$y31_codnoti&funcao_js=parent.js_mostrafiscal','Pesquisa',false);</script>";
 }

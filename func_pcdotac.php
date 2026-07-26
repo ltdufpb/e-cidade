@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcdotac_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpcdotac = new cl_pcdotac;
 $clpcdotac->rotulo->label("pc13_codigo");
 $clpcdotac->rotulo->label("pc13_anousu");
@@ -56,7 +57,7 @@ $clpcdotac->rotulo->label("pc13_quant");
               <?=$Lpc13_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc13_codigo",10,$Ipc13_codigo,true,"text",4,"","chave_pc13_codigo");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clpcdotac->rotulo->label("pc13_quant");
               <?=$Lpc13_coddot?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc13_coddot",6,$Ipc13_coddot,true,"text",4,"","chave_pc13_coddot");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $clpcdotac->rotulo->label("pc13_quant");
               <?=$Lpc13_quant?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc13_quant",10,$Ipc13_quant,true,"text",4,"","chave_pc13_quant");
 		       ?>
             </td>
@@ -94,7 +95,7 @@ $clpcdotac->rotulo->label("pc13_quant");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcdotac.php")==true){
@@ -130,12 +131,12 @@ $clpcdotac->rotulo->label("pc13_quant");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

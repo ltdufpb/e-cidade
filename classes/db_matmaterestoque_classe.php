@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE matmaterestoque
 class cl_matmaterestoque { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m64_sequencial = 0; 
-   var $m64_almox = 0; 
-   var $m64_matmater = 0; 
-   var $m64_estoqueminimo = 0; 
-   var $m64_estoquemaximo = 0; 
-   var $m64_pontopedido = 0; 
-   var $m64_localizacao = null; 
+   public $m64_sequencial = 0; 
+   public $m64_almox = 0; 
+   public $m64_matmater = 0; 
+   public $m64_estoqueminimo = 0; 
+   public $m64_estoquemaximo = 0; 
+   public $m64_pontopedido = 0; 
+   public $m64_localizacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m64_sequencial = int8 = Cód. Sequencial 
                  m64_almox = int4 = Cód. Depósito 
                  m64_matmater = int8 = Código do material 
@@ -60,10 +60,10 @@ class cl_matmaterestoque {
                  m64_localizacao = varchar(25) = Localização 
                  ";
    //funcao construtor da classe 
-   function cl_matmaterestoque() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matmaterestoque"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,10 +146,10 @@ class cl_matmaterestoque {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m64_sequencial = pg_result($result,0,0); 
+       $this->m64_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matmaterestoque_m64_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m64_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m64_sequencial)){
          $this->erro_sql = " Campo m64_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -189,7 +189,7 @@ class cl_matmaterestoque {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Materiais em Estoque ($this->m64_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Materiais em Estoque já Cadastrado";
@@ -213,16 +213,16 @@ class cl_matmaterestoque {
      $resaco = $this->sql_record($this->sql_query_file($this->m64_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10484,'$this->m64_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1812,10484,'','".AddSlashes(pg_result($resaco,0,'m64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1812,10485,'','".AddSlashes(pg_result($resaco,0,'m64_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1812,10486,'','".AddSlashes(pg_result($resaco,0,'m64_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1812,10487,'','".AddSlashes(pg_result($resaco,0,'m64_estoqueminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1812,10488,'','".AddSlashes(pg_result($resaco,0,'m64_estoquemaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1812,10489,'','".AddSlashes(pg_result($resaco,0,'m64_pontopedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1812,12092,'','".AddSlashes(pg_result($resaco,0,'m64_localizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1812,10484,'','".AddSlashes(pg_fetch_result($resaco,0,'m64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1812,10485,'','".AddSlashes(pg_fetch_result($resaco,0,'m64_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1812,10486,'','".AddSlashes(pg_fetch_result($resaco,0,'m64_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1812,10487,'','".AddSlashes(pg_fetch_result($resaco,0,'m64_estoqueminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1812,10488,'','".AddSlashes(pg_fetch_result($resaco,0,'m64_estoquemaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1812,10489,'','".AddSlashes(pg_fetch_result($resaco,0,'m64_pontopedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1812,12092,'','".AddSlashes(pg_fetch_result($resaco,0,'m64_localizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -231,10 +231,10 @@ class cl_matmaterestoque {
       $this->atualizacampos();
      $sql = " update matmaterestoque set ";
      $virgula = "";
-     if(trim($this->m64_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_sequencial"])){ 
+     if(trim((string) $this->m64_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_sequencial"])){ 
        $sql  .= $virgula." m64_sequencial = $this->m64_sequencial ";
        $virgula = ",";
-       if(trim($this->m64_sequencial) == null ){ 
+       if(trim((string) $this->m64_sequencial) == null ){ 
          $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
          $this->erro_campo = "m64_sequencial";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_matmaterestoque {
          return false;
        }
      }
-     if(trim($this->m64_almox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_almox"])){ 
+     if(trim((string) $this->m64_almox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_almox"])){ 
        $sql  .= $virgula." m64_almox = $this->m64_almox ";
        $virgula = ",";
-       if(trim($this->m64_almox) == null ){ 
+       if(trim((string) $this->m64_almox) == null ){ 
          $this->erro_sql = " Campo Cód. Depósito nao Informado.";
          $this->erro_campo = "m64_almox";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_matmaterestoque {
          return false;
        }
      }
-     if(trim($this->m64_matmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_matmater"])){ 
+     if(trim((string) $this->m64_matmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_matmater"])){ 
        $sql  .= $virgula." m64_matmater = $this->m64_matmater ";
        $virgula = ",";
-       if(trim($this->m64_matmater) == null ){ 
+       if(trim((string) $this->m64_matmater) == null ){ 
          $this->erro_sql = " Campo Código do material nao Informado.";
          $this->erro_campo = "m64_matmater";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_matmaterestoque {
          return false;
        }
      }
-     if(trim($this->m64_estoqueminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_estoqueminimo"])){ 
+     if(trim((string) $this->m64_estoqueminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_estoqueminimo"])){ 
        $sql  .= $virgula." m64_estoqueminimo = $this->m64_estoqueminimo ";
        $virgula = ",";
-       if(trim($this->m64_estoqueminimo) == null ){ 
+       if(trim((string) $this->m64_estoqueminimo) == null ){ 
          $this->erro_sql = " Campo Estoque Minimo nao Informado.";
          $this->erro_campo = "m64_estoqueminimo";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_matmaterestoque {
          return false;
        }
      }
-     if(trim($this->m64_estoquemaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_estoquemaximo"])){ 
+     if(trim((string) $this->m64_estoquemaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_estoquemaximo"])){ 
        $sql  .= $virgula." m64_estoquemaximo = $this->m64_estoquemaximo ";
        $virgula = ",";
-       if(trim($this->m64_estoquemaximo) == null ){ 
+       if(trim((string) $this->m64_estoquemaximo) == null ){ 
          $this->erro_sql = " Campo Estoque Máximo nao Informado.";
          $this->erro_campo = "m64_estoquemaximo";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_matmaterestoque {
          return false;
        }
      }
-     if(trim($this->m64_pontopedido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_pontopedido"])){ 
+     if(trim((string) $this->m64_pontopedido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_pontopedido"])){ 
        $sql  .= $virgula." m64_pontopedido = $this->m64_pontopedido ";
        $virgula = ",";
-       if(trim($this->m64_pontopedido) == null ){ 
+       if(trim((string) $this->m64_pontopedido) == null ){ 
          $this->erro_sql = " Campo Ponto de Pedido nao Informado.";
          $this->erro_campo = "m64_pontopedido";
          $this->erro_banco = "";
@@ -309,7 +309,7 @@ class cl_matmaterestoque {
          return false;
        }
      }
-     if(trim($this->m64_localizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_localizacao"])){ 
+     if(trim((string) $this->m64_localizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m64_localizacao"])){ 
        $sql  .= $virgula." m64_localizacao = '$this->m64_localizacao' ";
        $virgula = ",";
      }
@@ -321,23 +321,23 @@ class cl_matmaterestoque {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10484,'$this->m64_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m64_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1812,10484,'".AddSlashes(pg_result($resaco,$conresaco,'m64_sequencial'))."','$this->m64_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1812,10484,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m64_sequencial'))."','$this->m64_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m64_almox"]))
-           $resac = db_query("insert into db_acount values($acount,1812,10485,'".AddSlashes(pg_result($resaco,$conresaco,'m64_almox'))."','$this->m64_almox',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1812,10485,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m64_almox'))."','$this->m64_almox',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m64_matmater"]))
-           $resac = db_query("insert into db_acount values($acount,1812,10486,'".AddSlashes(pg_result($resaco,$conresaco,'m64_matmater'))."','$this->m64_matmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1812,10486,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m64_matmater'))."','$this->m64_matmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m64_estoqueminimo"]))
-           $resac = db_query("insert into db_acount values($acount,1812,10487,'".AddSlashes(pg_result($resaco,$conresaco,'m64_estoqueminimo'))."','$this->m64_estoqueminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1812,10487,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m64_estoqueminimo'))."','$this->m64_estoqueminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m64_estoquemaximo"]))
-           $resac = db_query("insert into db_acount values($acount,1812,10488,'".AddSlashes(pg_result($resaco,$conresaco,'m64_estoquemaximo'))."','$this->m64_estoquemaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1812,10488,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m64_estoquemaximo'))."','$this->m64_estoquemaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m64_pontopedido"]))
-           $resac = db_query("insert into db_acount values($acount,1812,10489,'".AddSlashes(pg_result($resaco,$conresaco,'m64_pontopedido'))."','$this->m64_pontopedido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1812,10489,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m64_pontopedido'))."','$this->m64_pontopedido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m64_localizacao"]))
-           $resac = db_query("insert into db_acount values($acount,1812,12092,'".AddSlashes(pg_result($resaco,$conresaco,'m64_localizacao'))."','$this->m64_localizacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1812,12092,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m64_localizacao'))."','$this->m64_localizacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -382,16 +382,16 @@ class cl_matmaterestoque {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10484,'$m64_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1812,10484,'','".AddSlashes(pg_result($resaco,$iresaco,'m64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1812,10485,'','".AddSlashes(pg_result($resaco,$iresaco,'m64_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1812,10486,'','".AddSlashes(pg_result($resaco,$iresaco,'m64_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1812,10487,'','".AddSlashes(pg_result($resaco,$iresaco,'m64_estoqueminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1812,10488,'','".AddSlashes(pg_result($resaco,$iresaco,'m64_estoquemaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1812,10489,'','".AddSlashes(pg_result($resaco,$iresaco,'m64_pontopedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1812,12092,'','".AddSlashes(pg_result($resaco,$iresaco,'m64_localizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1812,10484,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1812,10485,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m64_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1812,10486,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m64_matmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1812,10487,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m64_estoqueminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1812,10488,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m64_estoquemaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1812,10489,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m64_pontopedido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1812,12092,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m64_localizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matmaterestoque
@@ -451,7 +451,7 @@ class cl_matmaterestoque {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matmaterestoque";
@@ -465,7 +465,7 @@ class cl_matmaterestoque {
    function sql_query ( $m64_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -490,7 +490,7 @@ class cl_matmaterestoque {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_matmaterestoque {
    function sql_query_file ( $m64_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_matmaterestoque {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_matmaterestoque {
   function sql_queryAlmoxarifado ( $m64_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -560,7 +560,7 @@ class cl_matmaterestoque {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];

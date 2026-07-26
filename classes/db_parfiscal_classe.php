@@ -98,7 +98,7 @@ class cl_parfiscal {
                  y32_tipodatavencimento = int4 = Tipo Data Vencimento 
                  ";
    //funcao construtor da classe
-   function cl_parfiscal() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parfiscal");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

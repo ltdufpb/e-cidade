@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: farmacia
 //CLASSE DA ENTIDADE integracaohorusenvio
 class cl_integracaohorusenvio { 
@@ -33,7 +33,7 @@ class cl_integracaohorusenvio {
                  fa64_integracaohorus = int4 = Integração Hórus 
                  ";
    //funcao construtor da classe 
-   function cl_integracaohorusenvio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("integracaohorusenvio"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

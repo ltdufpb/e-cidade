@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_emppresta_classe.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clemppresta = new cl_emppresta;
 $clemppresta->rotulo->label("e45_numemp");
 $clemppresta->rotulo->label("e45_tipo");
@@ -89,13 +90,13 @@ function js_mascara(evt){
 
            <input name="chave_e60_codemp" size="12" type='text'  onKeyPress="return js_mascara(event);" >
             <?=$Le60_numemp?>
-            <? db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
+            <?php  db_input("e60_numemp",10,$Ie60_numemp,true,"text",4,"","chave_e60_numemp"); ?>
             </td>
           </tr>
          <tr>
             <td width="4%" align="right" nowrap title="<?=$Tz01_nome?>"><?=$Lz01_nome?></td>
             <td width="96%" align="left" nowrap>
-            <? db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
+            <?php  db_input("z01_nome",45,"",true,"text",4,"","chave_z01_nome"); ?>
             </td>
           </tr>
           <tr>
@@ -111,7 +112,7 @@ function js_mascara(evt){
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         $sCampos  = "e81_codmov, e60_codemp, e60_anousu, e60_numemp, e60_emiss, e60_vlremp-e60_vlranu as e60_vlremp,";
         $sCampos .= "e60_vlrpag, z01_nome, e44_descr, codigo, nomeinst, e45_acerta";
@@ -191,12 +192,12 @@ function js_mascara(evt){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

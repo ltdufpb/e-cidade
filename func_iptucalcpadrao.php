@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptucalcpadrao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptucalcpadrao = new cl_iptucalcpadrao;
 $cliptucalcpadrao->rotulo->label("j10_sequencial");
 $cliptucalcpadrao->rotulo->label("j10_anousu");
@@ -54,7 +55,7 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
               <?=$Lj10_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j10_sequencial",10,$Ij10_sequencial,true,"text",4,"","chave_j10_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
               <?=$Lj10_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j10_anousu",10,$Ij10_anousu,true,"text",4,"","chave_j10_anousu");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptucalcpadrao.php")==true){
@@ -122,12 +123,12 @@ $cliptucalcpadrao->rotulo->label("j10_anousu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE prontuariosclassificacaorisco
 class cl_prontuariosclassificacaorisco { 
@@ -26,7 +26,7 @@ class cl_prontuariosclassificacaorisco {
                  sd101_classificacaorisco = int4 = Classificação de Risco 
                  ";
    //funcao construtor da classe 
-   function cl_prontuariosclassificacaorisco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuariosclassificacaorisco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

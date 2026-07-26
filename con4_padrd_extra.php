@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,7 +29,7 @@ use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 class rd_extra {
     var $arq=null;
 
-  function rd_extra($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/RD_EXTRA.TXT",'w+');
      fputs($this->arq,$header);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -66,21 +66,21 @@ if(isset($db_opcaoal)){
     <td nowrap>
     </td>
     <td> 
-<?
+<?php 
 db_input('v18_sequencial',10,$Iv18_sequencial,true,'hidden',3,"")
 ?>
     </td>
    <tr>
     <td nowrap title="<?=@$Tv18_isencao?>">
-       <?
+       <?php 
        db_ancora(@$Lv18_isencao,"js_pesquisav18_isencao(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('v18_isencao',10,$Iv18_isencao,true,'text',3,"")
 ?>
-       <?
+       <?php 
 db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
        ?>
     </td>
@@ -90,7 +90,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
     <td nowrap title="">
 		   <b> Grupo de débito : </b>
     </td>
-       <?
+       <?php 
 			  // caso alteracao: a varivel $origem nao existe
         if((!isset($origem) || $origem == '') && $v18_isencao != ''){
 					$sqlBuscaOrigem  = " select case  ";
@@ -151,7 +151,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
     <td nowrap title="<?=@$v18_cadtipoitem?>">
 		  <b> Item da isenção : </b>
     </td>
-       <?
+       <?php 
   			if(isset($v18_cadtipoitem) && $v18_cadtipoitem != ''){
 					$v18_cadtipoitemant = $v18_cadtipoitem;
        	}  
@@ -196,7 +196,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
        <?=@$Lv18_dtini?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('v18_dtini',@$v18_dtini_dia,@$v18_dtini_mes,@$v18_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -206,7 +206,7 @@ db_inputdata('v18_dtini',@$v18_dtini_dia,@$v18_dtini_mes,@$v18_dtini_ano,true,'t
        <?=@$Lv18_dtfim?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('v18_dtfim',@$v18_dtfim_dia,@$v18_dtfim_mes,@$v18_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -216,7 +216,7 @@ db_inputdata('v18_dtfim',@$v18_dtfim_dia,@$v18_dtfim_mes,@$v18_dtfim_ano,true,'t
        <?=@$Lv18_tipovalor?>
     </td>
     <td> 
-<?
+<?php 
 $x = array('1'=>'PERCENTUAL','2'=>'VALOR');
 db_select('v18_tipovalor',$x,true,$db_opcao,"onChange='js_controlavalor();'");
 ?>
@@ -227,7 +227,7 @@ db_select('v18_tipovalor',$x,true,$db_opcao,"onChange='js_controlavalor();'");
        <?=@$Lv18_valor?>
     </td>
     <td> 
-<?
+<?php 
 db_input('v18_valor',10,$Iv18_valor,true,'text',$db_opcao,"onChange='js_controlavalor();'")
 ?>
     </td>
@@ -242,7 +242,7 @@ db_input('v18_valor',10,$Iv18_valor,true,'text',$db_opcao,"onChange='js_controla
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php 
 	 $chavepri= array("v18_sequencial"=>@$v18_sequencial);
 	 $cliframe_alterar_excluir->chavepri    = $chavepri;
 	 $cliframe_alterar_excluir->iframe_nome = "itenslanc";

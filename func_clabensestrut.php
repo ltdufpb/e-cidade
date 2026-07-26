@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_clabens_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clclabens = new cl_clabens;
 $clclabens->rotulo->label("t64_codcla");
 $clclabens->rotulo->label("t64_descr");
@@ -54,7 +55,7 @@ $clclabens->rotulo->label("t64_descr");
               <?=$Lt64_codcla?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("t64_codcla",10,$It64_codcla,true,"text",4,"","chave_t64_codcla");
               ?>
             </td>
@@ -64,7 +65,7 @@ $clclabens->rotulo->label("t64_descr");
               <?=$Lt64_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("t64_descr",50,$It64_descr,true,"text",4,"","chave_t64_descr");
               ?>
             </td>
@@ -82,7 +83,7 @@ $clclabens->rotulo->label("t64_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(isset($campos)==false){
         if(file_exists("funcoes/db_func_clabens.php")==true){
           include(modification("funcoes/db_func_clabens.php"));
@@ -138,12 +139,12 @@ $clclabens->rotulo->label("t64_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

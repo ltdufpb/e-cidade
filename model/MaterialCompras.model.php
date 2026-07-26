@@ -57,7 +57,7 @@ class MaterialCompras {
    *
    * @var array
    */
-  protected $aElementos = array();
+  protected $aElementos = [];
 
   /**
    *

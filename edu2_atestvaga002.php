@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,7 +43,7 @@ if($clatestvaga->numrows==0){?>
    </td>
   </tr>
  </table>
- <?
+ <?php 
  exit;
 }
 $pdf = new PDF();
@@ -58,7 +58,7 @@ for($x=0;$x<$clatestvaga->numrows;$x++){
  $pdf->addpage();
  $pdf->ln(5);
  $texto = "             Atesto, para os devidos fins, que há vaga na etapa $ed11_c_descr, ensino $ed10_c_descr, turno $ed15_c_nome, no ano letivo de $ed52_i_ano, para o aluno(a) $ed47_v_nome neste Estabelecimento de Ensino.";
- $data = substr($ed102_d_data,8,2)." de ".db_mes(substr($ed102_d_data,5,2),1)." de ".substr($ed102_d_data,0,4).".";
+ $data = substr((string) $ed102_d_data,8,2)." de ".db_mes(substr((string) $ed102_d_data,5,2),1)." de ".substr((string) $ed102_d_data,0,4).".";
  $pdf->setfont('arial','b',13);
  $pdf->cell(190,20,"ATESTADO DE VAGA",0,1,"C",0);
  $pdf->cell(190,20,"",0,1,"C",0);
@@ -80,7 +80,7 @@ for($x=0;$x<$clatestvaga->numrows;$x++){
 $pdf->addpage();
  $pdf->ln(5);
  $texto = "             Atesto, para os devidos fins, que há vaga na etapa $ed11_c_descr, ensino $ed10_c_descr, turno $ed15_c_nome, no ano letivo de $ed52_i_ano, para o aluno(a) $ed47_v_nome neste Estabelecimento de Ensino.";
- $data = substr($ed102_d_data,8,2)." de ".db_mes(substr($ed102_d_data,5,2),1)." de ".substr($ed102_d_data,0,4).".";
+ $data = substr((string) $ed102_d_data,8,2)." de ".db_mes(substr((string) $ed102_d_data,5,2),1)." de ".substr((string) $ed102_d_data,0,4).".";
  $pdf->setfont('arial','b',13);
  $pdf->cell(190,20,"ATESTADO DE VAGA",0,1,"C",0);
  $pdf->cell(190,20,"",0,1,"C",0);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habittipogrupoprograma_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clhabittipogrupoprograma = new cl_habittipogrupoprograma;
 $clhabittipogrupoprograma->rotulo->label("ht02_sequencial");
 $clhabittipogrupoprograma->rotulo->label("ht02_descricao");
@@ -54,7 +55,7 @@ $clhabittipogrupoprograma->rotulo->label("ht02_descricao");
               <?=$Lht02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ht02_sequencial",10,$Iht02_sequencial,true,"text",4,"","chave_ht02_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clhabittipogrupoprograma->rotulo->label("ht02_descricao");
               <?=$Lht02_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ht02_descricao",50,$Iht02_descricao,true,"text",4,"","chave_ht02_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clhabittipogrupoprograma->rotulo->label("ht02_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habittipogrupoprograma.php")==true){
@@ -122,12 +123,12 @@ $clhabittipogrupoprograma->rotulo->label("ht02_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

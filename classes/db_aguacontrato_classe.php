@@ -78,7 +78,7 @@ class cl_aguacontrato {
                  x54_emitiroutrosdebitos = bool = Emitir Outros Débitos 
                  ";
 
-   function cl_aguacontrato() {
+   function __construct() {
 
      $this->rotulo = new rotulo("aguacontrato");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

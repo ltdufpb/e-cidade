@@ -50,8 +50,8 @@ $result_per           = $clperiodoescola->sql_record( $sSqlPeriodoEscola );
 
 db_fieldsmemory($result_per, 0);
 
-$hora1         = (int) substr( $menorhorario, 0, 2 );
-$hora2         = (int) substr( $maiorhorario, 0, 2 ) + 1;
+$hora1         = (int) substr( (string) $menorhorario, 0, 2 );
+$hora2         = (int) substr( (string) $maiorhorario, 0, 2 ) + 1;
 $horainicial   = $hora1 * 100;
 $horafinal     = $hora2 * 100;
 $tempo_ini     = mktime( $hora1, 0, 0, date("m"), date("d"), date("Y") );
@@ -103,7 +103,7 @@ if( !isset( $larg_obj ) ) {
     largura   = document.body.clientWidth;
     var sUrl  = "edu3_rechumanohoradisp001.php?<?=$destino?>&larg_obj="+largura;
   </script>
-  <?
+  <?php 
   if( isset( $oGet->iHorarioDisponivel ) && !empty( $oGet->iHorarioDisponivel ) ) {
   ?>
     <script>
@@ -183,7 +183,7 @@ $tt      = 0;
 for( $t = $horainicial; $t <= $horafinal; $t++ ) {
 
   $hora         = strlen($t) == 3 ? "0" . $t : $t;
-  $hora         = substr( $hora, 0, 2 ) . ":" . substr( $hora, 2, 2 );
+  $hora         = substr( (string) $hora, 0, 2 ) . ":" . substr( (string) $hora, 2, 2 );
   $id_hora      = "H" . $hora;
   $id_hora2     = "HH" . $hora;
   $id_linhahora = "LH" . $hora;
@@ -243,7 +243,7 @@ for( $x = 0; $x < $cldiasemana->numrows + 1; $x++ ) {
  * Disponibilidade do Docente
  */
 ?>
-<table style="top:<?=isset( $ini_top ) ? $ini_top : ""?>px;left:<?=isset( $ini_left ) ? $ini_left : ""?>px;"
+<table style="top:<?=$ini_top ?? ""?>px;left:<?=$ini_left ?? ""?>px;"
        cellspacing="0"
        cellpadding="0">
   <tbody id="disp_rechumano">
@@ -282,17 +282,17 @@ for( $x = 0; $x < $cldiasemana->numrows + 1; $x++ ) {
         for( $t = $horainicial; $t <= $horafinal; $t++ ) {
 
           $hora = strlen($t) == 3 ? "0" . $t : $t;
-          $hora = substr( $hora, 0, 2 ) . ":" . substr( $hora, 2, 2 );
+          $hora = substr( (string) $hora, 0, 2 ) . ":" . substr( (string) $hora, 2, 2 );
 
           if( $clrechumanohoradisp->numrows > 0 ) {
 
             for( $y = 0; $y < $clrechumanohoradisp->numrows; $y++ ) {
 
               db_fieldsmemory( $result1, $y );
-              if( trim( $hora ) == trim( $ed17_h_inicio ) ) {
+              if( trim( $hora ) == trim( (string) $ed17_h_inicio ) ) {
 
-                $tempo_ini      = mktime( substr( $ed17_h_inicio, 0, 2), substr( $ed17_h_inicio, 3, 2 ), 0, 1, 1, 1999 );
-                $tempo_fim      = mktime( substr( $ed17_h_fim, 0, 2 ), substr( $ed17_h_fim, 3, 2 ), 0, 1, 1, 1999 );
+                $tempo_ini      = mktime( substr( (string) $ed17_h_inicio, 0, 2), substr( (string) $ed17_h_inicio, 3, 2 ), 0, 1, 1, 1999 );
+                $tempo_fim      = mktime( substr( (string) $ed17_h_fim, 0, 2 ), substr( (string) $ed17_h_fim, 3, 2 ), 0, 1, 1, 1999 );
                 $difermin       = ($tempo_fim - $tempo_ini) / 60;
                 $difer          = ceil( $difermin / 2 );
                 $sHoraAtividade = $ed33_horaatividade == 't' ? 'SIM' : 'NÃO';

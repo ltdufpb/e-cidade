@@ -539,7 +539,7 @@ class Almoxarifado extends DBDepartamento {
    */
   public static function getListaAlmoxarifados(){
 
-    $aListaAlmoxarifados = array();
+    $aListaAlmoxarifados = [];
     $oDaoDb_depart       = new cl_db_almox();
     $iInstituicao        = db_getsession("DB_instit");
     $sWhereLista         = "m91_depto <> 0 and db_depart.instit = {$iInstituicao}";

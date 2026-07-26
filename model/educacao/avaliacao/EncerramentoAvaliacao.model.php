@@ -14,7 +14,7 @@ class EncerramentoAvaliacao {
    * Situações de matriculas que devem ser canceladas
    * @var array
    */
-    private $aRemoveConclusaoMatricula = array(
+    private $aRemoveConclusaoMatricula = [
         'TRANSFERIDO FORA',
         'TRANSFERIDO REDE',
         'EVADIDO',
@@ -23,9 +23,9 @@ class EncerramentoAvaliacao {
         'MATRICULA INDEFERIDA',
         'CANCELADO',
         'DESISTENTE'
-    );
+    ];
 
-  public function __construct(DBLogJSON $oLogger = null) {
+  public function __construct(?DBLogJSON $oLogger = null) {
     if (!empty($oLogger)) {
       $this->oLogger = $oLogger;
     }
@@ -672,7 +672,7 @@ class EncerramentoAvaliacao {
     if (!$oDisciplina->getRegencia()->isObrigatoria()) {
 
       $sResultadoFinal = 'A';
-      if (trim($sValorAproveitamento) == '') {
+      if (trim((string) $sValorAproveitamento) == '') {
         $sValorAproveitamento = '-';
       }
     }
@@ -1089,9 +1089,7 @@ class EncerramentoAvaliacao {
                 $matriculas = $oMatricula->getTurma()->getAlunosMatriculados();
                 $oEtapa = $oMatricula->getEtapaDeOrigem();
 
-                $codigoAlunos = implode(',', array_map(function ($matricula) {
-                    return $matricula->getAluno()->getCodigoAluno();
-                }, $matriculas));
+                $codigoAlunos = implode(',', array_map(fn($matricula) => $matricula->getAluno()->getCodigoAluno(), $matriculas));
 
                 $daoHistoricos = new cl_historico();
                 $sqlHistoricos = $daoHistoricos->sql_query(
@@ -1226,7 +1224,7 @@ class EncerramentoAvaliacao {
     if (EncerramentoAvaliacao::permiteAprovacaoParcial($oTurma, $oEtapa) && $sResultadoFinal != "R") {
       $sResultadoFinal = EncerramentoAvaliacao::validaDiarioAlunoEja($oMatricula, $oEtapa);
     }
-    $aControleEtapasEncerradas = array();
+    $aControleEtapasEncerradas = [];
 
     /**
      * Em turmas de EJA que permitem a situação (APROVADO PARCIAL) não devemos gerar histórico para
@@ -1644,7 +1642,7 @@ class EncerramentoAvaliacao {
     $sNomeAluno .= "{$oMatricula->getAluno()->getNome()}.";
 
     $iCodigoEtapa  = $oEtapa->getCodigo();
-    $aCodigoEtapas = array();
+    $aCodigoEtapas = [];
 
     foreach ($oTurma->getEtapas() as $oEtapaTurma) {
 
@@ -1666,7 +1664,7 @@ class EncerramentoAvaliacao {
      * Itera sobre as disciplinas da turma para
      * Deletar do histório os vinculos das disciplinas para a(as) Etapa(as)
      */
-    $aHistoricos = array();
+    $aHistoricos = [];
     foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia) {
 
       $sWhereDisciplina  = $sWhereHistMps;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procandam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocandam = new cl_procandam;
 $clprocandam->rotulo->label("p61_codandam");
 $clprocandam->rotulo->label("p61_codandam");
@@ -54,7 +55,7 @@ $clprocandam->rotulo->label("p61_codandam");
               <?=$Lp61_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p61_codandam",0,$Ip61_codandam,true,"text",4,"","chave_p61_codandam");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprocandam->rotulo->label("p61_codandam");
               <?=$Lp61_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p61_codandam",0,$Ip61_codandam,true,"text",4,"","chave_p61_codandam");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprocandam->rotulo->label("p61_codandam");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "procandam.*";
@@ -114,14 +115,14 @@ $clprocandam->rotulo->label("p61_codandam");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p61_codandam.focus();
 document.form2.chave_p61_codandam.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

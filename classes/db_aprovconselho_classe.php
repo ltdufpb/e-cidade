@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE aprovconselho
 class cl_aprovconselho {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed253_i_codigo = 0;
-   var $ed253_i_diario = 0;
-   var $ed253_i_rechumano = null;
-   var $ed253_i_usuario = 0;
-   var $ed253_t_obs = null;
-   var $ed253_i_data = 0;
-   var $ed253_aprovconselhotipo = 0;
-   var $ed253_alterarnotafinal = null;
-   var $ed253_avaliacaoconselho = null;
+   public $ed253_i_codigo = 0;
+   public $ed253_i_diario = 0;
+   public $ed253_i_rechumano = null;
+   public $ed253_i_usuario = 0;
+   public $ed253_t_obs = null;
+   public $ed253_i_data = 0;
+   public $ed253_aprovconselhotipo = 0;
+   public $ed253_alterarnotafinal = null;
+   public $ed253_avaliacaoconselho = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed253_i_codigo = int8 = Código 
                  ed253_i_diario = int8 = Diário 
                  ed253_i_rechumano = int8 = Professor 
@@ -64,10 +64,10 @@ class cl_aprovconselho {
                  ed253_avaliacaoconselho = varchar(10) = Avaliação do Conselho 
                  ";
    //funcao construtor da classe
-   function cl_aprovconselho() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aprovconselho");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -158,10 +158,10 @@ class cl_aprovconselho {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed253_i_codigo = pg_result($result,0,0);
+       $this->ed253_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from aprovconselho_ed253_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed253_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed253_i_codigo)){
          $this->erro_sql = " Campo ed253_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -205,7 +205,7 @@ class cl_aprovconselho {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Alunos aprovados pelo conselho ($this->ed253_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Alunos aprovados pelo conselho já Cadastrado";
@@ -234,18 +234,18 @@ class cl_aprovconselho {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12464,'$this->ed253_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2175,12464,'','".AddSlashes(pg_result($resaco,0,'ed253_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,12465,'','".AddSlashes(pg_result($resaco,0,'ed253_i_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,12466,'','".AddSlashes(pg_result($resaco,0,'ed253_i_rechumano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,12467,'','".AddSlashes(pg_result($resaco,0,'ed253_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,12469,'','".AddSlashes(pg_result($resaco,0,'ed253_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,12468,'','".AddSlashes(pg_result($resaco,0,'ed253_i_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,19621,'','".AddSlashes(pg_result($resaco,0,'ed253_aprovconselhotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,20683,'','".AddSlashes(pg_result($resaco,0,'ed253_alterarnotafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2175,20684,'','".AddSlashes(pg_result($resaco,0,'ed253_avaliacaoconselho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,12464,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,12465,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_i_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,12466,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_i_rechumano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,12467,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,12469,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,12468,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_i_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,19621,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_aprovconselhotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,20683,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_alterarnotafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2175,20684,'','".AddSlashes(pg_fetch_result($resaco,0,'ed253_avaliacaoconselho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -255,10 +255,10 @@ class cl_aprovconselho {
       $this->atualizacampos();
      $sql = " update aprovconselho set ";
      $virgula = "";
-     if(trim($this->ed253_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_codigo"])){
+     if(trim((string) $this->ed253_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_codigo"])){
        $sql  .= $virgula." ed253_i_codigo = $this->ed253_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed253_i_codigo) == null ){
+       if(trim((string) $this->ed253_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed253_i_codigo";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_aprovconselho {
          return false;
        }
      }
-     if(trim($this->ed253_i_diario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_diario"])){
+     if(trim((string) $this->ed253_i_diario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_diario"])){
        $sql  .= $virgula." ed253_i_diario = $this->ed253_i_diario ";
        $virgula = ",";
-       if(trim($this->ed253_i_diario) == null ){
+       if(trim((string) $this->ed253_i_diario) == null ){
          $this->erro_sql = " Campo Diário nao Informado.";
          $this->erro_campo = "ed253_i_diario";
          $this->erro_banco = "";
@@ -281,17 +281,17 @@ class cl_aprovconselho {
          return false;
        }
      }
-     if(trim($this->ed253_i_rechumano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_rechumano"])){
-        if(trim($this->ed253_i_rechumano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_rechumano"])){
+     if(trim((string) $this->ed253_i_rechumano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_rechumano"])){
+        if(trim((string) $this->ed253_i_rechumano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_rechumano"])){
            $this->ed253_i_rechumano = "null" ;
         }
        $sql  .= $virgula." ed253_i_rechumano = $this->ed253_i_rechumano ";
        $virgula = ",";
      }
-     if(trim($this->ed253_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_usuario"])){
+     if(trim((string) $this->ed253_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_usuario"])){
        $sql  .= $virgula." ed253_i_usuario = $this->ed253_i_usuario ";
        $virgula = ",";
-       if(trim($this->ed253_i_usuario) == null ){
+       if(trim((string) $this->ed253_i_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "ed253_i_usuario";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_aprovconselho {
          return false;
        }
      }
-     if(trim($this->ed253_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_t_obs"])){
+     if(trim((string) $this->ed253_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_t_obs"])){
        $sql  .= $virgula." ed253_t_obs = '$this->ed253_t_obs' ";
        $virgula = ",";
-       if(trim($this->ed253_t_obs) == null ){
+       if(trim((string) $this->ed253_t_obs) == null ){
          $this->erro_sql = " Campo Justificativa nao Informado.";
          $this->erro_campo = "ed253_t_obs";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_aprovconselho {
          return false;
        }
      }
-     if(trim($this->ed253_i_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_data"])){
+     if(trim((string) $this->ed253_i_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_data"])){
        $sql  .= $virgula." ed253_i_data = $this->ed253_i_data ";
        $virgula = ",";
-       if(trim($this->ed253_i_data) == null ){
+       if(trim((string) $this->ed253_i_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "ed253_i_data";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_aprovconselho {
          return false;
        }
      }
-     if(trim($this->ed253_aprovconselhotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_aprovconselhotipo"])){
+     if(trim((string) $this->ed253_aprovconselhotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_aprovconselhotipo"])){
        $sql  .= $virgula." ed253_aprovconselhotipo = $this->ed253_aprovconselhotipo ";
        $virgula = ",";
-       if(trim($this->ed253_aprovconselhotipo) == null ){
+       if(trim((string) $this->ed253_aprovconselhotipo) == null ){
          $this->erro_sql = " Campo Tipo de Aprovação nao Informado.";
          $this->erro_campo = "ed253_aprovconselhotipo";
          $this->erro_banco = "";
@@ -340,14 +340,14 @@ class cl_aprovconselho {
          return false;
        }
      }
-     if(trim($this->ed253_alterarnotafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_alterarnotafinal"])){
-        if(trim($this->ed253_alterarnotafinal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed253_alterarnotafinal"])){
+     if(trim((string) $this->ed253_alterarnotafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_alterarnotafinal"])){
+        if(trim((string) $this->ed253_alterarnotafinal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed253_alterarnotafinal"])){
            $this->ed253_alterarnotafinal = "null" ;
         }
        $sql  .= $virgula." ed253_alterarnotafinal = $this->ed253_alterarnotafinal ";
        $virgula = ",";
      }
-     if(trim($this->ed253_avaliacaoconselho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_avaliacaoconselho"])){
+     if(trim((string) $this->ed253_avaliacaoconselho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed253_avaliacaoconselho"])){
        $sql  .= $virgula." ed253_avaliacaoconselho = '$this->ed253_avaliacaoconselho' ";
        $virgula = ",";
      }
@@ -365,27 +365,27 @@ class cl_aprovconselho {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,12464,'$this->ed253_i_codigo','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_codigo"]) || $this->ed253_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2175,12464,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_i_codigo'))."','$this->ed253_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,12464,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_i_codigo'))."','$this->ed253_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_diario"]) || $this->ed253_i_diario != "")
-             $resac = db_query("insert into db_acount values($acount,2175,12465,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_i_diario'))."','$this->ed253_i_diario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,12465,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_i_diario'))."','$this->ed253_i_diario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_rechumano"]) || $this->ed253_i_rechumano != "")
-             $resac = db_query("insert into db_acount values($acount,2175,12466,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_i_rechumano'))."','$this->ed253_i_rechumano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,12466,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_i_rechumano'))."','$this->ed253_i_rechumano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_usuario"]) || $this->ed253_i_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,2175,12467,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_i_usuario'))."','$this->ed253_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,12467,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_i_usuario'))."','$this->ed253_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_t_obs"]) || $this->ed253_t_obs != "")
-             $resac = db_query("insert into db_acount values($acount,2175,12469,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_t_obs'))."','$this->ed253_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,12469,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_t_obs'))."','$this->ed253_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_i_data"]) || $this->ed253_i_data != "")
-             $resac = db_query("insert into db_acount values($acount,2175,12468,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_i_data'))."','$this->ed253_i_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,12468,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_i_data'))."','$this->ed253_i_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_aprovconselhotipo"]) || $this->ed253_aprovconselhotipo != "")
-             $resac = db_query("insert into db_acount values($acount,2175,19621,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_aprovconselhotipo'))."','$this->ed253_aprovconselhotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,19621,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_aprovconselhotipo'))."','$this->ed253_aprovconselhotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_alterarnotafinal"]) || $this->ed253_alterarnotafinal != "")
-             $resac = db_query("insert into db_acount values($acount,2175,20683,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_alterarnotafinal'))."','$this->ed253_alterarnotafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,20683,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_alterarnotafinal'))."','$this->ed253_alterarnotafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed253_avaliacaoconselho"]) || $this->ed253_avaliacaoconselho != "")
-             $resac = db_query("insert into db_acount values($acount,2175,20684,'".AddSlashes(pg_result($resaco,$conresaco,'ed253_avaliacaoconselho'))."','$this->ed253_avaliacaoconselho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2175,20684,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed253_avaliacaoconselho'))."','$this->ed253_avaliacaoconselho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -439,18 +439,18 @@ class cl_aprovconselho {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,12464,'$ed253_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2175,12464,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,12465,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_i_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,12466,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_i_rechumano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,12467,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,12469,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,12468,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_i_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,19621,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_aprovconselhotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,20683,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_alterarnotafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2175,20684,'','".AddSlashes(pg_result($resaco,$iresaco,'ed253_avaliacaoconselho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,12464,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,12465,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_i_diario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,12466,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_i_rechumano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,12467,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,12469,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,12468,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_i_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,19621,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_aprovconselhotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,20683,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_alterarnotafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2175,20684,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed253_avaliacaoconselho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -511,7 +511,7 @@ class cl_aprovconselho {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aprovconselho";
@@ -565,7 +565,7 @@ class cl_aprovconselho {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -599,7 +599,7 @@ class cl_aprovconselho {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,7 +633,7 @@ class cl_aprovconselho {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

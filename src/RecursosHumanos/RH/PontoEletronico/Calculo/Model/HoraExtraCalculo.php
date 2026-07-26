@@ -125,7 +125,7 @@ class HoraExtraCalculo extends HoraExtra
     /**
      * @var HoraExtraArtefato[]
      */
-    private $horasCalculadas = array();
+    private $horasCalculadas = [];
 
     /**
      * HoraExtraCalculo constructor.
@@ -791,12 +791,12 @@ class HoraExtraCalculo extends HoraExtra
             \DateTime::createFromFormat('Y-m-d H:i', $diaTrabalho->getData()->getDate() . ' 00:00')
         );
 
-        $this->logger->debug("-- Horas Extras 50.................: " . ($diaTrabalho->getHorasExtra50() ? $diaTrabalho->getHorasExtra50() : ''));
-        $this->logger->debug("-- Horas Extras 75.................: " . ($diaTrabalho->getHorasExtra75() ? $diaTrabalho->getHorasExtra75() : ''));
-        $this->logger->debug("-- Horas Extras 100................: " . ($diaTrabalho->getHorasExtra100() ? $diaTrabalho->getHorasExtra100() : ''));
-        $this->logger->debug("-- Horas Extras 50 Noturna.........: " . ($diaTrabalho->getHorasExtra50Noturna() ? $diaTrabalho->getHorasExtra50Noturna() : ''));
-        $this->logger->debug("-- Horas Extras 75 Noturna.........: " . ($diaTrabalho->getHorasExtra75Noturna() ? $diaTrabalho->getHorasExtra75Noturna() : ''));
-        $this->logger->debug("-- Horas Extras 100 Noturna........: " . ($diaTrabalho->getHorasExtra100Noturna() ? $diaTrabalho->getHorasExtra100Noturna() : ''));
+        $this->logger->debug("-- Horas Extras 50.................: " . ($diaTrabalho->getHorasExtra50() ?: ''));
+        $this->logger->debug("-- Horas Extras 75.................: " . ($diaTrabalho->getHorasExtra75() ?: ''));
+        $this->logger->debug("-- Horas Extras 100................: " . ($diaTrabalho->getHorasExtra100() ?: ''));
+        $this->logger->debug("-- Horas Extras 50 Noturna.........: " . ($diaTrabalho->getHorasExtra50Noturna() ?: ''));
+        $this->logger->debug("-- Horas Extras 75 Noturna.........: " . ($diaTrabalho->getHorasExtra75Noturna() ?: ''));
+        $this->logger->debug("-- Horas Extras 100 Noturna........: " . ($diaTrabalho->getHorasExtra100Noturna() ?: ''));
     }
 
 
@@ -805,7 +805,7 @@ class HoraExtraCalculo extends HoraExtra
         $regraCalculoExtra          = new RegraExtraDiaTrabalho($this->getDiaTrabalho());
         $marcacoesParaCalculoLinear = clone $marcacoesNoDia;
         $entradaNoDia               = ($marcacoesParaCalculoLinear->getMarcacaoEntrada1()          ? $marcacoesParaCalculoLinear->getMarcacaoEntrada1()->getMarcacao() : null);
-        $ultimaMarcacao             = ($marcacoesParaCalculoLinear->getUltimaMarcacaoComRegistro() ? $marcacoesParaCalculoLinear->getUltimaMarcacaoComRegistro()       : null);
+        $ultimaMarcacao             = ($marcacoesParaCalculoLinear->getUltimaMarcacaoComRegistro() ?: null);
         $jornada                    = $this->getDiaTrabalho()->getJornada();
 
         if( $entradaNoDia && ($jornada->getHora(MarcacaoPonto::ENTRADA_1)->oHora->getTimestamp() < $entradaNoDia->getTimestamp()) ) {
@@ -827,14 +827,14 @@ class HoraExtraCalculo extends HoraExtra
         $horasExtrasCalculadas           = $regraCalculoExtra->getHorasExtras();
         $tiposHorasExtrasNaoAutorizadas  = array_keys($horasExtrasNaoAutorizadas);
         $tiposHorasCalculadas            = array_keys($horasExtrasCalculadas);
-        $tiposHorasNaoCalculadas         = (array_diff(array(
+        $tiposHorasNaoCalculadas         = (array_diff([
              BaseHora::HORAS_EXTRA50
             ,BaseHora::HORAS_EXTRA50_NOTURNA
             ,BaseHora::HORAS_EXTRA75
             ,BaseHora::HORAS_EXTRA75_NOTURNA
             ,BaseHora::HORAS_EXTRA100
             ,BaseHora::HORAS_EXTRA100_NOTURNA            
-        ), $tiposHorasCalculadas));
+        ], $tiposHorasCalculadas));
 
         if(is_array($tiposHorasNaoCalculadas) && !empty($tiposHorasNaoCalculadas)) {
 
@@ -843,14 +843,14 @@ class HoraExtraCalculo extends HoraExtra
             }
         }
 
-        $tiposHorasNaoAutorizadasFaltantes = (array_diff(array(
+        $tiposHorasNaoAutorizadasFaltantes = (array_diff([
              BaseHora::HORAS_EXTRA50_NAO_AUTORIZADAS
             ,BaseHora::HORAS_EXTRA50_NAO_AUTORIZADAS_NOTURNA
             ,BaseHora::HORAS_EXTRA75_NAO_AUTORIZADAS
             ,BaseHora::HORAS_EXTRA75_NAO_AUTORIZADAS_NOTURNA
             ,BaseHora::HORAS_EXTRA100_NAO_AUTORIZADAS
             ,BaseHora::HORAS_EXTRA100_NAO_AUTORIZADAS_NOTURNA
-        ), $tiposHorasExtrasNaoAutorizadas));
+        ], $tiposHorasExtrasNaoAutorizadas));
 
         if(is_array($tiposHorasNaoAutorizadasFaltantes) && !empty($tiposHorasNaoAutorizadasFaltantes)) {
 
@@ -931,16 +931,16 @@ class HoraExtraCalculo extends HoraExtra
             }
         }
                     
-        $this->getDiaTrabalho()->setHorasExtraNaoAutorizadas(array_sum(array(
+        $this->getDiaTrabalho()->setHorasExtraNaoAutorizadas(array_sum([
              $horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA50_NAO_AUTORIZADAS]
             ,$horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA75_NAO_AUTORIZADAS]
             ,$horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA100_NAO_AUTORIZADAS]
-        )));
+        ]));
 
-        $this->getDiaTrabalho()->setHorasExtraNaoAutorizadasNoturna(array_sum(array(
+        $this->getDiaTrabalho()->setHorasExtraNaoAutorizadasNoturna(array_sum([
              $horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA50_NAO_AUTORIZADAS_NOTURNA]
             ,$horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA75_NAO_AUTORIZADAS_NOTURNA]
             ,$horasExtrasNaoAutorizadas[BaseHora::HORAS_EXTRA100_NAO_AUTORIZADAS_NOTURNA]
-        )));
+        ]));
     }
 }

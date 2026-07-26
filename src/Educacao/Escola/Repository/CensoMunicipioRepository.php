@@ -52,7 +52,7 @@ class CensoMunicipioRepository extends Repository
             throw new Exception("Erro ao buscar das Cidades.");
         }
 
-        $municipios = array();
+        $municipios = [];
         while ($state = pg_fetch_array($rs)) {
             $municipios[] = CensoMunicipio::fromState($state);
         }
@@ -103,7 +103,7 @@ class CensoMunicipioRepository extends Repository
      */
     public function scopeNome($nome)
     {
-        $this->scopes['nome'] = sprintf("trim(ed261_c_nome) = '%s'", trim($nome));
+        $this->scopes['nome'] = sprintf("trim(ed261_c_nome) = '%s'", trim((string) $nome));
         return $this;
     }
 }

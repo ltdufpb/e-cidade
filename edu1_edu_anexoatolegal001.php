@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_edu_anexoatolegal_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoAtoLegal      = db_utils::getdao('atolegal');
 $oDaoAnexoAtoLegal = db_utils::getdao('edu_anexoatolegal');
@@ -48,8 +48,8 @@ function validaNomeArquivo($sNome) {
 
   $sNome       = TiraAcento($sNome);
 
-  $aCaracteres = array(" ", "[", "]", "{", "}", "*", "/", "&",
-                       "\\", "$", "%", "#", "@", "!", "'");
+  $aCaracteres = [" ", "[", "]", "{", "}", "*", "/", "&",
+                       "\\", "$", "%", "#", "@", "!", "'"];
   $sNome       = str_replace($aCaracteres, "_", $sNome);
 
   return $sNome;
@@ -112,7 +112,7 @@ if (isset($incluir)) {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     
-    <?
+    <?php 
       $sLib  = "scripts.js,prototype.js,webseller.js,strings.js,datagrid.widget.js,grid.style.css,";
       db_app::load($sLib);
     ?>
@@ -125,7 +125,7 @@ if (isset($incluir)) {
         <tr> 
           <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
             <center>
-	            <?
+	            <?php 
 	              include(modification("forms/db_frmedu_anexoatolegal.php"));
 	            ?>
             </center>
@@ -140,7 +140,7 @@ if (isset($incluir)) {
   js_tabulacaoforms("form1", "ed292_atolegal", true, 1, "ed292_atolegal", true);
 </script>
 
-<?
+<?php 
 
 if (isset($incluir)) {
 

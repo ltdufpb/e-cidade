@@ -38,7 +38,7 @@ class TurmaCensoVo
      * Turmas que foram unidas a essa pelo fato de serem multietapa
      * @var Array
      */
-    private $codigosTurmasVinculadas = array();
+    private $codigosTurmasVinculadas = [];
 
 
     private $codigoTurma;
@@ -69,18 +69,18 @@ class TurmaCensoVo
      */
     private $escola;
 
-    private $diasSemana = array();
+    private $diasSemana = [];
 
     private $escolarizacao = false;
     private $atividadeComplementar = false;
     private $atendimentoAEE = false;
 
-    private $atividadesComplementar = array();
+    private $atividadesComplementar = [];
 
     /**
      * @var TurmaCensoDisciplinaVO[]
      */
-    private $disciplinas = array();
+    private $disciplinas = [];
     private $turmaUnificada = false;
 
     private $horaInicio;

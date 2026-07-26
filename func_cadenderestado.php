@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadenderestado_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcadenderestado = new cl_cadenderestado;
 $clcadenderestado->rotulo->label("db71_sequencial");
 $clcadenderestado->rotulo->label("db71_descricao");
@@ -54,7 +55,7 @@ $clcadenderestado->rotulo->label("db71_descricao");
               <?=$Ldb71_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db71_sequencial",10,$Idb71_sequencial,true,"text",4,"","chave_db71_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcadenderestado->rotulo->label("db71_descricao");
               <?=$Ldb71_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db71_descricao",40,$Idb71_descricao,true,"text",4,"","chave_db71_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcadenderestado->rotulo->label("db71_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadenderestado.php")==true){
@@ -122,12 +123,12 @@ $clcadenderestado->rotulo->label("db71_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

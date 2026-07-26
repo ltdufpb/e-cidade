@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,28 +39,28 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme04_i_codigo?>
   </td>
   <td>
-   <?db_input('me04_i_codigo',10,$Ime04_i_codigo,true,'text',3,"")?>
+   <?php db_input('me04_i_codigo',10,$Ime04_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme04_i_cardapio?>">
-   <?db_ancora(@$Lme04_i_cardapio,"",3);?>
+   <?php db_ancora(@$Lme04_i_cardapio,"",3);?>
   </td>
   <td>
-   <?db_input('me04_i_cardapio',10,$Ime04_i_cardapio,true,'text',3,"")?>
-   <?db_input('me01_c_nome',40,@$Ime01_c_nome,true,'text',3,'')?>
+   <?php db_input('me04_i_cardapio',10,$Ime04_i_cardapio,true,'text',3,"")?>
+   <?php db_input('me01_c_nome',40,@$Ime01_c_nome,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
    <td nowrap title="<?=@$Tme04_i_nutricionista?>">
-    <?db_ancora(@$Lme04_i_nutricionista,"js_pesquisame04_i_nutricionistacardapio(true);",$db_opcao);?>
+    <?php db_ancora(@$Lme04_i_nutricionista,"js_pesquisame04_i_nutricionistacardapio(true);",$db_opcao);?>
    </td>
    <td>
-    <?db_input('me04_i_nutricionista',10,$Ime04_i_nutricionista,true,'text',$db_opcao,
+    <?php db_input('me04_i_nutricionista',10,$Ime04_i_nutricionista,true,'text',$db_opcao,
                " onchange='js_pesquisame04_i_nutricionistacardapio(false);'"
               )
     ?>
-    <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+    <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
    </td>
  </tr>
 </table>
@@ -76,7 +76,7 @@ $clrotulo->label("me01_i_codigo");
        onclick="js_cancela();" 
        <?=($db_botao==false?"disabled":"")?> >
 <br><br>
-<?
+<?php 
   $chavepri= array( "me02_i_codigo"=>@$me02_i_codigo,
                     "me02_i_cgm"=>@$me02_i_cgm,
                     "me02_c_crn"=>@$me02_c_crn

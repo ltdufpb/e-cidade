@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $ed31_c_ativo = '';
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory( $_POST );
 
 $iModulo = db_getsession('DB_modulo');
@@ -71,7 +71,7 @@ if( !isset( $excluir ) && isset( $chavepesquisa ) ) {
              ensino.*";
   $result = $clbase->sql_record( $clbase->sql_query_base2( "", $campos, "", "ed31_i_codigo = {$chavepesquisa}" ) );
 
-  echo pg_errormessage();
+  echo pg_last_error();
   db_fieldsmemory( $result, 0 );
   $db_botao = true;
 }

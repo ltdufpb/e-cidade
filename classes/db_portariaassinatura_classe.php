@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE portariaassinatura
 class cl_portariaassinatura { 
@@ -28,7 +28,7 @@ class cl_portariaassinatura {
                  rh136_amparo = text = Amparo Legal 
                  ";
    //funcao construtor da classe 
-   function cl_portariaassinatura() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("portariaassinatura"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

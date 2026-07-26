@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($HTTP_POST_VARS);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clturma               = new cl_turma;
 $clmatricula           = new cl_matricula;
@@ -85,7 +86,7 @@ if (!empty($oProximaEtapa) && $ed10_i_codigo != $oProximaEtapa->getEnsino()->get
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    /**
     * Na Classificacao, os Alunos pode ser matriculados qualquer etapa posterior a da matrícula atual.
     * no avanço, os alunos apenas podem ser colocados na próxima Etapa do ensino.

@@ -36,7 +36,7 @@
      * Collection de TipoFamiliar
      * @var array
      */
-    private $aTipos = array();
+    private $aTipos = [];
 
     /**
      * Instancia da classe
@@ -58,7 +58,7 @@
      */
     public static function getTipoFamiliarByCodigo($iCodigoTipoFamiliar) {
 
-      if (!array_key_exists($iCodigoTipoFamiliar, TipoFamiliarRepository::getInstance()->aTipos)) {
+      if (!array_key_exists((string) $iCodigoTipoFamiliar, TipoFamiliarRepository::getInstance()->aTipos)) {
         TipoFamiliarRepository::getInstance()->aTipos[$iCodigoTipoFamiliar] = new TipoFamiliar($iCodigoTipoFamiliar);
       }
       return TipoFamiliarRepository::getInstance()->aTipos[$iCodigoTipoFamiliar];
@@ -84,7 +84,7 @@
      */
     public static function adicionarTipoFamiliar(TipoFamiliar $oTipoFamiliar) {
 
-      if(!array_key_exists($oTipoFamiliar->getCodigo(), TipoFamiliarRepository::getInstance()->aTipos)) {
+      if(!array_key_exists((string) $oTipoFamiliar->getCodigo(), TipoFamiliarRepository::getInstance()->aTipos)) {
         TipoFamiliarRepository::getInstance()->aTipos[$oTipoFamiliar->getCodigo()] = $oTipoFamiliar;
       }
       return true;
@@ -99,7 +99,7 @@
        /**
         *
         */
-      if (array_key_exists($oTipoFamiliar->getCodigo(), TipoFamiliarRepository::getInstance()->aTipos)) {
+      if (array_key_exists((string) $oTipoFamiliar->getCodigo(), TipoFamiliarRepository::getInstance()->aTipos)) {
         unset(TipoFamiliarRepository::getInstance()->aTipos[$oTipoFamiliar->getCodigo()]);
       }
       return true;

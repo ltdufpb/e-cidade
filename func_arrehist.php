@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_arrehist_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clarrehist = new cl_arrehist;
 $clarrehist->rotulo->label("k00_idhist");
 $clarrehist->rotulo->label("k00_numpre");
@@ -54,7 +55,7 @@ $clarrehist->rotulo->label("k00_numpre");
               <?=$Lk00_idhist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k00_idhist",6,$Ik00_idhist,true,"text",4,"","chave_k00_idhist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clarrehist->rotulo->label("k00_numpre");
               <?=$Lk00_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k00_numpre",8,$Ik00_numpre,true,"text",4,"","chave_k00_numpre");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clarrehist->rotulo->label("k00_numpre");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_arrehist.php")==true){
@@ -118,12 +119,12 @@ $clarrehist->rotulo->label("k00_numpre");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

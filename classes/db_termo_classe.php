@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -109,7 +109,7 @@ class cl_termo {
                  v07_vlrdes = float8 = Valor Desconto 
                  ";
    //funcao construtor da classe
-   function cl_termo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("termo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

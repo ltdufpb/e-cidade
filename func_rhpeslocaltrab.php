@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpeslocaltrab_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhpeslocaltrab = new cl_rhpeslocaltrab;
 $clrhpeslocaltrab->rotulo->label("rh56_seq");
 $clrhpeslocaltrab->rotulo->label("rh56_seqpes");
@@ -54,7 +55,7 @@ $clrhpeslocaltrab->rotulo->label("rh56_seqpes");
               <?=$Lrh56_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh56_seq",6,$Irh56_seq,true,"text",4,"","chave_rh56_seq");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhpeslocaltrab->rotulo->label("rh56_seqpes");
               <?=$Lrh56_seqpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh56_seqpes",6,$Irh56_seqpes,true,"text",4,"","chave_rh56_seqpes");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhpeslocaltrab->rotulo->label("rh56_seqpes");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpeslocaltrab.php")==true){
@@ -122,12 +123,12 @@ $clrhpeslocaltrab->rotulo->label("rh56_seqpes");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

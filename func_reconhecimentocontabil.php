@@ -34,7 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_reconhecimentocontabil_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clreconhecimentocontabil = new cl_reconhecimentocontabil;
 $clreconhecimentocontabil->rotulo->label();
@@ -61,7 +62,7 @@ $oGet = db_utils::postMemory($_GET);
               <?=$Lc112_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c112_sequencial",10,$Ic112_sequencial,true,"text",4,"","chave_c112_sequencial");
 		       ?>
             </td>

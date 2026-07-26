@@ -86,7 +86,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
    * Dados do cabeçalho separado por disciplina
    * @var array
    */
-  private $aCabecalhoSegundaPagina = array();
+  private $aCabecalhoSegundaPagina = [];
 
   private $iLarguraColunaNota = 15;
 
@@ -205,7 +205,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
     $sDescricaoLegenda['S']  = "S - Sexo";
     $sDescricaoLegenda['FA'] = "FA - Faltas Abonadas";
 
-    $aLegendasImprimir = array();
+    $aLegendasImprimir = [];
 
     foreach ($aLegendas as $sLegenda => $lLeganda) {
 
@@ -361,7 +361,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
   private function getAvaliacoesTurma() {
 
     $oProcedimentoAvaliacao    = $this->oTurma->getProcedimentoDeAvaliacaoDaEtapa($this->oEtapa);
-    $aAvaliacaoTurma           = array();
+    $aAvaliacaoTurma           = [];
 
     foreach ($oProcedimentoAvaliacao->getAvaliacoes() as $oAvaliacao ) {
 

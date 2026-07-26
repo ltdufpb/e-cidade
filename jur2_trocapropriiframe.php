@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -138,7 +138,7 @@ function js_gera(){
 <b>Proprietários:</b>      
 </td>
 </tr>
-<?
+<?php 
 $resultini = $clinicialnomes->sql_record($clinicialnomes->sql_query($inicial,"","v58_numcgm","z01_nome")); 
 $numrows = $clinicialnomes->numrows;
 $numini="";

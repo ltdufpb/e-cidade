@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbo = new cl_bo;
 $clbo->rotulo->label("bo01_codbo");
 $clbo->rotulo->label("bo01_numcgm");
@@ -54,7 +55,7 @@ $clbo->rotulo->label("bo01_numcgm");
               <?=$Lbo01_codbo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo01_codbo",6,$Ibo01_codbo,true,"text",4,"","chave_bo01_codbo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbo->rotulo->label("bo01_numcgm");
               <?=$Lbo01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo01_numcgm",10,$Ibo01_numcgm,true,"text",4,"","chave_bo01_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbo->rotulo->label("bo01_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bo.php")==true){
@@ -118,12 +119,12 @@ $clbo->rotulo->label("bo01_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

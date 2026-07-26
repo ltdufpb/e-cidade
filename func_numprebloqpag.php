@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_numprebloqpag_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clnumprebloqpag = new cl_numprebloqpag;
 $clnumprebloqpag->rotulo->label("ar22_sequencial");
 $clnumprebloqpag->rotulo->label("ar22_numpre");
@@ -55,7 +56,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
               <?=$Lar22_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ar22_sequencial",10,$Iar22_sequencial,true,"text",4,"","chave_ar22_sequencial");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
               <?=$Lar22_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ar22_numpre",10,$Iar22_numpre,true,"text",4,"","chave_ar22_numpre");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
               <?=$Lar22_numpar?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
            db_input("ar22_numpar",10,$Iar22_numpar,true,"text",4,"","chave_ar22_numpar");
            ?>
             </td>
@@ -93,7 +94,7 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_numprebloqpag.php")==true){
@@ -149,12 +150,12 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

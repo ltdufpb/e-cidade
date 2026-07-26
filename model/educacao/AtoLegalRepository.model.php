@@ -34,7 +34,7 @@
 
 class AtoLegalRepository {
 
-  private $aAtoLegal = array();
+  private $aAtoLegal = [];
   private static $oInstance;
 
   private function __construct() {
@@ -123,7 +123,7 @@ class AtoLegalRepository {
     $rsAtoEscola   = $oDaoAtoEscola->sql_record($sSqlAtoEscola);
     $iLinhas       = $oDaoAtoEscola->numrows;
     
-    $aAtosLegais = array();
+    $aAtosLegais = [];
     
     for ($i = 0; $i < $iLinhas; $i++) {
       $aAtosLegais[] = AtoLegalRepository::getInstance()->getAtoLegalByCodigo(db_utils::fieldsMemory($rsAtoEscola, $i)->ed19_i_ato); 

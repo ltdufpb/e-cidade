@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,11 +53,11 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1"=>"Dias da Semana","a2"=>"Dias Letivos");
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"25");
-   $clcriaabas->src        = array("a1"=>"edu1_diasemana001.php","a2"=>"edu1_dialetivo001.php");
+   $clcriaabas->identifica = ["a1"=>"Dias da Semana","a2"=>"Dias Letivos"];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"25"];
+   $clcriaabas->src        = ["a1"=>"edu1_diasemana001.php","a2"=>"edu1_dialetivo001.php"];
    //$clcriaabas->disabled   = array("a2"=>"true");
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->cria_abas();
@@ -66,6 +66,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

@@ -34,6 +34,7 @@
  */
 class TransferenciaBancaria extends Transferencia {
 
+  #[\Override]
   public function salvar () {
 
   	parent::salvar();
@@ -44,6 +45,7 @@ class TransferenciaBancaria extends Transferencia {
    * Anula o slip
    * @see Transferencia::anular()
    */
+  #[\Override]
   public function anular($sMotivo) {
     parent::anular($sMotivo);
   }

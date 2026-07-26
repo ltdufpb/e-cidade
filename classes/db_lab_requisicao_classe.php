@@ -80,7 +80,7 @@ class cl_lab_requisicao {
                  la22_c_contato = char(50) = Contato: 
                  ";
    //funcao construtor da classe
-   function cl_lab_requisicao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_requisicao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

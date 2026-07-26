@@ -43,6 +43,7 @@ class MarcacaoPontoSaida extends MarcacaoPonto
      */
     private $oMarcacaoEntrada;
 
+    #[\Override]
     public function __clone()
     {
         parent::__clone();
@@ -94,6 +95,7 @@ class MarcacaoPontoSaida extends MarcacaoPonto
         return $retorno;
     }
 
+    #[\Override]
     public function isMarcacaoSaida()
     {
         return true;

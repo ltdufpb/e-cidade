@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,12 +66,12 @@ $clrotulo->label("e54_autori");
   <tr> 
     <td  align="left" nowrap title="<?=$Te54_autori?>">
     <b>
-    <?db_ancora(@$Le54_autori,"js_pesquisa_autori(true);",1); ?>
+    <?php db_ancora(@$Le54_autori,"js_pesquisa_autori(true);",1); ?>
     </b> 
     </td>
     
     <td align="left" nowrap>
-      <? 
+      <?php  
       db_input("e54_autori",8,$Ie54_autori,true,"text",4,"onchange='js_pesquisa_autori(false);'");
       
          ?></td>
@@ -88,7 +88,7 @@ $clrotulo->label("e54_autori");
 
   </form>
     </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

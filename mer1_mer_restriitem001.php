@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,7 +110,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Itens com Restrição</b></legend>
-    <?include(modification("forms/db_frmmer_restriitem.php"));?>
+    <?php include(modification("forms/db_frmmer_restriitem.php"));?>
    </fieldset>
   </td>
  </tr>
@@ -121,7 +121,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me25_i_alimento",true,1,"me25_i_alimento",true);
 </script>
-<?
+<?php 
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 	
   if ($clmer_restriitem->erro_status=="0") {

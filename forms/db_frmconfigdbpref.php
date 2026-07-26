@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,7 +41,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_instit?>
     </td>
     <td> 
-	  <?
+	  <?php 
 	   db_input('w13_instit',10,$Iw13_instit,true,'text',3,"");
 	  ?>
     </td>
@@ -51,7 +51,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_liberaatucgm?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_liberaatucgm");
 		  db_select('w13_liberaatucgm',$x,true,$db_opcao,"");
 		?>
@@ -62,7 +62,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_liberapedsenha?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_liberapedsenha"); 
 		  db_select('w13_liberapedsenha',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -73,7 +73,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_permfornsemlog?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_permfornsemlog");
 		  db_select('w13_permfornsemlog',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -84,7 +84,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_permvarsemlog?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_permvarsemlog");
 		  db_select('w13_permvarsemlog',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -95,7 +95,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_permconsservdemit?>
     </td>
     <td> 
-    <?
+    <?php 
       $x = getValoresPadroesCampo("w13_permconsservdemit");
       db_select('w13_permconsservdemit',$x,true,$db_opcao,"style='width:110px;;'");
     ?>
@@ -106,7 +106,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_liberaimobiliaria?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_liberaimobiliaria");
 		  db_select('w13_liberaimobiliaria',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -117,7 +117,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_permconscgm?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_permconscgm");
 		  db_select('w13_permconscgm',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -128,7 +128,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_aliqissretido?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_aliqissretido");
 		  db_select('w13_aliqissretido',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -139,7 +139,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_liberaissretido?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_liberaissretido");
 		  db_select('w13_liberaissretido',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -150,7 +150,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_utilizafolha?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_utilizafolha");
 		  db_select('w13_utilizafolha',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -161,7 +161,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_libcertpos?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_libcertpos");
 		  db_select('w13_libcertpos',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -172,7 +172,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_libcarnevariavel?>
     </td>
     <td> 
-		<?
+		<?php 
 	   	  $x = getValoresPadroesCampo("w13_libcarnevariavel");
     	  db_select('w13_libcarnevariavel',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -183,7 +183,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_libsociosdai?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_libsociosdai");
 		  db_select('w13_libsociosdai',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -194,7 +194,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_libissprestado?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = array("f"=>"Não","t"=>"Sim");
 		  $x = getValoresPadroesCampo("w13_libissprestado");
 		  db_select('w13_libissprestado',$x,true,$db_opcao,"style='width:110px;;'");
@@ -207,7 +207,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_liberalancisssemmov?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = array("f"=>"Não","t"=>"Sim");
 		  $x = getValoresPadroesCampo("w13_liberalancisssemmov");
 		  db_select('w13_liberalancisssemmov',$x,true,$db_opcao,"style='width:110px;;'");
@@ -219,7 +219,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_exigecpfcnpjmatricula?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_exigecpfcnpjmatricula");
 		  db_select('w13_exigecpfcnpjmatricula',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -231,7 +231,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_exigecpfcnpjinscricao?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_exigecpfcnpjinscricao");
 		  db_select('w13_exigecpfcnpjinscricao',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -242,7 +242,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_tipocertidao?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_tipocertidao");
 		  db_select('w13_tipocertidao',$x,true,$db_opcao,"style='width:110px;'");
 		?>
@@ -253,7 +253,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_agrupadebrecibos?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_agrupadebrecibos");
 		  db_select('w13_agrupadebrecibos',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -263,7 +263,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_msgaviso ?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_msgaviso");
 		  db_select("w13_msgaviso",$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -274,7 +274,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_liberaescritorios?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_liberaescritorios");
 		  db_select('w13_liberaescritorios',$x,true,$db_opcao,"style='width:360px;'");
 		?>
@@ -285,7 +285,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_regracnd?>
     </td>
     <td> 
-		<?
+		<?php 
 			$aRegraCND = getValoresPadroesCampo("w13_regracnd");
 			db_select('w13_regracnd',$aRegraCND,true,$db_opcao,"style='width:360px;'");
   	?>
@@ -296,7 +296,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_tipocodigocertidao ?>
     </td>
     <td> 
-		<?
+		<?php 
 		  $x = getValoresPadroesCampo("w13_tipocodigocertidao");
 		  db_select("w13_tipocodigocertidao",$x,true,$db_opcao,"style='width:360px;'");
 		?>
@@ -308,7 +308,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_emailadmin?>
     </td>
     <td> 
-		<?
+		<?php 
 		  db_input('w13_emailadmin',50,$Iw13_emailadmin,true,'text',$db_opcao,"");
 		?>
     </td>
@@ -318,7 +318,7 @@ $clconfigdbpref->rotulo->label();
        <?=@$Lw13_uploadarquivos?>
     </td>
     <td> 
-		<?
+		<?php 
 		  db_input('w13_uploadarquivos',50,$Iw13_uploadarquivos,true,'text',$db_opcao,"");
 		?>
     </td>
@@ -359,7 +359,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_configdbpref.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

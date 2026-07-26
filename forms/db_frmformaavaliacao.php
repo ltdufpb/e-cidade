@@ -61,7 +61,7 @@ $oDaoFormaAvaliacao->rotulo->label();
      </td>
      <td>
       <?php
-      $x = array(''=>'','NOTA'=>'NOTA','NIVEL'=>'NIVEL','PARECER'=>'PARECER');
+      $x = [''=>'','NOTA'=>'NOTA','NIVEL'=>'NIVEL','PARECER'=>'PARECER'];
       db_select('ed37_c_tipo',$x,true,$db_opcao1," onchange='js_tiporesultado(this.value)'");
       ?>
      </td>
@@ -76,7 +76,7 @@ $oDaoFormaAvaliacao->rotulo->label();
         </td>
         <td>
          <?php
-         $x = array(''=>'','S'=>'SIM','N'=>'NÃO');
+         $x = [''=>'','S'=>'SIM','N'=>'NÃO'];
          db_select('ed37_c_parecerarmaz',$x,true,$db_opcao,"");
          ?>
         </td>
@@ -106,8 +106,8 @@ $oDaoFormaAvaliacao->rotulo->label();
                 for ($iCont = 0; $iCont < $oDaoFormaAvaliacao->numrows; $iCont++) {
 
                   db_fieldsmemory($rsConceito,$iCont);
-                  $sSelected = trim($ed37_c_minimoaprov) == trim($ed39_c_conceito) ? "selected" : "";
-                  echo "<option value='".trim($ed39_c_conceito)."' {$sSelected} > " .trim($ed39_c_conceito) . "</option>";
+                  $sSelected = trim((string) $ed37_c_minimoaprov) == trim((string) $ed39_c_conceito) ? "selected" : "";
+                  echo "<option value='".trim((string) $ed39_c_conceito)."' {$sSelected} > " .trim((string) $ed39_c_conceito) . "</option>";
                 }
               }
             } else {
@@ -191,7 +191,7 @@ $oDaoFormaAvaliacao->rotulo->label();
 </center>
 </form>
 </div> <!-- Termina a Div que inicia nos fontes 001, 002, 003 nao remover -->
-<?if (@$ed37_c_tipo == "NIVEL") {?>
+<?php if (@$ed37_c_tipo == "NIVEL") {?>
     <center>
     <table width="100%">
      <tr>
@@ -203,7 +203,7 @@ $oDaoFormaAvaliacao->rotulo->label();
      </tr>
     </table>
     </center>
-<?}?>
+<?php }?>
 </center>
 <script>
 
@@ -264,9 +264,9 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_formaavaliacao.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 

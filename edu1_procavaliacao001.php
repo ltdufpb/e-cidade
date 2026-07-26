@@ -41,7 +41,7 @@ $db_opcao  = 1;
 $db_opcao1 = 1;
 $db_botao  = true;
 
-$sPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) ? $_GET['possuiTurmasEncerradas'] : '';
+$sPossuiTurmasEncerradas = $_GET['possuiTurmasEncerradas'] ?? '';
 $lPossuiTurmasEncerradas = $sPossuiTurmasEncerradas === 'S';
 
 try {
@@ -70,7 +70,7 @@ try {
     if( $linhas == 0 ) {
       $max = 0;
     } else {
-      $max = pg_result( $result, $linhas - 1, "ed41_i_sequencia" );
+      $max = pg_fetch_result( $result, $linhas - 1, "ed41_i_sequencia" );
     }
 
     if( $tipoVinculo == "A" ) {
@@ -226,7 +226,7 @@ try {
     <legend>
      <b><?=($db_opcao==1?"Inclusão":($db_opcao==2?"Alteração":"Exclusão"))?> da Avaliação Periódica <?=@$ed09_c_descr?></b>
     </legend>
-    <?include(modification("forms/db_frmprocavaliacao.php"));?>
+    <?php include(modification("forms/db_frmprocavaliacao.php"));?>
    </fieldset>
    </center>
   </td>
@@ -239,7 +239,7 @@ js_tabulacaoforms("form1","ed41_i_formaavaliacao",true,1,"ed41_i_formaavaliacao"
 </script>
 <?php
 if( isset( $chavepesquisa ) ) {
-  ?><script>iframe_aval.location.href = "edu1_procedimento004.php?codigo=<?=$ed41_i_formaavaliacao?>";</script><?
+  ?><script>iframe_aval.location.href = "edu1_procedimento004.php?codigo=<?=$ed41_i_formaavaliacao?>";</script><?php 
 }
 
 if( isset( $incluir ) ) {
@@ -306,7 +306,7 @@ if( isset( $excluir ) ) {
       parent.location.href = 'edu1_avaliacoes.php?procedimento=<?=$ed41_i_procedimento?>&ed40_c_descr=<?=$ed40_c_descr?>'+
                              '&forma=<?=$forma?>&possuiTurmasEncerradas=<?=$sPossuiTurmasEncerradas?>';
     </script>
-    <?
+    <?php 
   }
 }
 
@@ -377,16 +377,16 @@ function AvalResultList( $nome, $procedimento, $disabled, $sequencia, $avalvinc,
       }
 
       $tipoaval  = $avalvinc != 0 ? $avalvinc : $resultvinc;
-      $selected1 = trim( $tipoaval ) == trim( $dados1["codigo"] ) && $tipoaval1 == trim( $dados1["tipo"] ) ? " selected " : "";
+      $selected1 = trim( (string) $tipoaval ) == trim( (string) $dados1["codigo"] ) && $tipoaval1 == trim( (string) $dados1["tipo"] ) ? " selected " : "";
 
       $sHtml  = "<option value='{$dados1["codigo"]}'";
-      $sHtml .= "        tipo='" . trim($dados1["tipo"]) . "'";
-      $sHtml .= "        forma_avaliacao='" . trim($dados1["ed37_c_tipo"]) . "'";
-      $sHtml .= "        {$selected1}>" . trim($dados1["tipo"]) . " - " . trim($dados1["avaliacao"]);
+      $sHtml .= "        tipo='" . trim((string) $dados1["tipo"]) . "'";
+      $sHtml .= "        forma_avaliacao='" . trim((string) $dados1["ed37_c_tipo"]) . "'";
+      $sHtml .= "        {$selected1}>" . trim((string) $dados1["tipo"]) . " - " . trim((string) $dados1["avaliacao"]);
       $sHtml .= "</option>";
       echo $sHtml;
     }
     ?>
   </select>
-  <?
+  <?php 
 }

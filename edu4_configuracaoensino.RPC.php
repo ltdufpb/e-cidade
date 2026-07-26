@@ -51,14 +51,14 @@ try {
             $sql = $disciplina->sql_disciplinas_ensino($parametros->ensino);
 
             $rsDisciplinaEnsino = db_query($sql);
-            $disciplinasEnsino = array();
+            $disciplinasEnsino = [];
             db_utils::makeCollectionFromRecord($rsDisciplinaEnsino, function ($dado) use (&$disciplinasEnsino) {
                 $disciplinasEnsino[$dado->codigo_disciplina] = $dado;
             });
 
-            $logExcluir = array();
+            $logExcluir = [];
             foreach ($parametros->disciplinas_remover as $codigo) {
-                if (array_key_exists($codigo, $disciplinasEnsino)) {
+                if (array_key_exists((string) $codigo, $disciplinasEnsino)) {
                     $dadoDisciplina = $disciplinasEnsino[$codigo];
                     if (!empty($dadoDisciplina->com_vinculo)) {
                         $logExcluir[] = $dadoDisciplina->disciplina;
@@ -91,7 +91,7 @@ try {
                 
                 db_inicio_transacao();
                 
-                if (array_key_exists($codigo, $disciplinasEnsino)) {
+                if (array_key_exists((string) $codigo, $disciplinasEnsino)) {
                     $hasMatriz = $disciplinasEnsino[$codigo]->ed12_matrizcurricular == 't';
                     if ($hasMatriz == $lMatrizCurricular) {
                         continue;

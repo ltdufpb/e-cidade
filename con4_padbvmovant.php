@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -29,7 +29,7 @@
 class bvmovant {
   var $arq=null;
 
-  function bvmovant($header){
+  function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/BVMOVANT.TXT",'w+');
     fputs($this->arq,$header);

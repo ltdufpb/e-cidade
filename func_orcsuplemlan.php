@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcsuplemlan_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcsuplemlan = new cl_orcsuplemlan;
 $clorcsuplemlan->rotulo->label("o49_codsup");
 $clorcsuplemlan->rotulo->label("o49_data");
@@ -54,7 +55,7 @@ $clorcsuplemlan->rotulo->label("o49_data");
               <?=$Lo49_codsup?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o49_codsup",4,$Io49_codsup,true,"text",4,"","chave_o49_codsup");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcsuplemlan->rotulo->label("o49_data");
               <?=$Lo49_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o49_data",10,$Io49_data,true,"text",4,"","chave_o49_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcsuplemlan->rotulo->label("o49_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcsuplemlan.php")==true){
@@ -118,12 +119,12 @@ $clorcsuplemlan->rotulo->label("o49_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

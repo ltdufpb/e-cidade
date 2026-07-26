@@ -70,7 +70,7 @@ final class itemCompilacao extends itemSolicitacao
      */
     protected $iCodigoItemOrigem = null;
 
-    protected $aItemEstimativas = array();
+    protected $aItemEstimativas = [];
 
     /**
      * Codigo do item no orcamento
@@ -211,6 +211,7 @@ final class itemCompilacao extends itemSolicitacao
      * @param float $nQuantidade Quantidade do item
      * @return ItemEstimativa
      */
+    #[\Override]
     public function setQuantidade($nQuantidade)
     {
         $nPercentual = ParametroRegistroPreco::getPercentualExecedente();
@@ -219,6 +220,7 @@ final class itemCompilacao extends itemSolicitacao
         return $this;
     }
 
+    #[\Override]
     public function save($iSolicitacao = '')
     {
         if ($this->getQuantidadeMinima() <= 0) {
@@ -351,6 +353,7 @@ final class itemCompilacao extends itemSolicitacao
 
     }
 
+    #[\Override]
     public function remover()
     {
         /**

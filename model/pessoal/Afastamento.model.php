@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -397,7 +397,7 @@ class Afastamento
        * Caso o afastamentao nao termine no ultimo dia de fevereiro, devemos somar nos dias de ajustes a diferença
        * dos dias de fevereiro de 30 dias
        */
-      if (in_array($iUltimoDiaCompetencia, array(28, 29)) && $iDataTerminoAfastamento != $iUltimoDiaCompetencia) {
+      if (in_array($iUltimoDiaCompetencia, [28, 29]) && $iDataTerminoAfastamento != $iUltimoDiaCompetencia) {
         $iDiasAjuste += (30 - $oCompetencia->getUltimoDia());
       }
 

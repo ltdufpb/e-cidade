@@ -167,7 +167,7 @@ db_fieldsmemory(db_query($sql),0);
   <tr>
     <td  align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php 
 	$cadastromunicipal = true;
 	include(modification("forms/db_frmaverbacao.php"));
 	?>

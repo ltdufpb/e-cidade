@@ -383,22 +383,22 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 			?>
 <tr class='cabec'>
 	<td colspan="<?=$iNcolunas?>" align="left">
-					<?	
+					<?php 	
 					if( $this->lancar_transf_geral != null ){ ?>					
 						<input name="hora_transf" type="radio"
 		value="<?=$obj_undmedhorario->sd30_i_codigo?>"
 		onclick="js_hora_trans(this.value,'<?=$this->lado_transf?>')">
-					<? 
+					<?php  
 					}
 					echo $obj_undmedhorario->sd30_i_codigo." - ".$obj_undmedhorario->sd101_c_descr; 
 					?>
 					</td>
 </tr>
 <tr class='cabec'>
-					<? if( $this->gerar_faa != null ){ ?>
+					<?php  if( $this->gerar_faa != null ){ ?>
 					<td class='cabec' title='Inverte marcação' align='center'><a
 		title='Inverte Marcação' href='' onclick='js_checkbox();return false'>M</a></td>
-					<?} ?>
+					<?php } ?>
 					<td class='cabec' align="center">Ficha</td>
 	<td class='cabec' align="center">Hs Inicial</td>
 	<td class='cabec' align="center">Hs Final</td>
@@ -406,14 +406,14 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 	<td class='cabec' align="center">Tipo Grade</td>
 	<td class='cabec' align="center">CGS</td>
 	<td class='cabec' align="center">Nome do Paciente</td>
-					<? 
+					<?php  
 						if( $this->lancar_transf_individual != null || $this->opcoes != null || $this->gerar_faa != null ){ 
-							?><td class='cabec' align="center">Opções</td><?
+							?><td class='cabec' align="center">Opções</td><?php 
 						}
 					?>					
 				</tr>
 
-<?
+<?php 
 			for( $h=0; $h < $nro_fichas; $h++){
 			    $nro_ficha = str_pad($h,3,0,STR_PAD_LEFT);
 			    $id_ficha  = 0;
@@ -459,14 +459,14 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 				?>
 <tr>
 	<!--  <td style="border:1px solid #AACCCC;"   class='corpo' title='Inverte a marcação' align='center'><input ' ' type='checkbox' name='CHECK_<?=($h+1)?>' id='CHECK_<?=($h+1)?>'></td> -->
-					<? if( $this->gerar_faa != null ) { ?>
+					<?php  if( $this->gerar_faa != null ) { ?>
 					<td style="border: 1px solid #AACCCC;" class='corpo'
 		title='Inverte a marcação' align='center'><input
 		' ' 
 							type='checkbox' name='check[]' id='CHECK_<?=($h+1)?>'
 		onclick='js_marcado(<?=$codigo?>);return true;' value='<?=$codigo ?>'
 		<?=$codigo==0?"disabled":"" ?>></td>
-					<? } ?>
+					<?php  } ?>
 					<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=($h+1)?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr($hora_ini,0,5) ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr($hora_fim,0,5) ?></td>
@@ -474,22 +474,22 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$obj_undmedhorario->sd30_c_tipograde=="I"?"Intervalo":"Período" ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$cgs ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$paciente ?></td>
-					<? if( $this->lancar_transf_individual != null || $this->opcoes != null || $this->gerar_faa != null ){ ?> 
+					<?php  if( $this->lancar_transf_individual != null || $this->opcoes != null || $this->gerar_faa != null ){ ?> 
 						<td class='corpo' nowrap align="center"><a
 		title='Anular conteúdo da linha' href='#'
 		onclick='js_excluir(<?=$codigo?>);return false;'>&nbsp;A&nbsp;</a></td>
-					<? }
+					<?php  }
 						if( $this->lancar_transf_individual != null && (int)$cgs == 0 ){
 		       				?>
 		       				<td class='corpo' nowrap align="center"><a
 		title='LANÇAR CONTEÚDO DA LINHA' href='#'
 		onclick="js_lancar(<?=($h+1)?>,'<?=substr($hora_ini,0,5) ?>',<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$funcao_js ?>');">&nbsp;Lançar&nbsp;</a>
 	</td>
-		       				<?
+		       				<?php 
 						}
 					?>
 				</tr>
-<?
+<?php 
 			    if( $intervalo != 0){
 					$hora_ini    = $this->somahora($hora_ini,($intervalo+$mi_interva2));	
 					$mi_interva1 = -1;
@@ -528,7 +528,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		}
 		
 		</script>
-<?
+<?php 
 		
 				
 	}//fim função cria_table
@@ -648,13 +648,13 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 			?>
 <tr class='cabec'>
 	<td colspan="<?=$iNcolunas?>" align="left">
-					<?	
+					<?php 	
 					echo $obj_undmedhorario->sd30_i_codigo." - ".$obj_undmedhorario->sd101_c_descr; 
 					?>
 					</td>
 </tr>
 <tr class='cabec'>
-	<? 
+	<?php  
   if($lExibirCheckBox) {
     echo '<td class="cabec" align="acenter"><input type="button" value="M" id="marcarTodos"'.
          ' onclick="js_marcarTodos();"></td>';
@@ -668,14 +668,14 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 	<td class='cabec' align="center">Tipo Grade</td>
 	<td class='cabec' align="center">CGS</td>
 	<td class='cabec' align="center">Nome do Paciente</td>
-					<? 
+					<?php  
 						if( $this->lancar_transf_individual != null || $this->opcoes != null ){ 
-							?><td class='cabec' align="center">Opções</td><?
+							?><td class='cabec' align="center">Opções</td><?php 
 						}
 					 ?>					
 				</tr>
 
-<?
+<?php 
 			for( $h=0; $h < $nro_fichas; $h++){
 
 			    $nro_ficha = str_pad($h,3,0,STR_PAD_LEFT);
@@ -719,7 +719,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 			    
 				?>
 <tr>
-	<?
+	<?php 
   if(!isset($codigo) || empty($codigo)) {
     $sDisabled = 'disabled';
   } else {
@@ -738,18 +738,18 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$obj_undmedhorario->sd30_c_tipograde=="I"?"Intervalo":"Período" ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$cgs ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$paciente ?></td>
-					<?
+					<?php 
 						if( $this->lancar_transf_individual != null && (int)$cgs == 0 ){
 		       				?>
 		       				<td class='corpo' nowrap align="center"><a
 		title='LANÇAR CONTEÚDO DA LINHA' href='#'
 		onclick="js_lancar(<?=($h+1)?>,'<?=substr($hora_ini,0,5) ?>',<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$funcao_js ?>');">&nbsp;Lançar&nbsp;</a>
 	</td>
-		       				<?
+		       				<?php 
 						}
 					?>
 				</tr>
-<?
+<?php 
 			    if( $intervalo != 0){
 					$hora_ini    = $this->somahora($hora_ini,($intervalo+$mi_interva2));	
 					$mi_interva1 = -1;
@@ -764,9 +764,9 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 <script>
 
 js_hora_trans2(<?=$obj_undmedhorario->sd30_i_codigo?>, '<?=$this->lado_transf?>');
-<?if($lExibirCheckBox && $this->lMarcaTodasChekBox) {?>
+<?php if($lExibirCheckBox && $this->lMarcaTodasChekBox) {?>
   js_marcarTodos();
-<?}?>
+<?php }?>
 
 function js_hora_trans2(valor, lado) {
 
@@ -804,7 +804,7 @@ function js_marcarTodos() {
 
 }
 </script>
-<?
+<?php 
 				
 	}//fim função cria_table
   

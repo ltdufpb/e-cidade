@@ -52,11 +52,6 @@ class Autenticacao
     private static $instance;
 
     /**
-     * @var Curl
-     */
-    private $curl;
-
-    /**
      * @var array
      */
     private $properties;
@@ -65,7 +60,7 @@ class Autenticacao
      * Autenticacao constructor.
      * @param Curl $curl
      */
-    private function __construct(Curl $curl)
+    private function __construct(private readonly Curl $curl)
     {
         $configStorage = StorageHelper::getStorageConfig();
 
@@ -73,9 +68,7 @@ class Autenticacao
         $this->grant_type    = $configStorage->grant_type;
         $this->client_id     = $configStorage->client_id;
         $this->client_secret = $configStorage->client_secret;
-        $this->scope         = isset($configStorage->scope) ? $configStorage->scope : '*';
-
-        $this->curl = $curl;
+        $this->scope         = $configStorage->scope ?? '*';
     }
 
     /**
@@ -112,14 +105,14 @@ class Autenticacao
      */
     private function getOptions()
     {
-        $aplicacao = array(
+        $aplicacao = [
           'grant_type'    => $this->grant_type,
           'client_id'     => $this->client_id,
           'client_secret' => $this->client_secret,
           'scope'         => $this->scope
-        );
+        ];
 
-        $options = array();
+        $options = [];
         $options[CURLOPT_URL] = $this->url .'/'. self::ROUTE;
         $options[CURLOPT_POSTFIELDS] = $aplicacao;
         $options[CURLOPT_RETURNTRANSFER] = true;

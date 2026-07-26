@@ -34,26 +34,21 @@
 class CidadaoFiliacao {
 
 	/**
-	 * Cidadao que é o pai ou mae
-	 * @var Cidadao
-	 */
-  private $oCidadao = null;
-
-  /**
-   *Instancia do tipo familiar
-   * @var TipoFamiliar
-   */
-  private $oTipoFamiliar = null;
-
-  /**
    * Instancia uma nova filiacao
    * @param Cidadao $oCidadao
    * @param TipoFamiliar $oTipoFamiliar
    */
-  public function __construct(Cidadao $oCidadao, TipoFamiliar $oTipoFamiliar) {
-
-    $this->oCidadao      = $oCidadao;
-    $this->oTipoFamiliar = $oTipoFamiliar;
+  public function __construct(
+      /**
+       * Cidadao que é o pai ou mae
+       */
+      private readonly Cidadao $oCidadao,
+      /**
+       *Instancia do tipo familiar
+       */
+      private readonly TipoFamiliar $oTipoFamiliar
+  )
+  {
   }
 
   /**

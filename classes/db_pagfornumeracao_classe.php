@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE pagfornumeracao
 class cl_pagfornumeracao { 
@@ -28,7 +28,7 @@ class cl_pagfornumeracao {
                  o152_empagegera = int4 = Código da Remessa 
                  ";
    //funcao construtor da classe 
-   function cl_pagfornumeracao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pagfornumeracao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

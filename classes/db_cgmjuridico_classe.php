@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cgmjuridico
 class cl_cgmjuridico {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $z08_sequencial = 0;
-   var $z08_numcgm = 0;
-   var $z08_nire = null;
+   public $z08_sequencial = 0;
+   public $z08_numcgm = 0;
+   public $z08_nire = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  z08_sequencial = int4 = Código
                  z08_numcgm = int4 = Código CGM
                  z08_nire = varchar(11) = Nire
                  ";
    //funcao construtor da classe
-   function cl_cgmjuridico() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmjuridico");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -71,7 +71,7 @@ class cl_cgmjuridico {
      if($exclusao==false){
        $this->z08_sequencial = ($this->z08_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["z08_sequencial"]:$this->z08_sequencial);
        $this->z08_numcgm = ($this->z08_numcgm == ""?@$GLOBALS["HTTP_POST_VARS"]["z08_numcgm"]:$this->z08_numcgm);
-       $this->z08_nire = (is_null($this->z08_nire)?@$GLOBALS["HTTP_POST_VARS"]["z08_nire"]:$this->z08_nire);
+       $this->z08_nire ??= @$GLOBALS["HTTP_POST_VARS"]["z08_nire"];
      }else{
        $this->z08_sequencial = ($this->z08_sequencial == ""?@$GLOBALS["HTTP_POST_VARS"]["z08_sequencial"]:$this->z08_sequencial);
      }
@@ -98,10 +98,10 @@ class cl_cgmjuridico {
          $this->erro_status = "0";
          return false;
        }
-       $this->z08_sequencial = pg_result($result,0,0);
+       $this->z08_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from cgmjuridico_z08_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $z08_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $z08_sequencial)){
          $this->erro_sql = " Campo z08_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,7 +133,7 @@ class cl_cgmjuridico {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cgm Jurídico ($this->z08_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cgm Jurídico já Cadastrado";
@@ -157,12 +157,12 @@ class cl_cgmjuridico {
      $resaco = $this->sql_record($this->sql_query_file($this->z08_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16717,'$this->z08_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2940,16717,'','".AddSlashes(pg_result($resaco,0,'z08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2940,16719,'','".AddSlashes(pg_result($resaco,0,'z08_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2940,16720,'','".AddSlashes(pg_result($resaco,0,'z08_nire'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2940,16717,'','".AddSlashes(pg_fetch_result($resaco,0,'z08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2940,16719,'','".AddSlashes(pg_fetch_result($resaco,0,'z08_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2940,16720,'','".AddSlashes(pg_fetch_result($resaco,0,'z08_nire'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -171,10 +171,10 @@ class cl_cgmjuridico {
       $this->atualizacampos();
      $sql = " update cgmjuridico set ";
      $virgula = "";
-     if(trim($this->z08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z08_sequencial"])){
+     if(trim((string) $this->z08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z08_sequencial"])){
        $sql  .= $virgula." z08_sequencial = $this->z08_sequencial ";
        $virgula = ",";
-       if(trim($this->z08_sequencial) == null ){
+       if(trim((string) $this->z08_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "z08_sequencial";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_cgmjuridico {
          return false;
        }
      }
-     if(trim($this->z08_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z08_numcgm"])){
+     if(trim((string) $this->z08_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z08_numcgm"])){
        $sql  .= $virgula." z08_numcgm = $this->z08_numcgm ";
        $virgula = ",";
-       if(trim($this->z08_numcgm) == null ){
+       if(trim((string) $this->z08_numcgm) == null ){
          $this->erro_sql = " Campo Código CGM nao Informado.";
          $this->erro_campo = "z08_numcgm";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_cgmjuridico {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16717,'$this->z08_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z08_sequencial"]) || $this->z08_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2940,16717,'".AddSlashes(pg_result($resaco,$conresaco,'z08_sequencial'))."','$this->z08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2940,16717,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z08_sequencial'))."','$this->z08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z08_numcgm"]) || $this->z08_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,2940,16719,'".AddSlashes(pg_result($resaco,$conresaco,'z08_numcgm'))."','$this->z08_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2940,16719,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z08_numcgm'))."','$this->z08_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z08_nire"]) || $this->z08_nire != "")
-           $resac = db_query("insert into db_acount values($acount,2940,16720,'".AddSlashes(pg_result($resaco,$conresaco,'z08_nire'))."','$this->z08_nire',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2940,16720,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z08_nire'))."','$this->z08_nire',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
 
@@ -267,12 +267,12 @@ class cl_cgmjuridico {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16717,'$z08_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2940,16717,'','".AddSlashes(pg_result($resaco,$iresaco,'z08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2940,16719,'','".AddSlashes(pg_result($resaco,$iresaco,'z08_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2940,16720,'','".AddSlashes(pg_result($resaco,$iresaco,'z08_nire'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2940,16717,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2940,16719,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z08_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2940,16720,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z08_nire'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cgmjuridico
@@ -332,7 +332,7 @@ class cl_cgmjuridico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cgmjuridico";
@@ -369,7 +369,7 @@ class cl_cgmjuridico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,7 +403,7 @@ class cl_cgmjuridico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

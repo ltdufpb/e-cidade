@@ -62,7 +62,7 @@ class AcordoPenalidade  {
    */
   private $dtDataLimite = '';
   
-  private $aTiposContratos = array();
+  private $aTiposContratos = [];
   /**
    * 
    * 
@@ -228,7 +228,7 @@ class AcordoPenalidade  {
   		  }
   		}
   	} else {
-  		$this->aTiposContratos = array();
+  		$this->aTiposContratos = [];
   	}
   	return $this;
   }

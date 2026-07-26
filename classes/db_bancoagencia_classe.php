@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE bancoagencia
 class cl_bancoagencia {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db89_sequencial = 0;
-   var $db89_db_bancos = null;
-   var $db89_codagencia = null;
-   var $db89_digito = null;
+   public $db89_sequencial = 0;
+   public $db89_db_bancos = null;
+   public $db89_codagencia = null;
+   public $db89_digito = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db89_sequencial = int4 = Sequêncial 
                  db89_db_bancos = varchar(10) = Banco 
                  db89_codagencia = varchar(5) = Código da Agência 
                  db89_digito = varchar(2) = Digito 
                  ";
    //funcao construtor da classe
-   function cl_bancoagencia() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancoagencia");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -113,10 +113,10 @@ class cl_bancoagencia {
          $this->erro_status = "0";
          return false;
        }
-       $this->db89_sequencial = pg_result($result,0,0);
+       $this->db89_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from bancoagencia_db89_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db89_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db89_sequencial)){
          $this->erro_sql = " Campo db89_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -150,7 +150,7 @@ class cl_bancoagencia {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agência do banco ($this->db89_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agência do banco já Cadastrado";
@@ -174,13 +174,13 @@ class cl_bancoagencia {
      $resaco = $this->sql_record($this->sql_query_file($this->db89_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12534,'$this->db89_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2187,12534,'','".AddSlashes(pg_result($resaco,0,'db89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2187,12535,'','".AddSlashes(pg_result($resaco,0,'db89_db_bancos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2187,12536,'','".AddSlashes(pg_result($resaco,0,'db89_codagencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2187,12537,'','".AddSlashes(pg_result($resaco,0,'db89_digito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2187,12534,'','".AddSlashes(pg_fetch_result($resaco,0,'db89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2187,12535,'','".AddSlashes(pg_fetch_result($resaco,0,'db89_db_bancos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2187,12536,'','".AddSlashes(pg_fetch_result($resaco,0,'db89_codagencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2187,12537,'','".AddSlashes(pg_fetch_result($resaco,0,'db89_digito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -189,10 +189,10 @@ class cl_bancoagencia {
       $this->atualizacampos();
      $sql = " update bancoagencia set ";
      $virgula = "";
-     if(trim($this->db89_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_sequencial"])){
+     if(trim((string) $this->db89_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_sequencial"])){
        $sql  .= $virgula." db89_sequencial = $this->db89_sequencial ";
        $virgula = ",";
-       if(trim($this->db89_sequencial) == null ){
+       if(trim((string) $this->db89_sequencial) == null ){
          $this->erro_sql = " Campo Sequêncial nao Informado.";
          $this->erro_campo = "db89_sequencial";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_bancoagencia {
          return false;
        }
      }
-     if(trim($this->db89_db_bancos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_db_bancos"])){
+     if(trim((string) $this->db89_db_bancos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_db_bancos"])){
        $sql  .= $virgula." db89_db_bancos = '$this->db89_db_bancos' ";
        $virgula = ",";
-       if(trim($this->db89_db_bancos) == null ){
+       if(trim((string) $this->db89_db_bancos) == null ){
          $this->erro_sql = " Campo Banco nao Informado.";
          $this->erro_campo = "db89_db_bancos";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_bancoagencia {
          return false;
        }
      }
-     if(trim($this->db89_codagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_codagencia"])){
+     if(trim((string) $this->db89_codagencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_codagencia"])){
        $sql  .= $virgula." db89_codagencia = '$this->db89_codagencia' ";
        $virgula = ",";
-       if(trim($this->db89_codagencia) == null ){
+       if(trim((string) $this->db89_codagencia) == null ){
          $this->erro_sql = " Campo Código da Agência nao Informado.";
          $this->erro_campo = "db89_codagencia";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_bancoagencia {
          return false;
        }
      }
-     if(trim($this->db89_digito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_digito"])){
+     if(trim((string) $this->db89_digito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db89_digito"])){
        $sql  .= $virgula." db89_digito = '$this->db89_digito' ";
        $virgula = ",";
-       if(trim($this->db89_digito) == null ){
+       if(trim((string) $this->db89_digito) == null ){
          $this->erro_sql = " Campo Digito nao Informado.";
          $this->erro_campo = "db89_digito";
          $this->erro_banco = "";
@@ -249,17 +249,17 @@ class cl_bancoagencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12534,'$this->db89_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db89_sequencial"]) || $this->db89_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2187,12534,'".AddSlashes(pg_result($resaco,$conresaco,'db89_sequencial'))."','$this->db89_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2187,12534,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db89_sequencial'))."','$this->db89_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db89_db_bancos"]) || $this->db89_db_bancos != "")
-           $resac = db_query("insert into db_acount values($acount,2187,12535,'".AddSlashes(pg_result($resaco,$conresaco,'db89_db_bancos'))."','$this->db89_db_bancos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2187,12535,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db89_db_bancos'))."','$this->db89_db_bancos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db89_codagencia"]) || $this->db89_codagencia != "")
-           $resac = db_query("insert into db_acount values($acount,2187,12536,'".AddSlashes(pg_result($resaco,$conresaco,'db89_codagencia'))."','$this->db89_codagencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2187,12536,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db89_codagencia'))."','$this->db89_codagencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db89_digito"]) || $this->db89_digito != "")
-           $resac = db_query("insert into db_acount values($acount,2187,12537,'".AddSlashes(pg_result($resaco,$conresaco,'db89_digito'))."','$this->db89_digito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2187,12537,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db89_digito'))."','$this->db89_digito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -304,13 +304,13 @@ class cl_bancoagencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12534,'$db89_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2187,12534,'','".AddSlashes(pg_result($resaco,$iresaco,'db89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2187,12535,'','".AddSlashes(pg_result($resaco,$iresaco,'db89_db_bancos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2187,12536,'','".AddSlashes(pg_result($resaco,$iresaco,'db89_codagencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2187,12537,'','".AddSlashes(pg_result($resaco,$iresaco,'db89_digito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2187,12534,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db89_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2187,12535,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db89_db_bancos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2187,12536,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db89_codagencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2187,12537,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db89_digito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bancoagencia
@@ -370,7 +370,7 @@ class cl_bancoagencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bancoagencia";
@@ -407,7 +407,7 @@ class cl_bancoagencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,7 +441,7 @@ class cl_bancoagencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_bancoagencia {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

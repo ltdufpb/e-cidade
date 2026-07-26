@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ function js_emite(){
           </td>
        </tr>
       <tr >
-        <td colspan='2' ><?
+        <td colspan='2' ><?php 
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Tipos de Débitos</strong>";
                  $aux->codigo = "k00_tipo"; //chave de retorno da func
@@ -111,17 +111,17 @@ function js_emite(){
       </tr>
       <tr>
        <td title="<?=@$id_usuario?>">
-        <?db_ancora(@$Lid_usuario,"js_pesquisa_usuario(true);",$db_opcao);?>
+        <?php db_ancora(@$Lid_usuario,"js_pesquisa_usuario(true);",$db_opcao);?>
        </td>
        <td>
-        <?
+        <?php 
 	  db_input('id_usuario',5,$Iid_usuario,true,'text',$db_opcao," onchange='js_pesquisa_usuario(false);'");
           db_input('nome',50,$Inome,true,'text',3,'')
 	?>				   
        </td>
       </tr>
       <tr>
-       <td colspan="2">Periodo: <?db_inputdata('data1',"","","",true,'text',4)?> à <?db_inputdata('data2',"","","",true,'text',4)?> </td>
+       <td colspan="2">Periodo: <?php db_inputdata('data1',"","","",true,'text',4)?> à <?php db_inputdata('data2',"","","",true,'text',4)?> </td>
       </tr>
       <tr>
         <td >&nbsp;</td>
@@ -135,7 +135,7 @@ function js_emite(){
 
   </form>
     </table>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 </body>
 </html>
 <script>
@@ -162,7 +162,7 @@ function js_mostrausuario1(chave1,chave2){
 }
  
 </script>
-<?
+<?php 
 if(isset($ordem)){
   echo "<script> js_emite(); </script>";
 }

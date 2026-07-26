@@ -8,7 +8,7 @@
  */
 class TipoHoraTrabalhoRepository {
 
-  private $aTipoHora = array();
+  private $aTipoHora = [];
   private static $oInstance;
 
   private function __construct() {
@@ -77,7 +77,7 @@ class TipoHoraTrabalhoRepository {
 
     $iLinhas = pg_num_rows($rsTipoHora);
 
-    $aTipoHora = array();
+    $aTipoHora = [];
     for ( $i = 0; $i < $iLinhas; $i++ ) {
 
       $oDados      = db_utils::fieldsMemory( $rsTipoHora, $i );

@@ -34,27 +34,22 @@
 class EtapaTurma {
 
   /**
-   * Etapa (Serie)
-   * @var Etapa
-   */
-  private $oEtapa;
-  
-  /**
-   * Procedimento de Avalicao
-   * @var ProcedimentoAvaliacao
-   */
-  private $oProcedimentoAvaliacao;
-  
-  /**
    * Valida se a etapa da turma tem aprovação automática
    * @var boolean
    */
   private $lAprovacaoAutomatica = false;
   
-  public function __construct(Etapa $oEtapa, ProcedimentoAvaliacao $oProcedimentoAvaliacao) {
-    
-    $this->oEtapa                 = $oEtapa;
-    $this->oProcedimentoAvaliacao = $oProcedimentoAvaliacao;
+  public function __construct(
+      /**
+       * Etapa (Serie)
+       */
+      private readonly Etapa $oEtapa,
+      /**
+       * Procedimento de Avalicao
+       */
+      private readonly ProcedimentoAvaliacao $oProcedimentoAvaliacao
+  )
+  {
   }
   
   /**

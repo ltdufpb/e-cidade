@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_situacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsituacao = new cl_situacao;
 $clsituacao->rotulo->label("v52_codsit");
 $clsituacao->rotulo->label("v52_descr");
@@ -54,7 +55,7 @@ $clsituacao->rotulo->label("v52_descr");
               <?=$Lv52_codsit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v52_codsit",6,$Iv52_codsit,true,"text",4,"","chave_v52_codsit");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsituacao->rotulo->label("v52_descr");
               <?=$Lv52_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v52_descr",40,$Iv52_descr,true,"text",4,"","chave_v52_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsituacao->rotulo->label("v52_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_situacao.php")==true){
@@ -122,12 +123,12 @@ $clsituacao->rotulo->label("v52_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

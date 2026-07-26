@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_procdiver_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clprocdiver = new cl_procdiver;
 $clprocdiver->rotulo->label("dv09_procdiver");
@@ -65,7 +66,7 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
                                 <?= $Ldv09_procdiver ?>
                             </td>
                             <td width="96%" align="left" nowrap>
-                                <?
+                                <?php 
                                 db_input("dv09_procdiver", 5, $Idv09_procdiver, true, "text", 4, "", "chave_dv09_procdiver");
                                 ?>
                             </td>
@@ -75,7 +76,7 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
                                 <?= $Ldv09_descr ?>
                             </td>
                             <td width="96%" align="left" nowrap>
-                                <?
+                                <?php 
                                 db_input("dv09_descr", 40, $Idv09_descr, true, "text", 4, "", "chave_dv09_descr");
                                 ?>
                             </td>
@@ -93,7 +94,7 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
         </tr>
         <tr>
             <td align="center" valign="top">
-                <?
+                <?php 
                 $sWhereExcecao = "";
 
                 if (isset($excecao) AND !empty($excecao)) {
@@ -168,12 +169,12 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
 </body>
 
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 ?>
     <script>
     </script>
-<?
+<?php 
 }
 ?>
 <script>

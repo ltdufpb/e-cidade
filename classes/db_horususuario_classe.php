@@ -53,7 +53,7 @@ class cl_horususuario {
                  fa66_senha = varchar(40) = Senha 
                  ";
    //funcao construtor da classe 
-   function cl_horususuario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("horususuario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fiscalrua_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfiscalrua = new cl_fiscalrua;
 $clfiscalrua->rotulo->label("y33_codnoti");
 $clfiscalrua->rotulo->label("y33_codigo");
@@ -54,7 +55,7 @@ $clfiscalrua->rotulo->label("y33_codigo");
               <?=$Ly33_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y33_codnoti",20,$Iy33_codnoti,true,"text",4,"","chave_y33_codnoti");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clfiscalrua->rotulo->label("y33_codigo");
               <?=$Ly33_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y33_codigo",7,$Iy33_codigo,true,"text",4,"","chave_y33_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clfiscalrua->rotulo->label("y33_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscalrua.php")==true){
@@ -118,12 +119,12 @@ $clfiscalrua->rotulo->label("y33_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

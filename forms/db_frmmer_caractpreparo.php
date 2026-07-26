@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,16 +38,16 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_i_codigo?>
   </td>
   <td>
-   <?db_input('me06_i_codigo',10,$Ime06_i_codigo,true,'text',3,"")?>
+   <?php db_input('me06_i_codigo',10,$Ime06_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme06_i_cardapio?>">
-   <?db_ancora(@$Lme06_i_cardapio,"",3);?>
+   <?php db_ancora(@$Lme06_i_cardapio,"",3);?>
   </td>
   <td>
-   <?db_input('me06_i_cardapio',10,$Ime06_i_cardapio,true,'text',3,"")?>
-   <?db_input('me01_c_nome',30,@$Ime01_c_nome,true,'text',3,'')?>
+   <?php db_input('me06_i_cardapio',10,$Ime06_i_cardapio,true,'text',3,"")?>
+   <?php db_input('me01_c_nome',30,@$Ime01_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -55,7 +55,7 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_c_graudificuldade?>
   </td>
   <td>
-   <?
+   <?php 
    $x = array("1"=>"BAIXO","2"=>"MEDIO","3"=>"ALTO");
    db_select('me06_c_graudificuldade',$x,true,$db_opcao,"");
    ?>
@@ -66,7 +66,7 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_c_tempopreparo?>
   </td>
   <td>
-   <?db_input('me06_c_tempopreparo',10,$Ime06_c_tempopreparo,true,'text',$db_opcao,"")?>
+   <?php db_input('me06_c_tempopreparo',10,$Ime06_c_tempopreparo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -74,7 +74,7 @@ $clrotulo->label("me01_i_codigo");
    <?=@$Lme06_c_descr?>
   </td>
   <td>
-   <?db_input('me06_c_descr',42,$Ime06_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('me06_c_descr',42,$Ime06_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>

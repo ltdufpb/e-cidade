@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censocursoprofiss_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensocursoprofiss = new cl_censocursoprofiss;
 ?>
 <html>
@@ -52,14 +52,14 @@ $clcensocursoprofiss = new cl_censocursoprofiss;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <table width="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
    <br>
    <fieldset style="width:95%"><legend><b>Curso da Educação Profissional</b></legend>
    <br>
-   <?
+   <?php 
    $campos = "ed247_i_codigo,
               ed247_c_descr,
               case
@@ -91,9 +91,9 @@ $clcensocursoprofiss = new cl_censocursoprofiss;
               ed247_i_tipo
              ";
    $sql = $clcensocursoprofiss->sql_query("",$campos,"ed247_i_tipo,ed247_c_descr","");
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_ed247_i_codigo)){
-    $repassa = array("chave_ed247_i_codigo"=>@$chave_ed247_i_codigo);
+    $repassa = ["chave_ed247_i_codigo"=>@$chave_ed247_i_codigo];
    }
    db_lovrot($sql,25,"","","","","NoMe",$repassa);
    ?>
@@ -101,6 +101,6 @@ $clcensocursoprofiss = new cl_censocursoprofiss;
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

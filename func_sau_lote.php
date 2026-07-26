@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_lote_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_lote = new cl_sau_lote;
 $clsau_lote->rotulo->label("sd58_i_codigo");
 $clsau_lote->rotulo->label("sd58_i_codigo");
@@ -54,7 +55,7 @@ $clsau_lote->rotulo->label("sd58_i_codigo");
               <?=$Lsd58_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sd58_i_codigo",10,$Isd58_i_codigo,true,"text",4,"","chave_sd58_i_codigo");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clsau_lote->rotulo->label("sd58_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_lote.php")==true){
@@ -113,12 +114,12 @@ $clsau_lote->rotulo->label("sd58_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

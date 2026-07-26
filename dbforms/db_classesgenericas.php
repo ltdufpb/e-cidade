@@ -32,61 +32,61 @@
 //|16|// passando db_ voce pode colocar o nome que quiser...
 class cl_iframe_seleciona
 {
-    var $input_hidden    = false;
+    public $input_hidden    = false;
    //|30|//coloca um input hidden
-    var $desabilitados = true;
+    public $desabilitados = true;
    //|30|//quando for false, ele não irá retornar as chaves que estiverem desabilitas
-    var $fieldset    = true;
+    public $fieldset    = true;
    //|30|//coloca o iframe entre quatro linhas
-    var $sql        = null;
+    public $sql        = null;
    //|30|//sql para montar os campos
-    var $sql_disabled  = null;
+    public $sql_disabled  = null;
    //sql para dizer quais os campos devem iniciar marcados
-    var $sql_marca  = null;
+    public $sql_marca  = null;
    //sql para dizer quais os campos devem iniciar marcados
-    var $checked    = null;
+    public $checked    = null;
    //indica se todos as linhas devem abrir marcadas ou naum
-    var $chaves     = null;
+    public $chaves     = null;
    //|30|//campos que deseja retorna num input apenas
-    var $campos     = null;
+    public $campos     = null;
    //|30|//campos que serão mostrados
-    var $legenda    = "DADOS";
+    public $legenda    = "DADOS";
    //|30|//legenda do fieldset
-    var $alignlegenda = "center";
+    public $alignlegenda = "center";
    //|30|//Alinhamento da legenda no fieldset
-    var $msg_vazio  = "<small><b>Nenhum registro encontrado.</b><small>";
+    public $msg_vazio  = "<small><b>Nenhum registro encontrado.</b><small>";
    //|30|//mensagem a ser mostrada quando o sql não retornar nenhum registro
-    var $textocabec = 'darkblue';
+    public $textocabec = 'darkblue';
    //|30|//cor do texto do cabeçalho
-    var $textocorpo = 'black';
+    public $textocorpo = 'black';
    //|30|//cor do texto do corpo
-    var $fundocabec = '#aacccc ';
+    public $fundocabec = '#aacccc ';
    //|30|//cor do fundo do cabeçalho
-    var $fundocorpo = '#ccddcc';
+    public $fundocorpo = '#ccddcc';
    //|30|//cor do fundo do corpo
-    var $iframe_width = '750';
+    public $iframe_width = '750';
    //|30|//largura do iframe
-    var $iframe_height = '190';
+    public $iframe_height = '190';
    //|30|//altura do iframe
-    var $iframe_nome =   'nome_iframe ';
+    public $iframe_nome =   'nome_iframe ';
    //|30|//nome do iframe
-    var $cabecnowrap     = "false";
+    public $cabecnowrap     = "false";
    //|30|//quebrar linha ou não do cabeçalho
-    var $corponowrap     = "false";
+    public $corponowrap     = "false";
    //|30|//quebrar linha ou não do corpo
-    var $tamfontecabec = '10';
+    public $tamfontecabec = '10';
    //|30|//tamanho da fonte do cabeçalho
-    var $tamfontecorpo = '9';
+    public $tamfontecorpo = '9';
     //|30|//tamanho da fonte do corpo
-    var $dbscript = null;
+    public $dbscript = null;
     //|30|// função java script no campo de marcar
-    var $marcador = true;
+    public $marcador = true;
     //|30|// desabilita a opcao de clicar no marcador e inveter os checados
-    var $js_marcador = null;
+    public $js_marcador = null;
     //|30|// função java script quando clicar no marcador
-    var $mostra_totalizador  = "N";
+    public $mostra_totalizador  = "N";
    // Opcao para mostrar total de registro da consulta
-    var $posicao_totalizador = "A";
+    public $posicao_totalizador = "A";
    // Onde vai ficar o totalizador - A - Acima e B - Abaixo
     function iframe_seleciona($db_opcao)
     {
@@ -94,7 +94,7 @@ class cl_iframe_seleciona
          $arquivo.=".php";
          umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php     '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -105,12 +105,12 @@ class cl_iframe_seleciona
         fputs($fd, ' $tamfontecorpo="'.$this->tamfontecorpo.'";'."\n");
         fputs($fd, ' $marcador="'.$this->marcador.'";'."\n");
         if ($this->sql!="") {
-            fputs($fd, ' $sql="'.base64_encode($this->sql).'";'."\n");
+            fputs($fd, ' $sql="'.base64_encode((string) $this->sql).'";'."\n");
             if ($this->sql_disabled!=null) {
-                fputs($fd, ' $sql_disabled="'.base64_encode($this->sql_disabled).'";'."\n");
+                fputs($fd, ' $sql_disabled="'.base64_encode((string) $this->sql_disabled).'";'."\n");
             }
             if ($this->sql_marca!=null) {
-                fputs($fd, ' $sql_marca="'.base64_encode($this->sql_marca).'";'."\n");
+                fputs($fd, ' $sql_marca="'.base64_encode((string) $this->sql_marca).'";'."\n");
             }
             if ($this->js_marcador!=null) {
                 fputs($fd, ' $js_marcador="'.$this->js_marcador.'";'."\n");
@@ -131,8 +131,8 @@ class cl_iframe_seleciona
             fputs($fd, ' $mostra_totalizador="'.$this->mostra_totalizador.'";'."\n");
             fputs($fd, ' $posicao_totalizador="'.$this->posicao_totalizador.'";'."\n");
 
-            fputs($fd, ' $msg_vazio="'.base64_encode($this->msg_vazio).'";'."\n");
-            fputs($fd, ' $campos="'.base64_encode($this->campos).'";'."\n");
+            fputs($fd, ' $msg_vazio="'.base64_encode((string) $this->msg_vazio).'";'."\n");
+            fputs($fd, ' $campos="'.base64_encode((string) $this->campos).'";'."\n");
             fputs($fd, ' $db_opcao="'.$db_opcao.'";'."\n");
         }
         fputs($fd, '?>  '."\n");
@@ -252,43 +252,43 @@ class cl_iframe_seleciona
 //|15|//[variavel] = new cl_alterar_excluir_html;
 class cl_iframe_alterar_excluir_html_novo
 {
-    var $js_mouseover     = null;
+    public $js_mouseover     = null;
    //|30|//função executada quando o mouse for passado por cima da linha, é retornado para ela as chaves primarias...
-    var $js_mouseout     = null;
+    public $js_mouseout     = null;
    //|30|//função executada quando o mouse for passado por cima da linha, é retornado para ela as chaves primarias...
-    var $load = '1=1';
+    public $load = '1=1';
    //|30|//função a ser executada no onload do iframe
-    var $fontecabec = '10px';
+    public $fontecabec = '10px';
    //|30|//tamanho do texto do cabeçalho
-    var $fontecorpo = '10px';
+    public $fontecorpo = '10px';
    //|30|//tamanho do texto do corpo
-    var $textocabec = 'darkblue';
+    public $textocabec = 'darkblue';
    //|30|//cor do texto do cabeçalho
-    var $textocorpo = 'black';
+    public $textocorpo = 'black';
    //|30|//cor do texto do corpo
-    var $fundocabec = '#BDC6BD';
+    public $fundocabec = '#BDC6BD';
    //|30|//cor do fundo do cabeçalho
-    var $fundocorpo = '#cccccc';
+    public $fundocorpo = '#cccccc';
    //|30|//cor do fundo do corpo
-    var $iframe_width = '750';
+    public $iframe_width = '750';
    //|30|//largura do iframe
-    var $iframe_height = '190';
+    public $iframe_height = '190';
    //|30|//altura do iframe
-    var $iframe_nome = 'criatabela';
+    public $iframe_nome = 'criatabela';
    //|30|//nome do iframe
-    var $colunas     = null; //nome da colunas
+    public $colunas     = null; //nome da colunas
    //|30|//nome das colunas
-    var $js_ex01     = null;
+    public $js_ex01     = null;
    //|30|//função executada antes de excluir uma linha, caso esta função retorne false, a exclusão da linha será abortada
-    var $js_ex02     = null;
+    public $js_ex02     = null;
    //|30|//função executada depois de excluir uma linha
-    var $sql         = null;
+    public $sql         = null;
    //|30|//sql com dados a seresm colocados na tabela por PHP
-    var $db_opcao    =  null;
+    public $db_opcao    =  null;
    //|30|//não é obrogatório
-    var $tamfontecabec = '10';
+    public $tamfontecabec = '10';
    //|30|//tamanho da fonte do cabeçalho
-    var $tamfontecorpo = '9';
+    public $tamfontecorpo = '9';
     //|30|//tamanho da fonte do corpo
     //|30|//js_incluirlinhas(campos que deseja incluir);
     //|30|//js_alterarlinhas(campos); funcao que retorna todos os camos
@@ -304,7 +304,7 @@ class cl_iframe_alterar_excluir_html_novo
         $arquivo.=".php";
         umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php     '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -324,7 +324,7 @@ class cl_iframe_alterar_excluir_html_novo
             fputs($fd, ' $db_opcao="'.$this->db_opcao.'";'."\n");
         }
         if ($this->sql!=null) {
-            fputs($fd, ' $sql="'.base64_encode($this->sql).'";'."\n");
+            fputs($fd, ' $sql="'.base64_encode((string) $this->sql).'";'."\n");
         }
         for ($q=0; $q<sizeof($this->colunas); $q++) {
             fputs($fd, ' $x_'.key($this->colunas).'="'.$this->colunas[key($this->colunas)].'";'."\n");
@@ -471,43 +471,43 @@ class cl_iframe_alterar_excluir_html_novo
 //|15|//[variavel] = new cl_alterar_excluir_html;
 class cl_iframe_alterar_excluir_html
 {
-    var $js_mouseover     = null;
+    public $js_mouseover     = null;
    //|30|//função executada quando o mouse for passado por cima da linha, é retornado para ela as chaves primarias...
-    var $js_mouseout     = null;
+    public $js_mouseout     = null;
    //|30|//função executada quando o mouse for passado por cima da linha, é retornado para ela as chaves primarias...
-    var $load = '';
+    public $load = '';
    //|30|//função a ser executada no onload do iframe
-    var $fontecabec = '10px';
+    public $fontecabec = '10px';
    //|30|//tamanho do texto do cabeçalho
-    var $fontecorpo = '10px';
+    public $fontecorpo = '10px';
    //|30|//tamanho do texto do corpo
-    var $textocabec = 'darkblue';
+    public $textocabec = 'darkblue';
    //|30|//cor do texto do cabeçalho
-    var $textocorpo = 'black';
+    public $textocorpo = 'black';
    //|30|//cor do texto do corpo
-    var $fundocabec = '#BDC6BD';
+    public $fundocabec = '#BDC6BD';
    //|30|//cor do fundo do cabeçalho
-    var $fundocorpo = '#cccccc';
+    public $fundocorpo = '#cccccc';
    //|30|//cor do fundo do corpo
-    var $iframe_width = '750';
+    public $iframe_width = '750';
    //|30|//largura do iframe
-    var $iframe_height = '190';
+    public $iframe_height = '190';
    //|30|//altura do iframe
-    var $iframe_nome = 'criatabela';
+    public $iframe_nome = 'criatabela';
    //|30|//nome do iframe
-    var $colunas     = null; //nome da colunas
+    public $colunas     = null; //nome da colunas
    //|30|//nome das colunas
-    var $js_ex01     = null;
+    public $js_ex01     = null;
    //|30|//função executada antes de excluir uma linha, caso esta função retorne false, a exclusão da linha será abortada
-    var $js_ex02     = null;
+    public $js_ex02     = null;
    //|30|//função executada depois de excluir uma linha
-    var $sql         = null;
+    public $sql         = null;
    //|30|//sql com dados a seresm colocados na tabela por PHP
-    var $db_opcao    =  null;
+    public $db_opcao    =  null;
    //|30|//não é obrogatório
-    var $tamfontecabec = '10';
+    public $tamfontecabec = '10';
    //|30|//tamanho da fonte do cabeçalho
-    var $tamfontecorpo = '9';
+    public $tamfontecorpo = '9';
     //|30|//tamanho da fonte do corpo
     //|30|//js_incluirlinhas(campos que deseja incluir);
     //|30|//js_alterarlinhas(campos); funcao que retorna todos os camos
@@ -523,7 +523,7 @@ class cl_iframe_alterar_excluir_html
         $arquivo.=".php";
         umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php     '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -543,7 +543,7 @@ class cl_iframe_alterar_excluir_html
             fputs($fd, ' $db_opcao="'.$this->db_opcao.'";'."\n");
         }
         if ($this->sql!=null) {
-            fputs($fd, ' $sql="'.base64_encode($this->sql).'";'."\n");
+            fputs($fd, ' $sql="'.base64_encode((string) $this->sql).'";'."\n");
         }
         for ($q=0; $q<sizeof($this->colunas); $q++) {
             fputs($fd, ' $x_'.key($this->colunas).'="'.$this->colunas[key($this->colunas)].'";'."\n");
@@ -706,23 +706,24 @@ class cl_iframe_alterar_excluir_html
 //|10|//Cria abas com  iframe
 //|15|//[variavel] = new cl_criaabas;
 class cl_criaabas {
-   var $identifica    = null;
-   var $abas_top      = "46";
-   var $abas_left     = "0";
-   var $src           = null;
-   var $title         = null;
-   var $cortexto      = null;
-   var $corfundo      = null;
-   var $funcao_js     = null;
-   var $sizecampo     = null;
-   var $disabled      = null;
-   var $iframe_width  = "100%";
-   var $iframe_height = "100%";
+   public $identifica    = null;
+   public $abas_top      = "46";
+   public $abas_left     = "0";
+   public $src           = null;
+   public $title         = null;
+   public $cortexto      = null;
+   public $corfundo      = null;
+   public $funcao_js     = null;
+   public $sizecampo     = null;
+   public $disabled      = null;
+   public $iframe_width  = "100%";
+   public $iframe_height = "100%";
    // var $scrolling = "no";
-   var $scrolling = "yes";
+   public $scrolling = "yes";
 
-  function cria_abas(){
-?>
+  function cria_abas()
+  {
+      ?>
         <script>
           function mo_camada(idtabela){
             var camada="div_"+idtabela;
@@ -752,17 +753,17 @@ class cl_criaabas {
                 for(y=0; y < document.forms['formaba'].length; y++){
                   tab[x].style.border = '1px outset #cccccc';
                   tab[x].style.borderBottomColor = '#000000';
- <?
-    reset($this->identifica);
- for($w=0; $w<sizeof($this->identifica); $w++){
-       $chave=key($this->identifica);
- ?>
-              document.formaba.<?=$chave?>.style.color ='<?=(isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:"black")?>';
-              document.formaba.<?=$chave?>.style.fontWeight = 'normal';
-<?
-     next($this->identifica);
-   }
-?>
+ <?php 
+      reset($this->identifica);
+      for($w=0; $w<sizeof($this->identifica); $w++){
+            $chave=key($this->identifica);
+      ?>
+                   document.formaba.<?=$chave?>.style.color ='<?=(isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:"black")?>';
+                   document.formaba.<?=$chave?>.style.fontWeight = 'normal';
+     <?php 
+          next($this->identifica);
+        }
+      ?>
                 }
                 if(aba == tab[x].id){
                   tab[x].style.border = '3px outset #999999';
@@ -831,28 +832,29 @@ class cl_criaabas {
         <td align="left" valign="top">
         <table border="0" cellpadding="0" cellspacing="0" marginwidth="0">
         <tr>
- <?
-    reset($this->identifica);
-    for($w=0; $w<sizeof($this->identifica); $w++){
-       $chave     = key($this->identifica);
-       $cortexto  = (isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:'black');
-       $corfundo  = (isset($this->corfundo[$chave])&&$this->corfundo[$chave]!=""?$this->corfundo[$chave]:'#cccccc');
-
-       $funcao_js = (isset($this->funcao_js[$chave])&&$this->funcao_js[$chave]!=""?$this->funcao_js[$chave]:'');
-
-       $sizecampo = (isset($this->sizecampo[$chave])&&$this->sizecampo[$chave]!=""?$this->sizecampo[$chave]:'10');
-       $disabled  = (isset($this->disabled[$chave])&&$this->disabled[$chave]=="true"?'disabled':''); ?>
-       <td>
-         <table class="bordas" id="<?=$chave?>" border="0" style="border: 3px outset #666666; border-bottom-width: 0px; border-right-width: 1px ;border-right-color: #000000; border-top-color: #3c3c3c; border-right-style: inset; " cellpadding="3" cellspacing="0" >
-           <tr>
-             <td nowrap>
-               <input readonly <?=$disabled?> framename="iframe_<?=$chave?>" name="<?=$chave?>" class="input-abas"  style="font-weight:bold; color:<?=$cortexto?>; background-color:<?=$corfundo?>;" type="text"  value="<?=$this->identifica[$chave]?>" title="<?=$this->title[$chave]?>" size="<?=$sizecampo?>"  onClick="<?=$funcao_js?> mo_camada('<?=$chave?>'); ">
-             </td>
-           </tr>
-         </table>
-       </td>
-<?     next($this->identifica);
-    } ?>
+ <?php 
+      reset($this->identifica);
+      for($w=0; $w<sizeof($this->identifica); $w++){
+         $chave     = key($this->identifica);
+         $cortexto  = (isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:'black');
+         $corfundo  = (isset($this->corfundo[$chave])&&$this->corfundo[$chave]!=""?$this->corfundo[$chave]:'#cccccc');
+  
+         $funcao_js = (isset($this->funcao_js[$chave])&&$this->funcao_js[$chave]!=""?$this->funcao_js[$chave]:'');
+  
+         $sizecampo = (isset($this->sizecampo[$chave])&&$this->sizecampo[$chave]!=""?$this->sizecampo[$chave]:'10');
+         $disabled  = (isset($this->disabled[$chave])&&$this->disabled[$chave]=="true"?'disabled':''); ?>
+         <td>
+           <table class="bordas" id="<?=$chave?>" border="0" style="border: 3px outset #666666; border-bottom-width: 0px; border-right-width: 1px ;border-right-color: #000000; border-top-color: #3c3c3c; border-right-style: inset; " cellpadding="3" cellspacing="0" >
+             <tr>
+               <td nowrap>
+                 <input readonly <?=$disabled?> framename="iframe_<?=$chave?>" name="<?=$chave?>" class="input-abas"  style="font-weight:bold; color:<?=$cortexto?>; background-color:<?=$corfundo?>;" type="text"  value="<?=$this->identifica[$chave]?>" title="<?=$this->title[$chave]?>" size="<?=$sizecampo?>"  onClick="<?=$funcao_js?> mo_camada('<?=$chave?>'); ">
+               </td>
+             </tr>
+           </table>
+         </td>
+  <?php      next($this->identifica);
+      }
+      ?>
 
       </tr>
     </table>
@@ -862,31 +864,31 @@ class cl_criaabas {
       <form name="form_iframes" method="post" id="form_iframes" >
       <tr>
         <td height="340" align="center">
- <?
-    reset($this->identifica);
-    for($w=0; $w<sizeof($this->identifica); $w++){
-       $chave=key($this->identifica);
-       $src=(isset($this->src[$chave]) && $this->src[$chave]!=null?"src=\"".$this->src[$chave]."\"":"");
-       if($src==""){
-         /*echo "<script> document.formaba.$chave.disabled=true; </script>";*/
-       } ?>
-       <div class="tabela" id="div_<?=$chave?>" style="position:absolute; left:<?=$this->abas_left?>px; top:<?=$this->abas_top?>px;  visibility: visible;">
-          <iframe  id='<?=$chave?>' name="iframe_<?=$chave?>" class="bordasi" <?=$src?> frameborder="0" marginwidth="0" leftmargin="0" topmargin="0"   height="<?=$this->iframe_height?>" scrolling="<?=$this->scrolling?>"  width="<?=$this->iframe_width?>" >
-          </iframe>
-       </div>
- <?    echo " <script>  mo_camada('$chave'); </script> ";
-       next($this->identifica);
-    } ?>
+ <?php 
+      reset($this->identifica);
+      for($w=0; $w<sizeof($this->identifica); $w++){
+         $chave=key($this->identifica);
+         $src=(isset($this->src[$chave]) && $this->src[$chave]!=null?"src=\"".$this->src[$chave]."\"":"");
+         if($src==""){
+           /*echo "<script> document.formaba.$chave.disabled=true; </script>";*/
+         } ?>
+         <div class="tabela" id="div_<?=$chave?>" style="position:absolute; left:<?=$this->abas_left?>px; top:<?=$this->abas_top?>px;  visibility: visible;">
+            <iframe  id='<?=$chave?>' name="iframe_<?=$chave?>" class="bordasi" <?=$src?> frameborder="0" marginwidth="0" leftmargin="0" topmargin="0"   height="<?=$this->iframe_height?>" scrolling="<?=$this->scrolling?>"  width="<?=$this->iframe_width?>" >
+            </iframe>
+         </div>
+   <?php     echo " <script>  mo_camada('$chave'); </script> ";
+         next($this->identifica);
+      }
+      ?>
     </div>
         </td>
       </tr>
       </form>
       </table>
- <?
-  reset($this->identifica);
-  $chave=key($this->identifica);
-  echo " <script> mo_camada('$chave'); </script> ";
-   }
+ <?php 
+      $chave=array_key_first($this->identifica);
+      echo " <script> mo_camada('$chave'); </script> ";
+  }
 }
 
 
@@ -897,62 +899,62 @@ class cl_criaabas {
 //|10|//Cria um iframe com as opções de alterar e excluir por PHP.
 //|15|//[variavel] = new cl_iframe_alterar_excluir;
 class cl_iframe_alterar_excluir {
-   var $js_mouseover     = null;
+   public $js_mouseover     = null;
    //|30|//função executada quando o mouse for passado por cima da linha, é retornado para ela as chaves primarias...
-   var $js_mouseout     = null;
+   public $js_mouseout     = null;
    //|30|//função executada quando o mouse for passado por cima da linha, é retornado para ela as chaves primarias...
-   var $formulario   = true;
+   public $formulario   = true;
    //sql para montar os campos
    //|30|//nome e label dos campos
-   var $fieldset   = true;
+   public $fieldset   = true;
    //sql para montar os campos
    //|30|//nome e label dos campos
-   var $sql        = null;
+   public $sql        = null;
    //sql para montar os campos
    //|30|//nome e label dos campos
-   var $sql_disabled    = null;
+   public $sql_disabled    = null;
    //sql para desabilitar os campos que nao podem ser alterados ou excluidos
    //|30|//nome e label dos campos
-   var $campos     = null;
+   public $campos     = null;
    //|30|//campos que serão mostrados
-   var $opcoes    = 1;
+   public $opcoes    = 1;
    //|30|//quais opcoes poderão ter. Se for só alterar é 2, se for só excluir é 3 se for os dois é 1
-   var $legenda    = "DADOS";
+   public $legenda    = "DADOS";
    //|30|//legenda do fieldset
-   var $alignlegenda = "center";
+   public $alignlegenda = "center";
    //|30|//Alinhamento da legenda no fieldset
-   var $chavepri   = null;
+   public $chavepri   = null;
    //|30|//chaves que serão usadas para identificar
-   var $msg_vazio  = "Nenhum registro encontrado.";
+   public $msg_vazio  = "Nenhum registro encontrado.";
    //|30|//mensagem a ser mostrada quando o sql não retornar nenhum registro
-   var $textocabec = 'darkblue';
+   public $textocabec = 'darkblue';
    //|30|//cor do texto do cabeçalho
-   var $textocorpo = 'black';
+   public $textocorpo = 'black';
    //|30|//cor do texto do corpo
-   var $fundocabec = '#aacccc ';
+   public $fundocabec = '#aacccc ';
    //|30|//cor do fundo do cabeçalho
-   var $fundocorpo = '#ccddcc';
+   public $fundocorpo = '#ccddcc';
    //|30|//cor do fundo do corpo
-   var $iframe_width = '750';
+   public $iframe_width = '750';
    //|30|//largura do iframe
-   var $iframe_height = '190';
+   public $iframe_height = '190';
    //|30|//altura do iframe
-   var $iframe_nome =   'nome_iframe ';
+   public $iframe_nome =   'nome_iframe ';
    //|30|//nome do iframe
-   var $cabecnowrap     = "false";
+   public $cabecnowrap     = "false";
    //|30|//quebrar linha ou não do cabeçalho
-   var $corponowrap     = "false";
+   public $corponowrap     = "false";
    //|30|//quebrar linha ou não do corpo
-   var $tamfontecabec = '10';
+   public $tamfontecabec = '10';
    //|30|//tamanho da fonte do cabeçalho
-   var $tamfontecorpo = '9';
+   public $tamfontecorpo = '9';
     //|30|//tamanho da fonte do corpo
-   var $sql_comparar     = "";
-   var $sql_servico      = "";
-   var $sql_reservasaldo = "";
-   var $campos_comparar  = "";
-   var $strFormatar      = "1"; #se db_fieldsmemory ira formatar os valores
-   var $escondeOpcoes      = false; #se db_fieldsmemory ira formatar os valores
+   public $sql_comparar     = "";
+   public $sql_servico      = "";
+   public $sql_reservasaldo = "";
+   public $campos_comparar  = "";
+   public $strFormatar      = "1"; #se db_fieldsmemory ira formatar os valores
+   public $escondeOpcoes      = false; #se db_fieldsmemory ira formatar os valores
 
    function iframe_alterar_excluir($db_opcao){
      $query_string = "a=1";
@@ -974,15 +976,15 @@ class cl_iframe_alterar_excluir {
      fputs($fd,' $tamfontecabec="'.$this->tamfontecabec.'";'."\n");
      fputs($fd,' $tamfontecorpo="'.$this->tamfontecorpo.'";'."\n");
      fputs($fd,' $escondeOpcoes="'.$this->escondeOpcoes.'";'."\n");
-     fputs($fd,' $sql="'.base64_encode($this->sql).'";'."\n");
-     fputs($fd,' $msg_vazio="'.base64_encode($this->msg_vazio).'";'."\n");
-     fputs($fd,' $campos="'.base64_encode($this->campos).'";'."\n");
+     fputs($fd,' $sql="'.base64_encode((string) $this->sql).'";'."\n");
+     fputs($fd,' $msg_vazio="'.base64_encode((string) $this->msg_vazio).'";'."\n");
+     fputs($fd,' $campos="'.base64_encode((string) $this->campos).'";'."\n");
      fputs($fd,' $db_opcao="'.$db_opcao.'";'."\n");
      if ($this->sql_comparar != ""){
-          fputs($fd,' $sql_comparar="'.base64_encode($this->sql_comparar).'";'."\n");
-          fputs($fd,' $sql_servico="'.base64_encode($this->sql_servico).'";'."\n");
-          fputs($fd,' $sql_reservasaldo="'.base64_encode($this->sql_reservasaldo).'";'."\n");
-          fputs($fd,' $campos_comparar="'.base64_encode($this->campos_comparar).'";'."\n");
+          fputs($fd,' $sql_comparar="'.base64_encode((string) $this->sql_comparar).'";'."\n");
+          fputs($fd,' $sql_servico="'.base64_encode((string) $this->sql_servico).'";'."\n");
+          fputs($fd,' $sql_reservasaldo="'.base64_encode((string) $this->sql_reservasaldo).'";'."\n");
+          fputs($fd,' $campos_comparar="'.base64_encode((string) $this->campos_comparar).'";'."\n");
      }
 
      if($this->js_mouseover!=null){
@@ -1004,7 +1006,7 @@ class cl_iframe_alterar_excluir {
        fputs($fd,' $opcoes="'.$this->opcoes.'";'."\n");
      }
      if($this->sql_disabled!=null){
-       fputs($fd,' $sql_disabled="'.base64_encode($this->sql_disabled).'";'."\n");
+       fputs($fd,' $sql_disabled="'.base64_encode((string) $this->sql_disabled).'";'."\n");
      }
 
      fputs($fd,'?>  ');
@@ -1036,71 +1038,71 @@ class cl_arquivo_auxiliar {
 //|00|//cl_arquivo_auxiliar
 //|10|//Gera no formulario um select multiple com um campo de ancora para inclusao e selecao de item
 //|15|//[variavel] = new cl_arquivo_auxiliar;
-  var $nome_botao = "db_lanca";
+  public $nome_botao = "db_lanca";
 // Incluido para poder ter 2 arquivos auxiliares devido ao nome do botão estar fixo como db_lanca
-  var $cabecalho = null;
+  public $cabecalho = null;
 //|30|//Cabecalho : Descrição que será utilizada no FieldSet
-  var $top = null;
+  public $top = null;
 //|30|//Tipo de montagem do formulário, 1=vertical ou 2=horizontal
-  var $localjan = "(window.CurrentWindow || parent.CurrentWindow).corpo";
+  public $localjan = "(window.CurrentWindow || parent.CurrentWindow).corpo";
 //|30|//Cabecalho : Descrição que será utilizada no FieldSet
-  var $codigo = null;
+  public $codigo = null;
 //|30|//Código    : Nome do campo para o código da âncora
-  var $isfuncnome = false;
+  public $isfuncnome = false;
 //|30|//isfuncnome: Verifica se é a func_nome.php ou func_cgm.php, inverterá a ordem dos campos no retorno da função JavaScript quando informado o código
-  var $descr  = null;
+  public $descr  = null;
 //|30|//Descrição : Nome do campo da descrição para a descrição do código âncora
-  var $nomeobjeto = 'itens_selecao';
+  public $nomeobjeto = 'itens_selecao';
 //|30|//Nome do objeto javascript para o select multiple
-  var $funcao_js = null;
+  public $funcao_js = null;
 //|30|//Nome da função javascript que será utilizada quando clicar na âncora
-  var $funcao_js_hide = null;
+  public $funcao_js_hide = null;
 //|30|//Nome da função javascript que será utilizada quando colocar um código e sair do campo
-  var $sql_exec  = null;
+  public $sql_exec  = null;
 //|30|//Sql que será executado quando entrar em alteração do formulário
-  var $func_arquivo = null;
+  public $func_arquivo = null;
 //|30|//Função que será incluída no iframe quando clicado na âncora
-  var $nomeiframe = "";
+  public $nomeiframe = "";
 //|30|//Nome do objeto Javascript do Iframe para manipulação do mesmo
-  var $db_opcao = 2;
+  public $db_opcao = 2;
 //|30|//Código da opção do programa Padrão = 2
-  var $tipo = 1;
+  public $tipo = 1;
 //|30|//Tipo de montagem do formulário, 1=vertical ou 2=horizontal
-   var $linhas = 15;
+   public $linhas = 15;
 //|30|//Numero de linhas do objeto select Padrão = 15
-   var $onclick = "";
+   public $onclick = "";
 //|30|//funcao que será executada quando for incluido um objeto
-   var $vwidth = 250;
+   public $vwidth = 250;
 //|30|//Largura do objeto select Padrão = 250
-   var $passar_query_string_para_func = "";
+   public $passar_query_string_para_func = "";
 //|30|//Serve para caso seja necessário passar uma query string para a func de pesquisa... Ex.: Para filtrar por instituição
-   var $ordenar_itens = false;
+   public $ordenar_itens = false;
 //|30|//True se desejar ordenar os itens por seu value dentro do SELECT
-   var $concatenar_codigo = false;
+   public $concatenar_codigo = false;
 //|30|//True se desejar concatenar código dos itens com sua descrição no SELECT
-   var $obrigarselecao  = true;
+   public $obrigarselecao  = true;
 //|30|//True se desejar obrigar a seleção de itens ao utilizar a função js_campo_recebe_valores
-   var $tamanho_campo_descricao  = 25;
+   public $tamanho_campo_descricao  = 25;
 //|30|//Setar o tamanho do campo da descrição
-   var $parametros = "";
+   public $parametros = "";
 //|30|//Setar o nome da janela
-   var $nomejanela = "Pesquisa";
+   public $nomejanela = "Pesquisa";
 // Quando preenchido usado para passar como parameto ao campo func_arquivo
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //|30|//
 //|30|//VARIÁVEIS ABAIXO, CRIADAS ESPECIALMENTE PARA UTILIZAÇÃO NO MÓDULO PESSOAL
-   var $executa_script_apos_incluir = "";
+   public $executa_script_apos_incluir = "";
 //|30|//Script definido pelo programador que será executado após clicar em lançar
-   var $executa_script_lost_focus_campo = "";
+   public $executa_script_lost_focus_campo = "";
 //|30|//Script definido pelo programador que será executado após o campo do código ter perdido o foco
-   var $mostrar_botao_lancar = true;
+   public $mostrar_botao_lancar = true;
 //|30|//Se true: mostrará o botão lançar; Se false: Não mostrará o botão lançar. Default = true;
-   var $completar_com_zeros_codigo = false;
+   public $completar_com_zeros_codigo = false;
 //|30|//A princípio, utilizado somente para quando for rubrica (Módulo Pessoal), setando true, completará com zeros à esquerda formando um código com 4 caracteres
-   var $Labelancora = "";
+   public $Labelancora = "";
 //|30|//Em caso de true, é gerada um função js_campo_recebe_valores concatenando com o nome para cada objeto criado
-   var $lFuncaoPersonalizada = false;
+   public $lFuncaoPersonalizada = false;
 
 
   function funcao_gera_formulario( $sClassAuxiliar=null ) {
@@ -1120,7 +1122,7 @@ class cl_arquivo_auxiliar {
     $clrotulocampo->label($this->descr);
     $codfilho = "L".$this->codigo;
 
-    $ancora = trim($this->Labelancora);
+    $ancora = trim((string) $this->Labelancora);
     if( empty($ancora) ) {
       $labelAncora = $GLOBALS["$codfilho"];
     } else {
@@ -1145,8 +1147,8 @@ class cl_arquivo_auxiliar {
     echo "            <select name=\"".$this->nomeobjeto."[]\" id=\"".$this->nomeobjeto."\" size=\"".$this->linhas."\" style=\"width:".$this->vwidth."px\" multiple onDblClick=\"js_excluir_item".$this->nomeobjeto."()\">\n";
     if(!empty($this->sql_exec)){
        $result = db_query($this->sql_exec);
-       for($i=0;$i<pg_numrows($result);$i++){
-         echo "              <option value='".pg_result($result,$i,$this->codigo)."'>".pg_result($result,$i,$this->descr)."</option>\n";
+       for($i=0;$i<pg_num_rows($result);$i++){
+         echo "              <option value='".pg_fetch_result($result,$i,$this->codigo)."'>".pg_fetch_result($result,$i,$this->descr)."</option>\n";
        }
     }
     echo "            </select> \n";
@@ -1336,41 +1338,41 @@ class cl_arquivo_auxiliar {
 }
 
 class cl_db_estrut{
-  var $nivel = null;
-  var $mae   = null;
-  var $mae_cut   = null;
-  var $str   = null;
-  var $str_cut= null;
-  var $formatado = null;
-  var $erro_msg = null;
+  public $nivel = null;
+  public $mae   = null;
+  public $mae_cut   = null;
+  public $str   = null;
+  public $str_cut= null;
+  public $formatado = null;
+  public $erro_msg = null;
 
 
    // cria variaveis para a função que gera input
-   var $nomeform     = "form1";
-   var $reload       = false;
-   var $size         = '50';
-   var $mascara      = true;
-   var $input        = false;
-   var $nome         = "db_picture";
-   var $db_opcao     = 1;
-   var $funcao_onchange = null;
-   var $autocompletar=false;
+   public $nomeform     = "form1";
+   public $reload       = false;
+   public $size         = '50';
+   public $mascara      = true;
+   public $input        = false;
+   public $nome         = "db_picture";
+   public $db_opcao     = 1;
+   public $funcao_onchange = null;
+   public $autocompletar=false;
 
   function db_nivel($codigo,$mascara,$formata=false){
 
     $codigo = str_replace(".","",$codigo);
     $tamanho02   = strlen(str_replace(".","",$mascara));
-    $arr_mascara = split("\.",$mascara);
+    $arr_mascara = preg_split("#\\.#m",(string) $mascara);
     $tamanho =  count($arr_mascara);
 
     //rotina que salva em array onde inicia e qual o tamanho de cada nivel
-      $arr_tam = array();
-      $arr_ini = array();
+      $arr_tam = [];
+      $arr_ini = [];
       $inicio = 0;
       for($i=0; $i<$tamanho; $i++){
-     $arr_tam[$i] = strlen($arr_mascara[$i]);
+     $arr_tam[$i] = strlen((string) $arr_mascara[$i]);
      $arr_ini[$i] = $inicio;
-     $inicio += strlen($arr_mascara[$i]);
+     $inicio += strlen((string) $arr_mascara[$i]);
       }
     //fim
 
@@ -1412,18 +1414,18 @@ class cl_db_estrut{
 
   function db_monta($codigo,$mascara,$nivel){
     $codigo = str_replace(".","",$codigo);
-    $arr_mascara = split("\.",$mascara);
+    $arr_mascara = preg_split("#\\.#m",(string) $mascara);
     $tamanho =  count($arr_mascara);
     $tamanho02   = strlen(str_replace(".","",$mascara));
 
     //rotina que salva em array onde inicia e qual o tamanho de cada nivel
-      $arr_tam = array();
-      $arr_ini = array();
+      $arr_tam = [];
+      $arr_ini = [];
       $inicio = 0;
       for($i=0; $i<$tamanho; $i++){
-     $arr_tam[$i] = strlen($arr_mascara[$i]);
+     $arr_tam[$i] = strlen((string) $arr_mascara[$i]);
      $arr_ini[$i] = $inicio;
-     $inicio += strlen($arr_mascara[$i]);
+     $inicio += strlen((string) $arr_mascara[$i]);
       }
     //fim
     //rotina que atualiza a mãe
@@ -1447,18 +1449,18 @@ class cl_db_estrut{
 
   function db_estrutformata($codigo,$mascara){
     $codigo = str_replace(".","",$codigo);
-    $arr_mascara = split("\.",$mascara);
+    $arr_mascara = preg_split("#\\.#m",(string) $mascara);
     $tamanho =  count($arr_mascara);
     $tamanho02   = strlen(str_replace(".","",$mascara));
 
     //rotina que salva em array onde inicia e qual o tamanho de cada nivel
-      $arr_tam = array();
-      $arr_ini = array();
+      $arr_tam = [];
+      $arr_ini = [];
       $inicio = 0;
       for($i=0; $i<$tamanho; $i++){
-     $arr_tam[$i] = strlen($arr_mascara[$i]);
+     $arr_tam[$i] = strlen((string) $arr_mascara[$i]);
      $arr_ini[$i] = $inicio;
-     $inicio += strlen($arr_mascara[$i]);
+     $inicio += strlen((string) $arr_mascara[$i]);
       }
       $ponto="";
       $formatado='';
@@ -1476,7 +1478,7 @@ class cl_db_estrut{
        //rotina que verifica se o estrutural já não foi incluido
    $sql= " select $campo from $tabela where $campo = '".$codigo."' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_numrows($result);
+   $this->numrows = pg_num_rows($result);
    if($this->numrows>0){
       $this->erro_msg = 'Inclusão abortada. Estrutural já incluido!';
             $this->erro_status = 0;
@@ -1493,7 +1495,7 @@ class cl_db_estrut{
        //rotina que verifica se o código fornecido possui mae
    $sql= " select $tipomae as tipo from $tabela where $campo = '".$this->mae."' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_numrows($result);
+   $this->numrows = pg_num_rows($result);
    if($this->numrows<1){
       $this->erro_msg = 'Inclusão abortada. Estrutural  acima não encontrado!';
             $this->erro_status = 0;
@@ -1518,7 +1520,7 @@ class cl_db_estrut{
 
    $sql= " select $campo from $tabela where  $campo like '".$this->str_cut."%'";
    $result  =  @db_query($sql);
-   $this->numrows = pg_numrows($result);
+   $this->numrows = pg_num_rows($result);
    if($this->numrows>0){
       $this->erro_msg = 'Inclusão abortada. Existe um estrutural  de nível inferior cadastrado!';
             $this->erro_status = 0;
@@ -1539,7 +1541,7 @@ class cl_db_estrut{
        //rotina que verifica se o estrutural já não foi incluido
    $sql= " select $campo from $tabela where $campo = '".$codigo."' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_numrows($result);
+   $this->numrows = pg_num_rows($result);
    if($this->numrows==0){
       $this->erro_msg = 'Exclusão abortada. Estrutural não existe!';
             $this->erro_status = 0;
@@ -1557,15 +1559,15 @@ class cl_db_estrut{
    $this->db_monta($codigo,$mascara,$this->nivel);
 
     //rotina que monta o numero de zeros que precisa para a comparação do nivel
-    $resto = strlen($this->str)-strlen($this->str_cut);
+    $resto = strlen((string) $this->str)-strlen((string) $this->str_cut);
     $zero="";
     for($h=0; $h<$resto; $h++){
       $zero .="0";
     }
 
-   $sql= " select $campo from $tabela where  $campo like '".$this->str_cut."%' and substr($campo,".(strlen($this->str_cut)+1).",".$resto.")<>'$zero' ";
+   $sql= " select $campo from $tabela where  $campo like '".$this->str_cut."%' and substr($campo,".(strlen((string) $this->str_cut)+1).",".$resto.")<>'$zero' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_numrows($result);
+   $this->numrows = pg_num_rows($result);
    if($this->numrows>0){
       $this->erro_msg = 'Exclusão abortada. Existe um estrutural  de nível inferior cadastrado!';
             $this->erro_status = 0;
@@ -1586,14 +1588,14 @@ class cl_db_estrut{
     $nome = $this->nome;
     $x = "L".$nome;
     $y = "T".$nome;
-    global $mascara,$db77_descr,$$nome,$$x,$$y;
+    global $mascara,$db77_descr,${$nome},${$x},${$y};
     $clrotulocampo = new rotulocampo;
     $clrotulocampo->label($nome);
     $result  = db_query("select db77_descr, db77_estrut as mascara from db_estrutura where db77_codestrut=$id");
     $numrows = pg_num_rows($result);
     if ($numrows >0){
         db_fieldsmemory($result,0);
-        $tamanho=strlen($mascara);
+        $tamanho=strlen((string) $mascara);
     } else {
         db_msgbox('Não existe estrutural com o código fornecido. Verifique! ');
         exit;
@@ -1620,26 +1622,26 @@ class cl_db_estrut{
      <input name="mascara" style="background-color:#DEB887" readonly size='<?=$this->size?>' type="text"  value="<?=$mascara?>"    >
     </td>
   </tr>
-<?
+<?php 
    }
    if($this->input==false){
 ?>
    <tr>
-    <td nowrap title="<?=$$y?>">
-      <b> <?=@$$x?></b>
+    <td nowrap title="<?=${$y}?>">
+      <b> <?=@${$x}?></b>
     </td>
     <td title="<?=$this->nome?>">
-<?
+<?php 
 
    }
 ?>
-      <input title="<?=@$$title?>" name="<?=$this->nome?>" value="<?=@$$nome?>" maxlength='<?=$tamanho?>' size='<?=$this->size?>' type="text"   onKeyPress="return js_mascara01_<?=$nome?>(event,this.value);"  <?=$funcao?> <?=($this->db_opcao==22||$this->db_opcao==33||$this->db_opcao==3?"readonly style=\"background-color:#DEB887\" ":"")?> >
-<?
+      <input title="<?=@${$title}?>" name="<?=$this->nome?>" value="<?=@${$nome}?>" maxlength='<?=$tamanho?>' size='<?=$this->size?>' type="text"   onKeyPress="return js_mascara01_<?=$nome?>(event,this.value);"  <?=$funcao?> <?=($this->db_opcao==22||$this->db_opcao==33||$this->db_opcao==3?"readonly style=\"background-color:#DEB887\" ":"")?> >
+<?php 
    if($this->input==false){
 ?>
     </td>
    </tr>
-<?
+<?php 
     }
 ?>
     <script>
@@ -1666,14 +1668,14 @@ class cl_db_estrut{
        while(obj.search(/\./)!='-1'){
    obj=obj.replace(/\./,'');
        }
-<?
+<?php 
    if($this->autocompletar==true){
 ?>
      tam=<?=strlen(str_replace(".", "", $mascara))?>;
      for(i=obj.length; i<tam; i++){
        obj=obj+"0";
      }
-<?
+<?php 
    }
 ?>
       //analise da estrutura passada
@@ -1701,7 +1703,7 @@ class cl_db_estrut{
        }
         document.<?=$this->nomeform?>.<?=$this->nome?>.
         value = obj;
-<?
+<?php 
     if($this->reload==true){
 ?>
       obj=document.createElement('input');
@@ -1710,7 +1712,7 @@ class cl_db_estrut{
       obj.setAttribute('value',"atualizar");
       document.<?=$this->nomeform?>.appendChild(obj);
       document.<?=$this->nomeform?>.submit();
-<?
+<?php 
     }
 ?>
     }
@@ -1720,14 +1722,14 @@ class cl_db_estrut{
        while(obj.search(/\./)!='-1'){
    obj=obj.replace(/\./,'');
        }
-<?
+<?php 
    if($this->autocompletar==true){
 ?>
      tam=<?=strlen(str_replace(".", "", $mascara))?>;
      for(i=obj.length; i<tam; i++){
        obj=obj+"0";
      }
-<?
+<?php 
    }
 ?>
       //analise da estrutura passada
@@ -1758,147 +1760,147 @@ class cl_db_estrut{
     }
     </script>
 
-<?
+<?php 
   }
 }
 
 // CLASSE PARA GERAR FORM PARA RELATÓRIOS E CONSULTAS DA FOLHA
 class cl_formulario_rel_pes {
 
-  var $anonome = "anofolha"; // Nome do campo ANOFOLHA.
-  var $mesnome = "mesfolha"; // Nome do campo MESFOLHA.
-  var $js_anomes = "";       // JS script para ano e mes.
+  public $anonome = "anofolha"; // Nome do campo ANOFOLHA.
+  public $mesnome = "mesfolha"; // Nome do campo MESFOLHA.
+  public $js_anomes = "";       // JS script para ano e mes.
 
-  var $re1nome = "registro1"; // Nome do campo Registro 1.
-  var $re2nome = "registro2"; // Nome do campo Registro 2.
-  var $re3nome = "selregist"; // Nome do objeto de seleção de registros.
-  var $re4nome = "Matrícula"; // Nome para o Label do resumo , intervalo e selecao.
+  public $re1nome = "registro1"; // Nome do campo Registro 1.
+  public $re2nome = "registro2"; // Nome do campo Registro 2.
+  public $re3nome = "selregist"; // Nome do objeto de seleção de registros.
+  public $re4nome = "Matrícula"; // Nome para o Label do resumo , intervalo e selecao.
 
-  var $or1nome = "orgao1"; // Nome do campo ÓRGÃO 1.
-  var $or2nome = "orgao2"; // Nome do campo ÓRGÃO 2.
-  var $or3nome = "selorg"; // Nome do objeto de seleção de órgãos.
-  var $or4nome = "Órgão";  // Nome para o Label do resumo , intervalo e selecao.
+  public $or1nome = "orgao1"; // Nome do campo ÓRGÃO 1.
+  public $or2nome = "orgao2"; // Nome do campo ÓRGÃO 2.
+  public $or3nome = "selorg"; // Nome do objeto de seleção de órgãos.
+  public $or4nome = "Órgão";  // Nome para o Label do resumo , intervalo e selecao.
 
-  var $rc1nome = "recur1"; // Nome do campo RECURSO 1.
-  var $rc2nome = "recur2"; // Nome do campo RECURSO 2.
-  var $rc3nome = "selrec"; // Nome do objeto de seleção de recurso.
-  var $rc4nome = "Recurso";  // Nome para o Label do resumo , intervalo e selecao.
+  public $rc1nome = "recur1"; // Nome do campo RECURSO 1.
+  public $rc2nome = "recur2"; // Nome do campo RECURSO 2.
+  public $rc3nome = "selrec"; // Nome do objeto de seleção de recurso.
+  public $rc4nome = "Recurso";  // Nome para o Label do resumo , intervalo e selecao.
 
-  var $lo1nome = "lotacao1"; // Nome do campo LOTAÇÃO 1.
-  var $lo2nome = "lotacao2"; // Nome do campo LOTAÇÃO 2.
-  var $lo3nome = "sellotac"; // Nome do objeto de seleção de lotações.
-  var $lo4nome = "Lotação";  // Nome para o Label do resumo , intervalo e selecao.
+  public $lo1nome = "lotacao1"; // Nome do campo LOTAÇÃO 1.
+  public $lo2nome = "lotacao2"; // Nome do campo LOTAÇÃO 2.
+  public $lo3nome = "sellotac"; // Nome do objeto de seleção de lotações.
+  public $lo4nome = "Lotação";  // Nome para o Label do resumo , intervalo e selecao.
 
-  var $ru1nome = "rubrica1"; // Nome do campo RUBRICA 1.
-  var $ru2nome = "rubrica2"; // Nome do campo RUBRICA 2.
-  var $ru3nome = "selrubri"; // Nome do objeto de seleção de rubricas.
-  var $ru4nome = "Rubrica";  // Nome para o Label do resumo , intervalo e selecao.
+  public $ru1nome = "rubrica1"; // Nome do campo RUBRICA 1.
+  public $ru2nome = "rubrica2"; // Nome do campo RUBRICA 2.
+  public $ru3nome = "selrubri"; // Nome do objeto de seleção de rubricas.
+  public $ru4nome = "Rubrica";  // Nome para o Label do resumo , intervalo e selecao.
 
-  var $tr1nome = "local1"; // Nome do campo LOCAL 1.
-  var $tr2nome = "local2"; // Nome do campo LOCAL 2.
-  var $tr3nome = "sellocal"; // Nome do objeto de seleção de locais.
-  var $tr4nome = "Locais de trabalho";  // Nome para o Label do resumo , intervalo e selecao.
+  public $tr1nome = "local1"; // Nome do campo LOCAL 1.
+  public $tr2nome = "local2"; // Nome do campo LOCAL 2.
+  public $tr3nome = "sellocal"; // Nome do objeto de seleção de locais.
+  public $tr4nome = "Locais de trabalho";  // Nome para o Label do resumo , intervalo e selecao.
 
-  var $ca1nome = "cargo1";  // Nome do campo Cargo 1.
-  var $ca2nome = "cargo2";  // Nome do campo Cargo 2.
-  var $ca3nome = "selcargo"; // Nome do objeto de seleção de Cargos.
-  var $ca4nome = "Função";  // Nome para o Label do resumo , intervalo e selecao.
+  public $ca1nome = "cargo1";  // Nome do campo Cargo 1.
+  public $ca2nome = "cargo2";  // Nome do campo Cargo 2.
+  public $ca3nome = "selcargo"; // Nome do objeto de seleção de Cargos.
+  public $ca4nome = "Função";  // Nome para o Label do resumo , intervalo e selecao.
 
-  var $tfonome = "tipofol";  // Nome do campo TIPO DE FOLHA.
-  var $tponome = "tipopon";  // Nome do campo TIPO DE PONTO.
-  var $trenome = "tipores";  // Nome do campo RESUMO.
-  var $tfinome = "tipofil";  // Nome do campo TIPO DE FILTRO.
-  var $mornome = "mostord";  // Nome do campo ORDEM.
-  var $masnome = "mostasc";  // Nome do campo TIPO DE ORDEM.
-  var $mtonome = "mosttot";  // Nome do campo TOTALIZAÇÃO.
-  var $qbrnome = "qbrapag";  // Nome do campo Quebrar por página.
-  var $aignome = "atinpen";  // Nome do campo Inativos / Pensionistas, Ativos ou Geral.
-  var $selnome = "selecao";  // Nome do campo SELECAO.
-  var $previdnome = "previd"; // Nome do campo com as tabelas da previdência e INSS
-  var $tipoarqnome = "tipoarquivo";
+  public $tfonome = "tipofol";  // Nome do campo TIPO DE FOLHA.
+  public $tponome = "tipopon";  // Nome do campo TIPO DE PONTO.
+  public $trenome = "tipores";  // Nome do campo RESUMO.
+  public $tfinome = "tipofil";  // Nome do campo TIPO DE FILTRO.
+  public $mornome = "mostord";  // Nome do campo ORDEM.
+  public $masnome = "mostasc";  // Nome do campo TIPO DE ORDEM.
+  public $mtonome = "mosttot";  // Nome do campo TOTALIZAÇÃO.
+  public $qbrnome = "qbrapag";  // Nome do campo Quebrar por página.
+  public $aignome = "atinpen";  // Nome do campo Inativos / Pensionistas, Ativos ou Geral.
+  public $selnome = "selecao";  // Nome do campo SELECAO.
+  public $previdnome = "previd"; // Nome do campo com as tabelas da previdência e INSS
+  public $tipoarqnome = "tipoarquivo";
 
-  var $campo_auxilio_regi = "campo_auxilio_regi";  // Nome do campo de auxílio dos registros selecionados.
-  var $campo_auxilio_orga = "campo_auxilio_orga";  // Nome do campo de auxílio dos órgãos selecionados.
-  var $campo_auxilio_recu = "campo_auxilio_recu";  // Nome do campo de auxílio dos recursos selecionados.
-  var $campo_auxilio_lota = "campo_auxilio_lota";  // Nome do campo de auxílio das lotações selecionadas.
-  var $campo_auxilio_rubr = "campo_auxilio_rubr";  // Nome do campo de auxílio das rubricas selecionadas.
-  var $campo_auxilio_loca = "campo_auxilio_loca";  // Nome do campo de auxílio dos locais selecionados.
-  var $campo_auxilio_carg = "campo_auxilio_carg";  // Nome do campo de auxílio das cargos selecionadas.
+  public $campo_auxilio_regi = "campo_auxilio_regi";  // Nome do campo de auxílio dos registros selecionados.
+  public $campo_auxilio_orga = "campo_auxilio_orga";  // Nome do campo de auxílio dos órgãos selecionados.
+  public $campo_auxilio_recu = "campo_auxilio_recu";  // Nome do campo de auxílio dos recursos selecionados.
+  public $campo_auxilio_lota = "campo_auxilio_lota";  // Nome do campo de auxílio das lotações selecionadas.
+  public $campo_auxilio_rubr = "campo_auxilio_rubr";  // Nome do campo de auxílio das rubricas selecionadas.
+  public $campo_auxilio_loca = "campo_auxilio_loca";  // Nome do campo de auxílio dos locais selecionados.
+  public $campo_auxilio_carg = "campo_auxilio_carg";  // Nome do campo de auxílio das cargos selecionadas.
 
-  var $onchres = "";    // JavaScript rodado no onChange do campo tipo de filtro.
-  var $onchpad = false; // True para usar onChange padrão do campo tipo de filtro.
+  public $onchres = "";    // JavaScript rodado no onChange do campo tipo de filtro.
+  public $onchpad = false; // True para usar onChange padrão do campo tipo de filtro.
 
-  var $manomes = true;  // Mostrar ano e mês no formulário.
-  var $desabam = false; // Desabilitar ano e mês
-  var $valpadr = true;  // Mostrar data atual nos campos que tem data, ano ou mês
+  public $manomes = true;  // Mostrar ano e mês no formulário.
+  public $desabam = false; // Desabilitar ano e mês
+  public $valpadr = true;  // Mostrar data atual nos campos que tem data, ano ou mês
 
-  var $usaregi = false; // Usar registro.
-  var $usaorga = false; // Usar órgao.
-  var $usarecu = false; // Usar recursos.
-  var $usalota = false; // Usar lotação.
-  var $usarubr = false; // Usar rubrica.
-  var $usaloca = false; // Usar local de trabalho.
-  var $usacarg = false; // Usar cargo.
+  public $usaregi = false; // Usar registro.
+  public $usaorga = false; // Usar órgao.
+  public $usarecu = false; // Usar recursos.
+  public $usalota = false; // Usar lotação.
+  public $usarubr = false; // Usar rubrica.
+  public $usaloca = false; // Usar local de trabalho.
+  public $usacarg = false; // Usar cargo.
 
-  var $uniregi = false; // Mostrar um campo para registro.
-  var $intregi = false; // Mostrar um intervalo de registros com registro inicial ou final.
-  var $selregi = false; // Mostrar um objeto para registros selecionados.
+  public $uniregi = false; // Mostrar um campo para registro.
+  public $intregi = false; // Mostrar um intervalo de registros com registro inicial ou final.
+  public $selregi = false; // Mostrar um objeto para registros selecionados.
 
-  var $uniorga = false; // Mostrar um campo para órgao.
-  var $intorga = false; // Mostrar um intervalo de órgao com órgao inicial ou final.
-  var $selorga = false; // Mostrar um objeto para órgãos selecionados.
+  public $uniorga = false; // Mostrar um campo para órgao.
+  public $intorga = false; // Mostrar um intervalo de órgao com órgao inicial ou final.
+  public $selorga = false; // Mostrar um objeto para órgãos selecionados.
 
-  var $unirecu = false; // Mostrar um campo para recurso.
-  var $intrecu = false; // Mostrar um intervalo de recurso com recurso inicial ou final.
-  var $selrecu = false; // Mostrar um objeto para recurso selecionados.
+  public $unirecu = false; // Mostrar um campo para recurso.
+  public $intrecu = false; // Mostrar um intervalo de recurso com recurso inicial ou final.
+  public $selrecu = false; // Mostrar um objeto para recurso selecionados.
 
-  var $unilota = false; // Mostrar um campo para lotação.
-  var $intlota = false; // Mostrar um intervalo de lotações com lotação inicial ou final.
-  var $sellota = false; // Mostrar um objeto para lotações selecionadas.
+  public $unilota = false; // Mostrar um campo para lotação.
+  public $intlota = false; // Mostrar um intervalo de lotações com lotação inicial ou final.
+  public $sellota = false; // Mostrar um objeto para lotações selecionadas.
 
-  var $unirubr = false; // Mostrar um campo para rubrica.
-  var $intrubr = false; // Mostrar um intervalo de rubricas com rubrica inicial ou final.
-  var $selrubr = false; // Mostrar um objeto para rubricas selecionadas.
+  public $unirubr = false; // Mostrar um campo para rubrica.
+  public $intrubr = false; // Mostrar um intervalo de rubricas com rubrica inicial ou final.
+  public $selrubr = false; // Mostrar um objeto para rubricas selecionadas.
 
-  var $uniloca = false; // Mostrar um campo para local de trabalho.
-  var $intloca = false; // Mostrar um intervalo de local de trabalho com local inicial ou final.
-  var $selloca = false; // Mostrar um objeto para locais de trabalho selecionados.
+  public $uniloca = false; // Mostrar um campo para local de trabalho.
+  public $intloca = false; // Mostrar um intervalo de local de trabalho com local inicial ou final.
+  public $selloca = false; // Mostrar um objeto para locais de trabalho selecionados.
 
-  var $unicarg = false; // Mostrar um campo para cargo.
-  var $intcarg = false; // Mostrar um intervalo de cargos com cargo inicial ou final.
-  var $selcarg = false; // Mostrar um objeto para cargos selecionados.
+  public $unicarg = false; // Mostrar um campo para cargo.
+  public $intcarg = false; // Mostrar um intervalo de cargos com cargo inicial ou final.
+  public $selcarg = false; // Mostrar um objeto para cargos selecionados.
 
-  var $tipofol = true;  // Mostrar o tipo de folha (gerfsal, gerfres, gerffer, etc...).
-  var $tipopon = true;  // Mostrar o tipo de ponto (pontofs, pontofx, pontofa, etc...).
-  var $tipores = true;  // Mostrar tipo de resumo (geral, por lotação, por registro, etc...).
-  var $tipoarq = false; // Lista de extensões de arquivos para o gerador de relatório
-  var $mostord = true;  // Mostrar ordem (alfabética, numérica, etc...).
-  var $mosttot = true;  // Mostrar totalização (por conta, por registro, etc...).
-  var $mostasc = false; // Mostrar se é em ordem ordem ascendente ou descendente.
-  var $mostaln = false; // Mostrar se é em ordem ordem alfabética ou numérica.
-  var $mostnal = false; // Mostrar se é em ordem ordem numérica ou alfabética.
-  var $qbrapag = false; // Quebrar por página (Sim / Não).
-  var $atinpen = false; // Mostrar Inativos / Pensionistas, Ativos ou Geral.
-  var $selecao = false; // Mostrar seleção.
-  var $usarprevid = false; // Mostrar tabelas da previdência e INSS
+  public $tipofol = true;  // Mostrar o tipo de folha (gerfsal, gerfres, gerffer, etc...).
+  public $tipopon = true;  // Mostrar o tipo de ponto (pontofs, pontofx, pontofa, etc...).
+  public $tipores = true;  // Mostrar tipo de resumo (geral, por lotação, por registro, etc...).
+  public $tipoarq = false; // Lista de extensões de arquivos para o gerador de relatório
+  public $mostord = true;  // Mostrar ordem (alfabética, numérica, etc...).
+  public $mosttot = true;  // Mostrar totalização (por conta, por registro, etc...).
+  public $mostasc = false; // Mostrar se é em ordem ordem ascendente ou descendente.
+  public $mostaln = false; // Mostrar se é em ordem ordem alfabética ou numérica.
+  public $mostnal = false; // Mostrar se é em ordem ordem numérica ou alfabética.
+  public $qbrapag = false; // Quebrar por página (Sim / Não).
+  public $atinpen = false; // Mostrar Inativos / Pensionistas, Ativos ou Geral.
+  public $selecao = false; // Mostrar seleção.
+  public $usarprevid = false; // Mostrar tabelas da previdência e INSS
 
-  var $arr_tipofol = Array(); // Array com values e tipos de folha que deseja mostrar.
-  var $arr_tipopon = Array(); // Array com values e tipos de ponto que deseja mostrar.
-  var $arr_tipores = Array(); // Array com values e tipos de resumo que deseja mostrar.
-  var $arr_mostord = Array(); // Array com values e tipos de ordem em que deseja mostrar.
-  var $arr_mosttot = Array(); // Array com values e tipos de totalização.
-  var $arr_tipoarq = Array(); //Array com os tipos de arquivos
+  public $arr_tipofol = []; // Array com values e tipos de folha que deseja mostrar.
+  public $arr_tipopon = []; // Array com values e tipos de ponto que deseja mostrar.
+  public $arr_tipores = []; // Array com values e tipos de resumo que deseja mostrar.
+  public $arr_mostord = []; // Array com values e tipos de ordem em que deseja mostrar.
+  public $arr_mosttot = []; // Array com values e tipos de totalização.
+  public $arr_tipoarq = []; //Array com os tipos de arquivos
 
-  var $mbgerar = false;       // Colocar um botão gerar no final, já buscando os dados.
-  var $jsgerar = "js_gerar_consrel();"; // JavaScript que será chamado ao clicar no botão gerar.
-  var $relarqu = "";          // Nome do arquivo que será chamado
-  var $formnam = "form1";     // Nome do formulário do arquivo
-  var $jsconsr = "";          // JavaScript chamado na função js_gerar_consrel().
+  public $mbgerar = false;       // Colocar um botão gerar no final, já buscando os dados.
+  public $jsgerar = "js_gerar_consrel();"; // JavaScript que será chamado ao clicar no botão gerar.
+  public $relarqu = "";          // Nome do arquivo que será chamado
+  public $formnam = "form1";     // Nome do formulário do arquivo
+  public $jsconsr = "";          // JavaScript chamado na função js_gerar_consrel().
 
-  var $arr_tiposel = Array(); // Array que guarda o tipo de seleção (Por matrícula, por lotação ou por rubricas).
+  public $arr_tiposel = []; // Array que guarda o tipo de seleção (Por matrícula, por lotação ou por rubricas).
                               // Depois, testará se mostrará somente os selecionados ou intervalo.
-  var $valortipores = "g";    // Tipo de seleção para quando tiver intervalos no form
-  var $strngtipores = "";     // String com os tipos de resumo:
+  public $valortipores = "g";    // Tipo de seleção para quando tiver intervalos no form
+  public $strngtipores = "";     // String com os tipos de resumo:
                               // "g" => "Geral"
                               // "l" => "Lotação"
                               // "m" => "Matrícula"
@@ -1907,20 +1909,20 @@ class cl_formulario_rel_pes {
                               // "r" => "Rubrica"
                               // "t" => "Local de trabalho"
 
-  var $selregime    = false;  // Se o usuário poderá selecionar o regime
-  var $nomregime    = "regime"; // Nome do campo de seleção do regime
-  var $resumopadrao = "";     // Qual tipo de resumo será selecionado como default
-  var $filtropadrao = "";     // Qual tipo de filtro será selecionado como default
-  var $complementar = "";     // Value do gerfcom no tipo de folha ou ponto
-  var $comnome      = "complementar";     // Nome do campo com as complementares
-  var $tipresumo    = "Tipo de Resumo";   // Label do tipo de resumo
-  var $tipordem     = "Ordem";            // Label da ordem
-  var $testarescisaoregi = "";            // Testar se funcionário foi rescindido ou não.
-  var $whereprevid  = "";     // Where que será usado ao buscar tabelas da previdência e INSS
-  var $camposprevid = "r33_codtab, r33_nome";     // Campos que serão usados ao buscar tabelas da previdência e INSS
-  var $linhasSelecion = 12;
-  var $usaLotaFieldsetClass = false;      // Opacao para estilização adicional do fieldset
-  var $suplementar = "";      // Value do gerfsal no tipo de folha ou ponto
+  public $selregime    = false;  // Se o usuário poderá selecionar o regime
+  public $nomregime    = "regime"; // Nome do campo de seleção do regime
+  public $resumopadrao = "";     // Qual tipo de resumo será selecionado como default
+  public $filtropadrao = "";     // Qual tipo de filtro será selecionado como default
+  public $complementar = "";     // Value do gerfcom no tipo de folha ou ponto
+  public $comnome      = "complementar";     // Nome do campo com as complementares
+  public $tipresumo    = "Tipo de Resumo";   // Label do tipo de resumo
+  public $tipordem     = "Ordem";            // Label da ordem
+  public $testarescisaoregi = "";            // Testar se funcionário foi rescindido ou não.
+  public $whereprevid  = "";     // Where que será usado ao buscar tabelas da previdência e INSS
+  public $camposprevid = "r33_codtab, r33_nome";     // Campos que serão usados ao buscar tabelas da previdência e INSS
+  public $linhasSelecion = 12;
+  public $usaLotaFieldsetClass = false;      // Opacao para estilização adicional do fieldset
+  public $suplementar = "";      // Value do gerfsal no tipo de folha ou ponto
 
     /**
      * cl_formulario_rel_pes constructor.
@@ -1939,10 +1941,10 @@ class cl_formulario_rel_pes {
     // $arr_qualres[index] = 't'; -> Indice equivale à tabela rhlocaltrab
     // $arr_qualres[index] = 'c'; -> Indice equivale à tabela rhfuncao
     // $arr_qualres[index] = 's'; -> Indice equivale à tabela orctiporec
-    if((isset($GLOBALS[$this->trenome]) && trim($GLOBALS[$this->trenome]) != "") || trim($this->resumopadrao) != ""){
-      $index = isset($GLOBALS[$this->trenome]) ? $GLOBALS[$this->trenome] : $this->resumopadrao;
-      if((isset($GLOBALS[$this->tfinome])) || trim($this->filtropadrao) != ""){
-        $tipo_de_selecao = isset($GLOBALS[$this->tfinome]) ? $GLOBALS[$this->tfinome] : $this->filtropadrao;
+    if((isset($GLOBALS[$this->trenome]) && trim((string) $GLOBALS[$this->trenome]) != "") || trim((string) $this->resumopadrao) != ""){
+      $index = $GLOBALS[$this->trenome] ?? $this->resumopadrao;
+      if((isset($GLOBALS[$this->tfinome])) || trim((string) $this->filtropadrao) != ""){
+        $tipo_de_selecao = $GLOBALS[$this->tfinome] ?? $this->filtropadrao;
         $this->selregi = false;
         $this->selorga = false;
         $this->sellota = false;
@@ -2061,50 +2063,50 @@ class cl_formulario_rel_pes {
     if($tabela != "regi"){
       if(isset($GLOBALS[$this->campo_auxilio_regi])){
         $valor_variavel = $this->campo_auxilio_regi;
-        global $$valor_variavel;
-        $$valor_variavel = "";
+        global ${$valor_variavel};
+        ${$valor_variavel} = "";
       }
     }
     if($tabela != "recu"){
       if(isset($GLOBALS[$this->campo_auxilio_recu])){
         $valor_variavel = $this->campo_auxilio_recu;
-        global $$valor_variavel;
-        $$valor_variavel = "";
+        global ${$valor_variavel};
+        ${$valor_variavel} = "";
       }
     }
     if($tabela != "orga"){
       if(isset($GLOBALS[$this->campo_auxilio_orga])){
         $valor_variavel = $this->campo_auxilio_orga;
-        global $$valor_variavel;
-        $$valor_variavel = "";
+        global ${$valor_variavel};
+        ${$valor_variavel} = "";
       }
     }
     if($tabela != "lota"){
       if(isset($GLOBALS[$this->campo_auxilio_lota])){
         $valor_variavel = $this->campo_auxilio_lota;
-        global $$valor_variavel;
-        $$valor_variavel = "";
+        global ${$valor_variavel};
+        ${$valor_variavel} = "";
       }
     }
     if($tabela != "rubr"){
       if(isset($GLOBALS[$this->campo_auxilio_rubr])){
         $valor_variavel = $this->campo_auxilio_rubr;
-        global $$valor_variavel;
-        $$valor_variavel = "";
+        global ${$valor_variavel};
+        ${$valor_variavel} = "";
       }
     }
     if($tabela != "loca"){
       if(isset($GLOBALS[$this->campo_auxilio_loca])){
         $valor_variavel = $this->campo_auxilio_loca;
-        global $$valor_variavel;
-        $$valor_variavel = "";
+        global ${$valor_variavel};
+        ${$valor_variavel} = "";
       }
     }
     if($tabela != "carg"){
       if(isset($GLOBALS[$this->campo_auxilio_carg])){
         $valor_variavel = $this->campo_auxilio_carg;
-        global $$valor_variavel;
-        $$valor_variavel = "";
+        global ${$valor_variavel};
+        ${$valor_variavel} = "";
       }
     }
   }
@@ -2116,17 +2118,17 @@ class cl_formulario_rel_pes {
     $Incampo = "I".$ncampo;
     $Lncampo = "L".$ncampo;
     $Idcampo = "I".$dcampo;
-    global $$Tncampo, $$Incampo, $$Lncampo, $$Idcampo;
+    global ${$Tncampo}, ${$Incampo}, ${$Lncampo}, ${$Idcampo};
     echo "
           <tr>
-            <td align='left' nowrap title='".$$Tncampo."' >
+            <td align='left' nowrap title='".${$Tncampo}."' >
          ";
-         db_ancora(@$$Lncampo, "js_geraform_pesquisa".$tabela."(true,1);", 1);
+         db_ancora(@${$Lncampo}, "js_geraform_pesquisa".$tabela."(true,1);", 1);
     echo "
             </td>
             <td align='left' nowrap>
          ";
-         db_input($ncampo, $tamanho, $$Incampo, true, 'text', 1, " onchange='js_geraform_pesquisa".$tabela."(false,1);'",$campo);
+         db_input($ncampo, $tamanho, ${$Incampo}, true, 'text', 1, " onchange='js_geraform_pesquisa".$tabela."(false,1);'",$campo);
          db_input($dcampo, 45, $Idcampo, true, 'text', 3, '');
     echo "
             </td>
@@ -2139,7 +2141,7 @@ class cl_formulario_rel_pes {
     $Tncampo = "T".$ncampo;
     $Incampo = "I".$ncampo;
     $Lncampo = "L".$ncampo;
-    global $$Tncampo, $$Incampo, $$Lncampo;
+    global ${$Tncampo}, ${$Incampo}, ${$Lncampo};
     echo "
           <tr>
             <td align='left' nowrap title='".$campo4."' ><b>
@@ -2149,7 +2151,7 @@ class cl_formulario_rel_pes {
            </b></td>
             <td align='left' nowrap>
          ";
-         db_input($ncampo, $tamanho, $$Incampo, true, 'text', 1, " onchange='js_geraform_pesquisa".$tabela."(false,1);js_copiavalor".$tabela."();'",$campo1);
+         db_input($ncampo, $tamanho, ${$Incampo}, true, 'text', 1, " onchange='js_geraform_pesquisa".$tabela."(false,1);js_copiavalor".$tabela."();'",$campo1);
     echo "
               <strong>&nbsp;&nbsp;&nbsp;
          ";
@@ -2157,7 +2159,7 @@ class cl_formulario_rel_pes {
     echo "
               &nbsp;&nbsp;&nbsp;</strong>
          ";
-         db_input($ncampo, $tamanho, $$Incampo, true, 'text', 1, " onchange='js_geraform_pesquisa".$tabela."(false,2);'",$campo2);
+         db_input($ncampo, $tamanho, ${$Incampo}, true, 'text', 1, " onchange='js_geraform_pesquisa".$tabela."(false,2);'",$campo2);
     echo "
             </td>
           </tr>
@@ -2167,9 +2169,9 @@ class cl_formulario_rel_pes {
   function monta_select_tdrtable($arraydados,$nomecampo,$labelimp,$titleimp="",$onchang=""){
     $variavelresumo = $this->trenome;
     $variavelfiltro = $this->tfinome;
-    $$variavelresumo = isset($GLOBALS[$this->trenome])?$GLOBALS[$this->trenome]:$this->resumopadrao;
-    $$variavelfiltro = isset($GLOBALS[$this->tfinome])?$GLOBALS[$this->tfinome]:$this->filtropadrao;
-    global $$variavelresumo, $$variavelfiltro;
+    ${$variavelresumo} = $GLOBALS[$this->trenome] ?? $this->resumopadrao;
+    ${$variavelfiltro} = $GLOBALS[$this->tfinome] ?? $this->filtropadrao;
+    global ${$variavelresumo}, ${$variavelfiltro};
     if(count($arraydados) >= 1){
       echo "
             <tr>
@@ -2187,7 +2189,7 @@ class cl_formulario_rel_pes {
   }
   function monta_script_pesquisa($tabela,$dcampo1,$dcampo2,$ncampo1,$ncampo2,$ndescri,$formula){
     $testar_rescis = "";
-    if($tabela == "rhpessoal" && trim($this->testarescisaoregi) != ""){
+    if($tabela == "rhpessoal" && trim((string) $this->testarescisaoregi) != ""){
       $testar_rescis = "testarescisao=".$this->testarescisaoregi."&";
     }
     $variavel_retorno = "
@@ -2277,7 +2279,7 @@ class cl_formulario_rel_pes {
   }
 
   function monta_script_gerarif($formula,$ncampo,$qcampo=""){
-    if(trim($qcampo) == ""){
+    if(trim((string) $qcampo) == ""){
       $variavel_retorno = "
         if(document.".$formula.".".$ncampo."){
           qry += com+'".$ncampo."='+document.".$formula.".".$ncampo.".value;
@@ -2325,18 +2327,18 @@ class cl_formulario_rel_pes {
         eval('global $S'.$campoano.',$S'.$campomes.';');
         eval('$S'.$campoano.' = "Ano";');
         eval('$S'.$campomes.' = "Mês";');
-        global $$campoano, $$campomes ;
+        global ${$campoano}, ${$campomes} ;
 
-        $$campoano = $ano;
-        $$campomes = $mes;
-        if(trim($ano) == ""){
-          $$campoano = db_anofolha();
+        ${$campoano} = $ano;
+        ${$campomes} = $mes;
+        if(trim((string) $ano) == ""){
+          ${$campoano} = db_anofolha();
         }
-        if(trim($mes) == ""){
-          $$campomes = db_mesfolha();
+        if(trim((string) $mes) == ""){
+          ${$campomes} = db_mesfolha();
         }
-                $$campoano = db_formatar($$campoano,'s','0',4,'e',0);
-                $$campomes = db_formatar($$campomes,'s','0',2,'e',0);
+                ${$campoano} = db_formatar(${$campoano},'s','0',4,'e',0);
+                ${$campomes} = db_formatar(${$campomes},'s','0',2,'e',0);
       }
 
       echo "
@@ -2432,8 +2434,8 @@ class cl_formulario_rel_pes {
       if(pg_num_rows($result_regimes) > 0){
           $arr_regimes[0] = "Todos";
         for($i=0; $i<pg_num_rows($result_regimes); $i++){
-          $regime_for = pg_result($result_regimes, $i, "rh52_regime");
-          $descrr_for = pg_result($result_regimes, $i, "rh52_descr");
+          $regime_for = pg_fetch_result($result_regimes, $i, "rh52_regime");
+          $descrr_for = pg_fetch_result($result_regimes, $i, "rh52_descr");
           $arr_regimes[$regime_for] = $regime_for." - ".$descrr_for;
         }
         $this->monta_select_tdrtable($arr_regimes,$this->nomregime,"Regime:","Selecão de regime","");
@@ -2449,17 +2451,17 @@ class cl_formulario_rel_pes {
     }
 
     if($this->tipofol == true || $this->tipopon == true){
-      if(trim($this->complementar) != ""){
+      if(trim((string) $this->complementar) != ""){
         if((isset($GLOBALS[$this->tfonome]) && $GLOBALS[$this->tfonome] == $this->complementar) || (isset($GLOBALS[$this->tponome]) && $GLOBALS[$this->tponome] == $this->complementar)){
           if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
-            $result_complementar = db_query("select distinct rh141_codigo as semestralidade from rhfolhapagamento where rh141_tipofolha = 3 and rh141_anousu = ".$$campoano." and rh141_mesusu = ".$$campomes." order by semestralidade");
+            $result_complementar = db_query("select distinct rh141_codigo as semestralidade from rhfolhapagamento where rh141_tipofolha = 3 and rh141_anousu = ".${$campoano}." and rh141_mesusu = ".${$campomes}." order by semestralidade");
           } else {
-            $result_complementar = db_query("select distinct r48_semest as semestralidade from gerfcom  where r48_anousu = ".$$campoano." and r48_mesusu = ".$$campomes);
+            $result_complementar = db_query("select distinct r48_semest as semestralidade from gerfcom  where r48_anousu = ".${$campoano}." and r48_mesusu = ".${$campomes});
           }
 
-          if(pg_numrows($result_complementar) > 0){
+          if(pg_num_rows($result_complementar) > 0){
             $arr_selcomplementar[0] = "Todos ...";
-            for($icompl=0; $icompl<pg_numrows($result_complementar); $icompl++){
+            for($icompl=0; $icompl<pg_num_rows($result_complementar); $icompl++){
               db_fieldsmemory($result_complementar, $icompl);
               global $semestralidade;
                     $arr_selcomplementar[$semestralidade] = $semestralidade;
@@ -2474,13 +2476,13 @@ class cl_formulario_rel_pes {
         }
       }
 
-      if(trim($this->suplementar) != ""){
+      if(trim((string) $this->suplementar) != ""){
         if((isset($GLOBALS[$this->tfonome]) && $GLOBALS[$this->tfonome] == $this->suplementar) || (isset($GLOBALS[$this->tponome]) && $GLOBALS[$this->tponome] == $this->suplementar)){
 
-          $result_suplementar = db_query("select distinct rh141_codigo as semestralidade from rhfolhapagamento where rh141_tipofolha = 6 and rh141_anousu = ".$$campoano." and rh141_mesusu = ".$$campomes." order by semestralidade");
-          if(pg_numrows($result_suplementar) > 0){
+          $result_suplementar = db_query("select distinct rh141_codigo as semestralidade from rhfolhapagamento where rh141_tipofolha = 6 and rh141_anousu = ".${$campoano}." and rh141_mesusu = ".${$campomes}." order by semestralidade");
+          if(pg_num_rows($result_suplementar) > 0){
             $arr_selsuplementar[0] = "Todos ...";
-            for($isupl=0; $isupl<pg_numrows($result_suplementar); $isupl++){
+            for($isupl=0; $isupl<pg_num_rows($result_suplementar); $isupl++){
               db_fieldsmemory($result_suplementar, $isupl);
               global $semestralidade;
                     $arr_selsuplementar[$semestralidade] = $semestralidade;
@@ -2495,9 +2497,9 @@ class cl_formulario_rel_pes {
         }
       }
     }
-    if($this->tipores == true && (trim($this->strngtipores) != "" || count($this->arr_tipores) > 0)){
-      if(trim($this->strngtipores) != ""){
-        $numero_de_letras = strlen($this->strngtipores);
+    if($this->tipores == true && (trim((string) $this->strngtipores) != "" || count($this->arr_tipores) > 0)){
+      if(trim((string) $this->strngtipores) != ""){
+        $numero_de_letras = strlen((string) $this->strngtipores);
         for($i=0; $i<$numero_de_letras; $i++){
           $indice = $this->strngtipores[$i];
           if($indice == "g"){
@@ -2526,13 +2528,13 @@ class cl_formulario_rel_pes {
           $this->onchres = "";
         }
       }
-      if((trim($this->strngtipores) != "" || count($this->arr_tipores) > 0)){
+      if((trim((string) $this->strngtipores) != "" || count($this->arr_tipores) > 0)){
         $this->monta_select_tdrtable($this->arr_tipores,$this->trenome,$this->tipresumo.":",$this->tipresumo,$this->onchres);
-        $this->arr_tipofil = Array("0"=>"----------","i"=>"Intervalo","s"=>"Selecionados");
+        $this->arr_tipofil = ["0"=>"----------","i"=>"Intervalo","s"=>"Selecionados"];
         $valortipres = $this->trenome;
-        global $$valortipres;
-        if(trim($this->strngtipores) != "" && $$valortipres != "g"){
-          if((isset($GLOBALS[$this->trenome]) && $GLOBALS[$this->trenome] != $this->valortipores) || trim($this->resumopadrao) != "g"){
+        global ${$valortipres};
+        if(trim((string) $this->strngtipores) != "" && ${$valortipres} != "g"){
+          if((isset($GLOBALS[$this->trenome]) && $GLOBALS[$this->trenome] != $this->valortipores) || trim((string) $this->resumopadrao) != "g"){
             $this->monta_select_tdrtable($this->arr_tipofil,$this->tfinome,"Tipo de Filtro:","Tipo de Filtro",$this->onchres);
           }
         }
@@ -2547,17 +2549,17 @@ class cl_formulario_rel_pes {
     }
 
     if($this->mostasc == true){
-      $arr_mostasc = Array("a"=>"Ascendente","d"=>"Descendente");
+      $arr_mostasc = ["a"=>"Ascendente","d"=>"Descendente"];
       $this->monta_select_tdrtable($arr_mostasc,$this->masnome,"Tipo de Ordem:","Tipo de Ordem");
     }
 
     if($this->mostaln == true){
-      $arr_mostasc = Array("a"=>"Alfabética","d"=>"Numérica");
+      $arr_mostasc = ["a"=>"Alfabética","d"=>"Numérica"];
       $this->monta_select_tdrtable($arr_mostasc,$this->masnome,"Tipo de Ordem:","Tipo de Ordem");
     }
 
     if($this->mostnal == true){
-      $arr_mostasc = Array("d"=>"Numérica","a"=>"Alfabética");
+      $arr_mostasc = ["d"=>"Numérica","a"=>"Alfabética"];
       $this->monta_select_tdrtable($arr_mostasc,$this->masnome,"Tipo de Ordem:","Tipo de Ordem");
     }
 
@@ -2566,18 +2568,18 @@ class cl_formulario_rel_pes {
     }
 
     if($this->qbrapag == true){
-      $arr_qbrapag = Array("s"=>"Sim","n"=>"Não");
+      $arr_qbrapag = ["s"=>"Sim","n"=>"Não"];
       $this->monta_select_tdrtable($arr_qbrapag,$this->qbrnome,"Quebrar por Página:","Quebrar por Página");
     }
 
     if($this->atinpen == true){
-       $arr_atinpen = Array("g"=>"Geral","a"=>"Ativos","i"=>"Inativos","p"=>"Pensionistas","ip"=>"Inativos / Pensionistas");
+       $arr_atinpen = ["g"=>"Geral","a"=>"Ativos","i"=>"Inativos","p"=>"Pensionistas","ip"=>"Inativos / Pensionistas"];
       $this->monta_select_tdrtable($arr_atinpen,$this->aignome,"Vínculo:","Mostrar Inativos/Pensionistas, Ativos ou Geral");
     }
 // monta a parte das tabelas de previdência
     if($this->usarprevid == true){
       $whereprevid = "";
-      if(trim($this->whereprevid) != ""){
+      if(trim((string) $this->whereprevid) != ""){
         $whereprevid = " where ".$this->whereprevid;
       }
       $result_previd = db_query("select distinct ".$this->camposprevid." from inssirf ".$whereprevid." order by r33_codtab");
@@ -2689,15 +2691,15 @@ class cl_formulario_rel_pes {
         $this->clarquivo_auxiliar->executa_script_change_focus = "document.form1.rh01_regist.focus();";
         $this->clarquivo_auxiliar->completar_com_zeros_codigo = false;
   $registrosselecionados = "";
-        if(isset($GLOBALS[$this->campo_auxilio_regi]) && trim($GLOBALS[$this->campo_auxilio_regi]) != ""){
+        if(isset($GLOBALS[$this->campo_auxilio_regi]) && trim((string) $GLOBALS[$this->campo_auxilio_regi]) != ""){
           $registrosselecionados = $GLOBALS[$this->campo_auxilio_regi];
     if($this->testarescisaoregi == true){
       $registrosselecionados = "";
             $virgula = "";
-        $arr_registrosselecion = explode(",", $GLOBALS[$this->campo_auxilio_regi]);
+        $arr_registrosselecion = explode(",", (string) $GLOBALS[$this->campo_auxilio_regi]);
             for($i=0; $i<count($arr_registrosselecion); $i++){
                     $result_rescisoes = db_query("select rh05_recis from rhpessoalmov inner join rhpesrescisao on rh05_seqpes = rh02_seqpes where rh02_anousu = ".$ano." and rh02_mesusu = ".$mes." and rh02_regist = ".$arr_registrosselecion[$i]);
-        if(pg_numrows($result_rescisoes) == 0){
+        if(pg_num_rows($result_rescisoes) == 0){
                 $registrosselecionados.= $virgula.$arr_registrosselecion[$i];
                 $virgula = ", ";
         }else{
@@ -2729,7 +2731,7 @@ class cl_formulario_rel_pes {
         $this->clarquivo_auxiliar->executa_script_lost_focus_campo = "js_insSelect".$this->rc3nome."();";
         $this->clarquivo_auxiliar->executa_script_change_focus = "document.form1.o15_codigo.focus();";
         $this->clarquivo_auxiliar->completar_com_zeros_codigo = false;
-        if(isset($GLOBALS[$this->campo_auxilio_recu]) && trim($GLOBALS[$this->campo_auxilio_recu]) != ""){
+        if(isset($GLOBALS[$this->campo_auxilio_recu]) && trim((string) $GLOBALS[$this->campo_auxilio_recu]) != ""){
           $sql_recu = "select o15_codigo,o15_descr from orctiporec where o15_codigo in (".$GLOBALS[$this->campo_auxilio_recu].") ";
           $this->clarquivo_auxiliar->sql_exec = $sql_recu;
         }
@@ -2747,7 +2749,7 @@ class cl_formulario_rel_pes {
         $this->clarquivo_auxiliar->executa_script_lost_focus_campo = "js_insSelect".$this->or3nome."();";
         $this->clarquivo_auxiliar->executa_script_change_focus = "document.form1.o40_orgao.focus();";
         $this->clarquivo_auxiliar->completar_com_zeros_codigo = false;
-        if(isset($GLOBALS[$this->campo_auxilio_orga]) && trim($GLOBALS[$this->campo_auxilio_orga]) != ""){
+        if(isset($GLOBALS[$this->campo_auxilio_orga]) && trim((string) $GLOBALS[$this->campo_auxilio_orga]) != ""){
           $sql_orga = "select o40_orgao,o40_descr from orcorgao where o40_orgao in (".$GLOBALS[$this->campo_auxilio_orga].") and o40_anousu = ".db_getsession("DB_anousu");
           $this->clarquivo_auxiliar->sql_exec = $sql_orga;
         }
@@ -2765,10 +2767,10 @@ class cl_formulario_rel_pes {
         $this->clarquivo_auxiliar->executa_script_lost_focus_campo = "js_insSelect".$this->lo3nome."();";
         $this->clarquivo_auxiliar->executa_script_change_focus = "document.form1.r70_estrut.focus();";
         $this->clarquivo_auxiliar->completar_com_zeros_codigo = false;
-        if(isset($GLOBALS[$this->campo_auxilio_lota]) && trim($GLOBALS[$this->campo_auxilio_lota]) != ""){
+        if(isset($GLOBALS[$this->campo_auxilio_lota]) && trim((string) $GLOBALS[$this->campo_auxilio_lota]) != ""){
           $lotacoesselecionadas = "";
           $virgula = "";
-            $arr_lotacoesselecion = explode(",", $GLOBALS[$this->campo_auxilio_lota]);
+            $arr_lotacoesselecion = explode(",", (string) $GLOBALS[$this->campo_auxilio_lota]);
           for($i=0; $i<count($arr_lotacoesselecion); $i++){
             $lotacoesselecionadas = $virgula."'".$arr_lotacoesselecion[$i]."'";
             $virgula = ", ";
@@ -2778,7 +2780,7 @@ class cl_formulario_rel_pes {
         }
       }else if($this->selrubr == true){
         $this->clarquivo_auxiliar->Labelancora= $this->ru4nome;
-        $this->clarquivo_auxiliar->cabecalho = "<strong>".strtoupper($this->ru4nome)." Selecionadas</strong>";
+        $this->clarquivo_auxiliar->cabecalho = "<strong>".strtoupper((string) $this->ru4nome)." Selecionadas</strong>";
         $this->clarquivo_auxiliar->codigo = "rh27_rubric";
         $this->clarquivo_auxiliar->descr  = "rh27_descr";
         $this->clarquivo_auxiliar->nomeobjeto = $this->ru3nome;
@@ -2790,10 +2792,10 @@ class cl_formulario_rel_pes {
         $this->clarquivo_auxiliar->executa_script_lost_focus_campo = "js_insSelect".$this->ru3nome."()";
         $this->clarquivo_auxiliar->executa_script_change_focus = "document.form1.rh27_rubric.focus();";
         $this->clarquivo_auxiliar->completar_com_zeros_codigo = true;
-        if(isset($GLOBALS[$this->campo_auxilio_rubr]) && trim($GLOBALS[$this->campo_auxilio_rubr]) != ""){
+        if(isset($GLOBALS[$this->campo_auxilio_rubr]) && trim((string) $GLOBALS[$this->campo_auxilio_rubr]) != ""){
           $rubricasselecionadas = "";
           $virgula = "";
-            $arr_rubricasselecion = explode(",", $GLOBALS[$this->campo_auxilio_rubr]);
+            $arr_rubricasselecion = explode(",", (string) $GLOBALS[$this->campo_auxilio_rubr]);
           for($i=0; $i<count($arr_rubricasselecion); $i++){
             $rubricasselecionadas = $virgula."'".$arr_rubricasselecion[$i]."'";
             $virgula = ", ";
@@ -2803,7 +2805,7 @@ class cl_formulario_rel_pes {
         }
       }else if($this->selloca == true){
         $this->clarquivo_auxiliar->Labelancora= $this->tr4nome;
-        $this->clarquivo_auxiliar->cabecalho  = "<strong>".strtoupper($this->tr4nome)." Selecionados</strong>";
+        $this->clarquivo_auxiliar->cabecalho  = "<strong>".strtoupper((string) $this->tr4nome)." Selecionados</strong>";
         $this->clarquivo_auxiliar->codigo     = "rh55_estrut";
         $this->clarquivo_auxiliar->descr      = "rh55_descr";
         $this->clarquivo_auxiliar->nomeobjeto = $this->tr3nome;
@@ -2815,10 +2817,10 @@ class cl_formulario_rel_pes {
         $this->clarquivo_auxiliar->executa_script_lost_focus_campo = "js_insSelect".$this->tr3nome."();";
         $this->clarquivo_auxiliar->executa_script_change_focus = "document.form1.rh55_estrut.focus();";
         $this->clarquivo_auxiliar->completar_com_zeros_codigo = false;
-        if(isset($GLOBALS[$this->campo_auxilio_loca]) && trim($GLOBALS[$this->campo_auxilio_loca]) != ""){
+        if(isset($GLOBALS[$this->campo_auxilio_loca]) && trim((string) $GLOBALS[$this->campo_auxilio_loca]) != ""){
           $locaistrabselecionados = "";
           $virgula = "";
-            $arr_locaistrabselecion = explode(",", $GLOBALS[$this->campo_auxilio_loca]);
+            $arr_locaistrabselecion = explode(",", (string) $GLOBALS[$this->campo_auxilio_loca]);
           for($i=0; $i<count($arr_locaistrabselecion); $i++){
             $locaistrabselecionados = $virgula."'".$arr_locaistrabselecion[$i]."'";
             $virgula = ", ";
@@ -2828,7 +2830,7 @@ class cl_formulario_rel_pes {
         }
       }else if($this->selcarg == true){
         $this->clarquivo_auxiliar->Labelancora= $this->ca4nome;
-        $this->clarquivo_auxiliar->cabecalho  = "<strong>".strtoupper($this->ca4nome)." Selecionados</strong>";
+        $this->clarquivo_auxiliar->cabecalho  = "<strong>".strtoupper((string) $this->ca4nome)." Selecionados</strong>";
         $this->clarquivo_auxiliar->codigo     = "rh37_funcao";
         $this->clarquivo_auxiliar->descr      = "rh37_descr";
         $this->clarquivo_auxiliar->nomeobjeto = $this->ca3nome;
@@ -2841,10 +2843,10 @@ class cl_formulario_rel_pes {
         $this->clarquivo_auxiliar->executa_script_change_focus = "document.form1.rh37_funcao.focus();";
         $this->clarquivo_auxiliar->completar_com_zeros_codigo = false;
   $this->clarquivo_auxiliar->tamanho_campo_descricao = 42;
-        if(isset($GLOBALS[$this->campo_auxilio_carg]) && trim($GLOBALS[$this->campo_auxilio_carg]) != ""){
+        if(isset($GLOBALS[$this->campo_auxilio_carg]) && trim((string) $GLOBALS[$this->campo_auxilio_carg]) != ""){
           $locaistrabselecionados = "";
           $virgula = "";
-            $arr_locaistrabselecion = explode(",", $GLOBALS[$this->campo_auxilio_carg]);
+            $arr_locaistrabselecion = explode(",", (string) $GLOBALS[$this->campo_auxilio_carg]);
           for($i=0; $i<count($arr_locaistrabselecion); $i++){
             $locaistrabselecionados = $virgula.$arr_locaistrabselecion[$i];
             $virgula = ", ";
@@ -2855,7 +2857,7 @@ class cl_formulario_rel_pes {
       }
 
       $query_rescisao = "";
-      if($this->selregi == true && trim($this->testarescisaoregi) != ""){
+      if($this->selregi == true && trim((string) $this->testarescisaoregi) != ""){
   $query_rescisao = "&testarescisao=".$this->testarescisaoregi;
       }
       $this->clarquivo_auxiliar->passar_query_string_para_func = "&instit=".db_getsession("DB_instit").$query_rescisao;
@@ -2906,14 +2908,14 @@ class cl_formulario_rel_pes {
     echo "
       function js_testa_complementar(valor, tipo){
    ";
-    if(trim($this->complementar) != ""){
+    if(trim((string) $this->complementar) != ""){
     echo "
         if(valor == '".$this->complementar."' || document.".$this->formnam.".".$this->comnome."){
     document.".$this->formnam.".submit();
               }
    ";
     }
-    if(trim($this->suplementar) != ""){
+    if(trim((string) $this->suplementar) != ""){
     echo "
         if(valor == '".$this->suplementar."' || document.".$this->formnam.".".$this->comnome."){
     document.".$this->formnam.".submit();
@@ -2935,7 +2937,7 @@ class cl_formulario_rel_pes {
             function js_gerar_consrel(){
               qry = '';
          ";
-    if(trim($this->relarqu) != ""){
+    if(trim((string) $this->relarqu) != ""){
       echo "
               com = '?';
            ";
@@ -2979,7 +2981,7 @@ class cl_formulario_rel_pes {
               ".$this->monta_script_gerarif($this->formnam,$this->selnome,"")."
               ".$this->monta_script_gerarif($this->formnam,$this->previdnome,"")."
          ";
-    if(trim($this->relarqu) != ""){
+    if(trim((string) $this->relarqu) != ""){
       echo "jan = window.open('".$this->relarqu."'+qry,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');";
     }else{
       echo "

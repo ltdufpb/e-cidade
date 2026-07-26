@@ -65,7 +65,7 @@ class cl_escalaservidor extends DAOBasica {
     return $sSqlDiasEscala;
   }
 
-  function sqlEscalaTrabalhoJornada($sCampos = '*', $sOrdenacao = '', array $aWhere = array()) {
+  function sqlEscalaTrabalhoJornada($sCampos = '*', $sOrdenacao = '', array $aWhere = []) {
 
     $sSql  = "select {$sCampos}";
     $sSql .= "  from escalaservidor";

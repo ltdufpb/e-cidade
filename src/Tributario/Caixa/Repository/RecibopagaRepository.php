@@ -14,7 +14,7 @@ final class RecibopagaRepository extends Repository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param  $numpre
@@ -41,7 +41,7 @@ final class RecibopagaRepository extends Repository
             throw new Exception("Não foi possível buscar os débitos pagos.");
         }
 
-        $debitos = array();
+        $debitos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $debitos;

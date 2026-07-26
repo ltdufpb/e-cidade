@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: fiscal
 //CLASSE DA ENTIDADE taxavaloresreferencia
 class cl_taxavaloresreferencia { 
@@ -31,7 +31,7 @@ class cl_taxavaloresreferencia {
                  y121_data_base = date = Data Base 
                  ";
    //funcao construtor da classe 
-   function cl_taxavaloresreferencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxavaloresreferencia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

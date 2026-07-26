@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_gruporelatorio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_gruporelatorio = new cl_db_gruporelatorio;
 $cldb_gruporelatorio->rotulo->label("db13_sequencial");
 $cldb_gruporelatorio->rotulo->label("db13_descricao");
@@ -54,7 +55,7 @@ $cldb_gruporelatorio->rotulo->label("db13_descricao");
               <?=$Ldb13_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db13_sequencial",10,$Idb13_sequencial,true,"text",4,"","chave_db13_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_gruporelatorio->rotulo->label("db13_descricao");
               <?=$Ldb13_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db13_descricao",50,$Idb13_descricao,true,"text",4,"","chave_db13_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_gruporelatorio->rotulo->label("db13_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_gruporelatorio.php")==true){
@@ -122,12 +123,12 @@ $cldb_gruporelatorio->rotulo->label("db13_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

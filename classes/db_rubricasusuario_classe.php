@@ -30,25 +30,25 @@ use ECidade\RecursosHumanos\Pessoal\Interfaces\PesquisaRubricas;
 class cl_rubricasusuario implements PesquisaRubricas
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $rh219_sequencial = 0;
-    var $rh219_usuario = 0;
-    var $rh219_instituicao = 0;
-    var $rh219_rubrica = null;
+    public $rh219_sequencial = 0;
+    public $rh219_usuario = 0;
+    public $rh219_instituicao = 0;
+    public $rh219_rubrica = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  rh219_sequencial = int4 = Código 
                  rh219_usuario = int4 = Usuário 
                  rh219_instituicao = int4 = Instituição 
@@ -60,7 +60,7 @@ class cl_rubricasusuario implements PesquisaRubricas
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("rubricasusuario");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -132,10 +132,10 @@ class cl_rubricasusuario implements PesquisaRubricas
                 $this->erro_status = "0";
                 return false;
             }
-            $this->rh219_sequencial = pg_result($result, 0, 0);
+            $this->rh219_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from rubricasusuario_rh219_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $rh219_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $rh219_sequencial)) {
                 $this->erro_sql = " Campo rh219_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -171,7 +171,7 @@ class cl_rubricasusuario implements PesquisaRubricas
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Rubricas por usuário ($this->rh219_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Rubricas por usuário já Cadastrado";
@@ -203,19 +203,19 @@ class cl_rubricasusuario implements PesquisaRubricas
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1010044,'$this->rh219_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010332,1010044,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010332,1010044,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh219_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010332,1010045,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010332,1010045,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh219_usuario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010332,1010046,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010332,1010046,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh219_instituicao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010332,1010047,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010332,1010047,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh219_rubrica')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -229,10 +229,10 @@ class cl_rubricasusuario implements PesquisaRubricas
         $this->atualizacampos();
         $sql = " update rubricasusuario set ";
         $virgula = "";
-        if (trim($this->rh219_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_sequencial"])) {
+        if (trim((string) $this->rh219_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_sequencial"])) {
             $sql .= $virgula . " rh219_sequencial = $this->rh219_sequencial ";
             $virgula = ",";
-            if (trim($this->rh219_sequencial) == null) {
+            if (trim((string) $this->rh219_sequencial) == null) {
                 $this->erro_sql = " Campo Código não informado.";
                 $this->erro_campo = "rh219_sequencial";
                 $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_rubricasusuario implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh219_usuario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_usuario"])) {
+        if (trim((string) $this->rh219_usuario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_usuario"])) {
             $sql .= $virgula . " rh219_usuario = $this->rh219_usuario ";
             $virgula = ",";
-            if (trim($this->rh219_usuario) == null) {
+            if (trim((string) $this->rh219_usuario) == null) {
                 $this->erro_sql = " Campo Usuário não informado.";
                 $this->erro_campo = "rh219_usuario";
                 $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_rubricasusuario implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh219_instituicao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_instituicao"])) {
+        if (trim((string) $this->rh219_instituicao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_instituicao"])) {
             $sql .= $virgula . " rh219_instituicao = $this->rh219_instituicao ";
             $virgula = ",";
-            if (trim($this->rh219_instituicao) == null) {
+            if (trim((string) $this->rh219_instituicao) == null) {
                 $this->erro_sql = " Campo Instituição não informado.";
                 $this->erro_campo = "rh219_instituicao";
                 $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_rubricasusuario implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh219_rubrica) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_rubrica"])) {
+        if (trim((string) $this->rh219_rubrica) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh219_rubrica"])) {
             $sql .= $virgula . " rh219_rubrica = '$this->rh219_rubrica' ";
             $virgula = ",";
-            if (trim($this->rh219_rubrica) == null) {
+            if (trim((string) $this->rh219_rubrica) == null) {
                 $this->erro_sql = " Campo Rubrica não informado.";
                 $this->erro_campo = "rh219_rubrica";
                 $this->erro_banco = "";
@@ -299,26 +299,26 @@ class cl_rubricasusuario implements PesquisaRubricas
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010044,'$this->rh219_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh219_sequencial"]) || $this->rh219_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010332,1010044,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010332,1010044,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh219_sequencial')) . "','$this->rh219_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh219_usuario"]) || $this->rh219_usuario != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010332,1010045,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010332,1010045,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh219_usuario')) . "','$this->rh219_usuario'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh219_instituicao"]) || $this->rh219_instituicao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010332,1010046,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010332,1010046,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh219_instituicao')) . "','$this->rh219_instituicao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh219_rubrica"]) || $this->rh219_rubrica != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010332,1010047,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010332,1010047,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh219_rubrica')) . "','$this->rh219_rubrica'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -380,19 +380,19 @@ class cl_rubricasusuario implements PesquisaRubricas
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010044,'$rh219_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010332,1010044,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010332,1010044,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh219_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010332,1010045,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010332,1010045,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh219_usuario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010332,1010046,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010332,1010046,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh219_instituicao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010332,1010047,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010332,1010047,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh219_rubrica')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -532,7 +532,7 @@ class cl_rubricasusuario implements PesquisaRubricas
      * @param array $ordem
      * @return string
      */
-    public function sqlRubricas($campos = '*', $where = array(), $ordem = array())
+    public function sqlRubricas($campos = '*', $where = [], $ordem = [])
     {
         $sql = "
             select {$campos}

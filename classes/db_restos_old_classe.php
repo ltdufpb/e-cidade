@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -59,7 +59,7 @@ class cl_restos_old {
                  cm12_d_entrada = date = Entrada
                  ";
    //funcao construtor da classe
-   function cl_restos_old() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("restos_old");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoatend_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltipoatend = new cl_tipoatend;
 $cltipoatend->rotulo->label("at04_codtipo");
 $cltipoatend->rotulo->label("at04_descr");
@@ -54,7 +55,7 @@ $cltipoatend->rotulo->label("at04_descr");
               <?=$Lat04_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at04_codtipo",6,$Iat04_codtipo,true,"text",4,"","chave_at04_codtipo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltipoatend->rotulo->label("at04_descr");
               <?=$Lat04_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at04_descr",20,$Iat04_descr,true,"text",4,"","chave_at04_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltipoatend->rotulo->label("at04_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "tipoatend.*";
@@ -114,14 +115,14 @@ $cltipoatend->rotulo->label("at04_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_at04_codtipo.focus();
 document.form2.chave_at04_codtipo.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

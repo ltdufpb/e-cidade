@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tfd_centralagendamento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrotulo = new rotulocampo;
 $cltfd_centralagendamento = new cl_tfd_centralagendamento;
 $cltfd_centralagendamento->rotulo->label("tf09_i_codigo");
@@ -56,7 +57,7 @@ $clrotulo->label("z01_nome");
               <?=$Ltf09_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("tf09_i_codigo",10,$Itf09_i_codigo,true,"text",4,"","chave_tf09_i_codigo");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clrotulo->label("z01_nome");
               <?=$Ltf09_i_numcgm?>
              </td>
              <td width="96%" align="left" nowrap>
-             <?
+             <?php 
               db_input("tf09_i_numcgm",10,$Itf09_i_numcgm,true,"text",4,"","chave_tf09_i_numcgm");
             ?>
             </td>
@@ -77,7 +78,7 @@ $clrotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -95,7 +96,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tfd_centralagendamento.php")==true){
@@ -137,12 +138,12 @@ $clrotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

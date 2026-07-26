@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_cursoescola_classe.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $clcurso                  = new cl_curso;
 $clcursoescola            = new cl_cursoescola;
@@ -80,7 +80,7 @@ $sTitulo = 'Alteração de Curso';
     ?>
  </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($clcurso->erro_status == "0") {

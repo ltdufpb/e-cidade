@@ -60,7 +60,7 @@ class cl_caractercaracter {
                  j138_anousu = int4 = Anousu
                  ";
    //funcao construtor da classe
-   function cl_caractercaracter() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caractercaracter");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

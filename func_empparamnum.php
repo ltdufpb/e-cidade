@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empparamnum_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempparamnum = new cl_empparamnum;
 $clempparamnum->rotulo->label("e29_anousu");
 $clempparamnum->rotulo->label("e29_instit");
@@ -55,7 +56,7 @@ $clempparamnum->rotulo->label("e29_codemp");
               <?=$Le29_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e29_instit",2,$Ie29_instit,true,"text",4,"","chave_e29_instit");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clempparamnum->rotulo->label("e29_codemp");
               <?=$Le29_codemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e29_codemp",15,$Ie29_codemp,true,"text",4,"","chave_e29_codemp");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clempparamnum->rotulo->label("e29_codemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empparamnum.php")==true){
@@ -119,12 +120,12 @@ $clempparamnum->rotulo->label("e29_codemp");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

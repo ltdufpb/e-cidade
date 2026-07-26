@@ -58,41 +58,19 @@ class SistemaConta
 
     public function __construct($iCodigoSistema)
     {
-        switch ($iCodigoSistema) {
-            case 1:
-                $this->oSistemaConta = new SistemaContaFinanceiro();
-                break;
-            case 2:
-                $this->oSistemaConta = new SistemaContaPatrimonial();
-                break;
-            case 3:
-                $this->oSistemaConta = new SistemaContaOrcamentario();
-                break;
-            case 4:
-                $this->oSistemaConta = new SistemaContaCompensado();
-                break;
-            case 5:
-                $this->oSistemaConta = new SistemaContaFinanceiroCaixa();
-                break;
-            case 6:
-                $this->oSistemaConta = new SistemaContaFinanceiroBanco();
-                break;
-            case 7:
-                $this->oSistemaConta = new SistemaContaFinanceiroExtraOrcamentaria();
-                break;
-            case 8:
-                $this->oSistemaConta = new SistemaContaFinanceiroInterferencia();
-                break;
-            case 9:
-                $this->oSistemaConta = new SistemaContaDividaConsolidada();
-                break;
-            case 0:
-                $this->oSistemaConta = new SistemaContaNaoAplicado();
-                break;
-            default:
-                $this->oSistemaConta = new SistemaContaNaoAplicado();
-                break;
-        }
+        $this->oSistemaConta = match ($iCodigoSistema) {
+            1 => new SistemaContaFinanceiro(),
+            2 => new SistemaContaPatrimonial(),
+            3 => new SistemaContaOrcamentario(),
+            4 => new SistemaContaCompensado(),
+            5 => new SistemaContaFinanceiroCaixa(),
+            6 => new SistemaContaFinanceiroBanco(),
+            7 => new SistemaContaFinanceiroExtraOrcamentaria(),
+            8 => new SistemaContaFinanceiroInterferencia(),
+            9 => new SistemaContaDividaConsolidada(),
+            0 => new SistemaContaNaoAplicado(),
+            default => new SistemaContaNaoAplicado(),
+        };
     }
 
 

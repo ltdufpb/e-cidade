@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_docenteausencia_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldocenteausencia = new cl_docenteausencia;
 $cldocenteausencia->rotulo->label("ed321_sequencial");
 $cldocenteausencia->rotulo->label("ed321_sequencial");
@@ -47,7 +48,7 @@ $cldocenteausencia->rotulo->label("ed321_sequencial");
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         
         $sCampos  = " ed321_sequencial, ed321_inicio, ed321_final, ed321_rechumano, ";
@@ -90,12 +91,12 @@ $cldocenteausencia->rotulo->label("ed321_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

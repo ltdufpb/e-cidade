@@ -52,7 +52,7 @@ class cl_procdoc {
                  p56_ouvidoriatipodado = int4 = Tipo de Dado 
                  ";
    //funcao construtor da classe
-   function cl_procdoc() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdoc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

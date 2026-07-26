@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -227,7 +227,7 @@ $numrows09= $clpagordem->numrows;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
   border: 2px solid #cccccc;
   border-top-color: <?=$cor?>;
@@ -344,13 +344,13 @@ function js_padrao(val){
 <td class='bordas02' align='center'><small><b><?=$RLe50_codord?></b></small></td>
 <td class='bordas02' align='center'><small><b><?=$RLo15_descr?></b></small></td>
 <td class='bordas02' align='center'><small><b><?=$RLz01_nome?></b></small></td>
-<td class='bordas02' align='center'><small><b><?/*=$RLe60_emiss*/?>Conta</b></small></td>
+<td class='bordas02' align='center'><small><b><?php /*=$RLe60_emiss*/?>Conta</b></small></td>
 <td class='bordas02' align='center'><small><b>Total</b></small></td>
 <td class='bordas02' align='center'><small><b>Disp.</b></small></td>
 <td class='bordas02' align='center'><small><b>Valor</b></small></td>
 <td class='bordas02' align='center'><small><b><?=$RLe83_codtipo?></b></small></td>
 </tr>
-<?
+<?php 
 $nords =  '';
 $nvirg ='';
 
@@ -637,7 +637,7 @@ for ($i=0; $i<$numrows09; $i++) {
   <td class='bordas' align='right'> <small><?=db_input("valor_$e50_codord",6,$Ie53_valor,true,'text',($desativado == true?3:$db_opcao),"onChange='js_confere(this);'")?></small></td>
   <td class='bordas' align='right'><small><?=db_select("e83_codtipo_$e50_codord",$arr,true,1)?></small></td>
   </tr>
-  <?
+  <?php 
 }
 ?>
 <!--

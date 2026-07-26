@@ -2,8 +2,6 @@
 
 class ProgressBar {
 
-  private $sProgressBar;
-
   private $iTotalRegistros;
 
   private $iProgressoAtual;
@@ -13,8 +11,8 @@ class ProgressBar {
   /**
    * @param string sProgressBar Nome da instância do componente de tela.
    */
-  public function __construct($sProgressBar) {
-    $this->sProgressBar = $sProgressBar;
+  public function __construct(private $sProgressBar)
+  {
   }
 
   public function updateMaxProgress($iTotalRegistros) {

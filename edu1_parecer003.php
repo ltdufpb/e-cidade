@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,8 +36,8 @@ require_once(modification("classes/db_parecerdisciplina_classe.php"));
 require_once(modification("classes/db_parecerperiodo_classe.php"));
 require_once(modification("classes/db_parecer_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clparecer = new cl_parecer;
 $db_opcao  = 3;
 ?>
@@ -46,7 +46,7 @@ $db_opcao  = 3;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js, prototype.js, strings.js, arrays.js, windowAux.widget.js, datagrid.widget.js, 
                 dbmessageBoard.widget.js, dbcomboBox.widget.js, dbtextField.widget.js, webseller.js, 
                 DBVisualizadorImpressaoTexto.js");
@@ -56,13 +56,13 @@ $db_opcao  = 3;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <center>
   <div style="margin-top: 25px;"></div>
-    <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
-    <?include(modification("forms/db_frmparecer.php"));?>
+    <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+    <?php include(modification("forms/db_frmparecer.php"));?>
   </div>
 </center>
 </body>
 </html>
-<?
+<?php 
 if($db_opcao==3 && !isset($chavepesquisa)){
  echo "<script>document.form1.pesquisar.click();</script>";
 }

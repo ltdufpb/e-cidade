@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_caractercaracter_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clcaractercaracter = new cl_caractercaracter;
 $clcaractercaracter->rotulo->label("j138_sequencial");
@@ -51,7 +52,7 @@ $clcaractercaracter->rotulo->label("j138_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj138_sequencial?></label></td>
-          <td><? db_input("j138_sequencial",10,$Ij138_sequencial,true,"text",4,"","chave_j138_sequencial"); ?></td>
+          <td><?php  db_input("j138_sequencial",10,$Ij138_sequencial,true,"text",4,"","chave_j138_sequencial"); ?></td>
         </tr>
       </table>
     </fieldset>

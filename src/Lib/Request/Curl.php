@@ -47,7 +47,7 @@ class Curl
     /**
      * @var array
      */
-    private $options = array();
+    private $options = [];
 
     /**
      * @var bool|resource
@@ -57,7 +57,7 @@ class Curl
     /**
      * @var array
      */
-    private $headers = array();
+    private $headers = [];
 
     public function __construct()
     {
@@ -80,7 +80,7 @@ class Curl
     /**
      * @param array $options
      */
-    public function setOptions($options = array())
+    public function setOptions($options = [])
     {
         $this->options = $options;
     }
@@ -96,7 +96,6 @@ class Curl
 
     public function close()
     {
-        curl_close($this->resource);
     }
 
     /**

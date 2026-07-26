@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("classes/db_alunomatcenso_classe.php"));
 include(modification("classes/db_aluno_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clalunomatcenso = new cl_alunomatcenso;
 $claluno         = new cl_aluno;
@@ -75,7 +75,7 @@ if (isset($excluir)) {
   <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC">
-	<?
+	<?php 
 	  include(modification("forms/db_frmalunomatcenso.php"));
 	?>
 </body>
@@ -83,7 +83,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","ed280_i_turmacenso",true,1,"ed280_i_turmacenso",true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
   
   if ($clalunomatcenso->erro_status == "0") {

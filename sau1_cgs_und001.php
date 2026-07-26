@@ -135,7 +135,7 @@ if ( isset($incluir) || isset($alterar) ) {
 </head>
 <body class='body-default'>
   <div class="container">
-    <?include(modification("forms/db_frmcgs_und.php"));?>
+    <?php include(modification("forms/db_frmcgs_und.php"));?>
   </div>
 </body>
 </html>

@@ -61,7 +61,7 @@ if (isset($_SESSION['DB_servidor']) &&
 /**
  * Nome do programa atual
  */
-$sProgramaAtual = basename($_SERVER["SCRIPT_NAME"]);
+$sProgramaAtual = basename((string) $_SERVER["SCRIPT_NAME"]);
 
 if (isset($_SESSION['DB_NBASE'])) {
     $DB_BASE = $_SESSION["DB_NBASE"];
@@ -98,14 +98,14 @@ $capsuleManager->bootEloquent();
 /**
  * Verifica configuracoes customizadas do PostgreSQL para o sProgramaAtual
  */
-$sPgVersion = pg_result(pg_query($conn, "select substr(current_setting('server_version_num'),1,3)"), 0, 0);
+$sPgVersion = pg_fetch_result(pg_query($conn, "select substr(current_setting('server_version_num'),1,3)"), 0, 0);
 
 if (isset($DB_CUSTOM_PG_CONF[$sPgVersion][$sProgramaAtual])) {
 
     $sSqlSetConfig = "";
     foreach ($DB_CUSTOM_PG_CONF[$sPgVersion][$sProgramaAtual] as $sSetting => $sValue) {
 
-        if (substr($sSetting, 0, 3) <> "SQL") {
+        if (!str_starts_with((string) $sSetting, "SQL")) {
             $sSqlSetConfig .= "SET $sSetting TO $sValue;";
         } else {
             $sSqlSetConfig .= $sValue;
@@ -130,7 +130,7 @@ if (isset($_SESSION["DB_instit"])) {
     $lParametroUsaPCASP   = false;
 
     if ( $rsConParametro && pg_num_rows($rsConParametro) > 0) {
-        $lParametroUsaPCASP   = pg_result($rsConParametro, 0, 0);
+        $lParametroUsaPCASP   = pg_fetch_result($rsConParametro, 0, 0);
     }
 
     if ($lParametroUsaPCASP == 't') {
@@ -143,7 +143,7 @@ if (isset($_SESSION["DB_instit"])) {
 
         if (pg_num_rows($rsTipoInstituicao) == 1 && isset($_SESSION["DB_anousu"])) {
 
-            $iTipoInstituicao = pg_result($rsTipoInstituicao, 0, "db21_tipoinstit");
+            $iTipoInstituicao = pg_fetch_result($rsTipoInstituicao, 0, "db21_tipoinstit");
             if ($iTipoInstituicao == 101) {
 
                 if ($_SESSION["DB_anousu"] >= 2012) {
@@ -284,7 +284,7 @@ db_logs();
 if (isset($conn)) {
 
     $sIdUsuario  = $_SESSION["DB_id_usuario"];
-    $iPidConexao = pg_result(db_query("select pg_backend_pid()"),0,0);
+    $iPidConexao = pg_fetch_result(db_query("select pg_backend_pid()"),0,0);
     $sMenu       = 0;
 
     if (!empty($_SESSION["DB_itemmenu_acessado"])) {
@@ -302,7 +302,7 @@ if (db_getsession("DB_id_usuario") != 1 && db_getsession("DB_administrador") != 
     $result1 = pg_exec($conn, "select db21_ativo from db_config where prefeitura = true")
     or die("Erro ao verificar se sistema está liberado! Contate suporte!");
 
-    $ativo   = pg_result($result1,0,0);
+    $ativo   = pg_fetch_result($result1,0,0);
 
     if ($ativo == 3) {
 
@@ -333,7 +333,7 @@ define('UTILIZAR_NOVO_CADASTRO_FERIAS', false);
  * da aplicação e o item de menu que está sendo acessado entá na lista de itens bloqueados, caso true, redireciona para
  * o corpo.php
  */
-$aItensMenu = array(1576, 10336);
+$aItensMenu = [1576, 10336];
 
 if ( isset($_SESSION["DB_itemmenu_acessado"])
     && in_array($_SESSION["DB_itemmenu_acessado"],$aItensMenu)
@@ -351,7 +351,7 @@ if ( isset($_SESSION["DB_itemmenu_acessado"])
 
         for ($iIndice = 0; $iIndice < pg_num_rows($rsStatActivity); $iIndice++) {
 
-            $aDadosApplication = explode('_',pg_result($rsStatActivity, $iIndice, 'application_name'));
+            $aDadosApplication = explode('_',pg_fetch_result($rsStatActivity, $iIndice, 'application_name'));
             $iItemMenu = $aDadosApplication[2];
 
             if ( in_array($iItemMenu,$aItensMenu) ) {

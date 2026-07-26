@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fiscalandam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfiscalandam = new cl_fiscalandam;
 $clfiscalandam->rotulo->label("y49_codnoti");
 $clfiscalandam->rotulo->label("y49_codandam");
@@ -55,7 +56,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
               <?=$Ly49_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y49_codnoti",20,$Iy49_codnoti,true,"text",4,"","chave_y49_codnoti");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
               <?=$Ly49_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y49_codandam",20,$Iy49_codandam,true,"text",4,"","chave_y49_codandam");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
               <?=$Ly49_codandam?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y49_codandam",20,$Iy49_codandam,true,"text",4,"","chave_y49_codandam");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clfiscalandam->rotulo->label("y49_codandam");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         $campos = "fiscalandam.*,y39_codandam";
         if(isset($chave_y49_codnoti) && (trim($chave_y49_codnoti)!="") ){
@@ -123,12 +124,12 @@ $clfiscalandam->rotulo->label("y49_codandam");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

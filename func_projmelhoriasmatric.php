@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_projmelhoriasmatric_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprojmelhoriasmatric = new cl_projmelhoriasmatric;
 $clprojmelhoriasmatric->rotulo->label("d41_codigo");
 $clprojmelhoriasmatric->rotulo->label("d41_matric");
@@ -55,7 +56,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
               <?=$Ld41_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("d41_codigo",10,$Id41_codigo,true,"text",4,"","chave_d41_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
               <?=$Ld41_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("d41_matric",8,$Id41_matric,true,"text",4,"","chave_d41_matric");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
               <?=$Ld41_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("d41_matric",8,$Id41_matric,true,"text",4,"","chave_d41_matric");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_projmelhoriasmatric.php")==true){
@@ -129,12 +130,12 @@ $clprojmelhoriasmatric->rotulo->label("d41_matric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

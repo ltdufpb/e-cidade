@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regencia_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clregencia = new cl_regencia;
 $clregencia->rotulo->label("ed59_i_codigo");
 $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr"," ed59_i_turma = $turma AND ed59_i_serie = $serieregencia"));
@@ -54,7 +55,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
  <tr>
   <td align="center" valign="top">
    <br>
-   <?if(!isset($pesquisa_chave)){?>
+   <?php if(!isset($pesquisa_chave)){?>
     <b>Disciplinas da Turma <?=pg_result($result,0,'ed57_c_descr')?> para marcar horários:</b>
     <table border="1" cellspacing="1" cellpading="0">
      <tr>
@@ -74,7 +75,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
       <td>Marcados</td>
       <td>Restantes</td>
      </tr>
-     <?
+     <?php 
      $cor1 = "#97B5E6";
      $cor2 = "#E796A4";
      $cor = "";
@@ -116,7 +117,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
        quantos--;
       }
       </script>
-      <?
+      <?php 
      }
      ?>
      <tr id="nenhum" style="visibility:hidden;">
@@ -132,7 +133,7 @@ $result = $clregencia->sql_record($clregencia->sql_query("","*","ed232_c_descr",
       }
      </script>
     </table>
-   <?}?>
+   <?php }?>
   </td>
  </tr>
 </table>

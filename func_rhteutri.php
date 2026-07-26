@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhteutri_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhteutri = new cl_rhteutri;
 $clrhteutri->rotulo->label("rh67_sequencial");
 $clrhteutri->rotulo->label("rh67_regist");
@@ -54,7 +55,7 @@ $clrhteutri->rotulo->label("rh67_regist");
               <?=$Lrh67_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh67_sequencial",6,$Irh67_sequencial,true,"text",4,"","chave_rh67_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhteutri->rotulo->label("rh67_regist");
               <?=$Lrh67_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh67_regist",6,$Irh67_regist,true,"text",4,"","chave_rh67_regist");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhteutri->rotulo->label("rh67_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhteutri.php")==true){
@@ -122,12 +123,12 @@ $clrhteutri->rotulo->label("rh67_regist");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

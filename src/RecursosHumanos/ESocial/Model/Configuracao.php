@@ -126,9 +126,7 @@ class Configuracao
             throw new Exception('Não foi possível buscar as versões do e-Social');
         }
 
-        return db_utils::makeCollectionFromRecord($rs, function ($data) {
-            return $data->rh211_versao;
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($data) => $data->rh211_versao);
     }
 
     /**

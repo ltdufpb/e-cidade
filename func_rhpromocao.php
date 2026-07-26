@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,8 @@ require_once(modification("classes/db_rhpromocao_classe.php"));
 $oGet = db_utils::postmemory($HTTP_GET_VARS);
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhpromocao = new cl_rhpromocao;
 $clrhpromocao->rotulo->label("h72_sequencial");
@@ -61,7 +62,7 @@ $clrhpromocao->rotulo->label("h72_sequencial");
               <?=$Lh72_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input("h72_sequencial",10,$Ih72_sequencial,true,"text",4,"","chave_h72_sequencial");
 		         ?>
             </td>
@@ -72,7 +73,7 @@ $clrhpromocao->rotulo->label("h72_sequencial");
              <strong>Matrícula: </strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("z01_nome",60,"Nome",true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -90,7 +91,7 @@ $clrhpromocao->rotulo->label("h72_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere =  ' 1 = 1 ';
       
       if (isset($sOrigem) && $sOrigem == "avaliacoes") {
@@ -167,12 +168,12 @@ $clrhpromocao->rotulo->label("h72_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

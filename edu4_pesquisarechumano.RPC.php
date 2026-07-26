@@ -34,7 +34,7 @@ require_once modification("libs/db_utils.php");
 
 $oJson         = new services_json();
 $oDaoRecHumano = new cl_rechumano();
-$sName         = utf8_decode($_POST["string"]);
+$sName         = mb_convert_encoding($_POST["string"], 'ISO-8859-1');
 
 $iEscola = db_getsession('DB_coddepto');
 if ( !empty($_GET['iEscola']) ) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignacaobancolayout
 class cl_rhconsignacaobancolayout { 
@@ -30,7 +30,7 @@ class cl_rhconsignacaobancolayout {
                  rh178_instit = int4 = Instituiçao 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignacaobancolayout() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignacaobancolayout"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

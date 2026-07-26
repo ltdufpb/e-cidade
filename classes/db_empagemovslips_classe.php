@@ -1,33 +1,33 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE empagemovslips
 class cl_empagemovslips { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k107_sequencial = 0; 
-   var $k107_empagemov = 0; 
-   var $k107_data_dia = null; 
-   var $k107_data_mes = null; 
-   var $k107_data_ano = null; 
-   var $k107_data = null; 
-   var $k107_valor = 0; 
-   var $k107_ctacredito = 0; 
-   var $k107_ctadebito = 0; 
-   var $k107_retencao = 'null';
+   public $k107_sequencial = 0; 
+   public $k107_empagemov = 0; 
+   public $k107_data_dia = null; 
+   public $k107_data_mes = null; 
+   public $k107_data_ano = null; 
+   public $k107_data = null; 
+   public $k107_valor = 0; 
+   public $k107_ctacredito = 0; 
+   public $k107_ctadebito = 0; 
+   public $k107_retencao = 'null';
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k107_sequencial = int4 = Código Sequencial 
                  k107_empagemov = int4 = Movimento 
                  k107_data = date = Data do Movimento 
@@ -37,10 +37,10 @@ class cl_empagemovslips {
                  k107_retencao = int4 = Retenção 
                  ";
    //funcao construtor da classe 
-   function cl_empagemovslips() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemovslips"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,10 +133,10 @@ class cl_empagemovslips {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k107_sequencial = pg_result($result,0,0); 
+       $this->k107_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empagemovslips_k107_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k107_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k107_sequencial)){
          $this->erro_sql = " Campo k107_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,7 +176,7 @@ class cl_empagemovslips {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Slips a Realizar ($this->k107_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Slips a Realizar já Cadastrado";
@@ -205,16 +205,16 @@ class cl_empagemovslips {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12458,'$this->k107_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,2174,12458,'','".AddSlashes(pg_result($resaco,0,'k107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2174,12463,'','".AddSlashes(pg_result($resaco,0,'k107_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2174,12459,'','".AddSlashes(pg_result($resaco,0,'k107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2174,12460,'','".AddSlashes(pg_result($resaco,0,'k107_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2174,12461,'','".AddSlashes(pg_result($resaco,0,'k107_ctacredito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2174,12462,'','".AddSlashes(pg_result($resaco,0,'k107_ctadebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2174,1010031,'','".AddSlashes(pg_result($resaco,0,'k107_retencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2174,12458,'','".AddSlashes(pg_fetch_result($resaco,0,'k107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2174,12463,'','".AddSlashes(pg_fetch_result($resaco,0,'k107_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2174,12459,'','".AddSlashes(pg_fetch_result($resaco,0,'k107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2174,12460,'','".AddSlashes(pg_fetch_result($resaco,0,'k107_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2174,12461,'','".AddSlashes(pg_fetch_result($resaco,0,'k107_ctacredito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2174,12462,'','".AddSlashes(pg_fetch_result($resaco,0,'k107_ctadebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2174,1010031,'','".AddSlashes(pg_fetch_result($resaco,0,'k107_retencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -224,10 +224,10 @@ class cl_empagemovslips {
       $this->atualizacampos();
      $sql = " update empagemovslips set ";
      $virgula = "";
-     if(trim($this->k107_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_sequencial"])){ 
+     if(trim((string) $this->k107_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_sequencial"])){ 
        $sql  .= $virgula." k107_sequencial = $this->k107_sequencial ";
        $virgula = ",";
-       if(trim($this->k107_sequencial) == null ){ 
+       if(trim((string) $this->k107_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "k107_sequencial";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_empagemovslips {
          return false;
        }
      }
-     if(trim($this->k107_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_empagemov"])){ 
+     if(trim((string) $this->k107_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_empagemov"])){ 
        $sql  .= $virgula." k107_empagemov = $this->k107_empagemov ";
        $virgula = ",";
-       if(trim($this->k107_empagemov) == null ){ 
+       if(trim((string) $this->k107_empagemov) == null ){ 
          $this->erro_sql = " Campo Movimento não informado.";
          $this->erro_campo = "k107_empagemov";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_empagemovslips {
          return false;
        }
      }
-     if(trim($this->k107_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k107_data_dia"] !="") ){ 
+     if(trim((string) $this->k107_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k107_data_dia"] !="") ){ 
        $sql  .= $virgula." k107_data = '$this->k107_data' ";
        $virgula = ",";
-       if(trim($this->k107_data) == null ){ 
+       if(trim((string) $this->k107_data) == null ){ 
          $this->erro_sql = " Campo Data do Movimento não informado.";
          $this->erro_campo = "k107_data_dia";
          $this->erro_banco = "";
@@ -266,7 +266,7 @@ class cl_empagemovslips {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k107_data_dia"])){ 
          $sql  .= $virgula." k107_data = null ";
          $virgula = ",";
-         if(trim($this->k107_data) == null ){ 
+         if(trim((string) $this->k107_data) == null ){ 
            $this->erro_sql = " Campo Data do Movimento não informado.";
            $this->erro_campo = "k107_data_dia";
            $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_empagemovslips {
          }
        }
      }
-     if(trim($this->k107_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_valor"])){ 
+     if(trim((string) $this->k107_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_valor"])){ 
        $sql  .= $virgula." k107_valor = $this->k107_valor ";
        $virgula = ",";
-       if(trim($this->k107_valor) == null ){ 
+       if(trim((string) $this->k107_valor) == null ){ 
          $this->erro_sql = " Campo Valor do Movimento não informado.";
          $this->erro_campo = "k107_valor";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_empagemovslips {
          return false;
        }
      }
-     if(trim($this->k107_ctacredito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_ctacredito"])){ 
+     if(trim((string) $this->k107_ctacredito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_ctacredito"])){ 
        $sql  .= $virgula." k107_ctacredito = $this->k107_ctacredito ";
        $virgula = ",";
-       if(trim($this->k107_ctacredito) == null ){ 
+       if(trim((string) $this->k107_ctacredito) == null ){ 
          $this->erro_sql = " Campo Conta a Credito não informado.";
          $this->erro_campo = "k107_ctacredito";
          $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_empagemovslips {
          return false;
        }
      }
-     if(trim($this->k107_ctadebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_ctadebito"])){ 
+     if(trim((string) $this->k107_ctadebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_ctadebito"])){ 
        $sql  .= $virgula." k107_ctadebito = $this->k107_ctadebito ";
        $virgula = ",";
-       if(trim($this->k107_ctadebito) == null ){ 
+       if(trim((string) $this->k107_ctadebito) == null ){ 
          $this->erro_sql = " Campo Conta a Debito não informado.";
          $this->erro_campo = "k107_ctadebito";
          $this->erro_banco = "";
@@ -316,8 +316,8 @@ class cl_empagemovslips {
          return false;
        }
      }
-     if(trim($this->k107_retencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_retencao"])){ 
-        if(trim($this->k107_retencao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k107_retencao"])){ 
+     if(trim((string) $this->k107_retencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k107_retencao"])){ 
+        if(trim((string) $this->k107_retencao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k107_retencao"])){ 
            $this->k107_retencao = "null" ;
         } 
        $sql  .= $virgula." k107_retencao = $this->k107_retencao ";
@@ -337,23 +337,23 @@ class cl_empagemovslips {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,12458,'$this->k107_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k107_sequencial"]) || $this->k107_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,2174,12458,'".AddSlashes(pg_result($resaco,$conresaco,'k107_sequencial'))."','$this->k107_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2174,12458,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k107_sequencial'))."','$this->k107_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k107_empagemov"]) || $this->k107_empagemov != "")
-             $resac = db_query("insert into db_acount values($acount,2174,12463,'".AddSlashes(pg_result($resaco,$conresaco,'k107_empagemov'))."','$this->k107_empagemov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2174,12463,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k107_empagemov'))."','$this->k107_empagemov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k107_data"]) || $this->k107_data != "")
-             $resac = db_query("insert into db_acount values($acount,2174,12459,'".AddSlashes(pg_result($resaco,$conresaco,'k107_data'))."','$this->k107_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2174,12459,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k107_data'))."','$this->k107_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k107_valor"]) || $this->k107_valor != "")
-             $resac = db_query("insert into db_acount values($acount,2174,12460,'".AddSlashes(pg_result($resaco,$conresaco,'k107_valor'))."','$this->k107_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2174,12460,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k107_valor'))."','$this->k107_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k107_ctacredito"]) || $this->k107_ctacredito != "")
-             $resac = db_query("insert into db_acount values($acount,2174,12461,'".AddSlashes(pg_result($resaco,$conresaco,'k107_ctacredito'))."','$this->k107_ctacredito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2174,12461,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k107_ctacredito'))."','$this->k107_ctacredito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k107_ctadebito"]) || $this->k107_ctadebito != "")
-             $resac = db_query("insert into db_acount values($acount,2174,12462,'".AddSlashes(pg_result($resaco,$conresaco,'k107_ctadebito'))."','$this->k107_ctadebito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2174,12462,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k107_ctadebito'))."','$this->k107_ctadebito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k107_retencao"]) || $this->k107_retencao != "")
-             $resac = db_query("insert into db_acount values($acount,2174,1010031,'".AddSlashes(pg_result($resaco,$conresaco,'k107_retencao'))."','$this->k107_retencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2174,1010031,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k107_retencao'))."','$this->k107_retencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -407,16 +407,16 @@ class cl_empagemovslips {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,12458,'$k107_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,2174,12458,'','".AddSlashes(pg_result($resaco,$iresaco,'k107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2174,12463,'','".AddSlashes(pg_result($resaco,$iresaco,'k107_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2174,12459,'','".AddSlashes(pg_result($resaco,$iresaco,'k107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2174,12460,'','".AddSlashes(pg_result($resaco,$iresaco,'k107_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2174,12461,'','".AddSlashes(pg_result($resaco,$iresaco,'k107_ctacredito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2174,12462,'','".AddSlashes(pg_result($resaco,$iresaco,'k107_ctadebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2174,1010031,'','".AddSlashes(pg_result($resaco,$iresaco,'k107_retencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2174,12458,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2174,12463,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k107_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2174,12459,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k107_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2174,12460,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k107_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2174,12461,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k107_ctacredito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2174,12462,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k107_ctadebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2174,1010031,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k107_retencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -80,7 +80,7 @@ class ordemCompra {
      *
      * @var array
      */
-    private $aNotas = array ();
+    private $aNotas =  [];
 
     /**
      * Codifica strings com urlencode
@@ -317,7 +317,7 @@ class ordemCompra {
                 if ($oItens->pc01_servico == "t") {
                     $oItens->m70_quant = $oItens->m71_quant;
                 }
-                $this->aItensNota [] = array (
+                $this->aItensNota [] =  [
 
                     "pc01_descrmater" => $oItens->pc01_descrmater,
                     "pc01_fraciona" => $oItens->pc01_fraciona,
@@ -340,7 +340,7 @@ class ordemCompra {
                     "m71_codlanc"    => $oItens->m71_codlanc,
                     "m75_codmatunid" => $oItens->m75_codmatunid,
                     "m71_codmatestoque" => $oItens->m71_codmatestoque
-                );
+                ];
             }
             return true;
         }
@@ -370,7 +370,7 @@ class ordemCompra {
             $sJson ["z01_nome"]     = $this->dadosOrdem->z01_nome;
             $sJson ["m51_tipo"]     = $this->dadosOrdem->m51_tipo;
             $sJson ["totalItens"]   = 0;
-            $sJson ["itens"]        = array ();
+            $sJson ["itens"]        =  [];
             if ($this->getNotasOrdem($iCodNota)) {
 
                 $sJson ["e69_codnota"]  = $this->aNotas [$iCodNota] ["e69_codnota"];
@@ -427,12 +427,12 @@ class ordemCompra {
 
             $oDataAtual = new DBDate( date('Y-m-d', db_getsession("DB_datausu")) );
             $oEstoqueMovimentoAnulacao = null;
-            $aItensVerificar   = array();
-            $aEmpenhoGrupoItem = array();
-            $aItensLancamento  = array();
+            $aItensVerificar   = [];
+            $aEmpenhoGrupoItem = [];
+            $aItensLancamento  = [];
             $nTotalNota = 0;
 
-            $empenhosEnvolvidos = array();
+            $empenhosEnvolvidos = [];
             for($iItens = 0; $iItens < count($this->aItensNota); $iItens ++) {
 
                 $oItemAtivo = $this->aItensNota[$iItens];
@@ -592,7 +592,7 @@ class ordemCompra {
                         $iGrupoContaOrcamento  = $oGrupoContaOrcamento->getCodigo();
                     }
 
-                    if (in_array($iGrupoContaOrcamento, array(7, 8, 10)) && !empty($iCodigoMatEstoqueIniMei) || UTILIZA_INCORPORACAO_BEM) {
+                    if (in_array($iGrupoContaOrcamento, [7, 8, 10]) && !empty($iCodigoMatEstoqueIniMei) || UTILIZA_INCORPORACAO_BEM) {
                         $aItensLancamento[$oMaterial->getCodigo()][] = $iCodigoMatEstoqueIniMei;
                     }
                 }
@@ -990,7 +990,7 @@ class ordemCompra {
              * Buscamos todos os itens vinculados ao material do compras
              * no cadastro de materias do almoxarifados, para o usuário escolher um .
              */
-            $this->dadosOrdem->itens[$iInd]->matmater = array();
+            $this->dadosOrdem->itens[$iInd]->matmater = [];
             $this->dadosOrdem->itens[$iInd]->matmater[0] = new stdClass;
             $this->dadosOrdem->itens[$iInd]->matmater[0]->m63_codmatmater = "";
             $this->dadosOrdem->itens[$iInd]->matmater[0]->m60_descr       = "";
@@ -1055,7 +1055,7 @@ class ordemCompra {
 
         if (!isset($_SESSION["matordem{$this->iCodOrdem}"])) {
 
-            $_SESSION["matordem{$this->iCodOrdem}"]= array();
+            $_SESSION["matordem{$this->iCodOrdem}"]= [];
         }
         return $_SESSION["matordem{$this->iCodOrdem}"];
     }
@@ -1072,7 +1072,7 @@ class ordemCompra {
         $oOrdemSession = $this->initSession();
         if (!isset($oOrdemSession[$iCodLanc])) {
 
-            $oOrdemSession[$iCodLanc] = array();
+            $oOrdemSession[$iCodLanc] = [];
         }
 
         //verificamos se o material do estoque ja foi incluido.
@@ -1086,10 +1086,10 @@ class ordemCompra {
             }
         }
 
-        $oMaterial->pc01_descrmater = urlencode(urldecode($oMaterial->pc01_descrmater));
-        $oMaterial->e62_descr       = urlencode(urldecode($oMaterial->e62_descr));
-        $oMaterial->m76_nome        = urlencode(urldecode($oMaterial->m76_nome));
-        $oMaterial->m60_descr       = urlencode(urldecode($oMaterial->m60_descr));
+        $oMaterial->pc01_descrmater = urlencode(urldecode((string) $oMaterial->pc01_descrmater));
+        $oMaterial->e62_descr       = urlencode(urldecode((string) $oMaterial->e62_descr));
+        $oMaterial->m76_nome        = urlencode(urldecode((string) $oMaterial->m76_nome));
+        $oMaterial->m60_descr       = urlencode(urldecode((string) $oMaterial->m60_descr));
         if ($oMaterial->iIndiceEntrada != "") {
 
 
@@ -1145,7 +1145,7 @@ class ordemCompra {
 
         if (isset($_SESSION["matordem{$this->iCodOrdem}"])) {
 
-            $aItensCadastrados = array();
+            $aItensCadastrados = [];
             foreach ($_SESSION["matordem{$this->iCodOrdem}"] as $oItemOrdem) {
 
                 foreach ($oItemOrdem as $iCodLanc => $oItemLancado) {
@@ -1199,7 +1199,7 @@ class ordemCompra {
 
         $_SESSION["matordem{$this->iCodOrdem}"][$iCodLanc][$iIndice]->checked = " checked ";
         $oDaoTransMater = new cl_transmater();
-        $aItensMaterial = array();
+        $aItensMaterial = [];
         $sSqlTransMater = $oDaoTransMater->sql_query(null,
             "m63_codmatmater,m60_descr,m60_controlavalidade, m60_codmatunid, m60_quantent, m60_servico",
             null,
@@ -1264,15 +1264,15 @@ class ordemCompra {
         $nValorNota,
         $aItens,
         $oInfoNota = null,
-        $sObservacao,
+        $sObservacao = null,
         $sNumeroProcesso=null,
-        $oDataVencimento,
+        $oDataVencimento = null,
         $sLocalRecebimento = null,
         $processoEntradaNota = null) {
 
         $notaBemIncorporavel = false;
         if (UTILIZA_INCORPORACAO_BEM) {
-            $notaBemIncorporavel = in_array($processoEntradaNota, array(self::MATERIAL_INCORPORAVEL_BEM_PEMANENTE,self::SERVICO_INCORPORAVEL_BEM_PEMANENTE));
+            $notaBemIncorporavel = in_array($processoEntradaNota, [self::MATERIAL_INCORPORAVEL_BEM_PEMANENTE,self::SERVICO_INCORPORAVEL_BEM_PEMANENTE]);
         }
 
         //Devemos estar dentro de uma transação.
@@ -1284,7 +1284,7 @@ class ordemCompra {
             throw new Exception("Parametro aItens deve ser um Array.\nProcedimento Cancelado");
         }
 
-        $aElementosConfiguradosVerificacaoPatrimonio = array();
+        $aElementosConfiguradosVerificacaoPatrimonio = [];
         if (!USE_PCASP) {
             $oDaoConfiguracaoDesdobramentoPatrimonio = db_utils::getDao('configuracaodesdobramentopatrimonio');
 
@@ -1299,7 +1299,7 @@ class ordemCompra {
                 }
             }
         }
-        $aParamKeys = array(db_getsession("DB_anousu"));
+        $aParamKeys = [db_getsession("DB_anousu")];
 
         $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
         $iTipoControleCustos = 0;
@@ -1308,7 +1308,7 @@ class ordemCompra {
             $iTipoControleCustos = $aParametrosCustos[0]->cc09_tipocontrole;
         }
         //primeiro, descobrimos a quantidade de empenhos que a ordem de compra possui.
-        $aEmpenhos = array();
+        $aEmpenhos = [];
         $iTotItens = count($aItens);
         $aEntradas = $_SESSION["matordem{$this->iCodOrdem}"];
         /**
@@ -1376,9 +1376,9 @@ class ordemCompra {
          * Verificamos se existe controloe do pit, e incluimos as informações extras das notas;
          */
         $iControlaPit = 2;
-        $aParamKeys   = array(
+        $aParamKeys   = [
             db_getsession("DB_instit")
-        );
+        ];
 
         $aParametrosPit = db_stdClass::getParametro("matparaminstit",$aParamKeys);
         if (count($aParametrosPit) > 0) {
@@ -1386,7 +1386,7 @@ class ordemCompra {
         }
 
         if($this->dadosOrdem->z01_incest == '' && ($iControlaPit == 1 && $oInfoNota->iTipoDocumentoFiscal == 50) ) {
-            $sMsg  = "O cgm (".urldecode($this->dadosOrdem->z01_numcgm)." - ".urldecode($this->dadosOrdem->z01_nome).") ";
+            $sMsg  = "O cgm (".urldecode((string) $this->dadosOrdem->z01_numcgm)." - ".urldecode((string) $this->dadosOrdem->z01_nome).") ";
             $sMsg .= "não possui inscrição estadual cadastrada. para continuar essa rotina, informe a ";
             $sMsg .= "inscrição estadual do fornecedor";
             throw new Exception($sMsg);
@@ -1419,7 +1419,7 @@ class ordemCompra {
 
         $clEmpEmpenho = db_utils::getDao('empempenho');
 
-        $aEmpenhoGrupoItem = array();
+        $aEmpenhoGrupoItem = [];
         for ($iItem = 0; $iItem < $iTotItens; $iItem++) {
 
             if ($aEntradas[$aItens[$iItem]->iCodLanc][$aItens[$iItem]->iIndiceEntrada] ) {
@@ -1439,7 +1439,7 @@ class ordemCompra {
 
                 if ( pg_num_rows($rsValidaDataEmp) > 0 ) {
                     $oDataEmpenho = db_utils::fieldsMemory($rsValidaDataEmp,0);
-                    if ( implode("-",array_reverse(explode("/",$dtDataNota))) < $oDataEmpenho->e60_emiss ) {
+                    if ( implode("-",array_reverse(explode("/",(string) $dtDataNota))) < $oDataEmpenho->e60_emiss ) {
                         throw new Exception("Data da nota inferior a data do empenho!");
                     }
                 }
@@ -1462,7 +1462,7 @@ class ordemCompra {
                     $oDaoMatMater                       = new cl_matmater();
                     $oDaoMatMater->m60_codmatunid       = 1;
                     $oDaoMatMater->m60_quantent         = 1;
-                    $oDaoMatMater->m60_descr            = urldecode($oItemAtivo->pc01_descrmater);
+                    $oDaoMatMater->m60_descr            = urldecode((string) $oItemAtivo->pc01_descrmater);
                     $oDaoMatMater->m60_controlavalidade = 3;
                     $oDaoMatMater->m60_ativo            = "t";
                     $oDaoMatMater->m60_codant           = "";
@@ -1551,8 +1551,8 @@ class ordemCompra {
                     && $this->dadosOrdem->m51_tipo == 1) {
                     $oDaoEmpNota                           = new cl_empnota();
                     $oDaoEmpNota->e69_anousu               = db_getsession("DB_anousu");
-                    $oDaoEmpNota->e69_dtnota               = implode("-", array_reverse(explode("/", $dtDataNota)));
-                    $oDaoEmpNota->e69_dtrecebe             = implode("-", array_reverse(explode("/", $dtDataRecebe)));
+                    $oDaoEmpNota->e69_dtnota               = implode("-", array_reverse(explode("/", (string) $dtDataNota)));
+                    $oDaoEmpNota->e69_dtrecebe             = implode("-", array_reverse(explode("/", (string) $dtDataRecebe)));
                     $oDaoEmpNota->e69_dtvencimento         = $oDataVencimento ? $oDataVencimento->getDate() : null;
                     $oDaoEmpNota->e69_localrecebimento     = $sLocalRecebimento;
                     $oDaoEmpNota->e69_id_usuario           = db_getsession("DB_id_usuario");
@@ -1702,13 +1702,13 @@ class ordemCompra {
 
                 $servico = 'false';
                 if (($oItemAtivo->pc01_servico == "t" && !UTILIZA_INCORPORACAO_BEM)
-                    || (UTILIZA_INCORPORACAO_BEM && in_array($processoEntradaNota, array(self::SERVICO_PRESTADO, self::SERVICO_INCORPORAVEL_BEM_PEMANENTE)))) {
+                    || (UTILIZA_INCORPORACAO_BEM && in_array($processoEntradaNota, [self::SERVICO_PRESTADO, self::SERVICO_INCORPORAVEL_BEM_PEMANENTE]))) {
                     $servico = 'true';
                 }
 
                 $oDaoMatestoqueItem = new cl_matestoqueitem();
                 $oDaoMatestoqueItem->m71_codmatestoque = $iCodEstoque;
-                $oDaoMatestoqueItem->m71_data          = implode("-", array_reverse(explode("/", $dtDataRecebe)));
+                $oDaoMatestoqueItem->m71_data          = implode("-", array_reverse(explode("/", (string) $dtDataRecebe)));
                 $oDaoMatestoqueItem->m71_quant         = $oItemAtivo->m52_quant * $iQuantUnidade;
                 $oDaoMatestoqueItem->m71_quantatend    = $quantidadeAtendida;
                 $oDaoMatestoqueItem->m71_valor         = $oItemAtivo->m52_valor;
@@ -1756,7 +1756,7 @@ class ordemCompra {
                  * Caso o usuário informou o fabricante do material,
                  * gravamos na matestoqueitemfabricante.
                  */
-                if (trim($oItemAtivo->m78_matfabricante) != '') {
+                if (trim((string) $oItemAtivo->m78_matfabricante) != '') {
 
                     $oDaoMatFabricante = db_utils::getDao("matestoqueitemfabric");
                     $oDaoMatFabricante->m78_matestoqueitem = $oDaoMatestoqueItem->m71_codlanc;
@@ -1806,7 +1806,7 @@ class ordemCompra {
                 /**
                  * Caso o material seje servico, já fizemos a saida automatica para esse material
                  */
-                if (($oItemAtivo->pc01_servico == "t" && !UTILIZA_INCORPORACAO_BEM) || (UTILIZA_INCORPORACAO_BEM && in_array($processoEntradaNota, array(self::SERVICO_PRESTADO))) ) {
+                if (($oItemAtivo->pc01_servico == "t" && !UTILIZA_INCORPORACAO_BEM) || (UTILIZA_INCORPORACAO_BEM && in_array($processoEntradaNota, [self::SERVICO_PRESTADO])) ) {
 
                     $oMaterialEstoque = new materialEstoque($oItemAtivo->m63_codmatmater);
                     if ($oItemAtivo->cc08_sequencial != "") {
@@ -1852,10 +1852,10 @@ class ordemCompra {
                 /**
                  * caso o usuário deu informações sobre o lote, salvamos na tabela matestoqueitemlote
                  */
-                if (trim($oItemAtivo->m77_lote) != "") {
+                if (trim((string) $oItemAtivo->m77_lote) != "") {
 
                     $oDaoMatestoqueItemLote = db_utils::getDao("matestoqueitemlote");
-                    $oDaoMatestoqueItemLote->m77_dtvalidade     =  implode("-", array_reverse(explode("/", $oItemAtivo->m77_dtvalidade)));
+                    $oDaoMatestoqueItemLote->m77_dtvalidade     =  implode("-", array_reverse(explode("/", (string) $oItemAtivo->m77_dtvalidade)));
                     $oDaoMatestoqueItemLote->m77_lote           = $oItemAtivo->m77_lote;
                     $oDaoMatestoqueItemLote->m77_matestoqueitem = $oDaoMatestoqueItem->m71_codlanc;
                     $oDaoMatestoqueItemLote->incluir(null);
@@ -1879,7 +1879,7 @@ class ordemCompra {
                 if ($oGrupoContaOrcamento) {
 
                     $iGrupoContaOrcamento = $oGrupoContaOrcamento->getCodigo();
-                    if (in_array($iGrupoContaOrcamento, array(7, 8, 10)) || (UTILIZA_INCORPORACAO_BEM)) {
+                    if (in_array($iGrupoContaOrcamento, [7, 8, 10]) || (UTILIZA_INCORPORACAO_BEM)) {
 
                         $oMaterialEstoque             = new materialEstoque($oItemAtivo->m63_codmatmater);
                         $oGrupoMaterial               = $oMaterialEstoque->getGrupo();
@@ -1916,9 +1916,9 @@ class ordemCompra {
          * Verificamos se existe controloe do pit, e incluimos as informações extras das notas;
          */
         $iControlaPit = 2;
-        $aParamKeys = array(
+        $aParamKeys = [
             db_getsession("DB_instit")
-        );
+        ];
         $aParametrosPit   = db_stdClass::getParametro("matparaminstit",$aParamKeys);
         if (count($aParametrosPit) > 0) {
             $iControlaPit = $aParametrosPit[0]->m10_controlapit;
@@ -2023,7 +2023,7 @@ class ordemCompra {
                         (USE_PCASP && UTILIZA_INCORPORACAO_BEM && $processoEntradaNota === self::BEM_PERMANENTE)
                     ) {
 
-                        $aLancamentos = explode("#", $oItens->m71_codlanc);
+                        $aLancamentos = explode("#", (string) $oItens->m71_codlanc);
 
                         for ($i = 0; $i < count($aLancamentos); $i++) {
 
@@ -2076,7 +2076,7 @@ class ordemCompra {
 
         $iAnoUso         = db_getsession("DB_anousu");
         $oDaoOrcElemento = db_utils::getDao("orcelemento");
-        $aItens          = array();
+        $aItens          = [];
 
         $sCampos  = " desdobramentosliberadosordemcompra.pc33_sequencial,                                                ";
         $sCampos .= " orcelemento.o56_codele,                                                                            ";
@@ -2147,7 +2147,7 @@ class ordemCompra {
         $rsBuscaItensAtivos      = $oDaoBensEmpNotaItem->sql_record($sSqlBuscaItensAtivos);
         $aItensAtivos            = db_utils::getCollectionByRecord($rsBuscaItensAtivos);
         $iLinhas                 = $oDaoBensEmpNotaItem->numrows;
-        $mRetorno                = array();
+        $mRetorno                = [];
         for($i = 0; $i < $iLinhas; $i++) {
 
             $oItemAtivo                     = db_utils::fieldsMemory($rsBuscaItensAtivos, $i);
@@ -2243,7 +2243,7 @@ class ordemCompra {
         $oDocumentoContabil->setValorVariavel("[desdobramento]", $iCodigoContaElemento);
         $iCodigoDocumentoExecutar = $oDocumentoContabil->getCodigoDocumento();
 
-        if (in_array($iCodigoDocumentoExecutar, array(208, 209))) {
+        if (in_array($iCodigoDocumentoExecutar, [208, 209])) {
             return false;
         }
 
@@ -2305,13 +2305,13 @@ class ordemCompra {
      */
     public static function getDocumentoPorProcessoEntrada($tipoEntrada, $restosPagar = false) {
 
-        $documentos = array(
-            1 => array('ex_atual' => 200, 'ex_anterior' => 216),
-            2 => array('ex_atual' => 210, 'ex_anterior' => 212),
-            3 => array('ex_atual' => 208, 'ex_anterior' => 214),
-            4 => array('ex_atual' => 210, 'ex_anterior' => 212),
-            5 => array('ex_atual' => 200, 'ex_anterior' => 216)
-        );
+        $documentos = [
+            1 => ['ex_atual' => 200, 'ex_anterior' => 216],
+            2 => ['ex_atual' => 210, 'ex_anterior' => 212],
+            3 => ['ex_atual' => 208, 'ex_anterior' => 214],
+            4 => ['ex_atual' => 210, 'ex_anterior' => 212],
+            5 => ['ex_atual' => 200, 'ex_anterior' => 216]
+        ];
         $indice = $restosPagar ? 'ex_anterior' : 'ex_atual';
         return (int)$documentos[$tipoEntrada][$indice];
     }

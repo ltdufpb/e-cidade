@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -52,7 +52,7 @@ class cl_inicialnumpre
                  ";
 
     //funcao construtor da classe
-    function cl_inicialnumpre()
+    function __construct()
     {
      //classes dos rotulos dos campos
         $this->rotulo = new rotulo("inicialnumpre");

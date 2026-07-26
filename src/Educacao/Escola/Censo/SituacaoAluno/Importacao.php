@@ -23,19 +23,13 @@ class Importacao
    */
   private $oEscola = null;
 
-  /**
-   * @var CensoEscolar
-   */
-  private $oCenso = null;
-
-  private $aLinhas = array();
+  private $aLinhas = [];
 
   private $lPossuiInconsistencia = false;
 
-  public function __construct(CensoEscolar $oCenso, \Escola $oEscola)
+  public function __construct(private readonly CensoEscolar $oCenso, \Escola $oEscola)
   {
 
-    $this->oCenso = $oCenso;
     $this->oEscola = $oEscola;
   }
 
@@ -47,18 +41,10 @@ class Importacao
   private function lerArquivo($sFilePath)
   {
 
-    switch ($this->oCenso->getAno()) {
-      case 2016:
-      case 2017:
-
-        $this->aLinhas = Layout\Layout2016::lerArquivo($sFilePath);
-        break;
-
-      default:
-
-        throw new \BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}.");
-        break;
-    }
+    $this->aLinhas = match ($this->oCenso->getAno()) {
+        2016, 2017 => Layout\Layout2016::lerArquivo($sFilePath),
+        default => throw new \BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}."),
+    };
 
     $this->validarConteudoArquivo();
     unset($this->aLinhas[0]); // não precisa do registro 89
@@ -84,7 +70,7 @@ class Importacao
       }
 
       $iLinha = $iIndex + 1;
-      if (!in_array($oLinha->tipo_registro, array(89, 90, 91))) {
+      if (!in_array($oLinha->tipo_registro, [89, 90, 91])) {
 
         $sMsg = "Importação abortada. Registro inválido encontrado no arquivo.\n";
         $sMsg .= "  - Registro: {$oLinha->tipo_registro}\n  - Linha: {$iLinha}";
@@ -129,19 +115,19 @@ class Importacao
 
     $lValido = true;
     $sComplemento = "não possui valor ou o valor informado está inválido.";
-    if (empty($oLinha->codigo_turma_inep) || strlen($oLinha->codigo_turma_inep) > 10) {
+    if (empty($oLinha->codigo_turma_inep) || strlen((string) $oLinha->codigo_turma_inep) > 10) {
 
       $sMsg = "Linha [{$iLinha}] campo \"Código da turma - INEP\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;
     }
-    if (empty($oLinha->codigo_aluno_inep) || strlen($oLinha->codigo_aluno_inep) != 12) {
+    if (empty($oLinha->codigo_aluno_inep) || strlen((string) $oLinha->codigo_aluno_inep) != 12) {
       $sMsg = "Linha [{$iLinha}] campo \"Código de identificação única do aluno - INEP\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;
     }
 
-    if (empty($oLinha->codigo_matricula_inep) || strlen($oLinha->codigo_matricula_inep) > 12) {
+    if (empty($oLinha->codigo_matricula_inep) || strlen((string) $oLinha->codigo_matricula_inep) > 12) {
       $sMsg = "Linha [{$iLinha}] campo \"Código da Matrícula\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_receitamedica_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoSauReceitaMedica = new cl_sau_receitamedica;
 $oDaoSauReceitaMedica->rotulo->label("s158_i_codigo");
@@ -55,7 +56,7 @@ $oDaoSauReceitaMedica->rotulo->label("s158_i_codigo");
               <?=$Ls158_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input('s158_i_codigo', 10, $Is158_i_codigo, true, 'text', 4, '', 'chave_s158_i_codigo');
 		          ?>
             </td>
@@ -73,7 +74,7 @@ $oDaoSauReceitaMedica->rotulo->label("s158_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
       $sWhere = '';
       $sSep   = '';
@@ -179,12 +180,12 @@ $oDaoSauReceitaMedica->rotulo->label("s158_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

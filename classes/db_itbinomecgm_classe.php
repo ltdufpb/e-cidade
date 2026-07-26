@@ -52,7 +52,7 @@ class cl_itbinomecgm {
                  it21_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   public function cl_itbinomecgm() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbinomecgm"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

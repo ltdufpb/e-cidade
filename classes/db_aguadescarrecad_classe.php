@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ class cl_aguadescarrecad {
                  x35_tipojm = int4 = Tipo de juro e multa 
                  ";
    //funcao construtor da classe 
-   function cl_aguadescarrecad() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguadescarrecad"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

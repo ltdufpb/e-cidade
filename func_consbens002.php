@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_apolitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clapolitem = new cl_apolitem;
@@ -58,7 +59,7 @@ $clrotulo->label("t80_contato");//observação
   <tr> 
     <td  align="center" valign="top" bgcolor="#CCCCCC"> 
  <table border='1' cellspacing="0" cellpadding="0" align ="center" >   
- <?
+ <?php 
               
       $result = $clapolitem->sql_record($clapolitem->sql_query(null,null,"*",null," t82_codbem=$t82_codbem and t81_venc >='".date("Y-m-d",db_getsession("DB_datausu"))."'"));
       $numrows = $clapolitem->numrows;

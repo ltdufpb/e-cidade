@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_turma_matriculas_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clturma_matriculas = new cl_turma_matriculas;
 $clturma_matriculas->rotulo->label("ed36_i_turma");
 $clturma_matriculas->rotulo->label("ed36_i_matricula");
@@ -57,7 +58,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
               <?=$Led36_i_turma?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed36_i_turma",5,$Ied36_i_turma,true,"text",4,"","chave_ed36_i_turma");
                        ?>
             </td>
@@ -67,7 +68,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
               <?=$Led36_i_matricula?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed36_i_matricula",5,$Ied36_i_matricula,true,"text",4,"","chave_ed36_i_matricula");
                        ?>
             </td>
@@ -77,7 +78,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
               <?=$Led36_i_turma?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed36_i_turma",5,$Ied36_i_turma,true,"text",4,"","chave_ed36_i_turma");
                        ?>
             </td>
@@ -95,7 +96,7 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_turma_matriculas.php")==true){
@@ -131,12 +132,12 @@ $clturma_matriculas->rotulo->label("ed36_i_turma");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

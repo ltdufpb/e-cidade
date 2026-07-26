@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ db_app::load("webseller.js");
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
-<?
+<?php 
    $db_opcao2=1;
    $la52_i_codigo="";
    if(isset($iRequiitem)){
@@ -84,7 +84,7 @@ db_app::load("webseller.js");
    	  }
    }?>
 <input type="hidden" name="repositorios" id="repositorios" value="<?=$oAtributos->getInputs()?>" size="70">
- <?$iIndex=count($oAtributos->aRepositorios)+1;
+ <?php $iIndex=count($oAtributos->aRepositorios)+1;
    if($db_opcao2==2){
       echo"<table>
              <tr>
@@ -103,11 +103,11 @@ echo"</center>";
 ?>
 
 <center>
-<?if($db_opcao2==1){?>
+<?php if($db_opcao2==1){?>
   <input type="button" name="Salvar" id="Salvar" value="Salvar" tabindex="<?=$iIndex?>" onclick="js_incluir()" >
-<?}else{?>  
+<?php }else{?>  
   <input type="button" name="alterar" id="alterar" value="Alterar" tabindex="<?=$iIndex?>" onclick="js_alterar()" >
-<?}?>
+<?php }?>
 </center>
 </form>
 <script>

@@ -141,12 +141,13 @@ class AdicionalNoturno extends BaseHora implements Horas
 
     /**
      * @todo Deletar função para utilizar apenas a função da classe pai BaseHora. Deve-se tomar cuidado com os impactos.
-     * @deprecated
      * @param \DateTime $primeiraMarcacao
      * @param \DateTime $segundaMarcacao
      * @param bool $apenasHorasNoturnas
      * @return \stdClass | \DateTime
      */
+    #[\Override]
+    #[\Deprecated]
     public function percorreMinutoAMinuto(
         \DateTime $primeiraMarcacao,
         \DateTime $segundaMarcacao,

@@ -84,18 +84,18 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
 
       <tr>
         <td nowrap title="<?=@$Th31_portariatipo?>"><b>
-        <?
+        <?php 
            db_ancora(@$Lh31_portariatipo,"js_pesquisa_h31_portariatipo(true)",$db_opcao);
         ?>
         </b></td>
         <td>
-    <?
+    <?php 
     db_input('h31_portariatipo',10,$Ih31_portariatipo,true,'text',$db_opcao,"onchange='js_pesquisa_h31_portariatipo(false)';");
     db_input("h12_descr",40,@$Ih12_descr,true,"text",3);
     ?>
         </td>
       </tr>
-    <?
+    <?php 
     if (!isset($h31_usuario) && trim(@$h31_usuario)==""){
          $h31_usuario = db_getsession('DB_id_usuario');
     }
@@ -123,7 +123,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
            <?=@$Lh31_dtportaria?>
         </td>
         <td>
-    <?
+    <?php 
     db_inputdata('h31_dtportaria',@$h31_dtportaria_dia,@$h31_dtportaria_mes,@$h31_dtportaria_ano,true,'text',$db_opcao,"")
     ?>
         </td>
@@ -133,7 +133,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
            <?=@$Lh31_dtinicio?>
         </td>
         <td>
-    <?
+    <?php 
     db_inputdata('h31_dtinicio',@$h31_dtinicio_dia,@$h31_dtinicio_mes,@$h31_dtinicio_ano,true,'text',$db_opcao,"")
     ?>
         </td>
@@ -143,7 +143,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
            <?=@$Lh31_dtlanc?>
         </td>
         <td>
-    <?
+    <?php 
     db_inputdata('h31_dtlanc',@$h31_dtlanc_dia,@$h31_dtlanc_mes,@$h31_dtlanc_ano,true,'text',$db_opcao,"")
     ?>
         </td>
@@ -185,7 +185,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
   <fieldset>
     <legend align="left"><b>Dados de assentamento:</b></Legend>
     <table border="0" class="form-container">
-      <?
+      <?php 
       if (($db_opcao == 1 || $db_opcao == 11) && !isset($h31_sequencial) && trim(@$h31_sequencial)==""){
            $db_opcao_assenta = 1;
       } else {
@@ -242,7 +242,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
 
       <tr>
         <td nowrap title="<?=@$Th16_regist?>">
-          <?
+          <?php 
           db_ancora(@$Lh16_regist,"js_pesquisah16_regist(true);",$db_opcao_assenta);
           ?>
         </td>
@@ -253,7 +253,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
           ?>
         </td>
       </tr>
-      <?
+      <?php 
           db_input('h16_assent',6,$Ih16_assent,true,'hidden',3,"")
       ?>
       <tr>
@@ -459,7 +459,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_portaria.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
   }

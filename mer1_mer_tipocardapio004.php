@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -41,7 +41,8 @@ include(modification("classes/db_mer_caractpreparo_classe.php"));
 include(modification("classes/db_mer_modpreparo_classe.php"));
 include(modification("classes/db_mer_subitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_cardapio        = new cl_mer_cardapio;
 $clmer_tipocardapio    = new cl_mer_tipocardapio;
@@ -272,7 +273,7 @@ if (isset($cod_cardapio)) {
    alert("Criada nova versão n° <?=$num_novaversao?> para o cardápio <?=$me27_c_nome?>");
    parent.location.href = "mer1_mer_tipocardapio002.php?chavepesquisa=<?=$novaversao?>";
   </script>
-  <?
+  <?php 
   
 }
 ?>

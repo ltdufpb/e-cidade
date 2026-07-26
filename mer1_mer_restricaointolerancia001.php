@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -98,7 +98,7 @@ if (isset($excluir)) {
     <br><br>
     <center>
     <fieldset style="width:95%"><legend><b>Inclusão de Intolerância Alimentar</b></legend>
-	<?
+	<?php 
 	include(modification("forms/db_frmmer_restricaointolerancia.php"));
 	?>
 	</fieldset>
@@ -111,7 +111,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1", "me34_i_restricao", true, 1, "me34_i_restricao", true);
 </script>
-<?if (isset($incluir) || isset($alterar) || isset($excluir)) {
+<?php if (isset($incluir) || isset($alterar) || isset($excluir)) {
     
   if ($clmer_restricaointolerancia->erro_status=="0") {
     

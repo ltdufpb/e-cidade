@@ -120,7 +120,7 @@ class ExportacaoService
                 $escola
             );
 
-            $profissionaisEscolaMatriculaUnificada = array();
+            $profissionaisEscolaMatriculaUnificada = [];
             foreach ($profissionaisEscola as $profissionalEscola) {
                 $profissionaisEscolaMatriculaUnificada[$profissionalEscola->getCgm()->getCpf()] = $profissionalEscola;
             }

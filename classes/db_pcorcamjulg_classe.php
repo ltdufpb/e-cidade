@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE pcorcamjulg
 class cl_pcorcamjulg {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $pc24_orcamitem = 0;
-   var $pc24_pontuacao = 0;
-   var $pc24_orcamforne = 0;
+   public $pc24_orcamitem = 0;
+   public $pc24_pontuacao = 0;
+   public $pc24_orcamforne = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  pc24_orcamitem = int4 = Código sequencial do item no orçamento
                  pc24_pontuacao = int4 = Pontuação
                  pc24_orcamforne = int8 = Código do orcamento deste fornecedor
                  ";
    //funcao construtor da classe
-   function cl_pcorcamjulg() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamjulg");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -120,7 +120,7 @@ class cl_pcorcamjulg {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Julgamento dos valores dos itens dos orçamentos ($this->pc24_orcamitem."-".$this->pc24_orcamforne) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Julgamento dos valores dos itens dos orçamentos já Cadastrado";
@@ -144,13 +144,13 @@ class cl_pcorcamjulg {
      $resaco = $this->sql_record($this->sql_query_file($this->pc24_orcamitem,$this->pc24_orcamforne));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5519,'$this->pc24_orcamitem','I')");
        $resac = db_query("insert into db_acountkey values($acount,6496,'$this->pc24_orcamforne','I')");
-       $resac = db_query("insert into db_acount values($acount,860,5519,'','".AddSlashes(pg_result($resaco,0,'pc24_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,860,5520,'','".AddSlashes(pg_result($resaco,0,'pc24_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,860,6496,'','".AddSlashes(pg_result($resaco,0,'pc24_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,860,5519,'','".AddSlashes(pg_fetch_result($resaco,0,'pc24_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,860,5520,'','".AddSlashes(pg_fetch_result($resaco,0,'pc24_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,860,6496,'','".AddSlashes(pg_fetch_result($resaco,0,'pc24_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -159,10 +159,10 @@ class cl_pcorcamjulg {
       $this->atualizacampos();
      $sql = " update pcorcamjulg set ";
      $virgula = "";
-     if(trim($this->pc24_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc24_orcamitem"])){
+     if(trim((string) $this->pc24_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc24_orcamitem"])){
        $sql  .= $virgula." pc24_orcamitem = $this->pc24_orcamitem ";
        $virgula = ",";
-       if(trim($this->pc24_orcamitem) == null ){
+       if(trim((string) $this->pc24_orcamitem) == null ){
          $this->erro_sql = " Campo Código sequencial do item no orçamento nao Informado.";
          $this->erro_campo = "pc24_orcamitem";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_pcorcamjulg {
          return false;
        }
      }
-     if(trim($this->pc24_pontuacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc24_pontuacao"])){
+     if(trim((string) $this->pc24_pontuacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc24_pontuacao"])){
        $sql  .= $virgula." pc24_pontuacao = $this->pc24_pontuacao ";
        $virgula = ",";
-       if(trim($this->pc24_pontuacao) == null ){
+       if(trim((string) $this->pc24_pontuacao) == null ){
          $this->erro_sql = " Campo Pontuação nao Informado.";
          $this->erro_campo = "pc24_pontuacao";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_pcorcamjulg {
          return false;
        }
      }
-     if(trim($this->pc24_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc24_orcamforne"])){
+     if(trim((string) $this->pc24_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc24_orcamforne"])){
        $sql  .= $virgula." pc24_orcamforne = $this->pc24_orcamforne ";
        $virgula = ",";
-       if(trim($this->pc24_orcamforne) == null ){
+       if(trim((string) $this->pc24_orcamforne) == null ){
          $this->erro_sql = " Campo Código do orcamento deste fornecedor nao Informado.";
          $this->erro_campo = "pc24_orcamforne";
          $this->erro_banco = "";
@@ -215,16 +215,16 @@ class cl_pcorcamjulg {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5519,'$this->pc24_orcamitem','A')");
          $resac = db_query("insert into db_acountkey values($acount,6496,'$this->pc24_orcamforne','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc24_orcamitem"]) || $this->pc24_orcamitem != "")
-           $resac = db_query("insert into db_acount values($acount,860,5519,'".AddSlashes(pg_result($resaco,$conresaco,'pc24_orcamitem'))."','$this->pc24_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,860,5519,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc24_orcamitem'))."','$this->pc24_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc24_pontuacao"]) || $this->pc24_pontuacao != "")
-           $resac = db_query("insert into db_acount values($acount,860,5520,'".AddSlashes(pg_result($resaco,$conresaco,'pc24_pontuacao'))."','$this->pc24_pontuacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,860,5520,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc24_pontuacao'))."','$this->pc24_pontuacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc24_orcamforne"]) || $this->pc24_orcamforne != "")
-           $resac = db_query("insert into db_acount values($acount,860,6496,'".AddSlashes(pg_result($resaco,$conresaco,'pc24_orcamforne'))."','$this->pc24_orcamforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,860,6496,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc24_orcamforne'))."','$this->pc24_orcamforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -269,13 +269,13 @@ class cl_pcorcamjulg {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5519,'$pc24_orcamitem','E')");
          $resac = db_query("insert into db_acountkey values($acount,6496,'$pc24_orcamforne','E')");
-         $resac = db_query("insert into db_acount values($acount,860,5519,'','".AddSlashes(pg_result($resaco,$iresaco,'pc24_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,860,5520,'','".AddSlashes(pg_result($resaco,$iresaco,'pc24_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,860,6496,'','".AddSlashes(pg_result($resaco,$iresaco,'pc24_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,860,5519,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc24_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,860,5520,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc24_pontuacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,860,6496,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc24_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcorcamjulg
@@ -341,7 +341,7 @@ class cl_pcorcamjulg {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcorcamjulg";
@@ -356,7 +356,7 @@ class cl_pcorcamjulg {
    function sql_query ( $pc24_orcamitem=null,$pc24_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_pcorcamjulg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,7 +404,7 @@ class cl_pcorcamjulg {
    function sql_query_file ( $pc24_orcamitem=null,$pc24_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,7 +433,7 @@ class cl_pcorcamjulg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_pcorcamjulg {
    function sql_query_geraut( $pc24_orcamitem=null,$pc24_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,7 +495,7 @@ class cl_pcorcamjulg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -507,7 +507,7 @@ class cl_pcorcamjulg {
    function sql_query_gerautlic( $pc24_orcamitem=null,$pc24_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -562,7 +562,7 @@ class cl_pcorcamjulg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_pcorcamjulg {
    function sql_query_relmotivo ( $pc24_orcamitem=null,$pc24_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -607,7 +607,7 @@ class cl_pcorcamjulg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,7 +619,7 @@ class cl_pcorcamjulg {
    function sql_query_verifica_global ($pc20_codorc=null,$campos="*"){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -643,7 +643,7 @@ class cl_pcorcamjulg {
   function sql_query_adjudicacao( $pc24_orcamitem=null,$pc24_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -690,7 +690,7 @@ class cl_pcorcamjulg {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -703,7 +703,7 @@ class cl_pcorcamjulg {
   function sql_query_participantes_licitacao( $pc24_orcamitem=null,$pc24_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -755,7 +755,7 @@ class cl_pcorcamjulg {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

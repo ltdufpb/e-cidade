@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("classes/db_serie_classe.php"));
 include(modification("classes/db_serieequiv_classe.php"));
 include(modification("classes/db_ensino_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clserie = new cl_serie;
 $clserieequiv = new cl_serieequiv;
 $clensino = new cl_ensino;
@@ -76,16 +76,16 @@ if(isset($salvar)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Equivalência entre Etapas de Ensinos diferentes:</b></legend>
-    <?include(modification("forms/db_frmserieequiv.php"));?>
+    <?php include(modification("forms/db_frmserieequiv.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if(isset($salvar)){
  db_msgbox("Alteração efetuada com sucesso!");
 }

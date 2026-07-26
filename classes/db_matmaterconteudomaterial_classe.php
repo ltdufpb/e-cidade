@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: material
 //CLASSE DA ENTIDADE matmaterconteudomaterial
 class cl_matmaterconteudomaterial { 
@@ -28,7 +28,7 @@ class cl_matmaterconteudomaterial {
                  m08_quantidade = float8 = Quantidade 
                  ";
    //funcao construtor da classe 
-   function cl_matmaterconteudomaterial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matmaterconteudomaterial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

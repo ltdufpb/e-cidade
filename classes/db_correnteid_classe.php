@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE correnteid
 class cl_correnteid { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k56_sequencial = 0; 
-   var $k56_id = 0; 
-   var $k56_data_dia = null; 
-   var $k56_data_mes = null; 
-   var $k56_data_ano = null; 
-   var $k56_data = null; 
-   var $k56_autent = 0; 
+   public $k56_sequencial = 0; 
+   public $k56_id = 0; 
+   public $k56_data_dia = null; 
+   public $k56_data_mes = null; 
+   public $k56_data_ano = null; 
+   public $k56_data = null; 
+   public $k56_autent = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k56_sequencial = int4 = Código sequencial 
                  k56_id = int4 = Id 
                  k56_data = date = Data 
                  k56_autent = int4 = Autenticação 
                  ";
    //funcao construtor da classe 
-   function cl_correnteid() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("correnteid"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_correnteid {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k56_sequencial = pg_result($result,0,0); 
+       $this->k56_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from correnteid_k56_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k56_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k56_sequencial)){
          $this->erro_sql = " Campo k56_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_correnteid {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "correnteid ($this->k56_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "correnteid já Cadastrado";
@@ -190,13 +190,13 @@ class cl_correnteid {
      $resaco = $this->sql_record($this->sql_query_file($this->k56_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11894,'$this->k56_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2057,11894,'','".AddSlashes(pg_result($resaco,0,'k56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2057,11895,'','".AddSlashes(pg_result($resaco,0,'k56_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2057,11896,'','".AddSlashes(pg_result($resaco,0,'k56_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2057,11897,'','".AddSlashes(pg_result($resaco,0,'k56_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2057,11894,'','".AddSlashes(pg_fetch_result($resaco,0,'k56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2057,11895,'','".AddSlashes(pg_fetch_result($resaco,0,'k56_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2057,11896,'','".AddSlashes(pg_fetch_result($resaco,0,'k56_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2057,11897,'','".AddSlashes(pg_fetch_result($resaco,0,'k56_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -205,10 +205,10 @@ class cl_correnteid {
       $this->atualizacampos();
      $sql = " update correnteid set ";
      $virgula = "";
-     if(trim($this->k56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_sequencial"])){ 
+     if(trim((string) $this->k56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_sequencial"])){ 
        $sql  .= $virgula." k56_sequencial = $this->k56_sequencial ";
        $virgula = ",";
-       if(trim($this->k56_sequencial) == null ){ 
+       if(trim((string) $this->k56_sequencial) == null ){ 
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "k56_sequencial";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_correnteid {
          return false;
        }
      }
-     if(trim($this->k56_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_id"])){ 
+     if(trim((string) $this->k56_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_id"])){ 
        $sql  .= $virgula." k56_id = $this->k56_id ";
        $virgula = ",";
-       if(trim($this->k56_id) == null ){ 
+       if(trim((string) $this->k56_id) == null ){ 
          $this->erro_sql = " Campo Id nao Informado.";
          $this->erro_campo = "k56_id";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_correnteid {
          return false;
        }
      }
-     if(trim($this->k56_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k56_data_dia"] !="") ){ 
+     if(trim((string) $this->k56_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k56_data_dia"] !="") ){ 
        $sql  .= $virgula." k56_data = '$this->k56_data' ";
        $virgula = ",";
-       if(trim($this->k56_data) == null ){ 
+       if(trim((string) $this->k56_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k56_data_dia";
          $this->erro_banco = "";
@@ -247,7 +247,7 @@ class cl_correnteid {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k56_data_dia"])){ 
          $sql  .= $virgula." k56_data = null ";
          $virgula = ",";
-         if(trim($this->k56_data) == null ){ 
+         if(trim((string) $this->k56_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k56_data_dia";
            $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_correnteid {
          }
        }
      }
-     if(trim($this->k56_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_autent"])){ 
+     if(trim((string) $this->k56_autent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k56_autent"])){ 
        $sql  .= $virgula." k56_autent = $this->k56_autent ";
        $virgula = ",";
-       if(trim($this->k56_autent) == null ){ 
+       if(trim((string) $this->k56_autent) == null ){ 
          $this->erro_sql = " Campo Autenticação nao Informado.";
          $this->erro_campo = "k56_autent";
          $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_correnteid {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11894,'$this->k56_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k56_sequencial"]) || $this->k56_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2057,11894,'".AddSlashes(pg_result($resaco,$conresaco,'k56_sequencial'))."','$this->k56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2057,11894,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k56_sequencial'))."','$this->k56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k56_id"]) || $this->k56_id != "")
-           $resac = db_query("insert into db_acount values($acount,2057,11895,'".AddSlashes(pg_result($resaco,$conresaco,'k56_id'))."','$this->k56_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2057,11895,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k56_id'))."','$this->k56_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k56_data"]) || $this->k56_data != "")
-           $resac = db_query("insert into db_acount values($acount,2057,11896,'".AddSlashes(pg_result($resaco,$conresaco,'k56_data'))."','$this->k56_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2057,11896,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k56_data'))."','$this->k56_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k56_autent"]) || $this->k56_autent != "")
-           $resac = db_query("insert into db_acount values($acount,2057,11897,'".AddSlashes(pg_result($resaco,$conresaco,'k56_autent'))."','$this->k56_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2057,11897,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k56_autent'))."','$this->k56_autent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_correnteid {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11894,'$k56_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2057,11894,'','".AddSlashes(pg_result($resaco,$iresaco,'k56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2057,11895,'','".AddSlashes(pg_result($resaco,$iresaco,'k56_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2057,11896,'','".AddSlashes(pg_result($resaco,$iresaco,'k56_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2057,11897,'','".AddSlashes(pg_result($resaco,$iresaco,'k56_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2057,11894,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2057,11895,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k56_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2057,11896,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k56_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2057,11897,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k56_autent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from correnteid
@@ -400,7 +400,7 @@ class cl_correnteid {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:correnteid";
@@ -415,7 +415,7 @@ class cl_correnteid {
    function sql_query ( $k56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,7 +439,7 @@ class cl_correnteid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_correnteid {
    function sql_query_file ( $k56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_correnteid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

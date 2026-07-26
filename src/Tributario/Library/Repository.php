@@ -7,13 +7,9 @@ use ECidade\Tributario\Library\DataBase;
 
 abstract class Repository extends DataBaseRepository
 {
-    protected $dao;
-
-    public function __construct(DataBase $dataBase, $dao)
+    public function __construct(DataBase $dataBase, protected $dao)
     {
         parent::__construct($dataBase);
-
-        $this->dao = $dao;
     }
 
     public function getDao()

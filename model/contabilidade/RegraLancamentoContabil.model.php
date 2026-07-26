@@ -596,7 +596,7 @@ class RegraLancamentoContabil
 
         $oDaoContranslrelemento = new cl_contranslrelemento;
         $oDaoContranslrelemento->c114_contranslr = $iSequencialRegra;
-        $oDaoContranslrelemento->c114_elemento = str_pad($sElemento, 15, 0);
+        $oDaoContranslrelemento->c114_elemento = str_pad((string) $sElemento, 15, 0);
 
         $oDaoContranslrelemento->excluir(null, "c114_contranslr = $iSequencialRegra");
 

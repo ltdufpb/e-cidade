@@ -28,57 +28,57 @@
 //CLASSE DA ENTIDADE liclicita
 class cl_liclicita {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $l20_codigo = 0;
-   var $l20_codtipocom = 0;
-   var $l20_numero = 0;
-   var $l20_id_usucria = 0;
-   var $l20_datacria_dia = null;
-   var $l20_datacria_mes = null;
-   var $l20_datacria_ano = null;
-   var $l20_datacria = null;
-   var $l20_horacria = null;
-   var $l20_dataaber_dia = null;
-   var $l20_dataaber_mes = null;
-   var $l20_dataaber_ano = null;
-   var $l20_dataaber = null;
-   var $l20_dtpublic_dia = null;
-   var $l20_dtpublic_mes = null;
-   var $l20_dtpublic_ano = null;
-   var $l20_dtpublic = null;
-   var $l20_horaaber = null;
-   var $l20_local = null;
-   var $l20_objeto = null;
-   var $l20_tipojulg = 0;
-   var $l20_liccomissao = 0;
-   var $l20_liclocal = 0;
-   var $l20_procadmin = null;
-   var $l20_correto = 'f';
-   var $l20_instit = 0;
-   var $l20_licsituacao = 0;
-   var $l20_edital = 0;
-   var $l20_anousu = 0;
-   var $l20_usaregistropreco = 'f';
-   var $l20_localentrega = null;
-   var $l20_prazoentrega = null;
-   var $l20_condicoespag = null;
-   var $l20_validadeproposta = null;
-   var $l20_formacontroleregistropreco = 0;
-   var $l20_tipo = 0;
+   public $l20_codigo = 0;
+   public $l20_codtipocom = 0;
+   public $l20_numero = 0;
+   public $l20_id_usucria = 0;
+   public $l20_datacria_dia = null;
+   public $l20_datacria_mes = null;
+   public $l20_datacria_ano = null;
+   public $l20_datacria = null;
+   public $l20_horacria = null;
+   public $l20_dataaber_dia = null;
+   public $l20_dataaber_mes = null;
+   public $l20_dataaber_ano = null;
+   public $l20_dataaber = null;
+   public $l20_dtpublic_dia = null;
+   public $l20_dtpublic_mes = null;
+   public $l20_dtpublic_ano = null;
+   public $l20_dtpublic = null;
+   public $l20_horaaber = null;
+   public $l20_local = null;
+   public $l20_objeto = null;
+   public $l20_tipojulg = 0;
+   public $l20_liccomissao = 0;
+   public $l20_liclocal = 0;
+   public $l20_procadmin = null;
+   public $l20_correto = 'f';
+   public $l20_instit = 0;
+   public $l20_licsituacao = 0;
+   public $l20_edital = 0;
+   public $l20_anousu = 0;
+   public $l20_usaregistropreco = 'f';
+   public $l20_localentrega = null;
+   public $l20_prazoentrega = null;
+   public $l20_condicoespag = null;
+   public $l20_validadeproposta = null;
+   public $l20_formacontroleregistropreco = 0;
+   public $l20_tipo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  l20_codigo = int8 = Cod. Sequencial
                  l20_codtipocom = int4 = Código do tipo de compra
                  l20_numero = int8 = Numeração
@@ -108,10 +108,10 @@ class cl_liclicita {
                  l20_tipo = int4 = Tipo
                  ";
    //funcao construtor da classe
-   function cl_liclicita() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicita");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -370,10 +370,10 @@ class cl_liclicita {
          $this->erro_status = "0";
          return false;
        }
-       $this->l20_codigo = pg_result($result,0,0);
+       $this->l20_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from liclicita_l20_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l20_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l20_codigo)){
          $this->erro_sql = " Campo l20_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -453,7 +453,7 @@ class cl_liclicita {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "liclicita ($this->l20_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "liclicita já Cadastrado";
@@ -482,36 +482,36 @@ class cl_liclicita {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7589,'$this->l20_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1260,7589,'','".AddSlashes(pg_result($resaco,0,'l20_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7590,'','".AddSlashes(pg_result($resaco,0,'l20_codtipocom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7594,'','".AddSlashes(pg_result($resaco,0,'l20_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7592,'','".AddSlashes(pg_result($resaco,0,'l20_id_usucria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7591,'','".AddSlashes(pg_result($resaco,0,'l20_datacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7593,'','".AddSlashes(pg_result($resaco,0,'l20_horacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7595,'','".AddSlashes(pg_result($resaco,0,'l20_dataaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7596,'','".AddSlashes(pg_result($resaco,0,'l20_dtpublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7597,'','".AddSlashes(pg_result($resaco,0,'l20_horaaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7598,'','".AddSlashes(pg_result($resaco,0,'l20_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7599,'','".AddSlashes(pg_result($resaco,0,'l20_objeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7782,'','".AddSlashes(pg_result($resaco,0,'l20_tipojulg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7909,'','".AddSlashes(pg_result($resaco,0,'l20_liccomissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,7908,'','".AddSlashes(pg_result($resaco,0,'l20_liclocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,8986,'','".AddSlashes(pg_result($resaco,0,'l20_procadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,10010,'','".AddSlashes(pg_result($resaco,0,'l20_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,10103,'','".AddSlashes(pg_result($resaco,0,'l20_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,10287,'','".AddSlashes(pg_result($resaco,0,'l20_licsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,12605,'','".AddSlashes(pg_result($resaco,0,'l20_edital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,12606,'','".AddSlashes(pg_result($resaco,0,'l20_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,15270,'','".AddSlashes(pg_result($resaco,0,'l20_usaregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,15424,'','".AddSlashes(pg_result($resaco,0,'l20_localentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,15425,'','".AddSlashes(pg_result($resaco,0,'l20_prazoentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,15426,'','".AddSlashes(pg_result($resaco,0,'l20_condicoespag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,15427,'','".AddSlashes(pg_result($resaco,0,'l20_validadeproposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,20854,'','".AddSlashes(pg_result($resaco,0,'l20_formacontroleregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1260,22362,'','".AddSlashes(pg_result($resaco,0,'l20_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7589,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7590,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_codtipocom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7594,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7592,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_id_usucria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7591,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_datacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7593,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_horacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7595,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_dataaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7596,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_dtpublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7597,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_horaaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7598,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7599,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_objeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7782,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_tipojulg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7909,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_liccomissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,7908,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_liclocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,8986,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_procadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,10010,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,10103,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,10287,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_licsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,12605,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_edital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,12606,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,15270,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_usaregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,15424,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_localentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,15425,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_prazoentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,15426,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_condicoespag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,15427,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_validadeproposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,20854,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_formacontroleregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1260,22362,'','".AddSlashes(pg_fetch_result($resaco,0,'l20_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -521,10 +521,10 @@ class cl_liclicita {
       $this->atualizacampos();
      $sql = " update liclicita set ";
      $virgula = "";
-     if(trim($this->l20_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_codigo"])){
+     if(trim((string) $this->l20_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_codigo"])){
        $sql  .= $virgula." l20_codigo = $this->l20_codigo ";
        $virgula = ",";
-       if(trim($this->l20_codigo) == null ){
+       if(trim((string) $this->l20_codigo) == null ){
          $this->erro_sql = " Campo Cod. Sequencial não informado.";
          $this->erro_campo = "l20_codigo";
          $this->erro_banco = "";
@@ -534,10 +534,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_codtipocom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_codtipocom"])){
+     if(trim((string) $this->l20_codtipocom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_codtipocom"])){
        $sql  .= $virgula." l20_codtipocom = $this->l20_codtipocom ";
        $virgula = ",";
-       if(trim($this->l20_codtipocom) == null ){
+       if(trim((string) $this->l20_codtipocom) == null ){
          $this->erro_sql = " Campo Código do tipo de compra não informado.";
          $this->erro_campo = "l20_codtipocom";
          $this->erro_banco = "";
@@ -547,10 +547,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_numero"])){
+     if(trim((string) $this->l20_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_numero"])){
        $sql  .= $virgula." l20_numero = $this->l20_numero ";
        $virgula = ",";
-       if(trim($this->l20_numero) == null ){
+       if(trim((string) $this->l20_numero) == null ){
          $this->erro_sql = " Campo Numeração não informado.";
          $this->erro_campo = "l20_numero";
          $this->erro_banco = "";
@@ -560,10 +560,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_id_usucria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_id_usucria"])){
+     if(trim((string) $this->l20_id_usucria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_id_usucria"])){
        $sql  .= $virgula." l20_id_usucria = $this->l20_id_usucria ";
        $virgula = ",";
-       if(trim($this->l20_id_usucria) == null ){
+       if(trim((string) $this->l20_id_usucria) == null ){
          $this->erro_sql = " Campo Cod. Usuário não informado.";
          $this->erro_campo = "l20_id_usucria";
          $this->erro_banco = "";
@@ -573,10 +573,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_datacria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_datacria_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l20_datacria_dia"] !="") ){
+     if(trim((string) $this->l20_datacria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_datacria_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l20_datacria_dia"] !="") ){
        $sql  .= $virgula." l20_datacria = '$this->l20_datacria' ";
        $virgula = ",";
-       if(trim($this->l20_datacria) == null ){
+       if(trim((string) $this->l20_datacria) == null ){
          $this->erro_sql = " Campo Data Criação não informado.";
          $this->erro_campo = "l20_datacria_dia";
          $this->erro_banco = "";
@@ -589,7 +589,7 @@ class cl_liclicita {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l20_datacria_dia"])){
          $sql  .= $virgula." l20_datacria = null ";
          $virgula = ",";
-         if(trim($this->l20_datacria) == null ){
+         if(trim((string) $this->l20_datacria) == null ){
            $this->erro_sql = " Campo Data Criação não informado.";
            $this->erro_campo = "l20_datacria_dia";
            $this->erro_banco = "";
@@ -600,10 +600,10 @@ class cl_liclicita {
          }
        }
      }
-     if(trim($this->l20_horacria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_horacria"])){
+     if(trim((string) $this->l20_horacria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_horacria"])){
        $sql  .= $virgula." l20_horacria = '$this->l20_horacria' ";
        $virgula = ",";
-       if(trim($this->l20_horacria) == null ){
+       if(trim((string) $this->l20_horacria) == null ){
          $this->erro_sql = " Campo Hora Criação não informado.";
          $this->erro_campo = "l20_horacria";
          $this->erro_banco = "";
@@ -613,10 +613,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_dataaber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_dataaber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l20_dataaber_dia"] !="") ){
+     if(trim((string) $this->l20_dataaber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_dataaber_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l20_dataaber_dia"] !="") ){
        $sql  .= $virgula." l20_dataaber = '$this->l20_dataaber' ";
        $virgula = ",";
-       if(trim($this->l20_dataaber) == null ){
+       if(trim((string) $this->l20_dataaber) == null ){
          $this->erro_sql = " Campo Data Abertura não informado.";
          $this->erro_campo = "l20_dataaber_dia";
          $this->erro_banco = "";
@@ -629,7 +629,7 @@ class cl_liclicita {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l20_dataaber_dia"])){
          $sql  .= $virgula." l20_dataaber = null ";
          $virgula = ",";
-         if(trim($this->l20_dataaber) == null ){
+         if(trim((string) $this->l20_dataaber) == null ){
            $this->erro_sql = " Campo Data Abertura não informado.";
            $this->erro_campo = "l20_dataaber_dia";
            $this->erro_banco = "";
@@ -640,7 +640,7 @@ class cl_liclicita {
          }
        }
      }
-     if(trim($this->l20_dtpublic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_dtpublic_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l20_dtpublic_dia"] !="") ){
+     if(trim((string) $this->l20_dtpublic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_dtpublic_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l20_dtpublic_dia"] !="") ){
        $sql  .= $virgula." l20_dtpublic = '$this->l20_dtpublic' ";
        $virgula = ",";
      }     else{
@@ -649,10 +649,10 @@ class cl_liclicita {
          $virgula = ",";
        }
      }
-     if(trim($this->l20_horaaber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_horaaber"])){
+     if(trim((string) $this->l20_horaaber)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_horaaber"])){
        $sql  .= $virgula." l20_horaaber = '$this->l20_horaaber' ";
        $virgula = ",";
-       if(trim($this->l20_horaaber) == null ){
+       if(trim((string) $this->l20_horaaber) == null ){
          $this->erro_sql = " Campo Hora Abertura não informado.";
          $this->erro_campo = "l20_horaaber";
          $this->erro_banco = "";
@@ -662,10 +662,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_local"])){
+     if(trim((string) $this->l20_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_local"])){
        $sql  .= $virgula." l20_local = '$this->l20_local' ";
        $virgula = ",";
-       if(trim($this->l20_local) == null ){
+       if(trim((string) $this->l20_local) == null ){
          $this->erro_sql = " Campo Local da Licitação não informado.";
          $this->erro_campo = "l20_local";
          $this->erro_banco = "";
@@ -675,10 +675,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_objeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_objeto"])){
+     if(trim((string) $this->l20_objeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_objeto"])){
        $sql  .= $virgula." l20_objeto = '$this->l20_objeto' ";
        $virgula = ",";
-       if(trim($this->l20_objeto) == null ){
+       if(trim((string) $this->l20_objeto) == null ){
          $this->erro_sql = " Campo Objeto não informado.";
          $this->erro_campo = "l20_objeto";
          $this->erro_banco = "";
@@ -688,10 +688,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_tipojulg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_tipojulg"])){
+     if(trim((string) $this->l20_tipojulg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_tipojulg"])){
        $sql  .= $virgula." l20_tipojulg = $this->l20_tipojulg ";
        $virgula = ",";
-       if(trim($this->l20_tipojulg) == null ){
+       if(trim((string) $this->l20_tipojulg) == null ){
          $this->erro_sql = " Campo Tipo de Julgamento não informado.";
          $this->erro_campo = "l20_tipojulg";
          $this->erro_banco = "";
@@ -701,10 +701,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_liccomissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_liccomissao"])){
+     if(trim((string) $this->l20_liccomissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_liccomissao"])){
        $sql  .= $virgula." l20_liccomissao = $this->l20_liccomissao ";
        $virgula = ",";
-       if(trim($this->l20_liccomissao) == null ){
+       if(trim((string) $this->l20_liccomissao) == null ){
          $this->erro_sql = " Campo Código da Comissão não informado.";
          $this->erro_campo = "l20_liccomissao";
          $this->erro_banco = "";
@@ -714,10 +714,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_liclocal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_liclocal"])){
+     if(trim((string) $this->l20_liclocal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_liclocal"])){
        $sql  .= $virgula." l20_liclocal = $this->l20_liclocal ";
        $virgula = ",";
-       if(trim($this->l20_liclocal) == null ){
+       if(trim((string) $this->l20_liclocal) == null ){
          $this->erro_sql = " Campo Código do Local da Licitação não informado.";
          $this->erro_campo = "l20_liclocal";
          $this->erro_banco = "";
@@ -727,14 +727,14 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_procadmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_procadmin"])){
+     if(trim((string) $this->l20_procadmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_procadmin"])){
        $sql  .= $virgula." l20_procadmin = '$this->l20_procadmin' ";
        $virgula = ",";
      }
-     if(trim($this->l20_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_correto"])){
+     if(trim((string) $this->l20_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_correto"])){
        $sql  .= $virgula." l20_correto = '$this->l20_correto' ";
        $virgula = ",";
-       if(trim($this->l20_correto) == null ){
+       if(trim((string) $this->l20_correto) == null ){
          $this->erro_sql = " Campo Correto não informado.";
          $this->erro_campo = "l20_correto";
          $this->erro_banco = "";
@@ -744,10 +744,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_instit"])){
+     if(trim((string) $this->l20_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_instit"])){
        $sql  .= $virgula." l20_instit = $this->l20_instit ";
        $virgula = ",";
-       if(trim($this->l20_instit) == null ){
+       if(trim((string) $this->l20_instit) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "l20_instit";
          $this->erro_banco = "";
@@ -757,10 +757,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_licsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_licsituacao"])){
+     if(trim((string) $this->l20_licsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_licsituacao"])){
        $sql  .= $virgula." l20_licsituacao = $this->l20_licsituacao ";
        $virgula = ",";
-       if(trim($this->l20_licsituacao) == null ){
+       if(trim((string) $this->l20_licsituacao) == null ){
          $this->erro_sql = " Campo Situação da Licitação não informado.";
          $this->erro_campo = "l20_licsituacao";
          $this->erro_banco = "";
@@ -770,10 +770,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_edital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_edital"])){
+     if(trim((string) $this->l20_edital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_edital"])){
        $sql  .= $virgula." l20_edital = $this->l20_edital ";
        $virgula = ",";
-       if(trim($this->l20_edital) == null ){
+       if(trim((string) $this->l20_edital) == null ){
          $this->erro_sql = " Campo Edital não informado.";
          $this->erro_campo = "l20_edital";
          $this->erro_banco = "";
@@ -783,10 +783,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_anousu"])){
+     if(trim((string) $this->l20_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_anousu"])){
        $sql  .= $virgula." l20_anousu = $this->l20_anousu ";
        $virgula = ",";
-       if(trim($this->l20_anousu) == null ){
+       if(trim((string) $this->l20_anousu) == null ){
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "l20_anousu";
          $this->erro_banco = "";
@@ -796,10 +796,10 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_usaregistropreco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_usaregistropreco"])){
+     if(trim((string) $this->l20_usaregistropreco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_usaregistropreco"])){
        $sql  .= $virgula." l20_usaregistropreco = '$this->l20_usaregistropreco' ";
        $virgula = ",";
-       if(trim($this->l20_usaregistropreco) == null ){
+       if(trim((string) $this->l20_usaregistropreco) == null ){
          $this->erro_sql = " Campo Registro Preço não informado.";
          $this->erro_campo = "l20_usaregistropreco";
          $this->erro_banco = "";
@@ -809,33 +809,33 @@ class cl_liclicita {
          return false;
        }
      }
-     if(trim($this->l20_localentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_localentrega"])){
+     if(trim((string) $this->l20_localentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_localentrega"])){
        $sql  .= $virgula." l20_localentrega = '$this->l20_localentrega' ";
        $virgula = ",";
      }
-     if(trim($this->l20_prazoentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_prazoentrega"])){
+     if(trim((string) $this->l20_prazoentrega)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_prazoentrega"])){
        $sql  .= $virgula." l20_prazoentrega = '$this->l20_prazoentrega' ";
        $virgula = ",";
      }
-     if(trim($this->l20_condicoespag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_condicoespag"])){
+     if(trim((string) $this->l20_condicoespag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_condicoespag"])){
        $sql  .= $virgula." l20_condicoespag = '$this->l20_condicoespag' ";
        $virgula = ",";
      }
-     if(trim($this->l20_validadeproposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_validadeproposta"])){
+     if(trim((string) $this->l20_validadeproposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_validadeproposta"])){
        $sql  .= $virgula." l20_validadeproposta = '$this->l20_validadeproposta' ";
        $virgula = ",";
      }
-     if(trim($this->l20_formacontroleregistropreco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_formacontroleregistropreco"])){
-        if(trim($this->l20_formacontroleregistropreco)=="" && isset($GLOBALS["HTTP_POST_VARS"]["l20_formacontroleregistropreco"])){
+     if(trim((string) $this->l20_formacontroleregistropreco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_formacontroleregistropreco"])){
+        if(trim((string) $this->l20_formacontroleregistropreco)=="" && isset($GLOBALS["HTTP_POST_VARS"]["l20_formacontroleregistropreco"])){
            $this->l20_formacontroleregistropreco = "0" ;
         }
        $sql  .= $virgula." l20_formacontroleregistropreco = $this->l20_formacontroleregistropreco ";
        $virgula = ",";
      }
-     if(trim($this->l20_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_tipo"])){
+     if(trim((string) $this->l20_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l20_tipo"])){
        $sql  .= $virgula." l20_tipo = $this->l20_tipo ";
        $virgula = ",";
-       if(trim($this->l20_tipo) == null ){
+       if(trim((string) $this->l20_tipo) == null ){
          $this->erro_sql = " Campo Tipo não informado.";
          $this->erro_campo = "l20_tipo";
          $this->erro_banco = "";
@@ -859,63 +859,63 @@ class cl_liclicita {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,7589,'$this->l20_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_codigo"]) || $this->l20_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7589,'".AddSlashes(pg_result($resaco,$conresaco,'l20_codigo'))."','$this->l20_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7589,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_codigo'))."','$this->l20_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_codtipocom"]) || $this->l20_codtipocom != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7590,'".AddSlashes(pg_result($resaco,$conresaco,'l20_codtipocom'))."','$this->l20_codtipocom',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7590,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_codtipocom'))."','$this->l20_codtipocom',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_numero"]) || $this->l20_numero != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7594,'".AddSlashes(pg_result($resaco,$conresaco,'l20_numero'))."','$this->l20_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7594,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_numero'))."','$this->l20_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_id_usucria"]) || $this->l20_id_usucria != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7592,'".AddSlashes(pg_result($resaco,$conresaco,'l20_id_usucria'))."','$this->l20_id_usucria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7592,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_id_usucria'))."','$this->l20_id_usucria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_datacria"]) || $this->l20_datacria != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7591,'".AddSlashes(pg_result($resaco,$conresaco,'l20_datacria'))."','$this->l20_datacria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7591,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_datacria'))."','$this->l20_datacria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_horacria"]) || $this->l20_horacria != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7593,'".AddSlashes(pg_result($resaco,$conresaco,'l20_horacria'))."','$this->l20_horacria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7593,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_horacria'))."','$this->l20_horacria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_dataaber"]) || $this->l20_dataaber != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7595,'".AddSlashes(pg_result($resaco,$conresaco,'l20_dataaber'))."','$this->l20_dataaber',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7595,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_dataaber'))."','$this->l20_dataaber',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_dtpublic"]) || $this->l20_dtpublic != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7596,'".AddSlashes(pg_result($resaco,$conresaco,'l20_dtpublic'))."','$this->l20_dtpublic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7596,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_dtpublic'))."','$this->l20_dtpublic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_horaaber"]) || $this->l20_horaaber != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7597,'".AddSlashes(pg_result($resaco,$conresaco,'l20_horaaber'))."','$this->l20_horaaber',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_horaaber'))."','$this->l20_horaaber',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_local"]) || $this->l20_local != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7598,'".AddSlashes(pg_result($resaco,$conresaco,'l20_local'))."','$this->l20_local',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7598,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_local'))."','$this->l20_local',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_objeto"]) || $this->l20_objeto != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7599,'".AddSlashes(pg_result($resaco,$conresaco,'l20_objeto'))."','$this->l20_objeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7599,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_objeto'))."','$this->l20_objeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_tipojulg"]) || $this->l20_tipojulg != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7782,'".AddSlashes(pg_result($resaco,$conresaco,'l20_tipojulg'))."','$this->l20_tipojulg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7782,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_tipojulg'))."','$this->l20_tipojulg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_liccomissao"]) || $this->l20_liccomissao != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7909,'".AddSlashes(pg_result($resaco,$conresaco,'l20_liccomissao'))."','$this->l20_liccomissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7909,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_liccomissao'))."','$this->l20_liccomissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_liclocal"]) || $this->l20_liclocal != "")
-             $resac = db_query("insert into db_acount values($acount,1260,7908,'".AddSlashes(pg_result($resaco,$conresaco,'l20_liclocal'))."','$this->l20_liclocal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,7908,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_liclocal'))."','$this->l20_liclocal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_procadmin"]) || $this->l20_procadmin != "")
-             $resac = db_query("insert into db_acount values($acount,1260,8986,'".AddSlashes(pg_result($resaco,$conresaco,'l20_procadmin'))."','$this->l20_procadmin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,8986,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_procadmin'))."','$this->l20_procadmin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_correto"]) || $this->l20_correto != "")
-             $resac = db_query("insert into db_acount values($acount,1260,10010,'".AddSlashes(pg_result($resaco,$conresaco,'l20_correto'))."','$this->l20_correto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,10010,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_correto'))."','$this->l20_correto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_instit"]) || $this->l20_instit != "")
-             $resac = db_query("insert into db_acount values($acount,1260,10103,'".AddSlashes(pg_result($resaco,$conresaco,'l20_instit'))."','$this->l20_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,10103,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_instit'))."','$this->l20_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_licsituacao"]) || $this->l20_licsituacao != "")
-             $resac = db_query("insert into db_acount values($acount,1260,10287,'".AddSlashes(pg_result($resaco,$conresaco,'l20_licsituacao'))."','$this->l20_licsituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,10287,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_licsituacao'))."','$this->l20_licsituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_edital"]) || $this->l20_edital != "")
-             $resac = db_query("insert into db_acount values($acount,1260,12605,'".AddSlashes(pg_result($resaco,$conresaco,'l20_edital'))."','$this->l20_edital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,12605,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_edital'))."','$this->l20_edital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_anousu"]) || $this->l20_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,1260,12606,'".AddSlashes(pg_result($resaco,$conresaco,'l20_anousu'))."','$this->l20_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,12606,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_anousu'))."','$this->l20_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_usaregistropreco"]) || $this->l20_usaregistropreco != "")
-             $resac = db_query("insert into db_acount values($acount,1260,15270,'".AddSlashes(pg_result($resaco,$conresaco,'l20_usaregistropreco'))."','$this->l20_usaregistropreco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,15270,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_usaregistropreco'))."','$this->l20_usaregistropreco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_localentrega"]) || $this->l20_localentrega != "")
-             $resac = db_query("insert into db_acount values($acount,1260,15424,'".AddSlashes(pg_result($resaco,$conresaco,'l20_localentrega'))."','$this->l20_localentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,15424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_localentrega'))."','$this->l20_localentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_prazoentrega"]) || $this->l20_prazoentrega != "")
-             $resac = db_query("insert into db_acount values($acount,1260,15425,'".AddSlashes(pg_result($resaco,$conresaco,'l20_prazoentrega'))."','$this->l20_prazoentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,15425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_prazoentrega'))."','$this->l20_prazoentrega',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_condicoespag"]) || $this->l20_condicoespag != "")
-             $resac = db_query("insert into db_acount values($acount,1260,15426,'".AddSlashes(pg_result($resaco,$conresaco,'l20_condicoespag'))."','$this->l20_condicoespag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,15426,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_condicoespag'))."','$this->l20_condicoespag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_validadeproposta"]) || $this->l20_validadeproposta != "")
-             $resac = db_query("insert into db_acount values($acount,1260,15427,'".AddSlashes(pg_result($resaco,$conresaco,'l20_validadeproposta'))."','$this->l20_validadeproposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,15427,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_validadeproposta'))."','$this->l20_validadeproposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_formacontroleregistropreco"]) || $this->l20_formacontroleregistropreco != "")
-             $resac = db_query("insert into db_acount values($acount,1260,20854,'".AddSlashes(pg_result($resaco,$conresaco,'l20_formacontroleregistropreco'))."','$this->l20_formacontroleregistropreco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,20854,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_formacontroleregistropreco'))."','$this->l20_formacontroleregistropreco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l20_tipo"]) || $this->l20_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,1260,22362,'".AddSlashes(pg_result($resaco,$conresaco,'l20_tipo'))."','$this->l20_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1260,22362,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l20_tipo'))."','$this->l20_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -969,36 +969,36 @@ class cl_liclicita {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,7589,'$l20_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1260,7589,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7590,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_codtipocom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7594,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7592,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_id_usucria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7591,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_datacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7593,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_horacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7595,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_dataaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7596,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_dtpublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7597,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_horaaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7598,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7599,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_objeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7782,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_tipojulg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7909,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_liccomissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,7908,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_liclocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,8986,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_procadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,10010,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,10103,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,10287,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_licsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,12605,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_edital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,12606,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,15270,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_usaregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,15424,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_localentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,15425,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_prazoentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,15426,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_condicoespag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,15427,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_validadeproposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,20854,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_formacontroleregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1260,22362,'','".AddSlashes(pg_result($resaco,$iresaco,'l20_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7589,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7590,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_codtipocom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7594,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7592,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_id_usucria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7591,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_datacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7593,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_horacria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7595,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_dataaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7596,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_dtpublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_horaaber'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7598,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7599,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_objeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7782,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_tipojulg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7909,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_liccomissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,7908,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_liclocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,8986,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_procadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,10010,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,10103,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,10287,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_licsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,12605,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_edital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,12606,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,15270,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_usaregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,15424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_localentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,15425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_prazoentrega'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,15426,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_condicoespag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,15427,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_validadeproposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,20854,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_formacontroleregistropreco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1260,22362,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l20_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1159,7 +1159,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1201,7 +1201,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1242,7 +1242,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1283,7 +1283,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1320,7 +1320,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1357,7 +1357,7 @@ class cl_liclicita {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1394,7 +1394,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1451,7 +1451,7 @@ class cl_liclicita {
     if ($ordem != null ) {
 
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -1518,7 +1518,7 @@ class cl_liclicita {
       $sql .= $sql2;
       if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
       $sql .= $virgula.$campos_sql[$i];
@@ -1572,7 +1572,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1633,7 +1633,7 @@ class cl_liclicita {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

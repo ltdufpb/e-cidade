@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led02_i_codigo?>
   </td>
   <td>
-   <?db_input('ed02_i_codigo',10,$Ied02_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed02_i_codigo',10,$Ied02_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led02_c_descr?>
   </td>
   <td>
-   <?db_input('ed02_c_descr',30,$Ied02_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed02_c_descr',30,$Ied02_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  </table>
@@ -70,8 +70,8 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
-   $chavepri= array("ed02_i_codigo"=>@$ed02_i_codigo,"ed02_c_descr"=>@$ed02_c_descr);
+  <?php 
+   $chavepri= ["ed02_i_codigo"=>@$ed02_i_codigo,"ed02_c_descr"=>@$ed02_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cldocumentacao->sql_query($ed02_i_codigo,"*","ed02_c_descr");
    $cliframe_alterar_excluir->campos  ="ed02_i_codigo,ed02_c_descr";

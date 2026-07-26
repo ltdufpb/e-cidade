@@ -1,37 +1,37 @@
-<?
+<?php 
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordodocumentoevento
 class cl_acordodocumentoevento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ac57_sequencial = 0; 
-   var $ac57_acordoevento = 0; 
-   var $ac57_acordodocumento = 0; 
-   var $ac57_tipodocumento = 0; 
+   public $ac57_sequencial = 0; 
+   public $ac57_acordoevento = 0; 
+   public $ac57_acordodocumento = 0; 
+   public $ac57_tipodocumento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ac57_sequencial = int4 = Sequencial 
                  ac57_acordoevento = int4 = Evento 
                  ac57_acordodocumento = int4 = Documento 
                  ac57_tipodocumento = int4 = Tipo do Documento 
                  ";
    //funcao construtor da classe 
-   function cl_acordodocumentoevento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordodocumentoevento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_acordodocumentoevento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac57_sequencial = pg_result($result,0,0); 
+       $this->ac57_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from acordodocumentoevento_ac57_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac57_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac57_sequencial)){
          $this->erro_sql = " Campo ac57_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_acordodocumentoevento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Documentos dos acordos ($this->ac57_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Documentos dos acordos já Cadastrado";
@@ -159,13 +159,13 @@ class cl_acordodocumentoevento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21832,'$this->ac57_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3929,21832,'','".AddSlashes(pg_result($resaco,0,'ac57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3929,21833,'','".AddSlashes(pg_result($resaco,0,'ac57_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3929,21834,'','".AddSlashes(pg_result($resaco,0,'ac57_acordodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3929,21835,'','".AddSlashes(pg_result($resaco,0,'ac57_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3929,21832,'','".AddSlashes(pg_fetch_result($resaco,0,'ac57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3929,21833,'','".AddSlashes(pg_fetch_result($resaco,0,'ac57_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3929,21834,'','".AddSlashes(pg_fetch_result($resaco,0,'ac57_acordodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3929,21835,'','".AddSlashes(pg_fetch_result($resaco,0,'ac57_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_acordodocumentoevento {
       $this->atualizacampos();
      $sql = " update acordodocumentoevento set ";
      $virgula = "";
-     if(trim($this->ac57_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_sequencial"])){ 
+     if(trim((string) $this->ac57_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_sequencial"])){ 
        $sql  .= $virgula." ac57_sequencial = $this->ac57_sequencial ";
        $virgula = ",";
-       if(trim($this->ac57_sequencial) == null ){ 
+       if(trim((string) $this->ac57_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "ac57_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_acordodocumentoevento {
          return false;
        }
      }
-     if(trim($this->ac57_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_acordoevento"])){ 
+     if(trim((string) $this->ac57_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_acordoevento"])){ 
        $sql  .= $virgula." ac57_acordoevento = $this->ac57_acordoevento ";
        $virgula = ",";
-       if(trim($this->ac57_acordoevento) == null ){ 
+       if(trim((string) $this->ac57_acordoevento) == null ){ 
          $this->erro_sql = " Campo Evento não informado.";
          $this->erro_campo = "ac57_acordoevento";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_acordodocumentoevento {
          return false;
        }
      }
-     if(trim($this->ac57_acordodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_acordodocumento"])){ 
+     if(trim((string) $this->ac57_acordodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_acordodocumento"])){ 
        $sql  .= $virgula." ac57_acordodocumento = $this->ac57_acordodocumento ";
        $virgula = ",";
-       if(trim($this->ac57_acordodocumento) == null ){ 
+       if(trim((string) $this->ac57_acordodocumento) == null ){ 
          $this->erro_sql = " Campo Documento não informado.";
          $this->erro_campo = "ac57_acordodocumento";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_acordodocumentoevento {
          return false;
        }
      }
-     if(trim($this->ac57_tipodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_tipodocumento"])){ 
+     if(trim((string) $this->ac57_tipodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac57_tipodocumento"])){ 
        $sql  .= $virgula." ac57_tipodocumento = $this->ac57_tipodocumento ";
        $virgula = ",";
-       if(trim($this->ac57_tipodocumento) == null ){ 
+       if(trim((string) $this->ac57_tipodocumento) == null ){ 
          $this->erro_sql = " Campo Tipo do Documento não informado.";
          $this->erro_campo = "ac57_tipodocumento";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_acordodocumentoevento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21832,'$this->ac57_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac57_sequencial"]) || $this->ac57_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3929,21832,'".AddSlashes(pg_result($resaco,$conresaco,'ac57_sequencial'))."','$this->ac57_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3929,21832,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac57_sequencial'))."','$this->ac57_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac57_acordoevento"]) || $this->ac57_acordoevento != "")
-             $resac = db_query("insert into db_acount values($acount,3929,21833,'".AddSlashes(pg_result($resaco,$conresaco,'ac57_acordoevento'))."','$this->ac57_acordoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3929,21833,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac57_acordoevento'))."','$this->ac57_acordoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac57_acordodocumento"]) || $this->ac57_acordodocumento != "")
-             $resac = db_query("insert into db_acount values($acount,3929,21834,'".AddSlashes(pg_result($resaco,$conresaco,'ac57_acordodocumento'))."','$this->ac57_acordodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3929,21834,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac57_acordodocumento'))."','$this->ac57_acordodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac57_tipodocumento"]) || $this->ac57_tipodocumento != "")
-             $resac = db_query("insert into db_acount values($acount,3929,21835,'".AddSlashes(pg_result($resaco,$conresaco,'ac57_tipodocumento'))."','$this->ac57_tipodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3929,21835,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac57_tipodocumento'))."','$this->ac57_tipodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_acordodocumentoevento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21832,'$ac57_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3929,21832,'','".AddSlashes(pg_result($resaco,$iresaco,'ac57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3929,21833,'','".AddSlashes(pg_result($resaco,$iresaco,'ac57_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3929,21834,'','".AddSlashes(pg_result($resaco,$iresaco,'ac57_acordodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3929,21835,'','".AddSlashes(pg_result($resaco,$iresaco,'ac57_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3929,21832,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac57_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3929,21833,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac57_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3929,21834,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac57_acordodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3929,21835,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac57_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

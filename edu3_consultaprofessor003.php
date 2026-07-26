@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -97,8 +97,8 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
       }
 
       if (pg_num_rows($rsFormacao) > 0) {
-        $fileFormacao = array();
-        $formacaoHTML = array();
+        $fileFormacao = [];
+        $formacaoHTML = [];
         for ($iIndice = 0; $iIndice < pg_num_rows($rsFormacao); $iIndice++) {
           $idFormacao = db_utils::fieldsMemory($rsFormacao, $iIndice)->ed27_i_docformacao_estorage;
           $fileFormacao_ = !empty($idFormacao) ? basename(StorageHelper::downloadArquivo($idFormacao)): "" ;
@@ -123,8 +123,8 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
     }
 
     if (pg_num_rows($rsPosGraduacao) > 0) {
-      $filePosGraduacao = array();
-      $posGraduacaoHTML = array();
+      $filePosGraduacao = [];
+      $posGraduacaoHTML = [];
       for ($iIndice = 0; $iIndice < pg_num_rows($rsPosGraduacao); $iIndice++) {
         $idPosGraduacao = db_utils::fieldsMemory($rsPosGraduacao, $iIndice)->ed183_docpos_estorage;
         $filePosGraduacao_ = !empty($idPosGraduacao) ? basename(StorageHelper::downloadArquivo($idPosGraduacao)): "" ;
@@ -236,20 +236,20 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
               ?>
               </td>
             </tr>
-            <?}?>
+            <?php }?>
             <?php
               if( $t < $clrechumano->numrows - 1 ) {
             ?>
             <tr>
               <td>&nbsp;</td>
             </tr>
-            <?}?>
-          <?}?>
+            <?php }?>
+          <?php }?>
           </table>
         </fieldset>
       </td>
     </tr>
-    <?}?>
+    <?php }?>
     <?php
       if( $evento == 2 ) {
 
@@ -396,7 +396,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
         </fieldset>
       </td>
     </tr>
-    <?}?>
+    <?php }?>
     <tr>
       <td valign="top">
         <?php
@@ -408,8 +408,8 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
             <tr>
               <label class="bold">Vínculos Escola: </label>
               <?php
-                $aVinculos              = array( "Sem vínculo(s) com escola(s)" );
-                $iRecHumano             = isset( $cod_matricula ) ? $cod_matricula : $chavepesquisa;
+                $aVinculos              = [ "Sem vínculo(s) com escola(s)" ];
+                $iRecHumano             = $cod_matricula ?? $chavepesquisa;
                 $oDaoRecHumanoEscola    = new cl_rechumanoescola();
                 $sCamposRecHumanoEscola = "ed75_i_codigo, ed75_d_ingresso, ed75_i_saidaescola, ed18_c_nome";
                 $sWhereRecHumanoEscola  = $where;
@@ -451,7 +451,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
             </tr>
           </table>
         </fieldset>
-        <?}?>
+        <?php }?>
       </td>
     </tr>
   </table>

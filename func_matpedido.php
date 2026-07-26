@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matpedido_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatpedido = new cl_matpedido;
 $clmatpedido->rotulo->label("m97_sequencial");
 $clmatpedido->rotulo->label("m97_sequencial");
@@ -54,7 +55,7 @@ $clmatpedido->rotulo->label("m97_sequencial");
               <?=$Lm97_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m97_sequencial",10,$Im97_sequencial,true,"text",4,"","chave_m97_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmatpedido->rotulo->label("m97_sequencial");
               <?=$Lm97_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m97_sequencial",10,$Im97_sequencial,true,"text",4,"","chave_m97_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmatpedido->rotulo->label("m97_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = " m97_coddepto = ".db_getsession("DB_coddepto");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -123,12 +124,12 @@ $clmatpedido->rotulo->label("m97_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

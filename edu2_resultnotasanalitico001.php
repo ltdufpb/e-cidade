@@ -51,7 +51,7 @@ $sMsgTitle = "Para selecionar mais de uma turma, mantenha pressionada a tecla CT
 
 <body bgcolor="#CCCCCC">
 <div class='container'>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <form action="" ></form>
   <fieldset>
     <legend>Relatório de Conselho de Classe</legend>

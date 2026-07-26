@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE sau_cotasagendamento
 class cl_sau_cotasagendamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s163_i_codigo = 0; 
-   var $s163_i_rhcbo = 0; 
-   var $s163_i_upssolicitante = 0; 
-   var $s163_i_upsprestadora = 0; 
-   var $s163_i_quantidade = 0; 
-   var $s163_i_mescomp = 0; 
-   var $s163_i_anocomp = 0; 
+   public $s163_i_codigo = 0; 
+   public $s163_i_rhcbo = 0; 
+   public $s163_i_upssolicitante = 0; 
+   public $s163_i_upsprestadora = 0; 
+   public $s163_i_quantidade = 0; 
+   public $s163_i_mescomp = 0; 
+   public $s163_i_anocomp = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s163_i_codigo = int4 = Código 
                  s163_i_rhcbo = int4 = Especialidade 
                  s163_i_upssolicitante = int4 = Solicitante 
@@ -60,10 +60,10 @@ class cl_sau_cotasagendamento {
                  s163_i_anocomp = int4 = Ano 
                  ";
    //funcao construtor da classe 
-   function cl_sau_cotasagendamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_cotasagendamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_sau_cotasagendamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->s163_i_codigo = pg_result($result,0,0); 
+       $this->s163_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_cotasagendamento_s163_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s163_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s163_i_codigo)){
          $this->erro_sql = " Campo s163_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_sau_cotasagendamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cotas de agendamento ($this->s163_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cotas de agendamento já Cadastrado";
@@ -222,16 +222,16 @@ class cl_sau_cotasagendamento {
      $resaco = $this->sql_record($this->sql_query_file($this->s163_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18013,'$this->s163_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3184,18013,'','".AddSlashes(pg_result($resaco,0,'s163_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3184,18014,'','".AddSlashes(pg_result($resaco,0,'s163_i_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3184,18019,'','".AddSlashes(pg_result($resaco,0,'s163_i_upssolicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3184,18015,'','".AddSlashes(pg_result($resaco,0,'s163_i_upsprestadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3184,18016,'','".AddSlashes(pg_result($resaco,0,'s163_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3184,18017,'','".AddSlashes(pg_result($resaco,0,'s163_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3184,18018,'','".AddSlashes(pg_result($resaco,0,'s163_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3184,18013,'','".AddSlashes(pg_fetch_result($resaco,0,'s163_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3184,18014,'','".AddSlashes(pg_fetch_result($resaco,0,'s163_i_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3184,18019,'','".AddSlashes(pg_fetch_result($resaco,0,'s163_i_upssolicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3184,18015,'','".AddSlashes(pg_fetch_result($resaco,0,'s163_i_upsprestadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3184,18016,'','".AddSlashes(pg_fetch_result($resaco,0,'s163_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3184,18017,'','".AddSlashes(pg_fetch_result($resaco,0,'s163_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3184,18018,'','".AddSlashes(pg_fetch_result($resaco,0,'s163_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -240,10 +240,10 @@ class cl_sau_cotasagendamento {
       $this->atualizacampos();
      $sql = " update sau_cotasagendamento set ";
      $virgula = "";
-     if(trim($this->s163_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_codigo"])){ 
+     if(trim((string) $this->s163_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_codigo"])){ 
        $sql  .= $virgula." s163_i_codigo = $this->s163_i_codigo ";
        $virgula = ",";
-       if(trim($this->s163_i_codigo) == null ){ 
+       if(trim((string) $this->s163_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s163_i_codigo";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_rhcbo"])){ 
+     if(trim((string) $this->s163_i_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_rhcbo"])){ 
        $sql  .= $virgula." s163_i_rhcbo = $this->s163_i_rhcbo ";
        $virgula = ",";
-       if(trim($this->s163_i_rhcbo) == null ){ 
+       if(trim((string) $this->s163_i_rhcbo) == null ){ 
          $this->erro_sql = " Campo Especialidade nao Informado.";
          $this->erro_campo = "s163_i_rhcbo";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_upssolicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upssolicitante"])){ 
+     if(trim((string) $this->s163_i_upssolicitante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upssolicitante"])){ 
        $sql  .= $virgula." s163_i_upssolicitante = $this->s163_i_upssolicitante ";
        $virgula = ",";
-       if(trim($this->s163_i_upssolicitante) == null ){ 
+       if(trim((string) $this->s163_i_upssolicitante) == null ){ 
          $this->erro_sql = " Campo Solicitante nao Informado.";
          $this->erro_campo = "s163_i_upssolicitante";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_upsprestadora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upsprestadora"])){ 
+     if(trim((string) $this->s163_i_upsprestadora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upsprestadora"])){ 
        $sql  .= $virgula." s163_i_upsprestadora = $this->s163_i_upsprestadora ";
        $virgula = ",";
-       if(trim($this->s163_i_upsprestadora) == null ){ 
+       if(trim((string) $this->s163_i_upsprestadora) == null ){ 
          $this->erro_sql = " Campo Prestadora nao Informado.";
          $this->erro_campo = "s163_i_upsprestadora";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_quantidade"])){ 
+     if(trim((string) $this->s163_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_quantidade"])){ 
        $sql  .= $virgula." s163_i_quantidade = $this->s163_i_quantidade ";
        $virgula = ",";
-       if(trim($this->s163_i_quantidade) == null ){ 
+       if(trim((string) $this->s163_i_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "s163_i_quantidade";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_mescomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_mescomp"])){ 
+     if(trim((string) $this->s163_i_mescomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_mescomp"])){ 
        $sql  .= $virgula." s163_i_mescomp = $this->s163_i_mescomp ";
        $virgula = ",";
-       if(trim($this->s163_i_mescomp) == null ){ 
+       if(trim((string) $this->s163_i_mescomp) == null ){ 
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "s163_i_mescomp";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_sau_cotasagendamento {
          return false;
        }
      }
-     if(trim($this->s163_i_anocomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_anocomp"])){ 
+     if(trim((string) $this->s163_i_anocomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s163_i_anocomp"])){ 
        $sql  .= $virgula." s163_i_anocomp = $this->s163_i_anocomp ";
        $virgula = ",";
-       if(trim($this->s163_i_anocomp) == null ){ 
+       if(trim((string) $this->s163_i_anocomp) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "s163_i_anocomp";
          $this->erro_banco = "";
@@ -339,23 +339,23 @@ class cl_sau_cotasagendamento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18013,'$this->s163_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s163_i_codigo"]) || $this->s163_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3184,18013,'".AddSlashes(pg_result($resaco,$conresaco,'s163_i_codigo'))."','$this->s163_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3184,18013,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s163_i_codigo'))."','$this->s163_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s163_i_rhcbo"]) || $this->s163_i_rhcbo != "")
-           $resac = db_query("insert into db_acount values($acount,3184,18014,'".AddSlashes(pg_result($resaco,$conresaco,'s163_i_rhcbo'))."','$this->s163_i_rhcbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3184,18014,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s163_i_rhcbo'))."','$this->s163_i_rhcbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upssolicitante"]) || $this->s163_i_upssolicitante != "")
-           $resac = db_query("insert into db_acount values($acount,3184,18019,'".AddSlashes(pg_result($resaco,$conresaco,'s163_i_upssolicitante'))."','$this->s163_i_upssolicitante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3184,18019,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s163_i_upssolicitante'))."','$this->s163_i_upssolicitante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s163_i_upsprestadora"]) || $this->s163_i_upsprestadora != "")
-           $resac = db_query("insert into db_acount values($acount,3184,18015,'".AddSlashes(pg_result($resaco,$conresaco,'s163_i_upsprestadora'))."','$this->s163_i_upsprestadora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3184,18015,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s163_i_upsprestadora'))."','$this->s163_i_upsprestadora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s163_i_quantidade"]) || $this->s163_i_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,3184,18016,'".AddSlashes(pg_result($resaco,$conresaco,'s163_i_quantidade'))."','$this->s163_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3184,18016,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s163_i_quantidade'))."','$this->s163_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s163_i_mescomp"]) || $this->s163_i_mescomp != "")
-           $resac = db_query("insert into db_acount values($acount,3184,18017,'".AddSlashes(pg_result($resaco,$conresaco,'s163_i_mescomp'))."','$this->s163_i_mescomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3184,18017,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s163_i_mescomp'))."','$this->s163_i_mescomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s163_i_anocomp"]) || $this->s163_i_anocomp != "")
-           $resac = db_query("insert into db_acount values($acount,3184,18018,'".AddSlashes(pg_result($resaco,$conresaco,'s163_i_anocomp'))."','$this->s163_i_anocomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3184,18018,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s163_i_anocomp'))."','$this->s163_i_anocomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,16 +400,16 @@ class cl_sau_cotasagendamento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18013,'$s163_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3184,18013,'','".AddSlashes(pg_result($resaco,$iresaco,'s163_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3184,18014,'','".AddSlashes(pg_result($resaco,$iresaco,'s163_i_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3184,18019,'','".AddSlashes(pg_result($resaco,$iresaco,'s163_i_upssolicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3184,18015,'','".AddSlashes(pg_result($resaco,$iresaco,'s163_i_upsprestadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3184,18016,'','".AddSlashes(pg_result($resaco,$iresaco,'s163_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3184,18017,'','".AddSlashes(pg_result($resaco,$iresaco,'s163_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3184,18018,'','".AddSlashes(pg_result($resaco,$iresaco,'s163_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3184,18013,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s163_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3184,18014,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s163_i_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3184,18019,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s163_i_upssolicitante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3184,18015,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s163_i_upsprestadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3184,18016,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s163_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3184,18017,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s163_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3184,18018,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s163_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_cotasagendamento
@@ -469,7 +469,7 @@ class cl_sau_cotasagendamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_cotasagendamento";
@@ -484,7 +484,7 @@ class cl_sau_cotasagendamento {
    function sql_query ( $s163_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -518,7 +518,7 @@ class cl_sau_cotasagendamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,7 +531,7 @@ class cl_sau_cotasagendamento {
    function sql_query_file ( $s163_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -552,7 +552,7 @@ class cl_sau_cotasagendamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -567,7 +567,7 @@ class cl_sau_cotasagendamento {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = preg_split('#\##m', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -605,7 +605,7 @@ class cl_sau_cotasagendamento {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = preg_split('#\##m', (string) $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

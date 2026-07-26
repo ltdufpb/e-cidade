@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_docaluno_classe.php"));
 include(modification("classes/db_escola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldocaluno = new cl_docaluno;
 $clescola = new cl_escola;
 $db_opcao = 1;
@@ -82,7 +82,7 @@ if(isset($excluir)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
    <fieldset style="width:95%"><legend><b>Documentação Pendente</b></legend>
-    <?include(modification("forms/db_frmdocaluno.php"));?>
+    <?php include(modification("forms/db_frmdocaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -90,7 +90,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($cldocaluno->erro_status=="0"){
   $cldocaluno->erro(true,false);

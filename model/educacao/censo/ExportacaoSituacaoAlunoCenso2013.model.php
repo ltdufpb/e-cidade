@@ -47,12 +47,6 @@ class ExportacaoSituacaoAlunoCenso2013 {
   private $oLayout;
 
   /**
-   * Instância de Log
-   * @var DBLogJSON
-   */
-  private $oLog;
-
-  /**
    * Ano do censo
    * @var interger
    */
@@ -69,28 +63,28 @@ class ExportacaoSituacaoAlunoCenso2013 {
    * Etapas NÃO permitidas no aquivo Situação do Aluno Censo
    * @var array
    */
-  private $aEtapasNaoPermitidasNoArquivo = array(3, 12, 13, 22, 23, 24, 51, 56, 58, 64, 66);
+  private $aEtapasNaoPermitidasNoArquivo = [3, 12, 13, 22, 23, 24, 51, 56, 58, 64, 66];
 
   /**
    * Não podemos trazer no arquivo do censo, as matriculas que estão nas seguintes condições
    * -- Visto com Tiago
    * @var array
    */
-  private $aSituacoesMatriculaNaoPermitidas = array('MATRICULA INDEVIDA', 'MATRICULA INDEFERIDA', 'TROCA DE TURMA');
+  private $aSituacoesMatriculaNaoPermitidas = ['MATRICULA INDEVIDA', 'MATRICULA INDEFERIDA', 'TROCA DE TURMA'];
 
   /**
    * Etapas que definem conclusão de curso
    * @var array
    */
-  private $aEtapasConcluintes = array(11, 41, 27, 28, 29, 32, 33, 34, 37, 38, 39, 40, 44,45, 47, 48, 60, 61, 62, 63, 65);
+  private $aEtapasConcluintes = [11, 41, 27, 28, 29, 32, 33, 34, 37, 38, 39, 40, 44,45, 47, 48, 60, 61, 62, 63, 65];
 
   /**
    * Etapas em andamento
    * @var array
    */
-  private $aEtapasEmAndamento = array(1, 2, 39, 40, 43, 44, 45, 46, 47, 48, 60, 61, 62, 63, 65);
+  private $aEtapasEmAndamento = [1, 2, 39, 40, 43, 44, 45, 46, 47, 48, 60, 61, 62, 63, 65];
 
-  private $aEtapasEnsinoInfantil = array(1, 2);
+  private $aEtapasEnsinoInfantil = [1, 2];
 
   /**
    * Movimentos permitidos para campo:
@@ -104,9 +98,9 @@ class ExportacaoSituacaoAlunoCenso2013 {
    *
    * @var array
    */
-  private $aMovimento = array('TRANSFERIDO REDE' => 1, 'TRANSFERIDO FORA' => 1,
+  private $aMovimento = ['TRANSFERIDO REDE' => 1, 'TRANSFERIDO FORA' => 1,
                               'EVADIDO' => 2, 'MATRICULA TRANCADA' => 2,'CANCELADO' => 2,'EVADIDO' => 2,
-                              'FALECIDO' => 3);
+                              'FALECIDO' => 3];
 
   /**
    * Identifica se tem inconsistencia
@@ -124,7 +118,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
    * Lista dos alunos listados no registro 90 (com matrícula antes do censo)
    * @var array
    */
-  private $aAlunosAntesCenso = array();
+  private $aAlunosAntesCenso = [];
 
    /**
    * Método construtor
@@ -133,11 +127,13 @@ class ExportacaoSituacaoAlunoCenso2013 {
    * @param $iAno     ano do censo
    * @return
    */
-  public function __construct(DBLogJSON $oLog, $iAno = 2013) {
+  public function __construct(/**
+   * Instância de Log
+   */
+  private readonly DBLogJSON $oLog, $iAno = 2013) {
 
     $this->sNomeArquivo = "tmp/situacao_aluno_censo_{$iAno}.txt";
     $this->oLayout      = new db_layouttxt(self::LAYOUT, $this->sNomeArquivo, "", 1, true);
-    $this->oLog         = $oLog;
     $this->iAno         = $iAno;
   }
 
@@ -149,7 +145,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
 
     $this->lTemInconsistencia  = true;
     $oMensagem                 = new stdClass();
-    $oMensagem->sErro          = utf8_encode($MensagemLog);
+    $oMensagem->sErro          = mb_convert_encoding($MensagemLog, 'UTF-8', 'ISO-8859-1');
     $oMensagem->iIdentificador = $iIdentificador;
     $this->oLog->log($oMensagem, DBLog::LOG_ERROR);
   }
@@ -224,7 +220,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
     $sCampos .= " ,ed60_d_datasaida      as data_saida  ";
     $sCampos .= " ,ed52_i_ano            as ano  ";
 
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = " serie.ed11_i_codcenso not in (".implode(", ", $this->aEtapasNaoPermitidasNoArquivo).") ";
     $aWhere[] = " ed60_c_situacao not in ('". implode("', '", $this->aSituacoesMatriculaNaoPermitidas)."') ";
     $aWhere[] = " escola.ed18_i_codigo  = ". $this->oEscola->getCodigo();
@@ -266,7 +262,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
     $rs      = db_query($sSql);
     $iLinhas = pg_num_rows($rs);
 
-    $aAlunosFiltrados = array();
+    $aAlunosFiltrados = [];
     for ($i = 0; $i < $iLinhas; $i++) {
 
       $oDadosAluno = db_utils::fieldsMemory($rs, $i);
@@ -274,7 +270,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
       /**
        * Se aluno ja esta no array, significa que já foi encontrado qual o dado correto para valida-lo
        */
-      if ( array_key_exists($oDadosAluno->codigo_aluno_escola, $aAlunosFiltrados) ) {
+      if ( array_key_exists((string) $oDadosAluno->codigo_aluno_escola, $aAlunosFiltrados) ) {
         continue;
       }
 
@@ -284,7 +280,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
        * Se situação da matrícula for avanço ou classificado aluno é considerado aprovado
        * Não há necessidade de ver o diário de classe
        */
-      if ( in_array( $oDadosAluno->situacao, array('AVANÇADO', 'CLASSIFICADO') ) ) {
+      if ( in_array( $oDadosAluno->situacao, ['AVANÇADO', 'CLASSIFICADO'] ) ) {
 
         $oDadosAluno->resultado = 'A';
         $aAlunosFiltrados[$oDadosAluno->codigo_aluno_escola] = $oDadosAluno;
@@ -294,7 +290,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
       /**
        * Neste caso devemos verificar se aluno possui uma matrícula posterior no mesmo ano e escola
        */
-      if ( in_array( $oDadosAluno->situacao, array('TRANSFERIDO REDE', 'TRANSFERIDO FORA') ) ) {
+      if ( in_array( $oDadosAluno->situacao, ['TRANSFERIDO REDE', 'TRANSFERIDO FORA'] ) ) {
 
         $sSqlValidaProximaMatricula  = " select max(ed60_i_codigo) as matricula, trim(ed60_c_situacao) as situacao ";
         $sSqlValidaProximaMatricula .= "   from matricula ";
@@ -379,7 +375,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
       $oLinha->em_andamento          = 1;
       $oLinha->separador_final       = '';
 
-      if ( array_key_exists($oAluno->situacao, $this->aMovimento) ) {
+      if ( array_key_exists((string) $oAluno->situacao, $this->aMovimento) ) {
 
         $oLinha->movimento    = $this->aMovimento[$oAluno->situacao];
         $oLinha->em_andamento = '';
@@ -423,7 +419,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
        * Validamos se aluno já não foi escrito no registro 90]
        * Não podemos repetir aluno no registro 91
        */
-      if ( array_key_exists($oAluno->codigo_aluno_escola, $this->aAlunosAntesCenso) ) {
+      if ( array_key_exists((string) $oAluno->codigo_aluno_escola, $this->aAlunosAntesCenso) ) {
         continue;
       }
 
@@ -454,7 +450,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
       $oLinha->em_andamento          = 1;                                              // 16
       $oLinha->separador_final       = '';
 
-      if ( array_key_exists($oAluno->situacao, $this->aMovimento) ) {
+      if ( array_key_exists((string) $oAluno->situacao, $this->aMovimento) ) {
 
         $oLinha->movimento    = $this->aMovimento[$oAluno->situacao];
         $oLinha->em_andamento = '';
@@ -552,20 +548,20 @@ class ExportacaoSituacaoAlunoCenso2013 {
     $sTurma       = !empty($oDados->turma) ? $oDados->turma : '';
 
 
-    $aValidacoes = array( 89 => array( "email_gestor_escolar" => "Email do gestor não informado."
+    $aValidacoes = [ 89 => [ "email_gestor_escolar" => "Email do gestor não informado."
                                       ,"cargo_gestor_escolar" => "Cargo do gestor não foi informado."
                                       ,"nome_gestor_escolar" => "Nome do gestor não informado."
                                       ,"cpf_gestor_escolar" => "Cpf do gestor não informado."
                                       ,"codigo_escola_inep" => "Escola não possui código INEP."
-                                     ),
-                          90 => array( "codigo_turma_inep" => "Turma {$oDados->turma} - {$oDados->etapa} do aluno(a) {$oDados->aluno} está sem o código do INEP."
+                                     ],
+                          90 => [ "codigo_turma_inep" => "Turma {$oDados->turma} - {$oDados->etapa} do aluno(a) {$oDados->aluno} está sem o código do INEP."
                                       ,"codigo_aluno_inep" => "O(a) aluno(a) {$iCodigo} - {$oDados->aluno} ({$dtNascimento}) está sem o código do INEP."
                                       ,"codigo_matricula_inep" => "O(a) aluno(a) {$iCodigo} - {$oDados->aluno} ({$dtNascimento}) não possui matrícula do INEP. Turma {$sTurma} INEP: {$iTurmaInep} "
                                       ,"codigo_modalidade" => "Modalidade não informada."
                                       ,"codigo_etapa_censo" => "Etapa do censo da turma {$oDados->turma} - {$oDados->etapa} não informada."
-                                     ),
-                          91  => array( "codigo_aluno_inep" => "O(a) aluno(a) {$iCodigo} - {$oDados->aluno} ({$dtNascimento}) está sem o código do INEP.")
-                        );
+                                     ],
+                          91  => [ "codigo_aluno_inep" => "O(a) aluno(a) {$iCodigo} - {$oDados->aluno} ({$dtNascimento}) está sem o código do INEP."]
+                        ];
 
     foreach ($aValidacoes[$oDados->tipo_registro] as $sCampoValidar => $sMensagem) {
 
@@ -615,7 +611,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
      * Valida se o nome do gestor possui 4 letras repetidas em sequência
      */
     $sExpressao          = '/([a-zA-Z])\1{3}/';
-    $lValidacaoExpressao = preg_match( $sExpressao, $oDados->nome_gestor_escolar ) ? true : false;
+    $lValidacaoExpressao = preg_match( $sExpressao, (string) $oDados->nome_gestor_escolar ) ? true : false;
 
     if ( $lValidacaoExpressao ) {
 

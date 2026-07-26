@@ -814,7 +814,7 @@ class Registro00
     }
     public function toArray()
     {
-        return array(
+        return [
             "registro" => $this->getTipoRegistro(),
             "codigo" => $this->getCodigo(),
             "codigoInep" => $this->getCodigoInep(),
@@ -910,6 +910,6 @@ class Registro00
             "codigoEscolaSede" => $this->getCodigoEscolaSede(),
             "codigoIES" => $this->getCodigoIES(),
             "uf" => $this->getUf(),
-        );
+        ];
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -110,12 +110,12 @@ input {
         <td> 
             <select name="po01_tipo" id="po01_tipo">
               <option value="">-</option>
-            <?
+            <?php 
               $results = pg_fetch_all($cldb_tipo->sql_record($cldb_tipo->sql_query("","*","","")));
               foreach ($results as $result) {
             ?>
               <option value="<?=@$result['w03_codtipo']?>" <?=@($result['w03_codtipo']==$po01_tipo?"selected='selected'":"")?>><?=@$result['w03_tipo']?></option>
-            <?}?>
+            <?php }?>
             </select>
           </td>
       </tr>
@@ -152,7 +152,7 @@ input {
   </center>
 </form>
 </center>
-<?
+<?php 
 if(isset($Submit) || count($HTTP_POST_VARS)>0){
 	$query = "SELECT po01_sequencial as sequencial, po01_email as email, 
 									 w03_tipo as dl_categoria, 
@@ -185,7 +185,7 @@ if(isset($Submit) || count($HTTP_POST_VARS)>0){
 ?>
 
 <center>
-<? db_lovrot($query,10,"()","","js_emite|sequencial",null,"NoMe");?>
+<?php  db_lovrot($query,10,"()","","js_emite|sequencial",null,"NoMe");?>
 </center>
 
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("classes/db_mer_nutricionistaescola_classe.php"));
 include(modification("classes/db_mer_nutricionista_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_nutricionistaescola = new cl_mer_nutricionistaescola;
 $clmer_nutricionista = new cl_mer_nutricionista;
 $clcgm = new cl_cgm;
@@ -58,7 +59,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lme02_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me02_i_codigo",5,$Ime02_i_codigo,true,"text",4,"","chave_me02_i_codigo");
 		       ?>
             </td>
@@ -68,7 +69,7 @@ $clcgm->rotulo->label("z01_nome");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("z01_nome",30,@$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $clcgm->rotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
        if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
         	
@@ -133,13 +134,13 @@ $clcgm->rotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php 
   
 }
 ?>

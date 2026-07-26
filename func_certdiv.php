@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_certdiv_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcertdiv = new cl_certdiv;
 $clcertdiv->rotulo->label("v14_certid");
 $clcertdiv->rotulo->label("v14_coddiv");
@@ -55,7 +56,7 @@ $clcertdiv->rotulo->label("v14_coddiv");
               <?=$Lv14_certid?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v14_certid",4,$Iv14_certid,true,"text",4,"","chave_v14_certid");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clcertdiv->rotulo->label("v14_coddiv");
               <?=$Lv14_coddiv?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v14_coddiv",4,$Iv14_coddiv,true,"text",4,"","chave_v14_coddiv");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clcertdiv->rotulo->label("v14_coddiv");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         $campos = "distinct(v14_certid), z01_numcgm, z01_nome, v13_dtemis";
         if(isset($chave_v14_certid) && (trim($chave_v14_certid)!="") ){
@@ -109,14 +110,14 @@ $clcertdiv->rotulo->label("v14_coddiv");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v14_certid.focus();
 document.form2.chave_v14_certid.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

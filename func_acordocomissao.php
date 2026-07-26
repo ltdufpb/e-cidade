@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_acordocomissao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clacordocomissao = new cl_acordocomissao;
 $clacordocomissao->rotulo->label("ac08_sequencial");
 $clacordocomissao->rotulo->label("ac08_descricao");
@@ -71,7 +72,7 @@ switch (db_getsession("DB_modulo")) {
               <?=$Lac08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("ac08_sequencial",10,$Iac08_sequencial,true,"text",4,"","chave_ac08_sequencial");
 		       ?>
             </td>
@@ -81,7 +82,7 @@ switch (db_getsession("DB_modulo")) {
               <?=$Lac08_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("ac08_descricao",100,$Iac08_descricao,true,"text",4,"","chave_ac08_descricao");
 		       ?>
             </td>
@@ -99,7 +100,7 @@ switch (db_getsession("DB_modulo")) {
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhereTipoComissao = " and ac08_acordocomissaotipo = {$iCodigoComissaoTipo} ";
 
       $campos = " acordocomissao.ac08_sequencial,
@@ -158,12 +159,12 @@ switch (db_getsession("DB_modulo")) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

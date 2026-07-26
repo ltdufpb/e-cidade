@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_regenciahorario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clregenciahorario = new cl_regenciahorario;
 $db_opcao = 1;
 $db_botao = true;
@@ -60,7 +60,7 @@ $codigo_escola = db_getsession("DB_coddepto");
 </style>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?
+ <?php 
  # Seleciona todos as escolas
  $restricao = "exists(select * from rechumanoescola
                       where ed75_i_rechumano = ed58_i_rechumano
@@ -168,18 +168,18 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    if (itemArray[i][1] != null){
     selectCtrl.options[j].value = itemArray[i][1];
    }
-   <?if(isset($anohorario)){?>
+   <?php if(isset($anohorario)){?>
     if(<?=trim($anohorario)?>==itemArray[i][1]){
      indice = i;
     }
-   <?}?>
+   <?php }?>
    j++;
   }
-  <?if(isset($anohorario)){?>
+  <?php if(isset($anohorario)){?>
    selectCtrl.options[indice].selected = true;
-  <?}else{?>
+  <?php }else{?>
    selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php }?>
   document.form1.subgrupo.disabled = false;
  }
 }
@@ -196,7 +196,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <a name="topo"></a>
 <form name="form1" method="post" action="">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -207,7 +207,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
     <table border="0" align="left">
      <tr>
       <td align="left">
-       <?
+       <?php 
        $restricao = "exists(select * from rechumanoescola
                             where ed75_i_rechumano = ed58_i_rechumano
                             and ed75_i_escola = $codigo_escola) and ed58_ativo is true  ";
@@ -216,14 +216,14 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        <b>Selecione o Professor:</b><br>
        <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:300px;height:18px;">
         <option></option>
-        <?
+        <?php 
         while($row=pg_fetch_array($result)){
          $cod_rechumano=$row["ed20_i_codigo"];
          $desc_rechumano=$row["z01_nome"];
          $identificacao=$row["identificacao"];
          ?>
          <option value="<?=$cod_rechumano;?>" <?=$cod_rechumano==@$rechumano?"selected":""?>><?=$identificacao." - ".$desc_rechumano?></option>
-         <?
+         <?php 
         }
         ?>
        </select>
@@ -236,13 +236,13 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         <option value=""></option>
        </select>
       </td>
-      <?if(isset($anohorario)){?>
+      <?php if(isset($anohorario)){?>
       <tr>
        <td>
        <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
        <b>Escola:</b><br>
        <select name="escolahorario" style="font-size:9px;width:300px;height:18px;">
-       <?
+       <?php 
        //$result2 = $clregenciahorario->sql_record($clregenciahorario->sql_query("","DISTINCT ed18_i_codigo,ed18_c_nome","ed18_c_nome","ed58_i_rechumano = $rechumano AND ed52_i_ano = $anohorario"));
        $resultano = " select distinct ed18_i_codigo,ed18_c_nome from regenciahorario"; 
  	   $resultano .= " inner join periodoescola  on  periodoescola.ed17_i_codigo = regenciahorario.ed58_i_periodo";
@@ -262,23 +262,23 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        $result2 = db_query($resultano) ;
        $linhas2 = pg_num_rows($result2);
        if($linhas2>0){
-        ?><option value="">TODAS</option><?
+        ?><option value="">TODAS</option><?php 
         for($x=0;$x<$linhas2;$x++){
          db_fieldsmemory($result2,$x);
          ?>
          <option value="<?=$ed18_i_codigo?>" <?=@$ed18_i_codigo==@$escolahorario?"selected":""?>><?=$ed18_i_codigo." - ".$ed18_c_nome?></option>
-         <?
+         <?php 
         }
        }else{
          ?>
          <option value="">Nenhuma escola</option>
-         <?
+         <?php 
        }
        ?>
        </select>
        </td>
       </tr>
-      <?}?>
+      <?php }?>
       <tr>
        <td>
         <input type="button" name="procurar" value="Processar" onclick="js_procurar(document.form1.grupo.value,document.form1.subgrupo.value)">
@@ -290,7 +290,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -305,8 +305,8 @@ function js_procurar(professor,ano){
  jan = window.open('edu2_horarioprofessor002.php?rechumano='+professor+'&anohorario='+ano+'&escolahorario='+document.form1.escolahorario.value,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
  jan.moveTo(0,0);
 }
-<?if(!isset($anohorario) && pg_num_rows($result)>0){?>
+<?php if(!isset($anohorario) && pg_num_rows($result)>0){?>
  fillSelectFromArray2(document.form1.subgrupo,team[0]);
  document.form1.grupo.options[1].selected = true;
-<?}?>
+<?php }?>
 </script>

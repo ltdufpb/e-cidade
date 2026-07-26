@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 db_postmemory($HTTP_POST_VARS);
 //db_postmemory($HTTP_GET_VARS,2);exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrotulo = new rotulocampo;
 $clrotulo->label("e81_valor");
 ?>
@@ -79,7 +80,7 @@ $clrotulo->label("e81_valor");
       <strong>Valor dos cheques</strong>
     </td>
   </tr>
-    <?
+    <?php 
     $arr_cheqsel = Array();
     $arr_cheques = Array();
     $mostraquant = true;
@@ -290,26 +291,26 @@ function js_enviarvalores(){
     }
   }
   if(erro == false && valores_cheques != ""){
-  	<?if(!isset($forma)){?>
+  	<?php if(!isset($forma)){?>
   	(window.CurrentWindow || parent.CurrentWindow).corpo.db_iframe_cheque.jan.js_recebeval(con,valores_cheques);
-  	<?}else{?>
+  	<?php }else{?>
   	parent.js_recebeval(con,valores_cheques);
-  	<?}?>
+  	<?php }?>
   }
 }
 function js_verificardados(){
 	con = 1;
-	<?
+	<?php 
 	if(isset($ch) && trim($ch)){
 		$arr_cheqsel = split("-",$ch);
 		echo "con = ".count($arr_cheqsel).";";
 	}
 	?>
-	<?if(!isset($forma)){?>
+	<?php if(!isset($forma)){?>
 	(window.CurrentWindow || parent.CurrentWindow).corpo.db_iframe_cheque.jan.js_fechariframe(con);
-	<?}else{?>
+	<?php }else{?>
 	parent.js_fechariframe(con);
-	<?}?>
+	<?php }?>
 }
 document.form1.elements[0].select();
 document.form1.elements[0].focus();

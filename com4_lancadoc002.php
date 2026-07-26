@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -232,7 +232,7 @@ function js_marcaob(obj){
   <tr>
     <td align="center" valign="top" >
     
-<?
+<?php 
 
 db_input('pc72_pctipocertif', 8, '', true, 'hidden', 3);
 db_input('pc74_codigo', 8, '', true, 'hidden', 3);
@@ -248,7 +248,7 @@ echo "<script>
 ?>     
       <table border='0'  nowrap>
             
-<? 
+<?php  
 
 
 if (isset ($pc72_pctipocertif) && $pc72_pctipocertif != "") {
@@ -337,7 +337,7 @@ if (isset ($pc72_pctipocertif) && $pc72_pctipocertif != "") {
   <form>
   </body>
 </html>  
-<?
+<?php 
 
 if (isset ($atualizar)) {
 	if ($sqlerro == true) {
@@ -355,7 +355,7 @@ if (isset ($atualizar)) {
                          jan.moveTo(0,0);  
 		    }
 		</script>
-<?
+<?php 
 		echo "<script>parent.location.href='com4_lancadoc001.php';</script>";
 	}
 	//db_redireciona("com1_pctipodoccertifalt003.php?pc72_pctipocertif=$pc72_pctipocertif");

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -53,7 +53,7 @@ $clrotulo->label("");
 <script>
 </script>
 <style>
-<?//$cor ="#999999 "?>.bordas {
+<?php //$cor ="#999999 "?>.bordas {
 	border: 2px solid #cccccc;
 	border-top-color: #999999;
 	border-right-color: #999999;

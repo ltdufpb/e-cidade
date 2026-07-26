@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,7 @@ include(modification("classes/db_abonofalta_classe.php"));
 include(modification("classes/db_diarioavaliacao_classe.php"));
 include(modification("classes/db_regencia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $resultedu         = eduparametros(db_getsession("DB_coddepto"));
 $clabonofalta      = new cl_abonofalta;
 $cldiarioavaliacao = new cl_diarioavaliacao;
@@ -116,7 +116,7 @@ if (isset($excluir)) {
 </style>
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php 
 $sql     = " SELECT ed60_c_situacao,ed72_i_codigo, ";
 $sql    .= "        ed47_v_nome,ed47_i_codigo, ";																																																																
 $sql    .= "        ed60_i_numaluno,ed72_i_valornota,ed60_i_codigo, ed60_matricula ";
@@ -156,7 +156,7 @@ $linhas1 = pg_num_rows($result1);
               onchange="js_alunoescolha(this.value,<?=$regencia?>,'<?=$descrperiodo?>',<?=$avaliacao?>);" 
               style="font-size:9px;width:330px;">
        <option value=""><?=$linhas1==0?"NENHUM ALUNO PARA ABONAR FALTAS NESTE PERÍODO.":""?></option>
-       <?
+       <?php 
        for ($i = 0; $i < $linhas1; $i++) {
        	
          db_fieldsmemory($result1,$i);
@@ -164,14 +164,14 @@ $linhas1 = pg_num_rows($result1);
          <option value='<?=$ed72_i_codigo?>' <?=$ed72_i_codigo==@$aluno?"selected":""?>>
               <?=$ed47_i_codigo?> - <?=$ed47_v_nome?>
          </option>
-         <?
+         <?php 
        }
        ?>
       </select>
       <?=$linhas1==0?"<input name='fechar' type='button' value='Fechar' onclick='parent.db_iframe_abono.hide();'>":""?>
      </td>
     </tr>
-    <?if (isset($aluno)) {
+    <?php if (isset($aluno)) {
     	
         $sql  = " SELECT ed72_i_numfaltas, ";
         $sql .= "        ed80_i_codigo, ";
@@ -188,7 +188,7 @@ $linhas1 = pg_num_rows($result1);
         if (isset($ed80_i_codigo) && $ed80_i_codigo != "") {
         	
           $db_opcao = 2;
-          ?><input type="hidden" name="ed80_i_codigo" value="<?=$ed80_i_codigo?>"><?
+          ?><input type="hidden" name="ed80_i_codigo" value="<?=$ed80_i_codigo?>"><?php 
           
         }?>
         <tr>
@@ -207,25 +207,25 @@ $linhas1 = pg_num_rows($result1);
         </tr>
         <tr>
           <td nowrap title="<?=@$Ted80_i_justificativa?>">
-            <?db_ancora(@$Led80_i_justificativa,"js_pesquisaed80_i_justificativa(true);",$db_opcao);?>
-            <?db_input('ed80_i_justificativa',15,@$Ied80_i_justificativa,true,'text',$db_opcao,
+            <?php db_ancora(@$Led80_i_justificativa,"js_pesquisaed80_i_justificativa(true);",$db_opcao);?>
+            <?php db_input('ed80_i_justificativa',15,@$Ied80_i_justificativa,true,'text',$db_opcao,
                         " onchange='js_pesquisaed80_i_justificativa(false);'")?>
-            <?db_input('ed06_c_descr',50,@$Ied06_c_descr,true,'text',3,'')?>
+            <?php db_input('ed06_c_descr',50,@$Ied06_c_descr,true,'text',3,'')?>
           </td>
          </tr>
          <tr>
            <td align="center">
              <br><br>
-             <?if ($db_opcao == 1) {?>
+             <?php if ($db_opcao == 1) {?>
                  <input name="incluir" type="submit" id="db_opcao" value="Incluir">
-             <?} else {?>
+             <?php } else {?>
                  <input name="alterar" type="submit" id="db_opcao" value="Alterar">
                  <input name="excluir" type="submit" id="db_opcao" value="Excluir">
-             <?}?>
+             <?php }?>
                <input name='fechar' type='button' value='Fechar' onclick='parent.db_iframe_abono.hide();'>
            </td>
           </tr>
-    <?}?>
+    <?php }?>
     </table>
    </fieldset>
   </td>
@@ -234,7 +234,7 @@ $linhas1 = pg_num_rows($result1);
 </form>
 </body>
 </html>
-<?
+<?php 
 if (isset($incluir) || isset($alterar)) {
 	
   if ($clabonofalta->erro_status == "0") {
@@ -258,7 +258,7 @@ if (isset($incluir) || isset($alterar)) {
     	                                                    "&ed41_i_codigo=<?=$avaliacao?>";
       parent.db_iframe_abono.hide();
     </script>
-   <?
+   <?php 
   }
 }
 
@@ -274,7 +274,7 @@ if (isset($excluir)) {
     	                                                    "&ed41_i_codigo=<?=$avaliacao?>";
       parent.db_iframe_abono.hide();
     </script>
-   <?
+   <?php 
    
   }
 }

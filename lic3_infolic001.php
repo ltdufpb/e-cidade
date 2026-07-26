@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -83,29 +83,29 @@ function js_abreconsulta2(codigo){
   <tr> 
     <td  align="right" nowrap title="<?=$Tl20_codigo?>">
     <b>
-    <?db_ancora('Licitação:',"js_pesquisa_liclicita(true);",1);?>
+    <?php db_ancora('Licitação:',"js_pesquisa_liclicita(true);",1);?>
     </b> 
     </td>
     
     <td align="left" nowrap>
-      <? db_input("l20_codigo",8,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
+      <?php  db_input("l20_codigo",8,$Il20_codigo,true,"text",3,"onchange='js_pesquisa_liclicita(false);'");
          ?></td>
          
   </tr>
     
   <tr> 
-  <td align="right" nowrap title='$Tpc80_codproc'><?db_ancora(@$Lpc80_codproc,"js_pesquisa_pcproc(true);",1);?> </td>
+  <td align="right" nowrap title='$Tpc80_codproc'><?php db_ancora(@$Lpc80_codproc,"js_pesquisa_pcproc(true);",1);?> </td>
   <td align='left' nowrap>
-  <?
+  <?php 
   db_input("pc80_codproc",8,$Ipc80_codproc,true,"text",4,"onchange='js_pesquisa_pcproc(false);'"); 
   ?>
     </td>
   </tr>
 <tr>
-    <td align="right" nowrap title='<?=$Tpc10_numero?>' > <?db_ancora(@$Lpc10_numero,"js_pesquisa_solicita(true);",1) ?> </td>
+    <td align="right" nowrap title='<?=$Tpc10_numero?>' > <?php db_ancora(@$Lpc10_numero,"js_pesquisa_solicita(true);",1) ?> </td>
 
       <td align='left' nowrap>
-  <?
+  <?php 
       db_input("pc10_numero",8,$Ipc10_numero,true,"text",4,"onchange='js_pesquisa_solicita(false);'"); 
   ?>
        </td>
@@ -124,7 +124,7 @@ function js_abreconsulta2(codigo){
 </table>
 </form>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

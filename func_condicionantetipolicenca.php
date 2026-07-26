@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_condicionantetipolicenca_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcondicionantetipolicenca = new cl_condicionantetipolicenca;
 $clcondicionantetipolicenca->rotulo->label("am17_sequencial");
 $clcondicionantetipolicenca->rotulo->label("am17_tipolicenca");
@@ -50,11 +51,11 @@ $clcondicionantetipolicenca->rotulo->label("am17_tipolicenca");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for='am17_sequencial'><?=$Lam17_sequencial?></label></td>
-          <td><? db_input("am17_sequencial",10,$Iam17_sequencial,true,"text",4,"","chave_am17_sequencial"); ?></td>
+          <td><?php  db_input("am17_sequencial",10,$Iam17_sequencial,true,"text",4,"","chave_am17_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label for='am17_tipolicenca'><?=$Lam17_tipolicenca?></label></td>
-          <td><? db_input("am17_tipolicenca",10,$Iam17_tipolicenca,true,"text",4,"","chave_am17_tipolicenca");?></td>
+          <td><?php  db_input("am17_tipolicenca",10,$Iam17_tipolicenca,true,"text",4,"","chave_am17_tipolicenca");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clcondicionantetipolicenca->rotulo->label("am17_tipolicenca");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_condicionantetipolicenca.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_condicionantetipolicenca.php")==true){
@@ -104,12 +105,12 @@ $clcondicionantetipolicenca->rotulo->label("am17_tipolicenca");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

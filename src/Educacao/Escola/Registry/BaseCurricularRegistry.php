@@ -16,7 +16,7 @@ class BaseCurricularRegistry
     /**
      * @var BaseCurricular[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param BaseCurricular $base
@@ -33,7 +33,7 @@ class BaseCurricularRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $aluno = BaseCurricularRepository::find($key);
             if (is_null($aluno)) {
                 return null;

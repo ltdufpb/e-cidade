@@ -920,7 +920,7 @@ if ($lInserirAlvara == 'true' && $lAtivPrinc == 't' && isset($incluir)){
     </div>
   </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
 
   if($sqlerro==true){

@@ -40,7 +40,7 @@ class DiarioAreaRegistry
     /**
      * @var DiarioArea[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param DiarioArea $diarioArea
@@ -57,7 +57,7 @@ class DiarioAreaRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $diarioArea = DiarioAreaRepository::find($key);
             if (is_null($diarioArea)) {
                 return null;

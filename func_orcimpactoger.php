@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcimpactoger_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcimpactoger = new cl_orcimpactoger;
 $clorcimpactoger->rotulo->label("o62_codimpger");
 $clorcimpactoger->rotulo->label("o62_obs");
@@ -54,7 +55,7 @@ $clorcimpactoger->rotulo->label("o62_obs");
               <?=$Lo62_codimpger?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o62_codimpger",5,$Io62_codimpger,true,"text",4,"","chave_o62_codimpger");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcimpactoger->rotulo->label("o62_obs");
               <?=$Lo62_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o62_obs",1,$Io62_obs,true,"text",4,"","chave_o62_obs");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcimpactoger->rotulo->label("o62_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactoger.php")==true){
@@ -118,12 +119,12 @@ $clorcimpactoger->rotulo->label("o62_obs");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

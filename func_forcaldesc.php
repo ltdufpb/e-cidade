@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_forcaldesc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clforcaldesc = new cl_forcaldesc;
 $clforcaldesc->rotulo->label("q87_codigo");
 $clforcaldesc->rotulo->label("q87_descr");
@@ -54,7 +55,7 @@ $clforcaldesc->rotulo->label("q87_descr");
               <?=$Lq87_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q87_codigo",4,$Iq87_codigo,true,"text",4,"","chave_q87_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clforcaldesc->rotulo->label("q87_descr");
               <?=$Lq87_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q87_descr",80,$Iq87_descr,true,"text",4,"","chave_q87_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clforcaldesc->rotulo->label("q87_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_forcaldesc.php")==true){
@@ -118,12 +119,12 @@ $clforcaldesc->rotulo->label("q87_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

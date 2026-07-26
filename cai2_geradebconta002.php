@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ $instit = db_getsession("DB_instit");
 <br>
 <br>
 
-<?
+<?php 
 
 $jaexiste = 0;
 
@@ -505,7 +505,7 @@ if (1==0) {
 ?>
 <table style='border-collapse: collapse; border:1px solid #525252;' cellspacing=0 cellpadding=0>
 <tr><td align=center>
-<?
+<?php 
 
 echo "<br><br><br>";
 
@@ -523,7 +523,7 @@ echo "<br><strong><a style='color:black' href='$arqgerado'> Arquivo gerado em: $
 </body>
 </html>
 
-<?
+<?php 
 
 function busca_Valores_Recibo ( $iNumNov ) {
 

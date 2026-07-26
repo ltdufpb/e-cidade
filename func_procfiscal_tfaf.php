@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocfiscal = new cl_procfiscal;
 $clprocfiscal->rotulo->label("y100_sequencial");
 $clprocfiscal->rotulo->label("y100_coddepto");
@@ -54,7 +55,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
               <?=$Ly100_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y100_sequencial",10,$Iy100_sequencial,true,"text",4,"","chave_y100_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
               <?=$Ly100_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y100_coddepto",10,$Iy100_coddepto,true,"text",4,"","chave_y100_coddepto");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 			$where="";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -168,12 +169,12 @@ $clprocfiscal->rotulo->label("y100_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

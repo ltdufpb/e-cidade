@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: diversos
 //CLASSE DA ENTIDADE diversoslancamentotaxa
 class cl_diversoslancamentotaxa { 
@@ -31,7 +31,7 @@ class cl_diversoslancamentotaxa {
                  dv14_data_calculo = date = Data do Cálculo 
                  ";
    //funcao construtor da classe 
-   function cl_diversoslancamentotaxa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diversoslancamentotaxa"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

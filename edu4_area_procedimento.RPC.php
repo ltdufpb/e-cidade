@@ -41,7 +41,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 
 $parametros = JSON::requestParameters();
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 $codigoEscola = db_getsession('DB_coddepto');
 try {
@@ -173,7 +173,7 @@ try {
             $areaProcedimento = $service->getAreaProcedimentoPorProcedimentoAvaliacao($procedimento);
             $areaProcedimentoAvaliacoes = $areaProcedimento->getAvaliacoes();
 
-            $ordens = json_decode($parametros->ordens);
+            $ordens = json_decode((string) $parametros->ordens);
             foreach ($ordens as $ordem) {
                 foreach ($areaProcedimentoAvaliacoes as $areaProcedimentoAvaliacao) {
                     if ($areaProcedimentoAvaliacao->getCodigo() == $ordem->codigo) {

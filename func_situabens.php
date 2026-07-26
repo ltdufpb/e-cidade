@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_situabens_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsituabens = new cl_situabens;
 $clsituabens->rotulo->label("t70_situac");
 $clsituabens->rotulo->label("t70_descr");
@@ -54,7 +55,7 @@ $clsituabens->rotulo->label("t70_descr");
               <?=$Lt70_situac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t70_situac",10,$It70_situac,true,"text",4,"","chave_t70_situac");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsituabens->rotulo->label("t70_descr");
               <?=$Lt70_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t70_descr",40,$It70_descr,true,"text",4,"","chave_t70_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsituabens->rotulo->label("t70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_situabens.php")==true){
@@ -118,12 +119,12 @@ $clsituabens->rotulo->label("t70_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

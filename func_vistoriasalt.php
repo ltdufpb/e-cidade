@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vistorias_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvistorias = new cl_vistorias;
 $clvistorias->rotulo->label("y70_codvist");
 $clvistorias->rotulo->label("y70_id_usuario");
@@ -54,7 +55,7 @@ $clvistorias->rotulo->label("y70_id_usuario");
               <?=$Ly70_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y70_codvist",10,$Iy70_codvist,true,"text",4,"","chave_y70_codvist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clvistorias->rotulo->label("y70_id_usuario");
               <?=$Ly70_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y70_id_usuario",5,$Iy70_id_usuario,true,"text",4,"","chave_y70_id_usuario");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clvistorias->rotulo->label("y70_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($chave_y70_codvist) && (trim($chave_y70_codvist)!="") ){
 	         $sql = $clvistorias->sql_query_busca("","$chave_y70_codvist=y70_codvist and  y70_coddepto = ".db_getsession("DB_coddepto")." and y70_instit = ".db_getsession('DB_instit') );
@@ -112,12 +113,12 @@ $clvistorias->rotulo->label("y70_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

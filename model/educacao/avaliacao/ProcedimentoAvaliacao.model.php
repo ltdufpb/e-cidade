@@ -73,7 +73,7 @@ class ProcedimentoAvaliacao {
    * Array com os elementos que compõe o Procedimento de Avaliacao
    * @var array
    */
-  private $aElementos = array();
+  private $aElementos = [];
 
   /**
    * @param integer $iCodigoProcedimento
@@ -205,21 +205,11 @@ class ProcedimentoAvaliacao {
 
           $oElementos = db_utils::fieldsMemory($rsElementos, $iContador);
 
-          switch ($oElementos->tipo) {
-
-            case 'A':
-
-              $this->aElementos[$oElementos->sequencia] = new AvaliacaoPeriodica($oElementos->codigo_elemento);
-              break;
-
-            case 'R':
-
-              $this->aElementos[$oElementos->sequencia] = new ResultadoAvaliacao($oElementos->codigo_elemento);
-              break;
-
-            default:
-              throw new BusinessException("Nenhum elemento encontrado para o procedimento.");
-          }
+          $this->aElementos[$oElementos->sequencia] = match ($oElementos->tipo) {
+              'A' => new AvaliacaoPeriodica($oElementos->codigo_elemento),
+              'R' => new ResultadoAvaliacao($oElementos->codigo_elemento),
+              default => throw new BusinessException("Nenhum elemento encontrado para o procedimento."),
+          };
         }
       }
     }
@@ -290,7 +280,7 @@ class ProcedimentoAvaliacao {
    */
   public function getResultados() {
 
-    $aElementos = array();
+    $aElementos = [];
 
     foreach ($this->getElementos() as $oElemento) {
 
@@ -308,7 +298,7 @@ class ProcedimentoAvaliacao {
    */
   public function getAvaliacoes() {
 
-    $aElementos = array();
+    $aElementos = [];
 
     foreach ($this->getElementos() as $oElemento) {
 
@@ -345,7 +335,7 @@ class ProcedimentoAvaliacao {
    */
   public function getElementosAvaliacoesAnteriores( IElementoAvaliacao $oElementoAvaliacao  ) {
 
-    $aElementosAvaliacoesAnteriores = array();
+    $aElementosAvaliacoesAnteriores = [];
 
     foreach ( $this->getAvaliacoes() as $oElemento ) {
 
@@ -382,7 +372,7 @@ class ProcedimentoAvaliacao {
    */
   public static function getElementosToJson( $aElementos) {
 
-    $aPeriodosAvaliacao = array();
+    $aPeriodosAvaliacao = [];
     foreach ($aElementos as $oAvaliacao) {
 
       $oPeriodosAvaliacao                              = new stdClass();
@@ -395,7 +385,7 @@ class ProcedimentoAvaliacao {
       $oPeriodosAvaliacao->mMinimoAprovacao            = $oAvaliacao->getAproveitamentoMinimo();
       $oPeriodosAvaliacao->lControlaFrequencia         = false;
       $oPeriodosAvaliacao->lRecuperacao                = false;
-      $oPeriodosAvaliacao->aConceitos                  = array();
+      $oPeriodosAvaliacao->aConceitos                  = [];
       switch ($oPeriodosAvaliacao->sFormaAvaliacao) {
 
         case 'NOTA':
@@ -532,7 +522,7 @@ class ProcedimentoAvaliacao {
      *
      * Os dados são indexados na ordem de inclusão dos elementos
      */
-    $aDeParaAvaliacoes = array();
+    $aDeParaAvaliacoes = [];
     foreach ($oProcedimentoOrigem->getElementos() as $oElemento) {
 
       $oFormaAvaliacao       = $oElemento->getFormaDeAvaliacao();
@@ -646,7 +636,7 @@ class ProcedimentoAvaliacao {
           }
         }
 
-        $aDeParaAvaliacaoAlternativa = array();
+        $aDeParaAvaliacaoAlternativa = [];
         foreach ($oElemento->getAvaliacoesAlternativas() as $oAvaliacaoAlternativa) {
 
           $oDaoAvaliacaoAlternativa      = new cl_procavalalternativa;

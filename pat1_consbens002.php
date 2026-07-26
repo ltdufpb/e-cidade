@@ -247,7 +247,7 @@ $saldoDepreciavel = $valorAtual - $aux->t44_valorresidual;
         <strong>Órgão: </strong>
       </td>
       <td class="valores" align="right">
-        <? echo !empty($oOrgaoUnidade->db01_orgao)?$oOrgaoUnidade->db01_orgao:''; ?>
+        <?php  echo !empty($oOrgaoUnidade->db01_orgao)?$oOrgaoUnidade->db01_orgao:''; ?>
       </td>
       <td class="valores">
         <?php echo !empty($oOrgaoUnidade->o40_descr)?$oOrgaoUnidade->o40_descr:''; ?>

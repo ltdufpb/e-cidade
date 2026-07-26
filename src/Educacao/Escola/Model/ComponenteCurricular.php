@@ -130,7 +130,7 @@ class ComponenteCurricular
      */
     public function setNomeCompleto($nomeCompleto)
     {
-        $this->nomeCompleto = trim($nomeCompleto);
+        $this->nomeCompleto = trim((string) $nomeCompleto);
         return $this;
     }
 
@@ -166,7 +166,7 @@ class ComponenteCurricular
      */
     public function setCorHtml($corHtml)
     {
-        $this->corHtml = trim($corHtml);
+        $this->corHtml = trim((string) $corHtml);
         return $this;
     }
 

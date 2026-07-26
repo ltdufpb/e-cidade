@@ -67,7 +67,7 @@ if(isset($incluir)){
 <script>
 js_tabulacaoforms("form1","cm28_i_processo",true,1,"cm28_i_processo",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($clpropricemit->erro_status=="0"){
     $clpropricemit->erro(true,false);

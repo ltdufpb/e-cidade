@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontuariomedico_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprontuariomedico = new cl_prontuariomedico;
 $clprontuariomedico->rotulo->label("sd32_i_codigo");
 $clprontuariomedico->rotulo->label("z01_v_nome");
@@ -59,7 +60,7 @@ $clrotulo->label("z01_v_nome");
               <?=$Lsd32_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                  db_input("sd32_i_codigo",10,$Isd32_i_codigo,true,"text",4,"","chave_sd32_i_codigo");
                  ?>
             </td>
@@ -69,7 +70,7 @@ $clrotulo->label("z01_v_nome");
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                  db_input("z01_v_nome",60,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
                  ?>
             </td>
@@ -87,7 +88,7 @@ $clrotulo->label("z01_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_prontuariomedico.php")==true){
@@ -129,12 +130,12 @@ $clrotulo->label("z01_v_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

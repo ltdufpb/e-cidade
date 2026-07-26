@@ -63,7 +63,7 @@ try {
       if (isset($oParam->iTurma) && isset($oParam->iEtapa)) {
 
         $iDiarioAvaliacao    = null;
-        $oRetorno->aAlunos   = array();
+        $oRetorno->aAlunos   = [];
         $oTurma              = EducacaoSessionManager::carregarTurma($oParam->iTurma);
         $oEtapa              = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
 

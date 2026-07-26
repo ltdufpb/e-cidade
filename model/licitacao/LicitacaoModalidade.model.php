@@ -33,12 +33,6 @@
 class LicitacaoModalidade
 {
     /**
-     * Sequencial
-     * @var integer
-     */
-    private $iCodigo;
-
-    /**
      * Descrição
      * @var string
      */
@@ -77,11 +71,12 @@ class LicitacaoModalidade
      * @param null $iCodigo
      * @throws BusinessException
      */
-    public function __construct($iCodigo = null)
+    public function __construct(/**
+     * Sequencial
+     */
+    private $iCodigo = null)
     {
-        $this->iCodigo = $iCodigo;
-
-        if (empty($iCodigo)) {
+        if (empty($this->iCodigo)) {
             return;
         }
 
@@ -142,7 +137,7 @@ class LicitacaoModalidade
      */
     public static function possuiTipoCadastrado($sTipo)
     {
-        $sTipo = strtoupper($sTipo);
+        $sTipo = strtoupper((string) $sTipo);
         $instituicao = db_getsession('DB_instit');
         $oDaoCfLicita = new cl_cflicita;
         $sSqlBusca = $oDaoCfLicita->sql_query_file(

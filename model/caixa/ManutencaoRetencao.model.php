@@ -199,7 +199,7 @@ class ManutencaoRetencao {
 	 */
 	private static function buscaLancamentosRetencao($iRetencaoReceita) {
 
-		$aLancamentos = array();
+		$aLancamentos = [];
 
 		$sCampos = "c23_conlancam as lancamento";
 		$sWhere  = "e23_sequencial = {$iRetencaoReceita} ";
@@ -235,7 +235,7 @@ class ManutencaoRetencao {
 	 */
 	private static function buscaTesouraria($iLancamento) {
 
-		$aTesouraria = array();
+		$aTesouraria = [];
 
 		$sCampos = "k105_data as data, k105_autent as autenticadora, k105_id as id";
 		$sWhere  = "c23_conlancam = {$iLancamento}";

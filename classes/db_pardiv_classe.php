@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ class cl_pardiv {
                  v04_cobrarjurosmultacda = bool = Juros e multa até o vencimento do recibo 
                  ";
    //funcao construtor da classe 
-   function cl_pardiv() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pardiv"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

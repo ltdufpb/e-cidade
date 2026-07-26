@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhestagiocriterio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhestagiocriterio = new cl_rhestagiocriterio;
 $clrhestagiocriterio->rotulo->label("h52_sequencial");
 $clrhestagiocriterio->rotulo->label("h52_sequencial");
@@ -54,7 +55,7 @@ $clrhestagiocriterio->rotulo->label("h52_sequencial");
               <?=$Lh52_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h52_sequencial",10,$Ih52_sequencial,true,"text",4,"","chave_h52_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhestagiocriterio->rotulo->label("h52_sequencial");
               <?=$Lh52_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h52_sequencial",10,$Ih52_sequencial,true,"text",4,"","chave_h52_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhestagiocriterio->rotulo->label("h52_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhestagiocriterio.php")==true){
@@ -122,12 +123,12 @@ $clrhestagiocriterio->rotulo->label("h52_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

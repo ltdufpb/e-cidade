@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -37,7 +37,8 @@ include(modification("classes/db_veiccadtipo_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clveiculos      = new cl_veiculos;
 $clveiccadmodelo = new cl_veiccadmodelo;
@@ -67,7 +68,7 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
               <?=$Lve01_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-            <?
+            <?php 
     		       db_input("ve01_codigo",10,$Ive01_codigo,true,"text",4,"","chave_ve01_codigo");
 		        ?>
             </td>
@@ -78,7 +79,7 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
               <?=$Lve01_placa?>
             </td>
             <td width="96%" align="left" nowrap>
-            <?
+            <?php 
 		           db_input("ve01_placa",7,$Ive01_placa,true,"text",4,"","chave_ve01_placa");
   	        ?>
             </td>
@@ -89,17 +90,17 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
               <?=$Lve01_veiccadmodelo?>
             </td>
             <td width="96%" align="left" nowrap>
-            <?
+            <?php 
                $result = $clveiccadmodelo->sql_record($clveiccadmodelo->sql_query_file());
             ?>
               <select name="chave_ve01_veiccadmodelo" id="chave_ve01_veiccadmodelo">
                 <option value="-1">Nenhum</option>
-            <?
+            <?php 
                 for($i = 0; $i < $clveiccadmodelo->numrows; $i++){
                   db_fieldsmemory($result,$i);
             ?>
-                <option value="<?=$ve22_codigo?>"><? echo $ve22_codigo." - ".$ve22_descr; ?></option>
-            <?
+                <option value="<?=$ve22_codigo?>"><?php  echo $ve22_codigo." - ".$ve22_descr; ?></option>
+            <?php 
                 }
             ?>
               </select>
@@ -111,17 +112,17 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
               <?=$Lve01_veiccadmarca?>
             </td>
             <td width="96%" align="left" nowrap>
-            <?
+            <?php 
                $result = $clveiccadmarca->sql_record($clveiccadmarca->sql_query_file());
             ?>
               <select name="chave_ve01_veiccadmarca" id="chave_ve01_veiccadmarca">
                 <option value="-1">Nenhum</option>
-            <?
+            <?php 
                 for($i = 0; $i < $clveiccadmarca->numrows; $i++){
                   db_fieldsmemory($result,$i);
             ?>
-                <option value="<?=$ve21_codigo?>"><? echo $ve21_codigo." - ".$ve21_descr; ?></option>
-            <?
+                <option value="<?=$ve21_codigo?>"><?php  echo $ve21_codigo." - ".$ve21_descr; ?></option>
+            <?php 
                 }
             ?>
               </select>
@@ -133,17 +134,17 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
               <?=$Lve01_veiccadtipo?>
             </td>
             <td width="96%" align="left" nowrap>
-            <?
+            <?php 
                $result = $clveiccadtipo->sql_record($clveiccadtipo->sql_query_file());
             ?>
               <select name="chave_ve01_veiccadtipo" id="chave_ve01_veiccadtipo">
                 <option value="-1">Nenhum</option>
-            <?
+            <?php 
                 for($i = 0; $i < $clveiccadtipo->numrows; $i++){
                   db_fieldsmemory($result,$i);
             ?>
-                <option value="<?=$ve20_codigo?>"><? echo $ve20_codigo." - ".$ve20_descr; ?></option>
-            <?
+                <option value="<?=$ve20_codigo?>"><?php  echo $ve20_codigo." - ".$ve20_descr; ?></option>
+            <?php 
                 }
             ?>
               </select>
@@ -163,7 +164,7 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiculos.php")==true){
@@ -240,12 +241,12 @@ $clveiculos->rotulo->label("ve01_veiccadtipo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

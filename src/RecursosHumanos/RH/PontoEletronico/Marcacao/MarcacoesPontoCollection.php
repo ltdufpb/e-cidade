@@ -44,19 +44,19 @@ class MarcacoesPontoCollection
   /**
    * @var MarcacaoPonto[]
    */
-    private $aMarcacoes = array();
+    private $aMarcacoes = [];
 
     /**
      * @var array
      */
-    private $aMarcacoesFaltantes = array(
+    private $aMarcacoesFaltantes = [
         MarcacaoPonto::ENTRADA_1 => MarcacaoPonto::ENTRADA_1,
         MarcacaoPonto::SAIDA_1   => MarcacaoPonto::SAIDA_1,
         MarcacaoPonto::ENTRADA_2 => MarcacaoPonto::ENTRADA_2,
         MarcacaoPonto::SAIDA_2   => MarcacaoPonto::SAIDA_2,
         MarcacaoPonto::ENTRADA_3 => MarcacaoPonto::ENTRADA_3,
         MarcacaoPonto::SAIDA_3   => MarcacaoPonto::SAIDA_3
-    );
+    ];
 
   /**
    * @param array $aMarcacoes
@@ -70,9 +70,7 @@ class MarcacoesPontoCollection
         $dataAtual = $dataDiaTrabalho->getData()->getDate();
         $jornada = $dataDiaTrabalho->getJornada();
 
-        $marcacoesValidas = array_filter($aMarcacoes, function (stdClass $marcacao) {
-            return !empty($marcacao->hora);
-        });
+        $marcacoesValidas = array_filter($aMarcacoes, fn(stdClass $marcacao) => !empty($marcacao->hora));
         $possuiSomenteUmaMarcacao = count($marcacoesValidas) === 1;
 
         if ($possuiSomenteUmaMarcacao) {
@@ -135,7 +133,7 @@ class MarcacoesPontoCollection
             if ($oMarcacao instanceof MarcacaoPonto) {
                 $oMarcacao->setData(new \DBDate($oStdMarcacao->data));
                 $oMarcacao->setOrigemMarcacao($origemMarcacaoGeradaRelogio);
-                $oMarcacao->setManual((boolean)$oStdMarcacao->manual);
+                $oMarcacao->setManual((bool) $oStdMarcacao->manual);
 
                 if (!empty($oStdMarcacao->justificativa)) {
                     if ($oStdMarcacao->justificativa instanceof Justificativa) {
@@ -202,13 +200,13 @@ class MarcacoesPontoCollection
 
     public function getMarcacao($iTipo)
     {
-        return isset($this->aMarcacoes[$iTipo]) ? $this->aMarcacoes[$iTipo] : null;
+        return $this->aMarcacoes[$iTipo] ?? null;
     }
 
     public function getMarcacoesEntrada()
     {
 
-        $aMarcacoes   = array();
+        $aMarcacoes   = [];
 
         if ($this->getMarcacaoEntrada1() !== null) {
             $aMarcacoes[] = $this->getMarcacaoEntrada1();
@@ -224,7 +222,7 @@ class MarcacoesPontoCollection
     public function getMarcacoesSaida()
     {
 
-        $aMarcacoes   = array();
+        $aMarcacoes   = [];
 
         if ($this->getMarcacaoSaida1() !== null) {
             $aMarcacoes[] = $this->getMarcacaoSaida1();
@@ -386,7 +384,7 @@ class MarcacoesPontoCollection
 
     public function toArray()
     {
-        $marcacoes = array();
+        $marcacoes = [];
 
         foreach ($this->aMarcacoes as $marcacao) {
             $m = null;

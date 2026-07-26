@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fiscbairro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfiscbairro = new cl_fiscbairro;
 $clfiscbairro->rotulo->label("y32_codnoti");
 $clfiscbairro->rotulo->label("y32_codbai");
@@ -54,7 +55,7 @@ $clfiscbairro->rotulo->label("y32_codbai");
               <?=$Ly32_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y32_codnoti",20,$Iy32_codnoti,true,"text",4,"","chave_y32_codnoti");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clfiscbairro->rotulo->label("y32_codbai");
               <?=$Ly32_codbai?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y32_codbai",4,$Iy32_codbai,true,"text",4,"","chave_y32_codbai");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clfiscbairro->rotulo->label("y32_codbai");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fiscbairro.php")==true){
@@ -118,12 +119,12 @@ $clfiscbairro->rotulo->label("y32_codbai");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

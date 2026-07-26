@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_inicial_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clinicial = new cl_inicial;
 $clinicial->rotulo->label("v50_inicial");
 $clinicial->rotulo->label("v50_data");
@@ -54,7 +55,7 @@ $clinicial->rotulo->label("v50_data");
               <?=$Lv50_inicial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v50_inicial",6,$Iv50_inicial,true,"text",4,"","chave_v50_inicial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clinicial->rotulo->label("v50_data");
               <?=$Lv50_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v50_data",8,$Iv50_data,true,"text",4,"","chave_v50_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clinicial->rotulo->label("v50_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_inicial.php")==true){
@@ -122,12 +123,12 @@ $clinicial->rotulo->label("v50_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

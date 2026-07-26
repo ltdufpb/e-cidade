@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,13 +74,13 @@ function js_checa(){
           <td>     
             <input type="hidden" name="tipoImovel" value="<?=$tipoImovel?>"> 
             <input type="hidden" name="testaentra" value="true"> 
-            <?
+            <?php 
               db_ancora($Lj01_matric,' js_matri(true); ',1);
             ?>
           </td>
 
           <td> 
-          <?
+          <?php 
             db_input('j01_matric',10,0,true,'text',1,"onchange='js_matri(false)'");
             db_input('z01_nome',50,0,true,'text',3,"");
           ?>
@@ -92,7 +92,7 @@ function js_checa(){
   </center>
 </form>
 
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -26,7 +26,7 @@ import('phpdocwriter.pdw_drawing');
 class pdw_draw_line extends pdw_drawing
 {
 
-function pdw_draw_line(&$obj,$params)
+function __construct(&$obj,$params)
 {
 	$this->parent =& $obj;
 	$this->params =& $params;

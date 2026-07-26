@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $claluno           = new cl_aluno;
 $clalunobairro     = new cl_alunobairro;
@@ -79,7 +79,7 @@ if(isset($excluir)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Aluno</b></legend>
-    <?include(modification("forms/db_frmalunodados.php"));?>
+    <?php include(modification("forms/db_frmalunodados.php"));?>
    </fieldset>
    </center>
   </td>
@@ -87,7 +87,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
  if($claluno->erro_status=="0"){
    $claluno->erro(true,false);

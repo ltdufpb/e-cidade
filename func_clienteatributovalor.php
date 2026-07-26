@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clienteatributovalor_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clclienteatributovalor = new cl_clienteatributovalor;
 $clclienteatributovalor->rotulo->label("at94_sequencial");
 $clclienteatributovalor->rotulo->label("at94_valor");
@@ -54,7 +55,7 @@ $clclienteatributovalor->rotulo->label("at94_valor");
               <?=$Lat94_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at94_sequencial",10,$Iat94_sequencial,true,"text",4,"","chave_at94_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clclienteatributovalor->rotulo->label("at94_valor");
               <?=$Lat94_valor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at94_valor",1,$Iat94_valor,true,"text",4,"","chave_at94_valor");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clclienteatributovalor->rotulo->label("at94_valor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_clienteatributovalor.php")==true){
@@ -122,12 +123,12 @@ $clclienteatributovalor->rotulo->label("at94_valor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

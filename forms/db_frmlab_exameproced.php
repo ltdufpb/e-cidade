@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -57,7 +57,7 @@ $clrotulo->label("la08_i_codigo");
        ?>
     </td>
     <td>
-      <?
+      <?php 
         db_input('la53_i_exame',10,$Ila53_i_exame,true,'text',3," onchange='js_pesquisala53_i_exame(false);'");
         db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',3,'');
       ?>

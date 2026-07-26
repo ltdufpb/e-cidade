@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pontofx_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpontofx = new cl_pontofx;
 $clpontofx->rotulo->label("r90_anousu");
 $clpontofx->rotulo->label("r90_mesusu");
@@ -57,7 +58,7 @@ $clpontofx->rotulo->label("r90_regist");
               <?=$Lr90_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r90_mesusu",2,$Ir90_mesusu,true,"text",4,"","chave_r90_mesusu");
 		       ?>
             </td>
@@ -67,7 +68,7 @@ $clpontofx->rotulo->label("r90_regist");
               <?=$Lr90_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r90_regist",6,$Ir90_regist,true,"text",4,"","chave_r90_regist");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $clpontofx->rotulo->label("r90_regist");
               <?=$Lr90_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r90_rubric",4,$Ir90_rubric,true,"text",4,"","chave_r90_rubric");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $clpontofx->rotulo->label("r90_regist");
               <?=$Lr90_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r90_regist",6,$Ir90_regist,true,"text",4,"","chave_r90_regist");
 		       ?>
             </td>
@@ -105,7 +106,7 @@ $clpontofx->rotulo->label("r90_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pontofx.php")==true){
@@ -141,12 +142,12 @@ $clpontofx->rotulo->label("r90_regist");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

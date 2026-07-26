@@ -286,7 +286,7 @@ function js_submit_form(){
   		<input name="pesquisa" type="button"  disabled  value="Pesquisa" onclick="js_submit_form();" style="margin-top: 20px;">
 	  </form>
 </div>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

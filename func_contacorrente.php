@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_contacorrente_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcontacorrente = new cl_contacorrente;
 $clcontacorrente->rotulo->label("c17_sequencial");
 $clcontacorrente->rotulo->label("c17_descricao");
@@ -54,7 +55,7 @@ $clcontacorrente->rotulo->label("c17_descricao");
               <?=$Lc17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("c17_sequencial",10,$Ic17_sequencial,true,"text",4,"","chave_c17_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcontacorrente->rotulo->label("c17_descricao");
               <?=$Lc17_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("c17_descricao",50,$Ic17_descricao,true,"text",4,"","chave_c17_descricao");
 		       ?>
             </td>
@@ -131,12 +132,12 @@ $clcontacorrente->rotulo->label("c17_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

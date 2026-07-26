@@ -122,13 +122,13 @@ class HoraExtra extends BaseHora
      * Total Calculado de Horas Extras para a Tolerancia em minutos
      * @var array;
      */
-    private $totalCalculadoDeTolerancia = array();
+    private $totalCalculadoDeTolerancia = [];
 
     /**
      * Total de horas Calculadas
      * @var array
      */
-    private $totalHorasCalculadas = array();
+    private $totalHorasCalculadas = [];
 
     /**
      * HoraExtra constructor.

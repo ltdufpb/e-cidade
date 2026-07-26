@@ -32,7 +32,8 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 require_once modification("classes/db_avaliacao_classe.php");
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clavaliacao = new cl_avaliacao;
 $clavaliacao->rotulo->label("db101_sequencial");
 $clavaliacao->rotulo->label("db101_descricao");
@@ -82,7 +83,7 @@ $clavaliacao->rotulo->label("db101_descricao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $aWhere = array();
       if (!isset($_GET["todos"])) {
@@ -156,12 +157,12 @@ $clavaliacao->rotulo->label("db101_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

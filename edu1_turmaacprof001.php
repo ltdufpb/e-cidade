@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_turmaacprof_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clturmaacprof = new cl_turmaacprof;
 $db_opcao = 1;
 $db_botao = true;
@@ -68,13 +68,13 @@ if(isset($excluir)){
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <fieldset style="width:95%"><legend><b>Inclusão Profissional/Monitor</b></legend>
-	<?include(modification("forms/db_frmturmaacprof.php"));?>
+	<?php include(modification("forms/db_frmturmaacprof.php"));?>
 	</fieldset>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
 //db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -82,7 +82,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed222_i_turmaac",true,1,"ed222_i_turmaac",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($clturmaacprof->erro_status=="0"){
     $clturmaacprof->erro(true,false);
@@ -108,7 +108,7 @@ if(isset($alterar)){
     }
   }else{
     $clturmaacprof->erro(true,false);?>
-    <? db_redireciona("edu1_turmaacprof001.php?ed222_i_turmaac=$ed222_i_turmaac&ed268_c_descr=$ed268_c_descr");
+    <?php  db_redireciona("edu1_turmaacprof001.php?ed222_i_turmaac=$ed222_i_turmaac&ed268_c_descr=$ed268_c_descr");
   }
 }
 if(isset($excluir)){

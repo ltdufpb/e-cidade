@@ -52,7 +52,7 @@ class cl_certidcartoriorecibopaga {
                  v33_numnov = int4 = Numpre do Recibo da Certidão
                  ";
    //funcao construtor da classe
-   function cl_certidcartoriorecibopaga() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidcartoriorecibopaga");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

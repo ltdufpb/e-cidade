@@ -660,13 +660,13 @@ if(isset($mostra)){
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="if(document.form1.e87_codgera)document.form1.e87_codgera.focus();" >
 <center>
-   <?
+   <?php 
    	include(modification("forms/db_frmcancarq.php"));
    ?>
 </center>
 
 
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -698,7 +698,7 @@ function js_mostra(codage,data){
   
 }
 </script>
-<?//
+<?php //
 if(isset($sqlerro)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

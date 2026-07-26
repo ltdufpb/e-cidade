@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_inscricaopassivoitem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clinscricaopassivoitem = new cl_inscricaopassivoitem;
 $clinscricaopassivoitem->rotulo->label("c38_sequencial");
 $clinscricaopassivoitem->rotulo->label("c38_sequencial");
@@ -54,7 +55,7 @@ $clinscricaopassivoitem->rotulo->label("c38_sequencial");
               <?=$Lc38_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c38_sequencial",10,$Ic38_sequencial,true,"text",4,"","chave_c38_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clinscricaopassivoitem->rotulo->label("c38_sequencial");
               <?=$Lc38_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c38_sequencial",10,$Ic38_sequencial,true,"text",4,"","chave_c38_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clinscricaopassivoitem->rotulo->label("c38_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_inscricaopassivoitem.php")==true){
@@ -122,12 +123,12 @@ $clinscricaopassivoitem->rotulo->label("c38_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

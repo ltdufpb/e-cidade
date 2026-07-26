@@ -187,12 +187,12 @@ class Aluno
     /**
      * @var AlunoNecessidadeEspecial[]
      */
-    private $necessidadeEspecial = array();
+    private $necessidadeEspecial = [];
 
     /**
      * @var AlunoRecursoNecessarioAvaliacaoInep[]
      */
-    private $recursoNecessarioAvaliacaoInep = array();
+    private $recursoNecessarioAvaliacaoInep = [];
 
     /**
      * @return mixed
@@ -244,7 +244,7 @@ class Aluno
      */
     public function setNomeSocial($nome)
     {
-        $this->nomeSocial = trim($nome);
+        $this->nomeSocial = trim((string) $nome);
         return $this;
     }
 
@@ -262,7 +262,7 @@ class Aluno
      */
     public function setRaca($raca)
     {
-        $this->raca = trim($raca);
+        $this->raca = trim((string) $raca);
         return $this;
     }
 
@@ -352,7 +352,7 @@ class Aluno
      */
     public function setNomeResponsavel($nomeResponsavel)
     {
-        $this->nomeResponsavel = trim($nomeResponsavel);
+        $this->nomeResponsavel = trim((string) $nomeResponsavel);
         return $this;
     }
 
@@ -370,7 +370,7 @@ class Aluno
      */
     public function setEmailResponsavel($emailResponsavel)
     {
-        $this->emailResponsavel = trim($emailResponsavel);
+        $this->emailResponsavel = trim((string) $emailResponsavel);
         return $this;
     }
 
@@ -406,7 +406,7 @@ class Aluno
      */
     public function setZonaResidencia($zonaResidencia)
     {
-        $this->zonaResidencia = trim($zonaResidencia);
+        $this->zonaResidencia = trim((string) $zonaResidencia);
         return $this;
     }
 
@@ -694,7 +694,7 @@ class Aluno
      */
     public function setEmail($email)
     {
-        $this->email = trim($email);
+        $this->email = trim((string) $email);
         return $this;
     }
 
@@ -784,7 +784,7 @@ class Aluno
      */
     public function setMae($mae)
     {
-        $this->mae = trim($mae);
+        $this->mae = trim((string) $mae);
         return $this;
     }
 
@@ -802,7 +802,7 @@ class Aluno
      */
     public function setPai($pai)
     {
-        $this->pai = trim($pai);
+        $this->pai = trim((string) $pai);
         return $this;
     }
 
@@ -856,7 +856,7 @@ class Aluno
      */
     public function setFoto($foto)
     {
-        $this->foto = trim($foto);
+        $this->foto = trim((string) $foto);
         return $this;
     }
 
@@ -983,7 +983,7 @@ class Aluno
      */
     public function setNumero($numero)
     {
-        $this->numero = trim($numero);
+        $this->numero = trim((string) $numero);
         return $this;
     }
 
@@ -1307,7 +1307,7 @@ class Aluno
      */
     public function setNumeroCertidao($numeroCertidao)
     {
-        $this->numeroCertidao = trim($numeroCertidao);
+        $this->numeroCertidao = trim((string) $numeroCertidao);
         return $this;
     }
 
@@ -1325,7 +1325,7 @@ class Aluno
      */
     public function setLivroCertidao($livroCertidao)
     {
-        $this->livroCertidao = trim($livroCertidao);
+        $this->livroCertidao = trim((string) $livroCertidao);
         return $this;
     }
 
@@ -1343,7 +1343,7 @@ class Aluno
      */
     public function setFolhaCertidao($folhaCertidao)
     {
-        $this->folhaCertidao = trim($folhaCertidao);
+        $this->folhaCertidao = trim((string) $folhaCertidao);
         return $this;
     }
 
@@ -1415,7 +1415,7 @@ class Aluno
      */
     public function setMatriculaCeridao($matriculaCeridao)
     {
-        $this->matriculaCeridao = trim($matriculaCeridao);
+        $this->matriculaCeridao = trim((string) $matriculaCeridao);
         return $this;
     }
 
@@ -1433,7 +1433,7 @@ class Aluno
      */
     public function setPassaporte($passaporte)
     {
-        $this->passaporte = trim($passaporte);
+        $this->passaporte = trim((string) $passaporte);
         return $this;
     }
 
@@ -1469,7 +1469,7 @@ class Aluno
      */
     public function setIdentidadeComplemento($identidadeComplemento)
     {
-        $this->identidadeComplemento = trim($identidadeComplemento);
+        $this->identidadeComplemento = trim((string) $identidadeComplemento);
         return $this;
     }
 

@@ -50,7 +50,7 @@ class cl_agrupamentocaracteristicavalor {
                  j140_valor = float8 = Valor
                  ";
    //funcao construtor da classe
-   function cl_agrupamentocaracteristicavalor() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agrupamentocaracteristicavalor");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

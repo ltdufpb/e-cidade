@@ -44,7 +44,7 @@ $db_opcao                        = 1;
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php 
       $sLib  = "scripts.js,prototype.js,datagrid.widget.js,strings.js,grid.style.css,";
       $sLib .= "estilos.css,/widgets/dbautocomplete.widget.js,webseller.js";
       db_app::load($sLib);
@@ -67,13 +67,13 @@ $db_opcao                        = 1;
         <tr> 
           <td height="600" align="center" valign="top" bgcolor="#CCCCCC"> 
             <center>
-              <?include(modification("forms/db_frmlab_controlefisfinduplicar.php"));?>
+              <?php include(modification("forms/db_frmlab_controlefisfinduplicar.php"));?>
             </center>
           </td>
         </tr>
       </table>
     </center>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),

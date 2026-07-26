@@ -104,7 +104,7 @@ class Inventario {
    * Colecao de objeto da classe InventarioBem
    * @var array
    */
-  protected $aInventarioBens = array();
+  protected $aInventarioBens = [];
 
   function __construct($iInventario = '') {
 
@@ -193,7 +193,7 @@ class Inventario {
     $oDaoInventario->t75_situacao   = 3;
     $oDaoInventario->alterar($oDaoInventario->t75_sequencial);
     if ($oDaoInventario->erro_status == "0"){
-      throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_inventario', (object) array("sErro" => $oDaoInventario->erro_msg)));
+      throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_inventario', (object) ["sErro" => $oDaoInventario->erro_msg]));
     }
 
   }
@@ -227,7 +227,7 @@ class Inventario {
       $oDaoBensDepreciacao->alterar($oDaoBensDepreciacao->t44_sequencial);
 
       if ($oDaoBensDepreciacao->erro_status == "0"){
-          throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_depreciacao', (object) array("sErro" => $oDaoBensDepreciacao->erro_msg)));
+          throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_depreciacao', (object) ["sErro" => $oDaoBensDepreciacao->erro_msg]));
       }
 
       $oDaoBensHistoricoCalculo->t57_mes               = date("m"    , db_getsession("DB_datausu"));
@@ -242,7 +242,7 @@ class Inventario {
       $oDaoBensHistoricoCalculo->incluir(null);
 
       if ($oDaoBensHistoricoCalculo->erro_status == "0") {
-          throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_historico_calculo', (object) array("sErro" => $oDaoBensHistoricoCalculo->erro_msg)));
+          throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_historico_calculo', (object) ["sErro" => $oDaoBensHistoricoCalculo->erro_msg]));
       }
 
       if (empty($oInventarioBem->getBem()->getValorAtual()) || $oInventarioBem->getBem()->getValorAtual() == $oInventarioBem->getValorResidual()) {
@@ -285,7 +285,7 @@ class Inventario {
 
       $oDaoBensHistoricoCalculoBem->incluir(null);
       if ($oDaoBensHistoricoCalculoBem->erro_status == "0"){
-          throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_historico_calculo_bem', (object) array("sErro" => $oDaoBensHistoricoCalculoBem->erro_msg)));
+          throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_processar_reavaliacao_historico_calculo_bem', (object) ["sErro" => $oDaoBensHistoricoCalculoBem->erro_msg]));
       }
   }
 
@@ -375,7 +375,7 @@ class Inventario {
       $rsBensHistoricoCalculoBem   = $oDaoBensHistoricoCalculoBem->sql_record($sSqlBensHistoricoCalculoBem);
       $iTotalBem                   = $oDaoBensHistoricoCalculoBem->numrows;
       if ($iTotalBem == 0) {
-        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_2', (object) array("sErro" => $oDaoBensHistoricoCalculoBem->erro_msg)));
+        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_2', (object) ["sErro" => $oDaoBensHistoricoCalculoBem->erro_msg]));
       }
 
       $nValorAtualAnterior     = 0;
@@ -442,7 +442,7 @@ class Inventario {
        * Erro de atualização no banco
        */
       if ($oDaoBensDepreciacao->erro_status == "0"){
-        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_4', (object) array("sErro" => $oDaoBensDepreciacao->erro_msg)));
+        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_4', (object) ["sErro" => $oDaoBensDepreciacao->erro_msg]));
       }
 
       /**
@@ -461,7 +461,7 @@ class Inventario {
       $oDaoBensHistoricoCalculo->incluir(null);
 
       if ($oDaoBensHistoricoCalculo->erro_status == "0") {
-        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_5',(object) array("sErro" => $oDaoBensHistoricoCalculo->erro_msg)));
+        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_5',(object) ["sErro" => $oDaoBensHistoricoCalculo->erro_msg]));
       }
 
       /**
@@ -479,7 +479,7 @@ class Inventario {
       $oDaoBensHistoricoCalculoBem->incluir(null);
 
       if ($oDaoBensHistoricoCalculoBem->erro_status == "0"){
-        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_6', (object) array("sErro" => $oDaoBensHistoricoCalculoBem->erro_msg)));
+        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_6', (object) ["sErro" => $oDaoBensHistoricoCalculoBem->erro_msg]));
       }
 
       /**
@@ -491,7 +491,7 @@ class Inventario {
       $oDaoInventario->alterar($oDaoInventario->t75_sequencial);
 
       if ($oDaoInventario->erro_status == "0"){
-        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_7', (object) array("sErro" => $oDaoInventario->erro_msg)));
+        throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_tecnico_7', (object) ["sErro" => $oDaoInventario->erro_msg]));
       }
     }
   }
@@ -514,7 +514,7 @@ class Inventario {
     $oInventarioBem->excluir(null, "t77_inventario = {$this->getInventario()} and t77_bens = {$iBem} ");
     if ($oInventarioBem->erro_status == "0") {
 
-      throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_desvincular_bem', (object) array("sErro" => $oInventarioBem->erro_msg)));
+      throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_desvincular_bem', (object) ["sErro" => $oInventarioBem->erro_msg]));
     }
 
   }
@@ -575,7 +575,7 @@ class Inventario {
     $oDaoInventarioAnulado->incluir(null);
     if ($oDaoInventarioAnulado->erro_status == "0") {
 
-      throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_anular_inventario', (object) array("sErro" => $oDaoInventarioAnulado->erro_msg)));
+      throw new DBException(_M('patrimonial.patrimonio.Inventario.erro_anular_inventario', (object) ["sErro" => $oDaoInventarioAnulado->erro_msg]));
     }
 
 
@@ -606,7 +606,7 @@ class Inventario {
     $oDaoInventario->incluir(null);
     if ($oDaoInventario->erro_status == "0") {
 
-      throw new ParameterException(_M('patrimonial.patrimonio.Inventario.erro_salvar', (object) array("sErro" => $oDaoInventario->erro_msg)));
+      throw new ParameterException(_M('patrimonial.patrimonio.Inventario.erro_salvar', (object) ["sErro" => $oDaoInventario->erro_msg]));
     }
 
     $this->setInventario($oDaoInventario->t75_sequencial);
@@ -794,21 +794,12 @@ class Inventario {
    */
   public function getSituacaoString(){
 
-    switch ($this->getSituacao()) {
-
-      case "1":
-        $sSituacao = "ATIVO";
-        break;
-
-      case "2":
-        $sSituacao = "ANULADO";
-        break;
-
-      case "3":
-        $sSituacao = "PROCESSADO";
-        break;
-
-    }
+    $sSituacao = match ($this->getSituacao()) {
+        "1" => "ATIVO",
+        "2" => "ANULADO",
+        "3" => "PROCESSADO",
+        default => $sSituacao,
+    };
     return $sSituacao;
   }
 
@@ -836,12 +827,12 @@ class Inventario {
    */
   public function getDadosEscrituracaoContabil($lEstorno = false) {
 
-    $aDocumentosEstorno = array( "600" => "601",
+    $aDocumentosEstorno = [ "600" => "601",
                                  "602" => "603"
-                               );
+                               ];
 
     $aBens                   = $this->getBens();
-    $aDadosEscrituraContabil = array();
+    $aDadosEscrituraContabil = [];
 
     foreach ($aBens as $oDadosBem) {
 
@@ -856,7 +847,7 @@ class Inventario {
         $oValorEscriturar->nValorLancamento     = 0;
         $oValorEscriturar->nSaldoAnterior       = 0;
         $oValorEscriturar->nValorAnterior       = 0;
-        $oValorEscriturar->aClassificacoes      = array();
+        $oValorEscriturar->aClassificacoes      = [];
         $aDadosEscrituraContabil[$iCodigoConta] = $oValorEscriturar;
       } else {
         $oValorEscriturar = $aDadosEscrituraContabil[$iCodigoConta];

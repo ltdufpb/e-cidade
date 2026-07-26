@@ -52,7 +52,7 @@ try {
      */
     case 'buscaHorariosEscola':
 
-      $oRetorno->aHorariosEscola = array();
+      $oRetorno->aHorariosEscola = [];
 
       $oDaoHorarioEscola   = new cl_horarioescola();
       $sWhereHorarioEscola = "ed123_escola = {$oParam->iEscola} ";

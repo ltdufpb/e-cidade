@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,7 +70,7 @@ class cl_sau_receitamedica {
                  s158_c_hora = char(5) = Hora do sistema
                  ";
    //funcao construtor da classe
-   function cl_sau_receitamedica() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_receitamedica");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

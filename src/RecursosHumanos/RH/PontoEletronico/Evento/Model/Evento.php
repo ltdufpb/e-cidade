@@ -44,14 +44,14 @@ class Evento
      * @var array
      */
     public static $horasExtrasPermitidas =
-      array(
+      [
         BaseHora::HORAS_EXTRA50,
         BaseHora::HORAS_EXTRA75,
         BaseHora::HORAS_EXTRA100,
         BaseHora::HORAS_EXTRA50_NOTURNA,
         BaseHora::HORAS_EXTRA75_NOTURNA,
         BaseHora::HORAS_EXTRA100_NOTURNA
-      );
+      ];
     /**
      * @var integer
      */
@@ -95,7 +95,7 @@ class Evento
     /**
      * @var \Servidor[]
      */
-    protected $servidores = array();
+    protected $servidores = [];
     /**
      * @var \Instituicao
      */
@@ -365,10 +365,10 @@ class Evento
     public function validarServidores()
     {
 
-        $servidoresIgnorados = array();
+        $servidoresIgnorados = [];
 
         $nomeArquivo = 'tmp/servidores_inconsistencia.json';
-        $errosArquivo = array();
+        $errosArquivo = [];
 
         foreach ($this->servidores as $servidor) {
             $validador = EventoValidador::create();
@@ -381,12 +381,12 @@ class Evento
                     if (empty($errosArquivo[$codigoErro])) {
                         $errosArquivo[$codigoErro] = new \stdClass();
                         $errosArquivo[$codigoErro]->titulo = $titulo;
-                        $errosArquivo[$codigoErro]->matriculas = array();
+                        $errosArquivo[$codigoErro]->matriculas = [];
                     }
-                    $errosArquivo[$codigoErro]->matriculas[] = (object)array(
+                    $errosArquivo[$codigoErro]->matriculas[] = (object)[
                       'matricula' => $servidor->getMatricula(),
                       'nome'      => $servidor->getCgm()->getNome()
-                    );
+                    ];
                 }
             }
         }

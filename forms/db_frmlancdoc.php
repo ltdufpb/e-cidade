@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,7 +47,7 @@ $clrotulo->label("db44_descricao");
         <table border="0">
           <tr>
             <td nowrap title="<?=@$Tz06_cgm?>">
-            <?
+            <?php 
               if (isset($z06_numcgm) && $z06_numcgm > 0) {
                 db_ancora(@$Lz06_numcgm,"js_pesquisacgm(true);",3);
               } else {
@@ -56,7 +56,7 @@ $clrotulo->label("db44_descricao");
             ?>
             </td>
             <td> 
-            <?
+            <?php 
                if (isset($z06_numcgm) && $z06_numcgm > 0) {
                  
                  db_input('z06_numcgm',10,$Iz06_numcgm,true,'text',3,"");
@@ -75,7 +75,7 @@ $clrotulo->label("db44_descricao");
               <b>Documento:</b>
             </td>
             <td> 
-            <? 
+            <?php  
                $where         = "db44_cadtipodocumento = {$tipoDocumento}";
                $oDocumento    = new cl_caddocumento();
                $sSqlDocumento = $oDocumento->sql_query_buscaDocTipo(null, "*", "", $where);
@@ -107,7 +107,7 @@ $clrotulo->label("db44_descricao");
    </tr>
 </table>
 <div id='btnVoltarCgm'>
-<?
+<?php 
   if(!isset($lMostrarBotaoVoltar)) {
     $lMostrarBotaoVoltar = false;
   }
@@ -115,7 +115,7 @@ $clrotulo->label("db44_descricao");
     
 ?>
       <input name="voltar" type="button" id="voltar" value="Voltar Cadastro CGM" onclick="js_voltarCadCgm();" > 
-<?
+<?php 
   }
 ?>
 </div>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,25 +62,25 @@ if($clescola->numrows>0){
    <?=@$Led19_i_codigo?>
   </td>
   <td>
-   <?db_input('ed19_i_codigo',10,$Ied19_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed19_i_codigo',10,$Ied19_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted19_i_ato?>">
-   <?db_ancora(@$Led19_i_ato,"",3);?>
+   <?php db_ancora(@$Led19_i_ato,"",3);?>
   </td>
   <td>
-   <?db_input('ed19_i_ato',10,$Ied19_i_ato,true,'text',3,'')?>
-   <?db_input('ed05_c_finalidade',40,@$Ied05_c_finalidade,true,'text',3,'')?>
+   <?php db_input('ed19_i_ato',10,$Ied19_i_ato,true,'text',3,'')?>
+   <?php db_input('ed05_c_finalidade',40,@$Ied05_c_finalidade,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted19_i_escola?>">
-   <?db_ancora(@$Led19_i_escola,"",3);?>
+   <?php db_ancora(@$Led19_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed19_i_escola',10,$Ied19_i_escola,true,'text',3,'','',$color)?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'','',$color)?>
+   <?php db_input('ed19_i_escola',10,$Ied19_i_escola,true,'text',3,'','',$color)?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'','',$color)?>
   </td>
  </tr>
 </table>
@@ -89,13 +89,13 @@ if($clescola->numrows>0){
 <table>
  <tr>
   <td valign="top">
-  <?
-   $chavepri= array("ed19_i_codigo"=>@$ed19_i_codigo,
+  <?php 
+   $chavepri= ["ed19_i_codigo"=>@$ed19_i_codigo,
                     "ed19_i_escola"=>@$ed19_i_escola,
                     "ed18_c_nome"=>@$ed18_c_nome,
                     "ed19_i_ato"=>@$ed19_i_ato,
                     "ed05_c_finalidade"=>@$ed05_c_finalidade
-                   );
+                   ];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clatoescola->sql_query("","*","ed18_c_nome"," ed19_i_ato = $ed19_i_ato");
    @$cliframe_alterar_excluir->sql_disabled = $clatoescola->sql_query("","*","ed18_c_nome"," ed19_i_escola != $ed19_i_escola");

@@ -176,10 +176,10 @@ if ( isset( $alterar ) ) {
       if ($oDaoMatricula->numrows == 0) {
 
         $lAlteraAlunoCurso = false;
-        if (trim($ed60_c_situacao) == "TRANSFERIDO FORA") {
+        if (trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA") {
 
-          db_msgbox("ATENÇÃO! Aluno(a) ".trim($ed47_v_nome)." já possui matrícula\\nno calendário ".trim($caldescr).
-                    ", na turma ".trim($turdescr)." com situação de ".trim($ed60_c_situacao).
+          db_msgbox("ATENÇÃO! Aluno(a) ".trim((string) $ed47_v_nome)." já possui matrícula\\nno calendário ".trim((string) $caldescr).
+                    ", na turma ".trim((string) $turdescr)." com situação de ".trim((string) $ed60_c_situacao).
                     ".\\nPara reativar esta matrícula acesse:\\n  Procedimentos -> Transferências -> ".
                     "Matricular Alunos Transferidos (FORA)");
           ?>
@@ -189,8 +189,8 @@ if ( isset( $alterar ) ) {
           exit;
 
         } else {
-          db_msgbox("ATENÇÃO! Aluno(a) ".trim($ed47_v_nome)." já possui matrícula\\nno calendário ".trim($caldescr).
-                    ", na turma ".trim($turdescr)." com situação de ".trim($ed60_c_situacao).
+          db_msgbox("ATENÇÃO! Aluno(a) ".trim((string) $ed47_v_nome)." já possui matrícula\\nno calendário ".trim((string) $caldescr).
+                    ", na turma ".trim((string) $turdescr)." com situação de ".trim((string) $ed60_c_situacao).
                     ".\\nPara reativar esta matrícula acesse:\\n  Procedimentos -> Matrículas -> ".
                     "Alterar Situação da Matrícula");
         }
@@ -271,9 +271,9 @@ if (isset($incluirmatricula)) {
     if ($oDaoMatricula->numrows == 0) {
 
       $lAlteraAlunoCurso = true;
-      if (trim($sitmatricula) == "TRANSFERIDO FORA") {
+      if (trim((string) $sitmatricula) == "TRANSFERIDO FORA") {
 
-        db_msgbox("Aluno(a) ".trim($nometem)." já possui matrícula na turma $turmatem no calendário $caltem,\\ncom".
+        db_msgbox("Aluno(a) ".trim((string) $nometem)." já possui matrícula na turma $turmatem no calendário $caltem,\\ncom".
                   " situação de $sitmatricula!\\nPara reativar esta matrícula acesse:\\n  Procedimentos -> ".
                   "Transferências -> Matricular Alunos Transferidos (FORA)");
 
@@ -286,7 +286,7 @@ if (isset($incluirmatricula)) {
 
       } else {
 
-        db_msgbox("Aluno(a) ".trim($nometem)." já possui matrícula na turma $turmatem no calendário $caltem,\\ncom".
+        db_msgbox("Aluno(a) ".trim((string) $nometem)." já possui matrícula na turma $turmatem no calendário $caltem,\\ncom".
                   " situação de $sitmatricula!\\nPara reativar esta matrícula acesse:\\n  Procedimentos -> ".
                   "Matrículas -> Alterar Situação da Matrícula");
         db_redireciona("edu1_alunocurso001.php?ed56_i_aluno=$ed56_i_aluno&ed47_v_nome=$ed47_v_nome");
@@ -392,7 +392,7 @@ if (isset($incluirmatricula)) {
       $max = $max == "" ? "" : ($max+1);
       $trocaEscola = $escolaatual != $ed56_i_escola;
       $ed79_i_turmaant                     = $ed79_i_turmaant == "" ? "null" : $ed79_i_turmaant;
-      $tipomatricula                       = trim($sitanterior) == "CANDIDATO" || $lTrocaModalidade || $trocaEscola ? "N" : "R";
+      $tipomatricula                       = trim((string) $sitanterior) == "CANDIDATO" || $lTrocaModalidade || $trocaEscola ? "N" : "R";
       $oDaoMatricula->ed60_i_aluno         = $ed56_i_aluno;
       $oDaoMatricula->ed60_i_turma         = $ed60_i_turma;
       $oDaoMatricula->ed60_i_numaluno      = $max;
@@ -414,16 +414,16 @@ if (isset($incluirmatricula)) {
       $oDaoMatricula->incluir(null);
         /* PLUGIN MATRICULAONLINE - Vincular como Aluno */
 
-      $sitmatricula  = trim($sitanterior) == "CANDIDATO" || $trocaEscola ? "MATRICULAR" : "REMATRICULAR";
-      $sitmatricula1 = trim($sitanterior) == "CANDIDATO" || $trocaEscola ? "MATRICULADO" : "REMATRICULADO";
+      $sitmatricula  = trim((string) $sitanterior) == "CANDIDATO" || $trocaEscola ? "MATRICULAR" : "REMATRICULAR";
+      $sitmatricula1 = trim((string) $sitanterior) == "CANDIDATO" || $trocaEscola ? "MATRICULADO" : "REMATRICULADO";
 
       $iUltimaMatricula                       = $oDaoMatricula->ed60_i_codigo;
 
       $oDaoMatriculaMov->ed229_i_matricula    = $iUltimaMatricula;
       $oDaoMatriculaMov->ed229_i_usuario      = db_getsession("DB_id_usuario");
       $oDaoMatriculaMov->ed229_c_procedimento = "$sitmatricula ALUNO";
-      $oDaoMatriculaMov->ed229_t_descr        = "ALUNO $sitmatricula1 NA TURMA ".trim($ed57_c_descr).
-                                              ". SITUAÇÃO ANTERIOR: ".trim($sitanterior);
+      $oDaoMatriculaMov->ed229_t_descr        = "ALUNO $sitmatricula1 NA TURMA ".trim((string) $ed57_c_descr).
+                                              ". SITUAÇÃO ANTERIOR: ".trim((string) $sitanterior);
       $oDaoMatriculaMov->ed229_d_dataevento   = $ed60_d_datamatricula_ano."-".$ed60_d_datamatricula_mes."-".
                                               $ed60_d_datamatricula_dia;
       $oDaoMatriculaMov->ed229_c_horaevento   = date("H:i");
@@ -454,7 +454,7 @@ if (isset($incluirmatricula)) {
       /**
        * Busca os turnos referentes vinculados a turma
        */
-      $aTurnosReferente = array();
+      $aTurnosReferente = [];
       if ( isset($check_turno1) ) {
         $aTurnosReferente[] = $check_turno1;
       }
@@ -585,7 +585,7 @@ if (isset($incluirmatricula)) {
 
       <?php } else { ?>
         <legend><b>Cursos do Aluno</b></legend>
-        <?include(modification("forms/db_frmalunocurso.php"));?>
+        <?php include(modification("forms/db_frmalunocurso.php"));?>
       <?php } ?>
     </fieldset>
     </div>

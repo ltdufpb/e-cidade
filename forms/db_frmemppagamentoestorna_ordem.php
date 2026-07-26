@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ $clrotulo->label("e53_valor");
 $clrotulo->label("o56_elemento");
 ?>
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -154,7 +154,7 @@ $clrotulo->label("o56_elemento");
     <input name='verificador' type='hidden' value='ok'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <?php 
  if(isset($e60_numemp) && $e60_numemp!= ""){
       $result = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp,null,"*","e64_codele"));
       $numrows = $clempelemento->numrows;

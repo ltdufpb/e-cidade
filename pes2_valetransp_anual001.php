@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -101,12 +101,12 @@ function js_emite(){
         <strong>Ano :&nbsp;&nbsp;</strong>
         </td>
         <td>
-          <?
+          <?php 
            $DBtxt23 = db_anofolha();
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;&nbsp; a &nbsp;&nbsp;
-          <?
+          <?php 
            $anofinal = db_anofolha();
            db_input('anofinal',4,'',true,'text',2,'')
           ?>
@@ -118,7 +118,7 @@ function js_emite(){
                 <Legend>
                   <b>Selecione os Vale Transportes</b>
                 </Legend>
-                <?
+                <?php 
                 db_input("valor", 4, 0, true, 'hidden', 3);
                 db_input("colunas_sselecionados", 4, 0, true, 'hidden', 3);
                 db_input("colunas_nselecionados", 4, 0, true, 'hidden', 3);
@@ -157,7 +157,7 @@ function js_emite(){
         <td align="right" ><strong>Imprime Servidores :&nbsp;&nbsp;</strong>
         </td>
         <td align="left">
-          <?
+          <?php 
             $arr_imprime_serv = array("t"=>"Sim","f"=>"Não");
             db_select('imprime_serv',$arr_imprime_serv,true,4,"");
 	        ?>
@@ -176,7 +176,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

@@ -39,7 +39,7 @@ use ECidade\Educacao\Escola\Repository\RecuperacaoDiasLetivos as RecuperacaoDias
 $post = db_utils::postMemory($_REQUEST);
 $post->json = str_replace("\\", "", $post->json);
 $parametro = JSON::create()->parse($post->json);
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 $recuperacaoDiasLetivosRepository = RecuperacaoDiasLetivosRepository::getInstance();
 try {

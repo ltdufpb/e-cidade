@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,8 +36,8 @@ $cltransporteparam->rotulo->label();
    <?=@$Led224_f_limitekm?>
   </td>
   <td>
-   <?db_input('ed224_f_limitekm',5,$Ied224_f_limitekm,true,'text',$db_opcao,"")?>
-   <?db_input('ed224_i_codigo',10,$Ied224_i_codigo,true,'hidden',3,"")?>
+   <?php db_input('ed224_f_limitekm',5,$Ied224_f_limitekm,true,'text',$db_opcao,"")?>
+   <?php db_input('ed224_i_codigo',10,$Ied224_i_codigo,true,'hidden',3,"")?>
   </td>
  </tr>
 </table>
@@ -50,9 +50,9 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
  db_iframe_transporteparam.hide();
- <?
+ <?php 
  if($db_opcao!=1){
-   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+   echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }
  ?>
 }

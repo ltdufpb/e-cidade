@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -92,13 +92,13 @@ if ( isset($oPost->excluir) ) {
 </head>
 <body bgcolor=#CCCCCC>
 
-    <?
+    <?php 
     include(modification("forms/db_frmprocdiver.php"));
     ?>
 
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
   
   if ( $lSqlErro == true ) {

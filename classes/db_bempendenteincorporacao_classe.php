@@ -40,7 +40,7 @@ class cl_bempendenteincorporacao extends DAOBasica
         parent::__construct("patrimonio.bempendenteincorporacao");
     }
 
-    function sql_origem($campos, $ordem = null, $where)
+    function sql_origem($campos, $ordem = null, $where = null)
     {
         $sql = "
         select $campos

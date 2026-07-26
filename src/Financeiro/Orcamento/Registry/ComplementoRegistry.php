@@ -16,7 +16,7 @@ class ComplementoRegistry
     /**
      * @var Complemento[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Complemento $complemento
@@ -33,7 +33,7 @@ class ComplementoRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $complemento = ComplementoRepository::find($key);
             if (is_null($complemento)) {
                 return null;

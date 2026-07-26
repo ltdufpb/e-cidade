@@ -35,12 +35,6 @@ class TipoPrestacaoConta
 {
 
     /**
-     * Código sequencial
-     * @var integer
-     */
-    private $iCodigo;
-
-    /**
      * Descrição da prestação de contas
      * @var string
      */
@@ -57,10 +51,12 @@ class TipoPrestacaoConta
      * @param null $iCodigo
      * @throws BusinessException
      */
-    public function __construct($iCodigo = null)
+    public function __construct(/**
+     * Código sequencial
+     */
+    private $iCodigo = null)
     {
 
-        $this->iCodigo = $iCodigo;
         if (!empty($this->iCodigo)) {
 
             $oDaoEmpPrestaTip = db_utils::getDao("empprestatip");

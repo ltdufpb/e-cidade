@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE concilia
 class cl_concilia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k68_sequencial = 0; 
-   var $k68_data_dia = null; 
-   var $k68_data_mes = null; 
-   var $k68_data_ano = null; 
-   var $k68_data = null; 
-   var $k68_contabancaria = 0; 
-   var $k68_saldoextrato = 0; 
-   var $k68_saldocorrente = 0; 
-   var $k68_conciliastatus = 0; 
+   public $k68_sequencial = 0; 
+   public $k68_data_dia = null; 
+   public $k68_data_mes = null; 
+   public $k68_data_ano = null; 
+   public $k68_data = null; 
+   public $k68_contabancaria = 0; 
+   public $k68_saldoextrato = 0; 
+   public $k68_saldocorrente = 0; 
+   public $k68_conciliastatus = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k68_sequencial = int4 = Codigo sequencial 
                  k68_data = date = Data da conciliação 
                  k68_contabancaria = int4 = Codigo sequencial da conta bancaria 
@@ -61,10 +61,10 @@ class cl_concilia {
                  k68_conciliastatus = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_concilia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("concilia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_concilia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k68_sequencial = pg_result($result,0,0); 
+       $this->k68_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from concilia_k68_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k68_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k68_sequencial)){
          $this->erro_sql = " Campo k68_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_concilia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela das conciliações ($this->k68_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela das conciliações já Cadastrado";
@@ -218,15 +218,15 @@ class cl_concilia {
      $resaco = $this->sql_record($this->sql_query_file($this->k68_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10066,'$this->k68_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1730,10066,'','".AddSlashes(pg_result($resaco,0,'k68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1730,10067,'','".AddSlashes(pg_result($resaco,0,'k68_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1730,15631,'','".AddSlashes(pg_result($resaco,0,'k68_contabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1730,10068,'','".AddSlashes(pg_result($resaco,0,'k68_saldoextrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1730,10069,'','".AddSlashes(pg_result($resaco,0,'k68_saldocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1730,10149,'','".AddSlashes(pg_result($resaco,0,'k68_conciliastatus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1730,10066,'','".AddSlashes(pg_fetch_result($resaco,0,'k68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1730,10067,'','".AddSlashes(pg_fetch_result($resaco,0,'k68_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1730,15631,'','".AddSlashes(pg_fetch_result($resaco,0,'k68_contabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1730,10068,'','".AddSlashes(pg_fetch_result($resaco,0,'k68_saldoextrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1730,10069,'','".AddSlashes(pg_fetch_result($resaco,0,'k68_saldocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1730,10149,'','".AddSlashes(pg_fetch_result($resaco,0,'k68_conciliastatus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_concilia {
       $this->atualizacampos();
      $sql = " update concilia set ";
      $virgula = "";
-     if(trim($this->k68_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_sequencial"])){ 
+     if(trim((string) $this->k68_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_sequencial"])){ 
        $sql  .= $virgula." k68_sequencial = $this->k68_sequencial ";
        $virgula = ",";
-       if(trim($this->k68_sequencial) == null ){ 
+       if(trim((string) $this->k68_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "k68_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_concilia {
          return false;
        }
      }
-     if(trim($this->k68_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k68_data_dia"] !="") ){ 
+     if(trim((string) $this->k68_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k68_data_dia"] !="") ){ 
        $sql  .= $virgula." k68_data = '$this->k68_data' ";
        $virgula = ",";
-       if(trim($this->k68_data) == null ){ 
+       if(trim((string) $this->k68_data) == null ){ 
          $this->erro_sql = " Campo Data da conciliação nao Informado.";
          $this->erro_campo = "k68_data_dia";
          $this->erro_banco = "";
@@ -264,7 +264,7 @@ class cl_concilia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k68_data_dia"])){ 
          $sql  .= $virgula." k68_data = null ";
          $virgula = ",";
-         if(trim($this->k68_data) == null ){ 
+         if(trim((string) $this->k68_data) == null ){ 
            $this->erro_sql = " Campo Data da conciliação nao Informado.";
            $this->erro_campo = "k68_data_dia";
            $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_concilia {
          }
        }
      }
-     if(trim($this->k68_contabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_contabancaria"])){ 
+     if(trim((string) $this->k68_contabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_contabancaria"])){ 
        $sql  .= $virgula." k68_contabancaria = $this->k68_contabancaria ";
        $virgula = ",";
-       if(trim($this->k68_contabancaria) == null ){ 
+       if(trim((string) $this->k68_contabancaria) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial da conta bancaria nao Informado.";
          $this->erro_campo = "k68_contabancaria";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_concilia {
          return false;
        }
      }
-     if(trim($this->k68_saldoextrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_saldoextrato"])){ 
+     if(trim((string) $this->k68_saldoextrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_saldoextrato"])){ 
        $sql  .= $virgula." k68_saldoextrato = $this->k68_saldoextrato ";
        $virgula = ",";
-       if(trim($this->k68_saldoextrato) == null ){ 
+       if(trim((string) $this->k68_saldoextrato) == null ){ 
          $this->erro_sql = " Campo Saldo do extrato nao Informado.";
          $this->erro_campo = "k68_saldoextrato";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_concilia {
          return false;
        }
      }
-     if(trim($this->k68_saldocorrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_saldocorrente"])){ 
+     if(trim((string) $this->k68_saldocorrente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_saldocorrente"])){ 
        $sql  .= $virgula." k68_saldocorrente = $this->k68_saldocorrente ";
        $virgula = ",";
-       if(trim($this->k68_saldocorrente) == null ){ 
+       if(trim((string) $this->k68_saldocorrente) == null ){ 
          $this->erro_sql = " Campo Saldo do caixa nao Informado.";
          $this->erro_campo = "k68_saldocorrente";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_concilia {
          return false;
        }
      }
-     if(trim($this->k68_conciliastatus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_conciliastatus"])){ 
+     if(trim((string) $this->k68_conciliastatus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k68_conciliastatus"])){ 
        $sql  .= $virgula." k68_conciliastatus = $this->k68_conciliastatus ";
        $virgula = ",";
-       if(trim($this->k68_conciliastatus) == null ){ 
+       if(trim((string) $this->k68_conciliastatus) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "k68_conciliastatus";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_concilia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10066,'$this->k68_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k68_sequencial"]) || $this->k68_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,1730,10066,'".AddSlashes(pg_result($resaco,$conresaco,'k68_sequencial'))."','$this->k68_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1730,10066,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k68_sequencial'))."','$this->k68_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k68_data"]) || $this->k68_data != "")
-           $resac = db_query("insert into db_acount values($acount,1730,10067,'".AddSlashes(pg_result($resaco,$conresaco,'k68_data'))."','$this->k68_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1730,10067,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k68_data'))."','$this->k68_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k68_contabancaria"]) || $this->k68_contabancaria != "")
-           $resac = db_query("insert into db_acount values($acount,1730,15631,'".AddSlashes(pg_result($resaco,$conresaco,'k68_contabancaria'))."','$this->k68_contabancaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1730,15631,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k68_contabancaria'))."','$this->k68_contabancaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k68_saldoextrato"]) || $this->k68_saldoextrato != "")
-           $resac = db_query("insert into db_acount values($acount,1730,10068,'".AddSlashes(pg_result($resaco,$conresaco,'k68_saldoextrato'))."','$this->k68_saldoextrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1730,10068,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k68_saldoextrato'))."','$this->k68_saldoextrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k68_saldocorrente"]) || $this->k68_saldocorrente != "")
-           $resac = db_query("insert into db_acount values($acount,1730,10069,'".AddSlashes(pg_result($resaco,$conresaco,'k68_saldocorrente'))."','$this->k68_saldocorrente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1730,10069,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k68_saldocorrente'))."','$this->k68_saldocorrente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k68_conciliastatus"]) || $this->k68_conciliastatus != "")
-           $resac = db_query("insert into db_acount values($acount,1730,10149,'".AddSlashes(pg_result($resaco,$conresaco,'k68_conciliastatus'))."','$this->k68_conciliastatus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1730,10149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k68_conciliastatus'))."','$this->k68_conciliastatus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_concilia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10066,'$k68_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1730,10066,'','".AddSlashes(pg_result($resaco,$iresaco,'k68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1730,10067,'','".AddSlashes(pg_result($resaco,$iresaco,'k68_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1730,15631,'','".AddSlashes(pg_result($resaco,$iresaco,'k68_contabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1730,10068,'','".AddSlashes(pg_result($resaco,$iresaco,'k68_saldoextrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1730,10069,'','".AddSlashes(pg_result($resaco,$iresaco,'k68_saldocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1730,10149,'','".AddSlashes(pg_result($resaco,$iresaco,'k68_conciliastatus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1730,10066,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1730,10067,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k68_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1730,15631,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k68_contabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1730,10068,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k68_saldoextrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1730,10069,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k68_saldocorrente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1730,10149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k68_conciliastatus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from concilia
@@ -462,7 +462,7 @@ class cl_concilia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:concilia";
@@ -477,7 +477,7 @@ class cl_concilia {
    function sql_query ( $k68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,7 +505,7 @@ class cl_concilia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -518,7 +518,7 @@ class cl_concilia {
    function sql_query_file ( $k68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_concilia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

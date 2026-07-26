@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE rhpesfgts
 class cl_rhpesfgts { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh15_regist = 0; 
-   var $rh15_data_dia = null; 
-   var $rh15_data_mes = null; 
-   var $rh15_data_ano = null; 
-   var $rh15_data = null; 
-   var $rh15_banco = null; 
-   var $rh15_agencia = null; 
-   var $rh15_agencia_d = null; 
-   var $rh15_contac = null; 
-   var $rh15_contac_d = null; 
+   public $rh15_regist = 0; 
+   public $rh15_data_dia = null; 
+   public $rh15_data_mes = null; 
+   public $rh15_data_ano = null; 
+   public $rh15_data = null; 
+   public $rh15_banco = null; 
+   public $rh15_agencia = null; 
+   public $rh15_agencia_d = null; 
+   public $rh15_contac = null; 
+   public $rh15_contac_d = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh15_regist = int4 = Matrícula do Servidor 
                  rh15_data = date = Opção do FGTS 
                  rh15_banco = varchar(10) = Banco do FGTS 
@@ -63,10 +63,10 @@ class cl_rhpesfgts {
                  rh15_contac_d = varchar(2) = Dígito da Conta do FGTS 
                  ";
    //funcao construtor da classe 
-   function cl_rhpesfgts() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpesfgts"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -167,7 +167,7 @@ class cl_rhpesfgts {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Funcionários com FGTS ($this->rh15_regist) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Funcionários com FGTS já Cadastrado";
@@ -196,16 +196,16 @@ class cl_rhpesfgts {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7063,'$this->rh15_regist','I')");
-         $resac = db_query("insert into db_acount values($acount,1167,7063,'','".AddSlashes(pg_result($resaco,0,'rh15_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1167,7064,'','".AddSlashes(pg_result($resaco,0,'rh15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1167,7065,'','".AddSlashes(pg_result($resaco,0,'rh15_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1167,7066,'','".AddSlashes(pg_result($resaco,0,'rh15_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1167,7067,'','".AddSlashes(pg_result($resaco,0,'rh15_agencia_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1167,7068,'','".AddSlashes(pg_result($resaco,0,'rh15_contac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1167,7069,'','".AddSlashes(pg_result($resaco,0,'rh15_contac_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1167,7063,'','".AddSlashes(pg_fetch_result($resaco,0,'rh15_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1167,7064,'','".AddSlashes(pg_fetch_result($resaco,0,'rh15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1167,7065,'','".AddSlashes(pg_fetch_result($resaco,0,'rh15_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1167,7066,'','".AddSlashes(pg_fetch_result($resaco,0,'rh15_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1167,7067,'','".AddSlashes(pg_fetch_result($resaco,0,'rh15_agencia_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1167,7068,'','".AddSlashes(pg_fetch_result($resaco,0,'rh15_contac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1167,7069,'','".AddSlashes(pg_fetch_result($resaco,0,'rh15_contac_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -215,10 +215,10 @@ class cl_rhpesfgts {
       $this->atualizacampos();
      $sql = " update rhpesfgts set ";
      $virgula = "";
-     if(trim($this->rh15_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_regist"])){ 
+     if(trim((string) $this->rh15_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_regist"])){ 
        $sql  .= $virgula." rh15_regist = $this->rh15_regist ";
        $virgula = ",";
-       if(trim($this->rh15_regist) == null ){ 
+       if(trim((string) $this->rh15_regist) == null ){ 
          $this->erro_sql = " Campo Matrícula do Servidor não informado.";
          $this->erro_campo = "rh15_regist";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_rhpesfgts {
          return false;
        }
      }
-     if(trim($this->rh15_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh15_data_dia"] !="") ){ 
+     if(trim((string) $this->rh15_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh15_data_dia"] !="") ){ 
        $sql  .= $virgula." rh15_data = '$this->rh15_data' ";
        $virgula = ",";
-       if(trim($this->rh15_data) == null ){ 
+       if(trim((string) $this->rh15_data) == null ){ 
          $this->erro_sql = " Campo Opção do FGTS não informado.";
          $this->erro_campo = "rh15_data_dia";
          $this->erro_banco = "";
@@ -244,7 +244,7 @@ class cl_rhpesfgts {
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_data_dia"])){ 
          $sql  .= $virgula." rh15_data = null ";
          $virgula = ",";
-         if(trim($this->rh15_data) == null ){ 
+         if(trim((string) $this->rh15_data) == null ){ 
            $this->erro_sql = " Campo Opção do FGTS não informado.";
            $this->erro_campo = "rh15_data_dia";
            $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_rhpesfgts {
          }
        }
      }
-     if(trim($this->rh15_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_banco"])){ 
+     if(trim((string) $this->rh15_banco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_banco"])){ 
        $sql  .= $virgula." rh15_banco = '$this->rh15_banco' ";
        $virgula = ",";
-       if(trim($this->rh15_banco) == null ){ 
+       if(trim((string) $this->rh15_banco) == null ){ 
          $this->erro_sql = " Campo Banco do FGTS não informado.";
          $this->erro_campo = "rh15_banco";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_rhpesfgts {
          return false;
        }
      }
-     if(trim($this->rh15_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_agencia"])){ 
+     if(trim((string) $this->rh15_agencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_agencia"])){ 
        $sql  .= $virgula." rh15_agencia = '$this->rh15_agencia' ";
        $virgula = ",";
-       if(trim($this->rh15_agencia) == null ){ 
+       if(trim((string) $this->rh15_agencia) == null ){ 
          $this->erro_sql = " Campo Agência do FGTS não informado.";
          $this->erro_campo = "rh15_agencia";
          $this->erro_banco = "";
@@ -281,14 +281,14 @@ class cl_rhpesfgts {
          return false;
        }
      }
-     if(trim($this->rh15_agencia_d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_agencia_d"])){ 
+     if(trim((string) $this->rh15_agencia_d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_agencia_d"])){ 
        $sql  .= $virgula." rh15_agencia_d = '$this->rh15_agencia_d' ";
        $virgula = ",";
      }
-     if(trim($this->rh15_contac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_contac"])){ 
+     if(trim((string) $this->rh15_contac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_contac"])){ 
        $sql  .= $virgula." rh15_contac = '$this->rh15_contac' ";
        $virgula = ",";
-       if(trim($this->rh15_contac) == null ){ 
+       if(trim((string) $this->rh15_contac) == null ){ 
          $this->erro_sql = " Campo Conta  do FGTS não informado.";
          $this->erro_campo = "rh15_contac";
          $this->erro_banco = "";
@@ -298,7 +298,7 @@ class cl_rhpesfgts {
          return false;
        }
      }
-     if(trim($this->rh15_contac_d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_contac_d"])){ 
+     if(trim((string) $this->rh15_contac_d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh15_contac_d"])){ 
        $sql  .= $virgula." rh15_contac_d = '$this->rh15_contac_d' ";
        $virgula = ",";
      }
@@ -316,23 +316,23 @@ class cl_rhpesfgts {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,7063,'$this->rh15_regist','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_regist"]) || $this->rh15_regist != "")
-             $resac = db_query("insert into db_acount values($acount,1167,7063,'".AddSlashes(pg_result($resaco,$conresaco,'rh15_regist'))."','$this->rh15_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1167,7063,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh15_regist'))."','$this->rh15_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_data"]) || $this->rh15_data != "")
-             $resac = db_query("insert into db_acount values($acount,1167,7064,'".AddSlashes(pg_result($resaco,$conresaco,'rh15_data'))."','$this->rh15_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1167,7064,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh15_data'))."','$this->rh15_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_banco"]) || $this->rh15_banco != "")
-             $resac = db_query("insert into db_acount values($acount,1167,7065,'".AddSlashes(pg_result($resaco,$conresaco,'rh15_banco'))."','$this->rh15_banco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1167,7065,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh15_banco'))."','$this->rh15_banco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_agencia"]) || $this->rh15_agencia != "")
-             $resac = db_query("insert into db_acount values($acount,1167,7066,'".AddSlashes(pg_result($resaco,$conresaco,'rh15_agencia'))."','$this->rh15_agencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1167,7066,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh15_agencia'))."','$this->rh15_agencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_agencia_d"]) || $this->rh15_agencia_d != "")
-             $resac = db_query("insert into db_acount values($acount,1167,7067,'".AddSlashes(pg_result($resaco,$conresaco,'rh15_agencia_d'))."','$this->rh15_agencia_d',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1167,7067,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh15_agencia_d'))."','$this->rh15_agencia_d',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_contac"]) || $this->rh15_contac != "")
-             $resac = db_query("insert into db_acount values($acount,1167,7068,'".AddSlashes(pg_result($resaco,$conresaco,'rh15_contac'))."','$this->rh15_contac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1167,7068,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh15_contac'))."','$this->rh15_contac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh15_contac_d"]) || $this->rh15_contac_d != "")
-             $resac = db_query("insert into db_acount values($acount,1167,7069,'".AddSlashes(pg_result($resaco,$conresaco,'rh15_contac_d'))."','$this->rh15_contac_d',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1167,7069,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh15_contac_d'))."','$this->rh15_contac_d',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -386,16 +386,16 @@ class cl_rhpesfgts {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,7063,'$rh15_regist','E')");
-           $resac  = db_query("insert into db_acount values($acount,1167,7063,'','".AddSlashes(pg_result($resaco,$iresaco,'rh15_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1167,7064,'','".AddSlashes(pg_result($resaco,$iresaco,'rh15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1167,7065,'','".AddSlashes(pg_result($resaco,$iresaco,'rh15_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1167,7066,'','".AddSlashes(pg_result($resaco,$iresaco,'rh15_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1167,7067,'','".AddSlashes(pg_result($resaco,$iresaco,'rh15_agencia_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1167,7068,'','".AddSlashes(pg_result($resaco,$iresaco,'rh15_contac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1167,7069,'','".AddSlashes(pg_result($resaco,$iresaco,'rh15_contac_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1167,7063,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh15_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1167,7064,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1167,7065,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh15_banco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1167,7066,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh15_agencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1167,7067,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh15_agencia_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1167,7068,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh15_contac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1167,7069,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh15_contac_d'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -456,7 +456,7 @@ class cl_rhpesfgts {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhpesfgts";
@@ -493,7 +493,7 @@ class cl_rhpesfgts {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_rhpesfgts {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_rhpesfgts {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

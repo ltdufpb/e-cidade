@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysregrasacessocanc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_sysregrasacessocanc = new cl_db_sysregrasacessocanc;
 $cldb_sysregrasacessocanc->rotulo->label("db49_idacesso");
 $cldb_sysregrasacessocanc->rotulo->label("db49_observ");
@@ -54,7 +55,7 @@ $cldb_sysregrasacessocanc->rotulo->label("db49_observ");
               <?=$Ldb49_idacesso?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db49_idacesso",6,$Idb49_idacesso,true,"text",4,"","chave_db49_idacesso");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_sysregrasacessocanc->rotulo->label("db49_observ");
               <?=$Ldb49_observ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db49_observ",1,$Idb49_observ,true,"text",4,"","chave_db49_observ");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_sysregrasacessocanc->rotulo->label("db49_observ");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_sysregrasacessocanc.php")==true){
@@ -122,12 +123,12 @@ $cldb_sysregrasacessocanc->rotulo->label("db49_observ");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

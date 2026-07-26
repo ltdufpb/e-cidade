@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -51,7 +51,7 @@ class cl_sau_prestadores {
                  s110_i_numcgm = int4 = CGM
                  ";
    //funcao construtor da classe
-   function cl_sau_prestadores() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_prestadores");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

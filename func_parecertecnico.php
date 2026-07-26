@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parecertecnico_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clparecertecnico = new cl_parecertecnico;
 $clparecertecnico->rotulo->label("am08_sequencial");
 $clparecertecnico->rotulo->label("am08_datavencimento");
@@ -50,11 +51,11 @@ $clparecertecnico->rotulo->label("am08_datavencimento");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam08_sequencial?></label></td>
-          <td><? db_input("am08_sequencial",10,$Iam08_sequencial,true,"text",4,"","chave_am08_sequencial"); ?></td>
+          <td><?php  db_input("am08_sequencial",10,$Iam08_sequencial,true,"text",4,"","chave_am08_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam08_datavencimento?></label></td>
-          <td><? db_input("am08_datavencimento",10,$Iam08_datavencimento,true,"text",4,"","chave_am08_datavencimento");?></td>
+          <td><?php  db_input("am08_datavencimento",10,$Iam08_datavencimento,true,"text",4,"","chave_am08_datavencimento");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clparecertecnico->rotulo->label("am08_datavencimento");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_parecertecnico.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parecertecnico.php")==true){
@@ -104,12 +105,12 @@ $clparecertecnico->rotulo->label("am08_datavencimento");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

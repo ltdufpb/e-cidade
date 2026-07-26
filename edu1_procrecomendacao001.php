@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_procrecomendacao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprocrecomendacao = new cl_procrecomendacao;
 $db_opcao = 1;
 $db_botao = true;
@@ -81,7 +81,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Recomendações do  Procedimento de Avaliação <?=$ed40_c_descr?></b></legend>
-    <?include(modification("forms/db_frmprocrecomendacao.php"));?>
+    <?php include(modification("forms/db_frmprocrecomendacao.php"));?>
    </fieldset>
    </center>
   </td>
@@ -89,7 +89,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clprocrecomendacao->erro_status=="0"){
   $clprocrecomendacao->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_almox_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oPost = db_utils::postmemory($_POST,0);
 $oGet  = db_utils::postmemory($_GET,0);
@@ -61,7 +62,7 @@ $cldb_almox->rotulo->label("m91_depto");
               <?=$Lm91_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		        db_input("m91_codigo",6,$Im91_codigo,true,"text",4,"","chave_m91_codigo");
 		      ?>
             </td>
@@ -71,7 +72,7 @@ $cldb_almox->rotulo->label("m91_depto");
               <?=$Lm91_depto?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		        db_input("m91_depto",6,$Im91_depto,true,"text",4,"","m91_depto");
 		      ?>
             </td>
@@ -89,7 +90,7 @@ $cldb_almox->rotulo->label("m91_depto");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       if(!isset($pesquisa_chave)) {
 
@@ -158,12 +159,12 @@ $cldb_almox->rotulo->label("m91_depto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

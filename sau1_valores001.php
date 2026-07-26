@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,7 +49,7 @@ elseif(isset($aterar))
  </head>
  <body topmargin="0" leftmargin="0" class="texto">
  
-<?
+<?php 
  $proc  = $_GET["Procedimento"];
  $sqlvalor = "SELECT * FROM valores WHERE procedimento_i_codigo = $proc";
  $query = @db_query($conexao,$sqlvalor);
@@ -224,7 +224,7 @@ elseif(isset($aterar))
   </tr>
  </form>
 </table>
-<?
+<?php 
 if(isset($_GET["Array"]))
 {
  //grava dados
@@ -291,7 +291,7 @@ if(isset($_GET["Array"]))
    </td>
   </tr>
  </table>
- <?
+ <?php 
 }
 ?>
 </body>

@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_documento_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $cldb_documento = new cl_db_documento;
 $cldb_documento->rotulo->label("db03_docum");
@@ -56,7 +57,7 @@ $cldb_documento->rotulo->label("db03_descr");
                 <?= $Ldb03_docum ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("db03_docum", 8, $Idb03_docum, true, "text", 4, "", "chave_db03_docum");
                 ?>
             </td>
@@ -66,7 +67,7 @@ $cldb_documento->rotulo->label("db03_descr");
                 <?= $Ldb03_descr ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("db03_descr", 40, $Idb03_descr, true, "text", 4, "", "chave_db03_descr");
                 ?>
             </td>
@@ -85,7 +86,7 @@ $cldb_documento->rotulo->label("db03_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-        <?
+        <?php 
         $where = array();
 
         if (!empty($tipoDocumento)) {

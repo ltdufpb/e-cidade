@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_transfescolarede_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltransfescolarede = new cl_transfescolarede;
 $escola = db_getsession("DB_coddepto");
 $nomeescola = db_getsession("DB_nomedepto");
@@ -48,7 +49,7 @@ $nomeescola = db_getsession("DB_nomedepto");
  <tr>
   <td align="center" valign="top">
    <b>Alunos transferidos para <?=$nomeescola?></b><br><br>
-   <?
+   <?php 
    $where = " escoladestino.ed18_i_codigo = $escola AND ed103_c_situacao = 'A'";
    if(isset($campos)==false){
     if(file_exists("funcoes/db_func_transfescolarede.php")==true){

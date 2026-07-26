@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE avaliacaoresposta
 class cl_avaliacaoresposta { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db106_sequencial = 0; 
-   var $db106_avaliacaoperguntaopcao = 0; 
-   var $db106_resposta = null; 
+   public $db106_sequencial = 0; 
+   public $db106_avaliacaoperguntaopcao = 0; 
+   public $db106_resposta = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db106_sequencial = int4 = Sequencial 
                  db106_avaliacaoperguntaopcao = int4 = Avaliação Pergunta Opção 
                  db106_resposta = text = Resposta 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaoresposta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaoresposta"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -98,10 +98,10 @@ class cl_avaliacaoresposta {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db106_sequencial = pg_result($result,0,0); 
+       $this->db106_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from avaliacaoresposta_db106_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db106_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db106_sequencial)){
          $this->erro_sql = " Campo db106_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,7 +133,7 @@ class cl_avaliacaoresposta {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Avaliação Resposta ($this->db106_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Avaliação Resposta já Cadastrado";
@@ -159,12 +159,12 @@ class cl_avaliacaoresposta {
        $resaco = $this->sql_record($this->sql_query_file($this->db106_sequencial));
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16924,'$this->db106_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,2986,16924,'','".AddSlashes(pg_result($resaco,0,'db106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2986,16925,'','".AddSlashes(pg_result($resaco,0,'db106_avaliacaoperguntaopcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2986,16926,'','".AddSlashes(pg_result($resaco,0,'db106_resposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2986,16924,'','".AddSlashes(pg_fetch_result($resaco,0,'db106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2986,16925,'','".AddSlashes(pg_fetch_result($resaco,0,'db106_avaliacaoperguntaopcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2986,16926,'','".AddSlashes(pg_fetch_result($resaco,0,'db106_resposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -174,10 +174,10 @@ class cl_avaliacaoresposta {
       $this->atualizacampos();
      $sql = " update avaliacaoresposta set ";
      $virgula = "";
-     if(trim($this->db106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_sequencial"])){ 
+     if(trim((string) $this->db106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_sequencial"])){ 
        $sql  .= $virgula." db106_sequencial = $this->db106_sequencial ";
        $virgula = ",";
-       if(trim($this->db106_sequencial) == null ){ 
+       if(trim((string) $this->db106_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db106_sequencial";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_avaliacaoresposta {
          return false;
        }
      }
-     if(trim($this->db106_avaliacaoperguntaopcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_avaliacaoperguntaopcao"])){ 
+     if(trim((string) $this->db106_avaliacaoperguntaopcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_avaliacaoperguntaopcao"])){ 
        $sql  .= $virgula." db106_avaliacaoperguntaopcao = $this->db106_avaliacaoperguntaopcao ";
        $virgula = ",";
-       if(trim($this->db106_avaliacaoperguntaopcao) == null ){ 
+       if(trim((string) $this->db106_avaliacaoperguntaopcao) == null ){ 
          $this->erro_sql = " Campo Avaliação Pergunta Opção nao Informado.";
          $this->erro_campo = "db106_avaliacaoperguntaopcao";
          $this->erro_banco = "";
@@ -200,8 +200,8 @@ class cl_avaliacaoresposta {
          return false;
        }
      }
-     if(trim($this->db106_resposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_resposta"])){ 
-         if (trim($this->db106_resposta) === "null") {
+     if(trim((string) $this->db106_resposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db106_resposta"])){ 
+         if (trim((string) $this->db106_resposta) === "null") {
              $sql  .= $virgula." db106_resposta = null ";
          } else {
        $sql  .= $virgula." db106_resposta = '$this->db106_resposta' ";
@@ -219,15 +219,15 @@ class cl_avaliacaoresposta {
        if($this->numrows>0){
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16924,'$this->db106_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db106_sequencial"]) || $this->db106_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,2986,16924,'".AddSlashes(pg_result($resaco,$conresaco,'db106_sequencial'))."','$this->db106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2986,16924,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db106_sequencial'))."','$this->db106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db106_avaliacaoperguntaopcao"]) || $this->db106_avaliacaoperguntaopcao != "")
-             $resac = db_query("insert into db_acount values($acount,2986,16925,'".AddSlashes(pg_result($resaco,$conresaco,'db106_avaliacaoperguntaopcao'))."','$this->db106_avaliacaoperguntaopcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2986,16925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db106_avaliacaoperguntaopcao'))."','$this->db106_avaliacaoperguntaopcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db106_resposta"]) || $this->db106_resposta != "")
-             $resac = db_query("insert into db_acount values($acount,2986,16926,'".AddSlashes(pg_result($resaco,$conresaco,'db106_resposta'))."','$this->db106_resposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2986,16926,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db106_resposta'))."','$this->db106_resposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -276,12 +276,12 @@ class cl_avaliacaoresposta {
        if(($resaco!=false)||($this->numrows!=0)){
          for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16924,'$db106_sequencial','E')");
-           $resac = db_query("insert into db_acount values($acount,2986,16924,'','".AddSlashes(pg_result($resaco,$iresaco,'db106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2986,16925,'','".AddSlashes(pg_result($resaco,$iresaco,'db106_avaliacaoperguntaopcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2986,16926,'','".AddSlashes(pg_result($resaco,$iresaco,'db106_resposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2986,16924,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2986,16925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db106_avaliacaoperguntaopcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2986,16926,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db106_resposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -342,7 +342,7 @@ class cl_avaliacaoresposta {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:avaliacaoresposta";
@@ -357,7 +357,7 @@ class cl_avaliacaoresposta {
    function sql_query ( $db106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_avaliacaoresposta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_avaliacaoresposta {
    function sql_query_file ( $db106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_avaliacaoresposta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

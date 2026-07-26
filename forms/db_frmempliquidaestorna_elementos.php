@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,7 +49,7 @@ $clrotulo->label("e64_vlremp");
 $clrotulo->label("e64_vlrpag");
 ?>
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -90,11 +90,11 @@ $clrotulo->label("e64_vlrpag");
 	     tot  = tot.toFixed(2);
 	      eval("document.form1.generico_"+elemento+".value="+tot);
 	   }
-          <?if(isset($jafoipago) && $jafoipago==true){?>	
+          <?php if(isset($jafoipago) && $jafoipago==true){?>	
   	      parent.document.form1.vlrliq_estornar.value = soma_total.toFixed(2);
-          <?}else{?>
+          <?php }else{?>
   	      parent.document.form1.vlrliq_estornar_nota.value = soma_total.toFixed(2);
-          <?}?>
+          <?php }?>
       }
 
        function js_coloca(tot){  //se vier true é porque o valor passado eh notas
@@ -203,7 +203,7 @@ $clrotulo->label("e64_vlrpag");
     <form name='form1'>
     <input name='verificador' type='hidden' value='ok'>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <?php 
 function db_transf($campo,$cod,$valor){
     $e=$campo."_".$cod;
     global $$e;

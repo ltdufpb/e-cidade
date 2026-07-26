@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: acordos
 //CLASSE DA ENTIDADE acordoempempenho
 class cl_acordoempempenho { 
@@ -30,7 +30,7 @@ class cl_acordoempempenho {
                  ac54_ano = int4 = Exercício 
                  ";
    //funcao construtor da classe 
-   function cl_acordoempempenho() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoempempenho"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

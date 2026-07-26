@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,9 +33,9 @@ $resultedu           = eduparametros(db_getsession("DB_coddepto"));
 $permitenotaembranco = VerParametroNota(db_getsession("DB_coddepto"));
 $escola              = db_getsession("DB_coddepto");
 $oGet                = db_utils::postMemory( $_GET );
-$obs1                = base64_decode($obs1);
+$obs1                = base64_decode((string) $obs1);
 
-$oGet->secretario = base64_decode($oGet->secretario);
+$oGet->secretario = base64_decode((string) $oGet->secretario);
 
 $clmatricula       = new cl_matricula;
 $claluno           = new cl_aluno;
@@ -108,7 +108,7 @@ $sSqlTipoSanguineo = $oDaoTipoSanguineo->sql_query_file("", "*", "sd100_sequenci
 $rsTipoSanguineo   = $oDaoTipoSanguineo->sql_record($sSqlTipoSanguineo);
 $iLinhas           = $oDaoTipoSanguineo->numrows;
 
-$aTiposSanguineos = array();
+$aTiposSanguineos = [];
 
 if ( isset( $rsTipoSanguineo ) && $iLinhas > 0) {
 
@@ -149,7 +149,7 @@ $u       = 0;
 $iCodigo = 0;
 
 if (!empty($iDataEmissao)){
-  $data_emiExp = explode("/",$iDataEmissao);
+  $data_emiExp = explode("/",(string) $iDataEmissao);
   $dEmissao = $data_emiExp[2]."-".$data_emiExp[1]."-".$data_emiExp[0];
 }
 
@@ -165,7 +165,7 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $dia = date("d", $dataEmissao);
     $mes = date("m", $dataEmissao);
     $ano = date("Y", $dataEmissao);
-    $mes_extenso = array(
+    $mes_extenso = [
         "01" => "janeiro",
         "02" => "fevereiro",
         "03" => "março",
@@ -178,7 +178,7 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
         "10" => "outubro",
         "11" => "novembro",
         "12" => "dezembro"
-    );
+    ];
     $data_extenso = $mun_escola . ", " . $dia . " de " . $mes_extenso[$mes] . " de " . $ano . ".";
 
     /**
@@ -208,20 +208,20 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_v_nome), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_v_nome), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(120, 4, $ed47_v_nome, 0, 1, "L", 0);
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_i_codigo), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_i_codigo), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(20, 4, $ed47_i_codigo, 0, 0, "L", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(30, 4, strip_tags($Led47_c_codigoinep), 0, 0, "R", 0);
+    $pdf->cell(30, 4, strip_tags((string) $Led47_c_codigoinep), 0, 0, "R", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(20, 4, $ed47_c_codigoinep, 0, 0, "L", 0);
@@ -234,19 +234,19 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_d_nasc), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_d_nasc), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(20, 4, db_formatar($ed47_d_nasc, 'd'), 0, 0, "L", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(30, 4, strip_tags($Led47_v_sexo), 0, 0, "R", 0);
+    $pdf->cell(30, 4, strip_tags((string) $Led47_v_sexo), 0, 0, "R", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(20, 4, $ed47_v_sexo == "M" ? "MASCULINO" : "FEMININO", 0, 0, "L", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(25, 4, strip_tags($Led47_i_estciv), 0, 0, "R", 0);
+    $pdf->cell(25, 4, strip_tags((string) $Led47_i_estciv), 0, 0, "R", 0);
 
     if ($ed47_i_estciv == 1) {
         $ed47_i_estciv = "SOLTEIRO";
@@ -263,13 +263,13 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_tiposanguineo), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_tiposanguineo), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(65, 4, $ed47_tiposanguineo == "" ? "NÃO INFORMADO" : $aTiposSanguineos[$ed47_tiposanguineo], 0, 0, "L", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(30, 4, strip_tags($Led47_c_raca), 0, 0, "R", 0);
+    $pdf->cell(30, 4, strip_tags((string) $Led47_c_raca), 0, 0, "R", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(25, 4, $ed47_c_raca, 0, 1, "L", 0);
@@ -283,28 +283,28 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_v_mae), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_v_mae), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(120, 4, $ed47_v_mae, 0, 1, "L", 0);
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_v_pai), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_v_pai), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(120, 4, $ed47_v_pai, 0, 1, "L", 0);
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_c_nomeresp), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_c_nomeresp), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(120, 4, $ed47_c_nomeresp, 0, 1, "L", 0);
     $pdf->cell(3, 4, "", "L", 0, "C", 0);
 
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(35, 4, strip_tags($Led47_c_emailresp), 0, 0, "L", 0);
+    $pdf->cell(35, 4, strip_tags((string) $Led47_c_emailresp), 0, 0, "L", 0);
 
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(120, 4, $ed47_c_emailresp, 0, 1, "L", 0);
@@ -364,8 +364,8 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
 
         $pdf->setfont('arial', 'b', 7);
 
-        if (trim($ed60_c_situacao) == "AVANÇADO" || trim($ed60_c_situacao) == "CLASSIFICADO") {
-            $sitt = trim($ed60_c_situacao);
+        if (trim((string) $ed60_c_situacao) == "AVANÇADO" || trim((string) $ed60_c_situacao) == "CLASSIFICADO") {
+            $sitt = trim((string) $ed60_c_situacao);
         } else {
 
             if ($ed60_c_concluida == "S") {
@@ -377,8 +377,8 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
 
         $pdf->cell(85, 4, $sitt, "R", 1, "L", 1);
 
-        if (trim(Situacao($ed60_c_situacao, $ed60_i_codigo)) != "MATRICULADO"
-            && trim(Situacao($ed60_c_situacao, $ed60_i_codigo)) != "REMATRICULADO") {
+        if (trim((string) Situacao($ed60_c_situacao, $ed60_i_codigo)) != "MATRICULADO"
+            && trim((string) Situacao($ed60_c_situacao, $ed60_i_codigo)) != "REMATRICULADO") {
 
             $pdf->setfont('arial', '', 7);
             $pdf->cell(35, 4, "Data Saída:", "L", 0, "L", 1);
@@ -421,8 +421,8 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
             && $oMatricula->getTurma()->getBaseCurricular()->getCurso()->getEnsino()->isInfantil()
         ) {
 
-            $aDescricaoTurno = array();
-            $aTurnoReferente = array(1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE');
+            $aDescricaoTurno = [];
+            $aTurnoReferente = [1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE'];
 
             foreach ($oMatricula->getTurnosVinculados() as $oTurnoReferente) {
                 $aDescricaoTurno[] = $aTurnoReferente[$oTurnoReferente->ed336_turnoreferente];
@@ -545,7 +545,7 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
 
             $pdf->cell(190, 4, "Parecer", 1, 1, "C", 1);
             $pdf->setfont('arial', '', 7);
-            $pdf->multicell(190, 3, "  " . trim($parecer), "LRB", "J", 0, 0);
+            $pdf->multicell(190, 3, "  " . trim((string) $parecer), "LRB", "J", 0, 0);
         }
 
         /**
@@ -581,7 +581,7 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
             $pdf->cell(190, 4, "Parecer Final", 1, 1, "C", 1);
 
             $pdf->setfont('arial', '', 7);
-            $pdf->multicell(190, 3, "  " . trim($ed73_t_parecer), "LRB", "J", 0, 0);
+            $pdf->multicell(190, 3, "  " . trim((string) $ed73_t_parecer), "LRB", "J", 0, 0);
             $pdf->cell(190, 4, "", 0, 1, "C", 0);
         }
     }
@@ -589,7 +589,7 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     /**
      * Retorna o resultado final do aluno
      */
-    $sResultadoFinal = ResultadoFinal($ed60_i_codigo, $ed60_i_aluno, $ed60_i_turma, trim($ed60_c_situacao), trim($ed60_c_concluida), $ensino);
+    $sResultadoFinal = ResultadoFinal($ed60_i_codigo, $ed60_i_aluno, $ed60_i_turma, trim((string) $ed60_c_situacao), trim((string) $ed60_c_concluida), $ensino);
     $pdf->setfont('arial', 'b', 7);
     $pdf->cell(190, 4, "Resultado Final : " . $sResultadoFinal, 1, 1, "L", 1);
     $pdf->cell(190, 4, "", 0, 1, "C", 0);
@@ -684,7 +684,7 @@ function imprimirAssinaturas($pdf, $oGet, $oTurma)
 
         $regenteClasse = $oTurma->getProfessorConselheiro();
         $regente = $regenteClasse->getCgm()->getNome();
-        $nome = $regente ? $regente : "";
+        $nome = $regente ?: "";
 
         $assinaturas[] = (object)[
             'nome' => $nome,
@@ -735,7 +735,7 @@ function nomeDiretorEscola()
     $nome = "";
     if ($iLinhasDiretor > 0) {
 
-        $nome = trim(db_utils::fieldsmemory($rsDiretor, 0)->nome);
+        $nome = trim((string) db_utils::fieldsmemory($rsDiretor, 0)->nome);
     }
     return $nome;
 }

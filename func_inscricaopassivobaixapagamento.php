@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_inscricaopassivo_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clinscricaopassivo = new cl_inscricaopassivo;
 $clinscricaopassivo->rotulo->label("c36_sequencial");
@@ -61,7 +62,7 @@ $sWhere .= " and c109_sequencial       is null";
               <?=$Lc36_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c36_sequencial",10,$Ic36_sequencial,true,"text",4,"","chave_c36_sequencial");
 		       ?>
             </td>
@@ -79,7 +80,7 @@ $sWhere .= " and c109_sequencial       is null";
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)) {
         if(isset($campos)==false) {
            if(file_exists("funcoes/db_func_inscricaopassivo.php")==true) {
@@ -122,12 +123,12 @@ $sWhere .= " and c109_sequencial       is null";
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

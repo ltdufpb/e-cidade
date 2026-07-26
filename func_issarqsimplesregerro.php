@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarqsimplesregerro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissarqsimplesregerro = new cl_issarqsimplesregerro;
 $clissarqsimplesregerro->rotulo->label("q49_sequencial");
 $clissarqsimplesregerro->rotulo->label("q49_erro");
@@ -54,7 +55,7 @@ $clissarqsimplesregerro->rotulo->label("q49_erro");
               <?=$Lq49_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q49_sequencial",8,$Iq49_sequencial,true,"text",4,"","chave_q49_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clissarqsimplesregerro->rotulo->label("q49_erro");
               <?=$Lq49_erro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q49_erro",100,$Iq49_erro,true,"text",4,"","chave_q49_erro");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clissarqsimplesregerro->rotulo->label("q49_erro");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issarqsimplesregerro.php")==true){
@@ -122,12 +123,12 @@ $clissarqsimplesregerro->rotulo->label("q49_erro");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

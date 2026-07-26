@@ -118,7 +118,7 @@ class PeriodoAquisitivoAssentamento {
        */
       if ($oDaoRhFeriasAssenta->erro_status == "0") {
 
-        $oMensagemErro = (object) array("sMensagem" => $oDaoRhFeriasAssenta->erro_banco);
+        $oMensagemErro = (object) ["sMensagem" => $oDaoRhFeriasAssenta->erro_banco];
         throw new DBException( _M( self::MENSAGENS . "erro_inclusao", $oMensagemErro) );         
       }        
 
@@ -138,7 +138,7 @@ class PeriodoAquisitivoAssentamento {
      */ 
     if ($oDaoRhFeriasAssenta->erro_status == "0") {
 
-      $oMensagemErro = (object) array("sMensagem" => $oDaoRhFeriasAssenta->erro_banco);
+      $oMensagemErro = (object) ["sMensagem" => $oDaoRhFeriasAssenta->erro_banco];
       throw new DBException( _M( self::MENSAGENS . "erro_alteracao", $oMensagemErro) );
     }
 
@@ -165,7 +165,7 @@ class PeriodoAquisitivoAssentamento {
 
     if ($oDaoRhFeriasAssenta->erro_status == "0") {
 
-      $oMensagemErro = (object) array("sMensagem" => $oDaoRhFeriasAssenta->erro_banco);
+      $oMensagemErro = (object) ["sMensagem" => $oDaoRhFeriasAssenta->erro_banco];
       throw new DBException( _M(self::MENSAGENS . "erro_exclusao", $oMensagemErro) );
       
     }

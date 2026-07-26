@@ -104,7 +104,7 @@ class CensoMunicipio
      * @return CensoMunicipio
      * @throws Exception
      */
-    public static function fromState($state = array())
+    public static function fromState($state = [])
     {
         $self = new self();
         if (array_key_exists('ed261_i_codigo', $state)) {

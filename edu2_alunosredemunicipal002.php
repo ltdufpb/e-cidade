@@ -59,8 +59,8 @@ $oFiltros->sOrientacao         = $oParam->orientacao;
 $oFiltros->sAlinhamento        = $oParam->alinhamento;
 $oFiltros->iFonte              = $oParam->tamfonte;
 $oFiltros->sCampos             = $oParam->campos;
-$oFiltros->aAlinhamento        = explode("|", $oFiltros->sAlinhamento);
-$oFiltros->aCampos             = explode(",", $oFiltros->sCampos);
+$oFiltros->aAlinhamento        = explode("|", (string) $oFiltros->sAlinhamento);
+$oFiltros->aCampos             = explode(",", (string) $oFiltros->sCampos);
 $oFiltros->iTamanhoMaximoLinha = 192;
 
 /**
@@ -97,12 +97,12 @@ $oFiltros->iTamanhoDataMatricula = 24;
 /**
  * Array para controle das quebras
  */
-$oFiltros->aQuebras = array();
+$oFiltros->aQuebras = [];
 
 /**
  * Array com os cabecalhos selecionados para serem impressos
  */
-$oFiltros->aCabecalho = array();
+$oFiltros->aCabecalho = [];
 
 if ($oFiltros->sOrientacao == 'L') {
 
@@ -213,12 +213,12 @@ ksort($oFiltros->aCabecalho);
 /**
  * Array com as condicoes para SQL
  */
-$aWhereEscola = array();
+$aWhereEscola = [];
 
 /**
  * Array com as escolas para imprimir o nome no cabecalho
  */
-$aEscolas = array();
+$aEscolas = [];
 
 /**
  * Setamos por padrao a descricao do periodo no cabecalho com a data da sessao
@@ -228,7 +228,7 @@ $sPeriodoMatricula = db_getsession("DB_anousu");
 /**
  *  Array para buscar os anos do calendario
  */
-$aAno = array();
+$aAno = [];
 
 /**
  * Propriedades que receberao instancia DBDate da data de matricula inicial e final, caso tenham sido informadas
@@ -236,7 +236,7 @@ $aAno = array();
 $oFiltros->oMatriculaInicial = null;
 $oFiltros->oMatriculaFinal   = null;
 
-$aFiltrarMatricula = array();
+$aFiltrarMatricula = [];
 if (!empty($oFiltros->dtMatriculaInicial)) {
 
   $oFiltros->oMatriculaInicial = new DBDate($oFiltros->dtMatriculaInicial);
@@ -349,7 +349,7 @@ $head5 = "Etapa: {$sEtapa}";
 /**
  * Array para controle dos alunos, nao permitindo contabilizar alunos duplicados
  */
-$oFiltros->aControleAlunos = array();
+$oFiltros->aControleAlunos = [];
 
 /**
  * Total de escolas existentes no array

@@ -127,11 +127,11 @@ if (isset($incluir)) {
         if ($concluida == "N") {
             $oDaoMatricula->ed60_i_codigo       = $matricula;
             $oDaoMatricula->ed60_c_situacao     = "TRANSFERIDO FORA";
-            $oDaoMatricula->ed60_d_datamodif    = substr($ed104_d_data, 6, 4)."-".substr($ed104_d_data, 3, 2)."-".
-                                            substr($ed104_d_data, 0, 2);
-            $oDaoMatricula->ed60_d_datasaida    = substr($ed104_d_data, 6, 4)."-".substr($ed104_d_data, 3, 2)."-".
-                                            substr($ed104_d_data, 0, 2);
-            $oDaoMatricula->ed60_d_datamodifant = substr($datamodif, 6, 4)."-".substr($datamodif, 3, 2)."-".substr($datamodif, 0, 2);
+            $oDaoMatricula->ed60_d_datamodif    = substr((string) $ed104_d_data, 6, 4)."-".substr((string) $ed104_d_data, 3, 2)."-".
+                                            substr((string) $ed104_d_data, 0, 2);
+            $oDaoMatricula->ed60_d_datasaida    = substr((string) $ed104_d_data, 6, 4)."-".substr((string) $ed104_d_data, 3, 2)."-".
+                                            substr((string) $ed104_d_data, 0, 2);
+            $oDaoMatricula->ed60_d_datamodifant = substr((string) $datamodif, 6, 4)."-".substr((string) $datamodif, 3, 2)."-".substr((string) $datamodif, 0, 2);
             $oDaoMatricula->alterar($matricula);
 
             if ($oDaoMatricula->erro_status == '0') {
@@ -144,10 +144,10 @@ if (isset($incluir)) {
             $oDaoMatriculaMov->ed229_i_matricula    = $matricula;
             $oDaoMatriculaMov->ed229_i_usuario      = db_getsession("DB_id_usuario");
             $oDaoMatriculaMov->ed229_c_procedimento = "TRANSFERÊNCIA PARA OUTRA ESCOLA";
-            $oDaoMatriculaMov->ed229_t_descr        = "ALUNO DA TURMA ".trim($turma)." TRANSFERIDO PARA ESCOLA ".
-                                                trim($ed82_c_nome)."";
-            $oDaoMatriculaMov->ed229_d_dataevento   = substr($ed104_d_data, 6, 4)."-".substr($ed104_d_data, 3, 2)."-".
-                                                substr($ed104_d_data, 0, 2);
+            $oDaoMatriculaMov->ed229_t_descr        = "ALUNO DA TURMA ".trim((string) $turma)." TRANSFERIDO PARA ESCOLA ".
+                                                trim((string) $ed82_c_nome)."";
+            $oDaoMatriculaMov->ed229_d_dataevento   = substr((string) $ed104_d_data, 6, 4)."-".substr((string) $ed104_d_data, 3, 2)."-".
+                                                substr((string) $ed104_d_data, 0, 2);
             $oDaoMatriculaMov->ed229_c_horaevento   = date("H:i");
             $oDaoMatriculaMov->ed229_d_data         = date("Y-m-d", db_getsession("DB_datausu"));
             $oDaoMatriculaMov->incluir(null);
@@ -253,7 +253,7 @@ if (isset($incluir)) {
    ?>
     <script>
       window.open('edu2_guiatransf002.php?alunos=<?=$alunos?>&tipo=TF&diretor=<?=$diretor?>'+
-              '&bolsafamilia=<?=$ed283_c_bolsafamilia?>&obs=<?=urlencode(utf8_encode($obs))?>&modelo=<?=$modelo?>&notificar=sim&formato=<?=$formato?>','',
+              '&bolsafamilia=<?=$ed283_c_bolsafamilia?>&obs=<?=urlencode(mb_convert_encoding($obs, 'UTF-8', 'ISO-8859-1'))?>&modelo=<?=$modelo?>&notificar=sim&formato=<?=$formato?>','',
               'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0'
              ).moveTo(0,0);
     </script>

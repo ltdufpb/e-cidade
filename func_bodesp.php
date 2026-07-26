@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bodesp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbodesp = new cl_bodesp;
 $clbodesp->rotulo->label("bo05_cod_desp");
 $clbodesp->rotulo->label("bo05_despacho");
@@ -54,7 +55,7 @@ $clbodesp->rotulo->label("bo05_despacho");
               <?=$Lbo05_cod_desp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo05_cod_desp",9,$Ibo05_cod_desp,true,"text",4,"","chave_bo05_cod_desp");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbodesp->rotulo->label("bo05_despacho");
               <?=$Lbo05_despacho?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo05_despacho",200,$Ibo05_despacho,true,"text",4,"","chave_bo05_despacho");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbodesp->rotulo->label("bo05_despacho");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bodesp.php")==true){
@@ -118,12 +119,12 @@ $clbodesp->rotulo->label("bo05_despacho");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

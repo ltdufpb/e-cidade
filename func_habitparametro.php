@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitparametro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clhabitparametro = new cl_habitparametro;
 $clhabitparametro->rotulo->label("ht16_anousu");
 $clhabitparametro->rotulo->label("ht16_anousu");
@@ -54,7 +55,7 @@ $clhabitparametro->rotulo->label("ht16_anousu");
               <?=$Lht16_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ht16_anousu",10,$Iht16_anousu,true,"text",4,"","chave_ht16_anousu");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clhabitparametro->rotulo->label("ht16_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_habitparametro.php")==true){
@@ -112,12 +113,12 @@ $clhabitparametro->rotulo->label("ht16_anousu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

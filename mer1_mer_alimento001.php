@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Alimento</b></legend>
-	<?
+	<?php 
 	include(modification("forms/db_frmmer_alimento.php"));
 	?>
    </fieldset>
@@ -71,7 +71,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "me35_c_nomealimento", true, 1, "me35_c_nomealimento", true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 
   if ($clmer_alimento->erro_status == "0") {

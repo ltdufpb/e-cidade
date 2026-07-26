@@ -72,7 +72,7 @@ if (!$lMesmoUsuario) {
               <b>Usuário:</b> 
             </td>
             <td> 
-             <?
+             <?php 
              $iUsuario = db_getsession("DB_id_usuario");
              if ($db_opcao == 2 && isset($p67_id_usuario)) {
                $iUsuario = $p67_id_usuario;
@@ -90,7 +90,7 @@ if (!$lMesmoUsuario) {
               <b>Departamento:</b> 
             </td>
             <td> 
-             <?
+             <?php 
              $iDepartamento = db_getsession("DB_coddepto");
              if ($db_opcao == 2 && isset($te)) {
                $iDepartamento = $p67_coddepto;
@@ -108,7 +108,7 @@ if (!$lMesmoUsuario) {
                <?=@$Lp67_codarquiv?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('p67_codarquiv',10,$Ip67_codarquiv,true,'text',3,"")
               ?>
             </td>
@@ -118,7 +118,7 @@ if (!$lMesmoUsuario) {
                <?=@$Lp67_dtarq?>
             </td>
             <td> 
-              <?
+              <?php 
               if (empty($y30_data_dia)) {
                 
                 $p67_dtarq_dia = date("d",db_getsession("DB_datausu"));

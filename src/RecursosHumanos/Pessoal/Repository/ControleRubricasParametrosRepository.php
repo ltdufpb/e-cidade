@@ -42,20 +42,14 @@ class ControleRubricasParametrosRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * ControleHorasExtrasRepository constructor.
      * @param cl_controlehorasextras $dao
      */
-    public function __construct(cl_controlehorasextras $dao)
+    public function __construct(private readonly cl_controlehorasextras $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -64,7 +58,7 @@ class ControleRubricasParametrosRepository
      * @return bool|ControleRubricasParametros
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -94,11 +88,11 @@ class ControleRubricasParametrosRepository
         Instituicao $instituicao,
         DBCompetencia $competencia
     ) {
-        $where = array(
+        $where = [
             "rh232_instituicao = {$instituicao->getCodigo()}",
             "rh232_ano = {$competencia->getAno()}",
             "rh232_mes = {$competencia->getMes()}"
-        );
+        ];
 
         $sql = $this->dao->sql_query_file(null, '*', null, implode(" AND ", $where));
         $rs = db_query($sql);
@@ -153,7 +147,7 @@ class ControleRubricasParametrosRepository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
         return $this;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -66,7 +66,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession
 </style>
 <SCRIPT LANGUAGE="JavaScript">
  team = new Array(
- <?
+ <?php 
  # Seleciona todos os calendários
  $sql        = " SELECT ed29_i_codigo,ed29_c_descr ";
  $sql       .= "   FROM cursoedu ";
@@ -196,20 +196,20 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       if (itemArray[i][1] != null){
         selectCtrl.options[j].value = itemArray[i][1];
       }
-    <?if (isset($serieescolhida)) {?>
+    <?php if (isset($serieescolhida)) {?>
         if (<?=trim($serieescolhida)?> == itemArray[i][1]) {
           indice = i;
         }
-    <?}?>
+    <?php }?>
       j++;
     }
-  <?if (isset($serieescolhida)) {?>
+  <?php if (isset($serieescolhida)) {?>
 
       selectCtrl.options[indice].selected = true;
       document.form1.procurar.disabled    = false;
-  <?} else {?>
+  <?php } else {?>
       selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php }?>
     document.form1.subgrupo.disabled = false;
   }
 }
@@ -225,7 +225,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <a name="topo"></a>
 <form name="form1" method="post" action="">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -248,7 +248,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        <b>Calendário:</b><br>
        <select name="calenda" style="font-size:9px;width:150px;height:18px;">
        <option value="0">TODOS</option>
-        <?
+        <?php 
         $sql          = " SELECT ed52_i_codigo,ed52_c_descr ";
         $sql         .= "   FROM calendario ";
         $sql         .= "        inner join calendarioescola on ed38_i_calendario = ed52_i_codigo ";
@@ -264,7 +264,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
          ?>
          
          <option value="<?=$cod_cal?>" <?=$cod_cal==@$calendario?"selected":""?>><?=$desc_cal;?></option>
-         <?
+         <?php 
         }
         ?>
        </select>
@@ -275,7 +275,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
                onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" 
                style="font-size:9px;width:250px;height:18px;">
         <option></option>
-        <?
+        <?php 
         #Seleciona todos os grupos para setar os valores no combo
         $sql        = " SELECT ed29_i_codigo,ed29_c_descr ";
         $sql       .= "   FROM cursoedu ";
@@ -291,7 +291,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
           $desc_curso = $row["ed29_c_descr"];
          ?>
          <option value="<?=$cod_curso;?>" <?=$cod_curso==@$curso?"selected":""?>><?=$desc_curso;?></option>
-         <?
+         <?php 
         }
         #Popula o segundo combo de acordo com a escolha no primeiro
         ?>
@@ -313,7 +313,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    </fieldset>
   </td>
  </tr>
- <?if (isset($curso)) {?>
+ <?php if (isset($curso)) {?>
  <tr>
   <td align="center">
    <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
@@ -330,7 +330,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        <td>Etapa</td>
        <td>Calendário</td>
       </tr>
-      <?
+      <?php 
 
        if ( $calendario != 0 ) {
 
@@ -381,7 +381,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        $sql     .= "          OR alunocurso.ed56_c_situacao='REPETENTE'))) ";
        $sql     .= "  ORDER BY ed52_i_codigo, ed56_c_situacao, ed11_i_sequencia ";
        $result   = db_query( $sql );
-       $linhas   = pg_numrows( $result );
+       $linhas   = pg_num_rows( $result );
 
        if ( $linhas > 0 ) {
 
@@ -410,7 +410,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
           <td class="aluno"><?=$ed11_c_descr?></td>
           <td class="aluno"><?=$ed52_c_descr?></td>
          </tr>
-        <?
+        <?php 
         }
 
         $sCamposCalendario       = "ed52_i_codigo as codigocalendario, ed52_i_ano";
@@ -514,13 +514,13 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
          </td>
          <td></td>
         </tr>
-        <?
+        <?php 
        }else{
         ?>
         <tr bgcolor="#EAEAEA">
          <td align="center" class='aluno' colspan="7">Nenhum candidato para as opções escolhidas.</td>
         </tr>
-        <?
+        <?php 
        }
       }
       ?>
@@ -575,10 +575,10 @@ function js_botao( valor ) {
   }
 }
 
-<?if ( !isset( $serieescolhida ) && pg_num_rows( $sql_result ) > 0 ){?>
+<?php if ( !isset( $serieescolhida ) && pg_num_rows( $sql_result ) > 0 ){?>
 
  fillSelectFromArray2(document.form1.subgrupo,team[0]);
  document.form1.grupo.options[1].selected = true;
-<?}?>
+<?php }?>
 
 </script>

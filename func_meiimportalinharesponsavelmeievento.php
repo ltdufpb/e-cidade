@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meiimportalinharesponsavelmeievento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmeiimportalinharesponsavelmeievento = new cl_meiimportalinharesponsavelmeievento;
 $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_sequencial");
 $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharesponsavel");
@@ -54,7 +55,7 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
               <?=$Lq113_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q113_sequencial",10,$Iq113_sequencial,true,"text",4,"","chave_q113_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
               <?=$Lq113_meiimportalinharesponsavel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q113_meiimportalinharesponsavel",10,$Iq113_meiimportalinharesponsavel,true,"text",4,"","chave_q113_meiimportalinharesponsavel");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meiimportalinharesponsavelmeievento.php")==true){
@@ -122,12 +123,12 @@ $clmeiimportalinharesponsavelmeievento->rotulo->label("q113_meiimportalinharespo
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

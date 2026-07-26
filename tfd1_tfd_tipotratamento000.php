@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -61,7 +61,7 @@ if($db_opcao==1){
 <table marginwidth="0" width="100%" border="1" cellspacing="0" cellpadding="0">
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    $clcriaabas->identifica = array('a1'=>'Tipo',
                                    'a2'=>'Procedimentos',
                                    'a3'=>'Doc. Necessários');
@@ -79,6 +79,6 @@ if($db_opcao==1){
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

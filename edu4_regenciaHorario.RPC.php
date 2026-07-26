@@ -58,7 +58,7 @@ try {
             $oGrade = new GradeHorario($oTurma, $oEtapa);
             $horariosRegencia = horariosRegencia($oParam);
             $aPeriodos = $oGrade->getPeriodosAula();
-            $oParam->iRecHumano = isset($oParam->iRecHumano) ? $oParam->iRecHumano : 0;
+            $oParam->iRecHumano ??= 0;
           
         /* Se o recurso humano for 0, é uma disciplina sem professor. Removemos ela direto pelo codigo */
             if ($oParam->iRecHumano == 0) {

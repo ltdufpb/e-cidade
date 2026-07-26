@@ -27,7 +27,7 @@
 
 function db_autoload($sClassName) {
 
-  $aIncludeDirs = array();
+  $aIncludeDirs = [];
 
   $aIncludeDirs[] = "model/";
   $aIncludeDirs[] = "model/agua/";
@@ -223,7 +223,7 @@ function db_autoload($sClassName) {
     return require_once(modification(ECIDADE_PATH . $aArquivosCLasseErradas[$sClassName]));
   }
 
-  if (substr($sClassName, 0, 3) == 'cl_') {
+  if (str_starts_with((string) $sClassName, 'cl_')) {
 
     $sClassNameDao = str_replace("cl_", "db_", $sClassName);
     return require_once(modification(ECIDADE_PATH . "classes/{$sClassNameDao}_classe.php"));
@@ -255,4 +255,4 @@ function db_autoload($sClassName) {
   return false;
 }
 
-spl_autoload_register('db_autoload');
+spl_autoload_register(db_autoload(...));

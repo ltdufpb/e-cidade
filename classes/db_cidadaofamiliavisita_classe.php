@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE cidadaofamiliavisita
 class cl_cidadaofamiliavisita { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as05_sequencial = 0; 
-   var $as05_cidadaofamilia = 0; 
-   var $as05_datavisita_dia = null; 
-   var $as05_datavisita_mes = null; 
-   var $as05_datavisita_ano = null; 
-   var $as05_datavisita = null; 
-   var $as05_observacao = null; 
-   var $as05_horavisita = null; 
-   var $as05_profissional = 0; 
-   var $as05_visitatipo = 0; 
+   public $as05_sequencial = 0; 
+   public $as05_cidadaofamilia = 0; 
+   public $as05_datavisita_dia = null; 
+   public $as05_datavisita_mes = null; 
+   public $as05_datavisita_ano = null; 
+   public $as05_datavisita = null; 
+   public $as05_observacao = null; 
+   public $as05_horavisita = null; 
+   public $as05_profissional = 0; 
+   public $as05_visitatipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as05_sequencial = int4 = Código 
                  as05_cidadaofamilia = int4 = Cidadão Família 
                  as05_datavisita = date = Data da Visita 
@@ -63,10 +63,10 @@ class cl_cidadaofamiliavisita {
                  as05_visitatipo = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaofamiliavisita() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaofamiliavisita"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_cidadaofamiliavisita {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as05_sequencial = pg_result($result,0,0); 
+       $this->as05_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cidadaofamiliavisita_as05_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as05_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as05_sequencial)){
          $this->erro_sql = " Campo as05_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_cidadaofamiliavisita {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cidadaofamiliavisita ($this->as05_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cidadaofamiliavisita já Cadastrado";
@@ -213,16 +213,16 @@ class cl_cidadaofamiliavisita {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19083,'$this->as05_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3395,19083,'','".AddSlashes(pg_result($resaco,0,'as05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3395,19084,'','".AddSlashes(pg_result($resaco,0,'as05_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3395,19085,'','".AddSlashes(pg_result($resaco,0,'as05_datavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3395,19086,'','".AddSlashes(pg_result($resaco,0,'as05_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3395,19645,'','".AddSlashes(pg_result($resaco,0,'as05_horavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3395,19644,'','".AddSlashes(pg_result($resaco,0,'as05_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3395,19937,'','".AddSlashes(pg_result($resaco,0,'as05_visitatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3395,19083,'','".AddSlashes(pg_fetch_result($resaco,0,'as05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3395,19084,'','".AddSlashes(pg_fetch_result($resaco,0,'as05_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3395,19085,'','".AddSlashes(pg_fetch_result($resaco,0,'as05_datavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3395,19086,'','".AddSlashes(pg_fetch_result($resaco,0,'as05_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3395,19645,'','".AddSlashes(pg_fetch_result($resaco,0,'as05_horavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3395,19644,'','".AddSlashes(pg_fetch_result($resaco,0,'as05_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3395,19937,'','".AddSlashes(pg_fetch_result($resaco,0,'as05_visitatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -232,10 +232,10 @@ class cl_cidadaofamiliavisita {
       $this->atualizacampos();
      $sql = " update cidadaofamiliavisita set ";
      $virgula = "";
-     if(trim($this->as05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_sequencial"])){ 
+     if(trim((string) $this->as05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_sequencial"])){ 
        $sql  .= $virgula." as05_sequencial = $this->as05_sequencial ";
        $virgula = ",";
-       if(trim($this->as05_sequencial) == null ){ 
+       if(trim((string) $this->as05_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "as05_sequencial";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_cidadaofamiliavisita {
          return false;
        }
      }
-     if(trim($this->as05_cidadaofamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_cidadaofamilia"])){ 
+     if(trim((string) $this->as05_cidadaofamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_cidadaofamilia"])){ 
        $sql  .= $virgula." as05_cidadaofamilia = $this->as05_cidadaofamilia ";
        $virgula = ",";
-       if(trim($this->as05_cidadaofamilia) == null ){ 
+       if(trim((string) $this->as05_cidadaofamilia) == null ){ 
          $this->erro_sql = " Campo Cidadão Família nao Informado.";
          $this->erro_campo = "as05_cidadaofamilia";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_cidadaofamiliavisita {
          return false;
        }
      }
-     if(trim($this->as05_datavisita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_datavisita_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as05_datavisita_dia"] !="") ){ 
+     if(trim((string) $this->as05_datavisita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_datavisita_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as05_datavisita_dia"] !="") ){ 
        $sql  .= $virgula." as05_datavisita = '$this->as05_datavisita' ";
        $virgula = ",";
-       if(trim($this->as05_datavisita) == null ){ 
+       if(trim((string) $this->as05_datavisita) == null ){ 
          $this->erro_sql = " Campo Data da Visita nao Informado.";
          $this->erro_campo = "as05_datavisita_dia";
          $this->erro_banco = "";
@@ -274,7 +274,7 @@ class cl_cidadaofamiliavisita {
        if(isset($GLOBALS["HTTP_POST_VARS"]["as05_datavisita_dia"])){ 
          $sql  .= $virgula." as05_datavisita = null ";
          $virgula = ",";
-         if(trim($this->as05_datavisita) == null ){ 
+         if(trim((string) $this->as05_datavisita) == null ){ 
            $this->erro_sql = " Campo Data da Visita nao Informado.";
            $this->erro_campo = "as05_datavisita_dia";
            $this->erro_banco = "";
@@ -285,18 +285,18 @@ class cl_cidadaofamiliavisita {
          }
        }
      }
-     if(trim($this->as05_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_observacao"])){ 
+     if(trim((string) $this->as05_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_observacao"])){ 
        $sql  .= $virgula." as05_observacao = '$this->as05_observacao' ";
        $virgula = ",";
      }
-     if(trim($this->as05_horavisita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_horavisita"])){ 
+     if(trim((string) $this->as05_horavisita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_horavisita"])){ 
        $sql  .= $virgula." as05_horavisita = '$this->as05_horavisita' ";
        $virgula = ",";
      }
-     if(trim($this->as05_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_profissional"])){ 
+     if(trim((string) $this->as05_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_profissional"])){ 
        $sql  .= $virgula." as05_profissional = $this->as05_profissional ";
        $virgula = ",";
-       if(trim($this->as05_profissional) == null ){ 
+       if(trim((string) $this->as05_profissional) == null ){ 
          $this->erro_sql = " Campo Código Profissional nao Informado.";
          $this->erro_campo = "as05_profissional";
          $this->erro_banco = "";
@@ -306,8 +306,8 @@ class cl_cidadaofamiliavisita {
          return false;
        }
      }
-     if(trim($this->as05_visitatipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_visitatipo"])){ 
-        if(trim($this->as05_visitatipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["as05_visitatipo"])){ 
+     if(trim((string) $this->as05_visitatipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as05_visitatipo"])){ 
+        if(trim((string) $this->as05_visitatipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["as05_visitatipo"])){ 
            $this->as05_visitatipo = "0" ; 
         } 
        $sql  .= $virgula." as05_visitatipo = $this->as05_visitatipo ";
@@ -327,23 +327,23 @@ class cl_cidadaofamiliavisita {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19083,'$this->as05_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as05_sequencial"]) || $this->as05_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3395,19083,'".AddSlashes(pg_result($resaco,$conresaco,'as05_sequencial'))."','$this->as05_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3395,19083,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as05_sequencial'))."','$this->as05_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as05_cidadaofamilia"]) || $this->as05_cidadaofamilia != "")
-             $resac = db_query("insert into db_acount values($acount,3395,19084,'".AddSlashes(pg_result($resaco,$conresaco,'as05_cidadaofamilia'))."','$this->as05_cidadaofamilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3395,19084,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as05_cidadaofamilia'))."','$this->as05_cidadaofamilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as05_datavisita"]) || $this->as05_datavisita != "")
-             $resac = db_query("insert into db_acount values($acount,3395,19085,'".AddSlashes(pg_result($resaco,$conresaco,'as05_datavisita'))."','$this->as05_datavisita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3395,19085,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as05_datavisita'))."','$this->as05_datavisita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as05_observacao"]) || $this->as05_observacao != "")
-             $resac = db_query("insert into db_acount values($acount,3395,19086,'".AddSlashes(pg_result($resaco,$conresaco,'as05_observacao'))."','$this->as05_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3395,19086,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as05_observacao'))."','$this->as05_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as05_horavisita"]) || $this->as05_horavisita != "")
-             $resac = db_query("insert into db_acount values($acount,3395,19645,'".AddSlashes(pg_result($resaco,$conresaco,'as05_horavisita'))."','$this->as05_horavisita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3395,19645,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as05_horavisita'))."','$this->as05_horavisita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as05_profissional"]) || $this->as05_profissional != "")
-             $resac = db_query("insert into db_acount values($acount,3395,19644,'".AddSlashes(pg_result($resaco,$conresaco,'as05_profissional'))."','$this->as05_profissional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3395,19644,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as05_profissional'))."','$this->as05_profissional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as05_visitatipo"]) || $this->as05_visitatipo != "")
-             $resac = db_query("insert into db_acount values($acount,3395,19937,'".AddSlashes(pg_result($resaco,$conresaco,'as05_visitatipo'))."','$this->as05_visitatipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3395,19937,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as05_visitatipo'))."','$this->as05_visitatipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -397,16 +397,16 @@ class cl_cidadaofamiliavisita {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19083,'$as05_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3395,19083,'','".AddSlashes(pg_result($resaco,$iresaco,'as05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3395,19084,'','".AddSlashes(pg_result($resaco,$iresaco,'as05_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3395,19085,'','".AddSlashes(pg_result($resaco,$iresaco,'as05_datavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3395,19086,'','".AddSlashes(pg_result($resaco,$iresaco,'as05_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3395,19645,'','".AddSlashes(pg_result($resaco,$iresaco,'as05_horavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3395,19644,'','".AddSlashes(pg_result($resaco,$iresaco,'as05_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3395,19937,'','".AddSlashes(pg_result($resaco,$iresaco,'as05_visitatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3395,19083,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3395,19084,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as05_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3395,19085,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as05_datavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3395,19086,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as05_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3395,19645,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as05_horavisita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3395,19644,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as05_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3395,19937,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as05_visitatipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -467,7 +467,7 @@ class cl_cidadaofamiliavisita {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cidadaofamiliavisita";
@@ -482,7 +482,7 @@ class cl_cidadaofamiliavisita {
    function sql_query ( $as05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,7 +506,7 @@ class cl_cidadaofamiliavisita {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_cidadaofamiliavisita {
    function sql_query_file ( $as05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,7 +540,7 @@ class cl_cidadaofamiliavisita {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_cidadaofamiliavisita {
     $sql = "select ";
     if ($campos != "*" ) {
       
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         
@@ -592,7 +592,7 @@ class cl_cidadaofamiliavisita {
     if ($ordem != null) {
       
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",$ordem);
       $virgula    = "";
       for($i = 0; $i < sizeof($campos_sql); $i++) {
         
@@ -607,7 +607,7 @@ class cl_cidadaofamiliavisita {
     $sql = "select ";
     if ($campos != "*" ) {
       
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         
@@ -639,7 +639,7 @@ class cl_cidadaofamiliavisita {
     if ($ordem != null ) {
       
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = preg_split("#\\##m",(string) $ordem);
       $virgula     = "";
       
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -656,7 +656,7 @@ class cl_cidadaofamiliavisita {
     $sql = "select ";
     if ($campos != "*" ) {
   
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
   
@@ -685,7 +685,7 @@ class cl_cidadaofamiliavisita {
     if ($ordem != null ) {
   
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = preg_split("#\\##m",(string) $ordem);
       $virgula     = "";
   
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

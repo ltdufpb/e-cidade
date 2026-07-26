@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,7 @@ include(modification("classes/db_regencia_classe.php"));
 include(modification("classes/db_regenteconselho_classe.php"));
 include(modification("classes/db_diariofinal_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claprovconselho = new cl_aprovconselho;
 $clregenteconselho = new cl_regenteconselho;
 $cldiariofinal = new cl_diariofinal;
@@ -77,7 +77,7 @@ if($clregenteconselho->numrows>0){
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
-    <?include(modification("forms/db_frmaprovconselho.php"));?>
+    <?php include(modification("forms/db_frmaprovconselho.php"));?>
    </center>
   </td>
  </tr>
@@ -87,7 +87,7 @@ if($clregenteconselho->numrows>0){
 <script>
 js_tabulacaoforms("form1","ed253_i_diario",true,1,"ed253_i_diario",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($claprovconselho->erro_status=="0"){
   $claprovconselho->erro(true,false);
@@ -104,7 +104,7 @@ if(isset($incluir)){
    parent.parent.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>&iTrocaTurma=<?=$iTrocaTurma?>";
    parent.parent.db_iframe_alteraresultado.hide();
   </script>
-  <?
+  <?php 
  }
 }
 ?>

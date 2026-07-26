@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -31,7 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $escola = db_getsession("DB_coddepto");
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed18_c_nome");
@@ -56,7 +57,7 @@ if(!isset($opcaoescola)){
       <?=$Led18_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
+      <?php db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
       <select name="opcaoescola" onchange="location.href='?funcao_js=parent.oInstanciaViewOrigemNotaEscopoGlobal.mostraEscolaFora|ed18_i_codigo|ed18_c_nome|ed261_c_nome|ed260_c_sigla|tipoescoladescr|tipoescola&opcaoescola='+this.value">
        <option value="F" <?=@$opcaoescola=="F"?"selected":""?>>Escolas Fora da Rede</option>
        <option value="M" <?=@$opcaoescola=="M"?"selected":""?>>Escolas da Rede</option>
@@ -76,7 +77,7 @@ if(!isset($opcaoescola)){
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $where  = "";
    $where1 = "";
    if(isset($chave_ed18_c_nome) && (trim($chave_ed18_c_nome)!="") ){

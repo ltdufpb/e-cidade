@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -38,7 +38,7 @@ include_once(modification("classes/db_censodistrito_classe.php"));
 include_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clescolaproc    = new cl_escolaproc;
 $clcensouf 			 = new cl_censouf;
 $clcensomunic    = new cl_censomunic;
@@ -99,7 +99,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Escolas de Procedência de Alunos</b></legend>
-    <?include(modification("forms/db_frmescolaprocnova.php"));?>
+    <?php include(modification("forms/db_frmescolaprocnova.php"));?>
    </fieldset>
    </center>
   </td>
@@ -110,7 +110,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed82_c_nome",true,1,"ed82_c_nome",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clescolaproc->erro_status=="0"){
   $clescolaproc->erro(true,false);

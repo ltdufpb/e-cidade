@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_disciplina_classe.php"));
 include(modification("classes/db_caddisciplina_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldisciplina = new cl_disciplina;
 $clcaddisciplina = new cl_caddisciplina;
 $cldisciplina->rotulo->label("ed12_i_codigo");
@@ -58,7 +59,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
       <?=$Led12_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
+      <?php db_input("ed12_i_codigo",10,$Ied12_i_codigo,true,"text",4,"","chave_ed12_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -66,7 +67,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
       <?=$Led232_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed232_c_descr",30,@$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
+      <?php db_input("ed232_c_descr",30,@$Ied232_c_descr,true,"text",4,"","chave_ed232_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -87,7 +88,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $campos = "DISTINCT disciplina.ed12_i_codigo,
               caddisciplina.ed232_c_descr,
               caddisciplina.ed232_c_abrev

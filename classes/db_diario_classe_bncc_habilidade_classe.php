@@ -31,7 +31,7 @@ class cl_diario_classe_bncc_habilidade
     public function __construct()
     {
         $this->rotulo = new rotulo("diario_classe_bncc_habilidade"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -96,10 +96,10 @@ class cl_diario_classe_bncc_habilidade
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed156_codigo = pg_result($result,0,0); 
+       $this->ed156_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from diario_classe_bncc_habilidade_ed156_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed156_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed156_codigo)){
          $this->erro_sql = " Campo ed156_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,7 +133,7 @@ class cl_diario_classe_bncc_habilidade
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->ed156_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -162,13 +162,13 @@ class cl_diario_classe_bncc_habilidade
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011007,'$this->ed156_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010521,1011007,'','".AddSlashes(pg_result($resaco,0,'ed156_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010521,1011008,'','".AddSlashes(pg_result($resaco,0,'ed156_diario_classe_bncc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010521,1011009,'','".AddSlashes(pg_result($resaco,0,'ed156_bnccdisciplinas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010521,1011010,'','".AddSlashes(pg_result($resaco,0,'ed156_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010521,1011007,'','".AddSlashes(pg_fetch_result($resaco,0,'ed156_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010521,1011008,'','".AddSlashes(pg_fetch_result($resaco,0,'ed156_diario_classe_bncc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010521,1011009,'','".AddSlashes(pg_fetch_result($resaco,0,'ed156_bnccdisciplinas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010521,1011010,'','".AddSlashes(pg_fetch_result($resaco,0,'ed156_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -179,10 +179,10 @@ class cl_diario_classe_bncc_habilidade
       $this->atualizacampos();
      $sql = " update diario_classe_bncc_habilidade set ";
      $virgula = "";
-     if(trim($this->ed156_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_codigo"])){ 
+     if(trim((string) $this->ed156_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_codigo"])){ 
        $sql  .= $virgula." ed156_codigo = $this->ed156_codigo ";
        $virgula = ",";
-       if(trim($this->ed156_codigo) == null ){ 
+       if(trim((string) $this->ed156_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed156_codigo";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_diario_classe_bncc_habilidade
          return false;
        }
      }
-     if(trim($this->ed156_diario_classe_bncc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_diario_classe_bncc"])){ 
+     if(trim((string) $this->ed156_diario_classe_bncc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_diario_classe_bncc"])){ 
        $sql  .= $virgula." ed156_diario_classe_bncc = $this->ed156_diario_classe_bncc ";
        $virgula = ",";
-       if(trim($this->ed156_diario_classe_bncc) == null ){ 
+       if(trim((string) $this->ed156_diario_classe_bncc) == null ){ 
          $this->erro_sql = " Campo Diário de Classe BNCC não informado.";
          $this->erro_campo = "ed156_diario_classe_bncc";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_diario_classe_bncc_habilidade
          return false;
        }
      }
-     if(trim($this->ed156_bnccdisciplinas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_bnccdisciplinas"])){ 
+     if(trim((string) $this->ed156_bnccdisciplinas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_bnccdisciplinas"])){ 
        $sql  .= $virgula." ed156_bnccdisciplinas = $this->ed156_bnccdisciplinas ";
        $virgula = ",";
-       if(trim($this->ed156_bnccdisciplinas) == null ){ 
+       if(trim((string) $this->ed156_bnccdisciplinas) == null ){ 
          $this->erro_sql = " Campo Disciplina BNCC não informado.";
          $this->erro_campo = "ed156_bnccdisciplinas";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_diario_classe_bncc_habilidade
          return false;
        }
      }
-     if(trim($this->ed156_habilidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_habilidade"])){ 
+     if(trim((string) $this->ed156_habilidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed156_habilidade"])){ 
        $sql  .= $virgula." ed156_habilidade = '$this->ed156_habilidade' ";
        $virgula = ",";
-       if(trim($this->ed156_habilidade) == null ){ 
+       if(trim((string) $this->ed156_habilidade) == null ){ 
          $this->erro_sql = " Campo Habilidade não informado.";
          $this->erro_campo = "ed156_habilidade";
          $this->erro_banco = "";
@@ -245,17 +245,17 @@ class cl_diario_classe_bncc_habilidade
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1011007,'$this->ed156_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed156_codigo"]) || $this->ed156_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010521,1011007,'".AddSlashes(pg_result($resaco,$conresaco,'ed156_codigo'))."','$this->ed156_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010521,1011007,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed156_codigo'))."','$this->ed156_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed156_diario_classe_bncc"]) || $this->ed156_diario_classe_bncc != "")
-             $resac = db_query("insert into db_acount values($acount,1010521,1011008,'".AddSlashes(pg_result($resaco,$conresaco,'ed156_diario_classe_bncc'))."','$this->ed156_diario_classe_bncc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010521,1011008,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed156_diario_classe_bncc'))."','$this->ed156_diario_classe_bncc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed156_bnccdisciplinas"]) || $this->ed156_bnccdisciplinas != "")
-             $resac = db_query("insert into db_acount values($acount,1010521,1011009,'".AddSlashes(pg_result($resaco,$conresaco,'ed156_bnccdisciplinas'))."','$this->ed156_bnccdisciplinas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010521,1011009,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed156_bnccdisciplinas'))."','$this->ed156_bnccdisciplinas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed156_habilidade"]) || $this->ed156_habilidade != "")
-             $resac = db_query("insert into db_acount values($acount,1010521,1011010,'".AddSlashes(pg_result($resaco,$conresaco,'ed156_habilidade'))."','$this->ed156_habilidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010521,1011010,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed156_habilidade'))."','$this->ed156_habilidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -309,13 +309,13 @@ class cl_diario_classe_bncc_habilidade
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1011007,'$ed156_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010521,1011007,'','".AddSlashes(pg_result($resaco,$iresaco,'ed156_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010521,1011008,'','".AddSlashes(pg_result($resaco,$iresaco,'ed156_diario_classe_bncc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010521,1011009,'','".AddSlashes(pg_result($resaco,$iresaco,'ed156_bnccdisciplinas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010521,1011010,'','".AddSlashes(pg_result($resaco,$iresaco,'ed156_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010521,1011007,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed156_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010521,1011008,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed156_diario_classe_bncc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010521,1011009,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed156_bnccdisciplinas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010521,1011010,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed156_habilidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE infracaotransito
 class cl_infracaotransito { 
@@ -28,7 +28,7 @@ class cl_infracaotransito {
                  i05_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_infracaotransito() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("infracaotransito"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

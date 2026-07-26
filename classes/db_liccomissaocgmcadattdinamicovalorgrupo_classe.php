@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: licitacao
 //CLASSE DA ENTIDADE liccomissaocgmcadattdinamicovalorgrupo
 class cl_liccomissaocgmcadattdinamicovalorgrupo { 
@@ -26,7 +26,7 @@ class cl_liccomissaocgmcadattdinamicovalorgrupo {
                  l15_cadattdinamicovalorgrupo = int4 = Grupo dos Valores 
                  ";
    //funcao construtor da classe 
-   function cl_liccomissaocgmcadattdinamicovalorgrupo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liccomissaocgmcadattdinamicovalorgrupo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

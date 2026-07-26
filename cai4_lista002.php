@@ -231,7 +231,7 @@ $sSqlEtapa = array();
 <br>
 <br>
 
-<?
+<?php 
 /***
  *
  *  Nas inclusão de listas de débitos do DBportal existem 2 tipos de filtros:
@@ -1095,7 +1095,7 @@ if (!$lDebug) {
 ?>
 </body>
 </html>
-<?
+<?php 
 //monta uma lista com os nomes dos contribuintes indicados por matrículas, inscrições ou cgm
 function getContribuintes($sTipo, $sIdsContribuintes) {
 

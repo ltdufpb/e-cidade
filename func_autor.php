@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_autor_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clautor = new cl_autor;
 $clautor->rotulo->label("bi01_codigo");
 $clautor->rotulo->label("bi01_nome");
@@ -55,7 +56,7 @@ $clautor->rotulo->label("bi01_nome");
               <label for="chave_bi01_codigo"><?=$Lbi01_codigo?></label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                        db_input("bi01_codigo",10,$Ibi01_codigo,true,"text",4,"","chave_bi01_codigo");
                        ?>
             </td>
@@ -65,7 +66,7 @@ $clautor->rotulo->label("bi01_nome");
               <label for="chave_bi01_nome"><?=$Lbi01_nome?></label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                        db_input("bi01_nome",50,$Ibi01_nome,true,"text",4,"","chave_bi01_nome");
                        ?>
             </td>
@@ -83,7 +84,7 @@ $clautor->rotulo->label("bi01_nome");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autor.php")==true){
@@ -123,12 +124,12 @@ $clautor->rotulo->label("bi01_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE avaliacaoquestionariointerno
 class cl_avaliacaoquestionariointerno { 
@@ -30,7 +30,7 @@ class cl_avaliacaoquestionariointerno {
                  db170_codigo = int4 = Codigo do Questionario Externo 
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaoquestionariointerno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaoquestionariointerno"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

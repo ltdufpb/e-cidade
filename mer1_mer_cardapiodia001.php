@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ $escola             = db_getsession("DB_coddepto");
    <br>
    <center>
     <fieldset style="width:95%"><legend><b>Cardápio Semanal</b></legend>
-	<? include(modification("forms/db_frmmer_cardapiodia.php"));?>
+	<?php  include(modification("forms/db_frmmer_cardapiodia.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -66,7 +66,7 @@ $escola             = db_getsession("DB_coddepto");
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

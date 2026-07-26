@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benscomissao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbenscomissao = new cl_benscomissao;
 $clbenscomissao->rotulo->label("t60_codcom");
 $clbenscomissao->rotulo->label("t60_dataini");
@@ -54,7 +55,7 @@ $clbenscomissao->rotulo->label("t60_dataini");
               <?=$Lt60_codcom?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t60_codcom",10,$It60_codcom,true,"text",4,"","chave_t60_codcom");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbenscomissao->rotulo->label("t60_dataini");
               <?=$Lt60_dataini?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t60_dataini",10,$It60_dataini,true,"text",4,"","chave_t60_dataini");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbenscomissao->rotulo->label("t60_dataini");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where_instit = "t60_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -119,12 +120,12 @@ $clbenscomissao->rotulo->label("t60_dataini");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

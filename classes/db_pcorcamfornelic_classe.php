@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE pcorcamfornelic
 class cl_pcorcamfornelic {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $pc31_orcamforne = 0;
-   var $pc31_nomeretira = null;
-   var $pc31_dtretira_dia = null;
-   var $pc31_dtretira_mes = null;
-   var $pc31_dtretira_ano = null;
-   var $pc31_dtretira = null;
-   var $pc31_horaretira = null;
-   var $pc31_liclicitatipoempresa = 0;
-   var $pc31_tipocondicao = null;
+   public $pc31_orcamforne = 0;
+   public $pc31_nomeretira = null;
+   public $pc31_dtretira_dia = null;
+   public $pc31_dtretira_mes = null;
+   public $pc31_dtretira_ano = null;
+   public $pc31_dtretira = null;
+   public $pc31_horaretira = null;
+   public $pc31_liclicitatipoempresa = 0;
+   public $pc31_tipocondicao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  pc31_orcamforne = int8 = Código do orcamento deste fornecedor
                  pc31_nomeretira = varchar(100) = Nome da Pessoa que Retirou o Edital
                  pc31_dtretira = date = Data da Retirada do Edital
@@ -61,10 +61,10 @@ class cl_pcorcamfornelic {
                  pc31_tipocondicao = int4 = Tipo de Condição
                  ";
    //funcao construtor da classe
-   function cl_pcorcamfornelic() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamfornelic");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -158,7 +158,7 @@ class cl_pcorcamfornelic {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "pcorcamfornelic ($this->pc31_orcamforne) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "pcorcamfornelic já Cadastrado";
@@ -187,15 +187,15 @@ class cl_pcorcamfornelic {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7757,'$this->pc31_orcamforne','I')");
-         $resac = db_query("insert into db_acount values($acount,1291,7757,'','".AddSlashes(pg_result($resaco,0,'pc31_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1291,7755,'','".AddSlashes(pg_result($resaco,0,'pc31_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1291,7754,'','".AddSlashes(pg_result($resaco,0,'pc31_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1291,7756,'','".AddSlashes(pg_result($resaco,0,'pc31_horaretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1291,12301,'','".AddSlashes(pg_result($resaco,0,'pc31_liclicitatipoempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1291,21728,'','".AddSlashes(pg_result($resaco,0,'pc31_tipocondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1291,7757,'','".AddSlashes(pg_fetch_result($resaco,0,'pc31_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1291,7755,'','".AddSlashes(pg_fetch_result($resaco,0,'pc31_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1291,7754,'','".AddSlashes(pg_fetch_result($resaco,0,'pc31_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1291,7756,'','".AddSlashes(pg_fetch_result($resaco,0,'pc31_horaretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1291,12301,'','".AddSlashes(pg_fetch_result($resaco,0,'pc31_liclicitatipoempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1291,21728,'','".AddSlashes(pg_fetch_result($resaco,0,'pc31_tipocondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -205,10 +205,10 @@ class cl_pcorcamfornelic {
       $this->atualizacampos();
      $sql = " update pcorcamfornelic set ";
      $virgula = "";
-     if(trim($this->pc31_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_orcamforne"])){
+     if(trim((string) $this->pc31_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_orcamforne"])){
        $sql  .= $virgula." pc31_orcamforne = $this->pc31_orcamforne ";
        $virgula = ",";
-       if(trim($this->pc31_orcamforne) == null ){
+       if(trim((string) $this->pc31_orcamforne) == null ){
          $this->erro_sql = " Campo Código do orcamento deste fornecedor não informado.";
          $this->erro_campo = "pc31_orcamforne";
          $this->erro_banco = "";
@@ -218,14 +218,14 @@ class cl_pcorcamfornelic {
          return false;
        }
      }
-     if(trim($this->pc31_nomeretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_nomeretira"])){
+     if(trim((string) $this->pc31_nomeretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_nomeretira"])){
        $sql  .= $virgula." pc31_nomeretira = '$this->pc31_nomeretira' ";
        $virgula = ",";
      }
-     if(trim($this->pc31_dtretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_dtretira_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc31_dtretira_dia"] !="") ){
+     if(trim((string) $this->pc31_dtretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_dtretira_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc31_dtretira_dia"] !="") ){
        $sql  .= $virgula." pc31_dtretira = '$this->pc31_dtretira' ";
        $virgula = ",";
-       if(trim($this->pc31_dtretira) == null ){
+       if(trim((string) $this->pc31_dtretira) == null ){
          $this->erro_sql = " Campo Data da Retirada do Edital não informado.";
          $this->erro_campo = "pc31_dtretira_dia";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ class cl_pcorcamfornelic {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc31_dtretira_dia"])){
          $sql  .= $virgula." pc31_dtretira = null ";
          $virgula = ",";
-         if(trim($this->pc31_dtretira) == null ){
+         if(trim((string) $this->pc31_dtretira) == null ){
            $this->erro_sql = " Campo Data da Retirada do Edital não informado.";
            $this->erro_campo = "pc31_dtretira_dia";
            $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_pcorcamfornelic {
          }
        }
      }
-     if(trim($this->pc31_horaretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_horaretira"])){
+     if(trim((string) $this->pc31_horaretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_horaretira"])){
        $sql  .= $virgula." pc31_horaretira = '$this->pc31_horaretira' ";
        $virgula = ",";
-       if(trim($this->pc31_horaretira) == null ){
+       if(trim((string) $this->pc31_horaretira) == null ){
          $this->erro_sql = " Campo Hora da Retirada do Edital não informado.";
          $this->erro_campo = "pc31_horaretira";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_pcorcamfornelic {
          return false;
        }
      }
-     if(trim($this->pc31_liclicitatipoempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_liclicitatipoempresa"])){
+     if(trim((string) $this->pc31_liclicitatipoempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_liclicitatipoempresa"])){
        $sql  .= $virgula." pc31_liclicitatipoempresa = $this->pc31_liclicitatipoempresa ";
        $virgula = ",";
-       if(trim($this->pc31_liclicitatipoempresa) == null ){
+       if(trim((string) $this->pc31_liclicitatipoempresa) == null ){
          $this->erro_sql = " Campo Tipo da Empresa não informado.";
          $this->erro_campo = "pc31_liclicitatipoempresa";
          $this->erro_banco = "";
@@ -275,8 +275,8 @@ class cl_pcorcamfornelic {
          return false;
        }
      }
-     if(trim($this->pc31_tipocondicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_tipocondicao"])){
-        if(trim($this->pc31_tipocondicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc31_tipocondicao"])){
+     if(trim((string) $this->pc31_tipocondicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc31_tipocondicao"])){
+        if(trim((string) $this->pc31_tipocondicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc31_tipocondicao"])){
            $this->pc31_tipocondicao = "null" ;
         }
        $sql  .= $virgula." pc31_tipocondicao = $this->pc31_tipocondicao ";
@@ -296,21 +296,21 @@ class cl_pcorcamfornelic {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,7757,'$this->pc31_orcamforne','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc31_orcamforne"]) || $this->pc31_orcamforne != "")
-             $resac = db_query("insert into db_acount values($acount,1291,7757,'".AddSlashes(pg_result($resaco,$conresaco,'pc31_orcamforne'))."','$this->pc31_orcamforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1291,7757,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc31_orcamforne'))."','$this->pc31_orcamforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc31_nomeretira"]) || $this->pc31_nomeretira != "")
-             $resac = db_query("insert into db_acount values($acount,1291,7755,'".AddSlashes(pg_result($resaco,$conresaco,'pc31_nomeretira'))."','$this->pc31_nomeretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1291,7755,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc31_nomeretira'))."','$this->pc31_nomeretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc31_dtretira"]) || $this->pc31_dtretira != "")
-             $resac = db_query("insert into db_acount values($acount,1291,7754,'".AddSlashes(pg_result($resaco,$conresaco,'pc31_dtretira'))."','$this->pc31_dtretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1291,7754,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc31_dtretira'))."','$this->pc31_dtretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc31_horaretira"]) || $this->pc31_horaretira != "")
-             $resac = db_query("insert into db_acount values($acount,1291,7756,'".AddSlashes(pg_result($resaco,$conresaco,'pc31_horaretira'))."','$this->pc31_horaretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1291,7756,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc31_horaretira'))."','$this->pc31_horaretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc31_liclicitatipoempresa"]) || $this->pc31_liclicitatipoempresa != "")
-             $resac = db_query("insert into db_acount values($acount,1291,12301,'".AddSlashes(pg_result($resaco,$conresaco,'pc31_liclicitatipoempresa'))."','$this->pc31_liclicitatipoempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1291,12301,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc31_liclicitatipoempresa'))."','$this->pc31_liclicitatipoempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc31_tipocondicao"]) || $this->pc31_tipocondicao != "")
-             $resac = db_query("insert into db_acount values($acount,1291,21728,'".AddSlashes(pg_result($resaco,$conresaco,'pc31_tipocondicao'))."','$this->pc31_tipocondicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1291,21728,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc31_tipocondicao'))."','$this->pc31_tipocondicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -364,15 +364,15 @@ class cl_pcorcamfornelic {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,7757,'$pc31_orcamforne','E')");
-           $resac  = db_query("insert into db_acount values($acount,1291,7757,'','".AddSlashes(pg_result($resaco,$iresaco,'pc31_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1291,7755,'','".AddSlashes(pg_result($resaco,$iresaco,'pc31_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1291,7754,'','".AddSlashes(pg_result($resaco,$iresaco,'pc31_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1291,7756,'','".AddSlashes(pg_result($resaco,$iresaco,'pc31_horaretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1291,12301,'','".AddSlashes(pg_result($resaco,$iresaco,'pc31_liclicitatipoempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1291,21728,'','".AddSlashes(pg_result($resaco,$iresaco,'pc31_tipocondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1291,7757,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc31_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1291,7755,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc31_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1291,7754,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc31_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1291,7756,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc31_horaretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1291,12301,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc31_liclicitatipoempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1291,21728,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc31_tipocondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

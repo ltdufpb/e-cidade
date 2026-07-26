@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matmater_classe.php"));
 include(modification("classes/db_transmater_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmatmater = new cl_matmater;
 $cltransmater = new cl_transmater;
@@ -105,7 +106,7 @@ function js_ret(chave, chave2, validade){
               <?=$Lm60_codmater?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");
 		       db_input("codmater",10,$Im60_codmater,true,"hidden",3);
 		       db_input("descrmater",10,'',true,"hidden",3);
@@ -119,7 +120,7 @@ function js_ret(chave, chave2, validade){
               <?=$Lm60_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("m60_descr",40,$Im60_descr,true,"text",4,"","chave_m60_descr");
 		       ?>
             </td>
@@ -171,12 +172,12 @@ function js_ret(chave, chave2, validade){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 

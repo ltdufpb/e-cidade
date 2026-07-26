@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE areaconhecimento
 class cl_areaconhecimento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed293_sequencial = 0; 
-   var $ed293_descr = null; 
-   var $ed293_ativo = 0; 
+   public $ed293_sequencial = 0; 
+   public $ed293_descr = null; 
+   public $ed293_ativo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed293_sequencial = int4 = Código 
                  ed293_descr = varchar(50) = Descrição 
                  ed293_ativo = int4 = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_areaconhecimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("areaconhecimento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_areaconhecimento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed293_sequencial = pg_result($result,0,0); 
+       $this->ed293_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from areaconhecimento_ed293_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed293_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed293_sequencial)){
          $this->erro_sql = " Campo ed293_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_areaconhecimento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "areaconhecimento ($this->ed293_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "areaconhecimento já Cadastrado";
@@ -166,12 +166,12 @@ class cl_areaconhecimento {
      $resaco = $this->sql_record($this->sql_query_file($this->ed293_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18423,'$this->ed293_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3258,18423,'','".AddSlashes(pg_result($resaco,0,'ed293_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3258,18424,'','".AddSlashes(pg_result($resaco,0,'ed293_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3258,18425,'','".AddSlashes(pg_result($resaco,0,'ed293_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3258,18423,'','".AddSlashes(pg_fetch_result($resaco,0,'ed293_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3258,18424,'','".AddSlashes(pg_fetch_result($resaco,0,'ed293_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3258,18425,'','".AddSlashes(pg_fetch_result($resaco,0,'ed293_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_areaconhecimento {
       $this->atualizacampos();
      $sql = " update areaconhecimento set ";
      $virgula = "";
-     if(trim($this->ed293_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed293_sequencial"])){ 
+     if(trim((string) $this->ed293_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed293_sequencial"])){ 
        $sql  .= $virgula." ed293_sequencial = $this->ed293_sequencial ";
        $virgula = ",";
-       if(trim($this->ed293_sequencial) == null ){ 
+       if(trim((string) $this->ed293_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed293_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_areaconhecimento {
          return false;
        }
      }
-     if(trim($this->ed293_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed293_descr"])){ 
+     if(trim((string) $this->ed293_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed293_descr"])){ 
        $sql  .= $virgula." ed293_descr = '$this->ed293_descr' ";
        $virgula = ",";
-       if(trim($this->ed293_descr) == null ){ 
+       if(trim((string) $this->ed293_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "ed293_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_areaconhecimento {
          return false;
        }
      }
-     if(trim($this->ed293_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed293_ativo"])){ 
+     if(trim((string) $this->ed293_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed293_ativo"])){ 
        $sql  .= $virgula." ed293_ativo = $this->ed293_ativo ";
        $virgula = ",";
-       if(trim($this->ed293_ativo) == null ){ 
+       if(trim((string) $this->ed293_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "ed293_ativo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_areaconhecimento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18423,'$this->ed293_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed293_sequencial"]) || $this->ed293_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3258,18423,'".AddSlashes(pg_result($resaco,$conresaco,'ed293_sequencial'))."','$this->ed293_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3258,18423,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed293_sequencial'))."','$this->ed293_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed293_descr"]) || $this->ed293_descr != "")
-           $resac = db_query("insert into db_acount values($acount,3258,18424,'".AddSlashes(pg_result($resaco,$conresaco,'ed293_descr'))."','$this->ed293_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3258,18424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed293_descr'))."','$this->ed293_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed293_ativo"]) || $this->ed293_ativo != "")
-           $resac = db_query("insert into db_acount values($acount,3258,18425,'".AddSlashes(pg_result($resaco,$conresaco,'ed293_ativo'))."','$this->ed293_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3258,18425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed293_ativo'))."','$this->ed293_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_areaconhecimento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18423,'$ed293_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3258,18423,'','".AddSlashes(pg_result($resaco,$iresaco,'ed293_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3258,18424,'','".AddSlashes(pg_result($resaco,$iresaco,'ed293_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3258,18425,'','".AddSlashes(pg_result($resaco,$iresaco,'ed293_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3258,18423,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed293_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3258,18424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed293_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3258,18425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed293_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from areaconhecimento
@@ -345,7 +345,7 @@ class cl_areaconhecimento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:areaconhecimento";
@@ -360,7 +360,7 @@ class cl_areaconhecimento {
    function sql_query ( $ed293_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_areaconhecimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_areaconhecimento {
    function sql_query_file ( $ed293_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_areaconhecimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

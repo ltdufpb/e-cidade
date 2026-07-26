@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,91 +29,91 @@
 //CLASSE DA ENTIDADE cadferia
 class cl_cadferia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r30_anousu = 0; 
-   var $r30_mesusu = 0; 
-   var $r30_numcgm = 0; 
-   var $r30_regist = 0; 
-   var $r30_faltas = 0; 
-   var $r30_perai_dia = null; 
-   var $r30_perai_mes = null; 
-   var $r30_perai_ano = null; 
-   var $r30_perai = null; 
-   var $r30_peraf_dia = null; 
-   var $r30_peraf_mes = null; 
-   var $r30_peraf_ano = null; 
-   var $r30_peraf = null; 
-   var $r30_ndias = 0; 
-   var $r30_dias1 = 0; 
-   var $r30_dias2 = 0; 
-   var $r30_per1i_dia = null; 
-   var $r30_per1i_mes = null; 
-   var $r30_per1i_ano = null; 
-   var $r30_per1i = null; 
-   var $r30_per1f_dia = null; 
-   var $r30_per1f_mes = null; 
-   var $r30_per1f_ano = null; 
-   var $r30_per1f = null; 
-   var $r30_per2i_dia = null; 
-   var $r30_per2i_mes = null; 
-   var $r30_per2i_ano = null; 
-   var $r30_per2i = null; 
-   var $r30_per2f_dia = null; 
-   var $r30_per2f_mes = null; 
-   var $r30_per2f_ano = null; 
-   var $r30_per2f = null; 
-   var $r30_proc1 = null; 
-   var $r30_proc2 = null; 
-   var $r30_abono = 0; 
-   var $r30_proc1d = null; 
-   var $r30_vliq1 = "0";
-   var $r30_vfgt1 = "0";
-   var $r30_virf1 = "0";
-   var $r30_vpre1 = "0";
-   var $r30_vliq1d = "0";
-   var $r30_vfgt1d = "0";
-   var $r30_virf1d = "0";
-   var $r30_vpre1d = "0";
-   var $r30_vliq2 = "0";
-   var $r30_vfgt2 = "0";
-   var $r30_virf2 = "0";
-   var $r30_vliq2d = "0";
-   var $r30_virf2d = "0";
-   var $r30_vfgt2d = "0";
-   var $r30_vpre2d = "0";
-   var $r30_vpre2 = "0";
-   var $r30_tip1 = null;
-   var $r30_tip2 = null;
-   var $r30_psal1 = 'false';
-   var $r30_psal2 = 'false';
-   var $r30_proc2d = "null";
-   var $r30_ponto = "null";
-   var $r30_paga13 = 'f';
-   var $r30_descad = "0";
-   var $r30_tipoapuracaomedia = "0";
-   var $r30_periodolivreinicial_dia = null; 
-   var $r30_periodolivreinicial_mes = null; 
-   var $r30_periodolivreinicial_ano = null; 
-   var $r30_periodolivreinicial = null; 
-   var $r30_periodolivrefinal_dia = null; 
-   var $r30_periodolivrefinal_mes = null; 
-   var $r30_periodolivrefinal_ano = null; 
-   var $r30_periodolivrefinal = null; 
-   var $r30_obs = null; 
+   public $r30_anousu = 0; 
+   public $r30_mesusu = 0; 
+   public $r30_numcgm = 0; 
+   public $r30_regist = 0; 
+   public $r30_faltas = 0; 
+   public $r30_perai_dia = null; 
+   public $r30_perai_mes = null; 
+   public $r30_perai_ano = null; 
+   public $r30_perai = null; 
+   public $r30_peraf_dia = null; 
+   public $r30_peraf_mes = null; 
+   public $r30_peraf_ano = null; 
+   public $r30_peraf = null; 
+   public $r30_ndias = 0; 
+   public $r30_dias1 = 0; 
+   public $r30_dias2 = 0; 
+   public $r30_per1i_dia = null; 
+   public $r30_per1i_mes = null; 
+   public $r30_per1i_ano = null; 
+   public $r30_per1i = null; 
+   public $r30_per1f_dia = null; 
+   public $r30_per1f_mes = null; 
+   public $r30_per1f_ano = null; 
+   public $r30_per1f = null; 
+   public $r30_per2i_dia = null; 
+   public $r30_per2i_mes = null; 
+   public $r30_per2i_ano = null; 
+   public $r30_per2i = null; 
+   public $r30_per2f_dia = null; 
+   public $r30_per2f_mes = null; 
+   public $r30_per2f_ano = null; 
+   public $r30_per2f = null; 
+   public $r30_proc1 = null; 
+   public $r30_proc2 = null; 
+   public $r30_abono = 0; 
+   public $r30_proc1d = null; 
+   public $r30_vliq1 = "0";
+   public $r30_vfgt1 = "0";
+   public $r30_virf1 = "0";
+   public $r30_vpre1 = "0";
+   public $r30_vliq1d = "0";
+   public $r30_vfgt1d = "0";
+   public $r30_virf1d = "0";
+   public $r30_vpre1d = "0";
+   public $r30_vliq2 = "0";
+   public $r30_vfgt2 = "0";
+   public $r30_virf2 = "0";
+   public $r30_vliq2d = "0";
+   public $r30_virf2d = "0";
+   public $r30_vfgt2d = "0";
+   public $r30_vpre2d = "0";
+   public $r30_vpre2 = "0";
+   public $r30_tip1 = null;
+   public $r30_tip2 = null;
+   public $r30_psal1 = 'false';
+   public $r30_psal2 = 'false';
+   public $r30_proc2d = "null";
+   public $r30_ponto = "null";
+   public $r30_paga13 = 'f';
+   public $r30_descad = "0";
+   public $r30_tipoapuracaomedia = "0";
+   public $r30_periodolivreinicial_dia = null; 
+   public $r30_periodolivreinicial_mes = null; 
+   public $r30_periodolivreinicial_ano = null; 
+   public $r30_periodolivreinicial = null; 
+   public $r30_periodolivrefinal_dia = null; 
+   public $r30_periodolivrefinal_mes = null; 
+   public $r30_periodolivrefinal_ano = null; 
+   public $r30_periodolivrefinal = null; 
+   public $r30_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r30_anousu = int4 = Ano do Exercicio 
                  r30_mesusu = int4 = Mes do Exercicio 
                  r30_numcgm = int4 = Codigo do Funcionario no cgm 
@@ -162,10 +162,10 @@ class cl_cadferia {
                  r30_obs = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_cadferia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadferia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -750,7 +750,7 @@ class cl_cadferia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Ferias                                 () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Ferias                                 já Cadastrado";
@@ -782,10 +782,10 @@ class cl_cadferia {
       $this->atualizacampos();
      $sql = " update cadferia set ";
      $virgula = "";
-     if(trim($this->r30_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_anousu"])){ 
+     if(trim((string) $this->r30_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_anousu"])){ 
        $sql  .= $virgula." r30_anousu = $this->r30_anousu ";
        $virgula = ",";
-       if(trim($this->r30_anousu) == null ){ 
+       if(trim((string) $this->r30_anousu) == null ){ 
          $this->erro_sql = " Campo Ano do Exercicio não informado.";
          $this->erro_campo = "r30_anousu";
          $this->erro_banco = "";
@@ -795,10 +795,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_mesusu"])){ 
+     if(trim((string) $this->r30_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_mesusu"])){ 
        $sql  .= $virgula." r30_mesusu = $this->r30_mesusu ";
        $virgula = ",";
-       if(trim($this->r30_mesusu) == null ){ 
+       if(trim((string) $this->r30_mesusu) == null ){ 
          $this->erro_sql = " Campo Mes do Exercicio não informado.";
          $this->erro_campo = "r30_mesusu";
          $this->erro_banco = "";
@@ -808,10 +808,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_numcgm"])){ 
+     if(trim((string) $this->r30_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_numcgm"])){ 
        $sql  .= $virgula." r30_numcgm = $this->r30_numcgm ";
        $virgula = ",";
-       if(trim($this->r30_numcgm) == null ){ 
+       if(trim((string) $this->r30_numcgm) == null ){ 
          $this->erro_sql = " Campo Codigo do Funcionario no cgm não informado.";
          $this->erro_campo = "r30_numcgm";
          $this->erro_banco = "";
@@ -821,10 +821,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_regist"])){ 
+     if(trim((string) $this->r30_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_regist"])){ 
        $sql  .= $virgula." r30_regist = $this->r30_regist ";
        $virgula = ",";
-       if(trim($this->r30_regist) == null ){ 
+       if(trim((string) $this->r30_regist) == null ){ 
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "r30_regist";
          $this->erro_banco = "";
@@ -834,10 +834,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_faltas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_faltas"])){ 
+     if(trim((string) $this->r30_faltas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_faltas"])){ 
        $sql  .= $virgula." r30_faltas = $this->r30_faltas ";
        $virgula = ",";
-       if(trim($this->r30_faltas) == null ){ 
+       if(trim((string) $this->r30_faltas) == null ){ 
          $this->erro_sql = " Campo Faltas Durante o Período Aquisitivo não informado.";
          $this->erro_campo = "r30_faltas";
          $this->erro_banco = "";
@@ -847,10 +847,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_perai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_perai_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_perai_dia"] !="") ){ 
+     if(trim((string) $this->r30_perai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_perai_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_perai_dia"] !="") ){ 
        $sql  .= $virgula." r30_perai = '$this->r30_perai' ";
        $virgula = ",";
-       if(trim($this->r30_perai) == null ){ 
+       if(trim((string) $this->r30_perai) == null ){ 
          $this->erro_sql = " Campo Período Aquisitivo não informado.";
          $this->erro_campo = "r30_perai_dia";
          $this->erro_banco = "";
@@ -863,7 +863,7 @@ class cl_cadferia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r30_perai_dia"])){ 
          $sql  .= $virgula." r30_perai = null ";
          $virgula = ",";
-         if(trim($this->r30_perai) == null ){ 
+         if(trim((string) $this->r30_perai) == null ){ 
            $this->erro_sql = " Campo Período Aquisitivo não informado.";
            $this->erro_campo = "r30_perai_dia";
            $this->erro_banco = "";
@@ -874,10 +874,10 @@ class cl_cadferia {
          }
        }
      }
-     if(trim($this->r30_peraf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_peraf_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_peraf_dia"] !="") ){ 
+     if(trim((string) $this->r30_peraf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_peraf_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_peraf_dia"] !="") ){ 
        $sql  .= $virgula." r30_peraf = '$this->r30_peraf' ";
        $virgula = ",";
-       if(trim($this->r30_peraf) == null ){ 
+       if(trim((string) $this->r30_peraf) == null ){ 
          $this->erro_sql = " Campo Final Período não informado.";
          $this->erro_campo = "r30_peraf_dia";
          $this->erro_banco = "";
@@ -890,7 +890,7 @@ class cl_cadferia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r30_peraf_dia"])){ 
          $sql  .= $virgula." r30_peraf = null ";
          $virgula = ",";
-         if(trim($this->r30_peraf) == null ){ 
+         if(trim((string) $this->r30_peraf) == null ){ 
            $this->erro_sql = " Campo Final Período não informado.";
            $this->erro_campo = "r30_peraf_dia";
            $this->erro_banco = "";
@@ -901,10 +901,10 @@ class cl_cadferia {
          }
        }
      }
-     if(trim($this->r30_ndias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_ndias"])){ 
+     if(trim((string) $this->r30_ndias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_ndias"])){ 
        $sql  .= $virgula." r30_ndias = $this->r30_ndias ";
        $virgula = ",";
-       if(trim($this->r30_ndias) == null ){ 
+       if(trim((string) $this->r30_ndias) == null ){ 
          $this->erro_sql = " Campo Total de Dias a Gozar não informado.";
          $this->erro_campo = "r30_ndias";
          $this->erro_banco = "";
@@ -914,10 +914,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_dias1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_dias1"])){ 
+     if(trim((string) $this->r30_dias1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_dias1"])){ 
        $sql  .= $virgula." r30_dias1 = $this->r30_dias1 ";
        $virgula = ",";
-       if(trim($this->r30_dias1) == null ){ 
+       if(trim((string) $this->r30_dias1) == null ){ 
          $this->erro_sql = " Campo Dias não informado.";
          $this->erro_campo = "r30_dias1";
          $this->erro_banco = "";
@@ -927,10 +927,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_dias2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_dias2"])){ 
+     if(trim((string) $this->r30_dias2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_dias2"])){ 
        $sql  .= $virgula." r30_dias2 = $this->r30_dias2 ";
        $virgula = ",";
-       if(trim($this->r30_dias2) == null ){ 
+       if(trim((string) $this->r30_dias2) == null ){ 
          $this->erro_sql = " Campo Dias não informado.";
          $this->erro_campo = "r30_dias2";
          $this->erro_banco = "";
@@ -940,10 +940,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_per1i)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per1i_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per1i_dia"] !="") ){ 
+     if(trim((string) $this->r30_per1i)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per1i_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per1i_dia"] !="") ){ 
        $sql  .= $virgula." r30_per1i = '$this->r30_per1i' ";
        $virgula = ",";
-       if(trim($this->r30_per1i) == null ){ 
+       if(trim((string) $this->r30_per1i) == null ){ 
          $this->erro_sql = " Campo Início Gozo não informado.";
          $this->erro_campo = "r30_per1i_dia";
          $this->erro_banco = "";
@@ -956,7 +956,7 @@ class cl_cadferia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r30_per1i_dia"])){ 
          $sql  .= $virgula." r30_per1i = null ";
          $virgula = ",";
-         if(trim($this->r30_per1i) == null ){ 
+         if(trim((string) $this->r30_per1i) == null ){ 
            $this->erro_sql = " Campo Início Gozo não informado.";
            $this->erro_campo = "r30_per1i_dia";
            $this->erro_banco = "";
@@ -967,10 +967,10 @@ class cl_cadferia {
          }
        }
      }
-     if(trim($this->r30_per1f)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per1f_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per1f_dia"] !="") ){ 
+     if(trim((string) $this->r30_per1f)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per1f_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per1f_dia"] !="") ){ 
        $sql  .= $virgula." r30_per1f = '$this->r30_per1f' ";
        $virgula = ",";
-       if(trim($this->r30_per1f) == null ){ 
+       if(trim((string) $this->r30_per1f) == null ){ 
          $this->erro_sql = " Campo Final Gozo não informado.";
          $this->erro_campo = "r30_per1f_dia";
          $this->erro_banco = "";
@@ -983,7 +983,7 @@ class cl_cadferia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r30_per1f_dia"])){ 
          $sql  .= $virgula." r30_per1f = null ";
          $virgula = ",";
-         if(trim($this->r30_per1f) == null ){ 
+         if(trim((string) $this->r30_per1f) == null ){ 
            $this->erro_sql = " Campo Final Gozo não informado.";
            $this->erro_campo = "r30_per1f_dia";
            $this->erro_banco = "";
@@ -994,10 +994,10 @@ class cl_cadferia {
          }
        }
      }
-     if(trim($this->r30_per2i)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per2i_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per2i_dia"] !="") ){ 
+     if(trim((string) $this->r30_per2i)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per2i_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per2i_dia"] !="") ){ 
        $sql  .= $virgula." r30_per2i = '$this->r30_per2i' ";
        $virgula = ",";
-       if(trim($this->r30_per2i) == null ){ 
+       if(trim((string) $this->r30_per2i) == null ){ 
          $this->erro_sql = " Campo Início Gozo não informado.";
          $this->erro_campo = "r30_per2i_dia";
          $this->erro_banco = "";
@@ -1010,7 +1010,7 @@ class cl_cadferia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r30_per2i_dia"])){ 
          $sql  .= $virgula." r30_per2i = null ";
          $virgula = ",";
-         if(trim($this->r30_per2i) == null ){ 
+         if(trim((string) $this->r30_per2i) == null ){ 
            $this->erro_sql = " Campo Início Gozo não informado.";
            $this->erro_campo = "r30_per2i_dia";
            $this->erro_banco = "";
@@ -1021,10 +1021,10 @@ class cl_cadferia {
          }
        }
      }
-     if(trim($this->r30_per2f)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per2f_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per2f_dia"] !="") ){ 
+     if(trim((string) $this->r30_per2f)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_per2f_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_per2f_dia"] !="") ){ 
        $sql  .= $virgula." r30_per2f = '$this->r30_per2f' ";
        $virgula = ",";
-       if(trim($this->r30_per2f) == null ){ 
+       if(trim((string) $this->r30_per2f) == null ){ 
          $this->erro_sql = " Campo Final Gozo não informado.";
          $this->erro_campo = "r30_per2f_dia";
          $this->erro_banco = "";
@@ -1037,7 +1037,7 @@ class cl_cadferia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r30_per2f_dia"])){ 
          $sql  .= $virgula." r30_per2f = null ";
          $virgula = ",";
-         if(trim($this->r30_per2f) == null ){ 
+         if(trim((string) $this->r30_per2f) == null ){ 
            $this->erro_sql = " Campo Final Gozo não informado.";
            $this->erro_campo = "r30_per2f_dia";
            $this->erro_banco = "";
@@ -1048,10 +1048,10 @@ class cl_cadferia {
          }
        }
      }
-     if(trim($this->r30_proc1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc1"])){ 
+     if(trim((string) $this->r30_proc1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc1"])){ 
        $sql  .= $virgula." r30_proc1 = '$this->r30_proc1' ";
        $virgula = ",";
-       if(trim($this->r30_proc1) == null ){ 
+       if(trim((string) $this->r30_proc1) == null ){ 
          $this->erro_sql = " Campo Pagamento do 1o. periodo não informado.";
          $this->erro_campo = "r30_proc1";
          $this->erro_banco = "";
@@ -1061,10 +1061,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_proc2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc2"])){ 
+     if(trim((string) $this->r30_proc2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc2"])){ 
        $sql  .= $virgula." r30_proc2 = '$this->r30_proc2' ";
        $virgula = ",";
-       if(trim($this->r30_proc2) == null ){ 
+       if(trim((string) $this->r30_proc2) == null ){ 
          $this->erro_sql = " Campo Pagamento do 2o periodo não informado.";
          $this->erro_campo = "r30_proc2";
          $this->erro_banco = "";
@@ -1074,10 +1074,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_abono)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_abono"])){ 
+     if(trim((string) $this->r30_abono)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_abono"])){ 
        $sql  .= $virgula." r30_abono = $this->r30_abono ";
        $virgula = ",";
-       if(trim($this->r30_abono) == null ){ 
+       if(trim((string) $this->r30_abono) == null ){ 
          $this->erro_sql = " Campo Número de Dias do Abono não informado.";
          $this->erro_campo = "r30_abono";
          $this->erro_banco = "";
@@ -1087,10 +1087,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_proc1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc1d"])){ 
+     if(trim((string) $this->r30_proc1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc1d"])){ 
        $sql  .= $virgula." r30_proc1d = '$this->r30_proc1d' ";
        $virgula = ",";
-       if(trim($this->r30_proc1d) == null ){ 
+       if(trim((string) $this->r30_proc1d) == null ){ 
          $this->erro_sql = " Campo Ano/Mes do pagto da 1a dif não informado.";
          $this->erro_campo = "r30_proc1d";
          $this->erro_banco = "";
@@ -1100,10 +1100,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vliq1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq1"])){ 
+     if(trim((string) $this->r30_vliq1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq1"])){ 
        $sql  .= $virgula." r30_vliq1 = $this->r30_vliq1 ";
        $virgula = ",";
-       if(trim($this->r30_vliq1) == null ){ 
+       if(trim((string) $this->r30_vliq1) == null ){ 
          $this->erro_sql = " Campo vlr total das ferias - 1a não informado.";
          $this->erro_campo = "r30_vliq1";
          $this->erro_banco = "";
@@ -1113,10 +1113,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vfgt1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt1"])){ 
+     if(trim((string) $this->r30_vfgt1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt1"])){ 
        $sql  .= $virgula." r30_vfgt1 = $this->r30_vfgt1 ";
        $virgula = ",";
-       if(trim($this->r30_vfgt1) == null ){ 
+       if(trim((string) $this->r30_vfgt1) == null ){ 
          $this->erro_sql = " Campo base fgts ferias (1a) não informado.";
          $this->erro_campo = "r30_vfgt1";
          $this->erro_banco = "";
@@ -1126,10 +1126,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_virf1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf1"])){ 
+     if(trim((string) $this->r30_virf1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf1"])){ 
        $sql  .= $virgula." r30_virf1 = $this->r30_virf1 ";
        $virgula = ",";
-       if(trim($this->r30_virf1) == null ){ 
+       if(trim((string) $this->r30_virf1) == null ){ 
          $this->erro_sql = " Campo base irf ferias (1a) não informado.";
          $this->erro_campo = "r30_virf1";
          $this->erro_banco = "";
@@ -1139,10 +1139,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vpre1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre1"])){ 
+     if(trim((string) $this->r30_vpre1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre1"])){ 
        $sql  .= $virgula." r30_vpre1 = $this->r30_vpre1 ";
        $virgula = ",";
-       if(trim($this->r30_vpre1) == null ){ 
+       if(trim((string) $this->r30_vpre1) == null ){ 
          $this->erro_sql = " Campo base prev ferias (1a) não informado.";
          $this->erro_campo = "r30_vpre1";
          $this->erro_banco = "";
@@ -1152,10 +1152,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vliq1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq1d"])){ 
+     if(trim((string) $this->r30_vliq1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq1d"])){ 
        $sql  .= $virgula." r30_vliq1d = $this->r30_vliq1d ";
        $virgula = ",";
-       if(trim($this->r30_vliq1d) == null ){ 
+       if(trim((string) $this->r30_vliq1d) == null ){ 
          $this->erro_sql = " Campo vlr ferias dif (1a) não informado.";
          $this->erro_campo = "r30_vliq1d";
          $this->erro_banco = "";
@@ -1165,10 +1165,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vfgt1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt1d"])){ 
+     if(trim((string) $this->r30_vfgt1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt1d"])){ 
        $sql  .= $virgula." r30_vfgt1d = $this->r30_vfgt1d ";
        $virgula = ",";
-       if(trim($this->r30_vfgt1d) == null ){ 
+       if(trim((string) $this->r30_vfgt1d) == null ){ 
          $this->erro_sql = " Campo base fgts ferias dif (1a) não informado.";
          $this->erro_campo = "r30_vfgt1d";
          $this->erro_banco = "";
@@ -1178,10 +1178,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_virf1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf1d"])){ 
+     if(trim((string) $this->r30_virf1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf1d"])){ 
        $sql  .= $virgula." r30_virf1d = $this->r30_virf1d ";
        $virgula = ",";
-       if(trim($this->r30_virf1d) == null ){ 
+       if(trim((string) $this->r30_virf1d) == null ){ 
          $this->erro_sql = " Campo base irfferias dif (1a) não informado.";
          $this->erro_campo = "r30_virf1d";
          $this->erro_banco = "";
@@ -1191,10 +1191,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vpre1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre1d"])){ 
+     if(trim((string) $this->r30_vpre1d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre1d"])){ 
        $sql  .= $virgula." r30_vpre1d = $this->r30_vpre1d ";
        $virgula = ",";
-       if(trim($this->r30_vpre1d) == null ){ 
+       if(trim((string) $this->r30_vpre1d) == null ){ 
          $this->erro_sql = " Campo base prev ferias dif (1a) não informado.";
          $this->erro_campo = "r30_vpre1d";
          $this->erro_banco = "";
@@ -1204,10 +1204,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vliq2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq2"])){ 
+     if(trim((string) $this->r30_vliq2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq2"])){ 
        $sql  .= $virgula." r30_vliq2 = $this->r30_vliq2 ";
        $virgula = ",";
-       if(trim($this->r30_vliq2) == null ){ 
+       if(trim((string) $this->r30_vliq2) == null ){ 
          $this->erro_sql = " Campo valor ferias (2a) não informado.";
          $this->erro_campo = "r30_vliq2";
          $this->erro_banco = "";
@@ -1217,10 +1217,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vfgt2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt2"])){ 
+     if(trim((string) $this->r30_vfgt2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt2"])){ 
        $sql  .= $virgula." r30_vfgt2 = $this->r30_vfgt2 ";
        $virgula = ",";
-       if(trim($this->r30_vfgt2) == null ){ 
+       if(trim((string) $this->r30_vfgt2) == null ){ 
          $this->erro_sql = " Campo base fgts ferias (2a) não informado.";
          $this->erro_campo = "r30_vfgt2";
          $this->erro_banco = "";
@@ -1230,10 +1230,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_virf2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf2"])){ 
+     if(trim((string) $this->r30_virf2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf2"])){ 
        $sql  .= $virgula." r30_virf2 = $this->r30_virf2 ";
        $virgula = ",";
-       if(trim($this->r30_virf2) == null ){ 
+       if(trim((string) $this->r30_virf2) == null ){ 
          $this->erro_sql = " Campo base irf ferias (2a) não informado.";
          $this->erro_campo = "r30_virf2";
          $this->erro_banco = "";
@@ -1243,10 +1243,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vliq2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq2d"])){ 
+     if(trim((string) $this->r30_vliq2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vliq2d"])){ 
        $sql  .= $virgula." r30_vliq2d = $this->r30_vliq2d ";
        $virgula = ",";
-       if(trim($this->r30_vliq2d) == null ){ 
+       if(trim((string) $this->r30_vliq2d) == null ){ 
          $this->erro_sql = " Campo valor ferias dif (2a) não informado.";
          $this->erro_campo = "r30_vliq2d";
          $this->erro_banco = "";
@@ -1256,10 +1256,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_virf2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf2d"])){ 
+     if(trim((string) $this->r30_virf2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_virf2d"])){ 
        $sql  .= $virgula." r30_virf2d = $this->r30_virf2d ";
        $virgula = ",";
-       if(trim($this->r30_virf2d) == null ){ 
+       if(trim((string) $this->r30_virf2d) == null ){ 
          $this->erro_sql = " Campo base irf ferias dif (2a) não informado.";
          $this->erro_campo = "r30_virf2d";
          $this->erro_banco = "";
@@ -1269,10 +1269,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vfgt2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt2d"])){ 
+     if(trim((string) $this->r30_vfgt2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vfgt2d"])){ 
        $sql  .= $virgula." r30_vfgt2d = $this->r30_vfgt2d ";
        $virgula = ",";
-       if(trim($this->r30_vfgt2d) == null ){ 
+       if(trim((string) $this->r30_vfgt2d) == null ){ 
          $this->erro_sql = " Campo base fgts ferias dif (2a) não informado.";
          $this->erro_campo = "r30_vfgt2d";
          $this->erro_banco = "";
@@ -1282,10 +1282,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vpre2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre2d"])){ 
+     if(trim((string) $this->r30_vpre2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre2d"])){ 
        $sql  .= $virgula." r30_vpre2d = $this->r30_vpre2d ";
        $virgula = ",";
-       if(trim($this->r30_vpre2d) == null ){ 
+       if(trim((string) $this->r30_vpre2d) == null ){ 
          $this->erro_sql = " Campo base prev ferias dif (2a) não informado.";
          $this->erro_campo = "r30_vpre2d";
          $this->erro_banco = "";
@@ -1295,10 +1295,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_vpre2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre2"])){ 
+     if(trim((string) $this->r30_vpre2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_vpre2"])){ 
        $sql  .= $virgula." r30_vpre2 = $this->r30_vpre2 ";
        $virgula = ",";
-       if(trim($this->r30_vpre2) == null ){ 
+       if(trim((string) $this->r30_vpre2) == null ){ 
          $this->erro_sql = " Campo base prev ferias (2a) não informado.";
          $this->erro_campo = "r30_vpre2";
          $this->erro_banco = "";
@@ -1308,10 +1308,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_tip1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_tip1"])){ 
+     if(trim((string) $this->r30_tip1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_tip1"])){ 
        $sql  .= $virgula." r30_tip1 = '$this->r30_tip1' ";
        $virgula = ",";
-       if(trim($this->r30_tip1) == null ){ 
+       if(trim((string) $this->r30_tip1) == null ){ 
          $this->erro_sql = " Campo Pgto da 1a parc ou total não informado.";
          $this->erro_campo = "r30_tip1";
          $this->erro_banco = "";
@@ -1321,10 +1321,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_tip2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_tip2"])){ 
+     if(trim((string) $this->r30_tip2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_tip2"])){ 
        $sql  .= $virgula." r30_tip2 = '$this->r30_tip2' ";
        $virgula = ",";
-       if(trim($this->r30_tip2) == null ){ 
+       if(trim((string) $this->r30_tip2) == null ){ 
          $this->erro_sql = " Campo Pgto da 2a parcela não informado.";
          $this->erro_campo = "r30_tip2";
          $this->erro_banco = "";
@@ -1334,10 +1334,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_psal1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_psal1"])){ 
+     if(trim((string) $this->r30_psal1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_psal1"])){ 
        $sql  .= $virgula." r30_psal1 = '$this->r30_psal1' ";
        $virgula = ",";
-       if(trim($this->r30_psal1) == null ){ 
+       if(trim((string) $this->r30_psal1) == null ){ 
          $this->erro_sql = " Campo .t. = pontofs/.f.=pontofe não informado.";
          $this->erro_campo = "r30_psal1";
          $this->erro_banco = "";
@@ -1347,10 +1347,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_psal2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_psal2"])){ 
+     if(trim((string) $this->r30_psal2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_psal2"])){ 
        $sql  .= $virgula." r30_psal2 = '$this->r30_psal2' ";
        $virgula = ",";
-       if(trim($this->r30_psal2) == null ){ 
+       if(trim((string) $this->r30_psal2) == null ){ 
          $this->erro_sql = " Campo t.t= sal pontofs/.f. = pontofe não informado.";
          $this->erro_campo = "r30_psal2";
          $this->erro_banco = "";
@@ -1360,10 +1360,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_proc2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc2d"])){ 
+     if(trim((string) $this->r30_proc2d)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_proc2d"])){ 
        $sql  .= $virgula." r30_proc2d = '$this->r30_proc2d' ";
        $virgula = ",";
-       if(trim($this->r30_proc2d) == null ){ 
+       if(trim((string) $this->r30_proc2d) == null ){ 
          $this->erro_sql = " Campo Ano/Mês do pagto da dif do 2o período não informado.";
          $this->erro_campo = "r30_proc2d";
          $this->erro_banco = "";
@@ -1373,10 +1373,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_ponto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_ponto"])){ 
+     if(trim((string) $this->r30_ponto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_ponto"])){ 
        $sql  .= $virgula." r30_ponto = '$this->r30_ponto' ";
        $virgula = ",";
-       if(trim($this->r30_ponto) == null ){ 
+       if(trim((string) $this->r30_ponto) == null ){ 
          $this->erro_sql = " Campo Salario/Complementar não informado.";
          $this->erro_campo = "r30_ponto";
          $this->erro_banco = "";
@@ -1386,10 +1386,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_paga13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_paga13"])){ 
+     if(trim((string) $this->r30_paga13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_paga13"])){ 
        $sql  .= $virgula." r30_paga13 = '$this->r30_paga13' ";
        $virgula = ",";
-       if(trim($this->r30_paga13) == null ){ 
+       if(trim((string) $this->r30_paga13) == null ){ 
          $this->erro_sql = " Campo pagamento so 1/3 das ferias não informado.";
          $this->erro_campo = "r30_paga13";
          $this->erro_banco = "";
@@ -1399,10 +1399,10 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_descad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_descad"])){ 
+     if(trim((string) $this->r30_descad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_descad"])){ 
        $sql  .= $virgula." r30_descad = $this->r30_descad ";
        $virgula = ",";
-       if(trim($this->r30_descad) == null ){ 
+       if(trim((string) $this->r30_descad) == null ){ 
          $this->erro_sql = " Campo descontos sobre o adiantamento não informado.";
          $this->erro_campo = "r30_descad";
          $this->erro_banco = "";
@@ -1412,14 +1412,14 @@ class cl_cadferia {
          return false;
        }
      }
-     if(trim($this->r30_tipoapuracaomedia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_tipoapuracaomedia"])){ 
-        if(trim($this->r30_tipoapuracaomedia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["r30_tipoapuracaomedia"])){ 
+     if(trim((string) $this->r30_tipoapuracaomedia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_tipoapuracaomedia"])){ 
+        if(trim((string) $this->r30_tipoapuracaomedia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["r30_tipoapuracaomedia"])){ 
            $this->r30_tipoapuracaomedia = "0" ; 
         } 
        $sql  .= $virgula." r30_tipoapuracaomedia = $this->r30_tipoapuracaomedia ";
        $virgula = ",";
      }
-     if(trim($this->r30_periodolivreinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_periodolivreinicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_periodolivreinicial_dia"] !="") ){ 
+     if(trim((string) $this->r30_periodolivreinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_periodolivreinicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_periodolivreinicial_dia"] !="") ){ 
        $sql  .= $virgula." r30_periodolivreinicial = '$this->r30_periodolivreinicial' ";
        $virgula = ",";
      }     else{ 
@@ -1428,7 +1428,7 @@ class cl_cadferia {
          $virgula = ",";
        }
      }
-     if(trim($this->r30_periodolivrefinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_periodolivrefinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_periodolivrefinal_dia"] !="") ){ 
+     if(trim((string) $this->r30_periodolivrefinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_periodolivrefinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r30_periodolivrefinal_dia"] !="") ){ 
        $sql  .= $virgula." r30_periodolivrefinal = '$this->r30_periodolivrefinal' ";
        $virgula = ",";
      }     else{ 
@@ -1437,7 +1437,7 @@ class cl_cadferia {
          $virgula = ",";
        }
      }
-     if(trim($this->r30_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_obs"])){ 
+     if(trim((string) $this->r30_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r30_obs"])){ 
        $sql  .= $virgula." r30_obs = '$this->r30_obs' ";
        $virgula = ",";
      }
@@ -1579,7 +1579,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_pesquisa ( $oid = null,$campos="cadferia.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1607,7 +1607,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

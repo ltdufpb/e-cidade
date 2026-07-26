@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_documentotemplatepadrao
 class cl_db_documentotemplatepadrao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db81_sequencial = 0;
-   var $db81_templatetipo = 0;
-   var $db81_nomearquivo = null;
-   var $db81_descricao = null;
+   public $db81_sequencial = 0;
+   public $db81_templatetipo = 0;
+   public $db81_nomearquivo = null;
+   public $db81_descricao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db81_sequencial = int4 = Código Sequencial
                  db81_templatetipo = int4 = Template Tipo
                  db81_nomearquivo = varchar(50) = Nome do Arquivo
                  db81_descricao = varchar(50) = Documento
                  ";
    //funcao construtor da classe
-   function cl_db_documentotemplatepadrao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_documentotemplatepadrao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_db_documentotemplatepadrao {
          $this->erro_status = "0";
          return false;
        }
-       $this->db81_sequencial = pg_result($result,0,0);
+       $this->db81_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_documentotemplatepadrao_db81_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db81_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db81_sequencial)){
          $this->erro_sql = " Campo db81_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_db_documentotemplatepadrao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Doc. Template Padrão ($this->db81_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Doc. Template Padrão já Cadastrado";
@@ -180,13 +180,13 @@ class cl_db_documentotemplatepadrao {
      $resaco = $this->sql_record($this->sql_query_file($this->db81_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14473,'$this->db81_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2551,14473,'','".AddSlashes(pg_result($resaco,0,'db81_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2551,14474,'','".AddSlashes(pg_result($resaco,0,'db81_templatetipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2551,14477,'','".AddSlashes(pg_result($resaco,0,'db81_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2551,14476,'','".AddSlashes(pg_result($resaco,0,'db81_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2551,14473,'','".AddSlashes(pg_fetch_result($resaco,0,'db81_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2551,14474,'','".AddSlashes(pg_fetch_result($resaco,0,'db81_templatetipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2551,14477,'','".AddSlashes(pg_fetch_result($resaco,0,'db81_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2551,14476,'','".AddSlashes(pg_fetch_result($resaco,0,'db81_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -195,10 +195,10 @@ class cl_db_documentotemplatepadrao {
       $this->atualizacampos();
      $sql = " update db_documentotemplatepadrao set ";
      $virgula = "";
-     if(trim($this->db81_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_sequencial"])){
+     if(trim((string) $this->db81_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_sequencial"])){
        $sql  .= $virgula." db81_sequencial = $this->db81_sequencial ";
        $virgula = ",";
-       if(trim($this->db81_sequencial) == null ){
+       if(trim((string) $this->db81_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "db81_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_db_documentotemplatepadrao {
          return false;
        }
      }
-     if(trim($this->db81_templatetipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_templatetipo"])){
+     if(trim((string) $this->db81_templatetipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_templatetipo"])){
        $sql  .= $virgula." db81_templatetipo = $this->db81_templatetipo ";
        $virgula = ",";
-       if(trim($this->db81_templatetipo) == null ){
+       if(trim((string) $this->db81_templatetipo) == null ){
          $this->erro_sql = " Campo Template Tipo nao Informado.";
          $this->erro_campo = "db81_templatetipo";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_db_documentotemplatepadrao {
          return false;
        }
      }
-     if(trim($this->db81_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_nomearquivo"])){
+     if(trim((string) $this->db81_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_nomearquivo"])){
        $sql  .= $virgula." db81_nomearquivo = '$this->db81_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->db81_nomearquivo) == null ){
+       if(trim((string) $this->db81_nomearquivo) == null ){
          $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
          $this->erro_campo = "db81_nomearquivo";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_db_documentotemplatepadrao {
          return false;
        }
      }
-     if(trim($this->db81_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_descricao"])){
+     if(trim((string) $this->db81_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db81_descricao"])){
        $sql  .= $virgula." db81_descricao = '$this->db81_descricao' ";
        $virgula = ",";
-       if(trim($this->db81_descricao) == null ){
+       if(trim((string) $this->db81_descricao) == null ){
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "db81_descricao";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_db_documentotemplatepadrao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14473,'$this->db81_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db81_sequencial"]) || $this->db81_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2551,14473,'".AddSlashes(pg_result($resaco,$conresaco,'db81_sequencial'))."','$this->db81_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2551,14473,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db81_sequencial'))."','$this->db81_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db81_templatetipo"]) || $this->db81_templatetipo != "")
-           $resac = db_query("insert into db_acount values($acount,2551,14474,'".AddSlashes(pg_result($resaco,$conresaco,'db81_templatetipo'))."','$this->db81_templatetipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2551,14474,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db81_templatetipo'))."','$this->db81_templatetipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db81_nomearquivo"]) || $this->db81_nomearquivo != "")
-           $resac = db_query("insert into db_acount values($acount,2551,14477,'".AddSlashes(pg_result($resaco,$conresaco,'db81_nomearquivo'))."','$this->db81_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2551,14477,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db81_nomearquivo'))."','$this->db81_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db81_descricao"]) || $this->db81_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2551,14476,'".AddSlashes(pg_result($resaco,$conresaco,'db81_descricao'))."','$this->db81_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2551,14476,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db81_descricao'))."','$this->db81_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_db_documentotemplatepadrao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14473,'$db81_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2551,14473,'','".AddSlashes(pg_result($resaco,$iresaco,'db81_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2551,14474,'','".AddSlashes(pg_result($resaco,$iresaco,'db81_templatetipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2551,14477,'','".AddSlashes(pg_result($resaco,$iresaco,'db81_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2551,14476,'','".AddSlashes(pg_result($resaco,$iresaco,'db81_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2551,14473,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db81_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2551,14474,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db81_templatetipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2551,14477,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db81_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2551,14476,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db81_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_documentotemplatepadrao
@@ -376,7 +376,7 @@ class cl_db_documentotemplatepadrao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_documentotemplatepadrao";
@@ -413,7 +413,7 @@ class cl_db_documentotemplatepadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_db_documentotemplatepadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

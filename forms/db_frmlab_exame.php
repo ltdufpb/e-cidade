@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $cllab_exame->rotulo->label();
        <?=@$Lla08_i_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la08_i_codigo',10,$Ila08_i_codigo,true,'text',3,"")
 ?>
     </td>
@@ -48,7 +48,7 @@ db_input('la08_i_codigo',10,$Ila08_i_codigo,true,'text',3,"")
        <?=@$Lla08_c_sigla?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la08_c_sigla',10,$Ila08_c_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -58,7 +58,7 @@ db_input('la08_c_sigla',10,$Ila08_c_sigla,true,'text',$db_opcao,"")
        <?=@$Lla08_c_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -68,7 +68,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',$db_opcao,"")
        <?=$Lla08_i_ativo?>
     </td>
     <td> 
-       <?
+       <?php 
         $aX = array('1'=>'ATIVO','2'=>'DESATIVADO');
         db_select('la08_i_ativo', $aX, true, $db_opcao, "");
        ?>
@@ -83,7 +83,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',$db_opcao,"")
               <?=@$Lla08_i_idademin?>
             </td>
             <td nowrap> 
-              <?
+              <?php 
               db_input('la08_i_idademin',10,$Ila08_i_idademin,true,'text',$db_opcao,"");
               $aX = array('3'=>'ANOS', '2'=>'MESES', '1'=>'DIAS');
               db_select('la08_i_undidadeini', $aX, true, $db_opcao, '');
@@ -95,7 +95,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',$db_opcao,"")
               <?=@$Lla08_i_idademax?>
             </td>
             <td nowrap> 
-              <?
+              <?php 
               db_input('la08_i_idademax',10,$Ila08_i_idademax,true,'text',$db_opcao,"");
               $aX = array('3'=>'ANOS', '2'=>'MESES', '1'=>'DIAS');
               db_select('la08_i_undidadefim', $aX, true, $db_opcao, '');
@@ -112,7 +112,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',$db_opcao,"")
               <?=@$Lla08_d_inicio?>
             </td>
             <td> 
-              <?
+              <?php 
               db_inputdata('la08_d_inicio',@$la08_d_inicio_dia,@$la08_d_inicio_mes,@$la08_d_inicio_ano,true,"text",$db_opcao,"");
               ?>
             </td>
@@ -122,7 +122,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',$db_opcao,"")
               <?=@$Lla08_d_fim?>
             </td>
             <td> 
-              <?
+              <?php 
               db_inputdata('la08_d_fim',@$la08_d_fim_dia,@$la08_d_fim_mes,@$la08_d_fim_ano,true,'text',$db_opcao,"onchange=\"js_validaData();\"","","","parent.js_validaData();")
               ?>
             </td>
@@ -148,7 +148,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',$db_opcao,"")
        <?=@$Lla08_i_dias?>
     </td>
     <td> 
-<?
+<?php 
 db_input('la08_i_dias',10,$Ila08_i_dias,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -163,7 +163,7 @@ db_input('la08_i_dias',10,$Ila08_i_dias,true,'text',$db_opcao,"")
 <input type="checkbox" name="chk_etiqueta1" id="chk_etiqueta1" value="2"  <?=$db_opcao == 3 ? 'disabled ' : ''?> onchange="" <?=((@$la08_i_gerar==2)||(@$la08_i_gerar==3)||(@$la08_i_gerar==6)||(@$la08_i_gerar==7))?'checked':''?> > Etiqueta na coleta
 <input type="checkbox" name="chk_etiqueta2" id="chk_etiqueta2" value="4" <?=$db_opcao == 3 ? 'disabled ' : ''?> onchange=""  <?=((@$la08_i_gerar==4)||(@$la08_i_gerar==5)||(@$la08_i_gerar==6)||(@$la08_i_gerar==7))?'checked':''?> > Etiqueta na triagem
        
-<?
+<?php 
 //db_input('la08_i_gerar',10,$Ila08_i_gerar,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -171,25 +171,25 @@ db_input('la08_i_dias',10,$Ila08_i_dias,true,'text',$db_opcao,"")
 
    <tr>
       <td>
-          <?db_ancora(@$Lla10_i_codigo,"js_pesquisala18_i_sinonima(true);",$db_opcao);?>  
+          <?php db_ancora(@$Lla10_i_codigo,"js_pesquisala18_i_sinonima(true);",$db_opcao);?>  
       </td>
       <td colspan="2">
-                <? $rResult=db_query("select la10_i_codigo as chave, la10_c_descr as descricao from lab_sinonima");?>
-                   <? /*<select name="sinonimia" >
-                         <?for($x=0;$x<pg_num_rows($rResult);$x++){
+                <?php  $rResult=db_query("select la10_i_codigo as chave, la10_c_descr as descricao from lab_sinonima");?>
+                   <?php  /*<select name="sinonimia" >
+                         <?php for($x=0;$x<pg_num_rows($rResult);$x++){
                               db_fieldsmemory($rResult,$x);
                               echo"<option value=\"$chave\"> $descricao </option>";
                           }
                          ?>
                        </select> */ ?>
-                   <?db_input('la18_i_sinonima',5,"",true,'text',$db_opcao," onchange='js_pesquisala18_i_sinonima(false);'onFocus=\"nextfield='la08_c_sigla'\"")?>
-                   <?db_input('la10_c_descr',35,"",true,'text',$db_opcao,'')?>
+                   <?php db_input('la18_i_sinonima',5,"",true,'text',$db_opcao," onchange='js_pesquisala18_i_sinonima(false);'onFocus=\"nextfield='la08_c_sigla'\"")?>
+                   <?php db_input('la10_c_descr',35,"",true,'text',$db_opcao,'')?>
                 <input type="button" name="lanc" id="lanc" value="Lancar" <?=$db_opcao == 3 ? 'disabled ' : ''?> onclick="js_lanc();"><br>
                 <select name="boxsinonimia" id="boxsinonimia" size="5" value="" ondblclick="js_delete();" style="width: 300" <?=$db_opcao == 3 ? 'disabled ' : ''?>>
                 </select><br><font size="1.px">*Click duas vezes para deletar</font>
                 <input name="str_sinonimia" id="str_sinonimia" value="" type="hidden" >
                 <input name="str_sinonimia2" id="str_sinonimia2" value="" type="hidden" > 
-                <?
+                <?php 
                    if(isset($aSinonimia)){
                       if(count($aSinonimia>0)){
                           echo"<script>";
@@ -238,7 +238,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_lab_exame.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

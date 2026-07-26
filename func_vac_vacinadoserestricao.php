@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vac_vacinadoserestricao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvac_vacinadoserestricao = new cl_vac_vacinadoserestricao;
 $clvac_vacinadoserestricao->rotulo->label("vc08_i_codigo");
 $clvac_vacinadoserestricao->rotulo->label("vc08_i_codigo");
@@ -54,7 +55,7 @@ $clvac_vacinadoserestricao->rotulo->label("vc08_i_codigo");
               <?=$Lvc08_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-             <?db_input("vc08_i_codigo",10,$Ivc08_i_codigo,true,"text",4,"","chave_vc08_i_codigo");?>
+             <?php db_input("vc08_i_codigo",10,$Ivc08_i_codigo,true,"text",4,"","chave_vc08_i_codigo");?>
             </td>
           </tr>
           <tr> 
@@ -62,7 +63,7 @@ $clvac_vacinadoserestricao->rotulo->label("vc08_i_codigo");
               <?=$Lvc08_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?db_input("vc08_i_codigo",10,$Ivc08_i_codigo,true,"text",4,"","chave_vc08_i_codigo");?>
+            <?php db_input("vc08_i_codigo",10,$Ivc08_i_codigo,true,"text",4,"","chave_vc08_i_codigo");?>
             </td>
           </tr>
           <tr> 
@@ -79,7 +80,7 @@ $clvac_vacinadoserestricao->rotulo->label("vc08_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       
         if (isset($campos)==false) {
@@ -133,13 +134,13 @@ $clvac_vacinadoserestricao->rotulo->label("vc08_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 
   ?>
   <script>
   </script>
-  <?
+  <?php 
   
 }
 ?>

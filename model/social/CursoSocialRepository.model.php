@@ -37,7 +37,7 @@ class CursoSocialRepository {
    * Collection de CursoSocial
    * @var array
    */
-  private $aCursoSocial = array();
+  private $aCursoSocial = [];
 
   /**
    * Instancia da classe

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isstipoalvara_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clisstipoalvara = new cl_isstipoalvara;
 $clisstipoalvara->rotulo->label("q98_sequencial");
 $clisstipoalvara->rotulo->label("q98_descricao");
@@ -54,7 +55,7 @@ $clisstipoalvara->rotulo->label("q98_descricao");
               <?=$Lq98_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("q98_sequencial",10,$Iq98_sequencial,true,"text",4,"","chave_q98_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clisstipoalvara->rotulo->label("q98_descricao");
               <?=$Lq98_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("q98_descricao",70,$Iq98_descricao,true,"text",4,"","chave_q98_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clisstipoalvara->rotulo->label("q98_descricao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $whereAlvaraEvento = "q97_sequencial <> 7";
 
@@ -183,12 +184,12 @@ $clisstipoalvara->rotulo->label("q98_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

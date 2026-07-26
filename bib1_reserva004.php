@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -125,7 +125,7 @@ function somadata($dias,$ano,$mes,$dia){
    <br>
    <center>
    <fieldset style="width:92%"><legend><b>Acervos devolvidos recentemente que estão reservados:</b></legend>
-    <?
+    <?php 
     $campos = "case
                 when aluno.ed47_i_codigo is not null
                  then aluno.ed47_v_nome
@@ -156,7 +156,7 @@ function somadata($dias,$ano,$mes,$dia){
        <td><b>Hora</b></td>
        <td></td>
       </tr>
-     <?
+     <?php 
      for($y=0;$y<$clreserva->numrows;$y++){
       db_fieldsmemory($result,$y);
       $sql1 = "SELECT bi23_codigo
@@ -201,9 +201,9 @@ function somadata($dias,$ano,$mes,$dia){
         <input type="button" name="emprestimo" value="Empréstimo" onclick="location.href='bib1_emprestimo001.php?leitor=<?=$leitor?>&nomeleitor=<?=$nomeleitor?>&lista=<?=$lista?>&dev=<?=$devolucao?>&reserva=<?=$codreserva?>'">
        </td>
       </tr>
-      <?
+      <?php 
      }
-     ?></table><?
+     ?></table><?php 
     }else{
      echo "Nenhuma reserva para os acervos devolvidos recentemente.";
     }
@@ -213,6 +213,6 @@ function somadata($dias,$ano,$mes,$dia){
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

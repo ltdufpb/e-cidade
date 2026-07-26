@@ -41,21 +41,21 @@ class ExtraDiaTrabalho extends RegraCalculo {
      *
      * @var $limitesExtras;
      */
-    protected $limitesExtras = array();
+    protected $limitesExtras = [];
 
     /**
      * Cálculos de horas extras
      *
      * @var $horasExtras
      */
-    protected $horasExtras = array();
+    protected $horasExtras = [];
 
     /**
      * Cálculo de horas extras não autorizadas
      *
      * @var $horasExtrasNaoAutorizadas
      */
-    protected $horasExtrasNaoAutorizadas = array();
+    protected $horasExtrasNaoAutorizadas = [];
 
     /**
      * Limite de extras autorizadas
@@ -207,11 +207,11 @@ class ExtraDiaTrabalho extends RegraCalculo {
     public function getLimitesExtras()
     {
         return $this->limitesExtras;
-        $limitesExtras = array(
+        $limitesExtras = [
             'HORAS_EXTRA50'   => (!empty($this->limitesExtras[BaseHora::HORAS_EXTRA50])  ? $this->limitesExtras[BaseHora::HORAS_EXTRA50]  : null),
             'HORAS_EXTRA75'   => (!empty($this->limitesExtras[BaseHora::HORAS_EXTRA75])  ? $this->limitesExtras[BaseHora::HORAS_EXTRA75]  : null),
             'HORAS_EXTRA100'  => (!empty($this->limitesExtras[BaseHora::HORAS_EXTRA100]) ? $this->limitesExtras[BaseHora::HORAS_EXTRA100] : null)
-        );
+        ];
         
         return $limitesExtras;
     }
@@ -233,14 +233,14 @@ class ExtraDiaTrabalho extends RegraCalculo {
     public function getHorasExtras()
     {
         return $this->horasExtras;
-        $horasExtras = array(
+        $horasExtras = [
             'HORAS_EXTRA50'           => (!empty($this->horasExtras[BaseHora::HORAS_EXTRA50])          ? $this->horasExtras[BaseHora::HORAS_EXTRA50]          : null),
             'HORAS_EXTRA75'           => (!empty($this->horasExtras[BaseHora::HORAS_EXTRA75])          ? $this->horasExtras[BaseHora::HORAS_EXTRA75]          : null),
             'HORAS_EXTRA100'          => (!empty($this->horasExtras[BaseHora::HORAS_EXTRA100])         ? $this->horasExtras[BaseHora::HORAS_EXTRA100]         : null),
             'HORAS_EXTRA50_NOTURNA'   => (!empty($this->horasExtras[BaseHora::HORAS_EXTRA50_NOTURNA])  ? $this->horasExtras[BaseHora::HORAS_EXTRA50_NOTURNA]  : null),
             'HORAS_EXTRA75_NOTURNA'   => (!empty($this->horasExtras[BaseHora::HORAS_EXTRA75_NOTURNA])  ? $this->horasExtras[BaseHora::HORAS_EXTRA75_NOTURNA]  : null),
             'HORAS_EXTRA100_NOTURNA'  => (!empty($this->horasExtras[BaseHora::HORAS_EXTRA100_NOTURNA]) ? $this->horasExtras[BaseHora::HORAS_EXTRA100_NOTURNA] : null)
-        );
+        ];
         
         return $horasExtras;
     }

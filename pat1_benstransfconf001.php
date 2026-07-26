@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -208,7 +208,7 @@ if (isset ($incluir)) {
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -216,7 +216,7 @@ if (isset ($incluir)) {
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?$cor="999999"?>
+<?php $cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -227,15 +227,15 @@ if (isset ($incluir)) {
 
 </head>
 <body bgcolor=#CCCCCC >
-        <?
+        <?php 
           include(modification("forms/db_frmbenstransfconf.php"));
         ?>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 
 
 if (isset ($incluir)) {

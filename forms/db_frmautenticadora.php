@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -122,7 +122,7 @@ if (@$k11_aut2 == "") {
       <tr>
         <td height="25"><strong>Tipo da impressora de cheques :</strong></td>
 	<td>
-	<?
+	<?php 
 	$x = array("1"=>"CHRONOS","2"=>"Bematech","3"=>"Schalter");
 	db_select('k11_tipoimp',$x,true,4,'');
 	?>
@@ -131,7 +131,7 @@ if (@$k11_aut2 == "") {
       <tr>
         <td height="25"><strong>Tipo de Autenticação:</strong></td>
 	<td>
-	<?
+	<?php 
 	$x = array("1"=>"Autentica e Imprime","2"=>"Autentica e Não Imprime","3"=>"Não Autentica e Não Imprime(somente Empenho)");
 	db_select('k11_tipautent',$x,true,4,'');
 	?>

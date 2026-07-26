@@ -38,18 +38,6 @@ class ReceitaContabil
 {
 
     /**
-     * Codigo
-     * @var integer
-     */
-    protected $iCodigo;
-
-    /**
-     * Ano
-     * @var int
-     */
-    protected $iAno;
-
-    /**
      * Armazena um objeto do tipo ContaOrcamento
      * @var ContaOrcamento
      */
@@ -106,7 +94,7 @@ class ReceitaContabil
      * Desdobramentos da Receita
      * @var array
      */
-    private $aDesdobramentos = array();
+    private $aDesdobramentos = [];
 
     /**
      * @var string
@@ -137,29 +125,33 @@ class ReceitaContabil
      * @param null $iAno
      * @throws BusinessException
      */
-    public function __construct($iCodigo = null, $iAno = null)
+    public function __construct(/**
+     * Codigo
+     */
+    protected $iCodigo = null, /**
+     * Ano
+     */
+    protected $iAno = null)
     {
 
-        $this->iCodigo = $iCodigo;
-        $this->iAno = $iAno;
-        if (!empty($iCodigo)) {
+        if (!empty($this->iCodigo)) {
 
-            if (empty($iAno)) {
-                $iAno = db_getsession('DB_anousu');
+            if (empty($this->iAno)) {
+                $this->iAno = db_getsession('DB_anousu');
             }
 
             $oDaoOrcReceita = new cl_orcreceita();
             //$sSqlBuscaReceita = $oDaoOrcReceita->sql_query_dados_receita($iAno, $iCodigo);
-            $where = "o70_anousu = {$iAno} and o70_codrec = {$iCodigo}";
+            $where = "o70_anousu = {$this->iAno} and o70_codrec = {$this->iCodigo}";
             $sSqlBuscaReceita = $oDaoOrcReceita->sql_query_receita("*", null, $where);
             $rsBuscaReceita = $oDaoOrcReceita->sql_record($sSqlBuscaReceita);
             if ($oDaoOrcReceita->erro_status == "0") {
-                throw new BusinessException("Não foi possível buscar a receita {$iCodigo}/{$iAno}.");
+                throw new BusinessException("Não foi possível buscar a receita {$this->iCodigo}/{$this->iAno}.");
             }
 
             $oDadoReceita = db_utils::fieldsMemory($rsBuscaReceita, 0);
-            $this->iCodigo = $iCodigo;
-            $this->iAno = $iAno;
+            $this->iCodigo = $this->iCodigo;
+            $this->iAno = $this->iAno;
             $this->iCodigoContaContabil = $oDadoReceita->o70_codfon;
             $this->iTipoRecurso = $oDadoReceita->o70_codigo;
             $this->estrutural = $oDadoReceita->o57_fonte;
@@ -195,10 +187,10 @@ class ReceitaContabil
         $oDadoSqlGeral = new stdClass();
         $oDadoSqlGeral->arrecada = $nValorArrecadacao;
 
-        list($iAnoAutenticacao, $iMesAutenticacao, $iDiaAutenticacao) = explode("-", $dtAutenticacao);
+        [$iAnoAutenticacao, $iMesAutenticacao, $iDiaAutenticacao] = explode("-", (string) $dtAutenticacao);
 
         $aDesdobramentos = $this->getDesdobramentos();
-        $aReceitas = array();
+        $aReceitas = [];
 
         if (count($aDesdobramentos) > 0 && $this->getTipoRecurso() == 1 && $oDadoSqlGeral->arrecada != 0.01) {
 
@@ -775,9 +767,7 @@ class ReceitaContabil
         $sSqlOrcreceita = $oDaoOrcreceita->sql_query_receita($sCampos, null, $WhereOrcreceita);
         $rsSqlOrcreceita = $oDaoOrcreceita->sql_record($sSqlOrcreceita);
 
-        $receitas = db_utils::makeCollectionFromRecord($rsSqlOrcreceita, function($dados){
-            return ReceitaContabilRepository::getReceitaByCodigo($dados->o70_codrec, $dados->o70_anousu);
-        });
+        $receitas = db_utils::makeCollectionFromRecord($rsSqlOrcreceita, fn($dados) => ReceitaContabilRepository::getReceitaByCodigo($dados->o70_codrec, $dados->o70_anousu));
         return $receitas;
     }
 

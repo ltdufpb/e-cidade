@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,7 @@ include(modification("classes/db_diasemana_classe.php"));
 include(modification("classes/db_turmaac_classe.php"));
 include(modification("classes/db_turmaachorario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrechumano = new cl_rechumano;
 $cldiasemana = new cl_diasemana;
 $clperiodoescola = new cl_periodoescola;
@@ -60,9 +60,9 @@ if(isset($incluir)){
  for($x=0;$x<$contp;$x++){
   for($y=0;$y<$contd;$y++){
    $valores = "valorQ".$x.$y;
-   $valores = $$valores;
+   $valores = ${$valores};
    $marcados = "marcadoQ".$x.$y;
-   $marcados = $$marcados;
+   $marcados = ${$marcados};
    if(trim($valores)=="" && trim($marcados)!=""){
     $clturmaachorario->excluir($marcados);
    }elseif(trim($valores)!="" && trim($marcados)!=""){
@@ -111,9 +111,9 @@ if(isset($limpar)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:95%"><legend><b>Horários de Regências na Turma <?=@$ed268_c_descr?></b></legend>
-    <?if(!isset($excluir)){?>
-     <?include(modification("forms/db_frmturmaachorario.php"));?>
-    <?}?>
+    <?php if(!isset($excluir)){?>
+     <?php include(modification("forms/db_frmturmaachorario.php"));?>
+    <?php }?>
    </fieldset>
   </td>
  </tr>

@@ -12,7 +12,7 @@ class SalaRepository {
    * Collection de Sala
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
   /**
    * Instancia da classe
    * @var SalaRepository
@@ -102,7 +102,7 @@ class SalaRepository {
     $sDataInicio = $oCalendario->getDataInicio()->getDate();
     $sDataFim    = $oCalendario->getDataFinal()->getDate();
 
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = " ed57_i_escola      = {$oEscola->getCodigo()} ";
     $aWhere[] = " ed231_i_referencia = {$iTurnoReferente} ";
     $aWhere[] = " ('{$sDataInicio}', '{$sDataFim}') overlaps (ed52_d_inicio, ed52_d_fim) ";
@@ -128,7 +128,7 @@ class SalaRepository {
       throw new DBException( "Erro ao buscar as dependências. \n". pg_last_error() );
     }
 
-    $aSalas  = array();
+    $aSalas  = [];
     $iLinhas = pg_num_rows($rsDependencia);
 
     for ( $i = 0; $i < $iLinhas; $i++ ) {

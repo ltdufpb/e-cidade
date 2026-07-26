@@ -45,7 +45,7 @@ class AbonoFaltaRepository {
    * Array com os Abonos de Faltas
    * @var array
    */
-  private $aAbonoFalta = array();
+  private $aAbonoFalta = [];
 
   /**
    * Instância da classe
@@ -71,7 +71,7 @@ class AbonoFaltaRepository {
 
   public static function getByCodigo( $iCodigo ) {
 
-    if ( !array_key_exists($iCodigo, self::getInstance()->aAbonoFalta) ) {
+    if ( !array_key_exists((string) $iCodigo, self::getInstance()->aAbonoFalta) ) {
       self::getInstance()->aAbonoFalta[$iCodigo] = new AbonoFalta($iCodigo);
     }
     return self::getInstance()->aAbonoFalta[$iCodigo];

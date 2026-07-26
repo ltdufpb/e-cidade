@@ -6,7 +6,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_bancos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_bancos = new cl_db_bancos;
 $cldb_bancos->rotulo->label("db90_codban");
 $cldb_bancos->rotulo->label("db90_descr");
@@ -24,11 +25,11 @@ $cldb_bancos->rotulo->label("db90_descr");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ldb90_codban?></label></td>
-          <td><? db_input("db90_codban",10,$Idb90_codban,true,"text",4,"","chave_db90_codban"); ?></td>
+          <td><?php  db_input("db90_codban",10,$Idb90_codban,true,"text",4,"","chave_db90_codban"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ldb90_descr?></label></td>
-          <td><? db_input("db90_descr",10,$Idb90_descr,true,"text",4,"","chave_db90_descr");?></td>
+          <td><?php  db_input("db90_descr",10,$Idb90_descr,true,"text",4,"","chave_db90_descr");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $cldb_bancos->rotulo->label("db90_descr");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_db_bancos.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_bancos.php")==true){
@@ -78,12 +79,12 @@ $cldb_bancos->rotulo->label("db90_descr");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

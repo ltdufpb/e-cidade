@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clientesmodulosprocusu_classe.php"));
 include(modification("classes/db_db_usuclientes_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clclientesmodulosprocusu = new cl_clientesmodulosprocusu;
@@ -100,7 +101,7 @@ function js_atualiza(codigo,nome){
   </tr> 
   <tr> 
     <td colspan='2'>
-<?
+<?php 
 
 $result = $cldb_usuclientes->sql_record($cldb_usuclientes->sql_query(null,"at10_usuario,at10_login,at10_nome","at10_nome"," at10_codcli = $cliente "));
 echo "<table>";

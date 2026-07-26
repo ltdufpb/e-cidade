@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_avaliacaoestruturafrequencia_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clavaliacaoestruturafrequencia = new cl_avaliacaoestruturafrequencia;
 $clavaliacaoestruturafrequencia->rotulo->label("ed328_sequencial");
 $clavaliacaoestruturafrequencia->rotulo->label("ed328_db_estrutura");
@@ -55,7 +56,7 @@ $iCodEscola = db_getsession("DB_coddepto");
               <?=$Led328_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed328_sequencial",10,$Ied328_sequencial,true,"text",4,"","chave_ed328_sequencial");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $iCodEscola = db_getsession("DB_coddepto");
               <?=$Led328_db_estrutura?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed328_db_estrutura",10,$Ied328_db_estrutura,true,"text",4,"","chave_ed328_db_estrutura");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $iCodEscola = db_getsession("DB_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = " ed328_escola = {$iCodEscola}";
       if (!isset($pesquisa_chave)) {
 
@@ -132,12 +133,12 @@ $iCodEscola = db_getsession("DB_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

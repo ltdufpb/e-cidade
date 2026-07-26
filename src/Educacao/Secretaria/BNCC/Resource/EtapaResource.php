@@ -17,14 +17,14 @@ class EtapaResource
      */
     public static function toArray(array $etapas)
     {
-        $data = array();
+        $data = [];
 
         foreach ($etapas as $etapa) {
-            $data[] = (object) array(
+            $data[] = (object) [
                 "codigo" => $etapa->getCodigo(),
                 "etapa" => $etapa->getEtapa(),
                 "ensino" => $etapa->getEnsino(),
-            );
+            ];
         }
         return $data;
     }

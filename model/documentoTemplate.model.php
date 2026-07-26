@@ -42,11 +42,11 @@ class documentoTemplate  {
 
     require_once(modification('dbforms/db_funcoes.php'));
 
-    if((int) $iTipo == "" || (int) $iTipo == 0) {
+    if((int) $iTipo == 0 || (int) $iTipo == 0) {
       throw new Exception('Valor do tipo Informado não válido!');
     }
 
-    if (trim($sCaminhoArquivo) == '') {
+    if (trim((string) $sCaminhoArquivo) == '') {
       $sArquivoSxw      = "docTemplate" . date("YmdHis") . db_getsession("DB_id_usuario") .'.'.$sExtensaoArq;
       $sCaminhoTemplate = "tmp/" . $sArquivoSxw;
     } else {

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: empenho
 //CLASSE DA ENTIDADE errobanco
 class cl_errobanco { 
@@ -30,7 +30,7 @@ class cl_errobanco {
                  e92_empagetipotransmissao = int4 = Tipo de Transmissão 
                  ";
    //funcao construtor da classe 
-   function cl_errobanco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("errobanco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

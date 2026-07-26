@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vacinasaplicadas_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvacinasaplicadas = new cl_vacinasaplicadas;
 $clvacinasaplicadas->rotulo->label("sd08_c_vacina");
 $clvacinasaplicadas->rotulo->label("sd08_i_unidade");
@@ -56,7 +57,7 @@ $clvacinasaplicadas->rotulo->label("sd08_c_vacina");
               <?=$Lsd08_c_vacina?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sd08_c_vacina",10,$Isd08_c_vacina,true,"text",4,"","chave_sd08_c_vacina");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clvacinasaplicadas->rotulo->label("sd08_c_vacina");
               <?=$Lsd08_i_unidade?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sd08_i_unidade",10,$Isd08_i_unidade,true,"text",4,"","chave_sd08_i_unidade");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $clvacinasaplicadas->rotulo->label("sd08_c_vacina");
               <?=$Lsd08_i_cgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sd08_i_cgm",10,$Isd08_i_cgm,true,"text",4,"","chave_sd08_i_cgm");
 		       ?>
             </td>
@@ -86,7 +87,7 @@ $clvacinasaplicadas->rotulo->label("sd08_c_vacina");
               <?=$Lsd08_c_vacina?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sd08_c_vacina",10,$Isd08_c_vacina,true,"text",4,"","chave_sd08_c_vacina");
 		       ?>
             </td>
@@ -104,7 +105,7 @@ $clvacinasaplicadas->rotulo->label("sd08_c_vacina");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "sd08_c_vacina, sd07_c_nome, sd08_i_unidade, sd02_c_razao, sd08_i_cgm, z01_nome, sd08_d_data ";
@@ -136,12 +137,12 @@ $clvacinasaplicadas->rotulo->label("sd08_c_vacina");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -30,7 +30,7 @@ class RelatorioProfessorEscolaAnalitico extends RelatorioProfessorEscola {
    */
   private function organizaDados($oEscola) {
 
-    $aDadosOrganizados = array();
+    $aDadosOrganizados = [];
 
     // foreach ( $oEscola->aProfessores as $oProfessor ) {
 

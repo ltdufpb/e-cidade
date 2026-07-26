@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE tipohoratrabalho
 class cl_tipohoratrabalho { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed128_codigo = 0; 
-   var $ed128_descricao = null; 
-   var $ed128_abreviatura = null; 
-   var $ed128_tipoefetividade = 0; 
-   var $ed128_ativo = 'f'; 
+   public $ed128_codigo = 0; 
+   public $ed128_descricao = null; 
+   public $ed128_abreviatura = null; 
+   public $ed128_tipoefetividade = 0; 
+   public $ed128_ativo = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed128_codigo = int4 = Código 
                  ed128_descricao = varchar(70) = Descrição 
                  ed128_abreviatura = varchar(10) = Abreviatura 
@@ -30,10 +30,10 @@ class cl_tipohoratrabalho {
                  ed128_ativo = bool = Ativo 
                  ";
    //funcao construtor da classe 
-   function cl_tipohoratrabalho() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipohoratrabalho"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,10 +105,10 @@ class cl_tipohoratrabalho {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed128_codigo = pg_result($result,0,0); 
+       $this->ed128_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipohoratrabalho_ed128_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed128_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed128_codigo)){
          $this->erro_sql = " Campo ed128_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -144,7 +144,7 @@ class cl_tipohoratrabalho {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de hora de trabalho ($this->ed128_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de hora de trabalho já Cadastrado";
@@ -173,14 +173,14 @@ class cl_tipohoratrabalho {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21027,'$this->ed128_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3789,21027,'','".AddSlashes(pg_result($resaco,0,'ed128_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3789,21028,'','".AddSlashes(pg_result($resaco,0,'ed128_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3789,21029,'','".AddSlashes(pg_result($resaco,0,'ed128_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3789,21030,'','".AddSlashes(pg_result($resaco,0,'ed128_tipoefetividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3789,21031,'','".AddSlashes(pg_result($resaco,0,'ed128_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3789,21027,'','".AddSlashes(pg_fetch_result($resaco,0,'ed128_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3789,21028,'','".AddSlashes(pg_fetch_result($resaco,0,'ed128_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3789,21029,'','".AddSlashes(pg_fetch_result($resaco,0,'ed128_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3789,21030,'','".AddSlashes(pg_fetch_result($resaco,0,'ed128_tipoefetividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3789,21031,'','".AddSlashes(pg_fetch_result($resaco,0,'ed128_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -190,10 +190,10 @@ class cl_tipohoratrabalho {
       $this->atualizacampos();
      $sql = " update tipohoratrabalho set ";
      $virgula = "";
-     if(trim($this->ed128_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_codigo"])){ 
+     if(trim((string) $this->ed128_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_codigo"])){ 
        $sql  .= $virgula." ed128_codigo = $this->ed128_codigo ";
        $virgula = ",";
-       if(trim($this->ed128_codigo) == null ){ 
+       if(trim((string) $this->ed128_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed128_codigo";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_tipohoratrabalho {
          return false;
        }
      }
-     if(trim($this->ed128_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_descricao"])){ 
+     if(trim((string) $this->ed128_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_descricao"])){ 
        $sql  .= $virgula." ed128_descricao = '$this->ed128_descricao' ";
        $virgula = ",";
-       if(trim($this->ed128_descricao) == null ){ 
+       if(trim((string) $this->ed128_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "ed128_descricao";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_tipohoratrabalho {
          return false;
        }
      }
-     if(trim($this->ed128_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_abreviatura"])){ 
+     if(trim((string) $this->ed128_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_abreviatura"])){ 
        $sql  .= $virgula." ed128_abreviatura = '$this->ed128_abreviatura' ";
        $virgula = ",";
-       if(trim($this->ed128_abreviatura) == null ){ 
+       if(trim((string) $this->ed128_abreviatura) == null ){ 
          $this->erro_sql = " Campo Abreviatura não informado.";
          $this->erro_campo = "ed128_abreviatura";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_tipohoratrabalho {
          return false;
        }
      }
-     if(trim($this->ed128_tipoefetividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_tipoefetividade"])){ 
+     if(trim((string) $this->ed128_tipoefetividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_tipoefetividade"])){ 
        $sql  .= $virgula." ed128_tipoefetividade = $this->ed128_tipoefetividade ";
        $virgula = ",";
-       if(trim($this->ed128_tipoefetividade) == null ){ 
+       if(trim((string) $this->ed128_tipoefetividade) == null ){ 
          $this->erro_sql = " Campo Efetividade não informado.";
          $this->erro_campo = "ed128_tipoefetividade";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_tipohoratrabalho {
          return false;
        }
      }
-     if(trim($this->ed128_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_ativo"])){ 
+     if(trim((string) $this->ed128_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed128_ativo"])){ 
        $sql  .= $virgula." ed128_ativo = '$this->ed128_ativo' ";
        $virgula = ",";
-       if(trim($this->ed128_ativo) == null ){ 
+       if(trim((string) $this->ed128_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo não informado.";
          $this->erro_campo = "ed128_ativo";
          $this->erro_banco = "";
@@ -269,19 +269,19 @@ class cl_tipohoratrabalho {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21027,'$this->ed128_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed128_codigo"]) || $this->ed128_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3789,21027,'".AddSlashes(pg_result($resaco,$conresaco,'ed128_codigo'))."','$this->ed128_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3789,21027,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed128_codigo'))."','$this->ed128_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed128_descricao"]) || $this->ed128_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3789,21028,'".AddSlashes(pg_result($resaco,$conresaco,'ed128_descricao'))."','$this->ed128_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3789,21028,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed128_descricao'))."','$this->ed128_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed128_abreviatura"]) || $this->ed128_abreviatura != "")
-             $resac = db_query("insert into db_acount values($acount,3789,21029,'".AddSlashes(pg_result($resaco,$conresaco,'ed128_abreviatura'))."','$this->ed128_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3789,21029,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed128_abreviatura'))."','$this->ed128_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed128_tipoefetividade"]) || $this->ed128_tipoefetividade != "")
-             $resac = db_query("insert into db_acount values($acount,3789,21030,'".AddSlashes(pg_result($resaco,$conresaco,'ed128_tipoefetividade'))."','$this->ed128_tipoefetividade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3789,21030,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed128_tipoefetividade'))."','$this->ed128_tipoefetividade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed128_ativo"]) || $this->ed128_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,3789,21031,'".AddSlashes(pg_result($resaco,$conresaco,'ed128_ativo'))."','$this->ed128_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3789,21031,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed128_ativo'))."','$this->ed128_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -335,14 +335,14 @@ class cl_tipohoratrabalho {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21027,'$ed128_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3789,21027,'','".AddSlashes(pg_result($resaco,$iresaco,'ed128_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3789,21028,'','".AddSlashes(pg_result($resaco,$iresaco,'ed128_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3789,21029,'','".AddSlashes(pg_result($resaco,$iresaco,'ed128_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3789,21030,'','".AddSlashes(pg_result($resaco,$iresaco,'ed128_tipoefetividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3789,21031,'','".AddSlashes(pg_result($resaco,$iresaco,'ed128_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3789,21027,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed128_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3789,21028,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed128_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3789,21029,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed128_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3789,21030,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed128_tipoefetividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3789,21031,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed128_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -46,7 +46,7 @@ $oDaoParecerTurma      = db_utils::getDao('parecerturma');
 $oDaoParecerDisciplina = db_utils::getDao('parecerdisciplina');
 
 $oRetorno         = new stdClass();
-$oRetorno->dados  = array();
+$oRetorno->dados  = [];
 $oRetorno->status = 1;
 
 switch ($oParam->exec) {
@@ -74,8 +74,8 @@ switch ($oParam->exec) {
     $oDaoParecer->ed92_i_escola     = db_getsession("DB_coddepto");
     $oDaoParecer->ed92_i_sequencial = $iSequencia;
 
-    $aListaDisciplina      = explode(",", $oParam->sListaDisciplina);
-    $aListaPeriodos        = explode(",", $oParam->sListaPeriodos);
+    $aListaDisciplina      = explode(",", (string) $oParam->sListaDisciplina);
+    $aListaPeriodos        = explode(",", (string) $oParam->sListaPeriodos);
     $iCountListaDisciplina = !empty($oParam->sListaDisciplina)?count($aListaDisciplina):0;
     $iCountListaPeriodo    = !empty($oParam->sListaPeriodos)?count($aListaPeriodos):0;
 
@@ -199,7 +199,7 @@ switch ($oParam->exec) {
 
       $oDados = db_utils::fieldsMemory($rsParecer, 0);
       $oRetorno->iCodigo    = $oDados->ed92_i_codigo;
-      $oRetorno->sDescricao = urlencode($oDados->ed92_c_descr);
+      $oRetorno->sDescricao = urlencode((string) $oDados->ed92_c_descr);
       $oRetorno->iSequencia = $oDados->ed92_i_sequencial;
 
       $sCampos = " ed106_disciplina as codigo_disciplina, trim(ed232_c_descr||' ['||ed10_c_abrev||']') as disciplina ";
@@ -224,7 +224,7 @@ switch ($oParam->exec) {
                                                                    null, $sWhereParecerPeriodo );
       $rsParecerPeriodo      = $oDaoParecerPeriodo->sql_record($sSqlParecerPeriodo);
 
-      $oRetorno->aPeriodos = array();
+      $oRetorno->aPeriodos = [];
       if ($rsParecerPeriodo) {
 
         $aDadosPeriodos = db_utils::getCollectionByRecord($rsParecerPeriodo, false, false, true);
@@ -240,7 +240,7 @@ switch ($oParam->exec) {
       $sSqlParecerTurma    = $oDaoParecerTurma->sql_query_file('','ed105_i_turma','', $sWhereParecerTurma);
       $rsParecerTurma      = pg_query( $sSqlParecerTurma );
       $iLinhasParecerTurma = pg_num_rows( $rsParecerTurma );
-      $oRetorno->aTurmasVinculadas = array();
+      $oRetorno->aTurmasVinculadas = [];
 
       if ( $iLinhasParecerTurma > 0 ) {
 
@@ -330,7 +330,7 @@ switch ($oParam->exec) {
           throw new BusinessException($sErro);
         }
 
-        $aTurmasInclusas = array();
+        $aTurmasInclusas = [];
         foreach ( $oParam->aTurmas as $iTurma ) {
 
           if ( in_array($iTurma, $aTurmasInclusas) ) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("classes/db_empelemento_classe.php"));
 include_once(modification("classes/db_conplanoreduz_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clempelemento = new cl_empelemento;
@@ -57,7 +58,7 @@ $clempelemento->rotulo->label();
 <body bgcolor=#CCCCCC>
 <center>
  <table border='0' cellspacing="0" cellpadding="0" width="95%" style='border:2px inset white'>   
- <?
+ <?php 
       $result = $clempelemento->sql_record($clempelemento->sql_query($e60_numemp,null,"*","e64_codele"));
       $numrows = $clempelemento->numrows;
       if($numrows>0){

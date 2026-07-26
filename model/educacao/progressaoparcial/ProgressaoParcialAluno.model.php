@@ -118,9 +118,9 @@ final class ProgressaoParcialAluno {
   /**
    * Constantes para as situações
    */
-  const ATIVA     = 1;
-  const INATIVA   = 2;
-  const CONCLUIDA = 3;
+  const int ATIVA     = 1;
+  const int INATIVA   = 2;
+  const int CONCLUIDA = 3;
 
   /**
    * Método construtor da classe
@@ -725,8 +725,8 @@ final class ProgressaoParcialAluno {
    */
   public function getVinculosNaTurma(Turma $oTurma, Etapa $oEtapa) {
 
-    $aVinculos  = array();
-    $aRegencias = array();
+    $aVinculos  = [];
+    $aRegencias = [];
 
     foreach ( $oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia ) {
       $aRegencias[] = $oRegencia->getCodigo();
@@ -1014,7 +1014,7 @@ final class ProgressaoParcialAluno {
    */
   public function getVinculosProgressao() {
 
-    $aProgressaoParcialVinculoDisciplina = array();
+    $aProgressaoParcialVinculoDisciplina = [];
 
     $oDaoVinculosProgressao   = new cl_progressaoparcialalunoturmaregencia();
     $sWhereVinculosProgressao = "ed150_progressaoparcialaluno = {$this->iCodigoProgressaoParcial}";

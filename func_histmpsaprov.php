@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_histmpsaprov_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clhistmpsaprov = new cl_histmpsaprov;
 $clhistmpsaprov->rotulo->label("ed28_i_codigo");
 $clhistmpsaprov->rotulo->label("ed28_i_codigo");
@@ -56,7 +57,7 @@ $clhistmpsaprov->rotulo->label("ed28_i_codigo");
               <?=$Led28_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed28_i_codigo",10,$Ied28_i_codigo,true,"text",4,"","chave_ed28_i_codigo");
                        ?>
             </td>
@@ -66,7 +67,7 @@ $clhistmpsaprov->rotulo->label("ed28_i_codigo");
               <?=$Led28_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed28_i_codigo",10,$Ied28_i_codigo,true,"text",4,"","chave_ed28_i_codigo");
                        ?>
             </td>
@@ -84,7 +85,7 @@ $clhistmpsaprov->rotulo->label("ed28_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_histmpsaprov.php")==true){
@@ -124,12 +125,12 @@ $clhistmpsaprov->rotulo->label("ed28_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

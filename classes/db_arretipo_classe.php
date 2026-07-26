@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE arretipo
 class cl_arretipo
@@ -116,7 +116,7 @@ class cl_arretipo
                  ";
     //funcao construtor da classe
     //funcao construtor da classe
-    function cl_arretipo()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("arretipo");

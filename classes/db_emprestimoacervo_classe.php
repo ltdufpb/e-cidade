@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,7 +52,7 @@ class cl_emprestimoacervo {
                  bi19_exemplar = int8 = Exemplar
                  ";
    //funcao construtor da classe
-   function cl_emprestimoacervo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emprestimoacervo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

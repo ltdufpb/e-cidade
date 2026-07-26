@@ -35,7 +35,8 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $debug = isset($debug) ? $debug : null;
 
 

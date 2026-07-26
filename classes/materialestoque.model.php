@@ -193,7 +193,7 @@ class materialEstoque {
       return false;
 
     }
-    $aItens = array ();
+    $aItens =  [];
 
     $oItem = $this->getDados ();
     /**
@@ -572,7 +572,7 @@ class materialEstoque {
      * @throws DBException
      * @throws ParameterException
      */
-  function saidaMaterial($nQuantidade, $sObservacao = null, $lServico = false, TipoMovimentacaoEstoque $oMovimentacao = null, $processaDoc404 = true) {
+  function saidaMaterial($nQuantidade, $sObservacao = null, $lServico = false, ?TipoMovimentacaoEstoque $oMovimentacao = null, $processaDoc404 = true) {
 
     if (empty($nQuantidade) || $nQuantidade <= 0) {
       throw new Exception("Parametro nQuantidade inválido");

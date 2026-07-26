@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($c53_coddoc)){
 <form name="form1" method="post" action="<?=$db_action?>">
 <center>
 <table border="0">
-<?
+<?php 
 if(empty($c46_seqtrans) && isset($outro) && $outro==true){
 echo "
   <tr>
@@ -70,55 +70,55 @@ echo "
        <?=$Lc53_coddoc ?>
     </td>
     <td> 
-       <? db_input('c53_coddoc',4,$Ic53_coddoc,true,'text',3);?>
-       <? db_input('c53_descr',40,$Ic53_descr,true,'text',3,'')       ?>
+       <?php  db_input('c53_coddoc',4,$Ic53_coddoc,true,'text',3);?>
+       <?php  db_input('c53_descr',40,$Ic53_descr,true,'text',3,'')       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc46_seqtrans?>"><?=@$Lc46_seqtrans?> </td>
     <td> 
-    <? db_input('c46_seqtrans',6,$Ic46_seqtrans,true,'text',3,""); ?>
+    <?php  db_input('c46_seqtrans',6,$Ic46_seqtrans,true,'text',3,""); ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc46_seqtranslan?>"><?=@$Lc46_seqtranslan?></td>
     <td> 
-     <? db_input('c46_seqtranslan',8,$Ic46_seqtranslan,true,'text',3,"") ?>
+     <?php  db_input('c46_seqtranslan',8,$Ic46_seqtranslan,true,'text',3,"") ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tc46_codhist?>"><? db_ancora(@$Lc46_codhist,"js_pesquisac46_codhist(true);",$db_opcao); ?> </td>
+    <td nowrap title="<?=@$Tc46_codhist?>"><?php  db_ancora(@$Lc46_codhist,"js_pesquisac46_codhist(true);",$db_opcao); ?> </td>
     <td> 
-       <? db_input('c46_codhist',4,$Ic46_codhist,true,'text',$db_opcao," onchange='js_pesquisac46_codhist(false);'")   ?>
-       <? db_input('c50_descr',40,$Ic50_descr,true,'text',3,'')    ?>
+       <?php  db_input('c46_codhist',4,$Ic46_codhist,true,'text',$db_opcao," onchange='js_pesquisac46_codhist(false);'")   ?>
+       <?php  db_input('c50_descr',40,$Ic50_descr,true,'text',3,'')    ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc46_obs?>"><?=@$Lc46_obs?></td>
-    <td><? db_textarea('c46_obs',5,80,$Ic46_obs,true,'text',$db_opcao,"") ?> </td>
+    <td><?php  db_textarea('c46_obs',5,80,$Ic46_obs,true,'text',$db_opcao,"") ?> </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tc46_valor?>"><?=@$Lc46_valor?></td>
-    <td><? db_input('c46_valor',20,$Ic46_valor,true,'text',$db_opcao) ?></td>
+    <td><?php  db_input('c46_valor',20,$Ic46_valor,true,'text',$db_opcao) ?></td>
   </tr>
   <tr><td nowrap title="<?=@$Tc46_valor?>"><b>Obrigatório:</b></td>
-    <td><?
+    <td><?php 
           $xy = array("f"=>"NÃO","t"=>"SIM");
           db_select('c46_obrigatorio',$xy,true,$db_opcao);
         ?>
     </td>
   </tr>
    <tr>
-    <td nowrap title="<?=@$Tc46_evento?>"><? db_ancora(@$Lc46_evento,"js_pesquisac46_evento(true);",$db_opcao); ?> </td>
+    <td nowrap title="<?=@$Tc46_evento?>"><?php  db_ancora(@$Lc46_evento,"js_pesquisac46_evento(true);",$db_opcao); ?> </td>
     <td>
-       <? db_input('c46_evento',10,$Ic46_evento,true,'text',$db_opcao) ?>
-       <? if (isset($c46_evento) && ($c46_evento!="")){
+       <?php  db_input('c46_evento',10,$Ic46_evento,true,'text',$db_opcao) ?>
+       <?php  if (isset($c46_evento) && ($c46_evento!="")){
 	    $rr = $clconhistdoc->sql_record($clconhistdoc->sql_query($c46_evento,"c53_descr as c46_eventodescr"));
 	    if ($clconhistdoc->numrows>0)
 	       db_fieldsmemory($rr,0);
           }
         ?> 
-       <? db_input('c46_eventodescr',40,'',true,'text',3) ?>
+       <?php  db_input('c46_eventodescr',40,'',true,'text',3) ?>
 
     </td>
   </tr>
@@ -130,19 +130,19 @@ echo "
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
   <input name="seleciona" type="button"  value="Selecionar  histórico" onclick="js_pesquisahist();" >
-  <?if($db_opcao==2) {?>
+  <?php if($db_opcao==2) {?>
      <input name="novo" type="button"  value="Novo lançamento" onclick="js_novo();"  >
-  <?}?>     
-  <?if(isset($c46_seqtrans) && $c46_seqtrans!=""){?>
+  <?php }?>     
+  <?php if(isset($c46_seqtrans) && $c46_seqtrans!=""){?>
      <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar  documentos" onclick="js_pesquisa();" <?=(isset($c46_seqtrans) && $c46_seqtrans!=""?"":"disabled")?> >
-  <?}?>     
+  <?php }?>     
   
 </form>
 <script>
 function js_novo(){
-  <?if(isset($c53_coddoc)){?>
+  <?php if(isset($c53_coddoc)){?>
   location.href = "con1_contranslan004.php?c53_coddoc=<?=$c53_coddoc?>";
-  <?}?>
+  <?php }?>
 } 
 function js_pesquisahist(){
   js_OpenJanelaIframe('CurrentWindow.corpo.iframe_contranslan','db_iframe_conhist','func_conhistdoc.php?funcao_js=parent.js_preenchepesquisahist|c53_coddoc|c53_descr','Pesquisa',true,'0');
@@ -150,14 +150,14 @@ function js_pesquisahist(){
 function js_preenchepesquisahist(coddoc,descr){
       document.form1.c53_coddoc.value = coddoc;
       document.form1.c53_descr.value  = descr;
-  <?if($db_opcao!=11||$db_opcao!=1){?>
+  <?php if($db_opcao!=11||$db_opcao!=1){?>
 
 	      obj=document.createElement('input');
 	      obj.setAttribute('name','outro');
 	      obj.setAttribute('type','hidden');
       	      obj.setAttribute('value','true');
 	      document.form1.appendChild(obj);
-  <?}?>    
+  <?php }?>    
       document.form1.submit();
       db_iframe_conhist.hide();
 }
@@ -219,20 +219,20 @@ function js_mostraevento(chave1,chave2){
    db_iframe_conhistdoc.hide();
 }  
 function js_pesquisa(){
- <?if(isset($c46_seqtrans)){?> 
+ <?php if(isset($c46_seqtrans)){?> 
     js_OpenJanelaIframe('CurrentWindow.corpo.iframe_contranslan','db_iframe_contranslan','func_contranslan.php?chave_c46_seqtrans=<?=$c46_seqtrans?>&funcao_js=parent.js_preenchepesquisa|c46_seqtranslan','Pesquisa',true,'0');
- <?}?>  
+ <?php }?>  
 }
 function js_preenchepesquisa(chave){
   db_iframe_contranslan.hide();
-  <?
+  <?php 
 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php 
 if( $db_opcao == 11 ){
   echo "\n
            js_pesquisahist();

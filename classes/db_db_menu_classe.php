@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_menu
 class cl_db_menu { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_item = 0; 
-   var $id_item_filho = 0; 
-   var $menusequencia = 0; 
-   var $modulo = 0; 
+   public $id_item = 0; 
+   public $id_item_filho = 0; 
+   public $menusequencia = 0; 
+   public $modulo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_item = int4 = Código do ítem 
                  id_item_filho = int4 = Item filho 
                  menusequencia = int4 = Seqüência 
                  modulo = int4 = Módulo 
                  ";
    //funcao construtor da classe 
-   function cl_db_menu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_menu"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_db_menu {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Menu () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Menu já Cadastrado";
@@ -159,10 +159,10 @@ class cl_db_menu {
       $this->atualizacampos();
      $sql = " update db_menu set ";
      $virgula = "";
-     if(trim($this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+     if(trim((string) $this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
        $sql  .= $virgula." id_item = $this->id_item ";
        $virgula = ",";
-       if(trim($this->id_item) == null ){ 
+       if(trim((string) $this->id_item) == null ){ 
          $this->erro_sql = " Campo Código do ítem nao Informado.";
          $this->erro_campo = "id_item";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_db_menu {
          return false;
        }
      }
-     if(trim($this->id_item_filho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item_filho"])){ 
+     if(trim((string) $this->id_item_filho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item_filho"])){ 
        $sql  .= $virgula." id_item_filho = $this->id_item_filho ";
        $virgula = ",";
-       if(trim($this->id_item_filho) == null ){ 
+       if(trim((string) $this->id_item_filho) == null ){ 
          $this->erro_sql = " Campo Item filho nao Informado.";
          $this->erro_campo = "id_item_filho";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_db_menu {
          return false;
        }
      }
-     if(trim($this->menusequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["menusequencia"])){ 
+     if(trim((string) $this->menusequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["menusequencia"])){ 
        $sql  .= $virgula." menusequencia = $this->menusequencia ";
        $virgula = ",";
-       if(trim($this->menusequencia) == null ){ 
+       if(trim((string) $this->menusequencia) == null ){ 
          $this->erro_sql = " Campo Seqüência nao Informado.";
          $this->erro_campo = "menusequencia";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_db_menu {
          return false;
        }
      }
-     if(trim($this->modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["modulo"])){ 
+     if(trim((string) $this->modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["modulo"])){ 
        $sql  .= $virgula." modulo = $this->modulo ";
        $virgula = ",";
-       if(trim($this->modulo) == null ){ 
+       if(trim((string) $this->modulo) == null ){ 
          $this->erro_sql = " Campo Módulo nao Informado.";
          $this->erro_campo = "modulo";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_menu";
@@ -327,7 +327,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    * @param integer $iModulo
    * @return string
    */
-  function sqlItensMenuUsuario($sCampos = "*", $sOrdem = "", $sWhere = "", $iIdUsuario, $iAnoUsu, $iInstituicao, $iModulo = null) {
+  function sqlItensMenuUsuario($sCampos = "*", $sOrdem = "", $sWhere = "", $iIdUsuario = null, $iAnoUsu = null, $iInstituicao = null, $iModulo = null) {
 
     $sSql  = "  select {$sCampos}                                               \n";
     $sSql .= "    from db_menu m                                                \n";

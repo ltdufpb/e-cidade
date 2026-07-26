@@ -4,26 +4,26 @@
 class cl_liclicitem
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $l21_codigo = 0;
-    var $l21_codliclicita = 0;
-    var $l21_codpcprocitem = 0;
-    var $l21_situacao = 0;
-    var $l21_ordem = 0;
+    public $l21_codigo = 0;
+    public $l21_codliclicita = 0;
+    public $l21_codpcprocitem = 0;
+    public $l21_situacao = 0;
+    public $l21_ordem = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  l21_codigo = int8 = Cod. Sequencial
                  l21_codliclicita = int8 = Cod. Sequencial
                  l21_codpcprocitem = int8 = Código sequencial do item no processo
@@ -32,11 +32,11 @@ class cl_liclicitem
                  ";
 
     //funcao construtor da classe
-    function cl_liclicitem()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("liclicitem");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -116,10 +116,10 @@ class cl_liclicitem
 
                 return false;
             }
-            $this->l21_codigo = pg_result($result, 0, 0);
+            $this->l21_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from liclicitem_l21_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $l21_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $l21_codigo)) {
                 $this->erro_sql = " Campo l21_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -159,7 +159,7 @@ class cl_liclicitem
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "liclicitem ($this->l21_codigo) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "liclicitem já Cadastrado";
@@ -187,18 +187,18 @@ class cl_liclicitem
         $resaco = $this->sql_record($this->sql_query_file($this->l21_codigo));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,7600,'$this->l21_codigo','I')");
-            $resac = db_query("insert into db_acount values($acount,1261,7600,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1261,7600,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'l21_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1261,7601,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1261,7601,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'l21_codliclicita')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1261,7602,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1261,7602,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'l21_codpcprocitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1261,10011,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1261,10011,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'l21_situacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1261,10973,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1261,10973,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'l21_ordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -211,10 +211,10 @@ class cl_liclicitem
         $this->atualizacampos();
         $sql = " update liclicitem set ";
         $virgula = "";
-        if (trim($this->l21_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_codigo"])) {
+        if (trim((string) $this->l21_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_codigo"])) {
             $sql .= $virgula . " l21_codigo = $this->l21_codigo ";
             $virgula = ",";
-            if (trim($this->l21_codigo) == null) {
+            if (trim((string) $this->l21_codigo) == null) {
                 $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
                 $this->erro_campo = "l21_codigo";
                 $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_liclicitem
                 return false;
             }
         }
-        if (trim($this->l21_codliclicita) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_codliclicita"])) {
+        if (trim((string) $this->l21_codliclicita) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_codliclicita"])) {
             $sql .= $virgula . " l21_codliclicita = $this->l21_codliclicita ";
             $virgula = ",";
-            if (trim($this->l21_codliclicita) == null) {
+            if (trim((string) $this->l21_codliclicita) == null) {
                 $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
                 $this->erro_campo = "l21_codliclicita";
                 $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_liclicitem
                 return false;
             }
         }
-        if (trim($this->l21_codpcprocitem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_codpcprocitem"])) {
+        if (trim((string) $this->l21_codpcprocitem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_codpcprocitem"])) {
             $sql .= $virgula . " l21_codpcprocitem = $this->l21_codpcprocitem ";
             $virgula = ",";
-            if (trim($this->l21_codpcprocitem) == null) {
+            if (trim((string) $this->l21_codpcprocitem) == null) {
                 $this->erro_sql = " Campo Código sequencial do item no processo nao Informado.";
                 $this->erro_campo = "l21_codpcprocitem";
                 $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_liclicitem
                 return false;
             }
         }
-        if (trim($this->l21_situacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_situacao"])) {
+        if (trim((string) $this->l21_situacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_situacao"])) {
             $sql .= $virgula . " l21_situacao = $this->l21_situacao ";
             $virgula = ",";
-            if (trim($this->l21_situacao) == null) {
+            if (trim((string) $this->l21_situacao) == null) {
                 $this->erro_sql = " Campo Situação nao Informado.";
                 $this->erro_campo = "l21_situacao";
                 $this->erro_banco = "";
@@ -271,8 +271,8 @@ class cl_liclicitem
                 return false;
             }
         }
-        if (trim($this->l21_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_ordem"])) {
-            if (trim($this->l21_ordem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["l21_ordem"])) {
+        if (trim((string) $this->l21_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l21_ordem"])) {
+            if (trim((string) $this->l21_ordem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["l21_ordem"])) {
                 $this->l21_ordem = "0";
             }
             $sql .= $virgula . " l21_ordem = $this->l21_ordem ";
@@ -286,31 +286,31 @@ class cl_liclicitem
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,7600,'$this->l21_codigo','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["l21_codigo"])) {
-                    $resac = db_query("insert into db_acount values($acount,1261,7600,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1261,7600,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'l21_codigo')) . "','$this->l21_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["l21_codliclicita"])) {
-                    $resac = db_query("insert into db_acount values($acount,1261,7601,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1261,7601,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'l21_codliclicita')) . "','$this->l21_codliclicita'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["l21_codpcprocitem"])) {
-                    $resac = db_query("insert into db_acount values($acount,1261,7602,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1261,7602,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'l21_codpcprocitem')) . "','$this->l21_codpcprocitem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["l21_situacao"])) {
-                    $resac = db_query("insert into db_acount values($acount,1261,10011,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1261,10011,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'l21_situacao')) . "','$this->l21_situacao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["l21_ordem"])) {
-                    $resac = db_query("insert into db_acount values($acount,1261,10973,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1261,10973,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'l21_ordem')) . "','$this->l21_ordem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -366,22 +366,22 @@ class cl_liclicitem
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,7600,'$l21_codigo','E')");
-                $resac = db_query("insert into db_acount values($acount,1261,7600,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1261,7600,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'l21_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1261,7601,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1261,7601,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'l21_codliclicita')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1261,7602,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1261,7602,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'l21_codpcprocitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1261,10011,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1261,10011,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'l21_situacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1261,10973,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1261,10973,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'l21_ordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -453,7 +453,7 @@ class cl_liclicitem
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:liclicitem";
@@ -505,7 +505,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -560,7 +560,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -598,7 +598,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -675,7 +675,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -722,7 +722,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -768,7 +768,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -821,7 +821,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -881,7 +881,7 @@ class cl_liclicitem
 
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -927,7 +927,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -996,7 +996,7 @@ class cl_liclicitem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1043,7 +1043,7 @@ class cl_liclicitem
     function sql_query_acordos ( $l21_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1071,7 +1071,7 @@ class cl_liclicitem
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1196,7 +1196,7 @@ class cl_liclicitem
         return $sql;
     }
 
-    public function sqlItensSemVencedor($campos = array(), $where = array(), $ordernacao = array())
+    public function sqlItensSemVencedor($campos = [], $where = [], $ordernacao = [])
     {
         $campos = !empty($campos) ? implode(', ', $campos) : '*';
         $where = !empty($where) ? " where " . implode(' AND ', $where) : '';

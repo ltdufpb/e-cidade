@@ -24,11 +24,6 @@ class Logger {
     /**
      * @var string
      */
-    protected $path;
-
-    /**
-     * @var string
-     */
     protected $file;
 
     /**
@@ -39,12 +34,12 @@ class Logger {
     /**
      * @var callable[]
      */
-    protected $handlers = array();
+    protected $handlers = [];
 
     /**
      * @var array
      */
-    protected $levels = array(
+    protected $levels = [
       0 => 'QUIET',
       1 => 'INFO',
       2 => 'NOTICE',
@@ -56,17 +51,16 @@ class Logger {
       53 => 'DEBUG_3',
       54 => 'DEBUG_4',
       55 => 'DEBUG_5',
-    );
+    ];
 
     /**
      * @param string $path - caminho do arquivo para escrever log
      *  php://stdout : visivel somente no CLI
      *  php://output : visivel CLI e APACHE
      */
-    public function __construct($path = 'php://stdout', $verbosity = self::QUIET) {
+    public function __construct(protected $path = 'php://stdout', $verbosity = self::QUIET) {
 
-        $this->path = $path;
-        $this->setFile($path);
+        $this->setFile($this->path);
         $this->setVerbosity($verbosity);
     }
 

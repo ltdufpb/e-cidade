@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 db_postmemory( $_POST );
 
@@ -109,10 +109,10 @@ if (isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a8.location.href      = 'edu1_rechumanoescola001.php?ed75_i_rechumano=<?=$ed20_i_codigo?>&ed20_i_tiposervidor=<?=$ed20_i_tiposervidor?>';
    <?php
    $sComplementoUrl  = $ed20_i_tiposervidor == 1 ? "&identificacao={$ed284_i_rhpessoal}" : "&identificacao={$z01_numcgm}";
-   $sComplementoUrl .= "&z01_nomecomple=" . addslashes( $z01_nomecomple );
+   $sComplementoUrl .= "&z01_nomecomple=" . addslashes( (string) $z01_nomecomple );
    $sComplementoUrl .= "&ed20_i_tiposervidor=$ed20_i_tiposervidor";
 
-   $sNome = base64_encode($z01_nomecomple);
+   $sNome = base64_encode((string) $z01_nomecomple);
 
 
    if( isset( $ed75_i_codigo ) && !empty( $ed75_i_codigo ) ) {
@@ -155,7 +155,7 @@ if (isset($alterar)) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
           <br><br>
           <fieldset align="left" style="width:95%"><legend><b>Alteração de Recurso Humano</b></legend>
-            <?include(modification("forms/db_frmrechumano.php"));?>
+            <?php include(modification("forms/db_frmrechumano.php"));?>
           </fieldset>
         </td>
       </tr>

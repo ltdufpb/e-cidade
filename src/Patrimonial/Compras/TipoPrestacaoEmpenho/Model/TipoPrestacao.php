@@ -149,7 +149,7 @@ class TipoPrestacao
         }
 
         if (array_key_exists('e44_diaria', $state)) {
-            $tipoPrestacao->setNaturezaEvento((boolean) $state['e44_diaria']);
+            $tipoPrestacao->setNaturezaEvento((bool) $state['e44_diaria']);
         }
 
         return $tipoPrestacao;
@@ -160,13 +160,13 @@ class TipoPrestacao
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'e44_tipo' => $this->getCodigoTipoPrestacao(),
             'e44_descr' => $this->getDescricao(),
             'e44_obriga' => $this->getObrigacao(),
             'e44_naturezaevento' => $this->getNaturezaEvento(),
             'e44_diaria' => $this->isDiaria()
-        );
+        ];
 
         return $retorno;
     }

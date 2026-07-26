@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcfornemov_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpcfornemov = new cl_pcfornemov;
 $clpcfornemov->rotulo->label("pc62_codmov");
 $clpcfornemov->rotulo->label("pc62_numcgm");
@@ -54,7 +55,7 @@ $clpcfornemov->rotulo->label("pc62_numcgm");
               <?=$Lpc62_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc62_codmov",6,$Ipc62_codmov,true,"text",4,"","chave_pc62_codmov");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpcfornemov->rotulo->label("pc62_numcgm");
               <?=$Lpc62_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc62_numcgm",8,$Ipc62_numcgm,true,"text",4,"","chave_pc62_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpcfornemov->rotulo->label("pc62_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcfornemov.php")==true){
@@ -118,12 +119,12 @@ $clpcfornemov->rotulo->label("pc62_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

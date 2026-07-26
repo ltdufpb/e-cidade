@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_levusu_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllevusu = new cl_levusu;
 $cllevusu->rotulo->label("y61_codlev");
 $cllevusu->rotulo->label("y61_id_usuario");
@@ -55,7 +56,7 @@ $cllevusu->rotulo->label("y61_obs");
               <?=$Ly61_codlev?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y61_codlev",10,$Iy61_codlev,true,"text",4,"","chave_y61_codlev");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cllevusu->rotulo->label("y61_obs");
               <?=$Ly61_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y61_id_usuario",5,$Iy61_id_usuario,true,"text",4,"","chave_y61_id_usuario");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $cllevusu->rotulo->label("y61_obs");
               <?=$Ly61_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y61_obs",100,$Iy61_obs,true,"text",4,"","chave_y61_obs");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $cllevusu->rotulo->label("y61_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_levusu.php")==true){
@@ -129,12 +130,12 @@ $cllevusu->rotulo->label("y61_obs");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

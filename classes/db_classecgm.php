@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -29,7 +29,7 @@
 class cl_cgm {
   var $rotulo = null;
 
-  function cl_cgm() {
+  function __construct() {
     $this->rotulo = new rotulo("cgm");
   }
   function sqldadosNome($filtro = "") {

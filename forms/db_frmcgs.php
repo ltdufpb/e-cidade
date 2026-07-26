@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,41 +46,41 @@ if($db_opcao == 2){
        <?=@$Lsd01_c_siasus?>
     </td>
     <td> 
-<?
+<?php 
 db_input('sd01_c_siasus',18,$Isd01_c_siasus,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
- <?if($db_opcao == 2){?>
+ <?php if($db_opcao == 2){?>
   <tr>
    <td><?=@$Lz01_cep?></td>
    <td>
-    <?db_input('z01_cep',9,$Iz01_cep,true,'text',$db_opcao);?>
+    <?php db_input('z01_cep',9,$Iz01_cep,true,'text',$db_opcao);?>
    </td>
   </tr>
   <tr>
-   <td><?db_ancora(@$Lz01_ender,"js_pesquisarua(true);",$db_opcao);?></td>
+   <td><?php db_ancora(@$Lz01_ender,"js_pesquisarua(true);",$db_opcao);?></td>
    <td>
-    <?db_input('z01_ender',40,$Iz01_ender,true,'text',3);?>
+    <?php db_input('z01_ender',40,$Iz01_ender,true,'text',3);?>
    </td>
   </tr>
-  <tr><td><?=@$Lz01_numero?></td><td><?db_input('z01_numero',8,$Iz01_numero,true,'text',$db_opcao);?></td></tr>
-  <tr><td><?=@$Lz01_compl?></td><td><?db_input('z01_compl',10,$Iz01_compl,true,'text',$db_opcao);?></td></tr>
+  <tr><td><?=@$Lz01_numero?></td><td><?php db_input('z01_numero',8,$Iz01_numero,true,'text',$db_opcao);?></td></tr>
+  <tr><td><?=@$Lz01_compl?></td><td><?php db_input('z01_compl',10,$Iz01_compl,true,'text',$db_opcao);?></td></tr>
   <tr>
-   <td><?db_ancora(@$Lz01_bairro,"js_pesquisabairro(true);",$db_opcao);?></td>
+   <td><?php db_ancora(@$Lz01_bairro,"js_pesquisabairro(true);",$db_opcao);?></td>
    <td>
-    <?db_input('z01_bairro',25,$Iz01_bairro,true,'text',3);?>
+    <?php db_input('z01_bairro',25,$Iz01_bairro,true,'text',3);?>
    </td>
   </tr>
-  <tr><td><?=@$Lz01_telef?></td><td><?db_input('z01_telef',12,$Iz01_telef,true,'text',$db_opcao);?></td></tr>
-  <tr><td><?=@$Lz01_telcel?></td><td><?db_input('z01_telcel',12,$Iz01_telcel,true,'text',$db_opcao);?></td></tr>
-  <?}?>
+  <tr><td><?=@$Lz01_telef?></td><td><?php db_input('z01_telef',12,$Iz01_telef,true,'text',$db_opcao);?></td></tr>
+  <tr><td><?=@$Lz01_telcel?></td><td><?php db_input('z01_telcel',12,$Iz01_telcel,true,'text',$db_opcao);?></td></tr>
+  <?php }?>
   <tr>
     <td nowrap title="<?=@$Tsd01_c_parentesco?>">
        <?=@$Lsd01_c_parentesco?>
     </td>
     <td> 
-<?
+<?php 
 $x = array('TITULAR'=>'TITULAR','ESPOSO(A)'=>'ESPOSO(A)','COMPANHEIRO(A)'=>'COMPANHEIRO(A)','FILHO(A)'=>'FILHO(A)','PAI'=>'PAI','MÃE'=>'MÃE','SOGRO(A)'=>'SOGRO(A)','FILHO(A) ADOTIVO(A)'=>'FILHO(A) ADOTIVO(A)','OUTROS'=>'OUTROS');
 db_select('sd01_c_parentesco',$x,true,$db_opcao,"");
 ?>
@@ -91,7 +91,7 @@ db_select('sd01_c_parentesco',$x,true,$db_opcao,"");
        <?=@$Lsd01_c_sangue?>
     </td>
     <td> 
-<?
+<?php 
 $x = array('A+'=>'A+','A-'=>'A-','O+'=>'O+','O-'=>'O-','AB'=>'AB');
 db_select('sd01_c_sangue',$x,true,$db_opcao,"");
 ?>
@@ -102,7 +102,7 @@ db_select('sd01_c_sangue',$x,true,$db_opcao,"");
        <?=@$Lsd01_i_familia?>
     </td>
     <td> 
-<?
+<?php 
 db_input('sd01_i_familia',8,$Isd01_i_familia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -112,7 +112,7 @@ db_input('sd01_i_familia',8,$Isd01_i_familia,true,'text',$db_opcao,"")
        <?=@$Lsd01_c_alfabetizado?>
     </td>
     <td> 
-<?
+<?php 
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('sd01_c_alfabetizado',$x,true,$db_opcao,"");
 ?>
@@ -123,7 +123,7 @@ db_select('sd01_c_alfabetizado',$x,true,$db_opcao,"");
        <?=@$Lsd01_c_escola?>
     </td>
     <td> 
-<?
+<?php 
 $x = array('t'=>'SIM','f'=>'NÃO');
 db_select('sd01_c_escola',$x,true,$db_opcao,"");
 ?>

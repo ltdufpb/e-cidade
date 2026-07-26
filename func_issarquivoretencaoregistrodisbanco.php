@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarquivoretencaoregistrodisbanco_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissarquivoretencaoregistrodisbanco = new cl_issarquivoretencaoregistrodisbanco;
 $clissarquivoretencaoregistrodisbanco->rotulo->label("q94_sequencial");
 $clissarquivoretencaoregistrodisbanco->rotulo->label("q94_issarquivoretencaoregistro");
@@ -24,11 +25,11 @@ $clissarquivoretencaoregistrodisbanco->rotulo->label("q94_issarquivoretencaoregi
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lq94_sequencial?></label></td>
-          <td><? db_input("q94_sequencial",10,$Iq94_sequencial,true,"text",4,"","chave_q94_sequencial"); ?></td>
+          <td><?php  db_input("q94_sequencial",10,$Iq94_sequencial,true,"text",4,"","chave_q94_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lq94_issarquivoretencaoregistro?></label></td>
-          <td><? db_input("q94_issarquivoretencaoregistro",10,$Iq94_issarquivoretencaoregistro,true,"text",4,"","chave_q94_issarquivoretencaoregistro");?></td>
+          <td><?php  db_input("q94_issarquivoretencaoregistro",10,$Iq94_issarquivoretencaoregistro,true,"text",4,"","chave_q94_issarquivoretencaoregistro");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $clissarquivoretencaoregistrodisbanco->rotulo->label("q94_issarquivoretencaoregi
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_issarquivoretencaoregistrodisbanco.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issarquivoretencaoregistrodisbanco.php")==true){
@@ -78,12 +79,12 @@ $clissarquivoretencaoregistrodisbanco->rotulo->label("q94_issarquivoretencaoregi
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

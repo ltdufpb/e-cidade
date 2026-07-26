@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,17 +53,17 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    if (db_getsession("DB_modulo") == 1100747) {
    
      MsgAviso(db_getsession("DB_coddepto"),"escola");
      MsgAviso(db_getsession("DB_coddepto"),"periodoavaliacao");
    }
    
-   $clcriaabas->identifica = array("a1"=>"Geral","a2"=>"Períodos de Avaliação","a3"=>"Feriados e Eventos");
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"25","a3"=>"25");
-   $clcriaabas->src        = array("a1"=>"edu1_calendario002.php","a2"=>"","a3"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Geral","a2"=>"Períodos de Avaliação","a3"=>"Feriados e Eventos"];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"25","a3"=>"25"];
+   $clcriaabas->src        = ["a1"=>"edu1_calendario002.php","a2"=>"","a3"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->iframe_width = "100%";
@@ -73,6 +73,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

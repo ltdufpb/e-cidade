@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cnae_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcnae = new cl_cnae;
 $clcnae->rotulo->label("q71_sequencial");
 $clcnae->rotulo->label("q71_estrutural");
@@ -54,7 +55,7 @@ $clcnae->rotulo->label("q71_estrutural");
               <?=$Lq71_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		           db_input("q71_sequencial",10,$Iq71_sequencial,true,"text",4,"","chave_q71_sequencial");
 		          ?>
             </td>
@@ -64,7 +65,7 @@ $clcnae->rotulo->label("q71_estrutural");
               <?=$Lq71_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("q71_estrutural",10,$Iq71_estrutural,true,"text",4,"","chave_q71_estrutural");
 		          ?>
             </td>
@@ -72,7 +73,7 @@ $clcnae->rotulo->label("q71_estrutural");
           <tr>
 	          <td align="right"><b>Mostrar:</b></td>
 	          <td align="left" > 
-	          <?
+	          <?php 
 		        $arraymostra = array("A" => "Somente analítico ","T" => "Todos");
 		        db_select("mostra",$arraymostra,1,1,"onchange='document.form2.submit();'");
 		        ?>
@@ -91,7 +92,7 @@ $clcnae->rotulo->label("q71_estrutural");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
            $where  = "";
            $where2 = "";
            if(!isset($mostra) ||$mostra=='A'){
@@ -210,13 +211,13 @@ $clcnae->rotulo->label("q71_estrutural");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
             
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

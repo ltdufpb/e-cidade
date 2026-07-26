@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_diasemana_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldiasemana = new cl_diasemana;
 $db_opcao = 1;
 $db_botao = true;
@@ -66,11 +66,11 @@ if(isset($excluir)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Dia da Semana</b></legend>
-    <?include(modification("forms/db_frmdiasemana.php"));?>
+    <?php include(modification("forms/db_frmdiasemana.php"));?>
    </fieldset>
    </center>
   </td>
@@ -81,7 +81,7 @@ if(isset($excluir)){
 <script>
 js_tabulacaoforms("form1","ed32_c_descr",true,1,"ed32_c_descr",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($cldiasemana->erro_status=="0"){
   $cldiasemana->erro(true,false);

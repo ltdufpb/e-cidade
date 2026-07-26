@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -77,7 +77,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
       <table border="0">
 	  <tr>
 	    <td nowrap align="right" title="<?=@$Tm51_data?>"><b>Data:</b></td>
-	    <td><?if(empty($m51_data_dia)){
+	    <td><?php if(empty($m51_data_dia)){
 		  $m51_data_dia =  date("d",db_getsession("DB_datausu"));
 		  $m51_data_mes =  date("m",db_getsession("DB_datausu"));
 		  $m51_data_ano =  date("Y",db_getsession("DB_datausu"));
@@ -85,9 +85,9 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 		db_inputdata('m51_data',@$m51_data_dia,@$m51_data_mes,@$m51_data_ano,true,'text',3);?>
 	    </td>
 	    <td nowrap align="right" title="<?=@$Tm51_prazoent?>"><?=@$Lm51_prazoent?></td>
-	    <td><?db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
+	    <td><?php db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)?></td>
 	  <tr>
-				<?
+				<?php 
 					$rsMatparam = $clmatparam->sql_record($clmatparam->sql_query_file());
 					$oMatparam    = db_utils::fieldsMemory($rsMatparam,0);
 					
@@ -128,26 +128,26 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 				<b><?=$Lcoddepto?></b>				
 			</td>
 	    <td>
-				<?	 
+				<?php 	 
 					 db_selectrecord("coddepto",$rsAlmoxDepto,true,1);
 				?>
 			</td>
-				<?
+				<?php 
 					}else{
 				?>			
 			<td nowrap align="right" title="<?=@$descrdepto?>">
-				<?
+				<?php 
 						db_ancora(@$Lcoddepto,"js_coddepto(true);",1);
 				?>
 			</td>
 			<td>
-				<?			
+				<?php 			
 						db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
 						db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');
 				  }
 				?>
 	    </td>
-				<?
+				<?php 
          $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit")));
          if ($clpcparam->numrows > 0) {
 	           db_fieldsmemory($result_pcparam, 0);
@@ -164,7 +164,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 
               <td align="right"><input id='manda_email' name="manda_mail" type="checkbox" value="X"></td>
               <td nowrap><label for='manda_email'><b>Mandar e-mail para o fornecedor.</b></label></td>         
-           <?//end if parametro
+           <?php //end if parametro
 								}
 							}
 				?>		 
@@ -172,7 +172,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 	  <tr> 
 	  <td align='right'><b>Obs:</b></td>
 	    <td colspan='3' align='left'>
-	   <? 
+	   <?php  
 	   db_textarea("m51_obs","","110",$Im51_obs,true,'text',1);	 
 	   ?>
 	    </td>
@@ -210,7 +210,7 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
                <td class='table_header' style='width:18px' align='center'><b>&nbsp;</b></td> 
              </tr>
             <tbody id='dados' style='height:150;width:95%;overflow:scroll;overflow-x:hidden;background-color:white'>
-            <?
+            <?php 
              $sClassName = 'normal';
              $sChecked   = '';
              if ($clempempenho->numrows == 1) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE regracalculo
 class cl_regracalculo { 
@@ -24,7 +24,7 @@ class cl_regracalculo {
                  ed126_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_regracalculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regracalculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

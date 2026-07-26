@@ -50,7 +50,7 @@ class cl_parreciboitbi {
                  it17_codigo = int4 = codigo da receita 
                  ";
    //funcao construtor da classe 
-   public function cl_parreciboitbi() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parreciboitbi"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

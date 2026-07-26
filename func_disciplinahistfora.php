@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,8 @@ include(modification("classes/db_disciplina_classe.php"));
 include(modification("classes/db_histmpsdiscfora_classe.php"));
 include(modification("classes/db_historicompsfora_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldisciplina = new cl_disciplina;
 $clhistmpsdiscfora = new cl_histmpsdiscfora;
 $clhistoricompsfora = new cl_historicompsfora;
@@ -52,7 +53,7 @@ $clhistoricompsfora = new cl_historicompsfora;
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    $result  = $clhistoricompsfora->sql_record($clhistoricompsfora->sql_query("","ed29_i_ensino",""," ed99_i_codigo = $serie AND ed61_i_codigo = $curso"));
    db_fieldsmemory($result,0);

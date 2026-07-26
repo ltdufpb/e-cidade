@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_utils.php"));
 include(modification("classes/db_mer_tpcardapioturma_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
 
@@ -55,7 +56,7 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
       <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
        <tr>        
        </tr>
-       <?      
+       <?php       
         $sSql  = "SELECT ed18_i_codigo,
                         ed18_c_nome,
                         me27_i_ano,
@@ -103,7 +104,7 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
           <b>Alunos</b>
           </td>
           </tr>
-          <?
+          <?php 
           for ($c=0;$c<$iLinhas;$c++) {
           	
             $oEscola = db_utils::fieldsmemory($rsEscola,$c);
@@ -119,7 +120,7 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
              <?=$oEscola->qtdaluno?>              
             </td>
             </tr>
-            <?           
+            <?php            
           }
         } else {
         	
@@ -129,7 +130,7 @@ $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
             <td class='aluno'>NENHUMA TURMA NESTE CALENDÁRIO.</td>
            </tr>
           </table>
-          <?
+          <?php 
           
         }
          ?>

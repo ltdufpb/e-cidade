@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendusucliproced_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatendusucliproced = new cl_atendusucliproced;
 $clatendusucliproced->rotulo->label("at82_seq");
 $clatendusucliproced->rotulo->label("at82_usucliitem");
@@ -54,7 +55,7 @@ $clatendusucliproced->rotulo->label("at82_usucliitem");
               <?=$Lat82_seq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at82_seq",10,$Iat82_seq,true,"text",4,"","chave_at82_seq");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clatendusucliproced->rotulo->label("at82_usucliitem");
               <?=$Lat82_usucliitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at82_usucliitem",10,$Iat82_usucliitem,true,"text",4,"","chave_at82_usucliitem");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clatendusucliproced->rotulo->label("at82_usucliitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendusucliproced.php")==true){
@@ -122,12 +123,12 @@ $clatendusucliproced->rotulo->label("at82_usucliitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

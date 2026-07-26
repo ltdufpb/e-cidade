@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censoregradisc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensoregradisc = new cl_censoregradisc;
 ?>
 <html>
@@ -52,22 +52,22 @@ $clcensoregradisc = new cl_censoregradisc;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <table width="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
  <tr>
   <td align="center" valign="top">
    <br>
    <fieldset style="width:95%"><legend><b>Regras de Disciplinas</b></legend>
    <br>
-   <?
+   <?php 
    $campos = "ed266_i_codigo,
               ed266_c_descr as dl_etapa,
               ed265_c_descr as dl_disciplina
              ";
    $sql = $clcensoregradisc->sql_query("",$campos,"ed266_i_codigo,ed265_i_codigo","");
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_ed2721_i_codigo)){
-    $repassa = array("chave_ed272_i_codigo"=>@$chave_ed272_i_codigo);
+    $repassa = ["chave_ed272_i_codigo"=>@$chave_ed272_i_codigo];
    }
    db_lovrot($sql,25,"","","","","NoMe",$repassa);
    ?>
@@ -75,6 +75,6 @@ $clcensoregradisc = new cl_censoregradisc;
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

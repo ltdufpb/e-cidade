@@ -114,7 +114,7 @@ echo pg_last_error();
         <th class='table_header'>Dedução</th>
         <th class='table_header'>Aliquota</th>
       </tr>  
-               <?
+               <?php 
                foreach ($aTabelaIrrf as $oRetencao) {
 
                  echo "<tr>";
@@ -140,7 +140,7 @@ echo pg_last_error();
         <th class='table_header'>Dedução</th>
         <th class='table_header'>Aliquota</th>
       </tr>  
-               <?
+               <?php 
                foreach ($aTabelaINSS as $oRetencao) {
 
                  echo "<tr>";

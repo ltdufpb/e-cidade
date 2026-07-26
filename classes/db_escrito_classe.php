@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -62,7 +62,7 @@ class cl_escrito {
                  q10_dtfim = date = q10_dtfim
                  ";
    //funcao construtor da classe
-   function cl_escrito() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("escrito");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

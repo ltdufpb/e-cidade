@@ -110,13 +110,13 @@ class RegimeCompetencia {
    * @throws \DBException
    *
    */
-  public function removerParcelas(RegimeCompetenciaModel $regimeCompetencia, array $parcelas=null) {
+  public function removerParcelas(RegimeCompetenciaModel $regimeCompetencia, ?array $parcelas=null) {
 
     $oDaoParcelas   = new \cl_programacaofinanceiraparcela();
     $sWhereParcelas = "k118_programacaofinanceira = {$regimeCompetencia->getCodigo()} and k118_reconhecido is false";
     if (!empty($parcelas) && count($parcelas) > 0) {
 
-      $aCodigoParcela = array();
+      $aCodigoParcela = [];
       foreach ($parcelas as $parcela) {
         $aCodigoParcela[] = $parcela->getCodigo();
       }

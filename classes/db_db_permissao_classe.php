@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE db_permissao
 class cl_db_permissao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_usuario = 0; 
-   var $id_item = 0; 
-   var $permissaoativa = null; 
-   var $anousu = 0; 
-   var $id_instit = 0; 
-   var $id_modulo = 0; 
+   public $id_usuario = 0; 
+   public $id_item = 0; 
+   public $permissaoativa = null; 
+   public $anousu = 0; 
+   public $id_instit = 0; 
+   public $id_modulo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_usuario = int4 = Cod. Usuário 
                  id_item = int4 = Código do ítem 
                  permissaoativa = char(1) = Permissão ativa 
@@ -58,10 +58,10 @@ class cl_db_permissao {
                  id_modulo = int4 = ID módulo 
                  ";
    //funcao construtor da classe 
-   function cl_db_permissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_permissao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,7 +165,7 @@ class cl_db_permissao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Permissão ($this->id_usuario."-".$this->id_item."-".$this->anousu."-".$this->id_instit."-".$this->id_modulo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Permissão já Cadastrado";
@@ -189,19 +189,19 @@ class cl_db_permissao {
      $resaco = $this->sql_record($this->sql_query_file($this->id_usuario,$this->id_item,$this->anousu,$this->id_instit,$this->id_modulo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,568,'$this->id_usuario','I')");
        $resac = db_query("insert into db_acountkey values($acount,821,'$this->id_item','I')");
        $resac = db_query("insert into db_acountkey values($acount,1019,'$this->anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,1020,'$this->id_instit','I')");
        $resac = db_query("insert into db_acountkey values($acount,1021,'$this->id_modulo','I')");
-       $resac = db_query("insert into db_acount values($acount,174,568,'','".AddSlashes(pg_result($resaco,0,'id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,174,821,'','".AddSlashes(pg_result($resaco,0,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,174,1018,'','".AddSlashes(pg_result($resaco,0,'permissaoativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,174,1019,'','".AddSlashes(pg_result($resaco,0,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,174,1020,'','".AddSlashes(pg_result($resaco,0,'id_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,174,1021,'','".AddSlashes(pg_result($resaco,0,'id_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,174,568,'','".AddSlashes(pg_fetch_result($resaco,0,'id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,174,821,'','".AddSlashes(pg_fetch_result($resaco,0,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,174,1018,'','".AddSlashes(pg_fetch_result($resaco,0,'permissaoativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,174,1019,'','".AddSlashes(pg_fetch_result($resaco,0,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,174,1020,'','".AddSlashes(pg_fetch_result($resaco,0,'id_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,174,1021,'','".AddSlashes(pg_fetch_result($resaco,0,'id_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_db_permissao {
       $this->atualizacampos();
      $sql = " update db_permissao set ";
      $virgula = "";
-     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
+     if(trim((string) $this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
        $sql  .= $virgula." id_usuario = $this->id_usuario ";
        $virgula = ",";
-       if(trim($this->id_usuario) == null ){ 
+       if(trim((string) $this->id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "id_usuario";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+     if(trim((string) $this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
        $sql  .= $virgula." id_item = $this->id_item ";
        $virgula = ",";
-       if(trim($this->id_item) == null ){ 
+       if(trim((string) $this->id_item) == null ){ 
          $this->erro_sql = " Campo Código do ítem nao Informado.";
          $this->erro_campo = "id_item";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->permissaoativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["permissaoativa"])){ 
+     if(trim((string) $this->permissaoativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["permissaoativa"])){ 
        $sql  .= $virgula." permissaoativa = '$this->permissaoativa' ";
        $virgula = ",";
-       if(trim($this->permissaoativa) == null ){ 
+       if(trim((string) $this->permissaoativa) == null ){ 
          $this->erro_sql = " Campo Permissão ativa nao Informado.";
          $this->erro_campo = "permissaoativa";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
+     if(trim((string) $this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
        $sql  .= $virgula." anousu = $this->anousu ";
        $virgula = ",";
-       if(trim($this->anousu) == null ){ 
+       if(trim((string) $this->anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "anousu";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->id_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_instit"])){ 
+     if(trim((string) $this->id_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_instit"])){ 
        $sql  .= $virgula." id_instit = $this->id_instit ";
        $virgula = ",";
-       if(trim($this->id_instit) == null ){ 
+       if(trim((string) $this->id_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "id_instit";
          $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->id_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_modulo"])){ 
+     if(trim((string) $this->id_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_modulo"])){ 
        $sql  .= $virgula." id_modulo = $this->id_modulo ";
        $virgula = ",";
-       if(trim($this->id_modulo) == null ){ 
+       if(trim((string) $this->id_modulo) == null ){ 
          $this->erro_sql = " Campo ID módulo nao Informado.";
          $this->erro_campo = "id_modulo";
          $this->erro_banco = "";
@@ -308,7 +308,7 @@ class cl_db_permissao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,568,'$this->id_usuario','A')");
          $resac = db_query("insert into db_acountkey values($acount,821,'$this->id_item','A')");
@@ -316,17 +316,17 @@ class cl_db_permissao {
          $resac = db_query("insert into db_acountkey values($acount,1020,'$this->id_instit','A')");
          $resac = db_query("insert into db_acountkey values($acount,1021,'$this->id_modulo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"]) || $this->id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,174,568,'".AddSlashes(pg_result($resaco,$conresaco,'id_usuario'))."','$this->id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,174,568,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_usuario'))."','$this->id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_item"]) || $this->id_item != "")
-           $resac = db_query("insert into db_acount values($acount,174,821,'".AddSlashes(pg_result($resaco,$conresaco,'id_item'))."','$this->id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,174,821,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_item'))."','$this->id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["permissaoativa"]) || $this->permissaoativa != "")
-           $resac = db_query("insert into db_acount values($acount,174,1018,'".AddSlashes(pg_result($resaco,$conresaco,'permissaoativa'))."','$this->permissaoativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,174,1018,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'permissaoativa'))."','$this->permissaoativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["anousu"]) || $this->anousu != "")
-           $resac = db_query("insert into db_acount values($acount,174,1019,'".AddSlashes(pg_result($resaco,$conresaco,'anousu'))."','$this->anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,174,1019,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'anousu'))."','$this->anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_instit"]) || $this->id_instit != "")
-           $resac = db_query("insert into db_acount values($acount,174,1020,'".AddSlashes(pg_result($resaco,$conresaco,'id_instit'))."','$this->id_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,174,1020,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_instit'))."','$this->id_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_modulo"]) || $this->id_modulo != "")
-           $resac = db_query("insert into db_acount values($acount,174,1021,'".AddSlashes(pg_result($resaco,$conresaco,'id_modulo'))."','$this->id_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,174,1021,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_modulo'))."','$this->id_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -372,21 +372,21 @@ class cl_db_permissao {
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
-         $resac = db_query("insert into db_acountkey    values($acount,568 ,'".AddSlashes(pg_result($resaco,$iresaco,'id_usuario'))."','E')");
-         $resac = db_query("insert into db_acountkey    values($acount,821 ,'".AddSlashes(pg_result($resaco,$iresaco,'id_item'))."'   ,'E')");
-         $resac = db_query("insert into db_acountkey    values($acount,1019,'".AddSlashes(pg_result($resaco,$iresaco,'anousu'))."'    ,'E')");
-         $resac = db_query("insert into db_acountkey    values($acount,1020,'".AddSlashes(pg_result($resaco,$iresaco,'id_instit'))."' ,'E')");
-         $resac = db_query("insert into db_acountkey    values($acount,1021,'".AddSlashes(pg_result($resaco,$iresaco,'id_modulo'))."' ,'E')");
+         $resac = db_query("insert into db_acountkey    values($acount,568 ,'".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_usuario'))."','E')");
+         $resac = db_query("insert into db_acountkey    values($acount,821 ,'".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_item'))."'   ,'E')");
+         $resac = db_query("insert into db_acountkey    values($acount,1019,'".AddSlashes(pg_fetch_result($resaco,$iresaco,'anousu'))."'    ,'E')");
+         $resac = db_query("insert into db_acountkey    values($acount,1020,'".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_instit'))."' ,'E')");
+         $resac = db_query("insert into db_acountkey    values($acount,1021,'".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_modulo'))."' ,'E')");
          
-         $resac = db_query("insert into db_acount values($acount,174,568 ,'','".AddSlashes(pg_result($resaco,$iresaco,'id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,174,821 ,'','".AddSlashes(pg_result($resaco,$iresaco,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,174,1018,'','".AddSlashes(pg_result($resaco,$iresaco,'permissaoativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,174,1019,'','".AddSlashes(pg_result($resaco,$iresaco,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,174,1020,'','".AddSlashes(pg_result($resaco,$iresaco,'id_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,174,1021,'','".AddSlashes(pg_result($resaco,$iresaco,'id_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,174,568 ,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,174,821 ,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,174,1018,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'permissaoativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,174,1019,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,174,1020,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,174,1021,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_permissao
@@ -470,7 +470,7 @@ class cl_db_permissao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_permissao";
@@ -485,7 +485,7 @@ class cl_db_permissao {
    function sql_query ( $id_usuario=null,$id_item=null,$anousu=null,$id_instit=null,$id_modulo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -538,7 +538,7 @@ class cl_db_permissao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_db_permissao {
    function sql_query_file ( $id_usuario=null,$id_item=null,$anousu=null,$id_instit=null,$id_modulo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -604,7 +604,7 @@ class cl_db_permissao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -617,10 +617,10 @@ class cl_db_permissao {
       $this->atualizacampos();
      $sql = " update db_permissao set ";
      $virgula = "";
-     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
+     if(trim((string) $this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
        $sql  .= $virgula." id_usuario = $this->id_usuario ";
        $virgula = ",";
-       if(trim($this->id_usuario) == null ){ 
+       if(trim((string) $this->id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "id_usuario";
          $this->erro_banco = "";
@@ -630,10 +630,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+     if(trim((string) $this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
        $sql  .= $virgula." id_item = $this->id_item ";
        $virgula = ",";
-       if(trim($this->id_item) == null ){ 
+       if(trim((string) $this->id_item) == null ){ 
          $this->erro_sql = " Campo Código do ítem nao Informado.";
          $this->erro_campo = "id_item";
          $this->erro_banco = "";
@@ -643,10 +643,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->permissaoativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["permissaoativa"])){ 
+     if(trim((string) $this->permissaoativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["permissaoativa"])){ 
        $sql  .= $virgula." permissaoativa = '$this->permissaoativa' ";
        $virgula = ",";
-       if(trim($this->permissaoativa) == null ){ 
+       if(trim((string) $this->permissaoativa) == null ){ 
          $this->erro_sql = " Campo Permissão ativa nao Informado.";
          $this->erro_campo = "permissaoativa";
          $this->erro_banco = "";
@@ -656,10 +656,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
+     if(trim((string) $this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
        $sql  .= $virgula." anousu = $this->anousu ";
        $virgula = ",";
-       if(trim($this->anousu) == null ){ 
+       if(trim((string) $this->anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "anousu";
          $this->erro_banco = "";
@@ -669,10 +669,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->id_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_instit"])){ 
+     if(trim((string) $this->id_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_instit"])){ 
        $sql  .= $virgula." id_instit = $this->id_instit ";
        $virgula = ",";
-       if(trim($this->id_instit) == null ){ 
+       if(trim((string) $this->id_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "id_instit";
          $this->erro_banco = "";
@@ -682,10 +682,10 @@ class cl_db_permissao {
          return false;
        }
      }
-     if(trim($this->id_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_modulo"])){ 
+     if(trim((string) $this->id_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_modulo"])){ 
        $sql  .= $virgula." id_modulo = $this->id_modulo ";
        $virgula = ",";
-       if(trim($this->id_modulo) == null ){ 
+       if(trim((string) $this->id_modulo) == null ){ 
          $this->erro_sql = " Campo ID módulo nao Informado.";
          $this->erro_campo = "id_modulo";
          $this->erro_banco = "";

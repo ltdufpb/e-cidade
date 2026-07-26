@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_far_origemreceita_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaofar_origemreceita = new cl_far_origemreceita;
 $oDaofar_origemreceita->rotulo->label("fa40_i_codigo");
@@ -56,7 +57,7 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
               <?=$Lfa40_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	  	        db_input("fa40_i_codigo",10,$Ifa40_i_codigo,true,"text",4,"","chave_fa40_i_codigo");
 		          ?>
             </td>
@@ -66,7 +67,7 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
               <?=$Lfa40_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input('fa40_c_descr', 50, $Ifa40_c_descr, true, 'text', 4, '', 'chave_fa40_c_descr');
 		          ?>
             </td>
@@ -84,7 +85,7 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sSepVal = '';
       $sValidade = '';
       if(isset($chave_validade)) {
@@ -149,12 +150,12 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

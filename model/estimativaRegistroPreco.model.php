@@ -40,7 +40,7 @@ class estimativaRegistroPreco extends solicitacaoCompra {
    * Itens da Estimativa
    * @var ItemEstimativa[]
    */
-  protected $aItens = array();
+  protected $aItens = [];
 
   protected $iCodigoSolicitacao;
 
@@ -338,6 +338,7 @@ class estimativaRegistroPreco extends solicitacaoCompra {
    * retorno a resumo da Abertura
    * @return string
    */
+  #[\Override]
   public function getResumo() {
     return $this->sResumo;
   }
@@ -348,6 +349,7 @@ class estimativaRegistroPreco extends solicitacaoCompra {
    * @param string $sResumo Resumo
    * @return aberturaRegistroPreco
    */
+  #[\Override]
   public function setResumo($sResumo) {
 
     $this->sResumo = $sResumo;
@@ -426,6 +428,7 @@ class estimativaRegistroPreco extends solicitacaoCompra {
    * @return void
    */
 
+  #[\Override]
   public function anular($sMotivo, $sProcessoAdministrativo = null) {
 
     $lSolicitaAnulada = $this->isAnulada();

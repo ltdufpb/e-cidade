@@ -56,7 +56,7 @@ class cl_liclicitaata {
                  l39_posicaoinicial = bool = Posição Inicial do Registro 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitaata() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaata"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

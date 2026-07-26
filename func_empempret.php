@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempret_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempempret = new cl_empempret;
 $clempempret->rotulo->label("e67_numemp");
 $clempempret->rotulo->label("e67_seqretencao");
@@ -55,7 +56,7 @@ $clempempret->rotulo->label("e67_numemp");
               <?=$Le67_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e67_numemp",10,$Ie67_numemp,true,"text",4,"","chave_e67_numemp");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clempempret->rotulo->label("e67_numemp");
               <?=$Le67_seqretencao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e67_seqretencao",6,$Ie67_seqretencao,true,"text",4,"","chave_e67_seqretencao");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clempempret->rotulo->label("e67_numemp");
               <?=$Le67_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e67_numemp",10,$Ie67_numemp,true,"text",4,"","chave_e67_numemp");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clempempret->rotulo->label("e67_numemp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empempret.php")==true){
@@ -133,12 +134,12 @@ $clempempret->rotulo->label("e67_numemp");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

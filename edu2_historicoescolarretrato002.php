@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification('model/educacao/ArredondamentoNota.model.php'));
 
 $oGet = db_utils::postMemory($_GET);
-$aAlunosSelecionados = explode(",", $oGet->alunos);
+$aAlunosSelecionados = explode(",", (string) $oGet->alunos);
 $lExibirReclassificao = $oGet->sExibirReclassificacao == 't' ? true : false;
 $iAnoLimite = (int)$oGet->sAno;
 $sDataEmissao = $oGet->dataemissao;

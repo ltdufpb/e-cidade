@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $anousu     = db_getsession("DB_anousu");
 $clconplano = new cl_conplano;
@@ -64,7 +65,7 @@ $get = (object)filter_input_array(INPUT_GET);
               <?=$Lc60_codcon?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c60_codcon",10,$Ic60_codcon,true,"text",4,"","chave_c60_codcon");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $get = (object)filter_input_array(INPUT_GET);
               <?=$Lc60_estrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c60_estrut",15,$Ic60_estrut,true,"text",4,"","chave_c60_estrut");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $get = (object)filter_input_array(INPUT_GET);
               <?=$Lc61_reduz?>
 	    </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c61_reduz",10,$Ic61_reduz,true,"text",4,"","chave_c61_reduz");
 		       ?>
             </td>
@@ -90,7 +91,7 @@ $get = (object)filter_input_array(INPUT_GET);
               <?=$Lc60_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c60_descr",50,$Ic60_descr,true,"text",4,"","chave_c60_descr");
 		       ?>
             </td>
@@ -108,7 +109,7 @@ $get = (object)filter_input_array(INPUT_GET);
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conplano.php")==true){
@@ -194,13 +195,13 @@ $get = (object)filter_input_array(INPUT_GET);
 </table>
 </body>
 </html>
-<?
+<?php 
 if ((isset($campofoco) && $campofoco != "")) {
   ?>
   <script>
   <?="document.form2.{$campofoco}.focus()\n";?>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

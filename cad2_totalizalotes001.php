@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ $sizecp  = array();
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?
+     <?php 
        $clcriaabas->identifica = array("g1"=>"Bairro","g2"=>"Rua");
        $clcriaabas->title = array("g1"=>"Selecionar Bairro","g2"=>"Selecionar Rua");
        $clcriaabas->src = array("g1"=>"cad2_totalizalotes003.php","g2"=>"cad2_totalizalotes004.php");
@@ -71,7 +71,7 @@ $sizecp  = array();
 <tr>
 </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

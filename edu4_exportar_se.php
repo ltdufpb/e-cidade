@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 ?>
@@ -57,7 +57,7 @@ $db_botao = true;
   <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:95%"><legend><b>Exportar dados da secretaria para a escola</b></legend>
-    <?
+    <?php 
     if(isset($destino)){
      echo "<br><br>";
      ?>
@@ -67,18 +67,18 @@ $db_botao = true;
      <br><br>
      Para salvar arquivo, clique com o botão direito do mouse sobre
      o nome do arquivo. Após escolha <b>Salvar/Guardar Destino Como</b>.
-     <?
+     <?php 
     }else{
      ?>
      <form name="form1" method="post" action="">
      <table border="0">
       <tr>
        <td nowrap>
-        <?db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",$db_opcao);?>
+        <?php db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",$db_opcao);?>
        </td>
        <td>
-        <?db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed129_i_escola(false);'")?>
-        <?db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
+        <?php db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',$db_opcao," onchange='js_pesquisaed129_i_escola(false);'")?>
+        <?php db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
         <input type="button" value="Processar" name="processar" onclick="js_processar();">
        </td>
       </tr>
@@ -100,7 +100,7 @@ $db_botao = true;
      </table>
      <br><br>
      </form>
-     <?
+     <?php 
     }
     if(isset($ed129_i_escola) && $ed129_i_escola!=""){
       ?>
@@ -108,7 +108,7 @@ $db_botao = true;
        document.getElementById("tab_aviso").style.visibility = "visible";
        document.getElementById("id_escola").innerHTML = <?=$ed129_i_escola?>;
       </script>
-      <?
+      <?php 
       set_time_limit(0);
       $caminho_dump = "/usr/local/pgsql/bin/pg_dump"; //webseller
       //$caminho_dump = "/usr/bin/pg_dump"; //bage
@@ -131,8 +131,8 @@ $db_botao = true;
       $erro_trigger = false;
       for($t=0;$t<$linhas;$t++){
        $dados = pg_fetch_array($result);
-       $tabela = trim(strtolower($dados["ed130_c_tabela"]));
-       $ed130_c_dumptrigger = trim($dados["ed130_c_dumptrigger"]);
+       $tabela = trim(strtolower((string) $dados["ed130_c_tabela"]));
+       $ed130_c_dumptrigger = trim((string) $dados["ed130_c_dumptrigger"]);
        if($tabela=="ceplocalidades" || $tabela=="ceplogradouros" || $tabela=="db_acount" || $tabela=="db_acountkey"){
         $so_estrutura = "-s";
        }else{
@@ -174,13 +174,13 @@ $db_botao = true;
       $result1 = db_query($sql1);
       $sql2 = "select * from escola_sequencias where ed129_i_escola = $depto";
       $result2 = db_query($sql2);
-      $iniciosequencia = pg_result($result2,0,'ed129_i_inicio');
-      $finalsequencia = pg_result($result2,0,'ed129_i_final');
+      $iniciosequencia = pg_fetch_result($result2,0,'ed129_i_inicio');
+      $finalsequencia = pg_fetch_result($result2,0,'ed129_i_final');
       for($x=0; $x<pg_num_rows($result1);$x++){
-       $nomesequencia = trim(pg_result($result1,$x,'nomesequencia'));
-       $dump_seq = trim(pg_result($result1,$x,'ed130_c_dumpseq'));
-       $nometabela = trim(pg_result($result1,$x,'nomearq'));
-       $nomeprikey = trim(pg_result($result1,$x,'nomecam'));
+       $nomesequencia = trim(pg_fetch_result($result1,$x,'nomesequencia'));
+       $dump_seq = trim(pg_fetch_result($result1,$x,'ed130_c_dumpseq'));
+       $nometabela = trim(pg_fetch_result($result1,$x,'nomearq'));
+       $nomeprikey = trim(pg_fetch_result($result1,$x,'nomecam'));
        if(trim($dump_seq)=="S"){
         system($caminho_dump." $base -U postgres -t $nomesequencia >> ".$destino);
        }else{
@@ -190,7 +190,7 @@ $db_botao = true;
                  and $nomeprikey <= $finalsequencia
                 ";
         $result3 = db_query($sql3);
-        $maximo = pg_result($result3,0,'maximo');
+        $maximo = pg_fetch_result($result3,0,'maximo');
         if($maximo==""){
          $start_seq = $iniciosequencia;
         }else{
@@ -221,7 +221,7 @@ $db_botao = true;
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

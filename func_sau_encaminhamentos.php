@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_encaminhamentos_classe.php"));
 require_once(modification("classes/db_cgs_und_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_encaminhamentos = new cl_sau_encaminhamentos;
 $oClcgs_und = new cl_cgs_und;
 $clsau_encaminhamentos->rotulo->label("s142_i_codigo");
@@ -57,7 +58,7 @@ $oClcgs_und->rotulo->label("z01_v_nome");
               <?=$Ls142_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input("s142_i_codigo",5,$Is142_i_codigo,true,"text",4,"","chave_s142_i_codigo");
               ?>
             </td>
@@ -67,7 +68,7 @@ $oClcgs_und->rotulo->label("z01_v_nome");
               <?=$Lz01_v_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	            db_input("z01_v_nome",55,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
 		          ?>
             </td>
@@ -85,7 +86,7 @@ $oClcgs_und->rotulo->label("z01_v_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_encaminhamentos.php")==true){
@@ -183,12 +184,12 @@ $oClcgs_und->rotulo->label("z01_v_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

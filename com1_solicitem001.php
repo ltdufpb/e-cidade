@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -1830,7 +1830,7 @@ if (isset($pc11_numero)) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php 
 
     db_app::load("scripts.js, prototype.js, datagrid.widget.js,windowAux.widget.js,messageboard.widget.js, strings.js, AjaxRequest.js");
     db_app::load("classes/ultimosOrcamentos.classe.js");
@@ -1847,7 +1847,7 @@ if (isset($pc11_numero)) {
     <tr>
       <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
         <center>
-          <?
+          <?php 
 
 
           require_once(modification("forms/db_frmsolicitem.php"));

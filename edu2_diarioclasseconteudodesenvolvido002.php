@@ -51,8 +51,8 @@ $oTurma = TurmaRepository::getTurmaByCodigo($oGet->turma);
 $oCalendario = new Calendario($oGet->calendario);
 $etapa = EtapaRepository::getEtapaByCodigo($oGet->etapa);
 
-$aDisciplinas = array();
-$oGet->disciplinas = trim($oGet->disciplinas);
+$aDisciplinas = [];
+$oGet->disciplinas = trim((string) $oGet->disciplinas);
 if (!empty($oGet->disciplinas)) {
     $aDisciplinas = explode(",", trim($oGet->disciplinas));
 }
@@ -136,9 +136,9 @@ if (count($aDisciplinas) > 0 && $oDadosCabecalho->lDisciplinas == 'false') {
         /**
          * Busca os conteúdos desenvolvidos por disciplina quando for selecionado para ser lançado conforme diário.
          */
-        $aConteudoDesenvolvido = array();
+        $aConteudoDesenvolvido = [];
         if ($oGet->preenchimento == 'diario') {
-            $aConteudoDesenvolvido = buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario, $configuracao);
+            $aConteudoDesenvolvido = buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario);
         }
 
         switch ($oGet->preenchimento) {
@@ -187,7 +187,7 @@ function imprimeCabecalho($oPdf, $oDadosCabecalho, $aConteudoDesenvolvido = null
 
     $oPdf->SetFont('arial', 'b', 10);
 
-    $oPdf->Cell(290, 4, mb_strtoupper($oDadosCabecalho->sTitulo) . " - {$oDadosCabecalho->sPeriodo}", 0, 1, "C");
+    $oPdf->Cell(290, 4, mb_strtoupper((string) $oDadosCabecalho->sTitulo) . " - {$oDadosCabecalho->sPeriodo}", 0, 1, "C");
     $oPdf->Cell(290, 4, $oDadosCabecalho->sEscola, 0, 1, "C");
     $oPdf->Ln();
     $oPdf->SetFont('arial', 'b', 9);
@@ -282,7 +282,7 @@ function imprimeDiario($oPdf, $aConteudoDesenvolvido, $oDadosCabecalho)
 {
     global $mostrarHabilidades;
     for ($i = 0; $i < $oDadosCabecalho->iPaginas; $i++) {
-        imprimeCabecalho($oPdf, $oDadosCabecalho, $aConteudoDesenvolvido);
+        imprimeCabecalho($oPdf, $oDadosCabecalho);
 
         /**
          * guarda as posicoes iniciais do eixo x e y antes de comecar a imprimir as linhas.
@@ -405,7 +405,7 @@ function buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario, $confi
 
     $conteudoDesenvolvidoService = new ConteudoDesenvolvidoService();
     $conteudos = $conteudoDesenvolvidoService->buscarConteudoPeriodo($oRegencia, $sDataInicial, $sDataFinal);
-    $conteudoDesenvolvido = array();
+    $conteudoDesenvolvido = [];
     foreach ($conteudos as $conteudo) {
         $habilidades = [];
         foreach ($conteudo->getHabilidades() as $habilidadeDesenvolvida) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benstipodepreciacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbenstipodepreciacao = new cl_benstipodepreciacao;
 $clbenstipodepreciacao->rotulo->label("t46_sequencial");
 $clbenstipodepreciacao->rotulo->label("t46_descricao");
@@ -56,7 +57,7 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
                 <?=$Lt46_sequencial?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php 
   		            db_input("t46_sequencial",10,$It46_sequencial,true,"text",4,"","chave_t46_sequencial");
   		          ?>
               </td>
@@ -66,7 +67,7 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
                 <?=$Lt46_descricao?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php 
       		        db_input("t46_descricao",40,$It46_descricao,true,"text",4,"","chave_t46_descricao");
       		      ?>
               </td>
@@ -85,7 +86,7 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benstipodepreciacao.php")==true){
@@ -137,12 +138,12 @@ $clbenstipodepreciacao->rotulo->label("t46_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matriculas_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatriculas = new cl_matriculas;
 $clmatriculas->rotulo->label("ed09_i_codigo");
 $clmatriculas->rotulo->label("ed09_c_situacao");
@@ -56,7 +57,7 @@ $clmatriculas->rotulo->label("ed09_c_situacao");
               <?=$Led09_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed09_i_codigo",10,$Ied09_i_codigo,true,"text",4,"","chave_ed09_i_codigo");
                        ?>
             </td>
@@ -66,7 +67,7 @@ $clmatriculas->rotulo->label("ed09_c_situacao");
               <?=$Led09_c_situacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed09_c_situacao",20,$Ied09_c_situacao,true,"text",4,"","chave_ed09_c_situacao");
                        ?>
             </td>
@@ -84,7 +85,7 @@ $clmatriculas->rotulo->label("ed09_c_situacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matriculas.php")==true){
@@ -120,12 +121,12 @@ $clmatriculas->rotulo->label("ed09_c_situacao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

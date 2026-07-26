@@ -66,7 +66,7 @@ if(isset($alterar)){
   </div>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
   if($clpropricemit->erro_status=="0"){
     $clpropricemit->erro(true,false);
@@ -90,7 +90,7 @@ if(isset($alterar)){
          (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='<?=$x_opcao?>';
          parent.mo_camada('a2');
          </script>
-         <?
+         <?php 
     }
   }
 }

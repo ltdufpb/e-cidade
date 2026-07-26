@@ -29,7 +29,7 @@ namespace ECidade\RecursosHumanos\ESocial\Mapeadores\Tabelas;
 
 class CategoriaCNH implements TabelasInterface
 {
-    protected $categorias = array(
+    protected $categorias = [
         'A' => 'A',
         'B' => 'B',
         'C' => 'C',
@@ -39,7 +39,7 @@ class CategoriaCNH implements TabelasInterface
         'AC' => 'AC',
         'AD' => 'AD',
         'AE' => 'AE',
-    );
+    ];
 
     /**
      * Retorna o valor da tabela do esocial equivalente ao valor de um dado no e-cidade
@@ -48,7 +48,7 @@ class CategoriaCNH implements TabelasInterface
      */
     public function getValue($valor)
     {
-        $valor = mb_strtoupper(trim($valor));
+        $valor = mb_strtoupper(trim((string) $valor));
         if (array_key_exists($valor, $this->categorias)) {
             return $this->categorias[$valor];
         }

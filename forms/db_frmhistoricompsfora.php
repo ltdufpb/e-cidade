@@ -55,7 +55,7 @@ function js_direciona2() {
 
 parent.disciplina.location.href = "edu1_historicodisciplinafora.php?ed100_i_historicompsfora=<?=@$chavepesquisa?>";
 </script>
-<?
+<?php 
 if ( isset($situacao) && $situacao == "CONCLUÍDO") {
   $db_botao = false;
 }
@@ -161,7 +161,7 @@ $lExcluir = false;
       </td>
       <td>
         <?php
-        $x = array(
+        $x = [
                     ''               => '',
                     'CONCLUÍDO'      => 'CONCLUÍDO',
                     'AMPARADO'       => 'AMPARADO',
@@ -171,7 +171,7 @@ $lExcluir = false;
                     'FALECIDO'       => 'FALECIDO',
                     'RECLASSIFICADO' => 'RECLASSIFICADO',
                     'AVANÇO' => 'AVANÇO'
-                  );
+                  ];
         db_select( 'ed99_c_situacao', $x, true, $db_opcao, " onchange='js_situacao(this);'" );
         ?>
       </td>
@@ -219,7 +219,7 @@ $lExcluir = false;
                 </td>
                 <td>
                   <?php
-                  $x = array( '' => '', 'A' => 'APROVADO', 'R' => 'REPROVADO' );
+                  $x = [ '' => '', 'A' => 'APROVADO', 'R' => 'REPROVADO' ];
                   db_select( 'ed99_c_resultadofinal', $x, true, $db_opcao );
                   ?>
                 </td>

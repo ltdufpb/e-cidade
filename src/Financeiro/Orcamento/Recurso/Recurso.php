@@ -196,8 +196,8 @@ class Recurso
      *
      * @return int
      * @see getCodigo
-     * @deprecated
      */
+    #[\Deprecated]
     public function getCodigoRecurso()
     {
         return $this->iCodigoRecurso;
@@ -473,7 +473,7 @@ class Recurso
     {
         $this->sEspecificacao = $sEspecificacao;
         if (!empty($sEspecificacao) && FONTE_RECURSO_UNIAO) {
-            $this->sEspecificacao = str_pad($sEspecificacao, 2, '0', STR_PAD_LEFT);
+            $this->sEspecificacao = str_pad((string) $sEspecificacao, 2, '0', STR_PAD_LEFT);
         }
     }
 
@@ -540,11 +540,11 @@ class Recurso
             }
         }
 
-        $where = implode(' and ', array(
+        $where = implode(' and ', [
             "o15_codigo <> {$this->iCodigoRecurso}",
             "trim(o15_codtri) = trim('{$this->sCodigoTribunal}')",
             "(o15_datalimite is null or o15_datalimite >= '{$dataAtual}')"
-        ));
+        ]);
 
         $daoRecurso = new cl_orctiporec();
         $buscaRecurso = $daoRecurso->sql_query_file(null, "*", null, $where);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -101,7 +101,7 @@
                <?=@$Led316_descricao?>
             </td>
             <td> 
-              <?
+              <?php 
                 db_input('ed316_sequencial', 4, $Ied316_sequencial, true, 'hidden', 3, $sDisabled);
                 db_input('ed316_descricao', 40, $Ied316_descricao, true, 'text', $db_opcao, $sDisabled);
               ?>
@@ -112,8 +112,8 @@
                <?=@$Led316_ativo?>
             </td>
             <td> 
-              <?
-                $x = array("f"=>"NAO","t"=>"SIM");
+              <?php 
+                $x = ["f"=>"NAO","t"=>"SIM"];
                 db_select('ed316_ativo', $x, true, $db_opcao, $sDisabled);
               ?>
             </td>
@@ -123,8 +123,8 @@
               <?=$Led316_casasdecimaisarredondamento?>
             </td>
             <td>
-              <?
-                $aValores = array("1"=>"0","2"=>"00");
+              <?php 
+                $aValores = ["1"=>"0","2"=>"00"];
                 db_select('ed316_casasdecimaisarredondamento', $aValores, true, $db_opcao, $sDisabled);
               ?>
             </td>
@@ -133,7 +133,7 @@
             <td nowrap title="<?=@$Ted316_observacao?>" colspan="2">
               <fieldset>
                 <legend><b><?=@$Led316_observacao?></b></legend>
-                <?
+                <?php 
                   db_textarea('ed316_observacao', 5, 64, $Ied316_observacao, true, 'text', $db_opcao, $sDisabled);
                 ?>
               </fieldset>  
@@ -160,9 +160,9 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   
   db_iframe_regraarredondamento.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
 ?>
 }

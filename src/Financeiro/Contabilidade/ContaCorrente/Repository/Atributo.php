@@ -56,7 +56,7 @@ class Atributo extends \BaseClassRepository
         $anoSessao = db_getsession('DB_anousu');
         $instituicaoSessao = db_getsession('DB_instit');
         $oDaoConplanoAtributos = new \cl_conplanoatributos();
-        $aWhere = array();
+        $aWhere = [];
 
         $aWhere[] = "c120_anousu = {$anoSessao}";
         $aWhere[] = "c61_instit = {$instituicaoSessao}";
@@ -81,7 +81,7 @@ class Atributo extends \BaseClassRepository
             return false;
         }
 
-        $atributos = array();
+        $atributos = [];
         for ($row = 0; $row < $totalAtributos; $row++) {
             $stdDados = \db_utils::fieldsMemory($rsAtributos, $row);
             $atributos[] = $instance->make($stdDados);
@@ -115,7 +115,7 @@ class Atributo extends \BaseClassRepository
             return false;
         }
 
-        $atributos = array();
+        $atributos = [];
         for ($row = 0; $row < $totalAtributos; $row++) {
             $stdDados = \db_utils::fieldsMemory($rsAtributos, $row);
             //if (!empty($instance->aColecao[$stdDados->c121_sequencial])) {

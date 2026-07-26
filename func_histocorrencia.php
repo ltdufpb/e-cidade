@@ -38,7 +38,8 @@ require_once(modification("classes/db_numpref_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clnumpref  = new cl_numpref();
 $resnumpref = $clnumpref->sql_record( $clnumpref->sql_query_file( db_getsession("DB_anousu"), db_getsession('DB_instit'), "k03_certissvar") );
@@ -105,27 +106,27 @@ if(isset($chave_ar26_inscr)) {
       <form name="form2" method="post" action="" onsubmit="return validaForm()">
       <tr>
         <td align="left" valign="top" bgcolor="#CCCCCC">
-        <?
+        <?php 
           db_ancora($Lz01_nome, 'js_mostranomes(true);', 4);
         ?>
         </td>
         <td>
-        <?
+        <?php 
           db_input("z01_numcgm", 10, $Iz01_numcgm, true, 'text', 4, " onchange='js_mostranomes(false);'");
         ?>
-        <?
+        <?php 
           db_input("z01_nome", 40, $Iz01_nome, true, 'text', 3, " readonly = \"readonly\"");
         ?>
         </td>
       </tr>
       <tr>
         <td title="<?=$Tj01_matric?>">
-        <?
+        <?php 
           db_ancora($Lj01_matric, "js_mostramatricula(true,'$j18_nomefunc');", 2);
         ?>
         </td>
         <td>
-        <?
+        <?php 
           db_input("j01_matric", 10, $Ij01_matric, true, 'text', 1, "onchange=\"js_mostramatricula(false,'$j18_nomefunc')\"");
         ?>
         </td>
@@ -138,12 +139,12 @@ if(isset($chave_ar26_inscr)) {
       ?>
       <tr>
         <td>
-        <?
+        <?php 
           db_ancora($Lq02_inscr,' js_inscr(true); ',1, "$cssInscricao");
         ?>
         </td>
         <td>
-        <?
+        <?php 
           db_input('q02_inscr', 10, $Iq02_inscr,true,'text',1,"onchange='js_inscr(false)'", "", "", $cssInscricao);
         ?>
         </td>

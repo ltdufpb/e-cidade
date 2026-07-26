@@ -207,7 +207,7 @@ if(isset($incluir)){
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<? 
+<?php  
 db_app::load('scripts.js, prototype.js, strings.js, datagrid.widget.js, windowAux.widget.js, dbmessageBoard.widget.js, dbtextField.widget.js');
 db_app::load('estilos.css, grid.style.css, DBViewManutencaoLocalTrabalho.classe.js');
 ?>
@@ -225,14 +225,14 @@ db_app::load('estilos.css, grid.style.css, DBViewManutencaoLocalTrabalho.classe.
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php 
       include(modification("forms/db_frmvtffunc.php"));
       ?>
     </center>
     </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -250,7 +250,7 @@ if(document.form1.r17_regist && document.form1.r17_regist.readOnly == false && d
   }
 }
 </script>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   db_msgbox($erro_msg);
   if($sqlerro == true){

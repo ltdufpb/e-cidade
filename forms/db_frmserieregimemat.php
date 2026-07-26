@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,29 +57,29 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led223_i_codigo?>
   </td>
   <td>
-   <?db_input('ed223_i_codigo',20,$Ied223_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed223_i_codigo',20,$Ied223_i_codigo,true,'text',3,"")?>
    </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted223_i_serie?>">
-   <?db_ancora(@$Led223_i_serie,"",3);?>
+   <?php db_ancora(@$Led223_i_serie,"",3);?>
   </td>
   <td>
-   <?db_input('ed223_i_serie',20,$Ied223_i_serie,true,'text',3,"")?>
-   <?db_input('ed11_c_descr',20,@$Ied11_c_descr,true,'text',3,'')?>
+   <?php db_input('ed223_i_serie',20,$Ied223_i_serie,true,'text',3,"")?>
+   <?php db_input('ed11_c_descr',20,@$Ied11_c_descr,true,'text',3,'')?>
    </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted223_i_regimemat?>">
-   <?db_ancora(@$Led223_i_regimemat,"js_pesquisaed223_i_regimemat(true);",$db_opcao);?>
+   <?php db_ancora(@$Led223_i_regimemat,"js_pesquisaed223_i_regimemat(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed223_i_regimemat',20,$Ied223_i_regimemat,true,'text',$db_opcao," onchange='js_pesquisaed223_i_regimemat(false);'")?>
-   <?db_input('ed218_c_nome',30,@$Ied218_c_nome,true,'text',3,'')?>
-   <?db_input('ed218_c_divisao',1,@$Ied218_c_divisao,true,'hidden',3,'')?>
+   <?php db_input('ed223_i_regimemat',20,$Ied223_i_regimemat,true,'text',$db_opcao," onchange='js_pesquisaed223_i_regimemat(false);'")?>
+   <?php db_input('ed218_c_nome',30,@$Ied218_c_nome,true,'text',3,'')?>
+   <?php db_input('ed218_c_divisao',1,@$Ied218_c_divisao,true,'hidden',3,'')?>
   </td>
  </tr>
- <?
+ <?php 
  if(isset($ed218_c_divisao)&&$ed218_c_divisao=="S"){
   $visible = "visible";
  }else{
@@ -89,11 +89,11 @@ if(isset($opcao) && $opcao=="alterar"){
  <tbody id="divisao" style="visibility:<?=$visible?>">
  <tr>
   <td nowrap title="<?=@$Ted223_i_regimematdiv?>">
-   <?db_ancora(@$Led223_i_regimematdiv,"js_pesquisaed223_i_regimematdiv(true);",$db_opcao);?>
+   <?php db_ancora(@$Led223_i_regimematdiv,"js_pesquisaed223_i_regimematdiv(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed223_i_regimematdiv',20,$Ied223_i_regimematdiv,true,'text',$db_opcao," onchange='js_pesquisaed223_i_regimematdiv(false);'")?>
-   <?db_input('ed219_c_nome',30,@$Ied219_c_nome,true,'text',3,'')?>
+   <?php db_input('ed223_i_regimematdiv',20,$Ied223_i_regimematdiv,true,'text',$db_opcao," onchange='js_pesquisaed223_i_regimematdiv(false);'")?>
+   <?php db_input('ed219_c_nome',30,@$Ied219_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  </tbody>
@@ -104,11 +104,11 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top" width="70%">
-  <?
+  <?php 
   $campos = "ed223_i_codigo,
              ed218_c_nome as ed223_i_regimemat,
              ed219_c_nome as ed223_i_regimematdiv";
-  $chavepri= array("ed223_i_codigo"=>@$ed223_i_codigo);
+  $chavepri= ["ed223_i_codigo"=>@$ed223_i_codigo];
   $cliframe_alterar_excluir->chavepri=$chavepri;
   $cliframe_alterar_excluir->sql = $clserieregimemat->sql_query("",$campos,"ed223_i_ordenacao,ed223_i_codigo"," ed223_i_serie = $ed223_i_serie");
   $cliframe_alterar_excluir->campos  ="ed223_i_codigo,ed223_i_regimemat,ed223_i_regimematdiv";

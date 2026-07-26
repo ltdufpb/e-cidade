@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -127,13 +127,13 @@ function js_marca(obj){
       </tr>    
       <tr>
           <td>
-          <?
+          <?php 
             db_ancora("<b>Contribuinte:</b>","js_pesquisaNome({$oTermo->cgmcontr});",1);
           ?>
           </td>
           <td class='texto'><?=$oTermo->nomecontr?></td>
           <td align='right'>
-          <?
+          <?php 
            db_ancora("<b>Responsável :</b>","js_pesquisaNome({$oTermo->z01_numcgm});",1);
           ?>
           </td>

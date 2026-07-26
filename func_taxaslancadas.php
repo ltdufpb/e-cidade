@@ -35,7 +35,8 @@ use ECidade\Tributario\Arrecadacao\Model\TaxasLancadasDepart;
 use ECidade\Tributario\Arrecadacao\Repository\TaxasLancadasDepartRepository;
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("ar44_sequencial");
@@ -60,7 +61,7 @@ $clrotulo->label("ar44_descricao");
                                 <?= @$Lar44_sequencial ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_sequencial", 5, @$Iar44_sequencial, "ar44_sequencial", "text", 4, "", "chave_ar44_sequencial");
                                 ?>
                             </td>
@@ -70,7 +71,7 @@ $clrotulo->label("ar44_descricao");
                                 <?= @$Lar44_descricao ?>
                             </td>
                             <td>
-                                <?
+                                <?php 
                                 db_input("ar44_descricao", 40, @$Iar44_descricao, "ar44_descricao", "text", 4, "", "chave_ar44_descricao");
                                 ?>
                             </td>

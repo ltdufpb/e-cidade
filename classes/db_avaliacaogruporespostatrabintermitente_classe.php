@@ -21,8 +21,8 @@ class cl_avaliacaogruporespostatrabintermitente extends DAOBasica
      * @return string
      */
     public function buscarRespostasPreenchimento(
-        array $campos = array('*'),
-        array $where = array(),
+        array $campos = ['*'],
+        array $where = [],
         $outrosComandos = null
     ) {
         $sql = " SELECT " . implode(', ', $campos);
@@ -64,7 +64,7 @@ class cl_avaliacaogruporespostatrabintermitente extends DAOBasica
         return $sql;
     }
 
-    public function sqlPreenchimentos($empregador, array $campos = array('*'), array $where = array())
+    public function sqlPreenchimentos($empregador, array $campos = ['*'], array $where = [])
     {
         $campos = implode(', ', $campos);
         $where = implode(' AND ', $where);

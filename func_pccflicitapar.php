@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pccflicitapar_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpccflicitapar = new cl_pccflicitapar;
 $clpccflicitapar->rotulo->label("l25_codigo");
 $clpccflicitapar->rotulo->label("l25_codcflicita");
@@ -54,7 +55,7 @@ $clpccflicitapar->rotulo->label("l25_codcflicita");
               <?=$Ll25_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l25_codigo",6,$Il25_codigo,true,"text",4,"","chave_l25_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpccflicitapar->rotulo->label("l25_codcflicita");
               <?=$Ll25_codcflicita?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l25_codcflicita",6,$Il25_codcflicita,true,"text",4,"","chave_l25_codcflicita");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpccflicitapar->rotulo->label("l25_codcflicita");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pccflicitapar.php")==true){
@@ -118,12 +119,12 @@ $clpccflicitapar->rotulo->label("l25_codcflicita");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

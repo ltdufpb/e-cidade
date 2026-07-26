@@ -42,7 +42,7 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
     /**
      * @type stdClass[]
      */
-    private $aDadosLicitante = array();
+    private $aDadosLicitante = [];
 
     /**
      * LicitanteLicitaCon constructor.
@@ -60,12 +60,12 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $aCampos = array(
+        $aCampos = [
             'liclicita.l20_codigo as codigo',
             'cgm.z01_numcgm as numcgm',
             'pcorcamfornelic.pc31_orcamforne as fornecedor_licitacao',
             'pcorcamfornelic.pc31_liclicitatipoempresa as tipo_empresa'
-        );
+        ];
 
         $this->prepararLicitantesVencedores($aCampos);
         $this->prepararLicitantesGerais($aCampos);
@@ -91,7 +91,7 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
 
         $iTotalRegistros = pg_num_rows($rsBuscaEvento);
         if ($iTotalRegistros == 0) {
-            return array();
+            return [];
         }
 
         $resultadoHabilitacao = null;
@@ -99,7 +99,7 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
             $resultadoHabilitacao = 'I';
         }
 
-        $aRetorno = array();
+        $aRetorno = [];
         for ($iRowAutor = 0; $iRowAutor < $iTotalRegistros; $iRowAutor++) {
             $iCodigoAutor = db_utils::fieldsMemory($rsBuscaEvento, $iRowAutor)->autor;
 
@@ -155,10 +155,10 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
      */
     private function prepararLicitantesVencedores(array $aCampos)
     {
-        $aWhere = array(
+        $aWhere = [
             "l44_sigla in ('CNS', 'PRE', 'PRP', 'LEI', 'LEE')",
             "l44_sigla not in ('PRD', 'PRI', 'RPO')"
-        );
+        ];
 
         $aWherePadrao = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
             $this->oCabecalho->getDataGeracao());
@@ -176,7 +176,7 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
             throw new Exception('Não foi possível buscar os licitantes ganhadores.');
         }
 
-        $aFornecedores = array();
+        $aFornecedores = [];
         for ($iRow = 0; $iRow < pg_num_rows($rsBuscaLicitacoes); $iRow++) {
             $iFornecedor = db_utils::fieldsMemory($rsBuscaLicitacoes, $iRow)->numcgm;
             if (!in_array($iFornecedor, $aFornecedores)) {
@@ -214,10 +214,10 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
      */
     private function prepararLicitantesGerais(array $aCampos)
     {
-        $aWhere = array(
+        $aWhere = [
             "l44_sigla not in ('CNS', 'PRE', 'PRP', 'LEI', 'LEE')",
             "l44_sigla not in ('PRD', 'PRI', 'RPO')"
-        );
+        ];
 
         $aWhere = array_merge($aWhere, LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
             $this->oCabecalho->getDataGeracao()));
@@ -231,7 +231,7 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
             throw new Exception('Não foi possível realizar a busca geral de licitantes.');
         }
 
-        $aFornecedores = array();
+        $aFornecedores = [];
         for ($iRow = 0; $iRow < pg_num_rows($rsBuscaLicitacoes); $iRow++) {
             $iFornecedor = db_utils::fieldsMemory($rsBuscaLicitacoes, $iRow)->numcgm;
             if (!in_array($iFornecedor, $aFornecedores)) {
@@ -308,13 +308,13 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
      */
     private function adicionarRegistro(stdClass $oStdDado)
     {
-        $sHash = implode('', array(
+        $sHash = implode('', [
             $oStdDado->NR_LICITACAO,
             $oStdDado->ANO_LICITACAO,
             $oStdDado->CD_TIPO_MODALIDADE,
             $oStdDado->TP_DOCUMENTO_LICITANTE,
             $oStdDado->NR_DOCUMENTO_LICITANTE
-        ));
+        ]);
 
         if (!array_key_exists($sHash, $this->aDadosLicitante)) {
             $this->aDadosLicitante[$sHash] = $oStdDado;
@@ -380,7 +380,7 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
         if (!$rsBuscaCondicao) {
             throw new DBException('Ocorreu um erro ao buscar o Tipo de Condição do fornecedor.');
         }
-        $aValores = array(1 => 'CEP', 2 => 'CNP', 3 => 'NCP');
+        $aValores = [1 => 'CEP', 2 => 'CNP', 3 => 'NCP'];
         if (pg_num_rows($rsBuscaCondicao)) {
             $iCodigoSituacao = db_utils::fieldsMemory($rsBuscaCondicao, 0)->pc31_tipocondicao;
             return $iCodigoSituacao ? $aValores[$iCodigoSituacao] : '';

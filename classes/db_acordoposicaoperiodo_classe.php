@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE acordoposicaoperiodo
 class cl_acordoposicaoperiodo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ac36_sequencial = 0; 
-   var $ac36_acordoposicao = 0; 
-   var $ac36_datainicial_dia = null; 
-   var $ac36_datainicial_mes = null; 
-   var $ac36_datainicial_ano = null; 
-   var $ac36_datainicial = null; 
-   var $ac36_datafinal_dia = null; 
-   var $ac36_datafinal_mes = null; 
-   var $ac36_datafinal_ano = null; 
-   var $ac36_datafinal = null; 
-   var $ac36_descricao = null; 
-   var $ac36_numero = 0; 
+   public $ac36_sequencial = 0; 
+   public $ac36_acordoposicao = 0; 
+   public $ac36_datainicial_dia = null; 
+   public $ac36_datainicial_mes = null; 
+   public $ac36_datainicial_ano = null; 
+   public $ac36_datainicial = null; 
+   public $ac36_datafinal_dia = null; 
+   public $ac36_datafinal_mes = null; 
+   public $ac36_datafinal_ano = null; 
+   public $ac36_datafinal = null; 
+   public $ac36_descricao = null; 
+   public $ac36_numero = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ac36_sequencial = int4 = Codigo_sequencial 
                  ac36_acordoposicao = int4 = Acordo 
                  ac36_datainicial = date = Data inicial 
@@ -64,10 +64,10 @@ class cl_acordoposicaoperiodo {
                  ac36_numero = int4 = Numero 
                  ";
    //funcao construtor da classe 
-   function cl_acordoposicaoperiodo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acordoposicaoperiodo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -163,10 +163,10 @@ class cl_acordoposicaoperiodo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac36_sequencial = pg_result($result,0,0); 
+       $this->ac36_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from acordoposicaoperiodo_ac36_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac36_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac36_sequencial)){
          $this->erro_sql = " Campo ac36_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -204,7 +204,7 @@ class cl_acordoposicaoperiodo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "acordoposicaoperiodo ($this->ac36_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "acordoposicaoperiodo já Cadastrado";
@@ -228,15 +228,15 @@ class cl_acordoposicaoperiodo {
      $resaco = $this->sql_record($this->sql_query_file($this->ac36_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18035,'$this->ac36_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3187,18035,'','".AddSlashes(pg_result($resaco,0,'ac36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3187,18036,'','".AddSlashes(pg_result($resaco,0,'ac36_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3187,18037,'','".AddSlashes(pg_result($resaco,0,'ac36_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3187,18038,'','".AddSlashes(pg_result($resaco,0,'ac36_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3187,18039,'','".AddSlashes(pg_result($resaco,0,'ac36_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3187,18040,'','".AddSlashes(pg_result($resaco,0,'ac36_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3187,18035,'','".AddSlashes(pg_fetch_result($resaco,0,'ac36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3187,18036,'','".AddSlashes(pg_fetch_result($resaco,0,'ac36_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3187,18037,'','".AddSlashes(pg_fetch_result($resaco,0,'ac36_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3187,18038,'','".AddSlashes(pg_fetch_result($resaco,0,'ac36_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3187,18039,'','".AddSlashes(pg_fetch_result($resaco,0,'ac36_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3187,18040,'','".AddSlashes(pg_fetch_result($resaco,0,'ac36_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -245,10 +245,10 @@ class cl_acordoposicaoperiodo {
       $this->atualizacampos();
      $sql = " update acordoposicaoperiodo set ";
      $virgula = "";
-     if(trim($this->ac36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_sequencial"])){ 
+     if(trim((string) $this->ac36_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_sequencial"])){ 
        $sql  .= $virgula." ac36_sequencial = $this->ac36_sequencial ";
        $virgula = ",";
-       if(trim($this->ac36_sequencial) == null ){ 
+       if(trim((string) $this->ac36_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo_sequencial nao Informado.";
          $this->erro_campo = "ac36_sequencial";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_acordoposicaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac36_acordoposicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_acordoposicao"])){ 
+     if(trim((string) $this->ac36_acordoposicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_acordoposicao"])){ 
        $sql  .= $virgula." ac36_acordoposicao = $this->ac36_acordoposicao ";
        $virgula = ",";
-       if(trim($this->ac36_acordoposicao) == null ){ 
+       if(trim((string) $this->ac36_acordoposicao) == null ){ 
          $this->erro_sql = " Campo Acordo nao Informado.";
          $this->erro_campo = "ac36_acordoposicao";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_acordoposicaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac36_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"] !="") ){ 
+     if(trim((string) $this->ac36_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"] !="") ){ 
        $sql  .= $virgula." ac36_datainicial = '$this->ac36_datainicial' ";
        $virgula = ",";
-       if(trim($this->ac36_datainicial) == null ){ 
+       if(trim((string) $this->ac36_datainicial) == null ){ 
          $this->erro_sql = " Campo Data inicial nao Informado.";
          $this->erro_campo = "ac36_datainicial_dia";
          $this->erro_banco = "";
@@ -287,7 +287,7 @@ class cl_acordoposicaoperiodo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial_dia"])){ 
          $sql  .= $virgula." ac36_datainicial = null ";
          $virgula = ",";
-         if(trim($this->ac36_datainicial) == null ){ 
+         if(trim((string) $this->ac36_datainicial) == null ){ 
            $this->erro_sql = " Campo Data inicial nao Informado.";
            $this->erro_campo = "ac36_datainicial_dia";
            $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_acordoposicaoperiodo {
          }
        }
      }
-     if(trim($this->ac36_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"] !="") ){ 
+     if(trim((string) $this->ac36_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"] !="") ){ 
        $sql  .= $virgula." ac36_datafinal = '$this->ac36_datafinal' ";
        $virgula = ",";
-       if(trim($this->ac36_datafinal) == null ){ 
+       if(trim((string) $this->ac36_datafinal) == null ){ 
          $this->erro_sql = " Campo Data final nao Informado.";
          $this->erro_campo = "ac36_datafinal_dia";
          $this->erro_banco = "";
@@ -314,7 +314,7 @@ class cl_acordoposicaoperiodo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal_dia"])){ 
          $sql  .= $virgula." ac36_datafinal = null ";
          $virgula = ",";
-         if(trim($this->ac36_datafinal) == null ){ 
+         if(trim((string) $this->ac36_datafinal) == null ){ 
            $this->erro_sql = " Campo Data final nao Informado.";
            $this->erro_campo = "ac36_datafinal_dia";
            $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_acordoposicaoperiodo {
          }
        }
      }
-     if(trim($this->ac36_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_descricao"])){ 
+     if(trim((string) $this->ac36_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_descricao"])){ 
        $sql  .= $virgula." ac36_descricao = '$this->ac36_descricao' ";
        $virgula = ",";
-       if(trim($this->ac36_descricao) == null ){ 
+       if(trim((string) $this->ac36_descricao) == null ){ 
          $this->erro_sql = " Campo Descricão nao Informado.";
          $this->erro_campo = "ac36_descricao";
          $this->erro_banco = "";
@@ -338,10 +338,10 @@ class cl_acordoposicaoperiodo {
          return false;
        }
      }
-     if(trim($this->ac36_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_numero"])){ 
+     if(trim((string) $this->ac36_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac36_numero"])){ 
        $sql  .= $virgula." ac36_numero = $this->ac36_numero ";
        $virgula = ",";
-       if(trim($this->ac36_numero) == null ){ 
+       if(trim((string) $this->ac36_numero) == null ){ 
          $this->erro_sql = " Campo Numero nao Informado.";
          $this->erro_campo = "ac36_numero";
          $this->erro_banco = "";
@@ -359,21 +359,21 @@ class cl_acordoposicaoperiodo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18035,'$this->ac36_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_sequencial"]) || $this->ac36_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3187,18035,'".AddSlashes(pg_result($resaco,$conresaco,'ac36_sequencial'))."','$this->ac36_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3187,18035,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac36_sequencial'))."','$this->ac36_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_acordoposicao"]) || $this->ac36_acordoposicao != "")
-           $resac = db_query("insert into db_acount values($acount,3187,18036,'".AddSlashes(pg_result($resaco,$conresaco,'ac36_acordoposicao'))."','$this->ac36_acordoposicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3187,18036,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac36_acordoposicao'))."','$this->ac36_acordoposicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datainicial"]) || $this->ac36_datainicial != "")
-           $resac = db_query("insert into db_acount values($acount,3187,18037,'".AddSlashes(pg_result($resaco,$conresaco,'ac36_datainicial'))."','$this->ac36_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3187,18037,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac36_datainicial'))."','$this->ac36_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_datafinal"]) || $this->ac36_datafinal != "")
-           $resac = db_query("insert into db_acount values($acount,3187,18038,'".AddSlashes(pg_result($resaco,$conresaco,'ac36_datafinal'))."','$this->ac36_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3187,18038,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac36_datafinal'))."','$this->ac36_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_descricao"]) || $this->ac36_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3187,18039,'".AddSlashes(pg_result($resaco,$conresaco,'ac36_descricao'))."','$this->ac36_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3187,18039,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac36_descricao'))."','$this->ac36_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ac36_numero"]) || $this->ac36_numero != "")
-           $resac = db_query("insert into db_acount values($acount,3187,18040,'".AddSlashes(pg_result($resaco,$conresaco,'ac36_numero'))."','$this->ac36_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3187,18040,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac36_numero'))."','$this->ac36_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -418,15 +418,15 @@ class cl_acordoposicaoperiodo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18035,'$ac36_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3187,18035,'','".AddSlashes(pg_result($resaco,$iresaco,'ac36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3187,18036,'','".AddSlashes(pg_result($resaco,$iresaco,'ac36_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3187,18037,'','".AddSlashes(pg_result($resaco,$iresaco,'ac36_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3187,18038,'','".AddSlashes(pg_result($resaco,$iresaco,'ac36_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3187,18039,'','".AddSlashes(pg_result($resaco,$iresaco,'ac36_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3187,18040,'','".AddSlashes(pg_result($resaco,$iresaco,'ac36_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3187,18035,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac36_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3187,18036,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac36_acordoposicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3187,18037,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac36_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3187,18038,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac36_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3187,18039,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac36_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3187,18040,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac36_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from acordoposicaoperiodo
@@ -486,7 +486,7 @@ class cl_acordoposicaoperiodo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:acordoposicaoperiodo";
@@ -501,7 +501,7 @@ class cl_acordoposicaoperiodo {
    function sql_query ( $ac36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,7 +525,7 @@ class cl_acordoposicaoperiodo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -538,7 +538,7 @@ class cl_acordoposicaoperiodo {
    function sql_query_file ( $ac36_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ class cl_acordoposicaoperiodo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

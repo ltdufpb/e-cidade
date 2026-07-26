@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_cid_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_cid = new cl_sau_cid;
 $clsau_cid->rotulo->label("sd70_i_codigo");
 $clsau_cid->rotulo->label("sd70_c_cid");
@@ -55,7 +56,7 @@ $clsau_cid->rotulo->label("sd70_c_nome");
               <?=$Lsd70_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                  db_input("sd70_i_codigo",5,$Isd70_i_codigo,true,"text",4,"","chave_sd70_i_codigo");
                  ?>
             </td>
@@ -65,7 +66,7 @@ $clsau_cid->rotulo->label("sd70_c_nome");
               <?=$Lsd70_c_cid?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                  db_input("sd70_c_cid",60,$Isd70_c_cid,true,"text",4,"","chave_sd70_c_cid");
                  ?>
             </td>
@@ -75,7 +76,7 @@ $clsau_cid->rotulo->label("sd70_c_nome");
               <?=$Lsd70_c_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                  db_input("sd70_c_nome",60,$Isd70_c_nome,true,"text",4,"","chave_sd70_c_nome");
                  ?>
             </td>
@@ -93,7 +94,7 @@ $clsau_cid->rotulo->label("sd70_c_nome");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_cid.php")==true){
@@ -135,12 +136,12 @@ $clsau_cid->rotulo->label("sd70_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

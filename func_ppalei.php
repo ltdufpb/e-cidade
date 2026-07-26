@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_ppalei_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clppalei = new cl_ppalei;
 $clppalei->rotulo->label("o01_sequencial");
 $clppalei->rotulo->label("o01_descricao");
@@ -54,7 +55,7 @@ $clppalei->rotulo->label("o01_descricao");
               <?=$Lo01_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o01_sequencial",10,$Io01_sequencial,true,"text",4,"","chave_o01_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clppalei->rotulo->label("o01_descricao");
               <?=$Lo01_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o01_descricao",10,$Io01_descricao,true,"text",4,"","chave_o01_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clppalei->rotulo->label("o01_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = ' 1=1 ';
       
       
@@ -153,12 +154,12 @@ $clppalei->rotulo->label("o01_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

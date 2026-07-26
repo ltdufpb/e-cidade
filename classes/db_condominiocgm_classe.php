@@ -52,7 +52,7 @@ class cl_condominiocgm {
                  j106_numcgm = int4 = Cód. CGM
                  ";
    //funcao construtor da classe
-   public function cl_condominiocgm() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("condominiocgm");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

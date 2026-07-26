@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $escola = db_getsession("DB_coddepto");
 ?>
@@ -51,7 +52,7 @@ $escola = db_getsession("DB_coddepto");
 }
 </style>
 </head>
-<?
+<?php 
 $sql    = "select me09_i_codigo,me09_c_descr
            from mer_nutriente order by me09_c_descr";
 $result = db_query($sql);
@@ -72,16 +73,16 @@ $linhas2 = pg_num_rows($result2);
   <td>
    <b>Item</b>
   </td>
-  <?for ($x=0;$x<$linhas;$x++) {
+  <?php for ($x=0;$x<$linhas;$x++) {
   	
       db_fieldsmemory($result,$x);?>
       <td>
        <b><?=$me09_c_descr?></b>
       </td>
       
-  <?}?>
+  <?php }?>
  </tr>
- <?
+ <?php 
  $cor1 = "#DBDBDB";
  $cor2 = "#f3f3f3";
  $cor = ""; 
@@ -97,7 +98,7 @@ $linhas2 = pg_num_rows($result2);
     <td>
      <b><?=substr($me35_c_nomealimento,0,30)?></b>
     </td>
-    <?for ($x=0;$x<$linhas;$x++) {
+    <?php for ($x=0;$x<$linhas;$x++) {
     	
         db_fieldsmemory($result,$x);
         $sqln    = " select me08_f_quant,m61_descr from mer_infnutricional 
@@ -120,9 +121,9 @@ $linhas2 = pg_num_rows($result2);
          <?=$quantnutri?>
         </td>
         
-    <?}?>
+    <?php }?>
   </tr>
   
-<?}?>
+<?php }?>
 </table>
 </center>

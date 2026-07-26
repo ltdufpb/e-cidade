@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_departorg_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_departorg = new cl_db_departorg;
 $cldb_departorg->rotulo->label("db01_coddepto");
 $cldb_departorg->rotulo->label("db01_anousu");
@@ -55,7 +56,7 @@ $cldb_departorg->rotulo->label("db01_coddepto");
               <?=$Ldb01_coddepto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db01_coddepto",0,$Idb01_coddepto,true,"text",1,"","chave_db01_coddepto");
 		       ?>
             </td>
@@ -73,7 +74,7 @@ $cldb_departorg->rotulo->label("db01_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = "";
       if (isset($orgaos) && $orgaos != "") {
         
@@ -157,12 +158,12 @@ $cldb_departorg->rotulo->label("db01_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

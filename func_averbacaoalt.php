@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_averbacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claverbacao = new cl_averbacao;
 $claverbacao->rotulo->label("j75_codigo");
 $claverbacao->rotulo->label("j75_codigo");
@@ -54,7 +55,7 @@ $claverbacao->rotulo->label("j75_codigo");
               <?=$Lj75_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j75_codigo",6,$Ij75_codigo,true,"text",4,"","chave_j75_codigo");
 		       ?>
             </td>
@@ -73,7 +74,7 @@ $claverbacao->rotulo->label("j75_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $db_where = " j75_situacao = 1";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -112,12 +113,12 @@ $claverbacao->rotulo->label("j75_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

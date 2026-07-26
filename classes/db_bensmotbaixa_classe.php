@@ -54,7 +54,7 @@ class cl_bensmotbaixa
                  ";
 
     //funcao construtor da classe
-    function cl_bensmotbaixa()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("bensmotbaixa");

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_relatorio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_relatorio = new cl_db_relatorio;
 $cldb_relatorio->rotulo->label("db63_sequencial");
 $cldb_relatorio->rotulo->label("db63_db_gruporelatorio");
@@ -54,7 +55,7 @@ $cldb_relatorio->rotulo->label("db63_db_gruporelatorio");
               <?=$Ldb63_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db63_sequencial",10,$Idb63_sequencial,true,"text",4,"","chave_db63_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_relatorio->rotulo->label("db63_db_gruporelatorio");
               <?=$Ldb63_db_gruporelatorio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db63_db_gruporelatorio",10,$Idb63_db_gruporelatorio,true,"text",4,"","chave_db63_db_gruporelatorio");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_relatorio->rotulo->label("db63_db_gruporelatorio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
       $sWhere = '1=1';
       
@@ -133,12 +134,12 @@ $cldb_relatorio->rotulo->label("db63_db_gruporelatorio");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

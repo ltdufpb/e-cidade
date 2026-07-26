@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapioturma_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_cardapioturma = new cl_mer_cardapioturma;
 $clmer_cardapioturma->rotulo->label("me39_i_codigo");
 $clmer_cardapioturma->rotulo->label("me39_i_codigo");
@@ -54,7 +55,7 @@ $clmer_cardapioturma->rotulo->label("me39_i_codigo");
               <?=$Lme39_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me39_i_codigo",10,$Ime39_i_codigo,true,"text",4,"","chave_me39_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmer_cardapioturma->rotulo->label("me39_i_codigo");
               <?=$Lme39_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me39_i_codigo",10,$Ime39_i_codigo,true,"text",4,"","chave_me39_i_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmer_cardapioturma->rotulo->label("me39_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos) == false) {
@@ -128,12 +129,12 @@ $clmer_cardapioturma->rotulo->label("me39_i_codigo");
 </table>
 </body>
 </html>
-<? if (!isset($pesquisa_chave)) { ?>
+<?php  if (!isset($pesquisa_chave)) { ?>
 
   <script>
   </script>
 
-<?}?>
+<?php }?>
 
 <script>
   js_tabulacaoforms("form2", "chave_me39_i_codigo", true, 1, "chave_me39_i_codigo", true);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoMatricula  = db_utils::getdao("matricula");
 $oDaoCalendario = db_utils::getdao("calendario");
 $db_opcao       = 1;
@@ -102,14 +102,14 @@ function GetDadosEscola($iModulo) {
     <td width="140">&nbsp;</td>
    </tr>
   </table>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <a name="topo"></a>
   <div class="container">
     <form name="form1" method="post" action="">
       <fieldset style="width:95%"><legend><b>Relatório de Alunos Matriculados  </b></legend>
        <table border="0">
         <tr>
-         <?
+         <?php 
            GetDadosEscola(db_getsession('DB_modulo'));
          ?>
          <td>
@@ -151,11 +151,11 @@ function GetDadosEscola($iModulo) {
 
         $oCalendario = CalendarioRepository::getCalendarioByCodigo($calendario);
         $oEscola     = EscolaRepository::getEscolaByCodigo($iEscola);
-        $aEtapas     = array($etapa);
+        $aEtapas     = [$etapa];
 
         if ($etapa == 0) {
 
-          $aEtapas   = array();
+          $aEtapas   = [];
           $sCampos   = "distinct (ed11_i_codigo), ed11_i_ensino, ed11_i_sequencia";
           $sWhere    = "     ed57_i_escola     = $iEscola ";
           $sWhere   .= " and ed57_i_calendario = $calendario ";
@@ -191,7 +191,7 @@ function GetDadosEscola($iModulo) {
     ?>
   </div>
  </body>
- <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+ <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </html>
 <script>
 
@@ -275,15 +275,15 @@ function js_etapa(calendario) {
 
   oParam.exec       = "PesquisaEtapa";
 
-  <? if ($iModulo != 7159) { ?>
+  <?php  if ($iModulo != 7159) { ?>
 
     oParam.escola = <?=$iEscola?>
 
-  <? } else { ?>
+  <?php  } else { ?>
 
     oParam.escola  =  $('escola').value;
 
-  <? } ?>
+  <?php  } ?>
 
   oParam.calendario = calendario;
 
@@ -348,7 +348,7 @@ function js_matriculas(turma,descrturma,calendario,etapaturma){
 
 </script>
 
-<?
+<?php 
 
 if ($iModulo != 7159) {
 ?>
@@ -358,7 +358,7 @@ if ($iModulo != 7159) {
   js_escola(<?=$iEscola?>);
 </script>
 
-<?
+<?php 
 
   }
 

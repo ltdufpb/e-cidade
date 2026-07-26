@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -41,15 +41,15 @@ $oRotuloCampo->label( "ed15_c_nome" );
 
 $db_botao1 = false;
 
-$ed254_d_dataini_dia = isset( $ed254_d_dataini ) && !empty( $ed254_d_dataini ) ? substr( $ed254_d_dataini, 0, 2 ) : "";
-$ed254_d_dataini_mes = isset( $ed254_d_dataini ) && !empty( $ed254_d_dataini ) ? substr( $ed254_d_dataini, 3, 2 ) : "";
-$ed254_d_dataini_ano = isset( $ed254_d_dataini ) && !empty( $ed254_d_dataini ) ? substr( $ed254_d_dataini, 6, 4 ) : "";
-$ed254_d_datafim_dia = isset( $ed254_d_datafim ) && !empty( $ed254_d_datafim ) ? substr( $ed254_d_datafim, 0, 2 ) : "";
-$ed254_d_datafim_mes = isset( $ed254_d_datafim ) && !empty( $ed254_d_datafim ) ? substr( $ed254_d_datafim, 3, 2 ) : "";
-$ed254_d_datafim_ano = isset( $ed254_d_datafim ) && !empty( $ed254_d_datafim ) ? substr( $ed254_d_datafim, 6, 4 ) : "";
-$ed254_d_datacad_dia = isset( $ed254_d_datacad ) && !empty( $ed254_d_datacad ) ? substr( $ed254_d_datacad, 0, 2 ) : "";
-$ed254_d_datacad_mes = isset( $ed254_d_datacad ) && !empty( $ed254_d_datacad ) ? substr( $ed254_d_datacad, 3, 2 ) : "";
-$ed254_d_datacad_ano = isset( $ed254_d_datacad ) && !empty( $ed254_d_datacad ) ? substr( $ed254_d_datacad, 6, 4 ) : "";
+$ed254_d_dataini_dia = isset( $ed254_d_dataini ) && !empty( $ed254_d_dataini ) ? substr( (string) $ed254_d_dataini, 0, 2 ) : "";
+$ed254_d_dataini_mes = isset( $ed254_d_dataini ) && !empty( $ed254_d_dataini ) ? substr( (string) $ed254_d_dataini, 3, 2 ) : "";
+$ed254_d_dataini_ano = isset( $ed254_d_dataini ) && !empty( $ed254_d_dataini ) ? substr( (string) $ed254_d_dataini, 6, 4 ) : "";
+$ed254_d_datafim_dia = isset( $ed254_d_datafim ) && !empty( $ed254_d_datafim ) ? substr( (string) $ed254_d_datafim, 0, 2 ) : "";
+$ed254_d_datafim_mes = isset( $ed254_d_datafim ) && !empty( $ed254_d_datafim ) ? substr( (string) $ed254_d_datafim, 3, 2 ) : "";
+$ed254_d_datafim_ano = isset( $ed254_d_datafim ) && !empty( $ed254_d_datafim ) ? substr( (string) $ed254_d_datafim, 6, 4 ) : "";
+$ed254_d_datacad_dia = isset( $ed254_d_datacad ) && !empty( $ed254_d_datacad ) ? substr( (string) $ed254_d_datacad, 0, 2 ) : "";
+$ed254_d_datacad_mes = isset( $ed254_d_datacad ) && !empty( $ed254_d_datacad ) ? substr( (string) $ed254_d_datacad, 3, 2 ) : "";
+$ed254_d_datacad_ano = isset( $ed254_d_datacad ) && !empty( $ed254_d_datacad ) ? substr( (string) $ed254_d_datacad, 6, 4 ) : "";
 
 if( isset( $opcao ) && $opcao == "alterar" ) {
 
@@ -180,7 +180,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-              $criterios = array(
+              $criterios = [
                 0 => 'Não informado',
                 1 => 'Ser proprietário(a) ou sócio(a)-proprietário(a) da escola',
                 2 => 'Exclusivamente por indicação/escolha da gestão',
@@ -189,7 +189,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
                 5 => 'Exclusivamente por processo eleitoral com a participação da comunidade escolar',
                 6 => 'Processo seletivo qualificado e eleição com a participação da comunidade escolar',
                 7 => 'Outros'
-              );
+              ];
               db_select('ed254_criterioacessofuncao_cod', $criterios, true, $db_opcao);
             ?>
           </td>
@@ -246,7 +246,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
            <?php
-           $x = array( 'A'=> 'ABERTO', 'F' => 'FECHADO' );
+           $x = [ 'A'=> 'ABERTO', 'F' => 'FECHADO' ];
            db_select( 'ed254_c_tipo', $x, true, $db_opcao );
            ?>
           </td>
@@ -349,7 +349,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
                              then rechumanopessoal.ed284_i_rhpessoal
                              else rechumanocgm.ed285_i_cgm
                          end as identificacao";
-          $chavepri= array(
+          $chavepri= [
                             "ed254_i_codigo"    => @$ed254_i_codigo,
                             "ed254_i_escola"    => @$ed254_i_escola,
                             "ed18_c_nome"       => @$ed18_c_nome,
@@ -371,7 +371,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
                             "ed254_especificacaocriteriooutros" => @$ed254_especificacaocriteriooutros,
                             "ed01_c_exigeato"   => @$ed01_c_exigeato,
                             "identificacao"     => @$identificacao
-                          );
+                          ];
 
           $sOrdernacao = "ed15_i_sequencia, ed254_d_dataini desc";
           $sWhere      = "ed254_i_escola = {$ed254_i_escola}";
@@ -538,7 +538,7 @@ function js_valida() {
     return false;
   }
 
-  Vemail = "<?=@$GLOBALS[Sed254_c_email]?>";
+  Vemail = "<?=@$GLOBALS[\SED254_C_EMAIL]?>";
   if( jsValidaEmail( document.form1.ed254_c_email.value, Vemail ) == false ) {
     return false;
   }

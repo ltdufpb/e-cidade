@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipomovimentacaoregistropreco_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltipomovimentacaoregistropreco = new cl_tipomovimentacaoregistropreco;
 $cltipomovimentacaoregistropreco->rotulo->label("l33_sequencial");
 $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
@@ -54,7 +55,7 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
               <?=$Ll33_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l33_sequencial",10,$Il33_sequencial,true,"text",4,"","chave_l33_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
               <?=$Ll33_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l33_descricao",50,$Il33_descricao,true,"text",4,"","chave_l33_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipomovimentacaoregistropreco.php")==true){
@@ -122,12 +123,12 @@ $cltipomovimentacaoregistropreco->rotulo->label("l33_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

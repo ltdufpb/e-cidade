@@ -28,23 +28,15 @@ abstract class FolhaPagamentoFactory {
     }
     
     $oDados = db_utils::fieldsMemory($rsFolhaPagamento, 0);
-    switch ( $oDados->rh141_tipofolha ) {
-
-      case FolhaPagamento::TIPO_FOLHA_SALARIO:
-        return new FolhaPagamentoSalario($iSequencialFolhaPagamento);
-      case FolhaPagamento::TIPO_FOLHA_RESCISAO:
-        return new FolhaPagamentoRescisao($iSequencialFolhaPagamento);
-      case FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR:
-        return new FolhaPagamentoComplementar($iSequencialFolhaPagamento);
-      case FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO:
-        return new FolhaPagamentoAdiantamento($iSequencialFolhaPagamento);
-      case FolhaPagamento::TIPO_FOLHA_13o_SALARIO:
-        return new FolhaPagamento13o($iSequencialFolhaPagamento);
-      case FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR:
-        return new FolhaPagamentoSuplementar($iSequencialFolhaPagamento);
-      default:
-        throw new BusinessException("Tipo de Folha de Pagamento Inválido");
-    }
+    return match ($oDados->rh141_tipofolha) {
+        FolhaPagamento::TIPO_FOLHA_SALARIO => new FolhaPagamentoSalario($iSequencialFolhaPagamento),
+        FolhaPagamento::TIPO_FOLHA_RESCISAO => new FolhaPagamentoRescisao($iSequencialFolhaPagamento),
+        FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR => new FolhaPagamentoComplementar($iSequencialFolhaPagamento),
+        FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO => new FolhaPagamentoAdiantamento($iSequencialFolhaPagamento),
+        FolhaPagamento::TIPO_FOLHA_13o_SALARIO => new FolhaPagamento13o($iSequencialFolhaPagamento),
+        FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR => new FolhaPagamentoSuplementar($iSequencialFolhaPagamento),
+        default => throw new BusinessException("Tipo de Folha de Pagamento Inválido"),
+    };
   }
 
   /**
@@ -55,22 +47,14 @@ abstract class FolhaPagamentoFactory {
    */
   public static function construirPeloTipo( $iTipoFolhaPagamento ) {
 
-    switch ( $iTipoFolhaPagamento ) {
-
-      case FolhaPagamento::TIPO_FOLHA_SALARIO:
-        return new FolhaPagamentoSalario();
-      case FolhaPagamento::TIPO_FOLHA_RESCISAO:
-        return new FolhaPagamentoRescisao();
-      case FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR:
-        return new FolhaPagamentoComplementar();
-      case FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO:
-        return new FolhaPagamentoAdiantamento();
-      case FolhaPagamento::TIPO_FOLHA_13o_SALARIO:
-        return new FolhaPagamento13o();
-      case FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR:
-        return new FolhaPagamentoSuplementar();
-      default:
-        throw new BusinessException("Tipo de Folha de Pagamento Inválido");
-    }
+    return match ($iTipoFolhaPagamento) {
+        FolhaPagamento::TIPO_FOLHA_SALARIO => new FolhaPagamentoSalario(),
+        FolhaPagamento::TIPO_FOLHA_RESCISAO => new FolhaPagamentoRescisao(),
+        FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR => new FolhaPagamentoComplementar(),
+        FolhaPagamento::TIPO_FOLHA_ADIANTAMENTO => new FolhaPagamentoAdiantamento(),
+        FolhaPagamento::TIPO_FOLHA_13o_SALARIO => new FolhaPagamento13o(),
+        FolhaPagamento::TIPO_FOLHA_SUPLEMENTAR => new FolhaPagamentoSuplementar(),
+        default => throw new BusinessException("Tipo de Folha de Pagamento Inválido"),
+    };
   }
 }

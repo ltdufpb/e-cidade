@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_atributoexames_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_atributoexames = new cl_sau_atributoexames;
 $clsau_atributoexames->rotulo->label("s131_i_codigo");
 $clsau_atributoexames->rotulo->label("s131_c_descricao");
@@ -54,7 +55,7 @@ $clsau_atributoexames->rotulo->label("s131_c_descricao");
               <?=$Ls131_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s131_i_codigo",10,$Is131_i_codigo,true,"text",4,"","chave_s131_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsau_atributoexames->rotulo->label("s131_c_descricao");
               <?=$Ls131_c_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s131_c_descricao",50,$Is131_c_descricao,true,"text",4,"","chave_s131_c_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsau_atributoexames->rotulo->label("s131_c_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_atributoexames.php")==true){
@@ -122,12 +123,12 @@ $clsau_atributoexames->rotulo->label("s131_c_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

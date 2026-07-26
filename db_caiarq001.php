@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ function js_verifica(){
       <tr>
         <td nowrap><?=$Lk15_codbco?></td>
         <td>
-		<?
+		<?php 
 		db_input("k15_codbco",4,$Ik15_codbco,true,"text",4)
         ?>
 		
@@ -69,14 +69,14 @@ function js_verifica(){
       <tr>
         <td nowrap><?=$Lk15_codage?></td>
         <td>
-		<?
+		<?php 
 		db_input("k15_codage",6,$Ik15_codage,true,"text",4)
         ?>
      </tr>
       <tr> 
         <td nowrap><?=$Larqret?> </td>
         <td> 
-		<?
+		<?php 
 		db_input("arqret",50,$Iarqret,true,"file",4)
         ?>	
       </tr>

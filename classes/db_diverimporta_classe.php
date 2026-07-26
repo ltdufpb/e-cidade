@@ -63,7 +63,7 @@ class cl_diverimporta {
                  dv11_obs = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_diverimporta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("diverimporta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

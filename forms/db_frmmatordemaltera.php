@@ -111,7 +111,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 						<?=@$Le60_numcgm?>
 					</td>
           <td> 
-            <?
+            <?php 
               db_input('m51_numcgm',15,$Im51_numcgm,true,'text',3)
             ?>
           </td>
@@ -119,7 +119,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 						<?=@$Lz01_nome?>
 					</td>
           <td>
-            <?
+            <?php 
               db_input('z01_nome',40,$Iz01_nome,true,'text',3)
             ?>
           </td>
@@ -129,7 +129,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 						<b>Ordem de Compra:</b>
 					</td>
           <td>
-						<?
+						<?php 
               db_input('m51_codordem',15,$Im51_codordem,true,'text',3)
 						?>
 					</td>
@@ -137,7 +137,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 						<?=@$Lm51_prazoent?>
 					</td>
 				  <td>
-						<?
+						<?php 
 							db_input('m51_prazoent',6,$Im51_prazoent,true,'text',1)
 						?>
 					</td>
@@ -147,14 +147,14 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 						<b>Data da emiss&atilde;o:</b>
 					</td>
           <td> 
-						<?
+						<?php 
               $ano = substr($m51_data,0,4);
 						  $mes = substr($m51_data,5,2);
 						  $dia = substr($m51_data,8,2);
 						  db_inputdata('dataemis',"$dia","$mes","$ano",true,'text',3);
 						?>
           </td>
-						<?
+						<?php 
 							$result_entrada=$clmatestoqueitemoc->sql_record($clmatestoqueitemoc->sql_query_file(null,
 							                                     null,"*",
 							                                     null,
@@ -168,7 +168,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 							<td nowrap align="right" title="<?=@$descrdepto?>">
 								<?=@$Lcoddepto?>
 							<td> 
-								<?
+								<?php 
 									db_input('coddepto',6,$Im51_depto,true,'text',3);
 									db_input('descrdepto',36,$Idescrdepto,true,'text',3);
 									$depart="false";
@@ -181,12 +181,12 @@ if(isset($m51_codordem) && $m51_codordem!=''){
 								<b>Obs:</b>
 							</td>
 							<td colspan='3' align='left'>
-								<? 
+								<?php  
 									db_textarea("m51_obs","","90",$Im51_obs,true,'text',3);
 								?>
 							</td>
 						
-						<?
+						<?php 
 							}else{
 						  $result_matparam=$clmatparam->sql_record($clmatparam->sql_query_file());	
                          if ($clmatparam->numrows>0){
@@ -194,12 +194,12 @@ if(isset($m51_codordem) && $m51_codordem!=''){
                           if($m90_tipocontrol=='F'){
                         
 							?>
-                            <td nowrap align="right" title="<?=$labelDepartamento?>"><?db_ancora($labelDepartamento,"js_coddepto(true);",1);?></td>
-                            <td><?db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
+                            <td nowrap align="right" title="<?=$labelDepartamento?>"><?php db_ancora($labelDepartamento,"js_coddepto(true);",1);?></td>
+                            <td><?php db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
                           db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');?>
                             </td>
                             <tr> 
-							<?
+							<?php 
                         		if ($m90_almoxordemcompra == "2") {
                         			if (!isset($e60_numemp)) {
                         			  $e60_numemp = $m52_numemp;	
@@ -235,42 +235,42 @@ if(isset($m51_codordem) && $m51_codordem!=''){
                                                     
                           }else{
                             ?>
-                              <td nowrap align="right" title="<?=$labelDepartamento?>"><?db_ancora($labelDepartamento,"js_coddepto(true);",1);?></td>
-                              <td><?db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
+                              <td nowrap align="right" title="<?=$labelDepartamento?>"><?php db_ancora($labelDepartamento,"js_coddepto(true);",1);?></td>
+                              <td><?php db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
                             db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');?>
                               </td>
-                              <?
+                              <?php 
                           }
                         }else{
                           ?>
-                            <td nowrap align="right" title="<?=$labelDepartamento?>"><?db_ancora($labelDepartamento,"js_coddepto(true);",1);?></td>
-                            <td><?db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
+                            <td nowrap align="right" title="<?=$labelDepartamento?>"><?php db_ancora($labelDepartamento,"js_coddepto(true);",1);?></td>
+                            <td><?php db_input('coddepto',6,$Icoddepto,true,'text',1," onchange='js_coddepto(false);'");
                           db_input('descrdepto',35,$Idescrdepto,true,'text',3,'');?>
                             </td>
-                            <?}?>
+                            <?php }?>
                             <tr> 
 							<td align='right'>
 								<b>Obs:</b>
 							</td>
 							<td colspan='3' align='left'>
-								<?
+								<?php 
 									$obs = $m51_obs ;
 									db_textarea("obs","","90",$Im51_obs,true,'text',1);
 								?>
 							</td>
-					 <?	
+					 <?php 	
 						 } 
 					 ?> 
 				</tr>  
         <tr>
           <td colspan='4' align='center'>
-					  <?
+					  <?php 
 						  if ($m51_codordem!=""){
 					  ?>
 					  <input name="altera" type="submit"  value="Alterar">
-						<?}else{?>
+						<?php }else{?>
 						<input name="altera" type="submit" disabled  value="Alterar">
-						<?}?>
+						<?php }?>
 						<input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompraaltera001.php';" >
 					</td>
         </tr>
@@ -280,7 +280,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
   </tr>
   <tr>
    <td align='center' valign='top' colspan='1' align='center'>
-		 <?
+		 <?php 
 			 if(isset($m51_codordem)){
 		 ?>  
      <table>
@@ -290,12 +290,12 @@ if(isset($m51_codordem) && $m51_codordem!=''){
          </td>
        </tr>
      </table>
-		 <?}?>  
+		 <?php }?>  
    </td>
   </tr>
 </table>
 </center>
-<?
+<?php 
 	db_input("valores",100,0,true,"hidden",3);
 	db_input("val",100,0,true,"hidden",3);
 ?>

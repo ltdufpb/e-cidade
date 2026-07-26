@@ -50,7 +50,7 @@ class cl_rhlotacalend {
                  rh64_calend = int8 = Código do calendário
                  ";
    //funcao construtor da classe
-   function cl_rhlotacalend() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotacalend");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

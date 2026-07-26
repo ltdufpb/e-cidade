@@ -47,7 +47,7 @@ $sAreaTrabalho    = "Todas";
 /**
  * Valida os filtros passados pela interface
  */
-$aFiltros = array();
+$aFiltros = [];
 
 $sDataFinalFiltroSaida = date('Y-m-d', db_getsession("DB_datausu"));
 
@@ -149,7 +149,7 @@ if ($iLinhas == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado para os filtros selecionados.");
 }
 
-$aProfessorRede = array();
+$aProfessorRede = [];
 
 /**
  * Montamos a estrutura dos dados indexando um arrayt mult-dimensional da seguinte forma:
@@ -164,8 +164,8 @@ $aProfessorRede = array();
  *       aDisciplina->iTotal
  */
 
-$aTotalProfessorRede   = array();
-$aTotalProfessorEscola = array();
+$aTotalProfessorRede   = [];
+$aTotalProfessorEscola = [];
 for ($i = 0; $i < $iLinhas; $i++) {
 
   $oDadosProfessor = db_utils::fieldsMemory($rsProfessorRede, $i);
@@ -177,12 +177,12 @@ for ($i = 0; $i < $iLinhas; $i++) {
   $iEnsino     = $oDadosProfessor->codigo_ensino;
   $iDisciplina = $oDadosProfessor->codigo_disciplina;
 
-  if ( !array_key_exists($iEscola, $aProfessorRede) ) {
+  if ( !array_key_exists((string) $iEscola, $aProfessorRede) ) {
 
     $oEscola          = new stdClass();
     $oEscola->iCodigo = $oDadosProfessor->codigo_escola;
     $oEscola->sEscola = $oDadosProfessor->escola;
-    $oEscola->aEnsino = array();
+    $oEscola->aEnsino = [];
 
     $aProfessorRede[$oDadosProfessor->codigo_escola] = $oEscola;
   }
@@ -193,7 +193,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
     $oEnsino               = new stdClass();
     $oEnsino->iCodigo      = $oDadosProfessor->codigo_ensino;
     $oEnsino->sEnsino      = $oDadosProfessor->ensino;
-    $oEnsino->aDisciplinas = array();
+    $oEnsino->aDisciplinas = [];
 
     $aProfessorRede[$iEscola]->aEnsino[$iChaveEnsino] = $oEnsino;
   }
@@ -229,12 +229,12 @@ for ($i = 0; $i < $iLinhas; $i++) {
 foreach ($aProfessorRede as $oEscola) {
 
   foreach ($oEscola->aEnsino as $oEnsino) {
-    uasort($oEnsino->aDisciplinas, "ordernarDisciplinas");
+    uasort($oEnsino->aDisciplinas, ordernarDisciplinas(...));
   }
 }
 
 function ordernarDisciplinas($aArrayAtual, $aProximoArray) {
-  return strcasecmp($aArrayAtual->sDisciplina, $aProximoArray->sDisciplina);
+  return strcasecmp((string) $aArrayAtual->sDisciplina, (string) $aProximoArray->sDisciplina);
 }
 
 $head1 = "Professores da Rede";

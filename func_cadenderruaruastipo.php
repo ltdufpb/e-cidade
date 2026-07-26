@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadenderruaruastipo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcadenderruaruastipo = new cl_cadenderruaruastipo;
 $clcadenderruaruastipo->rotulo->label("db85_sequencial");
 $clcadenderruaruastipo->rotulo->label("db85_cadenderrua");
@@ -54,7 +55,7 @@ $clcadenderruaruastipo->rotulo->label("db85_cadenderrua");
               <?=$Ldb85_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db85_sequencial",10,$Idb85_sequencial,true,"text",4,"","chave_db85_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcadenderruaruastipo->rotulo->label("db85_cadenderrua");
               <?=$Ldb85_cadenderrua?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db85_cadenderrua",10,$Idb85_cadenderrua,true,"text",4,"","chave_db85_cadenderrua");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcadenderruaruastipo->rotulo->label("db85_cadenderrua");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cadenderruaruastipo.php")==true){
@@ -122,12 +123,12 @@ $clcadenderruaruastipo->rotulo->label("db85_cadenderrua");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

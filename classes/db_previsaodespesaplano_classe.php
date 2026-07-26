@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE previsaodespesaplano
 class cl_previsaodespesaplano { 
@@ -30,7 +30,7 @@ class cl_previsaodespesaplano {
                  c55_codigo = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_previsaodespesaplano() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("previsaodespesaplano"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
