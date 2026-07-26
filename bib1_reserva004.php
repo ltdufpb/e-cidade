@@ -61,7 +61,7 @@ function somadata($dias,$ano,$mes,$dia){
     $dia = 00;
    }
   }//FECHA IF GERAL
-  if($mes == 04 || $mes == 06 || $mes == 09 || $mes == 11){
+  if($mes == 04 || $mes == 06 || $mes == 9 || $mes == 11){
    if($dia == 30){
     $dia =  00;
     $mes++;

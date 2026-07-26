@@ -2,6 +2,8 @@
 
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno;
 
+use stdClass;
+use DBLog;
 use \DBLogJSON;
 
 /**
@@ -23,7 +25,7 @@ class LogErro {
       self::$instance = new static();
 
       $sArquivo   = "tmp/log_exportacao_situacao_aluno_" . time() . ".json";
-      self::$instance->oLog = new \DBLogJSON($sArquivo);
+      self::$instance->oLog = new DBLogJSON($sArquivo);
 
       self::$instance->arquivo = $sArquivo;
     }
@@ -33,19 +35,19 @@ class LogErro {
 
   public static function log($MensagemLog, $iIdentificador) {
 
-    $oMensagem                 = new \stdClass();
+    $oMensagem                 = new stdClass();
     $oMensagem->iIdentificador = $iIdentificador;
     $oMensagem->sErro          = mb_convert_encoding($MensagemLog, 'UTF-8', 'ISO-8859-1');
-    self::getInstance()->oLog->log($oMensagem, \DBLog::LOG_ERROR);
+    self::getInstance()->oLog->log($oMensagem, DBLog::LOG_ERROR);
   }
 
   /**
    * Registro os logs de erro na importacao da situação do aluno
    * @param  string $MensagemLog
    */
-  public static function logSituacao($MensagemLog, $iTipo = \DBLog::LOG_ERROR) {
+  public static function logSituacao($MensagemLog, $iTipo = DBLog::LOG_ERROR) {
 
-    $oMensagem            = new \stdClass();
+    $oMensagem            = new stdClass();
     $oMensagem->sMensagem = mb_convert_encoding($MensagemLog, 'UTF-8', 'ISO-8859-1');
     self::getInstance()->oLog->log($oMensagem, $iTipo);
   }
@@ -61,7 +63,7 @@ class LogErro {
 
   private function __construct(){ }
   private function __clone(){ }
-  private function __unserialize(array $data): void
+  public function __unserialize(array $data): void
   {
       foreach ($data as $property => $value) {
           if (property_exists($this, $property)) {

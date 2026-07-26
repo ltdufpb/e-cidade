@@ -62,8 +62,8 @@ class Dispatcher {
     $controller->setResponse($response);
     $controller->setView(new View($controller, new Document()));
 
-    call_user_func_array(array($controller, 'beforeAction'), $request->params()->all());
-    $result = call_user_func_array(array($controller, $action), $request->params()->all());
+    call_user_func_array(array($controller, 'beforeAction'), array_values($request->params()->all()));
+    $result = call_user_func_array(array($controller, $action), array_values($request->params()->all()));
 
     if (!$response->hasBody()) {
       $response->setBody($result);

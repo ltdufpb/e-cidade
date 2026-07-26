@@ -36,9 +36,9 @@ $clrotulo->label("ed11_i_codigo");
  <?php 
  #Seleciona todos os calendários
  $sql_result = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
- $num = pg_num_rows($sql_result);
- $conta = "";
- while ($row=pg_fetch_array($sql_result)){
+ $num = ($sql_result === false || $sql_result === null) ? 0 : pg_num_rows($sql_result);
+ $conta = 0;
+ while ($sql_result !== false && $sql_result !== null && ($row=pg_fetch_array($sql_result))){
   $conta = $conta+1;
   $cod_curso = $row["ed10_i_codigo"];
   echo "new Array(\n";
@@ -46,14 +46,14 @@ $clrotulo->label("ed11_i_codigo");
   $num_sub = !$sub_result ? 0 : pg_num_rows($sub_result);
   if ($num_sub>=1){
    echo "new Array(\"\", ''),\n";
-   $conta_sub = "";
+   $conta_sub = 0;
    while ($rowx=pg_fetch_array($sub_result)){
     $codigo_base=$rowx["ed11_i_codigo"];
     $base_nome=$rowx["ed11_c_descr"];
     $conta_sub=$conta_sub+1;
     if ($conta_sub==$num_sub){
      echo "new Array(\"$base_nome\", $codigo_base)\n";
-     $conta_sub = "";
+     $conta_sub = 0;
     }else{
      echo "new Array(\"$base_nome\", $codigo_base),\n";
     }

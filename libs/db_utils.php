@@ -67,6 +67,9 @@ class db_utils
     static function fieldsMemory($rs, $idx, $formata = false, $mostra = false, $lEncode = false)
     {
         $oFields = new stdClass();
+        if ($rs === false || $rs === null) {
+            return $oFields;
+        }
         $numFields = pg_num_fields($rs);
         $iTotalLinhas = pg_num_rows($rs);
         for ($i = 0; $i < $numFields; $i++) {
@@ -155,7 +158,7 @@ class db_utils
      * @param boolean $rInstance - Testa se além de carregar arquivo deve também Instanciá-la
      * @return OBJECT|boolean - Objeto da Classe Instanciada ou Apenas confirmação do Carregamento
      */
-    #[\Deprecated(message: 'não precisa mais usar...')]
+    #[Deprecated(message: 'não precisa mais usar...')]
     static function getDao($sClasse, $lInstanciaClasse = true)
     {
         if (!class_exists("cl_{$sClasse}")) {
@@ -182,6 +185,10 @@ class db_utils
      */
     static function getCollectionByRecord($rsRecordset, $lFormata = false, $lMostra = false, $lEncode = false)
     {
+        if ($rsRecordset === false || $rsRecordset === null) {
+            return [];
+        }
+
         $iINumRows = @pg_num_rows($rsRecordset);
         $aDButils = [];
 
@@ -231,9 +238,9 @@ class db_utils
      * @param bool $lFormata
      * @param bool $lMostra
      * @param bool $lEncode
-     * @return \stdClass[]
+     * @return stdClass[]
      */
-    #[\Deprecated(message: '- metodo depreciado - getCollectionByRecord')]
+    #[Deprecated(message: '- metodo depreciado - getCollectionByRecord')]
     static function getColectionByRecord($rsRecordset, $lFormata = false, $lMostra = false, $lEncode = false)
     {
         return self::getCollectionByRecord($rsRecordset, $lFormata, $lMostra, $lEncode);

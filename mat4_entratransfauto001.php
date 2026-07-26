@@ -174,7 +174,7 @@ if (isset($confirma)) {
       db_hora(),                                   // Hora Atual
       db_getsession('DB_coddepto'),                // Depto do Usuario Atual logado
       $aItens,                                     // Itens do Atendimento
-      &$erro_msg);
+      $erro_msg);
     }
     
     if ($sqlerro==true) {

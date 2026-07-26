@@ -2,6 +2,36 @@
 
 use ECidade\V3\Extension\Registry;
 
+// PHP 8 compatibility: register_long_arrays removed in PHP 5.4
+// O e-cidade legado usa as superglobais antigas $HTTP_*_VARS extensivamente,
+// tanto direto como via $GLOBALS["HTTP_*_VARS"]. Como esse arquivo
+// (db_stdlib.php) e includado por todo arquivo edu*.php/mer*.php/etc. no
+// inicio do request, popular aqui via $GLOBALS basta para que todo o
+// codigo legado encontre as variaveis.
+$GLOBALS["HTTP_SERVER_VARS"]  = $_SERVER  ?? [];
+$GLOBALS["HTTP_POST_VARS"]    = $_POST    ?? [];
+$GLOBALS["HTTP_GET_VARS"]     = $_GET     ?? [];
+$GLOBALS["HTTP_COOKIE_VARS"]  = $_COOKIE  ?? [];
+$GLOBALS["HTTP_SESSION_VARS"] = $_SESSION ?? [];
+$GLOBALS["HTTP_ENV_VARS"]     = $_ENV     ?? [];
+// Tambem cria as variaveis locais $HTTP_*_VARS (nomes antigos PHP 4)
+// no escopo global, ja que o legado faz uso direto em alguns lugares
+// (por exemplo: db_postmemory($HTTP_POST_VARS), parse_str($HTTP_SERVER_VARS[...])).
+// IMPORTANTE: nao sobrescrever $_SERVER/$_POST/$_SESSION/etc. ‚Äî isso quebra
+// o mecanismo interno do PHP que repopula $_SESSION em session_start() e
+// causa "Sessao invalida" em todo login. Bug introduzido por engano no
+// hotfix5 e corrigido em 2026-06-08.
+// NOTA RECTOR: estas linhas usam os nomes ANTIGOS no lado esquerdo de
+// proposito. A regra ReplaceHttpServerVarsByServerRector reescreve
+// $HTTP_*_VARS para $_* e ja reintroduziu o bug uma vez (PHP8-14) ‚Äî
+// este arquivo esta no withSkip da regra no rector.php.
+$HTTP_SERVER_VARS  = &$GLOBALS["HTTP_SERVER_VARS"];
+$HTTP_POST_VARS    = &$GLOBALS["HTTP_POST_VARS"];
+$HTTP_GET_VARS     = &$GLOBALS["HTTP_GET_VARS"];
+$HTTP_COOKIE_VARS  = &$GLOBALS["HTTP_COOKIE_VARS"];
+$HTTP_SESSION_VARS = &$GLOBALS["HTTP_SESSION_VARS"];
+$HTTP_ENV_VARS     = &$GLOBALS["HTTP_ENV_VARS"];
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBseller Servicos de Informatica
@@ -92,7 +122,7 @@ function db_query($param1, $param2=null, $param3="SQL"){
 
             foreach ($aWordsBlock as $sWord) {
 
-                $mAchouString = strpos((string) $dbsql, (string) $sWord);
+                $mAchouString = strpos($dbsql, $sWord);
                 if ($mAchouString) {
                     return true;
                 }
@@ -140,9 +170,9 @@ function db_dias_mes($ano,$mes,$ret_data = false){
  * FunÁ„o para validar PIS
  */
 function checkPIS($pis){
-    $pis = str_pad((string) preg_replace('#[^0-9]#m', '', (string) $pis), 11, '0', STR_PAD_LEFT);
+    $pis = str_pad((string) preg_replace('/[^0-9]/', '', (string) $pis), 11, '0', STR_PAD_LEFT);
 
-    if (strlen((string) $pis) != 11 || intval($pis) == 0) {
+    if (strlen($pis) != 11 || intval($pis) == 0) {
         return false;
     } else {
         for ($d = 0, $p = 3, $c = 0; $c < 10; $c++) {
@@ -200,7 +230,7 @@ function db_subdata($data,$opcao,$formatar="b"){
         }
     }
     $arr_data = explode("/",(string) $data);
-    if (trim((string) $arr_data[0]) == "" || !isset($arr_data[1]) || !isset($arr_data[2])) {
+    if (trim($arr_data[0]) == "" || !isset($arr_data[1]) || !isset($arr_data[2])) {
         return 0;
     }
     if ($opcao == "d") {
@@ -599,7 +629,7 @@ function db_mes($xmes,$tipo=0)
     } elseif ($tipo == 1) {
         return strtoupper(str_replace("Á", "«", $Mes));
     } else {
-        return ucfirst((string) $Mes);
+        return ucfirst($Mes);
     }
 }
 
@@ -608,16 +638,16 @@ function db_mes($xmes,$tipo=0)
 
 function db_geratexto($texto) {
   $texto .= "#";
-    $txt = explode("#", (string) $texto);
+    $txt = explode("#", $texto);
     $texto1 = '';
     for ($x = 0; $x < sizeof($txt); $x++) {
-        if (str_starts_with((string) $txt[$x], "$")) {
-            $txt1 = substr((string) $txt[$x], 1);
+        if (str_starts_with($txt[$x], "$")) {
+            $txt1 = substr($txt[$x], 1);
             global ${$txt1};
             $texto1 .= ${$txt1};
-        } elseif ((str_starts_with((string) $txt[$x], '\n')) or (str_starts_with((string) $txt[$x], '<br>'))) {
+        } elseif ((str_starts_with($txt[$x], '\n')) or (str_starts_with($txt[$x], '<br>'))) {
             $texto1 .= "\n";
-        } elseif (str_starts_with((string) $txt[$x], '\t')) {
+        } elseif (str_starts_with($txt[$x], '\t')) {
             $texto1 .= "\t";
         } else {
             $texto1 .= $txt[$x];
@@ -628,24 +658,6 @@ function db_geratexto($texto) {
 
 class janela
 {
-    //|00|//janela
-    //|10|//Abre um determinado arquivo no diretÛrio DOCUMENT_ROOT do servidor onde estiver rodando o PHP
-    //|15|//[variavel] = new janela($nome,$arquivo);
-    //|20|//nome    : Nome da janela a ser criada como objeto
-    //|20|//arquivo : Arquivo a ser executado no iframe
-    //|99|//(esta funcao n„o esta mais em uso, verifica a funcao java script |js_OpenJanelaIframe|)
-    //|99|//Exemplo:
-    //|99|//$func_iframe = new janela('db_iframe',''); // abre a classe janela
-    //|99|//$func_iframe->posX=1;                      // seta a posicao que dever· abrir em relaÁ„o a esquerda
-    //|99|//$func_iframe->posY=20;                     // seta a posiÁ„o que dever· abrir em relaÁ„o ao topo
-    //|99|//$func_iframe->largura=780;                 // seta a largura do formul·rio
-    //|99|//$func_iframe->altura=430;                  // seta a altura do formul·rio
-    //|99|//$func_iframe->titulo='Pesquisa';           // seta o titulo da janela
-    //|99|//$func_iframe->iniciarVisivel = false;      // seta se mostrar· ou n„o a janela (neste caso n„o)
-    //|99|//$func_iframe->mostrar();                   // escreve o objeto iframe na tela
-
-    public $nome;
-    public $arquivo;
     public $iniciarVisivel = true;
     public $largura = "780";
     public $altura = "430";
@@ -659,10 +671,8 @@ class janela
     public $titulo = "DBSeller Inform·tica Ltda";
     public $janBotoes = "111";
 
-    function __construct($nome, $arquivo)
+    function __construct(public $nome, public $arquivo)
     {
-        $this->nome = $nome;
-        $this->arquivo = $arquivo;
     }
 
     function mostrar()
@@ -972,7 +982,7 @@ function db_translate($db_transforma = null,$expresAdicional = "", $stringAdicio
     // $arr_regexp[3] substituÌdo por $arr_replac[3], ou seja, ¡ ou ¿ ou √ ou ¬ ou ƒ por A
     // $arr_regexp[n] substituÌdo por $arr_replac[n]
     // ...
-    $db_transforma = preg_replace($arr_regexp, (string) $arr_replac, (string) $db_transforma);
+    $db_transforma = preg_replace($arr_regexp, $arr_replac, (string) $db_transforma);
 
   return $db_transforma;
 
@@ -1122,8 +1132,8 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
                 //        return str_pad(number_format($str,$casasdecimais,",","."),$quantidade,"$caracter",STR_PAD_LEFT);
                 $vlrreturn = str_pad(number_format($str, $casasdecimais, ",", "."), $quantidade + 1, "$caracter",
                     STR_PAD_LEFT);
-                $posponto = strpos((string) $vlrreturn, ",");
-                return substr((string) $vlrreturn, 0, $posponto + $quantidade + 1);
+                $posponto = strpos($vlrreturn, ",");
+                return substr($vlrreturn, 0, $posponto + $quantidade + 1);
             }
         case "vdec" :
             // ponto decimal sem virgula
@@ -1144,8 +1154,8 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
             } else {
                 $vlrreturn = str_pad(number_format($str, $casasdecimais, ".", ""), $quantidade + 1, "$caracter",
                     STR_PAD_LEFT);
-                $posponto = strpos((string) $vlrreturn, ".");
-                return substr((string) $vlrreturn, 0, $posponto + $quantidade + 1);
+                $posponto = strpos($vlrreturn, ".");
+                return substr($vlrreturn, 0, $posponto + $quantidade + 1);
             }
         case "valsemform" :
 
@@ -1164,7 +1174,7 @@ function db_formatar($str, $tipo, $caracter = " ", $quantidade = 0, $TipoDePreen
 
             $valretornar = str_replace(",", "", $valretornar);
             $valretornar = str_replace(".", "", $valretornar);
-            return str_pad((string) $valretornar, $quantidade, " ", STR_PAD_LEFT);
+            return str_pad($valretornar, $quantidade, " ", STR_PAD_LEFT);
 
         case "f" :
             // ponto decimal com virgula
@@ -1356,7 +1366,7 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
                     break;
                 case "date" :
           if ($aux != "") {
-            $data = explode("-", (string) $aux);
+            $data = explode("-", $aux);
               ${$matriz[$i]} = $data[2]."/".$data[1]."/" . $data[0];
           } else {
               ${$matriz[$i]} = "";
@@ -1365,7 +1375,7 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
                         echo $matriz[$i]."->".${$matriz}[$i]."<br>";
           break;
                 default :
-                    ${$matriz[$i]} = stripslashes((string) $aux);
+                    ${$matriz[$i]} = stripslashes($aux);
                     if ($mostravar == true) {
                         echo $matriz[$i] . "->" . ${$matriz}[$i] . "<br>";
                     }
@@ -1374,7 +1384,7 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
         } else
             switch (pg_field_type($recordset, $i)) {
         case "date" :
-          $datav = explode("-", (string) $aux);
+          $datav = explode("-", $aux);
                     $explode_data = $matriz[$i]."_dia";
             global ${$explode_data};
             ${$explode_data} = @ $datav[2];
@@ -1395,7 +1405,7 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
                 echo $matriz[$i]."->".${$matriz}[$i]."<br>";
           break;
                 default :
-                    ${$matriz[$i]} = stripslashes((string) $aux);
+                    ${$matriz[$i]} = stripslashes($aux);
                     if ($mostravar == true) {
                         echo $matriz[$i] . "->" . ${$matriz}[$i] . "<br>";
                     }
@@ -1586,7 +1596,7 @@ function db_getsession($var = "0", $alertarExistencia = true,$decode=false)
             $caract = "&";
         }
         if($decode){
-            return unserialize(base64_decode((string) $str));
+            return unserialize(base64_decode($str));
         }else{
             return $str;
         }
@@ -2138,11 +2148,11 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     }
   } else if( isset( $_POST["totalizacao_repas"] ) ) {
 
-        $totalizacao_explode = explode( "|", (string) $_POST["totalizacao_repas"] );
+        $totalizacao_explode = explode( "|", $_POST["totalizacao_repas"] );
 
         for( $totrep = 0; $totrep < count( $totalizacao_explode ); $totrep++ ) {
 
-            $totalizacao_sep = explode("\=", (string) $totalizacao_explode[$totrep]);
+            $totalizacao_sep = explode("\=", $totalizacao_explode[$totrep]);
             $totalizacao[$totalizacao_sep[0]] = $totalizacao_sep[1];
 
             if (isset($_POST["totrep_" . $totalizacao_sep[0]])) {
@@ -2184,7 +2194,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     // se foi passado funcao
         if ($campos_layer != "") {
 
-            $campo_layerexe = explode("|", (string) $campos_layer);
+            $campo_layerexe = explode("|", $campos_layer);
             $sHtml .= "<td bgcolor=\"$db_corcabec\" title=\"Executa Procedimento EspecÌfico.\" class='DBLovrotClique'>";
             $sHtml .= "  Clique";
             $sHtml .= "</td>";
@@ -2230,7 +2240,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
     //cria nome da funcao com parametros
   if( $arquivo == "()" ) {
 
-    $arrayFuncao = explode("|", (string) $aonde);
+    $arrayFuncao = explode("|", $aonde);
       $quantidadeItemsArrayFuncao = count($arrayFuncao);
   }
 
@@ -2250,7 +2260,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
                 for ($cont = 1; $cont < $quantidadeItemsArrayFuncao; $cont++) {
 
-                    if (strlen((string) $arrayFuncao[$cont]) > 3) {
+                    if (strlen($arrayFuncao[$cont]) > 3) {
 
                         for ($luup = 0; $luup < pg_num_fields($result); $luup++) {
 
@@ -2262,7 +2272,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
                     $loop .= $caracter . "'";
                     $loop .= addslashes(str_replace('"', '', @pg_fetch_result($result, $i,
-                            (strlen((string) $arrayFuncao[$cont]) < 4 ? (int)$arrayFuncao[$cont] : $arrayFuncao[$cont])))) . "'";
+                            (strlen($arrayFuncao[$cont]) < 4 ? (int)$arrayFuncao[$cont] : $arrayFuncao[$cont])))) . "'";
                     $caracter = ",";
                 }
 
@@ -2280,7 +2290,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
         if ($campos_layer != "") {
 
-            $campo_layerexe = explode("|", (string) $campos_layer);
+            $campo_layerexe = explode("|", $campos_layer);
             $sHtml .= "<td id=\"funcao_aux" . $i . "\" ";
             $sHtml .= "    class = 'DBLovrotTdFuncaoAuxiliar' ";
             $sHtml .= "    bgcolor=\"$cor\"> ";
@@ -2828,7 +2838,7 @@ function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null
     }
 
     $sHtmlTooltipAviso2 = DBTooltipAvisoQuestionario::getInstanceQuestionario('Question·rio',
-        'modalPreenchimentoQuestionario()', $idItem, $modulo)->renderQuestionario($idItem, $modulo, $iTop);
+        'modalPreenchimentoQuestionario()', $idItem)->renderQuestionario($idItem, $modulo, $iTop);
 
     $sHtmlAvisos = '<div id="db-tooltip" class="db-tooltip">';
     $sHtmlAvisos .= $sHtmlReleaseNote;
@@ -2862,7 +2872,7 @@ function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null
     /**
      * Busca as preferÍnias do usu·rio
      */
-    $oPreferencias = unserialize(base64_decode(db_getsession('DB_preferencias_usuario')));
+    $oPreferencias = unserialize(base64_decode((string) db_getsession('DB_preferencias_usuario')));
     $sOrdenacao = DBMenu::getCampoOrdenacao();
     $DBMenu = new DBMenu($modulo, $usuario, $anousu, $instit);
     $DBMenu->setAdministrador((db_getsession("DB_administrador") == 1));
@@ -2872,7 +2882,7 @@ function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null
     $DBMenu->setFuncao(strtolower(basename((string) $_SERVER["PHP_SELF"])));
     $DBMenu->setOrdenacao($sOrdenacao);
 
-    $sMenu = $DBMenu->montaMenu($modulo);
+    $sMenu = $DBMenu->montaMenu();
 
     echo $sMenu;
     echo $sHtmlAvisos;
@@ -2899,7 +2909,7 @@ function db_menu($usuario = null, $modulo = null, $anousu = null, $instit = null
             $descrdep = "";
         }
 
-        $msg = ucfirst(db_getsession("DB_nome_modulo")) . $descrdep . "->" . $DBMenu->getDescricaoFuncao();
+        $msg = ucfirst((string) db_getsession("DB_nome_modulo")) . $descrdep . "->" . $DBMenu->getDescricaoFuncao();
 
     echo "<script>
             (window.CurrentWindow || parent.CurrentWindow).bstatus.document.getElementById('st').innerHTML = '&nbsp;&nbsp;$msg' ;
@@ -2983,9 +2993,9 @@ function db_extenso($valor = 0, $maiusculas = false)
     $z = 0;
 
     $valor = number_format($valor, 2, ".", ".");
-    $inteiro = explode(".", (string) $valor);
+    $inteiro = explode(".", $valor);
     for ($i = 0; $i < count($inteiro); $i++) {
-        for ($ii = strlen((string) $inteiro[$i]); $ii < 3; $ii++) {
+        for ($ii = strlen($inteiro[$i]); $ii < 3; $ii++) {
             $inteiro[$i] = "0" . $inteiro[$i];
         }
     }
@@ -3020,7 +3030,7 @@ function db_extenso($valor = 0, $maiusculas = false)
                   Rodrigo Cerqueira, rodrigobc@fte.com.br
                   */
     if ($rt)
-      $rt = preg_replace("# E #m", " e ", ucwords((string) $rt));
+      $rt = preg_replace("# E #m", " e ", ucwords($rt));
       return ($rt ?: "Zero");
   }
 
@@ -3366,7 +3376,7 @@ function db_separainstrucao($texto, $comeca=0, &$layout = null, $linha = null, $
 
     $texto = db_geratexto($texto);
 
-    $textos = explode("|", $texto);
+    $textos = explode("|", (string) $texto);
 
     //        for ($xxx=0; $xxx < sizeof($textos); $xxx++) {
     //                echo "$xxx: " . $textos[$xxx] . "<br>";
@@ -3375,7 +3385,7 @@ function db_separainstrucao($texto, $comeca=0, &$layout = null, $linha = null, $
     if ($maximo == 0) {
         $maximo = sizeof($textos);
     }
-    if (trim($texto) != "") {
+    if (trim((string) $texto) != "") {
         $totalprocessado = 0;
         if ($separador == "05") {
             $mostrar = 0;
@@ -3460,7 +3470,7 @@ function db_formatatexto($linhas, $largura, $texto, $tipo = "t")
         $linhatotal = 0;
         for ($i = 0; $i < $numlinhas; $i++) {
             $linhatotal = $linhatotal + 1;
-            $linhastam = strlen((string) $linha[$i]);
+            $linhastam = strlen($linha[$i]);
             if ($linhastam > $largura) {
                 $nlinhas = ($linhastam / $largura);
                 $nlinhas1 = (int)$nlinhas;
@@ -3471,7 +3481,7 @@ function db_formatatexto($linhas, $largura, $texto, $tipo = "t")
 
             if ($linhatotal >= $linhas) {
                 if ($linhastam > $largura) {
-                    $obs .= substr((string) $linha[$i], 1, $largura);
+                    $obs .= substr($linha[$i], 1, $largura);
                     $obs .= "...";
                 } else {
                     $obs .= $linha[$i]."...";
@@ -3704,7 +3714,7 @@ function db_buscaImagemBanco($cadban, $conn)
     if ($linhascadban > 0) {
         //db_fieldsmemory($resultcadban,0);
         $k15_codbco = pg_fetch_result($resultcadban, 0, "k15_codbco");
-        $banco = str_pad((string) $k15_codbco, 3, "0", STR_PAD_LEFT);
+        $banco = str_pad($k15_codbco, 3, "0", STR_PAD_LEFT);
         // busca os dados do banco..logo etc
         $sqlBanco = "select  * from db_bancos where db90_codban = '" . $banco . "'";
         $resultBanco = db_query($sqlBanco);
@@ -3889,16 +3899,16 @@ function db_removeAcentuacao($sRemover)
 
     $var = $sRemover;
 
-    $var = preg_replace("#[\xc1\xc0\xc2\xc3]#m", "A", (string) $var);
-    $var = preg_replace("#[\xe1\xe0\xe2\xe3\xaa]#m", "a", (string) $var);
-    $var = preg_replace("#[\xc9\xc8\xca]#m", "E", (string) $var);
-    $var = preg_replace("#[\xe9\xe8\xea]#m", "e", (string) $var);
-    $var = preg_replace("#[\xed\xec]#m", "i", (string) $var);
-    $var = preg_replace("#[\xcd\xcc]#m", "I", (string) $var);
-    $var = preg_replace("#[\xd3\xd2\xd4\xd5]#m", "O", (string) $var);
-    $var = preg_replace("#[\xf3\xf2\xf4\xf5\xba]#m", "o", (string) $var);
-    $var = preg_replace("#[\xda\xd9\xdb]#m", "U", (string) $var);
-  $var = preg_replace("#[\xfa\xf9\xfb]#m","u",(string) $var);
+    $var = preg_replace("#[¡¿¬√]#m", "A", $var);
+    $var = preg_replace("#[·‡‚„™]#m", "a", (string) $var);
+    $var = preg_replace("#[…» ]#m", "E", (string) $var);
+    $var = preg_replace("#[ÈËÍ]#m", "e", (string) $var);
+    $var = preg_replace("#[ÌÏ]#m", "i", (string) $var);
+    $var = preg_replace("#[ÕÃ]#m", "I", (string) $var);
+    $var = preg_replace("#[”“‘’]#m", "O", (string) $var);
+    $var = preg_replace("#[ÛÚÙı∫]#m", "o", (string) $var);
+    $var = preg_replace("#[⁄Ÿ€]#m", "U", (string) $var);
+  $var = preg_replace("#[˙˘˚]#m","u",(string) $var);
   $var = str_replace("'","",$var);
   $var = str_replace("«","C",$var);
   $var = str_replace("Á","c",$var);
@@ -4011,10 +4021,10 @@ function db_formatatempodecorrido($timestampAntes, $timestampDepois)
     }
 
     //retira a ultima virgula
-    $sRetorno = rtrim((string) $sRetorno, ', ');
+    $sRetorno = rtrim($sRetorno, ', ');
 
     //coloca "e" no lugar da ultima virgula
-    $arrExplode = explode(',', (string) $sRetorno);
+    $arrExplode = explode(',', $sRetorno);
     $sRetornoFinal = '';
     $nPedacos = count($arrExplode);
     for ($i = 0; $i < $nPedacos; $i++) {
@@ -4176,7 +4186,7 @@ function findword($sText, $sWord)
     return false;
   }
     $sText = str_replace(";", " ", $sText);
-    return in_array($sWord, explode(" ", (string) $sText));
+    return in_array($sWord, explode(" ", $sText));
 }
 
 function utf8_encode_all($entrada)
@@ -4231,7 +4241,7 @@ function verifica_ip_privado ($ip) {
 
       foreach ($pri_addrs AS $pri_addr) {
 
-        [$start, $end] = explode('|', (string) $pri_addr);
+        [$start, $end] = explode('|', $pri_addr);
         // if is private
 
         if ($long_ip >= ip2long ($start) && $long_ip <= ip2long ($end)) {
