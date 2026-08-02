@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -182,11 +182,11 @@ if(isset($j39_idcons)&&$j39_idcons=="nova"){
       }
    } 
  }
-<?if(isset($j39_matric)){?>
+<?php if(isset($j39_matric)){?>
   function js_trocaid(valor){
    location.href="cad4_iptuconstr002.php?j39_matric=<?=$j39_matric?>&j39_idcons="+valor+"&z01_nome="+document.form1.z01_nome.value;
   } 
-<?}?>
+<?php }?>
 function js_testacar(){
    if(document.form1.caracteristica.value=="X" || document.form1.caracteristica.value==""){
      alert("Informe as caracteristicas!");
@@ -247,7 +247,7 @@ function js_lo(){
 	     <?=$Lj39_matric?>
           </td>
           <td> 
-          <?
+          <?php 
            db_input('j39_matric',5,0,true,'text',3,"onchange='js_matri(false)'");
            db_input('z01_nome',30,0,true,'text',3,"");
           ?>
@@ -258,7 +258,7 @@ function js_lo(){
           <?=$Lj39_idcons?>*
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_idcons',5,$Ij39_idcons,true,'text',$db_opcaoid,"");
 ?>
           </td>
@@ -268,7 +268,7 @@ function js_lo(){
               <tr><td><b>Construções já Cadastradas</b></td></tr> 
               <tr>
                 <td align="center">  
-<?
+<?php 
 if(isset($j39_matric)){
   if(!isset($incluir)){
     $result = $cliptuconstr->sql_record($cliptuconstr->sql_query_file($j39_matric,"","j39_idcons,j39_idprinc as jj39_idprinc","",""));
@@ -298,7 +298,7 @@ if(isset($j39_matric)){
            <?=$Lj39_ano?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_ano',5,$Ij39_ano,true,'text',1,"");
 ?>
           </td>
@@ -308,7 +308,7 @@ if(isset($j39_matric)){
            <?=@$Lj39_habite?>
           </td>
           <td> 
-<?
+<?php 
 db_inputdata('j39_habite',@$j39_habite_dia,@$j39_habite_mes,@$j39_habite_ano,true,'text',$db_opcao,"")
 ?>
             </td>
@@ -318,7 +318,7 @@ db_inputdata('j39_habite',@$j39_habite_dia,@$j39_habite_mes,@$j39_habite_ano,tru
            <?=$Lj39_area?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_area',5,$Ij39_area,true,'text',1,"");
 ?>
           </td>
@@ -328,19 +328,19 @@ db_inputdata('j39_habite',@$j39_habite_dia,@$j39_habite_mes,@$j39_habite_ano,tru
            <?=$Lj39_areap?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_areap',5,$Ij39_areap,true,'text',1,"");
 ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj39_codigo?>">
-<?
+<?php 
   db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao);
 ?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_codigo',5,$Ij39_codigo,true,'text',$db_opcao," onchange='js_pesquisaj39_codigo(false);'");
   db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 ?>
@@ -351,7 +351,7 @@ db_inputdata('j39_habite',@$j39_habite_dia,@$j39_habite_mes,@$j39_habite_ano,tru
            <?=$Lj39_numero?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_numero',5,$Ij39_numero,true,'text',1,"");
 ?>
           </td>
@@ -361,7 +361,7 @@ db_inputdata('j39_habite',@$j39_habite_dia,@$j39_habite_mes,@$j39_habite_ano,tru
            <?=$Lj39_compl?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_compl',5,$Ij39_compl,true,'text',1,"");
 ?>
           </td>
@@ -369,13 +369,13 @@ db_inputdata('j39_habite',@$j39_habite_dia,@$j39_habite_mes,@$j39_habite_ano,tru
         <tr>
           <td>
             <b>
-<?
+<?php 
   db_ancora("Características","js_mostracaracteristica();",1);
 ?>
             </b> 
           </td>
           <td> 
-<?
+<?php 
   db_input('caracteristica',15,1,true,'hidden',1,"")
 ?>
           <td>
@@ -385,7 +385,7 @@ db_inputdata('j39_habite',@$j39_habite_dia,@$j39_habite_mes,@$j39_habite_ano,tru
            <?=@$Lj39_idaument?>
           </td>
           <td> 
-<?
+<?php 
 db_input('j39_idaument',6,$Ij39_idaument,true,'text',$db_opcao,"")
 ?>
           </td>
@@ -395,7 +395,7 @@ db_input('j39_idaument',6,$Ij39_idaument,true,'text',$db_opcao,"")
            <?=@$Lj39_idprinc?>
           </td>
           <td> 
-<?
+<?php 
 if(isset($num) && $num  > 0){
   $x = array("f"=>"Construção Secundária","t"=>"Construção Principal");
 }else{
@@ -426,7 +426,7 @@ db_select('j39_idprinc',$x,true,$db_opcao,"");
   </tr>
 </form>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 
@@ -495,7 +495,7 @@ function js_mostraruas(chave,erro){
   }
 }
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

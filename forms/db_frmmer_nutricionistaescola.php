@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $z01_nome = stripslashes($z01_nome);
   </tr>
   <tr>
     <td colspan="4">
-     <?
+     <?php 
        db_ancora(@$Lme31_i_nutricionista,"",3);echo "&nbsp";
        db_input('me31_i_nutricionista',10,$Ime31_i_nutricionista,true,'text',3,"");
        db_input('z01_nome',60,$Iz01_nome,true,'text',3,'');

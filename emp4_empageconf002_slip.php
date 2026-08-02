@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ $numrows = $clempageslip->numrows;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -152,7 +152,7 @@ function js_calcula(campo){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
 <form name="form1" method="post" action="">
-           <?
+           <?php 
              db_input("cgm",10,'',true,'hidden',1);
             ?>       
     <center>
@@ -170,7 +170,7 @@ function js_calcula(campo){
           <td class='bordas02' align='center'><small><b><?=$RLe83_codtipo?></b></small></td>
           <td class='bordas02' align='center' ><small><b><?=$RLz01_nome?></b></small></td>
 	</tr>
-        <?
+        <?php 
 	  $tot =0;
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
@@ -199,7 +199,7 @@ function js_calcula(campo){
           <td class='bordas' align='right' nowrap><small><?=$e83_descr?></small></td>
           <td class='bordas' align='left' nowrap><small >&nbsp; <?=$z01_nome?></small></td>
 	</tr>
-        <?
+        <?php 
 	  }
 	?>
       </table>

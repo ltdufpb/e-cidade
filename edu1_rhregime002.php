@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -79,16 +79,16 @@ if (isset($alterar)) {
       <br> 
       <center>
       <fieldset style="width:95%"><legend><b>Alteração de Vínculos</b></legend>
-      <?include(modification("forms/db_frmrhregimeedu.php"));?>
+      <?php include(modification("forms/db_frmrhregimeedu.php"));?>
       </fieldset>
       </center>
     </td>
   </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($clrhregime->erro_status=="0") {

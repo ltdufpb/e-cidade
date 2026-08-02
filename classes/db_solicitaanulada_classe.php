@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: compras
 //CLASSE DA ENTIDADE solicitaanulada
 class cl_solicitaanulada { 

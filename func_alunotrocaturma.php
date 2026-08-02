@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ $clrotulo->label("ed57_c_descr");
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <link href="estilos.css" rel="stylesheet" type="text/css">
-    <?
+    <?php 
       db_app::load("scripts.js, prototype.js, strings.js, arrays.js, dbcomboBox.widget.js");
     ?> 
   </head>
@@ -64,7 +64,7 @@ $clrotulo->label("ed57_c_descr");
                   <?=$Led47_i_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ed47_i_codigo", 10, $Ied47_i_codigo, true,"text", 4, "", "chave_ed47_i_codigo");?>
+                  <?php db_input("ed47_i_codigo", 10, $Ied47_i_codigo, true,"text", 4, "", "chave_ed47_i_codigo");?>
                 </td>
               </tr>
               <tr>
@@ -72,7 +72,7 @@ $clrotulo->label("ed57_c_descr");
                   <?=$Led47_v_nome?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ed47_v_nome",50,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+                  <?php db_input("ed47_v_nome",50,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
                 </td>
               </tr>
               <tr>
@@ -80,7 +80,7 @@ $clrotulo->label("ed57_c_descr");
                   <?=$Led57_c_descr?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?
+                  <?php 
                     $aTurmas            = array();
                     $aTurmas[]          = '';
                     $sCamposTurmaAluno  = "distinct ed60_i_turma, ed57_c_descr";
@@ -122,7 +122,7 @@ $clrotulo->label("ed57_c_descr");
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?
+          <?php 
           $sWhere   = "ed60_c_situacao = 'MATRICULADO' AND ed59_c_encerrada = 'N' AND ed57_i_escola = {$iEscola}  \n";
           $sWhere  .= " AND exists (select 1 from matricula mat                                                   \n";
           $sWhere  .= "                           inner join turma tur on tur.ed57_i_codigo = mat.ed60_i_turma    \n";

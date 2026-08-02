@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,8 +73,8 @@ $db_opcao=1;
        <b> Período:</b>
      </td>
      <td>
-       <? db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',$db_opcao,"");?>
-       <? db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',$db_opcao,"");?>
+       <?php  db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',$db_opcao,"");?>
+       <?php  db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',$db_opcao,"");?>
      </td>
      </tr>     
   <tr>
@@ -82,7 +82,7 @@ $db_opcao=1;
        <b>livro:</b>
     </td>
     <td> 
-       <?               
+       <?php                
         $result_modlivro = $clfar_modelolivro->sql_record($clfar_modelolivro->sql_query("","fa16_i_codigo,fa16_c_livro","fa16_c_livro"));
         db_selectrecord("fa16_i_codigo",$result_modlivro,"","","","","","  ","",1);
           ?>
@@ -93,7 +93,7 @@ $db_opcao=1;
        <b>xxxxx:</b>
     </td>
     <td> 
-       <?               
+       <?php                
         $result_periodo = $clfar_modelolivro->sql_record($clfar_modelolivro->sql_query("","fa16_c_periodo","fa16_i_codigo"));
         db_selectrecord("fa16_i_codigo",$result_periodo,"","","","","","  ","",1);
           ?>
@@ -115,7 +115,7 @@ $db_opcao=1;
 </center>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_botao(){                                 
 	parametros = '?fa16_i_codigo=<?=$fa16_i_codigo?>';

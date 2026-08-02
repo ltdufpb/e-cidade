@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -65,7 +65,7 @@ $instit = db_getsession("DB_instit");
             Data para Processamento
           </td>
           <td align="left">
-            <?
+            <?php 
               db_inputdata("dtProc", null, null, null, true, 'text', 1);
             ?>
           </td>
@@ -75,7 +75,7 @@ $instit = db_getsession("DB_instit");
             <input type="button" id="processar" style="margin-top: 10px;"  value="Procesar" onclick="js_processar();">
   </form>
 </center>
-<? 
+<?php  
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

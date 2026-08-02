@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE tipoassentamentoferias
 class cl_tipoassentamentoferias { 

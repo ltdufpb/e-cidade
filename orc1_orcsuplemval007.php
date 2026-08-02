@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -241,7 +241,7 @@ $soma_suplem    = $oSuplementacao->getvalorSuplementacao();
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmorcsuplemval.php"));
 	?>
     </center>
@@ -250,7 +250,7 @@ $soma_suplem    = $oSuplementacao->getvalorSuplementacao();
 </table>
 </body>
 </html>
-<?
+<?php 
 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($clorcsuplemval->erro_status=="0"){

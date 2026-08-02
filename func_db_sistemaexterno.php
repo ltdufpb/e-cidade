@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $cldb_sistemaexterno->rotulo->label("db124_descricao");
               <?=$Ldb124_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db124_sequencial",10,$Idb124_sequencial,true,"text",4,"","chave_db124_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $cldb_sistemaexterno->rotulo->label("db124_descricao");
               <?=$Ldb124_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db124_descricao",50,$Idb124_descricao,true,"text",4,"","chave_db124_descricao");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $cldb_sistemaexterno->rotulo->label("db124_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_sistemaexterno.php")==true){
@@ -122,12 +122,12 @@ $cldb_sistemaexterno->rotulo->label("db124_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

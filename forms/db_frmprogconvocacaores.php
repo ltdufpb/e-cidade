@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,17 +49,17 @@ if ($ed110_i_ptconvocacao == 0 || $ed110_i_ptgeral == 0) {
    <?=@$Led127_i_codigo?>
   </td>
   <td>
-   <?db_input('ed127_i_codigo',10,$Ied127_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed127_i_codigo',10,$Ied127_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted127_i_progmatricula?>">
-   <?db_ancora(@$Led127_i_progmatricula,"js_pesquisaed127_i_progmatricula(true);",$db_opcao);?>
+   <?php db_ancora(@$Led127_i_progmatricula,"js_pesquisaed127_i_progmatricula(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed127_i_progmatricula',10,$Ied127_i_progmatricula,true,'hidden',3,"")?>
-   <?db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
-   <?db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
+   <?php db_input('ed127_i_progmatricula',10,$Ied127_i_progmatricula,true,'hidden',3,"")?>
+   <?php db_input('ed112_i_rhpessoal',10,@$Ied112_i_rhpessoal,true,'text',3,"")?>
+   <?php db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -67,12 +67,12 @@ if ($ed110_i_ptconvocacao == 0 || $ed110_i_ptgeral == 0) {
    <?=@$Led112_d_datainicio?>
   </td>
   <td>
-   <?db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,
+   <?php db_inputdata('ed112_d_datainicio',@$ed112_d_datainicio_dia,
                   @$ed112_d_datainicio_mes,@$ed112_d_datainicio_ano,true,'text',3,"")?>
    <?=@$Led112_i_progclasse?>
-   <?db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
+   <?php db_input('ed107_c_descr',10,@$Ied107_c_descr,true,'text',3,'')?>
    
-   <?
+   <?php 
     if ($db_opcao != 1) {
       if (@$ed112_c_situacao == "A") {
         $ed112_c_situacao = "ABERTA";
@@ -85,7 +85,7 @@ if ($ed110_i_ptconvocacao == 0 || $ed110_i_ptgeral == 0) {
       <?=@$Led112_c_situacao?>
       <input name="ed112_c_situacao" type="text" value="<?=@$ed112_c_situacao?>" style="background:#DEB887;" readonly>
       
-   <?}?>
+   <?php }?>
    
   </td>
  </tr>
@@ -94,35 +94,35 @@ if ($ed110_i_ptconvocacao == 0 || $ed110_i_ptgeral == 0) {
    <?=@$Led127_d_data?>
   </td>
   <td>
-   <?db_inputdata('ed127_d_data',@$ed127_d_data_dia,@$ed127_d_data_mes,@$ed127_d_data_ano,
+   <?php db_inputdata('ed127_d_data',@$ed127_d_data_dia,@$ed127_d_data_mes,@$ed127_d_data_ano,
                   true,'text',$db_opcao," onchange=\"js_data();\"","","","parent.js_data();","js_data();"
                  )
    ?>
    <?=@$Led127_i_ano?>
-   <?db_input('ed127_i_ano',4,$Ied127_i_ano,true,'text',$db_opcao," onChange='js_valida(this.value);'")?>
+   <?php db_input('ed127_i_ano',4,$Ied127_i_ano,true,'text',$db_opcao," onChange='js_valida(this.value);'")?>
    <?=@$Led127_i_nconvoca?>
-   <?
+   <?php 
    $onchange = $db_opcao==1?"":"onchange='js_convocacao(this.value)'";
    db_input('ed127_i_nconvoca',10,$Ied127_i_nconvoca,true,'text',$db_opcao," $onchange")
    ?>
   </td>
  </tr>
- <?if (isset($chavepesquisa)) {?>
+ <?php if (isset($chavepesquisa)) {?>
  
      <tr>
       <td nowrap title="<?=@$Ted127_i_nparticipa?>">
        <?=@$Led127_i_nparticipa?>
       </td>
       <td>
-       <?db_input('ed127_i_nparticipa',10,$Ied127_i_nparticipa,true,'text',3,"")?>
+       <?php db_input('ed127_i_nparticipa',10,$Ied127_i_nparticipa,true,'text',3,"")?>
        <?=@$Led127_i_nfaltajust?>
-       <?db_input('ed127_i_nfaltajust',10,$Ied127_i_nfaltajust,true,'text',3,"")?>
+       <?php db_input('ed127_i_nfaltajust',10,$Ied127_i_nfaltajust,true,'text',3,"")?>
        <?=@$Led127_i_nfaltanjust?>
-       <?db_input('ed127_i_nfaltanjust',10,$Ied127_i_nfaltanjust,true,'text',3,"")?>
+       <?php db_input('ed127_i_nfaltanjust',10,$Ied127_i_nfaltanjust,true,'text',3,"")?>
       </td>
      </tr>
      
- <?}?>
+ <?php }?>
  <tr>
   <td colspan="2" align="center">
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" 
@@ -131,7 +131,7 @@ if ($ed110_i_ptconvocacao == 0 || $ed110_i_ptgeral == 0) {
    <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
   </td>
  </tr>
- <?if (isset($chavepesquisa) && $db_opcao != 3) {?>
+ <?php if (isset($chavepesquisa) && $db_opcao != 3) {?>
  
      <tr>
       <td colspan="2">
@@ -150,7 +150,7 @@ if ($ed110_i_ptconvocacao == 0 || $ed110_i_ptgeral == 0) {
       </td>
      </tr>
      
- <?}?>
+ <?php }?>
   </table>
  </center>
 </form>
@@ -278,7 +278,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_progconvocacaores.hide();
-  <?
+  <?php 
     if ($db_opcao != 1) {
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

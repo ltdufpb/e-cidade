@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $oDaoSauDistritoSanitario->rotulo->label();
       <?=@$Ls153_i_codigo?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('s153_i_codigo', 10, $Is153_i_codigo, true, 'text', 3, "");
       ?>
     </td>
@@ -46,7 +46,7 @@ $oDaoSauDistritoSanitario->rotulo->label();
       <?=@$Ls153_c_codigo?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('s153_c_codigo', 2, $Is153_c_codigo, true, 'text', $db_opcao, "");
       ?>
       <sup>*Valores de 01 a 77</sup>
@@ -57,7 +57,7 @@ $oDaoSauDistritoSanitario->rotulo->label();
       <?=@$Ls153_c_descr?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('s153_c_descr', 40, $Is153_c_descr, true, 'text', $db_opcao, "");
       ?>
     </td>
@@ -84,7 +84,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_sau_distritosanitario.hide();
-  <?
+  <?php 
   if($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

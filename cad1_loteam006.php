@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -100,7 +100,7 @@ if ( isset( $oPost->excluir ) ) {
   </tr>  
   <tr align="center" valign="top">
     <td>
-      <?
+      <?php 
         include(modification("forms/db_frmloteam.php"));
       ?>    
     </td>
@@ -108,7 +108,7 @@ if ( isset( $oPost->excluir ) ) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if ( isset($oPost->excluir) ) {
   
   if ($lSqlErro) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,7 +43,7 @@ include(modification("dbforms/db_funcoes.php"));
 <table align="center" border="0" cellspacing="0" cellpading="0">
 <tr>
  <td>
- <?
+ <?php 
  if (isset($GLOBALS["_FILES"]["la24_o_assinatura"])) {
    db_postmemory($GLOBALS["_FILES"]["la24_o_assinatura"]);
   if ($error==0) {
@@ -51,12 +51,12 @@ include(modification("dbforms/db_funcoes.php"));
    if ($type!="image/jpeg" and $type!="image/pjpeg") {
    	
      db_msgbox("Imagem não é um formato válido!\\n\\nUtilize somente imagens no formato JPG!");
-     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?
+     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?php 
      
    } elseif($size > 300000) {
    	
      db_msgbox("Tamanho da imagem é maior que o permitido!\\n\\nUtilize imagens até 300 kb!");
-     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?
+     ?><script>parent.frame_file.document.form3.la24_o_assinatura.value = "";</script><?php 
     
    } else {
     // Pega o tamanho da imagem e proporção de resize
@@ -88,7 +88,7 @@ include(modification("dbforms/db_funcoes.php"));
     echo "<center>";
     ?>
       <img src="<?=$imagem_gerada?>">
-    <?
+    <?php 
     if (empty( $scale )) {
     	
        echo "<p>Visualização não disponível";
@@ -99,19 +99,19 @@ include(modification("dbforms/db_funcoes.php"));
       <script>
         parent.document.form1.la24_o_assinatura.value = "<?=$parentname?>";
       </script>
-     <?
+     <?php 
      echo "</center>";
    }
   } else {?>
      <script>
        alert("Erro na importação da imagem");
      </script>
-    <?
+    <?php 
   }
  }
  if (isset($_GET["imagem_gerada"])) {?>
   <img src="<?=$imagem_gerada?>">
- <?}?>
+ <?php }?>
  </td>
 </tr>
 <table>

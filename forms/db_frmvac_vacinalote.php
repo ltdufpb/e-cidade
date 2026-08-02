@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,15 +44,15 @@ $clrotulo->label("vc06_i_vacina");
        <?=@$Lvc15_i_codigo?>
     </td>
     <td> 
-     <?db_input('vc15_i_codigo',10,$Ivc15_i_codigo,true,'text',3,"")?>
+     <?php db_input('vc15_i_codigo',10,$Ivc15_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc15_i_vacina?>">
-      <? db_ancora(@$Lvc15_i_vacina,"js_pesquisavc15_i_vacina(true);",$db_opcao);?>
+      <?php  db_ancora(@$Lvc15_i_vacina,"js_pesquisavc15_i_vacina(true);",$db_opcao);?>
     </td>
     <td> 
-    <?
+    <?php 
       db_input('vc15_i_vacina',10,$Ivc15_i_vacina,true,'text',$db_opcao,
                 " onchange='js_pesquisavc15_i_vacina(false);'");
       db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,'');
@@ -62,11 +62,11 @@ $clrotulo->label("vc06_i_vacina");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tvc15_i_lote?>">
-     <?db_ancora(@$Lvc15_i_lote,"js_pesquisavc15_i_lote(true);",$db_opcao);?>
+     <?php db_ancora(@$Lvc15_i_lote,"js_pesquisavc15_i_lote(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('vc15_i_lote',10,$Ivc15_i_lote,true,'text',$db_opcao," onchange='js_pesquisavc15_i_lote(false);'")?>
-     <?db_input('m77_lote',40,$Im77_lote,true,'text',3,'')?>
+     <?php db_input('vc15_i_lote',10,$Ivc15_i_lote,true,'text',$db_opcao," onchange='js_pesquisavc15_i_lote(false);'")?>
+     <?php db_input('m77_lote',40,$Im77_lote,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -74,7 +74,7 @@ $clrotulo->label("vc06_i_vacina");
       <?=@$Lm61_descr?>
     </td>
     <td>
-    <?db_input('m61_descr',10,$Im61_descr,true,'text',3,"")?>
+    <?php db_input('m61_descr',10,$Im61_descr,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -82,7 +82,7 @@ $clrotulo->label("vc06_i_vacina");
       <?=@$Lm77_dtvalidade?>
     </td>
     <td>
-    <?db_inputdata('m77_dtvalidade',@$m77_dtvalidade_dia,@$m77_dtvalidade_mes,@$m77_dtvalidade_ano,true,'text',3,"")?>
+    <?php db_inputdata('m77_dtvalidade',@$m77_dtvalidade_dia,@$m77_dtvalidade_mes,@$m77_dtvalidade_ano,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -90,7 +90,7 @@ $clrotulo->label("vc06_i_vacina");
       <strong><b>Quantidade do Lote:</b></strong> 
     </td>
     <td>
-    <?db_input('m71_quant',10,$Im71_quant,true,'text',3,"")?>
+    <?php db_input('m71_quant',10,$Im71_quant,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -98,7 +98,7 @@ $clrotulo->label("vc06_i_vacina");
        <?=@$Lvc15_n_quant?>
     </td>
     <td> 
-    <?db_input('vc15_n_quant',10,$Ivc15_n_quant,true,'text',$db_opcao,"")?>
+    <?php db_input('vc15_n_quant',10,$Ivc15_n_quant,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -342,7 +342,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_vacinalote.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

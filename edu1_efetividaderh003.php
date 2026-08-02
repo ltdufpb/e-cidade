@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,7 +75,7 @@ if (isset($excluir)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Informe a competência da efetividade:</b></legend>
-       <?include(modification("forms/db_frmefetividaderh.php"));?>
+       <?php include(modification("forms/db_frmefetividaderh.php"));?>
       </fieldset>
      </center>
     </td>
@@ -83,7 +83,7 @@ if (isset($excluir)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
   if ($oDaoEfetividadeRh->erro_status == "0") {
     $oDaoEfetividadeRh->erro(true,false);

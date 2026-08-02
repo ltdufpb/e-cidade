@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,13 +59,13 @@ $cltransfmarca->rotulo->label('ma02_i_marca');
     <tr>
      <td>
       De:
-      <?db_inputdata('data_ini',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
+      <?php db_inputdata('data_ini',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
       Até:
-      <?db_inputdata('data_fim',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
+      <?php db_inputdata('data_fim',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
      </td>
      <td>
       &nbsp;&nbsp;&nbsp;
-      <?
+      <?php 
       $tipo = array("Todas"=>"Todas","Por Marca"=>"Por Marca");
       db_select("escolha",$tipo,true,2,"onchange=\"js_opcao(this.value)\"");
       ?>
@@ -74,9 +74,9 @@ $cltransfmarca->rotulo->label('ma02_i_marca');
     </tr>
      <td>
       <span name="marcas" id="marcas" style="visibility:hidden">
-       <?db_ancora(@$Lma02_i_marca,"js_pesquisama02_i_marca(true);",1);?>
-       <?db_input('ma02_i_marca',10,'',true,'text',1," onchange='js_pesquisama02_i_marca(false);'")?>
-       <?db_input('z01_nome',40,'',true,'text',3,'')?>
+       <?php db_ancora(@$Lma02_i_marca,"js_pesquisama02_i_marca(true);",1);?>
+       <?php db_input('ma02_i_marca',10,'',true,'text',1," onchange='js_pesquisama02_i_marca(false);'")?>
+       <?php db_input('z01_nome',40,'',true,'text',3,'')?>
       </span>
      </td>
      <td>
@@ -159,6 +159,6 @@ function js_opcao(valor){
  }
 }
 </script>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

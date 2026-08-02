@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -89,7 +89,7 @@ if(isset($valores)){
     <td width=10% align=center><b>VALOR</b></td>
     <td width=10% align=center></td>
   </tr>
-  <?
+  <?php 
   if(isset($numslip) && trim($numslip) != ""){
     $res = $clsliprecurso->sql_record($clsliprecurso->sql_query(null,"o15_codigo as k29_recurso, o15_descr, k29_valor, k17_valor as valor_slip", "o15_codigo", " k29_slip = $numslip"));
     if($clsliprecurso->numrows > 0){
@@ -100,7 +100,7 @@ if(isset($valores)){
           <td><?=$k29_recurso?></td>
           <td><?=$o15_descr?></td>
           <td align=right>
-          <?
+          <?php 
           $campovalor = "val_".$k29_recurso;
           $$campovalor = $k29_valor;
           db_input($campovalor, 8, 0, true, "text", ($k29_recurso == 1 ? 3 : 1), "onchange='js_AtualizaDeletaRow(null, \"val_$k29_recurso\", false)'");
@@ -110,7 +110,7 @@ if(isset($valores)){
             <input type='button' value='E' onclick='js_AtualizaDeletaRow("rec_<?=$k29_recurso?>", "val_<?=$k29_recurso?>", true)' <?=($k29_recurso == 1 ? "disabled" : "")?>>
           </td>
         </tr>
-        <?
+        <?php 
       }
       db_input("numslip", 8, 0, true, "hidden", 3);
       db_input("valor_slip", 8, 0, true, "hidden", 3);
@@ -119,7 +119,7 @@ if(isset($valores)){
     <tr>
       <td id="semrecursos" colspan=2>Sem Recursos Lançados</td>
     </tr>
-    <?
+    <?php 
     }
   }
   ?>
@@ -207,7 +207,7 @@ function js_submita(){
   document.form1.submit();
 }
 </script>
-<?
+<?php 
 if(isset($valores)){
   db_msgbox($erro_msg);
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ $iModulo        = db_getsession('DB_modulo');
     <td width="140">&nbsp;</td>
    </tr>
   </table>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <a name="topo"></a>
   <form name="form1" method="post" action="">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -75,7 +75,7 @@ $iModulo        = db_getsession('DB_modulo');
       <fieldset style="width:95%"><legend><b>Quadro de Especificação</b></legend>
        <table border="0">
         <tr>
-         <?
+         <?php 
            if ($iModulo == 7159) {
 
              echo '<td align="left">';
@@ -192,7 +192,7 @@ $iModulo        = db_getsession('DB_modulo');
     </tr>
    </table>
   </form>
-  <?
+  <?php 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
             db_getsession("DB_anousu"),db_getsession("DB_instit")
            );
@@ -453,13 +453,13 @@ function js_retornoPesquisaAssinatura(oRetorno) {
 
 
 </script>
-<?
+<?php 
 if ($iModulo != 7159) {
 ?>
   <script>
     js_escola(<?=$iEscola?>);
   </script>
 
-<?
+<?php 
 }
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ if (isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href   = 'mer1_mer_infnutricional001.php?me08_i_alimento=<?=$chavepesquisa?>&me35_c_nomealimento=<?=$me35_c_nomealimento?>';
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href   = 'mer1_mer_alimentomatmater001.php?me36_i_alimento=<?=$chavepesquisa?>&me35_c_nomealimento=<?=$me35_c_nomealimento?>';     
   </script>
-  <?
+  <?php 
 }
 ?>
 <html>
@@ -74,7 +74,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Alimento</b></legend>
-	<?
+	<?php 
 	include(modification("forms/db_frmmer_alimento.php"));
 	?>
    </fieldset>
@@ -84,7 +84,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($clmer_alimento->erro_status == "0") {

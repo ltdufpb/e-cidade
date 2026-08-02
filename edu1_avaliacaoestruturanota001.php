@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -133,11 +133,11 @@
   </head>
   <body bgcolor=#CCCCCC style="margin-top: 25px" >
     <center>
-      <?
+      <?php 
         require_once(modification("forms/db_frmavaliacaoestruturanota.php"));
       ?>
     </center>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
   </body>
@@ -145,7 +145,7 @@
 <script>
   js_tabulacaoforms("form1","ed315_escola",true,1,"ed315_escola",true);
 </script>
-<?
+<?php 
   if (isset($incluir)) {
     if ($oDaoAvaliacaoEstruturaNota->erro_status == "0") {
 

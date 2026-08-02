@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE motivoalta
 class cl_motivoalta { 

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE assentamentofimcontrato
 class cl_assentamentofimcontrato { 

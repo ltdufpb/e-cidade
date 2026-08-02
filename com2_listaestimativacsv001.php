@@ -60,11 +60,11 @@ $db_opcao = 1;
 					<tr>
 				    <td nowrap title="Código da Abertura." style="width: 80">
 				      <strong>
-				        <? db_ancora("Abertura de Registro de Preço:", "js_pesquisaAbertura(true);", 1); ?>
+				        <?php  db_ancora("Abertura de Registro de Preço:", "js_pesquisaAbertura(true);", 1); ?>
 				      </strong>
 				    </td>
 				    <td  style="width: 100%">
-				      <?
+				      <?php 
 				        db_input('iAbertura', 10, "", true, 'text', 3);
 				      ?>
 				    </td>
@@ -75,7 +75,7 @@ $db_opcao = 1;
 	</div>
 </center>
 </form>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

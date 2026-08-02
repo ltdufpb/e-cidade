@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ if (isset($excluir)) {
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <br><br>
     <fieldset style="width:95%"><legend><b>Exclusão Cardápio Nutricionista</b></legend>
-	<? include(modification("forms/db_frmmer_cardapionutri.php"));?>
+	<?php  include(modification("forms/db_frmmer_cardapionutri.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -75,7 +75,7 @@ if (isset($excluir)) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clmer_cardapionutri->erro_status=="0") {

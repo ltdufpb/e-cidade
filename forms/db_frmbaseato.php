@@ -172,7 +172,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
     </table>
   </form>
 <script>
-<?$codbaseescola = $codbaseescola;?>
+<?php $codbaseescola = $codbaseescola;?>
 
 function js_pesquisaed278_i_atolegal() {
   js_OpenJanelaIframe(

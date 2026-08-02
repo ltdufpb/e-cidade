@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE horarioescola
 class cl_horarioescola { 

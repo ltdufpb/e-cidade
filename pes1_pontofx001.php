@@ -1382,7 +1382,7 @@ if (isset($r90_regist)) {
   </tr>
 </table>
 
-  <?
+  <?php 
   include(modification("forms/db_frmpontofx.php"));
 
   if(!isset($oGet->lConsulta)){
@@ -1393,7 +1393,7 @@ if (isset($r90_regist)) {
 </html>
 
 
-<?
+<?php 
 if(isset($sqlerro) && $sqlerro == true){
     db_msgbox($erro_msg);
 }

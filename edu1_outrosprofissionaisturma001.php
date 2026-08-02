@@ -60,7 +60,7 @@ require_once(modification("dbforms/db_funcoes.php"));
           <tr>
             <td>
               <label for="codigoProfissional">
-                <?db_ancora("<b>Profissional:</b>","pesquisa_profissional(true);", "");?>
+                <?php db_ancora("<b>Profissional:</b>","pesquisa_profissional(true);", "");?>
               </label>
             </td>
             <td>

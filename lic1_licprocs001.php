@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -94,13 +94,13 @@ function js_submit(){
       <strong>Licitação : </strong>
     </td>
     <td nowrap>
-    <?
+    <?php 
            db_input('licitacao',10,$Il20_codigo,true,'text',3);
     ?>
     </td>
     <td><b>Processos de Compras:</b></td>
     <td>
-    <?
+    <?php 
     $vir="";
         
         $result_liclicitem = $clliclicitem->sql_record($clliclicitem->sql_query(
@@ -191,7 +191,7 @@ function js_submit(){
       <strong>Usuário:</strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       db_input('nome',41,$Inome,true,'text',3);
     ?>
     </td>
@@ -202,7 +202,7 @@ function js_submit(){
       <strong>Data: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       db_input('pc80_data_dia',2,0,true,'text',3);
       db_input('pc80_data_mes',2,0,true,'text',3);
       db_input('pc80_data_ano',4,0,true,'text',3);
@@ -212,7 +212,7 @@ function js_submit(){
       <strong>Departamento: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       db_input('descrdepto',41,$Idescrdepto,true,'text',3);
     ?>
     </td>
@@ -222,7 +222,7 @@ function js_submit(){
       <strong>Resumo: </strong>
     </td>
     <td colspan="3" nowrap>
-    <?
+    <?php 
       db_textarea('pc80_resumo',2,73,$Ipc80_resumo,true,'text',3,"")     
     ?>
     </td>

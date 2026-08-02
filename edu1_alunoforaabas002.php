@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="460" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    $clcriaabas->identifica = array("a1"=>"Dados Pessoais","a2"=>"Outros Dados","a3"=>"Cursos");
    $clcriaabas->sizecampo  = array("a1"=>"15","a2"=>"10","a3"=>"15");
    $clcriaabas->src        = array("a1"=>"edu1_alunodadosfora002.php","a2"=>"","a3"=>"");
@@ -68,6 +68,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

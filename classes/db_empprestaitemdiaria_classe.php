@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: empenho
 //CLASSE DA ENTIDADE empprestaitemdiaria
 class cl_empprestaitemdiaria { 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -67,7 +67,7 @@ if (isset($alterar)) {
 
 </body>
 </html>
-<?
+<?php 
 if ($cltabrecjm->erro_status == 0) {
   $cltabrecjm->erro(true, false);
 } else {

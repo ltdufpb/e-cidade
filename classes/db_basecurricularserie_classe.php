@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE basecurricularserie
 class cl_basecurricularserie { 

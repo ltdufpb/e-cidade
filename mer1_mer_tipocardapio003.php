@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -89,7 +89,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão Cardápio</b></legend>
-    <?include(modification("forms/db_frmmer_tipocardapio.php"));?>
+    <?php include(modification("forms/db_frmmer_tipocardapio.php"));?>
    </fildsset>
    </center>
   </td>
@@ -97,7 +97,7 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clmer_tipocardapio->erro_status=="0") {

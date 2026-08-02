@@ -54,7 +54,7 @@ $db_opcao   = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    $clcriaabas->identifica    = array("a1"=>"Geral",
                                       "a2"=>"Contatos",
                                       "a3"=>"Infra Estrutura",
@@ -88,7 +88,7 @@ $db_opcao   = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
   db_getsession("DB_modulo"),
   db_getsession("DB_anousu"),
   db_getsession("DB_instit"));

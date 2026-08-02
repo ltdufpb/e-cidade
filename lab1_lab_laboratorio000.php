@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,7 +64,7 @@ db_fieldsmemory($rResultado,0);
 <table marginwidth="0" width="100%" border="1" cellspacing="0" cellpadding="0">
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    $clcriaabas->identifica = array("a1"=>converteCodificacao("Laboratório"),
                                    "a2"=>"Profissionais",
                                    "a3"=>"Usuarios externos",
@@ -106,6 +106,6 @@ db_fieldsmemory($rResultado,0);
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

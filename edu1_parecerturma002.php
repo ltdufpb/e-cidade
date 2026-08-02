@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -99,7 +99,7 @@ if (isset($alterar)) {
       <b>Selecione o Calendário:</b>
       <select name="calendario" onchange="js_calendario(this.value);" style="font-size:9px;width:200px;height:18px;">
        <option></option>
-       <?
+       <?php 
        #Seleciona todos os grupos para setar os valores no combo
        $sql = "SELECT ed52_i_codigo,ed52_c_descr
                  FROM calendario
@@ -114,14 +114,14 @@ if (isset($alterar)) {
         $desc_curso=$row["ed52_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-        <?
+        <?php 
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
       </select>
      </td>
     </tr>
-    <?if(isset($calendario)){?>
+    <?php if(isset($calendario)){?>
     <tr>
      <td>
       <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
@@ -132,7 +132,7 @@ if (isset($alterar)) {
          <input name="restaurar" type="button" value="Restaurar" onclick="location.href='edu1_parecerturma002.php?codigoparecer=<?=$codigoparecer?>&descrparecer=<?=$descrparecer?>&calendario=<?=$calendario?>';">
         </td>
        </tr>
-       <?
+       <?php 
        
        $sql = "SELECT DISTINCT
                       ed10_i_codigo,
@@ -185,7 +185,7 @@ if (isset($alterar)) {
              <input style="height:12px;" type="checkbox" id="MTE<?=$ed10_i_codigo?>" value="" onclick="js_marcaensino(<?=$ed10_i_codigo?>);"> Marcar Tudo
             </td>
            </tr>
-           <?
+           <?php 
            $ensino = $ed10_i_codigo;
            $codentrada .= $sepentrada.$ed10_i_codigo;
            $sepentrada = "|";
@@ -200,7 +200,7 @@ if (isset($alterar)) {
            <td>
             <table border="0" cellpading="0" cellspacing="0">
              <tr>
-             <?
+             <?php 
              $serie = $ed11_c_descr;
          }
          $result1 = $clparecerturma->sql_record($clparecerturma->sql_query("","ed105_i_codigo",""," ed105_i_turma = $ed57_i_codigo AND ed105_i_parecer = $codigoparecer"));
@@ -216,7 +216,7 @@ if (isset($alterar)) {
           <?=$ed57_c_descr?>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          </td>
-         <?
+         <?php 
          $codturma .= $septurma.$ed57_i_codigo;
          $septurma = ",";
         }
@@ -227,7 +227,7 @@ if (isset($alterar)) {
           <td class='aluno'>NENHUMA TURMA NESTE CALENDÁRIO.</td>
          </tr>
         </table>
-        <?
+        <?php 
        }
        ?>
       </table>
@@ -238,7 +238,7 @@ if (isset($alterar)) {
     <input type="hidden" name="calendario" value="<?=$calendario?>">
     <input type="hidden" name="codentrada" value="<?=$codentrada?>">
     <input type="hidden" name="codturma" value="<?=$codturma?>">
-    <?}?>
+    <?php }?>
    </table>
    </fieldset>
    </center>
@@ -296,11 +296,11 @@ function js_marcaensino(codigo) {
     }
   }
 }
-<?
+<?php 
 if($linhas_result>0 && !isset($calendario)){
  ?>
  js_calendario(document.form1.calendario.options[1].value);
- <?
+ <?php 
 }
 ?>
 </script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -230,7 +230,7 @@ if (isset($post->q54_inscr) and $post->q54_inscr !=''){
   </tr>
 </table>
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmissnotaavulsatomadoralt.php"));
 	?>
     </center>
@@ -238,7 +238,7 @@ if (isset($post->q54_inscr) and $post->q54_inscr !=''){
 </html>
 <script>
 </script>
-<?
+<?php 
 if(isset($post->incluir)){
 
   if($lSqlErro){

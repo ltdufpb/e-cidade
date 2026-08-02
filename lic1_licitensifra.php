@@ -354,7 +354,7 @@ function js_submit_form(){
   <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-    <?
+    <?php 
 
            db_input("tipojulg"  ,1 ,'',true,"hidden",3);
            db_input('licitacao' ,10,'',true,'hidden',3);

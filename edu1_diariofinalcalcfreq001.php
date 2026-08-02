@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -105,7 +105,7 @@ $iAno   = $oTurma->getCalendario()->getAnoExecucao();
       <td class="titulo">N° Abonos</td>
       <td class="titulo">Percentual por Disciplina</td>
      </tr>
-     <?
+     <?php 
      $soma_aulas = 0;
      $soma_faltas = 0;
      $soma_abonos = 0;
@@ -122,7 +122,7 @@ $iAno   = $oTurma->getCalendario()->getAnoExecucao();
        <td align="center"><?=$abonos?></td>
        <td align="right"><?=ArredondamentoFrequencia::arredondar($perc_disciplina, $iAno)?>%</td>
       </tr>
-      <?
+      <?php 
      }
      ?>
      <tr class="cabec1">

@@ -55,7 +55,7 @@ $clrotulo->label("ed99_i_periodoref");
         <table border="0" width="100%">
             <tr>
                 <td nowrap>
-                    <? db_ancora("<b>Etapa:</b>", "", 3); ?>
+                    <?php  db_ancora("<b>Etapa:</b>", "", 3); ?>
                 </td>
                 <td>
                     <?php

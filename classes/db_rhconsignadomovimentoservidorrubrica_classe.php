@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomovimentoservidorrubrica
 class cl_rhconsignadomovimentoservidorrubrica { 

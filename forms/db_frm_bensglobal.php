@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -199,7 +199,7 @@ function js_escondeFieldsetMaterial(){
   <tr><!-- Código do Bem -->
     <td title="<?=$Tt52_bem?>"><?=$Lt52_bem?></td>
     <td>
-      <?
+      <?php 
         db_input('t52_bem',8,$It52_bem,true,"text",3,"");
       ?>
     </td>
@@ -251,7 +251,7 @@ function js_escondeFieldsetMaterial(){
     ?>  
     </td>
     <td>
-    <?
+    <?php 
         }
       db_input('t52_ident',20,$It52_ident,true,'text',$iOpcaoPlaca);
       if ($t07_confplaca == 3 && ( $db_opcao == 1 || $db_opcao == 11) ) {
@@ -260,7 +260,7 @@ function js_escondeFieldsetMaterial(){
     ?>
     </td>   
   </tr>
-  <?
+  <?php 
     if ($db_opcao == 2 || $db_opcao == 22) {
       $t52_ident_atual = $t52_ident;
       db_input("t52_ident_atual",20,0,true,"hidden",3,"");
@@ -279,7 +279,7 @@ function js_escondeFieldsetMaterial(){
        <?=@$Lt52_descr?>
     </td>
     <td> 
-      <?
+      <?php 
         if ( isset($t52_descr) ) {
           $t52_descr = htmlspecialchars($t52_descr);  
         }
@@ -290,12 +290,12 @@ function js_escondeFieldsetMaterial(){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt64_class?>">
-      <?
+      <?php 
         db_ancora(@$Lt64_class,"js_pesquisat64_class(true);",$db_opcao);
       ?>
     </td>
     <td>
-      <?  
+      <?php   
         $cldb_estrut->autocompletar   = true;
         $cldb_estrut->mascara         = false;
         $cldb_estrut->input           = true;
@@ -317,12 +317,12 @@ function js_escondeFieldsetMaterial(){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt52_numcgm?>">
-       <?
+       <?php 
          db_ancora(@$Lt52_numcgm,"js_pesquisat52_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('t52_numcgm',8,$It52_numcgm,true,'text',$db_opcao," onchange='js_pesquisat52_numcgm(false);'");
         db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
       ?>
@@ -331,7 +331,7 @@ function js_escondeFieldsetMaterial(){
   <tr>
     <td><b>Medida:</b></td>
     <td>
-      <?
+      <?php 
         $rsBensMedida = $clbensmedida->sql_record($clbensmedida->sql_query());
         db_selectrecord('t67_sequencial',$rsBensMedida,'true',$db_opcao); 
       ?>
@@ -340,7 +340,7 @@ function js_escondeFieldsetMaterial(){
   <tr>
     <td><b>Modelo:</b></td>
     <td>
-      <?
+      <?php 
         $rsBensModelo = $clbensmodelo->sql_record($clbensmodelo->sql_query());
         db_selectrecord('t66_sequencial',$rsBensModelo,'true',$db_opcao); 
       ?>
@@ -349,7 +349,7 @@ function js_escondeFieldsetMaterial(){
   <tr>
     <td><b>Marca:</b></td>
     <td>
-      <?
+      <?php 
         $rsBensMarca = $clbensmarca->sql_record($clbensmarca->sql_query());
         db_selectrecord('t65_sequencial',$rsBensMarca,'true',$db_opcao); 
       ?>
@@ -360,7 +360,7 @@ function js_escondeFieldsetMaterial(){
        <?=@$Lt52_valaqu?>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('t52_valaqu',15,$It52_valaqu,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -370,7 +370,7 @@ function js_escondeFieldsetMaterial(){
        <?=@$Lt52_dtaqu?>
     </td>
     <td> 
-      <?
+      <?php 
         db_inputdata('t52_dtaqu',@$t52_dtaqu_dia,@$t52_dtaqu_mes,@$t52_dtaqu_ano,true,'text',$db_opcao,"");
       ?>
     </td>
@@ -380,7 +380,7 @@ function js_escondeFieldsetMaterial(){
        <?=@$Lt52_obs?>
     </td>
     <td> 
-      <?
+      <?php 
         db_textarea('t52_obs',3,48,$It52_obs,true,'text',$db_opcao,"")
       ?>
     </td>
@@ -409,67 +409,67 @@ function js_escondeFieldsetMaterial(){
       <b>Órgão:</b>
     </td>
     <td>
-      <?
+      <?php 
         db_input('o40_descr',51,$Io40_descr,3,'text',3);
       ?>        
     </td>
   </tr>
   <tr>
     <td><b>Unidade:</b></td>
-    <td><? db_input('o41_descr',51,$Io41_descr,3,'text',3); ?></td>
+    <td><?php  db_input('o41_descr',51,$Io41_descr,3,'text',3); ?></td>
   </tr>
   <?php
   }
   ?>
    <td nowrap title="<?=@$Tt52_depart?>">
-       <?
+       <?php 
        db_ancora(@$Lt52_depart,"js_pesquisat52_depart(true);",$db_opcao);
        ?>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('t52_depart',8,$It52_depart,true,'text',$db_opcao," onchange='js_pesquisat52_depart(false);'");
         db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
       ?>
     </td>
   </tr>
-  <?if (isset($t52_depart)&&$t52_depart!=""){?>
+  <?php if (isset($t52_depart)&&$t52_depart!=""){?>
   <tr>
     <td nowrap title="Divisão do Depart.">
     <b> Divisão:</b>   
     </td>
     <td>
-    <?if($db_opcao != 3){?>
+    <?php if($db_opcao != 3){?>
     <select name='t33_divisao'>
   <option value=''>Nenhuma</option>
-  <?
+  <?php 
   $result=$cldepartdiv->sql_record($cldepartdiv->sql_query_file(null,"t30_codigo,t30_descr",null,"t30_ativo = true and t30_depto=$t52_depart"));
   for($y=0;$y<$cldepartdiv->numrows;$y++){
     db_fieldsmemory($result,$y);
     ?>
     <option value=<?=@$t30_codigo?> <?=(isset($t33_divisao)&&$t33_divisao==$t30_codigo?"selected":"")?> > <?=@$t30_descr?></option>
-    <?}?>
+    <?php }?>
      </select> 
      </td>
   
-  <?}else{?>
+  <?php }else{?>
     <td> 
-      <?
+      <?php 
         db_input('t33_divisao',6,$It33_divisao,true,'text',$db_opcao,"");
         db_input('t30_descr',6,$It30_descr,true,'text',$db_opcao,"");
       ?>
     </td>
-  <?}?>
+  <?php }?>
   </tr> 
-    <?  }?>
+    <?php   }?>
     <tr>
       <td nowrap title="<?="Convênio"?>">
-        <?
+        <?php 
           db_ancora("<b>Convênio:</b>","js_pesquisat04_sequencial(true);",$db_opcao);
         ?>
       </td>
       <td> 
-        <?
+        <?php 
           if (isset($t52_bem) && !empty($t52_bem)) {
           	
             $result_benscedente = $clbenscedente->sql_record($clbenscedente->sql_query(null,"t09_benscadcedente,a.z01_nome as z01_nome_convenio",null,"t09_bem = $t52_bem"));
@@ -484,23 +484,23 @@ function js_escondeFieldsetMaterial(){
           }
           db_input('t04_sequencial',8,$It04_sequencial,true,'text',$db_opcao," onchange='js_pesquisat04_sequencial(false);'")
         ?>
-        <?
+        <?php 
           db_input('z01_nome_convenio',40,'',true,'text',3,'')
         ?>
       </td>
     </tr> 
     <tr>
-      <?
+      <?php 
         if($db_opcao == 1 || (isset($tipo_inclui)&&trim($tipo_inclui)!="")){
       ?>
       <tr>
         <td nowrap title="<?=@$Tt56_situac?>">
-          <?
+          <?php 
             db_ancora(@$Lt56_situac,"js_pesquisat56_situac(true);",1);
           ?>
         </td>
         <td> 
-          <?
+          <?php 
             db_input('t56_situac',8,$It56_situac,true,'text',1," onchange='js_pesquisat56_situac(false);'");
             db_input('t70_descr',40,$It70_descr,true,'text',3,'');
             db_input("tipo_inclui",40,"0",true,"hidden",3,"");
@@ -512,7 +512,7 @@ function js_escondeFieldsetMaterial(){
         <b>Quantidade:</b>
       </td>
       <td> 
-        <?
+        <?php 
           db_input('qtd',15,"",true,'text',1,'onchange="js_isnumber(this.value,this.name);"');
         ?>
       </td>
@@ -522,12 +522,12 @@ function js_escondeFieldsetMaterial(){
         <b>Descrição do lote:</b>
     </td>
     <td> 
-       <?
+       <?php 
         db_input('t42_descr',50,$It42_descr,true,'text',1,'');
        ?>
     </td>
   </tr> 
-<?
+<?php 
 }
 ?>
 <tr>
@@ -535,7 +535,7 @@ function js_escondeFieldsetMaterial(){
         <b>Placa de Identificação:</b>
     </td>
     <td> 
-       <?
+       <?php 
         if($db_opcao == 1 ){
           $placaidentificacao = "Não";
         }else if($db_opcao > 1){
@@ -564,12 +564,12 @@ function js_escondeFieldsetMaterial(){
       <table id="tabelaImovel" style="display:none;">
         <tr>
           <td width="4%" align="right" nowrap title="<?=$Tt54_idbql?>">
-            <?
+            <?php 
               db_ancora(@$Lt54_idbql,"js_pesquisat54_idbql(true);",$db_opcao);
             ?>
           </td>
           <td>
-            <?
+            <?php 
               db_input('t54_idbql',10,$It54_idbql,true,'text',$db_opcao," onchange='js_pesquisat54_idbql(false);'");
             ?>
           </td>
@@ -579,7 +579,7 @@ function js_escondeFieldsetMaterial(){
             <?=$Lt54_obs?>
           </td>
           <td width="96%" align="left" nowrap>
-            <?
+            <?php 
               db_textarea("t54_obs", 5, 40, $It54_obs, true, '', $db_opcao);
             ?>
           </td>
@@ -598,7 +598,7 @@ function js_escondeFieldsetMaterial(){
             <?=@$Lt53_ntfisc?>
           </td>
           <td> 
-            <?
+            <?php 
               db_input('t53_ntfisc',40,$It53_ntfisc,true,'text',$db_opcao,"");
              ?>
           </td>
@@ -619,7 +619,7 @@ function js_escondeFieldsetMaterial(){
         <tr>
           <td nowrap title="<?=@$Tt53_empen;?>" >
             <label style="font-weight: bold;" id='procAdm'> 
-              <? db_ancora(@$Lt53_empen,"js_pesquisat53_empen(true);",$db_opcao); ?>
+              <?php  db_ancora(@$Lt53_empen,"js_pesquisat53_empen(true);",$db_opcao); ?>
             </label>
             
               <label style="font-weight: bold; display: none;" id='procAdm1'> 
@@ -628,11 +628,11 @@ function js_escondeFieldsetMaterial(){
                   
           </td>
           <td> 
-            <? 
+            <?php  
               db_input('t53_empen',6,$It53_empen,true,'text',$db_opcao," onchange='js_pesquisat53_empen(false);'");
             ?>
             <span id="campoDescricao">              
-              <?db_input('z01_nome_empenho',30,$Iz01_nome,true,'text',3,""); ?>
+              <?php db_input('z01_nome_empenho',30,$Iz01_nome,true,'text',3,""); ?>
             </span>
           </td>
         </tr> 
@@ -641,7 +641,7 @@ function js_escondeFieldsetMaterial(){
             <?=@$Lt53_ordem;?>
           </td>
           <td> 
-          <?
+          <?php 
             db_input('t53_ordem',6,$It53_ordem,true,'text',$db_opcao,"");
           ?>
           </td>
@@ -651,7 +651,7 @@ function js_escondeFieldsetMaterial(){
             <?=@$Lt53_garant;?>
           </td>
           <td> 
-          <?
+          <?php 
             db_inputdata('t53_garant',@$t53_garant_dia,@$t53_garant_mes,@$t53_garant_ano,true,'text',$db_opcao,"");
           ?>
           </td>
@@ -666,7 +666,7 @@ function js_escondeFieldsetMaterial(){
 </fieldset>
 <br/>
 
-<?
+<?php 
   if ($db_opcao == 1) {
     $sLegendaBotao = "Incluir";
   } else if ($db_opcao == 2 || $db_opcao == 22) {
@@ -679,14 +679,14 @@ function js_escondeFieldsetMaterial(){
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> <?=((isset($tipo_inclui)&&$tipo_inclui=="true"))?"onclick=''":""?>>
 
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" <?=($msg_erro==""?"":"disabled")?> >
-<?if($db_opcao==2){?>
+<?php if($db_opcao==2){?>
   <input name="novo" type="button" id="novo" value="Novo" onclick="parent.location.href='pat1_bens001.php';" <?=($msg_erro==""?"":"disabled")?> >
-<?}
+<?php }
 
   if ( $db_opcao == 1 || $db_opcao == 11 ) {
 ?>
   <input name="importar" type="button" id="importar" value="Importação" onClick="js_importacao();">        
-<?
+<?php 
   }
 ?>
   </center>
@@ -809,7 +809,7 @@ function js_mostralote1(chave1){
 }
 
 function js_importacao(){
-<?
+<?php 
    if(isset($tipo_inclui)&&$tipo_inclui==true){
        $funcao = "func_benslotealt.php";
    } else {
@@ -820,7 +820,7 @@ function js_importacao(){
 }
 function js_mostrarbem(chave){
   db_iframe_bens.hide();
-<?
+<?php 
     if(isset($tipo_inclui)&&$tipo_inclui==true){
         $global = "&tipo_inclui=$tipo_inclui";
     } else {
@@ -839,12 +839,12 @@ function js_mostratext(placa){
 function js_retplaca(placa,seq){
   //alert(placa);
   //alert(seq);
-  <?if ($t07_confplaca==2){?>
+  <?php if ($t07_confplaca==2){?>
     document.form1.t52_ident.value = placa+seq;
-  <?}else if ($t07_confplaca==3){?>
+  <?php }else if ($t07_confplaca==3){?>
     document.form1.t52_ident.value = placa;
     document.form1.t52_ident_seq.value = seq;
-  <?}?>
+  <?php }?>
 }
 function js_buscplaca(classif){
       js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_bp','pat1_retseqplaca.php?classif='+classif,'',false);
@@ -957,9 +957,9 @@ function js_pesquisat64_class(mostra){
        }              
        js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_clabens','func_clabens.php?pesquisa_chave='+testa+'&funcao_js=parent.js_mostraclabens&analitica=true','Pesquisa',false);
      }else{
-      <?if ($t07_confplaca==2&&$db_opcao==1){?>
+      <?php if ($t07_confplaca==2&&$db_opcao==1){?>
     document.form1.t52_ident.value ="";
-  <?}?>
+  <?php }?>
        document.form1.t64_descr.value = ''; 
      }
   }
@@ -969,21 +969,21 @@ function js_mostraclabens(chave,erro){
   if(erro==true){ 
     document.form1.t64_class.value = '';
     document.form1.t64_class.focus();
-      <?if ($t07_confplaca==2&&$db_opcao==1){?>
+      <?php if ($t07_confplaca==2&&$db_opcao==1){?>
     document.form1.t52_ident.value ="";
-  <?}?>
+  <?php }?>
   }else{
-    <?if ($t07_confplaca==2&&$db_opcao==1){?>
+    <?php if ($t07_confplaca==2&&$db_opcao==1){?>
   js_buscplaca(document.form1.t64_class.value);
-  <?}?>  
+  <?php }?>  
   }
 }
 function js_mostraclabens1(chave1,chave2){
   document.form1.t64_class.value = chave1;
   document.form1.t64_descr.value = chave2;
-  <?if ($t07_confplaca==2&&$db_opcao==1){?>
+  <?php if ($t07_confplaca==2&&$db_opcao==1){?>
   js_buscplaca(document.form1.t64_class.value);
-  <?}?>
+  <?php }?>
   db_iframe_clabens.hide();
 }
 function js_pesquisat52_codmat(mostra){
@@ -1082,7 +1082,7 @@ function js_mostradb_depart1(chave1,chave2){
   document.form1.submit();
 }
 function js_pesquisa(){
-  <?
+  <?php 
      if(isset($tipo_inclui)&&$tipo_inclui==true){
          $url = "func_benslotealt.php?funcao_js=parent.js_preenchepesquisa|t42_codigo";
      } else {
@@ -1093,13 +1093,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bens.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php 
 if(isset($chavepesquisa)){
       echo "\njs_mascara03_t64_class(document.form1.t64_class.value);\n";
 }

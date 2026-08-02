@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,14 +45,14 @@ $clrotulo->label("ed72_t_parecer");
 <fieldset style="width:95%"><legend><b>Parecer Descritivo</b></legend>
 <form name="form1" method="post" action="">
 <table border="0" width="100%" cellspacing="0" cellpading="0">
- <?
+ <?php 
  $result = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed72_t_parecer,ed59_i_serie",""," ed72_i_codigo = $ed93_i_diarioavaliacao"));
  db_fieldsmemory($result,0);
  ?>
  <tr>
   <td colspan="4" align="center">
    <br>
-   <?
+   <?php 
    db_textarea('ed72_t_parecer',
                  5,
                  120,
@@ -64,7 +64,7 @@ $clrotulo->label("ed72_t_parecer");
                                    readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\""
                                  :"onblur=this.value = this.value.toUpperCase();")?>
    <br><br>
-   <?
+   <?php 
    $sql = "SELECT ed59_i_codigo,ed232_c_descr,ed59_i_ordenacao
            FROM regencia
             inner join disciplina on ed12_i_codigo = ed59_i_disciplina
@@ -87,17 +87,17 @@ $clrotulo->label("ed72_t_parecer");
     ?>
     <b>Selecione outras disciplinas para conter<br>este parecer no período <?=$periodo?></b>:<br>
     <select name="reg_outras[]" id="reg_outras" size="10" style="width:200px;font-size:10px;padding:0px;" multiple <?=@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":""?> >
-    <?
+    <?php 
     for($r=0;$r<$linhas;$r++){
      db_fieldsmemory($result,$r);
      ?>
       <option value="<?=$ed59_i_codigo?>"> <?=$ed232_c_descr?></option>
-     <?
+     <?php 
     }
     ?>
     </select>
     <br><br>
-   <?}?>
+   <?php }?>
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar2":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Salvar":"Excluir"))?>" <?=($db_botao==false||@$encerrado=="S"?"disabled":"")?> >
   </td>
  </tr>

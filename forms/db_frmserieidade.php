@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,16 +60,16 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led259_i_codigo?>
   </td>
   <td>
-   <?db_input('ed259_i_codigo',20,$Ied259_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed259_i_codigo',20,$Ied259_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted259_i_serie?>">
-   <?db_ancora(@$Led259_i_serie,"js_pesquisaed259_i_serie(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led259_i_serie,"js_pesquisaed259_i_serie(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed259_i_serie',20,$Ied259_i_serie,true,'text',$db_opcao1," onchange='js_pesquisaed259_i_serie(false);'")?>
-   <?db_input('ed11_c_descr',20,$Ied11_c_descr,true,'text',3,'')?>
+   <?php db_input('ed259_i_serie',20,$Ied259_i_serie,true,'text',$db_opcao1," onchange='js_pesquisaed259_i_serie(false);'")?>
+   <?php db_input('ed11_c_descr',20,$Ied11_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -77,8 +77,8 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led11_i_ensino?>
   </td>
   <td>
-   <?db_input('ed11_i_ensino',20,$Ied11_i_ensino,true,'text',3,'')?>
-   <?db_input('ed10_c_descr',40,$Ied10_c_descr,true,'text',3,'')?>
+   <?php db_input('ed11_i_ensino',20,$Ied11_i_ensino,true,'text',3,'')?>
+   <?php db_input('ed10_c_descr',40,$Ied10_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -86,7 +86,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led259_i_idadeini?>
   </td>
   <td>
-   <?db_input('ed259_i_idadeini',20,$Ied259_i_idadeini,true,'text',$db_opcao,"")?>
+   <?php db_input('ed259_i_idadeini',20,$Ied259_i_idadeini,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -94,7 +94,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led259_i_idadefim?>
   </td>
   <td>
-   <?db_input('ed259_i_idadefim',20,$Ied259_i_idadefim,true,'text',$db_opcao,"")?>
+   <?php db_input('ed259_i_idadefim',20,$Ied259_i_idadefim,true,'text',$db_opcao,"")?>
    </td>
  </tr>
 </table>
@@ -103,7 +103,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("ed259_i_codigo"=>@$ed259_i_codigo,"ed259_i_serie"=>@$ed259_i_serie,"ed11_c_descr"=>@$ed11_c_descr,"ed11_i_ensino"=>@$ed11_i_ensino,"ed10_c_descr"=>@$ed10_c_descr,"ed259_i_idadeini"=>@$ed259_i_idadeini,"ed259_i_idadefim"=>@$ed259_i_idadefim);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clserieidade->sql_query($ed259_i_codigo,"*","ed11_i_ensino,ed11_i_sequencia");

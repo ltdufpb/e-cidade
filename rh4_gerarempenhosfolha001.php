@@ -55,7 +55,7 @@ if (isset($oGet->iTipo) && $oGet->iTipo == 2 ) {
 ?>
 <html>
 <head>
-<?
+<?php 
 db_app::load("scripts.js");
 db_app::load("prototype.js");
 db_app::load("datagrid.widget.js");
@@ -68,7 +68,7 @@ db_app::load("DBViewFormularioFolha/ValidarFolhaPagamento.js");
 ?>
 </head>
 <body bgcolor="#cccccc">
-<?
+<?php 
 	include(modification("forms/db_frmgerarempenho.php"));
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,12 +48,12 @@ $clfar_retirada->rotulo->label();
  <tr>
   <td align="center" valign="top">
   	
-<?
+<?php 
    if(isset($consultar)){
 
     ?><fieldset style="width:95%"><legend><b>Retirada</b></legend>
 	
-    <?$campos = "fa04_i_codigo,
+    <?php $campos = "fa04_i_codigo,
 	             fa07_i_matrequi,
                  fa04_d_data,
                  fa04_c_numeroreceita,
@@ -81,7 +81,7 @@ $clfar_retirada->rotulo->label();
     if(isset($consultar)){
     	db_lovrot(@$sql,10,"()","","js_itens|fa04_i_codigo|fa07_i_matrequi","","NoMe",$repassa);
     }
-    ?></fieldset><br><br><?
+    ?></fieldset><br><br><?php 
    }
    ?>
     </td>

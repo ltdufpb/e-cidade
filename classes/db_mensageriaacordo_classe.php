@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: acordos
 //CLASSE DA ENTIDADE mensageriaacordo
 class cl_mensageriaacordo { 

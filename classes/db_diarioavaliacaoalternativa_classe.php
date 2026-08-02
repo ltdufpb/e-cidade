@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE diarioavaliacaoalternativa
 class cl_diarioavaliacaoalternativa { 

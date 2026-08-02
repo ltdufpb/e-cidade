@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ if(isset($censouf)){
   i--;
  }
  </script>
- <?
+ <?php 
  if($censouf==""){
   ?>
   <script>
@@ -71,7 +71,7 @@ if(isset($censouf)){
   parent.document.form1.elements["ed18_i_censodistrito"].options[0] = new Option("Selecione a Cidade","");
   parent.document.form1.elements["ed18_i_censoorgreg"].options[0] = new Option("Selecione o Estado","");
   </script>
-  <?
+  <?php 
  }else{
   ?>
   <script>
@@ -79,7 +79,7 @@ if(isset($censouf)){
   parent.document.form1.elements["ed18_i_censoorgreg"].options[0] = new Option("","");
   parent.document.form1.elements["ed18_i_censodistrito"].options[0] = new Option("Selecione a Cidade","");
   </script>
-  <?
+  <?php 
   $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $censouf"));
   for($x=0;$x<$clcensomunic->numrows;$x++){
    db_fieldsmemory($result_munic,$x);
@@ -87,7 +87,7 @@ if(isset($censouf)){
    <script>
    parent.document.form1.elements["ed18_i_censomunic"].options[<?=($x+1)?>] = new Option("<?=$ed261_c_nome?>",<?=$ed261_i_codigo?>);
    </script>
-   <?
+   <?php 
   }
   $result_orgreg = $clcensoorgreg->sql_record($clcensoorgreg->sql_query_file("","ed263_i_codigo,ed263_c_nome","ed263_c_nome","ed263_i_censouf = $censouf"));
   if($clcensoorgreg->numrows==0){
@@ -95,7 +95,7 @@ if(isset($censouf)){
    <script>
    parent.document.form1.elements["ed18_i_censoorgreg"].options[0] = new Option("Nenhum registro neste estado","");
    </script>
-   <?
+   <?php 
   }else{
    for($x=0;$x<$clcensoorgreg->numrows;$x++){
     db_fieldsmemory($result_orgreg,$x);
@@ -103,7 +103,7 @@ if(isset($censouf)){
     <script>
     parent.document.form1.elements["ed18_i_censoorgreg"].options[<?=($x+1)?>] = new Option("<?=$ed263_c_nome?>",<?=$ed263_i_codigo?>);
     </script>
-    <?
+    <?php 
    }
   }
  }
@@ -117,19 +117,19 @@ if(isset($censomunic)){
   i--;
  }
  </script>
- <?
+ <?php 
  if($censomunic==""){
   ?>
   <script>
   parent.document.form1.elements["ed18_i_censodistrito"].options[0] = new Option("Selecione a Cidade","");
   </script>
-  <?
+  <?php 
  }else{
   ?>
   <script>
   parent.document.form1.elements["ed18_i_censodistrito"].options[0] = new Option("","");
   </script>
-  <?
+  <?php 
   $result_distrito = $clcensodistrito->sql_record($clcensodistrito->sql_query("","ed262_i_codigo,ed262_c_nome","ed262_c_nome","ed262_i_censomunic = $censomunic"));
   for($x=0;$x<$clcensodistrito->numrows;$x++){
    db_fieldsmemory($result_distrito,$x);
@@ -137,7 +137,7 @@ if(isset($censomunic)){
    <script>
    parent.document.form1.elements["ed18_i_censodistrito"].options[<?=($x+1)?>] = new Option("<?=$ed262_c_nome?>",<?=$ed262_i_codigo?>);
    </script>
-   <?
+   <?php 
   }
  }
 }

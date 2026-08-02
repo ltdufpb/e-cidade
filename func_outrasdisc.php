@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -105,7 +105,7 @@ if(isset($coddisciplinas)){
  <script>
   parent.db_iframe_outrasdisc.hide();
  </script>
- <?
+ <?php 
  db_msgbox("Alterações efetuadas com sucesso!");
  exit;
 }
@@ -126,7 +126,7 @@ if(isset($coddisciplinas)){
    Selecione as outras disciplinas para<br>
    conter este resultado (<?=$valor=="N"?"REPROVADO":"APROVADO"?>)<br>
    </b>
-   <?
+   <?php 
    $sql = "SELECT ed59_i_codigo,ed232_c_descr
            FROM regencia
             inner join disciplina on ed12_i_codigo = ed59_i_disciplina
@@ -149,24 +149,24 @@ if(isset($coddisciplinas)){
    if($linhas>0){
     ?>
     <select name="outras_disc[]" id="outras_disc" size="10" style="width:200px;font-size:10px;padding:0px;" multiple>
-    <?
+    <?php 
     for($r=0;$r<$linhas;$r++){
      db_fieldsmemory($result,$r);
      ?>
       <option value="<?=$ed59_i_codigo?>"> <?=$ed232_c_descr?></option>
-     <?
+     <?php 
     }
     ?>
     </select>
     <br><br>
     <input type="button" value="Confirmar" onClick="js_confirmaserie();">
     <input type="button" value="Cancelar" onClick="js_fechar();">
-   <?}else{
+   <?php }else{
     ?>
     <script>
      parent.db_iframe_outrasdisc.hide();
     </script>
-    <?
+    <?php 
     exit;
    }?>
   </td>

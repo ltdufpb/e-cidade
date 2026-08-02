@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -127,7 +127,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:97%"><legend><b>Exclusão de Refeição </b></legend>
-    <?include(modification("forms/db_frmmer_cardapio.php"));?>
+    <?php include(modification("forms/db_frmmer_cardapio.php"));?>
    </fieldset>
    </center>
   </td>
@@ -135,7 +135,7 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clmer_cardapio->erro_status=="0") {
@@ -186,7 +186,7 @@ function js_removeMsg(idObj) {
  
 }
 
-<?if ($naopode==true) {?>
+<?php if ($naopode==true) {?>
     js_msg_nao_altera("<?=$msg_error?>","MsgBox");
-<?}?>
+<?php }?>
 </script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,13 +56,13 @@ include(modification("dbforms/db_funcoes.php"));
     <tr>
      <td>
       De:
-      <?db_inputdata('data_ini',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
+      <?php db_inputdata('data_ini',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
       Até:
-      <?db_inputdata('data_fim',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
+      <?php db_inputdata('data_fim',@$ma01_d_data_dia,@$ma01_d_data_mes,@$ma01_d_data_ano,true,'text',1,"")?>
      </td>
      <td>
       &nbsp;&nbsp;&nbsp;
-      <?
+      <?php 
       $tipo = array("Todos"=>"Todos","Cancelamentos"=>"Cancelamentos","Reativações"=>"Reativações");
       db_select("escolha",$tipo,true,2);
       ?>
@@ -97,7 +97,7 @@ function js_pesquisa(){
  }
 }
 </script>
-<?
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

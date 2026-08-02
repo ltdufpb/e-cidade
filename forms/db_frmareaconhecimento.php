@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ $oDaoAreaConhecimento->rotulo->label();
           <?=@$Led293_sequencial?>
         </td>
         <td> 
-          <?db_input('ed293_sequencial', 10, $Ied293_sequencial, true, 'text', "3", "")?>
+          <?php db_input('ed293_sequencial', 10, $Ied293_sequencial, true, 'text', "3", "")?>
         </td>
       </tr>
       <tr>
@@ -53,7 +53,7 @@ $oDaoAreaConhecimento->rotulo->label();
           <?=@$Led293_descr?>
         </td>
         <td> 
-          <?db_input('ed293_descr', 100, $Ied293_descr, true, 'text', $db_opcao, "")?>
+          <?php db_input('ed293_descr', 100, $Ied293_descr, true, 'text', $db_opcao, "")?>
         </td>
       </tr>
       <tr>
@@ -61,7 +61,7 @@ $oDaoAreaConhecimento->rotulo->label();
           <?=@$Led293_ativo?>
         </td>
         <td> 
-          <?
+          <?php 
             $aOpcoes = array("2" => "NÃO", "1" => "SIM");
             db_select('ed293_ativo', $aOpcoes, true, $db_opcao, '');
           ?>

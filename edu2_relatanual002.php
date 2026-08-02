@@ -85,7 +85,7 @@ if ($linhas == 0) { ?>
             </td>
         </tr>
     </table>
-    <?
+    <?php 
     exit;
 }
 

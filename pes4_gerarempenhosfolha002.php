@@ -508,7 +508,7 @@ foreach ($aSiglas as $sSigla) {
             sNomeFolha = 'Mensal';
             break;
     }
-    <?
+    <?php 
     if (!$lLiberado) {
     ?>
     lBotoes = false;
@@ -516,7 +516,7 @@ foreach ($aSiglas as $sSigla) {
     $('messageBoard').innerHTML = "Folha  de " + sNomeFolha + " para o período " + oParametros.iMesFolha + "/" + oParametros.iAnoFolha;
     $('messageBoard').innerHTML += " Não liberada para gerar Empenhos.";
     $('messageBoard').style.display = "";
-    <?
+    <?php 
     }
     ?>
     sUrl = "pes4_gerarEmpenhoFolhaRPC.php";

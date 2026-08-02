@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,8 +59,8 @@ if ( isset($oGet->lOrigemTransferencia) && $oGet->lOrigemTransferencia ) {
     <link href="estilos.css" rel="stylesheet" type="text/css">
   </head>
   <body bgcolor="#CCCCCC">
-    <?include(modification("forms/db_frmescolaproc.php"));?>
-    <?
+    <?php include(modification("forms/db_frmescolaproc.php"));?>
+    <?php 
       if ( !isset($oGet->lOrigemTransferencia) ) {
       	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       }

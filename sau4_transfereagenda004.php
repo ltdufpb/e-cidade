@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -71,7 +71,7 @@ a:active {
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 
-<?
+<?php 
 
 
 db_postmemory($HTTP_POST_VARS);

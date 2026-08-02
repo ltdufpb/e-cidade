@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clconciliaorigem->rotulo->label();
        <?=@$Lk96_sequencial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k96_sequencial',8,$Ik96_sequencial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('k96_sequencial',8,$Ik96_sequencial,true,'text',$db_opcao,"")
        <?=@$Lk96_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k96_descr',40,$Ik96_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_conciliaorigem.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

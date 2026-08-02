@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -71,7 +71,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led82_i_codigo?>
   </td>
   <td>
-   <?db_input('ed82_i_codigo',20,$Ied82_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed82_i_codigo',20,$Ied82_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -79,9 +79,9 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led82_c_nome?>
   </td>
   <td>
-   <?db_input('ed82_c_nome',50,$Ied82_c_nome,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_c_nome',50,$Ied82_c_nome,true,'text',$db_opcao,"")?>
    <?=@$Led82_c_abrev?>
-   <?db_input('ed82_c_abrev',20,$Ied82_c_abrev,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_c_abrev',20,$Ied82_c_abrev,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -89,7 +89,7 @@ if(isset($opcao) && $opcao=="alterar"){
      <?=@$Led82_pais?>
    </td>
    <td>
-     <?
+     <?php 
        $aPais      = array();
        $oDaoPais   = db_utils::getDao("pais");
        $sSqlPais   = $oDaoPais->sql_query_file(null, "ed228_i_codigo, ed228_c_descr","ed228_c_descr");
@@ -117,12 +117,12 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led82_c_mantenedora?>
   </td>
   <td>
-   <?
+   <?php 
    $x = array('1'=>'MUNICIPAL','2'=>'ESTADUAL','3'=>'FEDERAL','4'=>'PARTICULAR');
    db_select('ed82_c_mantenedora',$x,true,$db_opcao,"");
    ?>
    <?=@$Led82_c_email?>
-   <?db_input('ed82_c_email',80,$Ied82_c_email,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_c_email',80,$Ied82_c_email,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -130,7 +130,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led82_i_cep?>
   </td>
   <td>
-   <?db_input('ed82_i_cep',8,$Ied82_i_cep,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_i_cep',8,$Ied82_i_cep,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -138,9 +138,9 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led82_c_rua?>
   </td>
   <td>
-   <?db_input('ed82_c_rua',50,$Ied82_c_rua,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_c_rua',50,$Ied82_c_rua,true,'text',$db_opcao,"")?>
    <?=@$Led82_i_numero?>
-   <?db_input('ed82_i_numero',10,$Ied82_i_numero,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_i_numero',10,$Ied82_i_numero,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 <tr>
@@ -148,9 +148,9 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led82_c_complemento?>
   </td>
   <td>
-   <?db_input('ed82_c_complemento',20,$Ied82_c_complemento,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_c_complemento',20,$Ied82_c_complemento,true,'text',$db_opcao,"")?>
    <?=@$Led82_c_bairro?>
-   <?db_input('ed82_c_bairro',50,$Ied82_c_bairro,true,'text',$db_opcao,"")?>
+   <?php db_input('ed82_c_bairro',50,$Ied82_c_bairro,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 <tr>
@@ -158,7 +158,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <?=@$Led82_i_censouf?>
      </td>
      <td>
-      <?
+      <?php 
       $result_uf = $clcensouf->sql_record($clcensouf->sql_query_file("","ed260_i_codigo,ed260_c_nome","ed260_c_nome"));
       db_selectrecord("ed82_i_censouf",$result_uf,"","","","","","  ","iframe_ufs.location.href='edu1_escolaproc004.php?censouf='+this.value",1);
       ?>
@@ -169,7 +169,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <?=@$Led82_i_censomunic?>
      </td>
      <td>
-      <?
+      <?php 
       if(isset($ed82_i_censouf) && $ed82_i_censouf!=""){
 
        $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed82_i_censouf"));
@@ -191,7 +191,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <?=@$Led82_i_censodistrito?>
      </td>
      <td>
-      <?
+      <?php 
       if(isset($ed82_i_censomunic) && $ed82_i_censomunic!=""){
        $result_distrito = $clcensodistrito->sql_record($clcensodistrito->sql_query("","ed262_i_codigo,ed262_c_nome","ed262_c_nome","ed262_i_censomunic = $ed82_i_censomunic AND ed261_i_censouf = $ed82_i_censouf"));
        if($clcensodistrito->numrows==0){
@@ -215,7 +215,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-   <?
+   <?php 
    $campos = "ed82_i_codigo,
               ed82_c_nome,
               ed82_c_abrev,

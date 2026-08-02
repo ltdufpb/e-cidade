@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -75,12 +75,12 @@ function js_reemite() {
     <table class="form-contianer">
       <tr>
         <td nowrap title="<?=@$Tt96_codtran?>">
-          <?
+          <?php 
             db_ancora(@$Lt96_codtran,"js_pesquisat96_codtran(true);",1);
           ?>
         </td>
         <td>
-          <?
+          <?php 
             db_input('t96_codtran',8,$It96_codtran,true,'text',1," onchange='js_pesquisat96_codtran(false);'");
             db_input('nome',40,$Inome,true,'text',3,'','nome_transf');
           ?>
@@ -91,7 +91,7 @@ function js_reemite() {
   <input name="pesquisa" type="button" onclick='js_reemite();'  value="Gerar Relatório">
 </form>
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 </body>
 </html>

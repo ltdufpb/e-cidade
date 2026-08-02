@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,12 +46,12 @@ $clrotulo->label("p58_requer");
 <table border="0">
   <tr>   
     <td title="<?=$Ty50_codauto?>" >
-    <?
+    <?php 
      db_ancora($Ly50_codauto,' js_inscr(true); ',1);
     ?>
     </td>    
     <td title="<?=$Ty50_codauto?>" colspan="4">
-    <?
+    <?php 
      db_input('y50_codauto',5,$Iy50_codauto,true,'text',1,"onchange='js_inscr(false)'");
      db_input('z01_nome',50,0,true,'text',3);
 
@@ -69,17 +69,17 @@ $clrotulo->label("p58_requer");
 	 <?=@$Ly114_processo?>
       </td>
       <td colspan=3> 
-  <?
+  <?php 
   db_input('y114_processo',10,$Iy114_processo,true,'text',3," onchange='js_pesquisay114_processo(false);'")
   ?>
-  <?db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
+  <?php db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')
   
   ?>
       <td>
     </tr>
     <td nowrap title="<?=@$Tq07_databx?>" align='left'colspan=3 ><?=@$Lq07_databx?>
     
-<?
+<?php 
 if (isset($y87_dtbaixa)&&$y87_dtbaixa!=""){
     $data=split('-',$y87_dtbaixa);
     $q07_databx_ano=$data[0];
@@ -91,7 +91,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
 ?>
     </td>
   </tr>
-    <?
+    <?php 
      if (isset($y50_codauto)&&$y50_codauto!="" ){
        ?>
   <tr>
@@ -107,7 +107,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
 <td>  
   <tr>   
     <td align="center" colspan="2"> 
-    <?
+    <?php 
 	  $cliframe_seleciona->campos  = "y59_codigo,y59_codtipo,y29_descr,y29_descr_obs";
 	  $cliframe_seleciona->legenda="PROCEDÊNCIAS";
 	  $cliframe_seleciona->sql=$clautotipo->sql_query_baixa(null,"*",null,"y59_codauto=$y50_codauto and y87_dtbaixa is not null");
@@ -129,7 +129,7 @@ db_inputdata('q07_databx',@$q07_databx_dia,@$q07_databx_mes,@$q07_databx_ano,tru
     </td> 
   </tr>
 </table>
-<?}?>
+<?php }?>
 </fieldset>						      
     </td>
   </tr>

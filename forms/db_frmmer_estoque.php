@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,7 +41,7 @@ $clrotulo->label("ed52_i_codigo");
      <?=@$Lme18_i_codigo?>
     </td>
     <td> 
-     <?db_input('me18_i_codigo',5,$Ime18_i_codigo,true,'text',3,"")?>
+     <?php db_input('me18_i_codigo',5,$Ime18_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -49,7 +49,7 @@ $clrotulo->label("ed52_i_codigo");
      <?=@$Lme18_f_quant?>
     </td>
     <td> 
-      <?db_input('me18_f_quant',5,$Ime18_f_quant,true,'text',$db_opcao,"")?>
+      <?php db_input('me18_f_quant',5,$Ime18_f_quant,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -57,43 +57,43 @@ $clrotulo->label("ed52_i_codigo");
        <?=@$Lme18_f_valor?>
     </td>
     <td> 
-     <?db_input('me18_f_valor',5,$Ime18_f_valor,true,'text',$db_opcao,"")?>
+     <?php db_input('me18_f_valor',5,$Ime18_f_valor,true,'text',$db_opcao,"")?>
     </td>
   </tr>
-  <? $me18_i_matrequi=null; ?>
+  <?php  $me18_i_matrequi=null; ?>
   <tr>
     <td nowrap title="<?=@$Tme18_i_calendario?>">
-     <?db_ancora(@$Lme18_i_calendario,"js_pesquisame18_i_calendario(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme18_i_calendario,"js_pesquisame18_i_calendario(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me18_i_calendario',5,$Ime18_i_calendario,true,'text',$db_opcao," 
+     <?php db_input('me18_i_calendario',5,$Ime18_i_calendario,true,'text',$db_opcao," 
                  onchange='js_pesquisame18_i_calendario(false);'")
      ?>
-     <?db_input('ed52_i_codigo',20,$Ied52_i_codigo,true,'text',3,'')?>
+     <?php db_input('ed52_i_codigo',20,$Ied52_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme18_i_escola?>">
-      <?db_ancora(@$Lme18_i_escola,"js_pesquisame18_i_escola(true);",$db_opcao);?>
+      <?php db_ancora(@$Lme18_i_escola,"js_pesquisame18_i_escola(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me18_i_escola',5,$Ime18_i_escola,true,'text',$db_opcao,
+     <?php db_input('me18_i_escola',5,$Ime18_i_escola,true,'text',$db_opcao,
                  " onchange='js_pesquisame18_i_escola(false);'"
                )
      ?>
-     <?db_input('ed18_i_codigo',20,$Ied18_i_codigo,true,'text',3,'')?>
+     <?php db_input('ed18_i_codigo',20,$Ied18_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme18_i_codmater?>">
-     <?db_ancora(@$Lme18_i_codmater,"js_pesquisame18_i_codmater(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme18_i_codmater,"js_pesquisame18_i_codmater(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me18_i_codmater',5,$Ime18_i_codmater,true,'text',$db_opcao,
+     <?php db_input('me18_i_codmater',5,$Ime18_i_codmater,true,'text',$db_opcao,
                 " onchange='js_pesquisame18_i_codmater(false);'"
                )
      ?>
-     <?db_input('me10_i_codigo',5,$Ime10_i_codigo,true,'text',3,'')?>
+     <?php db_input('me10_i_codigo',5,$Ime10_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -285,7 +285,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_estoque.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

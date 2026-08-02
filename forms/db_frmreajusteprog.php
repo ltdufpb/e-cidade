@@ -93,7 +93,7 @@ $clrotulo->label("eso39_dataefeito");
                     <td colspan="5">
                     <fieldset>
                         <legend><b>Descricao da alteração ou do instrumento que a gerou:</b></legend>
-                        <? db_textarea('eso39_descricao', 3, 93, $Ieso39_descricao, true, 'text',1) ?>
+                        <?php  db_textarea('eso39_descricao', 3, 93, $Ieso39_descricao, true, 'text',1) ?>
                     </fieldset>
                 </td>
                 </tr>

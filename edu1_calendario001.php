@@ -79,7 +79,7 @@ if( isset( $incluir ) ) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Calendário</b></legend>
-    <?include(modification("forms/db_frmcalendario.php"));?>
+    <?php include(modification("forms/db_frmcalendario.php"));?>
    </fieldset>
    </center>
   </td>

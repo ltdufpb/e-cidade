@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE setorambulatorial
 class cl_setorambulatorial { 

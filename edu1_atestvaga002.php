@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -94,11 +94,11 @@ if (isset($alterar)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-     <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Alteração de Atestado de Vaga</b></legend>
-       <?include(modification("forms/db_frmatestvagaalt.php"));?>
+       <?php include(modification("forms/db_frmatestvagaalt.php"));?>
       </fieldset>
      </center>
     </td>
@@ -106,7 +106,7 @@ if (isset($alterar)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if($oDaoAtestVaga->erro_status == "0") {
@@ -132,7 +132,7 @@ if (isset($alterar)) {
      parent.document.form1.nomecaldest.value = '<?=$ed52_c_descr?>';
      parent.db_iframe_atestvaga.hide();
     </script>
-    <?
+    <?php 
     
   }
   

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clsaltes->rotulo->label("k13_descr");
 <td width="4%" align="right" nowrap title="<?=$Tk13_conta?>"><?=$Lk13_conta?>
 </td>
 <td width="96%" align="left" nowrap> 
-<? db_input("k13_conta",10,$Ik13_conta,true,"text",4,"");  ?>
+<?php  db_input("k13_conta",10,$Ik13_conta,true,"text",4,"");  ?>
 </td>
 </tr>
 
@@ -67,7 +67,7 @@ $clsaltes->rotulo->label("k13_descr");
 <tr> 
 <td width="4%" align="right" nowrap title="<?=$Tk13_descr?>"><?=$Lk13_descr?></td>
 <td width="96%" align="left" nowrap> 
-<? db_input("k13_descr",40,$Ik13_descr,true,"text",4,""); ?>
+<?php  db_input("k13_descr",40,$Ik13_descr,true,"text",4,""); ?>
 </td>
 </tr>
 
@@ -84,7 +84,7 @@ $clsaltes->rotulo->label("k13_descr");
 </tr>
 <tr> 
 <td align="center" valign="top"> 
-<?
+<?php 
 $campos="saltes.*";
 if(!isset($pesquisa_chave)){
   $txt_where="";
@@ -140,12 +140,12 @@ if(!isset($pesquisa_chave)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

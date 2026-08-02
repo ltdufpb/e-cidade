@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -115,21 +115,21 @@ return true;
 <center>
 <table border="0">
   <tr>
-    <td nowrap title="<?//=@$Tdb60_coddoc?>">
-       <?//=@$Ldb60_coddoc?>
+    <td nowrap title="<?php //=@$Tdb60_coddoc?>">
+       <?php //=@$Ldb60_coddoc?>
     </td>
     <td>
-<?
+<?php 
 db_input('db60_coddoc',8,$Idb60_coddoc,true,'hidden',3,"")
 ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?//=@$Tdb60_descr?>">
-       <?//=@$Ldb60_descr?>
+    <td nowrap title="<?php //=@$Tdb60_descr?>">
+       <?php //=@$Ldb60_descr?>
     </td>
     <td>
-<?
+<?php 
 db_input('db60_descr',40,$Idb60_descr,true,'hidden',$db_opcao,"")
 ?>
     </td>
@@ -138,16 +138,16 @@ db_input('db60_descr',40,$Idb60_descr,true,'hidden',$db_opcao,"")
 
 
   <tr>
-    <td nowrap title="<?//=@$Tdb60_tipodoc?>">
-       <?
+    <td nowrap title="<?php //=@$Tdb60_tipodoc?>">
+       <?php 
       // db_ancora(@$Ldb60_tipodoc,"js_pesquisadb60_tipodoc(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('db60_tipodoc',10,$Idb60_tipodoc,true,'hidden',$db_opcao," onchange='js_pesquisadb60_tipodoc(false);'")
 ?>
-       <?
+       <?php 
 db_input('db08_descr',40,$Idb08_descr,true,'hidden',3,'')
        ?>
     </td>
@@ -161,14 +161,14 @@ db_input('db08_descr',40,$Idb08_descr,true,'hidden',3,'')
       <fieldset><Legend>Ordena os Páragrafos</legend>
       <table border="0">
          <tr>
-           <td nowrap title="<?//=@$Tdb61_codparag?>" colspan="2">
-            <?
+           <td nowrap title="<?php //=@$Tdb61_codparag?>" colspan="2">
+            <?php 
              // db_ancora(@$Ldb61_codparag,"js_pesquisadb61_codparag(true);",$db_opcao);
             ?>
-            <?
+            <?php 
              // db_input('db61_codparag',8,$Idb61_codparag,true,'text',$db_opcao," onchange='js_pesquisadb61_codparag(false);'")
             ?>
-            <?
+            <?php 
              // db_input('db61_descr',25,$Idb61_descr,true,'text',3,'')
             ?>
 	    <!--<input name="lanca" type="button" value="Lançar"  <?=($db_botao==false?"disabled":"")?> >-->
@@ -178,7 +178,7 @@ db_input('db08_descr',40,$Idb08_descr,true,'hidden',3,'')
 	   <td align="right" colspan="" width="80%">
 
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?
+              <?php 
               if(isset($chavepesquisa)){
 
 	 $resulta = $cldb_docparagpadrao->sql_record($cldb_docparagpadrao->sql_query($chavepesquisa,"","db_docparagpadrao.*,db61_descr","db62_ordem"));
@@ -243,7 +243,7 @@ function js_mostradb_paragrafopadrao1(chave1,chave2){
   document.form1.lanca.onclick = js_insSelect;
 }
 function js_pesquisa(){
-<?
+<?php 
    if($db_opcao !=1){
     echo " db_iframe.jan.location.href = 'func_db_documentopadrao.php?funcao_js=parent.js_preenchepesquisa|0';";
    }
@@ -296,7 +296,7 @@ function js_mostradb_tipodoc1(chave1,chave2){
 
 
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

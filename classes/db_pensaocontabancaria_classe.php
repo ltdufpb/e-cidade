@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE pensaocontabancaria
 class cl_pensaocontabancaria { 

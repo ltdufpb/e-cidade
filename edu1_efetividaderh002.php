@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ if (isset($alterar)) {
   parent.document.formaba.a2.disabled = false;
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_efetividade001.php?efetividaderh=<?=$ed98_i_codigo?>';
  </script>
- <?
+ <?php 
  
 }
 
@@ -82,7 +82,7 @@ if (isset($alterar)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Informe a competência da efetividade:</b></legend>
-       <?include(modification("forms/db_frmefetividaderh.php"));?>
+       <?php include(modification("forms/db_frmefetividaderh.php"));?>
       </fieldset>
      </center>
     </td>
@@ -90,7 +90,7 @@ if (isset($alterar)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($oDaoEfetividadeRh->erro_status == "0") {
@@ -111,7 +111,7 @@ if (isset($alterar)) {
     <script>
      parent.iframe_a1.location.href = "edu1_efetividaderh002.php?chavepesquisa=<?=$ed98_i_codigo?>";
     </script>
-   <?
+   <?php 
    
   }
   

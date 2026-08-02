@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -119,7 +119,7 @@ if ($clpcparam->numrows>0){
 <input type=hidden name=dadosRet value="">
 <input type=hidden name=chavepesquisa value="<?=$chavepesquisa?>" >
 
-<?
+<?php 
 db_input('lanc_emp',6,"",true,'hidden',3)
 ?>
 <center>
@@ -129,7 +129,7 @@ db_input('lanc_emp',6,"",true,'hidden',3)
        <?=@$Le54_autori?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e54_autori',6,$Ie54_autori,true,'text',3)
 ?>
     </td>
@@ -139,7 +139,7 @@ db_input('e54_autori',6,$Ie54_autori,true,'text',3)
        <?=$Le54_numcgm?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e54_numcgm',10,$Ie54_numcgm,true,'text',3);
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
        ?>
@@ -150,7 +150,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
        <?=@$Le54_codcom?>
     </td>
     <td> 
-<?
+<?php 
 if(isset($e54_codcom) && $e54_codcom==''){
   $pc50_descr='';
 }
@@ -175,7 +175,7 @@ if(isset($e54_codcom) && $e54_codcom==''){
        <?=@$Le54_tipol?>
     </td>
     <td> 
-<?
+<?php 
 if(isset($tipocompra) || isset($e54_codcom)){
    if(isset($e54_codcom) && empty($tipocompra)){
      $tipocompra=$e54_codcom;
@@ -198,7 +198,7 @@ if(isset($tipocompra) || isset($e54_codcom)){
 }  
 ?>
        <?=@$Le54_numerl?>
-<?
+<?php 
 db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
 ?>
     </td>
@@ -208,7 +208,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
        <?=$Le54_codtipo?>
     </td>
     <td> 
-<?
+<?php 
   $result=$clemptipo->sql_record($clemptipo->sql_query_file(null,"e41_codtipo,e41_descr"));
   db_selectrecord("e54_codtipo",$result,true,$db_opcao);
 
@@ -220,7 +220,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
        <?=$Le57_codhist?>
     </td>
     <td> 
-<?
+<?php 
 
   $result=$clemphist->sql_record($clemphist->sql_query_file(null,"e40_codhist,e40_descr"));
   db_selectrecord("e57_codhist",$result,true,1,"","","","Nenhum");
@@ -232,7 +232,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
        <?=$Le44_tipo?>
     </td>
     <td> 
-<?
+<?php 
   $result=$clempprestatip->sql_record($clempprestatip->sql_query_file(null,"e44_tipo as tipo,e44_descr,e44_obriga","e44_obriga "));
   $numrows =  $clempprestatip->numrows;
   $arr = array();
@@ -253,7 +253,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
        <?=@$Le54_destin?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e54_destin',90,$Ie54_destin,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -263,22 +263,22 @@ db_input('e54_destin',90,$Ie54_destin,true,'text',$db_opcao,"")
        <?=@$Le54_resumo?>
     </td>
     <td> 
-<?
+<?php 
 db_textarea('e54_resumo',6,90,$Ie54_resumo,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
-<?
+<?php 
     $anousu = db_getsession("DB_anousu");
 
     if ($anousu > 2007){
 ?>
   <tr>
-    <td nowrap title="<?=@$Te54_concarpeculiar?>"><?
+    <td nowrap title="<?=@$Te54_concarpeculiar?>"><?php 
        db_ancora(@$Le54_concarpeculiar,"js_pesquisae54_concarpeculiar(true);",$db_opcao);
     ?></td>
     <td>
-    <?
+    <?php 
       if (isset($concarpeculiar) && trim(@$concarpeculiar) != ""){
         $e54_concarpeculiar = $concarpeculiar;
         $c58_descr          = $descr_concarpeculiar;
@@ -288,7 +288,7 @@ db_textarea('e54_resumo',6,90,$Ie54_resumo,true,'text',$db_opcao,"")
     ?>
     </td>
   </tr>
-<?
+<?php 
     } else {
       $e54_concarpeculiar = 0;
       $c58_descr          = "";
@@ -302,12 +302,12 @@ db_textarea('e54_resumo',6,90,$Ie54_resumo,true,'text',$db_opcao,"")
        value="<?=($db_opcao==1||$db_opcao==33?"Empenhar e imprimir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" 
        "<?=($db_botao==false?"disabled":($db_disab==false?"disabled":""))?>" >
 
-<?if($db_opcao==1){?>
+<?php if($db_opcao==1){?>
    <input name="op" 
           type="button" 
 	  value="Empenhar e não imprimir" 
 	  "<?=($db_disab==false?"disabled":"")?>" onclick="js_naoimprimir();" >
-<?}?>
+<?php }?>
 
 <input name="lanc" type="button" id="lanc" value="Lançar autorizações" onclick="parent.location.href='emp1_empautoriza001.php';">
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar autorizações" onclick="js_pesquisa();" >
@@ -420,7 +420,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
     db_iframe_orcreservaaut.hide();
-  <?
+  <?php 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }

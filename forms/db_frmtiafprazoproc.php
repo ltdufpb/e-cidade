@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -35,7 +35,7 @@ $clrotulo->label("y90_codtiaf");
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?
+<?php 
 		$where = "";
 	    if(isset($y96_codigo) && $y96_codigo != ""){  
 	      $where = " and y96_codigo = $y96_codigo ";
@@ -60,43 +60,43 @@ $clrotulo->label("y90_codtiaf");
 <table border="0">
 	<tr>
          <td nowrap title="<?=@$Ty90_codtiaf?>"> 
-	    <?
+	    <?php 
 	      db_ancora(@$Ly90_codtiaf,"js_pesquisay90_codtiaf(true);",$db_opcao);
 	    ?>
 	 </td>
 	 <td>
-	    <?
+	    <?php 
 	     db_input('y90_codtiaf',10,$Iy90_codtiaf,true,'text',3," onchange='js_pesquisay90_codtiaf(false);'");
 	    ?>
 	 </td>
 	 </tr>
 	 </tr>
-	 <?if (isset($opcao) && $opcao!="incluir"){?>
+	 <?php if (isset($opcao) && $opcao!="incluir"){?>
 	  <tr>	
 	  <td nowrap title="<?=@$Ty96_codigo?>"> 
-	    <?
+	    <?php 
 	      db_ancora(@$Ly96_codigo,"",3);
 	    ?>
 	 </td>
 	 <td>
-	    <?
+	    <?php 
 	     db_input('y96_codigo',10,$Iy96_codigo,true,'text',3,"");
 	    ?>
 	 </td>
-      <?}?>
+      <?php }?>
      
   
   <tr>
     <td nowrap title="<?=@$Ty97_codproc?>">
-       <?
+       <?php 
 	       db_ancora(@$Ly97_codproc,"js_pesquisay97_codproc(true);",$db_opcao);
        ?>
     </td>
     <td> 
-		<?
+		<?php 
 			db_input('y97_codproc',10,$Iy97_codproc,true,'text',$db_opcao," onchange='js_pesquisay97_codproc(false);'")
 		?>
-       <?
+       <?php 
 			db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,'')
        ?>
     </td>
@@ -106,14 +106,14 @@ $clrotulo->label("y90_codtiaf");
        <?=@$Ly96_prazo?>
     </td>
     <td> 
-	<?
+	<?php 
 		db_inputdata('y96_prazo',@$y96_prazo_dia,@$y96_prazo_mes,@$y96_prazo_ano,true,'text',$db_opcao,"")
 	?>
     </td>
   </tr>
   
   </table>
-  <?
+  <?php 
        //echo($cltiafprazo->sql_query("","*","","y96_codtiaf = $y90_codtiaf"));
        $chavepri= array("y90_codtiaf"=>$y90_codtiaf,"y96_codigo"=>$y96_codigo);
        $cliframe_alterar_excluir->chavepri = $chavepri;
@@ -190,7 +190,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tiafprazoproc.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

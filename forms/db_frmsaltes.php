@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -67,7 +67,7 @@ $oRotulo->label("coddepto");
               <table>
                 <tr>
                   <td nowrap title="<?=@$Tk13_descr?>">
-                    <?
+                    <?php 
                     if ($db_opcao == "2"){
                       db_ancora(@$Lk13_descr,"js_contas();",3 );
                     } else {
@@ -76,7 +76,7 @@ $oRotulo->label("coddepto");
                     ?>
                   </td>
                   <td>
-                    <?
+                    <?php 
                     db_input('k13_reduz',8,"",true,'text',3);
                     db_input('k13_descr',40,$Ik13_descr,true,'text',$db_opcao);
                     ?>
@@ -84,13 +84,13 @@ $oRotulo->label("coddepto");
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Tk13_ident?>"><?=@$Lk13_ident?> </td>
-                  <td><? db_input('k13_ident',15,$Ik13_ident,true,'text',$db_opcao,"")?>
+                  <td><?php  db_input('k13_ident',15,$Ik13_ident,true,'text',$db_opcao,"")?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Tk13_limite?>"> <?=@$Lk13_limite?> </td>
                   <td>
-                    <?
+                    <?php 
                     @list($k13_limite_dia,$k13_limite_mes,$k13_limite_ano)= split("/",$k13_limite);
                     db_inputdata('k13_limite',@$k13_limite_dia,@$k13_limite_mes,@$k13_limite_ano,true,'text',$db_opcao,"");
                     ?>
@@ -103,7 +103,7 @@ $oRotulo->label("coddepto");
               <table>
                 <tr>
                   <td nowrap title="<?=@$Tk13_dtimplantacao?>"> <?=@$Lk13_dtimplantacao?> </td>
-                  <td><?
+                  <td><?php 
                     @list($k13_dtimplantacao_dia,$k13_dtimplantacao_mes,$k13_dtimplantacao_ano)= split("/",$k13_dtimplantacao);
                     db_inputdata('k13_dtimplantacao',@$k13_dtimplantacao_dia,@$k13_dtimplantacao_mes,@$k13_dtimplantacao_ano,true,'text',$db_opcao,"");
                     ?>
@@ -111,7 +111,7 @@ $oRotulo->label("coddepto");
                 </tr>
                 <tr>
                   <td nowrap title="<?=@$Tk13_saldo?>"><?=@$Lk13_saldo?> </td>
-                  <td><?
+                  <td><?php 
                     if(isset($k13_saldo)&&$k13_saldo!="") {
                       $k13_saldo = str_replace(",",".",$k13_saldo);
                     }
@@ -126,7 +126,7 @@ $oRotulo->label("coddepto");
               <table>
                 <tr>
                   <td nowrap title="<?=@$Tk13_datvlr?>"> <?=@$Lk13_datvlr?> </td>
-                  <td><?
+                  <td><?php 
                     @list($k13_datvlr_dia,$k13_datvlr_mes,$k13_datvlr_ano)= split("/",$k13_datvlr);
                     db_inputdata('k13_datvlr',@$k13_datvlr_dia,@$k13_datvlr_mes,@$k13_datvlr_ano,true,'text', 3,"");
                     ?>
@@ -135,7 +135,7 @@ $oRotulo->label("coddepto");
                 <tr>
                   <td nowrap title="<?=@$Tk13_vlratu?>"><?=@$Lk13_vlratu?>
                   </td>
-                  <td><? db_input('k13_vlratu',15,$Ik13_vlratu,true,'text',3,"") ?>
+                  <td><?php  db_input('k13_vlratu',15,$Ik13_vlratu,true,'text',3,"") ?>
                   </td>
                 </tr>
               </table>
@@ -145,12 +145,12 @@ $oRotulo->label("coddepto");
               <table>
                 <tr>
                   <td>
-                    <?
+                    <?php 
                     db_ancora(@$Lk103_contrapartida,"js_saltes(true);",$db_opcao );
                     ?>
                   </td>
                   <td>
-                    <?
+                    <?php 
                     db_input('k103_contrapartida',8,$Ik103_contrapartida,true,'text',$db_opcao,"onchange='js_saltes(false)'");
                     db_input('k103_descr',40,$Ik13_descr,true,'text',3);
                     ?>
@@ -158,12 +158,12 @@ $oRotulo->label("coddepto");
                 </tr>
                 <tr>
                   <td>
-                    <?
+                    <?php 
                     db_ancora(@$Lk109_contaextra,"js_saltes2(true);",$db_opcao );
                     ?>
                   </td>
                   <td>
-                    <?
+                    <?php 
                     db_input('k109_saltesextra',8,$Ik109_contaextra,true,'text',$db_opcao,"onchange='js_saltes2(false)'");
                     db_input('k103_descrextra',40,$Ik13_descr,true,'text',3);
                     ?>
@@ -194,7 +194,7 @@ $oRotulo->label("coddepto");
   }
   function js_preenche(chave){
     db_iframe_saltes.hide();
-    <?
+    <?php 
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     ?>
   }

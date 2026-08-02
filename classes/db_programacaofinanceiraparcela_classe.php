@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE programacaofinanceiraparcela
 class cl_programacaofinanceiraparcela {

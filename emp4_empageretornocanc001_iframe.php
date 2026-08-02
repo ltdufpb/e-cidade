@@ -65,7 +65,7 @@ $clrotulo->label("e80_data");
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
           border: 1px solid #cccccc;
           border-top-color: <?=$cor?>;
@@ -110,7 +110,7 @@ function js_marca(obj){
       <form name="form1" method="post" action="">
       <center>
       <table align="center" border='7' height="100%" width="100%">
-<?
+<?php 
   $totalmovs = 0;
   $valormovs = 0;
   $valordebs = 0;

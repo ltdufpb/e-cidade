@@ -165,13 +165,13 @@ if ($sHabilitaConsultaAlunoPorEscola == 't') {
                             <b>CPF Filiação:</b>
                         </td>
                         <td nowrap>
-                            <?db_input("ov02_cnpjcpf",50,1,true,"text",1,"onFocus=\"nextfield='pesquisar2'\"", "chave_ov02_cnpjcpf");?>
+                            <?php db_input("ov02_cnpjcpf",50,1,true,"text",1,"onFocus=\"nextfield='pesquisar2'\"", "chave_ov02_cnpjcpf");?>
                         </td>
                         <td nowrap title="<?=$Tov02_cnpjcpf?>">
                             <b>CPF Resp.:</b>
                         </td>
                         <td nowrap>
-                            <?db_input("ov02_cpfresp",50,1,true,"text",1,"onFocus=\"nextfield='pesquisar2'\"", "chave_ov02_cpfresp");?>
+                            <?php db_input("ov02_cpfresp",50,1,true,"text",1,"onFocus=\"nextfield='pesquisar2'\"", "chave_ov02_cpfresp");?>
                         </td>
                     </tr>
                     <tr>

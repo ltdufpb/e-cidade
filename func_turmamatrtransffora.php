@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -115,7 +115,7 @@ if ( isset( $oGet->lReclassificacao ) ) {
  <tr>
   <td align="center" valign="top">
    <br><b>Turmas em <?=$anocalendario?>:</b><br><br>
-   <?
+   <?php 
    $sWhere = '';
    $sSep   = '';
 

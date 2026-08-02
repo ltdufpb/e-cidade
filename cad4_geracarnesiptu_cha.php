@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -395,7 +395,7 @@ echo "  parent.js_montarlista(listagem,'form1');";
 echo "</script>";	
 
 ?>
-<?
+<?php 
 
 require(modification("fpdf151/scpdf.php"));
 include(modification("fpdf151/impcarne.php"));

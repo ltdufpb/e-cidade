@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ if($clbiblioteca->numrows!=0){
      <?=$Lbi23_codigo?>
     </td>
     <td width="96%" align="left" nowrap>
-     <?db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
+     <?php db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
     </td>
    </tr>
    <tr>
@@ -71,7 +71,7 @@ if($clbiblioteca->numrows!=0){
      <?=$Lbi06_titulo?>
     </td>
     <td width="96%" align="left" nowrap>
-     <?db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+     <?php db_input("bi06_titulo",40,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
     </td>
    </tr>
    <tr>
@@ -87,7 +87,7 @@ if($clbiblioteca->numrows!=0){
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(isset($campos)==false){
     if(file_exists("funcoes/db_func_exemplar.php")==true){
      include(modification("funcoes/db_func_exemplar.php"));

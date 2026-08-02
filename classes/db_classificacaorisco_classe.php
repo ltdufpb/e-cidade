@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE classificacaorisco
 class cl_classificacaorisco { 

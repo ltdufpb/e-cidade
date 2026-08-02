@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clrhpesorigem->rotulo->label();
        <?=@$Lrh21_regist?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh21_regist',6,$Irh21_regist,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh21_regist',6,$Irh21_regist,true,'text',$db_opcao,"")
        <?=@$Lrh21_regpri?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh21_regpri',6,$Irh21_regpri,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhpesorigem.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

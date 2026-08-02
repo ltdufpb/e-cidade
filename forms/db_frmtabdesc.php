@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,7 @@ $clrotulo->label("k114_codban");
            <?=@$Lcodsubrec?>
         </td>
         <td> 
-          <?db_input('codsubrec',10,$Icodsubrec,true,'text',3,"")?>
+          <?php db_input('codsubrec',10,$Icodsubrec,true,'text',3,"")?>
         </td>
       </tr>
 
@@ -55,51 +55,51 @@ $clrotulo->label("k114_codban");
            <?=@$Lk07_descr?>
         </td>
         <td> 
-          <?db_input('k07_descr',54,$Ik07_descr,true,'text',$db_opcao,"")?>
+          <?php db_input('k07_descr',54,$Ik07_descr,true,'text',$db_opcao,"")?>
         </td>
       </tr>
 
       <tr>
         <td nowrap title="<?=@$Tk07_codigo?>">
-           <?db_ancora(@$Lk07_codigo,"js_pesquisak07_codigo(true);",$db_opcao);?>
+           <?php db_ancora(@$Lk07_codigo,"js_pesquisak07_codigo(true);",$db_opcao);?>
         </td>
         <td>
-          <?db_input('k07_codigo',10,$Ik07_codigo,true,'text',$db_opcao," onchange='js_pesquisak07_codigo(false);'")?>
-          <?db_input('k02_descr',40,$Ik02_descr,true,'text',3,'')?>
+          <?php db_input('k07_codigo',10,$Ik07_codigo,true,'text',$db_opcao," onchange='js_pesquisak07_codigo(false);'")?>
+          <?php db_input('k02_descr',40,$Ik02_descr,true,'text',3,'')?>
         </td>
       </tr>
       
       <tr>
         <td nowrap title="<?=@$Tk78_arretipo?>">
           <b>
-            <?db_ancora("Tipo para Recibo Protocolo","js_pesquisa_tipo(true);",$db_opcao);?>
+            <?php db_ancora("Tipo para Recibo Protocolo","js_pesquisa_tipo(true);",$db_opcao);?>
           </b>
         </td>
         <td> 
-          <?db_input('k78_arretipo',10,$Ik78_arretipo,true,'text',$db_opcao," onchange='js_pesquisa_tipo(false);'")?>
-          <?db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')?>
+          <?php db_input('k78_arretipo',10,$Ik78_arretipo,true,'text',$db_opcao," onchange='js_pesquisa_tipo(false);'")?>
+          <?php db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')?>
         </td>
       </tr>
 
       <tr>
         <td nowrap title="<?=@$Tk114_codban?>">
           <b>
-            <?db_ancora("Código do Banco","js_pesquisa_banco(true);",$db_opcao);?>
+            <?php db_ancora("Código do Banco","js_pesquisa_banco(true);",$db_opcao);?>
           </b>
         </td>
         <td> 
-          <?db_input('k114_codban',10,$Ik114_codban,true,'text',$db_opcao," onchange='js_pesquisa_banco(false);'")?>
-          <?db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
+          <?php db_input('k114_codban',10,$Ik114_codban,true,'text',$db_opcao," onchange='js_pesquisa_banco(false);'")?>
+          <?php db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
         </td>
       </tr>
 
       <tr>
         <td nowrap title="<?=@$Tk07_codinf?>">
-           <?db_ancora(@$Lk07_codinf,"js_pesquisak07_codinf(true);",$db_opcao);?>
+           <?php db_ancora(@$Lk07_codinf,"js_pesquisak07_codinf(true);",$db_opcao);?>
         </td>
         <td> 
-          <?db_input('k07_codinf',10,$Ik07_codinf,true,'text',3," onchange='js_pesquisak07_codinf(false);'")?>
-          <?db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')?>
+          <?php db_input('k07_codinf',10,$Ik07_codinf,true,'text',3," onchange='js_pesquisak07_codinf(false);'")?>
+          <?php db_input('i01_descr',40,$Ii01_descr,true,'text',3,'')?>
         </td>
       </tr>
 
@@ -108,7 +108,7 @@ $clrotulo->label("k114_codban");
            <?=@$Lk07_valorf?>
         </td>
         <td> 
-          <?db_input('k07_valorf',10,$Ik07_valorf,true,'text',$db_opcao,"")?>
+          <?php db_input('k07_valorf',10,$Ik07_valorf,true,'text',$db_opcao,"")?>
         </td>
       </tr>
 
@@ -117,7 +117,7 @@ $clrotulo->label("k114_codban");
            <?=@$Lk07_valorv?>
         </td>
         <td> 
-          <?db_input('k07_valorv',10,$Ik07_valorv,true,'text',$db_opcao,"")?>
+          <?php db_input('k07_valorv',10,$Ik07_valorv,true,'text',$db_opcao,"")?>
         </td>
       </tr>
 
@@ -126,7 +126,7 @@ $clrotulo->label("k114_codban");
            <?=@$Lk07_quamin?>
         </td>
         <td> 
-          <?db_input('k07_quamin',10,$Ik07_quamin,true,'text',$db_opcao,"")?>
+          <?php db_input('k07_quamin',10,$Ik07_quamin,true,'text',$db_opcao,"")?>
         </td>
       </tr>
 
@@ -135,7 +135,7 @@ $clrotulo->label("k114_codban");
            <?=@$Lk07_percde?>
         </td>
         <td> 
-          <?db_input('k07_percde',10,$Ik07_percde,true,'text',$db_opcao,"")?>
+          <?php db_input('k07_percde',10,$Ik07_percde,true,'text',$db_opcao,"")?>
         </td>
       </tr>
       
@@ -144,7 +144,7 @@ $clrotulo->label("k114_codban");
            <?=@$Lk07_data?>
         </td>
         <td> 
-          <?
+          <?php 
           db_inputdata('k07_data',@$k07_data_dia,@$k07_data_mes,@$k07_data_ano,true,'text',$db_opcao,"")
           ?>
         </td>
@@ -155,7 +155,7 @@ $clrotulo->label("k114_codban");
            <?=@$Lk07_dtval?>
         </td>
         <td> 
-          <?db_inputdata('k07_dtval',@$k07_dtval_dia,@$k07_dtval_mes,@$k07_dtval_ano,true,'text',$db_opcao,"")?>
+          <?php db_inputdata('k07_dtval',@$k07_dtval_dia,@$k07_dtval_mes,@$k07_dtval_ano,true,'text',$db_opcao,"")?>
         </td>
       </tr>
 
@@ -354,7 +354,7 @@ function js_envia() {
   return true;
 }
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led121_i_codigo?>
   </td>
   <td>
-   <?db_input('ed121_i_codigo',10,$Ied121_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed121_i_codigo',10,$Ied121_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led121_c_descr?>
   </td>
   <td>
-   <?db_input('ed121_c_descr',100,$Ied121_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed121_c_descr',100,$Ied121_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -69,7 +69,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led121_c_suspensao?>
   </td>
   <td>
-   <?
+   <?php 
    $x = array('S'=>'SIM','N'=>'NÂO');
    db_select('ed121_c_suspensao',$x,true,$db_opcao,"");
    ?>
@@ -80,7 +80,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led121_i_tempolimite?>
   </td>
   <td>
-   <?db_input('ed121_i_tempolimite',10,$Ied121_i_tempolimite,true,'text',$db_opcao,"")?> <b>dias</b>
+   <?php db_input('ed121_i_tempolimite',10,$Ied121_i_tempolimite,true,'text',$db_opcao,"")?> <b>dias</b>
   </td>
  </tr>
 </table>
@@ -89,7 +89,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php 
    $chavepri= array("ed121_i_codigo"=>@$ed121_i_codigo,"ed121_c_descr"=>@$ed121_c_descr,"ed121_c_suspensao"=>@$ed121_c_suspensao,"ed121_i_tempolimite"=>@$ed121_i_tempolimite);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clproglicenca->sql_query($ed121_i_codigo,"*","ed121_c_descr");

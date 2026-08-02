@@ -36,7 +36,7 @@ $oDaoJustificativa->rotulo->label();
      <?=@$Led06_i_codigo?>
     </td>
     <td>
-     <?db_input('ed06_i_codigo',15,$Ied06_i_codigo,true,'text',3,"")?>
+     <?php db_input('ed06_i_codigo',15,$Ied06_i_codigo,true,'text',3,"")?>
     </td>
    </tr>
    
@@ -45,7 +45,7 @@ $oDaoJustificativa->rotulo->label();
      <?=@$Led06_abreviatura?>
     </td>
     <td>
-     <?db_input('ed06_abreviatura', 3,$Ied06_abreviatura,true,'text',$db_opcao,"")?>
+     <?php db_input('ed06_abreviatura', 3,$Ied06_abreviatura,true,'text',$db_opcao,"")?>
     </td>
    </tr>
    
@@ -54,7 +54,7 @@ $oDaoJustificativa->rotulo->label();
      <?=@$Led06_c_descr?>
     </td>
     <td>
-     <?db_input('ed06_c_descr',100,$Ied06_c_descr,true,'text',$db_opcao,"")?>
+     <?php db_input('ed06_c_descr',100,$Ied06_c_descr,true,'text',$db_opcao,"")?>
     </td>
    </tr>
    <tr>
@@ -62,7 +62,7 @@ $oDaoJustificativa->rotulo->label();
      <?=@$Led06_c_ativo?>
     </td>
     <td>
-     <?
+     <?php 
       $x = array('S'=>'SIM','N'=>'NÃO');
       db_select('ed06_c_ativo',$x,true,$db_opcao,"");
      ?>
@@ -91,7 +91,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_justificativa.hide();
-  <?
+  <?php 
    if ($db_opcao != 1) {
      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
    }

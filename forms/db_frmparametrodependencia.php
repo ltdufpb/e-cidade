@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clrotulo->label("ed296_cursoedu");
           <?=@$Led295_sequencial?>
         </td>
         <td> 
-          <?db_input('ed295_sequencial',10,$Ied295_sequencial,true,'text',3,"")?>
+          <?php db_input('ed295_sequencial',10,$Ied295_sequencial,true,'text',3,"")?>
         </td>
       </tr>
       <tr>
@@ -48,7 +48,7 @@ $clrotulo->label("ed296_cursoedu");
           <?=@$Led295_habilitaprogressao?>
         </td>
         <td> 
-          <?
+          <?php 
             $aHabilita = array(
                                '1' => 'Desabilitada',
                                '2'=>'Habilitada'
@@ -62,7 +62,7 @@ $clrotulo->label("ed296_cursoedu");
           <?=@$Led295_qtddiscdependente?>
         </td>
         <td> 
-          <?db_input('ed295_qtddiscdependente',17,$Ied295_qtddiscdependente,true,'text',$db_opcao,"")?>
+          <?php db_input('ed295_qtddiscdependente',17,$Ied295_qtddiscdependente,true,'text',$db_opcao,"")?>
         </td>
       </tr>
       <tr>
@@ -70,7 +70,7 @@ $clrotulo->label("ed296_cursoedu");
           <?=@$Led295_controledependencia?>
         </td>
         <td> 
-          <?
+          <?php 
             $aControleDependencia = array(
                                           '0' => 'Selecione',
                                           '1' => 'Por Etapa',
@@ -85,7 +85,7 @@ $clrotulo->label("ed296_cursoedu");
           <?=@$Led295_controlefreq?>
         </td>
         <td> 
-          <?
+          <?php 
             $aControleFreq = array(
                                    '1' => 'Sim',
                                    '2' => 'Não'
@@ -99,7 +99,7 @@ $clrotulo->label("ed296_cursoedu");
           <?=@$Led295_disceliminadep?>
         </td>
         <td> 
-          <?
+          <?php 
             $aDiscEliminaDep = array(
                                      '1' => 'Não',
                                      '2' => 'Sim'
@@ -110,10 +110,10 @@ $clrotulo->label("ed296_cursoedu");
       </tr>  
       <tr>
         <td id = 'ed296_cursoedu' nowrap title="<?=@$Ted296_cursoedu?>" colspan= '2' >
-          <?db_ancora(@$Led296_cursoedu,"js_pesquisaed296_cursoedu(true);",$db_opcao);?>    
+          <?php db_ancora(@$Led296_cursoedu,"js_pesquisaed296_cursoedu(true);",$db_opcao);?>    
           
           <div id="arquivoAux">
-            <?db_input('webauxilia', 50, '', true, 'hidden', 3, '')?>
+            <?php db_input('webauxilia', 50, '', true, 'hidden', 3, '')?>
             <select multiple size="5" name="oAux" id="oAux" style="width:100%;"
                     onDblClick="js_apagarLinha(this);" 
                     <?=($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22 ?"" : "disabled")?> >
@@ -190,9 +190,9 @@ $clrotulo->label("ed296_cursoedu");
 </form>
 
 <script language="JavaScript">
-<?if($db_opcao!=3){?>
+<?php if($db_opcao!=3){?>
 js_troca();
-<?}?>
+<?php }?>
 
 function js_inicializa(iEscola) {
 
@@ -529,7 +529,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_parametrodependencia.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
@@ -575,11 +575,11 @@ function js_atualizaEtapas() {
       oParam.iEtapas = js_getSelectEtapas();
     }
   
-    <? if ($iEscola != 7159) { ?>
+    <?php  if ($iEscola != 7159) { ?>
     oParam.iEscola = <?=$iEscola?>;
-    <? } else { ?>
+    <?php  } else { ?>
     //oParam.iEscola = input da escola
-    <? } ?>
+    <?php  } ?>
 
     var sUrl = "edu4_escola.RPC.php";
 
@@ -855,10 +855,10 @@ function js_troca(valor) {
 
 }
 
-<? if (isset($iCodEscola)) {  ?>
+<?php  if (isset($iCodEscola)) {  ?>
   
   js_inicializa(<?=$iCodEscola?>);
 
-<? } ?>
+<?php  } ?>
 
 </script>

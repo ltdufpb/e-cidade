@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -551,7 +551,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
   if ($lSqlErro) {

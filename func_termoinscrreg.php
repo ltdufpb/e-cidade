@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ $clcertdiv->rotulo->label("v93_coddiv");
               <?=$Lv93_termo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v93_termo",4,$Iv93_termo,true,"text",4,"","chave_v93_termo");
 		       ?>
             </td>
@@ -65,7 +65,7 @@ $clcertdiv->rotulo->label("v93_coddiv");
               <?=$Lv93_coddiv?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v93_coddiv",4,$Iv93_coddiv,true,"text",4,"","chave_v93_coddiv");
 		       ?>
             </td>
@@ -83,7 +83,7 @@ $clcertdiv->rotulo->label("v93_coddiv");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         $campos = "distinct(v93_termo), z01_numcgm, z01_nome, v92_dtinsc";
         if(isset($chave_v93_termo) && (trim($chave_v93_termo)!="") ){
@@ -109,14 +109,14 @@ $clcertdiv->rotulo->label("v93_coddiv");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v93_termo.focus();
 document.form2.chave_v93_termo.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

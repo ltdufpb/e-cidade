@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -61,7 +61,7 @@ if(isset($Excluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmitbipropriold.php"));
 	?>
     </center>
@@ -70,7 +70,7 @@ if(isset($Excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($Excluir)){
   if($clitbipropriold->erro_status=="0"){
     $clitbipropriold->erro(true,false);

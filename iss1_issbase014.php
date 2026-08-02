@@ -446,7 +446,7 @@ if (isset($incluir)) {
   </div>
 </body>
 </html>
-<?
+<?php 
 if(isset($str_01) && $str_01!="" && !isset($incluir) && empty($q05_matric) && empty($first)){
   if($r==1){
    db_msgbox('CGM já esta sendo usado na inscrição '.$str_01);

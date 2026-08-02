@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -86,18 +86,18 @@ function js_vericampos(){
 }
 </script>
 <style type="text/css">
-<?db_estilosite();
+<?php db_estilosite();
 ?>
 </style>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 
-<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="<?=$w01_corbody?>" onLoad="" <? mens_OnHelp() ?>>
-<?
+<body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="<?=$w01_corbody?>" onLoad="" <?php  mens_OnHelp() ?>>
+<?php 
 mens_div();
 ?>
 <center>
-<table width="766" border="0" cellpadding="0" cellspacing="0" bgcolor="<?$w01_corbody?>">
+<table width="766" border="0" cellpadding="0" cellspacing="0" bgcolor="<?php $w01_corbody?>">
   <tr>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -124,7 +124,7 @@ mens_div();
 	  <table width="100%" height="313" border="0" cellpadding="0" cellspacing="0">
       <tr>
             <td width="90" align="left" valign="top"> 
-          <?    db_montamenus();        
+          <?php     db_montamenus();        
           ?>
 		</td>
             <td align="left" valign="top"> 
@@ -180,7 +180,7 @@ mens_div();
                      }
 		     </script>
                     <select name="ano">
-                    <?
+                    <?php 
 		      $sano = date("Y");
                       for($ci = $sano; $ci >= ($sano-10); $ci--){   
                         echo "<option value=".$ci." >$ci</option>";
@@ -188,7 +188,7 @@ mens_div();
                     ?> 
 		    </select>
                     <select name="mes" id="mes">
-                    <?
+                    <?php 
 		      $smes = 1;
                       for($ci = 1; $ci <= 12; $ci++){   
                         echo '"<option value="'.$ci.'"' . ($ci == date("m")?"selected":"") . ' >'.$ci.'</option>"';
@@ -222,12 +222,12 @@ mens_div();
   </tr>
 </table>
 </center>
-<?
+<?php 
 db_rodape();
 ?>
 </body>
 </html>
-<?
+<?php 
 db_logs("","",0,"Digita Codigo da Inscricao para o issqn retencao.");
 if(isset($erroscripts)){
   echo "<script>alert('".$erroscripts."');</script>";

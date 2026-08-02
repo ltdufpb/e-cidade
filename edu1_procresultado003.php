@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -152,7 +152,7 @@ if (isset($excluir)) {
      <br>
      <center>
       <fieldset style="width:95%" ><legend><b>Exclusão do Resultado <?=@$ed42_c_descr?></b></legend>
-       <?include(modification("forms/db_frmprocresultado.php"));?>
+       <?php include(modification("forms/db_frmprocresultado.php"));?>
       </fieldset>
      </center>
     </td>
@@ -163,7 +163,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1", "excluir", true, 1, "excluir", true);
 </script>
-<?
+<?php 
 if (isset($excluir)) {
 
   if ($oDaoProcResultado->erro_status == "0") {
@@ -177,7 +177,7 @@ if (isset($excluir)) {
                                                                                      "&ed40_c_descr=<?=$ed40_c_descr?>&forma=<?=$forma?>"+
                                                                                      "&possuiTurmasEncerradas=<?=$sPossuiTurmasEncerradas?>";
     </script>
-    <?
+    <?php 
 
   }
 

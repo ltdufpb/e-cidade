@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,13 +92,13 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração Tipo de Refeição</b></legend>
-    <?include(modification("forms/db_frmmer_tprefeicao.php"));?>
+    <?php include(modification("forms/db_frmmer_tprefeicao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -106,7 +106,7 @@ if (isset($alterar)) {
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)){
 	
   if ($clmer_tprefeicao->erro_status=="0"){

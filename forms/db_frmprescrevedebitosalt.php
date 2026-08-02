@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -29,7 +29,7 @@ $clprescricao->rotulo->label();
 $clarreprescr->rotulo->label();
 ?>
 <form name="form1" method="post" action="" >
-  <? 
+  <?php  
     if(isset($processar) && $processar != ''){ 
       echo " <table><tr><td> </td></td></tr></table>";
       if(isset($geral) && $geral == 't'){
@@ -51,7 +51,7 @@ $clarreprescr->rotulo->label();
                <strong> Valores de : </strong>
             </td>
             <td width="" align="left" nowrap title="">
-              <?   
+              <?php    
                 db_input('vlrmin',10,'',true,'text',$db_opcao,"");                
                 echo "&nbsp;&nbsp; <strong> até  </strong> &nbsp;&nbsp;";
                 db_input('vlrmax',10,'',true,'text',$db_opcao,"");                
@@ -60,7 +60,7 @@ $clarreprescr->rotulo->label();
           </tr>
           <tr>
             <td><?=@$Lk31_obs?></td>
-            <td><? db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></td>
+            <td><?php  db_textarea('k31_obs',2,70,$Ik31_obs,'','text',$db_opcao,"") ?></td>
           </tr>
        </table>
        <table> 
@@ -71,7 +71,7 @@ $clarreprescr->rotulo->label();
             <table border="0">
             <tr>
             <td width="" align="left" nowrap title="">
-            <? 
+            <?php  
                $sql = "select distinct v01_exerc from divida
                         inner join arrecad a on divida.v01_numpre = a.k00_numpre 
                                             and divida.v01_numpar = a.k00_numpar
@@ -122,7 +122,7 @@ $clarreprescr->rotulo->label();
        <table width="70%" border="0" align="center" cellspacing="0">
           <tr>
           <td colspan = 2>
-          <? 
+          <?php  
              // monta o iframeseleciona
              
              $sql = " select * from (
@@ -222,7 +222,7 @@ $clarreprescr->rotulo->label();
       </center>
       </td>
  </tr>
- <?}?>
+ <?php }?>
 </form>
 <script>
 function js_clickedcheck(){

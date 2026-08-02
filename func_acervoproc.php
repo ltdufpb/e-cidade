@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $clautor->rotulo->label("bi01_nome");
       <?=$Lbi06_codbarras?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi06_codbarras",30,$Ibi06_codbarras,true,"text",4,"","chave_bi06_codbarras");?>
+      <?php db_input("bi06_codbarras",30,$Ibi06_codbarras,true,"text",4,"","chave_bi06_codbarras");?>
      </td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ $clautor->rotulo->label("bi01_nome");
       <?=$Lbi06_titulo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+      <?php db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
      </td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@ $clautor->rotulo->label("bi01_nome");
       <b>Nome do Autor:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi01_nome",50,$Ibi01_nome,true,"text",4,"","chave_bi01_nome");?>
+      <?php db_input("bi01_nome",50,$Ibi01_nome,true,"text",4,"","chave_bi01_nome");?>
      </td>
     </tr>
     <tr>
@@ -92,7 +92,7 @@ $clautor->rotulo->label("bi01_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $depto = db_getsession("DB_coddepto");
    $result = $clbiblioteca->sql_record($clbiblioteca->sql_query("","bi17_codigo,bi17_nome",""," bi17_coddepto = $depto"));
    if($clbiblioteca->numrows!=0){

@@ -112,7 +112,7 @@ $clrotulo->label("z01_nome");
           </td>
         </tr>
         </table >
-          <?
+          <?php 
             db_input('setorParametro',"",0,true,'hidden',3,"");
             db_input('quadraParametro',"",0,true,'hidden',3,"");
             db_input('loteParametro',"",0,true,'hidden',3,"");

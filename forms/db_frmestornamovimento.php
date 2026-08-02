@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -160,7 +160,7 @@ $apenasRetencoes = !empty($_GET["apenas_retencoes"]) && $_GET["apenas_retencoes"
 $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
 ?>
 <style>
-  <?$cor="#999999"?>
+  <?php $cor="#999999"?>
   .bordas02{
     border: 1px solid #cccccc;
     border-top-color: <?=$cor?>;
@@ -183,7 +183,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
     <table border='0' cellspacing='0' cellpadding='0'>
       <tr>
         <td colspan='2' align='center' valign='top'>
-          <?
+          <?php 
 
 
           if (empty ($modo)) {
@@ -200,16 +200,16 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
             <table border="0" cellspacing='0' cellpadding='0'>
               <tr>
                 <td nowrap title="<?=@$Te60_numemp?>" colspan='3' align='right'>
-                  <?if(isset($pag_ord)){?>
+                  <?php if(isset($pag_ord)){?>
                     <?=@$Le50_codord?>
-                    <?
+                    <?php 
 
 
                     db_input('e50_codord', 8, $Ie50_codord, true, 'text', 3)
                     ?>
-                  <?}?>
+                  <?php }?>
                   <?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho','".@$e60_numemp."')",1)?>
-                  <?
+                  <?php 
 
                   db_input('e60_numemp', 13, $Ie60_numemp, true, 'text', 3)
                   ?>
@@ -220,8 +220,8 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                   <?=db_ancora($Lz01_nome,"js_JanelaAutomatica('cgm','".@$e60_numcgm."')",1)?>
                 </td>
                 <td>
-                  <?  db_input('e60_numcgm', 10, $Ie60_numcgm, true, 'text', 3) ?>
-                  <? db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '') ?>
+                  <?php   db_input('e60_numcgm', 10, $Ie60_numcgm, true, 'text', 3) ?>
+                  <?php  db_input('z01_nome', 40, $Iz01_nome, true, 'text', 3, '') ?>
                 </td>
               </tr>
               <tr>
@@ -229,10 +229,10 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                   <?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao','".@$e60_coddot."','".db_getsession("DB_anousu")."')",1)?>
                 </td>
                 <td>
-                  <? db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?>
+                  <?php  db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?>
                 </td>
               </tr>
-              <?
+              <?php 
               /* busca dados da dotação  */
               if ((isset ($e60_coddot))) {
                 $instit = db_getsession("DB_instit");
@@ -252,43 +252,43 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
               <tr>
                 <td nowrap title="<?=@$To58_orgao ?>"><?=@$Lo58_orgao ?> </td>
                 <td nowrap >
-                  <? db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?>
-                  <? db_input('o40_descr',40,"",true,'text',3,"");  ?>
+                  <?php  db_input('o58_orgao',8,"$Io58_orgao",true,'text',3,"");  ?>
+                  <?php  db_input('o40_descr',40,"",true,'text',3,"");  ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$To58_unidade ?>"><?=@$Lo58_unidade ?> </td>
                 <td nowrap >
-                  <? db_input('o58_unidade',8,"",true,'text',3,"");  ?>
-                  <? db_input('o41_descr',40,"",true,'text',3,"");  ?>
+                  <?php  db_input('o58_unidade',8,"",true,'text',3,"");  ?>
+                  <?php  db_input('o41_descr',40,"",true,'text',3,"");  ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$To58_funcao ?>"><?=@$Lo58_funcao ?> </td>
                 <td nowrap >
-                  <? db_input('o58_funcao',8,"",true,'text',3,"");  ?>
-                  <? db_input('o52_descr',40,"",true,'text',3,"");  ?>
+                  <?php  db_input('o58_funcao',8,"",true,'text',3,"");  ?>
+                  <?php  db_input('o52_descr',40,"",true,'text',3,"");  ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$To58_subfuncao ?>" ><?=@$Lo58_subfuncao ?> </td>
                 <td nowrap >
-                  <? db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>
-                  <? db_input('o53_descr',40,"",true,'text',3,"");  ?>
+                  <?php  db_input('o58_subfuncao',8,"",true,'text',3,"");  ?>
+                  <?php  db_input('o53_descr',40,"",true,'text',3,"");  ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$To58_programa ?>"    ><?=@$Lo58_programa ?> </td>
                 <td nowrap >
-                  <? db_input('o58_programa',8,"",true,'text',3,"");  ?>
-                  <? db_input('o54_descr',40,"",true,'text',3,"");  ?>
+                  <?php  db_input('o58_programa',8,"",true,'text',3,"");  ?>
+                  <?php  db_input('o54_descr',40,"",true,'text',3,"");  ?>
                 </td>
               </tr>
               <tr>
                 <td nowrap title="<?=@$To58_projativ ?>"><?=@$Lo58_projativ ?> </td>
                 <td nowrap >
-                  <? db_input('o58_projativ',8,"",true,'text',3,"");  ?>
-                  <? db_input('o55_descr',40,"",true,'text',3,"");  ?>
+                  <?php  db_input('o58_projativ',8,"",true,'text',3,"");  ?>
+                  <?php  db_input('o55_descr',40,"",true,'text',3,"");  ?>
                 </td>
               </tr>
               <tr>
@@ -300,30 +300,30 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
               <tr>
                 <td nowrap title="<?=@$To58_codigo ?>" ><?=@$Lo58_codigo ?> </td>
                 <td nowrap >
-                  <? db_input('o58_codigo',8,"",true,'text',3,"");  ?>
-                  <? db_input('o15_descr',40,"",true,'text',3,"");  ?>
+                  <?php  db_input('o58_codigo',8,"",true,'text',3,"");  ?>
+                  <?php  db_input('o15_descr',40,"",true,'text',3,"");  ?>
 
                 </td>
               </tr>
 
-              <? if (isset($e50_codord) && ($e50_codord!="")){   ?>
+              <?php  if (isset($e50_codord) && ($e50_codord!="")){   ?>
                 <tr>
                   <td nowrap >
-                    <? db_ancora("Consulta Pagamentos","js_pesquisa_pagamentos($e60_numemp);",1);  ?>
+                    <?php  db_ancora("Consulta Pagamentos","js_pesquisa_pagamentos($e60_numemp);",1);  ?>
                   </td>
                   <td nowrap >
                   </td>
                 </tr>
-              <?  } ?>
+              <?php   } ?>
 
 
               <tr style="<?=$displayEmpenhos?>">
                 <td nowrap title="<?=@$Tk13_conta?>">
-                  <? db_ancora(@ $Lk13_conta, "js_pesquisak13_conta(true);", 1); ?>
+                  <?php  db_ancora(@ $Lk13_conta, "js_pesquisak13_conta(true);", 1); ?>
                 </td>
                 <td nowrap >
-                  <? db_input('k13_conta', 8, $Ik13_conta, true, 'text', $db_opcao, " onchange='js_pesquisak13_conta(false);'") ?>
-                  <? db_input('k13_descr', 40, $Ik13_descr, true, 'text', 3); ?>
+                  <?php  db_input('k13_conta', 8, $Ik13_conta, true, 'text', $db_opcao, " onchange='js_pesquisak13_conta(false);'") ?>
+                  <?php  db_input('k13_descr', 40, $Ik13_descr, true, 'text', 3); ?>
                 </td>
               </tr>
               <tr>
@@ -331,7 +331,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                   <b>Motivo de estorno</b>
                 </td>
                 <td>
-                  <? db_textarea('c72_complem', 2, 50, 0, true, 'text', $db_opcao, "") ?>
+                  <?php  db_textarea('c72_complem', 2, 50, 0, true, 'text', $db_opcao, "") ?>
                 </td>
               </tr>
             </table>
@@ -340,13 +340,13 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
         <td valign='top'>
           <fieldset><legend><b>Saldos</b></legend>
             <table cellspacing='0' cellpadding='0' width="100%">
-              <?  if (isset ($e60_anousu) && $e60_anousu < db_getsession("DB_anousu")) {    ?>
+              <?php   if (isset ($e60_anousu) && $e60_anousu < db_getsession("DB_anousu")) {    ?>
                 <tr class='bordas'>
                   <td  colspan='2' align='center'>
                     <b style='color:red'>RESTO À PAGAR</b>
                   </td>
                 </tr>
-              <?
+              <?php 
               }
               ?>
               <tr>
@@ -359,13 +359,13 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                   <?=@$Le60_vlremp?>
                 </td>
                 <td class=''>
-                  <? db_input('e60_vlremp', 15, $Ie60_vlremp, true, 'text', 3, '') ?>
+                  <?php  db_input('e60_vlremp', 15, $Ie60_vlremp, true, 'text', 3, '') ?>
                 </td>
               </tr>
               <tr class=''>
                 <td class='' nowrap title="<?=@$Te60_vlranu?>"><?=@$Le60_vlranu?></td>
                 <td class=''>
-                  <? db_input('e60_vlranu', 15, $Ie60_vlranu, true, 'text', 3, '') ?>
+                  <?php  db_input('e60_vlranu', 15, $Ie60_vlranu, true, 'text', 3, '') ?>
                 </td>
               </tr>
               <tr>
@@ -373,16 +373,16 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                   <?=@$Le60_vlrliq?>
                 </td>
                 <td class=''>
-                  <? db_input('e60_vlrliq', 15, $Ie60_vlrliq, true, 'text', 3, '') ?>
+                  <?php  db_input('e60_vlrliq', 15, $Ie60_vlrliq, true, 'text', 3, '') ?>
                 </td>
               </tr>
               <tr>
                 <td class='' nowrap title="<?=@$Te60_vlrpag?>"><?=@$Le60_vlrpag?></td>
                 <td class=''>
-                  <? db_input('e60_vlrpag', 15, $Ie60_vlrpag, true, 'text', 3, '') ?>
+                  <?php  db_input('e60_vlrpag', 15, $Ie60_vlrpag, true, 'text', 3, '') ?>
                 </td>
               </tr>
-              <?
+              <?php 
               if (isset ($e60_numemp)) {
                 if (isset ($e50_codord) && $e50_codord != '') {
                   $result = $clpagordemele->sql_record($clpagordemele->sql_query(null, null, "sum(e53_valor) as tot_valor, sum(e53_vlrpag) as tot_vlrpag, sum(e53_vlranu) as tot_vlranu", "", "e60_numemp=$e60_numemp and e50_codord=$e50_codord "));
@@ -402,7 +402,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                       <?=@$Le53_valor?>
                     </td>
                     <td class=''>
-                      <? db_input('tot_valor', 15, $Ie60_vlranu, true, 'text', 3, '') ?>
+                      <?php  db_input('tot_valor', 15, $Ie60_vlranu, true, 'text', 3, '') ?>
                     </td>
                   </tr>
                   <tr>
@@ -410,14 +410,14 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                       <?=@$Le53_vlrpag?>
                     </td>
                     <td class=''>
-                      <? db_input('tot_vlrpag', 15, $Ie53_vlrpag, true, 'text', 3, '') ?>
+                      <?php  db_input('tot_vlrpag', 15, $Ie53_vlrpag, true, 'text', 3, '') ?>
                     </td>
                   </tr>
                   <tr>
                     <td class='' nowrap title="<?=@$Te53_vlranu?>"><?=@$Le53_vlranu?></td>
-                    <td class=''><? db_input('tot_vlranu', 15, $Ie53_vlranu, true, 'text', 3, '') ?></td>
+                    <td class=''><?php  db_input('tot_vlranu', 15, $Ie53_vlranu, true, 'text', 3, '') ?></td>
                   </tr>
-                <?
+                <?php 
                 }
               }
               ?>
@@ -433,7 +433,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                   <b>Valor disponível:</b>
                 </td>
                 <td class=''>
-                  <?
+                  <?php 
                   $vlrdis = number_format($vlrdis, "2", ".", "");
                   db_input('vlrdis', 15, 0, true, 'text', 3);
                   if ($vlrdis == 0) {
@@ -462,7 +462,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
               </tr>
               <tr>
                 <td class='' nowrap>
-                  <?
+                  <?php 
 
                   $dbwhere = "e80_instit = " . db_getsession("DB_instit") . " and e60_numemp = $e60_numemp";
 
@@ -487,7 +487,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
                   ?>
                 </td>
                 <td >
-                  <?
+                  <?php 
 
 
                   db_input('k12_cheque', 15, 4, true, 'text', 3);
@@ -529,11 +529,11 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
       <tr>
         <td align='center' colspan='3'>
           <br>
-          <? if( (isset($retorno) && $k11_tipautent == 1) ||  (isset($retorno_imp))  && !isset($confirmar_primeira_vez) ){  ?>
+          <?php  if( (isset($retorno) && $k11_tipautent == 1) ||  (isset($retorno_imp))  && !isset($confirmar_primeira_vez) ){  ?>
 
             <input name="pesquisar" type="button" id="imprimir_novamente" value="Autenticar Novamente" onclick="aut();" >
 
-          <? }  ?>
+          <?php  }  ?>
           <input name="confirmar" type="button" id="db_opcao" value="Confirmar" onclick="js_verificaSlipAutomatico()" <?=($db_botao==false?"disabled":"")?> >
           <input name="pesquisar" type="button" id="pesquisar" value="Voltar" onclick="js_volta();" >
         </td>
@@ -597,7 +597,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pagordem','func_pagordem002.php?e60_numemp='+empenho,'Pesquisa',true);
   }
 
-  <?
+  <?php 
 
 
   if (isset ($e60_numemp)) {
@@ -637,7 +637,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
 
   }
 
-  <?
+  <?php 
 
   }
   ?>
@@ -647,7 +647,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
   }
   function js_preenchepesquisa(chave){
     db_iframe_empempenho.hide();
-    <?
+    <?php 
 
 
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave";

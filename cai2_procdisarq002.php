@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ echo "<br>";
 
 ?>
 <link href="estilos.css" rel="stylesheet" type="text/css"> 
-<?
+<?php 
 
 
 db_criatermometro('termometro', 'Concluido...', 'blue', 1);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -109,13 +109,13 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Nutriente</b></legend>
-    <?include(modification("forms/db_frmmer_nutriente.php"));?>
+    <?php include(modification("forms/db_frmmer_nutriente.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -123,7 +123,7 @@ if (isset($excluir)) {
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clmer_nutriente->erro_status=="0") {

@@ -62,7 +62,7 @@ if (isset($alterar)) {
         parent.document.formaba.a2.disabled = false;
         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'edu1_disciplina001.php?ed12_i_ensino=<?=$ed10_i_codigo?>';
     </script>
-    <?
+    <?php 
 }
 
 $sAcao = 'Alteração';

@@ -85,11 +85,11 @@ if (isset($valor)) {
   <form method="POST" name="form2">
   <tr>
    <td colspan="8" align="right">
-    <?if($todos=="false" and $iLinhas!=0){?>
+    <?php if($todos=="false" and $iLinhas!=0){?>
         <input type="checkbox" name="todos" id="todos" value="true" onclick="js_vertodos()"> <label for="todos">Ver exemplares</label>
-    <?}elseif($todos=="true" and $iLinhas!=0){?>
+    <?php }elseif($todos=="true" and $iLinhas!=0){?>
         <input type="checkbox" name="todos"  id="todos" value="false" onclick="js_vertodos()"><label for="todos">Ocultar exemplares</label>
-    <?}?>
+    <?php }?>
    </td>
   </tr>
   <tr bgcolor="#999999">
@@ -193,13 +193,13 @@ if (isset($valor)) {
               }else{
                ?>
                <a href="#" onclick="parent.location.href='bib1_emprestimo001.php?bi23_codigo=<?=$bi23_codigo?>&bi06_titulo=<?=$bi06_titulo?>&assunto'" title="Realizar Empréstimo">Disponível</a>
-               <?
+               <?php 
               }
               ?>
               <b></b>
              </td>
             </tr>
-           <?
+           <?php 
            }
           }else{
              echo "<tr><td align='center' colspan='6'>Nenhum exemplar cadastrado para este acervo.</td></tr>";
@@ -208,17 +208,17 @@ if (isset($valor)) {
          </table>
         </td>
        </tr>
-     <?}?>
+     <?php }?>
 
-    <?}?>
+    <?php }?>
     <table>
     </form>
-   <?}else{?>
+   <?php }else{?>
     <tr>
      <td colspan="6" align="center">Nenhum acervo para este autor.</td>
     </tr>
     </table>
-   <?}
+   <?php }
   }else{
      echo "<div align='center'><br>Escolha o autor e clique em pesquisar</div>";
   }
@@ -226,7 +226,7 @@ if (isset($valor)) {
 <br><br>
 <script>
 function js_vertodos(){
- <?$pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor;?>
+ <?php $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor;?>
  location.href = "<?=$pagina?>&todos="+document.form2.todos.value;
 }
 </script>

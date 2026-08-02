@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ if(isset($Incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmitbipropriold.php"));
 	$result = $clitbirural->sql_record($clitbirural->sql_query($it20_guia)); 
 	if($clitbirural->numrows == 0){
@@ -69,7 +69,7 @@ if(isset($Incluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($Incluir)){
   if($clitbipropriold->erro_status=="0"){
     $clitbipropriold->erro(true,false);

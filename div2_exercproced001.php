@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -151,7 +151,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
             <tr>
               <td>Tipo:</td>
               <td>
-                <?
+                <?php 
            		  $matriz = array("r"=>"Resumido",
 		                          "c"=>"Completo",
 		                         );
@@ -164,7 +164,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 Lista de procedencias (separadas por vírgula):
               </td>
               <td>
-                <?
+                <?php 
                   db_input('v03_descr', 100, $Iv03_descr, true, 'text', $db_opcao);
                 ?>
               </td>
@@ -184,7 +184,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
               </tr>
-		      <?
+		      <?php 
                 $cor = '#E4F471';
                 $sqlmenor = "select distinct v01_exerc as exercicio from divida order by v01_exerc";
                 $resultmenor = db_query($sqlmenor) or die($sqlmenor);
@@ -205,7 +205,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                   <input type="checkbox" value="<?=$exercicio?>"
                   name="check<?=$i?>" checked onclick="js_verifica()"><?=$exercicio?>
                 </td>
-              <?
+              <?php 
                 if ($cont==4){
                 	echo "</tr>";
                   	$cont=0;
@@ -220,7 +220,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <input name="db_opcao" type="button" id="db_opcao" value="Gerar TXT" onClick="js_emite(2);"
         <?=($db_botao ? '' : 'disabled')?>>
       </form>
-      <?
+      <?php 
        db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
       ?>
     </body>

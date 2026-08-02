@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: biblioteca
 //CLASSE DA ENTIDADE baixabib
 class cl_baixabib { 

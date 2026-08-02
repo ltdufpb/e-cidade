@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -1161,7 +1161,7 @@ function js_emite(){
 
 </script>
 
-<?
+<?php 
 
 
 
@@ -1183,7 +1183,7 @@ function js_emite1(){
   jan.moveTo(0,0);
 }
 </script>
-<?
+<?php 
 
 
 }
@@ -1228,7 +1228,7 @@ function js_emite1(){
 	        <b>Código/Descrição:</b>
         </td>
         <td colspan="3">
-	        <?
+	        <?php 
           if($db_opcao == 1) {
  	          $xopcao = 3;
           } else {
@@ -1248,7 +1248,7 @@ function js_emite1(){
       <tr>
         <td title="Data da Geração da tabela débitos"><strong>Data Débitos :</strong>&nbsp;&nbsp;
         </td><td>
-         <?
+         <?php 
 
 $sql = "select k115_data as k22_data from datadebitos where k115_instit = ".db_getsession("DB_instit")."order by k115_data desc limit 1";
 $result = db_query($sql);
@@ -1274,18 +1274,18 @@ db_inputdata('data', $data_dia, $data_mes, $data_ano, true, 'text', 4)
       <tr>
         <td title="Intervalo de valores a serem listados"><strong>Valores :</strong>&nbsp;&nbsp;
         </td><td>
-          <?
+          <?php 
            db_input('DBtxt10', 10, $IDBtxt10, true, 'text', $db_opcao);
           ?>
           &nbsp;<b> à </b> &nbsp;
-          <?
+          <?php 
           db_input('DBtxt11', 10, $IDBtxt11, true, 'text', $db_opcao);
           ?>
         </td>
         <td align="left" >
         <strong>Tipo de Lista :&nbsp;&nbsp;</strong>
         </td><td>
-           <?
+           <?php 
            $x = array("N"=>"Nome (  CGM Geral  )","C"=>"Somente por CGM","M"=>"Matrícula","I"=>"Inscrição");
            db_select('k60_tipo',$x,true,1,"");
           ?>
@@ -1295,7 +1295,7 @@ db_inputdata('data', $data_dia, $data_mes, $data_ano, true, 'text', 4)
         <td title="Não lista os contribuintes notificados após esta data">
 	  <strong>Não Considerar Notificados Até:</strong>&nbsp;&nbsp;
     </td><td>
-         <?
+         <?php 
 
 
 $data1_ano = substr(date('Y'), 0, 4);
@@ -1308,13 +1308,13 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 ?>
         </td>
 	<td><strong>Massa Falida :</strong>&nbsp;&nbsp;
-        <?
+        <?php 
 	  $x = array ("f" => "NÃO", "t" => "SIM");
 	  db_select('massa', $x, true, 4, "");
 	?>
   </td><td>
 	<strong>Loteamentos:</strong>&nbsp;&nbsp;
-        <?
+        <?php 
 	  $x = array ("t" => "SIM", "f" => "NÃO");
 	  db_select('loteamento', $x, true, 4, "");
 	?>
@@ -1357,12 +1357,12 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 	    <b>Data de operação: </b>
 	  </td>
 	  <td>
-    <?
+    <?php 
      db_inputdata('dtini', "", "", "", true, 'text', $db_opcao, "")
     ?>
     </td><td>
 	  <b> à </b>
-    <?
+    <?php 
      db_inputdata('dtfim', "", "", "", true, 'text', $db_opcao, "")
     ?>
           </td>
@@ -1372,30 +1372,30 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 	    <b>Data do Vencimento: </b>
 	  </td>
 	  <td>
-    <?
+    <?php 
      db_inputdata('dataini', "", "", "", true, 'text', $db_opcao, "")
     ?>
     </td><td>
 	  <b> à </b>
-    <?
+    <?php 
      db_inputdata('datafim', "", "", "", true, 'text', $db_opcao, "")
     ?>
      </td>
     </tr>
-    <?
+    <?php 
     ?>
      <tr>
           <td nowrap title="<?=@$Tk22_exerc?>">
 	    <b>Exercicio:</b>
 	  </td>
 	  <td>
-<?
+<?php 
 
  db_input('exercini', 10, "Exercicio inicial", true, 'text', $db_opcao);
 ?>
 </td><td>
 	  <b> à </b>
-<?
+<?php 
 
  db_input('exercfim', 10, "Exercicio final", true, 'text', $db_opcao);
 ?>
@@ -1409,13 +1409,13 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 	  </td>
 
 	  <td>
-<?
+<?php 
 
  db_input('desconexercini', 10, "Exercicio inicial", true, 'text', $db_opcao);
 ?>
 </td><td>
 	  <b> à </b>
-<?
+<?php 
 
  db_input('desconexercfim', 10, "Exercicio final", true, 'text', $db_opcao);
 ?>
@@ -1429,12 +1429,12 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 					<b>Qtde de Parcelas em Atraso:</b>
 				</td>
 				<td>
-					<?
+					<?php 
 					 db_input('parcini', 10, "Parcela inicial", true, 'text', $db_opcao);
 					?>
           </td><td>
 							<b> à </b>
-					<?
+					<?php 
 					 db_input('parcfim', 10, "Parcela final", true, 'text', $db_opcao);
 					?>
 
@@ -1445,12 +1445,12 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 					<b>Número das Parcelas em Atraso:</b>
 				</td>
 				<td>
-					<?
+					<?php 
 					 db_input('numini', 10, "Número parcela inicial", true, 'text', $db_opcao);
 					?>
           </td><td>
 							<b> à </b>
-					<?
+					<?php 
 					 db_input('numfim', 10, "Número parcela final", true, 'text', $db_opcao);
 					?>
 
@@ -1462,7 +1462,7 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 	    <b>Considerar além dos filtros:</b>
 	  </td>
 	  <td colspan="2">
-<?
+<?php 
 
  	  $x = array ("f" => "NÃO", "t" => "SIM");
 	  db_select('considerar', $x, true, 4, "");
@@ -1501,16 +1501,16 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
           </tr>
          <tr>
            <td nowrap title="<?=@$Tk00_tipo?>" colspan="2">
-            <?
+            <?php 
 
  db_ancora(@ $Lk00_tipo, "js_pesquisadb02_idparag(true);", $db_opcao);
 ?>
-            <?
+            <?php 
 
 
 db_input('k00_tipo', 8, $Ik00_tipo, true, 'text', $db_opcao, " onchange='js_pesquisadb02_idparag(false);'")
 ?>
-            <?
+            <?php 
 
  db_input('k00_descr', 25, $Ik00_descr, true, 'text', 3, '')
 ?>
@@ -1521,7 +1521,7 @@ db_input('k00_tipo', 8, $Ik00_tipo, true, 'text', $db_opcao, " onchange='js_pesq
 	   <td align="right" colspan="" width="80%">
 
               <select name="campos[]" id="campos" size="7" style="width:250px" multiple>
-              <?
+              <?php 
 
  if (isset ($chavepesquisa)) {
 
@@ -1568,7 +1568,7 @@ db_input('k00_tipo', 8, $Ik00_tipo, true, 'text', $db_opcao, " onchange='js_pesq
   </form>
     </table>
 
-<?
+<?php 
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
@@ -1630,7 +1630,7 @@ function js_preenchepesquisa(chave){
 }
 
 </script>
-<?
+<?php 
 
 
 $func_iframe = new janela('db_iframe', '');

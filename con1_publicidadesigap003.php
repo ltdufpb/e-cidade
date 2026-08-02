@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -110,14 +110,14 @@ fieldset table td:first-child {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC"> 
     <center>
-      <?
+      <?php 
         include(modification("forms/db_frmpublicidadesigap.php"));
       ?>
     </center>
   </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -125,7 +125,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","excluir",true,1,"excluir",true);
 </script>
-<?
+<?php 
 if (isset($oPost->excluir)) {
   db_msgbox($sMsg);
 }

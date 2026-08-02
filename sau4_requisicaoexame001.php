@@ -101,10 +101,10 @@ $sProfissional = $oGet->sNomeProfissional;
 
         <tr>
           <td nowrap >
-            <?db_ancora ( "Exames:", "js_pesquisala19_i_exame(true);", 1 );?>
+            <?php db_ancora ( "Exames:", "js_pesquisala19_i_exame(true);", 1 );?>
           </td>
           <td>
-            <?
+            <?php 
               db_input ( 'iCodigoExame', 10, "", true, 'hidden', 1, "onchange='js_pesquisala19_i_exame(false);'" );
               db_input ( 'iSigla', 10, "", true, 'text', 3, "" );
               db_input ( 'sNomeExame', 62, "", true, 'text', 1, '' );
@@ -117,7 +117,7 @@ $sProfissional = $oGet->sNomeProfissional;
         <tr>
           <td><strong>Solicitado:</strong></td>
           <td>
-          <?
+          <?php 
               $aOpcoes = array( "0"=>"Não", "1"=>"Sim" );
               db_select("lSolicitado", $aOpcoes, true, 1)
             ?>
@@ -128,7 +128,7 @@ $sProfissional = $oGet->sNomeProfissional;
         <tr>
           <td><strong>Avaliado:</strong></td>
           <td>
-            <?
+            <?php 
               $aOpcoes = array( "0"=>"Não", "1"=>"Sim" );
               db_select("lAvaliado", $aOpcoes, true, 1)
             ?>

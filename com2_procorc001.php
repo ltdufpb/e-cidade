@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -107,17 +107,17 @@ function js_mostrapcorcamsol(chave){
     <td ></td>
   </tr>
   <tr> 
-    <td  align="right" nowrap title="<?=$Tpc20_codorc?>"> <? db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
+    <td  align="right" nowrap title="<?=$Tpc20_codorc?>"> <?php  db_ancora(@$Lpc20_codorc,"js_pesquisa_pcorcam(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php 
          db_input("pc20_codorc",8,$Ipc20_codorc,true,"text",3,"onchange='js_pesquisa_pcorcam(false);'"); 
       ?>
     </td>
   </tr>
   <tr> 
-    <td  align="right" nowrap title="<?=$Tpc80_codproc?>"> <? db_ancora(@$Lpc80_codproc,"js_pesquisapc80_codproc(true);",1);?>  </td>
+    <td  align="right" nowrap title="<?=$Tpc80_codproc?>"> <?php  db_ancora(@$Lpc80_codproc,"js_pesquisapc80_codproc(true);",1);?>  </td>
     <td align="left" nowrap>
-      <?
+      <?php 
          db_input("pc80_codproc",8,$Ipc80_codproc,true,"text",4,"onchange='js_pesquisapc80_codproc(false);'"); 
       ?>
     </td>
@@ -128,13 +128,13 @@ function js_mostrapcorcamsol(chave){
       <input name="limpar" type="button" onclick='js_limparcampos();'  value="Limpar campos">
     </td>
   </tr>
-  <?if(isset($pc20_codorc)){?>
+  <?php if(isset($pc20_codorc)){?>
   <tr> 
     <td colspan=2>
     <iframe name="iframe_fornec" id="fornecedores" marginwidth="0" marginheight="0" frameborder="0" src="com1_selfornecedor001.php?pc21_codorc=<?=$pc20_codorc?>" width="400" height="250"></iframe>
     </td>
   </tr>
-  <?}?>
+  <?php }?>
   <tr height="20px">
     <td ></td>
     <td ></td>
@@ -142,7 +142,7 @@ function js_mostrapcorcamsol(chave){
 </table>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_limparcampos(){

@@ -150,7 +150,7 @@ if($conparametro->c90_confirmadata == 't'){
       <tr>
         <td class='tamanho-primeira-col' nowrap><strong>Código da Planilha:</strong></td>
         <td>
-          <?
+          <?php 
           db_input('k80_codpla',10, $Ik80_codpla,true,'text',3,"")
           ?>
         </td>
@@ -172,7 +172,7 @@ if($conparametro->c90_confirmadata == 't'){
           </td>
 
           <td >
-             <? db_input('k144_numeroprocesso', 10, null, true, 'text', 3, null,null,null,null,15);?>
+             <?php  db_input('k144_numeroprocesso', 10, null, true, 'text', 3, null,null,null,null,15);?>
           </td>
         </tr>
 
@@ -194,7 +194,7 @@ if($conparametro->c90_confirmadata == 't'){
 
 </center>
 
-<?
+<?php 
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clprognivel->rotulo->label("ed124_c_descr");
       <?=$Led124_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed124_i_codigo",10,$Ied124_i_codigo,true,"text",4,"","chave_ed124_i_codigo");?>
+      <?php db_input("ed124_i_codigo",10,$Ied124_i_codigo,true,"text",4,"","chave_ed124_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,7 +62,7 @@ $clprognivel->rotulo->label("ed124_c_descr");
       <?=$Led124_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed124_c_descr",20,$Ied124_c_descr,true,"text",4,"","chave_ed124_c_descr");?>
+      <?php db_input("ed124_c_descr",20,$Ied124_c_descr,true,"text",4,"","chave_ed124_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ $clprognivel->rotulo->label("ed124_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_prognivel.php")==true){

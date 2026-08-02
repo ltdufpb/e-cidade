@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE turmaachorarioprofissional
 class cl_turmaachorarioprofissional

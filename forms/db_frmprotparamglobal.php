@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clprotparamglobal->rotulo->label();
        <?=@$Lp06_sequencial?>
     </td>
     <td> 
-        <?
+        <?php 
         db_input('p06_sequencial',10,$Ip06_sequencial,true,'text',$db_opcao,"")
         ?>
     </td>
@@ -48,7 +48,7 @@ $clprotparamglobal->rotulo->label();
        <?=@$Lp06_tipo?>
     </td>
     <td>
-      <?
+      <?php 
       $aTiposControle = getValoresPadroesCampo('p06_tipo');
       db_select('p06_tipo', $aTiposControle, true, $db_opcao);
       ?>
@@ -69,7 +69,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_protparamglobal.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

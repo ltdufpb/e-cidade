@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -58,7 +58,7 @@ $clrotulo->label("j34_lote");
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load('scripts.js');
   db_app::load('prototype.js');
   db_app::load('datagrid.widget.js');
@@ -150,12 +150,12 @@ function js_emite(){
 			          <table border='0'>
 			            <tr>
 			              <td align='right'>
-					            <?
+					            <?php 
 					              db_ancora('<b>Guia :</b>','js_pesquisait01_guia(true);',1);
 					            ?>
 			              </td>
 			              <td width='20'>
-					            <?
+					            <?php 
 					              db_input('it01_guia_ini',15,$Iit01_guia,true,'text',1," onchange='js_pesquisait01_guia(false);'");
 					            ?>
 			              </td>
@@ -163,7 +163,7 @@ function js_emite(){
 			                <b> a </b>
 			              </td>
 			              <td>
-					            <?
+					            <?php 
 					              db_input('it01_guia_fim',15,$Iit01_guia,true,'text',1,'');
 					            ?>
 			              </td>
@@ -173,7 +173,7 @@ function js_emite(){
                       <b>Periodo de :</b>
                     </td>
                     <td width='20'>
-						          <?
+						          <?php 
 						            db_inputdata('dtIni', '', '', '', true, 'text', 1, '');
 						          ?>
                     </td>
@@ -181,7 +181,7 @@ function js_emite(){
                       <b> a </b>
                     </td>
                     <td>
-						          <?
+						          <?php 
 						            db_inputdata('dtFim', '', '', '', true, 'text', 1, '');
 						          ?>
                     </td>
@@ -191,7 +191,7 @@ function js_emite(){
 					            <b>Logradouro :</b>
                     </td>
                     <td colspan='3'>
-					            <?
+					            <?php 
 					              db_input('logradouroid',40,'',true,'hidden',3);
 					              db_input('it18_nomelograd',40,$Iit18_nomelograd,true,'text',1);
 					            ?>
@@ -202,7 +202,7 @@ function js_emite(){
                       <b>Ordem :</b>
                     </td>
                     <td colspan='3'>
-                      <?
+                      <?php 
                         $aOrdem = array( 'g'=>'Guia',
                                          'v'=>'Valor' );
                         db_select('ordem',$aOrdem,true,2," style='width:275px;'");
@@ -236,7 +236,7 @@ function js_emite(){
                       <b>Tipo :</b>
                     </td>
                     <td colspan='3'>
-					            <?
+					            <?php 
 					              $aTipo = array( 't'=>'Todos',
 					                              'u'=>'Urbano',
 					                              'r'=>'Rural' );
@@ -250,7 +250,7 @@ function js_emite(){
                       <b>Situaçao:</b>
                     </td>
                     <td colspan='3'>
-				              <?
+				              <?php 
 				                $aSituacao = array( '1'=>'Todos',
 				                                    '2'=>'Aberto',
 				                                    '3'=>'Pago',
@@ -264,7 +264,7 @@ function js_emite(){
                       <b>Liberadas:</b>
                     </td>
                     <td colspan='3'>
-                      <?
+                      <?php 
                         $aLiberadas = array( 't'=>'Todos',
                                              's'=>'Sim',
                                              'n'=>'Não');
@@ -277,16 +277,16 @@ function js_emite(){
 								       <?=$Lj34_setor?>
 								    </td>
 								    <td colspan='3'>
-								    <?
+								    <?php 
 								     db_input('j34_setor',10,$Ij34_setor,true,'text',1);
 								     ?>
 								     <?=$Lj34_quadra?>
-								     <?
+								     <?php 
 								       db_input('j34_quadra',10,$Ij34_quadra,true,'text',1);
 								     ?>
 
 								     <?=$Lj34_lote?>
-								     <?
+								     <?php 
 								       db_input('j34_lote',10,$Ij34_lote,true,'text',1);
 								     ?>
 								    </td>
@@ -314,7 +314,7 @@ function js_emite(){
     </tr>
   </table>
 </form>
-<?
+<?php 
   db_menu(db_getsession('DB_id_usuario'),db_getsession('DB_modulo'),db_getsession('DB_anousu'),db_getsession('DB_instit'));
 ?>
 </body>

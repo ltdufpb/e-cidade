@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,7 +38,7 @@ $clrotulo->label("me18_i_codigo");
        <?=@$Lme19_i_codigo?>
     </td>
     <td> 
-     <?db_input('me19_i_codigo',5,$Ime19_i_codigo,true,'text',$db_opcao,"")?>
+     <?php db_input('me19_i_codigo',5,$Ime19_i_codigo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -46,7 +46,7 @@ $clrotulo->label("me18_i_codigo");
        <?=@$Lme19_f_quant?>
     </td>
     <td> 
-     <?db_input('me19_f_quant',5,$Ime19_f_quant,true,'text',$db_opcao,"")?>
+     <?php db_input('me19_f_quant',5,$Ime19_f_quant,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -54,7 +54,7 @@ $clrotulo->label("me18_i_codigo");
        <?=@$Lme19_f_valor?>
     </td>
     <td> 
-     <?db_input('me19_f_valor',5,$Ime19_f_valor,true,'text',$db_opcao,"")?>
+     <?php db_input('me19_f_valor',5,$Ime19_f_valor,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -62,7 +62,7 @@ $clrotulo->label("me18_i_codigo");
        <?=@$Lme19_f_quantatend?>
     </td>
     <td> 
-     <?db_input('me19_f_quantatend',5,$Ime19_f_quantatend,true,'text',$db_opcao,"")?>
+     <?php db_input('me19_f_quantatend',5,$Ime19_f_quantatend,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -70,19 +70,19 @@ $clrotulo->label("me18_i_codigo");
        <?=@$Lme19_d_data?>
     </td>
     <td> 
-    <?db_inputdata('me19_d_data',@$me19_d_data_dia,@$me19_d_data_mes,@$me19_d_data_ano,true,'text',$db_opcao,"")?>
+    <?php db_inputdata('me19_d_data',@$me19_d_data_dia,@$me19_d_data_mes,@$me19_d_data_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme19_i_merestoque?>">
-       <?db_ancora(@$Lme19_i_merestoque,"js_pesquisame19_i_merestoque(true);",$db_opcao);?>
+       <?php db_ancora(@$Lme19_i_merestoque,"js_pesquisame19_i_merestoque(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me19_i_merestoque',5,$Ime19_i_merestoque,true,'text',$db_opcao,
+     <?php db_input('me19_i_merestoque',5,$Ime19_i_merestoque,true,'text',$db_opcao,
                  " onchange='js_pesquisame19_i_merestoque(false);'"
                )
      ?>
-     <?db_input('me18_i_codigo',5,$Ime18_i_codigo,true,'text',3,'')?>
+     <?php db_input('me18_i_codigo',5,$Ime18_i_codigo,true,'text',3,'')?>
     </td>
   </tr>
   </table>
@@ -148,7 +148,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_estoqueitem.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

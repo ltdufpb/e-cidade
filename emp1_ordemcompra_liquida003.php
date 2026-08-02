@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -308,7 +308,7 @@ if (isset ($valores) && isset ($incluir)) {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-    <?
+    <?php 
 
 
 
@@ -317,7 +317,7 @@ include(modification("forms/db_frmmatordemcgm_liquida.php"));
     </td>
   </tr>
 </table>
-<?
+<?php 
 
 
 

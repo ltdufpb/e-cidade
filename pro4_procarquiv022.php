@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -260,7 +260,7 @@ function js_desabilita(){
                       <?=@$Lp67_historico?>
                     </td>
                     <td>
-                      <?
+                      <?php 
                       db_textarea('p67_historico',6,60,$Ip67_historico,true,'text',1,"")
                       ?>
                     </td>
@@ -270,7 +270,7 @@ function js_desabilita(){
                        <?=@$Lp67_dtarq?>
                     </td>
                     <td>
-                      <?
+                      <?php 
                       if(empty($y30_data_dia)){
                         $p67_dtarq_dia = date("d",db_getsession("DB_datausu"));
                         $p67_dtarq_mes = date("m",db_getsession("DB_datausu"));
@@ -287,7 +287,7 @@ function js_desabilita(){
                   </tr>
                   <tr>
                     <td colspan=2 align='center' >
-                    <?
+                    <?php 
 
                        if (!isset($data1) || !isset($data)) {
 
@@ -386,8 +386,8 @@ function js_desabilita(){
   </table>
   </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
-<?
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php 
 if (isset($incluir)){
     db_msgbox($erro_msg);
     if($sqlerro==true){

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,21 +39,21 @@ $clrotulo->label("bi07_nome");
           <?=@$Lbi10_codigo?>
         </td>
         <td>
-          <?db_input('bi10_codigo',10,$Ibi10_codigo,true,'text',3,"")?>
+          <?php db_input('bi10_codigo',10,$Ibi10_codigo,true,'text',3,"")?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tbi10_codigo?>">
-         <?db_ancora(@$Lbi16_leitor,"js_pesquisabi10_codigo(true);",$db_opcao1);?>
+         <?php db_ancora(@$Lbi16_leitor,"js_pesquisabi10_codigo(true);",$db_opcao1);?>
         </td>
         <td>
-          <?db_input('codigo', 10, @$codigo, true, 'text', 3, "")?>
-          <?db_input('nome', 50, @$nome, true, 'text', 3, '')?>
-          <?db_input('tipo', 12, "", true, 'text', 3, '')?>
-          <?db_input('seq', 12, "", true, 'hidden', 3, '')?>
-          <?if ($db_opcao == 1) {?>
+          <?php db_input('codigo', 10, @$codigo, true, 'text', 3, "")?>
+          <?php db_input('nome', 50, @$nome, true, 'text', 3, '')?>
+          <?php db_input('tipo', 12, "", true, 'text', 3, '')?>
+          <?php db_input('seq', 12, "", true, 'hidden', 3, '')?>
+          <?php if ($db_opcao == 1) {?>
           <input name="novo_leitor" type="button" id="novo_leitor" value="Novo Leitor" onclick="js_novo_leitor();" >
-          <?}?>
+          <?php }?>
         </td>
       </tr>
       <tr>
@@ -116,7 +116,7 @@ function js_carregaCidadao() {
      );
 }
 
-<?if ($db_opcao == 2 || $db_opcao == 3){?>
+<?php if ($db_opcao == 2 || $db_opcao == 3){?>
     document.getElementById("fieldleitor").style.visibility = "visible";
-<?}?>
+<?php }?>
 </script>

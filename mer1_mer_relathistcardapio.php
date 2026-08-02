@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,11 +89,11 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 	       <table border="0">
 	          <tr>
 	            <td>Inicio</td>
-	            <td><?db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
+	            <td><?php db_inputdata('dataini',@$diai,@$mesi,@$anoi,true,'text',1,"");?></td>
 	          </tr>
 	          <tr>
 	            <td>Fim</td>   
-	            <td><?db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
+	            <td><?php db_inputdata('datafim',@$diaf,@$mesf,@$anof,true,'text',1,"");?></td>
               </tr>
               <tr>  
                 <td colspan="2"><input name="Processar" type="button" value="Processar" onclick="js_consulta2()"></td>	      
@@ -121,7 +121,7 @@ $clmer_desperdicio = new cl_mer_desperdicio;
 	</fieldset>
 </form>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),

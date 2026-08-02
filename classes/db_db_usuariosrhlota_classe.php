@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE db_usuariosrhlota
 class cl_db_usuariosrhlota { 

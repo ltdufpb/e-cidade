@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,11 +87,11 @@ if(isset($alterar)){
     <table border="0">
      <tr>
       <td nowrap title="<?=@$Tbi16_leitor?>">
-      <?db_ancora(@$Lbi16_leitor,"",$opcao);?>
+      <?php db_ancora(@$Lbi16_leitor,"",$opcao);?>
       </td>
       <td>
-       <?db_input('bi16_leitor',10,$Ibi16_leitor,true,'text',$opcao,"")?>
-       <?db_input('z01_nome',50,@$z01_nome,true,'text',3," ")?>
+       <?php db_input('bi16_leitor',10,$Ibi16_leitor,true,'text',$opcao,"")?>
+       <?php db_input('z01_nome',50,@$z01_nome,true,'text',3," ")?>
       </td>
      </tr>
     </table>
@@ -103,7 +103,7 @@ if(isset($alterar)){
  <tr>
   <td colspan="2">
    <fieldset width="100%"><legend><b>Nova Carteira:</b></legend>
-    <?include(modification("forms/db_frmcarteira.php"));?>
+    <?php include(modification("forms/db_frmcarteira.php"));?>
    </fieldset>
   </td>
  </tr>
@@ -111,7 +111,7 @@ if(isset($alterar)){
 </form>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($clcarteira->erro_status=="0"){
   $clcarteira->erro(true,false);

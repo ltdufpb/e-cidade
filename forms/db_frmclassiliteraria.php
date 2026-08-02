@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi03_codigo?>
   </td>
   <td>
-   <?db_input('bi03_codigo',10,$Ibi03_codigo,true,'text',3,"")?>
+   <?php db_input('bi03_codigo',10,$Ibi03_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi03_classificacao?>
   </td>
   <td>
-   <?db_input('bi03_classificacao',50,$Ibi03_classificacao,true,'text',$db_opcao,"")?>
+   <?php db_input('bi03_classificacao',50,$Ibi03_classificacao,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("bi03_codigo"=>@$bi03_codigo,"bi03_classificacao"=>@$bi03_classificacao);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clclassiliteraria->sql_query("","*","bi03_classificacao");

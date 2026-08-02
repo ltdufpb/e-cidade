@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ $cltipoempresa->rotulo->label("db98_sequencial");
               <?=$Ldb98_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db98_sequencial",10,$Idb98_sequencial,true,"text",4,"","chave_db98_sequencial");
 		       ?>
             </td>
@@ -71,7 +71,7 @@ $cltipoempresa->rotulo->label("db98_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipoempresa.php")==true){
@@ -111,12 +111,12 @@ $cltipoempresa->rotulo->label("db98_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

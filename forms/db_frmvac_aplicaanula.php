@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,12 +56,12 @@ $oRotulo->label('vc16_c_hora');
   <table border="0">
     <tr>
       <td nowrap title="<?=@$Tvc16_i_cgs?>">
-        <?
+        <?php 
         db_ancora(@$Lvc16_i_cgs,"js_pesquisavc16_i_cgs(true);",$db_opcao);
         ?>
       </td>
       <td nowrap> 
-        <?
+        <?php 
         db_input('vc16_i_cgs',10,$Ivc16_i_cgs,true,'text',$db_opcao," onchange='js_pesquisavc16_i_cgs(false);'");
         db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'');
         ?>
@@ -72,7 +72,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lz01_d_nasc?>
       </td>
       <td>
-        <?
+        <?php 
         db_input('z01_d_nasc',10,$Iz01_d_nasc,true,'text',3,"");
         echo"<b>Idade:</b>";
         db_input('iIdade',23,"",true,'text',3,"");
@@ -86,7 +86,7 @@ $oRotulo->label('vc16_c_hora');
         <strong><b>Nome da Mãe:</b></strong>
       </td>
       <td>
-        <?
+        <?php 
         db_input('z01_v_mae', 50, $Iz01_v_mae, true, 'text' ,3, '');
         ?>
       </td>
@@ -100,12 +100,12 @@ $oRotulo->label('vc16_c_hora');
   <table border="0">
     <tr>
       <td nowrap title="<?=$Tvc18_i_aplica?>">
-        <?
+        <?php 
         db_ancora($Lvc18_i_aplica, 'js_pesquisavc18_i_aplica(true);', $db_opcao);
         ?>
       </td>
       <td nowrap> 
-        <?
+        <?php 
         db_input('vc18_i_aplica', 10, $Ivc18_i_aplica, true, 'text', $db_opcao,
                  " onchange='js_pesquisavc18_i_aplica(false);'");
         db_input('vc07_c_nome', 50, $Iz01_v_nome, true, 'text', 3, '');
@@ -117,7 +117,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc16_d_dataaplicada?>
       </td>
       <td nowrap>
-        <?
+        <?php 
         db_input('vc16_d_dataaplicada', 10, $Ivc16_d_dataaplicada, true, 'text', 3, '');
         ?>
       </td>
@@ -127,7 +127,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc16_n_quant?>
       </td>
       <td nowrap>
-        <?
+        <?php 
         db_input('vc16_n_quant', 10, $Ivc16_n_quant, true, 'text', 3, '');
         echo '<b>Unidade de Saída:</b> ';
         db_input('m61_descr', 10, $Im61_descr, true, 'text', 3, '');
@@ -139,7 +139,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc15_i_lote?>
       </td>
       <td nowrap>
-        <?
+        <?php 
         db_input('vc15_i_lote', 10, $Ivc15_i_lote, true, 'text', 3, '');
         echo $Lm77_dtvalidade;
         db_input('m77_dtvalidade', 10, $Im77_dtvalidade, true, 'text', 3, '');
@@ -151,7 +151,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc17_i_sala?>
       </td>
       <td nowrap>
-        <?
+        <?php 
         db_input('vc01_c_nome', 50, $Ivc01_c_nome, true, 'text', 3, '');
         ?>
       </td>
@@ -161,7 +161,7 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc16_i_usuario?>
       </td>
       <td nowrap>
-        <?
+        <?php 
         db_input('login', 10, $Ilogin, true, 'text', 3, '');
         db_input('nome', 50, $Inome, true, 'text', 3, '');
         ?>
@@ -172,7 +172,7 @@ $oRotulo->label('vc16_c_hora');
         <b>Data Lançamento:</b>
       </td>
       <td nowrap>
-        <?
+        <?php 
         db_input('vc16_d_data', 10, $Ivc16_d_data, true, 'text', 3, '');
         db_input('vc16_c_hora', 10, $Ivc16_c_hora, true, 'text', 3, '');
         ?>
@@ -185,7 +185,7 @@ $oRotulo->label('vc16_c_hora');
 <table>
   <tr>
     <td><?=$Lvc18_t_obs?></td>
-    <td><?db_textarea('vc18_t_obs',2,40,$Ivc18_t_obs,true,'text',$db_opcao,"")?></td>
+    <td><?php db_textarea('vc18_t_obs',2,40,$Ivc18_t_obs,true,'text',$db_opcao,"")?></td>
   </tr>
 </table>
 <input name="anular" type="submit" id="anular" value="Anular Aplicação" onClick="return js_validaEnvio();">

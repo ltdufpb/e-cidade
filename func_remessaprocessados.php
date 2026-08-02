@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -114,7 +114,7 @@ $instit = db_getsession("DB_instit");
                 </b>
               </td>
               <td align="left">
-                <?
+                <?php 
                   db_input("v83_sequencial",  10, $Iv83_sequencial, true, "text", 1, "");
                 ?>
               </td>
@@ -125,17 +125,17 @@ $instit = db_getsession("DB_instit");
                 </b>
               </td>
               <td align="left">
-                <?
+                <?php 
                   db_input("v83_nomearq",  40, $Iv83_nomearq, true, "text", 1, "");
                 ?>
               </td>
             </tr>
 		        <tr>
 		          <td align="right" nowrap title="<?=@$Tk60_codigo?>" >
-		            <b><?db_ancora("Lista", "js_pesquisalista(true);", 4);?></b>
+		            <b><?php db_ancora("Lista", "js_pesquisalista(true);", 4);?></b>
 		          </td>
 		          <td align="left">
-		            <?
+		            <?php 
 		              db_input("k60_codigo",  4, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisalista(false);'");
 		              db_input("k60_descr",  40, $Ik60_descr,  true, "text", 3, "");
 		            ?>
@@ -146,7 +146,7 @@ $instit = db_getsession("DB_instit");
                 <b>Data do Arquivo :</b>
               </td>
               <td align="left">
-               <? db_inputdata("v83_dtgeracao",@$v83_dtgeracao_dia,@$v83_dtgeracao_mes,@$v83_dtgeracao_ano,true,'text',1);?>
+               <?php  db_inputdata("v83_dtgeracao",@$v83_dtgeracao_dia,@$v83_dtgeracao_mes,@$v83_dtgeracao_ano,true,'text',1);?>
               </td>
             </tr>        
           </table>
@@ -161,7 +161,7 @@ $instit = db_getsession("DB_instit");
                 </b>
               </td>
               <td align="left">
-                <?
+                <?php 
                   db_input("v84_nomearq",  40, $Iv83_nomearq, true, "text", 1, "");
                 ?>
               </td>
@@ -171,7 +171,7 @@ $instit = db_getsession("DB_instit");
                 <b>Data do Retorno :</b>
               </td>
               <td align="left">
-               <? db_inputdata("retorno", null, null, null, true, 'text', 1);?>
+               <?php  db_inputdata("retorno", null, null, null, true, 'text', 1);?>
               </td>
             </tr>
             <tr>
@@ -179,7 +179,7 @@ $instit = db_getsession("DB_instit");
                 <b>Data do Processamento :</b>
               </td>
               <td align="left">
-               <? db_inputdata("processamento", null, null, null, true, 'text', 1); ?>
+               <?php  db_inputdata("processamento", null, null, null, true, 'text', 1); ?>
               </td>
             </tr>                     
           </table>

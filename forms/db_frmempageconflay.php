@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -86,14 +86,14 @@ function js_pesquisar(form){
   ordem.location.href = "emp4_empageconflay002_ordem.php?"+query;
 }
 function js_atualizar(){
-   <?if($e84_codmod == 2){?>
+   <?php if($e84_codmod == 2){?>
         if(document.form1.e87_descgera.value == ''){
 	  alert('Preencha o campo descrição.');
           document.form1.e87_descgera.style.backgroundColor='#99A9AE';
           document.form1.e87_descgera.focus();
 	  return false;
 	}
-    <?}?>
+    <?php }?>
 	if(ordem.document.form1){
           obj = ordem.document.form1;
 	  var coluna='';
@@ -178,9 +178,9 @@ function js_anular(){
 	      <?=$Le80_codage?>
 	      </td>	
 	      <td nowrap>
-		 <? db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
+		 <?php  db_input('e80_codage',10,$Ie80_codage,true,'text',3)?>
 	      <?=$Le80_data?>
-	       <?
+	       <?php 
                   $result07= $clempage->sql_record($clempage->sql_query_file(null, "*", null, "e80_codage = $e80_codage and e80_instit = " . db_getsession("DB_instit")));
                   db_fieldsmemory($result07,0);    
                    $arr_x  = split("-",$e80_data);
@@ -203,53 +203,53 @@ function js_anular(){
 	    </tr>
 	    <tr>
 	      <td nowrap title="<?=@$Te82_codord?>" align='right'>
-		 <? db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
+		 <?php  db_ancora(@$Le82_codord,"js_pesquisae82_codord(true);",$db_opcao);  ?>
 	      </td>
 	      <td> 
-		 <? db_input('e82_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
- 	   <? db_ancora("<b>até</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
-		 <? db_input('e82_codord',8,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
+		 <?php  db_input('e82_codord',10,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord(false);'")  ?>
+ 	   <?php  db_ancora("<b>até</b>","js_pesquisae82_codord02(true);",$db_opcao);  ?>
+		 <?php  db_input('e82_codord',8,$Ie82_codord,true,'text',$db_opcao," onchange='js_pesquisae82_codord02(false);'","e82_codord02")?>
 	      </td>
 	    </tr>
 
 	    
 	    <tr> 
 	      <td  align="right" nowrap title="<?=$Te60_numemp?>">
-		   <? db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
+		   <?php  db_ancora(@$Le60_codemp,"js_pesquisae60_codemp(true);",$db_opcao);  ?>
 	      </td>
 	      
 	      <td  nowrap> 
 	       
 		<input name="e60_codemp" title='<?=$Te60_codemp?>' size="10" type='text'  onKeyPress="return js_mascara(event);" >
-		       <? db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
-		       <? db_input('e60_numemp',10,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
+		       <?php  db_ancora(@$Le60_numemp,"js_pesquisae60_numemp(true);",$db_opcao);  ?>
+		       <?php  db_input('e60_numemp',10,$Ie60_numemp,true,'text',$db_opcao," onchange='js_pesquisae60_numemp(false);'")  ?>
 		    </td>
 		  </tr>
 	  <tr>
 	    <td nowrap title="<?=@$Tz01_numcgm?>" align='right'>
-	    <?
+	    <?php 
 	       db_ancora(@$Lz01_nome,"js_pesquisaz01_numcgm(true);",$db_opcao);
 	     ?>        
 	    </td>
 	    <td> 
-	<?
+	<?php 
 	db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")
 	?>
-	       <?
+	       <?php 
 	db_input('z01_nome',30,$Iz01_nome,true,'text',3,'')
 	       ?>
 	    </td>
 	  </tr>
-      <?if($e84_codmod ==2){?>
+      <?php if($e84_codmod ==2){?>
           <tr>
 	    <td><?=$Le87_descgera?></td>
 	    <td>
-	<?
+	<?php 
 	db_input('e87_descgera',40,$Ie87_descgera,true,'text',$db_opcao," onchange='js_pesquisaz01_numcgm(false);'")
 	?>
 	    </td>
 	  </tr>
-      <?}?>  	
+      <?php }?>  	
 	</table>  
       </td>  
       <td align='left'>
@@ -257,10 +257,10 @@ function js_anular(){
 	  <tr>
 	    <td nowrap><b>Data geração:</b></td>
 	    <td>
-              <?db_inputdata('dtin',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
+              <?php db_inputdata('dtin',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
 	    </td>  
 	  </tr>  
-	      <?
+	      <?php 
 	         $arr='';
 		  $result02  = $clempagepag->sql_record($clempagepag->sql_query(null,null,"distinct e83_codtipo as codtipo, e83_convenio,e83_sequencia,e83_descr",'',"e81_codage = $e80_codage and e80_instit = " . db_getsession("DB_instit")));
 		  $numrows02 = $clempagepag->numrows;
@@ -283,7 +283,7 @@ function js_anular(){
           <tr>
 	    <td><?=$Le83_codtipo?></td>
             <td nowrap class='bordas' align='left'><small>
-	    <?
+	    <?php 
 	    db_select("e83_codtipo",$arr,true,1,"onchange='js_troca(this.value);'");
 	    $e83_sequencia = $seq;
             db_input('e83_sequencia',10,'',true,'text',3,'');
@@ -293,13 +293,13 @@ function js_anular(){
 	  <tr>
 	    <td nowrap><b>Data depósito:</b></td>
 	    <td>
-              <?db_inputdata('deposito',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
+              <?php db_inputdata('deposito',date('d',db_getsession('DB_datausu')),date('m',db_getsession('DB_datausu')),date('Y',db_getsession('DB_datausu')),true,'text',1);?>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td><b>Convênio:</b></td>
 	    <td>
-	    <?
+	    <?php 
             db_input('e83_conv',10,'',true,'text',3,'');
 	    ?>
 	    </td>
@@ -310,15 +310,15 @@ function js_anular(){
     </tr>
     <tr>
       <td colspan='2' align='center'>
-      <?if(isset($arquivo) && isset($atualizar) && $sqlerro == false){?>
+      <?php if(isset($arquivo) && isset($atualizar) && $sqlerro == false){?>
 	<input name="emite" type="button" id="pesquisar" value="Reemitir arquivo" onclick='return js_emitir();'>
-      <?}?>  	
-      <?if($e84_codmod == 3){?>
+      <?php }?>  	
+      <?php if($e84_codmod == 3){?>
 	  <input name="adicionar" type="submit"  value="Adicionar" onclick='return js_atualizar();' >
 	  <input name="gerar" type="button"  value="Gerar selecionados" onclick='return js_gerar();' >
-      <?}else{?>  	
+      <?php }else{?>  	
 	<input name="atualizar" type="submit" id="pesquisar" value="Gerar arquivo" onclick='return js_atualizar();'>
-      <?}?>  	
+      <?php }?>  	
 	<input name="entrar_codord" type="button" id="pesquisar" value="Pesquisar" onclick='js_pesquisar(this.form);' >
          <!-- 
         <input name="voltar" type="reset" id="pesquisar" value="Voltar" onclick="location.href='emp4_empageconf001.php';">

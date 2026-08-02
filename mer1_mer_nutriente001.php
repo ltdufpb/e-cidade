@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -67,13 +67,13 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Nutriente</b></legend>
-    <?include(modification("forms/db_frmmer_nutriente.php"));?>
+    <?php include(modification("forms/db_frmmer_nutriente.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -84,7 +84,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me09_c_descr",true,1,"me09_c_descr",true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 	
   if ($clmer_nutriente->erro_status=="0") {

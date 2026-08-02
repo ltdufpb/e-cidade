@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -57,7 +57,7 @@ $clrhcbo->rotulo->label("rh70_descr");
               <?=$Lrh70_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("rh70_estrutural",10,$Irh70_sequencial,true,"text",4,"","chave_rh70_estrutural");
 		       ?>
             </td>
@@ -66,14 +66,14 @@ $clrhcbo->rotulo->label("rh70_descr");
              <td  align="left"> <strong>Descrição:</strong>
              </td>
              <td >
-                 <? db_input("rh70_descr",40,$Irh70_descr,true,"text",4,"","chave_rh70_descr");?>
+                 <?php  db_input("rh70_descr",40,$Irh70_descr,true,"text",4,"","chave_rh70_descr");?>
              </td>
           </tr>
          <tr>
              <td  align="left"> <strong>Grande Grupo:</strong>
              </td>
              <td >
-              <?
+              <?php 
 
               $sqlgg= "select rh70_estrutural as rh70_estrutural_1,
 												case when length(rh70_descr)>60
@@ -94,7 +94,7 @@ $clrhcbo->rotulo->label("rh70_descr");
              <td ><strong>Subgrupo Principal</strong>
              </td>
              <td >
-             <?
+             <?php 
              if(!isset($grandegrupo)){
                  $grandegrupo = '0';
              }
@@ -114,7 +114,7 @@ $clrhcbo->rotulo->label("rh70_descr");
              <td ><strong>Subgrupo</strong>
              </td>
              <td >
-             <?
+             <?php 
 
              if(isset($grandegrupo) && @$ggantes!= $grandegrupo){
                $ggantes = $grandegrupo;
@@ -149,7 +149,7 @@ $clrhcbo->rotulo->label("rh70_descr");
           <tr>
 	          <td ><strong>Mostrar:</strong></td>
 	          <td align="left" >
-	          <?
+	          <?php 
 		        $arraymostra = array("A" => "Somente analítico ","T" => "Todos");
 		        db_select("mostra",$arraymostra,1,1,"onchange='document.form1.submit();'");
 		        ?>

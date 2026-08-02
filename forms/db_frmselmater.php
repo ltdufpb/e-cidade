@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ if(isset($pc16_solicitem) && trim($pc16_solicitem)!=""){
        <?=@$Lpc16_solicitem?>
     </td>
     <td> 
-    <?
+    <?php 
       db_input('pc16_solicitem',8,$Ipc16_solicitem,true,'text',3);
       db_input('pc10_numero',8,$Ipc10_numero,true,'hidden',3);
       if(isset($libera)){
@@ -71,16 +71,16 @@ if(isset($pc16_solicitem) && trim($pc16_solicitem)!=""){
   </tr>  
   <tr>
     <td nowrap title="<?=@$Tpc16_codmater?>">
-	<?db_ancora(@$Lpc16_codmater,"js_pesquisapc16_codmater(true);",$db_opcao);?>
+	<?php db_ancora(@$Lpc16_codmater,"js_pesquisapc16_codmater(true);",$db_opcao);?>
     </td>
     <td> 
-    <?
+    <?php 
       db_input('pc16_codmater',8,$Ipc16_codmater,true,'text',$db_opcao," onchange='js_pesquisapc16_codmater(false);'");
       db_input('pc01_descrmater',50,$Ipc01_descrmater,true,'text',3,'');
     ?>
     </td>
   </tr>
-  <?
+  <?php 
   if($db_opcao==1){
     $arr_elementos = Array();
   	$where_elemento = " substr(o56_elemento,1,7)='".substr($elemento,0,7)."' and substr(o56_elemento,7,6)::int > 0 ";
@@ -102,18 +102,18 @@ if(isset($pc16_solicitem) && trim($pc16_solicitem)!=""){
        <?=@$Lo56_elemento?>
     </td>
     <td> 
-    <?
+    <?php 
        db_select("o56_codele",$arr_elementos,$Io56_elemento,$db_opcao,"onchange='js_limparmater();'");
     ?>
     </td>
   </tr>    
-  <?
+  <?php 
   }
   ?>  
   <tr>  
     <td align='center' colspan='2'>
       <input name="incluir" type="submit" id="db_opcao" value="Incluir" 
-      <? if(isset($tranca)){
+      <?php  if(isset($tranca)){
            echo "disabled";
          }
       ?> 

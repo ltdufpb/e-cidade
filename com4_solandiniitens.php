@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -243,7 +243,7 @@ function js_submit_form(){
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <? 
+    <?php  
 
 
 db_input('incluir', 10, '', true, 'hidden', 3);

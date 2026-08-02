@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE situacaoafastamento
 class cl_situacaoafastamento { 

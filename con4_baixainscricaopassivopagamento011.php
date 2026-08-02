@@ -63,10 +63,10 @@ $oGet = db_utils::postMemory($_GET);
           <table>
            <tr>
               <td  align="left" >
-                <b><?db_ancora('Inscricao Passivo:',"js_pesquisaInscricaoPassivo(true); ",1);?></b>
+                <b><?php db_ancora('Inscricao Passivo:',"js_pesquisaInscricaoPassivo(true); ",1);?></b>
               </td>
               <td align="left" nowrap>
-                <? db_input("c36_sequencial",6,1,true,"text",4,"onblur='js_pesquisaInscricaoPassivo(false)'");?>
+                <?php  db_input("c36_sequencial",6,1,true,"text",4,"onblur='js_pesquisaInscricaoPassivo(false)'");?>
               </td>
             </tr>
           </table>
@@ -75,7 +75,7 @@ $oGet = db_utils::postMemory($_GET);
           <input name="btnProcessar" id="btnProcessar" type="button"  value="Processar">
         </form>
   </div>
-  <?
+  <?php 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
 </body>

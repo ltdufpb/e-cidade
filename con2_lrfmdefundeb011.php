@@ -117,7 +117,7 @@ function js_emite(){
                      <?=@$Lo116_periodo?>
                   </td>
                   <td>
-                    <?
+                    <?php 
                      if ($anousu < 2010 ) {
               
                       $aListaPeriodos = array(

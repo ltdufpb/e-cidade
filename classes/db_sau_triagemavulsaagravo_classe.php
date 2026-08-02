@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE sau_triagemavulsaagravo
 class cl_sau_triagemavulsaagravo { 

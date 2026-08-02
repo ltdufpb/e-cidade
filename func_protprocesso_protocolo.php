@@ -90,7 +90,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                         </td>
                     </tr>
                     <!-- PLUGIN procjudicial -->
-                    <?
+                    <?php 
                     $departamentosLiberados = array(125, 236, 2481, 2479, 2483, 2489, 2488, 570, 2476, 2214);
                     if (in_array(db_getsession("DB_coddepto"), $departamentosLiberados)) { ?>
                         <tr>

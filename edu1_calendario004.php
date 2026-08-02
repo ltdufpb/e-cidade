@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -257,7 +257,7 @@ if(isset($sabado)){
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href='edu1_calendario002.php?chavepesquisa=<?=$calendario?>';
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_periodocalendario001.php?ed53_i_calendario=<?=$calendario?>&ed52_c_descr=<?=$ed52_c_descr?>';
    </script>
-   <?
+   <?php 
   }else{
    ?>
    <script>
@@ -266,7 +266,7 @@ if(isset($sabado)){
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_periodocalendario001.php?ed53_i_calendario=<?=$calendario?>&ed52_c_descr=<?=$ed52_c_descr?>';
     parent.document.form1.alterar.click();
    </script>
-   <?
+   <?php 
   }
  }else{
   $sql = $clcalendario->sql_query("","ed52_i_codigo,ed52_c_descr",""," ed52_i_codigo = $calendario");
@@ -275,11 +275,11 @@ if(isset($sabado)){
   ?>
   <script>
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_periodocalendario001.php?ed53_i_calendario=<?=$ed52_i_codigo?>&ed52_c_descr=<?=$ed52_c_descr?>';
-   <?if(!isset($feriado)){?>
+   <?php if(!isset($feriado)){?>
     parent.document.form1.alterar.click();
-   <?}?>
+   <?php }?>
   </script>
-  <?
+  <?php 
  }
 }
 ?>

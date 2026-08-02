@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -84,7 +84,7 @@ if (isset($alterar)) {
 	<tr>
 		<td align="left" valign="top" bgcolor="#CCCCCC">
 		<fieldset style="width: 95%"><legend><b>Alteração Cardápio
-		Nutricionista</b></legend> <? include(modification("forms/db_frmmer_cardapionutri.php"));?>
+		Nutricionista</b></legend> <?php  include(modification("forms/db_frmmer_cardapionutri.php"));?>
 		</fieldset>
 		</td>
 	</tr>
@@ -92,7 +92,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)){
 
 	if ($clmer_cardapionutri->erro_status=="0") {
@@ -114,7 +114,7 @@ if (isset($alterar)){
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href='mer1_mer_cardapionutri002.php?me04_i_cardapio=<?=$aux?>'+
                                          '&me01_c_nome=<?=$me01_c_nome?>';
     </script>
-		<?
+		<?php 
 
 	}
 }
@@ -125,7 +125,7 @@ if ($db_opcao==22) {
      (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href='mer1_mer_cardapionutri001.php?me04_i_cardapio=<?=$aux?>'+
                                         '&me01_c_nome=<?=$me01_c_nome?>';
     </script>
-	<?
+	<?php 
 
 }
 ?>

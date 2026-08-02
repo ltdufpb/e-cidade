@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE cgmestrangeiro
 class cl_cgmestrangeiro { 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -91,7 +91,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Turma com Atividade Complementar / AEE</b></legend>
-    <?include(modification("forms/db_frmturmaac.php"));?>
+    <?php include(modification("forms/db_frmturmaac.php"));?>
    </fieldset>
    </center>
   </td>
@@ -99,7 +99,7 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clturmaac->erro_status == "0") {
@@ -109,7 +109,7 @@ if (isset($excluir)) {
     $clturmaac->erro(true,false);
     ?>    
     <script>parent.document.form2.teste.click();</script>
-    <?
+    <?php 
     
   }
 }

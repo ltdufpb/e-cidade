@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,7 +41,7 @@ if(isset($HTTP_POST_VARS["sair"])) {
   window.opener.document.getElementById('sol').style.visibility = 'hidden';
   window.close();
   </script>
-  <?
+  <?php 
   exit;
 }
 

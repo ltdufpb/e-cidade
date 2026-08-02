@@ -177,7 +177,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 				  					?>
 				  				</td>
 				  			</tr>
-				  		<?
+				  		<?php 
 				  		}
 				  		?>
 				</table>

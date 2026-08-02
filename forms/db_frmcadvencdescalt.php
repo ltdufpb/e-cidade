@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clrotulo->label("k15_codigo");
   <tr>
     <td nowrap title="<?=@$Tq92_codigo?>">
        <?=@$Lq92_codigo?>
-<?
+<?php 
 db_input('tavainclu',5,10,true,'hidden',1);
 db_input('duplica',5,"",true,'hidden',3);
 db_input('cod_duplic',5,"",true,'hidden',3);
@@ -49,7 +49,7 @@ db_input('cod_duplic',5,"",true,'hidden',3);
 ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('q92_codigo',10,$Iq92_codigo,true,'text',3)
 ?>
     </td>
@@ -59,52 +59,52 @@ db_input('q92_codigo',10,$Iq92_codigo,true,'text',3)
        <?=@$Lq92_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('q92_descr',54,$Iq92_descr,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk15_codigo?>">
-       <?
+       <?php 
        db_ancora(@$Lcodbco,"js_banco(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k15_codigo',10,$Ik15_codigo,true,'text',$db_opcao," onchange='js_banco(false);'","","E6E4F1")
 ?>
-       <?
+       <?php 
 db_input('nomebco',40,$Inomebco,true,'text',3,'',"","E6E4F1")
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq92_tipo?>">
-       <?
+       <?php 
        db_ancora(@$Lq92_tipo,"js_pesquisaq92_tipo(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('q92_tipo',10,$Iq92_tipo,true,'text',$db_opcao," onchange='js_pesquisaq92_tipo(false);'")
 ?>
-       <?
+       <?php 
 db_input('k00_descr',40,$Ik00_descr,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tq92_hist?>">
-       <?
+       <?php 
        db_ancora(@$Lq92_hist,"js_pesquisaq92_hist(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('q92_hist',10,$Iq92_hist,true,'text',$db_opcao," onchange='js_pesquisaq92_hist(false);'")
 ?>
-       <?
+       <?php 
 db_input('k01_descr',40,$Ik01_descr,true,'text',3,'')
        ?>
     </td>
@@ -115,7 +115,7 @@ db_input('k01_descr',40,$Ik01_descr,true,'text',3,'')
        <?=$Lq92_vlrminimo?>
     </td>
     <td> 
-      <?
+      <?php 
         db_input('q92_vlrminimo',10,$Iq92_vlrminimo,true,'text',$db_opcao,'');
       ?>
     </td>
@@ -126,7 +126,7 @@ db_input('k01_descr',40,$Ik01_descr,true,'text',3,'')
        <?=$Lq92_formacalcparcvenc?>
     </td>
     <td> 
-      <?
+      <?php 
         $xw = array(
                      '1'=>"Calcula todas parcelas vencidas",
                      '2'=>"Calcula somente as escolhidas",
@@ -139,13 +139,13 @@ db_input('k01_descr',40,$Ik01_descr,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tq92_diasvcto?>">
-       <?
+       <?php 
        db_ancora(@$Lq92_diasvcto,"",3);
        ?>
 		
     </td> 
     <td> 
-			<?
+			<?php 
 			db_input('q92_diasvcto',10,$Iq92_diasvcto,true,'text',$db_opcao,"")
 			?>
     </td>
@@ -153,17 +153,17 @@ db_input('k01_descr',40,$Ik01_descr,true,'text',3,'')
   </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?
+<?php 
   if(!(isset($tavainclu) && $tavainclu==true)){
 ?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
 
-<?
+<?php 
   }
 if ($db_opcao==1){
 ?>
 <input name="dupli_venc" type="button" id="dupli_venc" value="Duplica Vencimento" onclick="js_pesquisavenc();" >
-<?}?>
+<?php }?>
 </form>
 <script>
 function js_banco(mostra){
@@ -229,7 +229,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadvencdesc.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }

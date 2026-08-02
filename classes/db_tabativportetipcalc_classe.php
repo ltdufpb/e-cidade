@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: issqn
 //CLASSE DA ENTIDADE tabativportetipcalc
 class cl_tabativportetipcalc { 

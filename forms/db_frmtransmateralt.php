@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,10 +44,10 @@ if(isset($opcao) && $opcao=="alterar"){
       <table border="0" cellspacing="0" cellpadding="0">
       <br><br>
 	  <td nowrap title="<?=@$Tm60_codmater?>">
-	     <?db_ancora(@$Lm60_codmater,"js_pesquisa_codmater(true);",3);?>
+	     <?php db_ancora(@$Lm60_codmater,"js_pesquisa_codmater(true);",3);?>
 	  </td>
 	  <td> 
-      <?
+      <?php 
       $result_descr=$clmatmater->sql_record($clmatmater->sql_query_file(@$m60_codmater,"m60_descr"));
       if ($clmatmater->numrows>0){
            db_fieldsmemory($result_descr,0);
@@ -59,12 +59,12 @@ if(isset($opcao) && $opcao=="alterar"){
 	</tr>
 	  <tr>
     <td nowrap title="<?=@$Tm63_codpcmater?>">
-       <?
+       <?php 
        db_ancora(@$Lm63_codpcmater,"js_pesquisam63_codpcmater(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 if(isset($m63_codpcmater)&&trim($m63_codpcmater)!=""){
     $result_pcdescr = $clpcmater->sql_record($clpcmater->sql_query_file($m63_codpcmater,"pc01_descrmater")); 
     if($clpcmater->numrows > 0){
@@ -88,7 +88,7 @@ db_input('pc01_descrmater',40,'',true,'text',3)
       <table>
   <tr>
     <td valign="top"> 
-    <?
+    <?php 
      $chavepri= array("m63_codmatmater"=>@$m63_codmatmater,"m63_codpcmater"=>@$m63_codpcmater);
      $cliframe_alterar_excluir->chavepri=$chavepri;
      if (isset($m60_codmater)&&@$m60_codmater!=""){        

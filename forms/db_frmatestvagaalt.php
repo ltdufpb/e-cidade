@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,7 @@ $clrotulo->label("nome");
    <?=@$Led102_i_codigo?>
   </td>
   <td>
-   <?db_input('ed102_i_codigo', 15, $Ied102_i_codigo, true, 'text', 3, "")?>
+   <?php db_input('ed102_i_codigo', 15, $Ied102_i_codigo, true, 'text', 3, "")?>
   </td>
  </tr>
  <tr>
@@ -55,11 +55,11 @@ $clrotulo->label("nome");
    <table>
     <tr>
      <td nowrap title="<?=@$Ted102_i_aluno?>">
-      <?db_ancora(@$Led102_i_aluno, "", 3);?>
+      <?php db_ancora(@$Led102_i_aluno, "", 3);?>
      </td>
      <td>
-      <?db_input('ed102_i_aluno', 15, $Ied102_i_aluno, true, 'text', 3, "")?>
-      <?db_input('ed47_v_nome', 40, @$Ied47_v_nome, true, 'text', 3, "")?>
+      <?php db_input('ed102_i_aluno', 15, $Ied102_i_aluno, true, 'text', 3, "")?>
+      <?php db_input('ed47_v_nome', 40, @$Ied47_v_nome, true, 'text', 3, "")?>
      </td>
     </tr>
     <tr>
@@ -67,8 +67,8 @@ $clrotulo->label("nome");
       <b>Escola Atual:</b>
      </td>
      <td>
-      <?db_input('codigoescola', 15, @$codigoescola, true, 'text', 3, '')?>
-      <?db_input('nomeescola', 40, @$nomeescola, true, 'text', 3, '')?>
+      <?php db_input('codigoescola', 15, @$codigoescola, true, 'text', 3, '')?>
+      <?php db_input('nomeescola', 40, @$nomeescola, true, 'text', 3, '')?>
      </td>
     </tr>
     <tr>
@@ -76,8 +76,8 @@ $clrotulo->label("nome");
       <b>Curso:</b>
      </td>
      <td>
-      <?db_input('codigocurso', 15, @$codigocurso, true, 'text', 3, '')?>
-      <?db_input('nomecurso', 40, @$nomecurso, true, 'text', 3, '')?>
+      <?php db_input('codigocurso', 15, @$codigocurso, true, 'text', 3, '')?>
+      <?php db_input('nomecurso', 40, @$nomecurso, true, 'text', 3, '')?>
      </td>
     </tr>
     <tr>
@@ -85,9 +85,9 @@ $clrotulo->label("nome");
       <b>Situação:</b>
      </td>
      <td>
-      <?db_input('situacao', 20, @$situacao, true, 'text', 3, '')?>
+      <?php db_input('situacao', 20, @$situacao, true, 'text', 3, '')?>
       <b>Data Matrícula:</b>
-      <?db_input('datamatricula', 10, @$situacao, true, 'text', 3, '')?>
+      <?php db_input('datamatricula', 10, @$situacao, true, 'text', 3, '')?>
      </td>
     </tr>
     <tr>
@@ -95,8 +95,8 @@ $clrotulo->label("nome");
       <b>Etapa:</b>
      </td>
      <td>
-      <?db_input('codigoserie', 15, @$codigoserie, true, 'text', 3, '')?>
-      <?db_input('nomeserie', 40, @$nomeserie, true, 'text', 3, '')?>
+      <?php db_input('codigoserie', 15, @$codigoserie, true, 'text', 3, '')?>
+      <?php db_input('nomeserie', 40, @$nomeserie, true, 'text', 3, '')?>
      </td>
     </tr>
     <tr>
@@ -104,7 +104,7 @@ $clrotulo->label("nome");
       <b>Ano:</b>
      </td>
      <td>
-      <?db_input('anocal', 15, @$anocal, true, 'text', 3, '')?>
+      <?php db_input('anocal', 15, @$anocal, true, 'text', 3, '')?>
      </td>
     </tr>
    </table>
@@ -113,69 +113,69 @@ $clrotulo->label("nome");
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted102_i_escola?>">
-   <?db_ancora(@$Led102_i_escola, "", 3);?>
+   <?php db_ancora(@$Led102_i_escola, "", 3);?>
   </td>
   <td>
-   <?db_input('ed102_i_escola', 15, $Ied102_i_escola, true, 'text', 3, "")?>
-   <?db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '')?>
+   <?php db_input('ed102_i_escola', 15, $Ied102_i_escola, true, 'text', 3, "")?>
+   <?php db_input('ed18_c_nome', 50, @$Ied18_c_nome, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted102_i_base?>">
-   <?db_ancora(@$Led102_i_base, "", 3);?>
+   <?php db_ancora(@$Led102_i_base, "", 3);?>
   </td>
   <td>
-   <?db_input('ed102_i_base', 15, $Ied102_i_base, true, 'text', 3, "")?>
-   <?db_input('ed31_c_descr', 50, @$Ied31_c_descr, true, 'text', 3, '')?>
+   <?php db_input('ed102_i_base', 15, $Ied102_i_base, true, 'text', 3, "")?>
+   <?php db_input('ed31_c_descr', 50, @$Ied31_c_descr, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="Curso">
    <b>Curso:</b>
   </td>
-  <?
+  <?php 
   if($db_opcao==3 || $db_opcao==2){
    ?>
    <td>
-    <?db_input('ed29_i_codigo', 15, @$Ied29_i_codigo, true, 'text', 3, '')?>
-    <?db_input('ed29_c_descr', 50, @$Ied29_c_descr, true, 'text', 3, '')?>
+    <?php db_input('ed29_i_codigo', 15, @$Ied29_i_codigo, true, 'text', 3, '')?>
+    <?php db_input('ed29_c_descr', 50, @$Ied29_c_descr, true, 'text', 3, '')?>
    </td>
-   <?
+   <?php 
   }else{
    ?>
    <td>
-    <?db_input('codcursodest', 15, @$Icodcursodest, true, 'text', 3, '')?>
-    <?db_input('nomecursodest', 50, @$Inomecursodest, true, 'text', 3, '')?>
+    <?php db_input('codcursodest', 15, @$Icodcursodest, true, 'text', 3, '')?>
+    <?php db_input('nomecursodest', 50, @$Inomecursodest, true, 'text', 3, '')?>
    </td>
-   <?
+   <?php 
   }
   ?>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted34_i_serie?>">
-   <?db_ancora("<b>Serie</b>", "", 3);?>
+   <?php db_ancora("<b>Serie</b>", "", 3);?>
   </td>
   <td>
-   <?db_input('ed102_i_serie', 15, @$Ied102_i_serie, true, 'text', 3, '')?>
-   <?db_input('ed11_c_descr', 50, @$Ied11_c_descr, true, 'text', 3, '')?>
+   <?php db_input('ed102_i_serie', 15, @$Ied102_i_serie, true, 'text', 3, '')?>
+   <?php db_input('ed11_c_descr', 50, @$Ied11_c_descr, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted102_i_turno?>">
-   <?db_ancora(@$Led102_i_turno, "", 3);?>
+   <?php db_ancora(@$Led102_i_turno, "", 3);?>
   </td>
   <td>
-   <?db_input('ed102_i_turno', 15, $Ied102_i_turno, true, 'text', 3, '')?>
-   <?db_input('ed15_c_nome', 50, @$Ied15_c_nome, true, 'text', 3, '')?>
+   <?php db_input('ed102_i_turno', 15, $Ied102_i_turno, true, 'text', 3, '')?>
+   <?php db_input('ed15_c_nome', 50, @$Ied15_c_nome, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted102_i_calendario?>">
-   <?db_ancora(@$Led102_i_calendario, "js_pesquisaed102_i_calendario(true);", $db_opcao);?>
+   <?php db_ancora(@$Led102_i_calendario, "js_pesquisaed102_i_calendario(true);", $db_opcao);?>
   </td>
   <td>
-   <?db_input('ed102_i_calendario', 15, $Ied102_i_calendario, true, 'text', 3, "")?>
-   <?db_input('ed52_c_descr', 50, @$Ied52_c_descr, true, 'text', 3, '')?>
+   <?php db_input('ed102_i_calendario', 15, $Ied102_i_calendario, true, 'text', 3, "")?>
+   <?php db_input('ed52_c_descr', 50, @$Ied52_c_descr, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
@@ -183,9 +183,9 @@ $clrotulo->label("nome");
    <?=@$Led52_d_inicio?>
   </td>
   <td>
-   <?db_input('ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'text', 3, '')?>
+   <?php db_input('ed52_d_inicio', 10, @$Ied52_d_inicio, true, 'text', 3, '')?>
    <?=@$Led52_d_fim?>
-   <?db_input('ed52_d_fim', 10, @$Ied52_d_fim, true, 'text', 3, '')?>
+   <?php db_input('ed52_d_fim', 10, @$Ied52_d_fim, true, 'text', 3, '')?>
   </td>
  </tr>
  <tr>
@@ -193,7 +193,7 @@ $clrotulo->label("nome");
    <?=@$Led102_d_data?>
   </td>
   <td>
-   <?db_inputdata('ed102_d_data', @$ed102_d_data_dia, @$ed102_d_data_mes, @$ed102_d_data_ano, true, 'text', $db_opcao)?>
+   <?php db_inputdata('ed102_d_data', @$ed102_d_data_dia, @$ed102_d_data_mes, @$ed102_d_data_ano, true, 'text', $db_opcao)?>
   </td>
  </tr>
  <tr>
@@ -201,7 +201,7 @@ $clrotulo->label("nome");
    <?=@$Led102_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed102_t_obs', 4, 54, $Ied102_t_obs, true, 'text', $db_opcao, "")?>
+   <?php db_textarea('ed102_t_obs', 4, 54, $Ied102_t_obs, true, 'text', $db_opcao, "")?>
   </td>
  </tr>
 </table>

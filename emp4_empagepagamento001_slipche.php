@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -139,7 +139,7 @@ $oParametro = db_stdClass::getParametro("empparametro",array(db_getsession("DB_a
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -193,7 +193,7 @@ function js_calcula(){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-<?
+<?php 
 
           $sql_disabled = $clempageconf->sql_query_cancslip(null,"e91_codcheque","",$dbwhere." and ((k17_autent>0 and k12_codmov is not null) or (k12_codmov is not null))");
 	  
@@ -231,7 +231,7 @@ function js_calcula(){
     </center>
     </td>
   </tr>
- <?
+ <?php 
     if ($oParametro[0]->e30_agendaautomatico == "t") {
   ?>
   <tr>
@@ -240,7 +240,7 @@ function js_calcula(){
             onclick='parent.document.form1.atualizar.click();'>
     </td>
   </tr>
-  <?
+  <?php 
    }
   ?>
 </table>
@@ -250,12 +250,12 @@ function js_calcula(){
    parent.document.form1.tot.value = js_formatar('<?=$tot?>', 'f');
    parent.document.form1.registros.value = '<?=$registros?>';
    parent.document.form1.tipo.value = 'slip_cheque';
-  <?
+  <?php 
     if ($oParametro[0]->e30_agendaautomatico == "f") {
      echo "  parent.document.form1.atualizar.disabled = false;\n";
     }
   ?>
-<?
+<?php 
 
 if($registros > 0){
   echo "parent.document.form1.atualizar.disabled=false;";
@@ -299,7 +299,7 @@ if($registros > 0){
 </script>
 
 
-<?/*
+<?php /*
 <!--
 <form name="form1" method="post" action="">
     <center>
@@ -316,7 +316,7 @@ if($registros > 0){
           <td class='bordas02' align='center'><small><b><?=$RLe83_conta?></b></small></td>
           <td class='bordas02' align='center' ><small><b><?=$RLz01_nome?></b></small></td>
 	</tr>
-        <?
+        <?php 
 	   $nords =  '';
 	   $nvirg ='';
 	  for($i=0; $i<$numrows; $i++){
@@ -369,7 +369,7 @@ if($registros > 0){
           <td class='bordas' align='right'><small> <?=$e83_conta?></small></td>
           <td class='bordas' align='left' nowrap><small >&nbsp; <?=$z01_nome?></small></td>
 	</tr>
-        <?
+        <?php 
 	  }
 	?>
       </table>

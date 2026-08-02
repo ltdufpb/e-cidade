@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptutaxanumpold
 class cl_iptutaxanumpold { 

@@ -90,7 +90,7 @@ if (isset($alterar)) {
 
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($cledu_relatmodel->erro_status == "0") {

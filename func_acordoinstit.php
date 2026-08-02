@@ -50,7 +50,7 @@ $iInstituicaoSessao = db_getsession('DB_instit');
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php 
 db_app::load("scripts.js, strings.js, datagrid.widget.js, windowAux.widget.js");
 db_app::load("dbmessageBoard.widget.js, prototype.js, contratos.classe.js");
 db_app::load("estilos.css, grid.style.css");
@@ -87,7 +87,7 @@ db_app::load("estilos.css, grid.style.css");
               <?php db_ancora($Lac16_acordogrupo, "js_pesquisaac16_acordogrupo(true);", 1); ?>
             </td>
             <td>
-              <?
+              <?php 
                 db_input('ac16_acordogrupo', 10, $Iac16_acordogrupo, true, 'text', 1, "onchange='js_pesquisaac16_acordogrupo(false);'");
                 db_input('ac02_descricao', 30, "", true, 'text', 3);
               ?>
@@ -197,12 +197,12 @@ db_app::load("estilos.css, grid.style.css");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

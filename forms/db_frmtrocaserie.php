@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,28 +47,28 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led101_i_codigo?>
   </td>
   <td>
-   <?db_input('ed101_i_codigo',15,$Ied101_i_codigo,true,'text',3,"")?>
-   <?db_input('iMatricula',10,'',true,'hidden',3,'')?>
+   <?php db_input('ed101_i_codigo',15,$Ied101_i_codigo,true,'text',3,"")?>
+   <?php db_input('iMatricula',10,'',true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted101_i_aluno?>">
-   <?db_ancora(@$Led101_i_aluno,"js_pesquisaed101_i_aluno(true);",$db_opcao);?>
+   <?php db_ancora(@$Led101_i_aluno,"js_pesquisaed101_i_aluno(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed101_i_aluno',15,$Ied101_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed101_i_aluno(false);'")?>
-   <?db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_input('ed101_i_aluno',15,$Ied101_i_aluno,true,'text',$db_opcao," onchange='js_pesquisaed101_i_aluno(false);'")?>
+   <?php db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted101_i_turmaorig?>">
-   <?db_ancora(@$Led101_i_turmaorig,"",3);?>
+   <?php db_ancora(@$Led101_i_turmaorig,"",3);?>
   </td>
   <td>
-   <?db_input('ed101_i_turmaorig',15,@$Ied101_i_turmaorig,true,'text',3,"")?>
-   <?db_input('ed57_c_descrorig',30,@$Ied57_c_descrorig,true,'text',3,'')?>
-   <?db_input('ed11_c_origem',30,@$Ied11_c_origem,true,'text',3,'')?>
-   <?db_input('ed11_i_codorigem',30,@$Ied11_i_codorigem,true,'hidden',3,'')?>
+   <?php db_input('ed101_i_turmaorig',15,@$Ied101_i_turmaorig,true,'text',3,"")?>
+   <?php db_input('ed57_c_descrorig',30,@$Ied57_c_descrorig,true,'text',3,'')?>
+   <?php db_input('ed11_c_origem',30,@$Ied11_c_origem,true,'text',3,'')?>
+   <?php db_input('ed11_i_codorigem',30,@$Ied11_i_codorigem,true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
@@ -76,20 +76,20 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led60_d_datamatricula?>
   </td>
   <td>
-   <?db_input('ed60_d_datamatricula',10,@$Ied60_d_datamatricula,true,'text',3,'')?>
-   <?db_input('ed52_d_inicio',10,@$Ied52_d_inicio,true,'hidden',3,'')?>
-   <?db_input('ed52_d_fim',10,@$Ied52_d_fim,true,'hidden',3,'')?>
+   <?php db_input('ed60_d_datamatricula',10,@$Ied60_d_datamatricula,true,'text',3,'')?>
+   <?php db_input('ed52_d_inicio',10,@$Ied52_d_inicio,true,'hidden',3,'')?>
+   <?php db_input('ed52_d_fim',10,@$Ied52_d_fim,true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted101_i_turmadest?>">
-   <?db_ancora(@$Led101_i_turmadest,"js_pesquisaed101_i_turmadest(true);",$db_opcao);?>
+   <?php db_ancora(@$Led101_i_turmadest,"js_pesquisaed101_i_turmadest(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed101_i_turmadest',15,@$Ied101_i_turmadest,true,'text',3,'')?>
-   <?db_input('ed57_c_descrdest',30,@$Ied57_c_descrdest,true,'text',3,'')?>
-   <?db_input('ed11_c_destino',30,@$Ied11_c_destino,true,'text',3,'')?>
-   <?db_input('ed11_i_coddestino',30,@$Ied11_i_coddestino,true,'hidden',3,'')?>
+   <?php db_input('ed101_i_turmadest',15,@$Ied101_i_turmadest,true,'text',3,'')?>
+   <?php db_input('ed57_c_descrdest',30,@$Ied57_c_descrdest,true,'text',3,'')?>
+   <?php db_input('ed11_c_destino',30,@$Ied11_c_destino,true,'text',3,'')?>
+   <?php db_input('ed11_i_coddestino',30,@$Ied11_i_coddestino,true,'hidden',3,'')?>
   </td>
  </tr>
  <tr>
@@ -97,7 +97,7 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led101_t_obs?>
   </td>
   <td>
-   <?db_textarea('ed101_t_obs',4,70,@$Ied101_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('ed101_t_obs',4,70,@$Ied101_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -105,7 +105,7 @@ $clrotulo->label("ed60_d_datamatricula");
    <?=@$Led101_d_data?>
   </td>
   <td>
-   <?db_inputdata('ed101_d_data',@$ed101_d_data_dia,@$ed101_d_data_mes,@$ed101_d_data_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('ed101_d_data',@$ed101_d_data_dia,@$ed101_d_data_mes,@$ed101_d_data_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>

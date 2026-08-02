@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ $oRotulo->label('vc16_c_hora');
         <?=@$Lvc16_i_cgs?>
       </td>
       <td nowrap> 
-        <?
+        <?php 
         db_input('vc16_i_cgs', 10, $Ivc16_i_cgs, true, 'text',3, "");
         db_input('z01_v_nome', 30, $Iz01_v_nome, true, 'text', 3, '');
         ?>
@@ -69,13 +69,13 @@ $oRotulo->label('vc16_c_hora');
         <?=$Lvc18_i_aplica?>
       </td>
       <td nowrap> 
-        <?db_input('vc18_i_aplica', 10, $Ivc18_i_aplica, true, 'text', 3, "");
+        <?php db_input('vc18_i_aplica', 10, $Ivc18_i_aplica, true, 'text', 3, "");
           db_input('vc07_c_nome', 30, $Iz01_v_nome, true, 'text', 3, '');?>
       </td>
     </tr>
     <tr>
       <td><?=$Lvc18_t_obs?></td>
-      <td><?db_textarea('vc18_t_obs',2,20,$Ivc18_t_obs,true,'text',$db_opcao,"")?></td>
+      <td><?php db_textarea('vc18_t_obs',2,20,$Ivc18_t_obs,true,'text',$db_opcao,"")?></td>
     </tr>
   </table>
 </center>

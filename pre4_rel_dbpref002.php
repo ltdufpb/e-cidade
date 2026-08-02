@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -92,9 +92,9 @@ if( !isset($HTTP_GET_VARS["data1"]) && !isset( $HTTP_GET_VARS["data2"])){
                             <strong>Período:&nbsp;&nbsp;</strong>
                             </td>
                             <td>
-                              <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+                              <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
                               Até
-                              <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
+                              <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?>
                             </td>
                           <td>&nbsp;</td>
                         </tr>
@@ -113,13 +113,13 @@ if( !isset($HTTP_GET_VARS["data1"]) && !isset( $HTTP_GET_VARS["data2"])){
           </tr>
         </form>
        </table>
-      <?
+      <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 
     ?>
     </body>
     </html>
-    <?
+    <?php 
 } else {
     db_postmemory($HTTP_POST_VARS);
     $str_sql = "select q50_data, q50_hora,z01_numcgm, z01_nome, q02_inscr, q50_numpre, q50_numpar, q50_vlrinf

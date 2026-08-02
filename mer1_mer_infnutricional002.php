@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ if (isset($alterar)) {
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      = 'mer1_mer_infnutricional002.php';
   </script> 
-<?
+<?php 
 
 }
 ?>
@@ -74,13 +74,13 @@ if (isset($alterar)) {
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
 	<br><br>
     <fieldset style="width:97%"><legend><b>Alteração de Informações Nutricionais</b></legend>
-	<?include(modification("forms/db_frmmer_infnutricional.php"));?>
+	<?php include(modification("forms/db_frmmer_infnutricional.php"));?>
 	</fieldset>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),
         db_getsession("DB_modulo"),
         db_getsession("DB_anousu"),
@@ -89,7 +89,7 @@ db_menu(db_getsession("DB_id_usuario"),
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($clmer_infnutricional->erro_status=="0") {

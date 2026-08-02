@@ -102,7 +102,7 @@ if ( !isset($sd30_i_diasemana) ) {
                   <td rowspan="2">
                     <table>
                       <tr>
-                        <td nowrap title="<?echo @$Tsd30_c_tipograde?>"><?echo @$Lsd30_c_tipograde?></td>
+                        <td nowrap title="<?php echo @$Tsd30_c_tipograde?>"><?php echo @$Lsd30_c_tipograde?></td>
                         <td>
                            <?php
                               $x = array('I'=>'INTERVALO','P'=>'PERÍODO');
@@ -113,7 +113,7 @@ if ( !isset($sd30_i_diasemana) ) {
                       <tr>
                         <td nowrap title="<?php echo @$Tsd30_i_tipoficha?>"><?php echo @$Lsd30_i_tipoficha?></td>
                         <td>
-                          <?
+                          <?php 
                             $result = $clsau_tipoficha->sql_record($clsau_tipoficha->sql_query("","*"));
                             db_selectrecord("sd30_i_tipoficha",$result,true,$db_opcao,'','','','','',1);
                           ?>

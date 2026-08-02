@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clsala->rotulo->label("ed16_c_descr");
       <?=$Led16_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed16_i_codigo",10,$Ied16_i_codigo,true,"text",4,"","chave_ed16_i_codigo");?>
+      <?php db_input("ed16_i_codigo",10,$Ied16_i_codigo,true,"text",4,"","chave_ed16_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $clsala->rotulo->label("ed16_c_descr");
       <?=$Led16_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed16_c_descr",20,$Ied16_c_descr,true,"text",4,"","chave_ed16_c_descr");?>
+      <?php db_input("ed16_c_descr",20,$Ied16_c_descr,true,"text",4,"","chave_ed16_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $clsala->rotulo->label("ed16_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $codescola = db_getsession("DB_coddepto");
    $where = " ed16_i_escola = $codescola";
    if(!isset($pesquisa_chave)){

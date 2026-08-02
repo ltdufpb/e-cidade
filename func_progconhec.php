@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,11 +58,11 @@ $clrotulo->label("ed114_i_tipoconhecimento");
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
       <?=$Led114_i_ano?>
-      <?db_input("ed114_i_ano",4,$Ied114_i_ano,true,"text",4,"","chave_ed114_i_ano");?>
+      <?php db_input("ed114_i_ano",4,$Ied114_i_ano,true,"text",4,"","chave_ed114_i_ano");?>
       <?=$Led114_i_tipoconhecimento?>
-      <?
+      <?php 
       $result = $cltipoconhecimento->sql_record($cltipoconhecimento->sql_query_file("","ed109_i_codigo,ed109_c_descr","ed109_c_descr",""));
       if($cltipoconhecimento->numrows==0){
        $x = array(''=>'NENHUM REGISTRO');
@@ -86,7 +86,7 @@ $clrotulo->label("ed114_i_tipoconhecimento");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_progconhec.php")==true){

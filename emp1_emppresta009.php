@@ -137,7 +137,7 @@ if ( isset($alterar) ) {
 </head>
 <body bgcolor=#CCCCCC style="margin-top: 30px;">
 <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmemppresta09.php"));
 	?>
 </center>

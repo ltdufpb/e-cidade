@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ $cliptupadraoconstrpontos->rotulo->label("j118_sequencial");
               <?=$Lj118_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("j118_sequencial",10,$Ij118_sequencial,true,"text",4,"","chave_j118_sequencial");
 		          ?>
             </td>
@@ -73,7 +73,7 @@ $cliptupadraoconstrpontos->rotulo->label("j118_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -121,12 +121,12 @@ $cliptupadraoconstrpontos->rotulo->label("j118_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

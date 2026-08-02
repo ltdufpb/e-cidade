@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
       <?=@$Led98_c_tipo?>
      </td>
      <td>
-      <?
+      <?php 
       $x = array(""=>"","P"=>"PROFESSORES","F"=>"FUNCIONÁRIOS");
       db_select('ed98_c_tipo',$x,true,@$db_opcao,"","")
       ?>
@@ -65,7 +65,7 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
       <?=$Led98_i_ano?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?
+      <?php 
       $arr_anos[""] = "";
       for($y=(date("Y")+1);$y>(date("Y")-30);$y--){
        $arr_anos[$y] = $y;
@@ -88,7 +88,7 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    if(!isset($pesquisa_chave)){
     $campos = "ed98_i_codigo,

@@ -126,7 +126,7 @@ try {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-  <?
+  <?php 
   include(modification("forms/db_frmsanicalc.php"));
   ?>
     </center>
@@ -135,7 +135,7 @@ try {
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($calcular)){
   if($calculo==true){
      db_msgbox('Calculo efetuado com sucesso!');

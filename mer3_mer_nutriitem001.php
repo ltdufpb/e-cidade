@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -76,7 +76,7 @@ $escola = db_getsession("DB_coddepto");
       <td>
        <select name="cod_item" value="0">
         <option value="">Todos</option>
-        <?
+        <?php 
         $sql    = " select me35_i_codigo,me35_c_nomealimento from mer_alimento order by me35_c_nomealimento";
         $result = db_query($sql);
         $linhas = pg_num_rows($result);
@@ -93,7 +93,7 @@ $escola = db_getsession("DB_coddepto");
       <td>
        <select name="cod_grupo" value="0">
         <option value="">Todos</option>
-        <?
+        <?php 
         $sql    = " select me30_i_codigo,me30_c_descricao from mer_grupoalimento order by me30_c_descricao";
         $result = db_query($sql);
         $linhas = pg_num_rows($result);
@@ -118,7 +118,7 @@ $escola = db_getsession("DB_coddepto");
 </table>
 <iframe name="iframe_tabela" id="iframe_tabela" src="" frameborder="0" width="100%" height="400"></iframe>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

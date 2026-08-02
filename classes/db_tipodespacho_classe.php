@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: protocolo
 //CLASSE DA ENTIDADE tipodespacho
 class cl_tipodespacho { 

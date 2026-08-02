@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,15 +33,15 @@
   <br>
   <br>
 	  <td nowrap title="<?=@$Tm60_codmater?>">
-	     <?
+	     <?php 
 	     db_ancora(@$Lm60_codmater,"js_pesquisam60_codmater(true);",1);
 	     ?>
 	  </td>
 	  <td colspan="3"> 
-	     <?
+	     <?php 
       db_input('m60_codmater',10,$Im60_codmater,true,'text',1," onchange='js_pesquisam60_codmater(false);'")
 	     ?>
-	     <?
+	     <?php 
       db_input('m60_descr',40,$Im60_descr,true,'text',3,'')
 	     ?>
 	  </td>
@@ -50,7 +50,7 @@
 	    <b>Informe os codigos dos materias : </b>
 	  </td>
 	  <td colspan="3"> 
-	     <?
+	     <?php 
       db_input('codigos_materiais',53,null,true,'text',1,"");
 	     ?>
 	  </td>

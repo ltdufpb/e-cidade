@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,7 +62,7 @@ $clcgmcorreto = new cl_cgmcorreto();
   
   <tr> 
     <td  align="center" valign="top"> 
-     <? 
+     <?php  
   
      $sWhere = "";
      $sAnd = "";

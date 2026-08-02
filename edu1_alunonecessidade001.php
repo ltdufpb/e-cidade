@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -121,7 +121,7 @@ if (isset($atualizar)) {
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js, prototype.js, strings.js, datagrid.widget.js, windowAux.widget.js, dbmessageBoard.widget.js");
   db_app::load('estilos.css, grid.style.css, arrays.js');
 ?>
@@ -133,7 +133,7 @@ if (isset($atualizar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Necessidades Especiais</b></legend>
-    <?include(modification("forms/db_frmalunonecessidade.php"));?>
+    <?php include(modification("forms/db_frmalunonecessidade.php"));?>
    </center>
    </fieldset>
   </td>
@@ -144,7 +144,7 @@ if (isset($atualizar)) {
 <script>
 js_tabulacaoforms("form1","ed214_i_necessidade",true,1,"ed214_i_necessidade",true);
 </script>
-<?
+<?php 
 if(isset($incluir) || isset($alterar)){
  if($clalunonecessidade->erro_status=="0"){
   $clalunonecessidade->erro(true,false);

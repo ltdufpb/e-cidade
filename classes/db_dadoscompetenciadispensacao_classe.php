@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: farmacia
 //CLASSE DA ENTIDADE dadoscompetenciadispensacao
 class cl_dadoscompetenciadispensacao {

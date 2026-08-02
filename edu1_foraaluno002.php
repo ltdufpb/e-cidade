@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -89,7 +89,7 @@ if(isset($chavepesquisa)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Outros Dados</b></legend>
-    <?include(modification("forms/db_frmforaaluno.php"));?>
+    <?php include(modification("forms/db_frmforaaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -97,7 +97,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);

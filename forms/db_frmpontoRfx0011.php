@@ -149,7 +149,7 @@ if($ponto == "fx"){
         </td>
       </tr>
       <tr>
-        <td title="<? echo isset($Tr90_regist) ? $Tr90_regist : '' ?>">
+        <td title="<?php  echo isset($Tr90_regist) ? $Tr90_regist : '' ?>">
           <?php
             db_ancora(@$Lr90_regist, "js_pesquisar90_regist(true);", $db_opcao);
           ?>

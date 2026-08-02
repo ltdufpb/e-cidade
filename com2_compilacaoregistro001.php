@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -51,7 +51,7 @@ function js_abre(){
    query += "&fim="+obj.pc10_numero_fim.value;
    query += "&departamento=<?=db_getsession("DB_coddepto")?>";
    jan = window.open('com2_compilacaoregistro002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0');
-   <?
+   <?php 
    /*
    $result_emissao = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_tipoemiss"));
    if($clpcparam->numrows>0){
@@ -99,11 +99,11 @@ function js_abre(){
 	   <strong>Solicitações de </strong>
 	</td>
 	<td> 
-	   <? db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao," onchange='js_copiacampo();'","pc10_numero_ini")  ?>
+	   <?php  db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao," onchange='js_copiacampo();'","pc10_numero_ini")  ?>
 	</td>
 	<td> <strong> à </strong></td> 
 	<td> 
-	   <? db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao,"","pc10_numero_fim")  ?>
+	   <?php  db_input('pc10_numero',8,$Ipc10_numero,true,'text',$db_opcao,"","pc10_numero_fim")  ?>
 	</td>
       </tr>
      <tr>
@@ -120,7 +120,7 @@ function js_abre(){
 </td>
 </tr>
 </table>
-    <? 
+    <?php  
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

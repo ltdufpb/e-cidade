@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -69,7 +69,7 @@ $clrotulo->label("k12_codord");
     <td height="63" align="center" valign="top">
         <table width="35%" border="0" align="center" cellspacing="0" cellpadding="4">
 	     <form name="form1" method="post" action="" >
-<?
+<?php 
    db_input("enviado",4,"",false,"hidden",3);
    db_input("ordens_selecionadas",100,"",false,"hidden",3);
 ?>
@@ -78,7 +78,7 @@ $clrotulo->label("k12_codord");
             <td align="right" nowrap title="<?=$Tk12_data?>"><b>Periodo:&nbsp;&nbsp;</b>
             </td>
             <td align="left" nowrap> 
-            <?
+            <?php 
 		          db_inputdata("k12_dataini",@$k12_dataini_dia,@$k12_dataini_mes,@$k12_dataini_ano,true,"text",4);
               echo "&nbsp;a&nbsp;";
 		          db_inputdata("k12_datafim",@$k12_datafim_dia,@$k12_datafim_mes,@$k12_datafim_ano,true,"text",4);
@@ -87,9 +87,9 @@ $clrotulo->label("k12_codord");
             </td>
           </tr>
           <tr> 
-            <td align="right" nowrap title="<?=$Tz01_numcgm?>"><?db_ancora($Lz01_numcgm,"js_pesquisa_cgm(true);",1);?></td>
+            <td align="right" nowrap title="<?=$Tz01_numcgm?>"><?php db_ancora($Lz01_numcgm,"js_pesquisa_cgm(true);",1);?></td>
             <td align="left" nowrap> 
-            <?
+            <?php 
 		          db_input("z01_numcgm",6,$Iz01_numcgm,true,"text",4,"onChange='js_pesquisa_cgm(false);'");
 	            db_input("z01_nome",40,"",true,"text",3);  
 		        ?>
@@ -98,7 +98,7 @@ $clrotulo->label("k12_codord");
           <tr>
             <td align="right" nowrap title="<?=$Tk12_conta?>"><?=$Lk12_conta?></td>
             <td align="left" nowrap>
-            <?
+            <?php 
 				       $result = $clsaltes->sql_record($clsaltes->sql_query("","saltes.k13_conta#k13_descr","k13_descr")); 
 				       db_selectrecord("k12_conta",$result,true,4,"","","","0");
 				    ?>
@@ -107,7 +107,7 @@ $clrotulo->label("k12_codord");
           <tr>
             <td align="right" nowrap title="<?=$Tk12_estorn?>"><?=$Lk12_estorn?></td>
             <td align="left" nowrap>
-            <?
+            <?php 
 		  	       $matriz = array("T"=>"TODOS","f"=>"NAO","t"=>"SIM");
 				       db_select("k12_estorn",$matriz,true,4);
 				    ?>
@@ -116,7 +116,7 @@ $clrotulo->label("k12_codord");
           <tr>
             <td align="right" nowrap title="<?=$Te90_cancelado?>"><b>Imprime Arquivos Cancelados:&nbsp;&nbsp;</b>
             <td align="left" nowrap>
-            <?
+            <?php 
                $matriz = array("f"=>"NAO","t"=>"SIM");
                db_select("cancelados",$matriz,true,4);
             ?>
@@ -124,7 +124,7 @@ $clrotulo->label("k12_codord");
           </tr>
           <tr>
             <td nowrap colspan="2" align="center"><table border="0">
-            <?
+            <?php 
               $aux->cabecalho      = "<strong>ORDENS DE PAGAMENTO</strong>";
               $aux->codigo         = "e53_codord";     //chave de retorno da func
               $aux->descr          = "k12_codord";     //chave de retorno
@@ -157,7 +157,7 @@ $clrotulo->label("k12_codord");
         </table>
       </td>
   </tr>
-  <?
+  <?php 
        if(isset($enviado)&&trim($enviado)=="true"){
            $dbwhere = "where 1=1 and corrente.k12_instit = ".db_getsession("DB_instit");
            if(isset($k12_dataini_dia)&&trim($k12_dataini_dia)!=""){
@@ -195,7 +195,7 @@ $clrotulo->label("k12_codord");
     document.form1.k12_codord.value = <?=$vetor[$i]?>;
     js_insSelectordem_sel();
   </script>
-<?
+<?php 
                }
 
                $dbwhere   .= " and coremp.k12_codord in ($k12_codord)";
@@ -263,7 +263,7 @@ $clrotulo->label("k12_codord");
                order by z01_numcgm, corrente.k12_data desc";
   ?>
     <td align="center" valign="top"> 
-    <?
+    <?php 
 //       echo $sql;
            $sql_marca = "";
            $campos    = "z01_numcgm,z01_nome,k12_data,k12_conta,k12_valor,e60_codemp,e96_descr,k12_cheque,e69_numero,k12_codord";
@@ -285,7 +285,7 @@ $clrotulo->label("k12_codord");
     </td>
   </tr>
 </table>
-<? 
+<?php  
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -414,7 +414,7 @@ function js_seleciona(valor){
    var frm      = document.form1;
    var contador = 0;
  
-<?
+<?php 
    if(isset($enviado)&&trim($enviado)=="true"){
 ?>     
    for(i=0; i < documaut.document.form1.elements.length; i++){
@@ -425,7 +425,7 @@ function js_seleciona(valor){
             }
         }
    }
-<?
+<?php 
    }  
 ?>
    if(contador == 0){

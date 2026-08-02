@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <?=@$Lr02_regime?>
           </td>
           <td> 
-            <?
+            <?php 
             $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null,"*"));
             db_selectrecord("r02_regime",$result_regime,true,($db_opcao == 1?1:3) );
             db_input('r02_anousu',4,$Ir02_anousu,true,'hidden',3,"");
@@ -70,7 +70,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <?=@$Lr02_codigo?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('r02_codigo',10,$Ir02_codigo,true,'text',($db_opcao == 1?1:3),"")
             ?>
           </td>
@@ -80,7 +80,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <?=@$Lr02_descr?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('r02_descr',30,$Ir02_descr,true,'text',$db_opcao,"", "", "", "", 25)
             ?>
           </td>
@@ -90,7 +90,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <?=@$Lr02_nivel?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('r02_nivel',30,$Ir02_nivel,true,'text',$db_opcao,"", "", "", "", 25)
             ?>
           </td>
@@ -100,7 +100,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
             <?=@$Lr02_classe?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('r02_classe',30,$Ir02_classe,true,'text',$db_opcao,"", "", "", "", 25)
             ?>
           </td>
@@ -117,7 +117,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
               <?=@$Lr02_tipo?>
             </td>
             <td> 
-              <?
+              <?php 
 	      if(!isset($r02_tipo)){
 		          $r02_tipo = "M";
               }
@@ -129,7 +129,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
               &nbsp;&nbsp;&nbsp;<?=@$Lr02_hrssem?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('r02_hrssem',4,$Ir02_hrssem,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -137,7 +137,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
               &nbsp;&nbsp;&nbsp;<?=@$Lr02_hrsmen?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('r02_hrsmen',4,$Ir02_hrsmen,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -155,7 +155,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
               <?=@$Lr02_form?>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('r02_form',47,$Ir02_form,true,'text',$db_opcao,"onclick='js_calculavalorform(false);'");
               db_input('r02_form',47,$Ir02_form,true,'hidden',3,"","formulaanterior");
               ?>
@@ -166,7 +166,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
               <?=@$Lr02_valor?>
             </td>
             <td> 
-              <?
+              <?php 
               @$r02_valor = str_replace(',','.',str_replace('.','',trim(db_formatar(@$r02_valor,'f'))));
               db_input('r02_valor',15,$Ir02_valor,true,'text',$db_opcao,"")
               ?>
@@ -174,10 +174,10 @@ $Ir02_descr_padraopai = $Ir02_descr;
           </tr>
           <tr>
             <td nowrap align="right" title="<?=@$Tr02_minimo?>">
-              <?db_ancora($Lr02_minimo,"js_pesquisar02_minimo(true)",$db_opcao);?>
+              <?php db_ancora($Lr02_minimo,"js_pesquisar02_minimo(true)",$db_opcao);?>
             </td>
             <td> 
-              <?
+              <?php 
                 db_input('r02_minimo', 4, $Ir02_minimo, true, 'text', $db_opcao, "onchange='js_pesquisar02_minimo(false);'");
                 db_input('r07_descr', 40, $Ir07_descr, true, 'text', 3, "  data=r07_descr");
               ?>
@@ -185,10 +185,10 @@ $Ir02_descr_padraopai = $Ir02_descr;
           </tr>
           <tr>
             <td nowrap align="right" title="<?=@$Tr02_padraopai_codigo?>">
-              <a href="#" id="lbl_r02_padraopai_codigo"><? echo $Lr02_padraopai_codigo; ?></a>
+              <a href="#" id="lbl_r02_padraopai_codigo"><?php  echo $Lr02_padraopai_codigo; ?></a>
             </td>
             <td> 
-              <?
+              <?php 
               db_input('r02_padraopai_codigo',4,$Ir02_padraopai_codigo,true,'text',$db_opcao,"onchange='js_pesquisar02_padraopai_codigo(false);' data=r02_codigo");
               db_input('r02_descr_padraopai',40,$Ir02_descr_padraopai,true,'text',3,"data=r02_descr");
               ?>
@@ -214,7 +214,7 @@ $Ir02_descr_padraopai = $Ir02_descr;
 </div>
 <script>  
 function js_trancaform(valor,change){
-  <?if($db_opcao == 1 || $db_opcao == 2){?>
+  <?php if($db_opcao == 1 || $db_opcao == 2){?>
   if(valor == "H"){
     document.form1.formulaanterior.value          = document.form1.r02_form.value;
     document.form1.r02_form.value                 = "";
@@ -227,10 +227,10 @@ function js_trancaform(valor,change){
     document.form1.r02_form.style.backgroundColor = "";
   }
   js_tabulacaoforms("form1","r02_regime",false,1,"r02_regime",false);
-  <?}?>
+  <?php }?>
 }
 function js_calculavalorform(submita){
-  <?
+  <?php 
   echo "opcao = ".$db_opcao.";\n"; 
   ?>
   if(document.form1.r02_form.value != "" && opcao != 3){
@@ -307,7 +307,7 @@ function js_mostraminimo1(chave1,chave2){
 }
 function js_preenchepesquisa(chave,chave1,chave2,chave3){
   db_iframe_padroes.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3";
   }

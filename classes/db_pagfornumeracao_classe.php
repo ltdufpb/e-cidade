@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE pagfornumeracao
 class cl_pagfornumeracao { 

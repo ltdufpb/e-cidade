@@ -399,7 +399,7 @@ input {
 <table width="790" align='center' border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php 
 /*      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
 	    if(isset($HTTP_POST_VARS["filtro"]))
 		  $str = $HTTP_POST_VARS["filtro"];
@@ -431,7 +431,7 @@ input {
 	    </script>
             <td> <select name="codcampai" size="1" onchange="js_buscadefault(this.value)">
                 <option value='0'>Campo Principal...</option>
-                <?
+                <?php 
                 if(isset($campodefault)){
                     echo "<option selected  value='$campodefault'>$campdes</option>";
 		            }
@@ -457,7 +457,7 @@ input {
           <tr> 
             <td width="92"><strong>Nome/Tipo:</strong></td>
             <td width="302"> <input type="text" name="nomecam" value="<?=@$nomecam?>"> 
-              <?
+              <?php 
 	  if(isset($conteudo)) {
 	    $v_tipo = split('\(',$conteudo);
 		$conteudo = $v_tipo[0];
@@ -471,16 +471,16 @@ input {
 	  ?>
               <select name="conteudo" size="1" OnChange="js_valida(this.value)">
                 <option value="0" >Tipos</option>
-                <option value="varchar" <? echo @$conteudo=="varchar"?"selected":"" ?>>Varchar</option>
-                <option value="text" <? echo @$conteudo=="text"?"selected":"" ?>>Text</option>
-                <option value="oid" <? echo @$conteudo=="oid"?"selected":"" ?>>Oid</option>
-                <option value="int4" <? echo (@$conteudo=="int4" || @$conteudo=="integer")?"selected":"" ?>>Int4</option>
-                <option value="int8" <? echo @$conteudo=="int8"?"selected":"" ?>>Int8</option>
-                <option value="float4" <? echo @$conteudo=="float4"?"selected":"" ?>>Float4</option>
-                <option value="float8" <? echo @$conteudo=="float8"?"selected":"" ?>>Float8</option>
-                <option value="bool" <? echo @$conteudo=="bool"?"selected":"" ?>>Lógico</option>
-                <option value="char" <? echo @$conteudo=="char"?"selected":"" ?>>Char</option>
-                <option value="date" <? echo @$conteudo=="date"?"selected":"" ?>>Data</option>
+                <option value="varchar" <?php  echo @$conteudo=="varchar"?"selected":"" ?>>Varchar</option>
+                <option value="text" <?php  echo @$conteudo=="text"?"selected":"" ?>>Text</option>
+                <option value="oid" <?php  echo @$conteudo=="oid"?"selected":"" ?>>Oid</option>
+                <option value="int4" <?php  echo (@$conteudo=="int4" || @$conteudo=="integer")?"selected":"" ?>>Int4</option>
+                <option value="int8" <?php  echo @$conteudo=="int8"?"selected":"" ?>>Int8</option>
+                <option value="float4" <?php  echo @$conteudo=="float4"?"selected":"" ?>>Float4</option>
+                <option value="float8" <?php  echo @$conteudo=="float8"?"selected":"" ?>>Float8</option>
+                <option value="bool" <?php  echo @$conteudo=="bool"?"selected":"" ?>>Lógico</option>
+                <option value="char" <?php  echo @$conteudo=="char"?"selected":"" ?>>Char</option>
+                <option value="date" <?php  echo @$conteudo=="date"?"selected":"" ?>>Data</option>
               </select> &nbsp;
 	      <input type="text" name="tamanho" value="<?=@$tamanho?>" size="3"     onKeyUp="js_ValidaCampos(this,1,'O tamanho do campo','f','f',event);" > 
             </td>
@@ -488,7 +488,7 @@ input {
                 <tr> 
                   <td> <strong>Valores default:</strong> 
                     <select multiple name="itensdef[]" onChange="js_mostradef(this)" size="13" id="itensdef" style="width:300">
-                      <?
+                      <?php 
 					  if(isset($retorno)){
 				        $result = db_query("select * from db_syscampodef where codcam = ".$retorno);
 					    $numrows = pg_numrows($result);
@@ -545,15 +545,15 @@ input {
             <td><strong>Valida&ccedil;&atilde;o:</strong></td>
             <td><select name="aceitatipo" size="1" OnChange="js_valida(this.selectedIndex)">
                 <option value='0'>Não Valida Campo</option>
-                <option value="1" <? echo @$aceitatipo=="1"?"selected":"" ?>>Somente 
+                <option value="1" <?php  echo @$aceitatipo=="1"?"selected":"" ?>>Somente 
                 Números</option>
-                <option value="2" <? echo @$aceitatipo=="2"?"selected":"" ?>>Somente 
+                <option value="2" <?php  echo @$aceitatipo=="2"?"selected":"" ?>>Somente 
                 Letras</option>
-                <option value="3" <? echo @$aceitatipo=="3"?"selected":"" ?>>Números 
+                <option value="3" <?php  echo @$aceitatipo=="3"?"selected":"" ?>>Números 
                 e Letras</option>
-                <option value="4" <? echo @$aceitatipo=="4"?"selected":"" ?>>Números 
+                <option value="4" <?php  echo @$aceitatipo=="4"?"selected":"" ?>>Números 
                 Casa Dec.</option>
-                <option value="5" <? echo @$aceitatipo=="5"?"selected":"" ?>> 
+                <option value="5" <?php  echo @$aceitatipo=="5"?"selected":"" ?>> 
                 Verdadeiro/Falso</option>
               </select></td>
           </tr>
@@ -577,22 +577,22 @@ input {
           <tr> 
             <td colspan="3" >
                   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-	             <input name="incluir" onClick="return js_verifica(); Botao = 'incluir'; " accesskey="i" type="submit" id="incluir2" value="Incluir" <? echo isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="alterar" accesskey="a" onClick="return js_verifica();" type="submit" id="alterar2" value="Alterar" <? echo !isset($retorno)?"disabled":"" ?>> 
-              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <? echo !isset($retorno)?"disabled":"" ?>> 
+	             <input name="incluir" onClick="return js_verifica(); Botao = 'incluir'; " accesskey="i" type="submit" id="incluir2" value="Incluir" <?php  echo isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="alterar" accesskey="a" onClick="return js_verifica();" type="submit" id="alterar2" value="Alterar" <?php  echo !isset($retorno)?"disabled":"" ?>> 
+              &nbsp; <input name="excluir" accesskey="e" type="submit" id="excluir2" value="Excluir" onClick="return confirm('Quer realmente excluir este registro?')" <?php  echo !isset($retorno)?"disabled":"" ?>> 
 	      &nbsp; <input name="docum_alteracao" value="Procurar campo" type="button" onclick="botao_pesquisa=false;js_alteracao_iframe()"> 
               &nbsp; <input name="procurar" onClick="Botao = 'procurar'" accesskey="p" type="hidden" id="procurar2" value="Procurar">	
             </td>
           </tr>
         </table>
   </form>
-      <?
+      <?php 
 //	  } // fim do else do if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
     ?>
     </td>
   </tr>
 </table>
-<?
+<?php 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>	
 </body>
@@ -635,7 +635,7 @@ function js_alteracampo(chave){
 </script>
 
 
-<?
+<?php 
 
 if($processamento==1){
 //  db_msgbox("Inclusao processada com sucesso!");

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE funcaorhrubricas
 class cl_funcaorhrubricas { 

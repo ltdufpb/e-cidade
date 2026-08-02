@@ -1,4 +1,4 @@
-<?
+<?php 
 $classinatura = new cl_assinatura;
 $xlin = 20;
 $xcol = 4;

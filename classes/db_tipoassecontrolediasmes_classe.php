@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE tipoassecontrolediasmes
 class cl_tipoassecontrolediasmes { 

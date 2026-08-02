@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,7 @@ $clrotulo->label("ed261_c_nome");
       <?=$Led257_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed257_i_codigo",10,$Ied257_i_codigo,true,"text",4,"","chave_ed257_i_codigo");?>
+      <?php db_input("ed257_i_codigo",10,$Ied257_i_codigo,true,"text",4,"","chave_ed257_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@ $clrotulo->label("ed261_c_nome");
       <?=$Led257_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed257_c_nome",50,$Ied257_c_nome,true,"text",4,"","chave_ed257_c_nome");?>
+      <?php db_input("ed257_c_nome",50,$Ied257_c_nome,true,"text",4,"","chave_ed257_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@ $clrotulo->label("ed261_c_nome");
       <?=$Led257_i_dependencia?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?
+      <?php 
       $x = array(''=>'','1'=>'FEDERAL','2'=>'ESTADUAL','3'=>'MUNICIPAL','4'=>'PRIVADA');
       db_select("chave_ed257_i_dependencia",$x,true,1,"");
       ?>
@@ -87,7 +87,7 @@ $clrotulo->label("ed261_c_nome");
       <?=$Led257_i_tipo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?
+      <?php 
       $x = array(''=>'','1'=>'PÚBLICA','2'=>'PRIVADA');
       db_select("chave_ed257_i_tipo",$x,true,1,"");
       ?>
@@ -98,7 +98,7 @@ $clrotulo->label("ed261_c_nome");
       <b>Cidade:</b>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed261_c_nome",50,$Ied261_c_nome,true,"text",4,"","chave_ed261_c_nome");?>
+      <?php db_input("ed261_c_nome",50,$Ied261_c_nome,true,"text",4,"","chave_ed261_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -114,7 +114,7 @@ $clrotulo->label("ed261_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
     if(!isset($pesquisa_chave)){
      if(isset($campos)==false){
       if(file_exists("funcoes/db_func_censoinstsuperior.php")==true){

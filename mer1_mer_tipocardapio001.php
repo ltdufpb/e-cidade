@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Cardápio</b></legend>
-    <?include(modification("forms/db_frmmer_tipocardapio.php"));?>
+    <?php include(modification("forms/db_frmmer_tipocardapio.php"));?>
    </fieldset>
    </center>
   </td>
@@ -76,7 +76,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me27_c_nome",true,1,"me27_c_nome",true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 	
  if ($clmer_tipocardapio->erro_status=="0") {

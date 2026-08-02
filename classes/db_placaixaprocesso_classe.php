@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: caixa
 //CLASSE DA ENTIDADE placaixaprocesso
 class cl_placaixaprocesso { 

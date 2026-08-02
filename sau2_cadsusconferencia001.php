@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,21 +70,21 @@ $db_botao = true;
   <tr>
      <td><b>Data Inicial:</b></td>
      <td>
-     <?db_inputdata("dataini","","","","","",1); ?>
+     <?php db_inputdata("dataini","","","","","",1); ?>
      </td>
   </tr>
   <tr>
      <td><b>Data Final:</b></td>
      <td>
-        <?db_inputdata("datafim","","","","","",1); ?>
+        <?php db_inputdata("datafim","","","","","",1); ?>
      </td>
   </tr>
   <tr>
     <td nowrap title="Importação">
-      <?db_ancora(@$Ls136_i_codigo,"js_pesquisas136_i_codigo(true);",$db_opcao);?>
+      <?php db_ancora(@$Ls136_i_codigo,"js_pesquisas136_i_codigo(true);",$db_opcao);?>
     </td>
     <td>
-    <?
+    <?php 
 db_input('s136_i_codigo',10,$Is136_i_codigo,true,'text',$db_opcao," onchange='js_pesquisas136_i_codigo(false);'");
 db_input('s136_d_data',10,@$Is136_d_data,true,'text',3,'');
     ?>
@@ -92,10 +92,10 @@ db_input('s136_d_data',10,@$Is136_d_data,true,'text',3,'');
   </tr>
   <tr>
      <td>
-       <?db_ancora(@$Ls136_i_user,"js_pesquisas136_i_user(true);",$db_opcao);?>
+       <?php db_ancora(@$Ls136_i_user,"js_pesquisas136_i_user(true);",$db_opcao);?>
      </td>
      <td>
-     <?
+     <?php 
 db_input('s136_i_user',10,$Is136_i_codigo,true,'text',$db_opcao," onchange='js_pesquisas136_i_user(false);'");
 db_input('nome',30,@$Inome,true,'text',3,'');
      ?>
@@ -200,7 +200,7 @@ function js_mostrauser1(chave1,chave2){
 	</td>
   </tr>
 </table>
-<?
+<?php 
  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

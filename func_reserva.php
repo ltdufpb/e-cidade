@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -56,7 +56,7 @@ $clrotulo->label("z01_nome");
       <?=$Lbi10_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi10_codigo",10,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
+      <?php db_input("bi10_codigo",10,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +64,7 @@ $clrotulo->label("z01_nome");
       <?=$Lz01_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +80,7 @@ $clrotulo->label("z01_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $depto = db_getsession("DB_coddepto");
    if(isset($chave_bi10_codigo) && (trim($chave_bi10_codigo)!="") ){
     $sql1 = " bi10_codigo = '$chave_bi10_codigo' AND bi17_coddepto = $depto";

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Alimento</b></legend>
-	<?
+	<?php 
 	include(modification("forms/db_frmmer_alimento.php"));
 	?>
    </fieldset>
@@ -76,7 +76,7 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 
   if ($clmer_alimento->erro_status == "0") {

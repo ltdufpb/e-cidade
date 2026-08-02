@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $cltarefaparam->rotulo->label();
        <?=@$Lat53_horasdia?>
     </td>
     <td> 
-<?
+<?php 
 db_input('at53_horasdia',2,$Iat53_horasdia,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -47,7 +47,7 @@ db_input('at53_horasdia',2,$Iat53_horasdia,true,'text',$db_opcao,"")
        <?=@$Lat53_horaini_manha?>
     </td>
     <td> 
-<?
+<?php 
 db_input('at53_horaini_manha',5,$Iat53_horaini_manha,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -57,7 +57,7 @@ db_input('at53_horaini_manha',5,$Iat53_horaini_manha,true,'text',$db_opcao,"")
        <?=@$Lat53_horafim_manha?>
     </td>
     <td> 
-<?
+<?php 
 db_input('at53_horafim_manha',5,$Iat53_horafim_manha,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -67,7 +67,7 @@ db_input('at53_horafim_manha',5,$Iat53_horafim_manha,true,'text',$db_opcao,"")
        <?=@$Lat53_horaini_tarde?>
     </td>
     <td> 
-<?
+<?php 
 db_input('at53_horaini_tarde',5,$Iat53_horaini_tarde,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -77,7 +77,7 @@ db_input('at53_horaini_tarde',5,$Iat53_horaini_tarde,true,'text',$db_opcao,"")
        <?=@$Lat53_horafim_tarde?>
     </td>
     <td> 
-<?
+<?php 
 db_input('at53_horafim_tarde',5,$Iat53_horafim_tarde,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -93,7 +93,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tarefaparam.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

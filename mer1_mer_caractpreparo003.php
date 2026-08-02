@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ if (isset($excluir)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Exclusão de Característica do Preparo</b></legend>
-	<? include(modification("forms/db_frmmer_caractpreparo.php"));?>
+	<?php  include(modification("forms/db_frmmer_caractpreparo.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -74,7 +74,7 @@ if (isset($excluir)) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clmer_caractpreparo->erro_status=="0") {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -127,7 +127,7 @@ function js_nome(obj){
 							<table border="0" align="center">
 								<tr>
 									<td align="top" colspan="2">
-                    <?
+                    <?php 
                     
                     $sql = "select distinct j34_zona,
                 														j34_quadra
@@ -162,7 +162,7 @@ function js_nome(obj){
 								<tr>
 									<td>
 										<input type="hidden" name="j34_zona">
-										<input type="hidden" name="j34_setor" value="<?@$j34_setor?>">
+										<input type="hidden" name="j34_setor" value="<?php @$j34_setor?>">
 									</td>
 							  </tr>
 							</table>

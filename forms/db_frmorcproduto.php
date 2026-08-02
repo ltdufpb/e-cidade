@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clorcproduto->rotulo->label();
        <?=@$Lo22_codproduto?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o22_codproduto',8,$Io22_codproduto,true,'text',3)
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('o22_codproduto',8,$Io22_codproduto,true,'text',3)
        <?=@$Lo22_descrprod?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o22_descrprod',40,$Io22_descrprod,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -54,11 +54,11 @@ db_input('o22_descrprod',40,$Io22_descrprod,true,'text',$db_opcao,"")
   </table>
   </center>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
-<?if(empty($novo)){?>
+<?php if(empty($novo)){?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?}else{?>
+<?php }else{?>
   <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_orcproduto.hide();">
-<?}?>
+<?php }?>
 </form>
 <script>
 function js_pesquisa(){
@@ -66,7 +66,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_orcproduto.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

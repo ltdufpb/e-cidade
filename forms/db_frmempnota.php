@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -126,7 +126,7 @@ if(isset($e69_numemp) && $e69_numemp!='' && empty($duv_msg)){
 
   ?>
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -147,7 +147,7 @@ if(isset($e69_numemp) && $e69_numemp!='' && empty($duv_msg)){
 <form name="form1" method="post" action="">
 <center>
 <table border='0'>
-	<?
+	<?php 
 	db_input('dados',6,0,true,'hidden',3);
 	?>
 <tr>
@@ -158,7 +158,7 @@ if(isset($e69_numemp) && $e69_numemp!='' && empty($duv_msg)){
        <?=@$Le69_codnota?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e69_codnota',6,$Ie69_codnota,true,'text',3)
 ?>
     </td>
@@ -168,25 +168,25 @@ db_input('e69_codnota',6,$Ie69_codnota,true,'text',3)
        <?=@$Le69_numemp?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e69_numemp',13,$Ie69_numemp,true,'text',3)
 ?>
-       <?
+       <?php 
 db_input('z01_nome',50,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Te69_id_usuario?>">
-       <?
+       <?php 
        db_ancora(@$Le69_id_usuario,"js_pesquisae69_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e69_id_usuario',5,$Ie69_id_usuario,true,'text',$db_opcao," onchange='js_pesquisae69_id_usuario(false);'")
 ?>
-       <?
+       <?php 
 db_input('nome',30,$Inome,true,'text',3,'')
        ?>
     </td>
@@ -196,7 +196,7 @@ db_input('nome',30,$Inome,true,'text',3,'')
        <?=@$Le69_numero?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e69_numero',20,$Ie69_numero,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -206,7 +206,7 @@ db_input('e69_numero',20,$Ie69_numero,true,'text',$db_opcao,"")
        <?=@$Le69_dtrecebe?>
     </td>
     <td> 
-<?
+<?php 
 if(empty($e69_dtrecebe_dia)){
   $e69_dtrecebe_dia =  date("d",db_getsession("DB_datausu"));
   $e69_dtrecebe_mes =  date("m",db_getsession("DB_datausu"));
@@ -226,52 +226,52 @@ db_inputdata('e69_dtrecebe',@$e69_dtrecebe_dia,@$e69_dtrecebe_mes,@$e69_dtrecebe
 	  </td>
 	  
 	</tr>
-      <?if($db_opcao==1){?>
+      <?php if($db_opcao==1){?>
 	  <tr class='bordas'>
 	    <td class='bordas' nowrap title="Valor que deseja anular">
 		
 	     <b>Valor disponível:</b>
 	    </td>
 	    <td class='bordas'> 
-      	     <?db_input('vlrdis',10,0,true,'text',3);?>
+      	     <?php db_input('vlrdis',10,0,true,'text',3);?>
 	    </td>
 	  </tr>
-      <?}?>   	  
+      <?php }?>   	  
 
-   <?if($db_opcao==2||$db_opcao==3){ ?>	    
+   <?php if($db_opcao==2||$db_opcao==3){ ?>	    
            <tr>   
 	    <td class='bordas' nowrap title="Valor à pagar">
 	       <b>Saldo atual:</b>
 	    </td>
 	    <td class='bordas'> 
-             <?db_input('saldo',10,4,true,'text',3,"onchange='js_verificar(\"campo\");'");?>
+             <?php db_input('saldo',10,4,true,'text',3,"onchange='js_verificar(\"campo\");'");?>
 	    </td>
 	   </tr>  
-   <?}?>
+   <?php }?>
 
-   <?if($db_opcao==1){?>	    
+   <?php if($db_opcao==1){?>	    
 	   <tr class='bordas'>
 	    <td class='bordas' nowrap title="Valor à pagar">
            <b>Valor da nota</b>
 	    </td>
 	    <td class='bordas'> 
-             <?db_input('vlrpag',10,4,true,'text',$db_opcao_botao,"onchange='js_verificar(\"campo\");'");?>
+             <?php db_input('vlrpag',10,4,true,'text',$db_opcao_botao,"onchange='js_verificar(\"campo\");'");?>
 	    </td>
 	  </tr>  
-    <?}?> 	  
+    <?php }?> 	  
 	  </table>
 	  </td>
 	</tr>  
   <tr>
     <td colspan='2' align='center'>
 <input name="<?=($db_opcao_botao==1||$db_opcao_botao==11?"incluir":($db_opcao_botao==2||$db_opcao_botao==22?"excluir":"anular"))?>" type="submit" id="db_opcao" value="<?=($db_opcao_botao==1?"Incluir":($db_opcao_botao==2||$db_opcao_botao==22?"Excluir":"Anular"))?>" <?=($db_botao==false?"disabled":"")?>  onclick="return js_vericampos();" >
-<?if($db_opcao!=1&&$db_opcao!=11){?>
+<?php if($db_opcao!=1&&$db_opcao!=11){?>
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?}?>
+<?php }?>
 
-<?if($db_opcao==1||$db_opcao==11){?>
+<?php if($db_opcao==1||$db_opcao==11){?>
 <input name="voltar" type="button"  value="Novo Empenho" onclick="js_pesquisae60_numemp(true);" >
-<?}?>
+<?php }?>
     </td>
   </tr>
   </table>
@@ -285,7 +285,7 @@ db_inputdata('e69_dtrecebe',@$e69_dtrecebe_dia,@$e69_dtrecebe_mes,@$e69_dtrecebe
 	  </td>
         </tr>   	 
 
-     <?if($db_opcao!=1){?>	 
+     <?php if($db_opcao!=1){?>	 
        <tr> 
         <td>
           <table>
@@ -299,7 +299,7 @@ db_inputdata('e69_dtrecebe',@$e69_dtrecebe_dia,@$e69_dtrecebe_mes,@$e69_dtrecebe
 		 <?=@$Le70_valor?>
 	      </td>
 	      <td class='bordas'> 
-	  <?
+	  <?php 
 	    db_input('total_valor',15,$Ie60_vlranu,true,'text',3,'')
 	  ?>
 	      </td>
@@ -309,7 +309,7 @@ db_inputdata('e69_dtrecebe',@$e69_dtrecebe_dia,@$e69_dtrecebe_mes,@$e69_dtrecebe
 		 <?=@$Le70_vlrliq?>
 	      </td>
 	      <td class='bordas'> 
-	  <?
+	  <?php 
 	    db_input('total_vlrliq',15,$Ie70_vlrliq,'text',3);
 	  ?>
 	      </td>
@@ -319,7 +319,7 @@ db_inputdata('e69_dtrecebe',@$e69_dtrecebe_dia,@$e69_dtrecebe_mes,@$e69_dtrecebe
 		 <?=@$Le70_vlranu?>
 	      </td>
 	      <td class='bordas'> 
-	  <?
+	  <?php 
 	    db_input('total_vlranu',15,$Ie70_vlranu,true,'text',3,'')
 	  ?>
 	      </td>
@@ -327,14 +327,14 @@ db_inputdata('e69_dtrecebe',@$e69_dtrecebe_dia,@$e69_dtrecebe_mes,@$e69_dtrecebe
 	    </table>
 	   </td>  
 	 </tr>  
-     <?}?>
+     <?php }?>
 	 
       </table> 	
     </td>	  
 </tr>
 </table>
   
-<?if(isset($e69_numemp)){?>  
+<?php if(isset($e69_numemp)){?>  
   <table>
     <tr>
       <td>
@@ -343,7 +343,7 @@ db_inputdata('e69_dtrecebe',@$e69_dtrecebe_dia,@$e69_dtrecebe_mes,@$e69_dtrecebe
       </td>
     </tr>
   </table>
-<?}?>  
+<?php }?>  
   </center>
 </form>
 <script>
@@ -364,7 +364,7 @@ function js_vericampos(){
   return true;
 }
 
-<?
+<?php 
   if(isset($vlrdis)){
     if(isset($mens_erro)){
       echo "alert('$mens_erro');\n";
@@ -400,7 +400,7 @@ function js_vericampos(){
 	}
 	
       }
-<?
+<?php 
   }
   
 ?>
@@ -441,13 +441,13 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_empnota.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
-<?
+<?php 
 if($db_opcao==11){
   echo "js_pesquisae60_numemp(true)";
 }

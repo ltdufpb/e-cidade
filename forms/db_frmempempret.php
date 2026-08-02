@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -30,7 +30,7 @@
 <table border="0">
   <tr>
     <td nowrap>
-      <?
+      <?php 
       $sql = $clempautret->sql_query_retencao($chavepesquisa,null,"*","e65_receita");
       db_lovrot($sql,15);
       ?>

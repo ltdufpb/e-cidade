@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -183,7 +183,7 @@ input {
            <?=$Lj39_matric?>
           </td>
           <td> 
-<?
+<?php 
   $result = $cliptubase->sql_record($cliptubase->sql_query($j39_matric,"z01_nome"));
   db_fieldsmemory($result,0);
   db_input('j39_matric',5,$Ij39_matric,true,'text',3,"");
@@ -196,7 +196,7 @@ input {
            <?=$Lj39_idcons?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_idcons',5,$Ij39_idcons,true,'text',$db_opcaoid,"");
 ?>
           </td>
@@ -206,7 +206,7 @@ input {
               <tr><td><b>Construções já Cadastradas</b></td></tr> 
               <tr>
                 <td align="center">  
-<?
+<?php 
   $result = $cliptuconstr->sql_record($cliptuconstr->sql_query_file($j39_matric,"","j39_idcons","",""));
   $num=$cliptuconstr->numrows;
   if($num!=""){  
@@ -229,7 +229,7 @@ input {
            <?=$Lj39_ano?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_ano',5,$Ij39_ano,true,'text',1,"");
 ?>
           </td>
@@ -239,7 +239,7 @@ input {
            <?=$Lj39_area?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_area',5,$Ij39_area,true,'text',1,"");
 ?>
           </td>
@@ -249,7 +249,7 @@ input {
            <?=$Lj39_areap?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_areap',5,$Ij39_areap,true,'text',1,"");
 ?>
           </td>
@@ -259,19 +259,19 @@ input {
            <?=$Lj39_dtlan?>
           </td>
           <td> 
-<?
+<?php 
   db_inputdata('j39_dtlan',@$j39_dtlan_dia,@$j39_dtlan_mes,@$j39_dtlan_ano,true,'text',2,"");
 ?>
           </td>
         </tr>
         <tr>
           <td nowrap title="<?=@$Tj39_codigo?>">
-<?
+<?php 
   db_ancora(@$Lj39_codigo,"js_pesquisaj39_codigo(true);",$db_opcao);
 ?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_codigo',5,$Ij39_codigo,true,'text',$db_opcao," onchange='js_pesquisaj39_codigo(false);'");
   db_input('j14_nome',40,$Ij14_nome,true,'text',3,'');
 ?>
@@ -282,7 +282,7 @@ input {
            <?=$Lj39_numero?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_numero',5,$Ij39_numero,true,'text',1,"");
 ?>
           </td>
@@ -292,7 +292,7 @@ input {
            <?=$Lj39_compl?>
           </td>
           <td> 
-<?
+<?php 
   db_input('j39_compl',5,$Ij39_compl,true,'text',1,"");
 ?>
           </td>
@@ -300,13 +300,13 @@ input {
         <tr>
           <td>
             <b>
-<?
+<?php 
   db_ancora("Características","js_mostracaracteristica();",1);
 ?>
             </b> 
           </td>
           <td> 
-<?
+<?php 
   db_input('caracteristica',15,1,true,'hidden',1,"")
 ?>
           <td>
@@ -318,7 +318,7 @@ input {
   </tr>
 </form>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -359,7 +359,7 @@ function js_mostraruas(chave,erro){
   }
 }
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

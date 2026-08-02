@@ -141,14 +141,14 @@ $ano  = $data[2];
        <?=@$Ly63_sequencia?>
     </td>
     <td>
-<?
+<?php 
 db_input('valores',60,0,true,'hidden',3);
 db_input('notas',60,0,true,'hidden',3);
 db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
 ?>
     </td>
     <td>
-      <?
+      <?php 
       db_input('y63_codlev',4,$Iy63_codlev,true,'hidden',3)
       ?>
     </td>
@@ -158,7 +158,7 @@ db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
        <?=@$Ly63_ano?>
     </td>
     <td>
-      <?
+      <?php 
       $result=$cllevanta->sql_record($cllevanta->sql_query_file($y63_codlev,"y60_dtini,y60_dtfim"));
       db_fieldsmemory($result,0);
       $arr_ini = split("-",$y60_dtini);
@@ -310,11 +310,11 @@ db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
     <td align="center">
     <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
-  <?
+  <?php 
   if(isset($opcao)){
   ?>
   <input name="novo" type="button" value="Novo" onclick="js_novo();" >
-  <?
+  <?php 
   }
   ?>
     </td>
@@ -449,7 +449,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_levvalor.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

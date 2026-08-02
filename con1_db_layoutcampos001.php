@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -219,7 +219,7 @@ if(!isset($db52_quebraapos)){
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmdb_layoutcampos.php"));
 	?>
     </center>
@@ -229,13 +229,13 @@ if(!isset($db52_quebraapos)){
 </body>
 </html>
 <script>
-<?if($db_opcao == 1 || $db_opcao == 2){?>
+<?php if($db_opcao == 1 || $db_opcao == 2){?>
 js_tabulacaoforms("form1","db52_nome",true,1,"db52_nome",true);
-<?}else{?>
+<?php }else{?>
 js_tabulacaoforms("form1","excluir",true,1,"excluir",true);
-<?}?>
+<?php }?>
 </script>
-<?
+<?php 
 if(isset($alterar) || isset($excluir) || isset($incluir)){
   if($sqlerro == true){
     db_msgbox($erro_msg);

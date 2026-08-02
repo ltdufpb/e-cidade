@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clvac_restricao->rotulo->label();
        <?=@$Lvc02_i_codigo?>
     </td>
     <td> 
-     <?db_input('vc02_i_codigo',10,$Ivc02_i_codigo,true,'text',3,"")?>
+     <?php db_input('vc02_i_codigo',10,$Ivc02_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -45,7 +45,7 @@ $clvac_restricao->rotulo->label();
        <?=@$Lvc02_c_nome?>
     </td>
     <td> 
-     <?db_input('vc02_c_nome',30,$Ivc02_c_nome,true,'text',$db_opcao,"")?>
+     <?php db_input('vc02_c_nome',30,$Ivc02_c_nome,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -53,7 +53,7 @@ $clvac_restricao->rotulo->label();
        <?=@$Lvc02_c_descr?>
     </td>
     <td> 
-     <?db_input('vc02_c_descr',50,$Ivc02_c_descr,true,'text',$db_opcao,"")?>
+     <?php db_input('vc02_c_descr',50,$Ivc02_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -81,7 +81,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_vac_restricao.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

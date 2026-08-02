@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -153,7 +153,7 @@ background-color:#ccddcc;
   
   <tr>
     <td colspan=2 align='center' >
-  <?db_input('incluir','100','',true,'hidden',3);
+  <?php db_input('incluir','100','',true,'hidden',3);
       db_input('descrmater','100','',true,'hidden',3);
      $campos = "matmater.m60_codmater,matmater.m60_descr";
      $result = $clmatmater->sql_record($clmatmater->sql_query("",$campos,"m60_descr"," m60_descr like '$descrmater%'  and m60_ativo is true"));

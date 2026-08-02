@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clcontcearquivo->rotulo->label("c11_id_usuario");
               <?=$Lc11_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c11_sequencial",10,$Ic11_sequencial,true,"text",4,"","chave_c11_sequencial");
 		       ?>
             </td>
@@ -72,7 +72,7 @@ $clcontcearquivo->rotulo->label("c11_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contcearquivo.php")==true){
@@ -112,12 +112,12 @@ $clcontcearquivo->rotulo->label("c11_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

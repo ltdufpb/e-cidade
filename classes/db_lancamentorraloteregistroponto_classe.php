@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE lancamentorraloteregistroponto
 class cl_lancamentorraloteregistroponto { 

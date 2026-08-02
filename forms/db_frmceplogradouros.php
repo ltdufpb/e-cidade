@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,11 +42,11 @@ if ($db_opcao==1){
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tcp06_codlogradouro?>">
-       <?//=@$Lcp06_codlogradouro?>
-       <?db_ancora(@$Lcp06_codlogradouro,"js_pesquisacp06_codlogradouro(true);",$opc);?>
+       <?php //=@$Lcp06_codlogradouro?>
+       <?php db_ancora(@$Lcp06_codlogradouro,"js_pesquisacp06_codlogradouro(true);",$opc);?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_codlogradouro',10,$Icp06_codlogradouro,true,'text',3,"");
 db_input('cp06_sequencial',10,$Icp06_sequencial,true,'hidden',3,"");
 ?>
@@ -54,30 +54,30 @@ db_input('cp06_sequencial',10,$Icp06_sequencial,true,'hidden',3,"");
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcp06_codbairroinicial?>">
-       <?
+       <?php 
        db_ancora(@$Lcp06_codbairroinicial,"js_pesquisacp06_codbairroinicial(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_codbairroinicial',10,$Icp06_codbairroinicial,true,'text',$db_opcao," onchange='js_pesquisacp06_codbairroinicial(false);'")
 ?>
-       <?
+       <?php 
 db_input('cp01_bairro_ini',72,$Icp01_bairro,true,'text',3,'')
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcp06_codbairrofinal?>">
-       <?
+       <?php 
        db_ancora(@$Lcp06_codbairrofinal,"js_pesquisacp06_codbairrofinal(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_codbairrofinal',10,$Icp06_codbairrofinal,true,'text',$db_opcao," onchange='js_pesquisacp06_codbairrofinal(false);'")
 ?>
-       <?
+       <?php 
 db_input('cp01_bairro_fim',72,$Icp01_bairro,true,'text',3,'')
        ?>
     </td>
@@ -87,7 +87,7 @@ db_input('cp01_bairro_fim',72,$Icp01_bairro,true,'text',3,'')
        <?=@$Lcp06_logradouro?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_logradouro',72,$Icp06_logradouro,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -97,7 +97,7 @@ db_input('cp06_logradouro',72,$Icp06_logradouro,true,'text',$db_opcao,"")
        <?=@$Lcp06_adicional?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_adicional',72,$Icp06_adicional,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -107,7 +107,7 @@ db_input('cp06_adicional',72,$Icp06_adicional,true,'text',$db_opcao,"")
        <?=@$Lcp06_cep?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_cep',8,$Icp06_cep,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -117,7 +117,7 @@ db_input('cp06_cep',8,$Icp06_cep,true,'text',$db_opcao,"")
        <?=@$Lcp06_grandeusuario?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_grandeusuario',1,$Icp06_grandeusuario,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -127,7 +127,7 @@ db_input('cp06_grandeusuario',1,$Icp06_grandeusuario,true,'text',$db_opcao,"")
        <?=@$Lcp06_numinicial?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_numinicial',10,$Icp06_numinicial,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -137,7 +137,7 @@ db_input('cp06_numinicial',10,$Icp06_numinicial,true,'text',$db_opcao,"")
        <?=@$Lcp06_numfinal?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_numfinal',10,$Icp06_numfinal,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -147,7 +147,7 @@ db_input('cp06_numfinal',10,$Icp06_numfinal,true,'text',$db_opcao,"")
        <?=@$Lcp06_lado?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_lado',1,$Icp06_lado,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -157,7 +157,7 @@ db_input('cp06_lado',1,$Icp06_lado,true,'text',$db_opcao,"")
        <?=@$Lcp06_codseccao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_codseccao',10,$Icp06_codseccao,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -167,22 +167,22 @@ db_input('cp06_codseccao',10,$Icp06_codseccao,true,'text',$db_opcao,"")
        <?=@$Lcp06_sigla?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_sigla',2,$Icp06_sigla,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcp06_codlocalidade?>">
-       <?
+       <?php 
        db_ancora(@$Lcp06_codlocalidade,"js_pesquisacp06_codlocalidade(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cp06_codlocalidade',10,$Icp06_codlocalidade,true,'text',$db_opcao," onchange='js_pesquisacp06_codlocalidade(false);'")
 ?>
-       <?
+       <?php 
 db_input('cp05_localidades',72,$Icp05_localidades,true,'text',3,'')
        ?>
     </td>
@@ -290,7 +290,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_ceplogradouros.hide();
 //  alert(chave);
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

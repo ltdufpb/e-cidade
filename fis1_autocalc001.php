@@ -113,7 +113,7 @@ if (isset($calcular) ){
   </div>
 </body>
 </html>
-<?
+<?php 
 if( isset($desabilita) ){
   echo "<script>document.form1.calcular.disabled = true</script>";
 }

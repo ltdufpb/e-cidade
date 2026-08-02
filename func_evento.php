@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clevento->rotulo->label("ed96_c_descr");
       <?=$Led96_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed96_i_codigo",10,$Ied96_i_codigo,true,"text",4,"","chave_ed96_i_codigo");?>
+      <?php db_input("ed96_i_codigo",10,$Ied96_i_codigo,true,"text",4,"","chave_ed96_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,7 +62,7 @@ $clevento->rotulo->label("ed96_c_descr");
       <?=$Led96_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed96_c_descr",30,$Ied96_c_descr,true,"text",4,"","chave_ed96_c_descr");?>
+      <?php db_input("ed96_c_descr",30,$Ied96_c_descr,true,"text",4,"","chave_ed96_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ $clevento->rotulo->label("ed96_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_evento.php")==true){

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -116,9 +116,9 @@ if($prescrnoti=="n"){
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0"
 	marginheight="0">
 <table width="100%" height="" border="0" align="center" cellspacing="0"	bgcolor="#CCCCCC">
-	<? include(modification("forms/db_frmprescrevedebitosalt.php")); ?>
+	<?php  include(modification("forms/db_frmprescrevedebitosalt.php")); ?>
 </table>
-	<?
+	<?php 
 	// se clicou em processar
 	$datadeb="";
 	if(isset($processar) && $processar != ''){

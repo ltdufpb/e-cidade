@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,9 +79,9 @@ function js_limpa(){
 </tr>
 
   <tr> 
-    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tm51_codordem?>"><?php db_ancora(@$Lm51_codordem,"js_pesquisa_matordem(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
+      <?php  db_input("m51_codordem",6,$Im51_codordem,true,"text",4,"onchange='js_pesquisa_matordem(false);'");
          ?></td>
   </tr>
 
@@ -102,7 +102,7 @@ function js_limpa(){
  
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //--------------------------------
 function js_pesquisa_matordem(mostra){

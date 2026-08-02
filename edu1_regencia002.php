@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -238,6 +238,6 @@ if(isset($codnobase)){
  <script>
    parent.location.href="edu1_regencia001.php?ed59_i_turma=<?=$ed59_i_turma?>&ed57_c_descr=<?=$ed57_c_descr?>&ed59_i_serie=<?=$ed59_i_serie?>&ed11_c_descr=<?=$ed11_c_descr?>&frequencia=<?=$frequencia?>";
  </script>
- <?
+ <?php 
 }
 ?>

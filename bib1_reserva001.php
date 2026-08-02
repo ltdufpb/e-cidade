@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -69,7 +69,7 @@ if (isset($incluir)) {
        location.href = "bib1_leitor000.php?opcao=2&chavepesquisa=<?=$bi14_carteira?>";
      }
     </script>
-    <?
+    <?php 
     $erro = true;
   } else if (   $bi14_carteira != "" && $clcarteira->numrows > 0 
              && str_replace("-", "", pg_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
@@ -81,7 +81,7 @@ if (isset($incluir)) {
        location.href = "bib1_leitor000.php?opcao=2&chavepesquisa=<?=$codleitor?>";
      }
     </script>
-    <?
+    <?php 
     $erro = true;
   } else if ($datadigitada - date("Ymd") < 0) {
 
@@ -124,11 +124,11 @@ if (isset($incluir)) {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
    <br>
    <center>
    <fieldset style="display:table"><legend><b>Cadastro de Reservas</b></legend>
-    <?require_once(modification("forms/db_frmreserva.php"));?>
+    <?php require_once(modification("forms/db_frmreserva.php"));?>
    </fieldset>
    </center>
   </td>
@@ -138,7 +138,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:92%"><legend><b>Reservas em aberto:</b></legend>
-    <?
+    <?php 
     $campos = "ov02_nome as ov02_nome2,
                bi14_codigo as bi14_codigo2,
                bi14_data as bi14_data2,
@@ -163,7 +163,7 @@ if (isset($incluir)) {
           <td><b>Hora</b></td>
           <td><b>Situação</b></td>
         </tr>
-      <?
+      <?php 
       for ($y = 0; $y < $clreserva->numrows; $y++) {
 
         db_fieldsmemory($result,$y);
@@ -191,7 +191,7 @@ if (isset($incluir)) {
           <td align="center" >
             <?=$bi14_horareserva2?>
           </td>
-          <?
+          <?php 
           $difdata = str_replace("-","",$bi14_datareserva2) - date("Ymd");
           $difhora = str_replace(":","",$bi14_horareserva2) - date("Hi");
           
@@ -209,11 +209,11 @@ if (isset($incluir)) {
            <?=$situacao?>
           </td>
         </tr>
-        <?
+        <?php 
       }
      ?>
      </table>
-     <?
+     <?php 
     } else {
       echo "Nenhuma reserva em aberto.";
     }
@@ -224,7 +224,7 @@ if (isset($incluir)) {
  </tr>
 </table>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -237,7 +237,7 @@ function OcultaID(id) {
   document.getElementById(id).style.visibility = "hidden";
 }
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 
   if ($clreserva->erro_status == "0") {

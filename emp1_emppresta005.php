@@ -155,7 +155,7 @@ if (isset($alterar)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" style="margin-top: 30px;">
 <center>
-    <?
+    <?php 
     include(modification("forms/db_frmemppresta.php"));
 
     if (empty($e60_vlrpag)) {
@@ -169,7 +169,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
     if ($sqlerro == true) {
         db_msgbox($erro_msg);

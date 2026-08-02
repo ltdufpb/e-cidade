@@ -102,7 +102,7 @@ function db_inputdatasaude( $intEspecmed,
   <input name="<?=($nomevar==""?$nome:$nomevar)."_dia"?>"   type="hidden" title="" id="<?=($nomevar==""?$nome:$nomevar)."_dia"?>" value="<?=@$dia?>" size="2"  maxlength="2" >
   <input name="<?=($nomevar==""?$nome:$nomevar)."_mes"?>"   type="hidden" title="" id="<?=($nomevar==""?$nome:$nomevar)."_mes"?>" value="<?=@$mes?>" size="2"  maxlength="2" >
   <input name="<?=($nomevar==""?$nome:$nomevar)."_ano"?>"   type="hidden" title="" id="<?=($nomevar==""?$nome:$nomevar)."_ano"?>" value="<?=@$ano?>" size="4"  maxlength="4" >
-  <?
+  <?php 
   if (($db_opcao < 3) || ($db_opcao == 4)) {
     ?>
     <script>
@@ -114,7 +114,7 @@ function db_inputdatasaude( $intEspecmed,
         <?=$jsRetornoCal?>
       }
     </script>
-    <?
+    <?php 
     if (isset($dbtype) && strtolower($dbtype) == strtolower('hidden')) {
       $sButtonType = "hidden";
     }
@@ -125,7 +125,7 @@ function db_inputdatasaude( $intEspecmed,
              type="<?=$sButtonType?>"
              name="dtjs_<?=($nomevar==""?$nome:$nomevar)?>"
              onclick="<?=$onclickBT?>pegaPosMouse(event);show_calendarexames('<?=($nomevar==""?$nome:$nomevar)?>','<?=$shutdown_function?>',<?=$intEspecmed ?>)"  >
-      <?
+      <?php 
     } else {
 
       if ( !$lTodosDias ) {
@@ -135,7 +135,7 @@ function db_inputdatasaude( $intEspecmed,
                type="<?=$sButtonType?>"
                name="dtjs_<?=($nomevar==""?$nome:$nomevar)?>"
                onclick="<?=$onclickBT?>pegaPosMouse(event);show_calendarsaude('<?=($nomevar==""?$nome:$nomevar)?>','<?=$shutdown_function?>',<?=$intEspecmed ?>, <?=$iUpsSolicitante?>, <?=$iUpsPrestadora?>)"  >
-        <?
+        <?php 
       } else {
 
         ?>
@@ -143,7 +143,7 @@ function db_inputdatasaude( $intEspecmed,
                type="<?=$sButtonType?>"
                name="dtjs_<?=($nomevar==""?$nome:$nomevar)?>"
                onclick="<?=$onclickBT?>pegaPosMouse(event);showCalendarioSaudeTodosDias('<?=($nomevar==""?$nome:$nomevar)?>','<?=$shutdown_function?>',<?=$intEspecmed ?>)"  >
-        <?
+        <?php 
       }
     }
   }
@@ -177,7 +177,7 @@ function MsgAviso($codescola,$tabela,$arquivo=null,$where=null) {
         <a href="javascript:location.href='<?=$arquivo?>'" title="<?=$dados['ed90_c_titulolink']?>"><?=$dados["ed90_c_descrlink"]?></a>
       </fieldset>
     </center>
-    <?
+    <?php 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     exit;
   }
@@ -1644,7 +1644,7 @@ function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
       font-weight: bold;
     }
   </style>
-  <?
+  <?php 
   $oDaoMatricula = db_utils::getDao("matricula");
   db_inicio_transacao();
 
@@ -3024,7 +3024,7 @@ function db_inputdatamerenda($nome, $dia = "", $mes = "", $ano = "", $dbcadastro
   <input name="<?=($nomevar==""?$nome:$nomevar)."_dia"?>"   type="hidden" title="" id="<?=($nomevar==""?$nome:$nomevar)."_dia"?>" value="<?=@$dia?>" size="2"  maxlength="2" >
   <input name="<?=($nomevar==""?$nome:$nomevar)."_mes"?>"   type="hidden" title="" id="<?=($nomevar==""?$nome:$nomevar)."_mes"?>" value="<?=@$mes?>" size="2"  maxlength="2" >
   <input name="<?=($nomevar==""?$nome:$nomevar)."_ano"?>"   type="hidden" title="" id="<?=($nomevar==""?$nome:$nomevar)."_ano"?>" value="<?=@$ano?>" size="4"  maxlength="4" >
-  <?
+  <?php 
   if (($db_opcao < 3) || ($db_opcao == 4)) {
     ?>
     <script>
@@ -3035,13 +3035,13 @@ function db_inputdatamerenda($nome, $dia = "", $mes = "", $ano = "", $dbcadastro
         <?=$jsRetornoCal?>
       }
     </script>
-    <?
+    <?php 
     if (isset($dbtype) && strtolower($dbtype) == strtolower('hidden')) {
       $sButtonType = "hidden";
     }
     ?>
     <input value="D" type="<?=$sButtonType?>" name="dtjs_<?=($nomevar==""?$nome:$nomevar)?>" onclick="<?=$onclickBT?>pegaPosMouse(event);show_calendarmerenda('<?=($nomevar==""?$nome:$nomevar)?>','<?=$shutdown_function?>')"  >
-    <?
+    <?php 
   }
 }
 function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
@@ -3494,7 +3494,7 @@ function geraArquivoBPA($oDados, $rsCabecalho, $rsProducao, $lValidaCid = true, 
         'width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
       jan.moveTo(0,0);
     </script>
-    <?
+    <?php 
     return -1;
 
   } else {
@@ -3505,7 +3505,7 @@ function geraArquivoBPA($oDados, $rsCabecalho, $rsProducao, $lValidaCid = true, 
       listagem = '<?=$sArquivo?>#Download arquivo TXT (BPA)|';
       js_montarlista(listagem, 'form1');
     </script>
-    <?
+    <?php 
     return $iBpas;
 
   }

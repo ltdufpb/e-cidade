@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -350,7 +350,7 @@ function js_incluirlinha(matri,refant,nome,setor,quadra,lote,zona,total,desconto
   <input name="confirma" type="hidden">
   <table border="0">
     <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
-  <?
+  <?php 
   if(isset($contri)){
     $cleditalrua->sql_record($cleditalrua->sql_query_file($contri));
     if(!$cleditalrua->numrows>0){
@@ -482,7 +482,7 @@ order by d10_codigo, j01_matric
     </tr>
   </body>
 </html>
-<?
+<?php 
 
 if(isset($confirma) && $confirma=="ok"){
   if($clcontrib->erro_status=="0"){

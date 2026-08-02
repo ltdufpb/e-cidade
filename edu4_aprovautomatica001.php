@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ if(isset($salvar)){
 </head>
 <script>
  team = new Array(
- <?
+ <?php 
  # Seleciona todos os calendários
  $sql = "SELECT ed52_i_codigo,ed52_c_descr
          FROM calendario
@@ -171,7 +171,7 @@ if(isset($salvar)){
           <b>Selecione o Calendário:</b><br>
           <select name="grupo" onChange="js_zerar();fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:250px;height:18px;">
            <option></option>
-           <?
+           <?php 
            $sql = "SELECT ed52_i_codigo,ed52_c_descr
                    FROM calendario
                     inner join calendarioescola on ed38_i_calendario = ed52_i_codigo
@@ -185,7 +185,7 @@ if(isset($salvar)){
             $desc_curso=$row["ed52_c_descr"];
             ?>
             <option value="<?=$cod_curso;?>" <?=$cod_curso==@$calendario?"selected":""?>><?=$desc_curso;?></option>
-            <?
+            <?php 
            }
            ?>
           </select>
@@ -200,15 +200,15 @@ if(isset($salvar)){
        </table>
       </td>
      </tr>
-     <?if(isset($serie)){?>
+     <?php if(isset($serie)){?>
      <tr>
       <td colspan="2" align="center">
-       <?
+       <?php 
        $result = $clturma->sql_record($clturma->sql_query_turmaserie("","DISTINCT ed220_i_codigo,ed57_c_descr,ed220_c_aprovauto","ed57_c_descr"," ed223_i_serie = $serie AND ed57_i_escola = $escola AND ed57_i_calendario = $calendario"));
        ?>
        <b>Turmas com aprovação automática na etapa <span id="nomeserie"></span>:</b><br>
        <select name="turmasaprov[]" id="turmasaprov" style="font-size:9px;width:400px;height:350px" multiple>
-        <?
+        <?php 
         for($x=0;$x<$clturma->numrows;$x++){
          db_fieldsmemory($result,$x);
          if($ed220_c_aprovauto=="S"){
@@ -218,7 +218,7 @@ if(isset($salvar)){
          }
          ?>
          <option value="<?=$ed220_i_codigo?>" <?=$selected?>><?=$ed57_c_descr?></option>
-         <?
+         <?php 
         }
         ?>
        </select>
@@ -245,7 +245,7 @@ if(isset($salvar)){
      document.form1.subgrupo.value = <?=$serie?>;
      document.getElementById("nomeserie").innerHTML = document.form1.subgrupo[document.form1.subgrupo.selectedIndex].text;
      </script>
-     <?}?>
+     <?php }?>
     </table>
     </center>
     </form>
@@ -256,8 +256,8 @@ if(isset($salvar)){
 </table>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
-<?
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php 
 if(isset($salvar)){
  db_msgbox("Alteração efetuada com sucesso!");
 }
@@ -277,13 +277,13 @@ function js_limpar(){
  }
 }
 function js_zerar(){
- <?if(isset($serie)){?>
+ <?php if(isset($serie)){?>
   qtd = document.form1.turmasaprov.length;
   for (i = 0; i < qtd; i++) {
   document.form1.turmasaprov.options[0] = null;
  }
  document.getElementById("nomeserie").innerHTML = "_________";
- <?}?>
+ <?php }?>
 }
 function js_geral(){
  js_OpenJanelaIframe('','db_iframe_geral','edu4_aprovautomatica002.php','Quadro Geral de Aprovação Automática de Turmas',true);

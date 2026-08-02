@@ -57,7 +57,7 @@ if (!isset($recurso)) {
               <?=$Lk13_conta?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 	      db_input("k13_conta",5,$Ik13_conta,true,"text",4,"","chave_k13_conta");
 	      ?>
             </td>
@@ -67,7 +67,7 @@ if (!isset($recurso)) {
               <?=$Lk13_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 	      db_input("k13_descr",40,$Ik13_descr,true,"text",4,"","chave_k13_descr");
 	      ?>
             </td>

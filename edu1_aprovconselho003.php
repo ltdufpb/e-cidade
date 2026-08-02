@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ if(isset($excluir)){
   parent.parent.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>&iTrocaTurma=<?=$iTrocaTurma?>";
   parent.parent.db_iframe_alteraresultado.hide();
  </script>
- <?
+ <?php 
 }
 ?>
 <html>
@@ -73,7 +73,7 @@ if(isset($excluir)){
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
-    <?include(modification("forms/db_frmaprovconselhoexc.php"));?>
+    <?php include(modification("forms/db_frmaprovconselhoexc.php"));?>
    </center>
   </td>
  </tr>

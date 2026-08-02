@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clrhlocaltrabcustoplano->rotulo->label("rh86_rhlocaltrab");
               <?=$Lrh86_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh86_sequencial",10,$Irh86_sequencial,true,"text",4,"","chave_rh86_sequencial");
 		       ?>
             </td>
@@ -64,7 +64,7 @@ $clrhlocaltrabcustoplano->rotulo->label("rh86_rhlocaltrab");
               <?=$Lrh86_rhlocaltrab?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh86_rhlocaltrab",10,$Irh86_rhlocaltrab,true,"text",4,"","chave_rh86_rhlocaltrab");
 		       ?>
             </td>
@@ -82,7 +82,7 @@ $clrhlocaltrabcustoplano->rotulo->label("rh86_rhlocaltrab");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlocaltrabcustoplano.php")==true){
@@ -122,12 +122,12 @@ $clrhlocaltrabcustoplano->rotulo->label("rh86_rhlocaltrab");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

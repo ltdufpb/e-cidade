@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ $clbenstipoaquisicao->rotulo->label();
          <?=@$Lt45_sequencial?>
       </td>
       <td> 
-        <?
+        <?php 
           db_input('t45_sequencial',10,$It45_sequencial,true,'text',3,"")
         ?>
       </td>
@@ -47,7 +47,7 @@ $clbenstipoaquisicao->rotulo->label();
          <?=@$Lt45_descricao?>
       </td>
       <td> 
-        <?
+        <?php 
           db_input('t45_descricao',50,$It45_descricao,true,'text',$db_opcao,"")
         ?>
       </td>
@@ -67,7 +67,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_benstipoaquisicao.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

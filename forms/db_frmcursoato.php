@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,34 +50,34 @@ if(isset($opcao) && $opcao=="alterar"){
 ?>
 <form name="form1" method="post" action="">
 <center>
-<?db_input('codcursoescola',15,@$Icodcursoescola,true,'hidden',3,"")?>
-<?db_input('ed215_i_codigo',15,$Ied215_i_codigo,true,'hidden',3,"")?>
+<?php db_input('codcursoescola',15,@$Icodcursoescola,true,'hidden',3,"")?>
+<?php db_input('ed215_i_codigo',15,$Ied215_i_codigo,true,'hidden',3,"")?>
 <table border="0" align="center" width="90%">
  <tr>
   <td nowrap title="<?=@$Ted71_i_escola?>">
-   <?db_ancora(@$Led71_i_escola,"",3);?>
+   <?php db_ancora(@$Led71_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed71_i_escola',15,$Ied71_i_escola,true,'text',3,"")?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?php db_input('ed71_i_escola',15,$Ied71_i_escola,true,'text',3,"")?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted71_i_curso?>">
-   <?db_ancora(@$Led71_i_curso,"",3);?>
+   <?php db_ancora(@$Led71_i_curso,"",3);?>
   </td>
   <td>
-   <?db_input('ed71_i_curso',15,$Ied71_i_curso,true,'text',3,"")?>
-   <?db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
+   <?php db_input('ed71_i_curso',15,$Ied71_i_curso,true,'text',3,"")?>
+   <?php db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted215_i_atolegal?>">
-   <?db_ancora(@$Led215_i_atolegal,"js_pesquisaed215_i_atolegal();",$db_opcao=="1"?1:3);?>
+   <?php db_ancora(@$Led215_i_atolegal,"js_pesquisaed215_i_atolegal();",$db_opcao=="1"?1:3);?>
   </td>
   <td>
-   <?db_input('ed215_i_atolegal',15,$Ied215_i_atolegal,true,'text',3,'')?>
-   <?db_input('ed05_c_finalidade',40,@$Ied05_c_finalidade,true,'text',3,'')?>
+   <?php db_input('ed215_i_atolegal',15,$Ied215_i_atolegal,true,'text',3,'')?>
+   <?php db_input('ed05_c_finalidade',40,@$Ied05_c_finalidade,true,'text',3,'')?>
   </td>
  </tr>
  <tbody id="etapas">
@@ -88,7 +88,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $campos_sql = "ed215_i_codigo,
                   ed215_i_atolegal,
                   ed05_c_numero,
@@ -258,7 +258,7 @@ function js_retornaPesquisaSerieIncluida(oAjax){
  $('db_opcao').disabled = false;
 }
 
-<?if(isset($opcao) && ($opcao=="alterar" || $opcao=="excluir")){?>
+<?php if(isset($opcao) && ($opcao=="alterar" || $opcao=="excluir")){?>
  js_PesquisaSerieIncluida();
-<?}?>
+<?php }?>
 </script>

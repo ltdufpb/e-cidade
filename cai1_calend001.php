@@ -155,7 +155,7 @@ if(isset($HTTP_POST_VARS["feriado"])) {
       } else
 	    location.href = location.href;
     </script>
-  <?
+  <?php 
   } else {
     db_query("insert into calend values('".date("Y-m-d",$data)."')");
 	db_redireciona();

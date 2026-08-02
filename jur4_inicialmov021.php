@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -122,7 +122,7 @@ function js_gerar(){
       <input name="voltar" type="button" value="Nova Pesquisa" onclick="js_volta()">
     </td>  
     <td valign="top" width="30%" valign="top" align="left">
-          <? 
+          <?php  
             $matriz=split("#",$chave);
        	    for($y=0;$y<sizeof($matriz);$y++){
        	      if($matriz[$y]!=""){
@@ -141,7 +141,7 @@ function js_gerar(){
   </tr>
   <tr height="90%"> 
     <td valign="top" align="center" colspan="2" >
-     <? 
+     <?php  
         db_lovrot($sql,15);
      ?>
     
@@ -149,7 +149,7 @@ function js_gerar(){
   </tr>
   </form>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -165,7 +165,7 @@ function js_oculta(){
   db_iframe.hide();
 }
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX=1;
 $func_iframe->posY=20;

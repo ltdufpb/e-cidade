@@ -84,9 +84,9 @@ if(!isset($_GET['calendario_selecionado'])) {
                 <b>Período:</b>
               </td>
               <td>
-                <?db_inputdata('dtInicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
+                <?php db_inputdata('dtInicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
                 <b>até</b>
-                <?db_inputdata('dtFim', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
+                <?php db_inputdata('dtFim', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
               </td>
                 <td>
                     <input type="button" name="btnFiltrar" id="btnFiltrar" value="filtrar"  style="cursor: pointer" />

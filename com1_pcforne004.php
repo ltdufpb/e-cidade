@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -79,7 +79,7 @@ if (isset($incluir)){
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 
-<?
+<?php 
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -87,7 +87,7 @@ db_app::load("widgets/windowAux.widget.js");
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <br />
     <center>
-	   <?
+	   <?php 
 	     include(modification("forms/db_frmpcforne.php"));
 	   ?>
     </center>
@@ -99,7 +99,7 @@ oAutoComplete.show();
 </script>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

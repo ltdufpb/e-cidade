@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: pessoal
 //CLASSE DA ENTIDADE tipoassefinanceirorra
 class cl_tipoassefinanceirorra { 

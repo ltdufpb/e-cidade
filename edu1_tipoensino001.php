@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -62,16 +62,16 @@ db_fieldsmemory($result,0);
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Modalidade de Ensino</b></legend>
-    <?include(modification("forms/db_frmtipoensino.php"));?>
+    <?php include(modification("forms/db_frmtipoensino.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  db_inicio_transacao();
  $cltipoensino->incluir($ed36_i_codigo);

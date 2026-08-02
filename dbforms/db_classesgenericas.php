@@ -94,7 +94,7 @@ class cl_iframe_seleciona
          $arquivo.=".php";
          umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php     '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -304,7 +304,7 @@ class cl_iframe_alterar_excluir_html_novo
         $arquivo.=".php";
         umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php     '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -523,7 +523,7 @@ class cl_iframe_alterar_excluir_html
         $arquivo.=".php";
         umask(74);
         $fd = fopen($arquivo, "w") or die('Erro ao abrir!');
-        fputs($fd, ' <?    '."\n");
+        fputs($fd, ' <?php     '."\n");
         fputs($fd, ' $textocabec="'.$this->textocabec.'";'."\n");
         fputs($fd, ' $textocorpo="'.$this->textocorpo.'";'."\n");
         fputs($fd, ' $fundocabec="'.$this->fundocabec.'";'."\n");
@@ -752,14 +752,14 @@ class cl_criaabas {
                 for(y=0; y < document.forms['formaba'].length; y++){
                   tab[x].style.border = '1px outset #cccccc';
                   tab[x].style.borderBottomColor = '#000000';
- <?
+ <?php 
     reset($this->identifica);
  for($w=0; $w<sizeof($this->identifica); $w++){
        $chave=key($this->identifica);
  ?>
               document.formaba.<?=$chave?>.style.color ='<?=(isset($this->cortexto[$chave])&&$this->cortexto[$chave]!=""?$this->cortexto[$chave]:"black")?>';
               document.formaba.<?=$chave?>.style.fontWeight = 'normal';
-<?
+<?php 
      next($this->identifica);
    }
 ?>
@@ -831,7 +831,7 @@ class cl_criaabas {
         <td align="left" valign="top">
         <table border="0" cellpadding="0" cellspacing="0" marginwidth="0">
         <tr>
- <?
+ <?php 
     reset($this->identifica);
     for($w=0; $w<sizeof($this->identifica); $w++){
        $chave     = key($this->identifica);
@@ -851,7 +851,7 @@ class cl_criaabas {
            </tr>
          </table>
        </td>
-<?     next($this->identifica);
+<?php      next($this->identifica);
     } ?>
 
       </tr>
@@ -862,7 +862,7 @@ class cl_criaabas {
       <form name="form_iframes" method="post" id="form_iframes" >
       <tr>
         <td height="340" align="center">
- <?
+ <?php 
     reset($this->identifica);
     for($w=0; $w<sizeof($this->identifica); $w++){
        $chave=key($this->identifica);
@@ -874,7 +874,7 @@ class cl_criaabas {
           <iframe  id='<?=$chave?>' name="iframe_<?=$chave?>" class="bordasi" <?=$src?> frameborder="0" marginwidth="0" leftmargin="0" topmargin="0"   height="<?=$this->iframe_height?>" scrolling="<?=$this->scrolling?>"  width="<?=$this->iframe_width?>" >
           </iframe>
        </div>
- <?    echo " <script>  mo_camada('$chave'); </script> ";
+ <?php     echo " <script>  mo_camada('$chave'); </script> ";
        next($this->identifica);
     } ?>
     </div>
@@ -882,7 +882,7 @@ class cl_criaabas {
       </tr>
       </form>
       </table>
- <?
+ <?php 
   reset($this->identifica);
   $chave=key($this->identifica);
   echo " <script> mo_camada('$chave'); </script> ";
@@ -1620,7 +1620,7 @@ class cl_db_estrut{
      <input name="mascara" style="background-color:#DEB887" readonly size='<?=$this->size?>' type="text"  value="<?=$mascara?>"    >
     </td>
   </tr>
-<?
+<?php 
    }
    if($this->input==false){
 ?>
@@ -1629,17 +1629,17 @@ class cl_db_estrut{
       <b> <?=@$$x?></b>
     </td>
     <td title="<?=$this->nome?>">
-<?
+<?php 
 
    }
 ?>
       <input title="<?=@$$title?>" name="<?=$this->nome?>" value="<?=@$$nome?>" maxlength='<?=$tamanho?>' size='<?=$this->size?>' type="text"   onKeyPress="return js_mascara01_<?=$nome?>(event,this.value);"  <?=$funcao?> <?=($this->db_opcao==22||$this->db_opcao==33||$this->db_opcao==3?"readonly style=\"background-color:#DEB887\" ":"")?> >
-<?
+<?php 
    if($this->input==false){
 ?>
     </td>
    </tr>
-<?
+<?php 
     }
 ?>
     <script>
@@ -1666,14 +1666,14 @@ class cl_db_estrut{
        while(obj.search(/\./)!='-1'){
    obj=obj.replace(/\./,'');
        }
-<?
+<?php 
    if($this->autocompletar==true){
 ?>
      tam=<?=strlen(str_replace(".", "", $mascara))?>;
      for(i=obj.length; i<tam; i++){
        obj=obj+"0";
      }
-<?
+<?php 
    }
 ?>
       //analise da estrutura passada
@@ -1701,7 +1701,7 @@ class cl_db_estrut{
        }
         document.<?=$this->nomeform?>.<?=$this->nome?>.
         value = obj;
-<?
+<?php 
     if($this->reload==true){
 ?>
       obj=document.createElement('input');
@@ -1710,7 +1710,7 @@ class cl_db_estrut{
       obj.setAttribute('value',"atualizar");
       document.<?=$this->nomeform?>.appendChild(obj);
       document.<?=$this->nomeform?>.submit();
-<?
+<?php 
     }
 ?>
     }
@@ -1720,14 +1720,14 @@ class cl_db_estrut{
        while(obj.search(/\./)!='-1'){
    obj=obj.replace(/\./,'');
        }
-<?
+<?php 
    if($this->autocompletar==true){
 ?>
      tam=<?=strlen(str_replace(".", "", $mascara))?>;
      for(i=obj.length; i<tam; i++){
        obj=obj+"0";
      }
-<?
+<?php 
    }
 ?>
       //analise da estrutura passada
@@ -1758,7 +1758,7 @@ class cl_db_estrut{
     }
     </script>
 
-<?
+<?php 
   }
 }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -318,7 +318,7 @@ if (!isset($ed52_i_ano)) {
     <td width="140">&nbsp;</td>
    </tr>
   </table>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <form name="form1" method="post" action="">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
@@ -330,13 +330,13 @@ if (!isset($ed52_i_ano)) {
          <tr>
           <td colspan="2">
            <b>Data do Censo:</b>
-            <?db_inputdata('data_censo',@$data_censo_dia,@$data_censo_mes,@$data_censo_ano,true,'text',1,
+            <?php db_inputdata('data_censo',@$data_censo_dia,@$data_censo_mes,@$data_censo_ano,true,'text',1,
                            " onchange=\"js_ano();\"","","","parent.js_ano();")?>
             <b>Ano do Censo:</b>
-            <?db_input('ed52_i_ano',4,@$Ied52_i_ano,true,'text',3,"");?>
+            <?php db_input('ed52_i_ano',4,@$Ied52_i_ano,true,'text',3,"");?>
           </td>
          </tr>
-         <?
+         <?php 
           $verif = false;
           if (isset($ed52_i_ano) && $ed52_i_ano != "" && !isset($gerararquivo)) {
         
@@ -365,15 +365,15 @@ if (!isset($ed52_i_ano)) {
          ?>
          <tr>
           <td nowrap title="<?=@$Ted52_d_inicio?>" colspan="2">
-         <?if ($verif == true) { 
+         <?php if ($verif == true) { 
              echo "<font color='red'><b>*Sem informações para o ano informado.<b></font><br>";
            }?>
            <fieldset ><legend><b>Calendário</b></legend>
             <?=@$Led52_d_inicio?>
-            <? db_inputdata('ed52_d_inicio',@$ed52_d_inicio_dia,@$ed52_d_inicio_mes,
+            <?php  db_inputdata('ed52_d_inicio',@$ed52_d_inicio_dia,@$ed52_d_inicio_mes,
                             @$ed52_d_inicio_ano,true,'text',$db_opcao,"");?>
             <?=@$Led52_d_fim?>
-            <? db_inputdata('ed52_d_fim',@$ed52_d_fim_dia,@$ed52_d_fim_mes,
+            <?php  db_inputdata('ed52_d_fim',@$ed52_d_fim_dia,@$ed52_d_fim_mes,
                             @$ed52_d_fim_ano,true,'text',$db_opcao,"");?>
            </fieldset>
           </td>
@@ -383,7 +383,7 @@ if (!isset($ed52_i_ano)) {
            <table>
             <tr>
              <td align="center">
-            <?if (isset($gerararquivo)) {?>
+            <?php if (isset($gerararquivo)) {?>
             
                 <script>
                  var sHors  = "00";
@@ -419,11 +419,11 @@ if (!isset($ed52_i_ano)) {
                  <span id="clock1"><?=date("H:i:s")?></span><script>setTimeout('getSecs()',1000);</script>
                 </b>
                 
-            <?}?>
+            <?php }?>
              </td>
              <td>
               <?=db_criatermometro_edu('termometro', 'Concluido...', 'blue', 1);?>
-             <?
+             <?php 
               if (isset($gerararquivo)) {
                 echo "<script>document.getElementById('termo').style.visibility = 'visible';</script>";
               }
@@ -445,7 +445,7 @@ if (!isset($ed52_i_ano)) {
     </tr>
    </table>
   </form>
-  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
+  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
     db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
   <script>
    function js_ano() {
@@ -500,7 +500,7 @@ if (!isset($ed52_i_ano)) {
   
    } 
   </script>
-  <?
+  <?php 
    if (isset($gerararquivo)) {
     
      $clescola     = new cl_escola;
@@ -3357,7 +3357,7 @@ if (!isset($ed52_i_ano)) {
    jan = window.open('edu4_exportarcenso002.php?arquivo_erro=<?=$logerro_txt?>','Erros Geração de Arquivo Censo escolar','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
    jan.moveTo(0,0);
   </script>
-  <?
+  <?php 
   unlink($arquivo_txt);
   db_redireciona("edu4_exportarcenso001.php");
  }else{
@@ -3369,7 +3369,7 @@ if (!isset($ed52_i_ano)) {
   }
   js_detectaarquivo("<?=$arquivo_txt?>");
   </script>
-  <?
+  <?php 
   unlink($logerro_txt);
   sleep(3);
   db_redireciona("edu4_exportarcenso001.php");

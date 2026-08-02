@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -139,7 +139,7 @@ if (isset($incluir) && $incluir == "Excluir"){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-	    <?
+	    <?php 
 	    
 	        //$rsResult = $cltiaf->sql_record($cltiaf->sql_query_file("$y90_codtiaf","*","",""));
 	        if ($sqlerro == false){
@@ -176,7 +176,7 @@ if (isset($incluir) && $incluir == "Excluir"){
 </body>
 </html>
 
-<?
+<?php 
 if(isset($incluir)){
   if($cltiaf->erro_status=="0"){
     $cltiaf->erro(true,false);

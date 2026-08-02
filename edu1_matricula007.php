@@ -48,11 +48,11 @@ if(isset($matricula)){
     parent.document.form1.alterar.click();
    }
   </script>
-  <?
+  <?php 
  }else{
   ?>
   <script>parent.document.form1.alterar.click();</script>
-  <?
+  <?php 
  }
 }
 if(isset($matricula_exc)){
@@ -63,7 +63,7 @@ if(isset($matricula_exc)){
    parent.document.form1.excluir.disabled = true;
    alert("Aluno selecionado foi progredido para esta turma.\nPara excluir sua matrícula, esta progressão deve ser cancelada.\nAcesse Procedimentos -> Progressão de Aluno -> Cancelar Progressão");
   </script>
-  <?
+  <?php 
   exit;
  }
  $sql_ver = "SELECT ed95_i_codigo

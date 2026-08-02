@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,22 +39,22 @@ $clrotulo->label("z01_nome");
        <?=@$Lcm03_i_codigo?>
     </td>
     <td colspan="3">
-<?
+<?php 
 db_input('cm03_i_codigo',10,$Icm03_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tcm03_i_proprietario?>">
-       <?
+       <?php 
        db_ancora(@$Lcm03_i_proprietario,"js_pesquisacm03_i_proprietario(true);",$db_opcao);
        ?>
     </td>
     <td colspan="3">
-<?
+<?php 
 db_input('cm03_i_proprietario',10,$Icm03_i_proprietario,true,'text',$db_opcao," onchange='js_pesquisacm03_i_proprietario(false);'")
 ?>
-       <?
+       <?php 
 db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -64,7 +64,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
        <?=@$Lcm03_c_termo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cm03_c_termo',10,$Icm03_c_termo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -72,7 +72,7 @@ db_input('cm03_c_termo',10,$Icm03_c_termo,true,'text',$db_opcao,"")
        <?=@$Lcm03_d_datatermo?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('cm03_d_datatermo',@$cm03_d_datatermo_dia,@$cm03_d_datatermo_mes,@$cm03_d_datatermo_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -82,7 +82,7 @@ db_inputdata('cm03_d_datatermo',@$cm03_d_datatermo_dia,@$cm03_d_datatermo_mes,@$
        <?=@$Lcm03_c_carta?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cm03_c_carta',10,$Icm03_c_carta,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -90,7 +90,7 @@ db_input('cm03_c_carta',10,$Icm03_c_carta,true,'text',$db_opcao,"")
        <?=@$Lcm03_d_datacarta?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('cm03_d_datacarta',@$cm03_d_datacarta_dia,@$cm03_d_datacarta_mes,@$cm03_d_datacarta_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -100,7 +100,7 @@ db_inputdata('cm03_d_datacarta',@$cm03_d_datacarta_dia,@$cm03_d_datacarta_mes,@$
        <?=@$Lcm03_d_aquisicao?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('cm03_d_aquisicao',@$cm03_d_aquisicao_dia,@$cm03_d_aquisicao_mes,@$cm03_d_aquisicao_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -108,7 +108,7 @@ db_inputdata('cm03_d_aquisicao',@$cm03_d_aquisicao_dia,@$cm03_d_aquisicao_mes,@$
        <?=@$Lcm03_c_base?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cm03_c_base',10,$Icm03_c_base,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -118,7 +118,7 @@ db_input('cm03_c_base',10,$Icm03_c_base,true,'text',$db_opcao,"")
        <?=@$Lcm03_c_estrutura?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cm03_c_estrutura',10,$Icm03_c_estrutura,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -126,7 +126,7 @@ db_input('cm03_c_estrutura',10,$Icm03_c_estrutura,true,'text',$db_opcao,"")
        <?=@$Lcm03_c_pronto?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cm03_c_pronto',10,$Icm03_c_pronto,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -136,7 +136,7 @@ db_input('cm03_c_pronto',10,$Icm03_c_pronto,true,'text',$db_opcao,"")
        <?=@$Lcm03_c_quadra?>
     </td>
     <td> 
-<?
+<?php 
 db_input('cm03_c_quadra',3,$Icm03_c_quadra,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -144,7 +144,7 @@ db_input('cm03_c_quadra',3,$Icm03_c_quadra,true,'text',$db_opcao,"")
        <?=@$Lcm03_i_lote?>
     </td>
     <td>
-<?
+<?php 
 db_input('cm03_i_lote',10,$Icm03_i_lote,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -154,16 +154,16 @@ db_input('cm03_i_lote',10,$Icm03_i_lote,true,'text',$db_opcao,"")
        <?=@$Lcm03_f_metragem1?>
     </td>
     <td colspan="3">
-     <?db_input('cm03_f_metragem1',10,$Icm03_f_metragem1,true,'text',$db_opcao,"")?>x
-     <?db_input('cm03_f_metragem2',10,$Icm03_f_metragem2,true,'text',$db_opcao,"")?>
+     <?php db_input('cm03_f_metragem1',10,$Icm03_f_metragem1,true,'text',$db_opcao,"")?>x
+     <?php db_input('cm03_f_metragem2',10,$Icm03_f_metragem2,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
   </center>
-<?if(@$antigo==""){?>
+<?php if(@$antigo==""){?>
 <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?}?>
+<?php }?>
 </form>
 <script>
 function js_pesquisacm03_i_sepultamento(mostra){
@@ -217,7 +217,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_jazigos.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

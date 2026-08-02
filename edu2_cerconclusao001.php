@@ -181,7 +181,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     document.form1.subgrupo.disabled = false;
   }
   document.form1.procurar.disabled = true;
- <?if (isset($turma)) {?>
+ <?php if (isset($turma)) {?>
      qtd = document.form1.alunosdiario.length;
      for (i = 0; i < qtd; i++) {
        document.form1.alunosdiario.options[0] = null;
@@ -190,7 +190,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
      for (i = 0; i < qtd; i++) {
        document.form1.alunos.options[0] = null;
      }
- <?}?>
+ <?php }?>
 }
 function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defaultItem) {
 
@@ -215,19 +215,19 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       if (itemArray[i][1] != null) {
         selectCtrl.options[j].value = itemArray[i][1];
       }
-    <?if (isset($turma)) {?>
+    <?php if (isset($turma)) {?>
         if (<?=trim($turma)?> == itemArray[i][1]) {
           indice = i;
         }
-    <?}?>
+    <?php }?>
       j++;
   }
-  <?if (isset($turma)) {?>
+  <?php if (isset($turma)) {?>
       selectCtrl.options[indice].selected = true;
       document.form1.procurar.disabled    = false;
-  <?} else {?>
+  <?php } else {?>
       selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php }?>
     document.form1.subgrupo.disabled = false;
   }
 }

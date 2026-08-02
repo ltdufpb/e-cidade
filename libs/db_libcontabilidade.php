@@ -3747,7 +3747,7 @@ class cl_estrutura_sistema
 
                 </td>
             </tr>
-            <?
+            <?php 
 
         }
     if ($this->input == false) {
@@ -3757,7 +3757,7 @@ class cl_estrutura_sistema
                 <?= @$$label ?>
             </td>
             <td>
-                <?
+                <?php 
 
                 }
                 ?>
@@ -3769,7 +3769,7 @@ class cl_estrutura_sistema
                     <?= $funcao ?> <?= ($this->db_opcao == 22 || $this->db_opcao == 33 || $this->db_opcao == 3 ? "readonly style=\"background-color:#DEB887\" "
                     : "") ?>
                 >
-                <?
+                <?php 
 
                 if ($this->botao == true) {
                     ?>
@@ -3785,17 +3785,17 @@ class cl_estrutura_sistema
                         ->db_opcao
                     == 3 ? "disabled "
                         : "") ?> >
-                    <?
+                    <?php 
 
                 }
                 ?>
-                <?
+                <?php 
 
                 if ($this->input == false) {
                 ?>
             </td>
         </tr>
-        <?
+        <?php 
 
     }
         ?>
@@ -3828,7 +3828,7 @@ class cl_estrutura_sistema
                 while (obj.search(/\./) != '-1') {
                     obj = obj.replace(/\./, '');
                 }
-                <?
+                <?php 
 
                 if ($this->autocompletar == true) {
                 ?>
@@ -3838,7 +3838,7 @@ class cl_estrutura_sistema
                         obj = obj + '0';
                     }
                 }
-                <?
+                <?php 
 
                 }
                 ?>
@@ -3867,7 +3867,7 @@ class cl_estrutura_sistema
                 document;
             .<?=$this->nomeform ?>.<?=$picture ?>.
                 value = obj;
-                <?
+                <?php 
 
                 if ($this->reload == true) {
                 ?>
@@ -3877,7 +3877,7 @@ class cl_estrutura_sistema
                 obj.setAttribute('value', 'atualizar');
                 document.<?=$this->nomeform ?>.appendChild(obj);
                 document.<?=$this->nomeform ?>.submit();
-                <?
+                <?php 
 
                 }
                 ?>
@@ -3890,7 +3890,7 @@ class cl_estrutura_sistema
                 while (obj.search(/\./) != '-1') {
                     obj = obj.replace(/\./, '');
                 }
-                <?
+                <?php 
 
                 if ($this->autocompletar == true) {
                 ?>
@@ -3898,7 +3898,7 @@ class cl_estrutura_sistema
                 for (i = obj.length; i < tam; i++) {
                     obj = obj + '0';
                 }
-                <?
+                <?php 
 
                 }
                 ?>
@@ -3930,7 +3930,7 @@ class cl_estrutura_sistema
                 value = obj;
             }
         </script>
-        <?
+        <?php 
 
         $this->nomeform = "form1";
         $this->reload = false;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ require_once(modification('libs/db_utils.php'));
                       <b>Ordem:</b>
                     </td>
                     <td align="left">
-                      <?$aX = array(1=>'EXAME',2=>'PROCEDIMENTO');
+                      <?php $aX = array(1=>'EXAME',2=>'PROCEDIMENTO');
                       db_select('tipo',$aX,true,1,"");?>
                     </td>
                   </tr>
@@ -74,7 +74,7 @@ require_once(modification('libs/db_utils.php'));
         </td>
       </tr>
     </table>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),
               db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),

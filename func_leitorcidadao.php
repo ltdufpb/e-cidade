@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -70,7 +70,7 @@ db_fieldsmemory($result_bib,  0);
                   <?=$Lbi10_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
+                  <?php db_input("bi10_codigo",6,$Ibi10_codigo,true,"text",4,"","chave_bi10_codigo");?>
                 </td>
               </tr>
               <tr>
@@ -78,7 +78,7 @@ db_fieldsmemory($result_bib,  0);
                   <b>Código do Cidadão:</b>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ov02_sequencial",6,@$Iov02_sequencial,true,"text",4,"","chave_ov02_sequencial");?>
+                  <?php db_input("ov02_sequencial",6,@$Iov02_sequencial,true,"text",4,"","chave_ov02_sequencial");?>
                 </td>
               </tr>
               <tr style="display:none">
@@ -86,7 +86,7 @@ db_fieldsmemory($result_bib,  0);
                   <b>Código Sequencial:</b>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ov02_seq", 6, @$Iov02_seq, true, "text", 4, "", "chave_ov02_seq");?>
+                  <?php db_input("ov02_seq", 6, @$Iov02_seq, true, "text", 4, "", "chave_ov02_seq");?>
                 </td>
               </tr>
               <tr>
@@ -94,7 +94,7 @@ db_fieldsmemory($result_bib,  0);
                   <?=$Lov02_nome?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input("ov02_nome",40,$Iov02_nome,true,"text",4,"","chave_ov02_nome");?>
+                  <?php db_input("ov02_nome",40,$Iov02_nome,true,"text",4,"","chave_ov02_nome");?>
                 </td>
               </tr>
               <tr>
@@ -123,7 +123,7 @@ db_fieldsmemory($result_bib,  0);
       </tr>
       <tr>
         <td align="center" valign="top">
-          <?
+          <?php 
             if (isset($chave_bi07_biblioteca) && (trim($chave_bi07_biblioteca)!="") ) {
              
                $restricao = " exists(select * from carteira

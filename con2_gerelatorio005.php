@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -55,7 +55,7 @@ include(modification("libs/db_usuariosonline.php"));
  $nomeok=ereg_replace(" ","",$nome);
  $arquivo = ($root."/"."gerador/".$nomeok."002.php");
  $fd = fopen($arquivo,"w");
- fputs($fd,'<? '."\n");
+ fputs($fd,'<?php  '."\n");
  fputs($fd,'  include(modification("fpdf151/pdfger.php"));'."\n");
  fputs($fd,'  // variaveis de cabeçalho;'."\n");
  fputs($fd,'  db_postmemory($HTTP_SERVER_VARS);'."\n");
@@ -419,7 +419,7 @@ include(modification("libs/db_usuariosonline.php"));
  $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
  $arquivo = ($root."/"."gerador/".$nomeok."001.php");
  $fd = fopen($arquivo,"w");
- fputs($fd,'<?'."\n");
+ fputs($fd,'<?php '."\n");
  fputs($fd,'require(modification("libs/db_stdlib.php"));'."\n");
  fputs($fd,'require(modification("libs/db_conecta.php"));'."\n");
  fputs($fd,'?>'."\n");

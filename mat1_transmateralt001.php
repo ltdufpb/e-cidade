@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -93,7 +93,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmtransmateralt.php"));
 	?>
     </center>
@@ -102,7 +102,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($sqlerro==true){
     $cltransmater->erro(true,false);

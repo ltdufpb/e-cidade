@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led249_i_codigo?>
   </td>
   <td>
-   <?db_input('ed249_i_codigo',20,$Ied249_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed249_i_codigo',20,$Ied249_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led249_c_motivo?>
   </td>
   <td>
-   <?db_input('ed249_c_motivo',50,$Ied249_c_motivo,true,'text',$db_opcao,"")?>
+   <?php db_input('ed249_c_motivo',50,$Ied249_c_motivo,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -71,7 +71,7 @@ value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Exclui
 <table width='100%'>
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("ed249_i_codigo"=>@$ed249_i_codigo,"ed249_c_motivo"=>@$ed249_c_motivo);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clmotivoexclusao->sql_query("","*","ed249_c_motivo","");

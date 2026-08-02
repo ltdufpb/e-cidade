@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -304,7 +304,7 @@ function js_ret_produto(cod,descr){
        <?=$Lo90_codimp?>
     </td>
     <td> 
-       <?
+       <?php 
 db_input('o90_codimp',4,$Io90_codimp,true,'text',3);
        ?>
     </td>
@@ -314,7 +314,7 @@ db_input('o90_codimp',4,$Io90_codimp,true,'text',3);
        <?=$Lo96_codperiodo?>
     </td>
     <td> 
-<?
+<?php 
   db_input('o90_codperiodo',2,$Io90_codperiodo,true,'text',3);
   $result=$clorcimpactoperiodo->sql_record($clorcimpactoperiodo->sql_query_file($o90_codperiodo,"substr(o96_descr,1,30)||' '||o96_anoini||'-'||o96_anofim as o96_descr"));
   db_fieldsmemory($result,0);
@@ -327,7 +327,7 @@ db_input('o96_descr',62,$Io96_descr,true,'text',3);
       <b> Estrutural</b>     
     </td>
     <td> 
-<?
+<?php 
 db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
 ?>
     </td>
@@ -336,12 +336,12 @@ db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
   <tr>
     <td><?=$Lo90_orgao?></td>
     <td>
-  <?
+  <?php 
   $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit")));
   db_selectrecord("o90_orgao",$result,true,2,"","","","0"," js_reload();");
   ?>
        
-       <?
+       <?php 
        db_ancora("Novo","js_nov_orgao();",$db_opcao);
        ?>
     </td>
@@ -349,7 +349,7 @@ db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
   <tr>
     <td><?=$Lo90_unidade?></td>
     <td>
-  <?
+  <?php 
   if(isset($o90_orgao)){
     $result = $clorcunidade->sql_record($clorcunidade->sql_query(null,null,null,"o41_unidade,o41_descr||' -'||o41_anousu as o41_descr","o41_unidade","o41_anousu=".db_getsession("DB_anousu")."  and o41_orgao=$o90_orgao " ));
     db_selectrecord("o90_unidade",$result,true,2,"","","",($clorcunidade->numrows>1?"0":""));
@@ -358,61 +358,61 @@ db_input('estrutural',20,0,true,'text',$db_opcao," onchange='js_troca();'")
   }
   ?>
        
-       <?
+       <?php 
        db_ancora("Novo","js_nov_unidade();",$db_opcao);
        ?>
     </td>
   	</tr>
   <tr>
     <td nowrap title="<?=@$To90_funcao?>">
-       <?
+       <?php 
        db_ancora(@$Lo90_funcao,"js_pesquisao90_funcao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o90_funcao',2,$Io90_funcao,true,'text',$db_opcao," onchange='js_pesquisao90_funcao(false);'")
 ?>
-       <?
+       <?php 
 db_input('o52_descr',62,$Io52_descr,true,'text',3,'')
        ?>
 
-       <?db_ancora("Novo","js_nov_funcao();",$db_opcao); ?>
+       <?php db_ancora("Novo","js_nov_funcao();",$db_opcao); ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To90_subfuncao?>">
-       <?
+       <?php 
        db_ancora(@$Lo90_subfuncao,"js_pesquisao90_subfuncao(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o90_subfuncao',3,$Io90_subfuncao,true,'text',$db_opcao," onchange='js_pesquisao90_subfuncao(false);'")
 ?>
-       <?
+       <?php 
 db_input('o53_descr',61,$Io53_descr,true,'text',3,'')
        ?>
        
-       <?
+       <?php 
        db_ancora("Novo","js_nov_subfuncao();",$db_opcao);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To90_programa?>">
-       <?
+       <?php 
        db_ancora(@$Lo90_programa,"js_pesquisao90_programa(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o90_programa',4,$Io90_programa,true,'text',$db_opcao," onchange='js_pesquisao90_programa(false);'")
 ?>
-       <?
+       <?php 
 db_input('o54_descr',60,$Io54_anousu,true,'text',3,'');
        ?>
-       <?db_ancora("Novo","js_nov_programa();",$db_opcao); ?>
+       <?php db_ancora("Novo","js_nov_programa();",$db_opcao); ?>
     </td>
   </tr>
   <tr>
@@ -420,26 +420,26 @@ db_input('o54_descr',60,$Io54_anousu,true,'text',3,'');
        <?=$Lo90_programatxt?>
     </td>
     <td> 
-       <?
+       <?php 
 	 db_textarea('o90_programatxt',3,95,$Io90_programatxt,true,'text',$db_opcao);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To90_acao?>">
-       <?
+       <?php 
        db_ancora(@$Lo90_acao,"js_pesquisao90_projativ(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o90_acao',4,$Io90_acao,true,'text',$db_opcao," onchange='js_pesquisao90_projativ(false);'")
 ?>
-       <?
+       <?php 
 db_input('o55_descr',60,$Io55_descr,true,'text',3,'')
        ?>
        
-       <?db_ancora("Novo","js_nov_acao();",$db_opcao); ?>
+       <?php db_ancora("Novo","js_nov_acao();",$db_opcao); ?>
     </td>
   </tr>
   <tr>
@@ -447,25 +447,25 @@ db_input('o55_descr',60,$Io55_descr,true,'text',3,'')
        <?=$Lo90_acaotxt?>
     </td>
     <td> 
-       <?
+       <?php 
 	 db_textarea('o90_acaotxt',3,95,$Io90_acaotxt,true,'text',$db_opcao);
        ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$To22_codproduto?>">
-       <?
+       <?php 
        db_ancora(@$Lo22_codproduto,"js_produto(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('o90_produto',6,$Io22_codproduto,true,'text',$db_opcao," onchange='js_produto(false);'")
 ?>
-       <?
+       <?php 
 db_input('o22_descrprod',58,$Io22_descrprod,true,'text',3,'')
        ?>
-       <?db_ancora("Novo","js_nov_produto();",$db_opcao); ?>
+       <?php db_ancora("Novo","js_nov_produto();",$db_opcao); ?>
     </td>
   </tr>
   <tr>
@@ -473,7 +473,7 @@ db_input('o22_descrprod',58,$Io22_descrprod,true,'text',3,'')
        <?=$Lo90_unimed?>
     </td>
     <td> 
-       <?
+       <?php 
 db_input('o90_unimed',4,$Io90_unimed,true,'text',$db_opcao);
        ?>
     </td>
@@ -493,7 +493,7 @@ db_input('o90_unimed',4,$Io90_unimed,true,'text',$db_opcao);
 
 function js_novo(){
          parent.document.formaba.orcimpactoval.disabled=true;
-  <?
+  <?php 
   if(isset($o90_codimp)){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chave_nova=$o90_codimp';";
   }else{
@@ -680,7 +680,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
     db_iframe_orcimpacto.hide();
-    <?
+    <?php 
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     ?>
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,14 +44,14 @@ if (isset($pc01_descrmater)&&$pc01_descrmater!=""){
        <?=@$Lpc01_descrmater?>
     </td>
     <td> 
-<?
+<?php 
  db_input('pc01_descrmater', 40, $Ipc01_descrmater, true, 'text', $op, '');
  db_input('m60_codmater', 40, "", true, 'hidden', 3, '');
 ?>
 
     </td>
   </tr>
-  <?if (isset($pc01_descrmater)&&$pc01_descrmater!=""){?>
+  <?php if (isset($pc01_descrmater)&&$pc01_descrmater!=""){?>
   <tr>
     <td colspan=2  align="center">
       <input name="atualizar" type="button"  id="db_opcao" value="Enviar" onclick="matcom.js_atualizar();" >
@@ -65,7 +65,7 @@ if (isset($pc01_descrmater)&&$pc01_descrmater!=""){
        </iframe> 
     </td>  
   </tr>
-  <?}else{
+  <?php }else{
   	?>
   	<tr>
     <td colspan=2  align="center">
@@ -73,7 +73,7 @@ if (isset($pc01_descrmater)&&$pc01_descrmater!=""){
     </td>
      
   </tr>
-  	<?
+  	<?php 
     }
     ?>
   </table>

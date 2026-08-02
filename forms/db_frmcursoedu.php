@@ -52,7 +52,7 @@ $clrotulo->label('ed10_c_descr');
       </tr>
       <tr>
         <td nowrap title="<?=$Ted29_i_ensino?>"  >
-          <label for="ed29_i_ensino"><?db_ancora($Led29_i_ensino, "js_pesquisaed29_i_ensino(true);", $db_opcao1);?></label>
+          <label for="ed29_i_ensino"><?php db_ancora($Led29_i_ensino, "js_pesquisaed29_i_ensino(true);", $db_opcao1);?></label>
         </td>
         <td colspan= '3'>
           <?php
@@ -156,7 +156,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 
   db_iframe_curso.hide();
-  <?
+  <?php 
     if ($db_opcao != 1) {
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }

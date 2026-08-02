@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -80,7 +80,7 @@ if (isset($j01_matric)) {
 <script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
-  <?
+  <?php 
   if(isset($j01_matric)){
     $alterando=true;
   }else{

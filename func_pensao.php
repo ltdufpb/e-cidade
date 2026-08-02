@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ if (isset($valor_testa_rescisao)) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -90,7 +90,7 @@ if(!isset($pesquisa_chave)){
       document.form2.submit();
     }
   </script>
-  <?
+  <?php 
 }
 ?>
 </head>
@@ -105,11 +105,11 @@ if(!isset($pesquisa_chave)){
               <strong>Ano / Mês:</strong>
             </td>
             <td nowrap>
-              <?
+              <?php 
               db_input('r52_anousu',4,$Ir52_anousu,true,'text',4,'',"chave_r52_anousu");
               ?>
               &nbsp;/&nbsp;
-              <?
+              <?php 
               db_input('r52_mesusu',2,$Ir52_mesusu,true,'text',4,'',"chave_r52_mesusu");
               ?>
             </td>
@@ -119,7 +119,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lr52_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r52_regist",10,$Ir52_regist,true,"text",4,"","chave_r52_regist");
 		       ?>
             </td>
@@ -129,7 +129,7 @@ if(!isset($pesquisa_chave)){
               <?=$Lr52_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("r52_numcgm",10,$Ir52_numcgm,true,"text",4,"","chave_r52_numcgm");
 		          ?>
             </td>
@@ -147,7 +147,7 @@ if(!isset($pesquisa_chave)){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -233,12 +233,12 @@ if(!isset($pesquisa_chave)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

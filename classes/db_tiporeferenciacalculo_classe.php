@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: laboratorio
 //CLASSE DA ENTIDADE tiporeferenciacalculo
 class cl_tiporeferenciacalculo { 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -132,9 +132,9 @@ background-color:#ccddcc;
    <td ></td>
   </tr>
   <tr> 
-    <td  align="left" nowrap title="<?=$Td40_codigo?>"><?db_ancora(@$Ld40_codigo,"js_pesquisa_lista(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Td40_codigo?>"><?php db_ancora(@$Ld40_codigo,"js_pesquisa_lista(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("d40_codigo",6,$Id40_codigo,true,"text",4,"onchange='js_pesquisa_lista(false);'");
+      <?php  db_input("d40_codigo",6,$Id40_codigo,true,"text",4,"onchange='js_pesquisa_lista(false);'");
          ?></td>
   </tr>
   <tr>
@@ -145,7 +145,7 @@ background-color:#ccddcc;
 </table>
 </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_pesquisa_lista(mostra){
   if(mostra==true){
@@ -172,7 +172,7 @@ function js_mostralista1(chave1){
   document.form1.incluir.disabled="";
 }
 </script>
-<?
+<?php 
 if (isset($incluir)){
     db_msgbox($erro_msg);
     if($sqlerro==true){

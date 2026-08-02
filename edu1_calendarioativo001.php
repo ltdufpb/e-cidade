@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -82,8 +82,8 @@ $clrotulo->label("ed52_c_passivo");
        <?=@$Led57_i_calendario?>
       </td>
       <td>
-       <?db_input('ed52_i_codigo',15,@$Ied52_i_codigo,true,'text',3,"")?>
-       <?db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,"")?>
+       <?php db_input('ed52_i_codigo',15,@$Ied52_i_codigo,true,'text',3,"")?>
+       <?php db_input('ed52_c_descr',20,@$Ied52_c_descr,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -91,7 +91,7 @@ $clrotulo->label("ed52_c_passivo");
        <b>Inativo:</b>
       </td>
       <td>
-       <?
+       <?php 
        $x = array('N'=>'NÃO','S'=>'SIM');
        db_select('ed52_c_passivo',$x,true,$db_opcao,"");
        ?>
@@ -113,7 +113,7 @@ $clrotulo->label("ed52_c_passivo");
 </form>
 </body>
 </html>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 var iModulo         = <?=db_getsession("DB_modulo")?>;
 var sFuncaoPesquisa = 'func_calendarioativo.php'
@@ -131,14 +131,14 @@ function js_pesquisar(){
 
 function js_preenchepesquisa(chave){
  db_iframe_calendario.hide();
- <?
+ <?php 
  if($db_opcao!=1){
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }
  ?>
 }
 </script>
-<?
+<?php 
 if(isset($alterar)){
  if($clcalendario->erro_status=="0"){
   $clcalendario->erro(true,false);

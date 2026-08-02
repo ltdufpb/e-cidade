@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: esocial
 //CLASSE DA ENTIDADE avaliacaoperguntadb_formulas
 class cl_avaliacaoperguntadb_formulas { 

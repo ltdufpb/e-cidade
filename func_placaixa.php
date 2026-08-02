@@ -54,7 +54,7 @@ $clplacaixa->rotulo->label("k80_data");
               <?=$Lk80_codpla ?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("k80_codpla", 6, $Ik80_codpla, true, "text", 4, "", "chave_k80_codpla");
               ?>
             </td>
@@ -72,7 +72,7 @@ $clplacaixa->rotulo->label("k80_data");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhere  = "     k80_instit = " . db_getsession("DB_instit");
       $sWhere .= " and to_char(k80_data,'YYYY') = '". db_getsession("DB_anousu") . "'";
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -60,7 +60,7 @@ $clfinalidadepagamentofundeb = new cl_finalidadepagamentofundeb;
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if (!isset($pesquisa_chave) && !isset($pesquisa_codigo)) {
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_finalidadepagamentofundeb.php")==true){
@@ -107,12 +107,12 @@ $clfinalidadepagamentofundeb = new cl_finalidadepagamentofundeb;
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

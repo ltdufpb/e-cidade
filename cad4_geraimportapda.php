@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -292,7 +292,7 @@ $clmobimportacao->rotulo->label();
        <?=@$Lj95_pda?>
     </td>
     <td> 
-    <?
+    <?php 
     $x = array('1'=>'Pda 1','2'=>'Pda 2','3'=>'Pda 3','4'=>'Pda 4','5'=>'Pda 5','6'=>'Pda 6','7'=>'Pda 7','8'=>'Pda 8','9'=>'Pda 9','10'=>'pda 10','11'=>'Pda 11','12'=>'Pda 12','13'=>'Pda 13','14'=>'Pda 14','15'=>'Pda 15');
     db_select('j95_pda',$x,true,$db_opcao,"");
     ?>
@@ -314,7 +314,7 @@ $clmobimportacao->rotulo->label();
 <tr>
 <td colspan=2 align=center><input name='importa' value='Importar' type='submit'></td>
 </tr>
-<?
+<?php 
 if(isset($importa)){
   if(isset($codimp)){
     echo "</tr>
@@ -333,12 +333,12 @@ if(isset($importa)){
 </table>
 </form>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($erro)){
   db_msgbox($msg);
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -297,7 +297,7 @@ function js_atualiza_variavel_retorno(objeto){
     </td>
   </tr>
 
-  <?
+  <?php 
   $clorcdotacao = new cl_orcdotacao;  
   $clorcelemento = new cl_orcelemento;  
   ?>
@@ -309,7 +309,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formorgao" action="post">
   <div id='div_orgao' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 width="100%">
-     <?
+     <?php 
      // echo($clorcdotacao->sql_query(null,null," distinct o58_orgao,orcorgao.o40_descr","o58_orgao"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o58_orgao,orcorgao.o40_descr","o58_orgao"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      for($i=0;$i<$clorcdotacao->numrows;$i++){
@@ -320,7 +320,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td align='right'> <?=$o58_orgao?> </td>
        <td align='left' ><strong><?=$o40_descr?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -329,7 +329,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formunidade" action="post">
   <div id='div_unidade' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o58_orgao,orcorgao.o40_descr,o58_unidade,orcunidade.o41_descr","o58_orgao,o58_unidade"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      $orgaoant = "";
      for($i=0;$i<$clorcdotacao->numrows;$i++){
@@ -354,7 +354,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$o58_unidade?> </td>
        <td align='left' ><strong><?=$o41_descr?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -363,7 +363,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formfuncao" action="post">
   <div id='div_funcao' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o58_funcao,orcfuncao.o52_descr","o58_funcao"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      for($i=0;$i<$clorcdotacao->numrows;$i++){
        db_fieldsmemory($result,$i);
@@ -373,7 +373,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$o58_funcao?> </td>
        <td align='left' ><strong><?=$o52_descr?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -382,7 +382,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formsubfuncao" action="post">
   <div id='div_subfuncao' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o58_subfuncao,orcsubfuncao.o53_descr","o58_subfuncao"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      for($i=0;$i<$clorcdotacao->numrows;$i++){
        db_fieldsmemory($result,$i);
@@ -392,7 +392,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$o58_subfuncao?> </td>
        <td align='left' ><strong><?=$o53_descr?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -401,7 +401,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formprograma" action="post">
   <div id='div_programa' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o58_programa,orcprograma.o54_descr","o58_programa"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      for($i=0;$i<$clorcdotacao->numrows;$i++){
        db_fieldsmemory($result,$i);
@@ -411,7 +411,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$o58_programa?> </td>
        <td align='left' ><strong><?=$o54_descr?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -420,7 +420,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formprojativ" action="post">
   <div id='div_projativ' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o58_projativ,orcprojativ.o55_descr","o58_projativ"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      for($i=0;$i<$clorcdotacao->numrows;$i++){
        db_fieldsmemory($result,$i);
@@ -430,7 +430,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$o58_projativ?> </td>
        <td align='left' ><strong><?=$o55_descr?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -439,7 +439,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formele" action="post">
   <div id='div_elemento' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $ind = 0;
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o56_codele,o56_elemento,orcelemento.o56_descr","o56_elemento"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      $tipodesp = array() ;
@@ -464,7 +464,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td > <input type='checkbox' name='<?=$o56_elemento?>_elemento_<?=$o56_codele?>' value='<?=$o56_codele?>'></td>
        <td  align='right'> <?=$o56_elemento?> </td>
        <td align='left' ><strong><?=$o56_descr?></strong></td>
-       <?
+       <?php 
        if($ind<sizeof($tipodesp)){
          echo "<td align='left' ><input name='' type='checkbox' onclick='js_despesas(\"".substr(key($tipodesp),0,3)."\",this.checked)' value='0' >".$tipodesp[key($tipodesp)]."</td>";
 	 $ind ++;
@@ -474,7 +474,7 @@ function js_atualiza_variavel_retorno(objeto){
        ?>
 
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -483,7 +483,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formrecurso" action="post">
   <div id='div_recurso' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $dbwhere  = " o15_datalimite is null or o15_datalimite > '".date('Y-m-d',db_getsession('DB_datausu'))."'";
      $sQuery   = " o58_anousu = ".db_getsession("DB_anousu")." and {$sel_orgaos} and {$dbwhere} ";
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o58_codigo,orctiporec.o15_descr","o58_codigo",$sQuery));
@@ -496,7 +496,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$o58_codigo?> </td>
        <td align='left' ><strong><?=$o15_descr?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      ?>
    </table>
@@ -506,7 +506,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formdepart" action="post">
   <div id='div_depart' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      //echo ($clorcdotacao->sql_query_autoriza(null,null," distinct coddepto,descrdepto","coddepto"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query_autoriza(null,null," distinct db_depart.coddepto,db_depart.descrdepto","db_depart.coddepto"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      for($i=0;$i<$clorcdotacao->numrows;$i++){
@@ -517,7 +517,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$coddepto?> </td>
        <td align='left' ><strong><?=$descrdepto?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      //echo $clorcdotacao->numrows;
      ?>
@@ -528,7 +528,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="formusuario" action="post">
   <div id='div_usuario' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 >
-    <?
+    <?php 
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query_autoriza(null,null," distinct db_usuarios.id_usuario,db_usuarios.nome","db_usuarios.id_usuario"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
      for($i=0;$i<$clorcdotacao->numrows;$i++){
        db_fieldsmemory($result,$i);
@@ -538,7 +538,7 @@ function js_atualiza_variavel_retorno(objeto){
        <td  align='right'> <?=$id_usuario?> </td>
        <td align='left' ><strong><?=$nome?></strong></td>
        <tr>
-       <?
+       <?php 
      }
      // echo $clorcdotacao->numrows;
      ?>
@@ -549,7 +549,7 @@ function js_atualiza_variavel_retorno(objeto){
   <form name="forminstit" action="post">
   <div id='div_instit' style='position:absolute; visibility:hidden' >
    <table border=1 cellspacing=0 align="center">
-    <?
+    <?php 
      $result = $clorcdotacao->sql_record("select codigo, nomeinst,prefeitura from db_config order by codigo"); 
      $todas=false;
      for($i=0;$i<$clorcdotacao->numrows;$i++){
@@ -564,14 +564,14 @@ function js_atualiza_variavel_retorno(objeto){
 	 ?>
 	 <tr>
 	 <td><input type='checkbox' name='instit_<?=$codigo ?>' value='<?=$codigo?>' 
-	       <? if (in_array($codigo,$array_instit))
+	       <?php  if (in_array($codigo,$array_instit))
 		    echo "checked"
 	       ?>
 	       onchange="js_atualiza_instit(); ";></td>
 	 <td align='right'><?=$codigo?> </td>
 	 <td align='left' ><strong><?=$nomeinst ?></strong></td>
 	 <tr>
-	 <?
+	 <?php 
        }
      }
      ?>
@@ -588,7 +588,7 @@ function js_atualiza_variavel_retorno(objeto){
   </tr>
   </table>
  
-  <?
+  <?php 
 ?>
 </table>
 </body>

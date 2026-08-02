@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -79,7 +79,7 @@ if (isset($excluir)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Exclusão de Procedimento de Avaliação</b></legend>
-        <?include(modification("forms/db_frmprocedimento.php"));?>
+        <?php include(modification("forms/db_frmprocedimento.php"));?>
       </fieldset>
      </center>
     </td>
@@ -90,7 +90,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1", "excluir", true, 1, "excluir", true);
 </script>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($oDaoProcedimento->erro_status == "0") {

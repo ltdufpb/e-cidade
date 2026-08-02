@@ -59,7 +59,7 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
               <?=$Lt75_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		           db_input("t75_sequencial",10,$It75_sequencial,true,"text",4,"","chave_t75_sequencial");
 		          ?>
             </td>
@@ -70,7 +70,7 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
               <?=$Lt75_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("t75_sequencial",10,$It75_sequencial,true,"text",4,"","chave_t75_sequencial");
 		          ?>
             </td>
@@ -90,7 +90,7 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
              
@@ -152,12 +152,12 @@ $sWhere  = " t75_db_depart = {$iDepart} and  t75_situacao = 1 ";
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -63,7 +63,7 @@ $clrotulo->label("e62_descr");
 </script>
 
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -71,7 +71,7 @@ $clrotulo->label("e62_descr");
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?$cor="999999"?>
+<?php $cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -90,7 +90,7 @@ $clrotulo->label("e62_descr");
 							<b>Itens</b>
 						</legend>
 						<table style='border:2px inset white' width='100%' cellspacing='0'>   
-							 <?
+							 <?php 
 								
 								if (isset ($m51_codordem) && $m51_codordem != "") {
 
@@ -259,7 +259,7 @@ $clrotulo->label("e62_descr");
   	</tr>
  		<tr>
     	<td nowrap title="<?=@$Tm51_valortotal?>"><?=$Lm51_valortotal?>&nbsp;&nbsp;
-				<?  
+				<?php   
     	  	db_input("m51_valortotal",10,"",true,"text",3); 
 				?>
 			</td>

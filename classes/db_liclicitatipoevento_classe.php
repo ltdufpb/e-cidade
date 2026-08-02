@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: licitacao
 //CLASSE DA ENTIDADE liclicitatipoevento
 class cl_liclicitatipoevento { 

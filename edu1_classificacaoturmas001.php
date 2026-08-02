@@ -48,7 +48,7 @@ $oGet = db_utils::postMemory($_GET);
 	<title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta http-equiv="Expires" CONTENT="0">
-	<?
+	<?php 
 	  db_app::load("scripts.js");
 	  db_app::load("strings.js");
 	  db_app::load("prototype.js");
@@ -59,13 +59,13 @@ $oGet = db_utils::postMemory($_GET);
 	</style>
 </head>
 <body id="corpo" bgcolor="#cccccc" style="margin-top: 25px" onload="">
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <center>
   <div id='ctnClassificacaoContainer' ></div>
 </center>
 </body>
 </html>
-<?
+<?php 
   if (!isset($oGet->lDesabilitaMenu)) {
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   }

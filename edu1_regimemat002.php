@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -78,25 +78,25 @@ if(isset($alterar)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Regime de Matrícula</b></legend>
-    <?include(modification("forms/db_frmregimemat.php"));?>
+    <?php include(modification("forms/db_frmregimemat.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?if(isset($ed218_c_divisao) && $ed218_c_divisao=="S"){?>
+<?php if(isset($ed218_c_divisao) && $ed218_c_divisao=="S"){?>
 <script>
  iframe_divisoes.location.href = "edu1_regimematdiv001.php?ed219_i_regimemat=<?=$ed218_i_codigo?>&ed218_c_nome=<?=$ed218_c_nome?>";
 </script>
-<?}?>
-<?
+<?php }?>
+<?php 
 if(isset($alterar)){
  if($clregimemat->erro_status=="0"){
   $clregimemat->erro(true,false);

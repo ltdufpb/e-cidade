@@ -81,7 +81,7 @@ try {
           </tr>
           <tr>
             <td nowrap title="<?= @$Tla22_i_codigo ?>">
-                <? db_ancora("<stronger><b>Requisição</b></stronger>", "js_pesquisala22_i_codigo(true);", $db_opcao); ?>
+                <?php  db_ancora("<stronger><b>Requisição</b></stronger>", "js_pesquisala22_i_codigo(true);", $db_opcao); ?>
             </td>
             <td>
                 <?php
@@ -124,7 +124,7 @@ try {
                       <?= @$Lla32_c_hora ?>
                   </td>
                   <td>
-                      <? db_input('la32_c_hora', 5, $Ila32_c_hora, true, 'text', $db_opcao); ?>
+                      <?php  db_input('la32_c_hora', 5, $Ila32_c_hora, true, 'text', $db_opcao); ?>
                   </td>
                 </tr>
                 <tr>
@@ -145,7 +145,7 @@ try {
                       <?= @$Lla32_d_entrega ?>
                   </td>
                   <td nowrap>
-                      <? db_inputdata(
+                      <?php  db_inputdata(
                         'la32_d_entrega',
                         @$la32_d_entrega_dia,
                         @$la32_d_entrega_mes,
@@ -161,7 +161,7 @@ try {
                       <?= @$Lla32_c_horaentrega ?>
                   </td>
                   <td>
-                      <? db_input('la32_c_horaentrega', 5, $Ila32_c_horaentrega, true, 'text', $db_opcao); ?>
+                      <?php  db_input('la32_c_horaentrega', 5, $Ila32_c_horaentrega, true, 'text', $db_opcao); ?>
                   </td>
                 </tr>
                 <tr>
@@ -260,7 +260,7 @@ try {
 
   F = document.form1;
   js_init();
-  <?if (isset($la22_i_codigo)) {
+  <?php if (isset($la22_i_codigo)) {
       echo "js_carregaexames($la22_i_codigo);";
   }
   ?>
@@ -505,7 +505,7 @@ try {
 
   function js_preenchepesquisa(chave) {
     db_iframe_lab_coletaitem.hide();
-      <?
+      <?php 
       if ($db_opcao != 1) {
           echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }

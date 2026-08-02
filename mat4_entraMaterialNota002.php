@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -834,7 +834,7 @@ if (isset($confirma)){
 <tr> 
 <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
 <center>
-<?
+<?php 
 include(modification("forms/db_frmentraordcomnota.php"));
 ?>
 </center>
@@ -842,10 +842,10 @@ include(modification("forms/db_frmentraordcomnota.php"));
 </tr>
 </table>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
-<?
+<?php 
 if (isset($confirma)){
   if (strlen($erro_msg)>0){
     db_msgbox($erro_msg);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -60,7 +60,7 @@ db_postmemory($HTTP_POST_VARS);
   }
 </script>
 
-<?
+<?php 
 
 if (($data1 !="--") && ($data2!="--")){
 	$where = " and q21_dataop>='$data1' and q21_dataop<='$data2' ";
@@ -114,10 +114,10 @@ $linhasprestador=pg_num_rows($resultprestador);
 		db_lovrot($sqlprestador,15,"","",'return false;',"","NoMe", $repassa,false, $total);
 		?><input name="imprime" type="button" value="Imprimir" onclick="js_emiterelatorio();">
         </center>
-        <?
+        <?php 
 	}else{
 		echo "<center>";
-		echo "<br><br><br><b><font color = red >NÃO TEM RETENÇÃO COMO PRESTADOR PARA ESTE PERÍODO</font><?b>";
+		echo "<br><br><br><b><font color = red >NÃO TEM RETENÇÃO COMO PRESTADOR PARA ESTE PERÍODO</font><?php b>";
         echo "</center>";
 
 	}

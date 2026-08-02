@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ $num = pg_numrows($result);
 </head>
 <body>
 
-<?
+<?php 
   if ($num > 0) { 
     db_fieldsmemory($result,0,true);
 ?>
@@ -76,7 +76,7 @@ $num = pg_numrows($result);
     <td width="165" nowrap bgcolor="#FFFFFF"> <font color="#666666"><strong>&nbsp;<?=$y30_numbloco?>
       </strong></font></td>
   </tr>
-  <?
+  <?php 
   
 //  die($clfiscal->sql_query_busca($codfiscal," dl_noti = $codfiscal and y30_instit = ".db_getsession('DB_instit')));
   $result_busca= $clfiscal->sql_record($clfiscal->sql_query_busca($codfiscal," dl_noti = $codfiscal and y30_instit = ".db_getsession('DB_instit') ) );
@@ -98,7 +98,7 @@ $num = pg_numrows($result);
   <tr> 
     <td align="right" nowrap bgcolor="#CCCCCC">&nbsp;        &nbsp;</td>
     <td align="left" nowrap bgcolor="#FFFFFF">&nbsp;<font color="#666666"><strong> 
-      <?
+      <?php 
            
       ?>
       &nbsp; </strong></font></td>
@@ -144,7 +144,7 @@ $num = pg_numrows($result);
   <tr> 
      <td align="center" nowrap bgcolor="#CCCCCC" colspan=4 ><b>Endereço Registrado:&nbsp;</b></td>
   </tr>
-  <?
+  <?php 
   $result_local=$clfiscalocal->sql_record($clfiscalocal->sql_query($codfiscal));
   if ($clfiscalocal->numrows>0){
     db_fieldsmemory($result_local,0,true);
@@ -173,7 +173,7 @@ $num = pg_numrows($result);
   <tr> 
     <td align="center" nowrap bgcolor="#CCCCCC" colspan=4 ><b>Endereço Localizado:&nbsp;</b></td>
   </tr>
-  <?
+  <?php 
   $result_exec=$clfiscexec->sql_record($clfiscexec->sql_query($codfiscal));
   if ($clfiscexec->numrows>0){
     db_fieldsmemory($result_exec,0,true);
@@ -223,14 +223,14 @@ $num = pg_numrows($result);
                 <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="fis3_consnotific002_detalhes.php?fiscal=<?=$codfiscal?>&solicitacao=Calculo" target="iframeDetalhes">&nbsp;C&aacute;lculo&nbsp;</a></td>
               </tr>
               -->
-              <?
+              <?php 
               $result_baixa=$clfiscalbaixa->sql_record($clfiscalbaixa->sql_query_file(null,"*",null,"y47_codnoti = $codfiscal"));
               if ($clfiscalbaixa->numrows>0){
               ?>
               <tr> 
                 <td align="center" nowrap bgcolor="#CCCCCC" style="cursor:hand"><a href="fis3_consnotific002_detalhes.php?fiscal=<?=$codfiscal?>&solicitacao=Baixa" target="iframeDetalhes">&nbsp;Fiscais&nbsp;</a></td>
               </tr>
-              <?
+              <?php 
               }
               ?>
             </table>
@@ -241,7 +241,7 @@ $num = pg_numrows($result);
   </tr>
 </table>
 
-<?
+<?php 
   } else {  // caso nao tenha retornado nenhum registro é mostrado uma tabela informando que a matricula nao foi localizada
 ?>
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -250,11 +250,11 @@ $num = pg_numrows($result);
   </tr>
   <tr> 
     <td align="center"><strong>Pesquisa da Notificação n&deg;
-      &nbsp;<?//=$numeroDaInscricao?>&nbsp;
+      &nbsp;<?php //=$numeroDaInscricao?>&nbsp;
       n&atilde;o retornou nenhum registro.</strong></td>
   </tr>
 </table>
-<? 
+<?php  
   } // fim da verificacao
 ?>
 </body>

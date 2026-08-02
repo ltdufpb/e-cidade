@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ $quant = 30;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <br>
 <center>
 <fieldset align="center" style="width:95%"><legend><b>Relatório de Ítens Mais Emprestados</b></legend>
@@ -69,7 +69,7 @@ $quant = 30;
     </tr>
     <tr >
      <td align="left" nowrap title="Tipo de Ítem" >
-      <?
+      <?php 
       $result_tipo = $cltipo->sql_record($cltipo->sql_query());
       db_selectrecord("tipo",$result_tipo,true,2,"","","",1,"",1);
       ?><br><br>
@@ -78,15 +78,15 @@ $quant = 30;
     <tr>
      <td>
       <strong>Selecione o período:</strong><br>
-      <?db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
+      <?php db_inputdata('data1',@$dia1,@$mes1,@$ano1,true,'text',1,"")?>
       até
-      <?db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?><br><br>
+      <?php db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"")?><br><br>
      </td>
     </tr>
     <tr>
      <td>
       <strong>Informe a quantidade de registros:</strong><br>
-      <?db_input('quant',5,@$quant,true,'text',1,"")?><br><br>
+      <?php db_input('quant',5,@$quant,true,'text',1,"")?><br><br>
      </td>
     </tr>
     <tr>
@@ -101,7 +101,7 @@ $quant = 30;
 </table>
 </fieldset>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

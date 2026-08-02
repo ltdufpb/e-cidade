@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -68,7 +68,7 @@ if ($oImpDown->getNumArquivos() == 1 || isset($iIndex)) {
       </head>
       <body bgcolor="#CCCCCC">
         <table>
-          <?
+          <?php 
             $iTam = $oImpDown->getNumArquivos();
             for ($iInd = 0; $iInd < $iTam; $iInd++) {
 
@@ -81,6 +81,6 @@ if ($oImpDown->getNumArquivos() == 1 || isset($iIndex)) {
         </table>
       </body>
     </html>
-  <?
+  <?php 
 }
 ?>

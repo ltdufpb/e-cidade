@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -111,7 +111,7 @@ function js_emite(){
 </tr>
   <tr>
     <td colspan=2>
-    <?
+    <?php 
            $cliframe_seleciona->campos  = "pc10_numero,pc10_data,pc10_resumo,pc10_depto,descrdepto,pc10_instit,nomeinst,pc10_login,nome";
            $cliframe_seleciona->legenda="Solicitações";
            $cliframe_seleciona->sql=$clsolicita->sql_query_reserv(null,"distinct pc10_numero,pc10_data,pc10_resumo,pc10_depto,descrdepto,pc10_instit,nomeinst,pc10_login,nome",null,"EXTRACT (YEAR FROM pc10_data)= ".db_getsession("DB_anousu")."  and o82_codres is not null and pc81_solicitem is null and (current_date-pc10_data)>=30 and pc10_depto in (select coddepto from db_depusu where id_usuario = ".db_getsession("DB_id_usuario").") ");
@@ -136,14 +136,14 @@ function js_emite(){
   </table>
   </form>
 </center>
-<? 
+<?php  
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
 <script>
 </script>
-<?
+<?php 
 if (isset($processar)){
   if ($sqlerro==true){    
     db_msgbox($erro_msg);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -64,22 +64,22 @@ if(isset($opcao)){
       <?=@$Lt61_codcom?>
     </td>
     <td> 
-<?
+<?php 
 db_input('t61_codcom',8,$It61_codcom,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tt61_id_usuario?>">
-       <?
+       <?php 
        db_ancora(@$Lt61_id_usuario,"js_pesquisat61_id_usuario(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('t61_id_usuario',8,$It61_id_usuario,true,'text',$db_opcao," onchange='js_pesquisat61_id_usuario(false);'");
 ?>
-<?
+<?php 
 db_input('nome',40,$Inome,true,'text',3,"");
 ?>
 
@@ -95,7 +95,7 @@ db_input('nome',40,$Inome,true,'text',3,"");
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php 
 	 $chavepri= array("t61_codcom"=>@$t61_codcom,"t61_id_usuario"=>@$t61_id_usuario);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->opcoes  = 3;

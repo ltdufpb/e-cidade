@@ -136,7 +136,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alter
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,
                 widgets/dbtextField.widget.js, dbmessageBoard.widget.js,dbautocomplete.widget.js,
                 dbcomboBox.widget.js, datagrid.widget.js, prototype.maskedinput.js, 

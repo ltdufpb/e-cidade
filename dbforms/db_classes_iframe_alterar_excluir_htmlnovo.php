@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -73,7 +73,7 @@ function js_alterar(a,b,c,d){
 <form name="form1" method="post" action="">
   <table  border="1" cellpadding="3" cellspacing="0" id="tab">
     <tr bgcolor="#BDC6BD">
-    <?
+    <?php 
       $colunas= split("#",$quais_colunas);
       for($i=0; $i<sizeof($colunas); $i++){
         $coluna="x_".$colunas[$i];
@@ -82,7 +82,7 @@ function js_alterar(a,b,c,d){
       echo "<th class='cabec'  title='Alterar ou Excluir'><b><small>Opções</small></b></td>";
     ?>
     </tr>
-    <?
+    <?php 
      if(isset($sql) && $sql!=""){
        $coluna="";
        $virgula="";
@@ -130,7 +130,7 @@ function js_alterar(a,b,c,d){
 </center>
 </body>
 </html>
-<?
+<?php 
   $retorno = @unlink(base64_decode($arquivo));
   if($retorno==false){
        echo "<blink>Carregando...</blink>";

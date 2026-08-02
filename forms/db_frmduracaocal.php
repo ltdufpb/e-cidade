@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led55_i_codigo?>
   </td>
   <td>
-   <?db_input('ed55_i_codigo',10,$Ied55_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed55_i_codigo',10,$Ied55_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led55_c_descr?>
   </td>
   <td>
-   <?db_input('ed55_c_descr',20,$Ied55_c_descr,true,'text',$db_opcao,"")?>
+   <?php db_input('ed55_c_descr',20,$Ied55_c_descr,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -69,7 +69,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led55_i_numperiodos?>
   </td>
   <td>
-   <?db_input('ed55_i_numperiodos',10,$Ied55_i_numperiodos,true,'text',$db_opcao,"")?>
+   <?php db_input('ed55_i_numperiodos',10,$Ied55_i_numperiodos,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -77,7 +77,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led55_i_diasprox?>
   </td>
   <td>
-   <?db_input('ed55_i_diasprox',10,$Ied55_i_diasprox,true,'text',$db_opcao,"")?>
+   <?php db_input('ed55_i_diasprox',10,$Ied55_i_diasprox,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -86,7 +86,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width= "100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php 
    $chavepri= array("ed55_i_codigo"=>@$ed55_i_codigo,"ed55_c_descr"=>@$ed55_c_descr,"ed55_i_numperiodos"=>@$ed55_i_numperiodos,"ed55_i_diasprox"=>@$ed55_i_diasprox);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clduracaocal->sql_query($ed55_i_codigo,"*","ed55_i_codigo");

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -83,7 +83,7 @@ body {
 <body>
 <table width="100%"  border="0">
 
-<?
+<?php 
 $aChaveProntuarios = explode(",",$chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
 for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
@@ -192,25 +192,25 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
     </table>
     <br><br><br><br><br><br>
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="style19" >
-      <?for($iY=0;$iY<10;$iY++){?>
+      <?php for($iY=0;$iY<10;$iY++){?>
       <tr>
         <td width="100%" height="20" nowrap="nowrap">
-          <?if(isset($objRetorno->prontproced[$iY]->sd29_t_tratamento)){
+          <?php if(isset($objRetorno->prontproced[$iY]->sd29_t_tratamento)){
              echo $objRetorno->prontproced[$iY]->sd29_t_tratamento; 
             }?>
         </td>
       </tr>
-      <?}?>
+      <?php }?>
     </table>
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="style19" >
       <tr>
         <td width="75%" height="30" nowrap="nowrap">
-          <?if(isset($objRetorno->prontproced[0]->sd70_c_nome)){
+          <?php if(isset($objRetorno->prontproced[0]->sd70_c_nome)){
               echo $objRetorno->prontproced[0]->sd70_c_nome;
             }?>
         </td>
         <td width="25%" height="30" nowrap="nowrap">
-          <?if(isset($objRetorno->prontproced[0]->sd70_c_cid)){
+          <?php if(isset($objRetorno->prontproced[0]->sd70_c_cid)){
               echo $objRetorno->prontproced[0]->sd70_c_cid;
             }?>
         </td>
@@ -219,12 +219,12 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="style19" >
       <tr>
         <td width="70%" height="60" nowrap="nowrap">
-          <?if($objRetorno->prontproced[0]->sd63_c_nome){
+          <?php if($objRetorno->prontproced[0]->sd63_c_nome){
               echo $objRetorno->prontproced[0]->sd63_c_nome;
             }?>
         </td>
         <td width="30%" height="60" nowrap="nowrap">
-          <?if($objRetorno->prontproced[0]->sd63_c_procedimento){
+          <?php if($objRetorno->prontproced[0]->sd63_c_procedimento){
               echo $objRetorno->prontproced[0]->sd63_c_procedimento;
             }?>
         </td>
@@ -232,7 +232,7 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
     </table>
   </td>
   </tr>
-<?} ?>  
+<?php } ?>  
 </table>
 <script language="JavaScript">
   self.print();

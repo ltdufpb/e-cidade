@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -428,7 +428,7 @@ if (isset($aprovminimo)) {
   <script>
    // parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>"+"&iTrocaTurma=<?=$iTrocaTurma?>";
   </script>
-<?
+<?php 
   $valoralterado = $valor;
 
 }
@@ -479,7 +479,7 @@ if (isset($aprovminimo)) {
 <form name="form1" method="post" action="">
 <input name="ed43_i_codigo" type="hidden" value="<?=$ed43_i_codigo?>">
 <input name="regencia" type="hidden" value="<?=$regencia?>">
-<?
+<?php 
 /* Busco informações dos alunos matriculados na turma para exibir no formulário */
 
 $sCampos  = 'diariofinal.*, matricula.ed60_c_situacao, matricula.ed60_c_concluida, matricula.ed60_i_codigo, matricula.ed60_matricula,';
@@ -612,7 +612,7 @@ if ($lCasasDecimais) {
      <td class="cabec1">Código</td>
      <td class="cabec1"><?=$oDadosMat->ed37_c_tipo?></td>
     </tr>
-    <?
+    <?php 
     if ($oDaoMatricula->numrows > 0) { // Matrículas encontrada
 
      for ($iCont = 0; $iCont < $oDaoMatricula->numrows; $iCont++) {
@@ -820,7 +820,7 @@ if ($lCasasDecimais) {
        <td align="center" class='aluno'><?=db_formatar($oDadosMat->ed60_d_datamatricula, 'd')?></td>
        <td align="center" class='aluno'><?=empty($datasaida) ? '&nbsp;': $datasaida?></td>
        <td align="right" class='aluno'><b><?=$oDadosMat->ed47_i_codigo?></b></td>
-       <?
+       <?php 
        echo (empty($sTdAmparo) ? '<td class="aluno" align="center">' : $sTdAmparo);
 
        if (trim($oDadosMat->ed81_c_todoperiodo) != 'S') { // Não tem amparo completo (todo o período)
@@ -1559,13 +1559,13 @@ if ($lCasasDecimais) {
 </form>
 </body>
 </html>
-<?
+<?php 
 if (isset($aprovminimo) && !isset($lNotaParecer)) {
  ?>
  <script>
   js_OpenJanelaIframe('','db_iframe_outrasdisc','func_outrasdisc.php?regencia=<?=$regencia?>&ed43_i_codigo=<?=$ed43_i_codigo?>&codigo=<?=$codigo?>&valor=<?=$valoralterado?>','Informar este resultado para outras disciplinas',true);
  </script>
- <?
+ <?php 
 }
 
 ?>
@@ -1680,11 +1680,11 @@ function js_movimentos(matricula) {
 }
 function js_cent(amount) {
  //retorna o valor com 2 casas decimais
- <?if ($lCasasDecimais) {?>
+ <?php if ($lCasasDecimais) {?>
   return(amount == Math.floor(amount)) ? amount + '.00' : ( (amount*10 == Math.floor(amount*10)) ? amount + '0' : amount);
- <?} else {?>
+ <?php } else {?>
   return(amount == Math.floor(amount)) ? Math.floor(amount) : ( (amount*10 == Math.floor(amount*10)) ? Math.floor(amount) : Math.floor(amount));
- <?}?>
+ <?php }?>
 }
 function js_dec(cantidad, decimales) {
  //arredonda o valor

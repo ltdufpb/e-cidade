@@ -52,7 +52,7 @@ if(is_null($z01_nome) || $z01_nome == ""){
           <table border="0" cellspacing="0" cellpadding="0" width=100%>
             <tr>
               <td width="208"><strong>Matrícula do Imóvel:</strong></td>
-              <td><?              
+              <td><?php               
                 db_input('j01_matric',10,0,true,'text',3,"");
                 db_input('z01_nome',35,0,true,'text',3,"");
               ?>            
@@ -85,8 +85,8 @@ if(is_null($z01_nome) || $z01_nome == ""){
                           <legend>
                             Descrição do arquivo:
                           </legend>
-                          <? db_input('db59_sequencial',10,0,false,'hidden',3,""); ?>
-                          <? db_textarea('j151_descricao', 5, 101, '', true, 'text', ""); ?>
+                          <?php  db_input('db59_sequencial',10,0,false,'hidden',3,""); ?>
+                          <?php  db_textarea('j151_descricao', 5, 101, '', true, 'text', ""); ?>
                           <input type="hidden" id="exec" name="exec">
                         </fieldset>
                       </td>

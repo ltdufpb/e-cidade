@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: patrimonio
 //CLASSE DA ENTIDADE levantamentopatrimonialbens
 class cl_levantamentopatrimonialbens { 

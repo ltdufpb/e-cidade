@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ $clvac_dependencia->rotulo->label("vc09_i_codigo");
               <?=$Lvc09_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?db_input("vc09_i_codigo",10,$Ivc09_i_codigo,true,"text",4,"","chave_vc09_i_codigo");?>
+            <?php db_input("vc09_i_codigo",10,$Ivc09_i_codigo,true,"text",4,"","chave_vc09_i_codigo");?>
             </td>
           </tr>
           <tr> 
@@ -62,7 +62,7 @@ $clvac_dependencia->rotulo->label("vc09_i_codigo");
               <?=$Lvc09_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-             <?db_input("vc09_i_codigo",10,$Ivc09_i_codigo,true,"text",4,"","chave_vc09_i_codigo");?>
+             <?php db_input("vc09_i_codigo",10,$Ivc09_i_codigo,true,"text",4,"","chave_vc09_i_codigo");?>
             </td>
           </tr>
           <tr> 
@@ -78,7 +78,7 @@ $clvac_dependencia->rotulo->label("vc09_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
 
         if (isset($campos)==false) {
@@ -128,13 +128,13 @@ $clvac_dependencia->rotulo->label("vc09_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 
   ?>
   <script>
   </script>
-  <?
+  <?php 
 
 }
 ?>

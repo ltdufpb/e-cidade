@@ -43,7 +43,7 @@ $db_opcao   = 1;
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php 
     db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                  dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,
                  datagrid.widget.js");
@@ -60,10 +60,10 @@ $db_opcao   = 1;
                <table>
                  <tr>
                    <td>
-                     <?db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
+                     <?php db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
                    </td>
                    <td>
-                     <?
+                     <?php 
                       db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, "onchange='js_pesquisacgm(false)'");
                       db_input("z01_nome", 40, $Iz01_nome, true, "text", 3);
                      ?>

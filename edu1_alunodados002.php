@@ -549,7 +549,7 @@ if ( isset( $alterar ) ) {
                                                                       +'&ed47_v_nome=<?= addslashes($ed47_v_nome) ?>'
                                                                       +'&iUtilizaTransporte=<?=$ed47_i_transpublico?>';
  </script>
- <?
+ <?php 
 }
 if ( isset( $excluirfoto ) ) {
 
@@ -585,7 +585,7 @@ if ( isset( $excluirfoto ) ) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
                 <fieldset style="width:95%"><legend><b>Alteração de Aluno</b></legend>
-                    <?include(modification("forms/db_frmalunodados.php"));?>
+                    <?php include(modification("forms/db_frmalunodados.php"));?>
                 </fieldset>
    </center>
   </td>
@@ -593,7 +593,7 @@ if ( isset( $excluirfoto ) ) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if ( isset($alterar) ) {
 
   if ( $claluno->erro_status == "0" ) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 //MODULO: escola
 //CLASSE DA ENTIDADE rechumanoausente
 class cl_rechumanoausente {
