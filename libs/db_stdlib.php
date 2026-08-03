@@ -1,5 +1,21 @@
 <?php
 
+// [migracao PHP 8] shim das superglobais: popula as antigas A PARTIR das modernas.
+// A direcao e sempre moderna -> antiga; o inverso reintroduz o defeito da sessao.
+$GLOBALS["HTTP_SERVER_VARS"]  = $_SERVER  ?? [];
+$GLOBALS["HTTP_POST_VARS"]    = $_POST    ?? [];
+$GLOBALS["HTTP_GET_VARS"]     = $_GET     ?? [];
+$GLOBALS["HTTP_COOKIE_VARS"]  = $_COOKIE  ?? [];
+$GLOBALS["HTTP_SESSION_VARS"] = $_SESSION ?? [];
+$GLOBALS["HTTP_ENV_VARS"]     = $_ENV     ?? [];
+$HTTP_SERVER_VARS  = &$GLOBALS["HTTP_SERVER_VARS"];
+$HTTP_POST_VARS    = &$GLOBALS["HTTP_POST_VARS"];
+$HTTP_GET_VARS     = &$GLOBALS["HTTP_GET_VARS"];
+$HTTP_COOKIE_VARS  = &$GLOBALS["HTTP_COOKIE_VARS"];
+$HTTP_SESSION_VARS = &$GLOBALS["HTTP_SESSION_VARS"];
+$HTTP_ENV_VARS     = &$GLOBALS["HTTP_ENV_VARS"];
+
+
 use ECidade\V3\Extension\Registry;
 
 /*
