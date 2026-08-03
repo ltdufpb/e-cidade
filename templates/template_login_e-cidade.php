@@ -252,6 +252,7 @@ $clientSecret = Registry::get('app.config')->get('api.client.secret');
 
       return HttpClient.post('login.rpc.php', {body: formData, reportProgress: false});
     }
+  }
 
   function js_acessar_jquery() {
     var sLogin = $('#usu_login').val();
@@ -262,7 +263,6 @@ $clientSecret = Registry::get('app.config')->get('api.client.secret');
     var sAuth = btoa("DB_login=" + sLogin + "&DB_senha=" + sSenha).urlEncode();
     var sUrl  = 'abrir.php?sAuth=' + sAuth;
     window.open(sUrl, wname, 'width=' + screen.availWidth + ',height=' + screen.availHeight);
-  }
   }
 
   $(document).ready(function() {
